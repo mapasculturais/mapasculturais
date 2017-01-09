@@ -31,6 +31,8 @@ class ApiQuery {
      * @var string
      */
     protected $metadataClassName;
+    
+    protected $fileClassName;
 
     /**
      * List of the entity properties
@@ -136,6 +138,8 @@ class ApiQuery {
      * @var type 
      */
     protected $_selectingFiles = [];
+    protected $_selectingFilesProperties = ['url'];
+    
     protected $_subqueriesSelect = [];
     protected $_order = 'id ASC';
     protected $_offset;
@@ -161,7 +165,12 @@ class ApiQuery {
 
         $this->apiParams = $api_params;
         $this->entityClassName = $entity_class_name;
+        
 
+        if ($entity_class_name::usesFiles()) {
+            $this->fileClassName = $entity_class_name::getFileClassName();
+        }
+        
         if ($entity_class_name::usesMetadata()) {
             $this->metadataClassName = $entity_class_name::getMetadataClassName();
 
@@ -185,12 +194,7 @@ class ApiQuery {
         if($app->config['app.log.apiDql']){
             $dql = str_replace("\n", "\n\t\t", "\t\t$dql");
             $name = $this->name ? "({$this->name})" : '';
-            $log = "
-            
-API DQL$name --> $action ( $this->entityClassName )
-            
-$dql
-";
+            $log = "\n\nAPI DQL$name --> $action ( $this->entityClassName )\n\n$dql\n";
             $_s1 = [];
             $_s2 = [];
             foreach($params as $k => $v){
@@ -226,8 +230,7 @@ $dql
 
         if ($result) {
             $_tmp = [&$result]; // php !!!!
-            $this->appendMetadata($_tmp);
-            $this->appendRelations($_tmp);
+            $this->_appendData($_tmp);
 
         }
 
@@ -255,8 +258,7 @@ $dql
 
         $result = $q->getResult(Query::HYDRATE_ARRAY);
 
-        $this->appendMetadata($result);
-        $this->appendRelations($result);
+        $this->_appendData($result);
 
         return $result;
     }
@@ -434,6 +436,17 @@ $dql
             return null;
         }
     }
+    
+    protected function _appendData(array &$result) {
+        $this->appendMetadata($result);
+        $this->appendRelations($result);
+        $this->appendFiles($result);
+        $this->appendTerms($result);
+        
+        // @TODO: metalist (copiar o files)
+        // @TODO: relatedAgents
+        // @TODO: seals
+    }
 
     protected function appendMetadata(array &$entities) {
         if ($this->_selectingMetadata && count($entities) > 0) {
@@ -576,6 +589,120 @@ $dql
 
             }
         }
+    }
+    
+    protected function appendFiles(array &$entities){
+        if(!$this->_selectingFiles){
+            return;
+        }
+        
+        $app = App::i();
+        
+        $file_groups = $app->getRegisteredFileGroupsByEntity($this->entityClassName);
+        
+        $em = $app->em;
+        
+        $where = [];
+        foreach($this->_selectingFiles as $select){
+            if(strpos($select, '.') > 0){
+                list($group, $transformation) = explode('.', $select);
+                $where[] = "(f.group = 'img:{$transformation}' AND fp.group = '{$group}')";
+            } else {
+                $where[] = "(f.group = '{$select}')";
+            }
+        }
+        $sub = $this->getSubqueryInIdentities($entities);
+        
+        $where = implode(' OR ', $where);
+        
+        $dql = "
+            SELECT 
+                f.id, 
+                f.name,
+                f.description,
+                f._path,
+                f.group as file_group,
+                fp.group as parent_group,
+                IDENTITY(f.owner) AS owner_id
+            FROM 
+                {$this->fileClassName} f 
+                    LEFT JOIN f.parent fp
+            WHERE
+                f.owner IN ({$sub}) AND ({$where})";
+                
+        $query = $em->createQuery($dql);
+                
+        $qrestul = $query->getResult(Query::HYDRATE_ARRAY);
+        
+        $files = [];
+        
+        foreach($qrestul as $f){
+            $owner_id = $f['owner_id'];
+            if(!isset($files[$owner_id])){
+                $files[$owner_id] = [];
+            }
+            
+            $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
+            
+            if($f['parent_group']) { 
+                $f['transformed'] = true;
+                $f['mainGroup'] = $f['parent_group'];
+                $f['group'] = $f['parent_group'] . '.' . str_replace('img:', '', $f['file_group']);
+            } else {
+                $f['transformed'] = false;
+                $f['mainGroup'] = $f['file_group'];                
+                $f['group'] = $f['file_group'];
+            }
+                        
+            $files[$owner_id][] = $f;
+        }
+        
+        foreach($entities as &$entity){
+            $id = $entity['id'];
+            if(isset($files[$id])){
+                foreach($files[$id] as $f){
+                    if(!isset($file_groups[$f['mainGroup']])){
+                        continue;
+                    }
+                    
+                    if(true) { // método para compatibilidade da v1 da api
+                        $file = [];
+                        if(in_array('id', $this->_selectingFilesProperties)){
+                            $file['id'] = $f['id'];
+                        }
+                        
+                        if(in_array('name', $this->_selectingFilesProperties)){
+                            $file['name'] = $f['name'];
+                        }
+                        
+                        if(in_array('url', $this->_selectingFilesProperties)){
+                            $file['url'] = $f['url'];
+                        }
+                        
+                        if(in_array('description', $this->_selectingFilesProperties)){
+                            $file['description'] = $f['description'];
+                        }
+                        
+                        $key = '@files:' . $f['group'];
+                        if($file_groups[$f['mainGroup']]->unique){
+                            $entity[$key] = $file;
+                        } else {
+                            if(!isset($entity[$key])){
+                                $entity[$key] = [];
+                            }
+                            $entity[$key][] = $file;
+                        }
+                    } else {
+                        // @TODO: implementar o novo método de retorno de imagens 
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+    
+    protected function appendTerms(array &$entities){
     }
 
     protected function addMultipleParams(array $values) {
@@ -983,73 +1110,12 @@ $dql
     }
 
     protected function _parseFiles($value) {
-        if (preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $val, $imatch)) {
-            return;
-            // example:
-            // @files=(avatar.smallAvatar,header.header):name,url
-
-            $cfg = [
-                'files' => explode(',', $imatch[1]),
-                'props' => key_exists(3, $imatch) ? explode(',', $imatch[3]) : ['url']
-            ];
-
-            $_join_in = [];
-
-            foreach ($cfg['files'] as $_f) {
-                if (strpos($_f, '.') > 0) {
-                    list($_f_group, $_f_transformation) = explode('.', $_f);
-                    $_join_in[] = $_f_group;
-                    $_join_in[] = 'img:' . $_f_transformation;
-                } else {
-                    $_join_in[] = $_f;
-                }
+        if (preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $value, $imatch)) {
+            $this->_selectingFiles = explode(',', str_replace(' ', '', $imatch[1]));
+            
+            if(isset($imatch[3])){
+                $this->_selectingFilesProperties = explode(',', str_replace(' ', '', $imatch[3]));
             }
-
-            $_join_in = array_unique($_join_in);
-
-            $dql_select[] = ", files, fparent";
-            $dql_select_joins[] = "
-                        LEFT JOIN e.__files files WITH files.group IN ('" . implode("','", $_join_in) . "')
-                        LEFT JOIN files.parent fparent";
-
-            $extract_data_cb = function($file, $ipath, $props) {
-                $result = [];
-                if ($ipath) {
-                    $path = explode('.', $ipath);
-                    foreach ($path as $transformation) {
-                        $file = $file->transform($transformation);
-                    }
-                }
-                if (is_object($file)) {
-                    foreach ($props as $prop) {
-                        $result[$prop] = $file->$prop;
-                    }
-                }
-
-                return $result;
-            };
-
-            $append_files_cb = function(&$result, $entity) use($cfg, $extract_data_cb) {
-
-                $files = $entity->files;
-
-                foreach ($cfg['files'] as $im) {
-                    $im = trim($im);
-
-                    list($igroup, $ipath) = explode('.', $im, 2) + [null, null];
-
-                    if (!key_exists($igroup, $files))
-                        continue;
-
-                    if (is_array($files[$igroup])) {
-                        $result["@files:$im"] = [];
-                        foreach ($files[$igroup] as $file)
-                            $result["@files:$im"][] = $extract_data_cb($file, $ipath, $cfg['props']);
-                    } else {
-                        $result["@files:$im"] = $extract_data_cb($files[$igroup], $ipath, $cfg['props']);
-                    }
-                }
-            };
         }
     }
 
