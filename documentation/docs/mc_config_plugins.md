@@ -125,4 +125,48 @@ Esse plugin é para configurar a funcionalidade de denúncia e/ou sugestões nos
 ),
 ```
 As chaves `compliant` e `suggestion` recebe um valor *boolean* habilitando ou desabilitando o botão da funcionalidade.
-IMPORTANTE: Esta funcionalidade trabalha em conjunto com o plugin [MAILER](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#mailer)
+**IMPORTANTE**: Esta funcionalidade trabalha em conjunto com o plugin [MAILER](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#mailer)
+
+### Templates
+Os templates é uma forma de customizar o formato dos e-mails que são enviados pelo Mapas Culturais para cada situação existente de notificação por e-mail. Por padrão contempla os seguintes processos de envio de e-mail:
+
+Esse plugin é para configurar a funcionalidade de denúncia e/ou sugestões nos singles das entidades do Mapas Culturais. Habilita o botão *Denúncia* e *Contato* que serão exibidos na parte inferior direita do single da entidade:
+* Boas vindas ao Mapas
+* Nova entidade cadastrada (Agente/Espaço/Projeto/Evento)
+* Longo tempo sem acesso do usuário ao Mapas. Esta mensagem, o seu envio funciona em conjunto com o plugin [Notificações] (https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#notificações)
+* Necessidade de atualização de registros do Mapas (Agente/Espaço/Projeto/Evento). Esta mensagem, o seu envio funciona em conjunto com o plugin [Notificações] (https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#notificações)
+* Sugestão de conteúdo no sistema. Esta mensagem, o seu envio funciona em conjunto com o plugin [Botão de Denúncia e Sugestão] (https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#botão-de-denúncia-e-sugestão)
+* Denúncia de conteúdo no sistema. Esta mensagem, o seu envio funciona em conjunto com o plugin [Botão de Denúncia e Sugestão] (https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#botão-de-denúncia-e-sugestão)
+
+Todos os templates utilizados devem se criado utilizando a notação HTML e armazenados na pasta */src/protected/application/themes/BaseV1/templates*, e devem ser configurados no arquivo conf-base.php ou config.php da aplicação com as seguintes definições:
+```
+'mailer.templates' => [
+        'welcome' => [
+            'title' => "Bem-vindo(a) ao Mapas Culturais",
+            'template' => 'welcome.html'
+        ],
+        'last_login' => [
+            'title' => "Acesse a Mapas Culturais",
+            'template' => 'last_login.html'
+        ],
+        'new' => [
+            'title' => "Novo registro",
+            'template' => 'new.html'
+        ],
+        'update_required' => [
+            'title' => "Acesse a Mapas Culturais",
+            'template' => 'update_required.html'
+        ],
+        'compliant' => [
+            'title' => "Denúncia - Mapas Culturais",
+            'template' => 'compliant.html'
+        ],
+        'suggestion' => [
+            'title' => "Mensagem - Mapas Culturais",
+            'template' => 'suggestion.html'
+        ]
+    ],
+```
+Os templates e e-mails sõ serão enviados se existir o template no array dentro do arquivo de configuração do Mapas. Para customizar templates por tema, é só criar a pasta _templates_ dentro da pasta do tema e incluir os arquivos de .html dos templates desejados.
+
+**IMPORTANTE**: Esta funcionalidade trabalha em conjunto com o plugin [Mailer](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#mailer)

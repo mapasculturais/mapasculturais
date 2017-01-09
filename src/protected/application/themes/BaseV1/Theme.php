@@ -824,24 +824,26 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
-                $user = $this->ownerUser;
-                $dataValue = [
-                    'name'          => $app->user->profile->name,
-                    'entityType'    => $this->entityTypeLabel,
-                    'entityName'    => $this->name,
-                    'url'           => $this->origin_site,
-                    'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
-                ];
+		if(in_array($app->config) && $app->config['notifications.entities.new']) {
+	                $user = $this->ownerUser;
+       		         $dataValue = [
+				'name'          => $app->user->profile->name,
+				'entityType'    => $this->entityTypeLabel,
+				'entityName'    => $this->name,
+				'url'           => $this->origin_site,
+				'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
+	                ];
 
-                $message = $app->renderMailerTemplate('new',$dataValue);
+        	        $message = $app->renderMailerTemplate('new',$dataValue);
 
-                $app->createAndSendMailMessage([
-                    'from' => $app->config['mailer.from'],
-                    'to' => $user->email,
-                    'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
-                    'body' => $message['body']
-                ]);
-            }
+                	$app->createAndSendMailMessage([
+       				'from' => $app->config['mailer.from'],
+				'to' => $user->email,
+				'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
+				'body' => $message['body']
+	                ]);
+        	    }
+		}
         });
 
         // sempre que insere uma imagem cria o avatarSmall
