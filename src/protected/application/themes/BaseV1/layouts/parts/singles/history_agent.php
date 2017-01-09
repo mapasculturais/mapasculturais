@@ -26,14 +26,7 @@ $action = "single";
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <?php if($entity->status === MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <div class="alert warning"><?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entityTypeLabel));?></div>
-        <?php elseif($entity->status === MapasCulturais\Entity::STATUS_TRASH): ?>
-            <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entityTypeLabel));?></div>
-        <?php elseif($entity->status === MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entityTypeLabel));?></div>
-        <?php endif; ?>
-
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em .");?></div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
         <div class="header-content">
@@ -144,7 +137,7 @@ $action = "single";
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
-                <?php /*$this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]);*/ ?>
+                <?php $this->part('singles/location', ['entity' => $entity]); ?>
 
             </div>
             <!--.ficha-spcultura-->

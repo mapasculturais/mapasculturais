@@ -35,10 +35,16 @@ class EntityRevision extends \MapasCulturais\Repository{
         $qryRev->setMaxResults(1);
         $entityRevision = $qryRev->getOneOrNullResult();
         $actualEntity = $app->repo($entityRevision->objectType)->find($entityRevision->objectId);
-        $entityRevisioned = new \stdClass();//$entityRevision->objectType;
+        $entityRevisioned = new \stdClass();
         $entityRevisioned->controller_id =  $actualEntity->getControllerId();
-        $app->log->debug("Controller: " . $entityRevisioned->controller_id);
         $entityRevisioned->id = $actualEntity->id;
+
+        $registeredMetadata = $app->getRegisteredMetadata($entityRevision->objectType);
+
+        foreach(array_keys($registeredMetadata) as $metadata) {
+            $entityRevisioned->$metadata = null;
+        }
+
         foreach($entityRevision->data as $dataRevision) {
             if(!is_array($dataRevision) && !is_object($dataRevision)) {
                 $data = $dataRevision;
@@ -46,15 +52,12 @@ class EntityRevision extends \MapasCulturais\Repository{
                 $data = $dataRevision->value;
             }
 
-            /*if($dataRevision->key == 'owner') {
-                $entityRevisioned->$attribute = $app->repo('agent')->find($data->id);
-            } elseif($dataRevision->key == 'location') { 
-                $app->log->debug($data);
-                $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint(0,0);
-            } else {*/
+            if($dataRevision->key == 'location') { 
+                $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint($data->latitude,$data->longitude);
+            } else {
                 $attribute = $dataRevision->key;
                 $entityRevisioned->$attribute = $data;
-            //}
+            }
         }
         return $entityRevisioned;
     }

@@ -90,7 +90,8 @@ $action = "single";
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <?php /*$this->part('singles/space-servico', ['entity' => $entity]);*/ ?>
 
-                <?php /*$this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]);*/ ?>
+                <?php $this->part('singles/location', ['entity' => $entity]); ?>
+                
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
