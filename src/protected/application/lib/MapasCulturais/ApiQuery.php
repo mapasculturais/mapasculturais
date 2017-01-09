@@ -14,6 +14,9 @@ class ApiQuery {
      */
     protected $__counter = 0;
     
+    protected $maxBeforeSubquery = 1024;
+    protected $_usingSubquery = false;
+    
     protected $name;
 
     /**
@@ -331,7 +334,8 @@ class ApiQuery {
     }
 
     protected function getSubqueryInIdentities(array $entities, $property = 'id') {
-        if (count($entities) > 1000 && !$this->getOffset() && !$this->getLimit()) {
+        if (count($entities) > $this->maxBeforeSubquery && !$this->getOffset() && !$this->getLimit()) {
+            $this->_usingSubquery = true;
             return $this->getSubDQL($property);
         } else {
             $identity = [];
@@ -450,6 +454,9 @@ class ApiQuery {
 
     protected function appendMetadata(array &$entities) {
         if ($this->_selectingMetadata && count($entities) > 0) {
+            $app = App::i();
+            $em = $app->em;
+
             $meta_keys = [];
             foreach ($this->_selectingMetadata as $meta) {
                 $meta_keys[uniqid('p')] = $meta;
@@ -457,18 +464,21 @@ class ApiQuery {
 
             $keys = ':' . implode(',:', array_keys($meta_keys));
 
-            $em = App::i()->em;
             $count = $this->__counter++;
 
             $in_entities_dql = $this->getSubqueryInIdentities($entities);
 
-            $dql = "SELECT e.key, e.value, IDENTITY(e.owner) AS objectId FROM {$this->metadataClassName} e WHERE e.owner IN ({$in_entities_dql}) AND e.key IN({$keys})";
+            $dql = "SELECT e.key, e.value, IDENTITY(e.owner) AS objectId FROM {$this->metadataClassName} e WHERE e.owner IN ({$in_entities_dql}) AND e.key IN({$keys}) ORDER BY e.id";
 
             $q = $em->createQuery($dql);
 
-            $q->setParameters($meta_keys);
-
+            if($this->_usingSubquery){
+                $q->setParameters($meta_keys + $this->_dqlParams);
+            } else {
+                $q->setParameters($meta_keys);                
+            }
             $metadata = [];
+            
             foreach ($q->getArrayResult() as $meta) {
                 if (!isset($metadata[$meta['objectId']])) {
                     $metadata[$meta['objectId']] = [];
@@ -628,10 +638,16 @@ class ApiQuery {
                 {$this->fileClassName} f 
                     LEFT JOIN f.parent fp
             WHERE
-                f.owner IN ({$sub}) AND ({$where})";
+                f.owner IN ({$sub}) AND ({$where})
+            ORDER BY f.id ASC";
+                
                 
         $query = $em->createQuery($dql);
-                
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+        
         $qrestul = $query->getResult(Query::HYDRATE_ARRAY);
         
         $files = [];
