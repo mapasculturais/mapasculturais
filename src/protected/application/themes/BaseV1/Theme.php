@@ -824,8 +824,7 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
-
-		if($app->config['notifications.entities.new']) {
+		if(in_array($app->config) && $app->config['notifications.entities.new']) {
 	                $user = $this->ownerUser;
        		         $dataValue = [
 				'name'          => $app->user->profile->name,
