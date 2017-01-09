@@ -53,9 +53,9 @@ class EntityRevision extends \MapasCulturais\Entity{
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="timestamp", type="datetime", nullable=false)
+     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
-    protected $timestamp;
+    protected $createTimestamp;
 
     /**
      * @var string
@@ -98,7 +98,7 @@ class EntityRevision extends \MapasCulturais\Entity{
 
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
-        $this->timestamp = new \DateTime;
+        $this->createTimestamp = new \DateTime;
         $this->action = $action;
 
         $this->data = new \Doctrine\Common\Collections\ArrayCollection();

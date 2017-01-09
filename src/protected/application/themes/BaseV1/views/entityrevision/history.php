@@ -1,1 +1,5 @@
-<?php echo "estamos por aqui";?>
+<?php
+
+$this->part("singles/history_" . $entityRevision->controller_id,['entityRevision' => $entityRevision]);
+
+?>

@@ -28,8 +28,8 @@ trait EntityRevision{
         }
         $relations = $class_metadata->getAssociationMappings();
 
-        if(array_key_exists("user",$relations)) {
-            $revisionData["user"] = $this->user->simplify("id,name");
+        if(array_key_exists("owner",$relations)) {
+            $revisionData["owner"] = $this->owner->simplify("id,name");
         }
 
         if(array_key_exists("parent",$relations)) {
@@ -76,7 +76,7 @@ trait EntityRevision{
 
         if($this->usesAgentRelation()) {
             foreach($this->__agentRelations as $agentRelation) {
-                $revisionData['_agents'][] = $agentRelation->agent->simplify();
+                $revisionData['_agents'][$agentRelation->group][] = $agentRelation->agent->simplify();
             }
         }
 

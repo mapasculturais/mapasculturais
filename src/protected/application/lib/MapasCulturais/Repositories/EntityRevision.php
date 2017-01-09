@@ -1,8 +1,10 @@
 <?php
 namespace MapasCulturais\Repositories;
+use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 class EntityRevision extends \MapasCulturais\Repository{
+    use Traits\EntityGeoLocation;
 
     public function findLastRevision($entity) {
         $objectId = $entity->id;
@@ -33,17 +35,27 @@ class EntityRevision extends \MapasCulturais\Repository{
         $qryRev->setMaxResults(1);
         $entityRevision = $qryRev->getOneOrNullResult();
         $actualEntity = $app->repo($entityRevision->objectType)->find($entityRevision->objectId);
-        $entityRevisioned = new $entityRevision->objectType;
+        $entityRevisioned = new \stdClass();//$entityRevision->objectType;
+        $entityRevisioned->controller_id =  $actualEntity->getControllerId();
+        $app->log->debug("Controller: " . $entityRevisioned->controller_id);
+        $entityRevisioned->id = $actualEntity->id;
         foreach($entityRevision->data as $dataRevision) {
-            if(!is_array($dataRevision->data) && !is_object($dataRevision->data)) {
-                $data = $dataRevision->data;
+            if(!is_array($dataRevision) && !is_object($dataRevision)) {
+                $data = $dataRevision;
             } else {
-                $data = $dataRevision->getValue();
+                $data = $dataRevision->value;
             }
-            $attibute = $dataRevision->key;
-            $entityRevisioned->$attibute = $data;
+
+            /*if($dataRevision->key == 'owner') {
+                $entityRevisioned->$attribute = $app->repo('agent')->find($data->id);
+            } elseif($dataRevision->key == 'location') { 
+                $app->log->debug($data);
+                $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint(0,0);
+            } else {*/
+                $attribute = $dataRevision->key;
+                $entityRevisioned->$attribute = $data;
+            //}
         }
-        //$entityRevisioned->dump();
-        return $entityRevision;
+        return $entityRevisioned;
     }
 }

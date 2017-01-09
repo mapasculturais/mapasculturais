@@ -20,8 +20,7 @@ class EntityRevision extends EntityController {
     	$id = $this->data['id'];
 
     	$entityRevision = $app->repo('EntityRevision')->findCreateRevisionObject($id);
-        //App::i()->log->debug($entityRevision);
 
-    	$this->render('history', ['entity' => $entityRevision, 'entityRevisioned' => true]);
+    	$this->render('history', ['entityRevision' => $entityRevision]);
     }
 }
