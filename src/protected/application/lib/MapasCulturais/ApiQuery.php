@@ -36,6 +36,8 @@ class ApiQuery {
     protected $metadataClassName;
     
     protected $fileClassName;
+    
+    protected $termRelationClassName;
 
     /**
      * List of the entity properties
@@ -172,6 +174,10 @@ class ApiQuery {
 
         if ($entity_class_name::usesFiles()) {
             $this->fileClassName = $entity_class_name::getFileClassName();
+        }
+        
+        if ($entity_class_name::usesTaxonomies()) {
+            $this->termRelationClassName = $entity_class_name::getTermRelationClassName();
         }
         
         if ($entity_class_name::usesMetadata()) {
@@ -648,11 +654,11 @@ class ApiQuery {
             $query->setParameters($this->_dqlParams);
         }
         
-        $qrestul = $query->getResult(Query::HYDRATE_ARRAY);
+        $restul = $query->getResult(Query::HYDRATE_ARRAY);
         
         $files = [];
         
-        foreach($qrestul as $f){
+        foreach($restul as $f){
             $owner_id = $f['owner_id'];
             if(!isset($files[$owner_id])){
                 $files[$owner_id] = [];
@@ -719,6 +725,70 @@ class ApiQuery {
     }
     
     protected function appendTerms(array &$entities){
+        $class = $this->entityClassName;
+        $term_relation_class_name = $this->termRelationClassName;
+        if($term_relation_class_name && in_array('terms', $this->_selecting)){
+            $app = App::i();
+            $em = $app->em;
+            $dql_in = $this->getSubqueryInIdentities($entities);
+            
+            // @TODO: refatorar com o merge da refatoração dos slugs das taxonomias
+            $taxonomies = [];
+            $skel = [];
+            foreach($app->getRegisteredTaxonomies($class) as $slug => $def){
+                $taxonomies[$def->id] = $slug;
+                $skel[$slug] = [];
+            }
+            // --------------------
+            
+            $dql = "
+                SELECT 
+                    t.term,
+                    t.taxonomy,
+                    IDENTITY(tr.owner) AS owner_id
+                FROM {$term_relation_class_name} tr
+                    JOIN tr.term t
+                WHERE 
+                    tr.owner IN ($dql_in)";
+                
+            $query = $em->createQuery($dql);
+            
+            if($this->_usingSubquery){
+                $query->setParameters($this->_dqlParams);
+            }
+            
+            $app->log->debug($dql);
+            
+            $result = $query->getResult(Query::HYDRATE_ARRAY);
+            
+            $terms_by_entity = [];
+            
+            foreach($result as $term){
+                // @TODO: refatorar com o merge da refatoração dos slugs das taxonomias
+                if(!isset($taxonomies[$term['taxonomy']])){
+                    continue;
+                }
+                $term['taxonomy'] = $taxonomies[$term['taxonomy']];
+                // --------------------
+                
+                $owner_id = $term['owner_id'];
+                $taxonomy = $term['taxonomy'];
+                $term = $term['term'];
+                
+                if(!isset($terms_by_entity[$owner_id])){
+                    $terms_by_entity[$owner_id] = $skel;
+                }
+                if(!in_array($term, $terms_by_entity[$owner_id][$taxonomy])){
+                    $terms_by_entity[$owner_id][$taxonomy][] = $term;
+                }
+            }
+            
+            foreach($entities as &$entity){
+                $id = $entity['id'];
+                
+                $entity['terms'] = isset($terms_by_entity[$id]) ? $terms_by_entity[$id] : $skel;
+            }
+        }
     }
 
     protected function addMultipleParams(array $values) {
