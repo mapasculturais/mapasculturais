@@ -5,7 +5,7 @@ $action = "single";
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
 
-<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?>
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'spaces','home_title' => 'entities: My Spaces']); ?>
 
 <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
@@ -26,14 +26,7 @@ $action = "single";
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <?php if($entity->status === MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <div class="alert warning"><?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entityTypeLabel));?></div>
-        <?php elseif($entity->status === MapasCulturais\Entity::STATUS_TRASH): ?>
-            <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entityTypeLabel));?></div>
-        <?php elseif($entity->status === MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entityTypeLabel));?></div>
-        <?php endif; ?>
-
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y H:i:s').".");?></div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
         <div class="header-content">

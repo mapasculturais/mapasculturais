@@ -54,11 +54,30 @@ class EntityRevision extends \MapasCulturais\Repository{
 
             if($dataRevision->key == 'location' && $data->longitude != 0 && $data->latitude !=0) { 
                 $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint($data->longitude,$data->latitude);
+            } elseif($dataRevision->key == 'createTimestamp' || $dataRevision->key == 'updateTimestamp') {
+                $attribute = $dataRevision->key;
+                $entityRevisioned->$attribute = \DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
             } else {
                 $attribute = $dataRevision->key;
                 $entityRevisioned->$attribute = $data;
             }
         }
         return $entityRevisioned;
+    }
+
+    public function findEntityLastRevisionId($classEntity, $entityId) {
+        $query = $this->_em->createQuery("SELECT e.id
+                                            FROM MapasCulturais\Entities\EntityRevision e
+                                            WHERE e.objectId = {$entityId} AND e.objectType = '{$classEntity}'
+                                            ORDER BY e.id DESC");
+
+        $query->setMaxResults(1);
+        $return = $query->getOneOrNullResult();
+        if(is_array($return) && count($return > 0)) {
+            $return = $return['id'];
+        } else {
+            $return = 0;
+        }
+        return $return;
     }
 }

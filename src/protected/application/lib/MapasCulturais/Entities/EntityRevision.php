@@ -98,12 +98,13 @@ class EntityRevision extends \MapasCulturais\Entity{
 
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
-        $this->createTimestamp = new \DateTime;
         $this->action = $action;
 
         $this->data = new \Doctrine\Common\Collections\ArrayCollection();
 
         if($action == self::ACTION_CREATED) {
+            $this->createTimestamp = $entity->createTimestamp;
+
             foreach($dataRevision as $key => $data) {
                 $revisionData = new EntityRevisionData;
                 $revisionData->key = $key;
@@ -115,6 +116,7 @@ class EntityRevision extends \MapasCulturais\Entity{
         } elseif($action == self::ACTION_MODIFIED) {
             $lastRevision = $entity->getLastRevision();
             $lastRevisionData = $lastRevision->getRevisionData();
+            $this->createTimestamp = (isset($lastRevision->updateTimestamp) ? $lastRevision->updateTimestamp: new \DateTime());
 
             foreach($dataRevision as $key => $data) {
                 $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;

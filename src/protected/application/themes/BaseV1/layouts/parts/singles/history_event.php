@@ -5,7 +5,7 @@ $action = "single";
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
 
-<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?>
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'events','home_title' => 'entities: My Events']); ?>
 
 <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
@@ -26,14 +26,7 @@ $action = "single";
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <?php if($entity->status === MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <div class="alert warning"><?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entityTypeLabel));?></div>
-        <?php elseif($entity->status === MapasCulturais\Entity::STATUS_TRASH): ?>
-            <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entityTypeLabel));?></div>
-        <?php elseif($entity->status === MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entityTypeLabel));?></div>
-        <?php endif; ?>
-
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y H:i:s').".");?></div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
         <div class="header-content">
@@ -178,10 +171,10 @@ $action = "single";
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
-<div class="sidebar-left sidebar agent">
+<div class="sidebar-left sidebar event">
     <!-- Related Seals BEGIN -->
     <?php if(isset($entity->_seals)):?>
-        <div class="sidebar-left sidebar agent">
+        <div class="sidebar-left sidebar event">
             <div class="selos-add">
             <div class="widget">
                 <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> 
@@ -226,7 +219,7 @@ $action = "single";
     </div>
     <?php endif; ?>
 </div>
-<div class="sidebar agent sidebar-right">
+<div class="sidebar event sidebar-right">
     <!-- Related Agents BEGIN -->
     <?php if(isset($entity->_agents)):?>
         <div class="agentes-relacionados">

@@ -26,7 +26,7 @@ $action = "single";
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em .");?></div>
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y H:i:s').".");?></div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
         <div class="header-content">

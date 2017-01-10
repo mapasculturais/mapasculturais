@@ -19,7 +19,9 @@ trait EntityRevision{
         $app = App::i();
         $class_metadata = $app->em->getClassMetadata($this->getClassName());
         $fields = $class_metadata->getFieldNames();
-        $removedFields = ['id','_geoLocation','createTimestamp','isVerified','userId','updateTimestamp'];
+        $removedFields = ['id','_geoLocation','isVerified','userId'];
+        $entity_data = null;
+
         foreach($fields as $field) {
             if(!in_array($field,$removedFields)) {
                 $revisionData[$field] = $this->$field;
@@ -28,12 +30,16 @@ trait EntityRevision{
         $relations = $class_metadata->getAssociationMappings();
 
         if(array_key_exists("owner",$relations)) {
-            $revisionData["owner"] = $this->owner->simplify("id,name");
+            $entity_data = $this->owner->simplify("id,name");
+            $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($this->owner->getClassName(),$entity_data->id);
+            $revisionData["owner"] = $entity_data;
         }
 
         if(array_key_exists("parent",$relations)) {
             if($this->parent) {
-                $revisionData["parent"] = $this->parent->simplify("id,name");
+                $entity_data = $this->parent->simplify("id,name");
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($this->parent->getClassName(),$entity_data->id);
+                $revisionData["parent"] = $entity_data;
             }
         }
 
@@ -45,19 +51,25 @@ trait EntityRevision{
 
         if(array_key_exists("_spaces",$relations) && count($this->_spaces) > 0) {
             foreach($this->_spaces as $space) {
-                $revisionData['_spaces'][] = $space->simplify("id,name");
+                $entity_data = $space->simplify("id,name");
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($space->getClassName(),$entity_data->id);
+                $revisionData['_spaces'][] = $entity_data;
             }
         }
 
         if(array_key_exists("_events",$relations) && count($this->_events) > 0) {
             foreach($this->_events as $event) {
-                $revisionData['_events'][] = $event->simplify("id,name");
+                $entity_data = $event->simplify("id,name");
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($event->getClassName(),$entity_data->id);
+                $revisionData['_events'][] = $entity_data;
             }
         }
 
         if(array_key_exists("_projects",$relations) && count($this->_projects) > 0) {
             foreach($this->_projects as $project) {
-                $revisionData['_projects'][] = $project->simplify("id,name");
+                $entity_data = $project->simplify("id,name");
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($project->getClassName(),$entity_data->id);
+                $revisionData['_projects'][] = $entity_data;
             }
         }
 
@@ -69,13 +81,17 @@ trait EntityRevision{
 
         if($this->usesSealRelation()) {
             foreach($this->__sealRelations as $sealRelation) {
-                $revisionData['_seals'][] = $sealRelation->seal->simplify();
+                $entity_data = $sealRelation->seal->simplify();
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($sealRelation->seal->getClassName(),$entity_data->id);
+                $revisionData['_seals'][] = $entity_data;
             }
         }
 
         if($this->usesAgentRelation()) {
             foreach($this->__agentRelations as $agentRelation) {
-                $revisionData['_agents'][$agentRelation->group][] = $agentRelation->agent->simplify();
+                $entity_data = $agentRelation->agent->simplify();
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($agentRelation->agent->getClassName(),$entity_data->id);
+                $revisionData['_agents'][$agentRelation->group][] = $entity_data;
             }
         }
 
