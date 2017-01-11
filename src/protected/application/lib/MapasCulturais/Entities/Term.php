@@ -27,9 +27,9 @@ class Term extends \MapasCulturais\Entity
     protected $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="taxonomy", type="smallint", nullable=false)
+     * @ORM\Column(name="taxonomy", type="string", length=64, nullable=false)
      */
     protected $taxonomy;
 
