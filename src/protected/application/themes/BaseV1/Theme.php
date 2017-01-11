@@ -1488,6 +1488,16 @@ class Theme extends MapasCulturais\Theme {
                                 break;
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                
+                                // ordena alfabeticamente
+                                uasort($types, function($a, $b) {
+                                    if ($a->name == $b->name)
+                                        return 0;
+                                    if ($a->name < $b->name)
+                                        return -1;
+                                    if ($a->name > $b->name)
+                                        return 1;
+                                });
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
