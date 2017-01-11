@@ -98,7 +98,7 @@
                     $window.leaflet.iconOptions[entity]
                 ).bindLabel(
                     entity === 'event' ?
-                        '<center>Eventos encontrados no espaço <br> <strong>'+item.name+'</strong></center>'
+                        '<center>' + MapasCulturais.gettext.controllerMap['eventsFound'] + ' <br> <strong>'+item.name+'</strong></center>'
                         : item.name
                 ).on('click', function() {
 

@@ -5,23 +5,23 @@ use MapasCulturais\Entities\Agent;
 function echoStatus($registration){
     switch ($registration->status){
         case R::STATUS_APPROVED:
-            echo 'selecionada';
+            echo \MapasCulturais\i::_e('selecionada');
             break;
 
         case R::STATUS_NOTAPPROVED:
-            echo 'não selecionada';
+            echo \MapasCulturais\i::_e('não selecionada');
             break;
 
         case R::STATUS_WAITLIST:
-            echo 'suplente';
+            echo \MapasCulturais\i::_e('suplente');
             break;
 
         case R::STATUS_INVALID:
-            echo 'inválida';
+            echo \MapasCulturais\i::_e('inválida');
             break;
 
         case R::STATUS_SENT:
-            echo 'pendente';
+            echo \MapasCulturais\i::_e('pendente');
             break;
     }
 }
@@ -38,8 +38,8 @@ $_properties = $app->config['registration.propertiesToExport'];
 <table>
     <thead>
         <tr>
-            <th>Número</th>
-            <th>Status</th>
+            <th><?php \MapasCulturais\i::_e("Número");?></th>
+            <th><?php \MapasCulturais\i::_e("Status");?></th>
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
@@ -51,6 +51,9 @@ $_properties = $app->config['registration.propertiesToExport'];
             <th>Arquivos</th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
+                
+                <th><?php echo $def->label; ?> - Área de Atuação</th>
+                
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
                     <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
                 <?php endforeach; ?>
@@ -77,7 +80,7 @@ $_properties = $app->config['registration.propertiesToExport'];
 
                 <td>
                     <?php if(key_exists('zipArchive', $r->files)): ?>
-                        <a href="<?php echo $r->files['zipArchive']->url; ?>">zip</a>
+                        <a href="<?php echo $r->files['zipArchive']->url; ?>"><?php \MapasCulturais\i::_e("zip");?></a>
                      <?php endif; ?>
                 </td>
 
@@ -89,6 +92,8 @@ $_properties = $app->config['registration.propertiesToExport'];
 
                     <?php if($agent): ?>
                         <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
+                        
+                        <td><?php echo implode(', ', $agent->terms['area']); ?></td>
 
                         <?php
                         foreach($_properties as $prop):

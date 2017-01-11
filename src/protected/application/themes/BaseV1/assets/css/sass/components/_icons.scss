@@ -164,6 +164,11 @@ h1 .icon {
         content: $unicode-agent;
     }
 }
+.icon-subsite {
+    &:before {
+        content: $unicode-subsite;
+    }
+}
 .icon-help {
     &:before {
         content: $unicode-help;

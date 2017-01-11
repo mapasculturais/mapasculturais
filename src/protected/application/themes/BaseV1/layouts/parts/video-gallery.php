@@ -22,7 +22,7 @@ $template = "<li id='video-{{id}}'>
             </li>";
 ?>
 <?php if ($this->isEditable() || $videos): ?>
-    <h3>Vídeos</h3>
+    <h3><?php \MapasCulturais\i::_e("Vídeos");?></h3>
     <a name="video"></a>
     <div id="video-player" class="video" ng-non-bindable>
         <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -37,14 +37,14 @@ $template = "<li id='video-{{id}}'>
                 <?php if($this->isEditable()): ?>
                     <div class="btn btn-default">
                         <a class="js-open-editbox edit hltip"
-                           data-dialog-title="Editar Vídeo"
+                           data-dialog-title="<?php \MapasCulturais\i::esc_attr_e("Editar Vídeo");?>"
                            data-target="#editbox-videogallery"
                            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
                            data-response-target="#video-<?php echo $video->id ?>"
                            data-metalist-action="edit"
                            data-item="<?php echo htmlentities(json_encode($video));?>"
-                           href="#" title='Editar'></a>
-                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="Excluir este vídeo?" title='Excluir'></a>
+                           href="#" title='<?php \MapasCulturais\i::_e("Editar");?>'></a>
+                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="<?php \MapasCulturais\i::esc_attr_e("Excluir este vídeo?");?>" title='<?php \MapasCulturais\i::_e("Excluir");?>'></a>
                     </div>
                 <?php endif; ?>
             </li>
@@ -52,13 +52,13 @@ $template = "<li id='video-{{id}}'>
     </ul>
 <?php endif; ?>
 
-<div id="editbox-videogallery" ng-non-bindable class="js-editbox mc-bottom" title="Editar Vídeo"
+<div id="editbox-videogallery" ng-non-bindable class="js-editbox mc-bottom" title="<?php \MapasCulturais\i::esc_attr_e("Editar Vídeo");?>"
      data-action-url="<?php echo $this->controller->createUrl('metalist', array('id' => $entity->id)) ?>"
      data-response-template="<?php echo $template; ?>"
      data-metalist-group="videos"
-     data-metalist-title-label="Título" data-metalist-value-label="Endereço do vídeo (Youtube ou Vimeo)" data-metalist-description-label="Descrição">
+     data-metalist-title-label="<?php \MapasCulturais\i::esc_attr_e("Título");?>" data-metalist-value-label="<?php \MapasCulturais\i::esc_attr_e("Endereço do vídeo (Youtube ou Vimeo)");?>" data-metalist-description-label="<?php \MapasCulturais\i::esc_attr_e("Descrição");?>">
     <?php if($this->controller->action == 'create'): ?>
-        <span class="js-dialog-disabled" data-message="Para adicionar vídeos você primeiro deve salvar."></span>
+        <span class="js-dialog-disabled" data-message="<?php \MapasCulturais\i::esc_attr_e("Para adicionar vídeos você primeiro deve salvar.");?>"></span>
     <?php else: ?>
         <?php $this->part('metalist-form-template'); ?>
     <?php endif; ?>
@@ -66,12 +66,12 @@ $template = "<li id='video-{{id}}'>
 <?php if($this->isEditable()): ?>
     <p class="gallery-footer" ng-non-bindable>
         <a class="btn btn-default add js-open-editbox" href="#"
-           data-dialog-title="Adicionar Vídeo"
+           data-dialog-title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Vídeo");?>"
            data-target="#editbox-videogallery"
            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
            data-response-target="ul.js-videogallery"
            data-metalist-action="insert"
            data-response-template="<?php echo $template; ?>"
-                        >Adicionar vídeo</a>
+                        ><?php \MapasCulturais\i::_e("Adicionar vídeo");?></a>
     </p>
 <?php endif; ?>

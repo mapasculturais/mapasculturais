@@ -17,7 +17,7 @@
     <?php endif; ?>
         <!-- pro responsivo!!! -->
         <?php if($project->isVerified): ?>
-            <a class="verified-seal hltip active" title="Este projeto é verificado." href="#"></a>
+            <a class="verified-seal hltip active" title="<?php \MapasCulturais\i::esc_attr_e("Este projeto é verificado.");?>" href="#"></a>
         <?php endif; ?>
         </div>
         <!--.avatar-->

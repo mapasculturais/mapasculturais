@@ -16,6 +16,8 @@ O Método find aceita os seguintes parâmetros:
 * **@or** - se usado a api usará o operador lógico OR para criar a query. _ex:( @or:1)_
 * **@type** - usado para definir o tipo de documento a ser gerado com o resultado da busca. _ex:( @type: html; ou @type: json; ou @type: xml)_
 * **@files** - indica que é para retornar os arquivos anexos. _ex:( @files=(avatar.avatarSmall,header):name,url - retorna o nome e url do thumbnail de tamanho avatarSmall da imagem avatar e a imagem header original)_
+* **@seals** - usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. _ex:( @seals: 1,10,25)_
+* **profiles** - usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. _ex:( @profiles:1)_
 
 Operadores
 ----------

@@ -21,9 +21,16 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 $this->entity = $entity;
 
 ?>
+<?php $this->applyTemplateHook('breadcrumb','begin'); ?>
+
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'spaces','home_title' => 'entities: My Spaces']); ?>
+
+<?php $this->applyTemplateHook('breadcrumb','end'); ?>
+
 <?php $this->part('editable-entity', ['entity' => $entity, 'action' => $action]);  ?>
 
 <article class="main-content space">
+    <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
@@ -52,9 +59,9 @@ $this->entity = $entity;
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre">Sobre</a></li>
+        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao">Permissões</a></li>
+        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -66,11 +73,11 @@ $this->entity = $entity;
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
-                    <div class="alert warning">O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui <?php echo strlen($entity->shortDescription) ?> caracteres. Você deve alterar seu texto ou este será cortado ao salvar.</div>
+                    <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
 
                 <p>
-                    <span class="js-editable required" data-edit="shortDescription" data-original-title="Descrição Curta" data-emptytext="Insira uma descrição curta" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable required" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <?php $this->part('singles/space-servico', ['entity' => $entity]); ?>
@@ -99,6 +106,8 @@ $this->entity = $entity;
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
     <?php $this->part('owner', ['entity' => $entity, 'owner' => $entity->owner]) ?>
+
+    <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar space">
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
@@ -114,7 +123,7 @@ $this->entity = $entity;
 <div class="sidebar space sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Para adicionar arquivos para download ou links, primeiro é preciso salvar <?php $this->dict('entities: the space') ?>.<span class="close"></span></p>
+            <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar");?> <?php $this->dict('entities: the space') ?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 

@@ -1,5 +1,5 @@
 <?php
-if($app->user->is('guest'))
+if($app->user->is('guest') || $this->controller->action === 'create')
     return false;
 ?>
 
@@ -12,12 +12,12 @@ if($app->user->is('guest'))
             <div class="objeto-meta">
                 <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $agent->agent ]); ?>
                 <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
-                <div><span class="label">Tipo:</span> <?php echo $agent->agent->type->name?></div>
-                <div><span class="label">Área(s) de atuação:</span> <?php echo implode(', ', $agent->agent->terms['area'])?></div>
+                <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <?php echo $agent->agent->type->name?></div>
+                <div><span class="label"><?php \MapasCulturais\i::_e("Área(s) de atuação");?>:</span> <?php echo implode(', ', $agent->agent->terms['area'])?></div>
             </div>
         </article>
     <?php endforeach; ?>
     <?php if(!$app->user->agentWithControl): ?>
-        <div class="alert info">Você não possui nenhum agente com permissão.</div>
+        <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum agente com permissão.");?></div>
     <?php endif; ?>
 </div>

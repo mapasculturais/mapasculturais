@@ -54,6 +54,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DRAFT = 0;
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
+    const STATUS_ARCHIVED = -2;
 
     /**
      * array of validation definition
@@ -112,6 +113,10 @@ abstract class Entity implements \JsonSerializable{
 
     function isNew(){
         return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
+    }
+
+    function isArchived(){
+        return $this->status === self::STATUS_ARCHIVED;
     }
 
     function simplify($properties = 'id,name'){
@@ -260,6 +265,10 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
+        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
+            return false;
+        }
+
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
@@ -389,6 +398,10 @@ abstract class Entity implements \JsonSerializable{
 
         return $data_array;
     }
+    
+    static public function getValidations(){
+        return [];
+    }
 
     public function isPropertyRequired($entity,$property) {
         $app = App::i();
@@ -402,7 +415,7 @@ abstract class Entity implements \JsonSerializable{
             $return = $metadata[$property]['required'];
         }
 
-        $v = $class::$validations;
+        $v = $class::getValidations();
         if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
             $return = true;
         }
@@ -475,8 +488,10 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getEntityType(){
-	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
+        return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
     }
+    
+    public function getEntityTypeLabel($plural = false) {}
 
     function getEntityState() {
         return App::i()->em->getUnitOfWork()->getEntityState($this);
@@ -515,11 +530,17 @@ abstract class Entity implements \JsonSerializable{
         }
 
         try{
-            if($this->isNew())
+            if($this->isNew()){
                 $this->checkPermission('create');
-            else
-                $this->checkPermission('modify');
 
+
+                if($this->usesOriginSubsite()){
+                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                }
+
+            }else{
+                $this->checkPermission('modify');
+            }
             $app->em->persist($this);
 
             if($flush){
@@ -676,7 +697,6 @@ abstract class Entity implements \JsonSerializable{
      * )
      * </code>
      *
-     * @see \MapasCulturais\App::txt() The MapasCulturais GetText method
      * @see \MapasCulturais\Traits\Metadata::getMetadataValidationErrors() Metadata Validation Errors
      *
      * @return array
@@ -684,7 +704,12 @@ abstract class Entity implements \JsonSerializable{
     public function getValidationErrors(){
         $errors = $this->_validationErrors;
         $class = get_called_class();
-        foreach($class::$validations as $property => $validations){
+
+        if(!method_exists($class, 'getValidations')) {
+            return $errors;
+        }
+        
+        foreach($class::getValidations() as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
                 continue;
@@ -717,16 +742,16 @@ abstract class Entity implements \JsonSerializable{
                     if (!key_exists($property, $errors))
                         $errors[$property] = [];
 
-                    $errors[$property][] = App::txt($error_message);
+                    $errors[$property][] = $error_message;
 
                 }
             }
         }
 
         if($this->usesTypes() && !$this->_type)
-            $errors['type'] = [App::txt('The type is required')];
+            $errors['type'] = [\MapasCulturais\i::__('O Tipo é obrigatório')];
         elseif($this->usesTypes() && !$this->validateType())
-            $errors['type'] = [App::txt('Invalid type')];
+            $errors['type'] = [\MapasCulturais\i::__('Tipo inválido')];
 
         if($this->usesMetadata())
             $errors = $errors + $this->getMetadataValidationErrors();
@@ -864,7 +889,7 @@ abstract class Entity implements \JsonSerializable{
                         $notification->delete();
                         $this->sentNotification = 0;
                         $this->save();
-                        
+
                         $app->em->flush();
                     }
                 });

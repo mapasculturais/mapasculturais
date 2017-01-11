@@ -1,18 +1,28 @@
 <?php
 return array(
+    'saasSuperAdmin' => array(
+        'name' => 'SaaS Superadmin',
+        'singularLabel' => 'roles: Subsite Super Administrator',
+        'pluralLabel' => 'roles: Subsite Super Administrators',
+    ),
+    'saasAdmin' => array(
+        'name' => 'SaaS Admin',
+        'singularLabel' => 'roles: Subsite Administrator',
+        'pluralLabel' => 'roles: Subsite Administrators',
+    ),
     'superAdmin' => array(
         'name' => 'Superadmin',
-        'singularLabel' => 'Super Administrador',
-        'pluralLabel' => 'Super Administradores',
+        'singularLabel' => 'roles: Super Administrator',
+        'pluralLabel' => 'roles: Super Administrators',
     ),
     'admin' => array(
         'name' => 'Admin',
-        'singularLabel' => 'Administrador',
-        'pluralLabel' => 'Administradores',
+        'singularLabel' => 'roles: Administrator',
+        'pluralLabel' => 'roles: Administrators',
     ),
     'staff' => array(
         'name' => 'Equipe',
-        'singularLabel' => 'Membro da Equipe',
-        'pluralLabel' => 'Membros da Equipe',
+        'singularLabel' => 'roles: Staff Member',
+        'pluralLabel' => 'roles: Staff Members',
     )
 );

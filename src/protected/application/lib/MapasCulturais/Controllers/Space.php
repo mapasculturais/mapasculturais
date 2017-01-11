@@ -21,6 +21,7 @@ class Space extends EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
+        Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested;
 
@@ -55,7 +56,7 @@ class Space extends EntityController {
         $_event_ids = $events_repo->findByDateInterval($date_from, $date_to, null, null, true);
         if (count($_event_ids) > 0) {
             $event_data['id'] = 'IN(' . implode(',', $_event_ids) . ')';
-            
+
             $events = $eventController->apiQuery($event_data);
             $event_ids = array_map(function ($e){ return $e['id']; }, $events);
 
@@ -76,8 +77,7 @@ class Space extends EntityController {
         } else {
             $response = key_exists('@count', $query_data) ? 0 : [];
         }
-        
+
         $this->apiResponse($response);
     }
 }
-

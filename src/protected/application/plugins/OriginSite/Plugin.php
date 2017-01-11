@@ -36,7 +36,7 @@ class Plugin extends \MapasCulturais\Plugin {
         foreach($this->getEntitiesClasses() as $class){
             
             $def = new \MapasCulturais\Definitions\Metadata('origin_site', [
-                'label' => $app->txt('Origin Site')
+                'label' => \MapasCulturais\i::__('Origin Site')
             ]);
             
             $app->registerMetadata($def, $class);

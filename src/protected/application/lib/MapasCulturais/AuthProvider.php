@@ -43,6 +43,17 @@ abstract class AuthProvider {
         $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
         $user = $this->_createUser($data);
         $app->applyHookBoundTo($this, 'auth.createUser:after', [$user, $data]);
+
+        $dataValue = ['name' => $user->profile->name];
+        $message = $app->renderMailerTemplate('welcome',$dataValue);
+
+        $app->createAndSendMailMessage([
+            'from' => $app->config['mailer.from'],
+            'to' => $user->email,
+            'subject' => $message['title'],
+            'body' => $message['body']
+        ]);
+
         return $user;
     }
 
@@ -66,7 +77,7 @@ abstract class AuthProvider {
         $app = App::i();
 
         if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
+            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }

@@ -1,8 +1,19 @@
 MapasCulturais = MapasCulturais || {};
 
+function charCounter(obj){
+    if($('#charCounter').text() == '')
+        return;
+
+    var max = $('#charCounter').text().split('/');
+        $('#charCounter').text(($(obj).val().length + '/' + max[1]));
+}
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
+
+    var labels = MapasCulturais.gettext.mapas;
+
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
@@ -113,6 +124,78 @@ $(function(){
         });
     }
 
+    $('.button-form-compliant-suggestion.compliant').on('click', function(){
+        var form_compliant = $(".js-compliant-form");
+        form_compliant.toggle();
+
+        var form_suggestion = $(".js-suggestion-form");
+        form_suggestion.hide();
+
+        var btn_suggestion = $(".button-form-compliant-suggestion.suggestion");
+        var btn_compliant = $(".button-form-compliant-suggestion.compliant");
+
+        showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant);
+    });
+
+    $('.button-form-compliant-suggestion.suggestion').on('click', function(){
+        var form_suggestion = $(".js-suggestion-form");
+        form_suggestion.toggle();
+
+        var form_compliant = $(".js-compliant-form");
+        form_compliant.hide();
+
+        var btn_compliant = $(".button-form-compliant-suggestion.compliant");
+        var btn_suggestion = $(".button-form-compliant-suggestion.suggestion");
+
+        showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant);
+    });
+
+    function showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant) {
+        if(form_compliant.is(":hidden")) {
+            btn_suggestion.show();
+        } else {
+            btn_suggestion.hide()
+        }
+
+        if(form_suggestion.is(":hidden")) {
+            btn_compliant.show();
+        } else {
+            btn_compliant.hide();
+        }
+    }
+
+    $('.js-submit-button.compliant-form').on('click', function(){
+        if(MapasCulturais.compliant_ok) {
+            $(".js-compliant-form")[0].reset();
+            $('.compliant-type').val('');;
+            $('.compliant-box').show();
+            $('.js-submit-button.compliant-form').hide();
+        }
+    });
+
+    $('.close.compliant-form').on('click', function(){
+        if(MapasCulturais.compliant_ok) {
+            $('.compliant-box').hide();
+            $('.js-submit-button.compliant-form').show();
+        }
+    });
+
+    $('.js-submit-button.suggestion-form').on('click', function(){
+        if(MapasCulturais.suggestion_ok) {
+            $(".js-suggestion-form")[0].reset();
+            $('.suggestion-type').val('');;
+            $('.suggestion-box').show();
+            $('.js-submit-button.suggestion-form').hide();
+        }
+    });
+
+    $('.close.suggestion-form').on('click', function(){
+        if(MapasCulturais.suggestion_ok) {
+            $('.suggestion-box').hide();
+            $('.js-submit-button.suggestion-form').show();
+        }
+    });
+
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 
 
@@ -134,23 +217,14 @@ $(function(){
     if(MapasCulturais.entity){
         MapasCulturais.entity.getTypeName = function(){
             switch(MapasCulturais.request.controller){
-                case 'agent' : return 'agente'; break;
-                case 'space' : return 'espaço'; break;
-                case 'event' : return 'evento'; break;
-                case 'project' : return 'projeto'; break;
-                case 'seal' : return 'selo'; break;
+                case 'agent' : return labels['agente']; break;
+                case 'space' : return labels['espaço']; break;
+                case 'event' : return labels['evento']; break;
+                case 'project' : return labels['projeto']; break;
+                case 'seal' : return labels['selo']; break;
             }
         };
     }
-    
-    
-    // confirm
-    
-    $('a.js-confirm-before-go').click(function() {
-        if (!confirm($(this).data('confirm-text')))
-            return false;
-    });
-    
 
 
     // confirm
@@ -161,6 +235,26 @@ $(function(){
     });
 
 
+
+    // confirm
+
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+
+
+    // positioning agent details box on mobile
+
+    if ($(window).width() < 768) {
+        $('.agentes-relacionados .avatar').on('click hover', function () {
+            $('.descricao-do-agente').hide();
+
+            var descAgent = $(this).find('.descricao-do-agente');
+            var descAgentHeight = descAgent.outerHeight();
+            descAgent.show().css('top',-((descAgentHeight)+10));
+        });
+    }
 });
 
 MapasCulturais.utils = {
@@ -517,6 +611,8 @@ MapasCulturais.EditBox = {
 
     initBoxes: function(selector){
 
+        var labels = MapasCulturais.gettext.mapas;
+
         $(selector).each(function(){
             var $dialog = $(this);
 
@@ -539,8 +635,8 @@ MapasCulturais.EditBox = {
             if($dialog.attr('title')){
                 $dialog.prepend('<header><h1>' + $(this).attr('title') + '</h1></header>');
             }
-            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
-            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
+            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : labels['Enviar'];
+            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : labels['Cancelar'];
 
             $dialog.append('<footer><button class="mc-cancel btn btn-default">' + cancel_label + '</button> <button type="submit" class="mc-submit">' + submit_label + '</button> </footer><div class="mc-arrow"></div>');
 

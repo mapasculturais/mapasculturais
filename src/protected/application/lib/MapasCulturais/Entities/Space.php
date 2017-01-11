@@ -29,21 +29,10 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityNested,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+        Traits\EntityDraft,
+        Traits\EntityOriginSubsite,
+        Traits\EntityArchive;
 
-
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do espaço é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::stringType()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'type' => [
-            'required' => 'O tipo do espaço é obrigatório',
-        ]
-    ];
 
     //
 
@@ -214,13 +203,46 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
+    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
 
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
-
+    
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Espaços');
+        else
+            return \MapasCulturais\i::__('Espaço');
+    }
+    
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do espaço é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'type' => [
+                'required' => \MapasCulturais\i::__('O tipo do espaço é obrigatório'),
+            ]
+        ];
+    }
+    
+    
+    
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

@@ -30,6 +30,19 @@ class Site extends \MapasCulturais\Controller {
     function GET_search() {
         $this->render('search');
     }
+    
+    function ALL_error() {
+        $app = \MapasCulturais\App::i();
+
+        $status = $this->data['code'];
+        
+        $app->response->setStatus($status);
+        if($app->request()->isAjax()){
+            throw $this->data['e'];
+        } else{
+            $this->render('error-' . $status, $this->data);
+        }
+    }
 
     function GET_page() {
         $app = \MapasCulturais\App::i();

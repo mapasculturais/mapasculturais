@@ -32,6 +32,10 @@ p > .editable {
     text-transform: none;
     color: $gray-dark;
 }
+.editable.editable-disabled:after {
+    content: '';
+}
+
 .editable:hover:after {
     color: $gray-darker;
 }
@@ -87,6 +91,7 @@ a.editable-click:hover {
 
 /*nos grupos relacionados*/
 .selos-relacionados .editable {
+    float: left;
     width: 3rem;
     height: 3rem;
     background: #d8d8d8;
@@ -127,6 +132,22 @@ a.editable-click:hover {
     margin-top: -10px;
 }
 /*campos de formulário*/
+
+.editable-buttons {
+    display:block;
+    margin-top:1em;
+    text-align: right;
+}
+
+.editable-input input[type=text] {
+    min-width: 250px;
+}
+
+.editable-input .examples {
+    font-style: italic;
+    font-size: 11px;
+}
+
 .editable-input input,
 .editable-input select,
 .editable-buttons button {
