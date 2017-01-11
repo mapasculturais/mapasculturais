@@ -254,7 +254,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         if($role_name === 'saasAdmin' || $role_name === 'saasSuperAdmin'){
             $subsite_id = null;
         } else {
-            if (false === $subsite_id) $app->getCurrentSubsiteId();
+            if (false === $subsite_id) {
+                $subsite_id = $app->getCurrentSubsiteId();
+            }
         }
 
 
