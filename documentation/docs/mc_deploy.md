@@ -261,10 +261,17 @@ $ mapas => select id,status, email from usr where email='digite o endereço de e
 
 Quando executar essa linha você vai pegar o id.
 
-4 - Dê um insert na tabela Role.
+4 - Dê um insert ou um update na tabela *role*.
 
+Insert:
 ```
 $ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin');
+```
+
+Update:
+
+```
+UPDATE role SET name = 'saasAdmin' WHERE id = 'ESCREVA SEU ID AQUI';
 ```
 
 5 - Caso queira verificar o sucesso da ação, dê um select na tabela role.

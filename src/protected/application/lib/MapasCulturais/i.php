@@ -13,6 +13,8 @@ class i {
 
     static function get_locale() {
         $app = App::i();
+        if (!isset($app->config['app.lcode']) || empty($app->config['app.lcode']))
+            return 'pt_BR';
         return $app->config['app.lcode'];
     }
 
@@ -37,11 +39,11 @@ class i {
     	// Unload previously loaded strings so we can switch translations.
     	self::unload_textdomain( 'default' );
 
-    	$return = self::load_textdomain( 'default', LANGUAGES_PATH . "/$locale/LC_MESSAGES/messages.mo" );
+    	$return = self::load_textdomain( 'default', LANGUAGES_PATH );
 
     	// Load Base Theme into default domain
 
-    	self::load_textdomain( 'default', THEMES_PATH . "/BaseV1/languages/$locale.mo" );
+    	self::load_textdomain( 'default', THEMES_PATH . "/BaseV1/languages/" );
 
     	return $return;
     }
@@ -310,11 +312,16 @@ class i {
      * and will be a MO object.
      *
      * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     * @param string $mofile Path to the .mo file.
+     * @param string $mofile Path to the folder where the .mo files are.
      * @return bool True on success, false on failure.
      */
-    static function load_textdomain( $domain, $mofile ) {
+    static function load_textdomain( $domain, $path ) {
         global $i18n;
+        
+        $locale = self::get_locale();
+        
+        $mofile = $path . '/' . $locale . '.mo';
+        
     	if ( !is_readable( $mofile ) ) return false;
 
     	$mo = new MO();

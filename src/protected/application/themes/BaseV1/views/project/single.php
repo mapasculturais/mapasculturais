@@ -38,6 +38,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content project" ng-controller="ProjectController">
+    <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
@@ -84,6 +85,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->applyTemplateHook('tabs-content','after'); ?>
 
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)) ?>
+
+    <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar project">
     <!-- Related Seals BEGIN -->

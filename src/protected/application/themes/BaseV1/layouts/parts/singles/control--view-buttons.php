@@ -10,9 +10,9 @@
     <a href="<?php echo $entity->undeleteUrl ?>" class="btn btn-success"><?php \MapasCulturais\i::_e("Recuperar");?></a>
 
     <?php if($entity->canUser('destroy')): ?>
-        <a class="btn btn-danger" href="<?php echo $entity->destroyUrl; ?>"<?php \MapasCulturais\i::esc_attr_e("Excluir Definitivamente");?></a>
+        <a class="btn btn-danger" href="<?php echo $entity->destroyUrl; ?>"><?php \MapasCulturais\i::_e("Excluir Definitivamente");?></a>
     <?php endif; ?>
 <?php endif; ?>
 <script type="text/javascript">
-    MapasCulturais.Messages.alert('<?php printf(\MapasCulturais\i::esc_attr__("Você possui permissão para editar este %s. Use os botões à direita para editar ou excluir."), strtolower($entity->entityTypeLabel()));?>');
+    MapasCulturais.Messages.alert('<?php printf(\MapasCulturais\i::esc_attr__("Você possui permissão para editar este %s. Use os botões à direita para editar ou excluir."), strtolower($entity->entityTypeLabel));?>');
 </script>

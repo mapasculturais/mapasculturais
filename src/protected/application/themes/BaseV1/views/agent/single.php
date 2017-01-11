@@ -28,6 +28,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
 <article class="main-content agent">
+    <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
@@ -146,29 +147,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
 
-    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
-
-    <div class="denuncia">
-        <input class="botao" type="button" name="Envia" value="Denuncie Abusos">
-    </div>
-
-    <form class="form-complaint-suggestion hidden" id="formulario">
-      <p>
-        <?php \MapasCulturais\i::_e("Nome");?>:<br />
-        <input type="text" rows="5" name="nome">
-      </p>
-      <p>
-        <?php \MapasCulturais\i::_e("E-mail");?>:<br />
-        <input type="text" rows="5" name="email">
-      </p>
-        <?php \MapasCulturais\i::_e("Mensagem");?>:<br />
-        <textarea type="text" rows="5" cols="40" name="mensagem"></textarea>
-      </p>
-      <p>
-        <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("Enviar Denúncia");?>">
-      </p>
-    </form>
-
+    <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar agent">
     <!-- Related Seals BEGIN -->
@@ -227,11 +206,3 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 
 </div>
-<script type="text/javascript">
-  var botao = document.querySelector(".botao");
-  botao.addEventListener("click", function(){
-    var formulario = document.getElementById("formulario");
-    formulario.classList.toggle("hidden");
-  }, true)
-
-</script>

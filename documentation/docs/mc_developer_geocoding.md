@@ -24,7 +24,7 @@ Para isso, basta sobreescrever o objeto JavaScript MapasCulturais.geocoder, decl
 No seu tema ou plugin, adicione o novo script:
 
 ```PHP
-    $this->enqueueScript('custom', 'my-script', 'path-to/my-script.js', array('mapasculturais-customizable'));
+    $this->enqueueScript('app', 'my-script', 'path-to/my-script.js', array('mapasculturais-customizable'));
 ```
 
 E siga as instruções em [customizable.js](../../src/protected/application/themes/BaseV1/assets/js/customizable.js)

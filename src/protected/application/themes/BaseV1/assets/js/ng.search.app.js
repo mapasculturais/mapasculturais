@@ -9,11 +9,13 @@
     
     var labels = MapasCulturais.gettext.searchApp;
     
+    var defaultViewMode = MapasCulturais.defaultViewModeToList ? 'list' : 'map';
+    
     var skeletonData = {
         global: {
             isVerified: false,
             isCombined: false,
-            viewMode: 'map',
+            viewMode: defaultViewMode,
             filterEntity: null,
             openEntity: {
                 id: null,

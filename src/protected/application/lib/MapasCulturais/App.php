@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use SwiftMailer\SwiftMailer;
+use Mustache\Mustache;
 
 /**
  * MapasCulturais Application class.
@@ -197,10 +198,10 @@ class App extends \Slim\Slim{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
             $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
         }
-        
+
         $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
 
-        
+
         $this->_mscache->setNamespace(__DIR__);
 
         spl_autoload_register(function($class) use ($config){
@@ -369,7 +370,7 @@ class App extends \Slim\Slim{
             $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
         } else {
             $this->_cache->setNamespace($config['app.cache.namespace']);
-            
+
             $theme_class = $config['themes.active'] . '\Theme';
             $theme_instance = new $theme_class($config['themes.assetManager']);
         }
@@ -471,7 +472,7 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
-            
+
         //Load defaut translation textdomain
         i::load_default_textdomain();
 
@@ -610,6 +611,13 @@ class App extends \Slim\Slim{
             $seal_types = include APPLICATION_PATH.'/conf/seal-types.php';
         }
         $seals_meta = key_exists('metadata', $seal_types) && is_array($seal_types['metadata']) ? $seal_types['metadata'] : [];
+
+        if ($theme_notification_types = $this->view->resolveFilename('','notification-types.php')) {
+            $notification_types = include $theme_notification_types;
+        } else {
+            $notification_types = include APPLICATION_PATH.'/conf/notification-types.php';
+        }
+        $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
 
         // register auth providers
         // @TODO veridicar se isto está sendo usado, se não remover
@@ -921,7 +929,6 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
-
         // register Subsite types and Subsite metadata
         $entity_class = 'MapasCulturais\Entities\Subsite';
 
@@ -947,6 +954,15 @@ class App extends \Slim\Slim{
                 $metadata = new Definitions\Metadata($meta_key, $meta_config);
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
+        }
+
+        // register notification metadata
+        $entity_class = 'MapasCulturais\Entities\Notification';
+
+        // add notification metadata definition
+        foreach($notification_meta as $meta_key => $meta_config){
+            $metadata = new Definitions\Metadata($meta_key, $meta_config);
+            $this->registerMetadata($metadata, $entity_class);
         }
 
         // register taxonomies
@@ -1267,14 +1283,19 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
-
+    
+    /**
+     * Returns the current subsite ID, or null if current site is the main site
+     *
+     * @return (int|null) ID of the current site or Null for main site
+     */
     public function getCurrentSubsiteId(){
         // @TODO: alterar isto quando for implementada a possibilidade de termos instalações de subsite com o tema diferente do Subsite
         if($this->_subsite){
             return $this->_subsite->id;
         }
 
-        return null;
+        return null; 
     }
 
     public function getCurrentSubsite(){
@@ -2234,20 +2255,36 @@ class App extends \Slim\Slim{
     function getMailer() {
         $transport = [];
 
-        if(!in_array('mailer',$this->_config['plugins.enabled'])) {
-            return;
-        }
+        // server
+        $server = isset($this->_config['mailer.server']) &&  !empty($this->_config['mailer.server']) ? $this->_config['mailer.server'] : false;
 
-        if(isset($this->_config['mailer.user']) &&
-            isset($this->_config['mailer.psw']) &&
-            isset($this->_config['mailer.server']) &&
-            isset($this->_config['mailer.port']) &&
-            isset($this->_config['mailer.protocol'])) {
-            $transport = \Swift_SmtpTransport::newInstance($this->_config['mailer.server'],
-                                                            $this->_config['mailer.port'],
-                                                            $this->_config['mailer.protocol'])
-                                                            ->setUsername($this->_config['mailer.user'])
-                                                            ->setPassword($this->_config['mailer.psw']);
+        // default transport SMTP
+        $transport_type = isset($this->_config['mailer.transport']) &&  !empty($this->_config['mailer.transport']) ? $this->_config['mailer.transport'] : 'smtp';
+
+        // default port to 25
+        $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
+
+        // default encryption protocol to ssl
+        $protocol = isset($this->_config['mailer.protocol']) &&  !empty($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : 'ssl';
+
+
+        if ($transport_type == 'smtp' && false !== $server) {
+
+            $transport = \Swift_SmtpTransport::newInstance($server, $port, $protocol);
+
+            // Maybe add username and password
+            if (isset($this->_config['mailer.user']) && !empty($this->_config['mailer.user']) &&
+                isset($this->_config['mailer.psw']) && !empty($this->_config['mailer.psw']) ) {
+
+                $transport->setUsername($this->_config['mailer.user'])->setPassword($this->_config['mailer.psw']);
+            }
+
+        } elseif ($transport_type == 'sendmail' && false !== $server) {
+            $transport = \Swift_SendmailTransport::newInstance($server);
+        } elseif ($transport_type == 'mail') {
+            $transport = \Swift_MailTransport::newInstance();
+        } else {
+            return false;
         }
 
         $instance = \Swift_Mailer::newInstance($transport);
@@ -2267,6 +2304,10 @@ class App extends \Slim\Slim{
             $message->setFrom($this->_config['mailer.from']);
         }
 
+        $type = $message->getHeaders()->get('Content-Type');
+        $type->setValue('text/html');
+        $type->setParameter('charset', 'utf-8');
+
         foreach($args as $key => $value){
             $key = ucfirst($key);
             $method_name = 'set' . $key;
@@ -2283,25 +2324,59 @@ class App extends \Slim\Slim{
         $failures = [];
         $mailer = $this->getMailer();
 
-        if(in_array('mailer',$this->_config['plugins.enabled']) && !$mailer->send($message,$failures)) {
-            App::i()->log->debug($failures);
+        if (!is_object($mailer))
+            return false;
+
+        try {
+            $mailer->send($message,$failures);
+            return true;
+        } catch(\Swift_TransportException $exception) {
+            App::i()->log->debug($exception);
+            return false;
         }
     }
 
     function createAndSendMailMessage(array $args = []){
         $message = $this->createMailMessage($args);
-        $this->sendMailMessage($message);
+        return $this->sendMailMessage($message);
     }
 
+    function renderMustacheTemplate($template,$templateData) {
+        if(!is_array($templateData) && !is_object($templateData)) {
+            throw new \Exception('Template data not object or array');
+        }
+
+        $templateData = (object) $templateData;
+        if(!($file_name = $this->view->resolveFileName('templates/' . \MapasCulturais\i::get_locale(),$template))) {
+            if(!($file_name = $this->view->resolveFileName('templates/pt_BR',$template))) {
+                throw new \Exception('Email Template undefined');
+            }
+        }
+
+        $mustache = new \Mustache_Engine();
+        $content = $mustache->render(file_get_contents($file_name),$templateData);
+        return $content;
+    }
+
+    function renderMailerTemplate($slug, $templateData = []) {
+        if(array_key_exists($slug,$this->_config['mailer.templates'])) {
+            $message = $this->_config['mailer.templates'][$slug];
+            $message['body'] = $this->renderMustacheTemplate($message['template'],$templateData);
+        }
+        return $message;
+    }
 
     /**************
      * GetText
      **************/
-
+    /* deprecated, use MapasCulturais\i::get_locale();
+     * 
+     * 
+     * 
+     */ 
     static function getCurrentLCode(){
-        return App::i()->_config['app.lcode'];
+        return \MapasCulturais\i::get_locale();
     }
-
 
     static function getTranslations($lcode, $domain = null) {
         $app = App::i();
@@ -2374,6 +2449,11 @@ class App extends \Slim\Slim{
             return $this->_config['routes']['readableNames'][$id];
         }
         return null;
+    }
+
+    function getAdmins() {
+        $app = App::i();
+        return $roles = $app->repo('Role')->findBy(['name' => 'superAdmin']);
     }
 
 }
