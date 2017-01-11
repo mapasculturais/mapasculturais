@@ -1,6 +1,10 @@
-<?php 
+<?php
+
+$this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+
 $entity = $entityRevision;
 $action = "single";
+$app = MapasCulturais\App::i();
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
@@ -80,7 +84,7 @@ $action = "single";
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo nl2br($entity->shortDescription); ?></span>
                 </p>
 
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
@@ -131,14 +135,51 @@ $action = "single";
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
-                <?php /*$this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]);*/ ?>
+                <!--.servico-->
+                <div class="servico ocorrencia clearfix">
 
+                    <div class="js-event-occurrence">
+
+                        <?php foreach($entity->occurrences as $key => $space): ?>
+                            <div class="regra clearfix">
+                                <header class="clearfix">
+                                    <h3 class="alignleft"><a href="<?php echo $app->createUrl("entityRevision","history",[$space->revision])?>"><?php echo $space->name?></a></h3>
+                                    <a class="toggle-mapa" href="#"><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
+                                </header>
+                                <div id="occurrence-map-<?php echo $key?>" class="mapa js-map" data-lat="<?php echo $space->location->latitude;?>" data-lng="<?php echo $space->location->longitude;?>"></div>
+                                <!-- .mapa -->
+                                <?php
+                                $occurrencesDescription = "";
+                                foreach($space->items as $occurrence) {
+                                    if(!empty($occurrence->rule->description)) {
+                                        $occurrencesDescription .= trim($occurrence->rule->description);
+                                    }
+                                    if($occurrence->rule->price) {
+                                        $occurrencesDescription .= '. '.$occurrence->rule->price;
+                                    }
+                                    if(!empty($occurrence->rule->description)) {
+                                        $occurrencesDescription .= '; ';
+                                    }
+                                }
+                                $occurrencesDescription = substr($occurrencesDescription,0,-2);
+                                ?>
+                                <?php foreach($space->items as $occurrence):?>
+                                    <div class="infos">
+                                        <p class="descricao-legivel"><?php echo $occurrencesDescription;?></p>
+                                        <?php if(!empty($occurrence->rule->price)): ?>
+                                            <p><span class="label"><?php \MapasCulturais\i::_e("Preço");?>:</span> <?php echo $occurrence->rule->price?></p>
+                                        <?php endif;?>
+                                        <p><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <?php echo $space->endereco;?></p>
+                                    </div>
+                                    <!-- .infos -->
+                                <?php endforeach;?>
+                            </div>
+                        <?php endforeach;?>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!--.ficha-spcultura-->
-
-            <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
-            <?php /*$this->part('singles/space-extra-info', ['entity' => $entity])*/ ?>
-            <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
 
             <!-- Video Gallery BEGIN -->
             <?php if (isset($entity->videos)): ?>
@@ -195,8 +236,6 @@ $action = "single";
     <?php endif;?>
     <!-- Related Seals END -->
 
-    <?php /*$this->part('singles/space-public', ['entity' => $entity])*/ ?>
-
     <?php if(isset($entity->_terms) && isset($entity->_terms->area)):?>
         <div class="widget">
         <h3><?php $this->dict('taxonomies:area: name') ?></h3>
@@ -223,27 +262,26 @@ $action = "single";
     <!-- Related Agents BEGIN -->
     <?php if(isset($entity->_agents)):?>
         <div class="agentes-relacionados">
-            <?php foreach($entity->_agents as $group => $agent): ?>
+            <?php foreach($entity->_agents as $group => $agents): ?>
             <div class="widget">
                 <h3><?php echo $group;?></h3>
                 <div class="agentes clearfix">
-                    <div class="avatar">
-                        <a href="">
-                            <img ng-src="" />
-                        </a>
-                        <div class="descricao-do-agente">
-                            <h1><a href=""><?php echo $agent->name;?></a></h1>
+                    <?php foreach($agents as $agent): ?>
+                        <div class="avatar">
+                            <a href="">
+                                <img ng-src="" />
+                            </a>
+                            <div class="descricao-do-agente">
+                                <h1><a href=""><?php echo $agent->name;?></a></h1>
+                            </div>
                         </div>
-                    </div>
+                    <?php endforeach;?>
                 </div>
             </div>
             <?php endforeach;?>
         </div>
     <?php endif;?>
     <!-- Related Agents END -->
-
-
-    <?php /*$this->part('singles/space-children', ['entity' => $entity]);*/ ?>
 
     <!-- Spaces BEGIN -->
     <?php if(isset($entities->_spaces)): ?>

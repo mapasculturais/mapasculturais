@@ -56,7 +56,9 @@ class EntityRevision extends \MapasCulturais\Repository{
                 $entityRevisioned->location = new \MapasCulturais\Types\GeoPoint($data->longitude,$data->latitude);
             } elseif($dataRevision->key == 'createTimestamp' || $dataRevision->key == 'updateTimestamp') {
                 $attribute = $dataRevision->key;
-                $entityRevisioned->$attribute = \DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
+                if(isset($data->date)) {
+                    $entityRevisioned->$attribute = \DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
+                }
             } else {
                 $attribute = $dataRevision->key;
                 $entityRevisioned->$attribute = $data;

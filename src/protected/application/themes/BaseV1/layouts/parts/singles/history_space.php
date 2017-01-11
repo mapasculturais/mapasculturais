@@ -232,27 +232,26 @@ $action = "single";
     <!-- Related Agents BEGIN -->
     <?php if(isset($entity->_agents)):?>
         <div class="agentes-relacionados">
-            <?php foreach($entity->_agents as $group => $agent): ?>
+            <?php foreach($entity->_agents as $group => $agents): ?>
             <div class="widget">
                 <h3><?php echo $group;?></h3>
                 <div class="agentes clearfix">
-                    <div class="avatar">
-                        <a href="">
-                            <img ng-src="" />
-                        </a>
-                        <div class="descricao-do-agente">
-                            <h1><a href=""><?php echo $agent->name;?></a></h1>
+                    <?php foreach($agents as $agent): ?>
+                        <div class="avatar">
+                            <a href="">
+                                <img ng-src="" />
+                            </a>
+                            <div class="descricao-do-agente">
+                                <h1><a href=""><?php echo $agent->name;?></a></h1>
+                            </div>
                         </div>
-                    </div>
+                    <?php endforeach;?>
                 </div>
             </div>
             <?php endforeach;?>
         </div>
     <?php endif;?>
     <!-- Related Agents END -->
-
-
-    <?php /*$this->part('singles/space-children', ['entity' => $entity]);*/ ?>
 
     <!-- Spaces BEGIN -->
     <?php if(isset($entities->_spaces)): ?>

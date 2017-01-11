@@ -451,19 +451,27 @@ class Event extends \MapasCulturais\Entity
     public function getRevisionData() {
         $revisionData = [];
         if(count($this->occurrences) > 0) {
-            foreach($this->occurrences as $ocurrence) {
-                $revisionData['occurrences'][] = [
-                    'id' => $ocurrence->id,
-                    'description' => $ocurrence->description,
-                    '_startsOn' => $ocurrence->_startsOn,
-                    '_endsOn' => $ocurrence->_endsOn,
-                    '_startsAt' => $ocurrence->_startsAt,
-                    '_endsAt' => $ocurrence->_endsAt,
-                    'frequency' => $ocurrence->frequency,
-                    'count' => $ocurrence->count,
-                    '_until' => $ocurrence->_until,
-                    'space' => $ocurrence->space
+            foreach($this->occurrences as $occurrence) {
+                $revisionData['occurrences'][$occurrence->space->id]['items'][] = [
+                    'id' => $occurrence->id,
+                    'description' => $occurrence->description,
+                    '_startsOn' => $occurrence->_startsOn,
+                    '_endsOn' => $occurrence->_endsOn,
+                    '_startsAt' => $occurrence->_startsAt,
+                    '_endsAt' => $occurrence->_endsAt,
+                    'frequency' => $occurrence->frequency,
+                    'count' => $occurrence->count,
+                    '_until' => $occurrence->_until,
+                    'rule' => $occurrence->rule
                 ];
+                
+                $revisionData['occurrences'][$occurrence->space->id]['name'] = $occurrence->space->name;
+                $revisionData['occurrences'][$occurrence->space->id]['location'] = [
+                                                                                    'latitude' => $occurrence->space->location->latitude,
+                                                                                    'longitude' => $occurrence->space->location->longitude
+                                                                                    ];
+                $revisionData['occurrences'][$occurrence->space->id]['endereco'] = $occurrence->space->endereco;
+                $revisionData['occurrences'][$occurrence->space->id]['revision'] = App::i()->repo('EntityRevision')->findEntityLastRevisionId($occurrence->space->getClassName(),$occurrence->space->id);
             }
         }
         return $revisionData;
