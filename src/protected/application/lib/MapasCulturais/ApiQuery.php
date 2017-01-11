@@ -38,6 +38,8 @@ class ApiQuery {
     protected $fileClassName;
     
     protected $termRelationClassName;
+    
+    protected $permissionCacheClassName;
 
     /**
      * List of the entity properties
@@ -178,6 +180,10 @@ class ApiQuery {
         
         if ($entity_class_name::usesTaxonomies()) {
             $this->termRelationClassName = $entity_class_name::getTermRelationClassName();
+        }
+        
+        if ($entity_class_name::usesPermissionCache()) {
+            $this->permissionCacheClassName = $entity_class_name::getPermissionCacheClassName();
         }
         
         if ($entity_class_name::usesMetadata()) {
@@ -342,7 +348,7 @@ class ApiQuery {
     protected function getSubqueryInIdentities(array $entities, $property = 'id') {
         if (count($entities) > $this->maxBeforeSubquery && !$this->getOffset() && !$this->getLimit()) {
             $this->_usingSubquery = true;
-            return $this->getSubDQL($property);
+            $result = $this->getSubDQL($property);
         } else {
             $identity = [];
             foreach($entities as $entity){
@@ -350,8 +356,14 @@ class ApiQuery {
                     $identity[] = $entity[$property];
                 }
             }
-            return implode(',', $identity);
+            if(!$identity){
+                $result = "'-1'";
+            } else {
+                $result = implode(',', $identity);
+            }
         }
+        
+        return $result;
     }
 
     function getLimit() {
@@ -381,7 +393,14 @@ class ApiQuery {
     }
 
     protected function generateJoins() {
+        $app = App::i();
         $joins = $this->joins;
+        
+        if($this->_permissions && !$app->user->is('admin')){
+            $pkey = implode(',', $this->addMultipleParams($this->_permissions));
+            $_uid = $app->user->id;
+            $joins .= "JOIN e.__permissionsCache __pcache WITH __pcache.action IN($pkey) AND __pcache.userId = $_uid";
+        }
 
         return $joins;
     }
@@ -459,9 +478,13 @@ class ApiQuery {
     }
 
     protected function appendMetadata(array &$entities) {
+        $app = App::i();
+        $metadata = [];
+        $definitions = $app->getRegisteredMetadata($this->entityClassName);
         if ($this->_selectingMetadata && count($entities) > 0) {
-            $app = App::i();
             $em = $app->em;
+            
+            $permissions = $this->getViewPrivateDataPermissions($entities);
 
             $meta_keys = [];
             foreach ($this->_selectingMetadata as $meta) {
@@ -483,7 +506,6 @@ class ApiQuery {
             } else {
                 $q->setParameters($meta_keys);                
             }
-            $metadata = [];
             
             foreach ($q->getArrayResult() as $meta) {
                 if (!isset($metadata[$meta['objectId']])) {
@@ -495,8 +517,25 @@ class ApiQuery {
         }
 
         foreach ($entities as &$entity) {
-            if (isset($metadata[$entity['id']])) {
-                $entity += $metadata[$entity['id']];
+            $entity_id = $entity['id'];
+            
+            if (isset($metadata[$entity_id])) {
+                $can_view = $permissions[$entity_id];
+                
+                $meta = $metadata[$entity_id];
+                foreach($meta as $k => $v){
+                    $private = $definitions[$k]->private;
+                    if(is_callable($private)){
+                        $private = \Closure::bind($private, (object) $entity);
+                        if($private() && !$can_view){
+                            unset($meta[$k]);
+                        }
+                    }else if($private && !$can_view){
+                        unset($meta[$k]);
+                    }    
+                }
+                
+                $entity += $meta;
             }
         }
     }
@@ -757,8 +796,6 @@ class ApiQuery {
                 $query->setParameters($this->_dqlParams);
             }
             
-            $app->log->debug($dql);
-            
             $result = $query->getResult(Query::HYDRATE_ARRAY);
             
             $terms_by_entity = [];
@@ -790,6 +827,45 @@ class ApiQuery {
             }
         }
     }
+    
+    private $__viewPrivateDataPermissions = null;
+    
+    protected function getViewPrivateDataPermissions(array $entities){
+        if(is_null($this->__viewPrivateDataPermissions)){
+            $this->__viewPrivateDataPermissions = [];
+            
+            $app = App::i();
+            $em = $app->em;
+            $is_admin = $app->user->is('admin') ;
+            if($is_admin || $app->user->is('guest')){
+                foreach($entities as $entity){
+                    $this->__viewPrivateDataPermissions[$entity['id']] = $is_admin;
+                }
+            } else {
+                $dql_in = $this->getSubqueryInIdentities($entities);
+                $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
+
+                $query = $em->createQuery($dql);
+
+                if($this->_usingSubquery){
+                    $query->setParameters($this->_dqlParams);
+                }
+
+                $qr = $query->getResult(Query::HYDRATE_ARRAY);
+
+                
+                foreach($entities as $entity){
+                    $this->__viewPrivateDataPermissions[$entity['id']] = false;
+                }
+                
+                foreach($qr as $r){
+                    $this->__viewPrivateDataPermissions[$r['entity_id']] = true;
+                }
+            }
+        }
+        
+        return $this->__viewPrivateDataPermissions;
+    }
 
     protected function addMultipleParams(array $values) {
         $result = [];
@@ -814,7 +890,7 @@ class ApiQuery {
             $_id = $matches[2];
 
             $value = ($_repo && $_id) ? $_repo->find($_id) : null;
-        } elseif (strlen($value) && $value[0] == '@') {
+        } elseif (trim($value) != '@control' && strlen($value) && $value[0] == '@') {
             $value = null;
         }
 

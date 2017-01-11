@@ -11,6 +11,10 @@ trait EntityPermissionCache {
         return true;
     }
 
+    static function getPermissionCacheClassName(){
+        return self::getClassName() . 'PermissionCache';
+    }
+
     function permissionCacheExists() {
         return $this->__enabled && !is_null($this->__permissionsCache) && count($this->__permissionsCache) > 0;
     }
