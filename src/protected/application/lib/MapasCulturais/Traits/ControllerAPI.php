@@ -163,13 +163,6 @@ trait ControllerAPI{
             return (int) $default_lifetime;
     }
     
-    
-    protected function detachApiQueryRS($rs){
-        $em = App::i()->em;
-        foreach($rs as $r){
-            $em->detach($r);
-        }
-    }
 
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
@@ -518,8 +511,8 @@ trait ControllerAPI{
             $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).query", [&$qdata, &$select_properties, &$dql_joins, &$dql_where]);
 
             $final_dql = "
-                SELECT PARTIAL
-                    e.{{$select_properties}}
+                SELECT
+                    e
                 FROM
                     $class e
                 $dql_joins
@@ -576,8 +569,8 @@ trait ControllerAPI{
                     $_join = $dql_select_joins[$i];
 
                     $dql = "
-                        SELECT PARTIAL
-                            e.{id} $_select
+                        SELECT
+                            e $_select
                         FROM
                             $class e $_join
                         WHERE
@@ -591,7 +584,6 @@ trait ControllerAPI{
                         $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
                     $rs = $q->getResult();
-                    $this->detachApiQueryRS($rs);
                 }
             };
 
@@ -687,8 +679,6 @@ trait ControllerAPI{
                 if($permissions){
                     $rs = $query->getResult();
                     
-                    $this->detachApiQueryRS($rs);
-                    
                     $result = [];
 
                     $rs = array_values(array_filter($rs, function($entity) use($permissions){
@@ -735,8 +725,6 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
-                    $this->detachApiQueryRS($rs);
-
 
                     $sub_queries($rs);
                 }else{
@@ -744,8 +732,6 @@ trait ControllerAPI{
                         $rs = $query->getArrayResult();
                     } else {
                         $rs = $query->getResult();
-                        $this->detachApiQueryRS($rs);
-
                     }
 
                     $sub_queries($rs);
