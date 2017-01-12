@@ -889,7 +889,7 @@ class Theme extends MapasCulturais\Theme {
                         tr.term
                             t
                         WITH
-                            t.taxonomy = '{$taxonomy->id}'";
+                            t.taxonomy = '{$taxonomy->slug}'";
         });
 
         $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) {

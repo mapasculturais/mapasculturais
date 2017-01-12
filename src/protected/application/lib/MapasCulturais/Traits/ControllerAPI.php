@@ -216,14 +216,14 @@ trait ControllerAPI{
 
             if($class::usesTaxonomies()){
                 $taxonomies = [];
-                $taxonomies_ids = [];
+                $taxonomies_slugs = [];
                 foreach($app->getRegisteredTaxonomies($class) as $obj){
                     $taxonomies[] = 'term:' . $obj->slug;
-                    $taxonomies_ids['term:' . $obj->slug] = $obj->id;
+                    $taxonomies_slugs['term:' . $obj->slug] = $obj->slug;
                 }
 
                 $dql_join_term_template = "
-                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
+                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
             }
 
             $keys = [];
@@ -418,7 +418,7 @@ trait ControllerAPI{
                     $taxo_num++;
                     $tr_alias = "tr{$taxo_num}";
                     $t_alias = "t{$taxo_num}";
-                    $taxonomy_id = $taxonomies_ids[$key];
+                    $taxonomy_id = $taxonomies_slugs[$key];
 
                     $keys[$key] = "$t_alias.term";
                     $dql_joins .= str_replace('{ALIAS_TR}', $tr_alias, str_replace('{ALIAS_T}', $t_alias, str_replace('{TAXO}', $taxonomy_id, $dql_join_term_template)));

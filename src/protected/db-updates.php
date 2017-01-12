@@ -30,7 +30,22 @@ function __column_exists($table_name, $column_name) {
     }
 }
 
+$updates = [];
+$registered_taxonomies = $this->_register['taxonomies']['by-id'];
+
+foreach($registered_taxonomies as $def){
+    $updates['update taxonomy slug ' . $def->slug] = function() use( $conn, $def ) {
+        $conn->executeQuery("UPDATE term SET taxonomy = '{$def->slug}' WHERE taxonomy = '{$def->id}'");
+    };
+}
+
+
 return [
+    'alter tablel term taxonomy type' => function() use ($conn) {
+        $conn->executeQuery("ALTER TABLE term ALTER taxonomy TYPE VARCHAR(64);");
+        $conn->executeQuery("ALTER TABLE term ALTER taxonomy DROP DEFAULT;");
+    },
+     
     'new random id generator' => function () use ($conn) {
         $conn->executeQuery("
             CREATE SEQUENCE pseudo_random_id_seq
@@ -349,4 +364,4 @@ return [
 
         $this->disableAccessControl();
     }
-];
+] + $updates ;
