@@ -1,6 +1,7 @@
 <?php 
 $entity = $entityRevision;
 $action = "single";
+$userCanView = $entity->userCanView;
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
@@ -87,15 +88,15 @@ $action = "single";
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>
 
-                    <?php if(isset($entity->nomeCompleto)): ?>
+                    <?php if(isset($entity->nomeCompleto) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Nome");?>:</span> <span class="js-editable" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Completo ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira seu nome completo ou razão social");?>"><?php echo $entity->nomeCompleto; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if(isset($entity->documento)): ?>
+                    <?php if(isset($entity->documento) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("CPF/CNPJ");?>:</span> <span class="js-editable" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->dataDeNascimento)): ?>
+                    <?php if(isset($entity->dataDeNascimento) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento/Fundação");?>:</span>
                             <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
@@ -103,20 +104,20 @@ $action = "single";
                         </p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->genero)): ?>
+                    <?php if(isset($entity->genero) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Gênero");?>:</span> <span class="js-editable" data-edit="genero" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Gênero");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione o gênero se for pessoa física");?>"><?php echo $entity->genero; ?></span></p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->orientacaoSexual)):?>
+                    <?php if(isset($entity->orientacaoSexual) && $userCanView):?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Orientação Sexual");?>:</span> <span class="js-editable" data-edit="orientacaoSexual" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Orientação Sexual"); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a orientação sexual se for pessoa física");?>"><?php echo $entity->orientacaoSexual; ?></span></p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->raca)):?>
+                    <?php if(isset($entity->raca) && $userCanView):?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span> <span class="js-editable" data-edit="raca" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Raça/cor");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a raça/cor se for pessoa física");?>"><?php echo $entity->raca; ?></span></p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->emailPrivado)): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPrivado") && $editEntity? 'required': '');?>" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
+                    <?php if(isset($entity->emailPrivado) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
                     <?php endif;?>
 
                     <?php if(isset($entity->emailPublico)): ?>
@@ -127,18 +128,18 @@ $action = "single";
                         <p><span class="label"><?php \MapasCulturais\i::_e("Telefone Público");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que será exibido publicamente");?>"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if(isset($entity->telefone1)): ?>
+                    <?php if(isset($entity->telefone1) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Telefone 1");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone1; ?></span></p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->telefone2)): ?>
+                    <?php if(isset($entity->telefone2) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Telefone 2");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
-                <?php $this->part('singles/location', ['entity' => $entity]); ?>
+                <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => (!$entity->publicLocation || $userCanView)]); ?>
 
             </div>
             <!--.ficha-spcultura-->
@@ -220,7 +221,7 @@ $action = "single";
     <div class="widget">
         <h3><?php \MapasCulturais\i::_e("Tags");?></h3>
         <?php foreach($entity->_terms->tag as $tag): ?>
-            <a class="tag tag-<?php echo $this->controller_id ?>" href="">
+            <a class="tag tag-<?php echo $entity->controller_id ?>" href="">
                 <?php echo $tag; ?>
             </a>
         <?php endforeach; ?>
