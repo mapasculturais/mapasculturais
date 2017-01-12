@@ -43,7 +43,8 @@ $action = "single";
             <div class="entity-type <?php echo $entity->controller_id ?>-type">
                 <div class="icon icon-<?php echo $entity->controller_id ?>"></div>
                 <a href="#" class='' data-original-title="<?php \MapasCulturais\i::esc_attr_e("Tipo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione um tipo");?>" data-entity='<?php echo $entity->controller_id ?>' data-value='<?php echo $entity->_type ?>'>
-                    <?php echo $entity->_type; ?>
+                    <?php $entity_types = $app->getRegisteredEntityTypes($entity->entityClassName);?>
+                    <?php echo $entity_types[$entity->_type]->name; ?>
                 </a>
             </div>
             <!--.entity-type-->

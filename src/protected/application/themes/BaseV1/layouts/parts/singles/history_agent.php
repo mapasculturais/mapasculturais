@@ -43,7 +43,8 @@ $action = "single";
             <div class="entity-type <?php echo $entity->controller_id ?>-type">
                 <div class="icon icon-<?php echo $entity->controller_id ?>"></div>
                 <a href="#" class='' data-original-title="<?php \MapasCulturais\i::esc_attr_e("Tipo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione um tipo");?>" data-entity='<?php echo $entity->controller_id ?>' data-value='<?php echo $entity->_type ?>'>
-                    <?php echo $entity->_type; ?>
+                    <?php $entity_types = $app->getRegisteredEntityTypes($entity->entityClassName);?>
+                    <?php echo $entity_types[$entity->_type]->name; ?>
                 </a>
             </div>
             <!--.entity-type-->
@@ -75,7 +76,7 @@ $action = "single";
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
