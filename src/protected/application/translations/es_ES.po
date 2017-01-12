@@ -4226,7 +4226,7 @@ msgstr "Palabra clave"
 #: themes/BaseV1/layouts/parts/panel/highlighted-message.php:3
 #, php-format
 msgid "Olá, %s, bem-vindo ao painel do %s!"
-msgstr "Hola %s, bienvenido al panel de %s."
+msgstr "¡Hola %s, bienvenido al panel de %s!"
 
 #: themes/BaseV1/layouts/parts/singles/space-public.php:6
 #: themes/BaseV1/layouts/parts/singles/space-public.php:15
