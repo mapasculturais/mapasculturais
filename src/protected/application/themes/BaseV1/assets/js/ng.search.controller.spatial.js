@@ -3,6 +3,8 @@
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
 
         var map = null;
+        
+        var labels = MapasCulturais.gettext.controllerSpatial;
 
         angular.element(document).ready(function() {
             map = $window.leaflet.map;
@@ -27,11 +29,11 @@
             }
 
 
-            L.drawLocal.draw.handlers.circle.tooltip.start = 'Clique e arraste para desenhar o círculo';
-            L.drawLocal.draw.handlers.circle.tooltip.end = 'Solte o mouse para finalizar o desenho';
-            L.drawLocal.draw.toolbar.actions.title = 'Cancelar desenho';
-            L.drawLocal.draw.toolbar.actions.text = 'Cancelar';
-            L.drawLocal.draw.toolbar.buttons.circle = 'Desenhar um círculo';
+            L.drawLocal.draw.handlers.circle.tooltip.start = labels['tooltip.start'];
+            L.drawLocal.draw.handlers.circle.tooltip.end = labels['tooltip.end'];
+            L.drawLocal.draw.toolbar.actions.title = labels['title'];
+            L.drawLocal.draw.toolbar.actions.text = labels['text'];
+            L.drawLocal.draw.toolbar.buttons.circle = labels['circle'];
 
             L.Draw.Circle = L.Draw.Circle.extend({
                 _onMouseMove: function(e) {
@@ -49,7 +51,7 @@
 
                         this._tooltip.updateContent({
                             text: L.drawLocal.draw.handlers.circle.tooltip.end,
-                            subtext: showRadius ? 'Raio: ' + L.GeometryUtil.readableDistance(radius, useMetric).replace('.',',') : ''
+                            subtext: showRadius ? labels['radius'] + ': ' + L.GeometryUtil.readableDistance(radius, useMetric).replace('.',',') : ''
                         });
                     }
                 }
@@ -112,9 +114,13 @@
                 $window.$timout.cancel($window.dataTimeout);
                 var radius = e.accuracy / 2,
                     neighborhoodRadius = $scope.defaultLocationRadius;
-
+                
+                var currentLocationLabel = labels['currentLocation'];
+                currentLocationLabel.replace('{{errorMargin}}', radius.toString().replace('.',','));
+                currentLocationLabel.replace('{{radius}}', neighborhoodRadius/1000);
+                
                 var marker = L.marker(e.latlng, $window.leaflet.iconOptions['location']).addTo(map)
-                    .bindPopup("Segundo seu navegador, você está aproximadamente neste ponto com margem de erro de " + radius.toString().replace('.',',') + " metros. Buscando resultados dentro de um raio de " + neighborhoodRadius/1000 + "KM deste ponto. <a onclick='document.querySelector(\".leaflet-draw-draw-circle\").click()'>Modificar</a>")
+                    .bindPopup(currentLocationLabel)
                     .openPopup();
 
                 var circle = L.circle(e.latlng, $scope.defaultLocationRadius, {className : 'vetorial-padrao'}).addTo(map.drawnItems);
@@ -167,37 +173,13 @@
         };
 
 
-        var geocoder = null;
-        if(typeof google !== 'undefined')
-            geocoder =  new google.maps.Geocoder();
-
-        // callback to handle google geolocation result
-        function geocode_callback(results, status) {
-            if(typeof google === 'undefined'){
-                return false;
-            }
-            if (status == google.maps.GeocoderStatus.OK) {
-                var location = results[0].geometry.location;
-                var foundLocation = new L.latLng(location.lat(), location.lng());
-                map.setView(foundLocation, 15);
-                marker.setLatLng(foundLocation);
-            }
-        }
-
         function filterAddress () {
-            var geocoder = null;
-            var addressString = $scope.data.global.locationFilters.address.text + ', Brasil';
+            var addressString = $scope.data.global.locationFilters.address.text;
 
-            if (!google){
-                return;
-            }else{
-                geocoder = new google.maps.Geocoder();
-            }
-            geocoder.geocode({'address': addressString}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
+            MapasCulturais.geocoder.geocode({'fullAddress': addressString}, function(results) {
+                if (results) {
                     $window.$timout.cancel($window.dataTimeout);
-                    var location = results[0].geometry.location;
-                    var foundLocation = new L.latLng(location.lat(), location.lng());
+                    var foundLocation = new L.latLng(results.lat, results.lon);
 
                     $window.leaflet.map.setView(foundLocation, 13);
 
@@ -214,8 +196,8 @@
                         address : {
                             text : $scope.data.global.locationFilters.address.text,
                             center : {
-                                lat: location.lat(),
-                                lng: location.lng()
+                                lat: results.lat,
+                                lng: results.lng
                             },
                             radius : $scope.defaultLocationRadius
                         }

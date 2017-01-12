@@ -20,6 +20,7 @@ $brand-event: #b3b921 !default;
 $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
+$brand-subsite:  #cc0033 !default;
 $brand-seal: #cc0033 !default;
 $brand-developer: #9966cc !default;
 
@@ -130,6 +131,12 @@ $unicode-add-button:            "\e050" !default;
 // .icon-agent on _icons.scss file
 // .btn-map-agent on _maps.scss file
 $unicode-agent:                 "\e08a" !default;
+
+//** Subsite icon
+// used on:
+// .icon-subsite on _icons.scss file
+// .btn-map-subsite on _maps.scss file
+$unicode-subsite:                  "\e0df" !default;
 
 //** Seal icon
 // used on:
@@ -424,7 +431,7 @@ $form-fields-height:                   2rem !default;
 
 $z-index-descricao-do-agente:    800 !default;
 $z-index-descricao-do-selo:		  1000 !default;
-$z-index-descricao-do-saas:    15000 !default;
+$z-index-descricao-do-subsite:    15000 !default;
 $z-index-home-watermark:         900 !default;
 $z-index-nav-title:             1000 !default;
 $z-index-home-nav:              1200 !default;

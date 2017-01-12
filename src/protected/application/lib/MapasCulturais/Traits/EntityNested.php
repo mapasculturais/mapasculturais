@@ -73,9 +73,9 @@ trait EntityNested{
         if (is_object($this->parent) && is_object($parent) && $this->parent->equals($parent))
             return;
 
-        $error_diff_type = App::txt('The parent entity must be of the same type');
-        $error_same_obj = App::txt('The parent and the child are the same object');
-        $error_circ_ref = App::txt('Circular reference');
+        $error_diff_type = \MapasCulturais\i::__('A entidade mãe deve ser do mesmo tipo');
+        $error_same_obj = \MapasCulturais\i::__('As entidades mãe e filha são o mesmo objeto');
+        $error_circ_ref = \MapasCulturais\i::__('Referência circular');
 
         $is_object = $parent && is_object($parent);
 

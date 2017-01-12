@@ -77,9 +77,9 @@ class Metadata extends \MapasCulturais\Definition{
      * @var array
      */
     protected $config = [];
-    
+
     protected $serialize = null;
-    
+
     protected $unserialize = null;
 
     /**
@@ -119,7 +119,7 @@ class Metadata extends \MapasCulturais\Definition{
         $this->is_unique = key_exists('validations', $config) && key_exists('unique', $config['validations']);
 
         $this->private = key_exists('private', $config) ? $config['private'] : false;
-        
+
         $this->serialize = key_exists('serialize', $config) ? $config['serialize'] : null;
         $this->unserialize = key_exists('unserialize', $config) ? $config['unserialize'] : null;
 
@@ -136,14 +136,14 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : [];
 
-        if (isset($config['options'])) {
+        if (isset($config['options']) && is_array($config['options'])) {
             $new_array = [];
-            foreach ($config['options'] as $key => $value) {
-                if (!is_string($key)) {
-                    $key = $value;
-                }
+            foreach ($config['options'] as $k => $value) {
 
-                $new_array[$key] = $value;
+                if (is_int($k)) {
+                    $k = $value;
+                }
+                $new_array[$k] = $value;
             }
 
             $config['options'] = $new_array;
@@ -251,7 +251,7 @@ class Metadata extends \MapasCulturais\Definition{
 
         if(key_exists('options', $this->config)){
             $result['options'] = $this->config['options'];
-            $result['optionsOrder'] = array_keys($this->config['options']);
+            $result['optionsOrder'] = array_keys((array)$this->config['options']);
         }
 
         if(key_exists('label', $this->config)){

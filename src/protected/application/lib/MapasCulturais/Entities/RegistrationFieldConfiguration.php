@@ -16,11 +16,6 @@ use MapasCulturais\Traits;
  */
 class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
 
-    protected static $validations = [
-        'owner' => [ 'required' => "O projeto é obrigatório."],
-        'title' => [ 'required' => "O título do anexo é obrigatório."],
-        'fieldType' => [ 'required' => "O tipo de campo é obrigatório" ]
-    ];
     /**
      * @var integer
      *
@@ -56,6 +51,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="max_size", type="string", nullable=true)
+     */
+    protected $maxSize;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="categories", type="array", nullable=true)
@@ -82,6 +84,20 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="field_options", type="array", length=255, nullable=false)
      */
     protected $fieldOptions = [];
+
+    static function getValidations() {
+        return [
+            'owner' => [ 
+                'required' => \MapasCulturais\i::__("O projeto é obrigatório.")
+            ],
+            'title' => [ 
+                'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
+            ],
+            'fieldType' => [ 
+                'required' => \MapasCulturais\i::__("O tipo de campo é obrigatório")
+            ]
+        ];
+    }
 
     public function setOwnerId($id){
 //        $this->owner = $this->repo()->find('project', $id);
@@ -118,17 +134,18 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function jsonSerialize() {
-        
+
         return [
-            'id' => $this->id,
-            'ownerId' => $this->owner->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'required' => $this->required,
-            'fieldType' => $this->fieldType,
-            'fieldOptions' => $this->fieldOptions,
-            'categories' => $this->categories,
-            'fieldName' => $this->getFieldName()
+        'id' => $this->id,
+        'ownerId' => $this->owner->id,
+        'title' => $this->title,
+        'description' => $this->description,
+        'maxSize' => $this->maxSize,
+        'required' => $this->required,
+        'fieldType' => $this->fieldType,
+        'fieldOptions' => $this->fieldOptions,
+        'categories' => $this->categories,
+        'fieldName' => $this->getFieldName()
         ];
     }
 

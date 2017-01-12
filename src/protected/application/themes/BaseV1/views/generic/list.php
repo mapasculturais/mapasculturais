@@ -13,9 +13,9 @@
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Descrição</th>
+        <th><?php \MapasCulturais\i::_e("ID");?></th>
+        <th><?php \MapasCulturais\i::_e("Nome");?></th>
+        <th><?php \MapasCulturais\i::_e("Descrição");?></th>
     </tr>
     </thead>
     <tbody>
@@ -24,20 +24,20 @@
         <tr>
             <td>
                 <?php echo $object->id?>
-                <a class="test-edit" href="<?php echo $this->controller->createUrl('edit', array('id'=>$object->id))?>">edit</a>
+                <a class="test-edit" href="<?php echo $this->controller->createUrl('edit', array('id'=>$object->id))?>"><?php \MapasCulturais\i::_e("edit");?></a>
             </td>
             <td>
                 <a href="#" data-name="name" data-type="text"
                    data-pk="<?php echo $object->id?>"
-                   data-original-title="Nome"
+                   data-original-title="<?php \MapasCulturais\i::esc_attr_e('Nome'); ?>"
                    data-mode="inline"
                    class="editable editable-click" style="display: inline;">
                     <?php echo $object->name ?></a>
             </td>
             <td>
                 <a href="#" data-name="short_description" data-type="textarea"
-                   data-pk="1" data-placeholder="Your comments here..."
-                   data-original-title="Enter comments"
+                   data-pk="1" data-placeholder="<?php \MapasCulturais\i::esc_attr_e('Your comments here...'); ?>"
+                   data-original-title="<?php \MapasCulturais\i::esc_attr_e('Enter comments'); ?>"
                    data-showButtons="bottom"
                    data-placement="left"
                    data-mode="inline"

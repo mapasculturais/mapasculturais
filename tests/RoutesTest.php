@@ -3,31 +3,6 @@
 require_once __DIR__ . '/bootstrap.php';
 
 class RoutesTest extends MapasCulturais_TestCase {
-    function assetStatus($method, $status, $url, $message){
-        $c = $this->$method($url);
-        $this->assertEquals($status, $c->http_status_code, $message);
-        return $c;
-    }
-
-    function assertGet200($url, $message){
-        return $this->assetStatus('get', 200, $url, $message);
-    }
-
-    function assertGet401($url, $message){
-        return $this->assetStatus('get', 401, $url, $message);
-    }
-
-    function assertGet403($url, $message){
-        return $this->assetStatus('get', 403, $url, $message);
-    }
-
-    function assertGet404($url, $message){
-        return $this->assetStatus('get', 404, $url, $message);
-    }
-
-    function assertGet503($url, $message){
-        return $this->assetStatus('get', 503, $url, $message);
-    }
 
     function testHome(){
         $this->user = null;

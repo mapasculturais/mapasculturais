@@ -16,6 +16,10 @@ pages:
     - 'Keywords': 'mc_developer_keywords.md'
     - 'Entidades': 'mc_developer_entities.md'
     - 'Criando um novo tema': 'mc_developer_theme.md'
-theme: 'flatly'
+    - 'Adicionando campos a um tema': 'mc_developer_theme_add_metadata.md'
+    - 'Opções de Geocoding e busca por código postal': 'mc_developer_geocoding.md'
+    - 'Personalizando montagem do endereço': 'mc_developer_address.md'
+    - 'Internacionalização': 'mc_developer_i18n.md'
+theme: 'mkdocs'
 markdown_extensions:
     - fenced_code

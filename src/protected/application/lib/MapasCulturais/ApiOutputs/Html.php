@@ -8,19 +8,19 @@ use MapasCulturais;
 class Html extends \MapasCulturais\ApiOutput{
 
     protected $translate = [
-        'id'=>'Id',
-        'name'=>'Nome',
-        'singleUrl'=>'Link',
-        'type'=>'Tipo',
-        'shortDescription'=>'Descrição Curta',
-        'name'=>'Nome',
-        'terms'=>'Termos',
-        'endereco'=>'Endereço',
-        'classificacaoEtaria'=>'Classificação Etária',
-        'project'=>'Projeto',
+        'id' => 'Id',
+        'name' => 'Nome',
+        'singleUrl' => 'Link',
+        'type' => 'Tipo',
+        'shortDescription' => 'Descrição Curta',
+        'name' => 'Nome',
+        'terms' => 'Termos',
+        'endereco' => 'Endereço',
+        'classificacaoEtaria' => 'Classificação Etária',
+        'project' => 'Projeto',
 
-        'tag'=>'Tags',
-        'area'=>'Áreas',
+        'tag' => 'Tags',
+        'area' => 'Áreas',
         'linguagem' => 'Linguagens',
 
         'agent'=>'Agente',
@@ -76,7 +76,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             continue;
                         }elseif($k==='occurrences'){ ?>
                             <th>
-                                <table><thead><tr> <th>Quando</th> <th>Onde</th> <th>Quanto</th> </tr></thead></table>
+                                <table><thead><tr> <th><?php \MapasCulturais\i::_e("Quando");?></th> <th><?php \MapasCulturais\i::_e("Onde");?></th> <th><?php \MapasCulturais\i::_e("Quanto");?></th> </tr></thead></table>
                             </th>
                             <?php
                         }else{

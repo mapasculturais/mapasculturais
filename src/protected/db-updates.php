@@ -10,7 +10,7 @@ function __table_exists($table_name) {
     $app = App::i();
     $em = $app->em;
     $conn = $em->getConnection();
-    
+
     if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '$table_name';")){
         return true;
     } else {
@@ -34,13 +34,23 @@ function __column_exists($table_name, $column_name) {
     $app = App::i();
     $em = $app->em;
     $conn = $em->getConnection();
-    
+
     if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name='$table_name' and column_name='$column_name'")){
         return true;
     } else {
         return false;
     }
 }
+
+$updates = [];
+$registered_taxonomies = $this->_register['taxonomies']['by-id'];
+
+foreach($registered_taxonomies as $def){
+    $updates['update taxonomy slug ' . $def->slug] = function() use( $conn, $def ) {
+        $conn->executeQuery("UPDATE term SET taxonomy = '{$def->slug}' WHERE taxonomy = '{$def->id}'");
+    };
+}
+
 
 return [
     
@@ -67,6 +77,12 @@ return [
         }
         $this->em->flush();
     },
+            
+    'alter tablel term taxonomy type' => function() use ($conn) {
+        $conn->executeQuery("ALTER TABLE term ALTER taxonomy TYPE VARCHAR(64);");
+        $conn->executeQuery("ALTER TABLE term ALTER taxonomy DROP DEFAULT;");
+    },
+     
     'new random id generator' => function () use ($conn) {
         $conn->executeQuery("
             CREATE SEQUENCE pseudo_random_id_seq
@@ -125,7 +141,7 @@ return [
             echo "TABLE user_app ALREADY EXISTS";
             return true;
         }
-        
+
         $conn->executeQuery("CREATE TABLE user_app (
                                 public_key character varying(64) NOT NULL,
                                 private_key character varying(128) NOT NULL,
@@ -215,7 +231,7 @@ return [
             echo "ALREADY APPLIED";
             return true;
         }
-        
+
         $conn->executeQuery("ALTER TABLE registration_file_configuration DROP CONSTRAINT IF EXISTS registration_meta_project_fk;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD categories TEXT DEFAULT NULL;");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ALTER id DROP DEFAULT;");
@@ -224,6 +240,31 @@ return [
         $conn->executeQuery("COMMENT ON COLUMN registration_file_configuration.categories IS '(DC2Type:array)';");
         $conn->executeQuery("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
+
+    'create saas tables' => function () use($conn) {
+      $conn->executeQuery("CREATE TABLE saas (id INT NOT NULL, name VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status SMALLINT NOT NULL, agent_id INTEGER NOT NULL, PRIMARY KEY(id), url VARCHAR(255) NOT NULL, url_parent VARCHAR(255), slug VARCHAR(50) NOT NULL, namespace VARCHAR(50) NOT NULL);");
+      $conn->executeQuery("CREATE SEQUENCE saas_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+      $conn->executeQuery("CREATE TABLE saas_meta ( object_id integer NOT NULL, key character varying(128) NOT NULL, value text, id integer NOT NULL);");
+      $conn->executeQuery("CREATE SEQUENCE saas_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+      $conn->executeQuery("ALTER TABLE ONLY saas_meta ADD CONSTRAINT saas_saas_meta_fk FOREIGN KEY (object_id) REFERENCES saas(id);");
+    },
+
+    'rename saas tables to subsite' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE saas RENAME TO subsite");
+        $conn->executeQuery("ALTER TABLE saas_meta RENAME TO subsite_meta");
+        $conn->executeQuery("ALTER SEQUENCE saas_id_seq RENAME TO subsite_id_seq");
+        $conn->executeQuery("ALTER SEQUENCE saas_meta_id_seq RENAME TO subsite_meta_id_seq");
+    },
+
+    'remove parent_url and add alias_url' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE subsite DROP COLUMN url_parent");
+        $conn->executeQuery("ALTER TABLE subsite ADD COLUMN alias_url VARCHAR(255) DEFAULT NULL;");
+
+        $conn->executeQuery("CREATE INDEX url_index ON subsite (url);");
+        $conn->executeQuery("CREATE INDEX alias_url_index ON subsite (alias_url);");
+
+    },
+
 
     'verified seal migration' => function () use($conn){
         $agent_id = $conn->fetchColumn("select profile_id
@@ -255,10 +296,62 @@ return [
     	$conn->executeQuery("ALTER TABLE event ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     	$conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
     },
-            
+
+    'alter table role add column subsite_id' => function () use($conn) {
+    	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_user_fk;");
+    	$conn->executeQuery("ALTER TABLE role DROP CONSTRAINT IF EXISTS role_unique;");
+        $conn->executeQuery("ALTER TABLE role ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE role ALTER id DROP DEFAULT;");
+        $conn->executeQuery("ALTER TABLE role ALTER usr_id DROP NOT NULL;");
+        $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_57698A6AC79C849A ON role (subsite_id);");
+    },
+
+    'Fix field options field type from registration field configuration' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ALTER COLUMN field_options TYPE text;");
+    },
+
+    'ADD columns subsite_id' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE space ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE space ADD CONSTRAINT FK_2972C13AC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2972C13AC79C849A ON space (subsite_id);");
+
+        $conn->executeQuery("ALTER TABLE agent ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_268B9C9DC79C849A ON agent (subsite_id);");
+
+        $conn->executeQuery("ALTER TABLE event ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_3BAE0AA7C79C849A ON event (subsite_id);");
+
+        $conn->executeQuery("ALTER TABLE project ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEC79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2FB3D0EEC79C849A ON project (subsite_id);");
+
+        $conn->executeQuery("ALTER TABLE seal ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_2E30AE30C79C849A ON seal (subsite_id);");
+
+        $conn->executeQuery("ALTER TABLE registration ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_62A8A7A7C79C849A ON registration (subsite_id);");
+
+        $conn->executeQuery("ALTER TABLE user_app ADD subsite_id INT DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE user_app ADD CONSTRAINT FK_22781144C79C849A FOREIGN KEY (subsite_id) REFERENCES subsite (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("CREATE INDEX IDX_22781144C79C849A ON user_app (subsite_id);");
+    },
+
+    'remove subsite slug column' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE subsite DROP COLUMN slug;");
+    },
+
+    'add subsite verified_seals column' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE subsite ADD verified_seals VARCHAR(512) DEFAULT '[]';");
+    },
     'update entities last_update_timestamp with user last log timestamp' => function () use($conn,$app) {
         $agents = $conn->fetchAll("SELECT a.id, u.last_login_timestamp FROM agent a, usr u WHERE u.id = a.user_id");
-        
+
         foreach($agents as $agent){
             $agent = (object) $agent;
             $conn->executeQuery("UPDATE space SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
@@ -266,7 +359,7 @@ return [
             $conn->executeQuery("UPDATE seal SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
             $conn->executeQuery("UPDATE project SET update_timestamp = '{$agent->last_login_timestamp}' WHERE agent_id = {$agent->id} AND update_timestamp IS NULL");
         }
-        
+
         $conn->executeQuery("UPDATE agent SET update_timestamp = u.last_login_timestamp FROM (SELECT id, last_login_timestamp FROM usr) AS u WHERE user_id = u.id AND update_timestamp IS NULL");
     },
 
@@ -324,21 +417,33 @@ return [
         $this->disableAccessControl();
         return false;
     },
+
+    'Add field for maximum size from registration field configuration' => function () use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
+    },
+
+    'Add notification type for compliant and suggestion messages' => function () use($conn) {
+        $conn->executeQuery("CREATE TABLE notification_meta (id INT NOT NULL, object_id INT DEFAULT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE SEQUENCE notification_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
     'create avatar thumbs' => function() use($conn){
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
-        
+
         $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-        
+
         foreach($files as $f){
             $f->transform('avatarSmall');
             $f->transform('avatarMedium');
             $f->transform('avatarBig');
         }
-        
+
         $this->disableAccessControl();
-    },
-];
+
+    }
+] + $updates ;

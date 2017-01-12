@@ -16,7 +16,7 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="notification")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Notification")
  */
 class Notification extends \MapasCulturais\Entity{
     const STATUS_PENDING = 1;
@@ -80,6 +80,10 @@ class Notification extends \MapasCulturais\Entity{
      */
     protected $request;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+     */
+    protected $__metadata;
 
     function getOwnerUser() {
         return $this->user;
@@ -124,4 +128,3 @@ class Notification extends \MapasCulturais\Entity{
     /** @ORM\PostUpdate */
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }
-

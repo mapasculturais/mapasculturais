@@ -1,5 +1,6 @@
 <?php
 $this->layout = 'panel';
+$app = \MapasCulturais\App::i();
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
@@ -7,10 +8,11 @@ $this->layout = 'panel';
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar <?php $this->dict('entities: new space') ?></a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos (<?php echo count($enabled); ?>)</a></li>
-		<li><a href="#permitido">Concedidos (<?php echo count($app->user->hasControlSpaces);?>)</a></li>
-        <li><a href="#rascunhos">Rascunhos (<?php echo count($draft); ?>)</a></li>
-        <li><a href="#lixeira">Lixeira (<?php echo count($trashed); ?>)</a></li>
+        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($enabled); ?>)</a></li>
+        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSpaces);?>)</a></li>
+        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($draft); ?>)</a></li>
+        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($trashed); ?>)</a></li>
+        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSpaces); ?>)</a></li>
     </ul>
     <div id="ativos">
 
@@ -20,7 +22,7 @@ $this->layout = 'panel';
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$enabled): ?>
-            <div class="alert info">Você não possui <?php $this->dict('entities: no registered spaces') ?>.</div>
+            <div class="alert info"><?php $this->dict('entities: no registered spaces') ?>.</div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -29,7 +31,7 @@ $this->layout = 'panel';
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$draft): ?>
-            <div class="alert info">Você não possui nenhum rascunho de <?php $this->dict('entities: space') ?>.</div>
+            <div class="alert info"><?php printf(\MapasCulturais\i::__("Você não possui nenhum rascunho de %s"), $this->dict('entities: space'));?>.</div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -38,17 +40,27 @@ $this->layout = 'panel';
             <?php $this->part('panel-space', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$trashed): ?>
-            <div class="alert info">Você não possui <?php $this->dict('entities: no spaces') ?> na lixeira.</div>
+            <div class="alert info"><?php printf(\MapasCulturais\i::__('%s na lixeira.'), $this->dict('entities: no spaces')); ?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
+	<!-- #arquivo-->
+    <div id="arquivo">
+		<?php foreach($app->user->archivedSpaces as $entity): ?>
+            <?php $this->part('panel-space', array('entity' => $entity)); ?>
+        <?php endforeach; ?>
+        <?php if(!$app->user->archivedSpaces): ?>
+            <div class="alert info"><?php printf(\MapasCulturais\i::__('%s arquivado.'), $this->dict('entities: no spaces')); ?></div>
+        <?php endif; ?>
+    </div>
+    <!-- #arquivo-->
 	<!-- #permitido-->
 	<div id="permitido">
 		<?php foreach($app->user->hasControlSpaces as $entity): ?>
 			<?php $this->part('panel-space', array('entity' => $entity)); ?>
 		<?php endforeach; ?>
 		<?php if(!$app->user->hasControlSpaces): ?>
-			<div class="alert info">Você não possui nenhum espaço liberado.</div>
+			<div class="alert info"><?php printf(\MapasCulturais\i::__('%s liberado.'), $this->dict('entities: no spaces')); ?></div>
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->

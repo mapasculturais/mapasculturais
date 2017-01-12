@@ -3,6 +3,8 @@ Este documento trata de uma customização simples do tema base do Mapas Cultura
 
 Neste documento será feito um tema de exemplo para uma _Secretaria Municipal de Cultura_ cuja sigla é _**SECONDO**_, de uma cidade fictícia chamada _**Macondo**_. O nome do site será _**Macondo Cultural**_.
 
+Veja também como [criar campos de informações adicionais no seu tema](mc_developer_theme_add_metadata.md).
+
 #### Índice
 
 - [Estrutura do Tema](#estrutura-do-tema)
@@ -226,11 +228,11 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
-Neste exemplo, houveram alterações nos arquivos *Theme.php* e no arquivo *conf-base.php*. Para publicar esse arquivos é necessário utilizar os comandos 
+Neste exemplo, houveram alterações nos arquivos *Theme.php* e no arquivo *conf-base.php*. Para publicar esse arquivos é necessário utilizar os comandos
 - `git add [nome_do_arquivo]`
 - `git commit -m "[mensagem_com_descricao_da_alteracao]"`
 - `git push`
- 
+
 Como no exemplo, para publicar os arquivos *Theme.php* e *conf-base.php* os comando seriam assim:
 ```
 $git add Theme.php

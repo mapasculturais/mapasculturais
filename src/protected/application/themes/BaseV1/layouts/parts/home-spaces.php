@@ -35,10 +35,10 @@ $url_search_spaces = $this->searchSpacesUrl;
             </div>
         </div>
         <p><?php $this->dict('home: spaces'); ?></p>
-        <h4>Encontre <?php $this->dict('entities: spaces') ?> por</h4>
+        <h4><?php \MapasCulturais\i::_e("Encontre ");?><?php $this->dict('entities: spaces') ?> <?php \MapasCulturais\i::_e(" por ");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#space-terms">Área de atuação</a></li>
-            <li><a href="#space-types">Tipo</a></li>
+            <li class="active"><a href="#space-terms"><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
+            <li><a href="#space-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
         </ul>
         <div id="space-terms" class="tag-box">
             <div>
@@ -61,14 +61,14 @@ $url_search_spaces = $this->searchSpacesUrl;
             <a href="<?php echo $space->singleUrl ?>">
                 <div <?php echo $space_img_attributes;?>>
                     <div class="feature-content">
-                        <h3>destaque</h3>
+                        <h3><?php \MapasCulturais\i::_e("destaque");?></h3>
                         <h2><?php echo $space->name ?></h2>
                         <p><?php echo $space->shortDescription ?></p>
                     </div>
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>">Adicionar <?php $this->dict('entities: space') ?></a>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>">Ver tudo</a>
+        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar ");?><?php $this->dict('entities: space') ?></a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
 </article>
