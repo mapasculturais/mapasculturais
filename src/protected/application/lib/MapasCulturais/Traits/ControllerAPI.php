@@ -165,9 +165,12 @@ trait ControllerAPI{
             return (int) $default_lifetime;
     }
 
+
     public function apiQuery($qdata, $options = []){
         $this->_apiFindParamList = [];
         $app = App::i();
+        
+        $__original_query_data = $qdata;
 
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
 
@@ -213,14 +216,14 @@ trait ControllerAPI{
 
             if($class::usesTaxonomies()){
                 $taxonomies = [];
-                $taxonomies_ids = [];
+                $taxonomies_slugs = [];
                 foreach($app->getRegisteredTaxonomies($class) as $obj){
                     $taxonomies[] = 'term:' . $obj->slug;
-                    $taxonomies_ids['term:' . $obj->slug] = $obj->id;
+                    $taxonomies_slugs['term:' . $obj->slug] = $obj->slug;
                 }
 
                 $dql_join_term_template = "
-                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
+                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
             }
 
             $keys = [];
@@ -415,7 +418,7 @@ trait ControllerAPI{
                     $taxo_num++;
                     $tr_alias = "tr{$taxo_num}";
                     $t_alias = "t{$taxo_num}";
-                    $taxonomy_id = $taxonomies_ids[$key];
+                    $taxonomy_id = $taxonomies_slugs[$key];
 
                     $keys[$key] = "$t_alias.term";
                     $dql_joins .= str_replace('{ALIAS_TR}', $tr_alias, str_replace('{ALIAS_T}', $t_alias, str_replace('{TAXO}', $taxonomy_id, $dql_join_term_template)));
@@ -521,8 +524,8 @@ trait ControllerAPI{
             }
 
             $final_dql = "
-                SELECT PARTIAL
-                    e.{{$select_properties}}
+                SELECT
+                    e
                 FROM
                     $class e
                 $dql_joins
@@ -579,8 +582,8 @@ trait ControllerAPI{
                     $_join = $dql_select_joins[$i];
 
                     $dql = "
-                        SELECT PARTIAL
-                            e.{id} $_select
+                        SELECT
+                            e $_select
                         FROM
                             $class e $_join
                         WHERE
@@ -594,7 +597,6 @@ trait ControllerAPI{
                         $app->log->debug("====================================== SUB QUERY =======================================\n\n: ".$dql);
 
                     $rs = $q->getResult();
-                    $this->detachApiQueryRS($rs);
                 }
             };
 
@@ -645,6 +647,12 @@ trait ControllerAPI{
                 }
                 return $entity;
             };
+            
+            if($findOne){
+                $hook_action = 'findOne';
+            } else {
+                $hook_action = 'find';
+            }
 
             if($findOne){
                 $query->setFirstResult(0)
@@ -676,13 +684,13 @@ trait ControllerAPI{
                     if($r)
                         $entity = $processEntity($r);
                 }
+                $app->applyHookBoundTo($this, "API.{$hook_action}({$this->id}).result", [$__original_query_data, &$entity, $hook_action]);
+
                 return $entity;
             }else{
 
                 if($permissions){
                     $rs = $query->getResult();
-
-                    $app->detachRS($rs);
 
                     $result = [];
 
@@ -730,7 +738,6 @@ trait ControllerAPI{
                     $rs_count = $paginator->count();
 
                     $rs = $paginator->getIterator()->getArrayCopy();
-                    $app->detachRS($rs);
 
 
                     $sub_queries($rs);
@@ -739,7 +746,6 @@ trait ControllerAPI{
                         $rs = $query->getArrayResult();
                     } else {
                         $rs = $query->getResult();
-                        $app->detachRS($rs);
 
                     }
 
@@ -750,6 +756,7 @@ trait ControllerAPI{
 
 
                 if ($counting) {
+                    $app->applyHookBoundTo($this, "API.{$hook_action}({$this->id}).result", [$__original_query_data, &$rs_count, $hook_action]);
                     return $rs_count;
                 }
 
@@ -759,8 +766,8 @@ trait ControllerAPI{
                 $result = array_map(function($entity) use ($processEntity){
                     return $processEntity($entity);
                 }, $rs);
-
-                $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result", [&$qdata, &$result]);
+                
+                $app->applyHookBoundTo($this, "API.{$hook_action}({$this->id}).result", [$__original_query_data, &$result, $hook_action]);
 
                 return $result;
             }

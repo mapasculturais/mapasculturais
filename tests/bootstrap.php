@@ -105,6 +105,33 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         return $entity;
     }
 
+    
+    function assertStatus($method, $status, $url, $message){
+        $c = $this->$method($url);
+        $this->assertEquals($status, $c->http_status_code, $message);
+        return $c;
+    }
+
+    function assertGet200($url, $message){
+        return $this->assertStatus('get', 200, $url, $message);
+    }
+
+    function assertGet401($url, $message){
+        return $this->assertStatus('get', 401, $url, $message);
+    }
+
+    function assertGet403($url, $message){
+        return $this->assertStatus('get', 403, $url, $message);
+    }
+
+    function assertGet404($url, $message){
+        return $this->assertStatus('get', 404, $url, $message);
+    }
+
+    function assertGet503($url, $message){
+        return $this->assertStatus('get', 503, $url, $message);
+    }
+    
     function assertPermissionDenied($callable, $msg = ''){
         $exception = null;
         try{

@@ -46,4 +46,31 @@ class APITest extends MapasCulturais_TestCase {
         
         $this->assertEquals(404, $curl->error_code);
     }
+    
+    function assertApiResult($controller, $endpoint, $query, $expected){
+        $curl = $this->get("/api/$controller/$endpoint", $query);
+        $this->assertEquals($expected, json_decode($curl->response), "asserting that $controller $endpoint response is valid");
+        
+    }
+    
+    function testAPI(){
+        $queries = json_decode(file_get_contents(__DIR__ . '/api-queries.json'));
+        foreach($queries as $query){
+            $this->app->cache->deleteAll();
+            
+            if($query->userId){
+                $this->user = $query->userId;
+            }else{
+                $this->user = null;
+            }
+            
+            $controller = $query->controller;
+            $endpoint = $query->endpoint;
+            $qdata = $query->qdata;
+            $expected = $query->result;
+            
+            $this->assertApiResult($controller, $endpoint, $qdata, $expected);
+        }
+    }
+    
 }

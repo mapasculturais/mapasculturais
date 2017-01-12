@@ -824,6 +824,7 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
+
 		if($app->config['notifications.entities.new']) {
 	                $user = $this->ownerUser;
        		         $dataValue = [
@@ -888,7 +889,7 @@ class Theme extends MapasCulturais\Theme {
                         tr.term
                             t
                         WITH
-                            t.taxonomy = '{$taxonomy->id}'";
+                            t.taxonomy = '{$taxonomy->slug}'";
         });
 
         $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) {

@@ -929,7 +929,6 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
-
         // register Subsite types and Subsite metadata
         $entity_class = 'MapasCulturais\Entities\Subsite';
 
