@@ -138,6 +138,8 @@ class ApiQuery {
     protected $_selectingMetadata = [];
     
     protected $_selectingRelations = [];
+    
+    protected $_selectingUrls = [];
 
     /**
      * Files that are being selected
@@ -160,6 +162,8 @@ class ApiQuery {
     protected $_templateJoinMetadata = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
     protected $_templateJoinTerm = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
 
+    protected $_appendOriginSubsiteUrl = false;
+    
     public function __construct($entity_class_name, $api_params) {
         $this->initialize($entity_class_name, $api_params);
 
@@ -245,7 +249,7 @@ class ApiQuery {
 
         if ($result) {
             $_tmp = [&$result]; // php !!!!
-            $this->_appendData($_tmp);
+            $this->processEntities($_tmp);
 
         }
 
@@ -273,7 +277,7 @@ class ApiQuery {
 
         $result = $q->getResult(Query::HYDRATE_ARRAY);
 
-        $this->_appendData($result);
+        $this->processEntities($result);
 
         return $result;
     }
@@ -373,7 +377,7 @@ class ApiQuery {
     function getOffset() {
         if ($this->_offset) {
             return $this->_offset;
-        } else if ($this->_page && $this->page > 1 && $this->_limit) {
+        } else if ($this->_page && $this->_page > 1 && $this->_limit) {
             return $this->_limit * ($this->_page - 1);
         } else {
             return 0;
@@ -386,7 +390,6 @@ class ApiQuery {
 
         $where .= implode(" $this->_op \n\t", $where_dqls);
 
-
         $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
 
         return $where;
@@ -396,18 +399,16 @@ class ApiQuery {
         $app = App::i();
         $joins = $this->joins;
         
-        if($this->_permissions && !$app->user->is('admin')){
-            $pkey = implode(',', $this->addMultipleParams($this->_permissions));
-            $_uid = $app->user->id;
-            $joins .= "JOIN e.__permissionsCache __pcache WITH __pcache.action IN($pkey) AND __pcache.userId = $_uid";
-        }
+        if($this->_appendOriginSubsiteUrl){
+            $joins .= ' LEFT JOIN MapasCulturais\Entities\Subsite __subsite__ WITH __subsite__.id = e._subsiteId';
+        }                
 
         return $joins;
     }
 
     protected function generateSelect() {
         $select = $this->select;
-
+        
         if(!in_array('id', $this->_selectingProperties)){
             $this->_selectingProperties = array_merge(['id'], $this->_selectingProperties);
         }
@@ -439,7 +440,11 @@ class ApiQuery {
                 }
             }
         }
-
+        
+        if($this->_appendOriginSubsiteUrl){
+            $select .= ', __subsite__.url AS originSiteUrl';
+        }
+        
         return $select;
     }
 
@@ -466,15 +471,18 @@ class ApiQuery {
         }
     }
     
-    protected function _appendData(array &$result) {
+    protected function processEntities(array &$result) {
         $this->appendMetadata($result);
         $this->appendRelations($result);
         $this->appendFiles($result);
         $this->appendTerms($result);
+        $this->appendUrls($result);
         
         // @TODO: metalist (copiar o files)
         // @TODO: relatedAgents
         // @TODO: seals
+        
+        
     }
 
     protected function appendMetadata(array &$entities) {
@@ -827,6 +835,30 @@ class ApiQuery {
         }
     }
     
+    protected function appendUrls(array &$entities){
+        if(!$this->_selectingUrls && !$this->_appendOriginSubsiteUrl){
+            return;
+        }
+        
+        $app = app::i();
+        
+        $controller = $app->getControllerByEntity($this->entityClassName);
+        
+        // @TODO: não existe hoje uma forma de conseguir a url do site principal
+        
+        $main_site_url = $app->config['base.url'];
+                
+        foreach ($entities as &$entity){
+            foreach($this->_selectingUrls as $action){
+                $entity["{$action}Url"] = $controller->createUrl($action, [$entity['id']]);
+            }
+            
+            if($this->_appendOriginSubsiteUrl && empty($entity['originSiteUrl'])){
+                $entity['originSiteUrl'] = $main_site_url;
+            } 
+        }
+    }
+    
     private $__viewPrivateDataPermissions = null;
     
     protected function getViewPrivateDataPermissions(array $entities){
@@ -1079,7 +1111,7 @@ class ApiQuery {
             } elseif (strtolower($key) == '@keyword') {
                 $this->_keyword = $value;
             } elseif (strtolower($key) == '@permissions') {
-                $this->_permissions = explode(',', $value);
+                $this->_addFilterByPermissions($value);
             } elseif (strtolower($key) == '@seals') {
                 $this->_seals = explode(',', $value);
             } elseif (strtolower($key) == '@verified') {
@@ -1089,7 +1121,7 @@ class ApiQuery {
             } elseif (strtolower($key) == '@files') {
                 $this->_parseFiles($value);
             } elseif ($key === 'user' && $class::usesOwnerAgent()) {
-                $this->_addFilterByOwnerUser();
+                $this->_addFilterByOwnerUser($value);
             } elseif (key_exists($key, $this->entityRelations) && $this->entityRelations[$key]['isOwningSide']) {
                 $this->_addFilterByEntityProperty($key, $value);
             } elseif (in_array($key, $this->entityProperties)) {
@@ -1107,13 +1139,24 @@ class ApiQuery {
             }
         }
     }
+    
+    protected function _addFilterByPermissions($value) { 
+        $app = App::i();
+        $this->_permissions = explode(',', $value);
+        
+        if($this->_permissions && !$app->user->is('admin')){
+            $pkey = implode(',', $this->addMultipleParams($this->_permissions));
+            $_uid = $app->user->id;
+            $this->joins .= "JOIN e.__permissionsCache __pcache WITH __pcache.action IN($pkey) AND __pcache.userId = $_uid";
+        }
+    }
 
-    protected function _addFilterByOwnerUser() {
+    protected function _addFilterByOwnerUser($value) {
         $this->_keys['user'] = '__user_agent__.user';
 
-        $this->joins .= '\n\tLEFT JOIN e.owner __user_agent__';
-
-        $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+        $this->joins .= "\n\tLEFT JOIN e.owner __user_agent__\n";
+        
+        $this->_whereDqls[] = $this->parseParam($this->_keys['user'], $value);
     }
 
     protected function _addFilterByEntityProperty($key, $value, $propery_name = null) {
@@ -1215,7 +1258,7 @@ class ApiQuery {
         }
 
         $this->_selecting = array_unique(explode(',', $select));
-
+        $entity_class = $this->entityClassName;
         foreach ($this->_selecting as $i => $prop) {
             if(!$prop){
                 continue;
@@ -1228,6 +1271,13 @@ class ApiQuery {
                 $this->_selecting[$i] = $this->_preCreateSelectSubquery($prop, 'id', $prop);
             } elseif ($prop[0] != '_' && isset($this->entityRelations["_{$prop}"])) {
                 $this->_selecting[$i] = $this->_preCreateSelectSubquery("_{$prop}", 'id', $prop);
+            } elseif ($prop === 'originSiteUrl' && $entity_class::usesOriginSubsite()) {
+                $this->_appendOriginSubsiteUrl = true;
+            } elseif (preg_match('#^([a-z][a-zA-Z]*)Url#', $prop, $url_match) && method_exists($this->entityClassName, "get{$prop}")) {
+                $this->_selectingUrls[] = $url_match[1];
+            } elseif($prop === 'type' && $entity_class::usesTypes()){
+                $this->_selectingProperties[] = '_type';
+                
             }
         }
     }
