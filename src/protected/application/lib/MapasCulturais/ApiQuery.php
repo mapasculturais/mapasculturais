@@ -158,7 +158,7 @@ class ApiQuery {
     protected $_status = '> 0';
     protected $_op = ' AND ';
     protected $_templateJoinMetadata = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
-    protected $_templateJoinTerm = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
+    protected $_templateJoinTerm = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
 
     public function __construct($entity_class_name, $api_params) {
         $this->initialize($entity_class_name, $api_params);
@@ -196,7 +196,7 @@ class ApiQuery {
 
         if ($entity_class_name::usesTaxonomies()) {
             foreach ($app->getRegisteredTaxonomies($entity_class_name) as $obj) {
-                $this->registeredTaxonomies['term:' . $obj->slug] = $obj->id;
+                $this->registeredTaxonomies['term:' . $obj->slug] = $obj->slug;
             }
         }
 
@@ -424,13 +424,13 @@ class ApiQuery {
         // to prevent new queries when selecting only the id of relations 
         foreach ($this->_subqueriesSelect as $key => &$cfg) {
             $prop = $cfg['property'];
-            
+            $mapping = null;
             if(isset($this->entityRelations[$prop])){
                 $mapping = $this->entityRelations[$prop];
-            } else {
+            } else if(isset($this->entityRelations['_' . $prop])) {
                 $mapping = $this->entityRelations['_' . $prop];                
             }
-            if ($mapping['type'] === 2 && $mapping['isOwningSide']) {
+            if ($mapping && $mapping['type'] === 2 && $mapping['isOwningSide']) {
                 $select .= ", IDENTITY(e.{$prop}) AS $prop";
                 $cfg['selected'] = true;
 
@@ -775,7 +775,7 @@ class ApiQuery {
             $taxonomies = [];
             $skel = [];
             foreach($app->getRegisteredTaxonomies($class) as $slug => $def){
-                $taxonomies[$def->id] = $slug;
+                $taxonomies[$def->slug] = $slug;
                 $skel[$slug] = [];
             }
             // --------------------
@@ -805,7 +805,6 @@ class ApiQuery {
                 if(!isset($taxonomies[$term['taxonomy']])){
                     continue;
                 }
-                $term['taxonomy'] = $taxonomies[$term['taxonomy']];
                 // --------------------
                 
                 $owner_id = $term['owner_id'];
@@ -995,7 +994,7 @@ class ApiQuery {
                     throw new Exceptions\Api\InvalidArgument('expression GEONEAR expects 3 arguments: longitude, latitude and radius in meters');
                 }
 
-                list($longitude, $latitude, $radius) = $this->addSingleParam($values);
+                list($longitude, $latitude, $radius) = $this->addMultipleParams($values);
 
 
                 $dql = $not ?
@@ -1063,6 +1062,7 @@ class ApiQuery {
     }
 
     protected function parseQueryParams() {
+        $app = App::i();
         $class = $this->entityClassName;
         foreach ($this->apiParams as $key => $value) {
             $value = trim($value);
@@ -1141,11 +1141,11 @@ class ApiQuery {
         $count = $this->__counter++;
         $tr_alias = "tr{$count}";
         $t_alias = "t{$count}";
-        $taxonomy_id = $this->registeredTaxonomies[$key];
+        $taxonomy_slug = $this->registeredTaxonomies[$key];
 
         $this->_keys[$key] = "$t_alias.term";
 
-        $this->joins .= str_replace(['{ALIAS_TR}', '{ALIAS_T}', '{TAXO}'], [$tr_alias, $t_alias, $taxonomy_id], $this->_templateJoinTerm);
+        $this->joins .= str_replace(['{ALIAS_TR}', '{ALIAS_T}', '{TAXO}'], [$tr_alias, $t_alias, $taxonomy_slug], $this->_templateJoinTerm);
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
@@ -1217,6 +1217,9 @@ class ApiQuery {
         $this->_selecting = array_unique(explode(',', $select));
 
         foreach ($this->_selecting as $i => $prop) {
+            if(!$prop){
+                continue;
+            }
             if (in_array($prop, $this->entityProperties)) {
                 $this->_selectingProperties[] = $prop;
             } elseif (in_array($prop, $this->registeredMetadata)) {
@@ -1230,8 +1233,12 @@ class ApiQuery {
     }
     
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {
+        if(!isset($this->entityRelations[$prop]) && !isset($this->entityRelations['_' . $prop])){
+            return false;
+        }
+        
         $_select_properties = explode(',', $_select);
-
+        
         $select = array_map(function($property) use(&$_match) {
             // if the property is a subsquery 
             if (isset($this->_subqueriesSelect[$property])) {

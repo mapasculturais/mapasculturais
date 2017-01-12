@@ -4,6 +4,8 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
+use MapasCulturais\ApiQuery;
+
 trait ControllerAPI{
 
     /**
@@ -165,8 +167,30 @@ trait ControllerAPI{
             return (int) $default_lifetime;
     }
 
+    public function apiQuery($api_params, $options = []){
+        $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $counting = key_exists('@count', $api_params);
+        if($counting){
+            unset($api_params['@count']);
+        }
 
-    public function apiQuery($qdata, $options = []){
+        
+        $query = new ApiQuery($this->entityClassName, $api_params);
+        
+        if($counting){
+            $result = $query->getCountResult();
+        } elseif( $findOne ) {
+            $result = $query->getFindOneResult();
+        } else {
+            $count = $query->getCountResult();
+            $result = $query->getFindResult();
+            $this->apiAddHeaderMetadata($api_params, $result, $count);
+        }
+        
+        return $result;
+    }
+
+    public function apiQueryV1($qdata, $options = []){
         $this->_apiFindParamList = [];
         $app = App::i();
         
