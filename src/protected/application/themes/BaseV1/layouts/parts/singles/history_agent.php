@@ -44,8 +44,7 @@ $userCanView = $entity->userCanView;
             <div class="entity-type <?php echo $entity->controller_id ?>-type">
                 <div class="icon icon-<?php echo $entity->controller_id ?>"></div>
                 <a href="#" class='' data-original-title="<?php \MapasCulturais\i::esc_attr_e("Tipo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione um tipo");?>" data-entity='<?php echo $entity->controller_id ?>' data-value='<?php echo $entity->_type ?>'>
-                    <?php $entity_types = $app->getRegisteredEntityTypes($entity->entityClassName);?>
-                    <?php echo $entity_types[$entity->_type]->name; ?>
+                    <?php echo $app->getRegisteredEntityTypeById($entity->entityClassName,$entity->_type)->name; ?>
                 </a>
             </div>
             <!--.entity-type-->
@@ -139,8 +138,55 @@ $userCanView = $entity->userCanView;
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
-                <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => (!$entity->publicLocation || $userCanView)]); ?>
+                <?php
+                $lat = isset($entity->location->latitude)? $entity->location->latitude: 0;
+                $lng = isset($entity->location->longitude)? $entity->location->longitude: 0;
+                ?>
+                <?php if (isset($entity->publicLocation) && ($entity->publicLocation || $userCanView)): ?>
+                    <?php $this->applyTemplateHook('location','before'); ?>
+                    <div class="servico clearfix">
+                        <div class="mapa js-map-container">
+                            <?php if($lat && $lng): ?>
+                                <div class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left">
+                                    <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="<?php \MapasCulturais\i::esc_attr_e("Encontrar minha localização");?>"></a>
+                                </div>
+                            <?php endif; ?>
+                            <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
+                            <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="<?php echo '[' . $lng . ',' . $lat . ']'; ?>"/>
+                        </div>
+                        <!--.mapa-->
+                        <div class="infos">
+                            <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Endereço");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
+                            <p class="endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("CEP");?>:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CEP");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CEP");?>" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("Logradouro");?>:</span> <span class="js-editable" id="En_Nome_Logradouro" data-edit="En_Nome_Logradouro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Logradouro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o logradouro");?>" data-showButtons="bottom"><?php echo $entity->En_Nome_Logradouro ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("Número");?>:</span> <span class="js-editable" id="En_Num" data-edit="En_Num" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Número");?>" data-showButtons="bottom"><?php echo $entity->En_Num ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("Complemento");?>:</span> <span class="js-editable" id="En_Complemento" data-edit="En_Complemento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Complemento");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um complemento");?>" data-showButtons="bottom"><?php echo $entity->En_Complemento ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("Bairro");?>:</span> <span class="js-editable" id="En_Bairro" data-edit="En_Bairro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Bairro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Bairro");?>" data-showButtons="bottom"><?php echo $entity->En_Bairro ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("Município");?>:</span> <span class="js-editable" id="En_Municipio" data-edit="En_Municipio" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Município");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Município");?>" data-showButtons="bottom"><?php echo $entity->En_Municipio ?></span></p>
+                            <p><span class="label"><?php \MapasCulturais\i::_e("Estado");?>:</span> <span class="js-editable" id="En_Estado" data-edit="En_Estado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Estado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Estado");?>" data-showButtons="bottom"><?php echo $entity->En_Estado ?></span></p>
+                            <?php if(!$entity->publicLocation): ?>
+                                <p class="privado">
+                                    <span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Localização");?>:</span>
+                                    <span class="js-editable clear" data-edit="publicLocation" data-type="select" data-showbuttons="false"
+                                        data-value="<?php echo $entity->publicLocation ? '1' : '0';?>"
+                                        <?php /* Translators: Location public / private */ ?>
+                                        data-source="[{value: 1, text: '<?php \MapasCulturais\i::esc_attr_e("Pública");?>'},{value: 0, text:'<?php \MapasCulturais\i::esc_attr_e("Privada");?>'}]">
+                                    </span>
+                                </p>
+                            <?php endif; ?>
 
+                            <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
+                                <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
+                                    <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
+                                </p>
+                            <?php endforeach; ?>
+                        </div>
+                        <!--.infos-->
+                    </div>
+                    <!--.servico-->
+                    <?php $this->applyTemplateHook('location','after'); ?>
+                <?php endif; ?>
             </div>
             <!--.ficha-spcultura-->
 
@@ -185,18 +231,17 @@ $userCanView = $entity->userCanView;
 <div class="sidebar-left sidebar agent">
     <!-- Related Seals BEGIN -->
     <?php if(isset($entity->_seals)):?>
-        <div class="sidebar-left sidebar agent">
-            <div class="selos-add">
+        <div class="selos-add">
             <div class="widget">
                 <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> 
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
-                    <div class="avatar-seal ng-scope">
-                        <a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>" class="ng-binding">
-                            <img ng-src="<?php echo $seal->url;?>">
+                    <div class="avatar-seal">
+                        <a href="">
+                            <img src="<?php $this->asset('img/avatar--agent.png'); ?>">
                         </a>
                         <div class="descricao-do-selo">
-                            <h1><a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>" class="ng-binding"><?php echo $seal->name;?></a></h1>
+                            <h1><a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>"><?php echo $seal->name;?></a></h1>
                         </div>
                     </div>
                 <?php endforeach;?>
@@ -242,7 +287,7 @@ $userCanView = $entity->userCanView;
                                 <img ng-src="" />
                             </a>
                             <div class="descricao-do-agente">
-                                <h1><a href=""><?php echo $agent->name;?></a></h1>
+                                <h1><a href="<?php echo $app->createUrl('entityRevision','history',[$agent->revision]);?>"><?php echo $agent->name;?></a></h1>
                             </div>
                         </div>
                     <?php endforeach;?>

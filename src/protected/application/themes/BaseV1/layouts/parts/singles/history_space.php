@@ -1,6 +1,7 @@
 <?php 
 $entity = $entityRevision;
 $action = "single";
+$userCanView = $entity->userCanView;
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
@@ -43,14 +44,15 @@ $action = "single";
             <div class="entity-type <?php echo $entity->controller_id ?>-type">
                 <div class="icon icon-<?php echo $entity->controller_id ?>"></div>
                 <a href="#" class='' data-original-title="<?php \MapasCulturais\i::esc_attr_e("Tipo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione um tipo");?>" data-entity='<?php echo $entity->controller_id ?>' data-value='<?php echo $entity->_type ?>'>
-                    <?php $entity_types = $app->getRegisteredEntityTypes($entity->entityClassName);?>
-                    <?php echo $entity_types[$entity->_type]->name; ?>
+                    <?php echo $app->getRegisteredEntityTypeById($entity->entityClassName,$entity->_type)->name; ?>
                 </a>
             </div>
             <!--.entity-type-->
             <?php $this->applyTemplateHook('type','after'); ?>
-
-            <?php /*$this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request])*/ ?>
+            
+            <?php if(isset($entity->parent)): ?>
+                <h4 class="entity-parent-title"><a href="<?php echo $app->createUrl('entityRevision','history',[$entity->parent->revision]); ?>"><?php echo $entity->parent->name; ?></a></h4>
+            <?php endif; ?>
 
             <?php $this->applyTemplateHook('name','before'); ?>
             <h2><span class="" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>"><?php echo $entity->name; ?></span></h2>
@@ -82,10 +84,6 @@ $action = "single";
                 </p>
 
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
-                <?php /*$this->part('singles/space-servico', ['entity' => $entity]);*/ ?>
-
-                <?php $this->part('singles/location', ['entity' => $entity]); ?>
-                
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
@@ -95,8 +93,7 @@ $action = "single";
 
                     <?php if(isset($entity->acessibilidade_fisica)): ?>
                         <p>
-                            <span class="label"><?php \MapasCulturais\i::_e("Acessibilidade física");?>: </span>
-                            <editable-multiselect entity-property="acessibilidade_fisica" empty-label="Selecione" allow-other="true" box-title="Acessibilidade física:"></editable-multiselect>
+                            <span class="label"><?php \MapasCulturais\i::_e("Acessibilidade física");?>: </span><span class="js-editable" data-edit="acessibilidade_fisica" data-original-title="Acessibilidade Física" data-emptytext="Especifique a acessibilidade física <?php $this->dict('entities: of the space') ?>"><?php echo $entity->acessibilidade_fisica; ?></span>
                         </p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('acessibilidade','after'); ?>
@@ -118,8 +115,8 @@ $action = "single";
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>
 
-                    <?php if(isset($entity->emailPrivado)): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPrivado") && $editEntity? 'required': '');?>" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
+                    <?php if(isset($entity->emailPrivado) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
                     <?php endif;?>
 
                     <?php if(isset($entity->emailPublico)): ?>
@@ -130,24 +127,32 @@ $action = "single";
                         <p><span class="label"><?php \MapasCulturais\i::_e("Telefone Público");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que será exibido publicamente");?>"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if(isset($entity->telefone1)): ?>
+                    <?php if(isset($entity->telefone1) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Telefone 1");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone1; ?></span></p>
                     <?php endif;?>
 
-                    <?php if(isset($entity->telefone2)): ?>
+                    <?php if(isset($entity->telefone2) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Telefone 2");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
-                <?php /*$this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]);*/ ?>
+                <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]); ?>
 
             </div>
             <!--.ficha-spcultura-->
 
             <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
-            <?php /*$this->part('singles/space-extra-info', ['entity' => $entity])*/ ?>
+            <?php if ( isset($entity->longDescription) ): ?>
+                <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição <?php $this->dict('entities: of the Space') ?>" data-emptytext="Insira uma descrição <?php $this->dict('entities: of the space') ?>" ><?php echo nl2br($entity->longDescription); ?></span>
+            <?php endif; ?>
+
+            <?php if ( isset($entity->criterios) ): ?>
+                <h3><?php \MapasCulturais\i::_e("Critérios de uso");?> <?php $this->dict('entities: of the space') ?></h3>
+                <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso <?php $this->dict('entities: of the space') ?>" data-emptytext="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-placeholder="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
+            <?php endif; ?>
             <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
 
             <!-- Video Gallery BEGIN -->
@@ -179,23 +184,31 @@ $action = "single";
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
 
+    <footer id='entity-owner' class="owner clearfix js-owner" ng-controller="ChangeOwnerController">
+        <img src="" class="avatar js-owner-avatar" />
+        <p class="small bottom"><?php \MapasCulturais\i::_e("Publicado por");?></p>
+
+        <h6 class='js-owner-name'><a href="<?php echo $app->createUrl('entityRevision', 'history', [$entity->owner->revision]);?>"><?php echo $entity->owner->name ?></a></h6>
+
+        <p class="owner-description js-owner-description"><?php echo nl2br($entity->owner->shortDescription); ?></p>
+    </footer>
+
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar agent">
     <!-- Related Seals BEGIN -->
     <?php if(isset($entity->_seals)):?>
-        <div class="sidebar-left sidebar agent">
-            <div class="selos-add">
+        <div class="selos-add">
             <div class="widget">
                 <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> 
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
-                    <div class="avatar-seal ng-scope">
-                        <a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>" class="ng-binding">
-                            <img ng-src="<?php echo $seal->url;?>">
+                    <div class="avatar-seal">
+                        <a href="">
+                            <img src="<?php $this->asset('img/avatar--agent.png'); ?>">
                         </a>
                         <div class="descricao-do-selo">
-                            <h1><a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>" class="ng-binding"><?php echo $seal->name;?></a></h1>
+                            <h1><a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>"><?php echo $seal->name;?></a></h1>
                         </div>
                     </div>
                 <?php endforeach;?>
@@ -205,7 +218,7 @@ $action = "single";
     <?php endif;?>
     <!-- Related Seals END -->
 
-    <?php /*$this->part('singles/space-public', ['entity' => $entity])*/ ?>
+    <?php $this->part('singles/space-public', ['entity' => $entity]); ?>
 
     <?php if(isset($entity->_terms) && isset($entity->_terms->area)):?>
         <div class="widget">
@@ -222,7 +235,7 @@ $action = "single";
     <div class="widget">
         <h3><?php \MapasCulturais\i::_e("Tags");?></h3>
         <?php foreach($entity->_terms->tag as $tag): ?>
-            <a class="tag tag-<?php echo $this->controller_id ?>" href="">
+            <a class="tag tag-<?php echo $entity->controller_id ?>" href="">
                 <?php echo $tag; ?>
             </a>
         <?php endforeach; ?>

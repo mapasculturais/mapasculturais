@@ -140,6 +140,7 @@ $app = MapasCulturais\App::i();
 
                     <div class="js-event-occurrence">
 
+                    <?php if(isset($entity->occurrences)):?>
                         <?php foreach($entity->occurrences as $key => $space): ?>
                             <div class="regra clearfix">
                                 <header class="clearfix">
@@ -163,18 +164,17 @@ $app = MapasCulturais\App::i();
                                 }
                                 $occurrencesDescription = substr($occurrencesDescription,0,-2);
                                 ?>
-                                <?php foreach($space->items as $occurrence):?>
-                                    <div class="infos">
-                                        <p class="descricao-legivel"><?php echo $occurrencesDescription;?></p>
-                                        <?php if(!empty($occurrence->rule->price)): ?>
-                                            <p><span class="label"><?php \MapasCulturais\i::_e("Preço");?>:</span> <?php echo $occurrence->rule->price?></p>
-                                        <?php endif;?>
-                                        <p><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <?php echo $space->endereco;?></p>
-                                    </div>
-                                    <!-- .infos -->
-                                <?php endforeach;?>
+                                <div class="infos">
+                                    <p class="descricao-legivel"><?php echo $occurrencesDescription;?></p>
+                                    <?php if(count($space->items) == 1 && !empty($space->items[0]->rule->price)): ?>
+                                        <p><span class="label"><?php \MapasCulturais\i::_e("Preço");?>:</span> <?php echo $space->items[0]->rule->price?></p>
+                                    <?php endif;?>
+                                    <p><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <?php echo $space->endereco;?></p>
+                                </div>
+                                <!-- .infos -->
                             </div>
                         <?php endforeach;?>
+                        <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -210,23 +210,31 @@ $app = MapasCulturais\App::i();
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
 
+    <footer id='entity-owner' class="owner clearfix js-owner" ng-controller="ChangeOwnerController">
+        <img src="" class="avatar js-owner-avatar" />
+        <p class="small bottom"><?php \MapasCulturais\i::_e("Publicado por");?></p>
+
+        <h6 class='js-owner-name'><a href="<?php echo $app->createUrl('entityRevision', 'history', [$entity->owner->revision]);?>"><?php echo $entity->owner->name ?></a></h6>
+
+        <p class="owner-description js-owner-description"><?php echo nl2br($entity->owner->shortDescription); ?></p>
+    </footer>
+
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar event">
     <!-- Related Seals BEGIN -->
     <?php if(isset($entity->_seals)):?>
-        <div class="sidebar-left sidebar event">
-            <div class="selos-add">
+        <div class="selos-add">
             <div class="widget">
                 <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> 
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
-                    <div class="avatar-seal ng-scope">
-                        <a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>" class="ng-binding">
-                            <img ng-src="<?php echo $seal->url;?>">
+                    <div class="avatar-seal">
+                        <a href="">
+                            <img src="<?php $this->asset('img/avatar--agent.png'); ?>">
                         </a>
                         <div class="descricao-do-selo">
-                            <h1><a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>" class="ng-binding"><?php echo $seal->name;?></a></h1>
+                            <h1><a href="<?php echo $app->createUrl('seal','single',[$seal->id]);?>"><?php echo $seal->name;?></a></h1>
                         </div>
                     </div>
                 <?php endforeach;?>
@@ -236,12 +244,19 @@ $app = MapasCulturais\App::i();
     <?php endif;?>
     <!-- Related Seals END -->
 
-    <?php if(isset($entity->_terms) && isset($entity->_terms->area)):?>
+    <?php if($entity->project): ?>
         <div class="widget">
-        <h3><?php $this->dict('taxonomies:area: name') ?></h3>
-            <?php foreach($entity->_terms->area as $area): ?>
+            <h3><?php \MapasCulturais\i::_e("Projeto");?></h3>
+            <a class="event-project-link" href="<?php echo $app->createUrl('project','single',[$entity->project->id]); ?>"><?php echo $entity->project->name; ?></a>
+        </div>
+    <?php endif; ?>
+
+    <?php if(isset($entity->_terms) && isset($entity->_terms->linguagem)):?>
+        <div class="widget">
+        <h3><?php $this->dict('taxonomies:linguagem: name') ?></h3>
+            <?php foreach($entity->_terms->linguagem as $linguagem): ?>
                 <a class="tag tag-<?php echo $entity->controller_id ?>">
-                    <?php echo $area ?>
+                    <?php echo $linguagem ?>
                 </a>
             <?php endforeach; ?>
         </div>
@@ -251,7 +266,7 @@ $app = MapasCulturais\App::i();
     <div class="widget">
         <h3><?php \MapasCulturais\i::_e("Tags");?></h3>
         <?php foreach($entity->_terms->tag as $tag): ?>
-            <a class="tag tag-<?php echo $this->controller_id ?>" href="">
+            <a class="tag tag-<?php echo $entity->controller_id ?>" href="">
                 <?php echo $tag; ?>
             </a>
         <?php endforeach; ?>

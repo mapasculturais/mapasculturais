@@ -40,6 +40,7 @@ class EntityRevision extends \MapasCulturais\Repository{
         $entityRevisioned->id = $actualEntity->id;
         $entityRevisioned->entityClassName = $entityRevision->objectType;
         $entityRevisioned->userCanView = $actualEntity->canUser('viewPrivateData');
+        $entityRevisioned->entity = $actualEntity;
 
         $registeredMetadata = $app->getRegisteredMetadata($entityRevision->objectType);
 

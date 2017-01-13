@@ -30,7 +30,7 @@ trait EntityRevision{
         $relations = $class_metadata->getAssociationMappings();
 
         if(array_key_exists("owner",$relations)) {
-            $entity_data = $this->owner->simplify("id,name");
+            $entity_data = $this->owner->simplify("id,name,shortDescription");
             $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($this->owner->getClassName(),$entity_data->id);
             $revisionData["owner"] = $entity_data;
         }
@@ -62,14 +62,6 @@ trait EntityRevision{
                 $entity_data = $event->simplify("id,name");
                 $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($event->getClassName(),$entity_data->id);
                 $revisionData['_events'][] = $entity_data;
-            }
-        }
-
-        if(array_key_exists("_projects",$relations) && count($this->_projects) > 0) {
-            foreach($this->_projects as $project) {
-                $entity_data = $project->simplify("id,name");
-                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($project->getClassName(),$entity_data->id);
-                $revisionData['_projects'][] = $entity_data;
             }
         }
 
@@ -114,16 +106,6 @@ trait EntityRevision{
                 ];
             }
         }
-
-        // if(($downloads = $this->getFiles('downloads'))) {
-        //     foreach($downloads as $download) {
-        //         $revisionData['downloads'][] = [
-        //                 'id' => $download->id,
-        //                 'description' => $download->description,
-        //                 'url' => $download->url
-        //         ];
-        //     }
-        // }
 
         if(method_exists($this, 'getRevisionData')){
             $entity_data = $this->getRevisionData();

@@ -474,6 +474,13 @@ class Event extends \MapasCulturais\Entity
                 $revisionData['occurrences'][$occurrence->space->id]['revision'] = App::i()->repo('EntityRevision')->findEntityLastRevisionId($occurrence->space->getClassName(),$occurrence->space->id);
             }
         }
+
+        if($this->project) {
+            $entity_data = $this->project->simplify("id,name");
+            $entity_data->{'revision'} = App::i()->repo('EntityRevision')->findEntityLastRevisionId($this->project->getClassName(),$entity_data->id);
+            $revisionData['project'] = $entity_data;
+        }
+
         return $revisionData;
     }
 
