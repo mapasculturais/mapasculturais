@@ -845,23 +845,23 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
                 if($app->config['notifications.entities.new']) {
-                        $user = $this->ownerUser;
-                        $dataValue = [
-                            'name'          => $app->user->profile->name,
-                            'entityType'    => $this->entityTypeLabel,
-                            'entityName'    => $this->name,
-                            'url'           => $this->origin_site,
-                            'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
-                        ];
+                    $user = $this->ownerUser;
+                    $dataValue = [
+                        'name'          => $app->user->profile->name,
+                        'entityType'    => $this->entityTypeLabel,
+                        'entityName'    => $this->name,
+                        'url'           => $this->origin_site,
+                        'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
+                    ];
 
-                        $message = $app->renderMailerTemplate('new',$dataValue);
+                    $message = $app->renderMailerTemplate('new',$dataValue);
 
-                        $app->createAndSendMailMessage([
-                            'from' => $app->config['mailer.from'],
-                            'to' => $user->email,
-                            'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
-                            'body' => $message['body']
-                        ]);
+                    $app->createAndSendMailMessage([
+                        'from' => $app->config['mailer.from'],
+                        'to' => $user->email,
+                        'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
+                        'body' => $message['body']
+                    ]);
                 }
             }
         });
@@ -908,7 +908,7 @@ class Theme extends MapasCulturais\Theme {
                         tr.term
                             t
                         WITH
-                            t.taxonomy = '{$taxonomy->id}'";
+                            t.taxonomy = '{$taxonomy->slug}'";
         });
 
         $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) {

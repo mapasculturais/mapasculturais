@@ -7,7 +7,7 @@ $this->layout = 'panel'
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('event', 'create'); ?>"><?php \MapasCulturais\i::_e('Adicionar novo evento'); ?></a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($enabled); ?>)</a></li>
+        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo $meta->count; ?>)</a></li>
         <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlEvents);?>)</a></li>
         <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($draft); ?>)</a></li>
         <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($trashed); ?>)</a></li>
