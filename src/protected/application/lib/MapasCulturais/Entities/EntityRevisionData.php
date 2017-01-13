@@ -56,4 +56,8 @@ class EntityRevisionData extends \MapasCulturais\Entity{
     public function getValue() {
         return json_decode($this->value);
     }
+
+    public function canUser($action, $userOrAgent = null){
+        return true;
+    }
 }

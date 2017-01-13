@@ -30,9 +30,11 @@ trait EntityRevision{
         $relations = $class_metadata->getAssociationMappings();
 
         if(array_key_exists("owner",$relations)) {
-            $entity_data = $this->owner->simplify("id,name,shortDescription");
-            $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($this->owner->getClassName(),$entity_data->id);
-            $revisionData["owner"] = $entity_data;
+            if(isset($this->owner)) {
+                $entity_data = $this->owner->simplify("id,name,shortDescription");
+                $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($this->owner->getClassName(),$entity_data->id);
+                $revisionData["owner"] = $entity_data;
+            }
         }
 
         if(array_key_exists("parent",$relations)) {
@@ -152,16 +154,13 @@ trait EntityRevision{
         }
 
         $revision = new Revision($revisionData,$this,$action,$message);
-        $revision->save(true);
+        //$revision->save(true);
     }
 
     public function _newDeletedRevision() {
         $revisionData = $this->_getRevisionData();
-        $action = $this->controller->action;
-        $message = "";
-        if($action == Revision::ACTION_DELETED) {
-            $message = "Registro deletado.";
-        }
+        $action = Revision::ACTION_DELETED;
+        $message = "Registro deletado.";
         $revision = new Revision($revisionData,$this,Revision::ACTION_DELETED,$message);
         $revision->save(true);
     }

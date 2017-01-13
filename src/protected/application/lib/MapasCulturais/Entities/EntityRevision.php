@@ -143,7 +143,19 @@ class EntityRevision extends \MapasCulturais\Entity{
         if(!empty(trim($message))) {
             $this->message = $message;
         }
-        $this->user = App::i()->user;
+        $user = App::i()->user;
+
+        if($user->is('guest')){
+            $user = $entity->getOwnerUser();
+        }
+        $this->user = $user;
+    }
+
+    public function canUser($action, $userOrAgent = null){
+        return true;
+        $app = App::i();
+        $entity = $app->repo($this->objectType)->find($this->objectId);
+        return $entity->canUser($action, $userOrAgent);
     }
 
     /*
