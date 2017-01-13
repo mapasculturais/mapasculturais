@@ -26,6 +26,10 @@ class ApiQuery {
      * @var string 
      */
     protected $entityClassName;
+    
+    protected $entityController;
+    
+    protected $entityRepository;
 
     /**
      * The Entity Metadata Class Name
@@ -162,7 +166,8 @@ class ApiQuery {
     protected $_templateJoinMetadata = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
     protected $_templateJoinTerm = "\n\tLEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
 
-    protected $_appendOriginSubsiteUrl = false;
+    protected $_selectingOriginSiteUrl = false;
+    protected $_selectingType = false;
     
     public function __construct($entity_class_name, $api_params) {
         $this->initialize($entity_class_name, $api_params);
@@ -173,10 +178,11 @@ class ApiQuery {
     protected function initialize($entity_class_name, $api_params) {
         $app = App::i();
         $em = $app->em;
-
+        
         $this->apiParams = $api_params;
         $this->entityClassName = $entity_class_name;
-        
+        $this->entityController = $app->getControllerByEntity($this->entityClassName);
+        $this->entityRepository = $app->repo($this->entityClassName);
 
         if ($entity_class_name::usesFiles()) {
             $this->fileClassName = $entity_class_name::getFileClassName();
@@ -369,6 +375,22 @@ class ApiQuery {
         
         return $result;
     }
+    
+    function getKeywordSubDQL(){
+        $dql = '';
+        if($this->_keyword){
+                
+            $alias = "k" . $this->__counter++;
+            $_keyword_dql = $this->entityRepository->getIdsByKeywordDQL($this->_keyword, $alias);
+            $_keyword_dql = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $_keyword_dql);
+            $_keyword_dql = str_replace("{$this->entityClassName} e", "{$this->entityClassName} {$alias}", $_keyword_dql);
+            
+            $dql = "e.id IN ($_keyword_dql)";
+            $this->_dqlParams['keyword'] = "%{$this->_keyword}%";
+        }
+        
+        return $dql;
+    }
 
     function getLimit() {
         return $this->_limit;
@@ -390,7 +412,12 @@ class ApiQuery {
 
         $where .= implode(" $this->_op \n\t", $where_dqls);
 
+        // @TODO: verificar se não está filtrando por status para colocar o status abaixo
         $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
+        
+        if($keyword_where = $this->getKeywordSubDQL()){
+            $where .= " AND $keyword_where";
+        }        
 
         return $where;
     }
@@ -399,7 +426,7 @@ class ApiQuery {
         $app = App::i();
         $joins = $this->joins;
         
-        if($this->_appendOriginSubsiteUrl){
+        if($this->_selectingOriginSiteUrl){
             $joins .= ' LEFT JOIN MapasCulturais\Entities\Subsite __subsite__ WITH __subsite__.id = e._subsiteId';
         }                
 
@@ -441,7 +468,7 @@ class ApiQuery {
             }
         }
         
-        if($this->_appendOriginSubsiteUrl){
+        if($this->_selectingOriginSiteUrl){
             $select .= ', __subsite__.url AS originSiteUrl';
         }
         
@@ -471,18 +498,46 @@ class ApiQuery {
         }
     }
     
-    protected function processEntities(array &$result) {
-        $this->appendMetadata($result);
-        $this->appendRelations($result);
-        $this->appendFiles($result);
-        $this->appendTerms($result);
-        $this->appendUrls($result);
+    protected function processEntities(array &$entities) {
+        $this->appendMetadata($entities);
+        $this->appendRelations($entities);
+        $this->appendFiles($entities);
+        $this->appendTerms($entities);
         
         // @TODO: metalist (copiar o files)
         // @TODO: relatedAgents
         // @TODO: seals
         
+        $app = app::i();
         
+        // @TODO: não existe hoje uma forma de conseguir a url do site principal
+        $main_site_url = $app->config['base.url'];
+        
+        if($this->_selectingType){
+            $types = $app->getRegisteredEntityTypes($this->entityClassName);
+        }
+        
+        foreach ($entities as &$entity){
+            foreach($this->_selectingUrls as $action){
+                $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
+            }
+            
+            if($this->_selectingOriginSiteUrl && empty($entity['originSiteUrl'])){
+                $entity['originSiteUrl'] = $main_site_url;
+            }
+            
+            if($this->_selectingType){
+                $entity['type'] = $types[$entity['_type']];
+                unset($entity['_type']);
+            }
+            
+            
+            foreach($this->_selecting as $prop){
+                if($prop && $prop[0] != '#' && !isset($entity[$prop])){
+                    $entity[$prop] = null;
+                }
+            }
+        }        
     }
 
     protected function appendMetadata(array &$entities) {
@@ -835,30 +890,6 @@ class ApiQuery {
         }
     }
     
-    protected function appendUrls(array &$entities){
-        if(!$this->_selectingUrls && !$this->_appendOriginSubsiteUrl){
-            return;
-        }
-        
-        $app = app::i();
-        
-        $controller = $app->getControllerByEntity($this->entityClassName);
-        
-        // @TODO: não existe hoje uma forma de conseguir a url do site principal
-        
-        $main_site_url = $app->config['base.url'];
-                
-        foreach ($entities as &$entity){
-            foreach($this->_selectingUrls as $action){
-                $entity["{$action}Url"] = $controller->createUrl($action, [$entity['id']]);
-            }
-            
-            if($this->_appendOriginSubsiteUrl && empty($entity['originSiteUrl'])){
-                $entity['originSiteUrl'] = $main_site_url;
-            } 
-        }
-    }
-    
     private $__viewPrivateDataPermissions = null;
     
     protected function getViewPrivateDataPermissions(array $entities){
@@ -1098,7 +1129,10 @@ class ApiQuery {
         $class = $this->entityClassName;
         foreach ($this->apiParams as $key => $value) {
             $value = trim($value);
-            if (strtolower($key) == '@select') {
+            
+            if (strtolower($key) == '@type') {
+                continue;
+            } elseif (strtolower($key) == '@select') {
                 $this->_parseSelect($value);
             } elseif (strtolower($key) == '@order') {
                 $this->_order = $value;
@@ -1135,7 +1169,7 @@ class ApiQuery {
             } elseif ($class::usesMetadata() && in_array($key, $this->registeredMetadata)) {
                 $this->_addFilterByMetadata($key, $value);
             } elseif ($key[0] !== '_' && $key != 'callback') {
-                $this->apiErrorResponse("property $key does not exists");
+                throw new Exceptions\Api\PropertyDoesNotExists("property $key does not exists");
             }
         }
     }
@@ -1272,12 +1306,12 @@ class ApiQuery {
             } elseif ($prop[0] != '_' && isset($this->entityRelations["_{$prop}"])) {
                 $this->_selecting[$i] = $this->_preCreateSelectSubquery("_{$prop}", 'id', $prop);
             } elseif ($prop === 'originSiteUrl' && $entity_class::usesOriginSubsite()) {
-                $this->_appendOriginSubsiteUrl = true;
+                $this->_selectingOriginSiteUrl = true;
             } elseif (preg_match('#^([a-z][a-zA-Z]*)Url#', $prop, $url_match) && method_exists($this->entityClassName, "get{$prop}")) {
                 $this->_selectingUrls[] = $url_match[1];
             } elseif($prop === 'type' && $entity_class::usesTypes()){
                 $this->_selectingProperties[] = '_type';
-                
+                $this->_selectingType = true;                
             }
         }
     }
