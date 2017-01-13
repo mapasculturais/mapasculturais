@@ -183,7 +183,7 @@ trait EntityTaxonomies{
         
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
-            $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->id, 'term' => $term]);
+            $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->slug, 'term' => $term]);
             $tr = $app->repo($this->getTermRelationClassName())->findOneBy(['term' => $t, 'owner' => $this]);
 
             // if the term is already associated to this entity return
