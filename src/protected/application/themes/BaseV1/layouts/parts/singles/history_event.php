@@ -244,7 +244,7 @@ $app = MapasCulturais\App::i();
     <?php endif;?>
     <!-- Related Seals END -->
 
-    <?php if($entity->project): ?>
+    <?php if(isset($entity->project)): ?>
         <div class="widget">
             <h3><?php \MapasCulturais\i::_e("Projeto");?></h3>
             <a class="event-project-link" href="<?php echo $app->createUrl('project','single',[$entity->project->id]); ?>"><?php echo $entity->project->name; ?></a>
