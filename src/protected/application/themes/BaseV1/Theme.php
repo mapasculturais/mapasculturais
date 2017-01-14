@@ -21,6 +21,9 @@ class Theme extends MapasCulturais\Theme {
         'magnific-popup' => '0.9.9',
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
+    
+    // The default fields that are queried to display the search results both on map and list modes
+    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl');
 
     static function getThemeFolder() {
         return __DIR__;
@@ -724,8 +727,8 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
 
-        $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
-
+        $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
+        
         $this->jsObject['EntitiesDescription'] = [
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
@@ -2092,6 +2095,27 @@ class Theme extends MapasCulturais\Theme {
         return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
     }
 
-
+    /*
+     * This methods adds fields to the default query used in the search pages
+     *
+     * Use this to add fields that are available to build the list results and the infoboxes
+     *
+     * @param string|array $fields The fields to be added. It can be an array or a string with comma separated list
+     *
+     */
+    function addSearchQueryFields($fields) {
+        if (!$fields || empty($fields))
+            return false;
+        
+        if (is_string($fields))
+            $fields = explode(',', $fields);
+        
+        $this->searchQueryFields = array_merge($this->searchQueryFields, $fields);
+        $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
+        
+    }
+    
+    
+    
 
 }

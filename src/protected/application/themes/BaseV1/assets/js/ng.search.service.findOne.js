@@ -6,7 +6,7 @@
         return function(data){
 
             if(data.global.viewMode === 'list') return;
-            var select = MapasCulturais.infoboxFields,
+            var select = MapasCulturais.searchQueryFields,
                 requestAction = 'findOne',
                 page=null,
                 result = {},
