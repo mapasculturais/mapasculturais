@@ -4,13 +4,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 $serviceup = <<SCRIPT
-
     echo "Starting service..."
-
     php -S 0.0.0.0:8000 -t /vagrant/src /vagrant/src/router.php &
-
     echo "All done! Call http://127.0.0.1:8000 in your browser and be happy."
-
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|

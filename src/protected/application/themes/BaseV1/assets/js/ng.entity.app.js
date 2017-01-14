@@ -32,9 +32,23 @@
             var only_owner  = $scope.data.only_owner;
             var message     = $scope.data.message;
             var copy        = $scope.data.copy;
+            MapasCulturais.compliant_ok = true;
 
-            CompliantService.send(name,email,type,anonimous,only_owner,message,copy).
-                success(function (data) {});
+            if(anonimous && !email){
+                MapasCulturais.Messages.error('O preenchimento do e-mail é obrigatório.');
+                MapasCulturais.compliant_ok = false;
+            } else if(!type){
+                MapasCulturais.Messages.error('O preenchimento do tipo de denúncia é obrigatório.');
+                MapasCulturais.compliant_ok = false;
+            } else if(!message){
+                MapasCulturais.Messages.error('O preenchimento da mensagem da denúncia é obrigatório.');
+                MapasCulturais.compliant_ok = false;
+            }
+
+            if(MapasCulturais.compliant_ok) {
+                CompliantService.send(name,email,type,anonimous,only_owner,message,copy).
+                    success(function (data) {});
+            }
         }
     }]);
 
@@ -81,9 +95,23 @@
             var only_owner  = $scope.data.only_owner;
             var message     = $scope.data.message;
             var copy        = $scope.data.copy;
+            MapasCulturais.suggestion_ok = true;
 
-            SuggestionService.send(name,email,type,anonimous,only_owner,message,copy).
-                success(function (data) {});
+            if(anonimous && !email){
+                MapasCulturais.Messages.error('O preenchimento do e-mail é obrigatório.');
+                MapasCulturais.suggestion_ok = false;
+            } else if(!type){
+                MapasCulturais.Messages.error('O preenchimento do tipo de mensagem é obrigatório.');
+                MapasCulturais.suggestion_ok = false;
+            } else if(!message){
+                MapasCulturais.Messages.error('O preenchimento da mensagem do contato é obrigatório.');
+                MapasCulturais.suggestion_ok = false;
+            }
+
+            if(MapasCulturais.compliant_ok) {
+                SuggestionService.send(name,email,type,anonimous,only_owner,message,copy).
+                    success(function (data) {});
+            }
         }
     }]);
 
