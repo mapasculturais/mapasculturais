@@ -6,13 +6,13 @@
 
             <?php if($this->isEditable() || $entity->nome_instalacao): ?>
                 <p>
-                    <span class="setup-name js-editable required" data-edit="name" data-original-title="Nome da Instalação" data-emptytext="Nome da instalação"><?php echo $entity->name; ?></span>
+                    <span class="setup-name js-editable required" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Nome da Instalação'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Nome da instalação'); ?>"><?php echo $entity->name; ?></span>
                 </p>
             <?php endif; ?>
 
             <div>
-                <span class="icon"></span><span class="label">Tema:</span>
-                <span class="js-editable required" data-edit="namespace" data-original-title="Tema" data-emptytext="Selecione a o tema a ser utilizado"><?php echo $entity->namespace; ?></span>
+                <span class="icon"></span><span class="label"><?php \MapasCulturais\i::_e('Tema:'); ?></span>
+                <span class="js-editable required" data-edit="namespace" data-original-title="Tema" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Selecione a o tema a ser utilizado'); ?>"><?php echo $entity->namespace; ?></span>
             </div>
 
             <?php $this->part('singles/subsite-header--domains', ['entity' => $entity]) ?>

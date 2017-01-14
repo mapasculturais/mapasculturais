@@ -7,11 +7,11 @@ if($this->controller->action === 'create')
 
 <div class="compliant-suggestion-box">
     <?php if($compliant): ?>
-    <input class="button-form-compliant-suggestion compliant btn-primary" type="button" name="compliant" value="<?php \MapasCulturais\i::_e("Denunciar");?>">
+    <input class="button-form-compliant-suggestion compliant btn-primary" type="button" name="compliant" value="<?php \MapasCulturais\i::esc_attr_e('Denunciar'); ?>">
     <?php endif;?>
     <?php if($suggestion): ?>
     &nbsp;
-    <input class="button-form-compliant-suggestion suggestion btn-success" type="button" name="suggestion" value="<?php \MapasCulturais\i::_e("Contato");?>">
+    <input class="button-form-compliant-suggestion suggestion btn-success" type="button" name="suggestion" value="<?php \MapasCulturais\i::esc_attr_e('Contato'); ?>">
     <?php endif;?>
 </div>
 

@@ -100,7 +100,7 @@ $this->includeMapAssets();
                         </span>
                     </div>
                     <div ng-show="openEntity.space.endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span>{{openEntity.space.endereco}}</div>
-                    <div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>:</span> {{openEntity.space.acessibilidade || 'Não Informado'}}</div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>:</span> {{openEntity.space.acessibilidade || '<?php \MapasCulturais\i::_e("Não informado");?>'}}</div>
                     <div>
                         <span class="label">Tags:</span>
                         <span ng-repeat="tags in openEntity.space.terms.tag">
@@ -264,7 +264,7 @@ $this->includeMapAssets();
                             </span>
                         </div>
                         <div ng-show="space.endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> {{space.endereco}}</div>
-                        <div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>:</span> {{space.acessibilidade || 'Não informado'}}</div>
+                        <div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>:</span> {{space.acessibilidade || '<?php \MapasCulturais\i::_e("Não informado");?>'}}</div>
                     </div>
                 </div>
             </article>
