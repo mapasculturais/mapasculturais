@@ -46,21 +46,31 @@ trait EntityPermissionCache {
     }
     
     function createPermissionsCacheForUsers(array $users = null, $flush = true) {
-        if(is_null($users)){
-            $users = $this->getUsersWithControl();
+        $this->refresh();
+        if($this->usesAgentRelation()){
+            $this->deleteUsersWithControlCache();
         }
         
-        $app = \MapasCulturais\App::i();
         
+        $app = \MapasCulturais\App::i();
+        $conn = $app->em->getConnection();
+        $class_name = $this->getClassName();
         $permissions = $this->getPermissionsList();
+        
+        if(is_null($users)){
+            $this->deletePermissionsCache();
+            $users = $this->getUsersWithControl();
+        }
+                
         $this->__enabled = false;
         
-        $conn = $app->em->getConnection();
-        
         foreach ($users as $u) {
+            $this->deletePermissionsCache($u->id);
+            
             if($u->is('admin', $this->_subsiteId)){
                 continue;
             }
+            
             foreach ($permissions as $permission) {
                 if($permission == 'view' && $this->status > 0) {
                     continue;
@@ -72,7 +82,7 @@ trait EntityPermissionCache {
                     $conn->insert('pcache', [
                         'user_id' => $u->id,
                         'action' => $permission,
-                        'object_type' => $this->getClassName(),
+                        'object_type' => $class_name,
                         'object_id' => $this->id,
                         'create_timestamp' => 'now()'
                     ]);
@@ -87,5 +97,33 @@ trait EntityPermissionCache {
         }
         
     }
-
+    
+    function deletePermissionsCache($user_id = null){
+        $app = \MapasCulturais\App::i();
+        $conn = $app->em->getConnection();
+        $class_name = $this->getClassName();
+        if($user_id){
+            $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id} AND user_id = {$user_id}");
+        } else {
+            $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id}");
+        }
+    }
+    
+    function addToRecreatePermissionsCacheList(){
+        $app = \MapasCulturais\App::i();
+        
+        $app->addEntityToRecreatePermissionCacheList($this);
+        
+        
+        $class_relations = $app->em->getClassMetadata($this->getClassName())->getAssociationMappings();
+        
+        foreach($class_relations as $prop => $def){
+            $rel_class = $def['targetEntity'];
+            if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
+                foreach($this->$prop as $entity){
+                    $entity->addToRecreatePermissionsCacheList();
+                }
+            }
+        }
+    }
 }

@@ -795,6 +795,14 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
+        
+        
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -842,6 +850,14 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
+        
+        
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -862,6 +878,10 @@ abstract class Entity implements \JsonSerializable{
 
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
+        
+        if($this->usesPermissionCache()){
+            $this->deletePermissionsCache();
+        }
     }
 
     /**
@@ -899,6 +919,13 @@ abstract class Entity implements \JsonSerializable{
                     }
                 });
             }
+        }
+        
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
         }
     }
 

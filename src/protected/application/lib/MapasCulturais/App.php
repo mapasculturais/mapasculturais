@@ -482,6 +482,9 @@ class App extends \Slim\Slim{
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
+//        if($this->_entitiesToRecreatePermissionsCache)
+//            eval(\psy\sh());
+        $this->recreatePermissionsCacheOfListedEntities();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
@@ -511,31 +514,6 @@ class App extends \Slim\Slim{
 
     function isWorkflowEnabled(){
         return $this->_workflowEnabled;
-    }
-    
-    protected function _recreatePermissionsCache($users_per_page = 10, $entities_per_page = 15){
-//        if($this->user->is('superAdmin')){
-//            $this->em->createQuery("DELETE FROM MapasCulturais\Entities\PermissionCache pc WHERE pc.id > 0")->execute();
-            $user_page=1;
-//            while($users = $this->repo('User')->findAllPaged($users_per_page, $user_page++)){
-                foreach([/*'Agent', 'Space','Project',*/ 'Event', 'Seal', 'Registration'] as $entity_class){
-                    $entity_page = 1;
-                    while($entities = $this->repo($entity_class)->findAllPaged($entities_per_page, $entity_page++)){
-                        foreach($entities as $entity){
-                            echo $entity . "\n";
-                            if($entity->permissionCacheExists()){
-                                continue;
-                            }
-                            $users = $entity->getUsersWithControl();
-//                            $this->log->debug("$entity "  . count($users) . "---> ". $users[0]->id);
-                            $entity->createPermissionsCacheForUsers($users, false);
-                        }
-                        $this->em->flush();
-                    }
-                }
-//            }
-            
-//        }
     }
 
     function _dbUpdates(){
@@ -1304,7 +1282,23 @@ class App extends \Slim\Slim{
 
         return $hook;
     }
-
+    
+    /**********************************************
+     * Permissions Cache
+     **********************************************/
+    protected $_entitiesToRecreatePermissionsCache = [];
+    
+    public function addEntityToRecreatePermissionCacheList(Entity $entity){
+        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+    }
+    
+    public function recreatePermissionsCacheOfListedEntities(){
+        foreach($this->_entitiesToRecreatePermissionsCache as $entity){
+            $entity->createPermissionsCacheForUsers();
+        }
+        $this->_entitiesToRecreatePermissionsCache = [];
+    }
+    
     /**********************************************
      * Getters
      **********************************************/
