@@ -169,6 +169,8 @@ class ApiQuery {
     protected $_selectingOriginSiteUrl = false;
     protected $_selectingType = false;
     
+    protected $_subqueryFilters = [];
+    
     public function __construct($entity_class_name, $api_params) {
         $this->initialize($entity_class_name, $api_params);
 
@@ -234,6 +236,10 @@ class ApiQuery {
         
     }
 
+    public function findOne(){
+        return $this->getFindOnerResult();
+    }
+    
     public function getFindOneResult() {
         $em = App::i()->em;
 
@@ -247,11 +253,13 @@ class ApiQuery {
 
         $q->setMaxResults(1);
 
-        $q->setParameters($this->_dqlParams);
+        $params = $this->getDqlParams();
+
+        $q->setParameters($params);
 
         $result = $q->getOneOrNullResult(Query::HYDRATE_ARRAY);
         
-        $this->logDql($dql, __FUNCTION__, $this->_dqlParams);
+        $this->logDql($dql, __FUNCTION__, $params);
 
         if ($result) {
             $_tmp = [&$result]; // php !!!!
@@ -262,6 +270,10 @@ class ApiQuery {
         return $result;
     }
 
+    public function find(){
+        return $this->getFindResult();
+    }
+    
     public function getFindResult() {
         $em = App::i()->em;
 
@@ -277,9 +289,11 @@ class ApiQuery {
             $q->setMaxResults($limit);
         }
 
-        $q->setParameters($this->_dqlParams);
+        $params = $this->getDqlParams();
+
+        $q->setParameters($params);
         
-        $this->logDql($dql, __FUNCTION__, $this->_dqlParams);
+        $this->logDql($dql, __FUNCTION__, $params);
 
         $result = $q->getResult(Query::HYDRATE_ARRAY);
 
@@ -288,20 +302,39 @@ class ApiQuery {
         return $result;
     }
 
+    
+    public function count(){
+        return $this->getCountResult();
+    }
+    
     public function getCountResult() {
         $em = App::i()->em;
 
         $dql = $this->getCountDQL();
 
         $q = $em->createQuery($dql);
-
-        $q->setParameters($this->_dqlParams);
         
-        $this->logDql($dql, __FUNCTION__, $this->_dqlParams);
+        $params = $this->getDqlParams();
+
+        $q->setParameters($params);
+        
+        $this->logDql($dql, __FUNCTION__, $params);
 
         $result = $q->getSingleScalarResult();
 
         return $result;
+    }
+    
+    function getDqlParams(){
+        $params = $this->_dqlParams;
+        
+        $subqueries = $this->getSubqueryFilters();
+        
+        foreach($subqueries as $filter){
+            $params += $filter['subquery']->getDqlParams();
+        }
+        
+        return $params;
     }
 
     public function getFindDQL() {
@@ -405,19 +438,49 @@ class ApiQuery {
             return 0;
         }
     }
+    
+    function getSubqueryFilters(){
+        $app = App::i();
+        
+        $filters = $this->_subqueryFilters;
+        
+        if($subsite = $app->getCurrentSubsite()){
+            $subsite_query = $subsite->getEntityFilter($this->entityClassName);
+            
+            if($subsite_query){
+                $filters[] = ['subquery' => $subsite_query, 'subquery_property' => 'id', 'property' => 'id'];
+            }
+        }
+        
+        return $filters;
+    }
 
     protected function generateWhere() {
+        
         $where = $this->where;
         $where_dqls = $this->_whereDqls;
 
         $where .= implode(" $this->_op \n\t", $where_dqls);
-
-        // @TODO: verificar se não está filtrando por status para colocar o status abaixo
-        $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
+        
+        if(!isset($this->apiParams['status']) || !in_array('view', $this->_permissions)){
+            $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
+        }
         
         if($keyword_where = $this->getKeywordSubDQL()){
             $where .= " AND $keyword_where";
-        }        
+        }
+        
+        $filters = $this->getSubqueryFilters();
+        
+        foreach($filters as $filter){
+            $subquery = $filter['subquery'];
+            $subquery_property = $filter['subquery_property'];
+            $property = $filter['property'];
+            
+            $sub_dql = $subquery->getSubDQL($subquery_property);
+            
+            $where .= "AND e.{$property} IN ({$sub_dql})";
+        }
 
         return $where;
     }
@@ -555,8 +618,6 @@ class ApiQuery {
             }
 
             $keys = ':' . implode(',:', array_keys($meta_keys));
-
-            $count = $this->__counter++;
 
             $in_entities_dql = $this->getSubqueryInIdentities($entities);
 
@@ -1225,6 +1286,14 @@ class ApiQuery {
         $this->joins .= str_replace(['{ALIAS_TR}', '{ALIAS_T}', '{TAXO}'], [$tr_alias, $t_alias, $taxonomy_slug], $this->_templateJoinTerm);
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+    }
+    
+    public function addFilterByApiQuery(ApiQuery $subquery, $subquery_property = 'id', $property = 'id'){
+        $this->_subqueryFilters[] = [
+            'subquery' => $subquery,
+            'subquery_property' => $subquery_property,
+            'property' => $property
+        ];
     }
     
     protected function _getAllPropertiesNames(){
