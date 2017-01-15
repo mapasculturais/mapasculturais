@@ -355,7 +355,7 @@ class Event extends EntityController {
         if(key_exists('_geoLocation', $query_data) || $space_data){
             $space_controller = App::i()->controller('space');
 
-            $space_data['@select'] = 'id,name,shortDescription,location,terms,__metadata';
+            $space_data['@select'] = 'id';
 
             if(key_exists('_geoLocation', $query_data)){
                 $space_data['_geoLocation'] = $this->data['_geoLocation'];
