@@ -184,8 +184,12 @@ trait ControllerAPI{
         } elseif( $findOne ) {
             $result = $query->getFindOneResult();
         } else {
-            $count = $query->getCountResult();
             $result = $query->getFindResult();
+            if(isset($api_params['@page']) || isset($api_params['@offset']) || isset($api_params['@limit'])){
+                $count = $query->getCountResult();
+            } else {
+                $count = count($result);
+            }
             $this->apiAddHeaderMetadata($api_params, $result, $count);
         }
         
