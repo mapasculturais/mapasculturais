@@ -45,20 +45,20 @@ trait EntityPermissionCache {
         return self::$__permissions[$class_name];
     }
     
-    
-
-    function createPermissionsCacheForUsers(array $users, $flush = true) {
+    function createPermissionsCacheForUsers(array $users = null, $flush = true) {
+        if(is_null($users)){
+            $users = $this->getUsersWithControl();
+        }
+        
         $app = \MapasCulturais\App::i();
         
         $permissions = $this->getPermissionsList();
         $this->__enabled = false;
         
-//        $permission_class = $this->getClassName() . 'PermissionCache';
-        
         $conn = $app->em->getConnection();
         
         foreach ($users as $u) {
-            if($u->is('admin')){
+            if($u->is('admin', $this->_subsiteId)){
                 continue;
             }
             foreach ($permissions as $permission) {
@@ -67,7 +67,7 @@ trait EntityPermissionCache {
                 }
                 
                 if($this->canUser($permission, $u)){
-                    $app->log->debug("PCACHE User {$u->id} <-> {$this->entityType} {$this->id} :: {$permission} ");
+                    //$app->log->debug("PCACHE User {$u->id} <-> {$this->entityType} {$this->id} :: {$permission} ");
                     
                     $conn->insert('pcache', [
                         'user_id' => $u->id,

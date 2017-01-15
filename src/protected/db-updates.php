@@ -410,13 +410,6 @@ return [
         $conn->executeQuery("ALTER TABLE ONLY pcache ALTER COLUMN id SET DEFAULT nextval('pcache_id_seq'::regclass);");
 
     },
-    
-    'recreate permissions cache' => function() {
-        $this->enableAccessControl();
-        $this->_recreatePermissionsCache(200,100);
-        $this->disableAccessControl();
-        return false;
-    },
 
     'Add field for maximum size from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
