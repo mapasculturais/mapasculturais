@@ -421,8 +421,8 @@ return [
         if(__column_exists('file', 'path')){
             return true;
         }
-        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_owner_index ON file (object_type, object_id);");
-        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_group_index ON file (grp);");
+        $conn->executeQuery("CREATE INDEX file_owner_index ON file (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX file_group_index ON file (grp);");
 
         $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
         
