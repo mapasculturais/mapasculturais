@@ -410,11 +410,7 @@ class ApiQuery {
         
         $this->logDql($dql, __FUNCTION__, $params);
         
-        try{
-            $result = $q->getResult(Query::HYDRATE_ARRAY);
-        }catch(\Exception $e){
-            eval(\psy\sh());
-        }
+        $result = $q->getResult(Query::HYDRATE_ARRAY);
 
         $this->processEntities($result);
 
@@ -1469,8 +1465,6 @@ class ApiQuery {
             
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
-            
-            eval(\psy\sh());
             
             $join_with_filter = "JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid";
             
