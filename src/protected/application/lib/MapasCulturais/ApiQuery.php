@@ -708,6 +708,8 @@ class ApiQuery {
             $types = $app->getRegisteredEntityTypes($this->entityClassName);
         }
         
+        $_original_select = explode(',', $this->apiParams['@select']);
+        
         foreach ($entities as &$entity){
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
@@ -722,7 +724,6 @@ class ApiQuery {
                 unset($entity['_type']);
             }
             
-            
             foreach($this->_selecting as $prop){
                 if($prop && $prop[0] != '#' && !isset($entity[$prop])){
                     $entity[$prop] = null;
@@ -732,7 +733,14 @@ class ApiQuery {
             foreach($this->_removeFromResult as $prop){
                 unset($entity[$prop]);
             }
-        }        
+            
+            foreach($_original_select as $prop){
+                $prop = trim($prop);
+                if(!isset($entity[$prop])){
+                    $entity[$prop] = null;
+                }
+            }
+        } 
     }
 
     protected function appendMetadata(array &$entities) {
