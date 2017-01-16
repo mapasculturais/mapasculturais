@@ -223,11 +223,29 @@ abstract class Request extends \MapasCulturais\Entity{
     }
 
     protected function canUserCreate($user){
-        return $this->origin->canUser('@control', $user);
+        $origin = $this->getOrigin();
+        if($origin){
+            return $origin->canUser('@control', $user);
+        } else {
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->delete(true);
+            $app->enableAccessControl();
+            return false;
+        }
     }
 
     protected function canUserApprove($user){
-        return $this->destination->canUser('@control', $user);
+        $destination = $this->getDestination();
+        if($destination){
+            return $destination->canUser('@control', $user);
+        } else {
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->delete(true);
+            $app->enableAccessControl();
+            return false;
+        }
     }
 
     protected function canUserReject($user){
