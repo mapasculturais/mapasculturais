@@ -168,6 +168,11 @@ trait ControllerAPI{
     }
 
     public function apiQuery($api_params, $options = []){
+        if(isset($api_params['@version']) == 1){
+            unset($api_params['@version']);
+            return $this->apiQueryV1($api_params, $options);
+        }
+        
         $app = App::i();
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
         $counting = key_exists('@count', $api_params);
