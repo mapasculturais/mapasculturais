@@ -409,8 +409,12 @@ class ApiQuery {
         $q->setParameters($params);
         
         $this->logDql($dql, __FUNCTION__, $params);
-
-        $result = $q->getResult(Query::HYDRATE_ARRAY);
+        
+        try{
+            $result = $q->getResult(Query::HYDRATE_ARRAY);
+        }catch(\Exception $e){
+            eval(\psy\sh());
+        }
 
         $this->processEntities($result);
 
@@ -933,6 +937,12 @@ class ApiQuery {
                     $query->name = "{$this->name}->$prop";
 
                     $query->where = "e.{$_target_property} IN ({$_subquery_where_id_in})";
+                    
+                    if($this->_usingSubquery){
+                        foreach($this->_dqlParams as $k => $v){
+                            $query->_dqlParams[$k] = $v;
+                        }
+                    }
 
                     $cfg['query'] = $query;
                     $cfg['query_result'] = [];
@@ -1459,6 +1469,8 @@ class ApiQuery {
             
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
+            
+            eval(\psy\sh());
             
             $join_with_filter = "JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid";
             
