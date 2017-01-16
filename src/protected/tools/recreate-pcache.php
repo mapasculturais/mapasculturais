@@ -1,5 +1,8 @@
 <?php
-if(isset($argv[1]) && isset($argv[2])){
+$delete = false;
+if(isset($argv[1]) && $argv[1] == 'delete'){
+    $delete = true;
+} else if(isset($argv[1]) && isset($argv[2])){
     $number_of_processes = $argv[1];
     $process_number = $argv[2];
 } else {
@@ -7,15 +10,21 @@ if(isset($argv[1]) && isset($argv[2])){
     $process_number = 1;
 }
 
-
 require __DIR__ . '/../application/bootstrap.php';
+
+$app = MapasCulturais\App::i();
+$conn = $app->em->getConnection();
+
+if($delete){
+    echo "\nDELETANDO CACHE EXISTENTE.... ";
+    $conn->executeQuery('DELETE FROM pcache');
+    echo "FEITO\n\n\n";
+    exit;
+}
 
 $log_file = "/tmp/pcache-log-{$process_number}.log";
 echo "\n iniciando o processo $process_number de $number_of_processes (log to $log_file)";
 
-$app = MapasCulturais\App::i();
-
-$conn = $app->em->getConnection();
 
 $entities = [
     'agent' => 'MapasCulturais\Entities\Agent',
@@ -80,7 +89,7 @@ foreach($entities as $table => $class){
         $_entity = round($processed_entity / $limit * 100,2);
         
         echo "\n P({$process_number}) :: $table ({$processed_entity} / {$num_entities} = {$_entity}%) :: TOTAL ({$processed_total} / {$total} = {$_total}%)";
-        $entity->createPermissionsCacheForUsers();
+        $entity->createPermissionsCacheForUsers(null, false, false);
         $current++;
         
         if($current > $flush_each){

@@ -53,30 +53,6 @@ foreach($registered_taxonomies as $def){
 
 
 return [
-    
-    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
-        if(__column_exists('file', 'path')){
-            return true;
-        }
-        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_owner_index ON file (object_type, object_id);");
-        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_group_index ON file (grp);");
-
-        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
-        
-    },
-            
-    'update file relative path' => function() use ($conn) {
-        
-        $files = $this->repo('File')->findAll();
-        
-        foreach($files as $file){
-            $path = $file->getRelativePath();
-            echo "\nsaving url of $file ($path)";
-            
-            $file->save();
-        }
-        $this->em->flush();
-    },
             
     'alter tablel term taxonomy type' => function() use ($conn) {
         $conn->executeQuery("ALTER TABLE term ALTER taxonomy TYPE VARCHAR(64);");
@@ -438,5 +414,30 @@ return [
 
         $this->disableAccessControl();
 
-    }
+    },
+    
+    
+    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
+        if(__column_exists('file', 'path')){
+            return true;
+        }
+        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_owner_index ON file (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_group_index ON file (grp);");
+
+        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
+        
+    },
+            
+    'update file relative path' => function() use ($conn) {
+        
+        $files = $this->repo('File')->findAll();
+        
+        foreach($files as $file){
+            $path = $file->getRelativePath();
+            echo "\nsaving url of $file ($path)";
+            
+            $file->save();
+        }
+        $this->em->flush();
+    },
 ] + $updates ;

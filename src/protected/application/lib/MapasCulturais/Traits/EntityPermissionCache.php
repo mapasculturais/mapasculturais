@@ -56,7 +56,7 @@ trait EntityPermissionCache {
         return $class_name;
     }
     
-    function createPermissionsCacheForUsers(array $users = null, $flush = true) {
+    function createPermissionsCacheForUsers($users = null, $flush = true, $delete_old = true) {
         $this->refresh();
         
         if(!$this->id){
@@ -75,8 +75,10 @@ trait EntityPermissionCache {
         
         $deleted = false;
         if(is_null($users)){
-            $deleted = true;
-            $this->deletePermissionsCache();
+            if($delete_old){
+                $deleted = true;
+                $this->deletePermissionsCache();
+            }
             
             if($this->usesAgentRelation()){
                 $users = $this->getUsersWithControl();
@@ -92,7 +94,7 @@ trait EntityPermissionCache {
         $this->__enabled = false;
         
         foreach ($users as $user) {
-            if(!$deleted){
+            if($delete_old && !$deleted){
                 $this->deletePermissionsCache($user->id);
             }
             
