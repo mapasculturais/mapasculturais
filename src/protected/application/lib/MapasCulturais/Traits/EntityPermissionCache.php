@@ -1,6 +1,7 @@
 <?php
-
 namespace MapasCulturais\Traits;
+
+use MapasCulturais\App;
 
 trait EntityPermissionCache {
 
@@ -45,42 +46,69 @@ trait EntityPermissionCache {
         return self::$__permissions[$class_name];
     }
     
+    function getPCacheObjectType(){
+        $class_name = $this->getClassName();
+        $metadata = App::i()->em->getClassMetadata($class_name);
+        if($root_class = $metadata->rootEntityName){
+            $class_name = $root_class;
+        }
+        
+        return $class_name;
+    }
+    
     function createPermissionsCacheForUsers(array $users = null, $flush = true) {
         $this->refresh();
+        
+        if(!$this->id){
+            return;
+        }
+        
+        
         if($this->usesAgentRelation()){
             $this->deleteUsersWithControlCache();
         }
         
-        
-        $app = \MapasCulturais\App::i();
+        $app = App::i();
         $conn = $app->em->getConnection();
-        $class_name = $this->getClassName();
+        $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();
         
+        $deleted = false;
         if(is_null($users)){
+            $deleted = true;
             $this->deletePermissionsCache();
-            $users = $this->getUsersWithControl();
+            
+            if($this->usesAgentRelation()){
+                $users = $this->getUsersWithControl();
+            } else if($this->owner) {
+                $users = $this->owner->getUsersWithControl();
+            } else {
+                $users = [$this->getOwnerUser()];
+            }
         }
+        
+        
                 
         $this->__enabled = false;
         
-        foreach ($users as $u) {
-            $this->deletePermissionsCache($u->id);
+        foreach ($users as $user) {
+            if(!$deleted){
+                $this->deletePermissionsCache($user->id);
+            }
             
-            if($u->is('admin', $this->_subsiteId)){
+            if($user->is('admin', $this->_subsiteId)){
                 continue;
             }
             
             foreach ($permissions as $permission) {
-                if($permission == 'view' && $this->status > 0) {
+                if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity()) {
                     continue;
                 }
-                
-                if($this->canUser($permission, $u)){
+                if($this->canUser($permission, $user)){
                     //$app->log->debug("PCACHE User {$u->id} <-> {$this->entityType} {$this->id} :: {$permission} ");
                     
                     $conn->insert('pcache', [
-                        'user_id' => $u->id,
+                        'user_id' => $user->id,
                         'action' => $permission,
                         'object_type' => $class_name,
                         'object_id' => $this->id,
@@ -99,9 +127,12 @@ trait EntityPermissionCache {
     }
     
     function deletePermissionsCache($user_id = null){
-        $app = \MapasCulturais\App::i();
+        $app = App::i();
         $conn = $app->em->getConnection();
-        $class_name = $this->getClassName();
+        $class_name = $this->getPCacheObjectType();
+        if(!$this->id){
+            return;
+        }
         if($user_id){
             $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id} AND user_id = {$user_id}");
         } else {
@@ -110,10 +141,9 @@ trait EntityPermissionCache {
     }
     
     function addToRecreatePermissionsCacheList(){
-        $app = \MapasCulturais\App::i();
+        $app = App::i();
         
         $app->addEntityToRecreatePermissionCacheList($this);
-        
         
         $class_relations = $app->em->getClassMetadata($this->getClassName())->getAssociationMappings();
         

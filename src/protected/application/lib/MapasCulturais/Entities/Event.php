@@ -443,10 +443,10 @@ class Event extends \MapasCulturais\Entity
     }
 
     protected function canUserView($user){
-        if($this->status === self::STATUS_ENABLED){
-            return true;
-        }else if($this->status === self::STATUS_DRAFT){
+        if($this->status === self::STATUS_DRAFT){
             return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
+        } else { 
+            return parent::canUserView($user);
         }
 
         return false;

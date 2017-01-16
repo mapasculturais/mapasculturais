@@ -55,7 +55,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
     const STATUS_ARCHIVED = -2;
-
+    
     /**
      * array of validation definition
      * @var array
@@ -102,6 +102,10 @@ abstract class Entity implements \JsonSerializable{
 
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
+    }
+    
+    static function isPrivateEntity(){
+        return false;
     }
 
     function refresh(){
@@ -724,7 +728,6 @@ abstract class Entity implements \JsonSerializable{
                 $validation = trim($validation);
 
                 $ok = true;
-
 
                 if($validation == 'required'){
                     if (is_string($this->$property)) {

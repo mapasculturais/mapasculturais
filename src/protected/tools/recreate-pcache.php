@@ -21,9 +21,11 @@ $entities = [
     'agent' => 'MapasCulturais\Entities\Agent',
     'space' => 'MapasCulturais\Entities\Space',
     'project' => 'MapasCulturais\Entities\Project',
-    'Event' => 'MapasCulturais\Entities\Event',
-    'Seal' => 'MapasCulturais\Entities\Seal',
+    'event' => 'MapasCulturais\Entities\Event',
+    'seal' => 'MapasCulturais\Entities\Seal',
     'registration' => 'MapasCulturais\Entities\Registration',
+    'notification' => 'MapasCulturais\Entities\Notification',
+    'request' => 'MapasCulturais\Entities\Request',
 ];
 
 $count = [];
@@ -45,6 +47,11 @@ foreach($entities as $table => $class){
     
 }
 
+if($process_number == 1){
+    print_r($limits);
+    print_r($offsets);
+}
+
 $processed_total = 0;
 foreach($entities as $table => $class){
     $processed_entity = 0;
@@ -56,13 +63,14 @@ foreach($entities as $table => $class){
     $q = $app->em->createQuery("SELECT e FROM $class e ORDER BY e.id");
     
     $q->setMaxResults($limit);
-    $q->setFirstResult($offset + 1);
+    $q->setFirstResult($offset);
     
     $entities = $q->getResult();
     
     $flush_each = 100;
     $current = 0;
     
+    $num_entities = count($entities);
     
     foreach($entities as $entity){
         $processed_total++;
@@ -71,7 +79,7 @@ foreach($entities as $table => $class){
         $_total = round($processed_total / $total * 100,2);
         $_entity = round($processed_entity / $limit * 100,2);
         
-        echo "\n P({$process_number}) :: $table ({$processed_entity} / {$limit} = {$_entity}%) :: TOTAL ({$processed_total} / {$total} = {$_total}%)";
+        echo "\n P({$process_number}) :: $table ({$processed_entity} / {$num_entities} = {$_entity}%) :: TOTAL ({$processed_total} / {$total} = {$_total}%)";
         $entity->createPermissionsCacheForUsers();
         $current++;
         

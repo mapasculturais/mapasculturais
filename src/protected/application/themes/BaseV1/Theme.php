@@ -1442,7 +1442,7 @@ class Theme extends MapasCulturais\Theme {
 
         if (!$app->user->is('guest')) {
             $this->jsObject['notifications'] = $app->controller('notification')->apiQuery(array(
-                '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id',
+                '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.{permissionTo.{approve,reject},requesterUser}',
                 'user' => 'EQ(@me)',
                 '@ORDER' => 'createTimestamp DESC'
             ));

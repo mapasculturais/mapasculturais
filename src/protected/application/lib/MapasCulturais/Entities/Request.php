@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Request
@@ -30,6 +31,8 @@ use MapasCulturais\App;
  * @ORM\HasLifecycleCallbacks
  */
 abstract class Request extends \MapasCulturais\Entity{
+    use Traits\EntityPermissionCache;
+    
     const STATUS_PENDING = 1;
     const STATUS_APPROVED = 2;
 
@@ -117,6 +120,12 @@ abstract class Request extends \MapasCulturais\Entity{
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade="all", orphanRemoval=true)
      */
     protected $notifications;
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
 
     /**
      * @var string

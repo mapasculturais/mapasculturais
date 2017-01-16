@@ -23,7 +23,9 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentPermissionCache",
         "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpacePermissionCache",
         "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealPermissionCache",
-        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationPermissionCache"
+        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationPermissionCache",
+        "MapasCulturais\Entities\Notification"                  = "\MapasCulturais\Entities\NotificationPermissionCache",
+        "MapasCulturais\Entities\Request"                       = "\MapasCulturais\Entities\RequestPermissionCache"
    })
  */
 abstract class PermissionCache extends \MapasCulturais\Entity {

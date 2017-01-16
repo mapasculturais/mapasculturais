@@ -30,7 +30,8 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_WAITLIST = 8;
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
-
+    
+    
     /**
      * @var integer
      *
@@ -133,6 +134,10 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+    
+    static function isPrivateEntity(){
+        return true;
     }
 
     static function getValidations() {
@@ -333,15 +338,17 @@ class Registration extends \MapasCulturais\Entity
             $this->checkPermission('changeStatus');
         }
 
-		if($status === self::STATUS_APPROVED) {
-			$this->setAgentsSealRelation();
-		}
+        if($status === self::STATUS_APPROVED) {
+            $this->setAgentsSealRelation();
+        }
 
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
+        
+        $app->addEntityToRecreatePermissionCacheList($this->project);
     }
 
     function setAgentsSealRelation() {
@@ -433,8 +440,10 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
-        $this->project->save(true);
+        
         $app->enableAccessControl();
+        
+        $app->addEntityToRecreatePermissionCacheList($this->project);
     }
 
     function getSendValidationErrors(){

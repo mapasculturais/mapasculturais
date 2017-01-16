@@ -331,7 +331,7 @@ abstract class File extends \MapasCulturais\Entity
 
         $transformation_group_name = 'img:' . $transformation_name;
 
-        $owner = App::i()->getManagedEntity($this->owner);        
+        $owner = $this->owner;
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 

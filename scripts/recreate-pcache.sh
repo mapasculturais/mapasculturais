@@ -12,6 +12,10 @@ else
 	NUM_PROCESSES=1
 fi
 
+if [[ $1 ]]; then
+    NUM_PROCESSES=$1
+fi
+
 COUNTER=0
 while [  $COUNTER -lt $NUM_PROCESSES ]; do
     let COUNTER=COUNTER+1 
