@@ -7,8 +7,16 @@ use Doctrine\ORM\Query;
 class ApiQuery {
     use Traits\MagicGetter;
     
+    /**
+     * Number of query objects to generate query ids
+     * @var int 
+     */
     protected static $queryCounter = 0;
     
+    /**
+     * Id of this query
+     * @var int 
+     */
     protected $__queryNum;
 
     /**
@@ -25,7 +33,6 @@ class ApiQuery {
     
     /**
      * The ApiQuery Name
-     * 
      * @var string
      */
     protected $name;
@@ -114,21 +121,18 @@ class ApiQuery {
     
     /**
      * The entity uses origin subsite?
-     * 
      * @var bool
      */
     protected $usesOriginSubsite;
 
     /**
      * List of the entity properties
-     * 
      * @var array
      */
     protected $entityProperties = [];
 
     /**
      * List of entity ralations
-     * 
      * @var array
      */
     protected $entityRelations = [];
@@ -141,14 +145,12 @@ class ApiQuery {
 
     /**
      * List of the registered taxonomies for this context
-     * 
      * @var array 
      */
     protected $registeredTaxonomies = [];
     
     /**
      * List of subsite ids in which the logged in user is admin
-     * 
      * @var array 
      */
     protected $adminInSubsites = [];
@@ -236,16 +238,64 @@ class ApiQuery {
      * @var array 
      */
     protected $_selectingFiles = [];
+    
+    /**
+     * Properties of files that are being selected
+     * @var type 
+     */
     protected $_selectingFilesProperties = ['url'];
     
+    /**
+     * Subqueries configuration
+     * @var array 
+     */
     protected $_subqueriesSelect = [];
+    
+    /**
+     * Result Order
+     * 
+     * @example 'name ASC'
+     * @var string
+     */
     protected $_order = 'id ASC';
+    
+    /**
+     * Query offset
+     * @var int
+     */
     protected $_offset;
-    protected $_page;
+    
+    /** 
+     * Maximum results to return
+     * @var int 
+     */
     protected $_limit;
+    
+    /**
+     * Page number. Used to create the query offset.
+     * @var int 
+     */
+    protected $_page;
+    
+    /**
+     * Keyword filter
+     * @var string 
+     */
     protected $_keyword;
+    
+    /**
+     * Seals filter
+     * @var type 
+     */
     protected $_seals = [];
+    
+    /**
+     * 
+     * @var type 
+     */
     protected $_permissions = [];
+    
+    protected $_subqueryFilters = [];
     protected $_status = '> 0';
     protected $_op = ' AND ';
     protected $_templateJoinMetadata = "\n\tLEFT JOIN e.__metadata {ALIAS} WITH {ALIAS}.key = '{KEY}'";
@@ -255,7 +305,6 @@ class ApiQuery {
     protected $_selectingType = false;
     protected $_usingSubquery = false;
 
-    protected $_subqueryFilters = [];
     
     public function __construct($entity_class_name, $api_params) {
         $this->initialize($entity_class_name, $api_params);
