@@ -571,6 +571,6 @@ return [
             echo "ALREADY APPLIED";
             return true;
         }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date TYPE DATE;");   
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
     }
 ] + $updates ;
