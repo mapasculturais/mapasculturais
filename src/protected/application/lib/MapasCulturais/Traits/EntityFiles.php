@@ -24,8 +24,9 @@ use MapasCulturais\Entities\File;
  */
 trait EntityFiles{
 
-    function getFileClassName(){
-        return $this->getClassName() . 'File';
+    public static function getFileClassName(){
+        $class = get_called_class();
+        return $class::getClassName() . 'File';
     }
     /**
      * Returns the files of this entity.

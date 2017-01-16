@@ -122,4 +122,9 @@ class Fake extends \MapasCulturais\AuthProvider{
         
         return $u;
     }
+    
+    public function login($user_id){
+        $_SESSION['auth.fakeAuthenticationUserId'] = $user_id;
+        $this->_setAuthenticatedUser($this->_getAuthenticatedUser());
+    }
 }

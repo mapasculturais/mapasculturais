@@ -4,6 +4,8 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
+use MapasCulturais\ApiQuery;
+
 trait ControllerAPI{
 
     /**
@@ -165,8 +167,41 @@ trait ControllerAPI{
             return (int) $default_lifetime;
     }
 
+    public function apiQuery($api_params, $options = []){
+        if(isset($api_params['@version']) == 1){
+            unset($api_params['@version']);
+            return $this->apiQueryV1($api_params, $options);
+        }
+        
+        $app = App::i();
+        $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $counting = key_exists('@count', $api_params);
+        if($counting){
+            unset($api_params['@count']);
+        }
 
-    public function apiQuery($qdata, $options = []){
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$api_params]);
+
+        $query = new ApiQuery($this->entityClassName, $api_params);
+        
+        if($counting){
+            $result = $query->getCountResult();
+        } elseif( $findOne ) {
+            $result = $query->getFindOneResult();
+        } else {
+            $result = $query->getFindResult();
+            if(isset($api_params['@page']) || isset($api_params['@offset']) || isset($api_params['@limit'])){
+                $count = $query->getCountResult();
+            } else {
+                $count = count($result);
+            }
+            $this->apiAddHeaderMetadata($api_params, $result, $count);
+        }
+        
+        return $result;
+    }
+
+    public function apiQueryV1($qdata, $options = []){
         $this->_apiFindParamList = [];
         $app = App::i();
         

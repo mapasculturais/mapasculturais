@@ -55,7 +55,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
     const STATUS_ARCHIVED = -2;
-
+    
     /**
      * array of validation definition
      * @var array
@@ -97,10 +97,15 @@ abstract class Entity implements \JsonSerializable{
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
+        
     }
 
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
+    }
+    
+    static function isPrivateEntity(){
+        return false;
     }
 
     function refresh(){
@@ -239,6 +244,10 @@ abstract class Entity implements \JsonSerializable{
         }else{
             return $this->canUser('@control', $user);
         }
+    }
+    
+    protected function canUserModify($user) {
+        return $this->genericPermissionVerification($user);
     }
 
     protected function canUserRemove($user){
@@ -728,7 +737,6 @@ abstract class Entity implements \JsonSerializable{
 
                 $ok = true;
 
-
                 if($validation == 'required'){
                     if (is_string($this->$property)) {
                         $ok = (bool) trim($this->$property);
@@ -798,6 +806,14 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
+        
+        
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -845,6 +861,14 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
+        
+        
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -868,6 +892,10 @@ abstract class Entity implements \JsonSerializable{
 
         if($this->usesRevision()) {
             //$this->_newDeletedRevision();
+        }
+        
+        if($this->usesPermissionCache()){
+            $this->deletePermissionsCache();
         }
     }
 
@@ -909,6 +937,13 @@ abstract class Entity implements \JsonSerializable{
                     }
                 });
             }
+        }
+        
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
         }
     }
 
