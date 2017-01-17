@@ -124,6 +124,24 @@ class ApiQuery {
      * @var bool
      */
     protected $usesOriginSubsite;
+    
+    /**
+     * The entity uses seal relation?
+     * @var bool 
+     */
+    protected $usesSealRelation;
+    
+    /**
+     * The entity uses types?
+     * @var bool 
+     */
+    protected $usesTypes;
+    
+    /**
+     * The entity uses owner agent?
+     * @var bool 
+     */
+    protected $usesOwnerAgent;
 
     /**
      * List of the entity properties
@@ -336,6 +354,9 @@ class ApiQuery {
         $this->usesTaxonomies = $class::usesTaxonomies();
         $this->usesMetadata = $class::usesMetadata();
         $this->usesOriginSubsite = $class::usesOriginSubsite();
+        $this->usesOwnerAgent = $class::usesOwnerAgent();
+        $this->usesTypes = $class::usesTypes();
+        $this->usesSealRelation = $class::usesSealRelation();
 
         if ($this->usesFiles) {
             $this->fileClassName = $class::getFileClassName();
@@ -656,9 +677,15 @@ class ApiQuery {
         $joins = $this->joins;
         $class = $this->entityClassName;
         
-        if($this->_selectingOriginSiteUrl && $class::usesOriginSubsite()){
+        if($this->_selectingOriginSiteUrl && $this->usesOriginSubsite){
             $joins .= ' LEFT JOIN MapasCulturais\Entities\Subsite __subsite__ WITH __subsite__.id = e._subsiteId';
-        }                
+        }
+        
+        if($this->usesSealRelation && $this->_seals){
+            $sl = $this->getAlias('sl');
+            $slv = implode(',', $this->_seals);
+            $joins = " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
+        }
 
         return $joins;
     }
@@ -678,7 +705,7 @@ class ApiQuery {
             $this->_removeFromResult[] = 'publicLocation';
         }
         
-        if (count($this->_selectingProperties) > 1 && !in_array('_subsiteId', $this->_selectingProperties) && $class::usesOriginSubsite()) {
+        if (count($this->_selectingProperties) > 1 && !in_array('_subsiteId', $this->_selectingProperties) && $this->usesOriginSubsite) {
             $this->_selectingProperties[] = '_subsiteId';
             $this->_removeFromResult[] = '_subsiteId';
         }
@@ -1267,22 +1294,25 @@ class ApiQuery {
 
     protected function addSingleParam($value) {
         $app = App::i();
-        if (trim($value) === '@me') {
-            $value = $app->user->is('guest') ? null : $app->user;
-        } elseif (strpos($value, '@me.') === 0) {
-            $v = str_replace('@me.', '', $value);
-            $value = $app->user->$v;
-        } elseif (trim($value) === '@profile') {
-            $value = $app->user->profile ? $app->user->profile : null;
-        } elseif (preg_match('#@(\w+)[ ]*:[ ]*(\d+)#i', trim($value), $matches)) {
-            $_repo = $app->repo($matches[1]);
-            $_id = $matches[2];
+        
+        if(!is_array($value)){
+            if (trim($value) === '@me') {
+                $value = $app->user->is('guest') ? null : $app->user;
+            } elseif (strpos($value, '@me.') === 0) {
+                $v = str_replace('@me.', '', $value);
+                $value = $app->user->$v;
+            } elseif (trim($value) === '@profile') {
+                $value = $app->user->profile ? $app->user->profile : null;
+            } elseif (preg_match('#@(\w+)[ ]*:[ ]*(\d+)#i', trim($value), $matches)) {
+                $_repo = $app->repo($matches[1]);
+                $_id = $matches[2];
 
-            $value = ($_repo && $_id) ? $_repo->find($_id) : null;
-        } elseif (trim($value) != '@control' && strlen($value) && $value[0] == '@') {
-            $value = null;
+                $value = ($_repo && $_id) ? $_repo->find($_id) : null;
+            } elseif (trim($value) != '@control' && strlen($value) && $value[0] == '@') {
+                $value = null;
+            }
         }
-
+        
         $uid = uniqid('v');
         $this->_dqlParams[$uid] = $value;
 
@@ -1474,29 +1504,38 @@ class ApiQuery {
             } elseif (strtolower($key) == '@permissions') {
                 $this->_addFilterByPermissions($value);
             } elseif (strtolower($key) == '@seals') {
-                $this->_seals = explode(',', $value);
+                $this->_addFilterBySeals(explode(',', $value));
             } elseif (strtolower($key) == '@verified') {
-                $this->_seals = $app->config['app.verifiedSealsIds'];
+                $this->_addFilterBySeals($app->config['app.verifiedSealsIds']);
             } elseif (strtolower($key) == '@or') {
                 $this->_op = ' OR ';
             } elseif (strtolower($key) == '@files') {
                 $this->_parseFiles($value);
-            } elseif ($key === 'user' && $class::usesOwnerAgent()) {
+            } elseif ($key === 'user' && $this->usesOwnerAgent) {
                 $this->_addFilterByOwnerUser($value);
             } elseif (key_exists($key, $this->entityRelations) && $this->entityRelations[$key]['isOwningSide']) {
                 $this->_addFilterByEntityProperty($key, $value);
             } elseif (in_array($key, $this->entityProperties)) {
                 $this->_addFilterByEntityProperty($key, $value);
-            } elseif ($class::usesTypes() && $key === 'type') {
+            } elseif ($this->usesTypes && $key === 'type') {
                 $this->_addFilterByEntityProperty($key, $value, '_type');
             } elseif ($key[0] !== '_' && strpos($key, '.') > 0) {
                 $this->_addFilterByEntityRelation($key, $value);
-            } elseif ($class::usesTaxonomies() && isset($this->registeredTaxonomies[$key])) {
+            } elseif ($this->usesTaxonomies && isset($this->registeredTaxonomies[$key])) {
                 $this->_addFilterByTermTaxonomy($key, $value);
-            } elseif ($class::usesMetadata() && in_array($key, $this->registeredMetadata)) {
+            } elseif ($this->usesMetadata && in_array($key, $this->registeredMetadata)) {
                 $this->_addFilterByMetadata($key, $value);
             } elseif ($key[0] !== '_' && $key != 'callback') {
                 throw new Exceptions\Api\PropertyDoesNotExists("property $key does not exists");
+            }
+        }
+    }
+    
+    protected function _addFilterBySeals($seals_ids){
+        foreach($seals_ids as $seal){
+            $s = intval($seal);
+            if($s && !in_array($s, $this->_seals)){
+                $this->_seals[] = $s;
             }
         }
     }
@@ -1682,11 +1721,11 @@ class ApiQuery {
                 $this->_selecting[$i] = $this->_preCreateSelectSubquery($prop, 'id', $prop);
             } elseif ($prop[0] != '_' && isset($this->entityRelations["_{$prop}"])) {
                 $this->_selecting[$i] = $this->_preCreateSelectSubquery("_{$prop}", 'id', $prop);
-            } elseif ($prop === 'originSiteUrl' && $entity_class::usesOriginSubsite()) {
+            } elseif ($prop === 'originSiteUrl' && $this->usesOriginSubsite) {
                 $this->_selectingOriginSiteUrl = true;
             } elseif (preg_match('#^([a-z][a-zA-Z]*)Url#', $prop, $url_match) && method_exists($this->entityClassName, "get{$prop}")) {
                 $this->_selectingUrls[] = $url_match[1];
-            } elseif($prop === 'type' && $entity_class::usesTypes()){
+            } elseif($prop === 'type' && $this->usesTypes){
                 $this->_selectingProperties[] = '_type';
                 $this->_selectingType = true;                
             }
