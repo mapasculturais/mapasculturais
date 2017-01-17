@@ -191,7 +191,7 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_spaces(){
         $fields = ['name', 'type', 'status', 'terms', 'endereco', 'singleUrl', 'originSiteUrl', 'editUrl',
-                   'deleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp','archiveUrl','unarchiveUrl'];
+                   'deleteUrl', 'undeleteUrl', 'publishUrl', 'unpublishUrl', 'acessibilidade', 'createTimestamp','archiveUrl','unarchiveUrl', 'permissionTo.destroy'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(space)', [&$fields]);
         $this->renderList('spaces', 'space', implode(',', $fields));
@@ -210,7 +210,7 @@ class Panel extends \MapasCulturais\Controller {
      */
     function GET_events(){
         $fields = ['name', 'type', 'status', 'terms', 'classificacaoEtaria', 'singleUrl',
-                   'editUrl', 'deleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp','archiveUrl','unarchiveUrl'];
+                   'editUrl', 'deleteUrl', 'undeleteUrl', 'publishUrl', 'unpublishUrl', 'createTimestamp','archiveUrl','unarchiveUrl', 'permissionTo.destroy'];
         $app = App::i();
         $app->applyHook('controller(panel).extraFields(event)', [&$fields]);
         $this->renderList('events', 'event', implode(',', $fields));

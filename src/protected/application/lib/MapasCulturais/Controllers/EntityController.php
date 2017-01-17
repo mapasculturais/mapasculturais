@@ -167,6 +167,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
     // ============= ACTIONS =============== //
 
+    function API_teste(){
+        $query = new \MapasCulturais\ApiQuery($this->entityClassName, $this->data);
+        
+        print_r(json_decode(json_encode($query->getFindResult())));
+        
+        
+    }
 
     /**
      * Default action.

@@ -482,6 +482,7 @@ class App extends \Slim\Slim{
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
+        $this->recreatePermissionsCacheOfListedEntities();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
@@ -1279,7 +1280,23 @@ class App extends \Slim\Slim{
 
         return $hook;
     }
-
+    
+    /**********************************************
+     * Permissions Cache
+     **********************************************/
+    protected $_entitiesToRecreatePermissionsCache = [];
+    
+    public function addEntityToRecreatePermissionCacheList(Entity $entity){
+        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+    }
+    
+    public function recreatePermissionsCacheOfListedEntities(){
+        foreach($this->_entitiesToRecreatePermissionsCache as $entity){
+            $entity->createPermissionsCacheForUsers();
+        }
+        $this->_entitiesToRecreatePermissionsCache = [];
+    }
+    
     /**********************************************
      * Getters
      **********************************************/

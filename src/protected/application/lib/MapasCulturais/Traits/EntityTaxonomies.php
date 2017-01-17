@@ -86,6 +86,20 @@ trait EntityTaxonomies{
         }
         return $this->terms;
     }
+    
+    function setTerms(array $taxonomy_terms){
+        foreach($taxonomy_terms as $taxonomy => $terms){
+            if(!is_array($terms)){
+                if($terms){
+                    $taxonomy_terms[$taxonomy] = [$terms];
+                } else {
+                    $taxonomy_terms[$taxonomy] = [];
+                }
+            }
+        }
+        
+        $this->terms = $taxonomy_terms;
+    }
 
     /**
      * Populates the terms property with values associated with this entity
@@ -93,7 +107,6 @@ trait EntityTaxonomies{
     protected function populateTermsProperty(){
         if(is_null($this->terms))
             $this->terms = new \ArrayObject();
-
         foreach ($this->taxonomyTerms as $taxonomy_slug => $terms){
             $this->terms[$taxonomy_slug] = [];
             foreach($terms as $term)
@@ -127,7 +140,6 @@ trait EntityTaxonomies{
 
         // temporary array
         $taxonomy = $this->terms;
-
         foreach($this->taxonomyTerms as $slug => $terms){
             foreach($terms as $term){
                 // if the term is in the terms property and the association already exists,
@@ -171,7 +183,7 @@ trait EntityTaxonomies{
         
         // if this entity uses this taxonomy
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
-            $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->id, 'term' => $term]);
+            $t = $app->repo('Term')->findOneBy(['taxonomy' => $definition->slug, 'term' => $term]);
             $tr = $app->repo($this->getTermRelationClassName())->findOneBy(['term' => $t, 'owner' => $this]);
 
             // if the term is already associated to this entity return
@@ -196,7 +208,7 @@ trait EntityTaxonomies{
 
                 $t = new \MapasCulturais\Entities\Term;
                 $t->term = $term;
-                $t->taxonomy = $definition->id;
+                $t->taxonomy = $definition->slug;
                 $t->description = $description;
 
                 $t->save();
@@ -239,8 +251,8 @@ trait EntityTaxonomies{
         
         foreach($this->__termRelations as $tr){
             $term = $tr->term;
-            if($term->taxonomySlug && isset($result[$term->taxonomySlug])){
-                $result[$term->taxonomySlug][] = $term;
+            if($term->taxonomy && isset($result[$term->taxonomy])){
+                $result[$term->taxonomy][] = $term;
             }
         }
         

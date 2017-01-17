@@ -18,6 +18,18 @@ function __table_exists($table_name) {
     }
 }
 
+function __sequence_exists($sequence_name) {
+    $app = App::i();
+    $em = $app->em;
+    $conn = $em->getConnection();
+    
+    if($conn->fetchAll("SELECT sequence_name FROM information_schema.sequences WHERE sequence_schema = 'public' AND sequence_name = '$sequence_name';")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function __column_exists($table_name, $column_name) {
     $app = App::i();
     $em = $app->em;
@@ -30,7 +42,23 @@ function __column_exists($table_name, $column_name) {
     }
 }
 
+$updates = [];
+$registered_taxonomies = $this->_register['taxonomies']['by-id'];
+
+foreach($registered_taxonomies as $def){
+    $updates['update taxonomy slug ' . $def->slug] = function() use( $conn, $def ) {
+        $conn->executeQuery("UPDATE term SET taxonomy = '{$def->slug}' WHERE taxonomy = '{$def->id}'");
+    };
+}
+
+
 return [
+            
+    'alter tablel term taxonomy type' => function() use ($conn) {
+        $conn->executeQuery("ALTER TABLE term ALTER taxonomy TYPE VARCHAR(64);");
+        $conn->executeQuery("ALTER TABLE term ALTER taxonomy DROP DEFAULT;");
+    },
+     
     'new random id generator' => function () use ($conn) {
         $conn->executeQuery("
             CREATE SEQUENCE pseudo_random_id_seq
@@ -69,7 +97,12 @@ return [
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
         $conn->executeQuery("UPDATE agent_meta SET value='Mulher' WHERE key='genero' AND value='Feminino'");
     },
-
+            
+    'remove orphan events again' => function() use($conn){
+        $conn->executeQuery("DELETE FROM event_meta WHERE object_id IN (SELECT id FROM event WHERE agent_id IS NULL)");
+        $conn->executeQuery("DELETE FROM event WHERE agent_id IS NULL");
+        return false;
+    },
 
     'remove circular references again... ;)' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent SET parent_id = null WHERE id = parent_id");
@@ -321,6 +354,38 @@ return [
                     )");
         $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
     },
+    
+    'create table pcache' => function () use($conn) {
+        if(__table_exists('pcache')){
+            echo 'tabela pcache já foi criada';
+            return true;
+            
+        }
+        $conn->executeQuery("CREATE TABLE pcache (id INT NOT NULL, user_id INT NOT NULL, action VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, object_type VARCHAR(255) NOT NULL, object_id INT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE INDEX IDX_3D853098A76ED395 ON pcache (user_id);");
+        $conn->executeQuery("CREATE INDEX IDX_3D853098232D562B ON pcache (object_id);");
+        $conn->executeQuery("CREATE INDEX pcache_owner_idx ON pcache (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX pcache_permission_idx ON pcache (object_type, object_id, action);");
+        $conn->executeQuery("CREATE INDEX pcache_permission_user_idx ON pcache (object_type, object_id, action, user_id);");
+        $conn->executeQuery("ALTER TABLE pcache ADD CONSTRAINT FK_3D853098A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+
+    },
+            
+    'function create pcache id sequence 2' => function () use ($conn) {
+        if(__sequence_exists('pcache_id_seq')){
+            echo 'sequencia pcache_id_seq já existe';
+            return true;
+        }
+        $conn->executeQuery("CREATE SEQUENCE pcache_id_seq
+                                START WITH 1
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+        
+        $conn->executeQuery("ALTER TABLE ONLY pcache ALTER COLUMN id SET DEFAULT nextval('pcache_id_seq'::regclass);");
+
+    },
 
     'Add field for maximum size from registration field configuration' => function () use($conn) {
         $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
@@ -348,5 +413,31 @@ return [
         }
 
         $this->disableAccessControl();
-    }
-];
+
+    },
+    
+    
+    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
+        if(__column_exists('file', 'path')){
+            return true;
+        }
+        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_owner_index ON file (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX IF NOT EXISTS file_group_index ON file (grp);");
+
+        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
+        
+    },
+            
+    'update file relative path' => function() use ($conn) {
+        
+        $files = $this->repo('File')->findAll();
+        
+        foreach($files as $file){
+            $path = $file->getRelativePath();
+            echo "\nsaving url of $file ($path)";
+            
+            $file->save();
+        }
+        $this->em->flush();
+    },
+] + $updates ;

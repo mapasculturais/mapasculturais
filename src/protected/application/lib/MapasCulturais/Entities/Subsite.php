@@ -256,36 +256,16 @@ class Subsite extends \MapasCulturais\Entity
         
         $app->applyHookBoundTo($this, 'subsite.applyFilters:before');
 
-        foreach($this->filters as $controller => $entity_filters){
-            $cache_id = "subsite:{$controller}:Ids";
+        foreach($this->filters as $controller_id => $entity_filters){
+            $entity_class_name = $app->controller($controller)->entityClassName;
+            $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters);
+            $query->where = "e._subsiteId = {$subsite_id}";
             
-            $ids = null;
+            $this->_entityApiQueryFilters[$entity_class_name] = $query;
             
-            if($app->msCache->contains($cache_id)){
-                $ids = $app->msCache->fetch($cache_id);
-
-            } else {
-                $subsite_qdata = ['@select' => 'id'];
-
-                foreach($entity_filters as $key => $val){
-                    $subsite_qdata[$key] = $val;
-                }
-
-                $ids = $app->controller($controller)->apiQuery($subsite_qdata);
-                
-                if(is_array($ids)){
-                    $ids = implode(',',array_map(function($e){ return $e['id']; }, $ids));
-                } 
-                $app->msCache->save($cache_id, $ids, 60);
-            }
-            
-            
-            $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($ids, $subsite_id) {
-                if($ids){
-                    $dql_where .= " AND (e.id IN ($ids) OR e._subsiteId = {$subsite_id})";
-                } else {
-                    $dql_where .= " AND e._subsiteId = {$subsite_id}";
-                }
+            $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($query) {
+                $query_dql = $query->getSubDQL();
+                $dql_where .=  " AND e.id IN({$query_dql})";
             });
         }
         
@@ -294,6 +274,12 @@ class Subsite extends \MapasCulturais\Entity
         });
         
         $app->applyHookBoundTo($this, 'subsite.applyFilters:after');
+    }
+    
+    protected $_entityApiQueryFilters = [];
+    
+    public function getApiQueryFilter($entity_class){
+        return isset($this->_entityApiQueryFilters[$entity_class]) ? $this->_entityApiQueryFilters[$entity_class] : null;
     }
     
     

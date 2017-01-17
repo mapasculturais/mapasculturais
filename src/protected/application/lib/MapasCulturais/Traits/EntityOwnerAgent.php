@@ -33,6 +33,8 @@ trait EntityOwnerAgent{
     function getOwner(){
         if(!$this->id && !$this->owner){
             return App::i()->user->profile;
+        } else if(!$this->owner && $this->_newOwner) {
+            return $this->_newOwner;
         } else {
             return $this->owner;
         }

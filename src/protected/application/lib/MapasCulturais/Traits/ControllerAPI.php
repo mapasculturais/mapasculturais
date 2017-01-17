@@ -4,6 +4,8 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
+use MapasCulturais\ApiQuery;
+
 trait ControllerAPI{
 
     /**
@@ -165,8 +167,41 @@ trait ControllerAPI{
             return (int) $default_lifetime;
     }
 
+    public function apiQuery($api_params, $options = []){
+        if(isset($api_params['@version']) == 1){
+            unset($api_params['@version']);
+            return $this->apiQueryV1($api_params, $options);
+        }
+        
+        $app = App::i();
+        $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $counting = key_exists('@count', $api_params);
+        if($counting){
+            unset($api_params['@count']);
+        }
 
-    public function apiQuery($qdata, $options = []){
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$api_params]);
+
+        $query = new ApiQuery($this->entityClassName, $api_params);
+        
+        if($counting){
+            $result = $query->getCountResult();
+        } elseif( $findOne ) {
+            $result = $query->getFindOneResult();
+        } else {
+            $result = $query->getFindResult();
+            if(isset($api_params['@page']) || isset($api_params['@offset']) || isset($api_params['@limit'])){
+                $count = $query->getCountResult();
+            } else {
+                $count = count($result);
+            }
+            $this->apiAddHeaderMetadata($api_params, $result, $count);
+        }
+        
+        return $result;
+    }
+
+    public function apiQueryV1($qdata, $options = []){
         $this->_apiFindParamList = [];
         $app = App::i();
         
@@ -216,14 +251,14 @@ trait ControllerAPI{
 
             if($class::usesTaxonomies()){
                 $taxonomies = [];
-                $taxonomies_ids = [];
+                $taxonomies_slugs = [];
                 foreach($app->getRegisteredTaxonomies($class) as $obj){
                     $taxonomies[] = 'term:' . $obj->slug;
-                    $taxonomies_ids['term:' . $obj->slug] = $obj->id;
+                    $taxonomies_slugs['term:' . $obj->slug] = $obj->slug;
                 }
 
                 $dql_join_term_template = "
-                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = {TAXO}";
+                        LEFT JOIN e.__termRelations {ALIAS_TR} LEFT JOIN {ALIAS_TR}.term {ALIAS_T} WITH {ALIAS_T}.taxonomy = '{TAXO}'";
             }
 
             $keys = [];
@@ -418,7 +453,7 @@ trait ControllerAPI{
                     $taxo_num++;
                     $tr_alias = "tr{$taxo_num}";
                     $t_alias = "t{$taxo_num}";
-                    $taxonomy_id = $taxonomies_ids[$key];
+                    $taxonomy_id = $taxonomies_slugs[$key];
 
                     $keys[$key] = "$t_alias.term";
                     $dql_joins .= str_replace('{ALIAS_TR}', $tr_alias, str_replace('{ALIAS_T}', $t_alias, str_replace('{TAXO}', $taxonomy_id, $dql_join_term_template)));
@@ -801,7 +836,6 @@ trait ControllerAPI{
                 $values = $this->_API_find_addValueToParamList($values);
 
                 if(count($values) < 1){
-//                    eval(\psy\sh());
                     $this->apiErrorResponse ('expression IN expects at last one value');
                 }
 

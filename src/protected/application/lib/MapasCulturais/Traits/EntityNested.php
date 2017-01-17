@@ -139,6 +139,10 @@ trait EntityNested{
                     $this->_newParent->checkPermission('createChild');
 
                 $this->parent = $this->_newParent;
+                
+                if($this->usesPermissionCache()){
+                    $this->addToRecreatePermissionsCacheList();
+                }
 
             }catch(\MapasCulturais\Exceptions\PermissionDenied $e){
                 if(!App::i()->isWorkflowEnabled())
