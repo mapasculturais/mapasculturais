@@ -112,7 +112,7 @@ trait EntityAgentRelation {
         $app->cache->delete($cache_id);
     }
 
-    function getUsersWithControl(){
+    function getUsersWithControl(array &$object_stack = []){
         $app = \MapasCulturais\App::i();
 
         // cache ids
@@ -140,10 +140,11 @@ trait EntityAgentRelation {
         }
 
         if($this->usesNested()) {
+            $object_stack[] = $this->id;
+            
             $parent = $this->getParent();
-
-            if(is_object($parent) && !$parent->equals($this)){
-                foreach($parent->getUsersWithControl() as $u){
+            if(is_object($parent) && !$parent->equals($this) && !in_array($parent->id, $object_stack)){
+                foreach($parent->getUsersWithControl($object_stack) as $u){
                     if(!in_array($u->id, $ids)){
                         $ids[] = $u->id;
                         $result[] = $u;

@@ -172,19 +172,19 @@ class Agent extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_spaces = [];
+    protected $_spaces;
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_projects = [];
+    protected $_projects;
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_events = [];
+    protected $_events;
 
 
     /**
@@ -297,14 +297,23 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getProjects(){
+        if(!$this->isNew()){
+            $this->refresh();
+        }
         return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getEvents(){
+        if(!$this->isNew()){
+            $this->refresh();
+        }
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getSpaces(){
+        if(!$this->isNew()){
+            $this->refresh();
+        }       
         return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 

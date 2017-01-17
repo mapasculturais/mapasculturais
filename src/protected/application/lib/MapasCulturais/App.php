@@ -482,8 +482,6 @@ class App extends \Slim\Slim{
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
-//        if($this->_entitiesToRecreatePermissionsCache)
-//            eval(\psy\sh());
         $this->recreatePermissionsCacheOfListedEntities();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }

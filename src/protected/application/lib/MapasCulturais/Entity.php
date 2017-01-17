@@ -91,9 +91,10 @@ abstract class Entity implements \JsonSerializable{
         if(property_exists($this, 'createTimestamp'))
                 $this->createTimestamp = new \DateTime;
 
-        if($this->usesTaxonomies())
-            $this->populateTermsProperty();
-
+        if($this->usesOwnerAgent() && !$app->user->is('guest')){
+            $this->setOwner($app->user->profile);
+        }
+        
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
@@ -533,6 +534,7 @@ abstract class Entity implements \JsonSerializable{
         if (method_exists($this, '_saveOwnerAgent')) {
             try {
                 $this->_saveOwnerAgent();
+                
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
@@ -583,7 +585,7 @@ abstract class Entity implements \JsonSerializable{
             if($repo->usesCache()){
                 $repo->deleteEntityCache($this->id);
             }
-
+            
         }catch(Exceptions\PermissionDenied $e){
             if(!$requests)
                 throw $e;

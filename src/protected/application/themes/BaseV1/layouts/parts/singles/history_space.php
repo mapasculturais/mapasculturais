@@ -1,7 +1,14 @@
 <?php 
+$this->bodyProperties['ng-controller'] = "EntityController";
+
 $entity = $entityRevision;
 $action = "single";
 $userCanView = $entity->userCanView;
+
+$this->addEntityToJs($entity->entity);
+$this->includeAngularEntityAssets($entity->entity);
+$this->includeMapAssets();
+
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
@@ -27,16 +34,16 @@ $userCanView = $entity->userCanView;
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y H:i:s').".");?>
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y ás H:i:s').".");?>
         <br>
         <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
             <?php printf(\MapasCulturais\i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s é um <b>rascunho<b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_TRASH): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s está na <b>lixeira<b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php endif; ?>, onde pode ser acessado clicando <a href='<?php echo $entity->entity->singleUrl;?>'>aqui</a>
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
@@ -149,8 +156,27 @@ $userCanView = $entity->userCanView;
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
 
-                <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]); ?>
-
+                <?php $this->applyTemplateHook('location','before'); ?>
+                <input type="hidden" class="latitude" id="latitude" name="latitude" value="<?php echo $entity->location->latitude;?>">
+                <input type="hidden" class="longitude" id="longitude" name="longitude" value="<?php echo $entity->location->longitude;?>">
+                <div id="space-map" style="width:100%; height:500px"></div>
+                <div class="servico clearfix">
+                    <!--.mapa-->
+                    <div class="infos">
+                        <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Endereço");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
+                        <p class="endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("CEP");?>:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CEP");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CEP");?>" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Logradouro");?>:</span> <span class="js-editable" id="En_Nome_Logradouro" data-edit="En_Nome_Logradouro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Logradouro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o logradouro");?>" data-showButtons="bottom"><?php echo $entity->En_Nome_Logradouro ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Número");?>:</span> <span class="js-editable" id="En_Num" data-edit="En_Num" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Número");?>" data-showButtons="bottom"><?php echo $entity->En_Num ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Complemento");?>:</span> <span class="js-editable" id="En_Complemento" data-edit="En_Complemento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Complemento");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um complemento");?>" data-showButtons="bottom"><?php echo $entity->En_Complemento ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Bairro");?>:</span> <span class="js-editable" id="En_Bairro" data-edit="En_Bairro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Bairro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Bairro");?>" data-showButtons="bottom"><?php echo $entity->En_Bairro ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Município");?>:</span> <span class="js-editable" id="En_Municipio" data-edit="En_Municipio" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Município");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Município");?>" data-showButtons="bottom"><?php echo $entity->En_Municipio ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Estado");?>:</span> <span class="js-editable" id="En_Estado" data-edit="En_Estado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Estado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Estado");?>" data-showButtons="bottom"><?php echo $entity->En_Estado ?></span></p>
+                    </div>
+                    <!--.infos-->
+                </div>
+                <!--.servico-->
+                <?php $this->applyTemplateHook('location','after'); ?>
             </div>
             <!--.ficha-spcultura-->
 

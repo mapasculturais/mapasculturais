@@ -30,16 +30,16 @@ $app = MapasCulturais\App::i();
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y H:i:s').".");?>
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y ás H:i:s').".");?>
         <br>
         <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
             <?php printf(\MapasCulturais\i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s é um <b>rascunho</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_TRASH): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s está na <b>lixeira</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php endif; ?>, onde pode ser acessado clicando <a href='<?php echo $entity->entity->singleUrl;?>'>aqui</a>
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
