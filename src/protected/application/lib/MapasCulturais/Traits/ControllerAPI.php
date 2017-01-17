@@ -836,7 +836,6 @@ trait ControllerAPI{
                 $values = $this->_API_find_addValueToParamList($values);
 
                 if(count($values) < 1){
-//                    eval(\psy\sh());
                     $this->apiErrorResponse ('expression IN expects at last one value');
                 }
 
