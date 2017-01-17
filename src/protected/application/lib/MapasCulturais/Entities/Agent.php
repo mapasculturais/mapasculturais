@@ -297,17 +297,23 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getProjects(){
-        $this->refresh();
+        if(!$this->isNew()){
+            $this->refresh();
+        }
         return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getEvents(){
-        $this->refresh();
+        if(!$this->isNew()){
+            $this->refresh();
+        }
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getSpaces(){
-        $this->refresh();        
+        if(!$this->isNew()){
+            $this->refresh();
+        }       
         return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
