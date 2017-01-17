@@ -135,6 +135,11 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     function save($flush = false) {
         try{
             parent::save($flush);
+            
+            if($this->owner->usesPermissionCache()){
+                $this->owner->deleteUsersWithControlCache();
+                $this->owner->addToRecreatePermissionsCacheList();
+            }
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
                throw $e;
@@ -162,6 +167,11 @@ abstract class AgentRelation extends \MapasCulturais\Entity
         foreach($requests as $r)
             $r->delete($flush);
 
-        parent::delete($flush);
+        parent::delete($flush);        
+
+        if($this->owner->usesPermissionCache()){
+            $this->owner->deleteUsersWithControlCache();
+            $this->owner->addToRecreatePermissionsCacheList();
+        }
     }
 }

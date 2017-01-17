@@ -355,7 +355,7 @@ class Event extends EntityController {
         if(key_exists('_geoLocation', $query_data) || $space_data){
             $space_controller = App::i()->controller('space');
 
-            $space_data['@select'] = 'id,name,shortDescription,location,terms,__metadata';
+            $space_data['@select'] = 'id';
 
             if(key_exists('_geoLocation', $query_data)){
                 $space_data['_geoLocation'] = $this->data['_geoLocation'];
@@ -388,30 +388,6 @@ class Event extends EntityController {
             $e['occurrences'] = [];
             $e['occurrencesReadable'] = [];
 
-//            $occurrences = $evt->findOccurrences($date_from, $date_to);
-//
-//            foreach($occurrences as $occ){
-//                $space_id = $occ->spaceId;
-//
-//                if(!key_exists($space_id, $e['spaces']))
-//                    $e['spaces'][$space_id] = $app->repo('Space')->find($space_id);
-//
-//
-//                if(!key_exists($space_id, $e['occurrences']))
-//                    $e['occurrences'][$space_id] = [];
-//
-//                if(!key_exists($space_id, $e['occurrencesReadable']))
-//                    $e['occurrencesReadable'][$space_id] = [];
-//
-//                $e['occurrences'][$space_id][] = $occ;
-//
-//                $month = \MapasCulturais\i::__($occ->startsOn->format('F'));
-//                $str = $occ->startsOn->format('d \d\e') . ' ' . $month . ' às ' . $occ->startsAt->format('H:i');
-//
-//                if(!in_array($str, $e['occurrencesReadable'][$space_id]))
-//                    $e['occurrencesReadable'][$space_id][] = $str;
-//            }
-
             $result_occurrences[$evt->id] = $e;
         }
 
@@ -420,7 +396,6 @@ class Event extends EntityController {
             $query_data['id'] = 'IN(' . implode(',', $event_ids) .')';
             // @TODO: verificar se o @select tem o id
             $result = $this->apiQuery($query_data);
-
             if(is_array($result)){
                 foreach($result as $k => $r){
                     if(isset($result_occurrences[$r['id']])){

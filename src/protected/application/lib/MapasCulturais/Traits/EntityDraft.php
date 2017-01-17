@@ -25,27 +25,27 @@ trait EntityDraft{
         $this->checkPermission('publish');
         
         $app = App::i();
-        
-        $app->disableAccessControl();
-        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').publish:before');
+
         $this->status = self::STATUS_ENABLED;
         
         $this->save($flush);
+        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').publish:after');
                 
-        $app->enableAccessControl();
     }
     
     function unpublish($flush = false){
-        $this->checkPermission('publish');
+        $this->checkPermission('unpublish');
         
         $app = App::i();
-        
-        $app->disableAccessControl();
-        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:before');
+
         $this->status = self::STATUS_DRAFT;
         
         $this->save($flush);
+        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:after');
                 
-        $app->enableAccessControl();
     }
 }

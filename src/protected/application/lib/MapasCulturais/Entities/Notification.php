@@ -4,6 +4,8 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
+
 
 /**
  * Notification
@@ -19,6 +21,8 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Notification")
  */
 class Notification extends \MapasCulturais\Entity{
+    use Traits\EntityPermissionCache;
+    
     const STATUS_PENDING = 1;
     const STATUS_VIEWED = 2;
 
@@ -84,6 +88,12 @@ class Notification extends \MapasCulturais\Entity{
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
      */
     protected $__metadata;
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
 
     function getOwnerUser() {
         return $this->user;

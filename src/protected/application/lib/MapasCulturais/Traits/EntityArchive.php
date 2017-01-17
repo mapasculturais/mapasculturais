@@ -25,27 +25,25 @@ trait EntityArchive{
         $this->checkPermission('archive');
 
         $app = App::i();
-
-        $app->disableAccessControl();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:before');
 
         $this->status = self::STATUS_ARCHIVED;
 
         $this->save($flush);
 
-        $app->enableAccessControl();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:before');
     }
 
     function unarchive($flush = true){
         $this->checkPermission('unarchive');
 
         $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unarchive:before');
 
-        $app->disableAccessControl();
-
-        $this->status = self::STATUS_DRAFT;
+        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
 
         $this->save($flush);
 
-        $app->enableAccessControl();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unarchive:before');
     }
 }
