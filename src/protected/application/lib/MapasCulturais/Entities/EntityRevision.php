@@ -95,6 +95,7 @@ class EntityRevision extends \MapasCulturais\Entity{
 
     public function __construct(array $dataRevision, $entity, $action, $message = "") {
         parent::__construct();
+        $app = App::i();
 
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
@@ -143,11 +144,14 @@ class EntityRevision extends \MapasCulturais\Entity{
         if(!empty(trim($message))) {
             $this->message = $message;
         }
-        $user = App::i()->user;
+        $user = $app->user;
 
         if($user->is('guest')){
             $user = $entity->getOwnerUser();
         }
+        
+        $user = $app->repo('User')->find($user->id);
+        
         $this->user = $user;
     }
 

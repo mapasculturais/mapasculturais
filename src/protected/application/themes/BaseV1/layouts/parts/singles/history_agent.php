@@ -1,7 +1,14 @@
 <?php 
+$this->bodyProperties['ng-controller'] = "EntityController";
+
 $entity = $entityRevision;
 $action = "single";
 $userCanView = $entity->userCanView;
+
+$this->addEntityToJs($entity->entity);
+$this->includeAngularEntityAssets($entity->entity);
+$this->includeMapAssets();
+
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
@@ -27,16 +34,16 @@ $userCanView = $entity->userCanView;
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y H:i:s').".");?>
+        <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y ás H:i:s').".");?>
         <br>
         <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
             <?php printf(\MapasCulturais\i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s é um <b>rascunho</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_TRASH): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s está na <b>lixeira</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(\MapasCulturais\i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php endif; ?>, onde pode ser acessado clicando <a href='<?php echo $entity->entity->singleUrl;?>'>aqui</a>
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
@@ -155,16 +162,10 @@ $userCanView = $entity->userCanView;
                 ?>
                 <?php if (isset($entity->publicLocation) && ($entity->publicLocation || $userCanView)): ?>
                     <?php $this->applyTemplateHook('location','before'); ?>
+                    <input type="hidden" class="latitude" id="latitude" name="latitude" value="<?php echo $entity->location->latitude;?>">
+                    <input type="hidden" class="longitude" id="longitude" name="longitude" value="<?php echo $entity->location->longitude;?>">
+                    <div id="agent-map" style="width:100%; height:500px"></div>
                     <div class="servico clearfix">
-                        <div class="mapa js-map-container">
-                            <?php if($lat && $lng): ?>
-                                <div class="clearfix js-leaflet-control" data-leaflet-target=".leaflet-top.leaflet-left">
-                                    <a id ="button-locate-me" class="control-infobox-open hltip botoes-do-mapa" title="<?php \MapasCulturais\i::esc_attr_e("Encontrar minha localização");?>"></a>
-                                </div>
-                            <?php endif; ?>
-                            <div id="single-map-container" class="js-map" data-lat="<?php echo $lat?>" data-lng="<?php echo $lng?>"></div>
-                            <input type="hidden" id="map-target" data-name="location" class="js-editable" data-edit="location" data-value="<?php echo '[' . $lng . ',' . $lat . ']'; ?>"/>
-                        </div>
                         <!--.mapa-->
                         <div class="infos">
                             <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Endereço");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
@@ -186,12 +187,6 @@ $userCanView = $entity->userCanView;
                                     </span>
                                 </p>
                             <?php endif; ?>
-
-                            <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
-                                <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
-                                    <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
-                                </p>
-                            <?php endforeach; ?>
                         </div>
                         <!--.infos-->
                     </div>
