@@ -12,17 +12,17 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('subsite', 'create') ?>"><?php echo $this->dict('entities: add new subsite');?></a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos">Ativos</a></li>
-        <li><a href="#rascunhos">Rascunhos</a></li>
-        <li><a href="#lixeira">Lixeira</a></li>
-		<li><a href="#arquivo">Arquivo</a></li>
+        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e('Ativos') ?></a></li>
+        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e('Rascunhos') ?></a></li>
+        <li><a href="#lixeira"><?php \MapasCulturais\i::_e('Lixeira') ?></a></li>
+		<li><a href="#arquivo"><?php \MapasCulturais\i::_e('Arquivo') ?></a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSubsite as $entity): ?>
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->enabledSubsite): ?>
-            <div class="alert info">Você não possui nenhum Subsite.</div>
+            <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum Subsite.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -31,7 +31,7 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->draftSubsite): ?>
-            <div class="alert info">Você não possui nenhum rascunho de subsite.</div>
+            <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum rascunho de subsite.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -40,7 +40,7 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->trashedSubsite): ?>
-            <div class="alert info">Você não possui nenhum subsite na lixeira.</div>
+            <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum subsite na lixeira.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -50,7 +50,7 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->archivedSubsite): ?>
-            <div class="alert info">Você não possui nenhum subsite arquivado.</div>
+            <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum subsite arquivado.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->

@@ -27,6 +27,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
+        Traits\EntityRevision,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntityVerifiable,
@@ -235,8 +236,8 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
-    
-    
+
+
     /**
      * @var integer
      *
@@ -254,14 +255,14 @@ class Agent extends \MapasCulturais\Entity
 
         parent::__construct();
     }
-    
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Agentes');
         else
             return \MapasCulturais\i::__('Agente');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -276,7 +277,7 @@ class Agent extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
 

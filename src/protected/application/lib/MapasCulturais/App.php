@@ -657,6 +657,8 @@ class App extends \Slim\Slim{
         //workflow controllers
         $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
+        // history controller
+        $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
@@ -1300,7 +1302,7 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
-    
+
     /**
      * Returns the current subsite ID, or null if current site is the main site
      *
@@ -1312,7 +1314,7 @@ class App extends \Slim\Slim{
             return $this->_subsite->id;
         }
 
-        return null; 
+        return null;
     }
 
     public function getCurrentSubsite(){
@@ -2387,10 +2389,10 @@ class App extends \Slim\Slim{
      * GetText
      **************/
     /* deprecated, use MapasCulturais\i::get_locale();
-     * 
-     * 
-     * 
-     */ 
+     *
+     *
+     *
+     */
     static function getCurrentLCode(){
         return \MapasCulturais\i::get_locale();
     }

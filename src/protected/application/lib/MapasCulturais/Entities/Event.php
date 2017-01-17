@@ -31,7 +31,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive;
+        Traits\EntityArchive,
+        Traits\EntityRevision;
 
     /**
      * @var integer
@@ -174,8 +175,8 @@ class Event extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
-    
-    
+
+
     /**
      * @var integer
      *
@@ -184,14 +185,14 @@ class Event extends \MapasCulturais\Entity
     protected $_subsiteId;
 
     private $_newProject = false;
-    
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Eventos');
         else
             return \MapasCulturais\i::__('Evento');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -206,7 +207,7 @@ class Event extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     function publish($flush = false){
         $this->checkPermission('publish');
 
@@ -450,6 +451,42 @@ class Event extends \MapasCulturais\Entity
         }
 
         return false;
+    }
+
+    public function getRevisionData() {
+        $revisionData = [];
+        if(count($this->occurrences) > 0) {
+            foreach($this->occurrences as $occurrence) {
+                $revisionData['occurrences'][$occurrence->space->id]['items'][] = [
+                    'id' => $occurrence->id,
+                    'description' => $occurrence->description,
+                    '_startsOn' => $occurrence->_startsOn,
+                    '_endsOn' => $occurrence->_endsOn,
+                    '_startsAt' => $occurrence->_startsAt,
+                    '_endsAt' => $occurrence->_endsAt,
+                    'frequency' => $occurrence->frequency,
+                    'count' => $occurrence->count,
+                    '_until' => $occurrence->_until,
+                    'rule' => $occurrence->rule
+                ];
+                
+                $revisionData['occurrences'][$occurrence->space->id]['name'] = $occurrence->space->name;
+                $revisionData['occurrences'][$occurrence->space->id]['location'] = [
+                                                                                    'latitude' => $occurrence->space->location->latitude,
+                                                                                    'longitude' => $occurrence->space->location->longitude
+                                                                                    ];
+                $revisionData['occurrences'][$occurrence->space->id]['endereco'] = $occurrence->space->endereco;
+                $revisionData['occurrences'][$occurrence->space->id]['revision'] = App::i()->repo('EntityRevision')->findEntityLastRevisionId($occurrence->space->getClassName(),$occurrence->space->id);
+            }
+        }
+
+        if($this->project) {
+            $entity_data = $this->project->simplify("id,name");
+            $entity_data->{'revision'} = App::i()->repo('EntityRevision')->findEntityLastRevisionId($this->project->getClassName(),$entity_data->id);
+            $revisionData['project'] = $entity_data;
+        }
+
+        return $revisionData;
     }
 
     //============================================================= //
