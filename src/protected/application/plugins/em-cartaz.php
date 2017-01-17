@@ -139,10 +139,11 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
     foreach($linguagens as $linguagem){
 
         $query = array(
+            '@version' => '1',
             '@verified' => 'IN(1)',
             '@from'=>$from->format('Y-m-d'),
             '@to'=>$to->format('Y-m-d'),
-            '@select' => 'id,name,shortDescription,singleUrl,classificacaoEtaria,location,metadata,occurrences,project,relatedAgents',
+            '@select' => 'id,name,shortDescription,singleUrl,classificacaoEtaria,location,metadata,occurrencesz,project,relatedAgents',
             '@order' => 'name ASC',
             'term:linguagem'=>'EQ('.$linguagem.')'
         );

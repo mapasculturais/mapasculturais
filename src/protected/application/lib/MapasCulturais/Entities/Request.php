@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 
 /**
  * Request
@@ -30,6 +31,8 @@ use MapasCulturais\App;
  * @ORM\HasLifecycleCallbacks
  */
 abstract class Request extends \MapasCulturais\Entity{
+    use Traits\EntityPermissionCache;
+    
     const STATUS_PENDING = 1;
     const STATUS_APPROVED = 2;
 
@@ -117,6 +120,12 @@ abstract class Request extends \MapasCulturais\Entity{
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade="all", orphanRemoval=true)
      */
     protected $notifications;
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
 
     /**
      * @var string
@@ -214,11 +223,29 @@ abstract class Request extends \MapasCulturais\Entity{
     }
 
     protected function canUserCreate($user){
-        return $this->origin->canUser('@control', $user);
+        $origin = $this->getOrigin();
+        if($origin){
+            return $origin->canUser('@control', $user);
+        } else {
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->delete(true);
+            $app->enableAccessControl();
+            return false;
+        }
     }
 
     protected function canUserApprove($user){
-        return $this->destination->canUser('@control', $user);
+        $destination = $this->getDestination();
+        if($destination){
+            return $destination->canUser('@control', $user);
+        } else {
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->delete(true);
+            $app->enableAccessControl();
+            return false;
+        }
     }
 
     protected function canUserReject($user){

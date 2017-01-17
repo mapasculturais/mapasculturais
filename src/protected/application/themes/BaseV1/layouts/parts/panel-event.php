@@ -29,9 +29,9 @@
             <a class="btn btn-small btn-success" href="<?php echo $entity->unarchiveUrl; ?>"><?php \MapasCulturais\i::_e("desarquivar");?></a>
         <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $entity->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>
-                <?php if($entity->canUser('destroy')): ?>
-                    <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
-                <?php endif; ?>
+            <?php if($entity->permissionTo->destroy): ?>
+                <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </article>

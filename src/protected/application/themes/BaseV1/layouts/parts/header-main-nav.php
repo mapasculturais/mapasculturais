@@ -86,7 +86,7 @@
     <ul class="menu session-menu clearfix">
         <?php if ($app->auth->isUserAuthenticated()): ?>
             <?php $this->applyTemplateHook('nav.main.notifications','before'); ?>
-            <li class="notifications" ng-controller="NotificationController" ng-hide="data.length == 0">
+            <li class="notifications" ng-controller="NotificationController" ng-show="data.length > 0" style="display:none" ng-style="{display: block !important: data.length > 0}">
                 <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
                     <div class="icon icon-notifications"></div>
                     <div class="menu-item-label"><?php \MapasCulturais\i::_e("Notificações");?></div>
