@@ -334,7 +334,7 @@ return array(
     'plugins' => [
         'ProjectPhases' => ['namespace' => 'ProjectPhases'],
         'AgendaSingles' => ['namespace' => 'AgendaSingles'],
-        'OriginSite'    => ['namespace' => 'OriginSite','config' => ['siteId' => @$_SERVER['HTTP_HOST']]]
+//        'OriginSite'    => ['namespace' => 'OriginSite','config' => ['siteId' => @$_SERVER['HTTP_HOST']]]
         //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
     ],
 

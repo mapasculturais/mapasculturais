@@ -131,26 +131,45 @@ trait EntityRevision{
 
     public function _newModifiedRevision() {
         $revisionData = $this->_getRevisionData();
-        $action = $this->controller->action;
-        $message = "";
-
-        if($action == Revision::ACTION_PUBLISHED) {
-            $message = "Registro publicado.";
-        } elseif($action == Revision::ACTION_UNPUBLISHED) {
-            $message = "Registro despublicado.";
-        } elseif($action == Revision::ACTION_ARCHIVED) {
-            $message = "Registro arquivado.";
-        } elseif($action == Revision::ACTION_UNARCHIVED) {
-            $message = "Registro desarquivado.";
-        } elseif($action == Revision::ACTION_TRASHED) {
-            $message = "Registro movido para a lixeira.";
-        } elseif($action == Revision::ACTION_UNTRASHED) {
-            $message = "Registro removido para a lixeira.";
-        } elseif($action == Revision::ACTION_DELETED) {
-            $message = "Registro deletado.";
-        } elseif($this->status > 0) {
-            $action = Revision::ACTION_MODIFIED;
-            $message = "Registro atualizado.";
+        $action = Revision::ACTION_MODIFIED;
+        $message = "Registro atualizado.";
+        
+        $last_revision = $this->getLastRevision();
+        $last_revision_data = $last_revision->getRevisionData();
+        
+        $old_status = $last_revision_data['status']->value;
+        $new_status = $this->status;
+        
+        if($old_status != $new_status){
+            switch ($new_status){
+                case self::STATUS_ENABLED:
+                    $action = Revision::ACTION_PUBLISHED;
+                    $message = "Registro publicado.";
+                    break;
+                
+                case self::STATUS_ARCHIVED:
+                    $action = Revision::ACTION_ARCHIVED;
+                    $message = "Registro arquivado.";
+                    break;
+                
+                case self::STATUS_DRAFT:
+                    if($old_status == self::STATUS_TRASH){
+                        $message = "Registro removido da lixeira.";
+                        $action = Revision::ACTION_UNTRASHED;
+                    } else if( $old_status == self::STATUS_ARCHIVED){
+                        $message = "Registro desarquivado.";
+                        $action = Revision::ACTION_UNARCHIVED;
+                    } else {
+                        $action = Revision::ACTION_UNPUBLISHED;
+                        $message = "Registro despublicado.";
+                    }
+                    break;
+                    
+                case self::STATUS_TRASH:
+                    $action = Revision::ACTION_TRASHED;
+                    $message = "Registro movido para a lixeira.";
+                    break;
+            }
         }
 
         $revision = new Revision($revisionData,$this,$action,$message);
