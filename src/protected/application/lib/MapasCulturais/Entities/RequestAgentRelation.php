@@ -39,7 +39,7 @@ class RequestAgentRelation extends Request{
     function _doRejectAction() {
         $relation = $this->getAgentRelation();
         if($relation){
-            $relation->delete();
+            $relation->delete(true);
         }
     }
 }

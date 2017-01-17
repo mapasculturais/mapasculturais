@@ -884,7 +884,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testCanUserAddRemoveRole(){
         $this->app->disableWorkflow();
         $this->resetTransactions();
-        $roles = ['staff', 'admin', 'superAdmin'];
+        $roles = ['admin', 'superAdmin'];
 
         /*
          * Guest user cannot add or remove roles
@@ -925,62 +925,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }, "Asserting that normal user CANNOT remove the role $role of a user");
         }
 
-
-        /*
-         * Admin user can add and remove role staff
-         */
-        $this->user = 'admin';
-
-        foreach($roles as $role){
-            $this->resetTransactions();
-
-            switch ($role) {
-                case 'staff':
-                    $assertion = 'assertPermissionGranted';
-                    $can = 'CAN';
-                break;
-
-                default:
-                    $assertion = 'assertPermissionDenied';
-                    $can = 'CANNOT';
-                break;
-            }
-
-            $this->$assertion(function() use($role){
-                $user = $this->getUser('normal', 1);
-                $user->addRole($role);
-            }, "Asserting that admin user $can add the role $role to a user");
-        }
-
-        foreach($roles as $role){
-            $this->resetTransactions();
-
-            switch ($role) {
-                case 'staff':
-                    $assertion = 'assertPermissionGranted';
-                    $can = 'CAN';
-                break;
-
-                default:
-                    $assertion = 'assertPermissionDenied';
-                    $can = 'CANNOT';
-                break;
-            }
-
-            $this->$assertion(function() use($role){
-                $user = $this->getUser($role, 1);
-                $user->removeRole($role);
-            }, "Asserting that admin user $can remove the role $role of a user");
-        }
-
         /*
          * Admin user can add and remove role staff
          */
         $this->user = 'superAdmin';
 
         foreach($roles as $role){
-            $this->resetTransactions();
-
             $this->assertPermissionGranted(function() use($role){
                 $user = $this->getUser('normal', 1);
                 $user->addRole($role);

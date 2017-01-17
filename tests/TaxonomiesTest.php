@@ -100,8 +100,8 @@ class TaxonomiesTests extends MapasCulturais_TestCase{
         $this->assertArrayNotHasKey('not_registered', $agent->terms, 'Asserting that not registered taxonomy terms was not saved');
         
         
-        $conn->executeQuery("INSERT INTO term(id,taxonomy,term) VALUES (10000,50,'not registered 1')");
-        $conn->executeQuery("INSERT INTO term(id,taxonomy,term) VALUES (10001,50,'not registered 2')");
+        $conn->executeQuery("INSERT INTO term(id,taxonomy,term) VALUES (10000,'not_registered','not registered 1')");
+        $conn->executeQuery("INSERT INTO term(id,taxonomy,term) VALUES (10001,'not_registered','not registered 2')");
         
         $conn->executeQuery("INSERT INTO term_relation(term_id,object_type,object_id) VALUES (10000,'MapasCulturais\Entities\Agent',{$agent->id})");
         $conn->executeQuery("INSERT INTO term_relation(term_id,object_type,object_id) VALUES (10001,'MapasCulturais\Entities\Agent',{$agent->id})");
