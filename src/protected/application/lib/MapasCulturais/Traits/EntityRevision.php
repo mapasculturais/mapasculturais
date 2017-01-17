@@ -154,7 +154,7 @@ trait EntityRevision{
         }
 
         $revision = new Revision($revisionData,$this,$action,$message);
-        //$revision->save(true);
+        $revision->save(true);
     }
 
     public function _newDeletedRevision() {
