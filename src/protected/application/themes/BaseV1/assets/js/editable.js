@@ -86,17 +86,19 @@ jQuery(function(){
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
         
-        editable.container.$form.find('.editable-cancel').attr('title', 'Cancelar Alteração (Esc)');
+        var labels = MapasCulturais.gettext.editable;
+        
+        editable.container.$form.find('.editable-cancel').attr('title', labels['cancel']);
         //textarea display default Ctrl+Enter and Esc shortcuts
         switch (editable.input.type.trim()) {
             case 'text|select':
-                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Enter)');
+                editable.container.$form.find('.editable-submit').attr('title', labels['confirm']);
                 break;
             case 'textarea':
-                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                editable.container.$form.find('.editable-submit').attr('title', labels['confirmC']);
                 break;
             case 'select2':
-                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                editable.container.$form.find('.editable-submit').attr('title', labels['confirmC']);
                 setTimeout(function() {
                     editable.container.$form.find('.select2-input')
                         .focus()
@@ -150,8 +152,9 @@ jQuery(function(){
 });
 
 $(window).on('beforeunload', function(){
+    var labels = MapasCulturais.gettext.editable;
     if($('.editable-unsaved').length){
-        return 'Há alterações não salvas nesta página.';
+        return labels['unsavedChanges'];
     }
 });
 
@@ -208,11 +211,14 @@ MapasCulturais.Editables = {
     },
 
     initSpacePublicEditable: function(){
+        
+        var labels = MapasCulturais.gettext.editable;
+        
         $('#editable-space-status').on('hidden', function(e, reason) {
             if($(this).editable('getValue', true) == '1'){
-                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
+                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-open"></div>'+labels['freePublish']+'</div><p class="venue-status-definition">'+labels['freePlublishDescription']+'</p>');
             }else{
-                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div><p class="venue-status-definition">Requer autorização para criar eventos.</p>');
+                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-locked"></div>'+labels['restrictedPublish']+'</div><p class="venue-status-definition">'+labels['restrictedPublishDescription']+'</p>');
             }
         });
     },
@@ -522,6 +528,8 @@ MapasCulturais.Editables = {
             var controller = MapasCulturais.request.controller; //Retorna controller da entidade atual
             var action = $(editableEntitySelector).data('action'); //"edit"
             var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
+            
+            var labels = MapasCulturais.gettext.editable;
 
             if(action === 'create'){
                 target = MapasCulturais.createUrl(controller, 'index');
@@ -531,9 +539,9 @@ MapasCulturais.Editables = {
 
                 if(MapasCulturais.entity.status == 0 && $button.data('status') == 1){
                     var message = MapasCulturais.request.controller === 'event' ?
-                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? ' :
-                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? Isto não poderá ser desfeito.';
-
+                        labels['confirmPublish'].replace('%s', MapasCulturais.entity.getTypeName(MapasCulturais.request.controller)) :
+                        labels['confirmPublishFinal'].replace('%s', MapasCulturais.entity.getTypeName(MapasCulturais.request.controller));
+                    
                     if(!confirm(message)){
                         return;
                     }
@@ -565,13 +573,13 @@ MapasCulturais.Editables = {
                             if(createdRequests && createdRequests.indexOf('ChildEntity') >= 0){
                                 name = $('[data-field-name="parentId"]').text();
                                 $('.js-pending-parent').show();
-                                MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+name+'</strong> foi enviada.');
+                                MapasCulturais.Messages.alert(labels['requestChild'].replace('%s', typeName).replace('%s', '<strong>'+name+'</strong>'));
                             }
 
                             if(createdRequests && createdRequests.indexOf('EventProject') >= 0){
                                 name = $('[data-field-name="projectId"]').text();
                                 $('.js-pending-project').show();
-                                MapasCulturais.Messages.alert('Sua requisição para associar este evento ao projeto <strong>'+name+'</strong> foi enviada.');
+                                MapasCulturais.Messages.alert(labels['requestEventProject'].replace('%s', '<strong>'+name+'</strong>'));
                             }
                         }
                     }
@@ -617,7 +625,7 @@ MapasCulturais.Editables = {
                         }
 
                         if(field_found)
-                            MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
+                            MapasCulturais.Messages.error(labels['correctErrors']);
 
                         if(unknow_errors){
                             for(var i in unknow_errors){
@@ -635,7 +643,7 @@ MapasCulturais.Editables = {
                             $(this).parent().css('display', r ? 'block' : 'none');
                         });
 
-                        MapasCulturais.Messages.success('Edições salvas.');
+                        MapasCulturais.Messages.success(labels['changesSaved']);
 
                         $('.editable-unsaved').
                                 css('background-color','').
@@ -657,7 +665,7 @@ MapasCulturais.Editables = {
                             $submitButton.click();
                         });
                     else{
-                        MapasCulturais.Messages.error('Um erro inesperado aconteceu.');
+                        MapasCulturais.Messages.error(labels['unexpectedError']);
                     }
                 }
             });
@@ -805,11 +813,12 @@ MapasCulturais.AjaxUploader = {
 
 MapasCulturais.MetalistManager = {
     init : function() {
+        var labels = MapasCulturais.gettext.editable;
         // bind form using 'ajaxForm'
         $('.js-metalist-form').ajaxForm({
             //target:        '#output1',   // target element(s) to be updated with server response
             //beforeSubmit:  showRequest,  // pre-submit callback
-
+            
             beforeSubmit:function(arr, $form, options){
                 //por enquanto validando apenas o vídeo contendo vimeo ou youtube e o link contendo algum protocolo...
                 var group = $form.parents('.js-editbox').data('metalist-group');
@@ -819,26 +828,26 @@ MapasCulturais.MetalistManager = {
 
                 if(group === 'videos'){
                     if($.trim($form.find('input.js-metalist-title').val()) === ''){
-                        $errorTag.html('Insira um título para seu vídeo.').show();
+                        $errorTag.html(labels['insertVideoTitle']).show();
                         return false;
                     }
 
                     var parsedURL = purl($linkField.val());
                     if (parsedURL.attr('host').indexOf('youtube') === -1 && parsedURL.attr('host').indexOf('vimeo')  === -1){
-                        $errorTag.html('Insira uma url de um vídeo do YouTube ou do Vimeo.').show();
+                        $errorTag.html(labels['insertVideoUrl']).show();
 
                         return false;
                     }
                 }else if (group === 'links'){
 
                     if($.trim($form.find('input.js-metalist-title').val()) === ''){
-                        $errorTag.html('Insira um título para seu link.').show();
+                        $errorTag.html(labels['insertLinkTitle']).show();
                         return false;
                     }
 
                     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
                     if (!pattern.test($linkField.val())){
-                        $errorTag.html('A url do link é inválida, insira uma url completa como http://www.google.com/.').show();
+                        $errorTag.html(labels['insertLinkUrl']).show();
                         return false;
                     }
                 }
