@@ -1240,6 +1240,27 @@ class Theme extends MapasCulturais\Theme {
         $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/saturation.png", 'img/bootstrap-colorpicker/saturation.png');
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
+        $this->localizeScript('editable', [
+            'cancel'    => i::__('Cancelar Alteração (Esc)'),
+            'confirm'    => i::__('Confirmar Alteração (Enter)'),
+            'confirmC'    => i::__('Confirmar Alteração (Ctrl+Enter)'),
+            'unsavedChanges'    => i::__('Há alterações não salvas nesta página.'),
+            'freePublish'    => i::__('Publicação livre'),
+            'restrictedPublish'    => i::__('Publicação restrita'),
+            'freePlublishDescription'    => i::__('Qualquer pessoa pode criar eventos.'),
+            'restrictedPublishDescription'    => i::__('Requer autorização para criar eventos.'),
+            'confirmPublish'    => i::__('Você tem certeza que deseja publicar este %s?'),
+            'confirmPublishFinal'    => i::__('Você tem certeza que deseja publicar este %s? Isto não poderá ser desfeito.'),
+            'requestChild'    => i::__('Sua requisição para fazer deste %s filho de %s foi enviada.'),
+            'requestEventProject'    => i::__('Sua requisição para associar este evento ao projeto %s foi enviada.'),
+            'correctErrors'    => i::__('Corrija os erros indicados abaixo.'),
+            'changesSaved'    => i::__('Edições salvas.'),
+            'unexpectedError'    => i::__('Um erro inesperado aconteceu.'),
+            'insertVideoTitle'    => i::__('Insira um título para seu vídeo.'),
+            'insertVideoUrl'    => i::__('Insira uma url de um vídeo do YouTube ou do Vimeo.'),
+            'insertLinkTitle'    => i::__('Insira um título para seu link.'),
+            'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
+        ]);
     }
 
     function includeSearchAssets() {
