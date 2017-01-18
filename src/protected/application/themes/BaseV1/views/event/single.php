@@ -497,7 +497,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
             </div>
             <div class="grupo-de-campos">
-                <span class="label">Frequência:</span><br>
+                <span class="label"><?php \MapasCulturais\i::_e("Frequência");?>:</span><br>
                     <select name="frequency" class="js-select-frequency">
                         <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}> <?php \MapasCulturais\i::_e("uma vez");?></option>
                         <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}> <?php \MapasCulturais\i::_e("todos os dias");?></option>
