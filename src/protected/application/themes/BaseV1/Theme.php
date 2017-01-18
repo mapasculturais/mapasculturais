@@ -21,6 +21,9 @@ class Theme extends MapasCulturais\Theme {
         'magnific-popup' => '0.9.9',
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
+    
+    // The default fields that are queried to display the search results both on map and list modes
+    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl');
 
     static function getThemeFolder() {
         return __DIR__;
@@ -724,8 +727,8 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
 
-        $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
-
+        $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
+        
         $this->jsObject['EntitiesDescription'] = [
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
@@ -1237,6 +1240,27 @@ class Theme extends MapasCulturais\Theme {
         $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/saturation.png", 'img/bootstrap-colorpicker/saturation.png');
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
+        $this->localizeScript('editable', [
+            'cancel'    => i::__('Cancelar Alteração (Esc)'),
+            'confirm'    => i::__('Confirmar Alteração (Enter)'),
+            'confirmC'    => i::__('Confirmar Alteração (Ctrl+Enter)'),
+            'unsavedChanges'    => i::__('Há alterações não salvas nesta página.'),
+            'freePublish'    => i::__('Publicação livre'),
+            'restrictedPublish'    => i::__('Publicação restrita'),
+            'freePlublishDescription'    => i::__('Qualquer pessoa pode criar eventos.'),
+            'restrictedPublishDescription'    => i::__('Requer autorização para criar eventos.'),
+            'confirmPublish'    => i::__('Você tem certeza que deseja publicar este %s?'),
+            'confirmPublishFinal'    => i::__('Você tem certeza que deseja publicar este %s? Isto não poderá ser desfeito.'),
+            'requestChild'    => i::__('Sua requisição para fazer deste %s filho de %s foi enviada.'),
+            'requestEventProject'    => i::__('Sua requisição para associar este evento ao projeto %s foi enviada.'),
+            'correctErrors'    => i::__('Corrija os erros indicados abaixo.'),
+            'changesSaved'    => i::__('Edições salvas.'),
+            'unexpectedError'    => i::__('Um erro inesperado aconteceu.'),
+            'insertVideoTitle'    => i::__('Insira um título para seu vídeo.'),
+            'insertVideoUrl'    => i::__('Insira uma url de um vídeo do YouTube ou do Vimeo.'),
+            'insertLinkTitle'    => i::__('Insira um título para seu link.'),
+            'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
+        ]);
     }
 
     function includeSearchAssets() {
@@ -2092,6 +2116,27 @@ class Theme extends MapasCulturais\Theme {
         return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
     }
 
-
+    /*
+     * This methods adds fields to the default query used in the search pages
+     *
+     * Use this to add fields that are available to build the list results and the infoboxes
+     *
+     * @param string|array $fields The fields to be added. It can be an array or a string with comma separated list
+     *
+     */
+    function addSearchQueryFields($fields) {
+        if (!$fields || empty($fields))
+            return false;
+        
+        if (is_string($fields))
+            $fields = explode(',', $fields);
+        
+        $this->searchQueryFields = array_merge($this->searchQueryFields, $fields);
+        $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
+        
+    }
+    
+    
+    
 
 }
