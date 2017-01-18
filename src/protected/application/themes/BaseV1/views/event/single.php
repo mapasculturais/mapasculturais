@@ -19,6 +19,13 @@ if ($this->isEditable()) {
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+$this->localizeScript('singleEvents', [
+            'correctErrors' => \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
+            'requestAddToSpace' => \MapasCulturais\i::__('Sua requisição para criar a ocorrência do evento no espaço %s foi enviada.'),
+            'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
+            'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
+            'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
+        ]);
 
 $this->includeAngularEntityAssets($entity);
 
