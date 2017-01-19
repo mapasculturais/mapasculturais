@@ -1757,7 +1757,7 @@ class Theme extends MapasCulturais\Theme {
 
     function addSealsToJs($onlyPermited = true,$sealId = array()) {
     	$query = [];
-    	$query['@select'] = 'id,name,status, singleUrl';
+    	$query['@select'] = 'id,name,status,singleUrl,validateDate';
 
         if($onlyPermited) {
     		$query['@permissions'] = '@control';

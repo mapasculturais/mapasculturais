@@ -225,6 +225,7 @@ return array(
     'notifications.interval'        => 60,  // seconds
     'notifications.entities.update' => 90,  // days
     'notifications.user.access'     => 90,  // days
+    'notifications.seal.toExpire'   => 10,  // days
 
     /* ==================== LOG ================== */
     // write log messages to a custom output (the class must implement the method "public write(mixed $message, int $level)")

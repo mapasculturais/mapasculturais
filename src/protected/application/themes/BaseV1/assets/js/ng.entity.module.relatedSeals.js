@@ -190,14 +190,19 @@
 						        };
 						        
 						        $scope.sealRelated = function(seal) {
-						        	var related = $scope.relations.find(function(r){
-						        		if(r.seal.id === seal.id) {
-						        			return r;
-						        		};
-						        	});
-						        	
+									var related = false;
+									for(var y in $scope.relations) {
+										if($scope.relations[y].seal.id === seal.id) {
+											related = $scope.relations[y];
+											break;
+										}
+									}
 						        	return related;
 						        };
+
+								$scope.getLength = function(obj) {
+									return Object.keys(obj).length;
+								};
 
 							} ]);
 })(angular);

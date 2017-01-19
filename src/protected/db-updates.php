@@ -348,5 +348,12 @@ return [
         }
 
         $this->disableAccessControl();
+    },
+    'create seal relation validate date' => function() use($conn) {
+        if(__column_exists('seal_relation', 'validate_date')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date TYPE DATE;");   
     }
 ];
