@@ -1328,15 +1328,15 @@ class App extends \Slim\Slim{
         $convertToKB = function($size) use($MB, $GB){
             switch(strtolower(substr($size, -1))){
                 case 'k';
-                    $size = (int) $size;
+                    $size = intval($size);
                 break;
 
                 case 'm':
-                    $size = $size * $MB;
+                    $size = intval($size) * $MB;
                 break;
 
                 case 'g':
-                    $size = $size * $GB;
+                    $size = intval($size) * $GB;
                 break;
             }
 
