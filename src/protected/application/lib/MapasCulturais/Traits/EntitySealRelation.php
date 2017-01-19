@@ -54,6 +54,8 @@ trait EntitySealRelation {
      * @return \MapasCulturais\Entities\Seal[]|\MapasCulturais\Entities\SealRelation[] The Seals related to this entity.
      */
     function getRelatedSeals($return_relations = false, $include_pending_relations = false){
+        $app = App::i();
+
         if(!$this->id)
             return [];
 
@@ -63,10 +65,22 @@ trait EntitySealRelation {
 
         $result = [];
 
-        foreach ($this->getSealRelations($include_pending_relations) as $sealRelation)
-            $result[] = $return_relations ? $sealRelation : $sealRelation->seal;
+        $now = new \DateTime;
+        foreach ($this->getSealRelations($include_pending_relations) as $sealRelation) {
+            $result[$sealRelation->id] = $return_relations ? $sealRelation : $sealRelation->seal;
+            $diff = ($result[$sealRelation->id]->validateDate->format("U") - $now->format("U"))/86400;//$now->diff($result[$sealRelation->id]->validateDate);
+            $result[$sealRelation->id]->validateDate = $result[$sealRelation->id]->validateDate->format("d/m/Y");
 
-        ksort($result);
+            if($diff <= 0) { // Expired
+                $result[$sealRelation->id]->{'toExpire'} = 0;
+            }else if($diff <= $app->config['notifications.seal.toExpire']) { // To Expire
+                $result[$sealRelation->id]->{'toExpire'} = 1;
+            } else {
+                $result[$sealRelation->id]->{'toExpire'} = 2; // Not To Expired
+            }
+        }
+
+        rsort($result);
 
 		return $result;
 
@@ -79,6 +93,11 @@ trait EntitySealRelation {
         $relation->seal = $seal;
         $relation->owner = $this;
         $relation->agent = $app->user->profile;
+
+        $period = new \DateInterval("P" . ((string)$seal->validPeriod) . "M");
+        $dateIni = $relation->createTimestamp->format("d/m/Y");
+        $dateFin = $relation->createTimestamp->add($period);
+        $relation->validateDate = $dateFin;
 
         if($save)
             $relation->save($flush);

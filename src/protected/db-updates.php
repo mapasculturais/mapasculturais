@@ -425,8 +425,7 @@ return [
         }
 
         $this->disableAccessControl();
-    },
-            
+    },      
     '*_meta drop all indexes again' => function () use($conn) {
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
             $table = "{$prefix}_meta";
@@ -531,9 +530,7 @@ return [
         $conn->executeQuery("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
     },
-    
-    
-            
+               
     'save file relative path' => function() use ($conn, $app) {
         $next = true;
         while($next){
@@ -563,5 +560,11 @@ return [
             $this->em->flush();
         }
     },
-    
+    'create seal relation validate date' => function() use($conn) {
+        if(__column_exists('seal_relation', 'validate_date')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date TYPE DATE;");   
+    }
 ] + $updates ;

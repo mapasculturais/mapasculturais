@@ -71,8 +71,13 @@ E as notificações de entidades sem atualização, definido em dias:
 ```
 'notifications.entities.update' => 90,  // days
 ```
-Observação: Para deixar as desabilitadas as notificações de usuário e entidades sem atualização, é só deixar suas diretivas de definição de dias para notificar com o valor 0 (zero).
+**Observação**: Para deixar as desabilitadas as notificações de usuário e entidades sem atualização, é só deixar suas diretivas de definição de dias para notificar com o valor 0 (zero).
 
+Habilita a notificação ao usuário por notificação e email o número de dias configurado antes da data de expiração do selo atribuído a algum registro de entidade (Agente/Espaço/Evento):
+```
+'notifications.seals.toExpire' => 90,  // days
+```
+**Observação**: Esta configuração funciona em conjunto com os plugins de [Selos Certificadores](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_seal.md) e [Mailer](https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_plugins.md#mailer)
 
 ### Mailer
 Assim como as notificações no sistema, o Mailer tem o propósito de comunicar sobre ocorrências no Mapas enviando e-mails para o usuário do sistema, independente se os usuários acessam ou não a plataforma.

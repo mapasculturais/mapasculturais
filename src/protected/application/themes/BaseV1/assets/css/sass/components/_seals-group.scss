@@ -77,6 +77,14 @@
                     font-weight: bold;
                 }
             }
+            p {
+                color: #444;
+                font-family: $font-stack-base;
+                font-size: .65rem;
+                line-height: $line-height-base;
+                margin-bottom: 0;
+                text-align: center;    
+            }
             .btn {
                 margin-top: $line-height-half;
             }
