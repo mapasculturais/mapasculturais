@@ -47,6 +47,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
+        
+        <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>

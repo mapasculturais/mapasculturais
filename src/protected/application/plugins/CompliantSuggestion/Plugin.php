@@ -25,7 +25,7 @@ class Plugin extends \MapasCulturais\Plugin {
         }
 
         $app->hook('template(<<agent|space|event|project>>.<<single>>.main-content):end', function() use ($app, $plugin, $params) {
-            $this->part('singles/compliant_suggestion.php',$params);
+            $this->part('compliant_suggestion.php',$params);
         });
     }
 
