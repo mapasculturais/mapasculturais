@@ -428,15 +428,15 @@ return [
         
     },
             
-    'update file relative path' => function() use ($conn) {
+    'save file relative path' => function() use ($conn) {
         
         $files = $this->repo('File')->findAll();
         
         foreach($files as $file){
-            $path = $file->getRelativePath();
+            $path = $file->getRelativePath(true);
             echo "\nsaving url of $file ($path)";
             
-            $file->save();
+            $file->save(true);
         }
         $this->em->flush();
     },
