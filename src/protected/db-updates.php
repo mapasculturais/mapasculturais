@@ -448,6 +448,10 @@ return [
                 $conn->executeQuery("DROP INDEX {$index['indname']}");
             }
         }
+<<<<<<< HEAD
+=======
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+>>>>>>> 8517128... Fix validate date creation on seal relation table.
     },
     'recreate *_meta indexes' => function() use($conn) {
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
