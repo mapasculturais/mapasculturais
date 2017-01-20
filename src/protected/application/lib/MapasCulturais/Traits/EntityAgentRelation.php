@@ -102,8 +102,17 @@ trait EntityAgentRelation {
             return $ids;
         }
     }
+    
+    function deleteUsersWithControlCache(){
+        $app = \MapasCulturais\App::i();
 
-    function getUsersWithControl(){
+        // cache ids
+        $cache_id = "$this::usersWithControl";
+        
+        $app->cache->delete($cache_id);
+    }
+
+    function getUsersWithControl(array &$object_stack = []){
         $app = \MapasCulturais\App::i();
 
         // cache ids
@@ -120,26 +129,24 @@ trait EntityAgentRelation {
 
         $result = [$this->getOwnerUser()];
         $ids = [$result[0]->id];
-        if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
 
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
             foreach($this->getOwner()->getUsersWithControl() as $u){
                 if(!in_array($u->id, $ids)){
                     $ids[] = $u->id;
-                    if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                     $result[] = $u;
                 }
             }
         }
 
         if($this->usesNested()) {
+            $object_stack[] = $this->id;
+            
             $parent = $this->getParent();
-
-            if(is_object($parent) && !$parent->equals($this)){
-                foreach($parent->getUsersWithControl() as $u){
+            if(is_object($parent) && !$parent->equals($this) && !in_array($parent->id, $object_stack)){
+                foreach($parent->getUsersWithControl($object_stack) as $u){
                     if(!in_array($u->id, $ids)){
                         $ids[] = $u->id;
-                        if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                         $result[] = $u;
                     }
                 }
@@ -152,7 +159,6 @@ trait EntityAgentRelation {
             $u = $relation->agent->user;
             if(!in_array($u->id, $ids)){
                 $ids[] = $u->id;
-                if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                 $result[] = $u;
             }
         }
@@ -189,6 +195,14 @@ trait EntityAgentRelation {
             $relation->save($flush);
 
         $this->refresh();
+        
+        $this->deleteUsersWithControlCache();
+        
+        if($this->usesPermissionCache()){
+            $this->addToRecreatePermissionsCacheList();
+        }
+        
+        
         return $relation;
     }
 
@@ -201,6 +215,12 @@ trait EntityAgentRelation {
         }
         
         $this->refresh();
+        
+        $this->deleteUsersWithControlCache();
+        
+        if($this->usesPermissionCache()){
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     function setRelatedAgentControl($agent, $control){
@@ -228,6 +248,14 @@ trait EntityAgentRelation {
         $q->execute();
 
         $em->flush();
+        
+        $this->refresh();
+        
+        $this->deleteUsersWithControlCache();
+        
+        if($this->usesPermissionCache()){
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     protected function canUserCreateAgentRelation($user){

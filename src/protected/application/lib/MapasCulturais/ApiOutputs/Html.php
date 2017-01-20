@@ -48,14 +48,13 @@ class Html extends \MapasCulturais\ApiOutput{
     	$entity = $app->view->controller->entityClassName;
     	$label = $entity::getPropertiesLabels();
         $first = true; 
-        
+        if(count($data)){
+            $keys = array_keys($data[0]);
+        }
         ?>
         <table border="1">
-        <?php foreach($data as $item): ?>
-            <?php
-            $item = json_encode($item);
-            $item = json_decode($item);
-            
+        <?php foreach($data as $item): 
+            $item = json_decode(json_encode($item));
             ?>
             <?php if(isset($item->occurrences)) : //Occurrences to the end
                 $occs = $item->occurrences; unset($item->occurrences); $item->occurrences = $occs; ?>
@@ -97,7 +96,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <tbody>
             <?php endif; ?>
                 <tr>
-                    <?php foreach($item as $k => $v):  ?>
+                    <?php foreach($keys as $k): $v = $item->$k; ?>
                         <?php if($k==='terms'): ?>
                             <?php if(property_exists($v, 'area')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
@@ -132,8 +131,9 @@ class Html extends \MapasCulturais\ApiOutput{
                             ?>
                             <td>
                                 <?php
-                                
-                                if(is_object($v) && $k==='type'){
+                                if(is_bool($v)){
+                                    echo $v ? 'true' : 'false';
+                                }elseif(is_object($v) && $k==='type'){
                                     echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
                                 }elseif(is_string($v) || is_numeric($v)){
                                     echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
@@ -182,6 +182,7 @@ class Html extends \MapasCulturais\ApiOutput{
                         echo $v->name;
                     }elseif($p==='tag' || $p==='area'){
                         echo implode(', ',$v);
+                        
                     }elseif(is_object($v) || is_array($v)){
                         $this->printTable($v);
                     }elseif(is_string($v) || is_numeric($v)){

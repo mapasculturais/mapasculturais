@@ -482,6 +482,7 @@ class App extends \Slim\Slim{
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
+        $this->recreatePermissionsCacheOfListedEntities();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
@@ -656,6 +657,8 @@ class App extends \Slim\Slim{
         //workflow controllers
         $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
+        // history controller
+        $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
@@ -1279,11 +1282,27 @@ class App extends \Slim\Slim{
 
         return $hook;
     }
-
+    
+    /**********************************************
+     * Permissions Cache
+     **********************************************/
+    protected $_entitiesToRecreatePermissionsCache = [];
+    
+    public function addEntityToRecreatePermissionCacheList(Entity $entity){
+        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+    }
+    
+    public function recreatePermissionsCacheOfListedEntities(){
+        foreach($this->_entitiesToRecreatePermissionsCache as $entity){
+            $entity->createPermissionsCacheForUsers();
+        }
+        $this->_entitiesToRecreatePermissionsCache = [];
+    }
+    
     /**********************************************
      * Getters
      **********************************************/
-    
+
     /**
      * Returns the current subsite ID, or null if current site is the main site
      *
@@ -1295,7 +1314,7 @@ class App extends \Slim\Slim{
             return $this->_subsite->id;
         }
 
-        return null; 
+        return null;
     }
 
     public function getCurrentSubsite(){
@@ -1309,15 +1328,15 @@ class App extends \Slim\Slim{
         $convertToKB = function($size) use($MB, $GB){
             switch(strtolower(substr($size, -1))){
                 case 'k';
-                    $size = (int) $size;
+                    $size = intval($size);
                 break;
 
                 case 'm':
-                    $size = $size * $MB;
+                    $size = intval($size) * $MB;
                 break;
 
                 case 'g':
-                    $size = $size * $GB;
+                    $size = intval($size) * $GB;
                 break;
             }
 
@@ -2370,10 +2389,10 @@ class App extends \Slim\Slim{
      * GetText
      **************/
     /* deprecated, use MapasCulturais\i::get_locale();
-     * 
-     * 
-     * 
-     */ 
+     *
+     *
+     *
+     */
     static function getCurrentLCode(){
         return \MapasCulturais\i::get_locale();
     }

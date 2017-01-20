@@ -99,27 +99,32 @@ class Fake extends \MapasCulturais\AuthProvider{
     protected function _createUser($data) {
         $app = App::i();
         $app->disableAccessControl();
-        $u = new \MapasCulturais\Entities\User;
+        $user = new \MapasCulturais\Entities\User;
 
-        $u->authProvider = 'Fake';
-        $u->authUid = uniqid('fake-');
-        $u->email = $data['email'];
+        $user->authProvider = 'Fake';
+        $user->authUid = uniqid('fake-');
+        $user->email = $data['email'];
 
-        $app->em->persist($u);
+        $app->em->persist($user);
         $app->em->flush();
 
-        $a = new \MapasCulturais\Entities\Agent($u);
-        $a->name = $data['name'];
-        $a->status = 0;
+        $agent = new \MapasCulturais\Entities\Agent($user);
+        $agent->name = $data['name'];
+        $agent->status = 0;
+        $agent->save();
 
-        $app->em->persist($a);
         $app->em->flush();
 
-        $u->profile = $a;
-        $u->save(true);
+        $user->profile = $agent;
+        $user->save(true);
 
         $app->enableAccessControl();
         
-        return $u;
+        return $user;
+    }
+    
+    public function login($user_id){
+        $_SESSION['auth.fakeAuthenticationUserId'] = $user_id;
+        $this->_setAuthenticatedUser($this->_getAuthenticatedUser());
     }
 }

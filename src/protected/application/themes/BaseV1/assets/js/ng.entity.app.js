@@ -116,6 +116,8 @@
     }]);
 
     app.factory('SuggestionService', ['$http', '$rootScope', function($http, $rootScope){
+        var labels = MapasCulturais.gettext.entityApp;
+        
         var controllerId = null,
             entityId = null,
             baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
@@ -136,7 +138,7 @@
                 return $http.post(this.getUrl('sendSuggestionMessage'), {name: name,email: email,type: type,anonimous: anonimous,only_owner: only_owner,message: message, entityId: this.entityId, copy: copy}).
                         success(function(data, status){
                             if(status === 202){
-                                MapasCulturais.Messages.alert('Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com sucesso.');
+                                MapasCulturais.Messages.alert(labels['requestSent']);
                             }
                             $rootScope.$emit('sendSuggestionMessage.created', data);
                         }).

@@ -98,6 +98,10 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         $entity->name = "Test $class "  . uniqid();
         $entity->type = $type;
         $entity->shortDescription = 'A litle short description';
+        
+        if($app->user->is('guest') && $user && $classname::usesOwnerAgent()){
+            $entity->owner = $user->profile;
+        }
 
         if(!is_null($user)){
             $this->user = $_user;

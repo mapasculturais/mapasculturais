@@ -20,6 +20,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation,
+        Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
     	Traits\EntitySealRelation;
 
@@ -29,7 +30,8 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_WAITLIST = 8;
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
-
+    
+    
     /**
      * @var integer
      *
@@ -52,7 +54,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
@@ -63,7 +65,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -114,7 +116,19 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
+    
+    /**
+     * @var \MapasCulturais\Entities\RegistrationAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
 
     /**
      * @var integer
@@ -127,6 +141,10 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+    
+    static function isPrivateEntity(){
+        return true;
     }
 
     static function getValidations() {
@@ -327,15 +345,17 @@ class Registration extends \MapasCulturais\Entity
             $this->checkPermission('changeStatus');
         }
 
-		if($status === self::STATUS_APPROVED) {
-			$this->setAgentsSealRelation();
-		}
+        if($status === self::STATUS_APPROVED) {
+            $this->setAgentsSealRelation();
+        }
 
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
+        
+        $app->addEntityToRecreatePermissionCacheList($this->project);
     }
 
     function setAgentsSealRelation() {
@@ -427,8 +447,10 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
-        $this->project->save(true);
+        
         $app->enableAccessControl();
+        
+        $app->addEntityToRecreatePermissionCacheList($this->project);
     }
 
     function getSendValidationErrors(){

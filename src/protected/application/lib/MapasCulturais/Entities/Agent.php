@@ -27,11 +27,13 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
+        Traits\EntityRevision,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityPermissionCache,
         Traits\EntityArchive,
         Traits\EntityOriginSubsite,
         Traits\EntityNested {
@@ -170,19 +172,19 @@ class Agent extends \MapasCulturais\Entity
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_spaces = [];
+    protected $_spaces;
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_projects = [];
+    protected $_projects;
 
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
-    protected $_events = [];
+    protected $_events;
 
 
     /**
@@ -222,6 +224,11 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
 
     /**
      * @var \DateTime
@@ -229,8 +236,8 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
-    
-    
+
+
     /**
      * @var integer
      *
@@ -248,14 +255,14 @@ class Agent extends \MapasCulturais\Entity
 
         parent::__construct();
     }
-    
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Agentes');
         else
             return \MapasCulturais\i::__('Agente');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -270,7 +277,7 @@ class Agent extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
 
@@ -290,14 +297,23 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function getProjects(){
+        if(!$this->isNew()){
+            $this->refresh();
+        }
         return $this->fetchByStatus($this->_projects, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getEvents(){
+        if(!$this->isNew()){
+            $this->refresh();
+        }
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
     function getSpaces(){
+        if(!$this->isNew()){
+            $this->refresh();
+        }       
         return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 

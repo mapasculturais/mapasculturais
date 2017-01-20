@@ -39,7 +39,7 @@ class RequestSealRelation extends Request{
     function _doRejectAction() {
         $relation = $this->getSealRelation();
         if($relation){
-            $relation->delete();
+            $relation->delete(true);
         }
     }
 }

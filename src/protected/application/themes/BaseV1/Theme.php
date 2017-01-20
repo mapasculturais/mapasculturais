@@ -21,6 +21,9 @@ class Theme extends MapasCulturais\Theme {
         'magnific-popup' => '0.9.9',
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
+    
+    // The default fields that are queried to display the search results both on map and list modes
+    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl');
 
     static function getThemeFolder() {
         return __DIR__;
@@ -29,20 +32,20 @@ class Theme extends MapasCulturais\Theme {
     static function getDictGroups(){
         $groups = [
             'site' => [
-                'title' => 'Diversos',
-                'description' => 'Textos utilizados em diversos lugares do site'
+                'title' => i::__('Diversos'),
+                'description' => i::__('Textos utilizados em diversos lugares do site')
             ],
             'home' => [
-                'title' => 'Página Inicial',
-                'description' => 'Textos utilizados exclusivamente na home do site'
+                'title' => i::__('Página Inicial'),
+                'description' => i::__('Textos utilizados exclusivamente na home do site')
             ],
             'search' => [
-                'title' => 'Busca / Mapa',
-                'description' => 'Textos utilizados exclusivamente na página de busca do site'
+                'title' => i::__('Busca / Mapa'),
+                'description' => i::__('Textos utilizados exclusivamente na página de busca do site')
             ],
             'entities' => [
-                'title' => 'Nomes das entidades',
-                'description' => 'Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos é interessante renomear as entidades, como por exemplo em uma instalação que só exibe museus é interessante chamar os espaços de museus.'
+                'title' => i::__('Nomes das entidades'),
+                'description' => i::__('Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos é interessante renomear as entidades, como por exemplo em uma instalação que só exibe museus é interessante chamar os espaços de museus.')
             ],
 //            'error' => [
 //                'title' => 'Erros',
@@ -548,7 +551,27 @@ class Theme extends MapasCulturais\Theme {
                 'text' => i::__('Selecione as áreas')
             ],
 
-
+            'taxonomies:linguagem: name' => [
+                'name' => i::__('Linguagem'),
+                'description' => i::__('Informar qual é a linguagem'),
+                'examples' => [],
+                'skip' => true,
+                'text' => i::__('Linguagem')
+            ],
+            'taxonomies:linguagem: select at least one' => [
+                'name' => i::__('Selecione pelos menos uma linguagem'),
+                'description' => i::__('Precisa ter pelo menos uma linguagem selecionada'),
+                'examples' => [],
+                'skip' => true,
+                'text' => i::__('Selecione pelo menos uma linguagem')
+            ],
+            'taxonomies:linguagem: select' => [
+                'name' => i::__('Selecione as linguagens'),
+                'description' => i::__('Selecionar quantas linguagens for preciso'),
+                'examples' => [],
+                'skip' => true,
+                'text' => i::__('Selecione as linguagens')
+            ],
             // Mensagens de erro
             'error:403: title' => [
                 'name' => i::__('Permissão negada'),
@@ -704,8 +727,8 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
 
-        $this->jsObject['infoboxFields'] = 'id,singleUrl,name,subTitle,type,shortDescription,terms,project.name,project.singleUrl';
-
+        $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
+        
         $this->jsObject['EntitiesDescription'] = [
         		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
         		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
@@ -824,26 +847,26 @@ class Theme extends MapasCulturais\Theme {
 
         $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
-		if($app->config['notifications.entities.new']) {
-	                $user = $this->ownerUser;
-       		         $dataValue = [
-				'name'          => $app->user->profile->name,
-				'entityType'    => $this->entityTypeLabel,
-				'entityName'    => $this->name,
-				'url'           => $this->origin_site,
-				'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
-	                ];
+                if($app->config['notifications.entities.new']) {
+                    $user = $this->ownerUser;
+                    $dataValue = [
+                        'name'          => $app->user->profile->name,
+                        'entityType'    => $this->entityTypeLabel,
+                        'entityName'    => $this->name,
+                        'url'           => $this->origin_site,
+                        'createTimestamp'=> $this->createTimestamp->format('d/m/Y - H:i')
+                    ];
 
-        	        $message = $app->renderMailerTemplate('new',$dataValue);
+                    $message = $app->renderMailerTemplate('new',$dataValue);
 
-                	$app->createAndSendMailMessage([
-       				'from' => $app->config['mailer.from'],
-				'to' => $user->email,
-				'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
-				'body' => $message['body']
-	                ]);
-        	    }
-		}
+                    $app->createAndSendMailMessage([
+                        'from' => $app->config['mailer.from'],
+                        'to' => $user->email,
+                        'subject' => sprintf(i::__($message['title'],$this->entityTypeLabel)),
+                        'body' => $message['body']
+                    ]);
+                }
+            }
         });
 
         // sempre que insere uma imagem cria o avatarSmall
@@ -888,7 +911,7 @@ class Theme extends MapasCulturais\Theme {
                         tr.term
                             t
                         WITH
-                            t.taxonomy = '{$taxonomy->id}'";
+                            t.taxonomy = '{$taxonomy->slug}'";
         });
 
         $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) {
@@ -1217,6 +1240,27 @@ class Theme extends MapasCulturais\Theme {
         $this->assetManager->publishAsset("vendor/bootstrap-colorpicker/img/bootstrap-colorpicker/saturation.png", 'img/bootstrap-colorpicker/saturation.png');
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
+        $this->localizeScript('editable', [
+            'cancel'    => i::__('Cancelar Alteração (Esc)'),
+            'confirm'    => i::__('Confirmar Alteração (Enter)'),
+            'confirmC'    => i::__('Confirmar Alteração (Ctrl+Enter)'),
+            'unsavedChanges'    => i::__('Há alterações não salvas nesta página.'),
+            'freePublish'    => i::__('Publicação livre'),
+            'restrictedPublish'    => i::__('Publicação restrita'),
+            'freePlublishDescription'    => i::__('Qualquer pessoa pode criar eventos.'),
+            'restrictedPublishDescription'    => i::__('Requer autorização para criar eventos.'),
+            'confirmPublish'    => i::__('Você tem certeza que deseja publicar este %s?'),
+            'confirmPublishFinal'    => i::__('Você tem certeza que deseja publicar este %s? Isto não poderá ser desfeito.'),
+            'requestChild'    => i::__('Sua requisição para fazer deste %s filho de %s foi enviada.'),
+            'requestEventProject'    => i::__('Sua requisição para associar este evento ao projeto %s foi enviada.'),
+            'correctErrors'    => i::__('Corrija os erros indicados abaixo.'),
+            'changesSaved'    => i::__('Edições salvas.'),
+            'unexpectedError'    => i::__('Um erro inesperado aconteceu.'),
+            'insertVideoTitle'    => i::__('Insira um título para seu vídeo.'),
+            'insertVideoUrl'    => i::__('Insira uma url de um vídeo do YouTube ou do Vimeo.'),
+            'insertLinkTitle'    => i::__('Insira um título para seu link.'),
+            'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
+        ]);
     }
 
     function includeSearchAssets() {
@@ -1318,6 +1362,9 @@ class Theme extends MapasCulturais\Theme {
             'entity.directive.editableMultiselect',
             'entity.directive.editableSingleselect',
         ));
+        $this->localizeScript('entityApp', [
+            'requestSent' =>  i::__('Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com sucesso.'),
+        ]);
 
         $this->enqueueScript('app', 'mc.directive.multiselect', 'js/ng.mc.directive.multiselect.js', array('ng-mapasculturais'));
         $this->enqueueScript('app', 'mc.directive.singleselect', 'js/ng.mc.directive.singleselect.js', array('ng-mapasculturais'));
@@ -1442,7 +1489,7 @@ class Theme extends MapasCulturais\Theme {
 
         if (!$app->user->is('guest')) {
             $this->jsObject['notifications'] = $app->controller('notification')->apiQuery(array(
-                '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.permissionTo.approve,request.permissionTo.reject,request.requesterUser.id',
+                '@select' => 'id,status,isRequest,createTimestamp,message,approveUrl,request.{permissionTo.{approve,reject},requesterUser}',
                 'user' => 'EQ(@me)',
                 '@ORDER' => 'createTimestamp DESC'
             ));
@@ -1487,6 +1534,16 @@ class Theme extends MapasCulturais\Theme {
                                 break;
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                
+                                // ordena alfabeticamente
+                                uasort($types, function($a, $b) {
+                                    if ($a->name == $b->name)
+                                        return 0;
+                                    if ($a->name < $b->name)
+                                        return -1;
+                                    if ($a->name > $b->name)
+                                        return 1;
+                                });
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
@@ -2059,6 +2116,27 @@ class Theme extends MapasCulturais\Theme {
         return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
     }
 
-
+    /*
+     * This methods adds fields to the default query used in the search pages
+     *
+     * Use this to add fields that are available to build the list results and the infoboxes
+     *
+     * @param string|array $fields The fields to be added. It can be an array or a string with comma separated list
+     *
+     */
+    function addSearchQueryFields($fields) {
+        if (!$fields || empty($fields))
+            return false;
+        
+        if (is_string($fields))
+            $fields = explode(',', $fields);
+        
+        $this->searchQueryFields = array_merge($this->searchQueryFields, $fields);
+        $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
+        
+    }
+    
+    
+    
 
 }

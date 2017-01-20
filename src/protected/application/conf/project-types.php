@@ -25,9 +25,9 @@ return array(
         ),
 
         'registrationLimit' => array(
-            'label' => 'Número máximo de inscrições no projeto',
+            'label' => \MapasCulturais\i::__('Número máximo de inscrições no projeto'),
             'validations' => array(
-                "v::intVal()" => "O número máximo de inscrições no projeto deve ser um número inteiro"
+                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições no projeto deve ser um número inteiro")
             )
         ),
 

@@ -29,9 +29,9 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
+        Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive;
-
 
     /**
      * @var integer
@@ -149,7 +149,7 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -223,6 +223,10 @@ class Project extends \MapasCulturais\Entity
     */
     protected $__sealRelations;
     
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
     
     /**
      * @var integer
