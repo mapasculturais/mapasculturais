@@ -17,6 +17,8 @@ define('APPMODE_STAGING', 'staging');
 
 require_once __DIR__."/../vendor/autoload.php";
 
+require __DIR__ . "/dump-function.php";
+
 if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){
     $config = include __DIR__.'/conf/' . $_ENV['MAPASCULTURAIS_CONFIG_FILE'];
 }else if(isset($_SERVER['MAPASCULTURAIS_CONFIG_FILE'])){
