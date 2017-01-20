@@ -97,6 +97,13 @@ abstract class SealRelation extends \MapasCulturais\Entity
      */
     protected $validateDate;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="renovation_request", type="boolean", nullable=false)
+     */
+    protected $renovation_request;
+
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');

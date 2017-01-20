@@ -3,6 +3,7 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
+// \dump($relation);
 $this->addEntityToJs($relation);
 
 if($this->isEditable()){
@@ -44,6 +45,40 @@ $entity = $relation->seal;
 			<h2><span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>"><a href="<?php echo $app->createUrl('seal', 'single', ['id' => $entity->id])?>"><?php echo $entity->name; ?></a></span></h2>
 			<?php $this->applyTemplateHook('name','after'); ?>
 
+            <?php if(is_object($relation->validateDate)): ?>
+                <?php   
+                    $now = new \DateTime;
+                    $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                ?>
+                <div>
+                    <span class="label">
+                        <?php if($diff <= 0):?>
+                            <?php \MapasCulturais\i::_e('Expirou em:'); ?>
+                        <?php else:?>
+                            <?php \MapasCulturais\i::_e('Válido em:'); ?>
+                        <?php endif;?>
+                    </span>
+                    <span class="js-editable" data-edit="validateDate" data-original-title="Data de Validade" data-emptytext=""><?php echo $relation->validateDate->format("d/m/Y"); ?></span>
+                    &nbsp;
+                    <?php if($entity->owner->userId <> $app->user->id): ?>
+                        <?php if($relation->renovation_request && ($diff <= 0 && $diff <= $app->config['notifications.seal.toExpire'])):?>
+                            <a href="<?php echo $relation->getRequestSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
+                                <?php \MapasCulturais\i::_e("Solicitar renovação");?>
+                            </a>
+                        <?php elseif($relation->renovation_request && ($diff <= 0 && $diff <= $app->config['notifications.seal.toExpire'])):?>
+                            <div class="alert warning">
+                                <?php \MapasCulturais\i::_e("Renovação Solicitada");?>
+                            <!--</div>-->
+                        <?php endif;?>
+                    <?php elseif($entity->owner->userId == $app->user->id && ($diff <= 0 && $diff <= $app->config['notifications.seal.toExpire'])):?>
+                        <a href="<?php echo $relation->getRenewSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
+                            <?php \MapasCulturais\i::_e("Renovar selo");?>
+                        </a>
+                    <?php endif;?>
+                </div>
+            <?php endif;?>
+            <!--.validade-->
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -76,11 +111,6 @@ $entity = $relation->seal;
             <?php endif; ?>
             <!--.descricao-->
 
-            <?php if ( $relation->validateDate ): ?>
-                <h3><?php \MapasCulturais\i::_e("Válido Até");?></h3>
-                <span class="js-editable" data-edit="validateDate" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Validade do Selo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a validade do selo");?>"><?php echo $relation->validateDate->format("d/m/Y"); ?></span>
-            <?php endif; ?>
-            <!--.validade-->
         </div>
         <!-- #sobre -->
 
