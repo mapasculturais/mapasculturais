@@ -30,15 +30,30 @@ $this->addRelatedSealsToJs($entity);
             <div class="selos clearfix">
                 <div class="avatar-seal ng-scope" ng-repeat="relation in relations" ng-class="{pending: relation.status < 0 || relation.toExpire != 2}">
                     <?php $idRelation =  '{{relation.id}}';?>
-                    <a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">
+                    <a ng-href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">
                         <img ng-src="{{avatarUrl(relation.seal.avatar.avatarMedium.url)}}">
                     </a>
                     <div class="botoes" ng-if="isEditable && canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="<?php \MapasCulturais\i::esc_attr_e("Excluir selo");?>" ng-click="deleteRelation(relation,relation.seal.id)"></a></div>
                     <div class="descricao-do-selo">
-                        <h1><a href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">{{relation.seal.name}}</a></h1>
+                        <h1><a ng-href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">{{relation.seal.name}}</a></h1>
                         <p><b ng-if="relation.toExpire == 2">Válido até:</b> 
                            <b ng-if="relation.toExpire == 1">Expira em:</b>
                            <b ng-if="relation.toExpire == 0">Expirou em:</b> {{relation.validateDate}} </p>
+                        <p>
+                            <div ng-if="relation.ownerSealUserId <> <?php echo $app->user->id;?>" align="center">
+                                <a ng-if="!relation.renovation_request && relation.toExpire < 2" ng-href="{{relation.requestSealRelationUrl}}" class="btn btn-default js-toggle-edit">
+                                <?php \MapasCulturais\i::_e("Solicitar renovação");?>
+                                </a>
+                                <div ng-if="relation.renovation_request && relation.toExpire < 2" class="alert warning">
+                                <?php \MapasCulturais\i::_e("Renovação Solicitada");?>
+                                </div>
+                            </div>
+                            <div ng-if="relation.ownerSealUserId == <?php echo $app->user->id;?>" align="center">
+                                <a ng-if="relation.toExpire < 2" ng-href="{{relation.renewSealRelationUrl}}" class="btn btn-default js-toggle-edit">
+                                <?php \MapasCulturais\i::_e("Renovar selo");?>
+                                </a>
+                            </div>
+                        </p>
                     </div>
                 </div>
             </div>

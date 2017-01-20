@@ -68,13 +68,18 @@ trait EntitySealRelation {
         $now = new \DateTime;
         foreach ($this->getSealRelations($include_pending_relations) as $sealRelation) {
             $result[$sealRelation->id] = $return_relations ? $sealRelation : $sealRelation->seal;
-            $diff = ($result[$sealRelation->id]->validateDate->format("U") - $now->format("U"))/86400;//$now->diff($result[$sealRelation->id]->validateDate);
+            $diff = ($result[$sealRelation->id]->validateDate->format("U") - $now->format("U"))/86400;
             $result[$sealRelation->id]->validateDate = $result[$sealRelation->id]->validateDate->format("d/m/Y");
+            $result[$sealRelation->id]->ownerSealUserId = $sealRelation->seal->owner->userId; 
 
             if($diff <= 0) { // Expired
                 $result[$sealRelation->id]->{'toExpire'} = 0;
+                $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
+                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealrelationUrl($sealRelation->id);
             }else if($diff <= $app->config['notifications.seal.toExpire']) { // To Expire
                 $result[$sealRelation->id]->{'toExpire'} = 1;
+                $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
+                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealrelationUrl($sealRelation->id);
             } else {
                 $result[$sealRelation->id]->{'toExpire'} = 2; // Not To Expired
             }
@@ -125,5 +130,38 @@ trait EntitySealRelation {
     function canUserRemoveSealRelation($user){
         $result = $user->is('admin');
         return $result;
+    }
+
+    function getRequestSealRelationUrl($idRelation){
+        return App::i()->createUrl($this->controllerId, 'requestsealrelation', [$idRelation]);
+    }
+    function getRenewSealRelationUrl($idRelation){
+        return App::i()->createUrl($this->controllerId, 'renewsealrelation', [$idRelation]);
+    }
+
+    function requestsealrelation($flush = true){
+        $this->checkPermission('requestsealrelation');
+
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').requestsealrelation:before');
+
+        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
+
+        $this->save($flush);
+
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').requestsealrelation:before');
+    }
+
+    function renewsealrelation($flush = true){
+        $this->checkPermission('renewsealrelation');
+
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').renewsealrelation:before');
+
+        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
+
+        $this->save($flush);
+
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').renewsealrelation:before');
     }
 }

@@ -449,6 +449,7 @@ return [
             }
         }
     },
+<<<<<<< HEAD
     'recreate *_meta indexes' => function() use($conn) {
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
         $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
@@ -558,6 +559,13 @@ return [
             
             $this->em->flush();
         }
+    },
+    'create seal relation renovation flag field' => function() use($conn) {
+        if(__column_exists('seal_relation', 'renovation_request')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");   
     },
     'create seal relation validate date' => function() use($conn) {
         if(__column_exists('seal_relation', 'validate_date')){

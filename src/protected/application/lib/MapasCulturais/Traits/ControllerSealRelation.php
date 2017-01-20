@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 /**
  * Implements actions to work with entities that uses seal relations.
@@ -61,7 +62,6 @@ trait ControllerSealRelation{
      * @WriteAPI POST removeSealRelation
      */
     public function POST_removeSealRelation(){
-//         $this->requireAuthentication();
         $app = App::i();
 
         if(!$this->urlData['id'])
@@ -96,5 +96,78 @@ trait ControllerSealRelation{
         $owner->setRelatedSealControl($seal);
 
         $this->json(true);
+    }
+
+    function GET_requestsealrelation(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+        if(!key_exists('id', $this->urlData))
+            $app->pass();
+
+        $entity = $this->requestedEntity;
+        $urls = [$entity->singleUrl, $entity->editUrl];
+
+        if(!$entity)
+            $app->pass();
+
+        $relation_class = $this->getClassName() . 'SealRelation';
+        $relation = $app->repo($relation_class)->find($this->urlData['id']);
+        
+        $notification = new Entities\Notification;
+        $notification->user = $relation->seal->owner->user;
+        $notification->message = "Solicitação de renovação do selo " . $entity->name . " para a entidade " . $entity->entityTypeName . ".<br>Acesse a página da entidade e renove o certificado. ";
+        $notification->message .= '<a class="btn btn-small btn-primary" href="' . $entity->editUrl . '">editar</a>';
+        $notification->save();
+
+        $relation->renovation_request = true;
+        $relation->save(true);
+
+        if($this->isAjax()){
+            $this->json($entity);
+        }else{
+            //e redireciona de volta para o referer
+            if(in_array($app->request()->getReferer(), $urls))
+                $app->redirect($app->createUrl('panel'));
+            else
+                $app->redirect($app->request()->getReferer());
+        }
+
+    }
+
+    function GET_renewsealrelation(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+        if(!key_exists('id', $this->urlData))
+            $app->pass();
+
+        $entity = $this->requestedEntity;
+        $urls = [$entity->singleUrl, $entity->editUrl];
+
+        if(!$entity)
+            $app->pass();
+
+        $relation_class = $this->getClassName() . 'SealRelation';
+        $relation = $app->repo($relation_class)->find($this->urlData['id']);
+        
+        $notification = new Entities\Notification;
+        $notification->user = $relation->seal->owner->user;
+        $notification->message = "Solicitação de renovação do selo " . $entity->name . " para a entidade " . $entity->entityTypeName . ".<br>Acesse a página da entidade e renove o certificado. ";
+        $notification->message .= '<a class="btn btn-small btn-primary" href="' . $entity->editUrl . '">editar</a>';
+        $notification->save();
+
+        $relation->renovation_request = true;
+        $relation->save(true);
+
+        if($this->isAjax()){
+            $this->json($entity);
+        }else{
+            //e redireciona de volta para o referer
+            if(in_array($app->request()->getReferer(), $urls))
+                $app->redirect($app->createUrl('panel'));
+            else
+                $app->redirect($app->request()->getReferer());
+        }
     }
 }
