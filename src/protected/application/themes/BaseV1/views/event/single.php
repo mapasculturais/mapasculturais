@@ -68,8 +68,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                    data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modificar Ocorrência'); ?>"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'<?php \MapasCulturais\i::_e("Editar");?></a>
-               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'<?php \MapasCulturais\i::_e("Excluir");?></a>
+                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'><?php \MapasCulturais\i::_e("Editar");?></a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'><?php \MapasCulturais\i::_e("Excluir");?></a>
             </div>
         <?php endif; ?>
     </div>
