@@ -47,6 +47,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
+        
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
@@ -146,6 +147,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
+    
+    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
