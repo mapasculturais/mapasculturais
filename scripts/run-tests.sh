@@ -30,7 +30,7 @@ psql -c 'DROP USER IF EXISTS mapasculturais_test;' -U postgres
 psql -c "CREATE USER mapasculturais_test WITH PASSWORD 'mapasculturais_test' SUPERUSER" -U postgres
 ./restore-dump.sh -o=mapasculturais_test -f=db-test.sql -db=mapasculturais_test --noconfirm
 ./compile-sass.sh localhost conf-test.php
-./db-update.sh localhost 1 conf-test.php
+./db-update.sh localhost 0 conf-test.php
 
 cd ..
 
