@@ -123,6 +123,7 @@ class Registration extends \MapasCulturais\Entity
     protected $__permissionsCache;
     
     /**
+
      * @var \MapasCulturais\Entities\RegistrationAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
