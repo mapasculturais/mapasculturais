@@ -7,7 +7,7 @@ else
 fi
 
 if [[ $2 ]]; then
-    SAVE_LOG=1;
+    SAVE_LOG=$2;
 else
     SAVE_LOG=0;
 fi
