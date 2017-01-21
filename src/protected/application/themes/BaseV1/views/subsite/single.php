@@ -13,7 +13,7 @@ $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));
 
 $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
 $this->localizeScript('singleSubsite', [
-            'examples' =>  i::__('exemplos:'),
+            'examples' =>  \MapasCulturais\i::__('exemplos:'),
         ]);
 
 ?>

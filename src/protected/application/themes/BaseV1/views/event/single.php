@@ -19,6 +19,13 @@ if ($this->isEditable()) {
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+$this->localizeScript('singleEvents', [
+            'correctErrors' => \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
+            'requestAddToSpace' => \MapasCulturais\i::__('Sua requisição para criar a ocorrência do evento no espaço %s foi enviada.'),
+            'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
+            'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
+            'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
+        ]);
 
 $this->includeAngularEntityAssets($entity);
 
@@ -61,8 +68,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                    data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modificar Ocorrência'); ?>"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'<?php \MapasCulturais\i::_e("Editar");?></a>
-               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'<?php \MapasCulturais\i::_e("Excluir");?></a>
+                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'><?php \MapasCulturais\i::_e("Editar");?></a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'><?php \MapasCulturais\i::_e("Excluir");?></a>
             </div>
         <?php endif; ?>
     </div>
@@ -166,12 +173,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
-                        <?php
-                        /*Agente padrão da Giovanna editando atrações da Virada*/
-                        if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
-                            $entity->classificacaoEtaria = 'Livre';
-                        }
-                        ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"classificacaoEtaria") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Classificação Etária");?>: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Classificação Etária");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe a classificação etária do evento");?>"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
@@ -490,7 +491,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
             </div>
             <div class="grupo-de-campos">
-                <span class="label">Frequência:</span><br>
+                <span class="label"><?php \MapasCulturais\i::_e("Frequência");?>:</span><br>
                     <select name="frequency" class="js-select-frequency">
                         <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}> <?php \MapasCulturais\i::_e("uma vez");?></option>
                         <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}> <?php \MapasCulturais\i::_e("todos os dias");?></option>
