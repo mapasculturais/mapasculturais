@@ -558,15 +558,19 @@ return [
         
     },
             
-    'save file relative path' => function() use ($conn) {
+    'save file relative paths' => function() use ($conn) {
         
         $files = $this->repo('File')->findAll();
         
         foreach($files as $file){
-            $path = $file->getRelativePath(true);
-            echo "\nsaving url of $file ($path)";
-            
-            $file->save(true);
+            try{
+                $path = $file->getRelativePath(true);
+                echo "\nsaving url of $file ($path)\n";
+
+                $file->save(true);
+            } catch (\Exception $e){
+                echo "\nCOULD NOT SAVE PATH FOR $file->name\n\n";
+            }
         }
         $this->em->flush();
     },
