@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-01-20 15:55-0300\n"
+"POT-Creation-Date: 2017-01-23 11:52-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ../../..\n"
-"X-Poedit-KeywordsList: _e;__;esc_attr_e\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -2326,35 +2326,35 @@ msgstr "Referencia circular"
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:127
 msgid "Registro criado."
-msgstr ""
+msgstr "Registro creado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:148
 msgid "Registro publicado."
-msgstr ""
+msgstr "Registro publicado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:153
 msgid "Registro arquivado."
-msgstr ""
+msgstr "Registro archivado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:158
 msgid "Registro recuperado da lixeira."
-msgstr ""
+msgstr "Registro recuperado de la papelera."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:161
 msgid "Registro desarquivado."
-msgstr ""
+msgstr "Registro desarchivado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:165
 msgid "Registro despublicado."
-msgstr ""
+msgstr "Registro despublicado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:171
 msgid "Registro movido para a lixeira."
-msgstr ""
+msgstr "Registro movido a la papelera."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:183
 msgid "Registro deletado."
-msgstr ""
+msgstr "Registro eliminado."
 
 #: protected/application/lib/MapasCulturais/Types/GeoPoint.php:80
 msgid "Latitude precisa ser um float entre 90 e -90"
@@ -2638,7 +2638,7 @@ msgstr "Fecha inicial"
 #: protected/application/themes/BaseV1/layouts/parts/search/filter.php:19
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
 msgid "a"
-msgstr ""
+msgstr "a"
 
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:60
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:11
@@ -4986,6 +4986,30 @@ msgstr " por "
 msgid "Adicionar "
 msgstr "Agregar "
 
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:14
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:46
+msgid "Excluir este link?"
+msgstr "Eliminar este link?"
+
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:14
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:47
+#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:28
+#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:33
+#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:7
+#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:11
+#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:21
+#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:26
+#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:35
+#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:40
+#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:17
+#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:22
+#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:30
+#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:35
+#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:22
+#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:27
+msgid "excluir"
+msgstr "borrar"
+
 #: protected/application/themes/BaseV1/layouts/parts/link-list.php:21
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:350
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:329
@@ -5011,28 +5035,6 @@ msgstr "Haga clic para agregar archivo links"
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:19
 msgid "editar"
 msgstr "editar"
-
-#: protected/application/themes/BaseV1/layouts/parts/link-list.php:46
-msgid "Excluir este link?"
-msgstr "Eliminar este link?"
-
-#: protected/application/themes/BaseV1/layouts/parts/link-list.php:47
-#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:28
-#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:33
-#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:7
-#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:11
-#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:21
-#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:26
-#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:35
-#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:40
-#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:17
-#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:22
-#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:30
-#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:35
-#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:22
-#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:27
-msgid "excluir"
-msgstr "borrar"
 
 #: protected/application/themes/BaseV1/layouts/parts/link-list.php:54
 msgid "Editar Link"
@@ -5450,13 +5452,28 @@ msgstr "Editar"
 msgid "Editar avatar"
 msgstr "Editar avatar"
 
+#: protected/application/themes/BaseV1/layouts/parts/singles/avatar.php:16
+#, php-format
+msgid "Este %s é verificado."
+msgstr "Este %s está verificado."
+
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:3
 msgid "Sair do modo de edição"
 msgstr "Salir del modo edición"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
+#, php-format
+msgid "Salvar este %s como rascunho."
+msgstr "Guardar este %s como borrador."
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
 msgid "Salvar rascunho"
 msgstr "Guardar borrador"
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
+#, php-format
+msgid "Salvar e publicar este %s."
+msgstr "Guardar y publicar este %s."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
 msgid "Publicar"
@@ -5494,6 +5511,15 @@ msgstr "Recuperar"
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:13
 msgid "Excluir Definitivamente"
 msgstr "Eliminar Definitivamente"
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:17
+#, php-format
+msgid ""
+"Você possui permissão para editar este %s. Use os botões à direita para "
+"editar ou excluir."
+msgstr ""
+"Usted posee permiso para editar este %s. Use los botones a la derecha para "
+"editar o eliminar."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/entity-status.php:10
 #, php-format
@@ -6876,6 +6902,16 @@ msgstr "Agregar subproyecto"
 msgid "área de atuação:"
 msgstr "área de actuación"
 
+#: protected/application/themes/BaseV1/layouts/parts/verified.php:8
+#, php-format
+msgid "Clique para marcar/desmarcar este %s"
+msgstr "Haga clic para marcar/desmarcar este %s"
+
+#: protected/application/themes/BaseV1/layouts/parts/verified.php:13
+#, php-format
+msgid "Este %s é verificado"
+msgstr "Este %s está verficado"
+
 #: protected/application/themes/BaseV1/layouts/parts/video-gallery.php:40
 #: protected/application/themes/BaseV1/layouts/parts/video-gallery.php:55
 msgid "Editar Vídeo"
@@ -7417,6 +7453,11 @@ msgstr "Actividades"
 #: protected/application/themes/BaseV1/views/panel/index.php:140
 msgid "Em"
 msgstr "En"
+
+#: protected/application/themes/BaseV1/views/panel/list-users.php:35
+#, php-format
+msgid "Você tem certeza que deseja remover este usuário da lista de %s?"
+msgstr "Usted está seguro que desea eliminar este usuario de la lista de %s?"
 
 #: protected/application/themes/BaseV1/views/panel/list-users.php:36
 msgid "remover do papel"
