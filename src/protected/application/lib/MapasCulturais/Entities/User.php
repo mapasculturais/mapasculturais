@@ -616,7 +616,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s/b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
+              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
               $notification->save();
 
               // use the notification id to use it later on entity update
