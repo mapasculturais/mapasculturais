@@ -142,7 +142,13 @@ class ApiQuery {
      * @var bool 
      */
     protected $usesOwnerAgent;
-
+    
+    /**
+     * The entity has the status property
+     * @var bool
+     */
+    protected $usesStatus;
+    
     /**
      * List of the entity properties
      * @var array
@@ -322,9 +328,13 @@ class ApiQuery {
     protected $_selectingOriginSiteUrl = false;
     protected $_selectingType = false;
     protected $_usingSubquery = false;
+    
+    protected $_subsiteId = false;
 
     
-    public function __construct($entity_class_name, $api_params) {
+    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false) {
+        $this->_subsiteId = $is_subsite_filter;
+        
         $this->initialize($entity_class_name, $api_params);
 
         $this->parseQueryParams();
@@ -345,6 +355,9 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
+        $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
+        $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
+        
         $this->entityClassName = $class;
         $this->entityController = $app->getControllerByEntity($this->entityClassName);
         $this->entityRepository = $app->repo($this->entityClassName);
@@ -357,6 +370,8 @@ class ApiQuery {
         $this->usesOwnerAgent = $class::usesOwnerAgent();
         $this->usesTypes = $class::usesTypes();
         $this->usesSealRelation = $class::usesSealRelation();
+        
+        $this->usesStatus = in_array('status', $this->entityProperties);
 
         if ($this->usesFiles) {
             $this->fileClassName = $class::getFileClassName();
@@ -391,9 +406,6 @@ class ApiQuery {
                 }
             }
         }
-
-        $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
-        $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
     }
     
     protected function getAlias($name){
@@ -627,11 +639,13 @@ class ApiQuery {
         
         $filters = $this->_subqueryFilters;
         
-        if($subsite = $app->getCurrentSubsite()){
-            $subsite_query = $subsite->getEntityFilter($this->entityClassName);
-            
-            if($subsite_query){
-                $filters[] = ['subquery' => $subsite_query, 'subquery_property' => 'id', 'property' => 'id'];
+        if(!$this->_subsiteId){
+            if($subsite = $app->getCurrentSubsite()){
+                $subsite_query = $subsite->getApiQueryFilter($this->entityClassName);
+
+                if($subsite_query){
+                    $filters[] = ['subquery' => $subsite_query, 'subquery_property' => 'id', 'property' => 'id'];
+                }
             }
         }
         
@@ -649,7 +663,7 @@ class ApiQuery {
             $where = $where_dqls;
         }
         
-        if(!isset($this->apiParams['status']) || $this->_permission != 'view'){
+        if($this->usesStatus && (!$this->_subsiteId && !isset($this->apiParams['status']) || $this->_permission != 'view')){
             $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
         }
         
@@ -667,6 +681,14 @@ class ApiQuery {
             $sub_dql = $subquery->getSubDQL($subquery_property);
             
             $where .= " AND e.{$property} IN ({$sub_dql})";
+        }
+        
+        if(!$where) {
+            $where = 'e.id > 0';
+        }
+        
+        if($this->_subsiteId){
+            $where = "($where) OR e._subsiteId = {$this->_subsiteId}";
         }
 
         return $where;
@@ -784,8 +806,6 @@ class ApiQuery {
             $types = $app->getRegisteredEntityTypes($this->entityClassName);
         }
         
-        $_original_select = explode(',', $this->apiParams['@select']);
-        
         foreach ($entities as &$entity){
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
@@ -810,8 +830,13 @@ class ApiQuery {
                 unset($entity[$prop]);
             }
             
-            foreach($_original_select as $prop){
-                $prop = trim($prop);
+            foreach($this->_selecting as $prop){
+                if($prop[0] === '#'){
+                    $prop = array_search($prop, $this->_selectingRelations);
+                    if(!$prop){
+                        continue;
+                    }
+                }
                 if(!isset($entity[$prop])){
                     $entity[$prop] = null;
                 }
@@ -1352,6 +1377,27 @@ class ApiQuery {
 
                 $dql = $not ? "$key NOT IN (" : "$key IN (";
                 $dql .= implode(', ', $values) . ')';
+                
+            }elseif($operator == "IIN"){
+                $values = $this->splitParam($value);
+
+                $values = $this->addMultipleParams($values);
+
+                $values = array_map(function($e) use ($key, $not) {
+                    if($not){
+                        return "unaccent(lower($key)) != unaccent(lower($e))";
+                    }else{
+                        return "unaccent(lower($key)) = unaccent(lower($e))";
+                    }
+                } , $values);
+
+                if(count($values) < 1){
+                    throw new Exceptions\Api\InvalidArgument('expression IIN expects at last one value');
+                }
+
+                $dql = "\n(\n\t" . ($not ? implode("\n\t AND ", $values) : implode("\n\t OR ", $values) ) . "\n)";
+
+                
             } elseif ($operator == "BET") {
                 $values = $this->splitParam($value);
 
@@ -1586,7 +1632,7 @@ class ApiQuery {
                     $admin_where = "OR ($admin_where)";
                 }
                 
-                if($this->_permission == 'view' && !$class::isPrivateEntity()) {
+                if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $view_where = 'OR e.status > 0';
                 }
                 
@@ -1730,6 +1776,7 @@ class ApiQuery {
                 $this->_selectingType = true;                
             }
         }
+        
     }
     
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {

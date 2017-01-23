@@ -83,6 +83,7 @@ MapasCulturais.EventOccurrenceManager = {
                 .toLocaleDateString(this.localeDateOptions.locale, this.localeDateOptions.dateOptions);
     },
     init : function(selector) {
+        var labels = MapasCulturais.gettext.singleEvents;
         $(selector).ajaxForm({
             success: function (response, statusText, xhr, $form)  {
 
@@ -99,7 +100,7 @@ MapasCulturais.EventOccurrenceManager = {
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
-                    $form.find('div.alert.danger').html('Corrija os erros indicados abaixo.')
+                    $form.find('div.alert.danger').html(labels['correctErrors'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -135,7 +136,7 @@ MapasCulturais.EventOccurrenceManager = {
 
 
                 if(xhr.status === 202){
-                    MapasCulturais.Messages.alert('Sua requisição para criar a ocorrência do evento no espaço <strong>' + response.space.name + '</strong> foi enviada.');
+                    MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
                 }
 
             },
@@ -143,12 +144,12 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parent().scrollTop(0);
 
                 if(xhr.status === 403){
-                    $form.find('div.alert.danger').html('Você não tem permissão para criar eventos nesse espaço.')
+                    $form.find('div.alert.danger').html(labels['notAllowed'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
                 }else{
-                    $form.find('div.alert.danger').html('Erro inesperado.')
+                    $form.find('div.alert.danger').html(labels['unexpectedError'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -158,7 +159,7 @@ MapasCulturais.EventOccurrenceManager = {
             beforeSubmit: function(arr, $form, options) {
 
                 if ($form.find('input[name="description"]').data('synced') != 1)
-                    return confirm('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?');
+                    return confirm(labels['confirmDescription']);
 
                 return true;
 

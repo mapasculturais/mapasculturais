@@ -256,14 +256,14 @@ class Subsite extends \MapasCulturais\Entity
         
         $app->applyHookBoundTo($this, 'subsite.applyFilters:before');
 
+//            \dump($this->filters);
         foreach($this->filters as $controller_id => $entity_filters){
-            $entity_class_name = $app->controller($controller)->entityClassName;
-            $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters);
-            $query->where = "e._subsiteId = {$subsite_id}";
+            $entity_class_name = $app->controller($controller_id)->entityClassName;
+            $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters, $this->id);
             
             $this->_entityApiQueryFilters[$entity_class_name] = $query;
             
-            $app->hook("API.<<*>>({$controller}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($query) {
+            $app->hook("API.<<*>>({$controller_id}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($query) {
                 $query_dql = $query->getSubDQL();
                 $dql_where .=  " AND e.id IN({$query_dql})";
             });

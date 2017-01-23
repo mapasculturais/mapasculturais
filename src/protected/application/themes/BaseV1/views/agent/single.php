@@ -47,6 +47,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
+        
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
@@ -146,6 +147,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
+    
+    <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
@@ -184,17 +187,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->children, 'title' => 'entities: Agent children')); ?>
     <!-- Children END -->
-
-    <!--
-    <div class="widget">
-        <h3>Projetos do agente</h3>
-        <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-        </ul>
-    </div>
-    -->
 
     <!-- Downloads BEGIN -->
         <?php $this->part('downloads.php', array('entity'=>$entity)); ?>

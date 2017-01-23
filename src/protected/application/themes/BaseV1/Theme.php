@@ -399,6 +399,12 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('projetos encontrados')],
                 'text' => i::__('projetos encontrados')
             ],
+            'entities: Projects of the agent' => [
+                'name' => i::__('texto "Projetos do agente"'),
+                'description' => i::__('Título da listagem dos projetos do agente em seu perfil'),
+                'examples' => [i::__('Projetos do agente'), i::__('Editais do agente'), i::__('Convocatórias do agente')],
+                'text' => i::__('Projetos do agente')
+            ],
 
 
 
