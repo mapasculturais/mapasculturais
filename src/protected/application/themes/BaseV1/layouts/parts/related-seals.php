@@ -40,7 +40,7 @@ $this->addRelatedSealsToJs($entity);
                            <b ng-if="relation.toExpire == 1">Expira em:</b>
                            <b ng-if="relation.toExpire == 0">Expirou em:</b> {{relation.validateDate}} </p>
                         <p>
-                            <div ng-if="relation.ownerSealUserId <> <?php echo $app->user->id;?>" align="center">
+                            <div ng-if="relation.ownerSealUserId != <?php echo $app->user->id;?>" align="center">
                                 <a ng-if="!relation.renovation_request && relation.toExpire < 2" ng-href="{{relation.requestSealRelationUrl}}" class="btn btn-default js-toggle-edit">
                                 <?php \MapasCulturais\i::_e("Solicitar renovação");?>
                                 </a>
