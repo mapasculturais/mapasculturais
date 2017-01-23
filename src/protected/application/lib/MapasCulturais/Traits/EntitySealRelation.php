@@ -72,14 +72,18 @@ trait EntitySealRelation {
             $result[$sealRelation->id]->validateDate = $result[$sealRelation->id]->validateDate->format("d/m/Y");
             $result[$sealRelation->id]->ownerSealUserId = $sealRelation->seal->owner->userId; 
 
+            if(is_null($result[$sealRelation->id]->renovation_request)) {
+                $result[$sealRelation->id]->renovation_request = false;    
+            }
+
             if($diff <= 0) { // Expired
                 $result[$sealRelation->id]->{'toExpire'} = 0;
                 $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
-                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealrelationUrl($sealRelation->id);
+                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
             }else if($diff <= $app->config['notifications.seal.toExpire']) { // To Expire
                 $result[$sealRelation->id]->{'toExpire'} = 1;
-                $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
-                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealrelationUrl($sealRelation->id);
+                $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealRelationUrl($sealRelation->id);
+                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
             } else {
                 $result[$sealRelation->id]->{'toExpire'} = 2; // Not To Expired
             }
@@ -137,31 +141,5 @@ trait EntitySealRelation {
     }
     function getRenewSealRelationUrl($idRelation){
         return App::i()->createUrl($this->controllerId, 'renewsealrelation', [$idRelation]);
-    }
-
-    function requestsealrelation($flush = true){
-        $this->checkPermission('requestsealrelation');
-
-        $app = App::i();
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').requestsealrelation:before');
-
-        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
-
-        $this->save($flush);
-
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').requestsealrelation:before');
-    }
-
-    function renewsealrelation($flush = true){
-        $this->checkPermission('renewsealrelation');
-
-        $app = App::i();
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').renewsealrelation:before');
-
-        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
-
-        $this->save($flush);
-
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').renewsealrelation:before');
     }
 }

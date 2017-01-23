@@ -60,8 +60,8 @@ $entity = $relation->seal;
                     </span>
                     <span class="js-editable" data-edit="validateDate" data-original-title="Data de Validade" data-emptytext=""><?php echo $relation->validateDate->format("d/m/Y"); ?></span>
                     &nbsp;
-                    <?php if($entity->owner->userId <> $app->user->id): ?>
-                        <?php if($relation->renovation_request && ($diff <= 0 && $diff <= $app->config['notifications.seal.toExpire'])):?>
+                    <?php if($relation->seal->owner->userId <> $app->user->id): ?>
+                        <?php if(!$relation->renovation_request && ($diff <= 0 && $diff <= $app->config['notifications.seal.toExpire'])):?>
                             <a href="<?php echo $relation->getRequestSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
                                 <?php \MapasCulturais\i::_e("Solicitar renovação");?>
                             </a>
