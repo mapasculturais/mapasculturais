@@ -257,6 +257,18 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('do espaço'), i::__('do museu'), i::__('da biblioteca')],
                 'text' => i::__('do espaço')
             ],
+            'entities: Description of the space' => [
+                'name' => i::__('texto "Descrição do espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Descrição do espaço'), i::__('Descrição do museu'), i::__('Descrição da biblioteca')],
+                'text' => i::__('Descrição do espaço')
+            ],
+            'entities: Usage criteria of the space' => [
+                'name' => i::__('texto "Critérios de uso do espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Critérios de uso do espaço'), i::__('Critérios de uso do museu'), i::__('Critérios de uso da biblioteca')],
+                'text' => i::__('Critérios de uso do espaço')
+            ],
             'entities: In this space' => [
                 'name' => i::__('texto "Neste espaço"'),
                 'description' => i::__(''),

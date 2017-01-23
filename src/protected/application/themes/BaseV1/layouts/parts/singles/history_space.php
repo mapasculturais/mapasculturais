@@ -184,12 +184,12 @@ $this->includeMapAssets();
             <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
             <?php if ( isset($entity->longDescription) ): ?>
                 <h3><?php i::_e("Descrição");?></h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição <?php $this->dict('entities: of the Space') ?>" data-emptytext="Insira uma descrição <?php $this->dict('entities: of the space') ?>" ><?php echo nl2br($entity->longDescription); ?></span>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="<?php $this->dict('entities: Description of the space') ?>" data-emptytext="<?php $this->dict('entities: Description of the space') ?>" ><?php echo nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
 
             <?php if ( isset($entity->criterios) ): ?>
-                <h3><?php i::_e("Critérios de uso");?> <?php $this->dict('entities: of the space') ?></h3>
-                <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso <?php $this->dict('entities: of the space') ?>" data-emptytext="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-placeholder="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
+                <h3><?php $this->dict('entities: Usage criteria of the space') ?></h3>
+                <div class="descricao js-editable" data-edit="criterios" data-original-title="<?php $this->dict('entities: Usage criteria of the space') ?>" data-emptytext="<?php $this->dict('entities: Usage criteria of the space') ?>" data-placeholder="<?php $this->dict('entities: Usage criteria of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
             <?php endif; ?>
             <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
 
