@@ -715,7 +715,7 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
 
-        $app->hook('mapasculturais.body:before', function() {
+        $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
                     <div id="fb-root"></div>
@@ -723,7 +723,7 @@ class Theme extends MapasCulturais\Theme {
                       var js, fjs = d.getElementsByTagName(s)[0];
                       if (d.getElementById(id)) return;
                       js = d.createElement(s); js.id = id;
-                      js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1";
+                      js.src = "//connect.facebook.net/<?php echo i::get_locale(); ?>/all.js#xfbml=1";
                       fjs.parentNode.insertBefore(js, fjs);
                     }(document, 'script', 'facebook-jssdk'));</script>
                 <!--fim do facebook-->
