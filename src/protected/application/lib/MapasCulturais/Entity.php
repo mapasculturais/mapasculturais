@@ -282,7 +282,7 @@ abstract class Entity implements \JsonSerializable{
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
-            $result = $this->userHasControl($user) || $user->is('admin');
+            $result = $this->userHasControl($user) || $user->is('admin') || $user->is('superAdmin') || $user->is('superSaasAdmin');
         }
 
         if(method_exists($this, 'canUser' . $action)){
