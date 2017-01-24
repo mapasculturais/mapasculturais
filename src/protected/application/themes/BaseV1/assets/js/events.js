@@ -249,8 +249,6 @@ MapasCulturais.EventHumanReadableManager = {
     },
     getSuggestion: function(selector) {
 
-        var human = '';
-
         var date_s = $(selector).find('.js-start-date').val();
         var hour = $(selector).find('#horario-de-inicio').val();
         var frequency = $(selector).find('select[name="frequency"]').val();
@@ -258,72 +256,13 @@ MapasCulturais.EventHumanReadableManager = {
         var weekDays = [];
         $(selector).find('input[type="checkbox"]:checked').each(function() { if ($(this).is(':checked')) weekDays.push($(this).attr('name').replace(/[^\d]/g, '')) });
 
-        //console.log( date_s);
-        //console.log( hour);
-        //console.log( frequency);
-        //console.log( date_e);
-        //console.log( weekDays);
-
         var mdate_s = false;
         var mdate_e = false;
 
         if (date_s) mdate_s = moment(date_s, 'DD/MM/YYYY');
         if (date_e) mdate_e = moment(date_e, 'DD/MM/YYYY');
 
-        if (frequency == 'once') {
-            if (!mdate_s) return '...';
-            human += 'Dia ' + mdate_s.format('D [de] MMMM [de] YYYY');
-        } else {
-
-            if (!mdate_s || !mdate_e) return '...';
-
-            if (frequency == 'daily') {
-                human += 'Diariamente';
-            } else if (frequency == 'weekly') {
-
-
-                if (weekDays.length > 0) {
-
-                    if (weekDays[0] == '0' || weekDays[0] == '6') {
-                        human += 'Todo ';
-                    } else {
-                        human += 'Toda ';
-                    }
-
-                    var count = 1;
-                    $.each(weekDays, function(i, v) {
-                        var wformat = weekDays.length > 1 ? 'ddd' : 'dddd';
-                        human += moment().day(v).format(wformat);
-                        count ++;
-                        if (count == weekDays.length)
-                            human += ' e ';
-                        else if (count < weekDays.length)
-                            human += ', '
-                    });
-                }
-            }
-
-            if (mdate_s.year() != mdate_e.year()) {
-                human += ' de ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
-            } else {
-                if (mdate_s.month() != mdate_e.month()) {
-                    human += ' de ' + mdate_s.format('D [de] MMMM') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
-                } else {
-                    human += ' de ' + mdate_s.format('D') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
-                }
-            }
-
-
-        }
-
-        if (hour) {
-            if (hour.substring(0,2) == '01')
-                human += ' à ' + hour;
-            else
-                human += ' às ' + hour;
-        }
-
-        return human;
+        return MapasCulturais.createHumanReadableOccurrences(frequency, mdate_s, mdate_e, weekDays, hour);
 
     }
 };
