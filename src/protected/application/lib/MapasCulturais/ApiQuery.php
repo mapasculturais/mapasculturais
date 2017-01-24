@@ -831,6 +831,9 @@ class ApiQuery {
             }
             
             foreach($this->_selecting as $prop){
+                if(!$prop){
+                    continue;
+                }
                 if($prop[0] === '#'){
                     $prop = array_search($prop, $this->_selectingRelations);
                     if(!$prop){
