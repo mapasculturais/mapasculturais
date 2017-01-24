@@ -1,5 +1,5 @@
-/* Brazilian initialisation for the jQuery UI date picker plugin. */
-/* Written by Leonildo Costa Silva (leocsilva@gmail.com). */
+/* Uruguyan :) initialisation for the jQuery UI date picker plugin. */
+/* Traducido by Leo Trujillo by libre.coop. */
 (function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 
@@ -13,18 +13,18 @@
 }(function( datepicker ) {
 
 datepicker.regional['es-ES'] = {
-	closeText: 'Fechar',
+	closeText: 'Cerrar',
 	prevText: '&#x3C;Anterior',
 	nextText: 'Próximo&#x3E;',
-	currentText: 'Hoje',
-	monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
-	'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-	monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun',
-	'Jul','Ago','Set','Out','Nov','Dez'],
-	dayNames: ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'],
-	dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
-	dayNamesMin: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
-	weekHeader: 'Sm',
+	currentText: 'Hoy',
+	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+	'Julio','Agosto','Setiembre','Octubre','Noviembre','Deciembre'],
+	monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+	'Jul','Ago','Set','Oct','Nov','Dic'],
+	dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+	dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+	dayNamesMin: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+	weekHeader: 'Sem',
 	dateFormat: 'dd/mm/yy',
 	firstDay: 0,
 	isRTL: false,
