@@ -1820,7 +1820,7 @@ class Theme extends MapasCulturais\Theme {
 
     function addSealsToJs($onlyPermited = true,$sealId = array()) {
     	$query = [];
-    	$query['@select'] = 'id,name,status, singleUrl';
+    	$query['@select'] = 'id,name,status,singleUrl,validateDate';
 
         if($onlyPermited) {
     		$query['@permissions'] = '@control';
@@ -1839,7 +1839,7 @@ class Theme extends MapasCulturais\Theme {
     	if (!$app->user->is('guest')) {
     		$this->jsObject['allowedSeals'] = $app->controller('seal')->apiQuery($query);
 
-        	if($app->user->is('admin') || $app->user->is('superAdmin') || $this->jsObject['allowedSeals'] > 0) {
+        	if($app->user->is('admin') || $app->user->is('superAdmin') || $app->user->is('saasSuperAdmin') || $this->jsObject['allowedSeals'] > 0) {
         		$this->jsObject['canRelateSeal'] = true;
         	} else {
         		$this->jsObject['canRelateSeal'] = false;

@@ -448,6 +448,20 @@ return [
 
         $this->disableAccessControl();
     },
+    'create seal relation validate date' => function() use($conn) {
+        if(__column_exists('seal_relation', 'validate_date')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+    },
+    'create seal relation renovation flag field' => function() use($conn) {
+        if(__column_exists('seal_relation', 'renovation_request')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");   
+    },
     'create entity revision tables' => function() use($conn) {
         if(__table_exists('entity_revision')) {
             echo "ALREADY APPLIED";
@@ -575,3 +589,4 @@ return [
         $this->em->flush();
     },
 ] + $updates ;
+
