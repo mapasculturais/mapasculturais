@@ -156,4 +156,29 @@ class Project extends EntityController {
 
         $this->apiResponse($projects);
     }
+    
+    function GET_exportFields() {
+        $this->requireAuthentication();
+        
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData)){
+            $app->pass();
+        }   
+/*
+        $dql = "SELECT *
+                FROM \MapasCulturais\Entities\RegistrationFieldConfiguration
+                WHERE project_id = :proj_id";
+        #$query = $app->em->createQuery($dql)->setParameters(['proj_id' => $this->urlData['id']]);
+*/
+        
+        #$fields = $query->getResult();
+        $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        
+        header('Content-disposition: attachment; filename=project-'.$this->urlData['id'].'-fields.txt');
+        header('Content-type: text/plain');
+        
+        echo json_encode($fields);
+    }
+    
 }
