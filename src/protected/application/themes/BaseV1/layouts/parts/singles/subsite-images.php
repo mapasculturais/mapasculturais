@@ -86,4 +86,34 @@
 
         <?php $this->applyTemplateHook('institute','after'); ?>
     </div>
+
+    <div class="favicon-container">
+        <h3 class="label">
+            <?php \MapasCulturais\i::_e('Favicon da Instalação:'); ?>
+        </h3>
+
+        <?php $this->applyTemplateHook('favicon','before'); ?>
+
+        <div class="favicon <?php if($entity->favicon): ?>com-imagem<?php endif; ?>">
+            <?php if($entity->favicon): ?>
+                <img class="js-favicon-img" src="<?php echo $entity->favicon->transform('favicon')->url; ?>" />
+            <?php else: ?>
+                <img class="js-favicon-img" src="<?php $this->asset('img/favicon.ico'); ?>" />
+            <?php endif; ?>
+
+            <?php if($this->isEditable()): ?>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-favicon" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
+                <div id="editbox-change-favicon" class="js-editbox mc-right" title="Editar Favicon da Instalação">
+                    <?php $this->ajaxUploader($entity, 'favicon', 'image-src', 'div.favicon img.js-favicon-img', '', 'favicon',false,".ico/.icon/.jpg/.png"); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <span class="tip">
+            <?php printf(\MapasCulturais\i::__('Deve ter as dimensões de %s com extensões %s'), '<strong>16x16px</strong>', '<strong>.ico/.icon/.png/.jpg</strong>'); ?>
+        </span>
+
+        <?php $this->applyTemplateHook('favicon','after'); ?>
+    </div>
+
 </div>
