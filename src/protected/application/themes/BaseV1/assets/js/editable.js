@@ -44,16 +44,30 @@ jQuery(function(){
         }
 
         if ($(this).hasClass('js-mask-phone')) {
-            var masks = ['(00) 00000-0000', '(00) 0000-00009'];
-            editable.input.$input.mask(masks[1], {onKeyPress:
-               function(val, e, field, options) {
-                   field.mask(val.length > 14 ? masks[0] : masks[1], options) ;
-               }
+            /* Phone masks is an array of masks that are used depending on the size of the string.
+             * 
+             * If you have more than one, the first mask has to have one optional character, and the next mask will have
+             * this required character and, optionally, another optiona, and so on...
+             * 
+             * Example: ['00-0009', '000-009', '0000-000']
+             * 
+             */ 
+            var masks = MapasCulturais.phoneMasks ? MapasCulturais.phoneMasks : ['(00) 0000-00009', '(00) 00000-0000'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+                function(val, e, field, options) {
+                    if (masks.length > 1) {
+                        for (var ii=1; ii<masks.length; ii++) {
+                            field.mask(val.length > masks[ii-1].length - 1 ? masks[ii] : masks[ii-1], options);
+                        }
+                        
+                    }
+                    
+                }
             });
         }
 
         if ($(this).hasClass('js-mask-cep')) {
-            var masks = ['00000-000'];
+            var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['00000-000'];
             editable.input.$input.mask(masks[0], {onKeyPress:
                function(val, e, field, options) {
                    field.mask(masks[0], options) ;
