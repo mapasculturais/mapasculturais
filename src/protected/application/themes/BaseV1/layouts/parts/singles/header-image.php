@@ -2,7 +2,7 @@
 if ($header = $entity->getFile('header')){
     $style = "background-image: url({$header->transform('header')->url});";
 } else {
-    $style = "";
+    $style = "background-image: url('');";
 }
 ?>
 <?php $this->applyTemplateHook('header-image','before'); ?>
