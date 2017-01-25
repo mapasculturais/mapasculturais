@@ -736,6 +736,7 @@ class App extends \Slim\Slim{
             'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|ico|icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
         ];
 
         // register file groups
@@ -772,6 +773,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('subsite',$file_groups['logo']);
         $this->registerFileGroup('subsite',$file_groups['background']);
         $this->registerFileGroup('subsite',$file_groups['institute']);
+        $this->registerFileGroup('subsite',$file_groups['favicon']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)

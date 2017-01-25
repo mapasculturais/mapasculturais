@@ -70,20 +70,23 @@ class Theme extends BaseV1\Theme{
                 @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
                 ';
 
-                if($institude = $this->subsiteInstance->institute){
+                if($institute = $this->subsiteInstance->institute){
                     $main_scss .= "
                     .header-image {
-                        background-image: url({$institude->url});
+                        background-image: url({$institute->url});
                     }";
                 }
 
                 if($bg = $this->subsiteInstance->background){
-
-    //                $bg = $bg->transform('backgroundFull');
                     $main_scss .= "
                     #home-watermark {
                         background-image: url({$bg->url});
                     }";
+                } else {
+                    $main_scss .= "
+                    #home-watermark {
+                        background-image: url('');
+                    }";    
                 }
 
                 $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->cor_agentes?  $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
@@ -119,6 +122,12 @@ class Theme extends BaseV1\Theme{
             $this->jsObject['assets']['logo-instituicao'] = $this->subsiteInstance->logo->url;
         } else {
             $this->jsObject['assets']['logo-instituicao'] = $this->asset('img/logo-instituicao.png', false);
+        }
+
+        if($this->subsiteInstance->getFavicon()) {
+            $this->jsObject['assets']['favicon'] = $this->subsiteInstance->favicon->url;
+        } else {
+            $this->jsObject['assets']['favicon'] = $this->asset('img/favicon.ico');
         }
     }
 }

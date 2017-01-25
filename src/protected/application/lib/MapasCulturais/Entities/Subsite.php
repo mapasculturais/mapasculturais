@@ -188,6 +188,15 @@ class Subsite extends \MapasCulturais\Entity
 
         return $this->_institute;
     }
+
+    protected $_favicon;
+
+    function getFavicon(){
+        if(!$this->_favicon)
+            $this->_favicon = $this->getFile('favicon');
+
+        return $this->_favicon;
+    }
     
     function getParentIds() {
         $app = App::i();

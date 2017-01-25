@@ -1433,3 +1433,13 @@ $(function() {
         map.on('moveend', setState);
     }
 });
+
+(function() {
+    if(MapasCulturais.assets.favicon) {
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        link.href = MapasCulturais.assets.favicon;
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
+}());

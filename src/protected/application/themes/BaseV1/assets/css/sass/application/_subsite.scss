@@ -1,6 +1,7 @@
 .logo-container,
 .background-container,
-.institute-container {
+.institute-container,
+.favicon-container {
 	width: 33.3%;
 	float: left;
 	text-align: center;
@@ -13,8 +14,11 @@
 
 .logo,
 .institute,
-.background {
+.background,
+.favicon {
     position: relative;
+	height:144px;
+	width:144px;
     .btn.edit {
         position: absolute;
         left: 16.4%;
