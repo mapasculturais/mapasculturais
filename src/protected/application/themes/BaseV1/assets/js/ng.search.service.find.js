@@ -215,7 +215,6 @@
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
-                console.log(searchData);
                 return searchData;
             }
 
