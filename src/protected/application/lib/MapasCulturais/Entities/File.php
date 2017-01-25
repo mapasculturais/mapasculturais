@@ -395,6 +395,8 @@ abstract class File extends \MapasCulturais\Entity
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         $app = App::i();
+        
+        $this->getRelativePath();
 
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
