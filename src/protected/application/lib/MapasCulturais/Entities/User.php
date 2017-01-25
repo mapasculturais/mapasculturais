@@ -602,7 +602,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           // message to user about last access system
           $notification = new Notification;
           $notification->user = $app->user;
-          $notification->message = "Seu último acesso foi em <b>" . $app->user->lastLoginTimestamp->format('d/m/Y') . "</b>, atualize suas informações se necessário.";
+          $notification->message = sprintf(\MapasCulturais\i::__("Seu último acesso foi em <b>%s</b>, atualize suas informações se necessário."),$app->user->lastLoginTimestamp->format('d/m/Y'));
           $notification->save();
         }
       }
@@ -616,8 +616,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = "O agente <b>" . $agent->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $agent->editUrl . '">editar</a>';
+              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
               $notification->save();
 
               // use the notification id to use it later on entity update
@@ -634,31 +633,56 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = "O Espaço <b>" . $space->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $space->editUrl . '">editar</a>';
+              $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$lastUpdateDate->format("d/m/Y"),$space->editUrl);
               $notification->save();
               // use the notification id to use it later on entity update
               $space->sentNotification = $notification->id;
               $space->save();
             }
           }
-
-          /* @TODO: verificar se faz sentido */
-
-//          foreach($this->seals as $seal) {
-//            $lastUpdateDate = $seal->updateTimestamp ? $seal->updateTimestamp: $seal->createTimestamp;
-//            $interval = date_diff($lastUpdateDate, $now);
-//            if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
-//              // message to user about old seal registrations
-//              $notification = new Notification;
-//              $notification->user = $app->user;
-//              $notification->message = "O selo <b>" . $seal->name . "</b> não é atualizado desde de <b>" . $lastUpdateDate->format("d/m/Y") . "</b>, atualize as informações se necessário.";
-//              $notification->message .= '<a class="btn btn-small btn-primary" href="' . $seal->editUrl . '">editar</a>';
-//              $notification->save();
-//            }
-//          }
-
         $app->em->flush();
+      }
+
+      if(in_array('notifications.seal.toExpire',$app->config) && $app->config['notifications.seal.toExpire'] > 0) {
+          $diff = 0;
+          $now = new \DateTime;
+          foreach($this->agents as $agent) {
+              foreach($agent->sealRelations as $relation) {
+                  $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                  if($diff <= 0.00) {
+                      $notification = new Notification;
+                      $notification->user = $app->user;
+                      $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
+                      $notification->save();
+                  } elseif($diff <= $app->config['notifications.seal.toExpire']) {
+                      $diff = is_int($diff)? $diff: round($diff);
+                      $diff = $diff == 0? $diff = 1: $diff;
+                      $notification = new Notification;
+                      $notification->user = $app->user;
+                      $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href=''>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
+                      $notification->save();
+                  }
+              }
+          }
+
+          foreach($this->spaces as $space) {
+              foreach($space->sealRelations as $relation) {
+                  $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                  if($diff <= 0.00) {
+                      $notification = new Notification;
+                      $notification->user = $app->user;
+                      $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
+                      $notification->save();
+                  } elseif($diff <= $app->config['notifications.seal.toExpire']) {
+                      $diff = is_int($diff)? $diff: round($diff);
+                      $diff = $diff == 0? $diff = 1: $diff;
+                      $notification = new Notification;
+                      $notification->user = $app->user;
+                      $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
+                      $notification->save();
+                  }
+              }
+          }
       }
     }
 

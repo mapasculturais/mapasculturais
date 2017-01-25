@@ -90,10 +90,24 @@ abstract class SealRelation extends \MapasCulturais\Entity
      */
     protected $owner_relation;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="validate_date", type="date", nullable=true)
+     */
+    protected $validateDate;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="renovation_request", type="boolean", nullable=false)
+     */
+    protected $renovation_request;
+
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');
-        $result['seal'] = $this->seal->simplify('id,name,avatar,singleUrl');
+        $result['seal'] = $this->seal->simplify('id,name,avatar,singleUrl,validateDate');
 
         return $result;
     }

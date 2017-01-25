@@ -11,6 +11,7 @@ return array(
     'background' => 'cropCenter(240,240)',
 //    'backgroundFull' => 'resize(1200,630,"inside","down")',
     'institute' => 'resize(240)',
+    'favicon' => 'resize(16)',
 
     'viradaSmall' => 'cropCenter(357,268)',
     'viradaBig' => 'cropCenter(1455,970)',

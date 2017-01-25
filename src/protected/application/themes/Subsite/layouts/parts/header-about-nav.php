@@ -1,6 +1,6 @@
 <nav id="about-nav" class="alignright clearfix">
     <h1 id="organization-logo">
-        <a href="#" target="_blank">
+        <a href="<?php echo $app->getBaseUrl() ?>" target="_blank">
         <?php if($this->subsiteInstance->getInstitute()): ?>
             <img src="<?php echo $this->subsiteInstance->institute->transform('logoHeader')->url;?>" />
         <?php else:?>

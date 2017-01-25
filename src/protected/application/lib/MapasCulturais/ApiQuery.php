@@ -142,7 +142,13 @@ class ApiQuery {
      * @var bool 
      */
     protected $usesOwnerAgent;
-
+    
+    /**
+     * The entity has the status property
+     * @var bool
+     */
+    protected $usesStatus;
+    
     /**
      * List of the entity properties
      * @var array
@@ -349,6 +355,9 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
+        $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
+        $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
+        
         $this->entityClassName = $class;
         $this->entityController = $app->getControllerByEntity($this->entityClassName);
         $this->entityRepository = $app->repo($this->entityClassName);
@@ -361,6 +370,8 @@ class ApiQuery {
         $this->usesOwnerAgent = $class::usesOwnerAgent();
         $this->usesTypes = $class::usesTypes();
         $this->usesSealRelation = $class::usesSealRelation();
+        
+        $this->usesStatus = in_array('status', $this->entityProperties);
 
         if ($this->usesFiles) {
             $this->fileClassName = $class::getFileClassName();
@@ -395,9 +406,6 @@ class ApiQuery {
                 }
             }
         }
-
-        $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
-        $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
     }
     
     protected function getAlias($name){
@@ -655,7 +663,7 @@ class ApiQuery {
             $where = $where_dqls;
         }
         
-        if(!$this->_subsiteId && !isset($this->apiParams['status']) || $this->_permission != 'view'){
+        if($this->usesStatus && (!$this->_subsiteId && !isset($this->apiParams['status']) || $this->_permission != 'view')){
             $where = $where ? "($where) AND e.status {$this->_status}" : "e.status {$this->_status}";
         }
         
@@ -798,8 +806,6 @@ class ApiQuery {
             $types = $app->getRegisteredEntityTypes($this->entityClassName);
         }
         
-        $_original_select = explode(',', $this->apiParams['@select']);
-        
         foreach ($entities as &$entity){
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
@@ -824,8 +830,16 @@ class ApiQuery {
                 unset($entity[$prop]);
             }
             
-            foreach($_original_select as $prop){
-                $prop = trim($prop);
+            foreach($this->_selecting as $prop){
+                if(!$prop){
+                    continue;
+                }
+                if($prop[0] === '#'){
+                    $prop = array_search($prop, $this->_selectingRelations);
+                    if(!$prop){
+                        continue;
+                    }
+                }
                 if(!isset($entity[$prop])){
                     $entity[$prop] = null;
                 }
@@ -1621,7 +1635,7 @@ class ApiQuery {
                     $admin_where = "OR ($admin_where)";
                 }
                 
-                if($this->_permission == 'view' && !$class::isPrivateEntity()) {
+                if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $view_where = 'OR e.status > 0';
                 }
                 
@@ -1765,6 +1779,7 @@ class ApiQuery {
                 $this->_selectingType = true;                
             }
         }
+        
     }
     
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {
