@@ -121,7 +121,11 @@ class Html extends \MapasCulturais\ApiOutput{
                                 </table>
                             </td>
                         <?php elseif($k==='project'): ?>
-                            <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
+                            <?php if(is_object($v)): ?>
+                                <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
+                            <?php else: ?>
+                                <td></td>
+                            <?php endif; ?>
                         <?php else:
                             if($k==='name' && !empty($item->singleUrl)){
                                 $v = '<a href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
