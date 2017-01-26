@@ -355,6 +355,8 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
+        $class = $class::getClassName();
+        
         $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
         $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
         
