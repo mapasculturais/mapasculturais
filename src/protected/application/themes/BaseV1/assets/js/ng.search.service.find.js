@@ -260,16 +260,25 @@
 
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
+                var exportSelect = ['singleUrl'];
                 Object.keys(Description).forEach(function(prop) {
-                	if (!Description[prop].isEntityRelation && (MapasCulturais.allowedFields || (!MapasCulturais.allowedFields && !Description[prop].private))) {
-                		if (Description[prop]['@select']) {
-                			prop = Description[prop]['@select'];
-                		}
-                		selectData += "," + prop;
-                	}
-                })
-
-                var queryString_apiExport = '@select='+selectData;
+                    if(prop[0] == '_'){
+                        return;
+                    }
+                    var def = Description[prop];
+                    var selectProperty = def['@select'] || prop;
+                    if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
+                        exportSelect.push(selectProperty); 
+                    } else if(def.isEntityRelation) {
+                        if(def.isOwningSide){
+                            exportSelect.push(prop + '.{id,name,singleUrl}');
+                        } else if (prop == 'occurrences') {
+                            exportSelect.push('occurrences.{space.{id,name,singleUrl},rule}');
+                        }
+                    }
+                });
+                
+                var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export
                 if(apiExportURL.indexOf('event/findByLocation') !== -1)

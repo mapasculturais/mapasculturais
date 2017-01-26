@@ -27,7 +27,10 @@ class Html extends \MapasCulturais\ApiOutput{
         'space'=>'Espaço',
         'event'=>'Evento',
         'project'=>'Projeto',
-        'seal'=>'Selo'
+        'seal'=>'Selo',
+        'owner' => 'Publicado por',
+        'parent' => 'Entidade pai',
+        'createTimestamp' => 'Entidade pai',
     ];
 
     protected function getContentType() {
@@ -74,17 +77,23 @@ class Html extends \MapasCulturais\ApiOutput{
                         }elseif(strpos($k,'@files')===0){
                             continue;
                         }elseif($k==='occurrences'){ ?>
-                            <th>
-                                <table><thead><tr> <th><?php \MapasCulturais\i::_e("Quando");?></th> <th><?php \MapasCulturais\i::_e("Onde");?></th> <th><?php \MapasCulturais\i::_e("Quanto");?></th> </tr></thead></table>
-                            </th>
+                            <th><?php \MapasCulturais\i::_e("Ocorrências");?></th> 
                             <?php
                         }else{
                             if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                 continue;
                             }
                             ?>
-                            <th>
-                            	<?php echo isset($label[$k])? $label[$k]: $k ;?>
+                            <th> 
+                                <?php 
+                                if(isset($label[$k]) && $label[$k]) {
+                                    echo $label[$k];
+                                } else if(isset($this->translate[$k])){
+                                    echo $this->translate[$k];
+                                } else {
+                                    echo $k;  
+                                }
+                                ?>
                             </th>
                         <?php
                         }
@@ -96,7 +105,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <tbody>
             <?php endif; ?>
                 <tr>
-                    <?php foreach($keys as $k): $v = $item->$k; ?>
+                    <?php foreach($item as $k => $v): ?>
                         <?php if($k==='terms'): ?>
                             <?php if(property_exists($v, 'area')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
@@ -106,21 +115,19 @@ class Html extends \MapasCulturais\ApiOutput{
                             <?php endif; ?>
                             <?php if(property_exists($v, 'linguagem')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->linguagem),"HTML-ENTITIES","UTF-8"); ?></td>
-                            <?php endif; ?>
+                            <?php endif; ?> 
                         <?php elseif(strpos($k,'@files')===0):  continue; ?>
                         <?php elseif($k==='occurrences'): ?>
                             <td>
-                                <table>
-                                    <?php foreach($v as $occ): ?>
-                                        <tr>
-                                            <td><?php echo mb_convert_encoding($occ->rule->description,"HTML-ENTITIES","UTF-8");?></td>
-                                            <td><a href="<?php echo $occ->space->singleUrl?>"><?php echo mb_convert_encoding($occ->space->name,"HTML-ENTITIES","UTF-8");?></a></td>
-                                            <td><?php echo mb_convert_encoding($occ->rule->price,"HTML-ENTITIES","UTF-8");?></td>
-                                        </tr>
-                                    <?php  endforeach; ?>
-                                </table>
+                                <?php foreach($v as $occ): $occ->rule = json_decode($occ->rule);?>
+                                    <?php echo mb_convert_encoding($occ->rule->description,"HTML-ENTITIES","UTF-8");?>,
+                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo mb_convert_encoding($occ->space->name,"HTML-ENTITIES","UTF-8");?></a>
+                                    <?php if($occ->rule->price): ?>
+                                        <?php echo mb_convert_encoding($occ->rule->price,"HTML-ENTITIES","UTF-8");?> <br>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </td>
-                        <?php elseif($k==='project'): ?>
+                        <?php elseif($k==='project'):?>
                             <?php if(is_object($v)): ?>
                                 <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
                             <?php else: ?>
@@ -149,8 +156,13 @@ class Html extends \MapasCulturais\ApiOutput{
                                     if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
                                     	echo implode(', ',$v);	
                                     } else {
-                                    	$this->printTable($v);
-	                                }
+                                        
+                                        if(isset($v->name) && isset($v->singleUrl)){
+                                            echo "<a href=\"$v->singleUrl\">$v->name</a>";
+                                        } else {
+                                            $this->printTable($v);
+                                        }
+                                    }
                                 }else{
                                     //var_dump($v);
                                 }

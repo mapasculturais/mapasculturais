@@ -997,8 +997,10 @@ class ApiQuery {
                 }
                 if(isset($this->entityRelations[$prop])){
                     $mapping = $this->entityRelations[$prop];
+                } else if(isset($this->entityRelations['_' . $prop])){
+                    $mapping = $this->entityRelations['_' . $prop];
                 } else {
-                    $mapping = $this->entityRelations['_' . $prop];                
+                    continue;
                 }
                 $skip = isset($cfg['skip']) && $cfg['skip'];
                 $selected = isset($cfg['selected']) && $cfg['selected'];
@@ -1730,7 +1732,6 @@ class ApiQuery {
         
         $replacer = function ($select, $_subquery_entity_class, $_subquery_select, $_subquery_match){
             $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select, $_subquery_match);
-
             if(is_null($replacement)){
                 $select = str_replace(["$_subquery_match,", ",$_subquery_match"], '', $select);
 
@@ -1742,7 +1743,7 @@ class ApiQuery {
         };
 
         // create subquery to format entity.* or entity.{id,name}
-        while (preg_match('#([^,\.]+)\.(\{[^\{\}]+\})#', $select, $matches)) {
+        while (preg_match('#([^,\.\{]+)\.(\{[^\{\}]+\})#', $select, $matches)) {
             $_subquery_match = $matches[0];
             $_subquery_entity = $matches[1];
             $_subquery_select = substr($matches[2], 1, -1);
@@ -1785,10 +1786,7 @@ class ApiQuery {
     }
     
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {
-        if($prop != 'permissionTo' && !isset($this->entityRelations[$prop]) && !isset($this->entityRelations['_' . $prop])){
-            return false;
-        }
-        
+                
         $_select_properties = explode(',', $_select);
         
         $select = array_map(function($property) use(&$_match) {
