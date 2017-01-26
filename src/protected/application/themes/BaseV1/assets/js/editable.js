@@ -52,6 +52,7 @@ jQuery(function(){
              * Example: ['00-0009', '000-009', '0000-000']
              * 
              */ 
+            if (MapasCulturais.phoneMasks === false) return;
             var masks = MapasCulturais.phoneMasks ? MapasCulturais.phoneMasks : ['(00) 0000-00009', '(00) 00000-0000'];
             editable.input.$input.mask(masks[0], {onKeyPress:
                 function(val, e, field, options) {
@@ -67,6 +68,7 @@ jQuery(function(){
         }
 
         if ($(this).hasClass('js-mask-cep')) {
+            if (MapasCulturais.postalCodeMask === false) return;
             var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['00000-000'];
             editable.input.$input.mask(masks[0], {onKeyPress:
                function(val, e, field, options) {
