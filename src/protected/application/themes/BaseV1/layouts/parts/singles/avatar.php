@@ -11,10 +11,6 @@
             <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
         </div>
     <?php endif; ?>
-    <!-- pro responsivo!!! -->
-    <?php if($entity->isVerified): ?>
-        <a class="verified-seal hltip active" title="<?php printf(\MapasCulturais\i::esc_attr__("Este %s é verificado."), $entity->entityTypeLabel);?>" href="#"></a>
-    <?php endif; ?>
 </div>
 <!--.avatar-->
 <?php $this->applyTemplateHook('avatar','after'); ?>
