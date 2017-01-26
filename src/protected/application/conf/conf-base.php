@@ -209,6 +209,7 @@ return array(
             'id' => \MapasCulturais\i::__('Id'),
             'name' => \MapasCulturais\i::__('Nome'),
             'createTimestamp' => \MapasCulturais\i::__('Data de Criação'),
+            'updateTimestamp' => \MapasCulturais\i::__('Data de Atualização'),
             'shortDescription' => \MapasCulturais\i::__('Descrição Curta'),
             'longDescription' => \MapasCulturais\i::__('Descrição Longa'),
             'certificateText' => \MapasCulturais\i::__('Conteúdo da Impressão do Certificado'),
