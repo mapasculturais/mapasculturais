@@ -9,7 +9,11 @@ use MapasCulturais\App;
 /**
  * SealMeta
  *
- * @ORM\Table(name="seal_meta")
+ * @ORM\Table(name="seal_meta", indexes={
+ *      @ORM\Index(name="seal_meta_owner_idx", columns={"object_id"}),
+ *      @ORM\Index(name="seal_meta_owner_key_idx", columns={"object_id", "key"}),
+ *      @ORM\Index(name="seal_meta_key_value_idx", columns={"key", "value"})
+ * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
@@ -43,9 +47,9 @@ class SealMeta extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Seal
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Seal")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $owner;

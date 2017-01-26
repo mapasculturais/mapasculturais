@@ -9,7 +9,11 @@ use MapasCulturais\App;
 /**
  * AgentMeta
  *
- * @ORM\Table(name="agent_meta")
+ * @ORM\Table(name="agent_meta", indexes={
+ *      @ORM\Index(name="agent_meta_owner_idx", columns={"object_id"}),
+ *      @ORM\Index(name="agent_meta_owner_key_idx", columns={"object_id", "key"}),
+ *      @ORM\Index(name="agent_meta_key_value_idx", columns={"key", "value"})
+ * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
@@ -42,9 +46,9 @@ class AgentMeta extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Agent")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $owner;
