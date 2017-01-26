@@ -8,7 +8,11 @@ use MapasCulturais\App;
 /**
  * RegistrationMeta
  *
- * @ORM\Table(name="registration_meta")
+ * @ORM\Table(name="registration_meta", indexes={
+ *      @ORM\Index(name="registration_meta_owner_idx", columns={"object_id"}),
+ *      @ORM\Index(name="registration_meta_owner_key_idx", columns={"object_id", "key"}),
+ *      @ORM\Index(name="registration_meta_key_value_idx", columns={"key", "value"})
+ * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
@@ -41,9 +45,9 @@ class RegistrationMeta extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Registration
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Registration")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $owner;

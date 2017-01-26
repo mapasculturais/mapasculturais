@@ -46,6 +46,16 @@ class Role extends \MapasCulturais\Entity{
      * @ORM\Column(name="subsite_id", type="integer", length=32, nullable=true)
      */
     protected $subsiteId;
+    
+    /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
