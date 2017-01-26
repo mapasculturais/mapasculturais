@@ -19,6 +19,7 @@ use MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunitySealRelation",
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectSealRelation",
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventSealRelation",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentSealRelation",

@@ -220,8 +220,6 @@ return array(
         //        'MapasCulturais\Entities\Agent' => array()
     ),
 
-    // 'app.projectRegistrationAgentRelationGroupName' \MapasCulturais\i::__(Inscrições"),
-
     'notifications.entities.new'    => false, // Send notification when a entity is included
     'notifications.interval'        => 60,  // seconds
     'notifications.entities.update' => 90,  // days

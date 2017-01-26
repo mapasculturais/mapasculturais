@@ -52,14 +52,14 @@ class Registration extends \MapasCulturais\Entity
 
 
     /**
-     * @var \MapasCulturais\Entities\Project
+     * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id")
      * })
      */
-    protected $project;
+    protected $opportunity;
 
 
     /**
@@ -160,7 +160,7 @@ class Registration extends \MapasCulturais\Entity
     function jsonSerialize() {
         $json = [
             'id' => $this->id,
-            'project' => $this->project->simplify('id,name,singleUrl'),
+            'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
             'number' => $this->number,
             'category' => $this->category,
             'owner' => $this->owner->simplify('id,name,singleUrl'),
@@ -177,7 +177,7 @@ class Registration extends \MapasCulturais\Entity
             }
         }
 
-        if($this->project->publishedRegistrations || $this->project->canUser('@control')) {
+        if($this->opportunity->publishedRegistrations || $this->opportunity->canUser('@control')) {
             $json['status'] = $this->status;
         }
 
@@ -222,8 +222,8 @@ class Registration extends \MapasCulturais\Entity
         if($this->id && !$this->_ownerChanged){
             return true;
         }else{
-            $registrationCount = $this->repo()->countByProjectAndOwner($this->project, $this->owner);
-            $limit = $this->project->registrationLimitPerOwner;
+            $registrationCount = $this->repo()->countByOpportunityAndOwner($this->opportunity, $this->owner);
+            $limit = $this->opportunity->registrationLimitPerOwner;
             if($limit > 0 && $registrationCount >= $limit){
                 return false;
             }
@@ -231,9 +231,9 @@ class Registration extends \MapasCulturais\Entity
         return true;
     }
 
-    function setProjectId($id){
-        $agent = App::i()->repo('Project')->find($id);
-        $this->project = $agent;
+    function setOpportunityId($id){
+        $agent = App::i()->repo('Opportunity')->find($id);
+        $this->opportunity = $agent;
     }
 
     function getSingleUrl(){
@@ -287,7 +287,7 @@ class Registration extends \MapasCulturais\Entity
         $definitions = App::i()->getRegistrationAgentsDefinitions();
         foreach($definitions as $groupName => $def){
             $metadata_name = $def->metadataName;
-            $meta_val = $this->project->$metadata_name;
+            $meta_val = $this->opportunity->$metadata_name;
             $definitions[$groupName]->use = $meta_val;
 
             if($meta_val === 'dontUse'){
@@ -356,7 +356,7 @@ class Registration extends \MapasCulturais\Entity
         $this->save(true);
         $app->enableAccessControl();
         
-        $app->addEntityToRecreatePermissionCacheList($this->project);
+        $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
     function setAgentsSealRelation() {
@@ -366,31 +366,31 @@ class Registration extends \MapasCulturais\Entity
     	/*
     	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
     	 */
-    	$projectMetadataSeals = $this->project->registrationSeals;
+    	$opportunityMetadataSeals = $this->opportunity->registrationSeals;
     	//eval(\Psy\sh());
     	//die;
 
-    	if(isset($projectMetadataSeals->owner)) {
+    	if(isset($opportunityMetadataSeals->owner)) {
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
 
-	    	$sealOwner			= App::i()->repo('Seal')->find($projectMetadataSeals->owner);
+	    	$sealOwner			= App::i()->repo('Seal')->find($opportunityMetadataSeals->owner);
 	        $relation->seal		= $sealOwner;
 	        $relation->owner	= $this->owner;
 	    	$relation->save(true);
     	}
 
-    	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
-    	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
+    	$sealInstitutions	= isset($opportunityMetadataSeals->institution)? App::i()->repo('Seal')->find($opportunityMetadataSeals->institution):null;
+    	$sealCollective		= isset($opportunityMetadataSeals->collective)? App::i()->repo('Seal')->find($opportunityMetadataSeals->collective):null;
 
         foreach($this->relatedAgents as $groupName => $relatedAgents){
-        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution) && is_object($sealInstitutions)) {
+        	if (trim($groupName) == 'instituicao' && isset($opportunityMetadataSeals->institution) && is_object($sealInstitutions)) {
         		$agent = $relatedAgents[0];
         		$relation = new $relation_class;
         		$relation->seal = $sealInstitutions;
         		$relation->owner = $agent;
         		$relation->save(true);
-        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective) && is_object($sealCollective)) {
+        	} elseif (trim($groupName) == 'coletivo' && isset($opportunityMetadataSeals->collective) && is_object($sealCollective)) {
         		$agent = $relatedAgents[0];
         		$relation = new $relation_class;
         		$relation->seal = $sealCollective;
@@ -451,7 +451,7 @@ class Registration extends \MapasCulturais\Entity
         
         $app->enableAccessControl();
         
-        $app->addEntityToRecreatePermissionCacheList($this->project);
+        $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
     function getSendValidationErrors(){
@@ -459,12 +459,12 @@ class Registration extends \MapasCulturais\Entity
 
         $errorsResult = [];
 
-        $project = $this->project;
+        $opportunity = $this->opportunity;
 
-        $use_category = (bool) $project->registrationCategories;
+        $use_category = (bool) $opportunity->registrationCategories;
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $project->registrationCategTitle)];
+            $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $opportunity->registrationCategTitle)];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -514,7 +514,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         // validate attachments
-        foreach($project->registrationFileConfigurations as $rfc){
+        foreach($opportunity->registrationFileConfigurations as $rfc){
 
             if($use_category && count($rfc->categories) > 0 && !in_array($this->category, $rfc->categories)){
                 continue;
@@ -532,7 +532,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         // validate fields
-        foreach ($project->registrationFieldConfigurations as $field) {
+        foreach ($opportunity->registrationFieldConfigurations as $field) {
 
             if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
                 continue;
@@ -595,7 +595,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->project && !$this->project->useRegistrations){
+        if($this->opportunity && !$this->opportunity->useRegistrations){
             return false;
         }
 
@@ -615,7 +615,7 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->project->canUser('@control', $user)){
+        if($this->opportunity->canUser('@control', $user)){
             return true;
         }
 
@@ -635,7 +635,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        return $this->status > 0 && $this->project->canUser('@control', $user);
+        return $this->status > 0 && $this->opportunity->canUser('@control', $user);
     }
 
     protected function canUserSend($user){
@@ -647,7 +647,7 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        if(!$this->project->isRegistrationOpen()){
+        if(!$this->opportunity->isRegistrationOpen()){
             return false;
         }
 

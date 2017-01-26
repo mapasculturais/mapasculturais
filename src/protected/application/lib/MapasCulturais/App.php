@@ -22,7 +22,7 @@ use Mustache\Mustache;
  * @property-read \MapasCulturais\Theme $view The MapasCulturais View object
  * @property-read \MapasCulturais\Storage\FileSystem $storage File Storage Component.
  * @property-read \MapasCulturais\Entities\User $user The Logged in user.
- * @property-read String $projectRegistrationAgentRelationGroupName Project Registration Agent Relation Group Name
+ * @property-read String $opportunityRegistrationAgentRelationGroupName Opportunity Registration Agent Relation Group Name
  *
  * From Slim Class Definition
  * @property-read array[\Slim] $apps = []
@@ -598,6 +598,13 @@ class App extends \Slim\Slim{
         }
         $projects_meta = key_exists('metadata', $project_types) && is_array($project_types['metadata']) ? $project_types['metadata'] : [];
 
+        if ($theme_opportunity_types = $this->view->resolveFilename('','opportunity-types.php')) {
+            $opportunity_types = include $theme_opportunity_types;
+        } else {
+            $opportunity_types = include APPLICATION_PATH.'/conf/opportunity-types.php';
+        }
+        $opportunities_meta = key_exists('metadata', $opportunity_types) && is_array($opportunity_types['metadata']) ? $opportunity_types['metadata'] : [];
+
         // get types and metadata configurations
         if ($theme_subsite_types = $this->view->resolveFilename('','subsite-types.php')) {
             $subsite_types = include $theme_subsite_types;
@@ -635,12 +642,13 @@ class App extends \Slim\Slim{
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
 
-        $this->registerController('event',   'MapasCulturais\Controllers\Event');
-        $this->registerController('agent',   'MapasCulturais\Controllers\Agent');
-        $this->registerController('seal',   'MapasCulturais\Controllers\Seal');
-        $this->registerController('space',   'MapasCulturais\Controllers\Space');
-        $this->registerController('project', 'MapasCulturais\Controllers\Project');
-        $this->registerController('subsite',    'MapasCulturais\Controllers\Subsite');
+        $this->registerController('event',          'MapasCulturais\Controllers\Event');
+        $this->registerController('agent',          'MapasCulturais\Controllers\Agent');
+        $this->registerController('seal',           'MapasCulturais\Controllers\Seal');
+        $this->registerController('space',          'MapasCulturais\Controllers\Space');
+        $this->registerController('project',        'MapasCulturais\Controllers\Project');
+        $this->registerController('opportunity',    'MapasCulturais\Controllers\Opportunity');
+        $this->registerController('subsite',        'MapasCulturais\Controllers\Subsite');
 
 
         $this->registerController('app',   'MapasCulturais\Controllers\UserApp');
@@ -759,7 +767,12 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('project', $file_groups['avatar']);
         $this->registerFileGroup('project', $file_groups['downloads']);
         $this->registerFileGroup('project', $file_groups['gallery']);
-        $this->registerFileGroup('project', $file_groups['rules']);
+
+        $this->registerFileGroup('opportunity', $file_groups['header']);
+        $this->registerFileGroup('opportunity', $file_groups['avatar']);
+        $this->registerFileGroup('opportunity', $file_groups['downloads']);
+        $this->registerFileGroup('opportunity', $file_groups['gallery']);
+        $this->registerFileGroup('opportunity', $file_groups['rules']);
 
         $this->registerFileGroup('seal', $file_groups['downloads']);
         $this->registerFileGroup('seal', $file_groups['header']);
@@ -837,6 +850,9 @@ class App extends \Slim\Slim{
 
         $this->registerMetaListGroup('project', $metalist_groups['links']);
         $this->registerMetaListGroup('project', $metalist_groups['videos']);
+
+        $this->registerMetaListGroup('opportunity', $metalist_groups['links']);
+        $this->registerMetaListGroup('opportunity', $metalist_groups['videos']);
 
         $this->registerMetaListGroup('seal', $metalist_groups['links']);
         $this->registerMetaListGroup('seal', $metalist_groups['videos']);
@@ -934,6 +950,27 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
+
+        // register opportunity types and opportunity metadata
+        $entity_class = 'MapasCulturais\Entities\Opportunity';
+
+        foreach($opportunity_types['items'] as $type_id => $type_config){
+            $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
+
+            $this->registerEntityType($type);
+            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+
+            // add opportunities metadata definition to opportunity type
+            foreach($opportunities_meta as $meta_key => $meta_config)
+                if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
+                    $type_config['metadata'][$meta_key] = $meta_config;
+
+            foreach($type_config['metadata'] as $meta_key => $meta_config){
+                $metadata = new Definitions\Metadata($meta_key, $meta_config);
+                $this->registerMetadata($metadata, $entity_class, $type_id);
+            }
+        }
+        
         // register Subsite types and Subsite metadata
         $entity_class = 'MapasCulturais\Entities\Subsite';
 
@@ -1370,9 +1407,8 @@ class App extends \Slim\Slim{
         return $result;
     }
 
-    public function getProjectRegistrationAgentRelationGroupName(){
-        return key_exists('app.projectRegistrationAgentRelationGroupName', $this->_config) ?
-                $this->_config['app.projectRegistrationAgentRelationGroupName'] : 'registration';
+    public function getOpportunityRegistrationAgentRelationGroupName(){
+        return 'registration';
     }
 
     public function getSiteName(){

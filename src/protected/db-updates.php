@@ -694,7 +694,38 @@ return [
         $conn->executeQuery("CREATE INDEX notification_meta_key_value_idx ON notification_meta (key, value);");
         $conn->executeQuery("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
-    }
+    },
     
+    /**
+     * Migrações Projeto -> Opurtunidade
+     * 
+     * - files do grupo rules
+     */
+            
+    'create opportunity tables' => function () use ($conn) {
+        if(!__table_exists('opportunity')){
+            $conn->executeQuery("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+            $conn->executeQuery("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories JSON DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+            $conn->executeQuery("CREATE INDEX opportunity_owner_idx ON opportunity (agent_id);");
+            $conn->executeQuery("CREATE INDEX opportunity_parent_idx ON opportunity (parent_id);");
+            $conn->executeQuery("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+            $conn->executeQuery("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
+            $conn->executeQuery("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
+            $conn->executeQuery("CREATE INDEX opportunity_meta_key_value_idx ON opportunity_meta (key, value);");
+            $conn->executeQuery("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE registration ADD opportunity_id INT DEFAULT NULL;");
+            $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("CREATE INDEX IDX_62A8A7A79A34590F ON registration (opportunity_id);");
+            $conn->executeQuery("ALTER TABLE registration_file_configuration RENAME COLUMN project_id TO opportunity_id;");
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("CREATE INDEX IDX_209C792E9A34590F ON registration_file_configuration (opportunity_id);");
+            $conn->executeQuery("ALTER TABLE registration_field_configuration RENAME COLUMN project_id TO opportunity_id;");
+            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB19A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("CREATE INDEX IDX_60C85CB19A34590F ON registration_field_configuration (opportunity_id);");
+
+        }
+    }
 ] + $updates ;
 
