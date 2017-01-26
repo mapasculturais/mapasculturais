@@ -1698,8 +1698,7 @@ class ApiQuery {
     
     protected function _getAllPropertiesNames(){
         $remove_properties = [
-            '_geoLocation',
-            'isVerified', // deprecated,
+            '_geoLocation'
         ];
         
         $properties = array_merge(

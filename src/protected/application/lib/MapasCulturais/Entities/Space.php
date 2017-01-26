@@ -27,7 +27,6 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntityNested,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
@@ -148,13 +147,6 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="agent_id", type="integer", nullable=false)
      */
     protected $_ownerId;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=false)
-     */
-    protected $isVerified = false;
 
 
     /**

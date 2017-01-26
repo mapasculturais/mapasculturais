@@ -29,7 +29,6 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
@@ -140,14 +139,6 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
     protected $_children;
-
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=false)
-     */
-    protected $isVerified = false;
 
 
     /**

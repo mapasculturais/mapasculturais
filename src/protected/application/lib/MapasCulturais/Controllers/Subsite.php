@@ -18,7 +18,6 @@ class Subsite extends EntityController {
 
     use Traits\ControllerUploads,
         Traits\ControllerTypes,
-        Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerDraft,
         Traits\ControllerArchive,

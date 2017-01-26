@@ -16,7 +16,7 @@ use MapasCulturais\App;
  * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Subsite")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks 
  */
 class Subsite extends \MapasCulturais\Entity
 {
@@ -25,7 +25,6 @@ class Subsite extends \MapasCulturais\Entity
         Traits\EntityMetadata,
         Traits\EntityMetaLists,
         Traits\EntityGeoLocation,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityArchive;
