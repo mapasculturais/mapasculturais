@@ -164,21 +164,74 @@ class Project extends EntityController {
 
         if(!key_exists('id', $this->urlData)){
             $app->pass();
-        }   
-/*
-        $dql = "SELECT *
-                FROM \MapasCulturais\Entities\RegistrationFieldConfiguration
-                WHERE project_id = :proj_id";
-        #$query = $app->em->createQuery($dql)->setParameters(['proj_id' => $this->urlData['id']]);
-*/
+        }
         
-        #$fields = $query->getResult();
+        // TODO: check if user has permission
+
         $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
         
         header('Content-disposition: attachment; filename=project-'.$this->urlData['id'].'-fields.txt');
         header('Content-type: text/plain');
         
         echo json_encode($fields);
+    }
+    
+    function POST_importFields() {
+        $this->requireAuthentication();
+        
+        $app = App::i();
+        \dump($this->urlData);
+        \dump($this->postData);
+        \dump($_FILES);
+        
+        if(!key_exists('id', $this->urlData)){
+            $app->pass();
+        }
+        
+        $project_id = $this->urlData['id'];
+        
+        // TODO: check if user has permission
+        
+        if (isset($_FILES['fieldsFile']) && isset($_FILES['fieldsFile']['tmp_name']) && is_readable($_FILES['fieldsFile']['tmp_name'])) {
+        
+            $importFile = fopen($_FILES['fieldsFile']['tmp_name'], "r"); 
+            $importSource = fread($importFile,filesize($_FILES['fieldsFile']['tmp_name']));
+            $importSource = json_decode($importSource);
+            
+            \dump($importSource); 
+            
+            $project =  $app->repo("Project")->find($project_id);
+            \dump($project);
+            
+            if (!is_null($importSource)) {
+            
+                foreach($importSource as $field) {
+                
+                    $newField = new Entities\RegistrationFieldConfiguration;
+                    $newField->owner = $project;
+                    $newField->title = $field->title;
+                    $newField->description = $field->description;
+                    $newField->maxSize = $field->maxSize;
+                    $newField->fieldType = $field->fieldType;
+                    $newField->required = $field->required;
+                    $newField->categories = json_encode($field->categories);
+                    $newField->fieldOptions = json_encode($field->fieldOptions);
+                    
+                    $app->em->persist($newField);
+                    
+                    \dump($newField->save());
+                
+                }
+                
+                $app->em->flush();
+            
+            }
+            
+            
+        
+        }
+        $app->redirect($project->editUrl.'#tab=inscricoes');
+        
     }
     
 }
