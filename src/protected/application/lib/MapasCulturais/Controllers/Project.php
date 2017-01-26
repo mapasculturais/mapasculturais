@@ -166,23 +166,57 @@ class Project extends EntityController {
             $app->pass();
         }
         
-        // TODO: check if user has permission
-
         $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        
+        $project =  $app->repo("Project")->find($this->urlData['id']);
+        
+        $user = $app->user;
+        
+        //TODO: verificar permissão do usuáario
+        
+        $projectMeta = array(
+            'registrationCategories', 
+            'useAgentRelationColetivo', 
+            'registrationLimitPerOwner', 
+            'registrationCategDescription', 
+            'registrationCategTitle', 
+            'useAgentRelationInstituicao', 
+            'introInscricoes',
+            'registrationSeals', 
+            'registrationLimit'
+        );
+        /*
+        \dump($project->registrationCategories);
+        \dump($project->useAgentRelationColetivo);
+        \dump($project->registrationLimitPerOwner);
+        \dump($project->registrationCategDescription);
+        \dump($project->registrationCategTitle);
+        \dump($project->useAgentRelationInstituicao);
+        \dump($project->introInscricoes);
+        \dump($project->registrationSeals);
+        \dump($project->registrationLimit);
+        */
+        
+        $metadata = [];
+        
+        foreach ($projectMeta as $key) {
+            $metadata[$key] = $project->{$key};
+        }
+        
+        $result = array(
+            'fields' => $fields,
+            'meta' => $metadata
+        );
         
         header('Content-disposition: attachment; filename=project-'.$this->urlData['id'].'-fields.txt');
         header('Content-type: text/plain');
-        
-        echo json_encode($fields);
+        echo json_encode($result);
     }
     
     function POST_importFields() {
         $this->requireAuthentication();
         
         $app = App::i();
-        \dump($this->urlData);
-        \dump($this->postData);
-        \dump($_FILES);
         
         if(!key_exists('id', $this->urlData)){
             $app->pass();
@@ -198,14 +232,11 @@ class Project extends EntityController {
             $importSource = fread($importFile,filesize($_FILES['fieldsFile']['tmp_name']));
             $importSource = json_decode($importSource);
             
-            \dump($importSource); 
-            
             $project =  $app->repo("Project")->find($project_id);
-            \dump($project);
             
             if (!is_null($importSource)) {
             
-                foreach($importSource as $field) {
+                foreach($importSource->fields as $field) {
                 
                     $newField = new Entities\RegistrationFieldConfiguration;
                     $newField->owner = $project;
@@ -214,22 +245,27 @@ class Project extends EntityController {
                     $newField->maxSize = $field->maxSize;
                     $newField->fieldType = $field->fieldType;
                     $newField->required = $field->required;
-                    $newField->categories = json_encode($field->categories);
-                    $newField->fieldOptions = json_encode($field->fieldOptions);
+                    $newField->categories = $field->categories;
+                    $newField->fieldOptions = $field->fieldOptions;
                     
                     $app->em->persist($newField);
                     
-                    \dump($newField->save());
+                    $newField->save();
                 
                 }
                 
+                foreach($importSource->meta as $key => $value) {
+                    $project->$key = $value;
+                }
+                
+                $project->save(true);
+                
                 $app->em->flush();
-            
+                
             }
-            
-            
         
         }
+
         $app->redirect($project->editUrl.'#tab=inscricoes');
         
     }
