@@ -56,7 +56,7 @@ class Theme extends BaseV1\Theme{
 
         $cache_id = $this->subsiteInstance->getSassCacheId();
 
-        if($app->isEnabled('subsite') /*&& !$app->msCache->contains($cache_id)*/){
+        if($app->isEnabled('subsite') && !$app->msCache->contains($cache_id)){
 
             $app->cache->deleteAll();
             if(!is_dir($this->subsitePath . '/assets/css/sass/')) {
