@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -424,12 +424,12 @@ msgstr "Colectivo"
 #: protected/application/conf/conf-base.php:73
 #: protected/application/themes/BaseV1/layouts/parts/editable-entity-logo.php:1
 msgid "Mapas Culturais"
-msgstr "Mapas Culturales"
+msgstr "Cultura en Línea"
 
 #: protected/application/conf/conf-base.php:74
 msgid "O Mapas Culturais é uma plataforma livre para mapeamento cultural."
 msgstr ""
-"Mapas Culturales es una plataforma de software libre, de cartografía "
+"Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
 #: protected/application/conf/conf-base.php:139
@@ -2315,7 +2315,7 @@ msgid ""
 "The location must be an instance of \\MapasCulturais\\Types\\GeoPoint or an "
 "array with two numeric values"
 msgstr ""
-"La ubicación debe ser una instancia de \\ MapasCulturais \\ Tipos \\ "
+"La ubicación debe ser una instancia de \\ Culturaenlinea \\ Tipos \\ "
 "GeoPoint o una matriz con dos valores numéricos"
 
 #: protected/application/lib/MapasCulturais/Traits/EntityNested.php:76
@@ -2934,7 +2934,7 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/Theme.php:74
 msgid "Mapa da Cultura"
-msgstr "Mapas Culturales"
+msgstr "Cultura en Línea"
 
 #: protected/application/themes/BaseV1/Theme.php:74
 msgid "Mapa Cultural do Estado do Acre"
@@ -3101,7 +3101,7 @@ msgid ""
 "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
 msgstr ""
-"Mapas Culturales es una plataforma de software libre, de cartografía "
+"Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
 #: protected/application/themes/BaseV1/Theme.php:132
@@ -3151,7 +3151,7 @@ msgstr "Colabore con el SNIIC"
 
 #: protected/application/themes/BaseV1/Theme.php:141
 msgid "Colabore com o Mapa da Cultura"
-msgstr "Colabore con Mapas Culturales"
+msgstr "Colabore con Cultura en Línea"
 
 #: protected/application/themes/BaseV1/Theme.php:141
 msgid "Colabore com o SpCultura"
@@ -3159,7 +3159,7 @@ msgstr "Colabore con SpCultura"
 
 #: protected/application/themes/BaseV1/Theme.php:142
 msgid "Colabore com o Mapas Culturais"
-msgstr "Colabore con Mapas Culturales"
+msgstr "Colabore con Cultura en Línea"
 
 #: protected/application/themes/BaseV1/Theme.php:145
 msgid "texto da seção \"eventos\" da home"
@@ -3246,13 +3246,13 @@ msgid ""
 msgstr ""
 "Hay varias formas en las que los desarrolladores interactúan con los mapas "
 "culturales. La primera es a través de nuestra <a href=\"https://github.com/"
-"hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. "
-"Con ella usted puede acceder a los datos públicos de nuestra base de datos y "
-"utilizarlos para desarrollar aplicaciones externas. Además, Mapas Culturales "
-"está realizado a partir del software libre <a href=\"http://institutotim.org."
-"br/project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, creado "
-"por Hacklabr en asociación con el Instituto TIM, y puede contribuir con su "
-"desarrollo a través de GitHub. "
+"LibreCoopUruguay/mapasculturais/blob/master/doc/api.md\" target=\"_blank"
+"\">API</a>. Con ella usted puede acceder a los datos públicos de nuestra "
+"base de datos y utilizarlos para desarrollar aplicaciones externas. Además, "
+"el sistema fue desarrollado a partir del software libre <a href=\"http://"
+"institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas "
+"Culturais</a>, creado por Hacklabr en asociación con el Instituto TIM, y "
+"puede contribuir con su desarrollo a través de GitHub. "
 
 #: protected/application/themes/BaseV1/Theme.php:172
 msgid "resultados verifiados"
@@ -4458,7 +4458,7 @@ msgid ""
 "Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
 "sucesso."
 msgstr ""
-"Su solicitud para enviar un contacto por Mapas Culturales fue enviada con "
+"Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
 "éxito."
 
 #: protected/application/themes/BaseV1/Theme.php:1394
@@ -4823,7 +4823,7 @@ msgstr "Agregar una imagen a la Galería"
 
 #: protected/application/themes/BaseV1/layouts/parts/header-about-nav.php:4
 msgid "Sobre os Mapas Culturais"
-msgstr "Sobre Mapas Culturales"
+msgstr "Sobre Cultura en Línea"
 
 #: protected/application/themes/BaseV1/layouts/parts/header-about-nav.php:5
 #: protected/application/themes/Subsite/layouts/parts/header-about-nav.php:13
