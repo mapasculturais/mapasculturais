@@ -20,7 +20,7 @@ trait EntityRevision{
         $app = App::i();
         $class_metadata = $app->em->getClassMetadata($this->getClassName());
         $fields = $class_metadata->getFieldNames();
-        $removedFields = ['id','_geoLocation','isVerified','userId'];
+        $removedFields = ['id','_geoLocation','userId'];
         $entity_data = null;
 
         foreach($fields as $field) {
