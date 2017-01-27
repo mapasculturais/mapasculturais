@@ -113,8 +113,8 @@ class Theme extends BaseV1\Theme{
                 /*  Creates entities pin single and grouped image only for each entity */
                 foreach($entities as $entity) {
                     $entity = iconv('UTF-8', 'ASCII//TRANSLIT', $entity);
-                    $entity_first_name_color = "cor_" . $entity;
                     $entity_first_sing_name = substr($entity, 0, -1);
+                    $entity_first_name_color = "cor_" . $entity;
                     if($this->subsiteInstance->$entity_first_name_color) {
                         $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/pin-" . $entity_first_sing_name. ".svg";
                         if(file_exists($entity_file_svg)) {
@@ -145,8 +145,8 @@ class Theme extends BaseV1\Theme{
 
                         foreach($entities_second as $second_entity) {
                             $second_entity = iconv('UTF-8', 'ASCII//TRANSLIT', $second_entity);
-                            $entity_sec_name_color = "cor_" . $second_entity;
                             $entity_second_sing_name = substr($second_entity, 0, -1);
+                            $entity_sec_name_color = "cor_" . $second_entity;
                             if($this->subsiteInstance->$entity_sec_name_color) {
                                 $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/agrupador-combinado-" . $entity_first_sing_name. "-" . $entity_second_sing_name . ".svg";
                                 if(file_exists($entity_file_svg)) {
@@ -170,33 +170,31 @@ class Theme extends BaseV1\Theme{
                                 }
                             }
 
-                            if($entity_first_sing_name == 'agente') {
-                                foreach($entities_third as $third_entity) {
-                                    $third_entity = iconv('UTF-8', 'ASCII//TRANSLIT', $third_entity);
-                                    $entity_thi_name_color = "cor_" . $third_entity;
-                                    $entity_third_sing_name = substr($third_entity, 0, -1);
-                                    if($this->subsiteInstance->$entity_thi_name_color) {
-                                        $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/agrupador-combinado.svg";
-                                        if(file_exists($entity_file_svg)) {
-                                            $im = new \Imagick();
-                                            $svg = file_get_contents($entity_file_svg);
-                                            $svg = preg_replace('/class="' . $entity_first_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
-                                            $svg = preg_replace('/class="' . $entity_second_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_sec_name_color .'"',$svg);
-                                            $svg = preg_replace('/class="' . $entity_third_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_thi_name_color .'"',$svg);
+                            foreach($entities_third as $third_entity) {
+                                $third_entity = iconv('UTF-8', 'ASCII//TRANSLIT', $third_entity);
+                                $entity_third_sing_name = substr($third_entity, 0, -1);
+                                $entity_thi_name_color = "cor_" . $third_entity;
+                                if($this->subsiteInstance->$entity_thi_name_color) {
+                                    $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/agrupador-combinado-"  . $entity_first_sing_name. "-" . $entity_second_sing_name . "-" . $entity_third_sing_name . ".svg";
+                                    if(file_exists($entity_file_svg)) {
+                                        $im = new \Imagick();
+                                        $svg = file_get_contents($entity_file_svg);
+                                        $svg = preg_replace('/class="' . $entity_first_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
+                                        $svg = preg_replace('/class="' . $entity_second_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_sec_name_color .'"',$svg);
+                                        $svg = preg_replace('/class="' . $entity_third_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_thi_name_color .'"',$svg);
 
-                                            $im->setBackgroundColor(new \ImagickPixel('transparent'));
-                                            $im->readImageBlob($svg);
+                                        $im->setBackgroundColor(new \ImagickPixel('transparent'));
+                                        $im->readImageBlob($svg);
 
-                                            /*png settings*/
-                                            $im->setImageFormat("png24");
+                                        /*png settings*/
+                                        $im->setImageFormat("png24");
 
-                                            if(file_exists($this->subsitePath . "/assets/img/agrupador-combinado.png")) {
-                                                unlink($this->subsitePath . "/assets/img/agrupador-combinado.png");
-                                            }
-                                            $im->writeImage($this->subsitePath . "/assets/img/agrupador-combinado.png");
-                                            $im->clear();
-                                            $im->destroy();
+                                        if(file_exists($this->subsitePath . "/assets/img/agrupador-combinado.png")) {
+                                            unlink($this->subsitePath . "/assets/img/agrupador-combinado.png");
                                         }
+                                        $im->writeImage($this->subsitePath . "/assets/img/agrupador-combinado.png");
+                                        $im->clear();
+                                        $im->destroy();
                                     }
                                 }
                             }
