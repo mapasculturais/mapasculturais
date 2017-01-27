@@ -429,17 +429,33 @@ return [
     },
             
     'save file relative path' => function() use ($conn, $app) {
-        $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e._path = '' OR e._path IS NULL");
-
-        $files = $q->getResult();
-                
-        foreach($files as $file){
-            $path = $file->getRelativePath(true);
-            echo "\nsaving url of $file ($path)";
+        $next = true;
+        while($next){
+            $app->em->clear();
             
-            $file->save(true);
+            $limit = 200;
+            
+            $ids = $conn->fetchAll("SELECT id FROM file WHERE path IS NULL ORDER BY random() LIMIT {$limit};");
+            
+            $next = count($ids) == $limit;
+
+            $ids = array_map(function($e) { return $e['id']; }, $ids);
+            
+            $ids = implode(',', $ids);
+
+            $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e.id IN({$ids})");
+            
+            $files = $q->getResult();
+
+            foreach($files as $file){
+                $path = $file->getRelativePath(true);
+                echo "\nsaving url of $file ($path)";
+
+                $file->save(true);
+            }
+            
+            $this->em->flush();
         }
-        $this->em->flush();
     },
             
     '*_meta drop all indexes' => function () use($conn) {
