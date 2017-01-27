@@ -3080,7 +3080,7 @@ msgstr ""
 #: protected/application/themes/BaseV1/Theme.php:123
 #: protected/application/themes/BaseV1/Theme.php:124
 msgid "Bem-vind@!"
-msgstr "Bienvenid@!"
+msgstr "¡Bienvenid@!"
 
 #: protected/application/themes/BaseV1/Theme.php:123
 msgid "Bem-vindo"
