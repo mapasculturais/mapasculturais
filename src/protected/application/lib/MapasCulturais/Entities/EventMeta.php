@@ -8,7 +8,11 @@ use MapasCulturais\App;
 /**
  * EventMeta
  *
- * @ORM\Table(name="event_meta")
+ * @ORM\Table(name="event_meta", indexes={
+ *      @ORM\Index(name="event_meta_owner_idx", columns={"object_id"}),
+ *      @ORM\Index(name="event_meta_owner_key_idx", columns={"object_id", "key"}),
+ *      @ORM\Index(name="event_meta_key_value_idx", columns={"key", "value"})
+ * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
@@ -41,9 +45,9 @@ class EventMeta extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\Event
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Event")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $owner;

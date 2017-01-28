@@ -26,7 +26,6 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntityNested,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
@@ -176,13 +175,6 @@ class Project extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
      */
     public $registrationFieldConfigurations;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=false)
-     */
-    protected $isVerified = false;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)

@@ -26,7 +26,6 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
@@ -117,13 +116,6 @@ class Event extends \MapasCulturais\Entity
      * })
      */
     protected $project = null;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=false)
-     */
-    protected $isVerified = false;
 
 
     /**

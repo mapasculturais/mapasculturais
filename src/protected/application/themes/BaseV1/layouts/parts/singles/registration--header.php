@@ -15,10 +15,6 @@
         <div class="avatar">
             <img class="js-avatar-img" src="<?php $this->asset('img/avatar--project.png'); ?>" />
     <?php endif; ?>
-        <!-- pro responsivo!!! -->
-        <?php if($project->isVerified): ?>
-            <a class="verified-seal hltip active" title="<?php \MapasCulturais\i::esc_attr_e("Este projeto é verificado.");?>" href="#"></a>
-        <?php endif; ?>
         </div>
         <!--.avatar-->
         <div class="entity-type registration-type">

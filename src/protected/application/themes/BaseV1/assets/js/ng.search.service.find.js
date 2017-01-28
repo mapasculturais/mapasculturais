@@ -36,16 +36,26 @@
             }
 
             var activeEntity = data.global.filterEntity;
+            var entities = ['space', 'event', 'agent'];
             if(data.global.viewMode === 'map'){
                 var compareEnabledEntities = angular.equals(lastQueries.enabledEntities, data.global.enabled);
+                var entityQueryData = {};
 
-                var entityQueryData = data2searchData(activeEntity, data[activeEntity]);
-                if(!angular.equals(entityQueryData, lastQueries[activeEntity]) || !compareEnabledEntities){
-                    lastQueries[activeEntity] = angular.copy(entityQueryData);
-                    callApi(activeEntity, entityQueryData);
-                }else{
-                    results[activeEntity] = $rootScope.lastResult[activeEntity];
-                }
+                // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
+                entities.forEach(function(entity){
+                    if(data.global.enabled[entity]) {
+                        entityQueryData = data2searchData(entity, data[entity]);
+                        if(!angular.equals(entityQueryData, lastQueries[entity]) || !compareEnabledEntities){
+                            lastQueries[entity] = angular.copy(entityQueryData);
+                            callApi(entity, entityQueryData);
+                        }else{
+                            results[entity] = $rootScope.lastResult[entity];
+                        }
+
+                        if(entity !== lastQueries.listedEntity)
+                            $rootScope.pagination[activeEntity] = 1;
+                        }
+                });
 
                 lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
@@ -116,6 +126,7 @@
 
                 apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs,status,header){
                     var metadata = JSON.parse(header('API-Metadata'));
+
                     numSuccessRequests++;
                     activeRequests--;
                     $rootScope.spinnerCount--;
@@ -124,10 +135,11 @@
 
                     endRequest();
 
-                    if(requestEntity === 'space' && requestAction === 'findByEvents')
+                    if(requestEntity === 'space' && requestAction === 'findByEvents') {
                         countResults[entity].spaces = metadata.count;
-                    else
+                    } else {
                         countResults[entity] = metadata.count;
+                    }
                     numCountSuccessRequests++;
                     numCountRequests++;
                     endCountRequest();
@@ -260,16 +272,25 @@
 
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
+                var exportSelect = ['singleUrl'];
                 Object.keys(Description).forEach(function(prop) {
-                	if (!Description[prop].isEntityRelation && (MapasCulturais.allowedFields || (!MapasCulturais.allowedFields && !Description[prop].private))) {
-                		if (Description[prop]['@select']) {
-                			prop = Description[prop]['@select'];
-                		}
-                		selectData += "," + prop;
-                	}
-                })
-
-                var queryString_apiExport = '@select='+selectData;
+                    if(prop[0] == '_'){
+                        return;
+                    }
+                    var def = Description[prop];
+                    var selectProperty = def['@select'] || prop;
+                    if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
+                        exportSelect.push(selectProperty); 
+                    } else if(def.isEntityRelation) {
+                        if(def.isOwningSide){
+                            exportSelect.push(prop + '.{id,name,singleUrl}');
+                        } else if (prop == 'occurrences') {
+                            exportSelect.push('occurrences.{space.{id,name,singleUrl},rule}');
+                        }
+                    }
+                });
+                
+                var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export
                 if(apiExportURL.indexOf('event/findByLocation') !== -1)

@@ -21,7 +21,6 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityAvatar,
         Traits\EntityAgentRelation,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
