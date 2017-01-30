@@ -5214,11 +5214,11 @@ msgstr "Pasar propiedad"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:37
 msgid "Ceder propriedade"
-msgstr "Ceder propriedad"
+msgstr "Ceder propiedad"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:39
 msgid "Reivindicar propriedade"
-msgstr "Reivindicar propriedad"
+msgstr "Reivindicar propiedad"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:41
 msgid "Selecione o agente para o qual você deseja passar a propriedade deste"
