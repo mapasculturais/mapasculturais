@@ -57,6 +57,7 @@ HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' S
 
 cd $DIR
 ./db-update.sh $DOMAIN
+./mc-db-updates.sh
 ./compile-sass.sh $DOMAIN
 
 cd $CDIR

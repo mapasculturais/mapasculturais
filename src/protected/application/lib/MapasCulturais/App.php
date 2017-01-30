@@ -736,7 +736,7 @@ class App extends \Slim\Slim{
             'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|ico|icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
         ];
 
         // register file groups
