@@ -974,7 +974,7 @@ class ApiQuery {
         }
         
         foreach($entities as &$entity){
-            if($user->is('admin', $entity['_subsiteId'])){
+            if(($this->usesOriginSubsite && $user->is('admin', $entity['_subsiteId'])) || (!$this->usesOriginSubsite && $user->is('saasAdmin'))){
                 $entity['permissionTo'] = $admin_skel;
             } else {
                 $entity_id = $entity['id'];
