@@ -1369,7 +1369,6 @@ MapasCulturais.cookies = {
             ].join(''));
     }
 };
-<<<<<<< HEAD
 
 $(function() {
     if (MapasCulturais.request.controller === 'entityrevision') {
