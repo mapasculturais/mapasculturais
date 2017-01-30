@@ -6397,29 +6397,28 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:1
 msgid "Baixar o regulamento"
-msgstr "Descargar el reglamento"
+msgstr "Descargar las bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:3
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:15
 msgid "Regulamento"
-msgstr "Reglamento"
+msgstr "Bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:6
 msgid "Antes de subir o regulamento é preciso salvar o projeto."
-msgstr "Antes de cargar el reglamento es preciso salvar el proyecto."
+msgstr "Antes de cargar las bases es preciso salvar el proyecto."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:9
 msgid "Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf."
-msgstr ""
-"Envíe un archivo con el reglamento. Formatos aceptados: .doc, .odt y .pdf."
+msgstr "Envíe un archivo con las bases. Formatos aceptados: .doc, .odt y .pdf."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:10
 msgid "Enviar regulamento"
-msgstr "Enviar reglamento"
+msgstr "Enviar bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:13
 msgid "excluir regulamento"
-msgstr "eliminar reglamento"
+msgstr "eliminar bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:8
 msgid ""
@@ -6481,8 +6480,7 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:12
 msgid "Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
-msgstr ""
-"No válida - no cumple con el reglamento (ejem. documentación incorrecta)."
+msgstr "No válida - no cumple con las bases (ejem. documentación incorrecta)."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:13
 msgid "Pendente - ainda não avaliada."
