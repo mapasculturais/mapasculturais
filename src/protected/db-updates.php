@@ -449,7 +449,6 @@ return [
             }
         }
     },
-<<<<<<< HEAD
     'recreate *_meta indexes' => function() use($conn) {
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
         $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
