@@ -90,7 +90,7 @@
 
         <div class="favicon <?php if($entity->favicon): ?>com-imagem<?php endif; ?>">
             <?php if($entity->favicon): ?>
-                <img class="js-favicon-img" src="<?php echo $entity->favicon->transform('favicon')->url; ?>" />
+                <img class="js-favicon-img" src="<?php echo $entity->favicon->url; ?>" />
             <?php else: ?>
                 <img class="js-favicon-img" src="<?php $this->asset('img/favicon.ico'); ?>" />
             <?php endif; ?>
@@ -109,5 +109,4 @@
 
         <?php $this->applyTemplateHook('favicon','after'); ?>
     </div>
-
 </div>
