@@ -396,25 +396,6 @@ return [
         $conn->executeQuery("CREATE SEQUENCE notification_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
-
-    'create avatar thumbs' => function() use($conn){
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
-
-        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-
-        foreach($files as $f){
-            $f->transform('avatarSmall');
-            $f->transform('avatarMedium');
-            $f->transform('avatarBig');
-        }
-
-        $this->disableAccessControl();
-
-    },
     
     
     'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
@@ -427,38 +408,26 @@ return [
         $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
         
     },
-            
-    'save file relative path' => function() use ($conn, $app) {
-        $next = true;
-        while($next){
-            $app->em->clear();
-            
-            $limit = 200;
-            
-            $ids = $conn->fetchAll("SELECT id FROM file WHERE path IS NULL ORDER BY random() LIMIT {$limit};");
-            
-            $next = count($ids) == $limit;
 
-            $ids = array_map(function($e) { return $e['id']; }, $ids);
-            
-            $ids = implode(',', $ids);
+    'create avatar thumbs' => function() use($conn){
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
 
-            $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e.id IN({$ids})");
-            
-            $files = $q->getResult();
-
-            foreach($files as $file){
-                $path = $file->getRelativePath(true);
-                echo "\nsaving url of $file ($path)";
-
-                $file->save(true);
-            }
-            
-            $this->em->flush();
+        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
+        echo count($files) . " ARQUIVOS\n";
+        foreach($files as $f){
+            $f->transform('avatarSmall');
+            $f->transform('avatarMedium');
+            $f->transform('avatarBig');
         }
+
+        $this->disableAccessControl();
     },
             
-    '*_meta drop all indexes' => function () use($conn) {
+    '*_meta drop all indexes again' => function () use($conn) {
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
             $table = "{$prefix}_meta";
             
@@ -483,7 +452,6 @@ return [
     },
             
     'recreate *_meta indexes' => function() use($conn) {
-        $conn->executeQuery("ALTER TABLE subsite_meta DROP CONSTRAINT saas_saas_meta_fk;");
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
         $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         try{ 
@@ -562,6 +530,38 @@ return [
         $conn->executeQuery("CREATE INDEX notification_meta_key_value_idx ON notification_meta (key, value);");
         $conn->executeQuery("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
-    }
+    },
+    
+    
+            
+    'save file relative path' => function() use ($conn, $app) {
+        $next = true;
+        while($next){
+            $app->em->clear();
+            
+            $limit = 200;
+            
+            $ids = $conn->fetchAll("SELECT id FROM file WHERE path IS NULL ORDER BY random() LIMIT {$limit};");
+            
+            $next = count($ids) == $limit;
+
+            $ids = array_map(function($e) { return $e['id']; }, $ids);
+            
+            $ids = implode(',', $ids);
+
+            $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e.id IN({$ids})");
+            
+            $files = $q->getResult();
+
+            foreach($files as $file){
+                $path = $file->getRelativePath(true);
+                echo "\nsaving url of $file ($path)";
+
+                $file->save(true);
+            }
+            
+            $this->em->flush();
+        }
+    },
     
 ] + $updates ;
