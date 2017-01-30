@@ -332,6 +332,7 @@ abstract class File extends \MapasCulturais\Entity
         $transformation_group_name = 'img:' . $transformation_name;
 
         $owner = $this->owner;
+        
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 
@@ -396,7 +397,6 @@ abstract class File extends \MapasCulturais\Entity
     public function _prePersist($args = null){
         $app = App::i();
         
-        $this->getRelativePath();
 
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
@@ -408,6 +408,11 @@ abstract class File extends \MapasCulturais\Entity
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after', $args);
 
+        if(!$this->_path){
+            $this->getRelativePath();
+            $this->save(true);
+        }
+        
         $this->owner->clearFilesCache();
     }
 
