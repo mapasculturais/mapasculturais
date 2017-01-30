@@ -431,18 +431,6 @@ return [
         $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
     
-    
-    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
-        if(__column_exists('file', 'path')){
-            return true;
-        }
-        $conn->executeQuery("CREATE INDEX file_owner_index ON file (object_type, object_id);");
-        $conn->executeQuery("CREATE INDEX file_group_index ON file (grp);");
-
-        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
-        
-    },
-
     'create avatar thumbs' => function() use($conn){
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
@@ -459,20 +447,6 @@ return [
         }
 
         $this->disableAccessControl();
-    },
-    'create seal relation validate date' => function() use($conn) {
-        if(__column_exists('seal_relation', 'validate_date')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
-    },
-    'create seal relation renovation flag field' => function() use($conn) {
-        if(__column_exists('seal_relation', 'renovation_request')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");   
     },
     'create entity revision tables' => function() use($conn) {
         if(__table_exists('entity_revision')) {
@@ -584,24 +558,6 @@ return [
         
     },
             
-    'save file relative path' => function() use ($conn, $app) {
-        $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e._path = '' OR e._path IS NULL");
-
-        $files = $q->getResult();
-                
-        foreach($files as $file){
-            try{
-                $path = $file->getRelativePath(true);
-                echo "\nsaving url of $file ($path)\n";
-
-                $file->save(true);
-            } catch (\Exception $e){
-                echo "\nCOULD NOT SAVE PATH FOR $file->name\n\n";
-            }
-        }
-        $this->em->flush();
-    },
-            
     '*_meta drop all indexes again' => function () use($conn) {
 
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
@@ -626,7 +582,6 @@ return [
             }
         }
     },
-            
     'recreate *_meta indexes' => function() use($conn) {
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
         $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
@@ -707,9 +662,7 @@ return [
         $conn->executeQuery("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
     },
-    
-    
-            
+               
     'save file relative path' => function() use ($conn, $app) {
         $next = true;
         while($next){
@@ -739,6 +692,19 @@ return [
             $this->em->flush();
         }
     },
-    
+    'create seal relation renovation flag field' => function() use($conn) {
+        if(__column_exists('seal_relation', 'renovation_request')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");   
+    },
+    'create seal relation validate date' => function() use($conn) {
+        if(__column_exists('seal_relation', 'validate_date')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+    }
 ] + $updates ;
 
