@@ -529,36 +529,7 @@ return [
         $conn->executeQuery("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
     },
-               
-    'save file relative path' => function() use ($conn, $app) {
-        $next = true;
-        while($next){
-            $app->em->clear();
             
-            $limit = 200;
-            
-            $ids = $conn->fetchAll("SELECT id FROM file WHERE path IS NULL ORDER BY random() LIMIT {$limit};");
-            
-            $next = count($ids) == $limit;
-
-            $ids = array_map(function($e) { return $e['id']; }, $ids);
-            
-            $ids = implode(',', $ids);
-
-            $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e.id IN({$ids})");
-            
-            $files = $q->getResult();
-
-            foreach($files as $file){
-                $path = $file->getRelativePath(true);
-                echo "\nsaving url of $file ($path)";
-
-                $file->save(true);
-            }
-            
-            $this->em->flush();
-        }
-    },
     'create seal relation renovation flag field' => function() use($conn) {
         if(__column_exists('seal_relation', 'renovation_request')){
             echo "ALREADY APPLIED";
