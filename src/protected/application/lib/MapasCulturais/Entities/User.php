@@ -648,7 +648,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           $now = new \DateTime;
           foreach($this->agents as $agent) {
               foreach($agent->sealRelations as $relation) {
-                if($relation->validateDate) {
+                if(isset($relation->validateDate) && $relation->validateDate->date) {
                     $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
                     if($diff <= 0.00) {
                         $notification = new Notification;
@@ -669,7 +669,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
           foreach($this->spaces as $space) {
               foreach($space->sealRelations as $relation) {
-                  if($relation->validateDate) {
+                  if(isset($relation->validateDate) && $relation->validateDate->date) {
                     $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
                     if($diff <= 0.00) {
                         $notification = new Notification;
