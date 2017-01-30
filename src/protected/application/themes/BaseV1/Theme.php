@@ -869,10 +869,6 @@ class Theme extends MapasCulturais\Theme {
             $this->transform('institute');
         });
 
-        $app->hook('entity(<<subsite>>).file(favicon).insert:after', function() {
-            $this->transform('favicon');
-        });
-
         $app->hook('entity(<<agent|space|event|project|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
