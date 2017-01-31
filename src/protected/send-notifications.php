@@ -70,9 +70,9 @@ foreach($userList as $reg) {
     if($app->config['notifications.entities.update'] > 0) {
         $now = new \DateTime;
         foreach($user->agents as $agent) {
-          $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
-          $interval = date_diff($lastUpdateDate, $now);
-          if($agent->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+            $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+
             $dataValue = [
                 'name'          => $user->profile->name,
                 'entityType'    => $agent->entityTypeLabel(),
@@ -81,16 +81,43 @@ foreach($userList as $reg) {
                 'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
             ];
 
-            $message = $app->renderMailerTemplate('update_required',$dataValue);
+            if($agent->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+                $message = $app->renderMailerTemplate('update_required',$dataValue);
+                // message to user about old agent registrations
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $user->email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
 
-            // message to user about old agent registrations
-            $app->createAndSendMailMessage([
-                'from' => $app->config['mailer.from'],
-                'to' => $user->email,
-                'subject' => $message['title'],
-                'body' => $message['body']
-            ]);
-          }
+            if(in_array('notifications.seal.toExpire',$app->config) && $app->config['notifications.seal.toExpire'] > 0) {
+                foreach($agent->sealRelations as $relation) {
+                    $dataValue['sealName'] = $relation->seal->name;
+                    if(isset($relation->validateDate) && $relation->validateDate->date) {
+                        $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                        if($diff <= 0.00) {
+                            $message = $app->renderMailerTemplate('seal_expired',$dataValue);
+                        } elseif($diff <= $app->config['notifications.seal.toExpire']) {
+                            $diff = is_int($diff)? $diff: round($diff);
+                            $diff = $diff == 0? $diff = 1: $diff;
+                            $dataValue['daysToExpire'] = $diff;
+                            $message = $app->renderMailerTemplate('seal_toexpire',$dataValue);
+                        }
+                    }
+
+                    if(!empty($message)) {
+                        // message to user about old agent registrations
+                        $app->createAndSendMailMessage([
+                            'from' => $app->config['mailer.from'],
+                            'to' => $user->email,
+                            'subject' => $message['title'],
+                            'body' => $message['body']
+                        ]);
+                    }
+                }
+            }
         }
 
         foreach($user->projects as $project) {
@@ -129,7 +156,6 @@ foreach($userList as $reg) {
             ];
 
             $message = $app->renderMailerTemplate('update_required',$dataValue);
-
             // message to user about old event registrations
             $app->createAndSendMailMessage([
                 'from' => $app->config['mailer.from'],
@@ -141,26 +167,52 @@ foreach($userList as $reg) {
         }
 
         foreach($user->spaces as $space) {
-          $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
-          $interval = date_diff($lastUpdateDate, $now);
-          if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
-            $dataValue = [
-                'name'          => $user->profile->name,
-                'entityType'    => $space->entityTypeLabel(),
-                'entityName'    => $space->name,
-                'url'           => $space->singleUrl,
-                'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
-            ];
+            $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
+            $interval = date_diff($lastUpdateDate, $now);
+            if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
+                $dataValue = [
+                    'name'          => $user->profile->name,
+                    'entityType'    => $space->entityTypeLabel(),
+                    'entityName'    => $space->name,
+                    'url'           => $space->singleUrl,
+                    'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
+                ];
 
-            $message = $app->renderMailerTemplate('update_required',$dataValue);
-            // message to user about old space registrations
-            $app->createAndSendMailMessage([
-                'from' => $app->config['mailer.from'],
-                'to' => $user->email,
-                'subject' => $message['title'],
-                'body' => $message['body']
-            ]);
-          }
+                $message = $app->renderMailerTemplate('update_required',$dataValue);
+                // message to user about old space registrations
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $user->email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
+            if(in_array('notifications.seal.toExpire',$app->config) && $app->config['notifications.seal.toExpire'] > 0) {
+                foreach($space->sealRelations as $relation) {
+                    $dataValue['sealName'] = $relation->seal->name;
+                    if(isset($relation->validateDate) && $relation->validateDate->date) {
+                        $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                        if($diff <= 0.00) {
+                            $message = $app->renderMailerTemplate('seal_expired',$dataValue);
+                        } elseif($diff <= $app->config['notifications.seal.toExpire']) {
+                            $diff = is_int($diff)? $diff: round($diff);
+                            $diff = $diff == 0? $diff = 1: $diff;
+                            $dataValue['daysToExpire'] = $diff;
+                            $message = $app->renderMailerTemplate('seal_toexpire',$dataValue);
+                        }
+                    }
+                    if(!empty($message)) {
+                        // message to user about old agent registrations
+                        $app->createAndSendMailMessage([
+                            'from' => $app->config['mailer.from'],
+                            'to' => $user->email,
+                            'subject' => $message['title'],
+                            'body' => $message['body']
+                        ]);
+                    }
+                }
+            }
+
         }
 
         /* @TODO avaliar necessidade de notificar os registros de seloss
