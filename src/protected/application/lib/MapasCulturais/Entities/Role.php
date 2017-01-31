@@ -42,6 +42,8 @@ class Role extends \MapasCulturais\Entity{
 
     /**
      * @var int
+     * 
+     * @TODO: REMOVER ESTE MAPEAMENTO
      *
      * @ORM\Column(name="subsite_id", type="integer", length=32, nullable=true)
      */
@@ -56,7 +58,33 @@ class Role extends \MapasCulturais\Entity{
      * })
      */
     protected $subsite;
-
+    
+    
+    function setSubsiteId($subsite_id){
+        if($subsite_id){
+            $subsite = \MapasCulturais\App::i()->repo('Subsite')->find($subsite_id);
+            
+            if($subsite){
+                $this->subsite = $subsite;
+            } else {
+                $subsite_id = null;
+            }
+        }
+        
+        $this->subsiteId = $subsite_id;
+    }
+    
+    function setSubsite($subsite){
+        if($subsite instanceof Subsite){
+            $this->subsiteId = $subsite->id;
+        } else {
+            $this->subsiteId = null;
+            $subsite = null;
+        }
+        
+        $this->subsite = $subsite;
+    }
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
