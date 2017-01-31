@@ -86,7 +86,7 @@ trait EntityPermissionCache {
                 $origin_users = $this->getOrigin()->getUsersWithControl();
                 $destination_users = $this->getDestination()->getUsersWithControl();
                 
-                $users = ["$this->requesterUser" => $requesterUser];
+                $users = ["$this->requesterUser" => $this->requesterUser];
                 foreach(array_merge($origin_users, $destination_users) as $u){
                     $users["$u"] = $u;
                 }
