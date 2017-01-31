@@ -648,38 +648,42 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
           $now = new \DateTime;
           foreach($this->agents as $agent) {
               foreach($agent->sealRelations as $relation) {
-                  $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
-                  if($diff <= 0.00) {
-                      $notification = new Notification;
-                      $notification->user = $app->user;
-                      $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
-                      $notification->save();
-                  } elseif($diff <= $app->config['notifications.seal.toExpire']) {
-                      $diff = is_int($diff)? $diff: round($diff);
-                      $diff = $diff == 0? $diff = 1: $diff;
-                      $notification = new Notification;
-                      $notification->user = $app->user;
-                      $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href=''>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
-                      $notification->save();
-                  }
+                if(isset($relation->validateDate) && $relation->validateDate->date) {
+                    $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                    if($diff <= 0.00) {
+                        $notification = new Notification;
+                        $notification->user = $app->user;
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
+                        $notification->save();
+                    } elseif($diff <= $app->config['notifications.seal.toExpire']) {
+                        $diff = is_int($diff)? $diff: round($diff);
+                        $diff = $diff == 0? $diff = 1: $diff;
+                        $notification = new Notification;
+                        $notification->user = $app->user;
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href=''>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
+                        $notification->save();
+                    }
+                }
               }
           }
 
           foreach($this->spaces as $space) {
               foreach($space->sealRelations as $relation) {
-                  $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
-                  if($diff <= 0.00) {
-                      $notification = new Notification;
-                      $notification->user = $app->user;
-                      $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
-                      $notification->save();
-                  } elseif($diff <= $app->config['notifications.seal.toExpire']) {
-                      $diff = is_int($diff)? $diff: round($diff);
-                      $diff = $diff == 0? $diff = 1: $diff;
-                      $notification = new Notification;
-                      $notification->user = $app->user;
-                      $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
-                      $notification->save();
+                  if(isset($relation->validateDate) && $relation->validateDate->date) {
+                    $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
+                    if($diff <= 0.00) {
+                        $notification = new Notification;
+                        $notification->user = $app->user;
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
+                        $notification->save();
+                    } elseif($diff <= $app->config['notifications.seal.toExpire']) {
+                        $diff = is_int($diff)? $diff: round($diff);
+                        $diff = $diff == 0? $diff = 1: $diff;
+                        $notification = new Notification;
+                        $notification->user = $app->user;
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
+                        $notification->save();
+                    }
                   }
               }
           }

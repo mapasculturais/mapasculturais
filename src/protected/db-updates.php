@@ -430,7 +430,7 @@ return [
         $conn->executeQuery("CREATE SEQUENCE notification_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
-
+    
     'create avatar thumbs' => function() use($conn){
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
@@ -439,7 +439,7 @@ return [
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
 
         $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-
+        echo count($files) . " ARQUIVOS\n";
         foreach($files as $f){
             $f->transform('avatarSmall');
             $f->transform('avatarMedium');
@@ -447,20 +447,6 @@ return [
         }
 
         $this->disableAccessControl();
-    },
-    'create seal relation validate date' => function() use($conn) {
-        if(__column_exists('seal_relation', 'validate_date')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
-    },
-    'create seal relation renovation flag field' => function() use($conn) {
-        if(__column_exists('seal_relation', 'renovation_request')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");   
     },
     'create entity revision tables' => function() use($conn) {
         if(__table_exists('entity_revision')) {
@@ -477,90 +463,7 @@ return [
         $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_entity_revision_fk FOREIGN KEY (revision_id) REFERENCES entity_revision (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_revision_data_fk FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) NOT DEFERRABLE INITIALLY IMMEDIATE");
     },
-    'create entities history entries' => function() use($conn) {
-        $app = App::i();
-        $query = $app->em->createQuery("SELECT a FROM \MapasCulturais\Entities\Agent a");
-        $agents = $query->getResult();
-
-        foreach($agents as $agent) {
-            $user = $agent->owner->user;
-            $app->user = $user;
-            $app->auth->authenticatedUser = $user;
-            $agent->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
-
-            echo ("==== > Ínicio de Migração do registro ");
-            echo ("Criação da versão created do Agente: " . $agent->id . " => " . $agent->name);
-            /*
-             * Versão de Criação
-             */
-            $agent->_newCreatedRevision();
-
-            $agent->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
-            echo ("Criação da versão modified do Agente: " . $agent->id . " => " . $agent->name);
-            /*
-             * Versão Atualizada
-             */
-            $agent->_newModifiedRevision();
-            echo ("==== > OK");
-        }
-
-        $query = $app->em->createQuery("SELECT s FROM \MapasCulturais\Entities\Space s");
-        $spaces = $query->getResult();
-
-        foreach($spaces as $space) {
-            $user = $agent->owner->user;
-            $app->user = $user;
-            $app->auth->authenticatedUser = $user;
-            $space->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
-
-            echo ("==== > Ínicio de Migração do registro ");
-            echo ("Criação da versão created do Espaço: " . $space->id . " => " . $space->name);
-
-            /*
-             * Versão de Criação
-             */
-            $space->_newCreatedRevision();
-
-            $space->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
-            echo ("Criação da versão modified do Espaço " . $space->id . " => " . $space->name);
-            /*
-             * Versão Atualizada
-             */
-            $space->_newModifiedRevision();
-            echo ("==== > OK");
-        }
-
-        $query = $app->em->createQuery("SELECT e FROM \MapasCulturais\Entities\Event e");
-        $events = $query->getResult();
-
-        foreach($events as $event) {
-            $user = $event->owner->user;
-            $app->user = $user;
-            $app->auth->authenticatedUser = $user;
-            $event->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
-
-            echo ("==== > Ínicio de Migração do registro ");
-            echo ("Criação da versão created do Agente: " . $event->id . " => " . $event->name);
-
-            /*
-             * Versão de Criação
-             */
-            $event->_newCreatedRevision();
-
-            $event->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
-            echo ("Criação da versão modified do Evento " . $event->id . " => " . $event->name);
-            /*
-             * Versão Atualizada
-             */
-            $event->_newModifiedRevision();
-            echo ("==== > OK");
-        }
-
-        $app->auth->logout();
-
-    },
-    
-    
+       
     'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
         if(__column_exists('file', 'path')){
             return true;
@@ -572,25 +475,8 @@ return [
         
     },
             
-    'save file relative path' => function() use ($conn, $app) {
-        $q = $app->em->createQuery("SELECT e FROM MapasCulturais\Entities\File e WHERE e._path = '' OR e._path IS NULL");
+    '*_meta drop all indexes again' => function () use($conn) {
 
-        $files = $q->getResult();
-                
-        foreach($files as $file){
-            try{
-                $path = $file->getRelativePath(true);
-                echo "\nsaving url of $file ($path)\n";
-
-                $file->save(true);
-            } catch (\Exception $e){
-                echo "\nCOULD NOT SAVE PATH FOR $file->name\n\n";
-            }
-        }
-        $this->em->flush();
-    },
-            
-    '*_meta drop all indexes' => function () use($conn) {
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
             $table = "{$prefix}_meta";
             
@@ -612,10 +498,9 @@ return [
                 $conn->executeQuery("DROP INDEX {$index['indname']}");
             }
         }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
     },
-            
     'recreate *_meta indexes' => function() use($conn) {
-        $conn->executeQuery("ALTER TABLE subsite_meta DROP CONSTRAINT saas_saas_meta_fk;");
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
         $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         try{ 
@@ -726,6 +611,104 @@ return [
             $conn->executeQuery("CREATE INDEX IDX_60C85CB19A34590F ON registration_field_configuration (opportunity_id);");
 
         }
-    }
+    },
+            
+    'create seal relation renovation flag field' => function() use($conn) {
+        if(__column_exists('seal_relation', 'renovation_request')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");   
+    },
+    'create seal relation validate date' => function() use($conn) {
+        if(__column_exists('seal_relation', 'validate_date')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+    },
+            
+    'create entities history entries' => function() use($conn) {
+        $app = App::i();
+        $query = $app->em->createQuery("SELECT a FROM \MapasCulturais\Entities\Agent a");
+        $agents = $query->getResult();
+
+        foreach($agents as $agent) {
+            $user = $agent->owner->user;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            $agent->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+            echo ("==== > Ínicio de Migração do registro ");
+            echo ("Criação da versão created do Agente: " . $agent->id . " => " . $agent->name);
+            /*
+             * Versão de Criação
+             */
+            $agent->_newCreatedRevision();
+
+            $agent->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+            echo ("Criação da versão modified do Agente: " . $agent->id . " => " . $agent->name);
+            /*
+             * Versão Atualizada
+             */
+            $agent->_newModifiedRevision();
+            echo ("==== > OK");
+        }
+
+        $query = $app->em->createQuery("SELECT s FROM \MapasCulturais\Entities\Space s");
+        $spaces = $query->getResult();
+
+        foreach($spaces as $space) {
+            $user = $agent->owner->user;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            $space->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+            echo ("==== > Ínicio de Migração do registro ");
+            echo ("Criação da versão created do Espaço: " . $space->id . " => " . $space->name);
+
+            /*
+             * Versão de Criação
+             */
+            $space->_newCreatedRevision();
+
+            $space->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+            echo ("Criação da versão modified do Espaço " . $space->id . " => " . $space->name);
+            /*
+             * Versão Atualizada
+             */
+            $space->_newModifiedRevision();
+            echo ("==== > OK");
+        }
+
+        $query = $app->em->createQuery("SELECT e FROM \MapasCulturais\Entities\Event e");
+        $events = $query->getResult();
+
+        foreach($events as $event) {
+            $user = $event->owner->user;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            $event->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+            echo ("==== > Ínicio de Migração do registro ");
+            echo ("Criação da versão created do Agente: " . $event->id . " => " . $event->name);
+
+            /*
+             * Versão de Criação
+             */
+            $event->_newCreatedRevision();
+
+            $event->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+            echo ("Criação da versão modified do Evento " . $event->id . " => " . $event->name);
+            /*
+             * Versão Atualizada
+             */
+            $event->_newModifiedRevision();
+            echo ("==== > OK");
+        }
+
+        $app->auth->logout();
+
+    },
 ] + $updates ;
 
