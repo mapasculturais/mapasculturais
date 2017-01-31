@@ -7,7 +7,7 @@ cd $DIR/..
 
 NUM_CORES=$(grep -c ^processor /proc/cpuinfo)
 if [ $NUM_CORES -gt 1 ]; then
-	NUM_PROCESSES=$(($NUM_CORES + 3))
+	NUM_PROCESSES=$(($NUM_CORES * 2))
 else
 	NUM_PROCESSES=1
 fi
