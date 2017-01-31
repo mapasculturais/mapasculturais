@@ -91,7 +91,7 @@ trait EntitySealRelation {
 
         rsort($result);
 
-		return $result;
+        return $result;
 
     }
 
@@ -103,14 +103,10 @@ trait EntitySealRelation {
         $relation->owner = $this;
         $relation->agent = $app->user->profile;
 
-        $period = new \DateInterval("P" . ((string)$seal->validPeriod) . "M");
-        $dateIni = $relation->createTimestamp->format("d/m/Y");
-        $dateFin = $relation->createTimestamp->add($period);
-        $relation->validateDate = $dateFin;
-
-        if($save)
+        if($save){
             $relation->save($flush);
-
+        }
+        
         $this->refresh();
         return $relation;
     }

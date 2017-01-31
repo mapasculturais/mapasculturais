@@ -495,7 +495,7 @@ class ApiQuery {
         $this->logDql($dql, __FUNCTION__, $params);
         
         $result = $q->getResult(Query::HYDRATE_ARRAY);
-
+        
         $this->processEntities($result);
 
         return $result;
@@ -1607,16 +1607,13 @@ class ApiQuery {
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
             
-            $join_with_filter = "JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid";
+            $join_with_filter = " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
             
-            if($this->_permission != 'view' && !$this->usesOriginSubsite) {
-                $this->joins .= $join_with_filter;
-                
-            } elseif($this->_permission != 'view' && !$this->adminInSubsites){
+            if($this->_permission != 'view' && (!$this->usesOriginSubsite || !$this->adminInSubsites)) {
                 $this->joins .= $join_with_filter;
                 
             } else {
-                $this->joins .= "JOIN e.__permissionsCache $alias";
+                $this->select =  $this->select ? ", $alias.action " : $this->select;
                 
                 $admin_where = '';
                 $view_where = '';
@@ -1643,7 +1640,7 @@ class ApiQuery {
                     $view_where = 'OR e.status > 0';
                 }
                 
-                $this->where .= " $and (($alias.action = $pkey AND $alias.userId = $_uid) $admin_where $view_where) ";
+                $this->where .= " $and ( e.id IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = $pkey AND $alias.userId = $_uid) $admin_where $view_where) ";
             }
         }
     }

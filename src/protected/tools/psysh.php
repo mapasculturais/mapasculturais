@@ -104,7 +104,7 @@ function get_user($user){
     if($user instanceof \MapasCulturais\Entities\User){
         return $user;
     } else if(is_numeric($user)){
-        return $app->repo('User')->find($user_id);
+        return $app->repo('User')->find($user);
     } else if(is_string($user)){
         return $app->repo('User')->findOneBy(['email' => $user]);
     }
