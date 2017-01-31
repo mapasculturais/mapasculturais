@@ -103,6 +103,19 @@ abstract class SealRelation extends \MapasCulturais\Entity
      * @ORM\Column(name="renovation_request", type="boolean", nullable=false)
      */
     protected $renovation_request;
+    
+    function setSeal(Seal $seal){
+        if($this->isNew()){
+            $this->seal = $seal;
+
+            $period = new \DateInterval("P" . ((string)$seal->validPeriod) . "M");
+            $dateFin = $this->createTimestamp->add($period);
+            $this->validateDate = $dateFin;
+            
+        } else {
+            throw new \Exception();
+        }
+    }
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
@@ -112,37 +125,37 @@ abstract class SealRelation extends \MapasCulturais\Entity
         return $result;
     }
 
-    protected function canUserRemove($user){
-    	if($user->is('guest'))
-    		return false;
+    protected function canUserRemove($user) {
+        if ($user->is('guest'))
+            return false;
 
-		if($user->is('admin') || $user->is('superAdmin') || $this->seal->canUser("@control"))
-			return true;
+        if ($user->is('admin') || $user->is('superAdmin') || $this->seal->canUser("@control"))
+            return true;
 
-		return false;
+        return false;
     }
 
     public function save($flush = false) {
         $app = App::i();
-    	 try{
+        try {
             $this->owner_relation = $app->user->profile;
             parent::save($flush);
-        }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
-           if(!App::i()->isWorkflowEnabled())
-               throw $e;
+        } catch (\MapasCulturais\Exceptions\PermissionDenied $e) {
+            if (!App::i()->isWorkflowEnabled())
+                throw $e;
 
-	    	$app = App::i();
-	    	$app->disableAccessControl();
-	    	$this->status = self::STATUS_PENDING;
+            $app = App::i();
+            $app->disableAccessControl();
+            $this->status = self::STATUS_PENDING;
             $this->owner_relation = $app->user->profile;
-	    	parent::save($flush);
-	    	$app->enableAccessControl();
+            parent::save($flush);
+            $app->enableAccessControl();
 
-	    	$request = new RequestSealRelation;
-	    	$request->setSealRelation($this);
-	    	$request->save(true);
+            $request = new RequestSealRelation;
+            $request->setSealRelation($this);
+            $request->save(true);
 
-			throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
+            throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
         }
     }
 
