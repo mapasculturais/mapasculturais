@@ -226,7 +226,7 @@ class Theme extends BaseV1\Theme{
         if($this->subsiteInstance->getFavicon()) {
             $this->jsObject['assets']['favicon'] = $this->subsiteInstance->favicon->url;
         } else {
-            $this->jsObject['assets']['favicon'] = $this->asset('img/favicon.ico');
+            $this->jsObject['assets']['favicon'] = $this->asset('img/favicon.ico', false);
         }
     }
 }
