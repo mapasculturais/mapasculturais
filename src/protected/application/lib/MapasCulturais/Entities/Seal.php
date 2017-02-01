@@ -172,7 +172,7 @@ class Seal extends \MapasCulturais\Entity
             ],
             'validPeriod' => [
                 'required' => \MapasCulturais\i::__('Validade do selo é obrigatória.'),
-                'v::allOf(v::positive(),v::intVal())' => \MapasCulturais\i::__('Validade do selo deve ser um número inteiro.')
+                'v::allOf(v::min(0),v::intVal())' => \MapasCulturais\i::__('Validade do selo deve ser um número inteiro.')
             ]
         ];
     }
