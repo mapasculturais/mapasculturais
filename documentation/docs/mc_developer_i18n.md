@@ -190,3 +190,36 @@ $text = \MapasCulturais\i::__('Canto');
 
 ?>
 ```
+
+## Outros arquivos que necessitam tradução
+
+Além das traduções do arquivo .po, existem alguns outros arquivos que devem ser traduzidos:
+
+* BaseV1/templates - templates HTML de emails enviados pelo sistema
+* BaseV1/assets/js/locale-specific/default.js - Arquivo com funções javascript que necessitam ser localizadas. Este arquivo deve ser duplicado e salvo com o nome do locale, por exemplo: es_ES.js
+
+Algumas bibliotecas javascript que utilizamos também precisam de seus arquivos de tradução, são elas:
+
+* moment.js - arquivo de tradução presente em BaseV1/assets/vendor/moment.{{locale}}.js
+* datepicker - arquivo de tradução presente em BaseV1/assets/vendor/jquery-ui-1.11.4/datepicker-{{locale}}.js
+* select2 - arquivo de tradução presente em BaseV1/assets/vendor/select2_locale_{{locale}}-edit.js
+
+
+## Outras opções úteis para localização:
+
+Essas opções podem ser sobreescritas em um arquivo .js. (Nota, isso provavelmente será apresentados como opção no config.php também em algum momento)
+
+```
+MapasCulturais.geocoder.country = 'uy'; // país de referencia ao fazer busca de coordenadas a partir do endereço buscado
+MapasCulturais.postalCodeMask = '000000'; // máscara do codigo postal
+MapasCulturais.phoneMasks = ['0000.00009', '000.000.000']; // máscaras de telefone
+```
+
+Phone masks is an array of masks that are used depending on the size of the string.
+
+If you have more than one, the first mask has to have one optional character, and the next mask will have
+this required character and, optionally, another optiona, and so on...
+
+```
+Example: ['00-0009', '000-0009', '0000-000']
+```

@@ -171,7 +171,8 @@ class Seal extends \MapasCulturais\Entity
                 'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
             ],
             'validPeriod' => [
-                'v::allOf(v::positive(),v::intVal())' => \MapasCulturais\i::__('Validade do selo é obrigatória.')
+                'required' => \MapasCulturais\i::__('Validade do selo é obrigatória.'),
+                'v::allOf(v::min(0),v::intVal())' => \MapasCulturais\i::__('Validade do selo deve ser um número inteiro.')
             ]
         ];
     }

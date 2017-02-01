@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('America/Sao_Paulo');
+//date_default_timezone_set('America/Sao_Paulo');
 
 if(!isset($asset_dir)){
     $asset_dir = 'assets/';
@@ -71,7 +71,7 @@ return array(
 
     // development, staging, production
     'app.mode' => 'production',
-    'app.lcode' => 'pt-br',
+    'app.lcode' => 'pt_BR',
 
     'app.verifiedSealsIds' => [1],
 

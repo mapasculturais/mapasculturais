@@ -1263,5 +1263,9 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
             relations = oldRelations;
         });
     };
+    
+    // Load relatedSeals saved values
+    jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
+    
 }]);
 })(angular);
