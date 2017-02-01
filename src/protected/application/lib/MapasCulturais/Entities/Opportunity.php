@@ -39,7 +39,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntityNested,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityPermissionCache,

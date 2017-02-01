@@ -18,6 +18,9 @@
     <?php if($app->isEnabled('projects')): ?>
         <?php $this->part('search/filter', ['display_name' => 'Projetos', 'entity_name' => 'project']); ?>
     <?php endif; ?>
+    <?php if($app->isEnabled('opportunities')): ?>
+        <?php $this->part('search/filter', ['display_name' => 'Oportunidades', 'entity_name' => 'opportunity']); ?>
+    <?php endif; ?>
 
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
@@ -69,6 +72,9 @@
 
                 <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'agent') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project')">,</span>
                 <span ng-if="numProjects">{{numProjects}} projeto<span ng-show="numProjects!==1">s</span> </span>
+                
+                <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'agent') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project' && numResults(numOpportunities, 'opportunity')">,</span>
+                <span ng-if="numOpportunities">{{numOpportunities}} oportunidade<span ng-show="numOpportunities!==1">s</span> </span>
             </span>
             <span ng-if="data.global.viewMode === 'map'" ng-show="spinnerCount===0 && (numResults(numEvents.events, 'event') === 0 || !showFilters('event')) && (numResults(numAgents, 'agent') === 0 || !showFilters('agent')) && (numResults(numSpaces, 'space') === 0 || !showFilters('space')) && (numProjects === 0 || !showFilters('project'))">Nenhum resultado encontrado
                     <span ng-if="resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event > 0" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}} <?php \MapasCulturais\i::_e("resultados sem localização");?>">
@@ -76,7 +82,7 @@
                     </span>
             </span>
 
-            <span ng-if="data.global.viewMode === 'list'" ng-show="spinnerCount===0 && numEventsInList == 0 || !showFilters('event') && (numAgents == 0 || !showFilters('agent')) && (numSpaces == 0 || !showFilters('space')) && (numProjects == 0 || !showFilters('project'))"><?php \MapasCulturais\i::_e("Nenhum resultado encontrado");?></span>
+            <span ng-if="data.global.viewMode === 'list'" ng-show="spinnerCount===0 && numEventsInList == 0 || !showFilters('event') && (numAgents == 0 || !showFilters('agent')) && (numSpaces == 0 || !showFilters('space')) && (numProjects == 0 || !showFilters('project') && (numOpportunities == 0 || !showFilters('opportunity'))"><?php \MapasCulturais\i::_e("Nenhum resultado encontrado");?></span>
         </div>
         <!--#search-results-->
         <div id="selected-filters">

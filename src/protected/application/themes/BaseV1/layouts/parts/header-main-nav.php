@@ -80,6 +80,20 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
         <?php endif; ?>
+            
+        <?php if($app->isEnabled('opportunities')): ?>
+            <?php $this->applyTemplateHook('nav.main.opportunities','before'); ?>
+            <li id="entities-menu-opportunity"
+                ng-class="{'active':data.global.filterEntity === 'opportunity',
+                           'current-entity-parent':'<?php echo $this->controller->id;?>' == 'opportunity'}"
+                ng-click="tabClick('opportunity')">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(opportunity:!t),filterEntity:opportunity,viewMode:list))'; ?>">
+                    <div class="icon icon-opportunity"></div>
+                    <div class="menu-item-label"><?php $this->dict('entities: Opportunities') ?></div>
+                </a>
+            </li>
+            <?php $this->applyTemplateHook('nav.main.opportunities','after'); ?>
+        <?php endif; ?>
 
     </ul>
     <!--.menu.entities-menu-->
@@ -190,6 +204,16 @@
                             <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
+
+                    <?php endif; ?>
+                        
+                    <?php if($app->isEnabled('opportunities')): ?>
+                        <?php $this->applyTemplateHook('nav.dropdown.opportunities','before'); ?>
+                        <li>
+                            <a href="<?php echo $app->createUrl('panel', 'opportunities') ?>"><?php \MapasCulturais\i::_e("Minhas Oportunidades");?></a>
+                            <a class="add" href="<?php echo $app->createUrl('opportunity', 'create') ?>"></a>
+                        </li>
+                        <?php $this->applyTemplateHook('nav.dropdown.opportunities','after'); ?>
 
                         <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
                         <li>

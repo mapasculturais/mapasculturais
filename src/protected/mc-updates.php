@@ -2,7 +2,7 @@
 
 return [
     'recreate pcache' => function () {
-        foreach (['Agent', 'Space', 'Project', 'Event', 'Seal', 'Registration', 'Notification', 'Request'] as $class){
+        foreach (['Agent', 'Space', 'Project', 'Event', 'Seal', 'Registration', 'Notification', 'Request', 'Opportunity'] as $class){
             DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) {
                 $entity->createPermissionsCacheForUsers();
             });

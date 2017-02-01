@@ -281,6 +281,21 @@ body.action-search {
         }
     }
 }
+//** Opportunity
+#entities-menu-opportunity {
+    &.active, &:hover, &.current-entity-parent {
+        border-top-color: $brand-opportunity;
+        color: $brand-opportunity;
+        a {
+            color: $brand-opportunity;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-opportunity);
+        }
+    }
+}
 
 //** Subsite
 #entities-menu-subsite {

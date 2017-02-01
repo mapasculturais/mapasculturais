@@ -90,6 +90,9 @@
 #nav-projects {
     background: $brand-project;
 }
+#nav-opportunities {
+    background: $brand-opportunity;
+}
 #nav-subsite {
     background: $brand-subsite;
 }
@@ -378,6 +381,10 @@
 #projects-filter:focus {
     background-color: $brand-project;
 }
+#opportunities-filter:hover,
+#opportunities-filter:focus {
+    background-color: $brand-opportunity;
+}
 #seals-filter:hover,
 #seals-filter:focus {
     background-color: $brand-seal;
@@ -408,6 +415,13 @@
     background: $brand-project;
     .abas li.active {
         border-bottom-color: $brand-project;
+    }
+}
+//** Opportunities section
+#home-opportunities {
+    background: $brand-opportunity;
+    .abas li.active {
+        border-bottom-color: $brand-opportunity;
     }
 }
 //** Subsite section

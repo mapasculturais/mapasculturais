@@ -18,7 +18,6 @@ class Opportunity extends EntityController {
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
         Traits\ControllerSealRelation,
-        Traits\ControllerVerifiable,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,

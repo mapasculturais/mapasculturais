@@ -431,23 +431,6 @@ return [
         $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
     
-    'create avatar thumbs' => function() use($conn){
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
-
-        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-        echo count($files) . " ARQUIVOS\n";
-        foreach($files as $f){
-            $f->transform('avatarSmall');
-            $f->transform('avatarMedium');
-            $f->transform('avatarBig');
-        }
-
-        $this->disableAccessControl();
-    },
     'create entity revision tables' => function() use($conn) {
         if(__table_exists('entity_revision')) {
             echo "ALREADY APPLIED";
@@ -473,6 +456,24 @@ return [
 
         $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
         
+    },
+            
+    'create avatar thumbs' => function() use($conn){
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
+
+        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
+        echo count($files) . " ARQUIVOS\n";
+        foreach($files as $f){
+            $f->transform('avatarSmall');
+            $f->transform('avatarMedium');
+            $f->transform('avatarBig');
+        }
+
+        $this->disableAccessControl();
     },
             
     '*_meta drop all indexes again' => function () use($conn) {
@@ -593,6 +594,47 @@ return [
             $conn->executeQuery("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories JSON DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
             $conn->executeQuery("CREATE INDEX opportunity_owner_idx ON opportunity (agent_id);");
             $conn->executeQuery("CREATE INDEX opportunity_parent_idx ON opportunity (parent_id);");
+            
+            $conn->executeQuery("
+                INSERT INTO opportunity (
+                    id, 
+                    parent_id, 
+                    agent_id, 
+                    type, 
+                    name, 
+                    short_description, 
+                    long_description, 
+                    registration_from, 
+                    registration_to, 
+                    published_registrations, 
+                    create_timestamp, 
+                    update_timestamp, 
+                    status, 
+                    subsite_id, 
+                    object_type 
+                ) (
+                    SELECT 
+                        p.id, 
+                        p.parent_id, 
+                        p.agent_id, 
+                        p.type, 
+                        p.name, 
+                        p.short_description, 
+                        p.long_description, 
+                        p.registration_from, 
+                        p.registration_to,
+                        p.published_registrations, 
+                        p.create_timestamp, 
+                        p.update_timestamp, 
+                        p.status, 
+                        p.subsite_id, 
+                        'MapasCulturais\Entities\Project' 
+                    FROM 
+                        project p 
+                    WHERE 
+                        p.use_registrations IS TRUE
+                );");
+            
             $conn->executeQuery("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
             $conn->executeQuery("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
             $conn->executeQuery("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
@@ -629,6 +671,7 @@ return [
     },
             
     'create entities history entries' => function() use($conn) {
+        return false;
         $app = App::i();
         $query = $app->em->createQuery("SELECT a FROM \MapasCulturais\Entities\Agent a");
         $agents = $query->getResult();
