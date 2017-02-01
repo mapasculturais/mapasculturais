@@ -368,7 +368,6 @@ class Registration extends \MapasCulturais\Entity
     	 */
     	$opportunityMetadataSeals = $this->opportunity->registrationSeals;
 
-
     	if(isset($opportunityMetadataSeals->owner)) {
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
