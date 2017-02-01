@@ -71,7 +71,7 @@ return array(
 
     // development, staging, production
     'app.mode' => 'production',
-    'app.lcode' => 'pt-br',
+    'app.lcode' => 'pt_BR',
 
     'app.verifiedSealsIds' => [1],
 
