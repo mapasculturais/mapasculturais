@@ -198,7 +198,7 @@
                         searchData['@to'] = moment(entityData.to).format('YYYY-MM-DD');
 
                     if(entityData.ropen){
-                        var today = moment().format('YYYY-MM-DD');
+                        var today = moment().format('YYYY-MM-DD HH:mm');
                         searchData.registrationFrom = 'LTE(' + today + ')';
                         searchData.registrationTo   = 'GTE(' + today + ')';
                     }
