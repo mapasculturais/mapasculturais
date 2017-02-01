@@ -32,9 +32,9 @@ $texts = \MapasCulturais\Themes\BaseV1\Theme::_dict();
                     <span class="js-editable js-editable--subsite-text"
                           data-edit="<?php echo "dict:" . $skey ?>"
                           data-original-title="<?php echo htmlentities($def['name']) ?>"
-                          data-emptytext="utilizando valor padrão (clique para definir)"
+                          data-emptytext="<?php echo isset($entity->dict[$key]) && !empty($entity->dict[$key])? '': 'utilizando valor padrão (clique para definir)';?>"
                           <?php if (isset($def['examples']) && $def['examples']): ?>data-examples="<?= htmlentities(json_encode($def['examples'])) ?>" <?php endif; ?>
-                          data-placeholder="<?= htmlentities($def['text']) ?>"><?php echo isset($entity->dict[$key]) ? $entity->dict[$key] : ''; ?></span>
+                          data-placeholder='<?php echo isset($entity->dict[$key]) && !empty($entity->dict[$key])? $entity->dict[$key]:$def['text'] ; ?>'><?php echo isset($entity->dict[$key]) ? $entity->dict[$key] : ''; ?></span>
                 </p>
 
             <?php endforeach; ?>

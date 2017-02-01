@@ -115,6 +115,12 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Painel'), i::__('Painel de Controle'), i::__('Área Administrativa')],
                 'text' => i::__('Painel de Controle')
             ],
+            'site: howto' => [
+                'name' => i::__('como usar do site'),
+                'description' => i::__('usado para orientar o usuário a utilizar a plataforma Mapas Culturais'),
+                'examples' => [i::__('como Usar'), i::__('Manual do Usuário'), i::__('Manual de Utilização')],
+                'text' => i::__('Como Usar')
+            ],
 
             // TEXTOS DA HOME DO SITE
             'home: title' => [
