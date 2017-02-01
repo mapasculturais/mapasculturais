@@ -167,12 +167,12 @@ class Project extends EntityController {
         }
         
         $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $files = $user = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
         
         $project =  $app->repo("Project")->find($this->urlData['id']);
         
-        $user = $app->user;
-        
-        //TODO: verificar permissão do usuáario
+        if (!$project->canUser('modify'))
+            return false; //TODO return error message?
         
         $projectMeta = array(
             'registrationCategories', 
@@ -185,17 +185,6 @@ class Project extends EntityController {
             'registrationSeals', 
             'registrationLimit'
         );
-        /*
-        \dump($project->registrationCategories);
-        \dump($project->useAgentRelationColetivo);
-        \dump($project->registrationLimitPerOwner);
-        \dump($project->registrationCategDescription);
-        \dump($project->registrationCategTitle);
-        \dump($project->useAgentRelationInstituicao);
-        \dump($project->introInscricoes);
-        \dump($project->registrationSeals);
-        \dump($project->registrationLimit);
-        */
         
         $metadata = [];
         
@@ -204,6 +193,7 @@ class Project extends EntityController {
         }
         
         $result = array(
+            'files' => $files,
             'fields' => $fields,
             'meta' => $metadata
         );
@@ -224,8 +214,6 @@ class Project extends EntityController {
         
         $project_id = $this->urlData['id'];
         
-        // TODO: check if user has permission
-        
         if (isset($_FILES['fieldsFile']) && isset($_FILES['fieldsFile']['tmp_name']) && is_readable($_FILES['fieldsFile']['tmp_name'])) {
         
             $importFile = fopen($_FILES['fieldsFile']['tmp_name'], "r"); 
@@ -234,8 +222,13 @@ class Project extends EntityController {
             
             $project =  $app->repo("Project")->find($project_id);
             
+            if (!$project->canUser('modifyRegistrationFields'))
+                return false; //TODO return error message?
+            
             if (!is_null($importSource)) {
             
+                
+                // Fields
                 foreach($importSource->fields as $field) {
                 
                     $newField = new Entities\RegistrationFieldConfiguration;
@@ -254,6 +247,57 @@ class Project extends EntityController {
                 
                 }
                 
+                //Files (attachments)
+                foreach($importSource->files as $file) {
+
+                    $newFile = new Entities\RegistrationFileConfiguration;
+                    
+                    $newFile->owner = $project;
+                    $newFile->title = $file->title;
+                    $newFile->description = $file->description;
+                    $newFile->required = $file->required;
+                    $newFile->categories = $file->categories;
+                    
+                    $app->em->persist($newFile);
+                    
+                    $newFile->save();
+                    
+                    if (is_object($file->template)) {
+                        
+                        $originFile = $app->repo("RegistrationFileConfigurationFile")->find($file->template->id);
+                        
+                        if (is_object($originFile)) { // se nao achamos o arquivo, talvez este campo tenha sido apagado
+                        
+                            $tmp_file = sys_get_temp_dir() . '/' . $file->template->name;
+                            
+                            if (file_exists($originFile->path)) {
+                                copy($originFile->path, $tmp_file);
+                                
+                                $newTemplateFile = array(
+                                    'name' => $file->template->name,
+                                    'type' => $file->template->mimeType,
+                                    'tmp_name' => $tmp_file,
+                                    'error' => 0,
+                                    'size' => filesize($tmp_file)
+                                );
+                                
+                                $newTemplate = new Entities\RegistrationFileConfigurationFile($newTemplateFile);
+                                
+                                $newTemplate->owner = $newFile;
+                                $newTemplate->description = $file->template->description;
+                                $newTemplate->group = $file->template->group;
+                                
+                                $app->em->persist($newTemplate);
+                            
+                                $newTemplate->save();
+                            }
+                            
+                        }
+                    
+                    }
+                }
+                
+                // Metadata
                 foreach($importSource->meta as $key => $value) {
                     $project->$key = $value;
                 }
