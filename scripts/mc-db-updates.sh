@@ -7,7 +7,7 @@ cd $DIR/..
 
 NUM_CORES=$(grep -c ^processor /proc/cpuinfo)
 if [ $NUM_CORES -gt 1 ]; then
-	NUM_PROCESSES=$(($NUM_CORES + 3))
+	NUM_PROCESSES=$(($NUM_CORES * 2))
 else
 	NUM_PROCESSES=1
 fi
@@ -44,5 +44,5 @@ COUNTER=0
 while [  $COUNTER -lt $NUM_PROCESSES ]; do
     let COUNTER=COUNTER+1 
 
-    HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php src/protected/tools/applpy-multicore-db-update.php $NUM_PROCESSES $COUNTER "$NAME"&
+    HTTP_HOST=$DOMAIN REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="8000" php src/protected/tools/apply-multicore-db-update.php $NUM_PROCESSES $COUNTER "$NAME"&
 done

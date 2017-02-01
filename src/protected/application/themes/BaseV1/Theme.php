@@ -1518,7 +1518,7 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
-//        eval(\Psy\sh());
+        
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
             $skeleton_field = [
                 'fieldType' => 'checklist',

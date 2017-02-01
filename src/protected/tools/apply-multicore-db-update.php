@@ -110,13 +110,13 @@ class DB_UPDATE {
                     $c = count($remaining_ids);
                     
                     $__per = min([100, $c*NUMBER_OF_PROCESSES / $__num_entities * 100]);
-                    $__per = str_pad(number_format($__per, 2),6);
+                    $__per = str_pad(number_format($__per, 2),6, STR_PAD_RIGHT);
                     
                     $__faltam = str_pad($c, 7);
                     
                     $__ptable = str_pad($__table, 15, ' ', STR_PAD_BOTH);
                     
-                    echo "PROCESS " . str_pad(PROCESS_NUM, 2) . " - $__name ($__ptable) FALTAM: $__faltam (" . $__per . "%)\n";
+                    echo " $__name #" . str_pad(PROCESS_NUM, 2) . " ($__ptable) FALTAM: $__faltam (" . $__per . "%)\n";
                     
                     $slice = array_splice($remaining_ids, 0, self::STEP);
                     
@@ -153,8 +153,10 @@ $finish_microtime = microtime(true);
 
 $execution_time = number_format($finish_microtime - $start_microtime, 4);
 
+$t = gmdate("H:i:s", $execution_time);
+
 echo "
 ==========================================================================================
-     PROCESSO {$PROCESS_NUM} de {$NUMBER_OF_PROCESSES} EXECUTADO em $execution_time segundos - das $start_time às $finish_time
+     PROCESSO {$PROCESS_NUM} de {$NUMBER_OF_PROCESSES} executado das $start_time às $finish_time ($t)
 ------------------------------------------------------------------------------------------
 ";

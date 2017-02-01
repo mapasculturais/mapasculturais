@@ -159,7 +159,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $this->checkPermission('addRole' . $role_name);
         else
             $this->checkPermission('addRole');
-
+        
         if(!$this->is($role_name, $subsite_id)){
             $role = new Role;
             $role->user = $this;

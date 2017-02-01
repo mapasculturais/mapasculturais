@@ -82,6 +82,14 @@ trait EntityPermissionCache {
             
             if($this->usesAgentRelation()){
                 $users = $this->getUsersWithControl();
+            } else if ($this instanceof \MapasCulturais\Entities\Request){
+                $origin_users = $this->getOrigin()->getUsersWithControl();
+                $destination_users = $this->getDestination()->getUsersWithControl();
+                
+                $users = ["$this->requesterUser" => $this->requesterUser];
+                foreach(array_merge($origin_users, $destination_users) as $u){
+                    $users["$u"] = $u;
+                }
             } else if($this->owner) {
                 $users = $this->owner->getUsersWithControl();
             } else {
