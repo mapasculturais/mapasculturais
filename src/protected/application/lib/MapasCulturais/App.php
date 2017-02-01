@@ -435,7 +435,10 @@ class App extends \Slim\Slim{
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-
+        
+        //Load defaut translation textdomain
+        i::load_default_textdomain();
+        
         $this->register();
 
 
@@ -472,9 +475,6 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
-
-        //Load defaut translation textdomain
-        i::load_default_textdomain();
 
         return $this;
     }
