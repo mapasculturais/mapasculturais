@@ -741,9 +741,9 @@ abstract class Entity implements \JsonSerializable{
 
                 if($validation == 'required'){
                     if (is_string($this->$property)) {
-                        $ok = (bool) trim($this->$property);
+                        $ok = trim($this->$property) !== '';
                     } else {
-                        $ok = (bool) $this->$property;
+                        $ok = (bool) $this->$property || $this->$property === 0;
                     }
 
                 }elseif($validation == 'unique'){

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-01-20 15:55-0300\n"
+"POT-Creation-Date: 2017-01-30 18:04-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ../../..\n"
-"X-Poedit-KeywordsList: _e;__;esc_attr_e\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -342,7 +342,7 @@ msgid "Estado"
 msgstr "Departamento"
 
 #: protected/application/conf/agent-types.php:234
-#: protected/application/conf/conf-base.php:408
+#: protected/application/conf/conf-base.php:410
 #: protected/application/conf/event-types.php:64
 #: protected/application/conf/project-types.php:35
 #: protected/application/conf/seal-types.php:8
@@ -424,12 +424,12 @@ msgstr "Colectivo"
 #: protected/application/conf/conf-base.php:73
 #: protected/application/themes/BaseV1/layouts/parts/editable-entity-logo.php:1
 msgid "Mapas Culturais"
-msgstr "Mapas Culturales"
+msgstr "Cultura en Línea"
 
 #: protected/application/conf/conf-base.php:74
 msgid "O Mapas Culturais é uma plataforma livre para mapeamento cultural."
 msgstr ""
-"Mapas Culturales es una plataforma de software libre, de cartografía "
+"Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
 #: protected/application/conf/conf-base.php:139
@@ -479,17 +479,17 @@ msgid "Não utilizar"
 msgstr "No utilizar"
 
 #: protected/application/conf/conf-base.php:152
-#: protected/application/themes/BaseV1/Theme.php:1413
+#: protected/application/themes/BaseV1/Theme.php:1431
 msgid "Obrigatório"
 msgstr "Obligatorio"
 
 #: protected/application/conf/conf-base.php:153
-#: protected/application/themes/BaseV1/Theme.php:1414
+#: protected/application/themes/BaseV1/Theme.php:1432
 msgid "Opcional"
 msgstr "Opcional"
 
 #: protected/application/conf/conf-base.php:181
-#: protected/application/themes/BaseV1/Theme.php:1405
+#: protected/application/themes/BaseV1/Theme.php:1423
 msgid "Agente responsável pela inscrição"
 msgstr "Agente responsable por la inscripción"
 
@@ -546,6 +546,10 @@ msgid "Data de Criação"
 msgstr "Fecha de creación"
 
 #: protected/application/conf/conf-base.php:212
+msgid "Data de Atualização"
+msgstr "Fecha de Actualización"
+
+#: protected/application/conf/conf-base.php:213
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:98
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:99
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:102
@@ -561,30 +565,30 @@ msgstr "Fecha de creación"
 #: protected/application/themes/BaseV1/views/event/single.php:165
 #: protected/application/themes/BaseV1/views/seal/create.php:64
 #: protected/application/themes/BaseV1/views/seal/edit.php:64
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:68
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:103
 #: protected/application/themes/BaseV1/views/seal/single.php:64
 #: protected/application/themes/BaseV1/views/space/create.php:80
 #: protected/application/themes/BaseV1/views/space/edit.php:80
 #: protected/application/themes/BaseV1/views/space/single.php:80
 msgid "Descrição Curta"
-msgstr "Descripción corta"
+msgstr "Descripción breve"
 
-#: protected/application/conf/conf-base.php:213
+#: protected/application/conf/conf-base.php:214
 msgid "Descrição Longa"
 msgstr "Descripción Larga"
 
-#: protected/application/conf/conf-base.php:214
+#: protected/application/conf/conf-base.php:215
 #: protected/application/themes/BaseV1/views/seal/create.php:114
 #: protected/application/themes/BaseV1/views/seal/edit.php:114
 #: protected/application/themes/BaseV1/views/seal/single.php:114
 msgid "Conteúdo da Impressão do Certificado"
 msgstr "Contenido de impresión del Certificado"
 
-#: protected/application/conf/conf-base.php:215
+#: protected/application/conf/conf-base.php:216
 msgid "Período de Validade"
 msgstr "Plazo de Validez"
 
-#: protected/application/conf/conf-base.php:216
+#: protected/application/conf/conf-base.php:217
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:34
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:13
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:2
@@ -592,18 +596,18 @@ msgstr "Plazo de Validez"
 msgid "Status"
 msgstr "Estado"
 
-#: protected/application/conf/conf-base.php:406
+#: protected/application/conf/conf-base.php:408
 #: protected/application/themes/BaseV1/Theme.php:115
 #: protected/application/themes/BaseV1/layouts/parts/panel-nav.php:4
 msgid "Painel"
 msgstr "Panel"
 
-#: protected/application/conf/conf-base.php:407
+#: protected/application/conf/conf-base.php:409
 msgid "Autenticação"
 msgstr "Autentiación"
 
-#: protected/application/conf/conf-base.php:409
-#: protected/application/lib/MapasCulturais/Entities/Event.php:193
+#: protected/application/conf/conf-base.php:411
+#: protected/application/lib/MapasCulturais/Entities/Event.php:185
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:60
 #: protected/application/themes/BaseV1/views/event/create.php:120
 #: protected/application/themes/BaseV1/views/event/edit.php:120
@@ -611,27 +615,27 @@ msgstr "Autentiación"
 msgid "Evento"
 msgstr "Evento"
 
-#: protected/application/conf/conf-base.php:409
-#: protected/application/lib/MapasCulturais/Entities/Event.php:191
-#: protected/application/themes/BaseV1/Theme.php:416
-#: protected/application/themes/BaseV1/Theme.php:417
+#: protected/application/conf/conf-base.php:411
+#: protected/application/lib/MapasCulturais/Entities/Event.php:183
+#: protected/application/themes/BaseV1/Theme.php:428
+#: protected/application/themes/BaseV1/Theme.php:429
 #: protected/application/themes/BaseV1/layouts/parts/home-events.php:26
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:12
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event.php:2
 msgid "Eventos"
 msgstr "Eventos"
 
-#: protected/application/conf/conf-base.php:410
-#: protected/application/lib/MapasCulturais/Entities/Agent.php:263
+#: protected/application/conf/conf-base.php:412
+#: protected/application/lib/MapasCulturais/Entities/Agent.php:254
 msgid "Agente"
 msgstr "Agente"
 
-#: protected/application/conf/conf-base.php:410
-#: protected/application/lib/MapasCulturais/Entities/Agent.php:261
-#: protected/application/themes/BaseV1/Theme.php:334
-#: protected/application/themes/BaseV1/Theme.php:335
-#: protected/application/themes/BaseV1/Theme.php:364
-#: protected/application/themes/BaseV1/Theme.php:365
+#: protected/application/conf/conf-base.php:412
+#: protected/application/lib/MapasCulturais/Entities/Agent.php:252
+#: protected/application/themes/BaseV1/Theme.php:346
+#: protected/application/themes/BaseV1/Theme.php:347
+#: protected/application/themes/BaseV1/Theme.php:376
+#: protected/application/themes/BaseV1/Theme.php:377
 #: protected/application/themes/BaseV1/layouts/parts/home-agents.php:28
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:16
 #: protected/application/themes/BaseV1/layouts/parts/search/list-agent.php:2
@@ -642,22 +646,22 @@ msgstr "Agente"
 msgid "Agentes"
 msgstr "Agentes"
 
-#: protected/application/conf/conf-base.php:411
-#: protected/application/lib/MapasCulturais/Entities/Space.php:229
+#: protected/application/conf/conf-base.php:413
+#: protected/application/lib/MapasCulturais/Entities/Space.php:221
 #: protected/application/themes/BaseV1/Theme.php:197
 #: protected/application/themes/BaseV1/Theme.php:198
 msgid "Espaço"
 msgstr "Espacio"
 
-#: protected/application/conf/conf-base.php:411
-#: protected/application/lib/MapasCulturais/Entities/Space.php:227
+#: protected/application/conf/conf-base.php:413
+#: protected/application/lib/MapasCulturais/Entities/Space.php:219
 #: protected/application/themes/BaseV1/Theme.php:203
 #: protected/application/themes/BaseV1/Theme.php:204
 msgid "Espaços"
 msgstr "Espacios"
 
-#: protected/application/conf/conf-base.php:412
-#: protected/application/lib/MapasCulturais/Entities/Project.php:242
+#: protected/application/conf/conf-base.php:414
+#: protected/application/lib/MapasCulturais/Entities/Project.php:234
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:32
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:27
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:261
@@ -670,24 +674,24 @@ msgstr "Espacios"
 msgid "Projeto"
 msgstr "Proyecto"
 
-#: protected/application/conf/conf-base.php:412
-#: protected/application/lib/MapasCulturais/Entities/Project.php:240
-#: protected/application/themes/BaseV1/Theme.php:375
-#: protected/application/themes/BaseV1/Theme.php:376
+#: protected/application/conf/conf-base.php:414
+#: protected/application/lib/MapasCulturais/Entities/Project.php:232
+#: protected/application/themes/BaseV1/Theme.php:387
+#: protected/application/themes/BaseV1/Theme.php:388
 #: protected/application/themes/BaseV1/layouts/parts/home-projects.php:25
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:24
 #: protected/application/themes/BaseV1/layouts/parts/search/list-project.php:3
 msgid "Projetos"
 msgstr "Proyectos"
 
-#: protected/application/conf/conf-base.php:413
+#: protected/application/conf/conf-base.php:415
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:25
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:5
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:7
 msgid "Inscrição"
 msgstr "Inscripción"
 
-#: protected/application/conf/conf-base.php:413
+#: protected/application/conf/conf-base.php:415
 #: protected/application/conf/event-types.php:12
 #: protected/application/plugins/ProjectPhases/layouts/parts/project-phases-tabs.php:6
 #: protected/application/themes/BaseV1/layouts/parts/search/list-project-item.php:15
@@ -699,7 +703,7 @@ msgstr "Inscripción"
 msgid "Inscrições"
 msgstr "Inscripciones"
 
-#: protected/application/conf/conf-base.php:414
+#: protected/application/conf/conf-base.php:416
 #: protected/application/conf/taxonomies.php:24
 #: protected/application/themes/BaseV1/views/panel/agents.php:16
 #: protected/application/themes/BaseV1/views/panel/events.php:14
@@ -710,68 +714,68 @@ msgstr "Inscripciones"
 msgid "Arquivo"
 msgstr "Archivo"
 
-#: protected/application/conf/conf-base.php:414
+#: protected/application/conf/conf-base.php:416
 #: protected/application/conf/space-types.php:249
 msgid "Arquivos"
 msgstr "Archivos"
 
-#: protected/application/conf/conf-base.php:415
-#: protected/application/lib/MapasCulturais/Entities/Seal.php:194
+#: protected/application/conf/conf-base.php:417
+#: protected/application/lib/MapasCulturais/Entities/Seal.php:195
 msgid "Selo"
 msgstr "Sello"
 
-#: protected/application/conf/conf-base.php:415
+#: protected/application/conf/conf-base.php:417
 #: protected/application/conf/project-types.php:61
-#: protected/application/lib/MapasCulturais/Entities/Seal.php:192
-#: protected/application/themes/BaseV1/Theme.php:512
-#: protected/application/themes/BaseV1/Theme.php:513
+#: protected/application/lib/MapasCulturais/Entities/Seal.php:193
+#: protected/application/themes/BaseV1/Theme.php:524
+#: protected/application/themes/BaseV1/Theme.php:525
 #: protected/application/themes/BaseV1/layouts/parts/home-seals.php:27
 #: protected/application/themes/BaseV1/views/panel/index.php:108
 msgid "Selos"
 msgstr "Sellos"
 
-#: protected/application/conf/conf-base.php:416
+#: protected/application/conf/conf-base.php:418
 #: protected/application/themes/BaseV1/layouts/parts/history.php:11
 msgid "Histórico"
 msgstr ""
 
-#: protected/application/conf/conf-base.php:416
+#: protected/application/conf/conf-base.php:418
 msgid "Revisões"
 msgstr "Revisiones"
 
-#: protected/application/conf/conf-base.php:417
+#: protected/application/conf/conf-base.php:419
 #: protected/application/themes/BaseV1/views/seal/printsealrelation.php:25
 msgid "Certificado"
 msgstr "Certificado"
 
-#: protected/application/conf/conf-base.php:419
-#: protected/application/themes/BaseV1/Theme.php:472
-#: protected/application/themes/BaseV1/Theme.php:474
+#: protected/application/conf/conf-base.php:421
+#: protected/application/themes/BaseV1/Theme.php:484
+#: protected/application/themes/BaseV1/Theme.php:486
 #: protected/application/themes/BaseV1/views/panel/index.php:94
 msgid "Subsite"
 msgstr "Subsitio"
 
-#: protected/application/conf/conf-base.php:420
+#: protected/application/conf/conf-base.php:422
 msgid "Listando"
 msgstr "Listando"
 
-#: protected/application/conf/conf-base.php:421
+#: protected/application/conf/conf-base.php:423
 msgid "Índice"
 msgstr "Índice"
 
-#: protected/application/conf/conf-base.php:422
+#: protected/application/conf/conf-base.php:424
 msgid "Apagando"
 msgstr "Eliminando"
 
-#: protected/application/conf/conf-base.php:423
+#: protected/application/conf/conf-base.php:425
 msgid "Editando"
 msgstr "Editando"
 
-#: protected/application/conf/conf-base.php:424
+#: protected/application/conf/conf-base.php:426
 msgid "Criando novo"
 msgstr "Creando nuevo"
 
-#: protected/application/conf/conf-base.php:425
+#: protected/application/conf/conf-base.php:427
 msgid "Busca"
 msgstr "Busca"
 
@@ -836,13 +840,13 @@ msgstr "Más información"
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:182
 #: protected/application/themes/BaseV1/views/event/create.php:48
 #: protected/application/themes/BaseV1/views/event/create.php:88
-#: protected/application/themes/BaseV1/views/event/create.php:550
+#: protected/application/themes/BaseV1/views/event/create.php:551
 #: protected/application/themes/BaseV1/views/event/edit.php:48
 #: protected/application/themes/BaseV1/views/event/edit.php:88
-#: protected/application/themes/BaseV1/views/event/edit.php:550
+#: protected/application/themes/BaseV1/views/event/edit.php:551
 #: protected/application/themes/BaseV1/views/event/single.php:48
 #: protected/application/themes/BaseV1/views/event/single.php:88
-#: protected/application/themes/BaseV1/views/event/single.php:550
+#: protected/application/themes/BaseV1/views/event/single.php:551
 msgid "Preço"
 msgstr "Precio"
 
@@ -852,7 +856,7 @@ msgstr "Precio"
 #: protected/application/themes/BaseV1/views/event/edit.php:198
 #: protected/application/themes/BaseV1/views/event/single.php:198
 msgid "Tradução para LIBRAS"
-msgstr "Traducción para LIBRAS"
+msgstr "Traducción para lenguaje de señas"
 
 #: protected/application/conf/event-types.php:47
 #: protected/application/conf/event-types.php:57
@@ -1077,7 +1081,7 @@ msgid "Anos"
 msgstr "Años"
 
 #: protected/application/conf/space-types.php:60
-#: protected/application/themes/BaseV1/Theme.php:1603
+#: protected/application/themes/BaseV1/Theme.php:1621
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-space.php:19
 #: protected/application/themes/BaseV1/layouts/parts/search/list-space-item.php:29
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:134
@@ -1172,6 +1176,8 @@ msgid "Horário de funcionamento"
 msgstr "Horario de funcionamento"
 
 #: protected/application/conf/space-types.php:163
+#: protected/application/themes/BaseV1/Theme.php:269
+#: protected/application/themes/BaseV1/Theme.php:270
 msgid "Critérios de uso do espaço"
 msgstr "Criterios de uso del espacio"
 
@@ -1951,17 +1957,9 @@ msgstr "Música Erudita"
 msgid "Palestra, Debate ou Encontro"
 msgstr "Conferencia, Debate o Encuentro"
 
-#: protected/application/lib/MapasCulturais/ApiOutputs/Html.php:78
-msgid "Quando"
-msgstr "Cuándo"
-
-#: protected/application/lib/MapasCulturais/ApiOutputs/Html.php:78
-msgid "Onde"
-msgstr "Dónde"
-
-#: protected/application/lib/MapasCulturais/ApiOutputs/Html.php:78
-msgid "Quanto"
-msgstr "Cuánto"
+#: protected/application/lib/MapasCulturais/ApiOutputs/Html.php:80
+msgid "Ocorrências"
+msgstr "Cuándo y dónde"
 
 #: protected/application/lib/MapasCulturais/App.php:671
 msgid "Campo de texto (textarea)"
@@ -2005,8 +2003,9 @@ msgstr "Selección múltiple (checkboxes)"
 #: protected/application/lib/MapasCulturais/App.php:736
 #: protected/application/lib/MapasCulturais/App.php:737
 #: protected/application/lib/MapasCulturais/App.php:738
-#: protected/application/lib/MapasCulturais/App.php:805
-#: protected/application/lib/MapasCulturais/App.php:821
+#: protected/application/lib/MapasCulturais/App.php:739
+#: protected/application/lib/MapasCulturais/App.php:807
+#: protected/application/lib/MapasCulturais/App.php:823
 msgid "O arquivo enviado não é uma imagem válida."
 msgstr "El archivo enviado no es una imagen válida."
 
@@ -2016,7 +2015,7 @@ msgstr "El archivo enviado no es una imagen válida."
 msgid "O arquivo enviado não é um documento válido."
 msgstr "El archivo enviado no es un documento válido."
 
-#: protected/application/lib/MapasCulturais/App.php:816
+#: protected/application/lib/MapasCulturais/App.php:818
 msgid "O link do vídeo é obrigatório"
 msgstr "El link del video es obligatorio"
 
@@ -2046,39 +2045,39 @@ msgstr "Anónimo"
 msgid "Anônima"
 msgstr "Anónima"
 
-#: protected/application/lib/MapasCulturais/Controllers/Subsite.php:86
+#: protected/application/lib/MapasCulturais/Controllers/Subsite.php:85
 msgid "Tema Personalizável"
 msgstr "Tema personalizable"
 
-#: protected/application/lib/MapasCulturais/Entities/Agent.php:269
+#: protected/application/lib/MapasCulturais/Entities/Agent.php:260
 msgid "O nome do agente é obrigatório"
 msgstr "El nombre del agente es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Agent.php:272
-#: protected/application/lib/MapasCulturais/Entities/Event.php:202
-#: protected/application/lib/MapasCulturais/Entities/Project.php:251
+#: protected/application/lib/MapasCulturais/Entities/Agent.php:263
+#: protected/application/lib/MapasCulturais/Entities/Event.php:194
+#: protected/application/lib/MapasCulturais/Entities/Project.php:243
 #: protected/application/lib/MapasCulturais/Entities/Seal.php:170
-#: protected/application/lib/MapasCulturais/Entities/Space.php:238
+#: protected/application/lib/MapasCulturais/Entities/Space.php:230
 msgid "A descrição curta é obrigatória"
-msgstr "La descripción corta es obligatoria"
+msgstr "La descripción breve es obligatoria"
 
-#: protected/application/lib/MapasCulturais/Entities/Agent.php:273
-#: protected/application/lib/MapasCulturais/Entities/Event.php:203
-#: protected/application/lib/MapasCulturais/Entities/Project.php:252
+#: protected/application/lib/MapasCulturais/Entities/Agent.php:264
+#: protected/application/lib/MapasCulturais/Entities/Event.php:195
+#: protected/application/lib/MapasCulturais/Entities/Project.php:244
 #: protected/application/lib/MapasCulturais/Entities/Seal.php:171
-#: protected/application/lib/MapasCulturais/Entities/Space.php:239
+#: protected/application/lib/MapasCulturais/Entities/Space.php:231
 msgid "A descrição curta deve ter no máximo 400 caracteres"
-msgstr "La descripción corta debe tener máximo 400 caracteres"
+msgstr "La descripción breve debe tener máximo 400 caracteres"
 
-#: protected/application/lib/MapasCulturais/Entities/Agent.php:276
+#: protected/application/lib/MapasCulturais/Entities/Agent.php:267
 msgid "O tipo do agente é obrigatório"
 msgstr "El tipo de agente es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Event.php:199
+#: protected/application/lib/MapasCulturais/Entities/Event.php:191
 msgid "O nome do evento é obrigatório"
 msgstr "El nombre del evento es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Event.php:206
+#: protected/application/lib/MapasCulturais/Entities/Event.php:198
 msgid "Você não pode criar eventos neste projeto."
 msgstr "Usted no puede crear eventos en este proyecto."
 
@@ -2135,25 +2134,25 @@ msgstr "Espacio es obligatorio"
 msgid "A descrição legível do horário é obrigatória"
 msgstr "Descripción legible del horario es obligatoria"
 
-#: protected/application/lib/MapasCulturais/Entities/Project.php:248
+#: protected/application/lib/MapasCulturais/Entities/Project.php:240
 msgid "O nome do projeto é obrigatório"
 msgstr "El nombre del proyecto es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Project.php:255
+#: protected/application/lib/MapasCulturais/Entities/Project.php:247
 msgid "O tipo do projeto é obrigatório"
 msgstr "El tipo de proyecto es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Project.php:258
-#: protected/application/lib/MapasCulturais/Entities/Project.php:262
+#: protected/application/lib/MapasCulturais/Entities/Project.php:250
+#: protected/application/lib/MapasCulturais/Entities/Project.php:254
 msgid "O valor informado não é uma data válida"
 msgstr "El valor informado no es una fecha válida"
 
-#: protected/application/lib/MapasCulturais/Entities/Project.php:259
+#: protected/application/lib/MapasCulturais/Entities/Project.php:251
 msgid "Data final obrigatória caso data inicial preenchida"
 msgstr ""
 "Fecha final obligatoria, en el caso de que la fecha final fuera completada"
 
-#: protected/application/lib/MapasCulturais/Entities/Project.php:263
+#: protected/application/lib/MapasCulturais/Entities/Project.php:255
 msgid "A data final das inscrições deve ser maior ou igual a data inicial"
 msgstr ""
 "La fecha final de las inscripciones debe ser mayor o igual que la fecha "
@@ -2226,24 +2225,28 @@ msgstr "El nombre del sello es obligatorio"
 msgid "Validade do selo é obrigatória."
 msgstr "El validado del sello es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Space.php:235
+#: protected/application/lib/MapasCulturais/Entities/Seal.php:175
+msgid "Validade do selo deve ser um número inteiro."
+msgstr "Validado del sello debe ser un número entero."
+
+#: protected/application/lib/MapasCulturais/Entities/Space.php:227
 msgid "O nome do espaço é obrigatório"
 msgstr "El nombre del espacio es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Space.php:242
+#: protected/application/lib/MapasCulturais/Entities/Space.php:234
 msgid "O tipo do espaço é obrigatório"
 msgstr "El tipo de espacio es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Subsite.php:142
+#: protected/application/lib/MapasCulturais/Entities/Subsite.php:141
 msgid "O nome da instalação é obrigatório"
 msgstr "El nombre de la instalación es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entities/Subsite.php:145
+#: protected/application/lib/MapasCulturais/Entities/Subsite.php:144
 msgid "A url da instalação é obrigatória"
 msgstr "La url de la instalación es obligatoria"
 
-#: protected/application/lib/MapasCulturais/Entities/Subsite.php:146
-#: protected/application/lib/MapasCulturais/Entities/Subsite.php:149
+#: protected/application/lib/MapasCulturais/Entities/Subsite.php:145
+#: protected/application/lib/MapasCulturais/Entities/Subsite.php:148
 msgid "Esta URL já está sendo utilizada"
 msgstr "Esta URL ya está siendo usada"
 
@@ -2254,6 +2257,79 @@ msgstr "Usuarios"
 #: protected/application/lib/MapasCulturais/Entities/User.php:124
 msgid "Usuário"
 msgstr "Usuario"
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:605
+#, php-format
+msgid ""
+"Seu último acesso foi em <b>%s</b>, atualize suas informações se necessário."
+msgstr ""
+"Su último acceso fue el <b>%s</b>, actualice sus datos si es necesario."
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:619
+#, php-format
+msgid ""
+"O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as "
+"informações se necessário. <a class='btn btn-small btn-primary' "
+"href='%s'>editar</a>'"
+msgstr ""
+"El agente  <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
+"actualice los datos. <a class='btn btn-small btn-primary' href='%s'>editar</"
+"a>'"
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:636
+#, php-format
+msgid ""
+"O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as "
+"informações se necessário. <a class='btn btn-small btn-primary' "
+"href='%s'>editar</a>"
+msgstr ""
+"El Espacio  <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
+"actualice los datos. <a class='btn btn-small btn-primary' href='%s'>editar</"
+"a>'"
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:655
+#, php-format
+msgid ""
+"O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a "
+"entidade e solicite a renovação da validade. <a class='btn btn-small btn-"
+"primary' href='%s'>editar</a>"
+msgstr ""
+"El Agente <b>%s</b> está con  su sello <b>%s</b> vencido.<br>Acceda a la "
+"entidad y solicite la renovación de la validez. <a class='btn btn-small btn-"
+"primary' href='%s'>editar</a>"
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:662
+#, php-format
+msgid ""
+"O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s)."
+"<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
+"small btn-primary' href=''>editar</a>"
+msgstr ""
+"El Agente <b>%s</b> está con  su sello <b>%s</b> pronto a vencerse en %s "
+"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
+"class='btn btn-small btn-primary' href=''>editar</a>"
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:674
+#, php-format
+msgid ""
+"O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a "
+"entidade e solicite a renovação da validade. <a class='btn btn-small btn-"
+"primary' href='%s'>editar</a>"
+msgstr ""
+"El Espacio <b>%s</b> está con  su sello <b>%s</b> vencido.<br>Acceda a la "
+"entidad y solicite la renovación de la validez. <a class='btn btn-small btn-"
+"primary' href='%s'>editar</a>"
+
+#: protected/application/lib/MapasCulturais/Entities/User.php:681
+#, php-format
+msgid ""
+"O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s)."
+"<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
+"small btn-primary' href='%s'>editar</a>"
+msgstr ""
+"El Agente <b>%s</b> está con  su sello <b>%s</b> pronto a vencerse en %s "
+"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
+"class='btn btn-small btn-primary' href='%s'>editar</a>"
 
 #: protected/application/lib/MapasCulturais/Entity.php:770
 msgid "O Tipo é obrigatório"
@@ -2292,6 +2368,28 @@ msgstr "Se requiere el ownerId."
 msgid "The agent with id %s not found."
 msgstr "El agente con id %s no fue encontrado."
 
+#: protected/application/lib/MapasCulturais/Traits/ControllerSealRelation.php:119
+#, php-format
+msgid ""
+"Solicitação de renovação do selo %s para a entidade %s.<br>Acesse a página "
+"da entidade e renove o certificado. <a class=\"btn btn-small btn-primary\" "
+"href=\"%s\">editar</a>"
+msgstr ""
+"Solicitud de renovación del sello %s para la entidad %s. <br>Acceda a la "
+"página de la entidad y renueve el certificado. <a class=\"btn btn-small btn-"
+"primary\" href=\"%s\">editar</a>"
+
+#: protected/application/lib/MapasCulturais/Traits/ControllerSealRelation.php:160
+#, php-format
+msgid ""
+"Validade do selo %s para a entidade %s renovada.<br>Acesse a página da "
+"entidade e do certificado. <a class=\"btn btn-small btn-sucess\" href=\"%s"
+"\">editar</a>"
+msgstr ""
+"Validez del sello %s para la entidad %s renovada. <br>Acceda a la página de "
+"la entidad del certificado. <a class=\"btn btn-small btn-sucess\" href=\"%s"
+"\">editar</a>"
+
 #: protected/application/lib/MapasCulturais/Traits/ControllerUploads.php:57
 msgid "O dono não existe"
 msgstr "El dueño no existe"
@@ -2309,7 +2407,7 @@ msgid ""
 "The location must be an instance of \\MapasCulturais\\Types\\GeoPoint or an "
 "array with two numeric values"
 msgstr ""
-"La ubicación debe ser una instancia de \\ MapasCulturais \\ Tipos \\ "
+"La ubicación debe ser una instancia de \\ Culturaenlinea \\ Tipos \\ "
 "GeoPoint o una matriz con dos valores numéricos"
 
 #: protected/application/lib/MapasCulturais/Traits/EntityNested.php:76
@@ -2326,35 +2424,35 @@ msgstr "Referencia circular"
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:127
 msgid "Registro criado."
-msgstr ""
+msgstr "Registro creado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:148
 msgid "Registro publicado."
-msgstr ""
+msgstr "Registro publicado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:153
 msgid "Registro arquivado."
-msgstr ""
+msgstr "Registro archivado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:158
 msgid "Registro recuperado da lixeira."
-msgstr ""
+msgstr "Registro recuperado de la papelera."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:161
 msgid "Registro desarquivado."
-msgstr ""
+msgstr "Registro desarchivado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:165
 msgid "Registro despublicado."
-msgstr ""
+msgstr "Registro despublicado."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:171
 msgid "Registro movido para a lixeira."
-msgstr ""
+msgstr "Registro movido a la papelera."
 
 #: protected/application/lib/MapasCulturais/Traits/EntityRevision.php:183
 msgid "Registro deletado."
-msgstr ""
+msgstr "Registro eliminado."
 
 #: protected/application/lib/MapasCulturais/Types/GeoPoint.php:80
 msgid "Latitude precisa ser um float entre 90 e -90"
@@ -2369,9 +2467,9 @@ msgid "Nenhum"
 msgstr "Ningún"
 
 #: protected/application/plugins/AgendaSingles/layouts/parts/agenda-singles--content.php:41
-#: protected/application/themes/BaseV1/Theme.php:561
-#: protected/application/themes/BaseV1/Theme.php:565
-#: protected/application/themes/BaseV1/Theme.php:1673
+#: protected/application/themes/BaseV1/Theme.php:573
+#: protected/application/themes/BaseV1/Theme.php:577
+#: protected/application/themes/BaseV1/Theme.php:1691
 #: protected/application/themes/BaseV1/layouts/parts/home-events.php:40
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:36
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:31
@@ -2381,7 +2479,7 @@ msgid "Linguagem"
 msgstr "Tipo de evento"
 
 #: protected/application/plugins/AgendaSingles/layouts/parts/agenda-singles--content.php:44
-#: protected/application/themes/BaseV1/Theme.php:1683
+#: protected/application/themes/BaseV1/Theme.php:1701
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:42
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:36
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:37
@@ -2389,7 +2487,7 @@ msgid "Classificação"
 msgstr "Clasificación"
 
 #: protected/application/plugins/AgendaSingles/layouts/parts/agenda-singles--header.php:3
-#: protected/application/themes/BaseV1/Theme.php:1203
+#: protected/application/themes/BaseV1/Theme.php:1219
 msgid "evento"
 msgstr "evento"
 
@@ -2417,7 +2515,7 @@ msgstr "E-mail"
 
 #: protected/application/plugins/CompliantSuggestion/layouts/parts/compliant_suggestion.php:33
 #: protected/application/plugins/CompliantSuggestion/layouts/parts/compliant_suggestion.php:70
-#: protected/application/themes/BaseV1/Theme.php:1705
+#: protected/application/themes/BaseV1/Theme.php:1723
 #: protected/application/themes/BaseV1/layouts/parts/home-agents.php:43
 #: protected/application/themes/BaseV1/layouts/parts/home-projects.php:39
 #: protected/application/themes/BaseV1/layouts/parts/home-spaces.php:41
@@ -2616,7 +2714,7 @@ msgstr "Agregar fase"
 
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:55
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:74
-#: protected/application/themes/BaseV1/Theme.php:1298
+#: protected/application/themes/BaseV1/Theme.php:1316
 #: protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:17
 msgid "de"
 msgstr "de"
@@ -2634,11 +2732,11 @@ msgstr "Fecha inicial"
 
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:59
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:78
-#: protected/application/themes/BaseV1/Theme.php:1300
+#: protected/application/themes/BaseV1/Theme.php:1318
 #: protected/application/themes/BaseV1/layouts/parts/search/filter.php:19
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
 msgid "a"
-msgstr ""
+msgstr "a"
 
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:60
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:11
@@ -2743,8 +2841,8 @@ msgstr "%s quiere agregar el evento %s que ocurre %s en el espacio %s."
 msgid ""
 "Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."
 msgstr ""
-"Su solicitud para crear la ocurrencia del evento %s en el espacio %s fue "
-"enviada."
+"Su solicitud para crear \"cuándo y dónde\" es el evento %s en el espacio %s "
+"fue enviada."
 
 #: protected/application/plugins/notifications.php:62
 #, php-format
@@ -2928,7 +3026,7 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/Theme.php:74
 msgid "Mapa da Cultura"
-msgstr "Mapas Culturales"
+msgstr "Cultura en Línea"
 
 #: protected/application/themes/BaseV1/Theme.php:74
 msgid "Mapa Cultural do Estado do Acre"
@@ -3074,7 +3172,7 @@ msgstr ""
 #: protected/application/themes/BaseV1/Theme.php:123
 #: protected/application/themes/BaseV1/Theme.php:124
 msgid "Bem-vind@!"
-msgstr "Bienvenid@!"
+msgstr "¡Bienvenid@!"
 
 #: protected/application/themes/BaseV1/Theme.php:123
 msgid "Bem-vindo"
@@ -3095,7 +3193,7 @@ msgid ""
 "O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
 msgstr ""
-"Mapas Culturales es una plataforma de software libre, de cartografía "
+"Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
 #: protected/application/themes/BaseV1/Theme.php:132
@@ -3145,7 +3243,7 @@ msgstr "Colabore con el SNIIC"
 
 #: protected/application/themes/BaseV1/Theme.php:141
 msgid "Colabore com o Mapa da Cultura"
-msgstr "Colabore con Mapas Culturales"
+msgstr "Colabore con Cultura en Línea"
 
 #: protected/application/themes/BaseV1/Theme.php:141
 msgid "Colabore com o SpCultura"
@@ -3153,7 +3251,7 @@ msgstr "Colabore con SpCultura"
 
 #: protected/application/themes/BaseV1/Theme.php:142
 msgid "Colabore com o Mapas Culturais"
-msgstr "Colabore con Mapas Culturales"
+msgstr "Colabore con Cultura en Línea"
 
 #: protected/application/themes/BaseV1/Theme.php:145
 msgid "texto da seção \"eventos\" da home"
@@ -3240,13 +3338,13 @@ msgid ""
 msgstr ""
 "Hay varias formas en las que los desarrolladores interactúan con los mapas "
 "culturales. La primera es a través de nuestra <a href=\"https://github.com/"
-"hacklabr/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</a>. "
-"Con ella usted puede acceder a los datos públicos de nuestra base de datos y "
-"utilizarlos para desarrollar aplicaciones externas. Además, Mapas Culturales "
-"está realizado a partir del software libre <a href=\"http://institutotim.org."
-"br/project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, creado "
-"por Hacklabr en asociación con el Instituto TIM, y puede contribuir con su "
-"desarrollo a través de GitHub. "
+"LibreCoopUruguay/mapasculturais/blob/master/doc/api.md\" target=\"_blank"
+"\">API</a>. Con ella usted puede acceder a los datos públicos de nuestra "
+"base de datos y utilizarlos para desarrollar aplicaciones externas. Además, "
+"el sistema fue desarrollado a partir del software libre <a href=\"http://"
+"institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas "
+"Culturais</a>, creado por Hacklabr en asociación con el Instituto TIM, y "
+"puede contribuir con su desarrollo a través de GitHub. "
 
 #: protected/application/themes/BaseV1/Theme.php:172
 msgid "resultados verifiados"
@@ -3354,7 +3452,7 @@ msgstr "nombre de la entidad espacio en singular"
 
 #: protected/application/themes/BaseV1/Theme.php:209
 #: protected/application/themes/BaseV1/Theme.php:210
-#: protected/application/themes/BaseV1/Theme.php:1202
+#: protected/application/themes/BaseV1/Theme.php:1218
 msgid "espaço"
 msgstr "espacio"
 
@@ -3507,754 +3605,783 @@ msgid "da biblioteca"
 msgstr "de la biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:261
-msgid "texto \"Neste espaço\""
-msgstr "texto \"En este espacio\""
+msgid "texto \"Descrição do espaço\""
+msgstr "texto \"Descripción del espacio\""
 
 #: protected/application/themes/BaseV1/Theme.php:263
 #: protected/application/themes/BaseV1/Theme.php:264
-msgid "Neste espaço"
-msgstr "En este espacio"
+msgid "Descrição do espaço"
+msgstr "Descripción del espacio"
 
 #: protected/application/themes/BaseV1/Theme.php:263
-msgid "Neste museu"
-msgstr "En este museo"
+msgid "Descrição do museu"
+msgstr "Descripción del museo"
 
 #: protected/application/themes/BaseV1/Theme.php:263
-msgid "Nesta biblioteca"
-msgstr "En esta biblioteca"
+msgid "Descrição da biblioteca"
+msgstr "Descripción de la biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:267
-msgid "texto \"neste espaço\""
-msgstr "texto \"en este espaio\""
+msgid "texto \"Critérios de uso do espaço\""
+msgstr "texto \"Criterios de uso del espacio\""
 
 #: protected/application/themes/BaseV1/Theme.php:269
-#: protected/application/themes/BaseV1/Theme.php:270
-msgid "neste espaço"
-msgstr "en este espaio"
+msgid "Critérios de uso do museu"
+msgstr "Criterios de uso del museo"
 
 #: protected/application/themes/BaseV1/Theme.php:269
-msgid "neste museu"
-msgstr "en este museo"
-
-#: protected/application/themes/BaseV1/Theme.php:269
-msgid "nesta biblioteca"
-msgstr "en esta biblioteca"
+msgid "Critérios de uso da biblioteca"
+msgstr "Criterios de uso de la biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:273
-msgid "texto \"espaços cadastrados\""
-msgstr "texto \"espacios registrados\""
+msgid "texto \"Neste espaço\""
+msgstr "texto \"En este espacio\""
 
 #: protected/application/themes/BaseV1/Theme.php:275
 #: protected/application/themes/BaseV1/Theme.php:276
-msgid "espaços cadastrados"
-msgstr "espacios registrados"
+msgid "Neste espaço"
+msgstr "En este espacio"
 
 #: protected/application/themes/BaseV1/Theme.php:275
-msgid "museus cadastrados"
-msgstr "museos registrados"
+msgid "Neste museu"
+msgstr "En este museo"
 
 #: protected/application/themes/BaseV1/Theme.php:275
-msgid "bibliotecas cadastradas"
-msgstr "bibliotecas registradas"
+msgid "Nesta biblioteca"
+msgstr "En esta biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:279
-msgid "texto \"nenhum espaço cadastrado\""
-msgstr "texto \"ningún espacio registrado\""
+msgid "texto \"neste espaço\""
+msgstr "texto \"en este espaio\""
 
 #: protected/application/themes/BaseV1/Theme.php:281
 #: protected/application/themes/BaseV1/Theme.php:282
-msgid "nenhum espaço cadastrado"
-msgstr "ningún espacio registrado"
+msgid "neste espaço"
+msgstr "en este espaio"
 
 #: protected/application/themes/BaseV1/Theme.php:281
-msgid "nenhum museu cadastrado"
-msgstr "ningún museo registrado"
+msgid "neste museu"
+msgstr "en este museo"
 
 #: protected/application/themes/BaseV1/Theme.php:281
-msgid "nenhuma biblioteca cadastrada"
-msgstr "ninguna biblioteca registrada"
+msgid "nesta biblioteca"
+msgstr "en esta biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:285
-msgid "texto \"nenhum espaço\""
-msgstr "texto \"ningún espacio\""
+msgid "texto \"espaços cadastrados\""
+msgstr "texto \"espacios registrados\""
 
 #: protected/application/themes/BaseV1/Theme.php:287
 #: protected/application/themes/BaseV1/Theme.php:288
-msgid "nenhum espaço"
-msgstr "ningún espacio"
+msgid "espaços cadastrados"
+msgstr "espacios registrados"
 
 #: protected/application/themes/BaseV1/Theme.php:287
-msgid "nenhum museu"
-msgstr "ningún museo"
+msgid "museus cadastrados"
+msgstr "museos registrados"
 
 #: protected/application/themes/BaseV1/Theme.php:287
-msgid "nenhuma biblioteca"
-msgstr "ninguna biblioteca"
+msgid "bibliotecas cadastradas"
+msgstr "bibliotecas registradas"
 
 #: protected/application/themes/BaseV1/Theme.php:291
-msgid "texto \"novo espaço\""
-msgstr "texto \"nuevo espacio\""
+msgid "texto \"nenhum espaço cadastrado\""
+msgstr "texto \"ningún espacio registrado\""
 
 #: protected/application/themes/BaseV1/Theme.php:293
 #: protected/application/themes/BaseV1/Theme.php:294
-msgid "novo espaço"
-msgstr "nuevo espacio"
+msgid "nenhum espaço cadastrado"
+msgstr "ningún espacio registrado"
 
 #: protected/application/themes/BaseV1/Theme.php:293
-msgid "novo museu"
-msgstr "nuevo museo"
+msgid "nenhum museu cadastrado"
+msgstr "ningún museo registrado"
 
 #: protected/application/themes/BaseV1/Theme.php:293
-msgid "nova biblioteca"
-msgstr "nueva biblioteca"
+msgid "nenhuma biblioteca cadastrada"
+msgstr "ninguna biblioteca registrada"
 
 #: protected/application/themes/BaseV1/Theme.php:297
-msgid "texto \"Subespaços\""
-msgstr "texto \"Subespacios\""
+msgid "texto \"nenhum espaço\""
+msgstr "texto \"ningún espacio\""
 
 #: protected/application/themes/BaseV1/Theme.php:299
 #: protected/application/themes/BaseV1/Theme.php:300
-msgid "Subespaços"
-msgstr "Subespacios"
+msgid "nenhum espaço"
+msgstr "ningún espacio"
 
 #: protected/application/themes/BaseV1/Theme.php:299
-msgid "Espaços filhos"
-msgstr "Espacios hijos"
+msgid "nenhum museu"
+msgstr "ningún museo"
 
 #: protected/application/themes/BaseV1/Theme.php:299
-msgid "Museus filhos"
-msgstr "Museos hijos"
-
-#: protected/application/themes/BaseV1/Theme.php:299
-msgid "Subespaços do museu"
-msgstr "Subespacios del museo"
-
-#: protected/application/themes/BaseV1/Theme.php:299
-msgid "Bibliotecas filhas"
-msgstr "Bibliotecas hijas"
-
-#: protected/application/themes/BaseV1/Theme.php:299
-msgid "Subespaços da biblioteca"
-msgstr "Subespacios de la biblioteca"
+msgid "nenhuma biblioteca"
+msgstr "ninguna biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:303
-msgid "texto \"Adicionar subespaço\""
-msgstr "texto \"Agregar subespacio\""
+msgid "texto \"novo espaço\""
+msgstr "texto \"nuevo espacio\""
 
 #: protected/application/themes/BaseV1/Theme.php:305
 #: protected/application/themes/BaseV1/Theme.php:306
-msgid "Adicionar subespaço"
-msgstr "Agregar subespacio"
+msgid "novo espaço"
+msgstr "nuevo espacio"
 
 #: protected/application/themes/BaseV1/Theme.php:305
-msgid "Adicionar espaço filho"
-msgstr "Agregar espacio hijo"
+msgid "novo museu"
+msgstr "nuevo museo"
 
 #: protected/application/themes/BaseV1/Theme.php:305
-msgid "Adicionar museu filho"
-msgstr "Agregar museo hijo"
-
-#: protected/application/themes/BaseV1/Theme.php:305
-msgid "Adicionar subespaço do museu"
-msgstr "Agregar subespacio del museo"
-
-#: protected/application/themes/BaseV1/Theme.php:305
-msgid "Adicionar biblioteca filha"
-msgstr "Agregar biblioteca hija"
-
-#: protected/application/themes/BaseV1/Theme.php:305
-msgid "Adicionar subespaço da biblioteca"
-msgstr "Agregar subespacio de la biblioteca"
+msgid "nova biblioteca"
+msgstr "nueva biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:309
-msgid "teto \"espaço encontrado\""
-msgstr "teto \"espacio encontrado\""
+msgid "texto \"Subespaços\""
+msgstr "texto \"Subespacios\""
 
 #: protected/application/themes/BaseV1/Theme.php:311
 #: protected/application/themes/BaseV1/Theme.php:312
-msgid "espaço encontrado"
-msgstr "espacio encontrado"
+msgid "Subespaços"
+msgstr "Subespacios"
 
 #: protected/application/themes/BaseV1/Theme.php:311
-msgid "museu encontrado"
-msgstr "museo encontrado"
+msgid "Espaços filhos"
+msgstr "Espacios hijos"
 
 #: protected/application/themes/BaseV1/Theme.php:311
-msgid "biblioteca encontrada"
-msgstr "Entidades encontrada"
+msgid "Museus filhos"
+msgstr "Museos hijos"
+
+#: protected/application/themes/BaseV1/Theme.php:311
+msgid "Subespaços do museu"
+msgstr "Subespacios del museo"
+
+#: protected/application/themes/BaseV1/Theme.php:311
+msgid "Bibliotecas filhas"
+msgstr "Bibliotecas hijas"
+
+#: protected/application/themes/BaseV1/Theme.php:311
+msgid "Subespaços da biblioteca"
+msgstr "Subespacios de la biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:315
-msgid "espaços encontrado"
-msgstr "espacios encontrados"
+msgid "texto \"Adicionar subespaço\""
+msgstr "texto \"Agregar subespacio\""
 
 #: protected/application/themes/BaseV1/Theme.php:317
 #: protected/application/themes/BaseV1/Theme.php:318
-msgid "espaços encontrados"
-msgstr "espacios encontrados"
+msgid "Adicionar subespaço"
+msgstr "Agregar subespacio"
 
 #: protected/application/themes/BaseV1/Theme.php:317
-msgid "museus encontrados"
-msgstr "museos encontrados"
+msgid "Adicionar espaço filho"
+msgstr "Agregar espacio hijo"
 
 #: protected/application/themes/BaseV1/Theme.php:317
-msgid "bibliotecas encontradas"
-msgstr "bibliotecas encontradas"
+msgid "Adicionar museu filho"
+msgstr "Agregar museo hijo"
+
+#: protected/application/themes/BaseV1/Theme.php:317
+msgid "Adicionar subespaço do museu"
+msgstr "Agregar subespacio del museo"
+
+#: protected/application/themes/BaseV1/Theme.php:317
+msgid "Adicionar biblioteca filha"
+msgstr "Agregar biblioteca hija"
+
+#: protected/application/themes/BaseV1/Theme.php:317
+msgid "Adicionar subespaço da biblioteca"
+msgstr "Agregar subespacio de la biblioteca"
 
 #: protected/application/themes/BaseV1/Theme.php:321
-msgid "texto \"Espaços do agente\""
-msgstr "texto \"Espacios del agente\""
+msgid "teto \"espaço encontrado\""
+msgstr "teto \"espacio encontrado\""
 
 #: protected/application/themes/BaseV1/Theme.php:323
 #: protected/application/themes/BaseV1/Theme.php:324
+msgid "espaço encontrado"
+msgstr "espacio encontrado"
+
+#: protected/application/themes/BaseV1/Theme.php:323
+msgid "museu encontrado"
+msgstr "museo encontrado"
+
+#: protected/application/themes/BaseV1/Theme.php:323
+msgid "biblioteca encontrada"
+msgstr "Entidades encontrada"
+
+#: protected/application/themes/BaseV1/Theme.php:327
+msgid "espaços encontrado"
+msgstr "espacios encontrados"
+
+#: protected/application/themes/BaseV1/Theme.php:329
+#: protected/application/themes/BaseV1/Theme.php:330
+msgid "espaços encontrados"
+msgstr "espacios encontrados"
+
+#: protected/application/themes/BaseV1/Theme.php:329
+msgid "museus encontrados"
+msgstr "museos encontrados"
+
+#: protected/application/themes/BaseV1/Theme.php:329
+msgid "bibliotecas encontradas"
+msgstr "bibliotecas encontradas"
+
+#: protected/application/themes/BaseV1/Theme.php:333
+msgid "texto \"Espaços do agente\""
+msgstr "texto \"Espacios del agente\""
+
+#: protected/application/themes/BaseV1/Theme.php:335
+#: protected/application/themes/BaseV1/Theme.php:336
 msgid "Espaços do agente"
 msgstr "Espacios del agente"
 
-#: protected/application/themes/BaseV1/Theme.php:323
+#: protected/application/themes/BaseV1/Theme.php:335
 msgid "Museus do agente"
 msgstr "Museos del agente"
 
-#: protected/application/themes/BaseV1/Theme.php:323
+#: protected/application/themes/BaseV1/Theme.php:335
 msgid "Bibliotecas do agente"
 msgstr "Bibliotecas del agente"
 
-#: protected/application/themes/BaseV1/Theme.php:332
+#: protected/application/themes/BaseV1/Theme.php:344
 msgid "texto \"Agentes\""
 msgstr "texto \"Agentes\""
 
-#: protected/application/themes/BaseV1/Theme.php:333
+#: protected/application/themes/BaseV1/Theme.php:345
 msgid "nome da entidade Agente no plural"
 msgstr "nombre de la entidad Agente en plural"
 
-#: protected/application/themes/BaseV1/Theme.php:338
+#: protected/application/themes/BaseV1/Theme.php:350
 msgid "texto \"agente econtrado\""
 msgstr "texto \"agente econtrado\""
 
-#: protected/application/themes/BaseV1/Theme.php:340
-#: protected/application/themes/BaseV1/Theme.php:341
+#: protected/application/themes/BaseV1/Theme.php:352
+#: protected/application/themes/BaseV1/Theme.php:353
 msgid "agente encontrado"
 msgstr "agente encontrado"
 
-#: protected/application/themes/BaseV1/Theme.php:344
+#: protected/application/themes/BaseV1/Theme.php:356
 msgid "texto \"agentes encontrados\""
 msgstr "texto \"agentes encontrados\""
 
-#: protected/application/themes/BaseV1/Theme.php:346
-#: protected/application/themes/BaseV1/Theme.php:347
+#: protected/application/themes/BaseV1/Theme.php:358
+#: protected/application/themes/BaseV1/Theme.php:359
 msgid "agentes encontrados"
 msgstr "agentes encontrados"
 
-#: protected/application/themes/BaseV1/Theme.php:350
+#: protected/application/themes/BaseV1/Theme.php:362
 msgid "texto \"Meus Agentes\""
 msgstr "texto \"Mis Agentes\""
 
-#: protected/application/themes/BaseV1/Theme.php:352
-#: protected/application/themes/BaseV1/Theme.php:353
+#: protected/application/themes/BaseV1/Theme.php:364
+#: protected/application/themes/BaseV1/Theme.php:365
 #: protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:162
 #: protected/application/themes/BaseV1/layouts/parts/panel-nav.php:14
 msgid "Meus Agentes"
 msgstr "Mis Agentes"
 
-#: protected/application/themes/BaseV1/Theme.php:356
+#: protected/application/themes/BaseV1/Theme.php:368
 msgid "texto \"Meus agentes\""
 msgstr "texto \"Mis Agentes\""
 
-#: protected/application/themes/BaseV1/Theme.php:358
-#: protected/application/themes/BaseV1/Theme.php:359
+#: protected/application/themes/BaseV1/Theme.php:370
+#: protected/application/themes/BaseV1/Theme.php:371
 #: protected/application/themes/BaseV1/views/panel/agents.php:7
 msgid "Meus agentes"
 msgstr "Mis Agentes"
 
-#: protected/application/themes/BaseV1/Theme.php:362
+#: protected/application/themes/BaseV1/Theme.php:374
 msgid "texto \"Sub-agentes\""
 msgstr "texto \"Sub-agentes\""
 
-#: protected/application/themes/BaseV1/Theme.php:363
+#: protected/application/themes/BaseV1/Theme.php:375
 msgid "texto nomeia os agentes filhos, ou sub-agentes, de outro agente"
 msgstr "nombres de texto de los agentes hijos o sub-agentes, de otro agente"
 
-#: protected/application/themes/BaseV1/Theme.php:364
+#: protected/application/themes/BaseV1/Theme.php:376
 msgid "Sub-agentes"
 msgstr "Sub-agentes"
 
-#: protected/application/themes/BaseV1/Theme.php:364
+#: protected/application/themes/BaseV1/Theme.php:376
 msgid "Agentes Filhos"
 msgstr "Agentes Hijos"
 
-#: protected/application/themes/BaseV1/Theme.php:373
+#: protected/application/themes/BaseV1/Theme.php:385
 msgid "texto \"Projetos\""
 msgstr "texto \"Proyectos\""
 
-#: protected/application/themes/BaseV1/Theme.php:374
+#: protected/application/themes/BaseV1/Theme.php:386
 msgid "nome da entidade Projeto no plural"
 msgstr "nNombre de la entidad Proyecto en plural"
 
-#: protected/application/themes/BaseV1/Theme.php:379
+#: protected/application/themes/BaseV1/Theme.php:391
 msgid "texto \"Meus Projetos\""
 msgstr "texto \"Mis Proyectos\""
 
-#: protected/application/themes/BaseV1/Theme.php:381
-#: protected/application/themes/BaseV1/Theme.php:382
+#: protected/application/themes/BaseV1/Theme.php:393
+#: protected/application/themes/BaseV1/Theme.php:394
 #: protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:189
 #: protected/application/themes/BaseV1/layouts/parts/panel-nav.php:32
 msgid "Meus Projetos"
 msgstr "Mis Proyectos"
 
-#: protected/application/themes/BaseV1/Theme.php:385
+#: protected/application/themes/BaseV1/Theme.php:397
 msgid "texto \"Meus projetos\""
 msgstr "texto \"Mis Proyectos\""
 
-#: protected/application/themes/BaseV1/Theme.php:387
-#: protected/application/themes/BaseV1/Theme.php:388
+#: protected/application/themes/BaseV1/Theme.php:399
+#: protected/application/themes/BaseV1/Theme.php:400
 #: protected/application/themes/BaseV1/views/panel/projects.php:6
 msgid "Meus projetos"
 msgstr "Mis proyectos"
 
-#: protected/application/themes/BaseV1/Theme.php:391
+#: protected/application/themes/BaseV1/Theme.php:403
 msgid "texto \"projeto encontrado\""
 msgstr "texto \"proyecto encontrado\""
 
-#: protected/application/themes/BaseV1/Theme.php:393
-#: protected/application/themes/BaseV1/Theme.php:394
+#: protected/application/themes/BaseV1/Theme.php:405
+#: protected/application/themes/BaseV1/Theme.php:406
 msgid "projeto encontrado"
 msgstr "proyecto encontrado"
 
-#: protected/application/themes/BaseV1/Theme.php:397
+#: protected/application/themes/BaseV1/Theme.php:409
 msgid "texto \"projetos encontrados\""
 msgstr "texto \"proyectos encontradostexto \""
 
-#: protected/application/themes/BaseV1/Theme.php:399
-#: protected/application/themes/BaseV1/Theme.php:400
+#: protected/application/themes/BaseV1/Theme.php:411
+#: protected/application/themes/BaseV1/Theme.php:412
 msgid "projetos encontrados"
 msgstr "proyectos encontrados"
 
-#: protected/application/themes/BaseV1/Theme.php:403
+#: protected/application/themes/BaseV1/Theme.php:415
 msgid "texto \"Projetos do agente\""
 msgstr "texto \"Proyectos del agente\""
 
-#: protected/application/themes/BaseV1/Theme.php:404
+#: protected/application/themes/BaseV1/Theme.php:416
 msgid "Título da listagem dos projetos do agente em seu perfil"
 msgstr "Título del listado de proyectos del agente en su perfil"
 
-#: protected/application/themes/BaseV1/Theme.php:405
-#: protected/application/themes/BaseV1/Theme.php:406
+#: protected/application/themes/BaseV1/Theme.php:417
+#: protected/application/themes/BaseV1/Theme.php:418
 msgid "Projetos do agente"
 msgstr "Proyectos del agente"
 
-#: protected/application/themes/BaseV1/Theme.php:405
+#: protected/application/themes/BaseV1/Theme.php:417
 msgid "Editais do agente"
 msgstr "Ediciones del agente"
 
-#: protected/application/themes/BaseV1/Theme.php:405
+#: protected/application/themes/BaseV1/Theme.php:417
 msgid "Convocatórias do agente"
 msgstr "Convocatorias del agente"
 
-#: protected/application/themes/BaseV1/Theme.php:414
+#: protected/application/themes/BaseV1/Theme.php:426
 msgid "texto \"Eventos\""
 msgstr "texto \"Eventos\""
 
-#: protected/application/themes/BaseV1/Theme.php:415
+#: protected/application/themes/BaseV1/Theme.php:427
 msgid "nome da entidade Evento no plural"
 msgstr "nombre de la entidad Evento en plural"
 
-#: protected/application/themes/BaseV1/Theme.php:416
+#: protected/application/themes/BaseV1/Theme.php:428
 msgid "Ações"
 msgstr "Acciones"
 
-#: protected/application/themes/BaseV1/Theme.php:420
+#: protected/application/themes/BaseV1/Theme.php:432
 msgid "texto \"Meus Eventos\""
 msgstr "texto \"Mis Eventos\""
 
-#: protected/application/themes/BaseV1/Theme.php:422
-#: protected/application/themes/BaseV1/Theme.php:423
+#: protected/application/themes/BaseV1/Theme.php:434
+#: protected/application/themes/BaseV1/Theme.php:435
 #: protected/application/themes/BaseV1/layouts/parts/header-main-nav.php:153
 #: protected/application/themes/BaseV1/layouts/parts/panel-nav.php:8
 msgid "Meus Eventos"
 msgstr "Mis eventos"
 
-#: protected/application/themes/BaseV1/Theme.php:422
+#: protected/application/themes/BaseV1/Theme.php:434
 msgid "Minhas Ações"
 msgstr "Mis Acciones"
 
-#: protected/application/themes/BaseV1/Theme.php:426
+#: protected/application/themes/BaseV1/Theme.php:438
 msgid "texto \"Meus eventos\""
 msgstr "texto \"Mis eventos\""
 
-#: protected/application/themes/BaseV1/Theme.php:428
-#: protected/application/themes/BaseV1/Theme.php:429
+#: protected/application/themes/BaseV1/Theme.php:440
+#: protected/application/themes/BaseV1/Theme.php:441
 #: protected/application/themes/BaseV1/views/panel/events.php:6
 msgid "Meus eventos"
 msgstr "Mis eventos"
 
-#: protected/application/themes/BaseV1/Theme.php:428
+#: protected/application/themes/BaseV1/Theme.php:440
 msgid "Minhas ações"
 msgstr "Mis acctiones"
 
-#: protected/application/themes/BaseV1/Theme.php:432
+#: protected/application/themes/BaseV1/Theme.php:444
 msgid "texto \"evento encontrado\""
 msgstr "texto \"evento encontrado\""
 
-#: protected/application/themes/BaseV1/Theme.php:434
-#: protected/application/themes/BaseV1/Theme.php:435
+#: protected/application/themes/BaseV1/Theme.php:446
+#: protected/application/themes/BaseV1/Theme.php:447
 msgid "evento encontrado"
 msgstr "evento encontrado"
 
-#: protected/application/themes/BaseV1/Theme.php:434
+#: protected/application/themes/BaseV1/Theme.php:446
 msgid "ação encontrada"
 msgstr "acción encontrada"
 
-#: protected/application/themes/BaseV1/Theme.php:438
+#: protected/application/themes/BaseV1/Theme.php:450
 msgid "texto \"eventos encontrados\""
 msgstr "texto \"eventos encontrados\""
 
-#: protected/application/themes/BaseV1/Theme.php:440
-#: protected/application/themes/BaseV1/Theme.php:441
+#: protected/application/themes/BaseV1/Theme.php:452
+#: protected/application/themes/BaseV1/Theme.php:453
 msgid "eventos encontrados"
 msgstr "evento encontrados"
 
-#: protected/application/themes/BaseV1/Theme.php:440
+#: protected/application/themes/BaseV1/Theme.php:452
 msgid "ações encontradas"
 msgstr "acciones encontradas"
 
-#: protected/application/themes/BaseV1/Theme.php:449
+#: protected/application/themes/BaseV1/Theme.php:461
 msgid "texto \"Descrição do Subsite\""
 msgstr "texto \"Descripción del Subsitio\""
 
-#: protected/application/themes/BaseV1/Theme.php:451
-#: protected/application/themes/BaseV1/Theme.php:453
+#: protected/application/themes/BaseV1/Theme.php:463
+#: protected/application/themes/BaseV1/Theme.php:465
 msgid "Descrição do Subsite"
 msgstr "Descripción del Subsitio"
 
-#: protected/application/themes/BaseV1/Theme.php:451
+#: protected/application/themes/BaseV1/Theme.php:463
 msgid "Descrição da Instalação"
 msgstr "Descripción de la Instalación"
 
-#: protected/application/themes/BaseV1/Theme.php:456
+#: protected/application/themes/BaseV1/Theme.php:468
 msgid "texto \"Meus Subsites\""
 msgstr "texto \"Mis Subsitios\""
 
-#: protected/application/themes/BaseV1/Theme.php:458
-#: protected/application/themes/BaseV1/Theme.php:460
+#: protected/application/themes/BaseV1/Theme.php:470
+#: protected/application/themes/BaseV1/Theme.php:472
 msgid "Meus Subsites"
 msgstr "Mis Subsitios"
 
-#: protected/application/themes/BaseV1/Theme.php:458
+#: protected/application/themes/BaseV1/Theme.php:470
 msgid "Minhas Instalações"
 msgstr "Mis instalaciones"
 
-#: protected/application/themes/BaseV1/Theme.php:463
+#: protected/application/themes/BaseV1/Theme.php:475
 msgid "texto \"Meus subsites\""
 msgstr "texto \"Mis subsitios\""
 
-#: protected/application/themes/BaseV1/Theme.php:465
-#: protected/application/themes/BaseV1/Theme.php:467
+#: protected/application/themes/BaseV1/Theme.php:477
+#: protected/application/themes/BaseV1/Theme.php:479
 msgid "Meus subsites"
 msgstr "Mis subsitios"
 
-#: protected/application/themes/BaseV1/Theme.php:465
+#: protected/application/themes/BaseV1/Theme.php:477
 msgid "Minhas instalações"
 msgstr "Mis Instalaciones"
 
-#: protected/application/themes/BaseV1/Theme.php:470
+#: protected/application/themes/BaseV1/Theme.php:482
 msgid "texto \"Subsite\""
 msgstr "texto \"Subsitio\""
 
-#: protected/application/themes/BaseV1/Theme.php:472
+#: protected/application/themes/BaseV1/Theme.php:484
 msgid "Instalação"
 msgstr "Instalación"
 
-#: protected/application/themes/BaseV1/Theme.php:477
+#: protected/application/themes/BaseV1/Theme.php:489
 msgid "texto \"nenhum subsite cadastrado\""
 msgstr "texto \"ningún subsitio registrado\""
 
-#: protected/application/themes/BaseV1/Theme.php:479
-#: protected/application/themes/BaseV1/Theme.php:481
+#: protected/application/themes/BaseV1/Theme.php:491
+#: protected/application/themes/BaseV1/Theme.php:493
 msgid "nenhum subsite cadastrado"
 msgstr "ningún subsitio registrado"
 
-#: protected/application/themes/BaseV1/Theme.php:479
+#: protected/application/themes/BaseV1/Theme.php:491
 msgid "nenhuma instalação cadastrada"
 msgstr "ninguna instalación registrada"
 
-#: protected/application/themes/BaseV1/Theme.php:484
+#: protected/application/themes/BaseV1/Theme.php:496
 msgid "texto \"nenhum subsite\""
 msgstr "texto \"ningún subsitio\""
 
-#: protected/application/themes/BaseV1/Theme.php:486
-#: protected/application/themes/BaseV1/Theme.php:488
+#: protected/application/themes/BaseV1/Theme.php:498
+#: protected/application/themes/BaseV1/Theme.php:500
 msgid "nenhum subsite"
 msgstr "ningún subsitio"
 
-#: protected/application/themes/BaseV1/Theme.php:486
+#: protected/application/themes/BaseV1/Theme.php:498
 msgid "nenhuma instalação"
 msgstr "ninguna instalación"
 
-#: protected/application/themes/BaseV1/Theme.php:491
+#: protected/application/themes/BaseV1/Theme.php:503
 msgid "texto \"subsite cadastrado\""
 msgstr "texto \"subsitio registrado\""
 
-#: protected/application/themes/BaseV1/Theme.php:493
-#: protected/application/themes/BaseV1/Theme.php:495
+#: protected/application/themes/BaseV1/Theme.php:505
+#: protected/application/themes/BaseV1/Theme.php:507
 msgid "subsite cadastrado"
 msgstr "subsitio registrado"
 
-#: protected/application/themes/BaseV1/Theme.php:493
+#: protected/application/themes/BaseV1/Theme.php:505
 msgid "instalação cadastrada"
 msgstr "instalación registrada"
 
-#: protected/application/themes/BaseV1/Theme.php:498
+#: protected/application/themes/BaseV1/Theme.php:510
 msgid "texto \"adicionar novo subsite\""
 msgstr "texto \"agregar nuevo subsitio\""
 
-#: protected/application/themes/BaseV1/Theme.php:500
-#: protected/application/themes/BaseV1/Theme.php:502
+#: protected/application/themes/BaseV1/Theme.php:512
+#: protected/application/themes/BaseV1/Theme.php:514
 msgid "adicionar novo subsite"
 msgstr "Agregar nuevo subsitio"
 
-#: protected/application/themes/BaseV1/Theme.php:500
+#: protected/application/themes/BaseV1/Theme.php:512
 msgid "adcionar nova instalação"
 msgstr "agregar nuevao instalación"
 
-#: protected/application/themes/BaseV1/Theme.php:510
+#: protected/application/themes/BaseV1/Theme.php:522
 msgid "texto \"Selos\""
 msgstr "texto \"Sellos\""
 
-#: protected/application/themes/BaseV1/Theme.php:511
+#: protected/application/themes/BaseV1/Theme.php:523
 msgid "nome da entidade Selos no plural"
 msgstr "nombre de la entidad Sellos en plural"
 
-#: protected/application/themes/BaseV1/Theme.php:512
+#: protected/application/themes/BaseV1/Theme.php:524
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:7
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:17
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:13
 msgid "Selos Certificadores"
 msgstr "Sellos Certificadores"
 
-#: protected/application/themes/BaseV1/Theme.php:512
+#: protected/application/themes/BaseV1/Theme.php:524
 msgid "Certificações"
 msgstr "Certificaciones"
 
-#: protected/application/themes/BaseV1/Theme.php:516
+#: protected/application/themes/BaseV1/Theme.php:528
 msgid "texto \"Meus Selos\""
 msgstr "texto \"Mis Sellos\""
 
-#: protected/application/themes/BaseV1/Theme.php:518
-#: protected/application/themes/BaseV1/Theme.php:519
+#: protected/application/themes/BaseV1/Theme.php:530
+#: protected/application/themes/BaseV1/Theme.php:531
 msgid "Meus Selos"
 msgstr "Mis Sellos"
 
-#: protected/application/themes/BaseV1/Theme.php:518
+#: protected/application/themes/BaseV1/Theme.php:530
 msgid "Meus Selos Certificadores"
 msgstr "Mis Sellos Certificadores"
 
-#: protected/application/themes/BaseV1/Theme.php:518
+#: protected/application/themes/BaseV1/Theme.php:530
 msgid "Minhas Certificações"
 msgstr "Mis Certificaciones"
 
-#: protected/application/themes/BaseV1/Theme.php:522
+#: protected/application/themes/BaseV1/Theme.php:534
 msgid "texto \"Meus selos\""
 msgstr "texto \"Mis sellos\""
 
-#: protected/application/themes/BaseV1/Theme.php:524
-#: protected/application/themes/BaseV1/Theme.php:525
+#: protected/application/themes/BaseV1/Theme.php:536
+#: protected/application/themes/BaseV1/Theme.php:537
 #: protected/application/themes/BaseV1/views/panel/seals.php:6
 msgid "Meus selos"
 msgstr "Mis sellos"
 
-#: protected/application/themes/BaseV1/Theme.php:524
+#: protected/application/themes/BaseV1/Theme.php:536
 msgid "Meus selos certificadores"
 msgstr "Mis sellos certificadores"
 
-#: protected/application/themes/BaseV1/Theme.php:524
+#: protected/application/themes/BaseV1/Theme.php:536
 msgid "Minhas certificações"
 msgstr "Mis certificaciones"
 
-#: protected/application/themes/BaseV1/Theme.php:529
+#: protected/application/themes/BaseV1/Theme.php:541
 msgid "texto \"Usuários e papéis\""
 msgstr "texto \"Usuarios y roles\""
 
-#: protected/application/themes/BaseV1/Theme.php:533
+#: protected/application/themes/BaseV1/Theme.php:545
 msgid "Usuários e papéis"
 msgstr "Usuarios y roles"
 
-#: protected/application/themes/BaseV1/Theme.php:539
-#: protected/application/themes/BaseV1/Theme.php:543
-#: protected/application/themes/BaseV1/Theme.php:1627
+#: protected/application/themes/BaseV1/Theme.php:551
+#: protected/application/themes/BaseV1/Theme.php:555
+#: protected/application/themes/BaseV1/Theme.php:1645
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:27
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:47
 msgid "Área de Atuação"
 msgstr "Área de actuación"
 
-#: protected/application/themes/BaseV1/Theme.php:540
+#: protected/application/themes/BaseV1/Theme.php:552
 msgid "Colocar qual é a área de atuação"
 msgstr "Colocar cuál es el área de actuación"
 
-#: protected/application/themes/BaseV1/Theme.php:546
+#: protected/application/themes/BaseV1/Theme.php:558
 msgid "Selecione pelos menos uma área"
 msgstr "Seleccione por lo menos un área"
 
-#: protected/application/themes/BaseV1/Theme.php:547
+#: protected/application/themes/BaseV1/Theme.php:559
 msgid "Precisa ter pelo menos uma área selecionada"
 msgstr "Necesita tener por lo menos un área seleccionada"
 
-#: protected/application/themes/BaseV1/Theme.php:550
+#: protected/application/themes/BaseV1/Theme.php:562
 msgid "Selecione pelo menos uma área"
 msgstr "Seleccione por lo menos un área"
 
-#: protected/application/themes/BaseV1/Theme.php:553
-#: protected/application/themes/BaseV1/Theme.php:557
-#: protected/application/themes/BaseV1/Theme.php:1628
+#: protected/application/themes/BaseV1/Theme.php:565
+#: protected/application/themes/BaseV1/Theme.php:569
+#: protected/application/themes/BaseV1/Theme.php:1646
 msgid "Selecione as áreas"
 msgstr "Seleccione las áreas"
 
-#: protected/application/themes/BaseV1/Theme.php:554
+#: protected/application/themes/BaseV1/Theme.php:566
 msgid "Selecionar quantas áreas for preciso"
 msgstr "Seleccionar el número de áreas que necesita"
 
-#: protected/application/themes/BaseV1/Theme.php:562
+#: protected/application/themes/BaseV1/Theme.php:574
 msgid "Informar qual é a linguagem"
 msgstr "Informar cuál es el tipo de evento"
 
-#: protected/application/themes/BaseV1/Theme.php:568
+#: protected/application/themes/BaseV1/Theme.php:580
 msgid "Selecione pelos menos uma linguagem"
 msgstr "Seleccione por lo menos un tipo de evento"
 
-#: protected/application/themes/BaseV1/Theme.php:569
+#: protected/application/themes/BaseV1/Theme.php:581
 msgid "Precisa ter pelo menos uma linguagem selecionada"
 msgstr "Necesita tener por lo menos un tipo de evento seleccionado"
 
-#: protected/application/themes/BaseV1/Theme.php:572
+#: protected/application/themes/BaseV1/Theme.php:584
 #: protected/application/themes/BaseV1/views/event/create.php:411
 #: protected/application/themes/BaseV1/views/event/edit.php:411
 #: protected/application/themes/BaseV1/views/event/single.php:411
 msgid "Selecione pelo menos uma linguagem"
 msgstr "Seleccione por lo menos un tipo de evento"
 
-#: protected/application/themes/BaseV1/Theme.php:575
-#: protected/application/themes/BaseV1/Theme.php:579
-#: protected/application/themes/BaseV1/Theme.php:1674
+#: protected/application/themes/BaseV1/Theme.php:587
+#: protected/application/themes/BaseV1/Theme.php:591
+#: protected/application/themes/BaseV1/Theme.php:1692
 msgid "Selecione as linguagens"
 msgstr "Selecciones los tipos de eventos"
 
-#: protected/application/themes/BaseV1/Theme.php:576
+#: protected/application/themes/BaseV1/Theme.php:588
 msgid "Selecionar quantas linguagens for preciso"
 msgstr "Seleccionar cuántos tipos de eventos se necesitan"
 
-#: protected/application/themes/BaseV1/Theme.php:583
-#: protected/application/themes/BaseV1/Theme.php:587
+#: protected/application/themes/BaseV1/Theme.php:595
+#: protected/application/themes/BaseV1/Theme.php:599
 msgid "Permissão negada"
 msgstr "Permiso denegado"
 
-#: protected/application/themes/BaseV1/Theme.php:590
+#: protected/application/themes/BaseV1/Theme.php:602
 msgid "Você não tem permissão para executar esta ação"
 msgstr "Usted no tiene permiso para ejecutar esta acción"
 
-#: protected/application/themes/BaseV1/Theme.php:594
+#: protected/application/themes/BaseV1/Theme.php:606
 msgid "Você não tem permissão para executar esta ação."
 msgstr "Usted no tiene permiso para ejecutar esta acción."
 
-#: protected/application/themes/BaseV1/Theme.php:597
+#: protected/application/themes/BaseV1/Theme.php:609
 msgid "Página não encontrada"
 msgstr "Página no encontrada"
 
-#: protected/application/themes/BaseV1/Theme.php:601
+#: protected/application/themes/BaseV1/Theme.php:613
 msgid "Página não encontrada."
 msgstr "Página no encontrada."
 
-#: protected/application/themes/BaseV1/Theme.php:604
-#: protected/application/themes/BaseV1/Theme.php:605
+#: protected/application/themes/BaseV1/Theme.php:616
+#: protected/application/themes/BaseV1/Theme.php:617
 msgid "Messagem Error 404"
 msgstr "Mensaje de Error 404"
 
-#: protected/application/themes/BaseV1/Theme.php:611
-#: protected/application/themes/BaseV1/Theme.php:615
+#: protected/application/themes/BaseV1/Theme.php:623
+#: protected/application/themes/BaseV1/Theme.php:627
 msgid "Um erro inesperado aconteceu"
 msgstr "Ocurrió un error inesperado"
 
-#: protected/application/themes/BaseV1/Theme.php:618
+#: protected/application/themes/BaseV1/Theme.php:630
 msgid "Error 500"
 msgstr "Error 500"
 
-#: protected/application/themes/BaseV1/Theme.php:619
+#: protected/application/themes/BaseV1/Theme.php:631
 msgid "Mensagem Error 500"
 msgstr "Mensaje Error 500"
 
-#: protected/application/themes/BaseV1/Theme.php:629
-#: protected/application/themes/BaseV1/Theme.php:633
+#: protected/application/themes/BaseV1/Theme.php:641
+#: protected/application/themes/BaseV1/Theme.php:645
 msgid "Super Administrador"
 msgstr "Súper Administrador"
 
-#: protected/application/themes/BaseV1/Theme.php:636
-#: protected/application/themes/BaseV1/Theme.php:640
+#: protected/application/themes/BaseV1/Theme.php:648
+#: protected/application/themes/BaseV1/Theme.php:652
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:9
 msgid "Super Administradores"
 msgstr "Súper Administradores"
 
-#: protected/application/themes/BaseV1/Theme.php:643
-#: protected/application/themes/BaseV1/Theme.php:647
+#: protected/application/themes/BaseV1/Theme.php:655
+#: protected/application/themes/BaseV1/Theme.php:659
 msgid "Administrador"
 msgstr "Administrador"
 
-#: protected/application/themes/BaseV1/Theme.php:650
-#: protected/application/themes/BaseV1/Theme.php:654
+#: protected/application/themes/BaseV1/Theme.php:662
+#: protected/application/themes/BaseV1/Theme.php:666
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:36
 msgid "Administradores"
 msgstr "Administradores"
 
-#: protected/application/themes/BaseV1/Theme.php:657
-#: protected/application/themes/BaseV1/Theme.php:661
+#: protected/application/themes/BaseV1/Theme.php:669
+#: protected/application/themes/BaseV1/Theme.php:673
 msgid "Subsite Super Administrador"
 msgstr "Subsitio Súper Administrador"
 
-#: protected/application/themes/BaseV1/Theme.php:664
-#: protected/application/themes/BaseV1/Theme.php:668
+#: protected/application/themes/BaseV1/Theme.php:676
+#: protected/application/themes/BaseV1/Theme.php:680
 msgid "Subsite Super Administradores"
 msgstr "Subsitio Súper Administradores"
 
-#: protected/application/themes/BaseV1/Theme.php:671
-#: protected/application/themes/BaseV1/Theme.php:675
+#: protected/application/themes/BaseV1/Theme.php:683
+#: protected/application/themes/BaseV1/Theme.php:687
 msgid "Subsite Administrador"
 msgstr "Subsitio Administrador"
 
-#: protected/application/themes/BaseV1/Theme.php:678
-#: protected/application/themes/BaseV1/Theme.php:682
+#: protected/application/themes/BaseV1/Theme.php:690
+#: protected/application/themes/BaseV1/Theme.php:694
 msgid "Subsite Administradores"
 msgstr "Subsitio Administradores"
 
-#: protected/application/themes/BaseV1/Theme.php:1194
+#: protected/application/themes/BaseV1/Theme.php:1210
 msgid "Anterior"
 msgstr "Anterior"
 
-#: protected/application/themes/BaseV1/Theme.php:1195
+#: protected/application/themes/BaseV1/Theme.php:1211
 msgid "Próxima"
 msgstr "Próxima"
 
-#: protected/application/themes/BaseV1/Theme.php:1197
+#: protected/application/themes/BaseV1/Theme.php:1213
 msgid "%curr% de %total%"
-msgstr ""
+msgstr "%curr% de %total%"
 
-#: protected/application/themes/BaseV1/Theme.php:1201
+#: protected/application/themes/BaseV1/Theme.php:1217
 msgid "agente"
 msgstr "agente"
 
-#: protected/application/themes/BaseV1/Theme.php:1204
+#: protected/application/themes/BaseV1/Theme.php:1220
 msgid "projeto"
 msgstr "proyecto"
 
-#: protected/application/themes/BaseV1/Theme.php:1205
+#: protected/application/themes/BaseV1/Theme.php:1221
 msgid "selo"
 msgstr "sello"
 
-#: protected/application/themes/BaseV1/Theme.php:1206
+#: protected/application/themes/BaseV1/Theme.php:1222
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:10
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:15
-#: protected/application/themes/BaseV1/views/event/create.php:555
-#: protected/application/themes/BaseV1/views/event/edit.php:555
-#: protected/application/themes/BaseV1/views/event/single.php:555
+#: protected/application/themes/BaseV1/views/event/create.php:556
+#: protected/application/themes/BaseV1/views/event/edit.php:556
+#: protected/application/themes/BaseV1/views/event/single.php:556
 msgid "Enviar"
 msgstr "Enviar"
 
-#: protected/application/themes/BaseV1/Theme.php:1207
-#: protected/application/themes/BaseV1/Theme.php:1287
+#: protected/application/themes/BaseV1/Theme.php:1223
+#: protected/application/themes/BaseV1/Theme.php:1305
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:41
 #: protected/application/themes/BaseV1/layouts/parts/related-agents.php:9
 #: protected/application/themes/BaseV1/layouts/parts/related-agents.php:46
@@ -4277,101 +4404,101 @@ msgstr "Enviar"
 msgid "Cancelar"
 msgstr "Cancelar"
 
-#: protected/application/themes/BaseV1/Theme.php:1220
+#: protected/application/themes/BaseV1/Theme.php:1238
 msgid "There was an error"
 msgstr "Ocurrió un error"
 
-#: protected/application/themes/BaseV1/Theme.php:1250
+#: protected/application/themes/BaseV1/Theme.php:1268
 msgid "Cancelar Alteração (Esc)"
 msgstr "Cancelar Edición (Esc)"
 
-#: protected/application/themes/BaseV1/Theme.php:1251
+#: protected/application/themes/BaseV1/Theme.php:1269
 msgid "Confirmar Alteração (Enter)"
 msgstr "Confirmar Edición (Enter)"
 
-#: protected/application/themes/BaseV1/Theme.php:1252
+#: protected/application/themes/BaseV1/Theme.php:1270
 msgid "Confirmar Alteração (Ctrl+Enter)"
 msgstr "Confirmar Edición (Ctrl+Enter)"
 
-#: protected/application/themes/BaseV1/Theme.php:1253
+#: protected/application/themes/BaseV1/Theme.php:1271
 msgid "Há alterações não salvas nesta página."
 msgstr "Hay cambios no guardados en esta página."
 
-#: protected/application/themes/BaseV1/Theme.php:1254
+#: protected/application/themes/BaseV1/Theme.php:1272
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:6
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:15
 msgid "Publicação livre"
 msgstr "Publicación libre"
 
-#: protected/application/themes/BaseV1/Theme.php:1255
+#: protected/application/themes/BaseV1/Theme.php:1273
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:9
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:18
 msgid "Publicação restrita"
 msgstr "Publicación restringida"
 
-#: protected/application/themes/BaseV1/Theme.php:1256
+#: protected/application/themes/BaseV1/Theme.php:1274
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:7
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:16
 msgid "Qualquer pessoa pode criar eventos."
 msgstr "Cualquier persona puede crear eventos."
 
-#: protected/application/themes/BaseV1/Theme.php:1257
+#: protected/application/themes/BaseV1/Theme.php:1275
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:10
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:19
 msgid "Requer autorização para criar eventos."
 msgstr "Requiere autorización para crear eventos."
 
-#: protected/application/themes/BaseV1/Theme.php:1258
+#: protected/application/themes/BaseV1/Theme.php:1276
 #, php-format
 msgid "Você tem certeza que deseja publicar este %s?"
 msgstr "¿Está seguro (a) que desea publicar este %s?"
 
-#: protected/application/themes/BaseV1/Theme.php:1259
+#: protected/application/themes/BaseV1/Theme.php:1277
 #, php-format
 msgid ""
 "Você tem certeza que deseja publicar este %s? Isto não poderá ser desfeito."
 msgstr ""
 "¿Está seguro (a) que desea publicar este %s? Esto no se podrá deshacer."
 
-#: protected/application/themes/BaseV1/Theme.php:1260
+#: protected/application/themes/BaseV1/Theme.php:1278
 #, php-format
 msgid "Sua requisição para fazer deste %s filho de %s foi enviada."
 msgstr "Su solicitud para hacer %s hijo de %s fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1261
+#: protected/application/themes/BaseV1/Theme.php:1279
 #, php-format
 msgid "Sua requisição para associar este evento ao projeto %s foi enviada."
 msgstr "Su solicitud para asociar este evento al proyecto %s fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1262
-#: protected/application/themes/BaseV1/Theme.php:1422
+#: protected/application/themes/BaseV1/Theme.php:1280
+#: protected/application/themes/BaseV1/Theme.php:1440
 #: protected/application/themes/BaseV1/views/event/create.php:23
 #: protected/application/themes/BaseV1/views/event/edit.php:23
 #: protected/application/themes/BaseV1/views/event/single.php:23
 msgid "Corrija os erros indicados abaixo."
 msgstr "Corrija los errores indicados abajo."
 
-#: protected/application/themes/BaseV1/Theme.php:1263
+#: protected/application/themes/BaseV1/Theme.php:1281
 msgid "Edições salvas."
 msgstr "Cambios guardados."
 
-#: protected/application/themes/BaseV1/Theme.php:1264
+#: protected/application/themes/BaseV1/Theme.php:1282
 msgid "Um erro inesperado aconteceu."
 msgstr "Ocurrió un error inesperado."
 
-#: protected/application/themes/BaseV1/Theme.php:1265
+#: protected/application/themes/BaseV1/Theme.php:1283
 msgid "Insira um título para seu vídeo."
 msgstr "Ingrese un título para su video."
 
-#: protected/application/themes/BaseV1/Theme.php:1266
+#: protected/application/themes/BaseV1/Theme.php:1284
 msgid "Insira uma url de um vídeo do YouTube ou do Vimeo."
 msgstr "Agregue una url de un video de YouTube o Vimeo."
 
-#: protected/application/themes/BaseV1/Theme.php:1267
+#: protected/application/themes/BaseV1/Theme.php:1285
 msgid "Insira um título para seu link."
 msgstr "Agregue un título para el link."
 
-#: protected/application/themes/BaseV1/Theme.php:1268
+#: protected/application/themes/BaseV1/Theme.php:1286
 msgid ""
 "A url do link é inválida, insira uma url completa como http://www.google."
 "com/."
@@ -4379,31 +4506,31 @@ msgstr ""
 "La url del link no es válida, agregue una url completa como http://www."
 "google.com/."
 
-#: protected/application/themes/BaseV1/Theme.php:1279
+#: protected/application/themes/BaseV1/Theme.php:1297
 msgid "Eventos encontrados no espaço"
 msgstr "Eventos encontrados en el espacio"
 
-#: protected/application/themes/BaseV1/Theme.php:1284
+#: protected/application/themes/BaseV1/Theme.php:1302
 msgid "Clique e arraste para desenhar o círculo"
 msgstr "Haga clic y arrastre para diseñar el círculo"
 
-#: protected/application/themes/BaseV1/Theme.php:1285
+#: protected/application/themes/BaseV1/Theme.php:1303
 msgid "Solte o mouse para finalizar o desenho"
 msgstr "Suelte el mouse para finalizar el diseño"
 
-#: protected/application/themes/BaseV1/Theme.php:1286
+#: protected/application/themes/BaseV1/Theme.php:1304
 msgid "Cancelar desenho"
 msgstr "Cancelar diseño"
 
-#: protected/application/themes/BaseV1/Theme.php:1288
+#: protected/application/themes/BaseV1/Theme.php:1306
 msgid "Desenhar um círculo"
 msgstr "Diseñar un círculo"
 
-#: protected/application/themes/BaseV1/Theme.php:1289
+#: protected/application/themes/BaseV1/Theme.php:1307
 msgid "Raio"
 msgstr "Radio"
 
-#: protected/application/themes/BaseV1/Theme.php:1290
+#: protected/application/themes/BaseV1/Theme.php:1308
 msgid ""
 "Segundo seu navegador, você está aproximadamente neste ponto com margem de "
 "erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de "
@@ -4413,28 +4540,28 @@ msgstr ""
 "error de {{errorMargin}} metros. Buscando resultados dentro de un radio de "
 "{{radius}}KM de este punto."
 
-#: protected/application/themes/BaseV1/Theme.php:1296
-#: protected/application/themes/BaseV1/Theme.php:1637
+#: protected/application/themes/BaseV1/Theme.php:1314
+#: protected/application/themes/BaseV1/Theme.php:1655
 msgid "Todos"
 msgstr "Todos"
 
-#: protected/application/themes/BaseV1/Theme.php:1372
+#: protected/application/themes/BaseV1/Theme.php:1390
 msgid ""
 "Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
 "sucesso."
 msgstr ""
-"Su solicitud para enviar un contacto por Mapas Culturales fue enviada con "
+"Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
 "éxito."
 
-#: protected/application/themes/BaseV1/Theme.php:1382
+#: protected/application/themes/BaseV1/Theme.php:1400
 msgid "O proprietário da entidade foi modificado"
 msgstr "El propietario de la entidad fue modificado"
 
-#: protected/application/themes/BaseV1/Theme.php:1383
+#: protected/application/themes/BaseV1/Theme.php:1401
 msgid "O proprietário da entidade não pode ser modificado"
 msgstr "El propietario de la entidad no puede ser modificado"
 
-#: protected/application/themes/BaseV1/Theme.php:1384
+#: protected/application/themes/BaseV1/Theme.php:1402
 msgid ""
 "Sua requisição para mudança de propriedade deste {{type}} para o agente "
 "{{recipient}} foi enviada."
@@ -4442,68 +4569,68 @@ msgstr ""
 "Su solicitud para el cambio de propiedad de este  {{type}} para el agente "
 "{{recipient}} fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1389
+#: protected/application/themes/BaseV1/Theme.php:1407
 msgid "Selecione o tipo de campo"
 msgstr "Seleccione el tipo de campo"
 
-#: protected/application/themes/BaseV1/Theme.php:1390
+#: protected/application/themes/BaseV1/Theme.php:1408
 msgid "Campo criado."
 msgstr "Campo creado."
 
-#: protected/application/themes/BaseV1/Theme.php:1391
+#: protected/application/themes/BaseV1/Theme.php:1409
 msgid "Campo removido."
 msgstr "Campo eliminado."
 
-#: protected/application/themes/BaseV1/Theme.php:1392
+#: protected/application/themes/BaseV1/Theme.php:1410
 msgid "Alterações Salvas."
 msgstr "Cambios guardados."
 
-#: protected/application/themes/BaseV1/Theme.php:1393
+#: protected/application/themes/BaseV1/Theme.php:1411
 msgid "Anexo criado."
 msgstr "Adjunto creado."
 
-#: protected/application/themes/BaseV1/Theme.php:1394
+#: protected/application/themes/BaseV1/Theme.php:1412
 msgid "Anexo removido."
 msgstr "Adjunto eliminado."
 
-#: protected/application/themes/BaseV1/Theme.php:1395
-#: protected/application/themes/BaseV1/Theme.php:1404
+#: protected/application/themes/BaseV1/Theme.php:1413
+#: protected/application/themes/BaseV1/Theme.php:1422
 msgid "Deseja remover este anexo?"
 msgstr "Desea eliminar este adjunto?"
 
-#: protected/application/themes/BaseV1/Theme.php:1396
+#: protected/application/themes/BaseV1/Theme.php:1414
 msgid "Deseja remover este modelo?"
 msgstr "Desea eliminar este modelo?"
 
-#: protected/application/themes/BaseV1/Theme.php:1397
+#: protected/application/themes/BaseV1/Theme.php:1415
 msgid "Modelo removido."
 msgstr "Modelo eliminado."
 
-#: protected/application/themes/BaseV1/Theme.php:1398
+#: protected/application/themes/BaseV1/Theme.php:1416
 msgid "publicado"
 msgstr "publicado"
 
-#: protected/application/themes/BaseV1/Theme.php:1399
+#: protected/application/themes/BaseV1/Theme.php:1417
 msgid "rascunho"
 msgstr "borrador"
 
-#: protected/application/themes/BaseV1/Theme.php:1400
+#: protected/application/themes/BaseV1/Theme.php:1418
 msgid "Publicando..."
 msgstr "Publicando..."
 
-#: protected/application/themes/BaseV1/Theme.php:1401
+#: protected/application/themes/BaseV1/Theme.php:1419
 msgid "Eventos publicados."
 msgstr "Eventos publicados."
 
-#: protected/application/themes/BaseV1/Theme.php:1402
+#: protected/application/themes/BaseV1/Theme.php:1420
 msgid "Tornando rascunho..."
 msgstr "Convirtiendo en borrador..."
 
-#: protected/application/themes/BaseV1/Theme.php:1403
+#: protected/application/themes/BaseV1/Theme.php:1421
 msgid "Eventos transformados em rascunho."
 msgstr "Eventos transformados en borradores."
 
-#: protected/application/themes/BaseV1/Theme.php:1406
+#: protected/application/themes/BaseV1/Theme.php:1424
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:32
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:44
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:83
@@ -4511,31 +4638,31 @@ msgstr "Eventos transformados en borradores."
 msgid "Todas"
 msgstr "Todas"
 
-#: protected/application/themes/BaseV1/Theme.php:1407
+#: protected/application/themes/BaseV1/Theme.php:1425
 msgid "Pendente"
 msgstr "Pendiente"
 
-#: protected/application/themes/BaseV1/Theme.php:1408
+#: protected/application/themes/BaseV1/Theme.php:1426
 msgid "Inválida"
 msgstr "No válida"
 
-#: protected/application/themes/BaseV1/Theme.php:1409
+#: protected/application/themes/BaseV1/Theme.php:1427
 msgid "Não selecionada"
 msgstr "No seleccionada"
 
-#: protected/application/themes/BaseV1/Theme.php:1410
+#: protected/application/themes/BaseV1/Theme.php:1428
 msgid "Suplente"
 msgstr "Suplente"
 
-#: protected/application/themes/BaseV1/Theme.php:1411
+#: protected/application/themes/BaseV1/Theme.php:1429
 msgid "Selecionada"
 msgstr "Seleccionada"
 
-#: protected/application/themes/BaseV1/Theme.php:1412
+#: protected/application/themes/BaseV1/Theme.php:1430
 msgid "Rascunho"
 msgstr "Borrador"
 
-#: protected/application/themes/BaseV1/Theme.php:1415
+#: protected/application/themes/BaseV1/Theme.php:1433
 msgid ""
 "Você tem certeza que deseja reabrir este formulário para edição? Ao fazer "
 "isso, ele sairá dessa lista."
@@ -4543,7 +4670,7 @@ msgstr ""
 "Usted está seguro que desea reabrir este formulario para edición? Al hacer "
 "esto, él saldrá de esta lista."
 
-#: protected/application/themes/BaseV1/Theme.php:1416
+#: protected/application/themes/BaseV1/Theme.php:1434
 msgid ""
 "Você não definiu um número de vagas. Para selecionar essa inscrição, "
 "configure um número de vagas na aba Inscrições, em Agentes."
@@ -4551,84 +4678,84 @@ msgstr ""
 "No ha establecido un número de vacantes. Para seleccionar esta inscripción, "
 "establecer un número de vacantes en la pestaña de registro de agentes."
 
-#: protected/application/themes/BaseV1/Theme.php:1417
+#: protected/application/themes/BaseV1/Theme.php:1435
 msgid "Você atingiu o limite máximo de 1 inscrição aprovada"
 msgstr "Usted ha alcanzado el límite máximo de 1 inscripción aprobada"
 
-#: protected/application/themes/BaseV1/Theme.php:1418
+#: protected/application/themes/BaseV1/Theme.php:1436
 msgid "Você atingiu o limite máximo de {{num}} inscrições aprovadas"
 msgstr "Usted alcanzó el límite máximo de  {{num}} inscripciones aprobadas"
 
-#: protected/application/themes/BaseV1/Theme.php:1419
+#: protected/application/themes/BaseV1/Theme.php:1437
 msgid "O limite de inscrições para o agente informado se esgotou."
 msgstr "El límite de inscripciones para el agente informado se ha agotado"
 
-#: protected/application/themes/BaseV1/Theme.php:1420
+#: protected/application/themes/BaseV1/Theme.php:1438
 msgid "O número de vagas da inscrição no projeto se esgotou."
 msgstr "El número de vacantes de la inscripción al proyecto se ha agotado"
 
-#: protected/application/themes/BaseV1/Theme.php:1421
+#: protected/application/themes/BaseV1/Theme.php:1439
 msgid ""
 "Para se inscrever neste projeto você deve selecionar um agente responsável."
 msgstr ""
 "Para inscribirse en este proyecto debe seleccionar un agente responsable."
 
-#: protected/application/themes/BaseV1/Theme.php:1423
+#: protected/application/themes/BaseV1/Theme.php:1441
 msgid "Inscrição enviada. Aguarde tela de sumário."
 msgstr "Inscripción enviada. Aguarde la pantalla de resumen."
 
-#: protected/application/themes/BaseV1/Theme.php:1431
+#: protected/application/themes/BaseV1/Theme.php:1449
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
 msgstr "Su solicitud para relacionar el agente {{agent}} fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1436
+#: protected/application/themes/BaseV1/Theme.php:1454
 msgid "Sua requisição para relacionar o selo {{seal}} foi enviada."
 msgstr "Su solicitud para relacionar el sello  {{seal}} fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1479
+#: protected/application/themes/BaseV1/Theme.php:1497
 #: protected/application/themes/BaseV1/views/event/create.php:496
 #: protected/application/themes/BaseV1/views/event/edit.php:496
 #: protected/application/themes/BaseV1/views/event/single.php:496
 msgid "uma vez"
 msgstr "una vez"
 
-#: protected/application/themes/BaseV1/Theme.php:1480
+#: protected/application/themes/BaseV1/Theme.php:1498
 #: protected/application/themes/BaseV1/views/event/create.php:497
 #: protected/application/themes/BaseV1/views/event/edit.php:497
 #: protected/application/themes/BaseV1/views/event/single.php:497
 msgid "todos os dias"
-msgstr "todos sos días"
+msgstr "todos los días"
 
-#: protected/application/themes/BaseV1/Theme.php:1481
+#: protected/application/themes/BaseV1/Theme.php:1499
 #: protected/application/themes/BaseV1/views/event/create.php:498
 #: protected/application/themes/BaseV1/views/event/edit.php:498
 #: protected/application/themes/BaseV1/views/event/single.php:498
 msgid "semanal"
 msgstr "semanal"
 
-#: protected/application/themes/BaseV1/Theme.php:1482
+#: protected/application/themes/BaseV1/Theme.php:1500
 msgid "mensal"
 msgstr "mensual"
 
-#: protected/application/themes/BaseV1/Theme.php:1594
-#: protected/application/themes/BaseV1/Theme.php:1636
+#: protected/application/themes/BaseV1/Theme.php:1612
+#: protected/application/themes/BaseV1/Theme.php:1654
 msgid "Tipos"
 msgstr "Tipos"
 
-#: protected/application/themes/BaseV1/Theme.php:1595
-#: protected/application/themes/BaseV1/Theme.php:1706
+#: protected/application/themes/BaseV1/Theme.php:1613
+#: protected/application/themes/BaseV1/Theme.php:1724
 msgid "Selecione os tipos"
 msgstr "Seleccione los tipos"
 
-#: protected/application/themes/BaseV1/Theme.php:1604
+#: protected/application/themes/BaseV1/Theme.php:1622
 msgid "Exibir somente resultados com Acessibilidade"
 msgstr "Mostrar solamente resultados con Accesibilidad"
 
-#: protected/application/themes/BaseV1/Theme.php:1684
+#: protected/application/themes/BaseV1/Theme.php:1702
 msgid "Selecione a classificação"
 msgstr "Seleccione la clasificación"
 
-#: protected/application/themes/BaseV1/Theme.php:1714
+#: protected/application/themes/BaseV1/Theme.php:1732
 msgid "Inscrições Abertas"
 msgstr "Inscripciones abiertas"
 
@@ -4788,7 +4915,7 @@ msgstr "Agregar una imagen a la Galería"
 
 #: protected/application/themes/BaseV1/layouts/parts/header-about-nav.php:4
 msgid "Sobre os Mapas Culturais"
-msgstr "Sobre Mapas Culturales"
+msgstr "Sobre Cultura en Línea"
 
 #: protected/application/themes/BaseV1/layouts/parts/header-about-nav.php:5
 #: protected/application/themes/Subsite/layouts/parts/header-about-nav.php:13
@@ -4986,6 +5113,30 @@ msgstr " por "
 msgid "Adicionar "
 msgstr "Agregar "
 
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:14
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:46
+msgid "Excluir este link?"
+msgstr "Eliminar este link?"
+
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:14
+#: protected/application/themes/BaseV1/layouts/parts/link-list.php:47
+#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:28
+#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:33
+#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:7
+#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:11
+#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:21
+#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:26
+#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:35
+#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:40
+#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:17
+#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:22
+#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:30
+#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:35
+#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:22
+#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:27
+msgid "excluir"
+msgstr "borrar"
+
 #: protected/application/themes/BaseV1/layouts/parts/link-list.php:21
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:350
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:329
@@ -5012,28 +5163,6 @@ msgstr "Haga clic para agregar archivo links"
 msgid "editar"
 msgstr "editar"
 
-#: protected/application/themes/BaseV1/layouts/parts/link-list.php:46
-msgid "Excluir este link?"
-msgstr "Eliminar este link?"
-
-#: protected/application/themes/BaseV1/layouts/parts/link-list.php:47
-#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:28
-#: protected/application/themes/BaseV1/layouts/parts/panel-agent.php:33
-#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:7
-#: protected/application/themes/BaseV1/layouts/parts/panel-app.php:11
-#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:21
-#: protected/application/themes/BaseV1/layouts/parts/panel-event.php:26
-#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:35
-#: protected/application/themes/BaseV1/layouts/parts/panel-project.php:40
-#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:17
-#: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:22
-#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:30
-#: protected/application/themes/BaseV1/layouts/parts/panel-space.php:35
-#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:22
-#: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:27
-msgid "excluir"
-msgstr "borrar"
-
 #: protected/application/themes/BaseV1/layouts/parts/link-list.php:54
 msgid "Editar Link"
 msgstr "Editar Link"
@@ -5059,7 +5188,7 @@ msgstr "Dirección (con http://)"
 #: protected/application/themes/BaseV1/views/generic/list.php:18
 #: protected/application/themes/BaseV1/views/seal/create.php:96
 #: protected/application/themes/BaseV1/views/seal/edit.php:96
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:74
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:109
 #: protected/application/themes/BaseV1/views/seal/single.php:96
 msgid "Descrição"
 msgstr "Descripción"
@@ -5085,11 +5214,11 @@ msgstr "Pasar propiedad"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:37
 msgid "Ceder propriedade"
-msgstr "Ceder propriedad"
+msgstr "Ceder propiedad"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:39
 msgid "Reivindicar propriedade"
-msgstr "Reivindicar propriedad"
+msgstr "Reivindicar propiedad"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:41
 msgid "Selecione o agente para o qual você deseja passar a propriedade deste"
@@ -5403,6 +5532,21 @@ msgstr "Sellos Disponibles"
 msgid "Excluir selo"
 msgstr "Borrar sello"
 
+#: protected/application/themes/BaseV1/layouts/parts/related-seals.php:45
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:66
+msgid "Solicitar renovação"
+msgstr "Solicitar renovación"
+
+#: protected/application/themes/BaseV1/layouts/parts/related-seals.php:48
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:70
+msgid "Renovação Solicitada"
+msgstr "Renovación Solicitada"
+
+#: protected/application/themes/BaseV1/layouts/parts/related-seals.php:53
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:75
+msgid "Renovar selo"
+msgstr "Renovar sello"
+
 #: protected/application/themes/BaseV1/layouts/parts/search/advanced-filters.php:1
 msgid "Exibir opções avançadas"
 msgstr "Mostrar opciones avanzadas"
@@ -5439,6 +5583,7 @@ msgstr "Agregar"
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:20
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:47
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:76
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:105
 #: protected/application/themes/BaseV1/layouts/parts/video-gallery.php:46
 #: protected/application/themes/BaseV1/views/event/create.php:71
 #: protected/application/themes/BaseV1/views/event/edit.php:71
@@ -5455,8 +5600,18 @@ msgid "Sair do modo de edição"
 msgstr "Salir del modo edición"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
+#, php-format
+msgid "Salvar este %s como rascunho."
+msgstr "Guardar este %s como borrador."
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:8
 msgid "Salvar rascunho"
 msgstr "Guardar borrador"
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
+#, php-format
+msgid "Salvar e publicar este %s."
+msgstr "Guardar y publicar este %s."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:9
 msgid "Publicar"
@@ -5494,6 +5649,15 @@ msgstr "Recuperar"
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:13
 msgid "Excluir Definitivamente"
 msgstr "Eliminar Definitivamente"
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:17
+#, php-format
+msgid ""
+"Você possui permissão para editar este %s. Use os botões à direita para "
+"editar ou excluir."
+msgstr ""
+"Usted posee permiso para editar este %s. Use los botones a la derecha para "
+"editar o eliminar."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/entity-status.php:10
 #, php-format
@@ -5566,7 +5730,7 @@ msgstr "Seleccione un tipo"
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:66
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:77
 #: protected/application/themes/BaseV1/layouts/parts/singles/name.php:8
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:44
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:45
 msgid "Nome de exibição"
 msgstr "Nombre para mostrar"
 
@@ -5579,13 +5743,13 @@ msgstr "Nombre para mostrar"
 #: protected/application/themes/BaseV1/views/agent/single.php:76
 #: protected/application/themes/BaseV1/views/seal/create.php:64
 #: protected/application/themes/BaseV1/views/seal/edit.php:64
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:68
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:103
 #: protected/application/themes/BaseV1/views/seal/single.php:64
 #: protected/application/themes/BaseV1/views/space/create.php:80
 #: protected/application/themes/BaseV1/views/space/edit.php:80
 #: protected/application/themes/BaseV1/views/space/single.php:80
 msgid "Insira uma descrição curta"
-msgstr "Agregue una descripción corta"
+msgstr "Agregue una descripción breve"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:110
 #: protected/application/themes/BaseV1/views/agent/create.php:92
@@ -5812,7 +5976,7 @@ msgstr "Informaciones sobre las inscripciones"
 #: protected/application/themes/BaseV1/views/event/edit.php:176
 #: protected/application/themes/BaseV1/views/event/single.php:176
 msgid "Informe a classificação etária do evento"
-msgstr "Informe la clasificación etaria del evento"
+msgstr "Clasificación etaria del evento"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:141
 #: protected/application/themes/BaseV1/views/event/create.php:202
@@ -5848,11 +6012,6 @@ msgstr "ver mapa"
 msgid "ocultar mapa"
 msgstr "ocultar mapa"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:191
-#: protected/application/themes/BaseV1/layouts/parts/singles/space-extra-info.php:7
-msgid "Critérios de uso"
-msgstr "Criterios de uso"
-
 #: protected/application/themes/BaseV1/layouts/parts/singles/location.php:11
 msgid "Encontrar minha localização"
 msgstr "Encontrar mi localización"
@@ -5868,7 +6027,7 @@ msgstr "Usted no posee ningún agente con permiso."
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--online-registration-button.php:2
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--online-registration-button.php:4
 msgid "Inscrições online"
-msgstr "Inscripciones online"
+msgstr "Inscripciones en línea"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--online-registration-button.php:5
 msgid "desativadas"
@@ -5896,7 +6055,7 @@ msgid ""
 "O limite de caracteres da descrição curta foi diminuido para 400, mas seu "
 "texto atual possui"
 msgstr ""
-"El límite de caracteres de la descripción corta fue acortado a 400, pero su "
+"El límite de caracteres de la descripción breve fue acortado a 400, pero su "
 "texto actual posee"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about.php:12
@@ -5998,7 +6157,7 @@ msgid ""
 "inscrever, como, por exemplo, \"categorias\" ou \"modalidades\". Se não "
 "desejar utilizar este recurso, deixe em branco o campo \"Opções\"."
 msgstr ""
-"Es posible crear opciones para que los proponente elijan a la hora de "
+"Es posible crear opciones para que los postulantes elijan a la hora de "
 "inscribirse, como por ejemplo \"categorías\" o \"modalidades\". Si no desea "
 "utilizar este recurso, deje en blanco el campo \"Opciones\"."
 
@@ -6084,7 +6243,7 @@ msgstr "Opciones de selección"
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:23
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:74
 msgid "Informe uma opção por linha."
-msgstr "Informe una opción por línea."
+msgstr "Una opción por línea."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:26
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:77
@@ -6177,7 +6336,7 @@ msgid ""
 "Não é possível realizar as inscrições online através desse dispositivo. "
 "Tente se inscrever a partir de um dispositivo com a tela maior."
 msgstr ""
-" No es posible realizar las incripciones online a través de este "
+" No es posible realizar las incripciones en línea a través de este "
 "dispositivo. Intente inscribirse a partir de un dispositivo con una pantalla "
 "más grande."
 
@@ -6238,29 +6397,28 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:1
 msgid "Baixar o regulamento"
-msgstr "Descargar el reglamento"
+msgstr "Descargar las bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:3
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:15
 msgid "Regulamento"
-msgstr "Reglamento"
+msgstr "Bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:6
 msgid "Antes de subir o regulamento é preciso salvar o projeto."
-msgstr "Antes de cargar el reglamento es preciso salvar el proyecto."
+msgstr "Antes de cargar las bases es preciso salvar el proyecto."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:9
 msgid "Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf."
-msgstr ""
-"Envíe un archivo con el reglamento. Formatos aceptados: .doc, .odt y .pdf."
+msgstr "Envíe un archivo con las bases. Formatos aceptados: .doc, .odt y .pdf."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:10
 msgid "Enviar regulamento"
-msgstr "Enviar reglamento"
+msgstr "Enviar bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:13
 msgid "excluir regulamento"
-msgstr "eliminar reglamento"
+msgstr "eliminar bases"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:8
 msgid ""
@@ -6322,8 +6480,7 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:12
 msgid "Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
-msgstr ""
-"No válida - no cumple con el reglamento (ejem. documentación incorrecta)."
+msgstr "No válida - no cumple con las bases (ejem. documentación incorrecta)."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:13
 msgid "Pendente - ainda não avaliada."
@@ -6419,14 +6576,10 @@ msgstr "Editar e enviar"
 msgid "Status dos eventos"
 msgstr "Estado de los eventos"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/registration--header.php:20
-msgid "Este projeto é verificado."
-msgstr "Este proyecto está verificado."
-
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:2
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-single--agents.php:2
 msgid "Agentes (proponentes)"
-msgstr "Agentes (proponentes)"
+msgstr "Agentes (postulantes)"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:3
 msgid "Relacione os agentes responsáveis pela inscrição."
@@ -6446,7 +6599,7 @@ msgstr "Campos adicionales"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:3
 msgid "Para efetuar sua inscrição, informe os campos abaixo."
-msgstr "Para afectuar su inscripción, informe los campos abajo."
+msgstr "Para afectuar su inscripción, complete los campos abajo."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:12
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:15
@@ -6559,7 +6712,7 @@ msgstr "Archivo no enviado."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:2
 msgid "Inscrição enviada no dia"
-msgstr "Inscripción enviada el dia"
+msgstr "Inscripción enviada el día"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-servico.php:5
 msgid "Virtual ou Físico? (se for virtual a localização não é obrigatória)"
@@ -6733,6 +6886,7 @@ msgstr "Logo:"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:27
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:84
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:113
 #, php-format
 msgid "Deve ter as dimensões de %s com extensões %s"
 msgstr "Debe tener las dimensiones de %s con extensiones %s"
@@ -6750,6 +6904,10 @@ msgstr ""
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:63
 msgid "Logo da Instituição:"
 msgstr "Logo de la Institución:"
+
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-images.php:92
+msgid "Favicon da Instalação:"
+msgstr "Favicón de instalación:"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-map.php:11
 msgid ""
@@ -6968,7 +7126,7 @@ msgstr "Nombre"
 msgid ""
 "Sua requisição para criar a ocorrência do evento no espaço %s foi enviada."
 msgstr ""
-"Su solicitud para crear la ocurrencia del evento en el espacio %s fue "
+"Su solicitud para crear \"cuándo y dónde\" es el evento en el espacio %s fue "
 "enviada."
 
 #: protected/application/themes/BaseV1/views/event/create.php:25
@@ -7038,61 +7196,61 @@ msgstr "Frecuencia"
 #: protected/application/themes/BaseV1/views/event/edit.php:68
 #: protected/application/themes/BaseV1/views/event/single.php:68
 msgid "Modificar Ocorrência"
-msgstr "Modificar ocurrencia"
+msgstr "Modificar cuándo y dónde"
 
 #: protected/application/themes/BaseV1/views/event/create.php:71
 #: protected/application/themes/BaseV1/views/event/edit.php:71
 #: protected/application/themes/BaseV1/views/event/single.php:71
 msgid "Editar Ocorrência"
-msgstr "Editar ocurrencia"
+msgstr "Editar cuándo y dónde"
 
 #: protected/application/themes/BaseV1/views/event/create.php:72
 #: protected/application/themes/BaseV1/views/event/edit.php:72
 #: protected/application/themes/BaseV1/views/event/single.php:72
 msgid "Excluir esta Ocorrência?"
-msgstr "Eliminar esta Ocurrencia?"
+msgstr "¿Eliminar cuándo y dónde?"
 
 #: protected/application/themes/BaseV1/views/event/create.php:72
 #: protected/application/themes/BaseV1/views/event/edit.php:72
 #: protected/application/themes/BaseV1/views/event/single.php:72
 msgid "Excluir Ocorrência"
-msgstr "Eliminar ocurrencia"
+msgstr "Eliminar cuándo y dónde"
 
 #: protected/application/themes/BaseV1/views/event/create.php:165
 #: protected/application/themes/BaseV1/views/event/edit.php:165
 #: protected/application/themes/BaseV1/views/event/single.php:165
 msgid "Insira uma descrição curta para o evento"
-msgstr "Agregue una descripción corta para el evento"
+msgstr "Agregue una descripción breve para el evento"
 
 #: protected/application/themes/BaseV1/views/event/create.php:182
 #: protected/application/themes/BaseV1/views/event/edit.php:182
 #: protected/application/themes/BaseV1/views/event/single.php:182
 msgid "Informe o endereço do site do evento"
-msgstr "Informe la dirección de la página web del evento"
+msgstr "Agregue la dirección de la página web del evento"
 
 #: protected/application/themes/BaseV1/views/event/create.php:321
 #: protected/application/themes/BaseV1/views/event/edit.php:321
 #: protected/application/themes/BaseV1/views/event/single.php:321
 msgid "Adicionar Ocorrência"
-msgstr "Agregar Ocurrencia"
+msgstr "Agregar cuándo y dónde"
 
 #: protected/application/themes/BaseV1/views/event/create.php:323
 #: protected/application/themes/BaseV1/views/event/edit.php:323
 #: protected/application/themes/BaseV1/views/event/single.php:323
 msgid "Clique para adicionar ocorrências"
-msgstr "Haga clic para agregar ocurrencias"
+msgstr "Haga clic para agregar cuándo y dónde"
 
 #: protected/application/themes/BaseV1/views/event/create.php:324
 #: protected/application/themes/BaseV1/views/event/edit.php:324
 #: protected/application/themes/BaseV1/views/event/single.php:324
 msgid "Adicionar ocorrência"
-msgstr "Agregar ocurrencia"
+msgstr "Agregar cuándo y dónde"
 
 #: protected/application/themes/BaseV1/views/event/create.php:330
 #: protected/application/themes/BaseV1/views/event/edit.php:330
 #: protected/application/themes/BaseV1/views/event/single.php:330
 msgid "Para adicionar ocorrências, primeiro é preciso salvar o evento"
-msgstr "Para agregar ocurrencias, primero debe guardar."
+msgstr "Para agregar cuándo y dónde, primero debe guardar."
 
 #: protected/application/themes/BaseV1/views/event/create.php:341
 #: protected/application/themes/BaseV1/views/event/edit.php:341
@@ -7158,45 +7316,18 @@ msgstr "Repite"
 #: protected/application/themes/BaseV1/views/event/create.php:521
 #: protected/application/themes/BaseV1/views/event/edit.php:521
 #: protected/application/themes/BaseV1/views/event/single.php:521
-msgid "D"
-msgstr "D"
-
-#: protected/application/themes/BaseV1/views/event/create.php:522
-#: protected/application/themes/BaseV1/views/event/create.php:526
-#: protected/application/themes/BaseV1/views/event/create.php:527
-#: protected/application/themes/BaseV1/views/event/edit.php:522
-#: protected/application/themes/BaseV1/views/event/edit.php:526
-#: protected/application/themes/BaseV1/views/event/edit.php:527
-#: protected/application/themes/BaseV1/views/event/single.php:522
-#: protected/application/themes/BaseV1/views/event/single.php:526
-#: protected/application/themes/BaseV1/views/event/single.php:527
-msgid "S"
-msgstr "L"
-
-#: protected/application/themes/BaseV1/views/event/create.php:523
-#: protected/application/themes/BaseV1/views/event/edit.php:523
-#: protected/application/themes/BaseV1/views/event/single.php:523
-msgid "T"
-msgstr "M"
-
-#: protected/application/themes/BaseV1/views/event/create.php:524
-#: protected/application/themes/BaseV1/views/event/create.php:525
-#: protected/application/themes/BaseV1/views/event/edit.php:524
-#: protected/application/themes/BaseV1/views/event/edit.php:525
-#: protected/application/themes/BaseV1/views/event/single.php:524
-#: protected/application/themes/BaseV1/views/event/single.php:525
-msgid "Q"
-msgstr "M"
-
-#: protected/application/themes/BaseV1/views/event/create.php:539
-#: protected/application/themes/BaseV1/views/event/edit.php:539
-#: protected/application/themes/BaseV1/views/event/single.php:539
-msgid "Descrição legível do horário"
-msgstr "Descripción legible del horario"
+msgid "D|S|T|Q|Q|S|S"
+msgstr "D|L|M|M|J|V|S"
 
 #: protected/application/themes/BaseV1/views/event/create.php:540
 #: protected/application/themes/BaseV1/views/event/edit.php:540
 #: protected/application/themes/BaseV1/views/event/single.php:540
+msgid "Descrição legível do horário"
+msgstr "Descripción legible del horario"
+
+#: protected/application/themes/BaseV1/views/event/create.php:541
+#: protected/application/themes/BaseV1/views/event/edit.php:541
+#: protected/application/themes/BaseV1/views/event/single.php:541
 msgid ""
 "Você pode inserir uma descrição própria ou inserir a descrição gerada "
 "automaticamente clicando no botão ao lado"
@@ -7205,21 +7336,21 @@ msgstr ""
 "descripción generada automáticamente haciendo clic en el botón situado al "
 "lado"
 
-#: protected/application/themes/BaseV1/views/event/create.php:542
-#: protected/application/themes/BaseV1/views/event/edit.php:542
-#: protected/application/themes/BaseV1/views/event/single.php:542
+#: protected/application/themes/BaseV1/views/event/create.php:543
+#: protected/application/themes/BaseV1/views/event/edit.php:543
+#: protected/application/themes/BaseV1/views/event/single.php:543
 msgid "Descrição gerada pelo sistema automaticamente"
 msgstr "Descripción generada por el sistema automaticamente"
 
-#: protected/application/themes/BaseV1/views/event/create.php:545
-#: protected/application/themes/BaseV1/views/event/edit.php:545
-#: protected/application/themes/BaseV1/views/event/single.php:545
+#: protected/application/themes/BaseV1/views/event/create.php:546
+#: protected/application/themes/BaseV1/views/event/edit.php:546
+#: protected/application/themes/BaseV1/views/event/single.php:546
 msgid ""
 "Coloque neste campo somente informações sobre a data e hora desta ocorrência "
 "do evento."
 msgstr ""
-"Coloque en este campo solamente información sobre la fecha y hora de "
-"ocurrencia de este evento"
+"Coloque en este campo solamente información sobre la fecha y la hora de este "
+"evento"
 
 #: protected/application/themes/BaseV1/views/generic/edit.php:1
 msgid "list"
@@ -7418,6 +7549,11 @@ msgstr "Actividades"
 msgid "Em"
 msgstr "En"
 
+#: protected/application/themes/BaseV1/views/panel/list-users.php:35
+#, php-format
+msgid "Você tem certeza que deseja remover este usuário da lista de %s?"
+msgstr "Usted está seguro que desea eliminar este usuario de la lista de %s?"
+
 #: protected/application/themes/BaseV1/views/panel/list-users.php:36
 msgid "remover do papel"
 msgstr "eliminar del papel"
@@ -7565,7 +7701,7 @@ msgstr "Período"
 #: protected/application/themes/BaseV1/views/seal/edit.php:72
 #: protected/application/themes/BaseV1/views/seal/single.php:72
 msgid "Informe o período de duração da validade do selo"
-msgstr "Informe el período de duración de validez del sello"
+msgstr "Período de duración de validez del sello"
 
 #: protected/application/themes/BaseV1/views/seal/create.php:77
 #: protected/application/themes/BaseV1/views/seal/edit.php:77
@@ -7585,14 +7721,14 @@ msgstr ""
 
 #: protected/application/themes/BaseV1/views/seal/create.php:97
 #: protected/application/themes/BaseV1/views/seal/edit.php:97
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:75
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:110
 #: protected/application/themes/BaseV1/views/seal/single.php:97
 msgid "Descrição do Selo"
 msgstr "Descripción del Sello"
 
 #: protected/application/themes/BaseV1/views/seal/create.php:97
 #: protected/application/themes/BaseV1/views/seal/edit.php:97
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:75
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:110
 #: protected/application/themes/BaseV1/views/seal/single.php:97
 msgid "Insira uma descrição do selo"
 msgstr "Ingrese una descripción del sello"
@@ -7625,7 +7761,7 @@ msgstr "Nombre del Sello aplicado"
 #: protected/application/themes/BaseV1/views/seal/edit.php:107
 #: protected/application/themes/BaseV1/views/seal/single.php:107
 msgid "Descrição curta do selo aplicado"
-msgstr "Descripción corta del sello aplicado"
+msgstr "Descripción breve del sello aplicado"
 
 #: protected/application/themes/BaseV1/views/seal/create.php:108
 #: protected/application/themes/BaseV1/views/seal/edit.php:108
@@ -7682,9 +7818,17 @@ msgstr ""
 "Para agregar archivo de imágenes, descargar o links, primero es preciso "
 "guardar el sello"
 
-#: protected/application/themes/BaseV1/views/seal/sealrelation.php:31
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:32
 msgid "Imprimir Certificado"
 msgstr "Imprimir Certificado"
+
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:56
+msgid "Expirou em:"
+msgstr "Venció el: "
+
+#: protected/application/themes/BaseV1/views/seal/sealrelation.php:58
+msgid "Válido em:"
+msgstr "Válido en:"
 
 #: protected/application/themes/BaseV1/views/site/permission-denied.php:1
 msgid "Você não tem permissão para executar esta operação."
@@ -7741,6 +7885,42 @@ msgstr "Para configurar los administradores primero debe guardar el subsitio."
 #: protected/application/themes/Subsite/layouts/parts/header-about-nav.php:12
 msgid "Sobre o Site"
 msgstr "Sobre el Sitio"
+
+#~ msgid "Quando"
+#~ msgstr "Cuándo"
+
+#~ msgid "Onde"
+#~ msgstr "Dónde"
+
+#~ msgid "Quanto"
+#~ msgstr "Cuánto"
+
+#~ msgid "Este %s é verificado."
+#~ msgstr "Este %s está verificado."
+
+#~ msgid "Este projeto é verificado."
+#~ msgstr "Este proyecto está verificado."
+
+#~ msgid "Clique para marcar/desmarcar este %s"
+#~ msgstr "Haga clic para marcar/desmarcar este %s"
+
+#~ msgid "Este %s é verificado"
+#~ msgstr "Este %s está verficado"
+
+#~ msgid "Critérios de uso"
+#~ msgstr "Criterios de uso"
+
+#~ msgid "D"
+#~ msgstr "D"
+
+#~ msgid "S"
+#~ msgstr "L"
+
+#~ msgid "T"
+#~ msgstr "M"
+
+#~ msgid "Q"
+#~ msgstr "M"
 
 #~ msgid "Denúncia"
 #~ msgstr "Denuncia"

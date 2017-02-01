@@ -263,6 +263,18 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('do espaço'), i::__('do museu'), i::__('da biblioteca')],
                 'text' => i::__('do espaço')
             ],
+            'entities: Description of the space' => [
+                'name' => i::__('texto "Descrição do espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Descrição do espaço'), i::__('Descrição do museu'), i::__('Descrição da biblioteca')],
+                'text' => i::__('Descrição do espaço')
+            ],
+            'entities: Usage criteria of the space' => [
+                'name' => i::__('texto "Critérios de uso do espaço"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Critérios de uso do espaço'), i::__('Critérios de uso do museu'), i::__('Critérios de uso da biblioteca')],
+                'text' => i::__('Critérios de uso do espaço')
+            ],
             'entities: In this space' => [
                 'name' => i::__('texto "Neste espaço"'),
                 'description' => i::__(''),
@@ -721,7 +733,7 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
 
-        $app->hook('mapasculturais.body:before', function() {
+        $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
                     <div id="fb-root"></div>
@@ -729,7 +741,7 @@ class Theme extends MapasCulturais\Theme {
                       var js, fjs = d.getElementsByTagName(s)[0];
                       if (d.getElementById(id)) return;
                       js = d.createElement(s); js.id = id;
-                      js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+                      js.src = "//connect.facebook.net/<?php echo i::get_locale(); ?>/all.js#xfbml=1";
                       fjs.parentNode.insertBefore(js, fjs);
                     }(document, 'script', 'facebook-jssdk'));</script>
                 <!--fim do facebook-->
@@ -1134,7 +1146,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle('vendor', 'select2', "vendor/select2-{$versions['select2']}/select2.css");
         $this->enqueueScript('vendor', 'select2', "vendor/select2-{$versions['select2']}/select2.js", array('jquery'));
 
-        $this->enqueueScript('vendor', 'select2-BR', 'vendor/select2_locale_pt-BR-edit.js', array('select2'));
+        $this->enqueueScript('vendor', 'select2-BR', 'vendor/select2_locale_'.i::get_locale().'-edit.js', array('select2'));
 
         $this->enqueueScript('vendor', 'poshytip', 'vendor/x-editable-jquery-poshytip/jquery.poshytip.js', array('jquery'));
         $this->enqueueScript('vendor', 'x-editable', "vendor/x-editable-{$versions['x-editable']}/js/jquery-editable-poshytip.js", array('jquery', 'poshytip', 'select2'));
@@ -1174,18 +1186,18 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'magnific-popup', "vendor/Magnific-Popup-{$versions['magnific-popup']}/jquery.magnific-popup.js", array('jquery'));
 
         $this->enqueueScript('vendor', 'momentjs', 'vendor/moment.js');
-        $this->enqueueScript('vendor', 'momentjs-pt-br', 'vendor/moment.pt-br.js', array('momentjs'));
+        $this->enqueueScript('vendor', 'momentjs-locale', 'vendor/moment.'.i::get_locale().'.js', array('momentjs'));
 
         $this->enqueueScript('vendor', 'jquery-ui', "vendor/jquery-ui-{$versions['jquery-ui']}/jquery-ui.js", array('jquery'));
-        $this->enqueueScript('vendor', 'jquery-ui-datepicker-pt-BR', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker-pt-BR.js", array('jquery-ui'));
+        $this->enqueueScript('vendor', 'jquery-ui-datepicker-locale', "vendor/jquery-ui-{$versions['jquery-ui']}/datepicker-".i::get_locale().".js", array('jquery-ui'));
 
-        $this->enqueueScript('vendor', 'angular', "vendor/angular-{$versions['angular']}/angular.js", array('jquery', 'jquery-ui-datepicker-pt-BR'));
+        $this->enqueueScript('vendor', 'angular', "vendor/angular-{$versions['angular']}/angular.js", array('jquery', 'jquery-ui-datepicker-locale'));
         $this->enqueueScript('vendor', 'angular-sanitize', "vendor/angular-{$versions['angular']}/angular-sanitize.js", array('angular'));
 
         $this->enqueueScript('vendor', 'angular-rison', '/vendor/angular-rison.js', array('angular'));
         $this->enqueueScript('vendor', 'ng-infinite-scroll', '/vendor/ng-infinite-scroll/ng-infinite-scroll.js', array('angular'));
 
-        $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-pt-BR', 'angular'));
+        $this->enqueueScript('vendor', 'angular-ui-date', '/vendor/ui-date-master/src/date.js', array('jquery-ui-datepicker-locale', 'angular'));
         $this->enqueueScript('vendor', 'angular-ui-sortable', '/vendor/ui-sortable/sortable.js', array('jquery-ui', 'angular'));
         $this->enqueueScript('vendor', 'angular-checklist-model', '/vendor/checklist-model/checklist-model.js', array('jquery-ui', 'angular'));
 
@@ -1216,6 +1228,8 @@ class Theme extends MapasCulturais\Theme {
             'Enviar'    => i::__('Enviar'),
             'Cancelar'  => i::__('Cancelar')
         ]);
+        $locale_specific_js = file_exists(dirname(__FILE__)  . '/assets/js/locale-specific/' . i::get_locale() . '.js') ? 'js/locale-specific/' . i::get_locale() . '.js' : 'js/locale-specific/default.js' ;
+        $this->enqueueScript('app', 'mapasculturais-locale-specific', $locale_specific_js, array('mapasculturais'));
 
         $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
 

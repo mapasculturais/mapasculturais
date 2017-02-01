@@ -518,13 +518,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <div class="alignleft js-freq-hide js-weekly">
                 <span class="label"><?php \MapasCulturais\i::_e("Repete");?>:</span><br>
                 <div>
-                    <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> <?php \MapasCulturais\i::_e("D");?> </label>
-                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> <?php \MapasCulturais\i::_e("S");?> </label>
-                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> <?php \MapasCulturais\i::_e("T");?> </label>
-                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> <?php \MapasCulturais\i::_e("Q");?> </label>
-                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> <?php \MapasCulturais\i::_e("Q");?> </label>
-                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> <?php \MapasCulturais\i::_e("S");?> </label>
-                    <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> <?php \MapasCulturais\i::_e("S");?> </label>
+                    <?php $weekDaysInitials = explode('|', \MapasCulturais\i::__('D|S|T|Q|Q|S|S')); ?>
+                    <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> <?php echo $weekDaysInitials[0];?> </label>
+                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> <?php echo $weekDaysInitials[1];?> </label>
+                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> <?php echo $weekDaysInitials[2];?> </label>
+                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> <?php echo $weekDaysInitials[3];?> </label>
+                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> <?php echo $weekDaysInitials[4];?> </label>
+                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> <?php echo $weekDaysInitials[5];?> </label>
+                    <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> <?php echo $weekDaysInitials[6];?> </label>
                 </div>
                 <!-- for now we will not support monthly recurrences.
                 <div>
