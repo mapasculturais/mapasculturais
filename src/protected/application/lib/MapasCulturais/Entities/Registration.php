@@ -367,8 +367,6 @@ class Registration extends \MapasCulturais\Entity
     	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
     	 */
     	$projectMetadataSeals = $this->project->registrationSeals;
-    	//eval(\Psy\sh());
-    	//die;
 
     	if(isset($projectMetadataSeals->owner)) {
     		$relation_class = $this->owner->getSealRelationEntityClassName();
