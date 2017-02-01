@@ -94,6 +94,7 @@ class Site extends \MapasCulturais\Controller {
             }
             
             $content = $view->renderMarkdown($file_content);
+            $content = $view->renderMarkdown($content);
 
             $attrs = ['content' => $content, 'left' => $left, 'right' => $right];
             
