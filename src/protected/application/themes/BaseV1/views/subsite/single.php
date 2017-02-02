@@ -105,4 +105,8 @@ $this->localizeScript('singleSubsite', [
         <?php $this->part('related-profiles-agents.php', array('entity' => $entity)); ?>
         <!-- Related Profile Agents END -->
     <?php endif; ?>
+
+    <!-- Downloads BEGIN -->
+    <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
+    <!-- Downloads END -->
 </div>
