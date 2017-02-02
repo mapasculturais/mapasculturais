@@ -34,7 +34,7 @@ $url_search_spaces = $this->searchSpacesUrl;
                 <div class="statistic-label"><?php $this->dict('entities: spaces') ?> da <?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
-        <p><?php $this->dict('home: spaces'); ?></p>
+        <p><?php echo $app->view->renderMarkdown($this->dict('home: spaces',false)); ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre ");?><?php $this->dict('entities: spaces') ?> <?php \MapasCulturais\i::_e(" por ");?></h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#space-terms"><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>

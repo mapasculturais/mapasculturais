@@ -33,7 +33,7 @@ $project_img_attributes = 'class="random-feature no-image"';
                 <div class="statistic-label"><?php \MapasCulturais\i::_e("projetos da ");?><?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
-        <p><?php $this->dict('home: projects') ?></p>
+        <p><?php echo $app->view->renderMarkdown($this->dict('home: projects',false)); ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre projetos por");?></h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#project-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
