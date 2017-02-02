@@ -44,7 +44,7 @@ class i {
 
     	// Load Base Theme into default domain
 
-    	self::load_textdomain( 'default', THEMES_PATH . "/BaseV1/languages/" );
+    	self::load_textdomain( 'default', THEMES_PATH . "/BaseV1/languages/", $locale );
 
     	return $return;
     }
