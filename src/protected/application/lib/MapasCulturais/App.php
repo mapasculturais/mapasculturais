@@ -773,6 +773,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('subsite',$file_groups['background']);
         $this->registerFileGroup('subsite',$file_groups['institute']);
         $this->registerFileGroup('subsite',$file_groups['favicon']);
+        $this->registerFileGroup('subsite',$file_groups['downloads']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         foreach($image_transformations as $name => $transformation)
