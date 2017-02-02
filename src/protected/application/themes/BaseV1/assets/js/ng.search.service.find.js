@@ -273,10 +273,18 @@
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
                 var exportSelect = ['singleUrl'];
+                var dontExportSelect = {
+                    user: true,
+                    publicLocation: true,
+                    status: true
+                }
                 Object.keys(Description).forEach(function(prop) {
                     if(prop[0] == '_'){
                         return;
                     }
+                    if (dontExportSelect[prop])
+                        return;
+                        
                     var def = Description[prop];
                     var selectProperty = def['@select'] || prop;
                     if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
@@ -289,7 +297,7 @@
                         }
                     }
                 });
-                
+
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export
