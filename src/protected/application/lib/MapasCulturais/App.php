@@ -188,7 +188,10 @@ class App extends \Slim\Slim{
                 header('Location: ' . $config['app.offlineUrl']);
             }
         }
-
+        
+        //Load defaut translation textdomain
+        i::load_default_textdomain($config['app.lcode']);
+        
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -435,9 +438,6 @@ class App extends \Slim\Slim{
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-        
-        //Load defaut translation textdomain
-        i::load_default_textdomain();
         
         $this->register();
 

@@ -40,7 +40,7 @@ class i {
     	// Unload previously loaded strings so we can switch translations.
     	self::unload_textdomain( 'default' );
 
-    	$return = self::load_textdomain( 'default', LANGUAGES_PATH );
+    	$return = self::load_textdomain( 'default', LANGUAGES_PATH, $locale );
 
     	// Load Base Theme into default domain
 
@@ -316,10 +316,12 @@ class i {
      * @param string $mofile Path to the folder where the .mo files are.
      * @return bool True on success, false on failure.
      */
-    static function load_textdomain( $domain, $path ) {
+    static function load_textdomain( $domain, $path, $locale = null ) {
         global $i18n;
         
-        $locale = self::get_locale();
+        if ( null === $locale ) {
+    		$locale = self::get_locale();
+    	}
         
         $mofile = $path . '/' . $locale . '.mo';
         
