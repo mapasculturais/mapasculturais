@@ -34,8 +34,8 @@ $url_search_events = $this->searchEventsUrl;
                 <div class="statistic-label"><?php \MapasCulturais\i::_e("eventos da ");?><?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
-        <p><?php $this->dict('home: events') ?></p>
-        <h4>Encontre eventos por</h4>
+        <p><?php echo $app->view->renderMarkdown($this->dict('home: events',false)) ?></p>
+        <h4><?php \MapasCulturais\i::_e("Encontre eventos por");?></h4>
         <ul class="abas clearfix">
             <li class="active"><a href="#event-terms"><?php \MapasCulturais\i::_e("Linguagem");?></a></li>
         </ul>
@@ -52,7 +52,7 @@ $url_search_events = $this->searchEventsUrl;
         <a href="<?php echo $event->singleUrl ?>">
             <div <?php echo $event_img_attributes;?>>
                 <div class="feature-content">
-                    <h3>destaque</h3>
+                    <h3><?php \MapasCulturais\i::_e("destaque");?></h3>
                     <h2><?php echo $event->name ?></h2>
                     <p><?php echo $event->shortDescription ?></p>
                 </div>

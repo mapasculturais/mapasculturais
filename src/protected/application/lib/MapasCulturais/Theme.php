@@ -533,6 +533,20 @@ abstract class Theme extends \Slim\View {
             }
         }
 
+        if(preg_match_all('#\{\{downloads:([^\}]+)\}\}#', $markdown, $matches)){
+            $subsite = $app->getCurrentSubsite();
+            $files = $subsite->getFiles('downloads');
+            if($subsite) {
+                foreach($matches[0] as $i => $tag){
+                    foreach($files as $file) {
+                        if($file->description == $matches[1][$i]) {
+                            $markdown = str_replace($tag, $file->url, $markdown);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
         $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);
