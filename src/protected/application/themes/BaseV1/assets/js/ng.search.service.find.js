@@ -308,7 +308,7 @@
 
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
-                    if(att != '@select' && att!='@page' && att!='@limit')
+                    if(att != '@select' && att!='@page' && att!='@limit' && att!='@files')
                         queryString_apiExport += "&"+att+"="+searchData[att];
                 }
 
