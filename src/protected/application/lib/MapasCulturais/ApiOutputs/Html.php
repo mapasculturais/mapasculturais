@@ -64,11 +64,13 @@ class Html extends \MapasCulturais\ApiOutput{
             <?php endif; ?>
             
             <?php 
-            if($first): $first=false;
+            if($first): 
+                $first_item_keys = array_keys($item);
+                $first=false;
             ?>
             <thead>
                 <tr>
-                    <?php foreach($item as $k => $v): ?><?php
+                    <?php foreach($first_item_keys as $k): $v = $item['k'] ?><?php
                         if($k==='terms'){
                             if(property_exists($v, 'area')){ ?><th><?php echo mb_convert_encoding($this->translate['area'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
                             if(property_exists($v, 'tag')){ ?><th><?php echo mb_convert_encoding($this->translate['tag'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
@@ -105,7 +107,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <tbody>
             <?php endif; ?>
                 <tr>
-                    <?php foreach($item as $k => $v): ?>
+                    <?php foreach($first_item_keys as $k): $v = $item[$k];?>
                         <?php if($k==='terms'): ?>
                             <?php if(property_exists($v, 'area')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
