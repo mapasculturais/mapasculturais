@@ -346,10 +346,6 @@ class Registration extends \MapasCulturais\Entity
             $this->checkPermission('changeStatus');
         }
 
-        if($status === self::STATUS_APPROVED) {
-            $this->setAgentsSealRelation();
-        }
-
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;

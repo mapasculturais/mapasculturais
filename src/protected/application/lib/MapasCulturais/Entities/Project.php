@@ -351,6 +351,14 @@ class Project extends \MapasCulturais\Entity
         $this->checkPermission('publishRegistrations');
 
         $this->publishedRegistrations = true;
+        
+        // atribui os selos as inscrições selecionadas
+        $app = App::i();
+        $registrations = $app->repo('Registration')->findBy(array('project' => $this, 'status' => Registration::STATUS_APPROVED));
+        
+        foreach ($registrations as $registration) {
+            $registration->setAgentsSealRelation();
+        }
 
         $this->save(true);
     }
