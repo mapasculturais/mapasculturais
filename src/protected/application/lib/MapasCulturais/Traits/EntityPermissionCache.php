@@ -63,7 +63,6 @@ trait EntityPermissionCache {
             return;
         }
         
-        
         if($this->usesAgentRelation()){
             $this->deleteUsersWithControlCache();
         }
@@ -82,25 +81,20 @@ trait EntityPermissionCache {
             
             if($this->usesAgentRelation()){
                 $users = $this->getUsersWithControl();
-            } else if ($this instanceof \MapasCulturais\Entities\Request){
-                $origin_users = $this->getOrigin()->getUsersWithControl();
-                $destination_users = $this->getDestination()->getUsersWithControl();
-                
-                $users = ["$this->requesterUser" => $this->requesterUser];
-                foreach(array_merge($origin_users, $destination_users) as $u){
-                    $users["$u"] = $u;
-                }
             } else if($this->owner) {
                 $users = $this->owner->getUsersWithControl();
             } else {
                 $users = [$this->getOwnerUser()];
             }
+            
+            if(method_exists($this, 'getExtraPermissionCacheUsers')){
+                $users = array_merge($users, $this->getExtraPermissionCacheUsers());
+            }
         }
-        
-        
                 
         $this->__enabled = false;
         
+        $alredy_created_users = [];
         foreach ($users as $user) {
             if($delete_old && !$deleted){
                 $this->deletePermissionsCache($user->id);
@@ -110,12 +104,17 @@ trait EntityPermissionCache {
                 continue;
             }
             
+            if(isset($alredy_created_users["$user"])){
+                continue;
+            } else {
+                $alredy_created_users["$user"] = true;
+            }
+            
             foreach ($permissions as $permission) {
                 if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity()) {
                     continue;
                 }
                 if($this->canUser($permission, $user)){
-                    //$app->log->debug("PCACHE User {$u->id} <-> {$this->entityType} {$this->id} :: {$permission} ");
                     
                     $conn->insert('pcache', [
                         'user_id' => $user->id,

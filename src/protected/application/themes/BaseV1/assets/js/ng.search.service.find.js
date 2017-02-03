@@ -289,7 +289,7 @@
                         }
                     }
                 });
-                
+                console.log(exportSelect);
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export
@@ -300,7 +300,7 @@
 
                 for(var att in searchData) {
                     querystring += "&"+att+"="+searchData[att];
-                    if(att != '@select' && att!='@page' && att!='@limit')
+                    if(att != '@select' && att!='@page' && att!='@limit' && att!='@files')
                         queryString_apiExport += "&"+att+"="+searchData[att];
                 }
 
