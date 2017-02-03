@@ -110,37 +110,62 @@ class Theme extends BaseV1\Theme{
                 $entities_second = $entities;
                 $entities_third = $entities;
 
+                if(!is_dir($this->subsitePath . '/assets/img/')) {
+                    mkdir($this->subsitePath . '/assets/img/',0755,true);
+                }
+
+                $entity_file_png = $this->subsitePath . "/assets/img/pin-single-example.png";
+
                 /*  Creates entities pin single and grouped image only for each entity */
                 foreach($entities as $entity) {
+                    $entity_file_svg = THEMES_PATH . "BaseV1/assets/img/pin-single-example.svg";
                     $entity = iconv('UTF-8', 'ASCII//TRANSLIT', $entity);
                     $entity_first_sing_name = substr($entity, 0, -1);
                     $entity_first_name_color = "cor_" . $entity;
                     if($this->subsiteInstance->$entity_first_name_color) {
-                        $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/pin-" . $entity_first_sing_name. ".svg";
+                        $entity_icon_img = THEMES_PATH . "BaseV1/assets/img/icon-" . $entity_first_sing_name . ".png";
                         if(file_exists($entity_file_svg)) {
-                            $im = new \Imagick();
                             $svg = file_get_contents($entity_file_svg);
-                            $svg = preg_replace('/class="' . $entity_first_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
+                            $svg = preg_replace('/class="pin-single-example" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
 
+                            if(file_exists($entity_file_png)) {
+                                unlink($entity_file_png);
+                            }
+                            
+                            $im = new \Imagick();
                             $im->setBackgroundColor(new \ImagickPixel('transparent'));
                             $im->readImageBlob($svg);
-
-                            /*png settings*/
                             $im->setImageFormat("png24");
-
-                            if(!is_dir($this->subsitePath . '/assets/img/')) {
-                                mkdir($this->subsitePath . '/assets/img/',0755,true);
-                            }
-                            if(file_exists($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name. ".png")) {
-                                unlink($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name. ".png");
-                            }
-                            if(file_exists($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png")) {
-                                unlink($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png");
-                            }
-                            $im->writeImage($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name. ".png");
-                            $im->writeImage($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png");
+                            $im->writeImage($entity_file_png);
                             $im->clear();
                             $im->destroy();
+
+                            if(file_exists($entity_file_png) && file_exists($entity_icon_img)) {
+                                $img = \WideImage\WideImage::load($entity_file_png);
+                                $watermark = \WideImage\WideImage::load($entity_icon_img);
+                                $new = $img->merge($watermark);
+                                $new->saveToFile($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name . ".png");
+                            }
+
+                            $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/pin-" . $entity_first_sing_name. ".svg";
+                            if(file_exists($entity_file_svg)) {
+                                $im = new \Imagick();
+                                $svg = file_get_contents($entity_file_svg);
+                                $svg = preg_replace('/class="' . $entity_first_sing_name . '-svg-img" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
+
+                                $im->setBackgroundColor(new \ImagickPixel('transparent'));
+                                $im->readImageBlob($svg);
+
+                                /*png settings*/
+                                $im->setImageFormat("png24");
+
+                                if(file_exists($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png")) {
+                                    unlink($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png");
+                                }
+                                $im->writeImage($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png");
+                                $im->clear();
+                                $im->destroy();
+                            }
                         }
 
                         foreach($entities_second as $second_entity) {
