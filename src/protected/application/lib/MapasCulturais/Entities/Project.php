@@ -261,6 +261,11 @@ class Project extends \MapasCulturais\Entity
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
 
+    /**
+     * Return project rergistrations
+     * 
+     * @return \MapasCulturais\Entities\Registration[]
+     */
     function getAllRegistrations(){
         // ============ IMPORTANTE =============//
         // @TODO implementar findSentByProject no repositório de inscrições
@@ -368,6 +373,19 @@ class Project extends \MapasCulturais\Entity
             if($this->useRegistrationAgentRelation($def))
                 $r[] = $def;
         return $r;
+    }
+    
+    function getExtraPermissionCacheUsers(){
+        $users = [];
+        if($this->publishedRegistrations) {
+            $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
+            $r = new Registration;
+            foreach($registrations as $r){
+                $users = array_merge($users, $r->getUsersWithControl());
+            }
+        }
+        
+        return $users;
     }
 
     function isRegistrationFieldsLocked(){
