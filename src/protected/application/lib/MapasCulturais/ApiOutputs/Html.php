@@ -108,7 +108,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <tbody>
             <?php endif; ?>
                 <tr>
-                    <?php foreach($first_item_keys as $k): $v = $item->$k;?>
+                    <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
                         <?php if($k==='terms'): ?>
                             <?php if(property_exists($v, 'area')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
