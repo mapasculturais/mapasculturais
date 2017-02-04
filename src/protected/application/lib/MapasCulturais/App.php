@@ -1008,10 +1008,18 @@ class App extends \Slim\Slim{
     function getRegisteredGeoDivisions(){
         $result = [];
         foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $name) {
+            
+            $display = true;
+            if (substr($key, 0, 1) == '_') {
+                $display = false;
+                $key = substr($key, 1);
+            }
+            
             $d = new \stdClass();
             $d->key = $key;
             $d->name = $name;
             $d->metakey = 'geo' . ucfirst($key);
+            $d->display = $display;
             $result[] = $d;
         }
 

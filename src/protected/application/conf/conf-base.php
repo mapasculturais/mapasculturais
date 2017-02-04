@@ -142,7 +142,17 @@ return array(
     'cep.token'         => '',
 
     'export.excelName'      => 'mapas-culturais-dados-exportados.xls',
-
+    
+    /* Divisões geográficas
+     * Veja http://docs.mapasculturais.org/mc_deploy_shapefiles/ para informações de como 
+     * inserir shapefiles aos bancos e cadastrá-los aqui
+     * 
+     * coloque um underline "_" na frente do slug da division para
+     * que o metadado gerado não seja exibido na página de perfil da entidade.
+     * 
+     * Ex: '_estado'        => \MapasCulturais\i::__('Estado'), 
+     * 
+     */ 
     'app.geoDivisionsHierarchy' => [
         'pais'          => \MapasCulturais\i::__('País'),          // metadata: geoPais
         'regiao'        => \MapasCulturais\i::__('Região'),        // metadata: geoRegiao

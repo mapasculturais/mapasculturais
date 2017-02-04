@@ -23,15 +23,28 @@ Para isso, é preciso:
 - editar o arquivo de configuração e adicionar a informação das divisões geográficas que serão usadas.
 
 Ex:
+```
 'app.geoDivisionsHierarchy' => array(
             'zona' => 'Zona',
             'subprefeitura' => 'Subprefeitura',
             'distrito' => 'Distrito'
         ),
+```
 
   Onde 'zona', 'subprefeitura' e 'distrito' são os valores da coluna 'type' da tabela Geodivision.
 
   Essa configuração criará, automaticamente, os metadados geoZona, geoSubprefeitura e geoDistrito.
+  
+  Se não quiser que o metadado criado seja exibido na página de perfil da entidade, adicione um "_" na frente do slug.
+  
+  Ex:
+  
+  ```
+'app.geoDivisionsHierarchy' => array(
+            'distrito' => 'Distrito', // irá gerar o metadado geoDistrito e exibí-lo automaticamente no perfil da entidade 
+            '_cidade' => 'Cidade' // irá gerar o metadado geoCidade mas não o exibirá na página de perfi da entidade
+        ),
+```
 
 #### 2. Como adicionar camadas na visualização do mapa
 
