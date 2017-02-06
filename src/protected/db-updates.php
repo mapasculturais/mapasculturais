@@ -593,7 +593,8 @@ return [
             echo "ALREADY APPLIED";
             return true;
         }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
+        $conn->executeQuery("UPDATE seal_relation SET validate_date = seal_relation.create_timestamp + cast(cast(s.valid_period as text) || 'month' as interval) FROM (SELECT id, valid_period FROM seal) AS s WHERE s.id = seal_id AND validate_date IS NULL;");
     },
             
     'create entities history entries' => function() use($conn) {
