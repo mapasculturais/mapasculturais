@@ -139,11 +139,16 @@ abstract class Request extends \MapasCulturais\Entity{
 
     private $_destination = null;
 
-
-
     public function __construct() {
         $this->requesterUser = App::i()->user;
         parent::__construct();
+    }
+    
+    function getExtraPermissionCacheUsers(){
+        $origin_users = $this->getOrigin()->getUsersWithControl();
+        $destination_users = $this->getDestination()->getUsersWithControl();
+
+        return array_merge($origin_users, $destination_users);
     }
 
     function getOwnerUser() {

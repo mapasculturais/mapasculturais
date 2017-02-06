@@ -543,6 +543,90 @@ return [
             echo "ALREADY APPLIED";
             return true;
         }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
-    }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
+        $conn->executeQuery("UPDATE seal_relation SET validate_date = seal_relation.create_timestamp + cast(cast(s.valid_period as text) || 'month' as interval) FROM (SELECT id, valid_period FROM seal) AS s WHERE s.id = seal_id AND validate_date IS NULL;");
+    },
+            
+    'create entities history entries' => function() use($conn) {
+        $app = App::i();
+        $query = $app->em->createQuery("SELECT a FROM \MapasCulturais\Entities\Agent a");
+        $agents = $query->getResult();
+
+        foreach($agents as $agent) {
+            $user = $agent->owner->user;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            $agent->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+            echo ("==== > Ínicio de Migração do registro ");
+            echo ("Criação da versão created do Agente: " . $agent->id . " => " . $agent->name);
+            /*
+             * Versão de Criação
+             */
+            $agent->_newCreatedRevision();
+
+            $agent->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+            echo ("Criação da versão modified do Agente: " . $agent->id . " => " . $agent->name);
+            /*
+             * Versão Atualizada
+             */
+            $agent->_newModifiedRevision();
+            echo ("==== > OK");
+        }
+
+        $query = $app->em->createQuery("SELECT s FROM \MapasCulturais\Entities\Space s");
+        $spaces = $query->getResult();
+
+        foreach($spaces as $space) {
+            $user = $agent->owner->user;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            $space->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+            echo ("==== > Ínicio de Migração do registro ");
+            echo ("Criação da versão created do Espaço: " . $space->id . " => " . $space->name);
+
+            /*
+             * Versão de Criação
+             */
+            $space->_newCreatedRevision();
+
+            $space->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+            echo ("Criação da versão modified do Espaço " . $space->id . " => " . $space->name);
+            /*
+             * Versão Atualizada
+             */
+            $space->_newModifiedRevision();
+            echo ("==== > OK");
+        }
+
+        $query = $app->em->createQuery("SELECT e FROM \MapasCulturais\Entities\Event e");
+        $events = $query->getResult();
+
+        foreach($events as $event) {
+            $user = $event->owner->user;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            $event->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+            echo ("==== > Ínicio de Migração do registro ");
+            echo ("Criação da versão created do Agente: " . $event->id . " => " . $event->name);
+
+            /*
+             * Versão de Criação
+             */
+            $event->_newCreatedRevision();
+
+            $event->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+            echo ("Criação da versão modified do Evento " . $event->id . " => " . $event->name);
+            /*
+             * Versão Atualizada
+             */
+            $event->_newModifiedRevision();
+            echo ("==== > OK");
+        }
+
+        $app->auth->logout();
+
+    },
 ] + $updates ;

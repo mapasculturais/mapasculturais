@@ -1,7 +1,7 @@
 <section id="home-intro" class="js-page-menu-item home-entity clearfix">
     <div class="box">
-        <h1><?php $this->dict('home: title') ?></h1>
-        <p><?php $this->dict('home: welcome') ?></p>
+        <h1><?php echo $app->view->renderMarkdown($this->dict('home: title',false)); ?></h1>
+        <p><?php echo $app->view->renderMarkdown($this->dict('home: welcome',false)); ?></p>
         <form id="home-search-form" class="clearfix" ng-non-bindable>
             <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="<?php \MapasCulturais\i::esc_attr_e("Digite uma palavra-chave");?>"/>
             <div id="home-search-filter" class="dropdown" data-searh-url-template="<?php echo $app->createUrl('site','search'); ?>##(global:(enabled:({{entity}}:!t),filterEntity:{{entity}}),{{entity}}:(keyword:'{{keyword}}'))">

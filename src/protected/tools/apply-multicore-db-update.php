@@ -110,7 +110,7 @@ class DB_UPDATE {
                     $c = count($remaining_ids);
                     
                     $__per = min([100, $c*NUMBER_OF_PROCESSES / $__num_entities * 100]);
-                    $__per = str_pad(number_format($__per, 2),6, STR_PAD_RIGHT);
+                    $__per = str_pad(number_format($__per, 2),6, ' ', STR_PAD_LEFT);
                     
                     $__faltam = str_pad($c, 7);
                     
