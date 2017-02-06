@@ -74,7 +74,7 @@ return array(
     ),
 
     3 => array(
-        'slug' => \MapasCulturais\i::__('linguagem'),
+        'slug' => 'linguagem',
         'required' => \MapasCulturais\i::__("Você deve informar ao menos uma linguagem"),
         'entities' => array(
             'MapasCulturais\Entities\Event'
