@@ -179,6 +179,19 @@
                         group.relations = oldRelations;
                     });
         };
+        
+        $scope.deleteGroup = function(group) {
+            if (confirm(labels['confirmDeleteGroup'].replace('%s', group.name))) {
+                var i = $scope.groups.indexOf(group);
+                console.log(group.relations);
+                group.relations.forEach(function(relation){
+                    //$scope.deleteRelation(relation);
+                    RelatedAgentsService.remove(relation.group, relation.agent.id);
+                });
+                
+                $scope.groups.splice(i,1);
+            }
+        };
 
         $scope.createAdminRelation = function(entity){
             var _scope = this.$parent;
