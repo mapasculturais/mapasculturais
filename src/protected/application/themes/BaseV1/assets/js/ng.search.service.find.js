@@ -237,7 +237,8 @@
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);
                 }
 
-                var selectData = 'id,singleUrl,name,type,shortDescription,terms';
+                var selectData = MapasCulturais.searchQueryFields;
+
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
                 var exportEntity = entity;
                 if(entity === 'space'){

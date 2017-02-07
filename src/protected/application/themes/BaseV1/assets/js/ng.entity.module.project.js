@@ -766,7 +766,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
             $scope.$apply();
             setTimeout(function(){
-                EditBox.close('editbox-file-'+id, event);
+                EditBox.close('editbox-file-'+id, evt);
             }, 700);
         });
     };

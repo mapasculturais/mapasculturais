@@ -5,6 +5,7 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Entities;
+use MapasCulturais\i;
 
 /**
  * Subsite Controller
@@ -81,7 +82,7 @@ class Subsite extends EntityController {
 
             $themes = [];
             foreach($themes_order as $theme){
-                $themes[$theme] = $theme === 'Subsite' ? 'Tema Personalizável' : $theme;
+                $themes[$theme] = $theme === 'Subsite' ? i::__('Tema Personalizável') : $theme;
             }
 
 

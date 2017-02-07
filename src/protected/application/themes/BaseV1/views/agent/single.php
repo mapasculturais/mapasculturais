@@ -188,17 +188,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->children, 'title' => 'entities: Agent children')); ?>
     <!-- Children END -->
 
-    <!--
-    <div class="widget">
-        <h3>Projetos do agente</h3>
-        <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-        </ul>
-    </div>
-    -->
-
     <!-- Downloads BEGIN -->
         <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->
@@ -207,5 +196,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
     <!-- Link List END -->
 
-
+    <!-- History BEGIN -->
+        <?php $this->part('history.php', array('entity' => $entity)); ?>
+    <!-- History END -->
 </div>

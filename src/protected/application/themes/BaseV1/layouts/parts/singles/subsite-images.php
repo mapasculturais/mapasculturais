@@ -1,8 +1,10 @@
 <div id="imagens" class="aba-content">
-    <p class="alert info">Nesta seção você configura as imagens que vão aparecer na instalação. É possível selecionar o logo da instalação, o background e o logo da instituição.</p>
+    <p class="alert info">
+        <?php \MapasCulturais\i::_e('Nesta seção você configura as imagens que vão aparecer na instalação. É possível selecionar o logo da instalação, o background e o logo da instituição.'); ?>
+    </p>
     <div class="logo-container">
         <h3 class="label">
-            Logo:
+            <?php \MapasCulturais\i::_e('Logo:'); ?>
         </h3>
 
         <?php $this->applyTemplateHook('logo','before'); ?>
@@ -15,21 +17,21 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-logo" href="#">Editar</a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-logo" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-logo" class="js-editbox mc-right" title="Editar logo">
                     <?php $this->ajaxUploader($entity, 'logo', 'image-src', 'div.logo img.js-logo-img', '', 'logo'); ?>
                 </div>
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter as dimensões de <strong>140x60px</strong> com extensões <strong>.png/.jpg</strong></span>
+        <span class="tip"><?php printf(\MapasCulturais\i::__('Deve ter as dimensões de %s com extensões %s'), '<strong>140x60px</strong>', '<strong>.png/.jpg</strong>'); ?></span>
 
         <?php $this->applyTemplateHook('logo','after'); ?>
     </div>
 
     <div class="background-container">
         <h3 class="label">
-            Background:
+            <?php \MapasCulturais\i::_e('Background:'); ?>
         </h3>
 
         <?php $this->applyTemplateHook('background','before'); ?>
@@ -42,21 +44,23 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-background" href="#">Editar</a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-background" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-background" class="js-editbox mc-right" title="Editar Imagem de Fundo">
                     <?php $this->ajaxUploader($entity, 'background', 'image-src', 'div.background img.js-background-img', '', 'background'); ?>
                 </div>
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter extensões <strong>680x680px</strong> com extensões <strong>.png/.jpg</strong> e deve ter fundo transparente</span>
+        <span class="tip">
+            <?php printf(\MapasCulturais\i::__('Deve ter extensões %s com extensões %s e deve ter fundo transparente'), '<strong>680x680px</strong>', '<strong>.png/.jpg</strong>'); ?>
+        </span>
 
         <?php $this->applyTemplateHook('background','after'); ?>
     </div>
 
     <div class="institute-container">
         <h3 class="label">
-            Logo da Instituição:
+            <?php \MapasCulturais\i::_e('Logo da Instituição:'); ?>
         </h3>
 
         <?php $this->applyTemplateHook('institute','before'); ?>
@@ -69,14 +73,16 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-institute" href="#">Editar</a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-institute" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-institute" class="js-editbox mc-right" title="Editar Logo Instituição">
                     <?php $this->ajaxUploader($entity, 'institute', 'image-src', 'div.institute img.js-institute-img', '', 'institute'); ?>
                 </div>
             <?php endif; ?>
         </div>
 
-        <span class="tip">Deve ter as dimensões de <strong>90x39px</strong> com extensões <strong>.png/.jpg</strong></span>
+        <span class="tip">
+            <?php printf(\MapasCulturais\i::__('Deve ter as dimensões de %s com extensões %s'), '<strong>90x39px</strong>', '<strong>.png/.jpg</strong>'); ?>
+        </span>
 
         <?php $this->applyTemplateHook('institute','after'); ?>
     </div>
@@ -109,4 +115,8 @@
 
         <?php $this->applyTemplateHook('favicon','after'); ?>
     </div>
+<<<<<<< HEAD
+
+=======
+>>>>>>> rc
 </div>

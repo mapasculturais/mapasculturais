@@ -71,7 +71,7 @@ return array(
 
     // development, staging, production
     'app.mode' => 'production',
-    'app.lcode' => 'pt-br',
+    'app.lcode' => 'pt_BR',
 
     'app.verifiedSealsIds' => [1],
 
@@ -357,7 +357,8 @@ return array(
             'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
-
+            //'historico' => array('entityRevision','history',array('entity' => 'event','id' => '6')),
+            'historico' => array('entityRevision','history'),
             'evento'    => array('event',   'single'),
             'usuario'   => array('user',    'single'),
             'agente'    => array('agent',   'single'),
@@ -391,6 +392,8 @@ return array(
             'inscricoes'     => 'registration',
             'instalacoes'    => 'subsite',
             'anexos'         => 'registrationfileconfiguration',
+            'revisoes'       => 'entityRevision',
+            'historico'      => 'entityRevision'
         ),
         'actions' => array(
             'lista'         => 'list',
@@ -400,9 +403,11 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-            'subsite'          => 'subsite',
+            'subsite'       => 'subsite',
             'selos'         => 'seals',
-            'inscricoes'    => 'registrations'
+            'inscricoes'    => 'registrations',
+            'agente'        => 'agent',
+            'evento'        => 'event'
         ),
 
         'readableNames' => array(
@@ -418,7 +423,7 @@ return array(
             'registration'  => \MapasCulturais\i::__('Inscrição'), 'registrations' => \MapasCulturais\i::__('Inscrições'),
             'file'          => \MapasCulturais\i::__('Arquivo'),   'files'         => \MapasCulturais\i::__('Arquivos'),
             'seal'          => \MapasCulturais\i::__('Selo'),      'seals'         => \MapasCulturais\i::__('Selos'),
-
+            'entityRevision'=> \MapasCulturais\i::__('Histórico'), 'revisions'     => \MapasCulturais\i::__('Revisões'),
             'sealrelation'  => \MapasCulturais\i::__('Certificado'),
             //actions
             'subsite'       => \MapasCulturais\i::__('Subsite'),

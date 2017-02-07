@@ -435,7 +435,10 @@ class App extends \Slim\Slim{
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-
+        
+        //Load defaut translation textdomain
+        i::load_default_textdomain();
+        
         $this->register();
 
 
@@ -472,9 +475,6 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
-
-        //Load defaut translation textdomain
-        i::load_default_textdomain();
 
         return $this;
     }
@@ -657,6 +657,8 @@ class App extends \Slim\Slim{
         //workflow controllers
         $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
+        // history controller
+        $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
@@ -1304,7 +1306,7 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
-    
+
     /**
      * Returns the current subsite ID, or null if current site is the main site
      *
@@ -1316,7 +1318,7 @@ class App extends \Slim\Slim{
             return $this->_subsite->id;
         }
 
-        return null; 
+        return null;
     }
 
     public function getCurrentSubsite(){
@@ -2391,10 +2393,10 @@ class App extends \Slim\Slim{
      * GetText
      **************/
     /* deprecated, use MapasCulturais\i::get_locale();
-     * 
-     * 
-     * 
-     */ 
+     *
+     *
+     *
+     */
     static function getCurrentLCode(){
         return \MapasCulturais\i::get_locale();
     }

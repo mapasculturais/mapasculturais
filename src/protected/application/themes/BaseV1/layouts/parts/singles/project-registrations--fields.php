@@ -10,6 +10,8 @@
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)"><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
+                
+                
             </p>
         <?php endif; ?>
         <!-- edit-box to add attachment -->
