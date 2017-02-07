@@ -545,6 +545,7 @@ return [
         }
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
     },
+<<<<<<< HEAD
             
     'refactor of entity meta keky value indexes' => function() use ($conn){
         $__try = function($sql) use ($conn){
@@ -573,4 +574,6 @@ return [
         $__try("DROP INDEX notification_meta_key_value_idx;");
         $__try("CREATE INDEX notification_meta_key_idx ON notification_meta(key);");
     }
+=======
+>>>>>>> 7fdf69b... Removed histories entries migration.
 ] + $updates ;
