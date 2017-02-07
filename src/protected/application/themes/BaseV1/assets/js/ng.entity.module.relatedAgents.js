@@ -53,6 +53,16 @@
                         $rootScope.$emit('error', { message: "Cannot remove related agent", data: data, status: status });
                     });
             },
+            
+            renameGroup: function(group) {
+                return $http.post(this.getUrl('renameGroupAgentRelation'), {group: group}).
+                    success(function(data, status){
+                        $rootScope.$emit('relatedAgent.renamedGroup', data);
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', { message: "Cannot rename group", data: data, status: status });
+                    });
+            },
 
             giveControl: function(agentId){
                 return this.setControl(agentId, true);
@@ -134,6 +144,10 @@
         $scope.closeNewGroupEditBox = function(){
             EditBox.close('new-related-agent-group');
         };
+        
+        $scope.closeRenameGroupEditBox = function(){
+            EditBox.close('rename-related-agent-group');
+        };
 
         $scope.data.newGroupName = '';
 
@@ -151,7 +165,29 @@
                 EditBox.close('new-related-agent-group');
             }
         };
-
+        
+        $scope.setRenameGroup = function(group){
+            $scope.data.editGroup = {};
+            angular.copy(group, $scope.data.editGroup);
+            $scope.data.editGroupIndex = $scope.groups.indexOf(group);
+        };
+        
+        $scope.renameGroup = function(e){
+            //console.log(e);
+            if($scope.data.editGroup.name.trim() && !groupExists( $scope.data.editGroup.name ) && $scope.data.editGroup.name.toLowerCase().trim() !== 'registration' && $scope.data.editGroup.name.toLowerCase().trim() !== 'group-admin' ){
+                
+                
+                RelatedAgentsService.renameGroup($scope.data.editGroup);
+                
+                
+                //$scope.groups[$scope.data.editGroupIndex] = $scope.data.editGroup;
+                
+                //console.log($scope.groups[$scope.data.editGroupIndex].relations);
+                
+                //EditBox.close('rename-related-agent-group');
+            }
+        };
+        
         $scope.createRelation = function(entity){
             var _scope = this.$parent;
             var groupName = _scope.attrs.group;
