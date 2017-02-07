@@ -30,7 +30,11 @@ $app = MapasCulturais\App::i();
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
+<<<<<<< HEAD
         <div class="alert info"><?php echo \MapasCulturais\i::__("As informações deste registro é histórico gerado em " .$entity->createTimestamp->format('d/m/Y ás H:i:s').".");?>
+=======
+        <div class="alert info"><?php printf(i::__("As informações deste registro é histórico gerado em %s."), $entity->createTimestamp->format('d/m/Y á\s H:i:s'))?>
+>>>>>>> 6d23623... Fix save last login timestamp on entity revision modified.
         <br>
         <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
             <?php printf(\MapasCulturais\i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
