@@ -173,18 +173,11 @@
         };
         
         $scope.renameGroup = function(e){
-            //console.log(e);
             if($scope.data.editGroup.name.trim() && !groupExists( $scope.data.editGroup.name ) && $scope.data.editGroup.name.toLowerCase().trim() !== 'registration' && $scope.data.editGroup.name.toLowerCase().trim() !== 'group-admin' ){
-                
-                
-                RelatedAgentsService.renameGroup($scope.data.editGroup);
-                
-                
-                //$scope.groups[$scope.data.editGroupIndex] = $scope.data.editGroup;
-                
-                //console.log($scope.groups[$scope.data.editGroupIndex].relations);
-                
-                //EditBox.close('rename-related-agent-group');
+                RelatedAgentsService.renameGroup($scope.data.editGroup).success(function() {
+                    angular.copy($scope.data.editGroup, $scope.groups[$scope.data.editGroupIndex]);
+                    EditBox.close('rename-related-agent-group');
+                });
             }
         };
         
@@ -219,7 +212,6 @@
         $scope.deleteGroup = function(group) {
             if (confirm(labels['confirmDeleteGroup'].replace('%s', group.name))) {
                 var i = $scope.groups.indexOf(group);
-                console.log(group.relations);
                 group.relations.forEach(function(relation){
                     //$scope.deleteRelation(relation);
                     RelatedAgentsService.remove(relation.group, relation.agent.id);

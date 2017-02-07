@@ -108,14 +108,14 @@ trait ControllerAgentRelation{
                     array_push($ids, $rel['id']);
                 }
                 
-                $query = sprintf('update MapasCulturais\Entities\AgentRelation r set r.type = :newName WHERE id IN(%s)', implode(',', $ids));
+                $query = sprintf('update MapasCulturais\Entities\AgentRelation r set r.group = :newName WHERE r.id IN(%s)', implode(',', $ids));
                 
-                #$q = $app->em->prepare($query);
-                #$q->bindValue('newName', $this->postData['group']['name']);
-                #$q = $app->em->createQuery($query);
-                #$numUpdated = $q->execute();
+                $q = $app->em->createQuery($query);
+                $q->setParameter("newName", $this->postData['group']['name']);
                 
-                #var_dump($numUpdated); die;
+                $numUpdated = $q->execute();
+                
+                $this->finish($numUpdated, 200, true);
         
         }
         
