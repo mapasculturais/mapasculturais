@@ -272,7 +272,7 @@
 
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
-                var exportSelect = ['singleUrl'];
+                var exportSelect = ['singleUrl,type,terms'];
                 var dontExportSelect = {
                     user: true,
                     publicLocation: true,
