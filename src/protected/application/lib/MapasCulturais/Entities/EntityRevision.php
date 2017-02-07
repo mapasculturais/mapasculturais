@@ -97,6 +97,16 @@ class EntityRevision extends \MapasCulturais\Entity{
         parent::__construct();
         $app = App::i();
 
+        $user = $app->user;
+
+        if($user->is('guest')){
+            $user = $entity->getOwnerUser();
+        }
+        
+        $user = $app->repo('User')->find($user->id);
+        
+        $this->user = $user;
+
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
         $this->action = $action;
@@ -117,7 +127,11 @@ class EntityRevision extends \MapasCulturais\Entity{
         } elseif($action == self::ACTION_MODIFIED) {
             $lastRevision = $entity->getLastRevision();
             $lastRevisionData = $lastRevision->getRevisionData();
-            $this->createTimestamp = (isset($lastRevision->updateTimestamp) ? $lastRevision->updateTimestamp: new \DateTime());
+            if(isset($lastRevision->updateTimestamp) && $lastRevision->updateTimestamp) {
+                $createTimestamp = $lastRevision->updateTimestamp;
+            } elseif(isset($this->user->lastLoginTimestamp) && $this->user->lastLoginTimestamp) {
+                $createTimestamp = $this->user->lastLoginTimestamp;
+            }
 
             foreach($dataRevision as $key => $data) {
                 $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
@@ -144,15 +158,6 @@ class EntityRevision extends \MapasCulturais\Entity{
         if(!empty(trim($message))) {
             $this->message = $message;
         }
-        $user = $app->user;
-
-        if($user->is('guest')){
-            $user = $entity->getOwnerUser();
-        }
-        
-        $user = $app->repo('User')->find($user->id);
-        
-        $this->user = $user;
     }
 
     public function canUser($action, $userOrAgent = null){
