@@ -36,7 +36,7 @@ $has_private_location = isset($has_private_location) && $has_private_location
                 </p>
             <?php endif; ?>
 
-            <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): $metakey = $geo_division->metakey; ?>
+            <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey; ?>
                 <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
                     <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
                 </p>

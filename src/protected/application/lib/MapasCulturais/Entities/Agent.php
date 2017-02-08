@@ -348,6 +348,10 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function setParent(Agent $parent = null){
+        if($parent->equals($this->parent)) {
+            return true;
+        }
+        
         $this->nestedSetParent($parent);
         if($parent)
             $this->setUser($parent->user);

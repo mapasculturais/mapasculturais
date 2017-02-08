@@ -66,26 +66,31 @@ trait EntitySealRelation {
         $result = [];
 
         $now = new \DateTime;
+        $diff = 0;
         foreach ($this->getSealRelations($include_pending_relations) as $sealRelation) {
             $result[$sealRelation->id] = $return_relations ? $sealRelation : $sealRelation->seal;
-            $diff = ($result[$sealRelation->id]->validateDate->format("U") - $now->format("U"))/86400;
-            $result[$sealRelation->id]->validateDate = $result[$sealRelation->id]->validateDate->format("d/m/Y");
+            if(isset($result[$sealRelation->id]->validateDate) && $result[$sealRelation->id]->validateDate) {
+                $diff = ($result[$sealRelation->id]->validateDate->format("U") - $now->format("U"))/86400;
+                $result[$sealRelation->id]->validateDate = $result[$sealRelation->id]->validateDate->format("d/m/Y");
+                if($diff <= 0) { // Expired
+                    $result[$sealRelation->id]->{'toExpire'} = 0;
+                    $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
+                    $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
+                }elseif($diff <= $app->config['notifications.seal.toExpire']) { // To Expire
+                    $result[$sealRelation->id]->{'toExpire'} = 1;
+                    $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealRelationUrl($sealRelation->id);
+                    $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
+                } else {
+                    $result[$sealRelation->id]->{'toExpire'} = 2; // Not To Expired
+                }
+            } else {
+                $result[$sealRelation->id]->{'toExpire'} = 2; // Not To Expired
+            }
+
             $result[$sealRelation->id]->ownerSealUserId = $sealRelation->seal->owner->userId; 
 
             if(is_null($result[$sealRelation->id]->renovation_request)) {
                 $result[$sealRelation->id]->renovation_request = false;    
-            }
-
-            if($diff <= 0) { // Expired
-                $result[$sealRelation->id]->{'toExpire'} = 0;
-                $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
-                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
-            }else if($diff <= $app->config['notifications.seal.toExpire']) { // To Expire
-                $result[$sealRelation->id]->{'toExpire'} = 1;
-                $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealRelationUrl($sealRelation->id);
-                $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
-            } else {
-                $result[$sealRelation->id]->{'toExpire'} = 2; // Not To Expired
             }
         }
 
@@ -97,6 +102,9 @@ trait EntitySealRelation {
 
     function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true){
         $app = App::i();
+        
+        $seal->checkPermission('@control');
+        
         $relation_class = $this->getSealRelationEntityClassName();
         $relation = new $relation_class;
         $relation->seal = $seal;
@@ -123,12 +131,12 @@ trait EntitySealRelation {
     }
 
     protected function canUserCreateSealRelation($user){
-        $result = $user->is('admin');
+        $result = $this->canUser('@control', $user);
         return $result;
     }
 
     function canUserRemoveSealRelation($user){
-        $result = $user->is('admin');
+        $this->canUser('@control', $user);
         return $result;
     }
 

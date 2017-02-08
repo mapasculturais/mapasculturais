@@ -1,77 +1,129 @@
 <?php
-/*
 require_once __DIR__ . '/bootstrap.php';
 
 class APITest extends MapasCulturais_TestCase {
     
-    function parseQuery($query){
-        $nq = [];
-        
-        foreach($query as $p){
-            list($key, $val) = explode('=', $p);
-            $nq[$key] = $val;
+    function api($entity, $_params){
+        if(is_string($_params)){
+            parse_str($_params,$params);
+        } else {
+            $params = $_params;
         }
-        
-        return $nq;
+        $rs = new MapasCulturais\ApiQuery("MapasCulturais\Entities\\$entity", $params);
+        return $rs;
     }
     
-    function findOne($controller, $query){
-        $curl = $this->get('/api/' . $controller . '/findOne', $this->parseQuery($query));
-        
-        return json_decode($curl->response);
+    function apiFind($entity, $_params){
+        $rs = $this->api($entity, $_params);
+        return $rs->find();
+    }
+    
+    function apiFindOne($entity, $_params){
+        $rs = $this->api($entity, $_params);
+        return $rs->findOne();
+    }
+    
+    function apiCount($entity, $_params){
+        $rs = $this->api($entity, $_params);
+        return $rs->count();
     }
 
     function testFindOneMethod() {
-        $props = 'id,name,shortDescription';
+        $simplify = function($entity, $props){
+            return (array) $entity->simplify($props);
+        };
         
-        $agent1 = $this->app->repo('Agent')->find(1)->simplify($props);
-        $response1 = $this->findOne('agent', [
-            'id=EQ(1)',
-            '@select=' . $props
-        ]);
-        
-        $this->assertEquals($agent1, $response1);
-        
-        $agent2 = $this->app->repo('Agent')->find(2)->simplify($props);
-        $response2 = $this->findOne('agent', [
-            'id=EQ(2)',
-            '@select=' . $props
-        ]);
-        
-        $this->assertEquals($agent2, $response2);
-    }
+        $cps = [
+            'id' => $simplify,
+            'id,singleUrl,editUrl,deleteUrl,destroyUrl,endereco,En_CEP' => $simplify,
 
-    function test404(){
-        $curl = $this->get('/foo/bar');
+            'id,name,user.{id,email,profile.{id,name,singleUrl,editUrl,deleteUrl,endereco,En_CEP}}' => function($entity){
+                $user = $entity->ownerUser;
+                $profile = $user->profile;
+                return [
+                    'id' => $entity->id,
+                    'name' => $entity->name,
+                    'user' => [
+                        'id' => $user->id,
+                        'email' => $user->email,
+                        'profile' => [
+                            'id' => $profile->id,
+                            'name' => $profile->name,
+                            'singleUrl' => $profile->singleUrl,
+                            'editUrl' => $profile->editUrl,
+                            'deleteUrl' => $profile->deleteUrl,
+                            'endereco' => $profile->endereco,
+                            'En_CEP' => $profile->En_CEP
+                        ]
+                    ]
+                ];
+            },
+            'id,name,owner' => function($entity){
+                $user = $entity->ownerUser;
+                $profile = $user->profile;
+                return [
+                    'id' => $entity->id,
+                    'name' => $entity->name,
+                    'owner' => $entity->owner->id
+                ];
+            },
+        ];
         
-        $this->assertEquals(404, $curl->error_code);
-    }
-    
-    function assertApiResult($controller, $endpoint, $query, $expected){
-        $curl = $this->get("/api/$controller/$endpoint", $query);
-        $this->assertEquals($expected, json_decode($curl->response), "asserting that $controller $endpoint response is valid");
-        
-    }
-    
-    function testAPI(){
-        $queries = json_decode(file_get_contents(__DIR__ . '/api-queries.json'));
-        foreach($queries as $query){
-            $this->app->cache->deleteAll();
+        foreach([null,'superAdmin','admin','normal'] as $user){
+            $this->user = $user;
             
-            if($query->userId){
-                $this->user = $query->userId;
-            }else{
-                $this->user = null;
+            // agente nao tem owner, tem parent...
+            foreach(['Space', 'Project', 'Event'] as $class){
+                $entities = $this->app->repo($class)->findAll();
+                
+                foreach($entities as $entity){
+                    if($entity->status < 1) continue;
+                    
+                    foreach($cps as $props => $proc){
+                        $response = $this->apiFindOne($class, "@select={$props}&id=EQ({$entity->id})");
+                        $_entity = $proc($entity, $props);
+                        
+                        $this->assertEquals($_entity, $response, "asserting {$class} api findOne to \$user");
+                    }
+                }
             }
+        }
+    }
             
-            $controller = $query->controller;
-            $endpoint = $query->endpoint;
-            $qdata = $query->qdata;
-            $expected = $query->result;
+    function testQuerySintax(){
+        $this->user = 'admin';
+        
+        $s1 = 'id,name,user.id,user.email,user.profile.id,user.profile.name,user.profile.singleUrl,user.profile.endereco,user.profile.spaces.id,user.profile.spaces.name,user.profile.spaces.singleUrl,user.profile.spaces.endereco';
+        $s2 = 'id,name,user.{id,email,profile.id,profile.name,profile.singleUrl,profile.endereco,profile.spaces.id,profile.spaces.name,profile.spaces.singleUrl,profile.spaces.endereco}';
+        $s3 = 'id,name,user.{id,email,profile.{id,name,singleUrl,endereco,spaces.id,spaces.name,spaces.singleUrl,spaces.endereco}}';
+        $s4 = 'id,name,user.{id,email,profile.{id,name,singleUrl,endereco,spaces.{id,name,singleUrl,endereco}}}';
+        
+        $entities = $this->app->repo('Event')->findAll();
+        foreach($entities as $entity){
+            $r1 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s1");
+            $r2 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s2");
+            $r3 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s3");
+            $r4 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s4");
             
-            $this->assertApiResult($controller, $endpoint, $qdata, $expected);
+            $this->assertEquals($r1, $r2, 'asserting same result for different sitaxes');
+            $this->assertEquals($r1, $r3, 'asserting same result for different sitaxes');
+            $this->assertEquals($r1, $r4, 'asserting same result for different sitaxes');
         }
     }
     
+    function testJsonOutput(){
+        $event_id = 522;
+        
+        $s1 = 'id,name,user.{id,email,profile.{id,name,singleUrl,endereco,spaces.{id,name,singleUrl,endereco}}}';
+        
+        $query = "id=EQ($event_id)&@select=$s1";
+        
+        $r1 = json_decode(json_encode($this->apiFind('event', $query)));
+        
+        $curl = $this->get("/api/event/find?$query");
+        $r2 = json_decode($curl->response);
+        
+        $this->assertEquals($r1, $r2);
+
+    }
 }
-*/

@@ -266,29 +266,6 @@ class Project extends \MapasCulturais\Entity
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
 
-
-    function getUsedAgentRelations(){
-        $app = App::i();
-        $r = [];
-        foreach($app->getRegistrationAgentsDefinitions() as $def)
-            if($this->useRegistrationAgentRelation($def))
-                $r[] = $def;
-        return $r;
-    }
-    
-    function getExtraPermissionCacheUsers(){
-        $users = [];
-        if($this->publishedRegistrations) {
-            $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
-            $r = new Registration;
-            foreach($registrations as $r){
-                $users = array_merge($users, $r->getUsersWithControl());
-            }
-        }
-        
-        return $users;
-    }
-
     protected function canUserCreateEvents($user) {
         if ($user->is('guest')) {
             return false;

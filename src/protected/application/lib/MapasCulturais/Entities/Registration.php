@@ -346,10 +346,6 @@ class Registration extends \MapasCulturais\Entity
             $this->checkPermission('changeStatus');
         }
 
-        if($status === self::STATUS_APPROVED) {
-            $this->setAgentsSealRelation();
-        }
-
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
@@ -372,10 +368,12 @@ class Registration extends \MapasCulturais\Entity
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
 
-	    	$sealOwner			= App::i()->repo('Seal')->find($opportunityMetadataSeals->owner);
-	        $relation->seal		= $sealOwner;
-	        $relation->owner	= $this->owner;
-	    	$relation->save(true);
+	    	$sealOwner          = App::i()->repo('Seal')->find($opportunityMetadataSeals->owner);
+	        $relation->seal     = $sealOwner;
+	        $relation->owner    = $this->owner;
+	        $relation->agent    = $this->project->owner; //  o agente que aplica o selo (o dono da oportunidade)
+
+                $relation->save(true);
     	}
 
     	$sealInstitutions	= isset($opportunityMetadataSeals->institution)? App::i()->repo('Seal')->find($opportunityMetadataSeals->institution):null;
@@ -387,12 +385,14 @@ class Registration extends \MapasCulturais\Entity
         		$relation = new $relation_class;
         		$relation->seal = $sealInstitutions;
         		$relation->owner = $agent;
+                $relation->agent = $this->project->owner;
         		$relation->save(true);
         	} elseif (trim($groupName) == 'coletivo' && isset($opportunityMetadataSeals->collective) && is_object($sealCollective)) {
         		$agent = $relatedAgents[0];
         		$relation = new $relation_class;
         		$relation->seal = $sealCollective;
         		$relation->owner = $agent;
+                $relation->agent = $this->project->owner;
         		$relation->save(true);
         	}
         }

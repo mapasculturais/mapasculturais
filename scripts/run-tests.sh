@@ -31,6 +31,7 @@ psql -c "CREATE USER mapasculturais_test WITH PASSWORD 'mapasculturais_test' SUP
 ./restore-dump.sh -o=mapasculturais_test -f=db-test.sql -db=mapasculturais_test --noconfirm
 ./compile-sass.sh localhost conf-test.php
 ./db-update.sh localhost 0 conf-test.php
+./mc-db-updates.sh -c="conf-test.php" -p=1
 
 cd ..
 

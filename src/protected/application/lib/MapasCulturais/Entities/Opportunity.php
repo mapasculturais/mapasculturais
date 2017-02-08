@@ -256,6 +256,19 @@ abstract class Opportunity extends \MapasCulturais\Entity
         ];
     }
     
+    function getExtraPermissionCacheUsers(){
+        $users = [];
+        if($this->publishedRegistrations) {
+            $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
+            $r = new Registration;
+            foreach($registrations as $r){
+                $users = array_merge($users, $r->getUsersWithControl());
+            }
+        }
+        
+        return $users;
+    }
+    
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
@@ -350,6 +363,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $this->checkPermission('publishRegistrations');
 
         $this->publishedRegistrations = true;
+        
+        // atribui os selos as inscrições selecionadas
+        $app = App::i();
+        $registrations = $app->repo('Registration')->findBy(array('project' => $this, 'status' => Registration::STATUS_APPROVED));
+        
+        foreach ($registrations as $registration) {
+            $registration->setAgentsSealRelation();
+        }
 
         $this->save(true);
     }

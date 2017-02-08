@@ -35,7 +35,7 @@ $this->includeMapAssets();
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <div class="alert info"><?php printf(i::__("As informações deste registro é histórico gerado em %s."), $entity->createTimestamp->format('d/m/Y ás H:i:s'));?>
+        <div class="alert info"><?php printf(i::__("As informações deste registro é histórico gerado em %s."), $entity->createTimestamp->format('d/m/Y á\s H:i:s'));?>
         <br>
         <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
             <?php printf(i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
