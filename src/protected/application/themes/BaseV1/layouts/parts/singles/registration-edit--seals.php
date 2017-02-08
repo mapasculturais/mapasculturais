@@ -3,12 +3,12 @@
 if(!$app->isEnabled('seals'))
 	return;
 
-$owner = isset($project->registrationSeals->owner) ? $project->registrationSeals->owner : '';
-$institution = isset($project->registrationSeals->institution) ? $project->registrationSeals->institution : '';
-$collective = isset($project->registrationSeals->collective) ? $project->registrationSeals->collective : '';
+$seals = $project->registrationSeals;
+$owner = isset($seals->owner) ? $seals->owner : '';
+$institution = isset($seals->institution) ? $seals->institution : '';
+$collective = isset($seals->collective) ? $seals->collective : '';
 
 $this->addSealsToJs(false, [$owner, $institution, $collective]);
-
 if(EMPTY($owner+$institution+$collective))
 	return;
 ?>

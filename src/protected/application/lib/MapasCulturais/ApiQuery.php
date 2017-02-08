@@ -440,7 +440,7 @@ class ApiQuery {
     }
 
     public function findOne(){
-        return $this->getFindOnerResult();
+        return $this->getFindOneResult();
     }
     
     public function getFindOneResult() {
@@ -724,21 +724,27 @@ class ApiQuery {
             $this->_selectingProperties = array_merge(['id'], $this->_selectingProperties);
         }
         
-        if (count($this->_selectingProperties) > 1 && in_array('publicLocation', $this->entityProperties) && !in_array('publicLocation', $this->_selectingProperties)) {
+        if (count($this->_selectingProperties) >= 1 && in_array('publicLocation', $this->entityProperties) && !in_array('publicLocation', $this->_selectingProperties)) {
             $this->_selectingProperties[] = 'publicLocation';
             $this->_removeFromResult[] = 'publicLocation';
         }
         
-        if (count($this->_selectingProperties) > 1 && !in_array('_subsiteId', $this->_selectingProperties) && $this->usesOriginSubsite) {
+        if (count($this->_selectingProperties) >= 1 && !in_array('_subsiteId', $this->_selectingProperties) && $this->usesOriginSubsite) {
             $this->_selectingProperties[] = '_subsiteId';
             $this->_removeFromResult[] = '_subsiteId';
         }
         
-
-        $select .= implode(', ', array_map(function ($e) {
-                    return "e.{$e}";
-                }, $this->_selectingProperties));
-
+        $_select = implode(', ', array_map(function ($e) {
+            return "e.{$e}";
+        }, $this->_selectingProperties));
+        
+        if($select && $_select){
+            $select = "$_select, $select";
+            
+        } else if ($_select) {
+           $select = $_select;
+        }
+                
         // to prevent new queries when selecting only the id of relations 
         foreach ($this->_subqueriesSelect as $key => &$cfg) {
             $prop = $cfg['property'];
@@ -999,6 +1005,14 @@ class ApiQuery {
                     $mapping = $this->entityRelations[$prop];
                 } else if(isset($this->entityRelations['_' . $prop])){
                     $mapping = $this->entityRelations['_' . $prop];
+                } else if($prop == 'user'){
+                    $mapping = [
+                        'targetEntity' => 'MapasCulturais\Entities\User',
+                        'type' => 2,
+                        'users' => array_map(function($e) { return $e['user']; }, $entities)
+                    ];
+                        
+                    $cfg['selected'] = true;
                 } else {
                     continue;
                 }
@@ -1011,11 +1025,12 @@ class ApiQuery {
                 $subquery_result_index = [];
 
                 $_target_property = null;
-
                 // if this relation was not selected in the main query
                 if (!$skip) {
-                    
-                    if ($mtype === 2) {
+                    if(isset($mapping['users'])){
+                        $_subquery_where_id_in = implode($mapping['users']);
+                        $_target_property = 'id';
+                    }else if ($mtype === 2) {
                         if ($selected) {
                             $_subquery_where_id_in = $this->getSubqueryInIdentities($entities, $prop);
                         } else {
@@ -1051,6 +1066,7 @@ class ApiQuery {
                     $cfg['query'] = $query;
                     $cfg['query_result'] = [];
                     $subquery_result = $query->getFindResult();
+                    
                     if($mtype == 2) {
                         foreach ($subquery_result as &$r) {
                             if($original_select === 'id'){
@@ -1058,7 +1074,9 @@ class ApiQuery {
 
                             } else {
                                 $subquery_result_index[$r[$_target_property]] = &$r;
-                                unset($r[$_target_property]);
+                                if(!in_array($_target_property, $query->_selecting)){
+                                    unset($r[$_target_property]);
+                                }
                             }
                         }
                     } else {
@@ -1071,14 +1089,17 @@ class ApiQuery {
 
                             } else {
                                 $subquery_result_index[$r[$_target_property]][] = &$r;
-                                unset($r[$_target_property]);
+                                if(!in_array($_target_property, $query->_selecting)){
+                                    unset($r[$_target_property]);
+                                }
                             }
                         }
                     }
-                   
+                    
                 }
 
                 foreach ($entities as &$entity) {
+                    
                     if ($skip) {
                         continue;
                     } elseif ($selected) {
@@ -1646,6 +1667,7 @@ class ApiQuery {
     }
 
     protected function _addFilterByOwnerUser($value) {
+        
         $this->_keys['user'] = '__user_agent__.user';
 
         $this->joins .= "\n\tLEFT JOIN e.owner __user_agent__\n";
@@ -1726,8 +1748,8 @@ class ApiQuery {
             $select = implode(',', $this->_getAllPropertiesNames());
         }
         
-        $replacer = function ($select, $_subquery_entity_class, $_subquery_select, $_subquery_match){
-            $replacement = $this->_preCreateSelectSubquery($_subquery_entity_class, $_subquery_select, $_subquery_match);
+        $replacer = function ($select, $prop, $_subquery_select, $_subquery_match){
+            $replacement = $this->_preCreateSelectSubquery($prop, $_subquery_select, $_subquery_match);
             if(is_null($replacement)){
                 $select = str_replace(["$_subquery_match,", ",$_subquery_match"], '', $select);
 
@@ -1741,18 +1763,18 @@ class ApiQuery {
         // create subquery to format entity.* or entity.{id,name}
         while (preg_match('#([^,\.\{]+)\.(\{[^\{\}]+\})#', $select, $matches)) {
             $_subquery_match = $matches[0];
-            $_subquery_entity = $matches[1];
+            $prop = $matches[1];
             $_subquery_select = substr($matches[2], 1, -1);
-            $select = $replacer($select, $_subquery_entity, $_subquery_select, $_subquery_match);
+            $select = $replacer($select, $prop, $_subquery_select, $_subquery_match);
         }
 
         // create subquery to format entity.id or entity.name        
-        while (preg_match('#([^,\.]+)\.([^,\.]+)#', $select, $matches)) {
+        while (preg_match('#([^,\.]+)\.([^,]+)#', $select, $matches)) {
             $_subquery_match = $matches[0];
-            $_subquery_entity = $matches[1];
+            $prop = $matches[1];
             $_subquery_select = $matches[2];
 
-            $select = $replacer($select, $_subquery_entity, $_subquery_select, $_subquery_match);
+            $select = $replacer($select, $prop, $_subquery_select, $_subquery_match);
         }
 
         $this->_selecting = array_unique(explode(',', $select));
@@ -1797,6 +1819,7 @@ class ApiQuery {
             }
         }, explode(',', $_select));
 
+        $first_time = !isset($this->_selectingRelations[$prop]);
         
         if(isset($this->_selectingRelations[$prop])){
             $uid = $this->_selectingRelations[$prop];
@@ -1819,6 +1842,13 @@ class ApiQuery {
             ];
             
             $result = $uid;
+        }
+        
+        if($first_time && $prop === 'user' && !isset($this->entityRelations['user']) && $this->usesOwnerAgent){
+            $user_alias = $this->getAlias('user');
+            $owner_alias = $this->getAlias('owner');
+            $this->select .=  $this->select ? ", IDENTITY({$owner_alias}.user) AS user" : "IDENTITY({$owner_alias}.user) AS user";
+            $this->joins .= " JOIN e.owner {$owner_alias}";
         }
         
         return $result;

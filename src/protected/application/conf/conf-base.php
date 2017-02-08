@@ -71,7 +71,7 @@ return array(
 
     // development, staging, production
     'app.mode' => 'production',
-    'app.lcode' => 'pt-br',
+    'app.lcode' => 'pt_BR',
 
     'app.verifiedSealsIds' => [1],
 
@@ -142,7 +142,17 @@ return array(
     'cep.token'         => '',
 
     'export.excelName'      => 'mapas-culturais-dados-exportados.xls',
-
+    
+    /* Divisões geográficas
+     * Veja http://docs.mapasculturais.org/mc_deploy_shapefiles/ para informações de como 
+     * inserir shapefiles aos bancos e cadastrá-los aqui
+     * 
+     * coloque um underline "_" na frente do slug da division para
+     * que o metadado gerado não seja exibido na página de perfil da entidade.
+     * 
+     * Ex: '_estado'        => \MapasCulturais\i::__('Estado'), 
+     * 
+     */ 
     'app.geoDivisionsHierarchy' => [
         'pais'          => \MapasCulturais\i::__('País'),          // metadata: geoPais
         'regiao'        => \MapasCulturais\i::__('Região'),        // metadata: geoRegiao
@@ -171,9 +181,13 @@ return array(
         'raca',
         'location',
         'endereco',
-        'geoZona',
-        'geoSubprefeitura',
-        'geoDistrito',
+        'En_CEP',
+        'En_Nome_Logradouro',
+        'En_Num',
+        'En_Complemento',
+        'En_Bairro',
+        'En_Municipio',
+        'En_Estado',
         'telefone1',
         'telefone2',
         'telefonePublico',
@@ -357,7 +371,8 @@ return array(
             'james-bond'                => array('agent', 'single', array('id' => 7)),
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
-
+            //'historico' => array('entityRevision','history',array('entity' => 'event','id' => '6')),
+            'historico' => array('entityRevision','history'),
             'evento'    => array('event',   'single'),
             'usuario'   => array('user',    'single'),
             'agente'    => array('agent',   'single'),
@@ -391,6 +406,8 @@ return array(
             'inscricoes'     => 'registration',
             'instalacoes'    => 'subsite',
             'anexos'         => 'registrationfileconfiguration',
+            'revisoes'       => 'entityRevision',
+            'historico'      => 'entityRevision'
         ),
         'actions' => array(
             'lista'         => 'list',
@@ -400,9 +417,11 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
-            'subsite'          => 'subsite',
+            'subsite'       => 'subsite',
             'selos'         => 'seals',
-            'inscricoes'    => 'registrations'
+            'inscricoes'    => 'registrations',
+            'agente'        => 'agent',
+            'evento'        => 'event'
         ),
 
         'readableNames' => array(
@@ -418,7 +437,7 @@ return array(
             'registration'  => \MapasCulturais\i::__('Inscrição'), 'registrations' => \MapasCulturais\i::__('Inscrições'),
             'file'          => \MapasCulturais\i::__('Arquivo'),   'files'         => \MapasCulturais\i::__('Arquivos'),
             'seal'          => \MapasCulturais\i::__('Selo'),      'seals'         => \MapasCulturais\i::__('Selos'),
-
+            'entityRevision'=> \MapasCulturais\i::__('Histórico'), 'revisions'     => \MapasCulturais\i::__('Revisões'),
             'sealrelation'  => \MapasCulturais\i::__('Certificado'),
             //actions
             'subsite'       => \MapasCulturais\i::__('Subsite'),
