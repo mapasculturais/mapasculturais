@@ -2724,7 +2724,7 @@ msgstr "Fecha inicial"
 #: protected/application/themes/BaseV1/layouts/parts/search/filter.php:19
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
 msgid "a"
-msgstr "a"
+msgstr "hasta"
 
 #: protected/application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:60
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:11
@@ -4769,7 +4769,7 @@ msgstr "Seleccione la clasificación"
 
 #: protected/application/themes/BaseV1/Theme.php:1738
 msgid "Inscrições Abertas"
-msgstr "Inscripciones abiertas"
+msgstr "Inscripciones Abiertas"
 
 #: protected/application/themes/BaseV1/layouts/parts/ajax-uploader.php:2
 msgid "Para subir arquivos você primeiro deve salvar."
@@ -5378,7 +5378,7 @@ msgstr "de "
 
 #: protected/application/themes/BaseV1/layouts/parts/panel-project.php:22
 msgid " a "
-msgstr " a "
+msgstr " hasta "
 
 #: protected/application/themes/BaseV1/layouts/parts/panel-project.php:26
 msgid "Organização:"
@@ -6061,7 +6061,7 @@ msgstr "activadas"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:7
 msgid "Inscrições abertas de"
-msgstr "Inscripciones abiertas de"
+msgstr "Inscripciones abiertas desde el"
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about.php:12
 #: protected/application/themes/BaseV1/views/agent/create.php:72
