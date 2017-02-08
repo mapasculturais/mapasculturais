@@ -32,4 +32,44 @@ class AgentTest extends MapasCulturais_TestCase{
         $this->assertFalse($agent2->isUserProfile, 'Asserting that the agent 2 is not the user profile after change the the user profile back to agent 1');
 
     }
+    
+    function testParent(){
+        $this->user = 'normal';
+        
+        $profile = $this->app->user->profile;
+        
+        $dest = $this->getNewEntity('Agent');
+        
+        $a1 = $this->getNewEntity('Agent');
+        $a2 = $this->getNewEntity('Agent');
+        $a3 = $this->getNewEntity('Agent');
+        
+        $a1->save(true);
+        $a2->save(true);
+        $a3->save(true);
+        
+        $dest->save(true);
+        
+        $dest->owner = $a1;
+        $dest->save(true);        
+        $dest->refresh();
+        $this->assertEquals($dest->owner->id, $a1->id);
+        
+        $dest->owner = $a2;
+        $dest->save(true);        
+        $dest->refresh();
+        $this->assertEquals($dest->owner->id, $a2->id);
+        
+        $dest->owner = $a3;
+        $dest->save(true);        
+        $dest->refresh();
+        $this->assertEquals($dest->owner->id, $a3->id);
+        
+        // repetindo mesmo agente
+        $dest->owner = $a3;
+        $dest->save(true);        
+        $dest->refresh();
+        $this->assertEquals($dest->owner->id, $a3->id);
+        
+    }
 }
