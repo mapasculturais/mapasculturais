@@ -2,10 +2,9 @@
 if(!$app->isEnabled('seals'))
 	return;
 
-$seals = $project->registrationSeals;
-$owner = isset($seals->owner) ? $seals->owner : '';
-$institution = isset($seals->institution) ? $seals->institution : '';
-$collective = isset($seals->collective) ? $seals->collective : '';
+$owner = isset($project->registrationSeals->owner) ? $project->registrationSeals->owner : '';
+$institution = isset($project->registrationSeals->institution) ? $project->registrationSeals->institution : '';
+$collective = isset($project->registrationSeals->collective) ? $project->registrationSeals->collective : '';
 
 $this->addSealsToJs(false, [$owner, $institution, $collective]);
 ?>
