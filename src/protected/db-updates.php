@@ -431,23 +431,6 @@ return [
         $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
     
-    'create avatar thumbs' => function() use($conn){
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
-
-        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-        echo count($files) . " ARQUIVOS\n";
-        foreach($files as $f){
-            $f->transform('avatarSmall');
-            $f->transform('avatarMedium');
-            $f->transform('avatarBig');
-        }
-
-        $this->disableAccessControl();
-    },
     'create entity revision tables' => function() use($conn) {
         if(__table_exists('entity_revision')) {
             echo "ALREADY APPLIED";
@@ -473,6 +456,24 @@ return [
 
         $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
         
+    },
+    
+    'create avatar thumbs' => function() use($conn){
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
+        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
+
+        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
+        echo count($files) . " ARQUIVOS\n";
+        foreach($files as $f){
+            $f->transform('avatarSmall');
+            $f->transform('avatarMedium');
+            $f->transform('avatarBig');
+        }
+
+        $this->disableAccessControl();
     },
             
     '*_meta drop all indexes again' => function () use($conn) {
@@ -501,6 +502,17 @@ return [
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
     },
     'recreate *_meta indexes' => function() use($conn) {
+        
+        $conn->executeQuery("DELETE FROM subsite_meta WHERE object_id NOT IN (SELECT id FROM subsite)");
+        $conn->executeQuery("DELETE FROM agent_meta WHERE object_id NOT IN (SELECT id FROM agent)");
+        $conn->executeQuery("DELETE FROM space_meta WHERE object_id NOT IN (SELECT id FROM space)");
+        $conn->executeQuery("DELETE FROM project_meta WHERE object_id NOT IN (SELECT id FROM project)");
+        $conn->executeQuery("DELETE FROM event_meta WHERE object_id NOT IN (SELECT id FROM event)");
+        $conn->executeQuery("DELETE FROM user_meta WHERE object_id NOT IN (SELECT id FROM usr)");
+        $conn->executeQuery("DELETE FROM seal_meta WHERE object_id NOT IN (SELECT id FROM seal)");
+        $conn->executeQuery("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration)");
+        $conn->executeQuery("DELETE FROM notification_meta WHERE object_id NOT IN (SELECT id FROM notification)");
+        
         $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
         $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         try{ 
