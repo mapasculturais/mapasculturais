@@ -102,6 +102,9 @@ trait EntitySealRelation {
 
     function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true){
         $app = App::i();
+        
+        $seal->checkPermission('@control');
+        
         $relation_class = $this->getSealRelationEntityClassName();
         $relation = new $relation_class;
         $relation->seal = $seal;
@@ -128,12 +131,12 @@ trait EntitySealRelation {
     }
 
     protected function canUserCreateSealRelation($user){
-        $result = $user->is('admin');
+        $result = $this->canUser('@control', $user);
         return $result;
     }
 
     function canUserRemoveSealRelation($user){
-        $result = $user->is('admin');
+        $this->canUser('@control', $user);
         return $result;
     }
 

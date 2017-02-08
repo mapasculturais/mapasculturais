@@ -16,21 +16,20 @@ $this->includeAngularEntityAssets($relation);
 
 $entity = $relation->seal;
 
+
+if ($header = $entity->getFile('header')){
+    $style = "background-image: url({$header->transform('header')->url});";
+} else {
+    $style = "";
+}
 ?>
 <article class="main-content seal">
     <header class="main-content-header">
-    <?php
-    	if ($header = $entity->getFile('header')){
-		    $style = "background-image: url({$header->transform('header')->url});";
-		} else {
-		    $style = "";
-		} ?>
         <?php $this->applyTemplateHook('header-image','before'); ?>
         <div class="header-image js-imagem-do-header" style="<?php echo $style ?>">
-		<?php if(!$app->user->is('guest') && $app->isEnabled('seals') && ($app->user->is('superAdmin')
-                    || $app->user->is('admin') || $app->user->profile->id == $relation->agent->id)) {?>
-			<a class="btn btn-default js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>"><?php \MapasCulturais\i::_e("Imprimir Certificado");?></a>
-		<?php } ?>
+            <?php if($relation->canUser('print')) :?>
+                <a class="btn btn-default js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>"><?php \MapasCulturais\i::_e("Imprimir Certificado");?></a>
+            <?php endif; ?>
 	</div>
 	<?php $this->applyTemplateHook('header-image','after'); ?>
 
