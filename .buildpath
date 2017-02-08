@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<buildpath>
-	<buildpathentry kind="src" path="cli/src"/>
-	<buildpathentry kind="src" path="scripts/report"/>
-	<buildpathentry kind="src" path="src"/>
-	<buildpathentry kind="src" path="tests"/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-</buildpath>
