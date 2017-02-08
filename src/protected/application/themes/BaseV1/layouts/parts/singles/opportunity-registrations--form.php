@@ -3,7 +3,7 @@
         <div class="registration-fieldset hide-tablet">
             <p class="registration-help"><?php \MapasCulturais\i::_e("Não é possível realizar as inscrições online através desse dispositivo. Tente se inscrever a partir de um dispositivo com a tela maior.");?></p>
         </div>
-        <form id="project-registration" class="registration-form clearfix">
+        <form id="opportunity-registration" class="registration-form clearfix">
             <p class="registration-help"><?php \MapasCulturais\i::_e("Para iniciar sua inscrição, selecione o agente responsável. Ele deve ser um agente individual (pessoa física), com um CPF válido preenchido.");?></p>
             <div>
                 <div id="select-registration-owner-button" class="input-text" ng-click="editbox.open('editbox-select-registration-owner', $event)">{{data.registration.owner ? data.registration.owner.name : data.registration.owner_default_label}}</div>

@@ -27,6 +27,7 @@ class Html extends \MapasCulturais\ApiOutput{
         'space'=>'Espaço',
         'event'=>'Evento',
         'project'=>'Projeto',
+        'opportunity'=>'Oportunidade',
         'seal'=>'Selo',
         'owner' => 'Publicado por',
         'parent' => 'Entidade pai',

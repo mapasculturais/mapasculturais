@@ -13,7 +13,7 @@
             <a class="delete hltip" ng-click="removeRegistrationRulesFile()" title="<?php \MapasCulturais\i::esc_attr_e("excluir regulamento");?>"></a>
         </div>
         <edit-box id="edibox-upload-rules" position="bottom" title="<?php \MapasCulturais\i::esc_attr_e("Regulamento");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true' on-submit="sendRegistrationRulesFile" on-cancel="closeRegistrationRulesUploadEditbox" spinner-condition="data.uploadSpinner">
-            <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('project', 'upload', array($entity->id)) ?>" data-group="rules"  enctype="multipart/form-data">
+            <form class="js-ajax-upload" method="post" action="<?php echo $app->createUrl('opportunity', 'upload', array($entity->id)) ?>" data-group="rules"  enctype="multipart/form-data">
                 <div class="alert danger hidden"></div>
                 <p class="form-help"><?php \MapasCulturais\i::_e("Tamanho máximo do arquivo");?>: {{maxUploadSizeFormatted}}</p>
                 <input type="file" name="rules" />

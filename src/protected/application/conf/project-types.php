@@ -71,7 +71,6 @@ return array(
         4 =>  array( 'name' => \MapasCulturais\i::__("Reunião")),
         5 =>  array( 'name' => \MapasCulturais\i::__("Mostra")),
         6 =>  array( 'name' => \MapasCulturais\i::__("Convenção")),
-        7 =>  array( 'name' => \MapasCulturais\i::__("Ciclo")),
         8 =>  array( 'name' => \MapasCulturais\i::__("Programa")),
         9 =>  array( 'name' => \MapasCulturais\i::__("Edital")),
         10 => array( 'name' => \MapasCulturais\i::__("Concurso")),
@@ -94,11 +93,6 @@ return array(
         27 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Nacional")),
         28 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Estadual")),
         29 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Municipal")),
-        30 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Militar")),
-        31 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Cívico")),
-        32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
-        33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
-        34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
     )
     /* EXEMPLOS DE METADADOS:
 

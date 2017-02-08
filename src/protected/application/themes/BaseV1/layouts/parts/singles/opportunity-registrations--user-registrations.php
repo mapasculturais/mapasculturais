@@ -1,4 +1,4 @@
-<?php if ($registrations = $app->repo('Registration')->findByProjectAndUser($entity, $app->user)): ?>
+<?php if ($registrations = $app->repo('Registration')->findByOpportunityAndUser($entity, $app->user)): ?>
     <table class="my-registrations">
         <caption><?php \MapasCulturais\i::_e("Minhas inscrições");?></caption>
         <thead>

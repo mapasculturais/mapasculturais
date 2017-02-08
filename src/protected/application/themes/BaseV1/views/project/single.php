@@ -1,6 +1,4 @@
 <?php
-use MapasCulturais\Entities\Registration;
-
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
 $this->bodyProperties['ng-app'] = "entity.app";
@@ -72,8 +70,6 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <?php $this->part('singles/project-events', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/project-about', ['entity' => $entity]) ?>
-
-        <?php $this->part('singles/project-registrations', ['entity' => $entity]) ?>
 
         <!-- #permissao -->
         <?php $this->part('singles/permissions') ?>

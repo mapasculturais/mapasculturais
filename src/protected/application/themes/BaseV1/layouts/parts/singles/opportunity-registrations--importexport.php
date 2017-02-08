@@ -8,7 +8,7 @@
     
     <p><?php \MapasCulturais\i::_e("Clique no botão abaixo para exportar as configurações e campos deste formulário. Salve o arquivo e o utilize para importar em outro formulário.");?> </p>
     
-    <a class="btn btn-default add" title="" href="<?php echo $app->createUrl('project', 'exportFields', [$entity->id]);?>"><?php \MapasCulturais\i::_e("Exportar formulário");?></a>
+    <a class="btn btn-default add" title="" href="<?php echo $app->createUrl('opportunity', 'exportFields', [$entity->id]);?>"><?php \MapasCulturais\i::_e("Exportar formulário");?></a>
     
     <br/><br/>            
     
@@ -22,7 +22,7 @@
     -->
     <?php if ($entity->canUser('modifyRegistrationFields')): ?>
         <div > <!-- ng-show="showImportFields" -->
-            <form name="impotFields" action="<?php echo $app->createUrl('project', 'importFields', [$entity->id]);?>" method="POST" enctype="multipart/form-data">
+            <form name="impotFields" action="<?php echo $app->createUrl('opportunity', 'importFields', [$entity->id]);?>" method="POST" enctype="multipart/form-data">
                 <input type="file" name="fieldsFile" />
                 <input type="submit" value="<?php echo \MapasCulturais\i::esc_attr_e('Enviar campos');?>" />
             </form>

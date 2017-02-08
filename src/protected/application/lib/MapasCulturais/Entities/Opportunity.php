@@ -15,7 +15,7 @@ use MapasCulturais\App;
  *      @ORM\Index(name="opportunity_owner_idx", columns={"agent_id"}),
  * })
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Opportunity")
  * @ORM\HasLifecycleCallbacks
  * 
  * @ORM\InheritanceType("SINGLE_TABLE")
@@ -263,7 +263,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function getAllRegistrations(){
         // ============ IMPORTANTE =============//
         // @TODO implementar findSentByProject no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+        $registrations = App::i()->repo('Registration')->findBy(['opportunity' => $this]);
 
         return $registrations;
     }

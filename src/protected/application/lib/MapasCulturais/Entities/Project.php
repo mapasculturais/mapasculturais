@@ -92,34 +92,11 @@ class Project extends \MapasCulturais\Entity
     protected $registrationTo;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="use_registrations", type="boolean", nullable=false)
-     */
-    protected $useRegistrations = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="published_registrations", type="boolean", nullable=false)
-     */
-    protected $publishedRegistrations = false;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="registration_categories", type="json_array", nullable=true)
-     */
-    protected $registrationCategories = [];
-
-
 
     /**
      * @var integer
@@ -161,20 +138,6 @@ class Project extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="project", fetch="LAZY", cascade={"persist"})
      */
     protected $_events;
-
-    /**
-     * @var \MapasCulturais\Entities\RegistrationFileConfiguration[] RegistrationFileConfiguration
-     *
-     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFileConfiguration", mappedBy="owner", fetch="LAZY")
-     */
-    public $registrationFileConfigurations;
-
-    /**
-     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
-     *
-     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
-     */
-    public $registrationFieldConfigurations;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
@@ -261,35 +224,6 @@ class Project extends \MapasCulturais\Entity
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
 
-    /**
-     * Return project rergistrations
-     * 
-     * @return \MapasCulturais\Entities\Registration[]
-     */
-    function getAllRegistrations(){
-        // ============ IMPORTANTE =============//
-        // @TODO implementar findSentByProject no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
-
-        return $registrations;
-    }
-
-    /**
-     * Returns sent registrations
-     *
-     * @return \MapasCulturais\Entities\Registration[]
-     */
-    function getSentRegistrations(){
-        $registrations = $this->getAllRegistrations();
-
-        $result = [];
-        foreach($registrations as $re){
-            if($re->status > 0)
-                $result[] = $re;
-        }
-        return $result;
-    }
-
     function setRegistrationFrom($date){
         if($date instanceof \DateTime){
             $this->registrationFrom = $date;
@@ -332,39 +266,6 @@ class Project extends \MapasCulturais\Entity
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
 
-    function setRegistrationCategories($value){
-        $new_value = $value;
-        if(is_string($value) && trim($value)){
-            $cats = [];
-            foreach(explode("\n", trim($value)) as $opt){
-                $opt = trim($opt);
-                if($opt && !in_array($opt, $cats)){
-                    $cats[] = $opt;
-                }
-            }
-            $new_value = $cats;
-        }
-
-        if($new_value != $this->registrationCategories){
-            $this->checkPermission('modifyRegistrationFields');
-        }
-
-        $this->registrationCategories = $new_value;
-    }
-
-    function publishRegistrations(){
-        $this->checkPermission('publishRegistrations');
-
-        $this->publishedRegistrations = true;
-
-        $this->save(true);
-    }
-
-    function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
-        $meta_name = $def->getMetadataName();
-        return $this->$meta_name != 'dontUse';
-    }
-
 
     function getUsedAgentRelations(){
         $app = App::i();
@@ -386,20 +287,6 @@ class Project extends \MapasCulturais\Entity
         }
         
         return $users;
-    }
-
-    function isRegistrationFieldsLocked(){
-        $app = App::i();
-        $cache_id = $this . ':' . __METHOD__;
-        if($app->rcache->contains($cache_id)){
-            return $app->rcache->fetch($cache_id);
-        }else{
-            $num = $app->repo('Registration')->countByProject($this, true);
-            $locked = $num > 0;
-
-            $app->rcache->save($cache_id, $locked);
-            return $locked;
-        }
     }
 
     protected function canUserCreateEvents($user) {
@@ -436,55 +323,10 @@ class Project extends \MapasCulturais\Entity
                 return true;
             }
         }
-
-        if ($this->publishedRegistrations) {
-            foreach ($this->getSentRegistrations() as $resgistration) {
-                if ($resgistration->status === Registration::STATUS_APPROVED) {
-                    if ($resgistration->canUser('@control', $user)) {
-                        return true;
-                    }
-                }
-            }
-        }
+        
+        // @TODO: verificar se há uma oportunidade relacionada e se o usuário foi aprovada nela
 
         return false;
-    }
-
-    protected function canUserModifyRegistrationFields($user){
-        if($user->is('guest')){
-            return false;
-        }
-
-        if($user->is('admin')){
-            return true;
-        }
-
-        if($this->isRegistrationFieldsLocked()){
-            return false;
-        }
-
-        return $this->canUser('modify', $user);
-
-    }
-
-    protected function canUserPublishRegistrations($user){
-        if($user->is('guest')){
-            return false;
-        }
-
-        if($this->registrationTo >= new \DateTime){
-            return false;
-        }
-
-        return $this->canUser('@control', $user);
-    }
-
-
-    protected function canUserRegister($user = null){
-        if($user->is('guest'))
-            return false;
-
-        return $this->isRegistrationOpen();
     }
 
     /** @ORM\PreRemove */
