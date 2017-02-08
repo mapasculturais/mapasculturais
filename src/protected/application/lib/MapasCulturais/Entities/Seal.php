@@ -89,16 +89,6 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
-   /**
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
-     * })
-     */
-    protected $agent;
-
     /**
      * @var \MapasCulturais\Entities\Agent
      *
@@ -113,11 +103,6 @@ class Seal extends \MapasCulturais\Entity
      * @ORM\Column(name="agent_id", type="integer", nullable=false)
      */
     protected $_ownerId;
-
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     */
-    protected $_seals;
 
 
     /**

@@ -36,7 +36,7 @@ $this->addRelatedSealsToJs($entity);
                     <div class="botoes" ng-if="isEditable && canRelateSeal"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="<?php \MapasCulturais\i::esc_attr_e("Excluir selo");?>" ng-click="deleteRelation(relation,relation.seal.id)"></a></div>
                     <div class="descricao-do-selo">
                         <h1><a ng-href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">{{relation.seal.name}}</a></h1>
-                        <p><b ng-if="relation.toExpire == 2">Válido até:</b> 
+                        <p><b ng-if="relation.toExpire == 2 && relation.validateDate">Válido até:</b> 
                            <b ng-if="relation.toExpire == 1">Expira em:</b>
                            <b ng-if="relation.toExpire == 0">Expirou em:</b> {{relation.validateDate}} </p>
                         <p>

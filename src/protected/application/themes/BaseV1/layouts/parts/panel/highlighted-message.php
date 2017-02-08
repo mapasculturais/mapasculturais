@@ -1,3 +1,4 @@
 <p class="highlighted-message">
-    <?php \MapasCulturais\i::_e("Olá");?>, <a href="<?php echo $app->user->profile->singleUrl ?>"><?php echo $app->user->profile->name ?></a>, <?php \MapasCulturais\i::_e("bem-vindo ao painel do");?> <?php $this->dict('site: name'); ?>!
+    <?php $linkProfile = '<a href="' . $app->user->profile->singleUrl . '">' . $app->user->profile->name . '</a>'; ?>
+    <?php printf(\MapasCulturais\i::__("Olá, %s, bem-vindo ao painel do %s!"), $linkProfile, $this->dict('site: name', false));?>
 </p>

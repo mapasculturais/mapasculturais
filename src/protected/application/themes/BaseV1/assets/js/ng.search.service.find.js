@@ -237,7 +237,8 @@
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);
                 }
 
-                var selectData = 'id,singleUrl,name,type,shortDescription,terms';
+                var selectData = MapasCulturais.searchQueryFields;
+
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
                 var exportEntity = entity;
                 if(entity === 'space'){
@@ -271,11 +272,19 @@
 
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
-                var exportSelect = ['singleUrl'];
+                var exportSelect = ['singleUrl,type,terms'];
+                var dontExportSelect = {
+                    user: true,
+                    publicLocation: true,
+                    status: true
+                }
                 Object.keys(Description).forEach(function(prop) {
                     if(prop[0] == '_'){
                         return;
                     }
+                    if (dontExportSelect[prop])
+                        return;
+                        
                     var def = Description[prop];
                     var selectProperty = def['@select'] || prop;
                     if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
@@ -288,7 +297,7 @@
                         }
                     }
                 });
-                console.log(exportSelect);
+
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export

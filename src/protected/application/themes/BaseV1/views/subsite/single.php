@@ -12,6 +12,9 @@ $this->includeMapAssets();
 $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));
 
 $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
+$this->localizeScript('singleSubsite', [
+            'examples' =>  \MapasCulturais\i::__('exemplos:'),
+        ]);
 
 ?>
 
@@ -95,7 +98,7 @@ $this->enqueueScript('app', 'subsite-map', 'js/single-subsite.js', ['map']);
 
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
-            <p class="alert info">Parar configurar os administradores você deve primeiro salvar o subsite.<span class="close"></span></p>
+            <p class="alert info"><?php \MapasCulturais\i::_e('Parar configurar os administradores você deve primeiro salvar o subsite.'); ?><span class="close"></span></p>
         </div>
     <?php else: ?>
         <!-- Related Profile Agents BEGIN -->
