@@ -132,21 +132,36 @@ abstract class SealRelation extends \MapasCulturais\Entity
         return $result;
     }
 
-    protected function canUserRemove($user) {
-        if ($user->is('guest'))
-            return false;
+    protected function canUserCreate($user){
+        $app = App::i();
 
-        if ($user->is('admin') || $user->is('superAdmin') || $this->seal->canUser("@control"))
-            return true;
+        $can = !$app->isWorkflowEnabled() || $this->seal->canUser('@control', $user);
 
-        return false;
+        return $this->owner->canUser('createSealRelation', $user) && $can;
+    }
+
+    protected function canUserRemove($user){
+        $app = App::i();
+
+        $can = !$app->isWorkflowEnabled() || $this->seal->canUser('@control', $user);
+
+        return $this->owner->canUser('removeSealRelation', $user) || $can;
+    }
+    
+    protected function canUserPrint($user) {
+        return $this->owner->canUser('@control', $user) || $this->seal->canUser('@control', $user);
     }
 
     public function save($flush = false) {
         $app = App::i();
         try {
-            $this->owner_relation = $app->user->profile;
+            if($this->owner instanceof Agent){
+                $this->owner_relation = $this->owner;
+            } else {
+                $this->owner_relation = $this->owner->owner;
+            }
             parent::save($flush);
+            
         } catch (\MapasCulturais\Exceptions\PermissionDenied $e) {
             if (!App::i()->isWorkflowEnabled())
                 throw $e;
@@ -154,7 +169,13 @@ abstract class SealRelation extends \MapasCulturais\Entity
             $app = App::i();
             $app->disableAccessControl();
             $this->status = self::STATUS_PENDING;
-            $this->owner_relation = $app->user->profile;
+            
+            
+            
+            
+            
+            
+            
             parent::save($flush);
             $app->enableAccessControl();
 
