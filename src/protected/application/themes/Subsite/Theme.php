@@ -90,6 +90,19 @@ class Theme extends BaseV1\Theme{
                     }";    
                 }
 
+                $main_scss .= "
+                    nav#about-nav{
+                        padding: 0.45rem 1.5rem
+                    }
+
+                    #organization-logo img {
+                        max-height: 60px;
+                        max-width: initial;
+                        width: initial;
+                    }
+
+                ";
+
                 $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->cor_agentes?  $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
                 $variables_scss .= "\$brand-project: " . ($this->subsiteInstance->cor_projetos? $this->subsiteInstance->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
                 $variables_scss .= "\$brand-event:   " . ($this->subsiteInstance->cor_eventos?  $this->subsiteInstance->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
