@@ -199,7 +199,7 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
         }else{
-            $json['owner'] = null;
+            $json = null;
         }
 
         return $json;
