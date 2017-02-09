@@ -42,6 +42,37 @@ function __column_exists($table_name, $column_name) {
     }
 }
 
+function __exec($sql){
+    $app = App::i();
+    $em = $app->em;
+    $conn = $em->getConnection();
+    
+    $conn->executeQuery($sql);
+}
+
+function __try($sql, $cb = null){
+    try{
+        __exec($sql);
+    } catch (\Exception $ex) {
+        if($cb){
+            $cb($ex, $sql);
+        } else {
+            $trace = $ex->getTraceAsString();
+            echo "
+ERROR ==============================
+
+$sql
+
+------------------------------------
+$ex
+$trace
+====================================
+
+";
+        }
+    }
+}
+
 $updates = [];
 $registered_taxonomies = $this->_register['taxonomies']['by-id'];
 
@@ -521,93 +552,87 @@ return [
     },
     'recreate *_meta indexes' => function() use($conn) {
         
-        $conn->executeQuery("DELETE FROM subsite_meta WHERE object_id NOT IN (SELECT id FROM subsite)");
-        $conn->executeQuery("DELETE FROM agent_meta WHERE object_id NOT IN (SELECT id FROM agent)");
-        $conn->executeQuery("DELETE FROM space_meta WHERE object_id NOT IN (SELECT id FROM space)");
-        $conn->executeQuery("DELETE FROM project_meta WHERE object_id NOT IN (SELECT id FROM project)");
-        $conn->executeQuery("DELETE FROM event_meta WHERE object_id NOT IN (SELECT id FROM event)");
-        $conn->executeQuery("DELETE FROM user_meta WHERE object_id NOT IN (SELECT id FROM usr)");
-        $conn->executeQuery("DELETE FROM seal_meta WHERE object_id NOT IN (SELECT id FROM seal)");
-        $conn->executeQuery("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration)");
-        $conn->executeQuery("DELETE FROM notification_meta WHERE object_id NOT IN (SELECT id FROM notification)");
+        __try("DELETE FROM subsite_meta WHERE object_id NOT IN (SELECT id FROM subsite)");
+        __try("DELETE FROM agent_meta WHERE object_id NOT IN (SELECT id FROM agent)");
+        __try("DELETE FROM space_meta WHERE object_id NOT IN (SELECT id FROM space)");
+        __try("DELETE FROM project_meta WHERE object_id NOT IN (SELECT id FROM project)");
+        __try("DELETE FROM event_meta WHERE object_id NOT IN (SELECT id FROM event)");
+        __try("DELETE FROM user_meta WHERE object_id NOT IN (SELECT id FROM usr)");
+        __try("DELETE FROM seal_meta WHERE object_id NOT IN (SELECT id FROM seal)");
+        __try("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration)");
+        __try("DELETE FROM notification_meta WHERE object_id NOT IN (SELECT id FROM notification)");
         
-        $conn->executeQuery("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        try{ 
-            $conn->executeQuery("ALTER TABLE subsite_meta ADD PRIMARY KEY (id);");
-        } catch (\Exception $e) { }
+        __try("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("ALTER TABLE subsite_meta ADD PRIMARY KEY (id);");
 
-        $conn->executeQuery("CREATE INDEX subsite_meta_owner_key_idx ON subsite_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX subsite_meta_key_value_idx ON subsite_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX subsite_meta_owner_idx ON subsite_meta (object_id);");
+        __try("CREATE INDEX subsite_meta_owner_key_idx ON subsite_meta (object_id, key);");
+        __try("CREATE INDEX subsite_meta_key_value_idx ON subsite_meta (key, value);");
+        __try("CREATE INDEX subsite_meta_owner_idx ON subsite_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE agent_meta DROP CONSTRAINT agent_agent_meta_fk;");
-        $conn->executeQuery("ALTER TABLE agent_meta ALTER id DROP DEFAULT;");
-        $conn->executeQuery("ALTER TABLE agent_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX agent_meta_owner_key_idx ON agent_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX agent_meta_key_value_idx ON agent_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX agent_meta_owner_idx ON agent_meta (object_id);");
+        __try("ALTER TABLE agent_meta DROP CONSTRAINT agent_agent_meta_fk;");
+        __try("ALTER TABLE agent_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE agent_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX agent_meta_owner_key_idx ON agent_meta (object_id, key);");
+        __try("CREATE INDEX agent_meta_key_value_idx ON agent_meta (key, value);");
+        __try("CREATE INDEX agent_meta_owner_idx ON agent_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE user_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE user_meta ADD CONSTRAINT FK_AD7358FC232D562B FOREIGN KEY (object_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        try{ 
-            $conn->executeQuery("ALTER TABLE user_meta ADD PRIMARY KEY (id);"); 
-        } catch(\Exception $e) {}
+        __try("ALTER TABLE user_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE user_meta ADD CONSTRAINT FK_AD7358FC232D562B FOREIGN KEY (object_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("ALTER TABLE user_meta ADD PRIMARY KEY (id);"); 
         
-        $conn->executeQuery("CREATE INDEX user_meta_owner_key_idx ON user_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX user_meta_key_value_idx ON user_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX user_meta_owner_idx ON user_meta (object_id);");
+        __try("CREATE INDEX user_meta_owner_key_idx ON user_meta (object_id, key);");
+        __try("CREATE INDEX user_meta_key_value_idx ON user_meta (key, value);");
+        __try("CREATE INDEX user_meta_owner_idx ON user_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE event_meta DROP CONSTRAINT event_project_meta_fk;");
-        $conn->executeQuery("ALTER TABLE event_meta ALTER id DROP DEFAULT;");
-        $conn->executeQuery("ALTER TABLE event_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX event_meta_owner_key_idx ON event_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX event_meta_key_value_idx ON event_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX event_meta_owner_idx ON event_meta (object_id);");
+        __try("ALTER TABLE event_meta DROP CONSTRAINT event_project_meta_fk;");
+        __try("ALTER TABLE event_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE event_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX event_meta_owner_key_idx ON event_meta (object_id, key);");
+        __try("CREATE INDEX event_meta_key_value_idx ON event_meta (key, value);");
+        __try("CREATE INDEX event_meta_owner_idx ON event_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE space_meta DROP CONSTRAINT space_space_meta_fk;");
-        $conn->executeQuery("ALTER TABLE space_meta ALTER id DROP DEFAULT;");
-        $conn->executeQuery("ALTER TABLE space_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX space_meta_owner_key_idx ON space_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX space_meta_key_value_idx ON space_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX space_meta_owner_idx ON space_meta (object_id);");
+        __try("ALTER TABLE space_meta DROP CONSTRAINT space_space_meta_fk;");
+        __try("ALTER TABLE space_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE space_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX space_meta_owner_key_idx ON space_meta (object_id, key);");
+        __try("CREATE INDEX space_meta_key_value_idx ON space_meta (key, value);");
+        __try("CREATE INDEX space_meta_owner_idx ON space_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE project_meta DROP CONSTRAINT project_project_meta_fk;");
-        $conn->executeQuery("ALTER TABLE project_meta ALTER id DROP DEFAULT;");
-        $conn->executeQuery("ALTER TABLE project_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX project_meta_owner_key_idx ON project_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX project_meta_key_value_idx ON project_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX project_meta_owner_idx ON project_meta (object_id);");
+        __try("ALTER TABLE project_meta DROP CONSTRAINT project_project_meta_fk;");
+        __try("ALTER TABLE project_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE project_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX project_meta_owner_key_idx ON project_meta (object_id, key);");
+        __try("CREATE INDEX project_meta_key_value_idx ON project_meta (key, value);");
+        __try("CREATE INDEX project_meta_owner_idx ON project_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE seal_meta DROP CONSTRAINT seal_meta_fk;");
-        $conn->executeQuery("ALTER TABLE seal_meta ALTER object_id SET NOT NULL;");
-        $conn->executeQuery("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX seal_meta_owner_key_idx ON seal_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX seal_meta_key_value_idx ON seal_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX seal_meta_owner_idx ON seal_meta (object_id);");
+        __try("ALTER TABLE seal_meta DROP CONSTRAINT seal_meta_fk;");
+        __try("ALTER TABLE seal_meta ALTER object_id SET NOT NULL;");
+        __try("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX seal_meta_owner_key_idx ON seal_meta (object_id, key);");
+        __try("CREATE INDEX seal_meta_key_value_idx ON seal_meta (key, value);");
+        __try("CREATE INDEX seal_meta_owner_idx ON seal_meta (object_id);");
 
-        try{ 
-            $conn->executeQuery("ALTER TABLE registration ADD PRIMARY KEY(id);");
-        } catch(\Exception $e) {}
+        __try("ALTER TABLE registration ADD PRIMARY KEY(id);");
 
-        $conn->executeQuery("ALTER TABLE registration_meta ALTER id DROP DEFAULT;");
-        $conn->executeQuery("ALTER TABLE registration_meta ALTER object_id SET DEFAULT pseudo_random_id_generator();");
-        $conn->executeQuery("ALTER TABLE registration_meta ALTER key TYPE VARCHAR(255);");
-        $conn->executeQuery("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX registration_meta_owner_key_idx ON registration_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX registration_meta_key_value_idx ON registration_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX registration_meta_owner_idx ON registration_meta (object_id);");
+        __try("ALTER TABLE registration_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE registration_meta ALTER object_id SET DEFAULT pseudo_random_id_generator();");
+        __try("ALTER TABLE registration_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX registration_meta_owner_key_idx ON registration_meta (object_id, key);");
+        __try("CREATE INDEX registration_meta_key_value_idx ON registration_meta (key, value);");
+        __try("CREATE INDEX registration_meta_owner_idx ON registration_meta (object_id);");
 
-        $conn->executeQuery("ALTER TABLE notification_meta DROP CONSTRAINT notification_meta_fk;");
-        $conn->executeQuery("ALTER TABLE notification_meta ALTER object_id SET NOT NULL;");
-        $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("CREATE INDEX notification_meta_owner_key_idx ON notification_meta (object_id, key);");
-        $conn->executeQuery("CREATE INDEX notification_meta_key_value_idx ON notification_meta (key, value);");
-        $conn->executeQuery("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
+        __try("ALTER TABLE notification_meta DROP CONSTRAINT notification_meta_fk;");
+        __try("ALTER TABLE notification_meta ALTER object_id SET NOT NULL;");
+        __try("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX notification_meta_owner_key_idx ON notification_meta (object_id, key);");
+        __try("CREATE INDEX notification_meta_key_value_idx ON notification_meta (key, value);");
+        __try("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
     },
     
@@ -617,61 +642,74 @@ return [
      * - files do grupo rules
      */
             
-    'create opportunity tables' => function () use ($conn) {
+    'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){
             // cria tabelas das oportunidades
-            $conn->executeQuery("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-            $conn->executeQuery("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories JSON DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
-            $conn->executeQuery("CREATE INDEX opportunity_owner_idx ON opportunity (agent_id);");
-            $conn->executeQuery("CREATE INDEX opportunity_parent_idx ON opportunity (parent_id);");
-            $conn->executeQuery("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
-            $conn->executeQuery("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
-            $conn->executeQuery("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
-            $conn->executeQuery("CREATE INDEX opportunity_meta_key_value_idx ON opportunity_meta (key, value);");
-            $conn->executeQuery("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+            __exec("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories JSON DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, object_id INT NOT NULL, PRIMARY KEY(id));");
+            __exec("CREATE INDEX opportunity_owner_idx ON opportunity (agent_id);");
+            __exec("CREATE INDEX opportunity_entity_idx ON opportunity (object_type, object_id);");
+            __exec("CREATE INDEX opportunity_parent_idx ON opportunity (parent_id);");
+            __exec("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+            __exec("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
+            __exec("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
+            __exec("CREATE INDEX opportunity_meta_key_value_idx ON opportunity_meta (key, value);");
+            __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
             
             // cria as oportunidades existentes
-            $conn->executeQuery("
+            __exec("
                 INSERT INTO opportunity (
                     id, parent_id, agent_id, type, name, short_description, 
                     long_description, registration_from, registration_to, published_registrations, 
-                    create_timestamp, update_timestamp, status, subsite_id, object_type 
+                    create_timestamp, update_timestamp, status, subsite_id, object_type, object_id 
                 ) (
                     SELECT 
                         p.id, p.parent_id, p.agent_id, p.type, p.name, p.short_description, 
                         p.long_description, p.registration_from, p.registration_to, p.published_registrations, 
-                        p.create_timestamp, p.update_timestamp, p.status, p.subsite_id, 'MapasCulturais\Entities\Project' 
+                        p.create_timestamp, p.update_timestamp, p.status, p.subsite_id, 'MapasCulturais\Entities\Project', p.id
                     FROM 
                         project p 
                     WHERE 
-                        p.id IN (SELECT DISTINCT(project_id) FROM registration)
+                        p.id IN (SELECT DISTINCT(project_id) FROM registration) OR
+                        p.id IN (SELECT DISTINCT(project_id) FROM registration_file_configuration) OR
+                        p.id IN (SELECT DISTINCT(project_id) FROM registration_field_configuration) OR
+                        p.use_registrations IS TRUE
                 );");
             
-            $conn->executeQuery("INSERT INTO opportunity_meta om SELECT pm.* FROM project_meta pm WHERE pm.object_id IN (SELECT id FROM opportunity)");
+            __exec("INSERT INTO opportunity_meta (id,object_id,key,value) SELECT id, object_id, key, value FROM project_meta WHERE object_id IN (SELECT id FROM opportunity)");
+            __exec("INSERT INTO term_relation (term_id, object_type, object_id) SELECT term_id, 'MapasCulturais\Entities\Opportunity', object_id FROM term_relation WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id IN (SELECT id FROM opportunity);");
             
             
             // modifica a tabela de projetos retirando o que tem de referencia a registration
-            $conn->executeQuery("ALTER TABLE project DROP CONSTRAINT fk_2fb3d0eec79c849a;");
-            $conn->executeQuery("ALTER TABLE project DROP registration_categories;");
-            $conn->executeQuery("ALTER TABLE project DROP use_registrations;");
-            $conn->executeQuery("ALTER TABLE project DROP published_registrations;");
+            __exec("ALTER TABLE project DROP CONSTRAINT fk_2fb3d0eec79c849a;");
+            __exec("ALTER TABLE project DROP registration_categories;");
+            __exec("ALTER TABLE project DROP use_registrations;");
+            __exec("ALTER TABLE project DROP published_registrations;");
             
+            // ajusta a tabela de inscrições
+            __exec("ALTER TABLE registration DROP CONSTRAINT fk_62a8a7a7c79c849a;");
+            __exec("ALTER TABLE registration RENAME COLUMN project_id TO opportunity_id;");
+            __exec("ALTER TABLE registration ALTER id SET DEFAULT pseudo_random_id_generator();");
+            __exec("ALTER TABLE registration ALTER status TYPE SMALLINT;");
+            __exec("ALTER TABLE registration ALTER status DROP DEFAULT;");
+            __exec("ALTER TABLE registration ALTER agents_data DROP DEFAULT;");
+            __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IDX_62A8A7A79A34590F ON registration (opportunity_id);");
+            __exec("CREATE INDEX IDX_62A8A7A73414710B ON registration (agent_id);");
             
-            $conn->executeQuery("ALTER TABLE registration DROP CONSTRAINT fk_62a8a7a7c79c849a;");
-            $conn->executeQuery("ALTER TABLE registration RENAME COLUMN project_id TO opportunity_id;");
-            $conn->executeQuery("ALTER TABLE registration ALTER id SET DEFAULT pseudo_random_id_generator();");
-            $conn->executeQuery("ALTER TABLE registration ALTER status TYPE SMALLINT;");
-            $conn->executeQuery("ALTER TABLE registration ALTER status DROP DEFAULT;");
-            $conn->executeQuery("ALTER TABLE registration ALTER agents_data DROP DEFAULT;");
-            $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("CREATE INDEX IDX_62A8A7A79A34590F ON registration (opportunity_id);");
-            $conn->executeQuery("CREATE INDEX IDX_62A8A7A73414710B ON registration (agent_id);");
+            // ajusta a tabela
+            __exec("ALTER TABLE registration_file_configuration DROP CONSTRAINT fk_209c792e166d1f9c;");
+            __exec("ALTER TABLE registration_file_configuration RENAME COLUMN project_id TO opportunity_id;");
+            __exec("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IDX_209C792E9A34590F ON registration_file_configuration (opportunity_id);");
             
-            
-            
+            __exec("ALTER TABLE registration_field_configuration DROP CONSTRAINT fk_60c85cb1166d1f9c;");
+            __exec("ALTER TABLE registration_field_configuration RENAME COLUMN project_id TO opportunity_id;");
+            __exec("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB19A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IDX_60C85CB19A34590F ON registration_field_configuration (opportunity_id);");
 
         }
     },

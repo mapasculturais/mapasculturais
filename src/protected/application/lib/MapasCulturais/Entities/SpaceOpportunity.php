@@ -15,7 +15,7 @@ class SpaceOpportunity extends Opportunity{
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      */
-    protected $owner;
+    protected $entity;
 
     /**
      * @var \MapasCulturais\Entities\SpaceOpportunity

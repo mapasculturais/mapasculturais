@@ -10,7 +10,7 @@ use MapasCulturais\App;
  * Opportunity
  *
  * @ORM\Table(name="opportunity", indexes={
- *      @ORM\Index(name="opportunity_owner_idx", columns={"object_type", "object_id"}),
+ *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
  *      @ORM\Index(name="opportunity_parent_idx", columns={"parent_id"}),
  *      @ORM\Index(name="opportunity_owner_idx", columns={"agent_id"}),
  * })
@@ -21,7 +21,7 @@ use MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectOpportunity",
+        "MapasCulturais\Entities\Opportunity"       = "\MapasCulturais\Entities\OpportunityOpportunity",
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventOpportunity",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentOpportunity",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceOpportunity",
@@ -51,7 +51,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="project_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="opportunity_id_seq", allocationSize=1, initialValue=1)
      * 
      */
     protected $id;
@@ -135,9 +135,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $status = self::STATUS_ENABLED;
 
     /**
-     * @var \MapasCulturais\Entities\Project
+     * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
@@ -145,9 +145,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $parent;
 
     /**
-     * @var \MapasCulturais\Entities\Project[] Chield projects
+     * @var \MapasCulturais\Entities\Opportunity[] Children opportunities
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="parent", fetch="LAZY", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Opportunity", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
     protected $_children;
 
@@ -176,46 +176,46 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public $registrationFieldConfigurations;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
 
     /**
-     * @var \MapasCulturais\Entities\ProjectFile[] Files
+     * @var \MapasCulturais\Entities\OpportunityFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
 
     /**
-     * @var \MapasCulturais\Entities\ProjectAgentRelation[] Agent Relations
+     * @var \MapasCulturais\Entities\OpportunityAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__agentRelations;
 
 
     /**
-     * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
+     * @var \MapasCulturais\Entities\OpportunityTermRelation[] TermRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Opportunity", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
 
 
     /**
-     * @var \MapasCulturais\Entities\ProjectSealRelation[] ProjectSealRelation
+     * @var \MapasCulturais\Entities\OpportunitySealRelation[] OpportunitySealRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
     
@@ -228,22 +228,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
-            return \MapasCulturais\i::__('Projetos');
+            return \MapasCulturais\i::__('Oportunidades');
         else
-            return \MapasCulturais\i::__('Projeto');
+            return \MapasCulturais\i::__('Oportunidade');
     }
     
     static function getValidations() {
         return [
             'name' => [
-                'required' => \MapasCulturais\i::__('O nome do projeto é obrigatório')
+                'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
             'shortDescription' => [
                 'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
                 'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
             ],
             'type' => [
-                'required' => \MapasCulturais\i::__('O tipo do projeto é obrigatório'),
+                'required' => \MapasCulturais\i::__('O tipo da oportunidade é obrigatório'),
             ],
             'registrationFrom' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
@@ -259,7 +259,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function getExtraPermissionCacheUsers(){
         $users = [];
         if($this->publishedRegistrations) {
-            $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
+            $registrations = App::i()->repo('Registration')->findBy(['opportunity' => $this, 'status' => Registration::STATUS_APPROVED]);
             $r = new Registration;
             foreach($registrations as $r){
                 $users = array_merge($users, $r->getUsersWithControl());
@@ -275,7 +275,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function getAllRegistrations(){
         // ============ IMPORTANTE =============//
-        // @TODO implementar findSentByProject no repositório de inscrições
+        // @TODO implementar findSentByOpportunity no repositório de inscrições
         $registrations = App::i()->repo('Registration')->findBy(['opportunity' => $this]);
 
         return $registrations;
@@ -366,7 +366,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         // atribui os selos as inscrições selecionadas
         $app = App::i();
-        $registrations = $app->repo('Registration')->findBy(array('project' => $this, 'status' => Registration::STATUS_APPROVED));
+        $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
         
         foreach ($registrations as $registration) {
             $registration->setAgentsSealRelation();
@@ -396,7 +396,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         if($app->rcache->contains($cache_id)){
             return $app->rcache->fetch($cache_id);
         }else{
-            $num = $app->repo('Registration')->countByProject($this, true);
+            $num = $app->repo('Registration')->countByOpportunity($this, true);
             $locked = $num > 0;
 
             $app->rcache->save($cache_id, $locked);
@@ -492,7 +492,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /** @ORM\PreRemove */
     public function unlinkEvents(){
         foreach($this->events as $event)
-            $event->project = null;
+            $event->opportunity = null;
     }
 
     //============================================================= //
