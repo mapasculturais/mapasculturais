@@ -1089,12 +1089,12 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                         ownerRegistration.push($scope.data.entity.registrations[i].owner);
                     }
                 }
-
+                
                 if(MapasCulturais.entity.object.registrationLimitPerOwner > 0 && ownerRegistration.length >= MapasCulturais.entity.object.registrationLimitPerOwner) {
                     MapasCulturais.Messages.error(labels['limitReached']);
                 }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
                     MapasCulturais.Messages.error(labels['VacanciesOver']);
-                }else if(registration.owner && ((!MapasCulturais.entity.object.registrationLimit) || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
+                }else if(registration.owner && (!MapasCulturais.entity.object.registrationLimit || MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
