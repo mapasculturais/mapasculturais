@@ -58,29 +58,22 @@ class APITest extends MapasCulturais_TestCase {
                     ]
                 ];
             },
-            'id,name,user.id,user.email,user.profile.id,user.profile.name,user.profile.singleUrl,user.profile.endereco' => function($entity){
+            'id,name,owner' => function($entity){
                 $user = $entity->ownerUser;
                 $profile = $user->profile;
                 return [
                     'id' => $entity->id,
                     'name' => $entity->name,
-                    'user' => [
-                        'id' => $user->id,
-                        'email' => $user->email,
-                        'profile' => [
-                            'id' => $profile->id,
-                            'name' => $profile->name,
-                            'singleUrl' => $profile->singleUrl,
-                            'endereco' => $profile->endereco
-                        ]
-                    ]
+                    'owner' => $entity->owner->id
                 ];
             },
         ];
         
         foreach([null,'superAdmin','admin','normal'] as $user){
             $this->user = $user;
-            foreach(['Event'] as $class){
+            
+            // agente nao tem owner, tem parent...
+            foreach(['Space', 'Project', 'Event'] as $class){
                 $entities = $this->app->repo($class)->findAll();
                 
                 foreach($entities as $entity){
@@ -116,5 +109,21 @@ class APITest extends MapasCulturais_TestCase {
             $this->assertEquals($r1, $r3, 'asserting same result for different sitaxes');
             $this->assertEquals($r1, $r4, 'asserting same result for different sitaxes');
         }
+    }
+    
+    function testJsonOutput(){
+        $event_id = 522;
+        
+        $s1 = 'id,name,user.{id,email,profile.{id,name,singleUrl,endereco,spaces.{id,name,singleUrl,endereco}}}';
+        
+        $query = "id=EQ($event_id)&@select=$s1";
+        
+        $r1 = json_decode(json_encode($this->apiFind('event', $query)));
+        
+        $curl = $this->get("/api/event/find?$query");
+        $r2 = json_decode($curl->response);
+        
+        $this->assertEquals($r1, $r2);
+
     }
 }
