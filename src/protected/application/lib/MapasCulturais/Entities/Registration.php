@@ -46,7 +46,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="category", type="string", length=255)
+     * @ORM\Column(name="category", type="string", length=255, nullable=true)
      */
     protected $category;
 
@@ -368,7 +368,7 @@ class Registration extends \MapasCulturais\Entity
     		$relation_class = $this->owner->getSealRelationEntityClassName();
     		$relation = new $relation_class;
 
-	    	$sealOwner          = App::i()->repo('Seal')->find($opportunityMetadataSeals->owner);
+	    	$sealOwner          = $app->repo('Seal')->find($opportunityMetadataSeals->owner);
 	        $relation->seal     = $sealOwner;
 	        $relation->owner    = $this->owner;
 	        $relation->agent    = $this->project->owner; //  o agente que aplica o selo (o dono da oportunidade)
@@ -376,8 +376,11 @@ class Registration extends \MapasCulturais\Entity
                 $relation->save(true);
     	}
 
-    	$sealInstitutions	= isset($opportunityMetadataSeals->institution)? App::i()->repo('Seal')->find($opportunityMetadataSeals->institution):null;
-    	$sealCollective		= isset($opportunityMetadataSeals->collective)? App::i()->repo('Seal')->find($opportunityMetadataSeals->collective):null;
+    	$sealInstitutions = isset($opportunityMetadataSeals->institution) ? 
+                $app->repo('Seal')->find($opportunityMetadataSeals->institution) : null;
+        
+    	$sealCollective = isset($opportunityMetadataSeals->collective) ? 
+                $app->repo('Seal')->find($opportunityMetadataSeals->collective) : null;
 
         foreach($this->relatedAgents as $groupName => $relatedAgents){
         	if (trim($groupName) == 'instituicao' && isset($opportunityMetadataSeals->institution) && is_object($sealInstitutions)) {

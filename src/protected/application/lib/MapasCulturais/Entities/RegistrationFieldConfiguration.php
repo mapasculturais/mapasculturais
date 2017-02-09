@@ -53,7 +53,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="max_size", type="string", nullable=true)
+     * @ORM\Column(name="max_size", type="integer", nullable=true)
      */
     protected $maxSize;
 
