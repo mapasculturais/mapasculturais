@@ -39,11 +39,11 @@ $_of_the_type = [
 $viewing_phase = $this->controller->requestedEntity;
 ?>
 <?php if($this->isEditable() || count($phases) > 0): ?>
-    <div class="project-phases clear">
+    <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
-            <a class="btn btn-default add" href="<?php echo $this->controller->createUrl('createNextPhase', [$project->id]) ?>"><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
+            <a class="btn btn-default add" href="<?php echo $this->controller->createUrl('createNextPhase', [$opportunity->id]) ?>"><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
         <?php endif; ?>
-        <!--<h3>Fases <?= $_of_the_type[$project->type->id] ?></h3>-->
+        <!--<h3>Fases <?= $_of_the_type[$opportunity->type->id] ?></h3>-->
         <ul>
 
         <?php foreach($phases as $phase): ?>

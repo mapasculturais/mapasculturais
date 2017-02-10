@@ -114,7 +114,7 @@ return array(
 
     'themes.brand-space'        => '#e83f96',
     'themes.brand-project'      => '#cc0033',
-    'themes.brand-opportunity'  => '#ffdddd',
+    'themes.brand-opportunity'  => '#ffaa00',
     'themes.brand-event'        => '#b3b921',
     'themes.brand-subsite'      => '#ff5545',
     'themes.brand-seal'         => '#ff5545',

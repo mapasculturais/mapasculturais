@@ -104,10 +104,6 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
     <!-- Related Agents END -->
 
-    <!-- Opportunities BEGIN -->
-    <?php $this->part('singles/widget-opportunities', ['entity' => $entity, 'opportunities' => $entity->children->toArray()]); ?>
-    <!-- Opportunities END -->
-
     <!-- Downloads BEGIN -->
     <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
     <!-- Downloads END -->

@@ -21,7 +21,7 @@ use MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Opportunity"       = "\MapasCulturais\Entities\OpportunityOpportunity",
+        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectOpportunity",
         "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventOpportunity",
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentOpportunity",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceOpportunity",
@@ -200,7 +200,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\OpportunityTermRelation[] TermRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Opportunity", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__termRelations;
@@ -254,6 +254,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
             ]
         ];
+    }
+    
+    static function getClassName() {
+        return get_class();
     }
     
     function getExtraPermissionCacheUsers(){
