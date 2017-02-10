@@ -1,4 +1,4 @@
-<div ng-if="data.opportunityRegistrationsEnabled" id="inscricoes" class="aba-content">
+<div id="inscricoes" class="aba-content">
     <?php if ($this->isEditable() || $entity->registrationFrom || $entity->registrationTo): ?>
         <p ng-if="data.isEditable" class="alert info">
             <?php \MapasCulturais\i::_e("Utilize este espaço caso queira abrir inscrições para Agentes Culturais cadastrados na plataforma.");?>

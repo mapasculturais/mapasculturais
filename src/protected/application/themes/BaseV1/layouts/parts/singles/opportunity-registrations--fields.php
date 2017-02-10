@@ -1,3 +1,10 @@
+<?php
+
+$can_edit = $entity->canUser('modifyRegistrationFields');
+
+$ditable_class = $can_edit ? 'js-editable' : '';
+?>
+
 <div id="registration-attachments" class="registration-fieldset">
 
     <h4>6. <?php \MapasCulturais\i::_e("Campos");?></h4>
@@ -7,11 +14,14 @@
         <?php if ($this->controller->action == 'create'): ?>
             <p class="allert warning"><?php \MapasCulturais\i::_e("Antes de configurar os campos é preciso salvar o projeto.");?></p>
         <?php else: ?>
+            <p ng-if="data.entity.canUserModifyRegistrationFields">
+                <span class="label"><?php \MapasCulturais\i::_e("Campo de Nome de Projeto");?></span><br>
+                <span class="<?php echo $ditable_class ?>" data-edit="projectName" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Campo de Nome de Projeto");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Habilite o campo de Nome de Projeto");?>"><?php echo $entity->projectName ?></span>
+            </p>
+
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)"><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
-                
-                
             </p>
         <?php endif; ?>
         <!-- edit-box to add attachment -->

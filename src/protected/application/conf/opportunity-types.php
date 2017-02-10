@@ -62,7 +62,15 @@ return array(
                 'serialize' => function($value) { return json_encode($value); },
                 'unserialize' => function($value) { return json_decode($value); }
         ),
-
+        'projectName' => array(
+            'label' => 'Nome do Projeto',
+            'type' => 'select',
+            'options' => array(
+                ''   => '',
+                'Sim' => 'Sim',
+                'Não' => 'Não'
+            )
+        ),
     ),
     'items' => array(
         1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),

@@ -10,10 +10,10 @@ $this->jsObject['angularAppDependencies'][] = 'entity.module.project';
 
 $this->addEntityToJs($entity);
 
-$this->addProjectToJs($entity);
+$this->addOpportunityToJs($entity);
 
 if(!$entity->isNew() && $entity->canUser('@control')){
-    $this->addProjectEventsToJs($entity);
+    $this->addOpportunityEventsToJs($entity);
 }
 
 if($this->isEditable()){
@@ -24,8 +24,6 @@ if($this->isEditable()){
 $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
-
-//$this->part('singles/breadcrumb', ['entity' => $entity]);
 
 ?>
 
@@ -64,7 +62,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
 
-    <?php $this->part('singles/project-tabs', ['entity' => $entity]) ?>
+    <?php $this->part('singles/opportunity-tabs', ['entity' => $entity]) ?>
 
     <div class="tabs-content">
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
@@ -73,7 +71,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
         <?php $this->part('singles/project-about', ['entity' => $entity]) ?>
 
-        <?php $this->part('singles/project-registrations', ['entity' => $entity]) ?>
+        <?php $this->part('singles/opportunity-registrations', ['entity' => $entity]) ?>
 
         <!-- #permissao -->
         <?php $this->part('singles/permissions') ?>
