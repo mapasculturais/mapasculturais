@@ -378,7 +378,7 @@ return array(
             'agente'        => array('agent', 'single'),
             'espaco'        => array('space', 'single'),
             'projeto'       => array('project', 'single'),
-            'opportunity'   => array('opportunity', 'single'),
+            'oportunidade'  => array('opportunity', 'single'),
             'instalacao'    => array('subsite', 'single'),
             'selo'          => array('seal', 'single'),
             'sair'          => array('auth', 'logout'),

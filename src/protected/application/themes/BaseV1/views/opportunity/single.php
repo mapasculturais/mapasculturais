@@ -21,8 +21,6 @@ $this->includeAngularEntityAssets($entity);
 
 $child_entity_request = isset($child_entity_request) ? $child_entity_request : null;
 
-//$this->part('singles/breadcrumb', ['entity' => $entity]);
-
 ?>
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>

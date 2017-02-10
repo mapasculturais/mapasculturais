@@ -35,22 +35,6 @@ $(function(){
         MapasCulturais.App.init();
     }
 
-    // dropdown
-
-    if(MapasCulturais.request.controller === 'project') {
-        var $els = $('#tab-inscricoes,#tab-inscritos').parent();
-        if(!MapasCulturais.entity.useRegistrations){
-            $els.hide();
-        }
-        $('#editable-use-registrations').on('hidden', function(e, reason) {
-            if($(this).editable('getValue', true) == '1'){
-                $els.fadeIn('fast');
-            }else{
-                $els.fadeOut('fast');
-            }
-        });
-    }
-
     //main nav submenus toggle on click
     $('body').on('click', '.js-submenu-toggle', function(){
         var $self = $(this),

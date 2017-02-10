@@ -67,8 +67,8 @@ return array(
             'type' => 'select',
             'options' => array(
                 ''   => '',
-                'Sim' => 'Sim',
-                'Não' => 'Não'
+                '1' => 'Sim',
+                '0' => 'Não'
             )
         ),
     ),

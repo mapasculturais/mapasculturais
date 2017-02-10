@@ -371,9 +371,9 @@ class Registration extends \MapasCulturais\Entity
 	    	$sealOwner          = $app->repo('Seal')->find($opportunityMetadataSeals->owner);
 	        $relation->seal     = $sealOwner;
 	        $relation->owner    = $this->owner;
-	        $relation->agent    = $this->project->owner; //  o agente que aplica o selo (o dono da oportunidade)
+	        $relation->agent    = $this->opportunity->owner; //  o agente que aplica o selo (o dono da oportunidade)
 
-                $relation->save(true);
+            $relation->save(true);
     	}
 
     	$sealInstitutions = isset($opportunityMetadataSeals->institution) ? 
@@ -388,14 +388,14 @@ class Registration extends \MapasCulturais\Entity
         		$relation = new $relation_class;
         		$relation->seal = $sealInstitutions;
         		$relation->owner = $agent;
-                $relation->agent = $this->project->owner;
+                $relation->agent = $this->opportunity->owner;
         		$relation->save(true);
         	} elseif (trim($groupName) == 'coletivo' && isset($opportunityMetadataSeals->collective) && is_object($sealCollective)) {
         		$agent = $relatedAgents[0];
         		$relation = new $relation_class;
         		$relation->seal = $sealCollective;
         		$relation->owner = $agent;
-                $relation->agent = $this->project->owner;
+                $relation->agent = $this->opportunity->owner;
         		$relation->save(true);
         	}
         }
@@ -596,7 +596,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->opportunity && !$this->opportunity->useRegistrations){
+        if($this->opportunity){
             return false;
         }
 

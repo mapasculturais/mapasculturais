@@ -712,12 +712,6 @@ class App extends \Slim\Slim{
             'requireValuesConfiguration' => true
         ]));
 
-//        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-//            'slug' => 'radio',
-//            'name' => \MapasCulturais\i::__('Seleção única (radio)'),
-//            'requireValuesConfiguration' => true
-//        ]));
-
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',
             'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
@@ -799,7 +793,7 @@ class App extends \Slim\Slim{
 
         foreach($this->_config['registration.agentRelations'] as $config){
             $def = new Definitions\RegistrationAgentRelation($config);
-            $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
+            $opportunities_meta[$def->metadataName] = $def->getMetadataConfiguration();
 
             $this->registerRegistrationAgentRelation($def);
         }

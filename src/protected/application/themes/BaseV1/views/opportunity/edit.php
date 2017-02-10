@@ -6,7 +6,7 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
-$this->jsObject['angularAppDependencies'][] = 'entity.module.project';
+$this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
 $this->addEntityToJs($entity);
 
@@ -29,13 +29,13 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
 
-<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'projects','home_title' => 'entities: My Projects']); ?>
+<?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'opportunities','home_title' => 'entities: My Opportunities']); ?>
 
 <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<article class="main-content project" ng-controller="ProjectController">
+<article class="main-content opportunity" ng-controller="OpportunityController">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
@@ -69,7 +69,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
         <?php $this->part('singles/project-events', ['entity' => $entity]) ?>
 
-        <?php $this->part('singles/project-about', ['entity' => $entity]) ?>
+        <?php $this->part('singles/opportunity-about', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/opportunity-registrations', ['entity' => $entity]) ?>
 
@@ -86,14 +86,14 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
-<div class="sidebar-left sidebar project">
+<div class="sidebar-left sidebar opportunity">
     <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
-<div class="sidebar project sidebar-right">
+<div class="sidebar opportunity sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto");?>.<span class="close"></span></p>

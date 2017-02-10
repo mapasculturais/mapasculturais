@@ -1,4 +1,4 @@
-<?php if ($entity->isRegistrationOpen() && !$this->isEditable() && $entity->useRegistrations): ?>
+<?php if ($entity->isRegistrationOpen() && !$this->isEditable()): ?>
     <?php if ($app->auth->isUserAuthenticated()): ?>
         <div class="registration-fieldset hide-tablet">
             <p class="registration-help"><?php \MapasCulturais\i::_e("Não é possível realizar as inscrições online através desse dispositivo. Tente se inscrever a partir de um dispositivo com a tela maior.");?></p>

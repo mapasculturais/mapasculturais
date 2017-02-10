@@ -2013,7 +2013,6 @@ class Theme extends MapasCulturais\Theme {
     function addProjectToJs(Entities\Project $entity){
         $app = App::i();
 
-        $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
 

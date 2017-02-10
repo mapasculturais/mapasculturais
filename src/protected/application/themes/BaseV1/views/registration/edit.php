@@ -4,13 +4,9 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
-$this->jsObject['angularAppDependencies'][] = 'entity.module.project';
-
-$project = $entity->project;
+$this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
 $this->addEntityToJs($entity);
-
-$this->addProjectToJs($project);
 
 $this->addRegistrationToJs($entity);
 
@@ -19,7 +15,6 @@ $this->includeAngularEntityAssets($entity);
 
 $_params = [
     'entity' => $entity,
-    'project' => $project,
     'action' => $action
 ];
 
@@ -27,7 +22,7 @@ $_params = [
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<article class="main-content registration" ng-controller="ProjectController">
+<article class="main-content registration" ng-controller="OpportunityController">
 
     <?php $this->part('singles/registration--header', $_params); ?>
     
