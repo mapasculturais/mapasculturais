@@ -136,7 +136,7 @@ trait EntitySealRelation {
     }
 
     function canUserRemoveSealRelation($user){
-        $this->canUser('@control', $user);
+        $result = $this->canUser('@control', $user);
         return $result;
     }
 
