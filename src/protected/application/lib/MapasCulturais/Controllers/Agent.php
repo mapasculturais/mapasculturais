@@ -86,8 +86,6 @@ class Agent extends EntityController {
             $success = $agent->user->removeRole($this->data['role']);
         }
         
-        die(var_dump($success));
-
         if($this->isAjax()){
             if($success)
                 $this->json (true);
