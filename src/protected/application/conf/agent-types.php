@@ -47,16 +47,6 @@ return array(
             )
         ),
 
-        'precisao' => array(
-            'label' => \MapasCulturais\i::__('Localização'),
-            'type' => 'select',
-            'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
-                'Precisa' => \MapasCulturais\i::__('Precisa'),
-                'Aproximada' => \MapasCulturais\i::__('Aproximada')
-            )
-        ),
-
         'localizacao' => array(
             'label' => \MapasCulturais\i::__('Localização'),
             'type' => 'select',
