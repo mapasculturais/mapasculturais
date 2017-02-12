@@ -298,6 +298,7 @@ article.project .highlighted-message .btn {
         &.registration-view-mode {
             padding: .3em 1em;
             font-size: 0.75em;
+            word-wrap: break-word;
             label {
                 font-weight: bold;
                 color:#333;
