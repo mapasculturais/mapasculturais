@@ -11,7 +11,7 @@ $this->addTaxonoyTermsToJs('linguagem');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Space');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Agent');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Project');
-$this->addEntityTypesToJs('MapasCulturais\Entities\Opportunity');
+// $this->addEntityTypesToJs('MapasCulturais\Entities\Opportunity');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Seal');
 
 $this->includeSearchAssets();

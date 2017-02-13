@@ -15,7 +15,8 @@ $this->includeAngularEntityAssets($entity);
 
 $_params = [
     'entity' => $entity,
-    'action' => $action
+    'action' => $action,
+    'opportunity' => $entity->opportunity
 ];
 
 

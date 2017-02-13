@@ -895,10 +895,6 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
 
-        if($this->usesRevision()) {
-            //$this->_newDeletedRevision();
-        }
-        
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();
         }

@@ -407,6 +407,7 @@
         var infiniteScrollTimeout = null;
 
         $scope.addMore = function(entity){
+            var entityName = "";
             if($scope.data.global.viewMode !== 'list')
                 return;
 
@@ -416,7 +417,13 @@
             if($rootScope.isPaginating)
                 return;
 
-            if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
+            if(entity == 'opportunity') {
+                entityName = 'opportunities';
+            } else {
+                entityName = entity + 's'
+            }
+
+            if($scope[entityName].length === 0 || $scope[entityName].length < 10)
                 return;
 
             $rootScope.pagination[entity]++;

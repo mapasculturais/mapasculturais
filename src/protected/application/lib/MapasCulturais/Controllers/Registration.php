@@ -69,7 +69,7 @@ class Registration extends EntityController {
 
             ];
             $registration = $this->requestedEntity;
-            foreach($registration->project->registrationFileConfigurations as $rfc){
+            foreach($registration->opportunity->registrationFileConfigurations as $rfc){
 
                 $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true);
                 $app->registerFileGroup('registration', $fileGroup);
@@ -79,7 +79,7 @@ class Registration extends EntityController {
         $app->hook('entity(Registration).file(rfc_<<*>>).insert:before', function() use ($app){
             // find registration file configuration
             $rfc = null;
-            foreach($this->owner->project->registrationFileConfigurations as $r){
+            foreach($this->owner->opportunity->registrationFileConfigurations as $r){
                 if($r->fileGroupName === $this->group){
                     $rfc = $r;
                 }
@@ -102,20 +102,20 @@ class Registration extends EntityController {
                 return;
             }
 
-            $project = $registration->project;
+            $opportunity = $registration->opportunity;
             
-            $this->registerRegistrationMetadata($project);
+            $this->registerRegistrationMetadata($opportunity);
             
         });
 
         parent::__construct();
     }
 
-    function registerRegistrationMetadata(\MapasCulturais\Entities\Project $project){
+    function registerRegistrationMetadata(\MapasCulturais\Entities\Opportunity $opportunity){
         
         $app = App::i();
 
-        foreach($project->registrationFieldConfigurations as $field){
+        foreach($opportunity->registrationFieldConfigurations as $field){
 
             $cfg = [
                 'label' => $field->title,
@@ -143,31 +143,31 @@ class Registration extends EntityController {
         }
     }
 
-    function getRequestedProject(){
+    function getRequestedOpportunity(){
         $app = App::i();
-        if(!isset($this->urlData['projectId']) || !intval($this->urlData['projectId'])){
+        if(!isset($this->urlData['opportunityId']) || !intval($this->urlData['opportunityId'])){
             $app->pass();
         }
 
-        $project = $app->repo('Project')->find(intval($this->urlData['projectId']));
+        $opportunity = $app->repo('Opportunity')->find(intval($this->urlData['opportunityId']));
 
-        if(!$project){
+        if(!$opportunity){
             $this->pass();
         }
 
-        return $project;
+        return $opportunity;
     }
 
     function GET_create(){
         $this->requireAuthentication();
 
-        $project = $this->getRequestedProject();
+        $opportunity = $this->getRequestedOpportunity();
 
-        $project->checkPermission('register');
+        $opportunity->checkPermission('register');
 
         $registration = new $this->entityClassName;
 
-        $registration->project = $project;
+        $registration->opportunity = $opportunity;
 
         $this->render('create', ['entity' => $registration]);
     }

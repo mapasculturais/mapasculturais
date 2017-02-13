@@ -596,8 +596,8 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->opportunity){
-            return false;
+        if(!$this->opportunity instanceof Opportunity) {
+             return false;
         }
 
         return $this->genericPermissionVerification($user);
