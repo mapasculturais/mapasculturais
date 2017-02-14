@@ -356,6 +356,8 @@ class Project extends \MapasCulturais\Entity
         $this->checkPermission('publishRegistrations');
 
         $this->publishedRegistrations = true;
+        
+        App::i()->addEntityToRecreatePermissionCacheList($this);
 
         $this->save(true);
     }
@@ -379,7 +381,7 @@ class Project extends \MapasCulturais\Entity
         $users = [];
         if($this->publishedRegistrations) {
             $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
-            $r = new Registration;
+            
             foreach($registrations as $r){
                 $users = array_merge($users, $r->getUsersWithControl());
             }
