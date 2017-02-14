@@ -35,6 +35,11 @@ root@server# curl -sS https://getcomposer.org/installer | php
 root@server# mv composer.phar /usr/local/bin/composer.phar
 ```
 
+Também é importante ter o pacote zip instalado no seu servidor. Ele é usado para gerar o pacote com os anexos enviados nas inscrições. Caso ainda não tenha:
+```
+root@server# apt-get install zip
+```
+
 No Ubuntu o executável do NodeJS se chama *nodejs*, porém para o correto funcionamento das bibliotecas utilizadas, o executáel deve se chamar *node*. Para isto criamos um link simbólico com o comando abaixo
 ```
 root@server# update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10

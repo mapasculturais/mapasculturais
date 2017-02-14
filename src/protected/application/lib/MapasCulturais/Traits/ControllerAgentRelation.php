@@ -82,6 +82,46 @@ trait ControllerAgentRelation{
 
         $this->json(true);
     }
+    
+    /**
+     * Rename a group agent relation.
+     * 
+     * This action requires authentication.
+     * 
+     * 
+     * @WriteAPI POST renameGroupAgentRelation
+     */
+    public function POST_renameGroupAgentRelation(){
+        $this->requireAuthentication();
+       
+        $app = App::i();
+        
+        if(!$this->urlData['id'])
+            $app->pass();
+        
+        if (isset($this->postData['group']) && is_array($this->postData['group'])
+            && isset($this->postData['group']['relations']) && is_array($this->postData['group']['relations']) ) {
+        
+                $ids = array();
+                
+                foreach ($this->postData['group']['relations'] as $rel) {
+                    array_push($ids, $rel['id']);
+                }
+                
+                $query = sprintf('update MapasCulturais\Entities\AgentRelation r set r.group = :newName WHERE r.id IN(%s)', implode(',', $ids));
+                
+                $q = $app->em->createQuery($query);
+                $q->setParameter("newName", $this->postData['group']['name']);
+                
+                $numUpdated = $q->execute();
+                
+                $this->finish($numUpdated, 200, true);
+        
+        }
+        
+       
+
+    }
 
     public function POST_setRelatedAgentControl(){
         $this->requireAuthentication();

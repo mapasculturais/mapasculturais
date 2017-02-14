@@ -230,6 +230,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Edi
     $scope.openEditBox = function(id, e){
         EditBox.open(id, e);
     };
+
 }]);
 
 })(angular);
