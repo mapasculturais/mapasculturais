@@ -569,6 +569,8 @@ class Registration extends \MapasCulturais\Entity
                 $errorsResult['registration-field-' . $field->id] = $errors;
             }
         }
+        
+        // @TODO: validar o campo projectName
 
         return $errorsResult;
     }

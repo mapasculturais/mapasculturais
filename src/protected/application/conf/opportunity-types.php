@@ -63,13 +63,17 @@ return array(
                 'unserialize' => function($value) { return json_decode($value); }
         ),
         'projectName' => array(
-            'label' => 'Nome do Projeto',
+            'label' => \MapasCulturais\i::__('Nome do Projeto'),
             'type' => 'select',
-            'options' => array(
-                ''   => '',
-                '1' => 'Sim',
-                '0' => 'Não'
-            )
+            'options' => (object) array(
+                '0' => \MapasCulturais\i::__('Não Utilizar'),
+                '1' => \MapasCulturais\i::__('Opcional'),
+                '2' => \MapasCulturais\i::__('Obrigatório'),
+            ),
+            
+            'unserialize' => function($val){
+                return intval($val);
+            }
         ),
     ),
     'items' => array(

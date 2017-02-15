@@ -695,7 +695,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     function initEditables(){
         jQuery('.js-editable-field').each(function(){
             var field = fieldsByName[this.id];
-            if(field.fieldOptions){
+            if(field && field.fieldOptions){
                 var cfg = {};
                 cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
                 jQuery(this).editable(cfg);

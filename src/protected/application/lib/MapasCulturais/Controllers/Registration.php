@@ -114,6 +114,13 @@ class Registration extends EntityController {
     function registerRegistrationMetadata(\MapasCulturais\Entities\Opportunity $opportunity){
         
         $app = App::i();
+        
+        if($opportunity->projectName){
+            $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
+            
+            $metadata = new Definitions\Metadata('projectName', $cfg);
+            $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
+        }
 
         foreach($opportunity->registrationFieldConfigurations as $field){
 
