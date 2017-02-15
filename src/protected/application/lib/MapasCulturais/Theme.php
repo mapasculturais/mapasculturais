@@ -595,4 +595,22 @@ abstract class Theme extends \Slim\View {
         }
         App::i()->applyHookBoundTo($this, $hook, $args);
     }
+    
+    /**
+     * Replace links in text with html links
+     *
+     * http://stackoverflow.com/questions/1959062/how-to-add-anchor-tag-to-a-url-from-text-input
+     * 
+     * @param  string $text
+     * @param  bool $force By default will check for isEditable and only add links if not on edit mode. Set force to true to force replace
+     * @return string
+     */
+    function autoLinkString($text, $force = false) {
+       
+        if ($this->isEditable() && true !== $force)
+            return $text;
+        
+        return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4">$1$2$3$4</a>', $text);
+        
+    }
 }

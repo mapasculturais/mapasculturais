@@ -375,6 +375,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         foreach ($registrations as $registration) {
             $registration->setAgentsSealRelation();
         }
+        
+        $app->addEntityToRecreatePermissionCacheList($this);
 
         $this->save(true);
     }
