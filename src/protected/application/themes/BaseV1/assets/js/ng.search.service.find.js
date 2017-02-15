@@ -288,6 +288,11 @@
                     var def = Description[prop];
                     var selectProperty = def['@select'] || prop;
                     if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
+                        
+                        // Não adiciona os metadados geograficos que devem ser ocultos (que começam com "_")
+                        if (prop.substr(0,4) == 'geo_')
+                            return;
+                        
                         exportSelect.push(selectProperty); 
                     } else if(def.isEntityRelation) {
                         if(def.isOwningSide){

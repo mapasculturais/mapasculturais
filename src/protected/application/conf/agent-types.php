@@ -23,13 +23,6 @@ return array(
 //            )
         ),
 
-        'idade' => array(
-            'private' => true,
-            'label' => \MapasCulturais\i::__('Idade'),
-            'validations' => array(
-                "v::intVal()->positive()" => \MapasCulturais\i::__("A idade/tempo deve ser um número positivo.")
-            )
-        ),
 
         'raca' => array(
             'private' => true,
@@ -51,16 +44,6 @@ return array(
             'type' => 'date',
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
-            )
-        ),
-
-        'precisao' => array(
-            'label' => \MapasCulturais\i::__('Localização'),
-            'type' => 'select',
-            'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
-                'Precisa' => \MapasCulturais\i::__('Precisa'),
-                'Aproximada' => \MapasCulturais\i::__('Aproximada')
             )
         ),
 
