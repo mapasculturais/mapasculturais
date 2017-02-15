@@ -79,7 +79,7 @@
         <div class="label"><?php \MapasCulturais\i::esc_attr_e("Nome do Projeto");?></div>
             <div>
             <p style="position: relative;">
-                <span class='js-editable' id="projectName" data-name="projectName" data-edit="projectName" data-type="url" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome do Projeto");?>" 
+                <span class='js-editable editable' id="projectName" data-name="projectName" data-edit="projectName" data-type="url" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome do Projeto");?>" 
                 data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="<?php echo $opportunity->projectName?>"><?php echo $entity->projectName?></span>
                 </p>
             </div>

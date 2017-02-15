@@ -2035,8 +2035,6 @@ class Theme extends MapasCulturais\Theme {
 
         $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
 
-
-
         usort($field_types, function ($a,$b){
             return strcmp($a->name, $b->name);
         });
