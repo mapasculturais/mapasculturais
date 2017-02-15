@@ -608,7 +608,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($user->is('admin') || $user->is('superAdmin') || $user->is('saasAdmin')  || $user->is('saasSuperAdmin') ){
             return true;
         }
 

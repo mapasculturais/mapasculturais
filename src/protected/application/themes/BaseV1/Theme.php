@@ -2014,41 +2014,7 @@ class Theme extends MapasCulturais\Theme {
     function addProjectToJs(Entities\Project $entity){
         $app = App::i();
 
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
-        $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
-
-        usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
-            if($a->title > $b->title){
-                return 1;
-            }else if($a->title < $b->title){
-
-            }else{
-                return 0;
-            }
-        });
-
-        $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
-
-
-
-        usort($field_types, function ($a,$b){
-            return strcmp($a->name, $b->name);
-        });
-
-        $this->jsObject['registrationFieldTypes'] = $field_types;
-
-        $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
-
-        if($entity->canUser('@control')){
-            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
-        } else {
-            $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
-        }
-        
-        $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
-        $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
-        $this->jsObject['projectRegistrationsEnabled'] = App::i()->config['app.enableProjectRegistration'];
     }
 
     function addOpportunityToJs(Entities\Opportunity $entity){
@@ -2083,7 +2049,7 @@ class Theme extends MapasCulturais\Theme {
         if($entity->canUser('@control')){
             $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
         } else {
-        $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+            $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         }
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');

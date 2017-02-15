@@ -620,7 +620,6 @@ return [
         __try("ALTER TABLE registration ADD PRIMARY KEY(id);");
 
         __try("ALTER TABLE registration_meta ALTER id DROP DEFAULT;");
-        __try("ALTER TABLE registration_meta ALTER object_id SET DEFAULT pseudo_random_id_generator();");
         __try("ALTER TABLE registration_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX registration_meta_owner_key_idx ON registration_meta (object_id, key);");
