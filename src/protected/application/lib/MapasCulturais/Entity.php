@@ -298,7 +298,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function checkPermission($action){
-        if(!$this->canUser($action))
+        if(!$this->canUser($action,App::i()->user))
             throw new Exceptions\PermissionDenied(App::i()->user, $this, $action);
     }
 

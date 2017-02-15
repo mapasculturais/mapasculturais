@@ -8,6 +8,8 @@ $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
 $this->addEntityToJs($entity);
 
+$this->addOpportunityToJs($entity);
+    
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
