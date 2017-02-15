@@ -1,3 +1,4 @@
+<?php $app->log->debug($opportunity->projectName);?>
 <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
     <h4><?php \MapasCulturais\i::_e("Campos adicionais");?></h4>
     <p class="registration-help"><?php \MapasCulturais\i::_e("Para efetuar sua inscrição, informe os campos abaixo.");?></p>
@@ -35,8 +36,7 @@
                     <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="checklist" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}" style="white-space: pre;">{{entity[field.fieldName].join("\n")}}</span>
                 </p>
             </div>
-
-
+         
             <div ng-show="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                 <div class="attachment-description">
@@ -69,6 +69,19 @@
                     </form>
                 </edit-box>
             </div>
+        </li>
+    </ul>
+    <ul class="attachment-list">
+        <li class="attachment-list-item">
+        <?php if($opportunity->projectName == 'Sim'):?>
+        <div class="label"><?php \MapasCulturais\i::esc_attr_e("Nome do Projeto");?></div>
+            <div>
+            <p style="position: relative;">
+                <span class='js-editable' id="projectName" data-name="projectName" data-edit="projectName" data-type="url" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome do Projeto");?>" 
+                data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="<?php echo $opportunity->projectName?>"><?php echo $entity->projectName?></span>
+                </p>
+            </div>
+            <?php endif;?>
         </li>
     </ul>
 </div>
