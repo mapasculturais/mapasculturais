@@ -26,5 +26,12 @@
                 <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
             </edit-box>
         </li>
+        <!-- Video Gallery BEGIN -->
+        <?php $this->part('video-gallery.php', array('entity'=>$entity->owner)); ?>
+        <!-- Video Gallery END -->
+
+        <!-- Image Gallery BEGIN -->
+        <?php $this->part('gallery.php', array('entity'=>$entity->owner)); ?>
+        <!-- Image Gallery END -->
     </ul>
 </div>
