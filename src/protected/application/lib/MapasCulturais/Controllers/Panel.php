@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Subsite;
 
