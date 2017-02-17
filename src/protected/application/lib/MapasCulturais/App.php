@@ -133,7 +133,8 @@ class App extends \Slim\Slim{
             'api_outputs' => [],
             'image_transformations' => [],
             'registration_agent_relations' => [],
-            'registration_fields' => []
+            'registration_fields' => [],
+            'oppotunity_evaluation_methods' => []
         ];
 
     protected $_registerLocked = true;
@@ -2253,6 +2254,24 @@ class App extends \Slim\Slim{
 
         return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
+    }
+    
+    
+    
+    function registerEvaluationMethod(Definitions\EvaluationMethod $def){
+        $this->_register['evaluation_method'][$def->slug] = $def;
+    }
+    
+    function getRegisteredEvaluationMethods(){
+        return $this->_register['evaluation_method'];
+    }
+    
+    function getRegisteredEvaluationMethodBySlug($slug){
+        if(isset($this->_register['evaluation_method'][$slug])){
+            return $this->_register['evaluation_method'][$slug];
+        } else {
+            return null;
+        }
     }
 
     /*************

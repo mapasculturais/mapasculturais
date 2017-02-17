@@ -2,22 +2,34 @@
 
 namespace MapasCulturais\Definitions;
 
-/**
- * This class defines an Opportunity Evaluation Method
- *
- */
-class OpportunityEvaluationMethod extends \MapasCulturais\Definition {
+use MapasCulturais\EvaluationMethod;
 
-    protected $_config;
-    protected $slug;
+/**
+ * This class defines an Evaluation Method
+ *
+ * @property-read string $name 
+ * @property-read string $slug 
+ * @property-read string $description 
+ * 
+ * @property-read string $evaluationMethodClassName 
+ * @property-read MapasCulturais\EvaluationMethod $evaluationMethod 
+ */
+class EvaluationMethod extends \MapasCulturais\Definition {
+
+    protected $evaluationMethod;
     protected $evaluationMethodClassName;
+    
+    protected $slug;
     protected $name;
     protected $description;
     
-    public function __construct($slug, $evaluation_method_class_name, $name, $description) {
-        $this->slug = $slug;
-        $this->evaluationMethodClassName = $evaluation_method_class_name;
-        $this->name = $name;
-        $this->description;
+    public function __construct(EvaluationMethod $evaluation_method) {
+        $this->evaluationMethod = $evaluation_method;
+        $this->evaluationMethodClassName = get_class($evaluation_method);
+        
+        $this->slug = $evaluation_method->getSlug();
+        $this->name = $evaluation_method->getName();
+        $this->description = $evaluation_method->getDescription();
     }
+    
 }

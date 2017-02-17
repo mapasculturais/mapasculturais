@@ -1,17 +1,23 @@
 <?php
-
 namespace MapasCulturais\Entities;
+
+use MapasCulturais\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Role
+ * EvaluationMethodConfiguration
  *
- * @ORM\Table(name="role")
+ * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class Role extends \MapasCulturais\Entity{
+class EvaluationMethodConfiguration extends \MapasCulturais\Entity{
+    
+    use Traits\EntityTypes,
+        Traits\EntityMetadata,
+        Traits\EntityAgentRelation,
+        Traits\EntityPermissionCache;
 
     /**
      * @var integer
@@ -24,66 +30,23 @@ class Role extends \MapasCulturais\Entity{
     protected $id;
 
     /**
+     * The Evaluation Method Slug
+     * 
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=32, nullable=false)
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
      */
-    protected $name;
+    protected $_type;
 
     /**
-     * @var \MapasCulturais\Entities\User
+     * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
-     * })
+     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethod", cascade="persist" )
+     * @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", nullable=false)
      */
-    protected $user;
-
-    /**
-     * @var int
-     * 
-     * @TODO: REMOVER ESTE MAPEAMENTO
-     *
-     * @ORM\Column(name="subsite_id", type="integer", length=32, nullable=true)
-     */
-    protected $subsiteId;
-    
-    /**
-     * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
-     * })
-     */
-    protected $subsite;
+    protected $opportunity;
     
     
-    function setSubsiteId($subsite_id){
-        if($subsite_id){
-            $subsite = \MapasCulturais\App::i()->repo('Subsite')->find($subsite_id);
-            
-            if($subsite){
-                $this->subsite = $subsite;
-            } else {
-                $subsite_id = null;
-            }
-        }
-        
-        $this->subsiteId = $subsite_id;
-    }
-    
-    function setSubsite($subsite){
-        if($subsite instanceof Subsite){
-            $this->subsiteId = $subsite->id;
-        } else {
-            $this->subsiteId = null;
-            $subsite = null;
-        }
-        
-        $this->subsite = $subsite;
-    }
     
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

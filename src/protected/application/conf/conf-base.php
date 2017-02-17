@@ -358,6 +358,7 @@ return array(
     'plugins' => [
         'OpportunityPhases' => ['namespace' => 'OpportunityPhases'],
         'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+        'EvaluationMethodSimple' => ['namespace' => 'EvaluationMethodSimple'],
 //        'OriginSite'    => ['namespace' => 'OriginSite','config' => ['siteId' => @$_SERVER['HTTP_HOST']]]
         //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
     ],
