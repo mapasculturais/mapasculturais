@@ -1160,7 +1160,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
                             var $el;
-                            if(field === 'category'){
+                            if(field === 'projectName'){
+                                $el = $('#projectName').parent().find('.label');
+                            }else if(field === 'category'){
                                 $el = $('.js-editable-registrationCategory').parent();
                             }else if(field.indexOf('agent') !== -1){
                                 $el = $('#' + field).parent().find('.registration-label');

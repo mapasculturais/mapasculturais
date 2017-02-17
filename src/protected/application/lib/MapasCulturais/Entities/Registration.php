@@ -571,6 +571,10 @@ class Registration extends \MapasCulturais\Entity
         }
         
         // @TODO: validar o campo projectName
+        
+        if($opportunity->projectName == 2 && !$this->projectName){
+            $errorsResult['projectName'] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), \MapasCulturais\i::__('Nome do Projeto'));
+        }
 
         return $errorsResult;
     }

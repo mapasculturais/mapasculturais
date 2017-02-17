@@ -4,16 +4,6 @@
     <p class="registration-help"><?php \MapasCulturais\i::_e("Para efetuar sua inscrição, informe os campos abaixo.");?></p>
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController"> 
-        <li class="attachment-list-item">
-            <?php
-            $opportunity = $entity->opportunity;
-            if($opportunity->projectName):?>
-                <h4><?php \MapasCulturais\i::_e("Nome do Projeto");?> <?php if($opportunity->projectName == 2 ) echo "*"?></h4>
-                <p>
-                    <span class='js-editable-field js-include-editable' id="projectName" data-name="projectName" data-type="text" data-original-title="<?php \MapasCulturais\i::_e("Nome do Projeto");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o nome do projeto");?>" data-value="<?php echo $entity->projectName ?>"><?php echo $entity->projectName ?></span>
-                </p>
-            <?php endif; ?>
-        </li>
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode">
             <div ng-show="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
