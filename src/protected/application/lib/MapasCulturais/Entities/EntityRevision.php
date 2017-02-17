@@ -135,7 +135,16 @@ class EntityRevision extends \MapasCulturais\Entity{
 
             foreach($dataRevision as $key => $data) {
                 $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
-                if(is_null($item) || json_encode($data) != json_encode($item->getValue())) {
+                if(is_object($item->getValue())) {
+                    $itemValue = (array) $item->getValue();
+                    if(is_array($itemValue) && array_key_exists("_empty_",$itemValue)) {
+                        $itemValue = array("" => $itemValue['_empty_']);
+                    }
+                } else {
+                    $itemValue = $item->getValue();
+                }
+
+                if(is_null($item) || json_encode($data) != json_encode($itemValue)) {
                     $revisionData = new EntityRevisionData;
                     $revisionData->key = $key;
                     $revisionData->value = $data;
