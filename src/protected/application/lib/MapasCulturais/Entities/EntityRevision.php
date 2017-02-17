@@ -135,9 +135,7 @@ class EntityRevision extends \MapasCulturais\Entity{
 
             foreach($dataRevision as $key => $data) {
                 $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
-                $app->log->debug("Gente, me diz o que está acontecendo??");
                 if(!is_null($item)) {
-                    $app->log->debug("E agora??");
                     if(is_object($item->getValue())) {
                         $itemValue = (array) $item->getValue();
                         if(is_array($itemValue) && array_key_exists("_empty_",$itemValue)) {
@@ -147,10 +145,7 @@ class EntityRevision extends \MapasCulturais\Entity{
                         $itemValue = $item->getValue();
                     }
 
-                    $app->log->debug(json_encode($data));
-                    $app->log->debug(json_encode($itemValue));
                     if(json_encode($data) != json_encode($itemValue)) {
-                        $app->log->debug("entra aqui??");
                         $revisionData = new EntityRevisionData;
                         $revisionData->key = $key;
                         $revisionData->value = $data;
