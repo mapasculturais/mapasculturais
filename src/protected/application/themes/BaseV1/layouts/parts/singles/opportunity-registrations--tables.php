@@ -1,4 +1,4 @@
-<div ng-if="data.opportunityRegistrationsEnabled" id="inscritos" class="aba-content">
+<div id="inscritos" class="aba-content">
     <?php if ($entity->canUser('@control')): ?>
         <?php $this->part('singles/opportunity-registrations--tables--manager', ['entity' => $entity]) ?>
 
