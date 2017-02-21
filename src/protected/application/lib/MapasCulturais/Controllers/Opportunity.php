@@ -156,4 +156,41 @@ class Opportunity extends EntityController {
 
         $this->apiResponse($opportunities);
     }
+
+    /*
+     * Send opportunity claim message (mail and notification)
+     */
+    public function POST_sendOpportunityClaimMessage() {
+        $app = App::i();
+        $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
+
+        $dataValue = [
+            'name'          => $app->user->profile->name,
+            'entityType'    => $entity->getEntityTypeLabel(),
+            'person'        => $person,
+            'email'         => $person_email,
+            'url'           => $entity->singleUrl,
+            'type'          => $this->data['type'],
+            'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+            'message'       => $this->data['message']
+        ];
+
+        $message = $app->renderMailerTemplate('opportunity_claim',$dataValue);
+
+        if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+            $admins = $app->getAdmins();
+
+            foreach($admins as $administrator) {
+                /*
+                * Envia e-mail para o administrador para instalação Mapas
+                */
+                $app->createAndSendMailMessage([
+                    'from' => $app->config['mailer.from'],
+                    'to' => $administrator->user->email,
+                    'subject' => $message['title'],
+                    'body' => $message['body']
+                ]);
+            }
+        }
+    }
 }

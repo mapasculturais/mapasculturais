@@ -41,6 +41,9 @@
                     <td class="registration-status-col">
                         <?php if ($registration->status > 0): ?>
                             <?php \MapasCulturais\i::_e("Enviada em");?> <?php echo $registration->sentTimestamp ? $registration->sentTimestamp->format('d/m/Y à\s H:i'): ''; ?>.
+                            <p>
+                                <?php $this->part('singles/opportunity-registrations--claim',['registration' => $registration]) ?>
+                            </p>
                         <?php else: ?>
                             <?php \MapasCulturais\i::_e("Não enviada.");?><br>
                             <a class="btn btn-small btn-primary" href="<?php echo $registration->singleUrl ?>"><?php \MapasCulturais\i::_e("Editar e enviar");?></a>
