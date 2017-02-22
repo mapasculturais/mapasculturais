@@ -93,6 +93,8 @@ class EntityRevision extends \MapasCulturais\Entity{
      */
     protected $user;
 
+    protected $modified = false;
+
     public function __construct(array $dataRevision, $entity, $action, $message = "") {
         parent::__construct();
         $app = App::i();
@@ -153,6 +155,7 @@ class EntityRevision extends \MapasCulturais\Entity{
                     $revisionData->setValue($data);
                     $revisionData->save();
                     $this->data[] = $revisionData;
+                    $this->modified = true;
                 } elseif(!is_null($item)) {
                     $this->data[] = $item;
                 }
