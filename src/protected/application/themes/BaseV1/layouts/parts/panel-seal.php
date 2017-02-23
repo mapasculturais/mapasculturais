@@ -7,7 +7,7 @@ use MapasCulturais\Entities\Seal;
         <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
     </h1>
     <div class="objeto-meta">
-        <?php if($entity->originSiteUrl): ?>
+        <?php if(isset($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
     </div>

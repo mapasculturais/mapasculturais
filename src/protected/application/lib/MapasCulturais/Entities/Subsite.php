@@ -91,6 +91,72 @@ class Subsite extends \MapasCulturais\Entity
     protected $aliasUrl;
 
     /**
+     * @var \MapasCulturais\Entities\Space[] Space
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_spaces;
+
+    /**
+     * @var \MapasCulturais\Entities\Project[] Project
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_projects;
+
+
+    /**
+     * @var \MapasCulturais\Entities\Event[] Event
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_events;
+
+    /**
+     * @var \MapasCulturais\Entities\Agent[] Agent
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id")
+     * })
+    */
+    protected $_agents;
+
+
+    /**
+     * @var \MapasCulturais\Entities\Seal[] Seal
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_seals;
+
+
+    /**
+     * @var \MapasCulturais\Entities\Role[] Role
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_roles;
+
+    /**
+     * @var \MapasCulturais\Entities\UserApp[] UserApp
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserApp", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_userApps;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
