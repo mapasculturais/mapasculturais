@@ -59,6 +59,10 @@ return array(
         'seal_expired' => [
             'title' => "Selo Certificador Expirado",
             'template' => 'seal_expired.html'
+        ],
+        'opportunity_claim' => [
+            'title' => "Solicitação de Recurso de Oportunidade",
+            'template' => 'opportunity_claim.html'
         ]
 
     ],
@@ -358,7 +362,7 @@ return array(
     'plugins' => [
         'OpportunityPhases' => ['namespace' => 'OpportunityPhases'],
         'AgendaSingles' => ['namespace' => 'AgendaSingles'],
-        'EvaluationMethodSimple' => ['namespace' => 'EvaluationMethodSimple'],
+        // 'EvaluationMethodSimple' => ['namespace' => 'EvaluationMethodSimple'],
 //        'OriginSite'    => ['namespace' => 'OriginSite','config' => ['siteId' => @$_SERVER['HTTP_HOST']]]
         //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
     ],

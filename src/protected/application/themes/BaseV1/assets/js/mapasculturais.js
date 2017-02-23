@@ -180,6 +180,20 @@ $(function(){
         }
     });
 
+    $('.js-submit-button.opportunity-claim-form').on('click', function(){
+        var form_button_opportunity_claim = $(".js-submit-button.opportunity-claim-form");
+        if(MapasCulturais.opportunity_claim_ok) {
+            $(".js-opportunity-claim-form")[0].reset();
+            $('.opportunity-claim-box').show();
+            $('.js-submit-button.opportunity-claim-form').hide();
+        }
+    });
+
+    $('.button-form-opportunity-claim').on('click', function(){
+        var form_opportunity_claim = $(".js-opportunity-claim-form")
+        form_opportunity_claim.toggle();
+    });
+
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 
 
