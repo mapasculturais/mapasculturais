@@ -74,6 +74,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity{
         }
     }
     
+    public function jsonSerialize() {
+        $result = parent::jsonSerialize();
+        
+        $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl');
+        
+        return $result;
+    }
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

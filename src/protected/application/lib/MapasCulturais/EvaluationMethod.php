@@ -1,7 +1,7 @@
 <?php
 namespace MapasCulturais;
 
-abstract class EvaluationMethod extends Plugin{
+abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function register();
     
     abstract function getSlug();
@@ -28,5 +28,9 @@ abstract class EvaluationMethod extends Plugin{
         $metadata = new Definitions\Metadata($key, $config);
         
         $app->registerMetadata($metadata, 'MapasCulturais\Entities\EvaluationMethod', $this->getSlug());
+    }
+    
+    public function jsonSerialize() {
+        return null;
     }
 }

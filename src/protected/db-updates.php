@@ -750,7 +750,6 @@ return [
             try{
                 $conn->executeQuery($sql);
             } catch (\Exception $ex) {
-                echo "$ex";
             }
         };
         

@@ -1571,7 +1571,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
-
         if ($print_script_tag)
             echo "\n<script type=\"text/javascript\">\n";
 
