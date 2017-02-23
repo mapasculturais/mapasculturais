@@ -162,13 +162,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $owner;
     
     /**
-     * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
-     * 
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy="opportunity")
-     */
-    protected $evaluationMethodConfiguration;
-
-    /**
      * @var \MapasCulturais\Entities\RegistrationFileConfiguration[] RegistrationFileConfiguration
      *
      * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFileConfiguration", mappedBy="owner", fetch="LAZY")
