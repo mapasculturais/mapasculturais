@@ -159,10 +159,10 @@ VARIÁVEIS DISPONÍVEIS:
   
 para logar: login(id do usuário);
 
-para criar uma ApiQuery: api(\$entity, \$params); (exemplo: api('agent', ['@select' => 'id,name']))
+para criar uma ApiQuery: \033[33mapi(\$entity, \$params);\033[0m (exemplo: api('agent', ['@select' => 'id,name']))
 
-para adicionar uma role a um usuário: role::add(\$user_id, 'roleName', \$subsite_id = null); (exemplo role::add(1, 'saasSuperAdmin'))
-para remover uma role a um usuário: role::remove(\$user_id, 'roleName', \$subsite_id = null); (exemplo role::remove(1, 'saasSuperAdmin'))
+para adicionar uma role a um usuário: \033[33mrole::add(\$user_id, 'roleName', \$subsite_id = null);\033[0m (exemplo role::add(1, 'saasSuperAdmin'))
+para remover uma role a um usuário: \033[33mrole::remove(\$user_id, 'roleName', \$subsite_id = null);\033[0m (exemplo role::remove(1, 'saasSuperAdmin'))
 
 ";
 

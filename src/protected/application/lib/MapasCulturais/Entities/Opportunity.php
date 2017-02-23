@@ -8,6 +8,8 @@ use MapasCulturais\App;
 
 /**
  * Opportunity
+ * 
+ * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
  *
  * @ORM\Table(name="opportunity", indexes={
  *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
@@ -232,6 +234,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+    
+    function setEvaluationMethodConfiguration(EvaluationMethodConfiguration $eval, $cascade = true){
+        $this->evaluationMethodConfiguration = $eval;
+        
+        if($cascade){
+            $eval->setOpportunity($this, false);
+        }
+    }
 
     public function getEntityTypeLabel($plural = false) {
         if ($plural)

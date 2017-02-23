@@ -26,7 +26,8 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Seal"          = "\MapasCulturais\Entities\SealPermissionCache",
         "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationPermissionCache",
         "MapasCulturais\Entities\Notification"  = "\MapasCulturais\Entities\NotificationPermissionCache",
-        "MapasCulturais\Entities\Request"       = "\MapasCulturais\Entities\RequestPermissionCache"
+        "MapasCulturais\Entities\Request"       = "\MapasCulturais\Entities\RequestPermissionCache",
+        "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache",
    })
  */
 abstract class PermissionCache extends \MapasCulturais\Entity {

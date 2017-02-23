@@ -713,6 +713,32 @@ return [
         }
     },
             
+    'create evaluation methods tables' => function (){
+        if(__table_exists('evaluation_method_configuration')){
+            echo "evaluation_method_configuration table already exists";
+            return true;
+        }
+        __exec("CREATE SEQUENCE evaluationMethodConfiguration_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("CREATE TABLE evaluation_method_configuration (id INT NOT NULL, opportunity_id INT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+        __exec("CREATE UNIQUE INDEX UNIQ_330CB54C9A34590F ON evaluation_method_configuration (opportunity_id);");
+        __exec("CREATE TABLE evaluationMethodConfiguration_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+        __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_idx ON evaluationMethodConfiguration_meta (object_id);");
+        __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_key_idx ON evaluationMethodConfiguration_meta (object_id, key);");
+        __exec("CREATE INDEX evaluationMethodConfiguration_meta_key_value_idx ON evaluationMethodConfiguration_meta (key, value);");
+        __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE evaluationMethodConfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        
+        $opportunities = $this->repo('Opportunity')->findAll();
+        
+        foreach($opportunities as $opportunity){
+            $emc = new Entities\EvaluationMethodConfiguration;
+            
+            $emc->opportunity = $opportunity;
+            $emc->type = 'simple';
+            $emc->save(true);
+        }
+    },
+    
     'create seal relation renovation flag field' => function() use($conn) {
         if(__column_exists('seal_relation', 'renovation_request')){
             echo "ALREADY APPLIED";

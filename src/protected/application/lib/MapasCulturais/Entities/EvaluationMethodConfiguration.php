@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * EvaluationMethodConfiguration
+ * 
+ * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
  *
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -41,12 +43,36 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity{
     /**
      * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethod", cascade="persist" )
+     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethodConfiguration", cascade="persist" )
      * @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", nullable=false)
      */
     protected $opportunity;
+
+    /**
+     * @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+     */
+    protected $__metadata;
     
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
     
+    function setOpportunity(Opportunity $opportunity, $cascade = true){
+        $this->opportunity = $opportunity;
+        if($cascade){
+            $opportunity->setEvaluationMethodConfiguration($this, false);
+        }
+    }
     
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
