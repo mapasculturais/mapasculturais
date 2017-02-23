@@ -567,7 +567,6 @@ return [
         __try("ALTER TABLE subsite_meta ADD PRIMARY KEY (id);");
 
         __try("CREATE INDEX subsite_meta_owner_key_idx ON subsite_meta (object_id, key);");
-        __try("CREATE INDEX subsite_meta_key_value_idx ON subsite_meta (key, value);");
         __try("CREATE INDEX subsite_meta_owner_idx ON subsite_meta (object_id);");
 
         __try("ALTER TABLE agent_meta DROP CONSTRAINT agent_agent_meta_fk;");
@@ -575,7 +574,6 @@ return [
         __try("ALTER TABLE agent_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX agent_meta_owner_key_idx ON agent_meta (object_id, key);");
-        __try("CREATE INDEX agent_meta_key_value_idx ON agent_meta (key, value);");
         __try("CREATE INDEX agent_meta_owner_idx ON agent_meta (object_id);");
 
         __try("ALTER TABLE user_meta ALTER key TYPE VARCHAR(255);");
@@ -583,7 +581,6 @@ return [
         __try("ALTER TABLE user_meta ADD PRIMARY KEY (id);"); 
         
         __try("CREATE INDEX user_meta_owner_key_idx ON user_meta (object_id, key);");
-        __try("CREATE INDEX user_meta_key_value_idx ON user_meta (key, value);");
         __try("CREATE INDEX user_meta_owner_idx ON user_meta (object_id);");
 
         __try("ALTER TABLE event_meta DROP CONSTRAINT event_project_meta_fk;");
@@ -591,7 +588,6 @@ return [
         __try("ALTER TABLE event_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX event_meta_owner_key_idx ON event_meta (object_id, key);");
-        __try("CREATE INDEX event_meta_key_value_idx ON event_meta (key, value);");
         __try("CREATE INDEX event_meta_owner_idx ON event_meta (object_id);");
 
         __try("ALTER TABLE space_meta DROP CONSTRAINT space_space_meta_fk;");
@@ -599,7 +595,6 @@ return [
         __try("ALTER TABLE space_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX space_meta_owner_key_idx ON space_meta (object_id, key);");
-        __try("CREATE INDEX space_meta_key_value_idx ON space_meta (key, value);");
         __try("CREATE INDEX space_meta_owner_idx ON space_meta (object_id);");
 
         __try("ALTER TABLE project_meta DROP CONSTRAINT project_project_meta_fk;");
@@ -607,14 +602,12 @@ return [
         __try("ALTER TABLE project_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX project_meta_owner_key_idx ON project_meta (object_id, key);");
-        __try("CREATE INDEX project_meta_key_value_idx ON project_meta (key, value);");
         __try("CREATE INDEX project_meta_owner_idx ON project_meta (object_id);");
 
         __try("ALTER TABLE seal_meta DROP CONSTRAINT seal_meta_fk;");
         __try("ALTER TABLE seal_meta ALTER object_id SET NOT NULL;");
         __try("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX seal_meta_owner_key_idx ON seal_meta (object_id, key);");
-        __try("CREATE INDEX seal_meta_key_value_idx ON seal_meta (key, value);");
         __try("CREATE INDEX seal_meta_owner_idx ON seal_meta (object_id);");
 
         __try("ALTER TABLE registration ADD PRIMARY KEY(id);");
@@ -623,14 +616,12 @@ return [
         __try("ALTER TABLE registration_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX registration_meta_owner_key_idx ON registration_meta (object_id, key);");
-        __try("CREATE INDEX registration_meta_key_value_idx ON registration_meta (key, value);");
         __try("CREATE INDEX registration_meta_owner_idx ON registration_meta (object_id);");
 
         __try("ALTER TABLE notification_meta DROP CONSTRAINT notification_meta_fk;");
         __try("ALTER TABLE notification_meta ALTER object_id SET NOT NULL;");
         __try("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("CREATE INDEX notification_meta_owner_key_idx ON notification_meta (object_id, key);");
-        __try("CREATE INDEX notification_meta_key_value_idx ON notification_meta (key, value);");
         __try("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
         
     },
@@ -652,7 +643,6 @@ return [
             __exec("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
             __exec("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
             __exec("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
-            __exec("CREATE INDEX opportunity_meta_key_value_idx ON opportunity_meta (key, value);");
             __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
             __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
             __exec("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
@@ -724,7 +714,6 @@ return [
         __exec("CREATE TABLE evaluationMethodConfiguration_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
         __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_idx ON evaluationMethodConfiguration_meta (object_id);");
         __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_key_idx ON evaluationMethodConfiguration_meta (object_id, key);");
-        __exec("CREATE INDEX evaluationMethodConfiguration_meta_key_value_idx ON evaluationMethodConfiguration_meta (key, value);");
         __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE evaluationMethodConfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         

@@ -161,7 +161,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
      */
-    protected $owner;
+    protected $owner; 
+    
+    /**
+     * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
+     * 
+     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy="opportunity")
+     */
+    protected $evaluationMethodConfiguration;
     
     /**
      * @var \MapasCulturais\Entities\RegistrationFileConfiguration[] RegistrationFileConfiguration
