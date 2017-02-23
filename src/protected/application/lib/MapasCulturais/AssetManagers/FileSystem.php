@@ -23,9 +23,9 @@ class FileSystem extends \MapasCulturais\AssetManager{
 
     protected function _mkAssetDir($output_file, $is_dir = false){
         if($is_dir){
-            $path = $this->_config['publishPath'] . $output_file;
+            $path = $this->config['publishPath'] . $output_file;
         }else{
-            $path = dirname($this->_config['publishPath'] . $output_file);
+            $path = dirname($this->config['publishPath'] . $output_file);
         }
 
         if(!is_dir($path))
@@ -43,9 +43,9 @@ class FileSystem extends \MapasCulturais\AssetManager{
                 '{PUBLISH_PATH}'
             ], [
                 $input_files,
-                $this->_config['publishPath'] . $output_file,
+                $this->config['publishPath'] . $output_file,
                 $output_file,
-                $this->_config['publishPath']
+                $this->config['publishPath']
             ], $command_pattern);
 
         
@@ -61,11 +61,11 @@ class FileSystem extends \MapasCulturais\AssetManager{
         $info = pathinfo($asset_filename);
         $extension = strtolower($info['extension']);
 
-        if(isset($this->_config["process.{$extension}"])){
-            $this->_exec($this->_config["process.{$extension}"], $asset_filename, $output_file);
+        if(isset($this->config["process.{$extension}"])){
+            $this->_exec($this->config["process.{$extension}"], $asset_filename, $output_file);
         }else{
             $this->_mkAssetDir($output_file);
-            copy($asset_filename, $this->_config['publishPath'] . $output_file);
+            copy($asset_filename, $this->config['publishPath'] . $output_file);
         }
 
         return $app->assetUrl . $output_file;
@@ -73,7 +73,7 @@ class FileSystem extends \MapasCulturais\AssetManager{
 
     protected function _publishFolder($path, $destination){
         $this->_mkAssetDir($destination, true);
-        $this->_exec($this->_config['publishFolderCommand'], $path, $destination);
+        $this->_exec($this->config['publishFolderCommand'], $path, $destination);
     }
 
     protected function _publishScripts($group) {
@@ -87,14 +87,14 @@ class FileSystem extends \MapasCulturais\AssetManager{
     protected function _publishAssetGroup($extension, $group) {
         if($extension === 'js'){
             $enqueuedAssets = isset($this->_enqueuedScripts[$group]) ? $this->_enqueuedScripts[$group] : null;
-            $merge = $this->_config['mergeScripts'];
-            $process_pattern = $this->_config['process.js'];
+            $merge = $this->config['mergeScripts'];
+            $process_pattern = $this->config['process.js'];
 
             $ordered = $this->_getOrderedScripts($group);
         }else{
             $enqueuedAssets = isset($this->_enqueuedStyles[$group]) ? $this->_enqueuedStyles[$group] : null;
-            $merge = $this->_config['mergeStyles'];
-            $process_pattern = $this->_config['process.css'];
+            $merge = $this->config['mergeStyles'];
+            $process_pattern = $this->config['process.css'];
 
             $ordered = $this->_getOrderedStyles($group);
         }

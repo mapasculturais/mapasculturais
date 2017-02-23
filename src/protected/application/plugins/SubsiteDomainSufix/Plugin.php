@@ -5,14 +5,17 @@ use MapasCulturais\App;
 
 
 class Plugin extends \MapasCulturais\Plugin{
-    public function _init() {
-        $app = App::i();
-        
+    function getSufix(){
         $sufix = $this->_config['sufix'];
-
         if (is_callable($sufix)) {
             $sufix = $sufix();
         }
+        return $sufix;
+    }
+    public function _init() {
+        $app = App::i();
+        
+        $sufix = $this->getSufix();
         
         if($sufix[0] !== '.'){
             $sufix = '.' . $sufix;
@@ -32,4 +35,5 @@ class Plugin extends \MapasCulturais\Plugin{
     }
     
     public function register() { }
+    
 }
