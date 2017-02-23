@@ -5,8 +5,6 @@
 
 //**  Widgets structure.
 .widget {
-    overflow-x: visible;
-    overflow-y: auto;
     position: relative;
     margin-bottom: $line-height-base;
     padding-bottom: $padding-large;
@@ -44,10 +42,7 @@
             max-height: none !important;
         }
     }
-
-    .slimScrollDiv, .slimScrollDiv ul{
-        overflow-x:auto !important;
-    }
+    
 }
 //**  Widget list.
 
@@ -55,7 +50,12 @@
 
 .widget-list {
     margin: 0;
-    overflow: initial;
+
+    &.horizontalScroll {
+        overflow-x: auto !important;
+        max-width: $screen-md-max !important;
+    }
+
     .widget-list-item {
         position: relative;
         padding-bottom: $padding-small;
