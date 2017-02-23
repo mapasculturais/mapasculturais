@@ -10,7 +10,7 @@ $currentDate = null;
 <?php if(count($entityRevisions) > 0): ?>
 <div class="widget">
     <h3><?php \MapasCulturais\i::_e("Histórico");?></h3>
-    <ul class="widget-list js-slimScroll">
+    <ul class="widget-list js-slimScroll horizontalScroll">
 	<?php foreach($entityRevisions as $revision):?>
         <li id="revision-<?php echo $revision->id?>" class="widget-list-item" >
             <?php if(is_null($currentDate) || trim($currentDate->format('d/m/Y')) != ($revision->createTimestamp->format('d/m/Y'))):?>
