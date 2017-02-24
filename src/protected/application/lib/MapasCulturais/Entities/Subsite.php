@@ -91,54 +91,6 @@ class Subsite extends \MapasCulturais\Entity
     protected $aliasUrl;
 
     /**
-     * @var \MapasCulturais\Entities\Space[] Space
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Space", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
-     * })
-    */
-    protected $_spaces;
-
-    /**
-     * @var \MapasCulturais\Entities\Project[] Project
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Project", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
-     * })
-    */
-    protected $_projects;
-
-
-    /**
-     * @var \MapasCulturais\Entities\Event[] Event
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
-     * })
-    */
-    protected $_events;
-
-    /**
-     * @var \MapasCulturais\Entities\Agent[] Agent
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id")
-     * })
-    */
-    protected $_agents;
-
-
-    /**
-     * @var \MapasCulturais\Entities\Seal[] Seal
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Seal", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
-     * })
-    */
-    protected $_seals;
-
-
-    /**
      * @var \MapasCulturais\Entities\Role[] Role
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
      * @ORM\JoinColumns({
@@ -146,15 +98,6 @@ class Subsite extends \MapasCulturais\Entity
      * })
     */
     protected $_roles;
-
-    /**
-     * @var \MapasCulturais\Entities\UserApp[] UserApp
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserApp", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
-     * })
-    */
-    protected $_userApps;
 
     /**
      * @var string
@@ -435,6 +378,42 @@ class Subsite extends \MapasCulturais\Entity
         parent::save($flush);
         $this->clearCache();
     }
+
+    /** @ORM\PreRemove */
+    public function _setNullSubsiteId() {
+        $app = App::i();
+        $subsite_id = $this->id;
+        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.subsite = NULL WHERE a._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Space s SET s.subsite = NULL WHERE s._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Event e SET e.subsite = NULL WHERE e._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Project p SET p.subsite = NULL WHERE p._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Seal s SET s.subsite = NULL WHERE s._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Registration r SET r.subsite = NULL WHERE r._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $app->em->flush();
+    }
+    
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
