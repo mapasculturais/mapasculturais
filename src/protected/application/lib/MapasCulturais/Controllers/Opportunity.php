@@ -26,13 +26,8 @@ class Opportunity extends EntityController {
         Traits\ControllerAPINested;
 
     function GET_create() {
-        if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
-            $parent = $this->repository->find($this->urlData['parentId']);
-            if($parent)
-                App::i()->hook('entity(opportunity).new', function() use ($parent){
-                    $this->parent = $parent;
-                });
-        }
+        // @TODO: definir entitidade relacionada
+        
         parent::GET_create();
     }
 

@@ -36,7 +36,6 @@
 
             remove: function(agentId,role){
                 var url = this.getUrl('removeRole', agentId);
-                console.log('é pra postar isso: ', url)
                 return $http.post(url, {subsiteId: entityId, role: role}).
                     success(function(data, status){
                         $rootScope.$emit('subsiteAdmins.removed', data);
@@ -72,7 +71,6 @@
                 });
         };
         $scope.createAdminRole = function(entity){
-            console.log(entity);
             var _scope = this.$parent;
             SubsiteAdminsService.create(entity.id,'admin').
                 success(function(data){

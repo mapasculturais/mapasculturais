@@ -13,6 +13,7 @@ $this->addOpportunityToJs($entity->opportunity);
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
+$this->includeEditableEntityAssets();
 
 $_params = [
     'entity' => $entity,

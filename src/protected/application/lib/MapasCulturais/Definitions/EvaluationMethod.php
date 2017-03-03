@@ -1,8 +1,8 @@
 <?php
-
 namespace MapasCulturais\Definitions;
 
-use MapasCulturais\EvaluationMethod;
+use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 /**
  * This class defines an Evaluation Method
@@ -16,6 +16,10 @@ use MapasCulturais\EvaluationMethod;
  */
 class EvaluationMethod extends \MapasCulturais\Definition {
 
+    /**
+     * The Evaluation Method
+     * @var \MapasCuturais\EvaluationMethod
+     */
     protected $evaluationMethod;
     protected $evaluationMethodClassName;
     
@@ -23,7 +27,7 @@ class EvaluationMethod extends \MapasCulturais\Definition {
     protected $name;
     protected $description;
     
-    public function __construct(EvaluationMethod $evaluation_method) {
+    public function __construct(\MapasCulturais\EvaluationMethod $evaluation_method) {
         $this->evaluationMethod = $evaluation_method;
         $this->evaluationMethodClassName = get_class($evaluation_method);
         
@@ -31,5 +35,4 @@ class EvaluationMethod extends \MapasCulturais\Definition {
         $this->name = $evaluation_method->getName();
         $this->description = $evaluation_method->getDescription();
     }
-    
 }

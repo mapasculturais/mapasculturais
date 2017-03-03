@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Entities;
 
+use MapasCulturais\App;
 use MapasCulturais\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * EvaluationMethodConfiguration
  * 
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
+ * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition
  *
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -77,9 +79,19 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity{
     public function jsonSerialize() {
         $result = parent::jsonSerialize();
         
-        $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl');
+        $result['opportunity'] = $this->opportunity->simduplify('id,name,singleUrl');
         
         return $result;
+    }
+    
+    public function getDefinition(){
+        $app = App::i();
+        $definition = $app->getRegisteredEvaluationMethodBySlug($this->_type);
+        return $definition;
+    }
+    
+    function getOwner(){
+        return $this->opportunity;
     }
     
     //============================================================= //

@@ -362,7 +362,7 @@ return array(
     'plugins' => [
         'OpportunityPhases' => ['namespace' => 'OpportunityPhases'],
         'AgendaSingles' => ['namespace' => 'AgendaSingles'],
-        // 'EvaluationMethodSimple' => ['namespace' => 'EvaluationMethodSimple'],
+         'EvaluationMethodSimple' => ['namespace' => 'EvaluationMethodSimple'],
 //        'OriginSite'    => ['namespace' => 'OriginSite','config' => ['siteId' => @$_SERVER['HTTP_HOST']]]
         //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
     ],
@@ -384,6 +384,7 @@ return array(
             'espaco'        => array('space', 'single'),
             'projeto'       => array('project', 'single'),
             'oportunidade'  => array('opportunity', 'single'),
+            'salva-avaliacao'  => array('registration', 'saveEvaluation'),
             'instalacao'    => array('subsite', 'single'),
             'selo'          => array('seal', 'single'),
             'sair'          => array('auth', 'logout'),

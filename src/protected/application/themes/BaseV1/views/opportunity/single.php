@@ -65,11 +65,15 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
         <?php $this->part('singles/opportunity-about', ['entity' => $entity]) ?>
 
-        <?php $this->part('singles/opportunity-registrations', ['entity' => $entity]) ?>
+        <?php if($this->isEditable()): ?>
+            <?php $this->part('singles/opportunity-registrations--config', ['entity' => $entity]) ?>
+            <?php if(!$entity->isNew()): ?>
+                <?php $this->part('singles/opportunity-evaluations--config', ['entity' => $entity]) ?>
+            <?php endif; ?>
 
-        <!-- #permissao -->
-        <?php $this->part('singles/permissions') ?>
-        <!-- #permissao -->
+        <?php else : ?>
+            <?php $this->part('singles/opportunity-registrations--tables', ['entity' => $entity]) ?>
+        <?php endif; ?>
 
         <?php $this->applyTemplateHook('tabs-content','end'); ?>
     </div>

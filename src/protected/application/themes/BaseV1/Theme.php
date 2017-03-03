@@ -1346,6 +1346,8 @@ class Theme extends MapasCulturais\Theme {
             'insertLinkTitle'    => i::__('Insira um título para seu link.'),
             'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
         ]);
+        
+        $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
     }
 
     function includeSearchAssets() {
@@ -1424,6 +1426,9 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeAngularEntityAssets($entity) {
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
+        
         $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
@@ -1568,6 +1573,8 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
+        
+        $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
@@ -1935,6 +1942,10 @@ class Theme extends MapasCulturais\Theme {
 
     function addRelatedAdminAgentsToJs($entity) {
         $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+    }
+    
+    function addOpportunityEvaluationCommitteeToJs(\MapasCulturais\Entities\EvaluationMethodConfiguration $evaluation_configuration) {
+        $this->jsObject['entity']['evaluationCommittee'] = $evaluation_configuration->getAgentRelations(true);
     }
 
     function addSubsiteAdminsToJs($subsite) {

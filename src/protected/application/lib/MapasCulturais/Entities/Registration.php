@@ -8,6 +8,7 @@ use MapasCulturais\App;
 /**
  * Registration
  * @property-read \MapasCulturais\Entities\Agent $owner The owner of this registration
+ * @property-read \MapasCulturais\Entities\Opportunity $opportunity 
  *
  * @ORM\Table(name="registration")
  * @ORM\Entity
@@ -675,6 +676,42 @@ class Registration extends \MapasCulturais\Entity
         }else{
             return $this->genericPermissionVerification($user);
         }
+    }
+    
+    /**
+     * 
+     * @param \MapasCulturais\Entities\User $user
+     * @return \MapasCulturais\Entities\RegistrationEvaluation
+     */
+    function getUserEvaluation(User $user = null){
+        $app = App::i();
+        if(is_null($user)){
+            $user = $app->user;
+        }
+        $evaluation = App::i()->repo('RegistrationEvaluation')->findOneBy([
+            'registration' => $this,
+            'user' => $user
+        ]);
+        
+        return $evaluation;
+    }
+    
+    function saveUserEvaluation(array $data, User $user = null){
+        $app = App::i();
+        if(is_null($user)){
+            $user = $app->user;
+        }
+        
+        $evaluation = $this->getUserEvaluation($user);
+        if(!$evaluation){
+            $evaluation = new RegistrationEvaluation;
+            $evaluation->user = $user;
+            $evaluation->registration = $this;
+        }
+        
+        $evaluation->data = $data;
+        
+        $evaluation->save(true);
     }
 
     //============================================================= //

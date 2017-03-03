@@ -257,4 +257,11 @@ class Registration extends EntityController {
             }
         }
     }
+    
+    function POST_saveEvaluation(){
+        
+        $registration = $this->getRequestedEntity();
+        
+        $registration->saveUserEvaluation($this->postData['data']);
+    }
 }

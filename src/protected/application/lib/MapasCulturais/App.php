@@ -134,7 +134,7 @@ class App extends \Slim\Slim{
             'image_transformations' => [],
             'registration_agent_relations' => [],
             'registration_fields' => [],
-            'oppotunity_evaluation_methods' => []
+            'evaluation_method' => []
         ];
 
     protected $_registerLocked = true;
@@ -648,7 +648,10 @@ class App extends \Slim\Slim{
         $this->registerController('seal',           'MapasCulturais\Controllers\Seal');
         $this->registerController('space',          'MapasCulturais\Controllers\Space');
         $this->registerController('project',        'MapasCulturais\Controllers\Project');
+        
         $this->registerController('opportunity',    'MapasCulturais\Controllers\Opportunity');
+        $this->registerController('evaluationMethodConfiguration', 'MapasCulturais\Controllers\EvaluationMethodConfiguration');
+        
         $this->registerController('subsite',        'MapasCulturais\Controllers\Subsite');
 
 

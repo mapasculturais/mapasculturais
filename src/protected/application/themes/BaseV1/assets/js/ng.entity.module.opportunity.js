@@ -12,46 +12,11 @@
         };
     }]);
 
-    module.factory('OpportunityEventsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
-        var url = new UrlService('opportunity');
-
-        return {
-            getUrl: function(action){
-                return url.create(action, MapasCulturais.entity.id);
-            },
-
-            publish: function(ids){
-             var url = this.getUrl('publishEvents');
-
-             return $http.post(url, {ids: ids}).
-             success(function (data, status) {
-                $rootScope.$emit('opportunity.publishEvents', {message: "Opportunity events was published", data: data, status: status});
-            }).
-             error(function (data, status) {
-                $rootScope.$emit('error', {message: "Cannot publish opportunity events", data: data, status: status});
-            });
-
-
-         },
-
-         unpublish: function(ids){
-            var url = this.getUrl('unpublishEvents');
-
-            return $http.post(url, {ids: ids}).
-            success(function (data, status) {
-                $rootScope.$emit('opportunity.unpublishEvents', {message: "Opportunity events was unpublished", data: data, status: status});
-            }).
-            error(function (data, status) {
-                $rootScope.$emit('error', {message: "Cannot unpublish opportunity events", data: data, status: status});
-            });
-        }
-    };
-}]);
-
 
 
     module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
         var url = new UrlService('registration');
+        var labels = MapasCulturais.gettext.moduleOpportunity;
 
         return {
             getUrl: function(action, registrationId){
@@ -158,7 +123,36 @@
                         }
                     },50)
                 });
-            }
+            },
+            
+            registrationStatuses: [
+                {value: null, label: labels['allStatus']},
+                {value: 1, label: labels['pending']},
+                {value: 2, label: labels['invalid']},
+                {value: 3, label: labels['notSelected']},
+                {value: 8, label: labels['suplente']},
+                {value: 10, label: labels['selected']}
+            ],
+            
+            registrationStatusesNames: [
+                {value: 1, label: labels['pending']},
+                {value: 2, label: labels['invalid']},
+                {value: 3, label: labels['notSelected']},
+                {value: 8, label: labels['suplente']},
+                {value: 10, label: labels['selected']},
+                {value: 0, label: labels['Draft']}
+            ],
+            
+            publishedRegistrationStatuses: [
+                {value: null, label: labels['allStatus']},
+                {value: 8, label: labels['suplente']},
+                {value: 10, label: labels['selected']}
+            ],
+            
+            publishedRegistrationStatusesNames: [
+                {value: 8, label: labels['suplente']},
+                {value: 10, label: labels['selected']}
+            ]
 
         };
     }]);
@@ -387,7 +381,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.openFieldConfigurationEditBox = function(id, index, event){
             $scope.fieldConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
-            console.log('aaa');
             EditBox.open('editbox-registration-field-'+id, event);
         };
 
@@ -824,6 +817,209 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 }]);
 
+
+    module.controller('OpportunityEvaluationCommitteeController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EditBox) {
+        $scope.editbox = EditBox;
+        RelatedAgentsService = angular.copy(RelatedAgentsService);
+        
+        RelatedAgentsService.controllerId = 'evaluationMethodConfiguration';
+        RelatedAgentsService.entityId = MapasCulturais.entity.object.evaluationMethodConfiguration.id;
+
+        $scope.groups = [];
+
+        $scope.committee = MapasCulturais.entity.evaluationCommittee;
+
+        $scope.showCreateDialog = {};
+
+        $scope.spinners = {};
+
+        $scope.isEditable = MapasCulturais.isEditable;
+        $scope.canChangeControl = MapasCulturais.entity.canUserCreateRelatedAgentsWithControl;
+
+        $scope.data = {};
+
+        $scope.agentRelationDisabledCD = MapasCulturais.agentRelationDisabledCD || [];
+        
+        $scope.findQuery = {
+            type: 'EQ(1)',
+            status: 'GT(0)',
+            parent: 'NULL()'
+        };
+        
+        $scope.$watch('committee',function(o,n){
+            var ids = $scope.committee.map(function(e){ return e.agent.id; });
+            if(ids.length > 0){
+                $scope.findQuery.id = '!IN(' + (ids.join(',')) + ')';
+            } else {
+                delete $scope.findQuery.id;
+            }
+        },true);
+
+        $scope.disabledCD = function(groupName){
+            return $scope.agentRelationDisabledCD.indexOf(groupName) >= 0;
+        };
+
+
+        function getGroup(groupName){
+            var result = null;
+            $scope.groups.forEach(function(group){
+                if(group.name === groupName)
+                    result = group;
+            });
+
+            return result;
+        }
+
+        function groupExists(groupName){
+            if(getGroup(groupName))
+                return true;
+            else
+                return false;
+        }
+
+        $scope.avatarUrl = function(entity){
+            if(entity.avatar.avatarSmall)
+                return entity.avatar.avatarSmall.url;
+            else
+                return MapasCulturais.defaultAvatarURL;
+        };
+
+        $scope.closeNewGroupEditBox = function(){
+            EditBox.close('new-related-agent-group');
+        };
+        
+        $scope.closeRenameGroupEditBox = function(){
+            EditBox.close('rename-related-agent-group');
+        };
+
+        $scope.data.newGroupName = '';
+
+        $scope.getCreateAgentRelationEditBoxId = function(groupName){
+            return 'add-related-agent-' + groupName.replace(/[^a-z0-9_]/gi,'');
+        };
+
+        $scope.createGroup = function(){
+            if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName ) && $scope.data.newGroupName.toLowerCase().trim() !== 'registration' && $scope.data.newGroupName.toLowerCase().trim() !== 'group-admin' ){
+                var newGroup = {name: $scope.data.newGroupName, relations: []};
+
+                $scope.groups = [newGroup].concat($scope.groups);
+
+                $scope.data.newGroupName = '';
+                EditBox.close('new-related-agent-group');
+            }
+        };
+        
+        $scope.setRenameGroup = function(group){
+            $scope.data.editGroup = {};
+            angular.copy(group, $scope.data.editGroup);
+            $scope.data.editGroupIndex = $scope.groups.indexOf(group);
+        };
+        
+        $scope.renameGroup = function(e){
+            if($scope.data.editGroup.name.trim() && !groupExists( $scope.data.editGroup.name ) && $scope.data.editGroup.name.toLowerCase().trim() !== 'registration' && $scope.data.editGroup.name.toLowerCase().trim() !== 'group-admin' ){
+                RelatedAgentsService.renameGroup($scope.data.editGroup).success(function() {
+                    angular.copy($scope.data.editGroup, $scope.groups[$scope.data.editGroupIndex]);
+                    EditBox.close('rename-related-agent-group');
+                });
+            }
+        };
+        
+        $scope.createRelation = function(entity){
+            var _scope = this.$parent;
+            var groupName = _scope.attrs.group;
+
+            RelatedAgentsService.create(groupName, entity.id).
+                    success(function(data){
+                        var group = getGroup(groupName);
+                        group.relations.push(data);
+                        $scope.showCreateDialog[groupName] = false;
+                        _scope.$parent.searchText = '';
+                        _scope.$parent.result = [];
+                        EditBox.close($scope.getCreateAgentRelationEditBoxId(groupName));
+                    });
+        };
+
+        $scope.deleteRelation = function(relation){
+            var group = getGroup(relation.group);
+            var oldRelations = group.relations.slice();
+            var i = group.relations.indexOf(relation);
+
+            group.relations.splice(i,1);
+
+            RelatedAgentsService.remove(relation.group, relation.agent.id).
+                    error(function(){
+                        group.relations = oldRelations;
+                    });
+        };
+        
+        $scope.deleteGroup = function(group) {
+            if (confirm(labels['confirmDeleteGroup'].replace('%s', group.name))) {
+                var i = $scope.groups.indexOf(group);
+                group.relations.forEach(function(relation){
+                    //$scope.deleteRelation(relation);
+                    RelatedAgentsService.remove(relation.group, relation.agent.id);
+                });
+                
+                $scope.groups.splice(i,1);
+            }
+        };
+
+        $scope.createAdminRelation = function(entity){
+            var _scope = this.$parent;
+            var groupName = 'group-admin';
+            var hasControl = true;
+
+            RelatedAgentsService.create(groupName, entity.id, true).
+                    success(function(data){
+                        $scope.committee.push(data);
+                        _scope.$parent.searchText = '';
+                        _scope.$parent.result = [];
+                        EditBox.close('add-committee-agent');
+                    });
+        };
+
+        $scope.deleteAdminRelation = function(relation){
+            RelatedAgentsService.remove('group-admin', relation.agent.id).
+                    success(function(){
+                        var i = $scope.committee.findIndex(function(el){
+                            return el.id == relation.id;
+                        });
+                        $scope.committee.splice(i,1);
+                    });
+        };
+
+
+        $scope.toggleControl = function(relation){
+            relation.hasControl = !relation.hasControl;
+
+            if(relation.hasControl){
+                RelatedAgentsService.giveControl(relation.agent.id).
+                        error(function(){
+                            relation.hasControl = false;
+                        });
+            }else{
+                RelatedAgentsService.removeControl(relation.agent.id).
+                        error(function(){
+                            relation.hasControl = true;
+                        });
+            }
+        };
+
+        $scope.filterResult = function( data, status ){
+            var group = getGroup( this.attrs.group );
+
+            if(group && group.relations.length > 0){
+                var ids = group.relations.map( function( el ){ return el.agent.id; } );
+
+                data = data.filter( function( e ){
+                    if( ids.indexOf( e.id ) === -1 )
+                        return e;
+                } );
+            }
+            return data;
+        };
+    }]);
+
 module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService) {
     var adjustingBoxPosition = false,
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
@@ -846,34 +1042,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             owner_default_label: labels['registrationOwnerDefault']
         },
 
-        registrationStatuses:[
-        {value: null, label: labels['allStatus']},
-        {value: 1, label: labels['pending']},
-        {value: 2, label: labels['invalid']},
-        {value: 3, label: labels['notSelected']},
-        {value: 8, label: labels['suplente']},
-        {value: 10, label: labels['selected']}
-        ],
+        registrationStatuses: RegistrationService.registrationStatuses,
 
-        registrationStatusesNames: [
-        {value: 1, label: labels['pending']},
-        {value: 2, label: labels['invalid']},
-        {value: 3, label: labels['notSelected']},
-        {value: 8, label: labels['suplente']},
-        {value: 10, label: labels['selected']},
-        {value: 0, label: labels['Draft']}
-        ],
+        registrationStatusesNames: RegistrationService.registrationStatusesNames,
 
-        publishedRegistrationStatuses:[
-        {value: null, label: labels['allStatus']},
-        {value: 8, label: labels['suplente']},
-        {value: 10, label: labels['selected']}
-        ],
+        publishedRegistrationStatuses: RegistrationService.publishedRegistrationStatuses,
 
-        publishedRegistrationStatusesNames: [
-        {value: 8, label: labels['suplente']},
-        {value: 10, label: labels['selected']}
-        ],
+        publishedRegistrationStatusesNames: RegistrationService.publishedRegistrationStatusesNames,
 
         publishedRegistrationStatus: 10,
 

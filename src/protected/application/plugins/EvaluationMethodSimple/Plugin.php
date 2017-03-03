@@ -1,25 +1,38 @@
 <?php
 namespace EvaluationMethodSimple;
 use MapasCulturais\i;
+use MapasCulturais\App;
 
 class Plugin extends \MapasCulturais\EvaluationMethod{
     public function getSlug() {
         return 'simple';
     }
     public function getName() {
-        return i::__('avaliação simples');
+        return i::__('Avaliação Simplificada');
     }
     
     public function getDescription() {
-        return i::__('Este método de avaliação consiste num select box com os status possíveis para uma inscrição.');
+        return i::__('Consiste num select box com os status possíveis para uma inscrição.');
     }
     
-    public function register() {
+    public function getConfigurationFormPartName() {
+        return null;
+    }
+    
+    protected function _register() {
         ;
+    }
+    
+    function enqueueScriptsAndStyles() {
+        $app = App::i();
+        
+        $app->view->enqueueScript('app', 'simple-evaluation-form', 'js/ng.evaluationMethod.simple.js', ['entity.module.opportunity']);
+        $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.simple';
     }
     
     public function _init() {
         ;
     }
+    
     
 }
