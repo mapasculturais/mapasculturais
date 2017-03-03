@@ -28,7 +28,7 @@ $this->addRelatedSealsToJs($entity);
                 </div>
             </edit-box>
             <div class="selos clearfix">
-                <div class="avatar-seal ng-scope" ng-repeat="relation in relations" ng-class="{pending: relation.status < 0 || relation.toExpire != 2}">
+                <div class="avatar-seal ng-scope" ng-repeat="relation in relations" ng-class="{pending: relation.status < 0 || (relation.toExpire == 1 || relation.toExpire == 0) }">
                     <?php $idRelation =  '{{relation.id}}';?>
                     <a ng-href="<?php echo $app->createUrl('seal','sealrelation',[$idRelation]);?>" class="ng-binding">
                         <img ng-src="{{avatarUrl(relation.seal.avatar.avatarMedium.url)}}">
