@@ -5549,7 +5549,7 @@ msgstr "Agregar sello relacionado"
 
 #: protected/application/themes/BaseV1/layouts/parts/related-seals.php:17
 msgid "Fechar"
-msgstr "Cerca"
+msgstr "Cerrar"
 
 #: protected/application/themes/BaseV1/layouts/parts/related-seals.php:19
 msgid "Selos Disponíveis"
