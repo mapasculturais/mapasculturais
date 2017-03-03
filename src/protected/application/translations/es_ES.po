@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-02-08 15:41-0300\n"
+"POT-Creation-Date: 2017-03-03 12:50-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -23,15 +23,7 @@ msgstr "Nombre completo o Razón Social"
 msgid "CPF ou CNPJ"
 msgstr "CI o RUT"
 
-#: protected/application/conf/agent-types.php:28
-msgid "Idade"
-msgstr "Edad"
-
-#: protected/application/conf/agent-types.php:30
-msgid "A idade/tempo deve ser um número positivo."
-msgstr "La edad/tiempo deber ser un número positivo."
-
-#: protected/application/conf/agent-types.php:36
+#: protected/application/conf/agent-types.php:29
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:134
 #: protected/application/themes/BaseV1/views/agent/create.php:101
 #: protected/application/themes/BaseV1/views/agent/edit.php:101
@@ -39,35 +31,34 @@ msgstr "La edad/tiempo deber ser un número positivo."
 msgid "Raça/cor"
 msgstr "Raza/Color"
 
-#: protected/application/conf/agent-types.php:39
-#: protected/application/conf/agent-types.php:61
-#: protected/application/conf/agent-types.php:71
-#: protected/application/conf/agent-types.php:82
-#: protected/application/conf/agent-types.php:98
+#: protected/application/conf/agent-types.php:32
+#: protected/application/conf/agent-types.php:54
+#: protected/application/conf/agent-types.php:65
+#: protected/application/conf/agent-types.php:81
 msgid "Não Informar"
 msgstr "No ingresado"
 
-#: protected/application/conf/agent-types.php:40
+#: protected/application/conf/agent-types.php:33
 msgid "Branca"
 msgstr "Blanca"
 
-#: protected/application/conf/agent-types.php:41
+#: protected/application/conf/agent-types.php:34
 msgid "Preta"
 msgstr "Negra"
 
-#: protected/application/conf/agent-types.php:42
+#: protected/application/conf/agent-types.php:35
 msgid "Amarela"
 msgstr "Amarilla"
 
-#: protected/application/conf/agent-types.php:43
+#: protected/application/conf/agent-types.php:36
 msgid "Parda"
 msgstr "Parda"
 
-#: protected/application/conf/agent-types.php:44
+#: protected/application/conf/agent-types.php:37
 msgid "Indígena"
 msgstr "Indígena"
 
-#: protected/application/conf/agent-types.php:50
+#: protected/application/conf/agent-types.php:43
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:118
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:119
 #: protected/application/themes/BaseV1/views/agent/create.php:94
@@ -79,38 +70,29 @@ msgstr "Indígena"
 msgid "Data de Nascimento/Fundação"
 msgstr "Fecha de Nacimiento/Fundación"
 
-#: protected/application/conf/agent-types.php:53
+#: protected/application/conf/agent-types.php:46
 msgid "Data inválida"
 msgstr "Fecha incorrecta"
 
-#: protected/application/conf/agent-types.php:58
-#: protected/application/conf/agent-types.php:68
+#: protected/application/conf/agent-types.php:51
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:183
 #: protected/application/themes/BaseV1/layouts/parts/singles/location.php:30
 msgid "Localização"
 msgstr "Localización"
 
-#: protected/application/conf/agent-types.php:62
-msgid "Precisa"
-msgstr "Precisa"
-
-#: protected/application/conf/agent-types.php:63
-msgid "Aproximada"
-msgstr "Aproximada"
-
-#: protected/application/conf/agent-types.php:72
+#: protected/application/conf/agent-types.php:55
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:187
 #: protected/application/themes/BaseV1/layouts/parts/singles/location.php:34
 msgid "Pública"
 msgstr "Pública"
 
-#: protected/application/conf/agent-types.php:73
+#: protected/application/conf/agent-types.php:56
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:187
 #: protected/application/themes/BaseV1/layouts/parts/singles/location.php:34
 msgid "Privada"
 msgstr "Privada"
 
-#: protected/application/conf/agent-types.php:79
+#: protected/application/conf/agent-types.php:62
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:126
 #: protected/application/themes/BaseV1/views/agent/create.php:99
 #: protected/application/themes/BaseV1/views/agent/edit.php:99
@@ -118,36 +100,36 @@ msgstr "Privada"
 msgid "Gênero"
 msgstr "Género"
 
-#: protected/application/conf/agent-types.php:83
+#: protected/application/conf/agent-types.php:66
 msgid "Mulher Transexual"
 msgstr "Mujer Transexual"
 
-#: protected/application/conf/agent-types.php:84
+#: protected/application/conf/agent-types.php:67
 msgid "Mulher"
 msgstr "Mujer"
 
-#: protected/application/conf/agent-types.php:85
+#: protected/application/conf/agent-types.php:68
 msgid "Homem Transexual"
 msgstr "Hombre Transexual"
 
-#: protected/application/conf/agent-types.php:86
+#: protected/application/conf/agent-types.php:69
 msgid "Homem"
 msgstr "Hombre"
 
-#: protected/application/conf/agent-types.php:87
+#: protected/application/conf/agent-types.php:70
 msgid "Não Binário"
 msgstr "No Binario"
 
-#: protected/application/conf/agent-types.php:88
+#: protected/application/conf/agent-types.php:71
 msgid "Travesti"
 msgstr "Travesti"
 
-#: protected/application/conf/agent-types.php:89
-#: protected/application/conf/agent-types.php:104
+#: protected/application/conf/agent-types.php:72
+#: protected/application/conf/agent-types.php:87
 msgid "Outras"
 msgstr "Otras"
 
-#: protected/application/conf/agent-types.php:95
+#: protected/application/conf/agent-types.php:78
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:130
 #: protected/application/themes/BaseV1/views/agent/create.php:100
 #: protected/application/themes/BaseV1/views/agent/edit.php:100
@@ -155,27 +137,27 @@ msgstr "Otras"
 msgid "Orientação Sexual"
 msgstr "Orientación sexual"
 
-#: protected/application/conf/agent-types.php:99
+#: protected/application/conf/agent-types.php:82
 msgid "Heterossexual"
 msgstr "Heterosexual"
 
-#: protected/application/conf/agent-types.php:100
+#: protected/application/conf/agent-types.php:83
 msgid "Lésbica"
 msgstr "Lésbica"
 
-#: protected/application/conf/agent-types.php:101
+#: protected/application/conf/agent-types.php:84
 msgid "Gay"
 msgstr "Gay"
 
-#: protected/application/conf/agent-types.php:102
+#: protected/application/conf/agent-types.php:85
 msgid "Bissexual"
 msgstr "Bisexual"
 
-#: protected/application/conf/agent-types.php:103
+#: protected/application/conf/agent-types.php:86
 msgid "Assexual"
 msgstr "Asexual"
 
-#: protected/application/conf/agent-types.php:109
+#: protected/application/conf/agent-types.php:92
 #: protected/application/conf/space-types.php:8
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:142
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:142
@@ -186,12 +168,12 @@ msgstr "Asexual"
 msgid "Email Público"
 msgstr "E-mail Público"
 
-#: protected/application/conf/agent-types.php:111
+#: protected/application/conf/agent-types.php:94
 #: protected/application/conf/space-types.php:10
 msgid "O email público não é um email válido."
 msgstr "El email público no es un email válido."
 
-#: protected/application/conf/agent-types.php:117
+#: protected/application/conf/agent-types.php:100
 #: protected/application/conf/space-types.php:15
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:138
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:138
@@ -202,12 +184,12 @@ msgstr "El email público no es un email válido."
 msgid "Email Privado"
 msgstr "E-mail Privado"
 
-#: protected/application/conf/agent-types.php:120
+#: protected/application/conf/agent-types.php:103
 #: protected/application/conf/space-types.php:17
 msgid "O email privado não é um email válido."
 msgstr "El email privado ne es un email válido."
 
-#: protected/application/conf/agent-types.php:125
+#: protected/application/conf/agent-types.php:108
 #: protected/application/conf/space-types.php:23
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:146
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:128
@@ -219,14 +201,14 @@ msgstr "El email privado ne es un email válido."
 msgid "Telefone Público"
 msgstr "Teléfono Público"
 
-#: protected/application/conf/agent-types.php:128
+#: protected/application/conf/agent-types.php:111
 #: protected/application/conf/event-types.php:35
 #: protected/application/conf/space-types.php:26
 msgid "Por favor, informe o telefone público no formato (xx) xxxx-xxxx."
 msgstr ""
 "Por favor, introduzca el teléfono público en el formato (xx) xxxx-xxxx."
 
-#: protected/application/conf/agent-types.php:134
+#: protected/application/conf/agent-types.php:117
 #: protected/application/conf/space-types.php:31
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:150
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:150
@@ -236,12 +218,12 @@ msgstr ""
 msgid "Telefone 1"
 msgstr "Teléfono 1"
 
-#: protected/application/conf/agent-types.php:137
+#: protected/application/conf/agent-types.php:120
 #: protected/application/conf/space-types.php:34
 msgid "Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx."
 msgstr "Por favor, introduzca el teléfono 1 en el formato (xx) xxxx-xxxx."
 
-#: protected/application/conf/agent-types.php:144
+#: protected/application/conf/agent-types.php:127
 #: protected/application/conf/space-types.php:41
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:154
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:154
@@ -251,12 +233,12 @@ msgstr "Por favor, introduzca el teléfono 1 en el formato (xx) xxxx-xxxx."
 msgid "Telefone 2"
 msgstr "Teléfono 2"
 
-#: protected/application/conf/agent-types.php:147
+#: protected/application/conf/agent-types.php:130
 #: protected/application/conf/space-types.php:44
 msgid "Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx."
 msgstr "Por favor, introduzca el teléfono 2 en el formato (xx) xxxx-xxxx."
 
-#: protected/application/conf/agent-types.php:155
+#: protected/application/conf/agent-types.php:138
 #: protected/application/conf/space-types.php:100
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-space.php:18
 #: protected/application/themes/BaseV1/layouts/parts/search/list-space-item.php:28
@@ -273,7 +255,7 @@ msgstr "Por favor, introduzca el teléfono 2 en el formato (xx) xxxx-xxxx."
 msgid "Endereço"
 msgstr "Dirección"
 
-#: protected/application/conf/agent-types.php:160
+#: protected/application/conf/agent-types.php:143
 #: protected/application/conf/space-types.php:106
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:174
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:169
@@ -281,7 +263,7 @@ msgstr "Dirección"
 msgid "CEP"
 msgstr "CP"
 
-#: protected/application/conf/agent-types.php:166
+#: protected/application/conf/agent-types.php:149
 #: protected/application/conf/space-types.php:109
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:175
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:170
@@ -289,7 +271,7 @@ msgstr "CP"
 msgid "Logradouro"
 msgstr "Calle"
 
-#: protected/application/conf/agent-types.php:172
+#: protected/application/conf/agent-types.php:155
 #: protected/application/conf/space-types.php:112
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:176
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:171
@@ -298,7 +280,7 @@ msgstr "Calle"
 msgid "Número"
 msgstr "Número"
 
-#: protected/application/conf/agent-types.php:178
+#: protected/application/conf/agent-types.php:161
 #: protected/application/conf/space-types.php:115
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:177
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:172
@@ -306,7 +288,7 @@ msgstr "Número"
 msgid "Complemento"
 msgstr "Complemento"
 
-#: protected/application/conf/agent-types.php:184
+#: protected/application/conf/agent-types.php:167
 #: protected/application/conf/space-types.php:118
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:178
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_space.php:173
@@ -316,7 +298,7 @@ msgstr "Complemento"
 msgid "Bairro"
 msgstr "Barrio"
 
-#: protected/application/conf/agent-types.php:190
+#: protected/application/conf/agent-types.php:173
 #: protected/application/conf/conf-base.php:162
 #: protected/application/conf/config.dev.php:37
 #: protected/application/conf/config.template.php:45
@@ -329,7 +311,7 @@ msgstr "Barrio"
 msgid "Município"
 msgstr "Municipio"
 
-#: protected/application/conf/agent-types.php:196
+#: protected/application/conf/agent-types.php:179
 #: protected/application/conf/conf-base.php:159
 #: protected/application/conf/config.dev.php:34
 #: protected/application/conf/config.template.php:42
@@ -341,7 +323,7 @@ msgstr "Municipio"
 msgid "Estado"
 msgstr "Departamento"
 
-#: protected/application/conf/agent-types.php:234
+#: protected/application/conf/agent-types.php:217
 #: protected/application/conf/conf-base.php:432
 #: protected/application/conf/event-types.php:64
 #: protected/application/conf/project-types.php:35
@@ -368,10 +350,10 @@ msgstr "Departamento"
 msgid "Site"
 msgstr "Página web"
 
-#: protected/application/conf/agent-types.php:236
-#: protected/application/conf/agent-types.php:242
-#: protected/application/conf/agent-types.php:248
-#: protected/application/conf/agent-types.php:254
+#: protected/application/conf/agent-types.php:219
+#: protected/application/conf/agent-types.php:225
+#: protected/application/conf/agent-types.php:231
+#: protected/application/conf/agent-types.php:237
 #: protected/application/conf/event-types.php:66
 #: protected/application/conf/event-types.php:72
 #: protected/application/conf/event-types.php:78
@@ -388,32 +370,32 @@ msgstr "Página web"
 msgid "A url informada é inválida."
 msgstr "La url ingresada no es válida."
 
-#: protected/application/conf/agent-types.php:240
+#: protected/application/conf/agent-types.php:223
 #: protected/application/conf/event-types.php:70
 #: protected/application/conf/project-types.php:42
 #: protected/application/conf/space-types.php:174
 msgid "Facebook"
 msgstr "Facebook"
 
-#: protected/application/conf/agent-types.php:246
+#: protected/application/conf/agent-types.php:229
 #: protected/application/conf/event-types.php:76
 #: protected/application/conf/project-types.php:48
 #: protected/application/conf/space-types.php:180
 msgid "Twitter"
 msgstr ""
 
-#: protected/application/conf/agent-types.php:252
+#: protected/application/conf/agent-types.php:235
 #: protected/application/conf/event-types.php:82
 #: protected/application/conf/project-types.php:54
 #: protected/application/conf/space-types.php:186
 msgid "Google+"
 msgstr ""
 
-#: protected/application/conf/agent-types.php:260
+#: protected/application/conf/agent-types.php:243
 msgid "Individual"
 msgstr "Individual"
 
-#: protected/application/conf/agent-types.php:261
+#: protected/application/conf/agent-types.php:244
 #: protected/application/conf/conf-base.php:220
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:72
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
@@ -940,7 +922,7 @@ msgstr ""
 
 #: protected/application/conf/project-types.php:71
 msgid "Reunião"
-msgstr ""
+msgstr "Reunión"
 
 #: protected/application/conf/project-types.php:72
 msgid "Mostra"
@@ -1081,7 +1063,7 @@ msgid "Anos"
 msgstr "Años"
 
 #: protected/application/conf/space-types.php:60
-#: protected/application/themes/BaseV1/Theme.php:1627
+#: protected/application/themes/BaseV1/Theme.php:1628
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-space.php:19
 #: protected/application/themes/BaseV1/layouts/parts/search/list-space-item.php:29
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:134
@@ -2319,11 +2301,11 @@ msgstr ""
 "dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
 "class='btn btn-small btn-primary' href='%s'>editar</a>"
 
-#: protected/application/lib/MapasCulturais/Entity.php:770
+#: protected/application/lib/MapasCulturais/Entity.php:773
 msgid "O Tipo é obrigatório"
 msgstr "El Tipo es obligatorio"
 
-#: protected/application/lib/MapasCulturais/Entity.php:772
+#: protected/application/lib/MapasCulturais/Entity.php:775
 msgid "Tipo inválido"
 msgstr "Tipo no válido"
 
@@ -2457,7 +2439,7 @@ msgstr "Ningún"
 #: protected/application/plugins/AgendaSingles/layouts/parts/agenda-singles--content.php:41
 #: protected/application/themes/BaseV1/Theme.php:579
 #: protected/application/themes/BaseV1/Theme.php:583
-#: protected/application/themes/BaseV1/Theme.php:1697
+#: protected/application/themes/BaseV1/Theme.php:1698
 #: protected/application/themes/BaseV1/layouts/parts/home-events.php:40
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:36
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:31
@@ -2467,7 +2449,7 @@ msgid "Linguagem"
 msgstr "Tipo de evento"
 
 #: protected/application/plugins/AgendaSingles/layouts/parts/agenda-singles--content.php:44
-#: protected/application/themes/BaseV1/Theme.php:1707
+#: protected/application/themes/BaseV1/Theme.php:1708
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:42
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:36
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:37
@@ -2503,7 +2485,7 @@ msgstr "E-mail"
 
 #: protected/application/plugins/CompliantSuggestion/layouts/parts/compliant_suggestion.php:33
 #: protected/application/plugins/CompliantSuggestion/layouts/parts/compliant_suggestion.php:70
-#: protected/application/themes/BaseV1/Theme.php:1729
+#: protected/application/themes/BaseV1/Theme.php:1730
 #: protected/application/themes/BaseV1/layouts/parts/home-agents.php:43
 #: protected/application/themes/BaseV1/layouts/parts/home-projects.php:39
 #: protected/application/themes/BaseV1/layouts/parts/home-spaces.php:41
@@ -4217,7 +4199,7 @@ msgstr "Usuarios y roles"
 
 #: protected/application/themes/BaseV1/Theme.php:557
 #: protected/application/themes/BaseV1/Theme.php:561
-#: protected/application/themes/BaseV1/Theme.php:1651
+#: protected/application/themes/BaseV1/Theme.php:1652
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:27
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:47
 msgid "Área de Atuação"
@@ -4241,7 +4223,7 @@ msgstr "Seleccione por lo menos un área"
 
 #: protected/application/themes/BaseV1/Theme.php:571
 #: protected/application/themes/BaseV1/Theme.php:575
-#: protected/application/themes/BaseV1/Theme.php:1652
+#: protected/application/themes/BaseV1/Theme.php:1653
 msgid "Selecione as áreas"
 msgstr "Seleccione las áreas"
 
@@ -4270,7 +4252,7 @@ msgstr "Seleccione por lo menos un tipo de evento"
 
 #: protected/application/themes/BaseV1/Theme.php:593
 #: protected/application/themes/BaseV1/Theme.php:597
-#: protected/application/themes/BaseV1/Theme.php:1698
+#: protected/application/themes/BaseV1/Theme.php:1699
 msgid "Selecione as linguagens"
 msgstr "Selecciones los tipos de eventos"
 
@@ -4396,7 +4378,8 @@ msgstr "Enviar"
 #: protected/application/themes/BaseV1/Theme.php:1311
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:41
 #: protected/application/themes/BaseV1/layouts/parts/related-agents.php:9
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:46
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:12
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:55
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--edit-buttons.php:12
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:24
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:20
@@ -4553,7 +4536,7 @@ msgstr ""
 "{{radius}}KM de este punto."
 
 #: protected/application/themes/BaseV1/Theme.php:1320
-#: protected/application/themes/BaseV1/Theme.php:1661
+#: protected/application/themes/BaseV1/Theme.php:1662
 msgid "Todos"
 msgstr "Todos"
 
@@ -4717,57 +4700,63 @@ msgid "Inscrição enviada. Aguarde tela de sumário."
 msgstr "Inscripción enviada. Aguarde la pantalla de resumen."
 
 #: protected/application/themes/BaseV1/Theme.php:1455
+#: protected/application/themes/BaseV1/Theme.php:1460
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
 msgstr "Su solicitud para relacionar el agente {{agent}} fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1460
-msgid "Sua requisição para relacionar o selo {{seal}} foi enviada."
-msgstr "Su solicitud para relacionar el sello  {{seal}} fue enviada."
+#: protected/application/themes/BaseV1/Theme.php:1461
+#, php-format
+msgid ""
+"Tem certeza que deseja remover o grupo %s? A relação com todos os agentes "
+"dentro deste grupo será removida."
+msgstr ""
+"¿Está seguro que desea eliminar el grupo %s? La relación con todos los "
+"agentes dentre de este grupo será eliminada."
 
-#: protected/application/themes/BaseV1/Theme.php:1503
+#: protected/application/themes/BaseV1/Theme.php:1504
 #: protected/application/themes/BaseV1/views/event/create.php:496
 #: protected/application/themes/BaseV1/views/event/edit.php:496
 #: protected/application/themes/BaseV1/views/event/single.php:496
 msgid "uma vez"
 msgstr "una vez"
 
-#: protected/application/themes/BaseV1/Theme.php:1504
+#: protected/application/themes/BaseV1/Theme.php:1505
 #: protected/application/themes/BaseV1/views/event/create.php:497
 #: protected/application/themes/BaseV1/views/event/edit.php:497
 #: protected/application/themes/BaseV1/views/event/single.php:497
 msgid "todos os dias"
 msgstr "todos los días"
 
-#: protected/application/themes/BaseV1/Theme.php:1505
+#: protected/application/themes/BaseV1/Theme.php:1506
 #: protected/application/themes/BaseV1/views/event/create.php:498
 #: protected/application/themes/BaseV1/views/event/edit.php:498
 #: protected/application/themes/BaseV1/views/event/single.php:498
 msgid "semanal"
 msgstr "semanal"
 
-#: protected/application/themes/BaseV1/Theme.php:1506
+#: protected/application/themes/BaseV1/Theme.php:1507
 msgid "mensal"
 msgstr "mensual"
 
-#: protected/application/themes/BaseV1/Theme.php:1618
-#: protected/application/themes/BaseV1/Theme.php:1660
+#: protected/application/themes/BaseV1/Theme.php:1619
+#: protected/application/themes/BaseV1/Theme.php:1661
 msgid "Tipos"
 msgstr "Tipos"
 
-#: protected/application/themes/BaseV1/Theme.php:1619
-#: protected/application/themes/BaseV1/Theme.php:1730
+#: protected/application/themes/BaseV1/Theme.php:1620
+#: protected/application/themes/BaseV1/Theme.php:1731
 msgid "Selecione os tipos"
 msgstr "Seleccione los tipos"
 
-#: protected/application/themes/BaseV1/Theme.php:1628
+#: protected/application/themes/BaseV1/Theme.php:1629
 msgid "Exibir somente resultados com Acessibilidade"
 msgstr "Mostrar solamente resultados con Accesibilidad"
 
-#: protected/application/themes/BaseV1/Theme.php:1708
+#: protected/application/themes/BaseV1/Theme.php:1709
 msgid "Selecione a classificação"
 msgstr "Seleccione la clasificación"
 
-#: protected/application/themes/BaseV1/Theme.php:1738
+#: protected/application/themes/BaseV1/Theme.php:1739
 msgid "Inscrições Abertas"
 msgstr "Inscripciones Abiertas"
 
@@ -4906,7 +4895,7 @@ msgstr "Galería"
 #: protected/application/themes/BaseV1/layouts/parts/gallery.php:14
 #: protected/application/themes/BaseV1/layouts/parts/gallery.php:24
 #: protected/application/themes/BaseV1/layouts/parts/related-admin-agents.php:27
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:40
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:49
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:24
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:51
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:7
@@ -5247,7 +5236,7 @@ msgid "Selecione o agente para o qual você deseja passar a propriedade deste"
 msgstr "Seleccione el agente para el cual desea pasar la propiedad de este"
 
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:42
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:47
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:56
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:11
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:32
 msgid "Nenhum agente encontrado"
@@ -5481,6 +5470,14 @@ msgid "Nome do grupo de agentes"
 msgstr "Nombre del grupo de agentes"
 
 #: protected/application/themes/BaseV1/layouts/parts/related-agents.php:12
+msgid "Renomear grupo de agentes"
+msgstr "Renombrar gurpo de agentes"
+
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:12
+msgid "Renomear"
+msgstr "Renombrar"
+
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:15
 msgid ""
 "Grupos de agentes podem ser usados para exibir membros de um coletivo, "
 "equipes técnicas, etc."
@@ -5488,31 +5485,39 @@ msgstr ""
 "Grupos de agentes pueden ser usados para exhibir miembros de un colectivo, "
 "equipos técnicos, etc."
 
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:12
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:15
 #: protected/application/themes/BaseV1/views/panel/index.php:50
 msgid "Adicionar agentes"
 msgstr "Agregar agentes"
 
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:25
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:22
+msgid "Renomear este grupo"
+msgstr "Renombrar este grupo"
+
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:23
+msgid "Remover este grupo"
+msgstr "Eliminar este grupo"
+
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:34
 msgid "Aguardando confirmação."
 msgstr "Esperando confirmación."
 
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:31
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:40
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:21
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:48
 #: protected/application/themes/BaseV1/layouts/parts/templates.php:10
 msgid "tipo:"
 msgstr "tipo:"
 
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:34
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:43
 msgid "Permitir editar:"
 msgstr "Permitir editar:"
 
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:44
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:53
 msgid "Adicionar Integrante a este Grupo"
 msgstr "Agregar Integrante a este Grupo"
 
-#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:46
+#: protected/application/themes/BaseV1/layouts/parts/related-agents.php:55
 msgid "Adicionar agente relacionado"
 msgstr "Agregar agente relacionado"
 
@@ -7630,16 +7635,16 @@ msgstr "Actividades"
 msgid "Em"
 msgstr "En"
 
-#: protected/application/themes/BaseV1/views/panel/list-users.php:35
+#: protected/application/themes/BaseV1/views/panel/list-users.php:39
 #, php-format
 msgid "Você tem certeza que deseja remover este usuário da lista de %s?"
 msgstr "Usted está seguro que desea eliminar este usuario de la lista de %s?"
 
-#: protected/application/themes/BaseV1/views/panel/list-users.php:36
+#: protected/application/themes/BaseV1/views/panel/list-users.php:40
 msgid "remover do papel"
 msgstr "eliminar del papel"
 
-#: protected/application/themes/BaseV1/views/panel/list-users.php:46
+#: protected/application/themes/BaseV1/views/panel/list-users.php:50
 #, php-format
 msgid "Não há %s"
 msgstr "No hay %s"
@@ -7966,6 +7971,21 @@ msgstr "Para configurar los administradores primero debe guardar el subsitio."
 #: protected/application/themes/Subsite/layouts/parts/header-about-nav.php:12
 msgid "Sobre o Site"
 msgstr "Acerca del Sitio"
+
+#~ msgid "Idade"
+#~ msgstr "Edad"
+
+#~ msgid "A idade/tempo deve ser um número positivo."
+#~ msgstr "La edad/tiempo deber ser un número positivo."
+
+#~ msgid "Precisa"
+#~ msgstr "Precisa"
+
+#~ msgid "Aproximada"
+#~ msgstr "Aproximada"
+
+#~ msgid "Sua requisição para relacionar o selo {{seal}} foi enviada."
+#~ msgstr "Su solicitud para relacionar el sello  {{seal}} fue enviada."
 
 #~ msgid "tag"
 #~ msgstr "etiqueta"
