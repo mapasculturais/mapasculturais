@@ -15,8 +15,8 @@ $evaluation_form_part_name = $evaluationMethod->getEvaluationFormPartName();
                 <?php $this->part($evaluation_form_part_name, ['opportunity' => $opportunity, 'entity' => $entity, 'evaluationMethod' => $evaluationMethod]); ?>
                 <hr>
                 <div style="text-align: right;">
-                    <button class="btn btn-default"><?php i::_e('Salvar e Continuar'); ?></button> <br>
-                    <button class="btn btn-primary"><?php i::_e('Salvar e Avançar'); ?></button> 
+                    <button class="btn btn-default js-evaluation-submit"><?php i::_e('Salvar'); ?></button> 
+                    <button class="btn btn-primary js-evaluation-submit js-next"><?php i::_e('Salvar e Avançar'); ?> &gt;&gt;</button> 
                 </div>
             </form>
         </div>

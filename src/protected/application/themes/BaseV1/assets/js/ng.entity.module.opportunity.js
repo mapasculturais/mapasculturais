@@ -1374,6 +1374,61 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 });
             };
         }]);
+    
+    module.controller('RegistrationListController', ['$scope', '$interval', function($scope, $timeout){
+        $scope.registrations = MapasCulturais.entity.registrations;
+        $scope.evaluations = MapasCulturais.entity.userEvaluations;
+        $scope.data = {
+            keyword: '',
+            current: MapasCulturais.registration.id,
+            keywords: [],
+            pending: true
+        }
+        
+        var last = '';
+        
+        $scope.$watch('data.keyword', function(o,n){
+            var lower = $scope.data.keyword.toLowerCase();
+            if(lower != last){
+                last = lower;
+                $scope.data.keywords = lower.split('*');
+            }
+        });
+        
+        $scope.evaluated = function(registration){
+            return  $scope.evaluations[registration.id] && $scope.evaluations[registration.id].result !== null;
+        }
+        
+        $scope.show = function(registration){
+            if(registration.status === 0){
+                return false;
+            }
+            var ks = $scope.data.keywords;
+            var result = false;
+            if(ks.length > 0){
+                for(var i in ks){
+                    var k = ks[i];
+                    if(k == registration.number || k == registration.id || registration.owner.name.toLowerCase().indexOf(k) >= 0){
+                        result = true;
+                    }
+                    
+                    if($scope.evaluations[registration.id] && $scope.evaluations[registration.id].resultString.toLowerCase() == k){
+                        result = true;
+                    }
+                }
+            } else {
+                result = true;
+            }
+            
+            if($scope.data.pending){
+                if($scope.evaluated(registration)){
+                    result = false;
+                }
+            }
+            
+            return result;
+        }
+    }]);
 
 module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
     $scope.editbox = EditBox;

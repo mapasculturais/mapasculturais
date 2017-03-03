@@ -14,15 +14,17 @@
     }]);
 
     module.controller('SimpleEvaluationForm',['$scope', 'RegistrationService',function($scope, RegistrationService){
+        var evaluation = MapasCulturais.evaluation;
+        var statuses = RegistrationService.registrationStatusesNames.filter(function(status) {
+            if(status.value > 1) return status;
+        });
         $scope.data = {
+            registration: evaluation ? evaluation.evaluationData.status : null,
             
-            registrationStatuses: RegistrationService.registrationStatuses,
+            registrationStatusesNames: statuses,
 
-            registrationStatusesNames: RegistrationService.registrationStatusesNames,
-
-            publishedRegistrationStatuses: RegistrationService.publishedRegistrationStatuses,
-
-            publishedRegistrationStatusesNames: RegistrationService.publishedRegistrationStatusesNames,
         };
+        
+        console.log($scope.data);
     }]);
 })(angular);

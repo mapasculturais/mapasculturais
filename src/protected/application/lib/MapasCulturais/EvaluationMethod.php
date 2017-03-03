@@ -12,13 +12,15 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     
     abstract function getConfigurationFormPartName();
     
+    abstract function getConsolidatedResult(Entities\RegistrationEvaluation $evaluation);
+    abstract function evaluationToString(Entities\RegistrationEvaluation $evaluation);
+    
     function getEvaluationFormPartName(){
         $slug = $this->getSlug();
         
         return "$slug--evaluation-form";
     }
     
-//    abstract function getPartialResult(Entities\Registration $registration);
     
     function register(){
         $app = App::i();

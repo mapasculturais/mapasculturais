@@ -235,6 +235,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
     
+    /**
+     * Returns the Evaluation Method Definition Object
+     * @return \MapasCulturais\Definitions\EvaluationMethod
+     */
+    public function getEvaluationMethodDefinition() {
+        return $this->evaluationMethodConfiguration->getDefinition();
+    }
+
+    /**
+     * Returns the Evaluation Method Plugin Object
+     * @return \MapasCulturais\EvaluationMethod
+     */
+    public function getEvaluationMethod() {
+        return $this->evaluationMethodConfiguration->getEvaluationMethod();
+    }
+    
     function setEvaluationMethodConfiguration(EvaluationMethodConfiguration $eval, $cascade = true){
         $this->evaluationMethodConfiguration = $eval;
         

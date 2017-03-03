@@ -1,23 +1,24 @@
 <?php
+
 namespace MapasCulturais\Entities;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * EvaluationMethodConfiguration
  * 
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
- * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition
+ * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
+ * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
  *
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class EvaluationMethodConfiguration extends \MapasCulturais\Entity{
-    
+class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
+
     use Traits\EntityTypes,
         Traits\EntityMetadata,
         Traits\EntityAgentRelation,
@@ -55,62 +56,94 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity{
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
-    */
+     */
     protected $__agentRelations;
-
 
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
      */
     protected $__metadata;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
-    
-    function setOpportunity(Opportunity $opportunity, $cascade = true){
+
+    function setOpportunity(Opportunity $opportunity, $cascade = true) {
         $this->opportunity = $opportunity;
-        if($cascade){
+        if ($cascade) {
             $opportunity->setEvaluationMethodConfiguration($this, false);
         }
     }
-    
+
     public function jsonSerialize() {
         $result = parent::jsonSerialize();
-        
+
         $result['opportunity'] = $this->opportunity->simduplify('id,name,singleUrl');
-        
+
         return $result;
     }
-    
-    public function getDefinition(){
+
+    /**
+     * Returns the Evaluation Method Definition Object
+     * @return \MapasCulturais\Definitions\EvaluationMethod
+     */
+    public function getDefinition() {
         $app = App::i();
         $definition = $app->getRegisteredEvaluationMethodBySlug($this->_type);
         return $definition;
     }
-    
-    function getOwner(){
+
+    /**
+     * Returns the Evaluation Method Plugin Object
+     * @return \MapasCulturais\EvaluationMethod
+     */
+    public function getEvaluationMethod() {
+        $definition = $this->getDefinition();
+        return $definition->evaluationMethod;
+    }
+
+    /**
+     * The Owner Opportunity
+     * @return \MapasCulturais\Entities\Opportunity
+     */
+    function getOwner() {
         return $this->opportunity;
     }
-    
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
 
     /** @ORM\PrePersist */
-    public function prePersist($args = null){ parent::prePersist($args); }
+    public function prePersist($args = null) {
+        parent::prePersist($args);
+    }
+
     /** @ORM\PostPersist */
-    public function postPersist($args = null){ parent::postPersist($args); }
+    public function postPersist($args = null) {
+        parent::postPersist($args);
+    }
 
     /** @ORM\PreRemove */
-    public function preRemove($args = null){ parent::preRemove($args); }
+    public function preRemove($args = null) {
+        parent::preRemove($args);
+    }
+
     /** @ORM\PostRemove */
-    public function postRemove($args = null){ parent::postRemove($args); }
+    public function postRemove($args = null) {
+        parent::postRemove($args);
+    }
 
     /** @ORM\PreUpdate */
-    public function preUpdate($args = null){ parent::preUpdate($args); }
+    public function preUpdate($args = null) {
+        parent::preUpdate($args);
+    }
+
     /** @ORM\PostUpdate */
-    public function postUpdate($args = null){ parent::postUpdate($args); }
+    public function postUpdate($args = null) {
+        parent::postUpdate($args);
+    }
+
 }

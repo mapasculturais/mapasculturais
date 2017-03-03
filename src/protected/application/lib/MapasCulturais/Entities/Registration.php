@@ -678,6 +678,42 @@ class Registration extends \MapasCulturais\Entity
         }
     }
     
+    protected function canUserEvaluate($user){
+        if($this->status <= 0) {
+            return false;
+        }
+        
+        if($user->is('guest')){
+            return false;
+        }
+        
+        return $this->opportunity->evaluationMethodConfiguration->canUser('@control');
+    }
+    
+    /**
+     * Returns the Evaluation Method Definition Object
+     * @return \MapasCulturais\Definitions\EvaluationMethod
+     */
+    public function getEvaluationMethodDefinition() {
+        return $this->opportunity->getEvaluationMethodDefinition();
+    }
+    
+    /**
+     * Returns the Evaluation Method Configuration
+     * @return \MapasCulturais\Definitions\EvaluationMethodConfiguration
+     */
+    public function getEvaluationMethodConfiguration() {
+        return $this->opportunity->evaluationMethodConfiguration;
+    }
+
+    /**
+     * Returns the Evaluation Method Plugin Object
+     * @return \MapasCulturais\EvaluationMethod
+     */
+    public function getEvaluationMethod() {
+        return $this->opportunity->getEvaluationMethod();
+    }
+    
     /**
      * 
      * @param \MapasCulturais\Entities\User $user
@@ -709,9 +745,11 @@ class Registration extends \MapasCulturais\Entity
             $evaluation->registration = $this;
         }
         
-        $evaluation->data = $data;
+        $evaluation->evaluationData = $data;
         
         $evaluation->save(true);
+        
+        return $evaluation;
     }
 
     //============================================================= //

@@ -7,6 +7,8 @@ use MapasCulturais\App;
 
 /**
  * RegistrationMeta
+ * 
+ * @property-read string $result
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
@@ -34,9 +36,9 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="evaluation_data", type="text", nullable=false)
+     * @ORM\Column(name="evaluation_data", type="json_array", nullable=false)
      */
-    protected $evaluationData;
+    protected $evaluationData = [];
 
     /**
      * @var \MapasCulturais\Entities\Registration
@@ -58,9 +60,61 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      */
     protected $user;
     
+    function getEvaluationData(){
+        return (object) $this->evaluationData;
+    }
     
-    function canUser($action, $user) {
-        return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->canUser('@control', $user);
+    function setEvaluationData($data){
+        $this->evaluationData = (object) $data;
+        
+        $evaluation_method = $this->getEvaluationMethod();
+        
+        $this->result = $evaluation_method->getConsolidatedResult($this);
+    }
+    
+    /**
+     * Returns the Evaluation Method Definition Object
+     * @return \MapasCulturais\Definitions\EvaluationMethod
+     */
+    public function getEvaluationMethodDefinition() {
+        return $this->registration->getEvaluationMethodDefinition();
+    }
+    
+    /**
+     * Returns the Evaluation Method Configuration
+     * @return \MapasCulturais\Definitions\EvaluationMethodConfiguration
+     */
+    public function getEvaluationMethodConfiguration() {
+        return $this->registration->evaluationMethodConfiguration;
+    }
+
+    /**
+     * Returns the Evaluation Method Plugin Object
+     * @return \MapasCulturais\EvaluationMethod
+     */
+    public function getEvaluationMethod() {
+        return $this->registration->getEvaluationMethod();
+    }
+    
+    public function getResultString(){
+        $evaluation_method = $this->getEvaluationMethod();
+        
+        return $evaluation_method->evaluationToString($this);
+    }
+    
+    function canUser($action, $user = null) {
+        return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
+    }
+    
+    public function jsonSerialize() {
+        $result = parent::jsonSerialize();
+        
+        $result['resultString'] = $this->getResultString();
+        $result['user'] = $this->user->id;
+        $result['agent'] = $this->user->profile->simplify('id,name,singleUrl');
+        $result['registration'] = $this->registration->simplify('id,number,singleUrl');
+        
+        return $result;
     }
     
     //============================================================= //

@@ -262,6 +262,8 @@ class Registration extends EntityController {
         
         $registration = $this->getRequestedEntity();
         
-        $registration->saveUserEvaluation($this->postData['data']);
+        $evaluation = $registration->saveUserEvaluation($this->postData['data']);
+        
+        $this->json($evaluation);
     }
 }

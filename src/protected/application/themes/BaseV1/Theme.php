@@ -2061,6 +2061,15 @@ class Theme extends MapasCulturais\Theme {
         }
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
+        
+        // add current user registrations evaluations
+        
+        if($entity->evaluationMethodConfiguration->canUser('@control')){
+            $this->jsObject['entity']['userEvaluations'] = [];
+            foreach($this->jsObject['entity']['registrations'] as $registration){
+                $this->jsObject['entity']['userEvaluations'][$registration->id] = $registration->getUserEvaluation();
+            }
+        }
     }
 
     function addRegistrationToJs(Entities\Registration $entity){
@@ -2079,8 +2088,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
-        if($entity->opportunity->canUser('@control')){
+        if($entity->opportunity->evaluationMethodConfiguration->canUser('@control')){
             $this->jsObject['registration'] = $entity;
+            $this->jsObject['evaluation'] = $entity->getUserEvaluation();
+            
         }
         foreach($entity->_getDefinitionsWithAgents() as $def){
             $agent = $def->agent;
@@ -2097,6 +2108,8 @@ class Theme extends MapasCulturais\Theme {
             }
             $this->jsObject['entity']['registrationAgents'][] = $def;
         }
+        
+        
     }
 
     /**

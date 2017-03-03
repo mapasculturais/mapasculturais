@@ -446,7 +446,7 @@ MapasCulturais.Messages = {
                 $(this).remove();
             });
         }
-
+        $(window).scroll();
     },
     success: function(message) {
         this.showMessage('success', message);
