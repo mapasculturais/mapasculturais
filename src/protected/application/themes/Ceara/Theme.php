@@ -46,4 +46,15 @@ class Theme extends BaseV1\Theme{
         }
     }
 
+
+
+   function register() {
+        parent::register();
+        
+        $def = App::i()->getRegisteredTaxonomyBySlug('area');
+        $terms = $def->restrictedTerms;
+        $terms[] = 'Humor';
+	sort($terms);
+        $def->restrictedTerms = $terms;
+    }
 }
