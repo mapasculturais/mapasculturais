@@ -521,11 +521,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
 
-    protected function canUserRegister($user = null){
+    protected function canUserRegister($user){
         if($user->is('guest'))
             return false;
 
         return $this->isRegistrationOpen();
+    }
+    
+    protected function canUserEvaluateRegistrations($user){
+        $date_ok = $this->registrationTo < (new \DateTime) && !$this->publishedRegistrations;
+        return $date_ok && $this->evaluationMethodConfiguration->canUser('@control', $user);
     }
 
     /** @ORM\PreRemove */

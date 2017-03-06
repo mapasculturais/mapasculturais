@@ -703,6 +703,10 @@ return [
         }
     },
             
+    'rename opportunity_meta key isProjectPhase to isOpportunityPhase' => function() {
+        __exec("UPDATE opportunity_meta SET key = 'isOpportunityPhase' WHERE key = 'isProjectPhase'");
+    },
+            
     'create evaluation methods tables' => function (){
         if(__table_exists('evaluation_method_configuration')){
             echo "evaluation_method_configuration table already exists";
