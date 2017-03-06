@@ -17,7 +17,7 @@
 		<div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade:");?></span> <?php echo $entity->acessibilidade ? $entity->acessibilidade : \MapasCulturais\i::_e('Não informado') ?></div>
         <?php $createTimestamp = isset($entity->createTimestamp->date)? (new DateTime($entity->createTimestamp->date))->format('d/m/Y H:i:s'): $entity->createTimestamp->format('d/m/Y H:i:s'); ?>
 		<div><span class="label"><?php \MapasCulturais\i::_e("Data de Criação:");?></span> <?php echo $createTimestamp; ?></div>
-        <?php if($entity->originSiteUrl): ?>
+        <?php if(isset($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
 

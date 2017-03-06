@@ -15,7 +15,7 @@ use MapasCulturais\Entities\Agent;
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
         <div><span class="label"><?php \MapasCulturais\i::_e("Tipo:");?></span> <?php echo $entity->type->name?></div>
         <div><span class="label"><?php \MapasCulturais\i::_e("Área(s) de atuação:");?></span> <?php echo implode(', ', $entity->terms['area'])?></div>
-        <?php if($entity->originSiteUrl): ?>
+        <?php if(isset($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span><?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
     </div>

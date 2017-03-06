@@ -14,17 +14,19 @@
                         <span class="label"><?php \MapasCulturais\i::_e("Inscrições:");?></span>
                         <?php
                             if($entity->isRegistrationOpen()) echo'open ';
-                            if($entity->registrationFrom && !$entity->registrationTo)
+                            $app->log->debug("Estamos aqu2");
+                            if($entity->registrationFrom && !$entity->registrationTo) {
                                 echo \MapasCulturais\i::_e("a partir de ") .$entity->registrationFrom->format('d/m/Y');
-                            elseif(!$entity->registrationFrom && $entity->registrationTo)
+                            } elseif(!$entity->registrationFrom && $entity->registrationTo) {
                                 echo \MapasCulturais\i::_e(' até '). $entity->registrationTo->format('d/m/Y');
-                            else
+                            } else {
                                 echo \MapasCulturais\i::_e('de '). $entity->registrationFrom->format('d/m/Y') .\MapasCulturais\i::_e(' a '). $entity->registrationTo->format('d/m/Y');
+                            }
                         ?>
                     </div>
                 <?php endif; ?>
 		<div><span class="label"><?php \MapasCulturais\i::_e("Organização:");?></span> <?php echo $entity->owner->name; ?></div>
-        <?php if($entity->originSiteUrl): ?>
+        <?php if(isset($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
 	</div>
