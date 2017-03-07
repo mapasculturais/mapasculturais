@@ -838,7 +838,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
         spinner: false,
 
         registrationCategories: categories,
-        registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
+        registrationCategoriesToFilter: [{value: null, label: labels['Todas opções']}].concat(categories),
 
         registration: {
             owner: null,
