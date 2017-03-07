@@ -140,7 +140,7 @@
                 {value: 3, label: labels['notSelected']},
                 {value: 8, label: labels['suplente']},
                 {value: 10, label: labels['selected']},
-                {value: 0, label: labels['Draft']}
+                {value: 0, label: labels['draft']}
             ],
             
             publishedRegistrationStatuses: [
@@ -1088,6 +1088,52 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.openEditBox = function(id, e){
         EditBox.open(id, e);
     };
+    
+    // EVALUATIONS - BEGIN
+    
+    $scope.getUserEvaluation = function(registration){
+        var userEvaluation = MapasCulturais.entity.userEvaluations[registration.id];
+        return userEvaluation;
+    };
+    
+    $scope.getEvaluationStatus = function(registration){
+        var userEvaluation = $scope.getUserEvaluation(registration);
+        
+        if(angular.isObject(userEvaluation)){
+            if(userEvaluation.result){
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return -1;
+        }
+    };
+    
+    $scope.getEvaluationStatusLabel = function(registration){
+        var status = $scope.getEvaluationStatus(registration);
+        var slugs = {
+            '-1': 'pending',
+            '0': 'draft',
+            '1': 'evaluated'
+        };
+        var statusSlug = slugs[status];
+        
+        return labels[statusSlug];
+        
+    }
+    
+    $scope.getEvaluationResultString = function(registration){
+        var userEvaluation = $scope.getUserEvaluation(registration);
+        if(userEvaluation) { 
+            return userEvaluation.resultString;
+        } else {
+            return '';
+        }
+    }
+    
+    // EVALUATIONS - END
+    
 
     $scope.getStatusSlug = function(status){
                 /*

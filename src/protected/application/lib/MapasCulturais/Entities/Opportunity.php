@@ -8,7 +8,7 @@ use MapasCulturais\App;
 
 /**
  * Opportunity
- * 
+ *
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
  *
  * @ORM\Table(name="opportunity", indexes={
@@ -19,7 +19,7 @@ use MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Opportunity")
  * @ORM\HasLifecycleCallbacks
- * 
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
@@ -54,7 +54,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="opportunity_id_seq", allocationSize=1, initialValue=1)
-     * 
+     *
      */
     protected $id;
 
@@ -161,15 +161,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
      */
-    protected $owner; 
-    
+    protected $owner;
+
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
-     * 
+     *
      * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy="opportunity")
      */
     protected $evaluationMethodConfiguration;
-    
+
     /**
      * @var \MapasCulturais\Entities\RegistrationFileConfiguration[] RegistrationFileConfiguration
      *
@@ -222,19 +222,19 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
-    
+
     /**
      * Returns the Evaluation Method Definition Object
      * @return \MapasCulturais\Definitions\EvaluationMethod
@@ -250,10 +250,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getEvaluationMethod() {
         return $this->evaluationMethodConfiguration->getEvaluationMethod();
     }
-    
+
     function setEvaluationMethodConfiguration(EvaluationMethodConfiguration $eval, $cascade = true){
         $this->evaluationMethodConfiguration = $eval;
-        
+
         if($cascade){
             $eval->setOpportunity($this, false);
         }
@@ -265,7 +265,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         else
             return \MapasCulturais\i::__('Oportunidade');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -288,11 +288,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     static function getClassName() {
         return get_class();
     }
-    
+
     function getExtraPermissionCacheUsers(){
         $users = [];
         if($this->publishedRegistrations) {
@@ -302,10 +302,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $users = array_merge($users, $r->getUsersWithControl());
             }
         }
-        
+
         return $users;
     }
-    
+
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
@@ -400,18 +400,41 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $this->checkPermission('publishRegistrations');
 
         $this->publishedRegistrations = true;
-        
+
         // atribui os selos as inscrições selecionadas
         $app = App::i();
         $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
-        
+
         foreach ($registrations as $registration) {
             $registration->setAgentsSealRelation();
         }
-        
+
         $app->addEntityToRecreatePermissionCacheList($this);
 
         $this->save(true);
+    }
+
+    function sendUserEvaluations($user = null){
+        $app = App::i();
+
+        if(is_null($user)){
+            $user = $app->user;
+        }
+
+        $this->checkPermission('sendUserEvaluations', $user);
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
+
+        foreach($evaluations as $evaluation){
+            $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+            $evaluation->save();
+        }
+
+        $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
+        $relation->status = EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
+        $relation->save();
+
+        $app->em->flush();
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
@@ -527,10 +550,31 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         return $this->isRegistrationOpen();
     }
-    
+
+    protected function canUserSendUserEvaluations($user){
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($this->canUser('@control')) {
+            return true;
+        }
+
+        if($this->registrationTo > (new \DateTime) || $this->publishedRegistrations){
+            return false;
+        }
+
+        $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
+
+        return $relation && $relation->status === AgentRelation::STATUS_ENABLED;
+    }
+
     protected function canUserEvaluateRegistrations($user){
-        $date_ok = $this->registrationTo < (new \DateTime) && !$this->publishedRegistrations;
-        return $date_ok && $this->evaluationMethodConfiguration->canUser('@control', $user);
+        return $this->canUser('sendUserEvaluations', $user);
+    }
+
+    protected function canUserViewEvaluations($user){
+        return $this->evaluationMethodConfiguration->canUser('@control');
     }
 
     /** @ORM\PreRemove */

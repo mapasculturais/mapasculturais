@@ -55,7 +55,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
     const STATUS_ARCHIVED = -2;
-    
+
     /**
      * array of validation definition
      * @var array
@@ -94,17 +94,17 @@ abstract class Entity implements \JsonSerializable{
         if($this->usesOwnerAgent() && !$app->user->is('guest')){
             $this->setOwner($app->user->profile);
         }
-        
+
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
-        
+
     }
 
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
     }
-    
+
     static function isPrivateEntity(){
         return false;
     }
@@ -246,7 +246,7 @@ abstract class Entity implements \JsonSerializable{
             return $this->canUser('@control', $user);
         }
     }
-    
+
     protected function canUserModify($user) {
         return $this->genericPermissionVerification($user);
     }
@@ -297,9 +297,12 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
-    public function checkPermission($action){
-        if(!$this->canUser($action,App::i()->user))
-            throw new Exceptions\PermissionDenied(App::i()->user, $this, $action);
+    public function checkPermission($action, $user = null){
+        if(is_null($user)) {
+            $user = App::i()->user;
+        }
+        if(!$this->canUser($action, $user))
+            throw new Exceptions\PermissionDenied($user, $this, $action);
     }
 
     public static function getPropertiesLabels(){
@@ -534,7 +537,7 @@ abstract class Entity implements \JsonSerializable{
         if (method_exists($this, '_saveOwnerAgent')) {
             try {
                 $this->_saveOwnerAgent();
-                
+
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
@@ -585,7 +588,7 @@ abstract class Entity implements \JsonSerializable{
             if($repo->usesCache()){
                 $repo->deleteEntityCache($this->id);
             }
-            
+
         }catch(Exceptions\PermissionDenied $e){
             if(!$requests)
                 throw $e;
@@ -811,8 +814,8 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
-        
-        
+
+
         if($this->usesPermissionCache()){
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
@@ -866,8 +869,8 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
-        
-        
+
+
         if($this->usesPermissionCache()){
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
@@ -939,7 +942,7 @@ abstract class Entity implements \JsonSerializable{
                 });
             }
         }
-        
+
         if($this->usesPermissionCache()){
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();

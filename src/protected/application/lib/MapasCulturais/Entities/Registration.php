@@ -625,7 +625,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin') || $user->is('superAdmin') || $user->is('saasAdmin')  || $user->is('saasSuperAdmin') ){
+        if($user->is('admin')){
             return true;
         }
 
@@ -634,6 +634,10 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if($this->opportunity->canUser('@control', $user)){
+            return true;
+        }
+        
+        if($this->opportunity->canUser('evaluateRegistrations', $user)){
             return true;
         }
 

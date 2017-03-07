@@ -27,8 +27,27 @@ class Opportunity extends EntityController {
 
     function GET_create() {
         // @TODO: definir entitidade relacionada
-        
+
         parent::GET_create();
+    }
+
+    function ALL_sendEvaluations(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $opportunity = $this->requestedEntity;
+
+        if(!$opportunity)
+            $app->pass();
+
+        $opportunity->sendUserEvaluations();
+
+        if($app->request->isAjax()){
+            $this->json($opportunity);
+        }else{
+            $app->redirect($app->request->getReferer());
+        }
     }
 
     function ALL_publishRegistrations(){
@@ -82,51 +101,6 @@ class Opportunity extends EntityController {
         $this->partial('report', ['entity' => $entity]);
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
-    }
-
-    protected function _setEventStatus($status){
-        $this->requireAuthentication();
-
-        $app = App::i();
-
-        if(!key_exists('id', $this->urlData)){
-            $app->pass();
-        }
-
-
-        $entity = $this->getRequestedEntity();
-
-        if(!$entity){
-            $app->pass();
-        }
-
-        $entity->checkPermission('@control');
-
-        if(isset($this->data['ids']) && $this->data['ids']){
-            $ids = is_array($this->data['ids']) ? $this->data['ids'] : explode(',', $this->data['ids']);
-
-            $events = $app->repo('Event')->findBy(['id' => $ids]);
-        }
-
-        foreach($events as $event){
-            if(\MapasCulturais\Entities\Event::STATUS_ENABLED === $status){
-                $event->publish();
-            }elseif(\MapasCulturais\Entities\Event::STATUS_DRAFT === $status){
-                $event->unpublish();
-            }
-        }
-
-        $app->em->flush();
-
-        $this->json(true);
-    }
-
-    function POST_publishEvents(){
-        $this->_setEventStatus(Entities\Event::STATUS_ENABLED);
-    }
-
-    function POST_unpublishEvents(){
-        $this->_setEventStatus(Entities\Event::STATUS_DRAFT);
     }
 
 

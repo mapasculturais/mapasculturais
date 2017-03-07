@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
+    const STATUS_SENT = 10;
 
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfiguration

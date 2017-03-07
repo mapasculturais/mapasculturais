@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * EvaluationMethodConfiguration
- * 
+ *
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
@@ -36,7 +36,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
     /**
      * The Evaluation Method Slug
-     * 
+     *
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=false)
@@ -101,6 +101,17 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     public function getEvaluationMethod() {
         $definition = $this->getDefinition();
         return $definition->evaluationMethod;
+    }
+
+    public function getUserRelation($user = null){
+        $app = App::i();
+        if(is_null($user)){
+            $user = $app->user;
+        }
+
+        $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['agent' => $user->profile, 'owner' => $this]);
+
+        return $relation;
     }
 
     /**

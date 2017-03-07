@@ -888,6 +888,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
                 'project' => \MapasCulturais\Entities\Project::getPropertiesLabels(),
+                'opportunity' => \MapasCulturais\Entities\Opportunity::getPropertiesLabels(),
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
                 'subsite' => \MapasCulturais\Entities\Subsite::getPropertiesLabels(),
@@ -1540,7 +1541,7 @@ class Theme extends MapasCulturais\Theme {
             'notSelected' =>  i::__('Não selecionada'),
             'suplente' =>  i::__('Suplente'),
             'selected' =>  i::__('Selecionada'),
-            'Draft' =>  i::__('Rascunho'),
+            'draft' =>  i::__('Rascunho'),
             'requiredLabel' =>  i::__('Obrigatório'),
             'optionalLabel' =>  i::__('Opcional'),
             'confirmReopen' =>  i::__('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'),
@@ -1552,6 +1553,8 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste oportunidade você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
+            
+            'evaluated' => i::__('Avaliada')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

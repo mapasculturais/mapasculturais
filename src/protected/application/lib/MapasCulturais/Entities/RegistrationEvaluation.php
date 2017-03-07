@@ -2,20 +2,23 @@
 
 namespace MapasCulturais\Entities;
 
+use MapasCulturais;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
 /**
  * RegistrationMeta
- * 
+ *
  * @property-read string $result
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\RegistrationEvaluation")
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationEvaluation extends \MapasCulturais\Entity {
+    const STATUS_SENT = self::STATUS_ENABLED;
+
     /**
      * @var integer
      *
@@ -59,19 +62,26 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * })
      */
     protected $user;
-    
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=true)
+     */
+    protected $status = self::STATUS_DRAFT;
+
     function getEvaluationData(){
         return (object) $this->evaluationData;
     }
-    
+
     function setEvaluationData($data){
         $this->evaluationData = (object) $data;
-        
+
         $evaluation_method = $this->getEvaluationMethod();
-        
+
         $this->result = $evaluation_method->getConsolidatedResult($this);
     }
-    
+
     /**
      * Returns the Evaluation Method Definition Object
      * @return \MapasCulturais\Definitions\EvaluationMethod
@@ -79,7 +89,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     public function getEvaluationMethodDefinition() {
         return $this->registration->getEvaluationMethodDefinition();
     }
-    
+
     /**
      * Returns the Evaluation Method Configuration
      * @return \MapasCulturais\Definitions\EvaluationMethodConfiguration
@@ -95,28 +105,28 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     public function getEvaluationMethod() {
         return $this->registration->getEvaluationMethod();
     }
-    
+
     public function getResultString(){
         $evaluation_method = $this->getEvaluationMethod();
-        
+
         return $evaluation_method->evaluationToString($this);
     }
-    
+
     function canUser($action, $user = null) {
         return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
     }
-    
+
     public function jsonSerialize() {
         $result = parent::jsonSerialize();
-        
+
         $result['resultString'] = $this->getResultString();
         $result['user'] = $this->user->id;
         $result['agent'] = $this->user->profile->simplify('id,name,singleUrl');
         $result['registration'] = $this->registration->simplify('id,number,singleUrl');
-        
+
         return $result;
     }
-    
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

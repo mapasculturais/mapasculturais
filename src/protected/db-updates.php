@@ -739,7 +739,14 @@ return [
         }
         
         __exec("CREATE SEQUENCE registration_evaluation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        __exec("CREATE TABLE registration_evaluation (id INT NOT NULL, registration_id INT DEFAULT pseudo_random_id_generator() NOT NULL, user_id INT NOT NULL, result VARCHAR(255) DEFAULT NULL, evaluation_data TEXT NOT NULL, PRIMARY KEY(id));");
+        __exec("CREATE TABLE registration_evaluation (
+            id INT NOT NULL, 
+            registration_id INT DEFAULT pseudo_random_id_generator() NOT NULL, 
+            user_id INT NOT NULL, 
+            result VARCHAR(255) DEFAULT NULL, 
+            evaluation_data TEXT NOT NULL, 
+            status SMALLINT DEFAULT NULL,
+            PRIMARY KEY(id));");
         __exec("CREATE INDEX IDX_2E186C5C833D8F43 ON registration_evaluation (registration_id);");
         __exec("CREATE INDEX IDX_2E186C5CA76ED395 ON registration_evaluation (user_id);");
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
