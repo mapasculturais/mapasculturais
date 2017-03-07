@@ -141,6 +141,13 @@ class Theme extends MapasCulturais\Theme {
                 'text' => i::__('MC'),
                 'required' => true
             ],
+            'home: logo institute url' => [
+                'name' => i::__('Url da página da instituição responsável pelo site'),
+                'description' => i::__('usado principalmente na home para criar um link à página da instituição responsável pelo site'),
+                'examples' => [i::__($app->getBaseUrl())],
+                'text' => i::__($app->getBaseUrl()),
+                'required' => true
+            ],
             'home: colabore' => [
                 'name' => i::__('texto do botão colabore'),
                 'description' => i::__('texto do botão que chama o usuário para colaborar com o mapeamento'),

@@ -669,7 +669,11 @@ MapasCulturais.Editables = {
 
 
                         if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
-                            document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                            if(response.status == 1) {
+                                document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
+                            } else {
+                                document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                            }
                         }
                     }
                     $submitButton.data('clicked',false);

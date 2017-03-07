@@ -146,6 +146,16 @@ class Seal extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
 
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
+
     static function getValidations() {
         return [
             'name' => [

@@ -42,16 +42,25 @@
             max-height: none !important;
         }
     }
+    
 }
 //**  Widget list.
+
+    
+
 .widget-list {
     margin: 0;
+
+    &.horizontalScroll {
+        overflow-x: auto !important;
+        max-width: $screen-md-max !important;
+    }
+
     .widget-list-item {
         position: relative;
         padding-bottom: $padding-small;
         > a {
             display: block;
-            overflow: hidden;
             text-overflow: ellipsis;
             span {
                 white-space: nowrap;

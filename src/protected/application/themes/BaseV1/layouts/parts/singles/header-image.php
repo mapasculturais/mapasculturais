@@ -6,6 +6,7 @@ if ($header = $entity->getFile('header')){
 }
 ?>
 <?php $this->applyTemplateHook('header-image','before'); ?>
+<?php if ($this->isEditable() || $header): ?>
 <div class="header-image js-imagem-do-header" style="<?php echo $style ?>">        
     <?php if ($this->isEditable()): ?>
         <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#"><?php \MapasCulturais\i::_e("Editar");?></a>
@@ -14,4 +15,5 @@ if ($header = $entity->getFile('header')){
         </div>
     <?php endif; ?>
 </div>
+<?php endif; ?>
 <?php $this->applyTemplateHook('header-image','after'); ?>

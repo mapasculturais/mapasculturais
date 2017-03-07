@@ -22,14 +22,12 @@ trait EntityRevision{
         $fields = $class_metadata->getFieldNames();
         $removedFields = ['id','_geoLocation','userId'];
         $entity_data = null;
-
         foreach($fields as $field) {
             if(!in_array($field,$removedFields)) {
                 $revisionData[$field] = $this->$field;
             }
         }
         $relations = $class_metadata->getAssociationMappings();
-
         if(array_key_exists("owner",$relations)) {
             if(isset($this->owner)) {
                 $entity_data = $this->owner->simplify("id,name,shortDescription");
@@ -133,7 +131,7 @@ trait EntityRevision{
     public function _newModifiedRevision() {
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
-        $message = "Registro atualizado.";
+        $message = i::__("Registro atualizado.");
         
         $last_revision = $this->getLastRevision();
         $last_revision_data = $last_revision->getRevisionData();
@@ -174,7 +172,9 @@ trait EntityRevision{
         }
 
         $revision = new Revision($revisionData,$this,$action,$message);
-        $revision->save(true);
+        if($revision->modified) {
+            $revision->save(true);
+        }
     }
 
     public function _newDeletedRevision() {

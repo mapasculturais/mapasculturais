@@ -227,6 +227,16 @@ class Project extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
 
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Projetos');
@@ -364,6 +374,8 @@ class Project extends \MapasCulturais\Entity
         foreach ($registrations as $registration) {
             $registration->setAgentsSealRelation();
         }
+        
+        $app->addEntityToRecreatePermissionCacheList($this);
 
         $this->save(true);
     }
@@ -387,7 +399,7 @@ class Project extends \MapasCulturais\Entity
         $users = [];
         if($this->publishedRegistrations) {
             $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
-            $r = new Registration;
+            
             foreach($registrations as $r){
                 $users = array_merge($users, $r->getUsersWithControl());
             }

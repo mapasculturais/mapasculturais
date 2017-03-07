@@ -91,6 +91,15 @@ class Subsite extends \MapasCulturais\Entity
     protected $aliasUrl;
 
     /**
+     * @var \MapasCulturais\Entities\Role[] Role
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_roles;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
@@ -369,6 +378,42 @@ class Subsite extends \MapasCulturais\Entity
         parent::save($flush);
         $this->clearCache();
     }
+
+    /** @ORM\PreRemove */
+    public function _setNullSubsiteId() {
+        $app = App::i();
+        $subsite_id = $this->id;
+        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.subsite = NULL WHERE a._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Space s SET s.subsite = NULL WHERE s._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Event e SET e.subsite = NULL WHERE e._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Project p SET p.subsite = NULL WHERE p._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Seal s SET s.subsite = NULL WHERE s._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Registration r SET r.subsite = NULL WHERE r._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $app->em->flush();
+    }
+    
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
