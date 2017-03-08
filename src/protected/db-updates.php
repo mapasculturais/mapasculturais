@@ -544,5 +544,33 @@ return [
             return true;
         }
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+    },
+            
+    'refactor of entity meta keky value indexes' => function() use ($conn){
+        $__try = function($sql) use ($conn){
+            try{
+                $conn->executeQuery($sql);
+            } catch (\Exception $ex) {
+                echo "$ex";
+            }
+        };
+        
+        $__try("DROP INDEX subsite_meta_key_value_idx;");
+        $__try("CREATE INDEX subsite_meta_key_idx ON subsite_meta(key);");
+        $__try("DROP INDEX agent_meta_key_value_idx;");
+        $__try("CREATE INDEX agent_meta_key_idx ON agent_meta(key);");
+        $__try("DROP INDEX user_meta_key_value_idx;");
+        $__try("CREATE INDEX user_meta_key_idx ON user_meta(key);");
+        $__try("DROP INDEX event_meta_key_value_idx;");
+        $__try("CREATE INDEX event_meta_key_idx ON event_meta(key);");
+        $__try("DROP INDEX space_meta_key_value_idx;");
+        $__try("CREATE INDEX space_meta_key_idx ON space_meta(key);");
+        $__try("DROP INDEX project_meta_key_value_idx;");
+        $__try("CREATE INDEX project_meta_key_idx ON project_meta(key);");
+        $__try("DROP INDEX seal_meta_key_value_idx;");
+        $__try("CREATE INDEX seal_meta_key_idx ON seal_meta(key);");
+        $__try("CREATE INDEX registration_meta_key_idx ON registration_meta key;");
+        $__try("DROP INDEX notification_meta_key_value_idx;");
+        $__try("CREATE INDEX notification_meta_key_idx ON notification_meta(key);");
     }
 ] + $updates ;
