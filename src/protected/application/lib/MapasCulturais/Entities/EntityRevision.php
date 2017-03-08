@@ -212,8 +212,4 @@ class EntityRevision extends \MapasCulturais\Entity{
     public function preUpdate($args = null){ parent::preUpdate($args); }
     /** @ORM\PostUpdate */
     public function postUpdate($args = null){ parent::postUpdate($args); }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> f39ffa1... restore EntityRegistration file
