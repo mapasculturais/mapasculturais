@@ -307,6 +307,7 @@ MapasCulturais.Editables = {
 
     createAll : function (){
         var entity = MapasCulturais.entity.definition;
+        var labels = MapasCulturais.gettext.editable;
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
@@ -349,7 +350,7 @@ MapasCulturais.Editables = {
                     config.viewformat = 'dd/mm/yyyy';
                     config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
-                    config.clear = 'Limpar';
+                    config.clear = labels['Limpar'];
                     break;
 
                 case 'multiselect':

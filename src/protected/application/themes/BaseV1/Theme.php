@@ -1297,6 +1297,7 @@ class Theme extends MapasCulturais\Theme {
             'insertVideoUrl'    => i::__('Insira uma url de um vídeo do YouTube ou do Vimeo.'),
             'insertLinkTitle'    => i::__('Insira um título para seu link.'),
             'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
+            'Limpar'    => i::__('Limpar'),
         ]);
     }
 
