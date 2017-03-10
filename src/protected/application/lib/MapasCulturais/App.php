@@ -1041,6 +1041,17 @@ class App extends \Slim\Slim{
             return key_exists ($key, $this->_config) ? $this->_config[$key] : null;
 
     }
+    
+    /**
+     * Returns the configuration array or the specified configuration
+     *
+     * @param string $key configuration key
+     *
+     * @return mixed
+     */
+    public function getPlugins(){
+        return $this->_plugins;
+    }
 
     /**
      * Creates a URL to an controller action action

@@ -307,6 +307,7 @@ class Subsite extends \MapasCulturais\Entity
 
         $config['app.verifiedSealsIds'] = $this->verifiedSeals;
         
+        
         if($this->longitude && $this->longitude) {
             $config['maps.center'] = array($this->latitude, $this->longitude);
         }
@@ -322,6 +323,27 @@ class Subsite extends \MapasCulturais\Entity
         if($this->zoom_max){
             $config['maps.zoom.min'] = $this->zoom_max;
         }
+        
+        $domain = $this->url;
+        
+        foreach($app->plugins as $plugin){
+            if(get_class($plugin) == 'SubsiteDomainSufix\Plugin'){
+                $sufix = $plugin->getSufix();
+                if($sufix[0] == '.'){
+                    $domain = str_replace($sufix, '', $domain);
+                } else {
+                    $domain = str_replace('.' . $sufix, '', $domain);
+                }
+                break;
+            }
+        }
+        
+        $assets_folder = "assets/{$domain}/";
+        
+        $config['base.assetUrl'] = $app->baseUrl . $assets_folder; 
+        $config['themes.assetManager']->config['publishPath'] = BASE_PATH . $assets_folder; 
+        
+        // @TODO: passar esta parte abaixo para o tema
                 
         $entidades = explode(';', $this->entidades_habilitadas);
         
@@ -340,6 +362,9 @@ class Subsite extends \MapasCulturais\Entity
         if (!in_array('Eventos', $entidades)) {
             $config['app.enabled.events'] = false;
         }
+        
+        
+        
         
         $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$config]);
 
