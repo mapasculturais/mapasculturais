@@ -187,8 +187,7 @@
             
             _scope.result = [];
             _scope.searchText = '';
-            //_scope.spinnerCondition = true;
-            $scope.spinnerCondition = true; // não está funcionando
+            $scope.spinners[groupName] = true;
 
             RelatedAgentsService.create(groupName, entity.id).
                     success(function(data){
@@ -231,8 +230,7 @@
             
             _scope.result = [];
             _scope.searchText = '';
-            //_scope.spinnerCondition = true;
-            $scope.spinnerCondition = true; // não está funcionando
+            $scope.spinners['group-admin'] = true; // não está funcionando
             
             var groupName = 'group-admin';
             var hasControl = true;

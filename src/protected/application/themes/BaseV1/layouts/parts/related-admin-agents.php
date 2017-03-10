@@ -31,7 +31,7 @@ $this->addRelatedAdminAgentsToJs($entity);
             <div ng-if="isEditable" ng-click="editbox.open('add-related-agent', $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Agente aos Administradores");?>" ></div>
 
             <edit-box ng-if="isEditable" id="add-related-agent" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agente relacionado");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true'>
-                <find-entity entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" description="" spinner-condition="false" select="createAdminRelation"></find-entity>
+                <find-entity entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" description="" spinner-condition="spinners['group-admin']" select="createAdminRelation"></find-entity>
             </edit-box>
         </div>
     </div>
