@@ -18,6 +18,7 @@ function printSubsiteFilter($property){
 <?php $this->applyTemplateHook('subsite-filters','before'); ?>
 <div id="filtros" class="aba-content">
     <?php $this->applyTemplateHook('subsite-filters','begin'); ?>
+
     <p class="alert info">
         <?php i::_e('Configure aqui os filtros que serão aplicados sobre os dados cadastrados na instalação principal. Deixe em branco os campos onde você não quer aplicar filtro algum, deixando aparecer todos os dados da instalação principal.'); ?>
     </p>
@@ -25,6 +26,7 @@ function printSubsiteFilter($property){
     <?php $this->applyTemplateHook('subsite-filters-agent','before'); ?>
     <section class="filter-section">
         <header><?php i::_e('Agentes'); ?></header>
+
         <?php $this->applyTemplateHook('subsite-filters-agent','begin'); ?>
         <p>
           <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_agent_term_area") && $editEntity? 'required': '');?>"><?php i::_e('Área de Atuação do Agente:'); ?> </span>
@@ -90,7 +92,7 @@ function printSubsiteFilter($property){
     <section class="filter-section">
         <header>Selos Verificadores</header>
         <?php $this->applyTemplateHook('subsite-filters-seal','begin'); ?>
-            <span class="label <?php echo ($entity->isPropertyRequired($entity, "verifiedSeals") && $editEntity ? 'required' : ''); ?>"><?php i::_e('Selos:'); ?> </span>
+        <span class="label <?php echo ($entity->isPropertyRequired($entity, "verifiedSeals") && $editEntity ? 'required' : ''); ?>"><?php i::_e('Selos:'); ?> </span>
         <div class="subsite-related-seal-configuration" ng-controller="SealsSubSiteController">
             <div class="selos-relacionados">
                 <input type="hidden" id="verifiedSeals" name="verifiedSeals" class="js-editable" data-edit="verifiedSeals" data-name="verifiedSeals" data-value="<?php printSubsiteFilter($entity->verifiedSeals) ?>">

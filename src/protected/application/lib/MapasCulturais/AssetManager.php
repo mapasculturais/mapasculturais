@@ -14,10 +14,10 @@ abstract class AssetManager{
      */
     protected $_enqueuedStyles = [];
 
-    protected $_config = [];
+    public $config = [];
 
     function __construct(array $config = []) {
-        $this->_config = $config;
+        $this->config = $config;
     }
 
 

@@ -950,7 +950,10 @@ class ApiQuery {
                 {$this->permissionCacheClassName} pc 
             WHERE 
                 pc.action IN (:pcache_select) AND
-                pc.owner IN ($dql_in)";
+                pc.owner IN ($dql_in) AND
+                pc.user = {$user->id}";
+                
+        
                 
              
         $query = $this->em->createQuery($dql);
