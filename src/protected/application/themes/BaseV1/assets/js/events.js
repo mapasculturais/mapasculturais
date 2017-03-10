@@ -91,12 +91,14 @@ MapasCulturais.EventOccurrenceManager = {
                 if(response.error){
                     var $element = null,
                         message;
+                        
                     for(i in response.data) {
                         message = response.data[i].join(', ').toLowerCase();
 
                         if(i == 'space') $element = $form.find('.js-space');
                         else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Erro:'+message+'"/>');
+                     // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);

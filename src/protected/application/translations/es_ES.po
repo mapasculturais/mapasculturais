@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-03-10 15:30-0300\n"
+"POT-Creation-Date: 2017-03-10 16:25-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -235,9 +235,9 @@ msgstr "Por favor, introduzca el teléfono 2 en el formato (xx) xxxx-xxxx."
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:168
 #: application/themes/BaseV1/layouts/parts/singles/location.php:19
 #: application/themes/BaseV1/layouts/parts/singles/location.php:20
-#: application/themes/BaseV1/views/event/create.php:90
-#: application/themes/BaseV1/views/event/edit.php:90
-#: application/themes/BaseV1/views/event/single.php:90
+#: application/themes/BaseV1/views/event/create.php:91
+#: application/themes/BaseV1/views/event/edit.php:91
+#: application/themes/BaseV1/views/event/single.php:91
 msgid "Endereço"
 msgstr "Dirección"
 
@@ -316,12 +316,12 @@ msgstr "Departamento"
 #: application/themes/BaseV1/views/agent/edit.php:85
 #: application/themes/BaseV1/views/agent/single.php:83
 #: application/themes/BaseV1/views/agent/single.php:85
-#: application/themes/BaseV1/views/event/create.php:180
-#: application/themes/BaseV1/views/event/create.php:182
-#: application/themes/BaseV1/views/event/edit.php:180
-#: application/themes/BaseV1/views/event/edit.php:182
-#: application/themes/BaseV1/views/event/single.php:180
-#: application/themes/BaseV1/views/event/single.php:182
+#: application/themes/BaseV1/views/event/create.php:181
+#: application/themes/BaseV1/views/event/create.php:183
+#: application/themes/BaseV1/views/event/edit.php:181
+#: application/themes/BaseV1/views/event/edit.php:183
+#: application/themes/BaseV1/views/event/single.php:181
+#: application/themes/BaseV1/views/event/single.php:183
 msgid "Site"
 msgstr "Página web"
 
@@ -489,12 +489,12 @@ msgstr "Fecha de Actualización"
 #: application/themes/BaseV1/views/agent/create.php:76
 #: application/themes/BaseV1/views/agent/edit.php:76
 #: application/themes/BaseV1/views/agent/single.php:76
-#: application/themes/BaseV1/views/event/create.php:164
 #: application/themes/BaseV1/views/event/create.php:165
-#: application/themes/BaseV1/views/event/edit.php:164
+#: application/themes/BaseV1/views/event/create.php:166
 #: application/themes/BaseV1/views/event/edit.php:165
-#: application/themes/BaseV1/views/event/single.php:164
+#: application/themes/BaseV1/views/event/edit.php:166
 #: application/themes/BaseV1/views/event/single.php:165
+#: application/themes/BaseV1/views/event/single.php:166
 #: application/themes/BaseV1/views/seal/create.php:64
 #: application/themes/BaseV1/views/seal/edit.php:64
 #: application/themes/BaseV1/views/seal/sealrelation.php:102
@@ -540,9 +540,9 @@ msgstr "Autentiación"
 #: application/conf/conf-base.php:433
 #: application/lib/MapasCulturais/Entities/Event.php:195
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:60
-#: application/themes/BaseV1/views/event/create.php:120
-#: application/themes/BaseV1/views/event/edit.php:120
-#: application/themes/BaseV1/views/event/single.php:120
+#: application/themes/BaseV1/views/event/create.php:121
+#: application/themes/BaseV1/views/event/edit.php:121
+#: application/themes/BaseV1/views/event/single.php:121
 msgid "Evento"
 msgstr "Evento"
 
@@ -603,12 +603,12 @@ msgstr "Espacios"
 #: application/themes/BaseV1/layouts/parts/search/infobox-event.php:32
 #: application/themes/BaseV1/layouts/parts/search/list-event-item.php:27
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:261
-#: application/themes/BaseV1/views/event/create.php:377
-#: application/themes/BaseV1/views/event/create.php:404
-#: application/themes/BaseV1/views/event/edit.php:377
-#: application/themes/BaseV1/views/event/edit.php:404
-#: application/themes/BaseV1/views/event/single.php:377
-#: application/themes/BaseV1/views/event/single.php:404
+#: application/themes/BaseV1/views/event/create.php:378
+#: application/themes/BaseV1/views/event/create.php:405
+#: application/themes/BaseV1/views/event/edit.php:378
+#: application/themes/BaseV1/views/event/edit.php:405
+#: application/themes/BaseV1/views/event/single.php:378
+#: application/themes/BaseV1/views/event/single.php:405
 msgid "Projeto"
 msgstr "Proyecto"
 
@@ -636,9 +636,9 @@ msgstr "Inscripción"
 #: application/themes/BaseV1/layouts/parts/search/list-project-item.php:15
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:109
 #: application/themes/BaseV1/layouts/parts/singles/project-tabs.php:6
-#: application/themes/BaseV1/views/event/create.php:172
-#: application/themes/BaseV1/views/event/edit.php:172
-#: application/themes/BaseV1/views/event/single.php:172
+#: application/themes/BaseV1/views/event/create.php:173
+#: application/themes/BaseV1/views/event/edit.php:173
+#: application/themes/BaseV1/views/event/single.php:173
 msgid "Inscrições"
 msgstr "Inscripciones"
 
@@ -728,9 +728,9 @@ msgstr "Subtítulo"
 
 #: application/conf/event-types.php:16
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:119
-#: application/themes/BaseV1/views/event/create.php:176
-#: application/themes/BaseV1/views/event/edit.php:176
-#: application/themes/BaseV1/views/event/single.php:176
+#: application/themes/BaseV1/views/event/create.php:177
+#: application/themes/BaseV1/views/event/edit.php:177
+#: application/themes/BaseV1/views/event/single.php:177
 msgid "Classificação Etária"
 msgstr "Clasificación etaria"
 
@@ -763,42 +763,42 @@ msgid "A classificação etária é obrigatória."
 msgstr "La clasificación etaria es obligatoria."
 
 #: application/conf/event-types.php:32
-#: application/themes/BaseV1/views/event/create.php:189
-#: application/themes/BaseV1/views/event/edit.php:189
-#: application/themes/BaseV1/views/event/single.php:189
+#: application/themes/BaseV1/views/event/create.php:190
+#: application/themes/BaseV1/views/event/edit.php:190
+#: application/themes/BaseV1/views/event/single.php:190
 msgid "Mais Informações"
 msgstr "Más información"
 
 #: application/conf/event-types.php:40
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:182
-#: application/themes/BaseV1/views/event/create.php:48
-#: application/themes/BaseV1/views/event/create.php:88
-#: application/themes/BaseV1/views/event/create.php:551
-#: application/themes/BaseV1/views/event/edit.php:48
-#: application/themes/BaseV1/views/event/edit.php:88
-#: application/themes/BaseV1/views/event/edit.php:551
-#: application/themes/BaseV1/views/event/single.php:48
-#: application/themes/BaseV1/views/event/single.php:88
-#: application/themes/BaseV1/views/event/single.php:551
+#: application/themes/BaseV1/views/event/create.php:49
+#: application/themes/BaseV1/views/event/create.php:89
+#: application/themes/BaseV1/views/event/create.php:552
+#: application/themes/BaseV1/views/event/edit.php:49
+#: application/themes/BaseV1/views/event/edit.php:89
+#: application/themes/BaseV1/views/event/edit.php:552
+#: application/themes/BaseV1/views/event/single.php:49
+#: application/themes/BaseV1/views/event/single.php:89
+#: application/themes/BaseV1/views/event/single.php:552
 msgid "Preço"
 msgstr "Precio"
 
 #: application/conf/event-types.php:44
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:137
-#: application/themes/BaseV1/views/event/create.php:198
-#: application/themes/BaseV1/views/event/edit.php:198
-#: application/themes/BaseV1/views/event/single.php:198
+#: application/themes/BaseV1/views/event/create.php:199
+#: application/themes/BaseV1/views/event/edit.php:199
+#: application/themes/BaseV1/views/event/single.php:199
 msgid "Tradução para LIBRAS"
 msgstr "Traducción para lenguaje de señas"
 
 #: application/conf/event-types.php:47 application/conf/event-types.php:57
 #: application/conf/space-types.php:63
-#: application/themes/BaseV1/views/event/create.php:47
 #: application/themes/BaseV1/views/event/create.php:48
-#: application/themes/BaseV1/views/event/edit.php:47
+#: application/themes/BaseV1/views/event/create.php:49
 #: application/themes/BaseV1/views/event/edit.php:48
-#: application/themes/BaseV1/views/event/single.php:47
+#: application/themes/BaseV1/views/event/edit.php:49
 #: application/themes/BaseV1/views/event/single.php:48
+#: application/themes/BaseV1/views/event/single.php:49
 msgid "Não Informado"
 msgstr "No informado"
 
@@ -1014,9 +1014,9 @@ msgstr "Años"
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:134
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:110
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:9
-#: application/themes/BaseV1/views/event/create.php:195
-#: application/themes/BaseV1/views/event/edit.php:195
-#: application/themes/BaseV1/views/event/single.php:195
+#: application/themes/BaseV1/views/event/create.php:196
+#: application/themes/BaseV1/views/event/edit.php:196
+#: application/themes/BaseV1/views/event/single.php:196
 msgid "Acessibilidade"
 msgstr "Accesibilidad"
 
@@ -2573,9 +2573,9 @@ msgstr "Esta fase del proyecto está en la papelera."
 #: application/themes/BaseV1/views/agent/create.php:58
 #: application/themes/BaseV1/views/agent/edit.php:58
 #: application/themes/BaseV1/views/agent/single.php:58
-#: application/themes/BaseV1/views/event/create.php:145
-#: application/themes/BaseV1/views/event/edit.php:145
-#: application/themes/BaseV1/views/event/single.php:145
+#: application/themes/BaseV1/views/event/create.php:146
+#: application/themes/BaseV1/views/event/edit.php:146
+#: application/themes/BaseV1/views/event/single.php:146
 #: application/themes/BaseV1/views/seal/create.php:51
 #: application/themes/BaseV1/views/seal/edit.php:51
 #: application/themes/BaseV1/views/seal/single.php:51
@@ -2601,9 +2601,9 @@ msgstr "Inscriptos"
 #: application/themes/BaseV1/views/agent/create.php:60
 #: application/themes/BaseV1/views/agent/edit.php:60
 #: application/themes/BaseV1/views/agent/single.php:60
-#: application/themes/BaseV1/views/event/create.php:147
-#: application/themes/BaseV1/views/event/edit.php:147
-#: application/themes/BaseV1/views/event/single.php:147
+#: application/themes/BaseV1/views/event/create.php:148
+#: application/themes/BaseV1/views/event/edit.php:148
+#: application/themes/BaseV1/views/event/single.php:148
 #: application/themes/BaseV1/views/seal/create.php:53
 #: application/themes/BaseV1/views/seal/edit.php:53
 #: application/themes/BaseV1/views/seal/single.php:53
@@ -2626,12 +2626,12 @@ msgstr "de"
 
 #: application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:56
 #: application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:8
-#: application/themes/BaseV1/views/event/create.php:57
-#: application/themes/BaseV1/views/event/create.php:508
-#: application/themes/BaseV1/views/event/edit.php:57
-#: application/themes/BaseV1/views/event/edit.php:508
-#: application/themes/BaseV1/views/event/single.php:57
-#: application/themes/BaseV1/views/event/single.php:508
+#: application/themes/BaseV1/views/event/create.php:58
+#: application/themes/BaseV1/views/event/create.php:509
+#: application/themes/BaseV1/views/event/edit.php:58
+#: application/themes/BaseV1/views/event/edit.php:509
+#: application/themes/BaseV1/views/event/single.php:58
+#: application/themes/BaseV1/views/event/single.php:509
 msgid "Data inicial"
 msgstr "Fecha inicial"
 
@@ -2645,12 +2645,12 @@ msgstr "hasta"
 
 #: application/plugins/ProjectPhases/layouts/parts/widget-project-phases.php:60
 #: application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:11
-#: application/themes/BaseV1/views/event/create.php:59
-#: application/themes/BaseV1/views/event/create.php:513
-#: application/themes/BaseV1/views/event/edit.php:59
-#: application/themes/BaseV1/views/event/edit.php:513
-#: application/themes/BaseV1/views/event/single.php:59
-#: application/themes/BaseV1/views/event/single.php:513
+#: application/themes/BaseV1/views/event/create.php:60
+#: application/themes/BaseV1/views/event/create.php:514
+#: application/themes/BaseV1/views/event/edit.php:60
+#: application/themes/BaseV1/views/event/edit.php:514
+#: application/themes/BaseV1/views/event/single.php:60
+#: application/themes/BaseV1/views/event/single.php:514
 msgid "Data final"
 msgstr "Fecha final"
 
@@ -4191,9 +4191,9 @@ msgid "Precisa ter pelo menos uma linguagem selecionada"
 msgstr "Necesita tener por lo menos un tipo de evento seleccionado"
 
 #: application/themes/BaseV1/Theme.php:597
-#: application/themes/BaseV1/views/event/create.php:411
-#: application/themes/BaseV1/views/event/edit.php:411
-#: application/themes/BaseV1/views/event/single.php:411
+#: application/themes/BaseV1/views/event/create.php:412
+#: application/themes/BaseV1/views/event/edit.php:412
+#: application/themes/BaseV1/views/event/single.php:412
 msgid "Selecione pelo menos uma linguagem"
 msgstr "Seleccione por lo menos un tipo de evento"
 
@@ -4316,9 +4316,9 @@ msgstr "sello"
 #: application/themes/BaseV1/Theme.php:1235
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:10
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:15
-#: application/themes/BaseV1/views/event/create.php:556
-#: application/themes/BaseV1/views/event/edit.php:556
-#: application/themes/BaseV1/views/event/single.php:556
+#: application/themes/BaseV1/views/event/create.php:557
+#: application/themes/BaseV1/views/event/edit.php:557
+#: application/themes/BaseV1/views/event/single.php:557
 msgid "Enviar"
 msgstr "Enviar"
 
@@ -4671,23 +4671,23 @@ msgstr ""
 "agentes dentre de este grupo será eliminada."
 
 #: application/themes/BaseV1/Theme.php:1513
-#: application/themes/BaseV1/views/event/create.php:496
-#: application/themes/BaseV1/views/event/edit.php:496
-#: application/themes/BaseV1/views/event/single.php:496
+#: application/themes/BaseV1/views/event/create.php:497
+#: application/themes/BaseV1/views/event/edit.php:497
+#: application/themes/BaseV1/views/event/single.php:497
 msgid "uma vez"
 msgstr "una vez"
 
 #: application/themes/BaseV1/Theme.php:1514
-#: application/themes/BaseV1/views/event/create.php:497
-#: application/themes/BaseV1/views/event/edit.php:497
-#: application/themes/BaseV1/views/event/single.php:497
+#: application/themes/BaseV1/views/event/create.php:498
+#: application/themes/BaseV1/views/event/edit.php:498
+#: application/themes/BaseV1/views/event/single.php:498
 msgid "todos os dias"
 msgstr "todos los días"
 
 #: application/themes/BaseV1/Theme.php:1515
-#: application/themes/BaseV1/views/event/create.php:498
-#: application/themes/BaseV1/views/event/edit.php:498
-#: application/themes/BaseV1/views/event/single.php:498
+#: application/themes/BaseV1/views/event/create.php:499
+#: application/themes/BaseV1/views/event/edit.php:499
+#: application/themes/BaseV1/views/event/single.php:499
 msgid "semanal"
 msgstr "semanal"
 
@@ -4836,12 +4836,12 @@ msgstr "Seleccionar"
 #: application/themes/BaseV1/layouts/parts/entity-parent.php:41
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:12
 #: application/themes/BaseV1/layouts/parts/singles/registration-single--agents.php:11
-#: application/themes/BaseV1/views/event/create.php:43
-#: application/themes/BaseV1/views/event/create.php:400
-#: application/themes/BaseV1/views/event/edit.php:43
-#: application/themes/BaseV1/views/event/edit.php:400
-#: application/themes/BaseV1/views/event/single.php:43
-#: application/themes/BaseV1/views/event/single.php:400
+#: application/themes/BaseV1/views/event/create.php:44
+#: application/themes/BaseV1/views/event/create.php:401
+#: application/themes/BaseV1/views/event/edit.php:44
+#: application/themes/BaseV1/views/event/edit.php:401
+#: application/themes/BaseV1/views/event/single.php:44
+#: application/themes/BaseV1/views/event/single.php:401
 msgid "Aguardando confirmação"
 msgstr "Esperando confirmación"
 
@@ -4862,9 +4862,9 @@ msgstr "Galería"
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:25
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:56
 #: application/themes/BaseV1/layouts/parts/video-gallery.php:47
-#: application/themes/BaseV1/views/event/create.php:72
-#: application/themes/BaseV1/views/event/edit.php:72
-#: application/themes/BaseV1/views/event/single.php:72
+#: application/themes/BaseV1/views/event/create.php:73
+#: application/themes/BaseV1/views/event/edit.php:73
+#: application/themes/BaseV1/views/event/single.php:73
 msgid "Excluir"
 msgstr "Borrar"
 
@@ -5152,9 +5152,9 @@ msgstr "Dirección (con http://)"
 #: application/themes/BaseV1/views/agent/create.php:128
 #: application/themes/BaseV1/views/agent/edit.php:128
 #: application/themes/BaseV1/views/agent/single.php:128
-#: application/themes/BaseV1/views/event/create.php:340
-#: application/themes/BaseV1/views/event/edit.php:340
-#: application/themes/BaseV1/views/event/single.php:340
+#: application/themes/BaseV1/views/event/create.php:341
+#: application/themes/BaseV1/views/event/edit.php:341
+#: application/themes/BaseV1/views/event/single.php:341
 #: application/themes/BaseV1/views/generic/list.php:18
 #: application/themes/BaseV1/views/seal/create.php:96
 #: application/themes/BaseV1/views/seal/edit.php:96
@@ -5578,9 +5578,9 @@ msgstr "Agregar"
 #: application/themes/BaseV1/layouts/parts/singles/subsite-images.php:76
 #: application/themes/BaseV1/layouts/parts/singles/subsite-images.php:105
 #: application/themes/BaseV1/layouts/parts/video-gallery.php:46
-#: application/themes/BaseV1/views/event/create.php:71
-#: application/themes/BaseV1/views/event/edit.php:71
-#: application/themes/BaseV1/views/event/single.php:71
+#: application/themes/BaseV1/views/event/create.php:72
+#: application/themes/BaseV1/views/event/edit.php:72
+#: application/themes/BaseV1/views/event/single.php:72
 msgid "Editar"
 msgstr "Editar"
 
@@ -5951,64 +5951,64 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:72
-#: application/themes/BaseV1/views/event/create.php:129
-#: application/themes/BaseV1/views/event/edit.php:129
-#: application/themes/BaseV1/views/event/single.php:129
+#: application/themes/BaseV1/views/event/create.php:130
+#: application/themes/BaseV1/views/event/edit.php:130
+#: application/themes/BaseV1/views/event/single.php:130
 msgid "Subtítulo"
 msgstr "Subtítulo"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:72
-#: application/themes/BaseV1/views/event/create.php:129
-#: application/themes/BaseV1/views/event/edit.php:129
-#: application/themes/BaseV1/views/event/single.php:129
+#: application/themes/BaseV1/views/event/create.php:130
+#: application/themes/BaseV1/views/event/edit.php:130
+#: application/themes/BaseV1/views/event/single.php:130
 msgid "Insira um subtítulo para o evento"
 msgstr "Ingrese un subtítulo para el evento"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:109
-#: application/themes/BaseV1/views/event/create.php:172
-#: application/themes/BaseV1/views/event/edit.php:172
-#: application/themes/BaseV1/views/event/single.php:172
+#: application/themes/BaseV1/views/event/create.php:173
+#: application/themes/BaseV1/views/event/edit.php:173
+#: application/themes/BaseV1/views/event/single.php:173
 msgid "Informações sobre as inscrições"
 msgstr "Datos acerca de las inscripciones"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:119
-#: application/themes/BaseV1/views/event/create.php:176
-#: application/themes/BaseV1/views/event/edit.php:176
-#: application/themes/BaseV1/views/event/single.php:176
+#: application/themes/BaseV1/views/event/create.php:177
+#: application/themes/BaseV1/views/event/edit.php:177
+#: application/themes/BaseV1/views/event/single.php:177
 msgid "Informe a classificação etária do evento"
 msgstr "Clasificación etaria del evento"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:141
-#: application/themes/BaseV1/views/event/create.php:202
-#: application/themes/BaseV1/views/event/edit.php:202
-#: application/themes/BaseV1/views/event/single.php:202
+#: application/themes/BaseV1/views/event/create.php:203
+#: application/themes/BaseV1/views/event/edit.php:203
+#: application/themes/BaseV1/views/event/single.php:203
 msgid "Áudio Descrição"
 msgstr "Audio Descripción"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:141
-#: application/themes/BaseV1/views/event/create.php:202
-#: application/themes/BaseV1/views/event/edit.php:202
-#: application/themes/BaseV1/views/event/single.php:202
+#: application/themes/BaseV1/views/event/create.php:203
+#: application/themes/BaseV1/views/event/edit.php:203
+#: application/themes/BaseV1/views/event/single.php:203
 msgid "Descrição Sonora"
 msgstr "Descripción Sonora"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:160
-#: application/themes/BaseV1/views/event/create.php:41
-#: application/themes/BaseV1/views/event/create.php:81
-#: application/themes/BaseV1/views/event/edit.php:41
-#: application/themes/BaseV1/views/event/edit.php:81
-#: application/themes/BaseV1/views/event/single.php:41
-#: application/themes/BaseV1/views/event/single.php:81
+#: application/themes/BaseV1/views/event/create.php:42
+#: application/themes/BaseV1/views/event/create.php:82
+#: application/themes/BaseV1/views/event/edit.php:42
+#: application/themes/BaseV1/views/event/edit.php:82
+#: application/themes/BaseV1/views/event/single.php:42
+#: application/themes/BaseV1/views/event/single.php:82
 msgid "ver mapa"
 msgstr "ver mapa"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:160
-#: application/themes/BaseV1/views/event/create.php:41
-#: application/themes/BaseV1/views/event/create.php:81
-#: application/themes/BaseV1/views/event/edit.php:41
-#: application/themes/BaseV1/views/event/edit.php:81
-#: application/themes/BaseV1/views/event/single.php:41
-#: application/themes/BaseV1/views/event/single.php:81
+#: application/themes/BaseV1/views/event/create.php:42
+#: application/themes/BaseV1/views/event/create.php:82
+#: application/themes/BaseV1/views/event/edit.php:42
+#: application/themes/BaseV1/views/event/edit.php:82
+#: application/themes/BaseV1/views/event/single.php:42
+#: application/themes/BaseV1/views/event/single.php:82
 msgid "ocultar mapa"
 msgstr "ocultar mapa"
 
@@ -6045,9 +6045,9 @@ msgstr "Inscripciones abiertas desde el"
 #: application/themes/BaseV1/views/agent/create.php:72
 #: application/themes/BaseV1/views/agent/edit.php:72
 #: application/themes/BaseV1/views/agent/single.php:72
-#: application/themes/BaseV1/views/event/create.php:160
-#: application/themes/BaseV1/views/event/edit.php:160
-#: application/themes/BaseV1/views/event/single.php:160
+#: application/themes/BaseV1/views/event/create.php:161
+#: application/themes/BaseV1/views/event/edit.php:161
+#: application/themes/BaseV1/views/event/single.php:161
 #: application/themes/BaseV1/views/space/create.php:76
 #: application/themes/BaseV1/views/space/edit.php:76
 #: application/themes/BaseV1/views/space/single.php:76
@@ -6062,9 +6062,9 @@ msgstr ""
 #: application/themes/BaseV1/views/agent/create.php:72
 #: application/themes/BaseV1/views/agent/edit.php:72
 #: application/themes/BaseV1/views/agent/single.php:72
-#: application/themes/BaseV1/views/event/create.php:160
-#: application/themes/BaseV1/views/event/edit.php:160
-#: application/themes/BaseV1/views/event/single.php:160
+#: application/themes/BaseV1/views/event/create.php:161
+#: application/themes/BaseV1/views/event/edit.php:161
+#: application/themes/BaseV1/views/event/single.php:161
 #: application/themes/BaseV1/views/space/create.php:76
 #: application/themes/BaseV1/views/space/edit.php:76
 #: application/themes/BaseV1/views/space/single.php:76
@@ -6788,12 +6788,12 @@ msgstr "Virtual o Físico? (si fuera virtual la localización no es obligatoria)
 
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:15
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:7
-#: application/themes/BaseV1/views/event/create.php:463
-#: application/themes/BaseV1/views/event/create.php:471
-#: application/themes/BaseV1/views/event/edit.php:463
-#: application/themes/BaseV1/views/event/edit.php:471
-#: application/themes/BaseV1/views/event/single.php:463
-#: application/themes/BaseV1/views/event/single.php:471
+#: application/themes/BaseV1/views/event/create.php:464
+#: application/themes/BaseV1/views/event/create.php:472
+#: application/themes/BaseV1/views/event/edit.php:464
+#: application/themes/BaseV1/views/event/edit.php:472
+#: application/themes/BaseV1/views/event/single.php:464
+#: application/themes/BaseV1/views/event/single.php:472
 msgid "Selecione"
 msgstr "Seleccione"
 
@@ -7268,153 +7268,159 @@ msgstr ""
 "Las fechas fueron cambiadas pero la descripción no. ¿Está seguro (a) que "
 "desea guardar?"
 
-#: application/themes/BaseV1/views/event/create.php:47
-#: application/themes/BaseV1/views/event/edit.php:47
-#: application/themes/BaseV1/views/event/single.php:47
+#: application/themes/BaseV1/views/event/create.php:28
+#: application/themes/BaseV1/views/event/edit.php:28
+#: application/themes/BaseV1/views/event/single.php:28
+msgid "Erro"
+msgstr "Error"
+
+#: application/themes/BaseV1/views/event/create.php:48
+#: application/themes/BaseV1/views/event/edit.php:48
+#: application/themes/BaseV1/views/event/single.php:48
 msgid "Descrição Legível"
 msgstr "Descripción Legible"
 
-#: application/themes/BaseV1/views/event/create.php:49
-#: application/themes/BaseV1/views/event/create.php:482
-#: application/themes/BaseV1/views/event/edit.php:49
-#: application/themes/BaseV1/views/event/edit.php:482
-#: application/themes/BaseV1/views/event/single.php:49
-#: application/themes/BaseV1/views/event/single.php:482
+#: application/themes/BaseV1/views/event/create.php:50
+#: application/themes/BaseV1/views/event/create.php:483
+#: application/themes/BaseV1/views/event/edit.php:50
+#: application/themes/BaseV1/views/event/edit.php:483
+#: application/themes/BaseV1/views/event/single.php:50
+#: application/themes/BaseV1/views/event/single.php:483
 msgid "Horário inicial"
 msgstr "Horario inicial"
 
-#: application/themes/BaseV1/views/event/create.php:51
-#: application/themes/BaseV1/views/event/create.php:486
-#: application/themes/BaseV1/views/event/edit.php:51
-#: application/themes/BaseV1/views/event/edit.php:486
-#: application/themes/BaseV1/views/event/single.php:51
-#: application/themes/BaseV1/views/event/single.php:486
+#: application/themes/BaseV1/views/event/create.php:52
+#: application/themes/BaseV1/views/event/create.php:487
+#: application/themes/BaseV1/views/event/edit.php:52
+#: application/themes/BaseV1/views/event/edit.php:487
+#: application/themes/BaseV1/views/event/single.php:52
+#: application/themes/BaseV1/views/event/single.php:487
 msgid "Duração"
 msgstr "Duración "
 
-#: application/themes/BaseV1/views/event/create.php:51
-#: application/themes/BaseV1/views/event/edit.php:51
-#: application/themes/BaseV1/views/event/single.php:51
+#: application/themes/BaseV1/views/event/create.php:52
+#: application/themes/BaseV1/views/event/edit.php:52
+#: application/themes/BaseV1/views/event/single.php:52
 msgid "min"
 msgstr "min"
 
-#: application/themes/BaseV1/views/event/create.php:53
-#: application/themes/BaseV1/views/event/create.php:490
-#: application/themes/BaseV1/views/event/edit.php:53
-#: application/themes/BaseV1/views/event/edit.php:490
-#: application/themes/BaseV1/views/event/single.php:53
-#: application/themes/BaseV1/views/event/single.php:490
+#: application/themes/BaseV1/views/event/create.php:54
+#: application/themes/BaseV1/views/event/create.php:491
+#: application/themes/BaseV1/views/event/edit.php:54
+#: application/themes/BaseV1/views/event/edit.php:491
+#: application/themes/BaseV1/views/event/single.php:54
+#: application/themes/BaseV1/views/event/single.php:491
 msgid "Horário final"
 msgstr "Horario final"
 
-#: application/themes/BaseV1/views/event/create.php:55
-#: application/themes/BaseV1/views/event/create.php:494
-#: application/themes/BaseV1/views/event/edit.php:55
-#: application/themes/BaseV1/views/event/edit.php:494
-#: application/themes/BaseV1/views/event/single.php:55
-#: application/themes/BaseV1/views/event/single.php:494
+#: application/themes/BaseV1/views/event/create.php:56
+#: application/themes/BaseV1/views/event/create.php:495
+#: application/themes/BaseV1/views/event/edit.php:56
+#: application/themes/BaseV1/views/event/edit.php:495
+#: application/themes/BaseV1/views/event/single.php:56
+#: application/themes/BaseV1/views/event/single.php:495
 msgid "Frequência"
 msgstr "Frecuencia"
 
-#: application/themes/BaseV1/views/event/create.php:68
-#: application/themes/BaseV1/views/event/edit.php:68
-#: application/themes/BaseV1/views/event/single.php:68
+#: application/themes/BaseV1/views/event/create.php:69
+#: application/themes/BaseV1/views/event/edit.php:69
+#: application/themes/BaseV1/views/event/single.php:69
 msgid "Modificar Ocorrência"
 msgstr "Modificar cuándo y dónde"
 
-#: application/themes/BaseV1/views/event/create.php:71
-#: application/themes/BaseV1/views/event/edit.php:71
-#: application/themes/BaseV1/views/event/single.php:71
+#: application/themes/BaseV1/views/event/create.php:72
+#: application/themes/BaseV1/views/event/edit.php:72
+#: application/themes/BaseV1/views/event/single.php:72
 msgid "Editar Ocorrência"
 msgstr "Editar cuándo y dónde"
 
-#: application/themes/BaseV1/views/event/create.php:72
-#: application/themes/BaseV1/views/event/edit.php:72
-#: application/themes/BaseV1/views/event/single.php:72
+#: application/themes/BaseV1/views/event/create.php:73
+#: application/themes/BaseV1/views/event/edit.php:73
+#: application/themes/BaseV1/views/event/single.php:73
 msgid "Excluir esta Ocorrência?"
 msgstr "¿Eliminar cuándo y dónde?"
 
-#: application/themes/BaseV1/views/event/create.php:72
-#: application/themes/BaseV1/views/event/edit.php:72
-#: application/themes/BaseV1/views/event/single.php:72
+#: application/themes/BaseV1/views/event/create.php:73
+#: application/themes/BaseV1/views/event/edit.php:73
+#: application/themes/BaseV1/views/event/single.php:73
 msgid "Excluir Ocorrência"
 msgstr "Eliminar cuándo y dónde"
 
-#: application/themes/BaseV1/views/event/create.php:165
-#: application/themes/BaseV1/views/event/edit.php:165
-#: application/themes/BaseV1/views/event/single.php:165
+#: application/themes/BaseV1/views/event/create.php:166
+#: application/themes/BaseV1/views/event/edit.php:166
+#: application/themes/BaseV1/views/event/single.php:166
 msgid "Insira uma descrição curta para o evento"
 msgstr "Agregue una descripción breve para el evento"
 
-#: application/themes/BaseV1/views/event/create.php:182
-#: application/themes/BaseV1/views/event/edit.php:182
-#: application/themes/BaseV1/views/event/single.php:182
+#: application/themes/BaseV1/views/event/create.php:183
+#: application/themes/BaseV1/views/event/edit.php:183
+#: application/themes/BaseV1/views/event/single.php:183
 msgid "Informe o endereço do site do evento"
 msgstr "Agregue la dirección de la página web del evento"
 
-#: application/themes/BaseV1/views/event/create.php:321
-#: application/themes/BaseV1/views/event/edit.php:321
-#: application/themes/BaseV1/views/event/single.php:321
+#: application/themes/BaseV1/views/event/create.php:322
+#: application/themes/BaseV1/views/event/edit.php:322
+#: application/themes/BaseV1/views/event/single.php:322
 msgid "Adicionar Ocorrência"
 msgstr "Agregar cuándo y dónde"
-
-#: application/themes/BaseV1/views/event/create.php:323
-#: application/themes/BaseV1/views/event/edit.php:323
-#: application/themes/BaseV1/views/event/single.php:323
-msgid "Clique para adicionar ocorrências"
-msgstr "Haga clic para agregar cuándo y dónde"
 
 #: application/themes/BaseV1/views/event/create.php:324
 #: application/themes/BaseV1/views/event/edit.php:324
 #: application/themes/BaseV1/views/event/single.php:324
+msgid "Clique para adicionar ocorrências"
+msgstr "Haga clic para agregar cuándo y dónde"
+
+#: application/themes/BaseV1/views/event/create.php:325
+#: application/themes/BaseV1/views/event/edit.php:325
+#: application/themes/BaseV1/views/event/single.php:325
 msgid "Adicionar ocorrência"
 msgstr "Agregar cuándo y dónde"
 
-#: application/themes/BaseV1/views/event/create.php:330
-#: application/themes/BaseV1/views/event/edit.php:330
-#: application/themes/BaseV1/views/event/single.php:330
+#: application/themes/BaseV1/views/event/create.php:331
+#: application/themes/BaseV1/views/event/edit.php:331
+#: application/themes/BaseV1/views/event/single.php:331
 msgid "Para adicionar ocorrências, primeiro é preciso salvar o evento"
 msgstr "Para agregar cuándo y dónde, primero debe guardar."
 
-#: application/themes/BaseV1/views/event/create.php:341
-#: application/themes/BaseV1/views/event/edit.php:341
-#: application/themes/BaseV1/views/event/single.php:341
+#: application/themes/BaseV1/views/event/create.php:342
+#: application/themes/BaseV1/views/event/edit.php:342
+#: application/themes/BaseV1/views/event/single.php:342
 msgid "Descrição do Evento"
 msgstr "Descripción del Evento"
 
-#: application/themes/BaseV1/views/event/create.php:341
-#: application/themes/BaseV1/views/event/edit.php:341
-#: application/themes/BaseV1/views/event/single.php:341
+#: application/themes/BaseV1/views/event/create.php:342
+#: application/themes/BaseV1/views/event/edit.php:342
+#: application/themes/BaseV1/views/event/single.php:342
 msgid "Insira uma descrição do evento"
 msgstr "Agregue una descripción del evento"
 
-#: application/themes/BaseV1/views/event/create.php:383
-#: application/themes/BaseV1/views/event/create.php:385
-#: application/themes/BaseV1/views/event/edit.php:383
-#: application/themes/BaseV1/views/event/edit.php:385
-#: application/themes/BaseV1/views/event/single.php:383
-#: application/themes/BaseV1/views/event/single.php:385
+#: application/themes/BaseV1/views/event/create.php:384
+#: application/themes/BaseV1/views/event/create.php:386
+#: application/themes/BaseV1/views/event/edit.php:384
+#: application/themes/BaseV1/views/event/edit.php:386
+#: application/themes/BaseV1/views/event/single.php:384
+#: application/themes/BaseV1/views/event/single.php:386
 msgid "Selecione um projeto"
 msgstr "Seleccione un proyecto"
 
-#: application/themes/BaseV1/views/event/create.php:396
-#: application/themes/BaseV1/views/event/edit.php:396
-#: application/themes/BaseV1/views/event/single.php:396
+#: application/themes/BaseV1/views/event/create.php:397
+#: application/themes/BaseV1/views/event/edit.php:397
+#: application/themes/BaseV1/views/event/single.php:397
 msgid "Selecionar um Projeto"
 msgstr "Seleccione un proyecto"
 
-#: application/themes/BaseV1/views/event/create.php:409
-#: application/themes/BaseV1/views/event/create.php:411
-#: application/themes/BaseV1/views/event/edit.php:409
-#: application/themes/BaseV1/views/event/edit.php:411
-#: application/themes/BaseV1/views/event/single.php:409
-#: application/themes/BaseV1/views/event/single.php:411
+#: application/themes/BaseV1/views/event/create.php:410
+#: application/themes/BaseV1/views/event/create.php:412
+#: application/themes/BaseV1/views/event/edit.php:410
+#: application/themes/BaseV1/views/event/edit.php:412
+#: application/themes/BaseV1/views/event/single.php:410
+#: application/themes/BaseV1/views/event/single.php:412
 msgid "Linguagens"
 msgstr "Tipos de eventos"
 
-#: application/themes/BaseV1/views/event/create.php:425
-#: application/themes/BaseV1/views/event/edit.php:425
-#: application/themes/BaseV1/views/event/single.php:425
+#: application/themes/BaseV1/views/event/create.php:426
+#: application/themes/BaseV1/views/event/edit.php:426
+#: application/themes/BaseV1/views/event/single.php:426
 msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "evento"
@@ -7422,27 +7428,27 @@ msgstr ""
 "Para agregar archivos para descarga o enlaces, primero es precioso guardar "
 "el evento"
 
-#: application/themes/BaseV1/views/event/create.php:519
-#: application/themes/BaseV1/views/event/edit.php:519
-#: application/themes/BaseV1/views/event/single.php:519
+#: application/themes/BaseV1/views/event/create.php:520
+#: application/themes/BaseV1/views/event/edit.php:520
+#: application/themes/BaseV1/views/event/single.php:520
 msgid "Repete"
 msgstr "Repite"
 
-#: application/themes/BaseV1/views/event/create.php:521
-#: application/themes/BaseV1/views/event/edit.php:521
-#: application/themes/BaseV1/views/event/single.php:521
+#: application/themes/BaseV1/views/event/create.php:522
+#: application/themes/BaseV1/views/event/edit.php:522
+#: application/themes/BaseV1/views/event/single.php:522
 msgid "D|S|T|Q|Q|S|S"
 msgstr "D|L|M|M|J|V|S"
-
-#: application/themes/BaseV1/views/event/create.php:540
-#: application/themes/BaseV1/views/event/edit.php:540
-#: application/themes/BaseV1/views/event/single.php:540
-msgid "Descrição legível do horário"
-msgstr "Descripción legible del horario"
 
 #: application/themes/BaseV1/views/event/create.php:541
 #: application/themes/BaseV1/views/event/edit.php:541
 #: application/themes/BaseV1/views/event/single.php:541
+msgid "Descrição legível do horário"
+msgstr "Descripción legible del horario"
+
+#: application/themes/BaseV1/views/event/create.php:542
+#: application/themes/BaseV1/views/event/edit.php:542
+#: application/themes/BaseV1/views/event/single.php:542
 msgid ""
 "Você pode inserir uma descrição própria ou inserir a descrição gerada "
 "automaticamente clicando no botão ao lado"
@@ -7451,15 +7457,15 @@ msgstr ""
 "descripción generada automáticamente haciendo clic en el botón situado al "
 "lado"
 
-#: application/themes/BaseV1/views/event/create.php:543
-#: application/themes/BaseV1/views/event/edit.php:543
-#: application/themes/BaseV1/views/event/single.php:543
+#: application/themes/BaseV1/views/event/create.php:544
+#: application/themes/BaseV1/views/event/edit.php:544
+#: application/themes/BaseV1/views/event/single.php:544
 msgid "Descrição gerada pelo sistema automaticamente"
 msgstr "Descripción generada por el sistema automaticamente"
 
-#: application/themes/BaseV1/views/event/create.php:546
-#: application/themes/BaseV1/views/event/edit.php:546
-#: application/themes/BaseV1/views/event/single.php:546
+#: application/themes/BaseV1/views/event/create.php:547
+#: application/themes/BaseV1/views/event/edit.php:547
+#: application/themes/BaseV1/views/event/single.php:547
 msgid ""
 "Coloque neste campo somente informações sobre a data e hora desta ocorrência "
 "do evento."

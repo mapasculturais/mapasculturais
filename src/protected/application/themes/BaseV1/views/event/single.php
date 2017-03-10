@@ -25,6 +25,7 @@ $this->localizeScript('singleEvents', [
             'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
             'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
             'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
+            'Erro'=> \MapasCulturais\i::__('Erro'),
         ]);
 
 $this->includeAngularEntityAssets($entity);
