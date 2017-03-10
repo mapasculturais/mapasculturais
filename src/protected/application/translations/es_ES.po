@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-03-10 16:25-0300\n"
+"POT-Creation-Date: 2017-03-10 17:10-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2423,6 +2423,7 @@ msgstr "E-mail"
 #: application/themes/BaseV1/Theme.php:1739
 #: application/themes/BaseV1/layouts/parts/home-agents.php:43
 #: application/themes/BaseV1/layouts/parts/home-projects.php:39
+#: application/themes/BaseV1/layouts/parts/home-saas.php:41
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:41
 #: application/themes/BaseV1/layouts/parts/search/infobox-agent.php:8
 #: application/themes/BaseV1/layouts/parts/search/infobox-space.php:11
@@ -4964,6 +4965,7 @@ msgid "Encontre agentes por"
 msgstr "Buscar agentes por"
 
 #: application/themes/BaseV1/layouts/parts/home-agents.php:42
+#: application/themes/BaseV1/layouts/parts/home-saas.php:40
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:40
 #: application/themes/BaseV1/layouts/parts/search/infobox-space.php:13
 #: application/themes/BaseV1/layouts/parts/search/list-agent-item.php:14
@@ -4974,6 +4976,7 @@ msgstr "Área de actuación"
 #: application/themes/BaseV1/layouts/parts/home-agents.php:65
 #: application/themes/BaseV1/layouts/parts/home-events.php:55
 #: application/themes/BaseV1/layouts/parts/home-projects.php:55
+#: application/themes/BaseV1/layouts/parts/home-saas.php:64
 #: application/themes/BaseV1/layouts/parts/home-seals.php:45
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:64
 msgid "destaque"
@@ -4987,6 +4990,7 @@ msgstr "Agregar agente"
 #: application/themes/BaseV1/layouts/parts/home-agents.php:73
 #: application/themes/BaseV1/layouts/parts/home-events.php:63
 #: application/themes/BaseV1/layouts/parts/home-projects.php:63
+#: application/themes/BaseV1/layouts/parts/home-saas.php:72
 #: application/themes/BaseV1/layouts/parts/home-seals.php:53
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:72
 msgid "Ver tudo"
