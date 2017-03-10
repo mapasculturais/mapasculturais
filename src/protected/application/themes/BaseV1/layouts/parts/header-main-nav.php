@@ -106,16 +106,16 @@
                                     <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)"><?php \MapasCulturais\i::_e("aceitar");?></a>
 
                                     <span ng-if="notification.request.permissionTo.reject">
-                                        <span ng-if="notification.request.requesterUser.id === MapasCulturais.userId">
+                                        <span ng-if="notification.request.requesterUser === MapasCulturais.userId">
                                             <a class="btn btn-small btn-default" ng-click="reject(notification.id)"><?php \MapasCulturais\i::_e("cancelar");?></a>
                                             <a class="btn btn-small btn-success" ng-click="delete(notification.id)"><?php \MapasCulturais\i::_e("ok");?></a>
                                         </span>
-                                        <span ng-if="notification.request.requesterUser.id !== MapasCulturais.userId">
+                                        <span ng-if="notification.request.requesterUser !== MapasCulturais.userId">
                                             <a class="btn btn-small btn-danger" ng-click="reject(notification.id)"><?php \MapasCulturais\i::_e("rejeitar");?></a>
                                         </span>
                                     </span>
 
-                                    <span ng-if="!notification.isRequest">
+                                    <span ng-if="!notification.request">
                                         <a class="btn btn-small btn-success" ng-click="delete(notification.id)"><?php \MapasCulturais\i::_e("ok");?></a>
                                     </span>
 
