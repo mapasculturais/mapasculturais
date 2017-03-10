@@ -889,6 +889,7 @@ abstract class Entity implements \JsonSerializable{
         
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();
+        }
 
         if($this->usesRevision()) {
             //$this->_newDeletedRevision();
