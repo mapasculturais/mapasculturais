@@ -124,7 +124,7 @@
                     },50)
                 });
             },
-            
+
             registrationStatuses: [
                 {value: null, label: labels['allStatus']},
                 {value: 1, label: labels['pending']},
@@ -133,7 +133,7 @@
                 {value: 8, label: labels['suplente']},
                 {value: 10, label: labels['selected']}
             ],
-            
+
             registrationStatusesNames: [
                 {value: 1, label: labels['pending']},
                 {value: 2, label: labels['invalid']},
@@ -142,13 +142,13 @@
                 {value: 10, label: labels['selected']},
                 {value: 0, label: labels['draft']}
             ],
-            
+
             publishedRegistrationStatuses: [
                 {value: null, label: labels['allStatus']},
                 {value: 8, label: labels['suplente']},
                 {value: 10, label: labels['selected']}
             ],
-            
+
             publishedRegistrationStatusesNames: [
                 {value: 8, label: labels['suplente']},
                 {value: 10, label: labels['selected']}
@@ -202,9 +202,9 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
 module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
-    
+
     var labels = MapasCulturais.gettext.moduleOpportunity;
-    
+
     $scope.isEditable = MapasCulturais.isEditable;
     $scope.maxUploadSize = MapasCulturais.maxUploadSize;
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
@@ -497,7 +497,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$timeout', 'OpportunityEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, OpportunityEventsService, EditBox, $http, UrlService) {
     $scope.events = $scope.data.entity.events.slice();
     $scope.numSelectedEvents = 0;
-    
+
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
     $scope.events.forEach(function(evt){
@@ -658,7 +658,7 @@ module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$time
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
     var registrationsUrl = new UrlService('registration');
-    
+
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
     $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
@@ -791,11 +791,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.showFieldForCategory = function(field){
+        var result;
         if (!$scope.useCategories){
-            return true;
+            result = true;
         } else {
-            return field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
+            result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
         }
+
+        // console.log('>>> ', {result: result, useCategories: $scope.useCategories, categoriesLength: field.categories.length, categoriesIndexOf: field.categories.indexOf($scope.selectedCategory)});
+        return result;
     };
 
 
@@ -821,7 +825,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     module.controller('OpportunityEvaluationCommitteeController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EditBox) {
         $scope.editbox = EditBox;
         RelatedAgentsService = angular.copy(RelatedAgentsService);
-        
+
         RelatedAgentsService.controllerId = 'evaluationMethodConfiguration';
         RelatedAgentsService.entityId = MapasCulturais.entity.object.evaluationMethodConfiguration.id;
 
@@ -839,13 +843,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.data = {};
 
         $scope.agentRelationDisabledCD = MapasCulturais.agentRelationDisabledCD || [];
-        
+
         $scope.findQuery = {
             type: 'EQ(1)',
             status: 'GT(0)',
             parent: 'NULL()'
         };
-        
+
         $scope.$watch('committee',function(o,n){
             var ids = $scope.committee.map(function(e){ return e.agent.id; });
             if(ids.length > 0){
@@ -887,7 +891,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.closeNewGroupEditBox = function(){
             EditBox.close('new-related-agent-group');
         };
-        
+
         $scope.closeRenameGroupEditBox = function(){
             EditBox.close('rename-related-agent-group');
         };
@@ -908,13 +912,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 EditBox.close('new-related-agent-group');
             }
         };
-        
+
         $scope.setRenameGroup = function(group){
             $scope.data.editGroup = {};
             angular.copy(group, $scope.data.editGroup);
             $scope.data.editGroupIndex = $scope.groups.indexOf(group);
         };
-        
+
         $scope.renameGroup = function(e){
             if($scope.data.editGroup.name.trim() && !groupExists( $scope.data.editGroup.name ) && $scope.data.editGroup.name.toLowerCase().trim() !== 'registration' && $scope.data.editGroup.name.toLowerCase().trim() !== 'group-admin' ){
                 RelatedAgentsService.renameGroup($scope.data.editGroup).success(function() {
@@ -923,7 +927,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 });
             }
         };
-        
+
         $scope.createRelation = function(entity){
             var _scope = this.$parent;
             var groupName = _scope.attrs.group;
@@ -951,7 +955,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         group.relations = oldRelations;
                     });
         };
-        
+
         $scope.deleteGroup = function(group) {
             if (confirm(labels['confirmDeleteGroup'].replace('%s', group.name))) {
                 var i = $scope.groups.indexOf(group);
@@ -959,7 +963,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     //$scope.deleteRelation(relation);
                     RelatedAgentsService.remove(relation.group, relation.agent.id);
                 });
-                
+
                 $scope.groups.splice(i,1);
             }
         };
@@ -1088,17 +1092,17 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.openEditBox = function(id, e){
         EditBox.open(id, e);
     };
-    
+
     // EVALUATIONS - BEGIN
-    
+
     $scope.getUserEvaluation = function(registration){
         var userEvaluation = MapasCulturais.entity.userEvaluations[registration.id];
         return userEvaluation;
     };
-    
+
     $scope.getEvaluationStatus = function(registration){
         var userEvaluation = $scope.getUserEvaluation(registration);
-        
+
         if(angular.isObject(userEvaluation)){
             if(userEvaluation.result){
                 return 1;
@@ -1109,7 +1113,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             return -1;
         }
     };
-    
+
     $scope.getEvaluationStatusLabel = function(registration){
         var status = $scope.getEvaluationStatus(registration);
         var slugs = {
@@ -1118,22 +1122,22 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             '1': 'evaluated'
         };
         var statusSlug = slugs[status];
-        
+
         return labels[statusSlug];
-        
+
     }
-    
+
     $scope.getEvaluationResultString = function(registration){
         var userEvaluation = $scope.getUserEvaluation(registration);
-        if(userEvaluation) { 
+        if(userEvaluation) {
             return userEvaluation.resultString;
         } else {
             return '';
         }
     }
-    
+
     // EVALUATIONS - END
-    
+
 
     $scope.getStatusSlug = function(status){
                 /*
@@ -1420,7 +1424,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 });
             };
         }]);
-    
+
     module.controller('RegistrationListController', ['$scope', '$interval', function($scope, $timeout){
         $scope.registrations = MapasCulturais.entity.registrations;
         $scope.evaluations = MapasCulturais.entity.userEvaluations;
@@ -1430,9 +1434,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             keywords: [],
             pending: true
         }
-        
+
         var last = '';
-        
+
         $scope.$watch('data.keyword', function(o,n){
             var lower = $scope.data.keyword.toLowerCase();
             if(lower != last){
@@ -1440,11 +1444,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 $scope.data.keywords = lower.split('*');
             }
         });
-        
+
         $scope.evaluated = function(registration){
             return  $scope.evaluations[registration.id] && $scope.evaluations[registration.id].result !== null;
         }
-        
+
         $scope.show = function(registration){
             if(registration.status === 0){
                 return false;
@@ -1457,7 +1461,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     if(k == registration.number || k == registration.id || registration.owner.name.toLowerCase().indexOf(k) >= 0){
                         result = true;
                     }
-                    
+
                     if($scope.evaluations[registration.id] && $scope.evaluations[registration.id].resultString.toLowerCase() == k){
                         result = true;
                     }
@@ -1465,13 +1469,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             } else {
                 result = true;
             }
-            
+
             if($scope.data.pending){
                 if($scope.evaluated(registration)){
                     result = false;
                 }
             }
-            
+
             return result;
         }
     }]);
@@ -1541,10 +1545,10 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
             relations = oldRelations;
         });
     };
-    
+
     // Load relatedSeals saved values
     jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
-    
+
 }]);
 
 module.controller('OpportunityClaimController',['$scope', '$timeout', 'OpportunityClaimService',function($scope, $timeout, OpportunityClaimService){
@@ -1557,7 +1561,7 @@ module.controller('OpportunityClaimController',['$scope', '$timeout', 'Opportuni
             MapasCulturais.Messages.error('O preenchimento da mensagem da solicitação de recurso.');
             MapasCulturais.opportunity_claim_ok = false;
         }
-        
+
         if(MapasCulturais.opportunity_claim_ok) {
             OpportunityClaimService.send(message,registration_id).
                 success(function (data) {});

@@ -1,8 +1,7 @@
-<?php 
-use MapasCulturais\i; 
+<?php
+use MapasCulturais\i;
 ?>
 <style>
-    .evaluation-form--simple { position:fixed; }
     .evaluation-form--simple mc-select div.dropdown { width:100%; }
 </style>
 

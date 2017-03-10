@@ -18,11 +18,11 @@
         <?php elseif($entity->canUser('@control')): ?>
             <li><a href="#inscritos"><?php \MapasCulturais\i::_e("Inscritos");?></a></li>
         <?php endif; ?>
-            
-        <?php if($entity->canUser('evaluateRegistrations') || $entity->canUser('@control')): ?>
+
+        <?php if($entity->canUser('viewEvaluations') || $entity->canUser('@control')): ?>
             <li><a href="#evaluations"><?php \MapasCulturais\i::_e("Avaliações");?></a></li>
         <?php endif; ?>
-            
+
     <?php endif; ?>
 
     <?php $this->applyTemplateHook('tabs','end'); ?>

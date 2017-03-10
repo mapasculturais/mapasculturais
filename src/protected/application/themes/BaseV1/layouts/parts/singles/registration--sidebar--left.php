@@ -1,4 +1,4 @@
-<?php 
+<?php
 use MapasCulturais\i;
 ?>
 <div class="sidebar-left sidebar registration">
@@ -8,15 +8,16 @@ use MapasCulturais\i;
             position: fixed;
             margin-right: -1.5em;
             margin-left: -1.5em;
-            width:15%;
+            width:14.5%;
             display:block;
+            font-size: .75em;
         }
         @media screen and (max-width: 1100px) {
             #registrations-list-container{
                 display:none;
             }
         }
-            
+
         @media screen and (max-width: 1366px) and (min-width: 1200px){
             #registrations-list-container{
                 width:20%;
@@ -27,8 +28,8 @@ use MapasCulturais\i;
             overflow-y: auto;
             margin:0;
         }
-        .registrations-list .registration-item { 
-            border-bottom: 1px solid #aaa; 
+        .registrations-list .registration-item {
+            border-bottom: 1px solid #aaa;
             cursor: pointer !important;
             padding: .5em;
         }
@@ -37,6 +38,9 @@ use MapasCulturais\i;
         .registrations-list .registration-item a:hover { text-decoration: none; }
         .registrations-list .registration-item.current { background: #cfc; }
         .registrations-list .registration-item .registration-evaluated { font-style: italic; font-size:10px; font-color:#666; }
+        .registrations-list .registration-item .registration-number { font-weight: bold; }
+        .registrations-list .registration-item .registration-owner {  }
+        .registrations-list .registration-item .registration-category { font-style:italic; }
 
     </style>
     <div ng-controller="RegistrationListController" id="registrations-list-container">
@@ -48,11 +52,11 @@ use MapasCulturais\i;
                 <a href="{{::registration.singleUrl}}">
                     <div ng-if="evaluated(registration)" class="registration-evaluated">(<?php i::_e('Avaliação:')?> <strong>{{evaluations[registration.id].resultString}}</strong>)</div>
                     <div class="registration-number">{{::registration.number}}</div>
-                    <div ng-if="registration.category" class="registration-category">{{::registration.category}}</div>
                     <div class="registration-owner">{{::registration.owner.name}}</div>
+                    <div ng-if="registration.category" class="registration-category">{{::registration.category}}</div>
                 </a>
             </li>
-            
+
         </ul>
     </div>
     <?php endif; ?>

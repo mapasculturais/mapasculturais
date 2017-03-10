@@ -21,7 +21,7 @@ class Theme extends MapasCulturais\Theme {
         'magnific-popup' => '0.9.9',
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
-    
+
     // The default fields that are queried to display the search results both on map and list modes
     public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl');
 
@@ -817,7 +817,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
 
         $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
-        
+
         $this->jsObject['EntitiesDescription'] = [
         		"agent"         => Entities\Agent::getPropertiesMetadata(),
         		"event"         => Entities\Event::getPropertiesMetadata(),
@@ -1354,8 +1354,11 @@ class Theme extends MapasCulturais\Theme {
             'insertLinkTitle'    => i::__('Insira um título para seu link.'),
             'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
         ]);
-        
+
         $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
+        $this->localizeScript('evaluations', [
+            'saveMessage' => i::__('A avaiação foi salva')
+        ]);
     }
 
     function includeSearchAssets() {
@@ -1436,7 +1439,7 @@ class Theme extends MapasCulturais\Theme {
     function includeAngularEntityAssets($entity) {
         $app = App::i();
         $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
-        
+
         $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
@@ -1515,7 +1518,7 @@ class Theme extends MapasCulturais\Theme {
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
         ]);
-        
+
         $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
         $this->localizeScript('moduleOpportunity', [
             'selectFieldType' =>  i::__('Selecione o tipo de campo'),
@@ -1553,7 +1556,7 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste oportunidade você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
-            
+
             'evaluated' => i::__('Avaliada')
         ]);
 
@@ -1583,7 +1586,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
-        
+
         $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
     }
 
@@ -1636,7 +1639,7 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
-        
+
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
             $skeleton_field = [
                 'fieldType' => 'checklist',
@@ -1676,7 +1679,7 @@ class Theme extends MapasCulturais\Theme {
                                 break;
                             case 'entitytype':
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
-                                
+
                                 // ordena alfabeticamente
                                 uasort($types, function($a, $b) {
                                     if ($a->name == $b->name)
@@ -1953,7 +1956,7 @@ class Theme extends MapasCulturais\Theme {
     function addRelatedAdminAgentsToJs($entity) {
         $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
     }
-    
+
     function addOpportunityEvaluationCommitteeToJs(\MapasCulturais\Entities\EvaluationMethodConfiguration $evaluation_configuration) {
         $this->jsObject['entity']['evaluationCommittee'] = $evaluation_configuration->getAgentRelations(true);
     }
@@ -2071,9 +2074,9 @@ class Theme extends MapasCulturais\Theme {
         }
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
-        
+
         // add current user registrations evaluations
-        
+
         if($entity->evaluationMethodConfiguration->canUser('@control')){
             $this->jsObject['entity']['userEvaluations'] = [];
             foreach($this->jsObject['entity']['registrations'] as $registration){
@@ -2083,9 +2086,9 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addRegistrationToJs(Entities\Registration $entity){
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ? 
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
                 $entity->opportunity->registrationFileConfigurations->toArray() : array();
-        
+
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
             if($a->title > $b->title){
                 return 1;
@@ -2101,7 +2104,7 @@ class Theme extends MapasCulturais\Theme {
         if($entity->opportunity->evaluationMethodConfiguration->canUser('@control')){
             $this->jsObject['registration'] = $entity;
             $this->jsObject['evaluation'] = $entity->getUserEvaluation();
-            
+
         }
         foreach($entity->_getDefinitionsWithAgents() as $def){
             $agent = $def->agent;
@@ -2118,8 +2121,8 @@ class Theme extends MapasCulturais\Theme {
             }
             $this->jsObject['entity']['registrationAgents'][] = $def;
         }
-        
-        
+
+
     }
 
     /**
@@ -2321,16 +2324,16 @@ class Theme extends MapasCulturais\Theme {
     function addSearchQueryFields($fields) {
         if (!$fields || empty($fields))
             return false;
-        
+
         if (is_string($fields))
             $fields = explode(',', $fields);
-        
+
         $this->searchQueryFields = array_merge($this->searchQueryFields, $fields);
         $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
-        
+
     }
-    
-    
-    
+
+
+
 
 }

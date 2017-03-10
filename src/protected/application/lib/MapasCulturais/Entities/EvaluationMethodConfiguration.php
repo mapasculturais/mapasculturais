@@ -109,7 +109,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             $user = $app->user;
         }
 
-        $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['agent' => $user->profile, 'owner' => $this]);
+        $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findOneBy(['agent' => $user->profile, 'owner' => $this]);
 
         return $relation;
     }

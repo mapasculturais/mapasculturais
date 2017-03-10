@@ -8,7 +8,7 @@
 </header>
 <div id='status-info' class="alert info">
     <p><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar inscrições</strong>:");?></p>
-    
+
     <div class="close"></div>
 </div>
 <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
@@ -27,10 +27,7 @@
                 <?php \MapasCulturais\i::_e("Anexos");?>
             </th>
             <th class="registration-status-col">
-                <mc-select ng-if="data.evaluationStatus" placeholder="status" model="data.evaluationStatus" data="data.evaluationsStatuses"></mc-select>
-            </th>
-            <th class="registration-result-col">
-                <?php \MapasCulturais\i::_e('Avaliação'); ?>
+                <?php \MapasCulturais\i::_e("Status / Avaliação");?>
             </th>
         </tr>
     </thead>
@@ -67,7 +64,12 @@
                 <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
             </td>
             <td class="registration-status-col">
-                {{::getEvaluationStatusLabel(reg)}}<span ng-if="::getEvaluationResultString(reg)"> / {{::getEvaluationResultString(reg)}}</span>
+                <div ng-show="::getEvaluationResultString(reg)">
+                    <strong>{{::getEvaluationStatusLabel(reg)}} / {{::getEvaluationResultString(reg)}}</strong>
+                </div>
+                <div ng-hide="::getEvaluationResultString(reg)">
+                    {{::getEvaluationStatusLabel(reg)}}
+                </div>
             </td>
         </tr>
     </tbody>

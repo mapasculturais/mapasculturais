@@ -45,7 +45,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             return null;
         }
     }
-    
+
     public function evaluationToString(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
         switch ($evaluation->result) {
             case 2:
@@ -62,7 +62,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 break;
             default:
                 return '';
-            
+
         }
     }
 
