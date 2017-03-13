@@ -3,7 +3,7 @@
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
 
         var map = null;
-        
+
         var labels = MapasCulturais.gettext.controllerSpatial;
 
         angular.element(document).ready(function() {
@@ -114,11 +114,11 @@
                 $window.$timout.cancel($window.dataTimeout);
                 var radius = e.accuracy / 2,
                     neighborhoodRadius = $scope.defaultLocationRadius;
-                
+
                 var currentLocationLabel = labels['currentLocation'];
                 currentLocationLabel.replace('{{errorMargin}}', radius.toString().replace('.',','));
                 currentLocationLabel.replace('{{radius}}', neighborhoodRadius/1000);
-                
+
                 var marker = L.marker(e.latlng, $window.leaflet.iconOptions['location']).addTo(map)
                     .bindPopup(currentLocationLabel)
                     .openPopup();
@@ -149,7 +149,6 @@
 
             map.on('locationerror', function(e) {
                 /* @TODO alert de erro para o usuário */
-                //console.log(e.message);
             });
 
             //to fix address field not getting focus on touch screens

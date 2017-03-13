@@ -7,7 +7,6 @@ $(function(){
                 if (r){
                     $('.seal-model-preview').removeClass('hidden');
                     $('.seal-model-preview > img').attr('src', r);
-                    console.log('acertou');
                 }
                 else {
                     $('.seal-model-preview').addClass('hidden');

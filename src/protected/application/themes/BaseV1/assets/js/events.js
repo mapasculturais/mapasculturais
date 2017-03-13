@@ -56,7 +56,7 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
       onComplete: function(time) {
         var mendtime = moment(time, 'HH:mm');
         var mtime = moment($startsAt.val(), 'HH:mm');
-        
+
         if(mtime.isValid() && mendtime.isValid()) {
             if(mtime > mendtime){
                 mendtime = mendtime.add('days', 1);
@@ -130,7 +130,6 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parents('.js-dialog').find('.js-close').click();
 
                 //Por enquanto sempre inicializa o mapa
-                //console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
 
