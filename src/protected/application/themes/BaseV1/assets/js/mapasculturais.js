@@ -276,7 +276,6 @@ MapasCulturais.utils = {
     },
 
     isObjectEquals: function(obj1, obj2){
-//        console.log(JSON.stringify(this.sortOjectProperties(obj1)), JSON.stringify(this.sortOjectProperties(obj2)));
         return JSON.stringify(this.sortOjectProperties(obj1)) === JSON.stringify(this.sortOjectProperties(obj2));
     },
 
@@ -958,14 +957,12 @@ MapasCulturais.Search = {
                 try{
                     MapasCulturais.Search.formats[format].onSave($selector);
                 }catch(e){
-                    console.log("EXECEPTION: ", e.message);
                 }
             });
             $selector.on('hidden',function(){
                 try{
                     MapasCulturais.Search.formats[format].onHidden($selector);
                 }catch(e){
-                    console.log("EXECEPTION: ", e.message);
                 }
             });
 
