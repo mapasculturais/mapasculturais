@@ -302,6 +302,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $users = array_merge($users, $r->getUsersWithControl());
             }
         }
+        
+        if($this->evaluationMethodConfiguration){
+            $users = array_merge($users, $this->evaluationMethodConfiguration->getUsersWithControl());
+        }
 
         return $users;
     }

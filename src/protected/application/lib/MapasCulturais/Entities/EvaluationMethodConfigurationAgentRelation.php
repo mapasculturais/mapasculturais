@@ -19,4 +19,15 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
      * })
      */
     protected $owner;
+    
+    function save($flush = false) {
+        parent::save($flush);
+        
+        $this->owner->opportunity->addToRecreatePermissionsCacheList();
+    }
+    
+    function delete($flush = false) {
+        parent::delete($flush);
+        $this->owner->opportunity->addToRecreatePermissionsCacheList();
+    }
 }

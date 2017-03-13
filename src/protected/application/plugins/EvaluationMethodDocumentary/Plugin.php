@@ -37,11 +37,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function getConsolidatedResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
-        if(!is_array($evaluation->evaluationData) || count($evaluation->evaluationData) == 0){
+        $data = (array) $evaluation->evaluationData;
+        
+        if(count($data) == 0){
             return true; // valid
         }
 
-        foreach ($evaluation->evaluationData as $id => $value) {
+        foreach ($data as $id => $value) {
             if(isset($value['invalid']) && $value['invalid']){
                 return false;
             }
@@ -51,7 +53,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function evaluationToString(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
-        if(!isset($evaluation->result)){
+        if(is_null($evaluation->result)){
             return '';
         }
 
