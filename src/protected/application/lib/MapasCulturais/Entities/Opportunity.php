@@ -465,54 +465,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
-    protected function canUserCreateEvents($user) {
-        if ($user->is('guest')) {
-            return false;
-        }
-
-        if ($user->is('admin')) {
-            return true;
-        }
-
-        if ($this->canUser('@control')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function canUserRequestEventRelation($user) {
-        if ($user->is('guest')) {
-            return false;
-        }
-
-        if ($user->is('admin')) {
-            return true;
-        }
-
-        if ($this->canUser('createEvents')) {
-            return true;
-        }
-
-        foreach ($this->getAgentRelations() as $relation) {
-            if ($relation->agent->userId == $user->id) {
-                return true;
-            }
-        }
-
-        if ($this->publishedRegistrations) {
-            foreach ($this->getSentRegistrations() as $resgistration) {
-                if ($resgistration->status === Registration::STATUS_APPROVED) {
-                    if ($resgistration->canUser('@control', $user)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
     protected function canUserModifyRegistrationFields($user){
         if($user->is('guest')){
             return false;
