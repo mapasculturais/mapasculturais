@@ -1061,7 +1061,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         fields: RegistrationService.getFields(),
 
-        relationApiQuery: {}
+        relationApiQuery: {'@keywowrd': '*'}
     }, MapasCulturais);
 
     for(var name in MapasCulturais.labels.agent){
@@ -1255,6 +1255,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     }
                 }
             }
+            
 
             $scope.setRegistrationOwner = function(agent){
                 $scope.data.registration.owner = agent;
@@ -1302,7 +1303,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
             $('#editbox-select-registration-owner').on('open', function () {
                 if (!adjustingBoxPosition)
-                    $('#find-entity-registration-owner').trigger('find');
+                    $('#find-entity-registration-owner').trigger('find',0);
             });
 
             $scope.register = function(){
