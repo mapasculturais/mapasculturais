@@ -1,4 +1,10 @@
-<?php $downloads = $entity->getFiles('downloads'); ?>
+<?php if(!is_object($entity)):?>
+    <div class="alert info"><?php MapasCulturais\i::__("Nenhum download disponível");?></div>
+    <?php return;?>
+<?php endif;?>
+<?php 
+$downloads = $entity->getFiles('downloads'); 
+?>
 
 <?php if(count($downloads) <= 0 && $this->controller == 'registration'):?>
     <div class="alert info"><?php i::__("Nenhum download disponível");?></div>

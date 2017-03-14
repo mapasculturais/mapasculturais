@@ -1,4 +1,8 @@
 <?php
+if(!is_object($entity))
+    echo '<div class="alert info"><?php i::__("Nenhum link disponível");?></div>';
+    return;
+
 $links = $entity->getMetaLists('links');
 
 

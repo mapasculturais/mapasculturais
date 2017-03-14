@@ -2,6 +2,11 @@
 if($this->controller->action === 'create')
     return;
 ?>
+<?php if(!is_object($entity)):?>
+    <div class="alert info"><?php MapasCulturais\i::__("Nenhuma imagem disponível");?></div>
+    <?php return;?>
+<?php endif;?>
+
 <?php $gallery = $entity->getFiles('gallery'); ?>
 <?php if(count($gallery) <= 0 && $this->controller == 'registration'):?>
     <div class="alert info"><?php i::__("Nenhuma imagem disponível");?></div>

@@ -1,8 +1,13 @@
 <?php
-if($this->controller->action === 'create')
+if($this->controller->action === 'create' || !is_object($entity))
     return;
+?>
+<?php if(!is_object($entity)):?>
+    <div class="alert info"><?php i::__("Nenhum vídeo disponível");?></div>
+    <?php return;?>
+<?php endif;?>
 
-
+<?php
 $videos = $entity->getMetaLists('videos');
 $spinner_url = $this->asset("img/spinner_192.gif", false);
 $template = "<li id='video-{{id}}'>
