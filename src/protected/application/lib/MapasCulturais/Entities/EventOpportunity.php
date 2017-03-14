@@ -15,7 +15,7 @@ class EventOpportunity extends Opportunity{
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      */
-    protected $entity;
+    protected $ownerEntity;
 
     /**
      * @var \MapasCulturais\Entities\EventOpportunity
@@ -26,4 +26,8 @@ class EventOpportunity extends Opportunity{
      * })
      */
     protected $parent;
+    
+    public function getSpecializedClassName() {
+        return get_class();
+    }
 }

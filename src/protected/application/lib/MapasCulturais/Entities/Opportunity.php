@@ -10,6 +10,7 @@ use MapasCulturais\App;
  * Opportunity
  *
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property \MapasCulturais\Entity $ownerEntity
  *
  * @ORM\Table(name="opportunity", indexes={
  *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
@@ -234,6 +235,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+    
+    abstract function getSpecializedClassName();
 
     /**
      * Returns the Evaluation Method Definition Object

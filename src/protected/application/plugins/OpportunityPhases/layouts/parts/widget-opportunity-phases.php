@@ -37,11 +37,30 @@ $_of_the_type = [
 ];
 
 $viewing_phase = $this->controller->requestedEntity;
+
+
+$evaluation_methods = $app->getRegisteredEvaluationMethods();
+
 ?>
 <?php if($this->isEditable() || count($phases) > 0): ?>
+<?php if($this->isEditable()): ?>
+<edit-box id="new-opportunity-phase" position="top" title="<?php \MapasCulturais\i::esc_attr_e('Escolha o método de avaliação da nova fase') ?>"  cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel="true">
+    <ul class="evaluation-methods">
+        <?php foreach($evaluation_methods as $method): ?>
+        <li class="evaluation-methods--item">
+            <a href="<?php echo $this->controller->createUrl('createNextPhase', [$opportunity->id, 'evaluationMethod' => $method->slug]) ?>">
+                <span class="evaluation-methods--name"><?php echo $method->name; ?></span>
+                <p class="evaluation-methods--name"><?php echo $method->description; ?></p>
+            </a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</edit-box>
+<?php endif; ?>
     <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
-            <a class="btn btn-default add" href="<?php echo $this->controller->createUrl('createNextPhase', [$opportunity->id]) ?>"><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
+            
+            <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)" ><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
         <?php endif; ?>
         <!--<h3>Fases <?= $_of_the_type[$opportunity->type->id] ?></h3>-->
         <ul>
@@ -61,12 +80,12 @@ $viewing_phase = $this->controller->requestedEntity;
                     <?php 
                     /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
                     \MapasCulturais\i::_e('às'); ?>
-                    <strong class="js-editable" id="registrationTo_time" data-datetime-value="<?php echo $phase->registrationTo ? $phase->registrationTo->format('d/m/Y H:i') : ''; ?>" data-placeholder="<?php \MapasCulturais\i::esc_attr_e('Hora final'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Hora final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('H:i') : ''; ?></strong>
+                    <strong class="js-editable" id="registrationTo_time" data-viewformat="dd/mm/yyyy" data-datetime-value="<?php echo $phase->registrationTo ? $phase->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="<?php \MapasCulturais\i::esc_attr_e('Hora final'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Hora final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('H:i') : ''; ?></strong>
                     .
                 </li>
             <?php else: ?>
                 <li>
-                    <a href="<?= $phase->singleUrl ?>"><?= $phase->name ?></a>
+                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>"><?= $phase->name ?></a>
                     <?php if($phase->registrationFrom && $phase->registrationTo): ?>
                         - <em>
                             <?php 

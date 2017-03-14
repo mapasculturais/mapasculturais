@@ -15,7 +15,7 @@ class AgentOpportunity extends Opportunity{
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      */
-    protected $entity;
+    protected $ownerEntity;
 
     /**
      * @var \MapasCulturais\Entities\AgentOpportunity
@@ -26,4 +26,8 @@ class AgentOpportunity extends Opportunity{
      * })
      */
     protected $parent;
+    
+    public function getSpecializedClassName() {
+        return get_class();
+    }
 }

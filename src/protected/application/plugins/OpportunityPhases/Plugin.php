@@ -10,7 +10,7 @@ use MapasCulturais\App,
 class Plugin extends \MapasCulturais\Plugin{
     
     /**
-     * Retorna o projeto principal
+     * Retorna o oportunidade principal
      * 
      * @return \MapasCulturais\Entities\Opportunity
      */
@@ -29,7 +29,7 @@ class Plugin extends \MapasCulturais\Plugin{
     }
     
     /**
-     * Retorna o projeto/fase que está sendo visualizado
+     * Retorna o oportunidade/fase que está sendo visualizado
      * 
      * @return \MapasCulturais\Entities\Opportunity
      */
@@ -46,7 +46,7 @@ class Plugin extends \MapasCulturais\Plugin{
     }
     
     /**
-     * Retorna a última fase do projeto
+     * Retorna a última fase do oportunidade
      * 
      * @param \MapasCulturais\Entities\Opportunity $base_opportunity
      * @return \MapasCulturais\Entities\Opportunity
@@ -141,7 +141,7 @@ class Plugin extends \MapasCulturais\Plugin{
     
     
     /**
-     * Retorna as fases do projeto informado
+     * Retorna as fases do oportunidade informado
      * 
      * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @return \MapasCulturais\Entities\Opportunity[]
@@ -168,22 +168,12 @@ class Plugin extends \MapasCulturais\Plugin{
         return $phases;
     }
     
-    /**
-     * O projeto informado tem os requisitos mínimos para se criar novas fases?
-     * 
-     * @param \MapasCulturais\Entities\Opportunity $opportunity
-     * @return type
-     */
-    static function canCreatePhases(Entities\Opportunity $opportunity){
-        return $opportunity->useRegistrations && $opportunity->registrationTo;
-    }
-    
     function _init () {
         $app = App::i();
         
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
         
-        // action para criar uma nova fase no projeto
+        // action para criar uma nova fase no oportunidade
         $app->hook('GET(opportunity.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
             
@@ -203,9 +193,13 @@ class Plugin extends \MapasCulturais\Plugin{
             
             $num_phases = count($phases);
             
-            $phase = new Entities\Opportunity;
+            $opportunity_class_name = $parent->getSpecializedClassName();
+            
+            $phase = new $opportunity_class_name;
             $phase->status = Entities\Opportunity::STATUS_DRAFT;
             $phase->parent = $parent;
+            $phase->ownerEntity = $parent->ownerEntity;
+            
             $phase->name = $_phases[$num_phases];
             $phase->shortDescription = 'Descrição da ' . $_phases[$num_phases];
             $phase->type = $parent->type;
@@ -223,12 +217,22 @@ class Plugin extends \MapasCulturais\Plugin{
             $phase->registrationTo = $_to;
             
 
-            $phase->save(true);
+            $phase->save();
+            
+            $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
+            
+            $emconfig = new Entities\EvaluationMethodConfiguration;
+            
+            $emconfig->opportunity = $phase;
+            
+            $emconfig->type = $definition->slug;
+            
+            $emconfig->save(true);
 
             $app->redirect($phase->editUrl);
         });
         
-        // redireciona para a página do projeto após deletar uma fase
+        // redireciona para a página do oportunidade após deletar uma fase
         $app->hook('DELETE(opportunity):beforeRedirect', function($entity, &$redirect_url){
             if($entity->isOpportunityPhase){
                 $redirect_url = $entity->parent->singleUrl;
@@ -325,7 +329,7 @@ class Plugin extends \MapasCulturais\Plugin{
             }
         });
         
-        // subsitui a mensagem de projeto rascunho quando for uma fase de projeto
+        // subsitui a mensagem de oportunidade rascunho quando for uma fase de oportunidade
         $app->hook('view.partial(singles/entity-status).params', function(&$params, &$template_name){
             $opportunity = self::getRequestedOpportunity();
             
@@ -338,7 +342,7 @@ class Plugin extends \MapasCulturais\Plugin{
             }
         });
         
-        // muda o status de publicação dos projetos
+        // muda o status de publicação dos oportunidades
         $app->hook('view.partial(singles/control--edit-buttons).params', function(&$params) use ($app){
             $opportunity = self::getRequestedOpportunity();
             
@@ -394,27 +398,9 @@ class Plugin extends \MapasCulturais\Plugin{
             }
         });
         
-        // remove opção de desativar inscrições online nas fases
-        $app->hook('view.partial(singles/opportunity-about--online-registration-button).params', function(&$data, &$template){ 
-            $opportunity = self::getRequestedOpportunity();
-            
-            if(!$opportunity){
-                return;
-            }
-            
-            if($opportunity->isOpportunityPhase){
-                echo '<br>';
-                $template = '_empty';
-            }
-        });
-        
         // adiciona a lista de fases e o botão 'adicionar fase'
         $app->hook('template(opportunity.<<single|edit>>.tab-about--highlighted-message):end', function() use($app){
             $opportunity = self::getBaseOpportunity();
-            
-            if(!self::canCreatePhases($opportunity)){
-                return;
-            }
             
             $phases = self::getPhases($opportunity);
             
@@ -435,7 +421,7 @@ class Plugin extends \MapasCulturais\Plugin{
             }
         });
         
-        // remove a aba agenda de um projeto que é uma fase de outro projeto
+        // remove a aba agenda de um oportunidade que é uma fase de outro oportunidade
         $app->hook('view.partial(<<agenda|singles/opportunity-events>>).params', function(&$data, &$template){
             $opportunity = $this->controller->requestedEntity;
             
