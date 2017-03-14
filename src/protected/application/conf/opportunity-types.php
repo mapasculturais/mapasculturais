@@ -4,10 +4,6 @@
  */
 return array(
     'metadata' => array(
-        'introInscricoes' => array(
-            'label' => \MapasCulturais\i::__('Texto introdutório das inscrições'),
-            'type' => 'text'
-        ),
 
         'registrationCategTitle' => array(
             'label' => \MapasCulturais\i::__('Título das opções (ex: Categorias)'),
@@ -106,11 +102,21 @@ return array(
         27 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Nacional")),
         28 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Estadual")),
         29 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Municipal")),
-        30 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Militar")),
-        31 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Cívico")),
-        32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
-        33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
-        34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
+//        30 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Militar")),
+//        31 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Cívico")),
+//        32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
+//        33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
+//        34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
+
+        // tipos não existentes em projetos
+        40 => array( 'name' => \MapasCulturais\i::__("Abaixo-assinado")),
+        41 => array( 'name' => \MapasCulturais\i::__("Campanhas")),
+        42 => array( 'name' => \MapasCulturais\i::__("Pesquisa")),
+        43 => array( 'name' => \MapasCulturais\i::__("Oportunidade de trabalho")),
+        44 => array( 'name' => \MapasCulturais\i::__("Outros eventos")),
+        45 => array( 'name' => \MapasCulturais\i::__("Outros tipos de inscrição")),
+        
+        
     )
     /* EXEMPLOS DE METADADOS:
 

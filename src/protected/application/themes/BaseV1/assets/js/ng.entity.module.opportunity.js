@@ -199,6 +199,25 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
     };
 }]);
 
+module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
+    var url = new UrlService('evaluationMethodConfiguration');
+    return {
+        getUrl: function(action){
+            return url.create(action, [MapasCulturais.entity.object.evaluationMethodConfiguration.id]);
+        },
+        patch: function(data){
+            var deferred = $q.defer();
+            $http.post(this.getUrl('single'), data)
+            .success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            );
+            return deferred.promise;
+        }
+    };
+}]);
+
 module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
@@ -822,7 +841,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 }]);
 
 
-    module.controller('OpportunityEvaluationCommitteeController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EditBox) {
+    module.controller('OpportunityEvaluationCommitteeController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox) {
         $scope.editbox = EditBox;
         RelatedAgentsService = angular.copy(RelatedAgentsService);
 
@@ -841,6 +860,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.canChangeControl = MapasCulturais.entity.canUserCreateRelatedAgentsWithControl;
 
         $scope.data = {};
+        
+        $scope.fetch = {};
+        
+        $scope.$watch('fetch', function(o,n){
+            EvaluationMethodConfigurationService.patch({fetch: $scope.fetch}).success(function(){
+            });
+        },true);
 
         $scope.agentRelationDisabledCD = MapasCulturais.agentRelationDisabledCD || [];
 
@@ -1061,7 +1087,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         fields: RegistrationService.getFields(),
 
-        relationApiQuery: {}
+        relationApiQuery: {'@keywowrd': '*'}
     }, MapasCulturais);
 
     for(var name in MapasCulturais.labels.agent){
@@ -1255,6 +1281,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     }
                 }
             }
+            
 
             $scope.setRegistrationOwner = function(agent){
                 $scope.data.registration.owner = agent;
@@ -1302,7 +1329,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
             $('#editbox-select-registration-owner').on('open', function () {
                 if (!adjustingBoxPosition)
-                    $('#find-entity-registration-owner').trigger('find');
+                    $('#find-entity-registration-owner').trigger('find',0);
             });
 
             $scope.register = function(){

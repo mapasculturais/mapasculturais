@@ -702,9 +702,42 @@ return [
 
         }
     },
+            
+    'create opportunity sequence' => function () use ($conn) {
+        if(__sequence_exists('opportunity_id_seq')){
+            return true;
+        }
+        $last_id = $conn->fetchColumn ('SELECT max(id) FROM opportunity;');
+        $last_id++;
+        $conn->executeQuery("CREATE SEQUENCE opportunity_id_seq
+                                START WITH $last_id
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+
+        $conn->executeQuery("ALTER TABLE ONLY opportunity ALTER COLUMN id SET DEFAULT nextval('opportunity_id_seq'::regclass);");
+        
+    },
+            
+    'update opportunity_meta_id sequence' => function() use ($conn){
+        $last_id = $conn->fetchColumn ('SELECT max(id) FROM opportunity_meta;');
+        $last_id++;
+        
+        $conn->executeQuery("ALTER SEQUENCE opportunity_meta_id_seq START {$last_id} RESTART");
+        
+        $conn->executeQuery("ALTER TABLE ONLY opportunity_meta ALTER COLUMN id SET DEFAULT nextval('opportunity_meta_id_seq'::regclass);");
+    },
 
     'rename opportunity_meta key isProjectPhase to isOpportunityPhase' => function() {
         __exec("UPDATE opportunity_meta SET key = 'isOpportunityPhase' WHERE key = 'isProjectPhase'");
+    },
+            
+    'migrate introInscricoes value to shortDescription' => function() use($conn) {
+        $values = $conn->fetchAll("SELECT * from opportunity_meta WHERE key = 'introInscricoes'");
+        foreach($values as $value){
+            $conn->executeQuery("UPDATE opportunity SET short_description = :desc WHERE id = :id", ['id' => $value['object_id'], 'desc' => $value['value']]);
+        }
     },
 
     'create evaluation methods tables' => function (){

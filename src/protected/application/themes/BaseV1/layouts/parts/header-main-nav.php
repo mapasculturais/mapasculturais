@@ -211,7 +211,6 @@
                         <?php $this->applyTemplateHook('nav.dropdown.opportunities','before'); ?>
                         <li>
                             <a href="<?php echo $app->createUrl('panel', 'opportunities') ?>"><?php \MapasCulturais\i::_e("Minhas Oportunidades");?></a>
-                            <a class="add" href="<?php echo $app->createUrl('opportunity', 'create') ?>"></a>
                         </li>
                         <?php $this->applyTemplateHook('nav.dropdown.opportunities','after'); ?>
 

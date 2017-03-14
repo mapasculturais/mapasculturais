@@ -10,6 +10,7 @@ use MapasCulturais\App;
  * Opportunity
  *
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property \MapasCulturais\Entity $ownerEntity
  *
  * @ORM\Table(name="opportunity", indexes={
  *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
@@ -78,13 +79,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="short_description", type="text", nullable=true)
      */
     protected $shortDescription;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="long_description", type="text", nullable=true)
-     */
-    protected $longDescription;
 
     /**
      * @var \DateTime
@@ -234,6 +228,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+    
+    abstract function getSpecializedClassName();
 
     /**
      * Returns the Evaluation Method Definition Object
@@ -272,8 +268,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
             'shortDescription' => [
-                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+                'required' => \MapasCulturais\i::__('A introdução é obrigatória'),
             ],
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo da oportunidade é obrigatório'),
@@ -468,54 +463,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $app->rcache->save($cache_id, $locked);
             return $locked;
         }
-    }
-
-    protected function canUserCreateEvents($user) {
-        if ($user->is('guest')) {
-            return false;
-        }
-
-        if ($user->is('admin')) {
-            return true;
-        }
-
-        if ($this->canUser('@control')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function canUserRequestEventRelation($user) {
-        if ($user->is('guest')) {
-            return false;
-        }
-
-        if ($user->is('admin')) {
-            return true;
-        }
-
-        if ($this->canUser('createEvents')) {
-            return true;
-        }
-
-        foreach ($this->getAgentRelations() as $relation) {
-            if ($relation->agent->userId == $user->id) {
-                return true;
-            }
-        }
-
-        if ($this->publishedRegistrations) {
-            foreach ($this->getSentRegistrations() as $resgistration) {
-                if ($resgistration->status === Registration::STATUS_APPROVED) {
-                    if ($resgistration->canUser('@control', $user)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     protected function canUserModifyRegistrationFields($user){

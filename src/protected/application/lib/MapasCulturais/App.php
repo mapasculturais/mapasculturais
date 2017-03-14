@@ -2271,15 +2271,30 @@ class App extends \Slim\Slim{
     }
     
     
-    
+    /**
+     * Register an Evaluation Method
+     * @param \MapasCulturais\Definitions\EvaluationMethod $def
+     */
     function registerEvaluationMethod(Definitions\EvaluationMethod $def){
         $this->_register['evaluation_method'][$def->slug] = $def;
     }
     
+    
+    /**
+     * Returns the evaluation methods definitions
+     * @return \MapasCulturais\Definitions\EvaluationMethod[];
+     */
     function getRegisteredEvaluationMethods(){
         return $this->_register['evaluation_method'];
     }
     
+    /**
+     * Returns the evaluation method definition
+     * 
+     * @param string $slug
+     * 
+     * @return \MapasCulturais\Definitions\EvaluationMethod;
+     */
     function getRegisteredEvaluationMethodBySlug($slug){
         if(isset($this->_register['evaluation_method'][$slug])){
             return $this->_register['evaluation_method'][$slug];

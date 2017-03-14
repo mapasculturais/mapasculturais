@@ -16,7 +16,7 @@ class ProjectOpportunity extends Opportunity{
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * })
      */
-    protected $entity;
+    protected $ownerEntity;
 
     /**
      * @var \MapasCulturais\Entities\ProjectOpportunity
@@ -27,4 +27,8 @@ class ProjectOpportunity extends Opportunity{
      * })
      */
     protected $parent;
+    
+    public function getSpecializedClassName() {
+        return get_class();
+    }
 }
