@@ -841,7 +841,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 }]);
 
 
-    module.controller('OpportunityEvaluationCommitteeController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox) {
+    module.controller('EvaluationMethodConfigurationController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox) {
+        var labels = MapasCulturais.gettext.moduleOpportunity;
+        var emconfig = MapasCulturais.entity.object.evaluationMethodConfiguration;
+
         $scope.editbox = EditBox;
         RelatedAgentsService = angular.copy(RelatedAgentsService);
 
@@ -850,8 +853,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         $scope.groups = [];
 
-        $scope.committee = MapasCulturais.entity.evaluationCommittee;
-
         $scope.showCreateDialog = {};
 
         $scope.spinners = {};
@@ -859,13 +860,35 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.isEditable = MapasCulturais.isEditable;
         $scope.canChangeControl = MapasCulturais.entity.canUserCreateRelatedAgentsWithControl;
 
-        $scope.data = {};
+        $scope.data = {
+            entity: MapasCulturais.entity,
+            categories: MapasCulturais.entity.registrationCategories,
+            committee: MapasCulturais.entity.evaluationCommittee,
+            
+        };
         
-        $scope.fetch = {};
+        $scope.fetch = emconfig.fetch || {};
         
-        $scope.$watch('fetch', function(o,n){
-            EvaluationMethodConfigurationService.patch({fetch: $scope.fetch}).success(function(){
-            });
+        $scope.config = {
+            fetch: emconfig.fetch,
+            infos: emconfig.infos
+        };
+        
+        var lastConfig = angular.copy($scope.config);
+        
+        $scope.$watch('config', function(o,n){
+            if(angular.equals(lastConfig, $scope.config)){
+                return;
+            }
+            
+            lastConfig = angular.copy($scope.config);
+            
+            var promise = EvaluationMethodConfigurationService.patch($scope.config);
+            promise.then(function(){
+                            MapasCulturais.Messages.success(labels['changesSaved']);
+                        }, function(error){
+                            console.log('error: ' + error);
+                        });
         },true);
 
         $scope.agentRelationDisabledCD = MapasCulturais.agentRelationDisabledCD || [];
