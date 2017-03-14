@@ -9,7 +9,7 @@ class Event extends \MapasCulturais\Repository{
     protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
         if($app->getCurrentSubsiteId()){
-            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds($implode);
         } else {
             $space_ids = "SELECT id FROM space WHERE status > 0";
         }
