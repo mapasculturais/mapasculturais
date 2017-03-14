@@ -26,12 +26,7 @@
 
     }
     </style>
-    <div id="documentary-evaluation-info" class="alert info">
-        <p><?php MapasCulturais\i::_e('Para <strong>validar</strong> a inscrição salve a avaliação sem invalidar nenhum campo.') ?></p>
-        <p><?php MapasCulturais\i::_e('Para <strong>invalidar</strong> a inscrição, clique no(s) campo(s) inválido(s), marque o checkbox <strong>Marcar como inválido</strong> e preencha a justificativa. Após invalidar todos os campos inválidos, salve a avaliação.') ?></p>
-
-        <div class="close" style="cursor: pointer;"></div>
-    </div>
+    
     <div id="documentary-evaluation-form--container"></div>
 </div>
 <script id='documentary-evaluation-form-template' class='js-mustache-template' type="html/template">

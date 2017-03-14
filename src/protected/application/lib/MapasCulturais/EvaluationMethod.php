@@ -10,7 +10,6 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function getName();
     abstract function getDescription();
 
-
     abstract function getConsolidatedResult(Entities\RegistrationEvaluation $evaluation);
     abstract function evaluationToString(Entities\RegistrationEvaluation $evaluation);
     
@@ -28,7 +27,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         
         $can = $config->canUser('@control');
         
-        if($this->fetchRegistrations()){
+        if($can && $this->fetchRegistrations()){
             
             $fetch = []; 
             foreach($config->fetch as $id => $val){
@@ -77,12 +76,17 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         return "$slug--evaluation-form";
     }
 
+    function getEvaluationFormInfoPartName(){
+        $slug = $this->getSlug();
+
+        return "$slug--evaluation-info";
+    }
+    
     function getConfigurationFormPartName(){
         $slug = $this->getSlug();
 
         return "$slug--configuration-form";
     }
-
 
     function register(){
         $app = App::i();

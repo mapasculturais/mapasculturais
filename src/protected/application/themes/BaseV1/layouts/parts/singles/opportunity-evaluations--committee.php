@@ -8,7 +8,7 @@ $method = $entity->getEvaluationMethod();
 <style>
     .committee-avatar img { height: 32px; width:32px; }
 </style>
-<div class="agentes-relacionados" ng-controller="OpportunityEvaluationCommitteeController">
+<div class="agentes-relacionados">
     <div class="registration-fieldset">
         <h4><?php i::_e('Comissão de Avaliação'); ?></h4>
         <?php if($method->fetchRegistrations()): ?>
@@ -16,15 +16,17 @@ $method = $entity->getEvaluationMethod();
                 <p>
                     <?php \MapasCulturais\i::_e("No campo <strong>fatiamento</strong> informe o <strong>final do número de inscrição</strong>, de acordo com os exemplos abaixo.") ?>
                     <ul>
-                        <li><?php // \MapasCulturais\i::_e("<strong>1,2,3</strong> - para as inscrições com final 1, 2 e 3</li>");?></li>
-                        <li><?php \MapasCulturais\i::_e("<strong>4-10</strong> - para as inscrições com final entre 4 e 10</li>");?></li>
+                        <!--<li><?php // \MapasCulturais\i::_e("<strong>1,2,3</strong> - para as inscrições com final 1, 2 e 3</li>");?></li>-->
+                        <li><?php \MapasCulturais\i::_e("<strong>00-09</strong> - para as inscrições com final entre 0 e 9</li>");?></li>
+                        <li><?php \MapasCulturais\i::_e("<strong>10-60</strong> - para as inscrições com final entre 10 e 60</li>");?></li>
+                        <li><?php \MapasCulturais\i::_e("<strong>61-99</strong> - para as inscrições com final entre 61 e 99</li>");?></li>
                     </ul>
                 </p>
 
                 <div class="close"></div>
             </div>
         <?php endif; ?>
-        <table style="width: 100%" ng-if="committee.length > 0">
+        <table style="width: 100%" ng-if="data.committee.length > 0">
             <thead>
                 <tr>
                     <th>&nbsp;</th>
@@ -39,17 +41,17 @@ $method = $entity->getEvaluationMethod();
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="admin in committee">
+                <tr ng-repeat="admin in data.committee">
                     <td class="committee-avatar"><img ng-src="{{avatarUrl(admin.agent)}}" /></td>
                     <td class="committee-name">
-                        {{admin.agent.name}}S
+                        {{admin.agent.name}}
                     </td>
                     <td class="committee-areas">
                         <span ng-if="admin.agent.terms.area" ng-repeat="area in admin.agent.terms.area">{{area}}<span ng-if="!$last && area">, </span></span>
                     </td>
                     <?php if($method->fetchRegistrations()): ?>
                     <td>
-                        <input ng-model="fetch[admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" />
+                        <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" />
                     </td>
                     <?php endif; ?>
                     <td class="committee-actions">

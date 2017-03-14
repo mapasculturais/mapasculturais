@@ -30,4 +30,5 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         parent::delete($flush);
         $this->owner->opportunity->addToRecreatePermissionsCacheList();
     }
+    
 }

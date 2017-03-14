@@ -74,7 +74,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <?php else : ?>
             <?php $this->part('singles/opportunity-registrations--tables', ['entity' => $entity]) ?>
         
-            <?php if($entity->canUser('evaluateRegistrations') || $entity->canUser('@control')): ?>
+            <?php if($entity->canUser('viewEvaluations') || $entity->canUser('@control')): ?>
                 <?php $this->part('singles/opportunity-evaluations', ['entity' => $entity]) ?>
             <?php endif; ?>
         <?php endif; ?>

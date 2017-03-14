@@ -177,7 +177,7 @@ class Theme extends MapasCulturais\Theme {
             'home: opportunities' => [
                 'name' => i::__('texto da seção "oportunidades" da home'),
                 'description' => i::__(''),
-                'text' => i::__('@TODO: DEFINIR ESTE TEXTO.')
+                'text' => i::__('Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e convocatórias. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.')
             ],
             'home: home_devs' => [
                 'name' => i::__('texto da seção "desenvolvedores" da home'),
@@ -1120,6 +1120,15 @@ class Theme extends MapasCulturais\Theme {
                 }
             }
         }
+        
+        // after plugin registration that creates the configuration types
+        $app->hook('app.register', function(){
+            $this->view->registerMetadata('MapasCulturais\Entities\EvaluationMethodConfiguration', 'infos', [
+                'label' => i::__("Textos informativos para as fichas de avaliação"),
+                'serialize' => function($val){ return json_encode($val); },
+                'unserialize' => function($val){ return json_decode($val); },
+            ]);
+        });
     }
 
     function head() {
