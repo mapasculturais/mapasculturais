@@ -900,7 +900,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         };
 
         $scope.$watch('committee',function(o,n){
-            var ids = $scope.committee.map(function(e){ return e.agent.id; });
+            var ids = $scope.data.committee.map(function(e){ return e.agent.id; });
             if(ids.length > 0){
                 $scope.findQuery.id = '!IN(' + (ids.join(',')) + ')';
             } else {
@@ -1024,7 +1024,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
             RelatedAgentsService.create(groupName, entity.id, true).
                     success(function(data){
-                        $scope.committee.push(data);
+                        $scope.data.committee.push(data);
                         _scope.$parent.searchText = '';
                         _scope.$parent.result = [];
                         EditBox.close('add-committee-agent');
@@ -1034,10 +1034,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.deleteAdminRelation = function(relation){
             RelatedAgentsService.remove('group-admin', relation.agent.id).
                     success(function(){
-                        var i = $scope.committee.findIndex(function(el){
+                        var i = $scope.data.committee.findIndex(function(el){
                             return el.id == relation.id;
                         });
-                        $scope.committee.splice(i,1);
+                        $scope.data.committee.splice(i,1);
                     });
         };
 
