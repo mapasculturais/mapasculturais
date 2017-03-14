@@ -1,4 +1,9 @@
 <?php $downloads = $entity->getFiles('downloads'); ?>
+
+<?php if(count($downloads) <= 0 && $this->controller == 'registration'):?>
+    <div class="alert info"><?php i::__("Nenhum download disponível");?></div>
+<?php endif;?>
+
 <?php if ($this->isEditable() || $downloads): ?>
     <div class="widget">
         <h3 class="<?php if($this->isEditable()) echo \MapasCulturais\i::_e('editando') ?>"><?php \MapasCulturais\i::_e("Downloads");?></h3>

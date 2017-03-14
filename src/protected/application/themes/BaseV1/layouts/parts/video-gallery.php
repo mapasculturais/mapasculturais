@@ -21,6 +21,11 @@ $template = "<li id='video-{{id}}'>
                 </div>
             </li>";
 ?>
+
+<?php if(count($videos) <= 0 && $this->controller == 'registration'):?>
+    <div class="alert info"><?php i::__("Nenhum vídeo disponível");?></div>
+<?php endif;?>
+
 <?php if ($this->isEditable() || $videos): ?>
     <h3><?php \MapasCulturais\i::_e("Vídeos");?></h3>
     <a name="video"></a>

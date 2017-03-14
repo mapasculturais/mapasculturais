@@ -194,6 +194,24 @@ $(function(){
         form_opportunity_claim.toggle();
     });
 
+    $('.button-form-opportunity-claim').on('click', function(){
+        var form_opportunity_claim = $(".js-opportunity-claim-form")
+        form_opportunity_claim.toggle();
+    });
+
+
+    $('.btn.btn-default.add').on('click', function() {
+        var btn_visualiza_portfolio = $('.btn.btn-default.add').attr('id');
+        var modal_wrapper = $('.modal-wrapper.' + btn_visualiza_portfolio);
+        modal_wrapper.toggle();
+    })
+
+     $('.btn.btn-default.close-window').on('click', function() {
+        var btn_visualiza_portfolio = $('.btn.btn-default.close-window').attr('id');
+        var modal_wrapper = $('.modal-wrapper.' + btn_visualiza_portfolio);
+        modal_wrapper.toggle();
+    })
+
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 
 

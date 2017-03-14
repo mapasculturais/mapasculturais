@@ -3,6 +3,10 @@ if($this->controller->action === 'create')
     return;
 ?>
 <?php $gallery = $entity->getFiles('gallery'); ?>
+<?php if(count($gallery) <= 0 && $this->controller == 'registration'):?>
+    <div class="alert info"><?php i::__("Nenhuma imagem disponível");?></div>
+<?php endif;?>
+
 <?php if ($this->isEditable() || $gallery): ?>
     <h3><?php \MapasCulturais\i::_e("Galeria");?></h3>
     <div class="clearfix js-gallery">
