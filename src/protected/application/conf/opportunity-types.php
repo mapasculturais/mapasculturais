@@ -4,10 +4,6 @@
  */
 return array(
     'metadata' => array(
-        'introInscricoes' => array(
-            'label' => \MapasCulturais\i::__('Texto introdutório das inscrições'),
-            'type' => 'text'
-        ),
 
         'registrationCategTitle' => array(
             'label' => \MapasCulturais\i::__('Título das opções (ex: Categorias)'),

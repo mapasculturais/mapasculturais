@@ -732,6 +732,13 @@ return [
     'rename opportunity_meta key isProjectPhase to isOpportunityPhase' => function() {
         __exec("UPDATE opportunity_meta SET key = 'isOpportunityPhase' WHERE key = 'isProjectPhase'");
     },
+            
+    'migrate introInscricoes value to shortDescription' => function() use($conn) {
+        $values = $conn->fetchAll("SELECT * from opportunity_meta WHERE key = 'introInscricoes'");
+        foreach($values as $value){
+            $conn->executeQuery("UPDATE opportunity SET short_description = :desc WHERE id = :id", ['id' => $value['object_id'], 'desc' => $value['value']]);
+        }
+    },
 
     'create evaluation methods tables' => function (){
         if(__table_exists('evaluation_method_configuration')){

@@ -1,17 +1,13 @@
 <?php $this->applyTemplateHook('tabs','before'); ?>
 <ul class="abas clearfix">
     <?php $this->applyTemplateHook('tabs','begin'); ?>
-    <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+    <li class="active"><a href="#main-content"><?php \MapasCulturais\i::_e("Principal");?></a></li>
 
     <?php if($this->isEditable()): ?>
-        <li><a href="#registrations-config"><?php \MapasCulturais\i::_e("Formulário de Inscrição");?></a></li>
         <?php if(!$entity->isNew()): ?>
             <li><a href="#evaluations-config"><?php \MapasCulturais\i::_e("Configuração da Avaliação");?></a></li>
         <?php endif; ?>
     <?php else: ?>
-        <?php if($entity->isRegistrationOpen()): ?>
-            <li><a href="#inscricoes"><?php \MapasCulturais\i::_e("Inscrições");?></a></li>
-        <?php endif; ?>
 
         <?php if($entity->publishedRegistrations): ?>
             <li><a href="#inscritos"><?php \MapasCulturais\i::_e("Resultado");?></a></li>

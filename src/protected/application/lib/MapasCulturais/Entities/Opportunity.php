@@ -81,13 +81,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $shortDescription;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="long_description", type="text", nullable=true)
-     */
-    protected $longDescription;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_from", type="datetime", nullable=true)
@@ -275,8 +268,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
             'shortDescription' => [
-                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+                'required' => \MapasCulturais\i::__('A introdução é obrigatória'),
             ],
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo da oportunidade é obrigatório'),
