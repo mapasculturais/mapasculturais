@@ -640,6 +640,10 @@ class Registration extends \MapasCulturais\Entity
         if($this->opportunity->canUser('evaluateRegistrations', $user)){
             return true;
         }
+        
+        if($this->opportunity->canUser('viewEvaluations', $user)){
+            return true;
+        }
 
         foreach($this->getRelatedAgents() as $agents){
             foreach($agents as $agent){

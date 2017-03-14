@@ -316,6 +316,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         return $registrations;
     }
+    
+    function getSendEvaluationsUrl(){
+        return $this->controller->createUrl('sendEvaluations', [$this->id]);
+    }
 
     /**
      * Returns sent registrations
@@ -424,16 +428,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
+        $app->disableAccessControl();
+        
         foreach($evaluations as $evaluation){
             $evaluation->status = RegistrationEvaluation::STATUS_SENT;
-            $evaluation->save();
+            $evaluation->save(true);
         }
 
         $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
         $relation->status = EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
-        $relation->save();
+        $relation->save(true);
 
         $app->em->flush();
+        
+        $app->enableAccessControl();
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){

@@ -42,7 +42,7 @@ $infos = (array) $configuration->infos;
                     <hr>
                     <strong><?php echo $entity->category ?></strong>
                     <p><?php echo $infos[$entity->category] ?></p>
-                <?php endif; ?>    
+                <?php endif; ?>
                 
             </div>
             <form>
