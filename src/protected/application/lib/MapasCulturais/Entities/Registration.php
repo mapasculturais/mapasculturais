@@ -697,11 +697,15 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
         
-        if($user->is('guest')){
-            return false;
-        }
+        return $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+    }
+    
+    function getExtraPermissionCacheUsers(){
+        $users = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
         
-        return $this->opportunity->evaluationMethodConfiguration->canUser('@control');
+        $users = array_merge($users, $this->opportunity->getUsersWithControl());
+        
+        return $users;
     }
     
     /**
