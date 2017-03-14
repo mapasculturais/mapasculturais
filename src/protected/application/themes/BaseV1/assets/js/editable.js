@@ -467,9 +467,9 @@ MapasCulturais.Editables = {
                     $timepicker.editable();
                     $hidden.editable({name: $datepicker.data('edit')});
                     $datepicker.editable(config);
-
+                    
                     if($timepicker.data('datetime-value'))
-                        $hidden.editable('setValue', $timepicker.data('datetime-value'));
+                        $hidden.editable('setValue', moment($timepicker.data('datetime-value')).format('YYYY-MM-DD HH:mm'));
                     else
                         $hidden.editable('setValue', '');
 
@@ -480,7 +480,7 @@ MapasCulturais.Editables = {
                             $timepicker.editable('setValue', '23:59');
                         }
                         $hidden.editable('setValue',
-                            moment($datepicker.editable('getValue', true)).format('YYYY-M-D') + ' ' + params.newValue
+                            moment($datepicker.editable('getValue', true)).format('YYYY-MM-DD') + ' ' + params.newValue
                         );
                     });
 
@@ -490,8 +490,9 @@ MapasCulturais.Editables = {
                             if(!$timepicker.editable('getValue', true)){
                                 $timepicker.editable('setValue', '23:59');
                             }
+                            console.log('aqui');
                             $hidden.editable('setValue',
-                                moment(params.newValue).format('YYYY-M-D') + ' ' + $timepicker.editable('getValue', true)
+                                moment(params.newValue).format('YYYY-MM-DD') + ' ' + $timepicker.editable('getValue', true)
                             );
                         }else{
                             $hidden.editable('setValue', '');
