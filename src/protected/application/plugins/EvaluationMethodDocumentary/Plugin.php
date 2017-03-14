@@ -63,5 +63,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             return i::__('Inscrição inválida');
         }
     }
+    
+    public function fetchRegistrations() {
+        return true;
+    }
 
 }

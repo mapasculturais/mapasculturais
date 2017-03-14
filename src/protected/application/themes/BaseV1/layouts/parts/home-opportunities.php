@@ -59,7 +59,6 @@ $opportunity_img_attributes = 'class="random-feature no-image"';
                 </div>
             </a>
         <?php endif; ?>
-        <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('opportunity', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar oportunidade");?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_opportunities ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
 </article>

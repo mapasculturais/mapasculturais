@@ -2070,7 +2070,13 @@ class Theme extends MapasCulturais\Theme {
         if($entity->canUser('@control')){
             $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
         } else {
-            $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
+            $this->jsObject['entity']['registrations'] = [];
+        
+            foreach($entity->sentRegistrations as $reg){
+                if($reg->canUser('evaluate')){
+                    $this->jsObject['entity']['registrations'][] = $reg;
+                }
+            }
         }
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');

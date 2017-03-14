@@ -65,5 +65,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         }
     }
+    
+    public function fetchRegistrations() {
+        return true;
+    }
 
 }

@@ -5,7 +5,6 @@ $this->layout = 'panel'
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2><?php i::_e("Minhas oportunidades");?></h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('opportunity', 'create') ?>"><?php i::_e("Adicionar nova oportunidade");?></a>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos"><?php i::_e("Ativos");?> (<?php echo count($user->enabledOpportunities); ?>)</a></li>

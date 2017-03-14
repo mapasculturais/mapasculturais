@@ -14,12 +14,61 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function getConsolidatedResult(Entities\RegistrationEvaluation $evaluation);
     abstract function evaluationToString(Entities\RegistrationEvaluation $evaluation);
     
-    protected function canUserEvaluateRegistration(Entities\Registration $registration, $user){
+    function fetchRegistrations(){
+        return false;
+    }
+
+
+    public function canUserEvaluateRegistration(Entities\Registration $registration, $user){
         if($user->is('guest')){
             return false;
         }
         
-        return $registration->getEvaluationMethodConfiguration()->canUser('@control');        
+        $config = $registration->getEvaluationMethodConfiguration();
+        
+        $can = $config->canUser('@control');
+        
+        if($this->fetchRegistrations()){
+            
+            $fetch = []; 
+            foreach($config->fetch as $id => $val){
+                $fetch [(int)$id] = $val;
+            }
+            
+            if(isset($fetch[$user->id])){
+                $ufetch = $fetch[$user->id];
+                if(preg_match("#([0-9]+) *[-] *([0-9]+)*#", $ufetch, $matches)){
+                    $s1 = $matches[1];
+                    $s2 = $matches[2];
+                    
+                    $len = max([strlen($s1), strlen($s2)]);
+                    
+                    $fin = substr($registration->id, -$len);
+                    if($fin < $s1 || $fin > $s2){
+                        return false;
+                    }
+//                }else {
+//                    $vals = explode(',', $ufetch);
+//                    $ok = false;
+//                    foreach($vals as $v){
+//                        $len = strlen($v);
+//                        $fin = substr($registration->id, -$len);
+//                        
+//                        if($fin == $v){
+//                            $ok = true;
+//                        }
+//                    }
+//                    
+//                    
+//                    if(!$ok) {
+//                        return false;
+//                    }
+                }
+                
+            } 
+        }
+        
+        return $can;
     }
 
     function getEvaluationFormPartName(){
@@ -53,6 +102,18 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         $app->hook('view.includeAngularEntityAssets:after', function() use($self){
             $self->enqueueScriptsAndStyles();
         });
+        
+        if($this->fetchRegistrations()){
+            $this->registerMetadata('fetch', [
+                'label' => \MapasCulturais\i::__('Configuração do fatiamento das inscrições entre os avaliadores'),
+                'serialize' => function ($val) {
+                    return json_encode($val);
+                },
+                'unserialize' => function($val) {
+                    return json_decode($val);
+                }
+            ]);
+        }
 
     }
 
@@ -61,7 +122,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
         $metadata = new Definitions\Metadata($key, $config);
 
-        $app->registerMetadata($metadata, 'MapasCulturais\Entities\EvaluationMethod', $this->getSlug());
+        $app->registerMetadata($metadata, 'MapasCulturais\Entities\EvaluationMethodConfiguration', $this->getSlug());
     }
 
     function usesEvaluationCommittee(){
