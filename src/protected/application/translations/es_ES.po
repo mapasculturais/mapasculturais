@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-03-10 17:10-0300\n"
+"POT-Creation-Date: 2017-03-15 18:17-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -274,8 +274,8 @@ msgstr "Complemento"
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:178
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:173
 #: application/themes/BaseV1/layouts/parts/singles/location.php:25
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:39
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:64
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:45
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:74
 msgid "Bairro"
 msgstr "Barrio"
 
@@ -285,10 +285,10 @@ msgstr "Barrio"
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:179
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:174
 #: application/themes/BaseV1/layouts/parts/singles/location.php:26
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:35
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:60
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:41
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:70
 msgid "Município"
-msgstr "Municipio"
+msgstr "Municipio/Localidad"
 
 #: application/conf/agent-types.php:179 application/conf/conf-base.php:159
 #: application/conf/config.dev.php:34 application/conf/config.template.php:42
@@ -296,7 +296,7 @@ msgstr "Municipio"
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:175
 #: application/themes/BaseV1/layouts/parts/singles/location.php:27
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:56
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:66
 msgid "Estado"
 msgstr "Departamento"
 
@@ -578,7 +578,7 @@ msgstr "Agente"
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:10
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:50
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:51
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:24
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:28
 msgid "Agentes"
 msgstr "Agentes"
 
@@ -2379,7 +2379,7 @@ msgstr "Ningún"
 #: application/themes/BaseV1/layouts/parts/search/infobox-event.php:36
 #: application/themes/BaseV1/layouts/parts/search/list-event-item.php:31
 #: application/themes/BaseV1/layouts/parts/singles/project-events.php:36
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:72
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:86
 msgid "Linguagem"
 msgstr "Tipo de evento"
 
@@ -4148,8 +4148,8 @@ msgstr "Usuarios y roles"
 #: application/themes/BaseV1/Theme.php:564
 #: application/themes/BaseV1/Theme.php:568
 #: application/themes/BaseV1/Theme.php:1661
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:27
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:47
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:33
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:57
 msgid "Área de Atuação"
 msgstr "Área de actuación"
 
@@ -4904,25 +4904,25 @@ msgid "Marcar todas como lidas"
 msgstr "Marcar todas como leídas"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:106
-#: application/themes/BaseV1/views/panel/index.php:145
+#: application/themes/BaseV1/views/panel/index.php:139
 msgid "aceitar"
 msgstr "aceptar"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:110
-#: application/themes/BaseV1/views/panel/index.php:148
+#: application/themes/BaseV1/views/panel/index.php:142
 msgid "cancelar"
 msgstr "cancelar"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:111
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:119
 #: application/themes/BaseV1/views/auth/fake-authentication.php:11
-#: application/themes/BaseV1/views/panel/index.php:149
-#: application/themes/BaseV1/views/panel/index.php:160
+#: application/themes/BaseV1/views/panel/index.php:143
+#: application/themes/BaseV1/views/panel/index.php:154
 msgid "ok"
 msgstr "ok"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:114
-#: application/themes/BaseV1/views/panel/index.php:151
+#: application/themes/BaseV1/views/panel/index.php:145
 msgid "rejeitar"
 msgstr "rechazar"
 
@@ -5917,7 +5917,7 @@ msgstr "Ingrese el Barrio"
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:174
 #: application/themes/BaseV1/layouts/parts/singles/location.php:26
 msgid "Insira o Município"
-msgstr "Ingrese el Municipio"
+msgstr "Ingrese el Municipio/Localidad"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:175
@@ -6878,7 +6878,7 @@ msgstr "Introducción del sitio"
 msgid "Introdução do Site"
 msgstr "Introducción del sitio"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:20
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:23
 msgid ""
 "Configure aqui os filtros que serão aplicados sobre os dados cadastrados na "
 "instalação principal. Deixe em branco os campos onde você não quer aplicar "
@@ -6888,80 +6888,80 @@ msgstr ""
 "sitio principal. Dejar campos en blanco en el que no desea aplicar ningún "
 "filtro, dejando que aparezcan todos los datos de la instalación principal."
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:26
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:32
 msgid "Área de Atuação do Agente:"
 msgstr "Área de actuación del Agente:"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:27
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:47
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:33
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:57
 msgid "Selecione a(s) área(s) de atuação"
 msgstr "Seleccione la(s) Área(s) de actuación"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:30
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:36
 msgid "Estado(s):"
 msgstr "Departamento(s):"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:31
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:37
 msgid "Estado(s)"
 msgstr "Departamento(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:31
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:37
 msgid "Selecione o(s) estado(s) para o(s) Agente(s)"
 msgstr "Seleccione el/los estado(s) para el/los Agente(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:34
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:59
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:40
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:69
 msgid "Municipio(s):"
-msgstr "Municipio(s):"
+msgstr "Municipio(s)/Localidades:"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:35
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:60
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:41
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:70
 msgid "Selecione o(s) município(s) para o(s) Agente(s)"
-msgstr "Seleccione el/los municipio(s) para el/los Agente(s)"
+msgstr "Seleccione el/los municipio(s)/localidades para el/los Agente(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:38
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:63
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:44
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:73
 msgid "Bairro(s):"
 msgstr "Barrio(s):"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:39
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:64
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:45
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:74
 msgid "Selecione o(s) bairro(s) para o(s) Agente(s)"
 msgstr "Seleccione el/los barrio(s) para el/los Agente(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:46
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:56
 msgid "Área de Atuação do Espaço:"
 msgstr "Área de Actuación del Espacio:"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:50
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:60
 msgid "Tipo de Espaço:"
 msgstr "Tipo de Espacio:"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:51
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:61
 msgid "Tipo de Espaço"
 msgstr "Tipo de Espacio"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:51
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:61
 msgid "Selecione o(s) tipo(s) de espaço(s)"
 msgstr "Seleccione el(los) tipo(s) de espacio(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:55
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:65
 msgid "Estado:"
 msgstr "Departamento:"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:56
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:66
 msgid "Selecione o(s) estado(s) para o(s) Espaço(s)"
 msgstr "Seleccione el(los) estado(s) para el(los) Espacio(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:71
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:85
 msgid "Linguagem:"
 msgstr "Tipo de Evento:"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:72
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:86
 msgid "Selecione o(s) tipos(s) de linguagem"
 msgstr "Seleccione el(los) tipo(s) de eventos(s)"
 
-#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:78
+#: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:95
 msgid "Selos:"
 msgstr "Sellos:"
 
@@ -7047,8 +7047,8 @@ msgstr ""
 "En esta sección se indica la posición inicial en el mapa, es decir, cuando "
 "el usuario abre el mapa se mostrará la información en esta posición ya "
 "establecida, pudiendo hacer un mínimo y máximo de zoom. Introduzca la "
-"dirección / nombre del municipio / ciudad / departamento / en el campo "
-"\"Introducir una dirección\"."
+"dirección / nombre del municipio o localidad / ciudad / departamento / en el "
+"campo \"Introducir una dirección\"."
 
 #: application/themes/BaseV1/layouts/parts/singles/subsite-map.php:13
 msgid "Busque pelo nome da cidade ou estado"
@@ -7670,7 +7670,7 @@ msgstr "Agregar sellos"
 msgid "Atividades"
 msgstr "Actividades"
 
-#: application/themes/BaseV1/views/panel/index.php:140
+#: application/themes/BaseV1/views/panel/index.php:134
 msgid "Em"
 msgstr "En"
 
