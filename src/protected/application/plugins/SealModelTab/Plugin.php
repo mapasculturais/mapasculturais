@@ -66,7 +66,7 @@ class Plugin extends \MapasCulturais\Plugin {
             $replaces = [
                 "\t"                        =>"&nbsp;&nbsp;&nbsp;&nbsp",
                 "[sealName]"                => $relation->seal->name,
-                "[sealOwner]"               => $relation->seal->agent->name,
+                "[sealOwner]"               => $relation->seal->owner->name,
                 "[sealShortDescription]"    => $relation->seal->shortDescription,
                 "[sealRelationLink]"        => $app->createUrl('seal','printsealrelation',[$relation->id]),
                 "[entityDefinition]"        => $relation->owner->entityTypeLabel(),

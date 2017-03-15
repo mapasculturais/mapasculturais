@@ -8,8 +8,8 @@
     <div class="footer">
         <div class="footer-signatures">
             <div class="certificate-seal-owner">
-                <p><?php echo $relation->seal->agent->name; ?><br>
-                <?php echo $relation->seal->agent->shortDescription; ?></p>
+                <p><?php echo $relation->seal->owner->name; ?><br>
+                <?php echo $relation->seal->owner->shortDescription; ?></p>
             </div>
             <?php $avatar = $relation->seal->getAvatar();
                 if ($avatar){ ?>
