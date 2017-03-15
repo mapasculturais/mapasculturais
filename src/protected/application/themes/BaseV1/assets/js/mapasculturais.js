@@ -200,17 +200,12 @@ $(function(){
     });
 
 
-    $('.btn.btn-default.add').on('click', function() {
-        var btn_visualiza_portfolio = $('.btn.btn-default.add').attr('id');
-        var modal_wrapper = $('.modal-wrapper.' + btn_visualiza_portfolio);
+    $('body').on('click', '.js-modal-toggle', function(e) {
+        var id = $(this).data('modalId');
+        e.preventDefault();
+        var modal_wrapper = $('#' + id);
         modal_wrapper.toggle();
-    })
-
-     $('.btn.btn-default.close-window').on('click', function() {
-        var btn_visualiza_portfolio = $('.btn.btn-default.close-window').attr('id');
-        var modal_wrapper = $('.modal-wrapper.' + btn_visualiza_portfolio);
-        modal_wrapper.toggle();
-    })
+    });
 
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 

@@ -19,8 +19,8 @@
     .field-shadow {
         box-shadow: 0px 0px 30px 0;
     }
-    .evaluation-invalid {
-        background-color: rgba(255,200,200,.5);
+    .evaluation-invalid,.evaluation-invalid:hover {
+        background-color: rgba(255,200,200,.5) !important;
     }
     .evaluation-empty {
 

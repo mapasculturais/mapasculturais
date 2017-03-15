@@ -30,12 +30,11 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         if($can && $this->fetchRegistrations()){
             
             $fetch = []; 
-            if(is_array($config->fetch)){
+            if(!is_null($config->fetch)){
                 foreach($config->fetch as $id => $val){
                     $fetch [(int)$id] = $val;
                 }
             }
-            
             if(isset($fetch[$user->id])){
                 $ufetch = $fetch[$user->id];
                 if(preg_match("#([0-9]+) *[-] *([0-9]+)*#", $ufetch, $matches)){

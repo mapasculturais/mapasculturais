@@ -47,7 +47,7 @@ $(function(){
             $field.data('$form', $form);
 
             $form.find('input').on('click', function(){
-                if($(this).val() == 1){
+                if($(this).is(':checked') == 1){
                     $field.removeClass('evaluation-empty');
                     $field.addClass('evaluation-invalid');
                 } else {
