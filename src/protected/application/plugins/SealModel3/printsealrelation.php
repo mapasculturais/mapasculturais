@@ -1,5 +1,5 @@
 <div id="certificate-model3">
-    <img class ="background" src="<?php $view->asset('img/modelo_certificado_03.jpg') ?>"/>
+    <img class ="cert-background" src="<?php $view->asset('img/modelo_certificado_03.jpg') ?>"/>
     <p class="certificate-content"><?php echo nl2br($msg) ?></p>
     <div class="footer">
         <div class="entity-url">

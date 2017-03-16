@@ -1,5 +1,5 @@
 <div id="certificate-model2">
-    <img class ="background" src="<?php $view->asset('img/modelo_certificado_02.jpg') ?>"/>
+    <img class ="cert-background" src="<?php $view->asset('img/modelo_certificado_02.jpg') ?>"/>
     <p class="certificate-content"><?php echo nl2br($msg) ?></p>
     <div class="entity-url">
         <a  href="<?php echo $relation->owner->getSingleUrl(); ?>"
