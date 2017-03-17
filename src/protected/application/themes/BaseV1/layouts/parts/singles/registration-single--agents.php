@@ -33,7 +33,7 @@ $agentsRelated['owner'] = $entity->owner;
                 <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p> -->
                 <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
             </edit-box>
-            <a class="btn btn-default js-modal-toggle" data-modal-id="portifolio-{{def.agentRelationGroupName}}" ><?php \MapasCulturais\i::_e("Visualizar Portfólio");?></a>
+            <a  ng-if="def.agent" class="btn btn-default js-modal-toggle" data-modal-id="portifolio-{{def.agentRelationGroupName}}" ><?php \MapasCulturais\i::_e("Visualizar Portfólio");?></a>
         </li>
     </ul>
 </div>
