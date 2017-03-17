@@ -36,7 +36,7 @@ use MapasCulturais\i;
         .registrations-list .registration-item:hover { background: #ffc; }
         .registrations-list .registration-item a { font-weight: normal; }
         .registrations-list .registration-item a:hover { text-decoration: none; }
-        .registrations-list .registration-item.current { background: #cfc; }
+        .registrations-list .registration-item.current { background: #ffc; }
         .registrations-list .registration-item .registration-evaluated { font-style: italic; font-size:10px; font-color:#666; }
         .registrations-list .registration-item .registration-number { font-weight: bold; }
         .registrations-list .registration-item .registration-owner {  }
