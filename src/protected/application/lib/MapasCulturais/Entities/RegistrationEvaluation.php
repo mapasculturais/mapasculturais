@@ -17,7 +17,8 @@ use MapasCulturais\App;
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationEvaluation extends \MapasCulturais\Entity {
-    const STATUS_SENT = self::STATUS_ENABLED;
+    const STATUS_EVALUATED = self::STATUS_ENABLED;
+    const STATUS_SENT = 2;
 
     /**
      * @var integer
@@ -107,6 +108,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     }
 
     public function getResultString(){
+        if($this->status === self::STATUS_DRAFT){
+            return MapasCulturais\i::__('Rascunho');
+        }
+        
         $evaluation_method = $this->getEvaluationMethod();
 
         return $evaluation_method->evaluationToString($this);

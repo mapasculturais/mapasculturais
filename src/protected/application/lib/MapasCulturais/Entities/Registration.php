@@ -754,7 +754,7 @@ class Registration extends \MapasCulturais\Entity
         return $evaluation;
     }
     
-    function saveUserEvaluation(array $data, User $user = null){
+    function saveUserEvaluation(array $data, User $user = null, $evaluation_status = null){
         $app = App::i();
         if(is_null($user)){
             $user = $app->user;
@@ -768,6 +768,10 @@ class Registration extends \MapasCulturais\Entity
         }
         
         $evaluation->evaluationData = $data;
+        
+        if(!is_null($evaluation_status)){
+            $evaluation->status = $evaluation_status;
+        }
         
         $evaluation->save(true);
         

@@ -1482,7 +1482,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             keyword: '',
             current: MapasCulturais.registration.id,
             keywords: [],
-            pending: true
+            pending: false
         }
 
         var last = '';

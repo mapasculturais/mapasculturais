@@ -11,7 +11,7 @@ $(function(){
 
     $form.find('.js-evaluation-submit').on('click', function(){
         var $button = $(this);
-        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [MapasCulturais.registration.id]);
+        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.registration.id, 'status': 'evaluated'});
         var data = $form.find('form').serialize();
 
         if(!data){
