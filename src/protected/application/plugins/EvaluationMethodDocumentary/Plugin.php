@@ -4,7 +4,11 @@ namespace EvaluationMethodDocumentary;
 use MapasCulturais\i;
 use MapasCulturais\App;
 
+const STATUS_INVALID = 'invalid';
+const STATUS_VALID = 'valid';
+
 class Plugin extends \MapasCulturais\EvaluationMethod {
+    
 
     public function getSlug() {
         return 'documentary';
@@ -44,7 +48,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         }
 
         foreach ($data as $id => $value) {
-            if(isset($value['invalid']) && $value['invalid']){
+            if(isset($value['evaluation']) && $value['evaluation'] === STATUS_INVALID){
                 return false;
             }
         }

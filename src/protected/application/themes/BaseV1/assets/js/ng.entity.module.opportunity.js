@@ -787,18 +787,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 
     if($scope.useCategories){
-
+        
         RegistrationService.getSelectedCategory().then(function(value){
             $scope.selectedCategory = value;
-            $interval(function(){
-
-                RegistrationService.getSelectedCategory().then(function(selectedCategory) {
-                    if($scope.selectedCategory !== selectedCategory){
-                        $scope.selectedCategory = selectedCategory;
-                        RegistrationService.save();
-                    }
-                });
-            },50);
+        });
+        
+        $('.js-editable-registrationCategory').on('save', function(){
+            RegistrationService.getSelectedCategory().then(function(value){
+                $scope.selectedCategory = value;
+            });
         });
 
         $scope.$watch('selectedCategory', function(){
@@ -1151,13 +1148,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     $scope.getEvaluationStatus = function(registration){
         var userEvaluation = $scope.getUserEvaluation(registration);
-
         if(angular.isObject(userEvaluation)){
-            if(userEvaluation.result){
-                return 1;
-            } else {
-                return 0;
-            }
+            return userEvaluation.status;
         } else {
             return -1;
         }

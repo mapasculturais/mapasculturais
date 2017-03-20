@@ -6,8 +6,9 @@ $(function(){
     var $list = $('#registrations-list-container');
     var $header = $('#main-header');
     $(window).scroll(function(){
-        $formContainer.css('margin-top', $header.css('top'));
-        $list.css('margin-top', $header.css('top'));
+        var top = parseInt($header.css('top'));
+        $formContainer.css('margin-top', top);
+        $list.css('margin-top', top);
     });
 
     $formContainer.find('.js-evaluation-submit').on('click', function(){

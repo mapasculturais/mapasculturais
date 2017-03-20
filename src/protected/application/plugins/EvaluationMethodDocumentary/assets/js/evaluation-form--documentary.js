@@ -3,7 +3,6 @@ $(function(){
 
     var $container = $('#documentary-evaluation-form--container');
 
-
     function getForm($field){
         var $form = $field.data('$form');
         if(!$form){
@@ -14,6 +13,7 @@ $(function(){
                 label = $field.find('.registration-label').text();
                 id = label;
             }
+            if(!id) return;
 
             if(label[0] === '*'){
                 label = label.substr(1).trim();
@@ -28,16 +28,23 @@ $(function(){
                 label: label
             };
 
-            var evaluation = MapasCulturais.evaluation ? MapasCulturais.evaluation.evaluationData[id] : null;
+            var val = MapasCulturais.evaluation ? MapasCulturais.evaluation.evaluationData[id] : null;
 
-            if(evaluation){
-                if(evaluation.invalid){
+            if(val){
+                data.empty = true;
+                data.invalid = false;
+                data.valid = false;
+                
+                if(val.evaluation == 'invalid'){
+                    data.empty = false;
                     data.invalid = true;
-                } else {
-                    data.invalid = false;
+                } else if(val.evaluation == 'valid'){
+                    data.empty = false;
+                    data.valid = true;
                 }
-                data.obs = evaluation.obs;
+                data.obs = data.obs;
             } else {
+                data.empty = true;
                 data.invalid = false;
                 data.obs = '';
             }
@@ -48,11 +55,21 @@ $(function(){
 
             $form.find('input').on('click', function(){
                 if($(this).is(':checked') == 1){
-                    $field.removeClass('evaluation-empty');
-                    $field.addClass('evaluation-invalid');
-                } else {
-                    $field.removeClass('evaluation-invalid');
-                    $field.addClass('evaluation-empty');
+                    if($(this).val() == 'valid'){
+                        $field.removeClass('evaluation-empty');
+                        $field.removeClass('evaluation-invalid');
+                        $field.addClass('evaluation-valid');
+                        
+                    } else if($(this).val() == 'invalid'){
+                        $field.removeClass('evaluation-empty');
+                        $field.removeClass('evaluation-valid');
+                        $field.addClass('evaluation-invalid');
+                        
+                    } else {
+                        $field.removeClass('evaluation-valid');
+                        $field.removeClass('evaluation-invalid');
+                        $field.addClass('evaluation-empty');
+                    }
                 }
             });
         }
@@ -63,11 +80,17 @@ $(function(){
         getForm($(this));
     });
 
-    if(MapasCulturais.evaluation && MapasCulturais.evaluation.evaluationData){
-        setTimeout(function(){
+    var intervalCount = 0;
+    var interval = setInterval(function(){
+        intervalCount += 50;
+        // espera o angular renderizar a lista
+        if(intervalCount >= 500){
+            clearInterval(interval);
+        }
+        if(MapasCulturais.evaluation && MapasCulturais.evaluation.evaluationData){
             for (var id in MapasCulturais.evaluation.evaluationData){
                 var $field = $('#registration-field-' + id);
-                var evaluation = MapasCulturais.evaluation.evaluationData[id];
+                var val = MapasCulturais.evaluation.evaluationData[id];
                 
                 $('li.registration-list-item').each(function(){
                     var agentFieldId = $(this).find('.registration-label').text();
@@ -79,20 +102,20 @@ $(function(){
                 });
                 
                 getForm($field);
-                if(evaluation.invalid){
+                if(val.evaluation && val.evaluation == 'invalid'){
                     $field.addClass('evaluation-invalid');
+                    
+                } else if(val.evaluation && val.evaluation == 'valid'){
+                    $field.addClass('evaluation-valid');
+                    
                 } else {
                     $field.addClass('evaluation-empty');
                 }
             }
-            
-            
-        }, 50);
-    }
-
-    setTimeout(function(){
+        }
+        
         $('li.js-field, li.registration-list-item').css('cursor', 'pointer');
-    },50);
+    }, 50);
 
     $('body').on('click', 'li.js-field, li.registration-list-item', function(){
         var $field = $(this);

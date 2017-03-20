@@ -109,7 +109,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
 
     public function getResultString(){
         if($this->status === self::STATUS_DRAFT){
-            return MapasCulturais\i::__('Rascunho');
+            return '';
         }
         
         $evaluation_method = $this->getEvaluationMethod();
