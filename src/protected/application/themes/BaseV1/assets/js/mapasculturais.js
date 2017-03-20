@@ -434,6 +434,7 @@ jQuery(document).ready(function(){
 
 
 MapasCulturais.Messages = {
+    animated: false,
     delayToFadeOut: 5000,
     fadeOutSpeed: 'slow',
     showMessage: function(type, message) {
@@ -441,19 +442,36 @@ MapasCulturais.Messages = {
         var $message = $('<div class="alert ' + type + '">"').html(message);
         var $mainSection = $('#main-section');
         var delayToFadeOut = this.delayToFadeOut;
+        var marginTop = 42;
         $container.append($message);
+        
 
         if($container.hasClass('js-not-editable')){
+            
+            function animateAndShow(cb){
+                MapasCulturais.Messages.animated = true;
+                $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) + marginTop}, 'fast', cb);
+            }
             $container.slideDown('fast');
-            $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) + 42}, 'fast', function(){
+            
+            var cb = function( animate ){
                 $message.css('display', 'inline-block').css('display', 'inline-block').delay(delayToFadeOut).fadeOut(this.fadeOutSpeed, function() {
                     $(this).remove();
                     if($container.find('>').length === 0){
                         $container.slideUp('fast');
-                        $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) - 42}, 'fast');
+                        console.log('aqui');
+                        $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) - marginTop}, 'fast', function(){
+                            MapasCulturais.Messages.animated = false;
+                        });
                     }
                 });
-            });
+            };
+            
+            if(MapasCulturais.Messages.animated) {
+                cb();
+            } else {
+                animateAndShow(cb);
+            }
         }else{
             $message.css('display', 'inline-block').css('display', 'inline-block').delay(delayToFadeOut).fadeOut(this.fadeOutSpeed, function() {
                 $(this).remove();
