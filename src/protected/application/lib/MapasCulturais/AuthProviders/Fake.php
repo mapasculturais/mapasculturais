@@ -1,56 +1,62 @@
 <?php
+
 namespace MapasCulturais\AuthProviders;
 
 use MapasCulturais\App;
 
-class Fake extends \MapasCulturais\AuthProvider{
+class Fake extends \MapasCulturais\AuthProvider {
+
     protected function _init() {
         $app = App::i();
 
         // add actions to auth controller
-        $app->hook('GET(auth.index)', function () use($app){
-            $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-            // build rsm here
+        $app->hook('GET(auth.index)', function () use($app) {
 
-            $query = $app->em->createNativeQuery('
-                SELECT 
-                    u.id, 
-                    u.email, 
+            $searchQuery = trim($app->request()->get('q', ''));
+            if ($searchQuery !== '') {
+                $searchQuery = '%' . $searchQuery . '%';
+            }
+
+            $users = $app->em->getConnection()->fetchAll("
+                SELECT
+                    u.id,
+                    u.email,
                     a.name AS profile,
-                    r.name AS roles
-                FROM 
+                    r.name AS role_name
+                FROM
                     usr u
                     LEFT JOIN agent a ON a.id = u.profile_id
                     LEFT JOIN role r ON r.usr_id = u.id
-                    
-                ORDER BY profile', $rsm);
-            
-            $rsm->addScalarResult('id', 'id', 'string');
-            $rsm->addScalarResult('email', 'email', 'string');
-            $rsm->addScalarResult('profile', 'profile', 'string');
-            $rsm->addScalarResult('roles', 'roles', 'string');
-            $users = $query->getScalarResult();
-            
-            $this->render('fake-authentication', [
-                'users' => $users, 
-                'form_action' => $app->createUrl('auth', 'fakeLogin'),
-                'new_user_form_action' => $app->createUrl('user')
+                WHERE (? = '' OR u.email ILIKE ? OR a.name ILIKE ? OR r.name ILIKE ?)
+                ORDER BY profile, email, role_name
+                LIMIT 10", [
+                $searchQuery, $searchQuery, $searchQuery, $searchQuery
             ]);
-        });
 
-        $app->hook('GET(auth.fakeLogin)', function () use($app){
-            $app->auth->processResponse();
-
-            if($app->auth->isUserAuthenticated()){
-                $app->redirect ($app->auth->getRedirectPath());
-            }else{
-                $app->redirect ($this->createUrl(''));
+            if ($app->request()->isXhr()) {
+                $this->json($users);
+            } else {
+                $this->render('fake-authentication', [
+                    'users' => $users,
+                    'form_action' => $app->createUrl('auth', 'fakeLogin'),
+                    'new_user_form_action' => $app->createUrl('user')
+                ]);
             }
         });
-        
-        $app->hook('POST(user.index)', function() use($app){
+
+        $app->hook('GET(auth.fakeLogin)', function () use($app) {
+            $app->auth->processResponse();
+
+            if ($app->auth->isUserAuthenticated()) {
+                $app->redirect($app->auth->getRedirectPath());
+            } else {
+                $app->redirect($this->createUrl(''));
+            }
+        });
+
+        $app->hook('POST(user.index)', function() use($app) {
             $new_user = $app->auth->createUser($this->postData);
-            $app->redirect($app->createUrl('auth', 'fakeLogin') .'?fake_authentication_user_id='.$new_user->id);
+            $app->redirect($app->createUrl('auth', 'fakeLogin') . '?fake_authentication_user_id=' . $new_user->id);
         });
     }
 
@@ -62,34 +68,32 @@ class Fake extends \MapasCulturais\AuthProvider{
      * Returns the URL to redirect after authentication
      * @return string
      */
-    public function getRedirectPath(){
+    public function getRedirectPath() {
         $path = key_exists('mapasculturais.auth.redirect_path', $_SESSION) ?
-                    $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site','');
+                $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site', '');
 
         unset($_SESSION['mapasculturais.auth.redirect_path']);
 
         return $path;
     }
 
-
     public function _getAuthenticatedUser() {
         $user = null;
-        if(key_exists('auth.fakeAuthenticationUserId', $_SESSION)){
+        if (key_exists('auth.fakeAuthenticationUserId', $_SESSION)) {
             $user_id = $_SESSION['auth.fakeAuthenticationUserId'];
             $user = App::i()->repo("User")->find($user_id);
             return $user;
-        }else{
+        } else {
             return null;
         }
     }
-
 
     /**
      * Process the Opauth authentication response and creates the user if it not exists
      * @return boolean true if the response is valid or false if the response is not valid
      */
-    public function processResponse(){
-        if(key_exists('fake_authentication_user_id', $_GET)){
+    public function processResponse() {
+        if (key_exists('fake_authentication_user_id', $_GET)) {
             $_SESSION['auth.fakeAuthenticationUserId'] = $_GET['fake_authentication_user_id'];
             $this->_setAuthenticatedUser($this->_getAuthenticatedUser());
             App::i()->applyHook('auth.successful');
@@ -110,7 +114,7 @@ class Fake extends \MapasCulturais\AuthProvider{
 
         $agent = new \MapasCulturais\Entities\Agent($user);
         $agent->name = $data['name'];
-        $agent->status = 0;
+        //$agent->status = 0;
         $agent->save();
 
         $app->em->flush();
@@ -119,12 +123,13 @@ class Fake extends \MapasCulturais\AuthProvider{
         $user->save(true);
 
         $app->enableAccessControl();
-        
+
         return $user;
     }
-    
-    public function login($user_id){
+
+    public function login($user_id) {
         $_SESSION['auth.fakeAuthenticationUserId'] = $user_id;
         $this->_setAuthenticatedUser($this->_getAuthenticatedUser());
     }
+
 }
