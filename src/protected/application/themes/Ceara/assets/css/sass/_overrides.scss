@@ -32,7 +32,10 @@
     a {
         img {
             @media screen and (min-width: $screen-tablet) {
-                margin-top: 12px;
+                width: 155px;
+            }
+            @media screen and (min-width: $screen-desktop) {
+                width: 250px;
             }
         }
     }
