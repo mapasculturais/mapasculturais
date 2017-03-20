@@ -44,6 +44,10 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                     $len = max([strlen($s1), strlen($s2)]);
                     
                     $fin = substr($registration->id, -$len);
+                    
+                    if(intval($s2) == 0){ // "00" => "100"
+                        $s2 = "1$s2";
+                    }
                     if($fin < $s1 || $fin > $s2){
                         return false;
                     }
