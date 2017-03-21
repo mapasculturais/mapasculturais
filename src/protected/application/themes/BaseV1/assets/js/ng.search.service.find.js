@@ -279,7 +279,7 @@
                     var def = Description[prop];
                     var selectProperty = def['@select'] || prop;
                     if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
-                        exportSelect.push(selectProperty); 
+                        exportSelect.push(selectProperty);
                     } else if(def.isEntityRelation) {
                         if(def.isOwningSide){
                             exportSelect.push(prop + '.{id,name,singleUrl}');
@@ -288,7 +288,6 @@
                         }
                     }
                 });
-                console.log(exportSelect);
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export
