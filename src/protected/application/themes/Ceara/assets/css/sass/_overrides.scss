@@ -34,6 +34,11 @@
             @media screen and (min-width: $screen-tablet) {
                 width: 155px;
             }
+
+            @media screen and (min-width: 992px) and (max-width: 1014px) {
+                width: 227px;
+            }
+
             @media screen and (min-width: $screen-desktop) {
                 width: 250px;
             }
