@@ -370,7 +370,6 @@ MapasCulturais.Editables = {
                         });
                     }
 
-                    // console.log(field_name, select2_option.tags);
 
                     select2_option.createSearchChoice = function () {
                         return null;
