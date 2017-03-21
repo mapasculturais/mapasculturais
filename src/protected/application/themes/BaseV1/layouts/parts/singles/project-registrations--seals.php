@@ -1,5 +1,5 @@
 <?php
-if(!$app->isEnabled('seals'))
+if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 	return;
 ?>
 <!-- BEGIN Seals -->
