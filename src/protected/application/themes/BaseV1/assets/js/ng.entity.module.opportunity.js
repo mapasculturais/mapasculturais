@@ -1160,7 +1160,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         var slugs = {
             '-1': 'pending',
             '0': 'draft',
-            '1': 'evaluated'
+            '1': 'evaluated',
+            '2': 'sent'
         };
         var statusSlug = slugs[status];
 

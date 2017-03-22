@@ -34,6 +34,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $app = App::i();
 
         $app->view->enqueueScript('app', 'documentary-evaluation-form', 'js/evaluation-form--documentary.js', ['entity.module.opportunity']);
+        $app->view->enqueueStyle('app', 'documentary-evaluation-method', 'css/documentary-evaluation-method.css');
     }
 
     public function _init() {

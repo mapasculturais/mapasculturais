@@ -697,6 +697,18 @@ class Registration extends \MapasCulturais\Entity
     }
     
     protected function canUserEvaluate($user){
+        $can = $this->canUserViewUserEvaluation($user);
+        
+        $evaluation_sent = false;
+        
+        if($evaluation = $this->getUserEvaluation($user)){
+            $evaluation_sent = $evaluation->status === RegistrationEvaluation::STATUS_SENT;
+        }
+        
+        return $can && !$evaluation_sent;
+    }
+    
+    protected function canUserViewUserEvaluation($user){
         if($this->status <= 0) {
             return false;
         }

@@ -4,7 +4,6 @@
         <?php $this->part('singles/opportunity-evaluations--admin--buttons', ['entity' => $entity]) ?>
     <?php else: ?>
         <?php $this->part('singles/opportunity-evaluations--committee--table', ['entity' => $entity]) ?>
-        <?php $this->part('singles/opportunity-evaluations--committee--buttons', ['entity' => $entity]) ?>
     <?php endif; ?>
 
 </div>

@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 <div class="sidebar-left sidebar registration">
-    <?php if($entity->canUser('evaluate')): ?>
+    <?php if($entity->opportunity->canUser('viewEvaluations')): ?>
     <style>
         #registrations-list-container{
             position: fixed;

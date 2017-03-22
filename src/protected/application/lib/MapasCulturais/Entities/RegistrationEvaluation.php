@@ -116,9 +116,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
 
         return $evaluation_method->evaluationToString($this);
     }
-
-    function canUser($action, $user = null) {
+    
+    protected function genericPermissionVerification($user) {
         return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
+    }
+    
+    protected function canUserModify($user) {
+        return $this->registration->canUser('evaluate', $user) && $this->status < self::STATUS_SENT;
     }
 
     public function jsonSerialize() {

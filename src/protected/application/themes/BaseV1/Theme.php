@@ -1566,7 +1566,8 @@ class Theme extends MapasCulturais\Theme {
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
 
-            'evaluated' => i::__('Avaliada')
+            'evaluated' => i::__('Avaliada'),
+            'sent' => i::__('Enviada'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -2082,7 +2083,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['entity']['registrations'] = [];
         
             foreach($entity->sentRegistrations as $reg){
-                if($reg->canUser('evaluate')){
+                if($reg->canUser('viewUserEvaluation')){
                     $this->jsObject['entity']['registrations'][] = $reg;
                 }
             }

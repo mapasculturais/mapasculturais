@@ -5,6 +5,7 @@ $configuration = $opportunity->evaluationMethodConfiguration;
 $definition = $configuration->definition;
 $evaluationMethod = $definition->evaluationMethod;
 $evaluation_form_part_name = $evaluationMethod->getEvaluationFormPartName();
+$evaluation_view_part_name = $evaluationMethod->getEvaluationViewPartName();
 
 $params = ['opportunity' => $opportunity, 'entity' => $entity, 'evaluationMethod' => $evaluationMethod];
 
@@ -13,7 +14,7 @@ $infos = (array) $configuration->infos;
 <div class="sidebar registration sidebar-right">
     <?php if($action === 'single'): ?>
 
-        <?php if($entity->canUser('evaluate')): ?>
+        <?php if($entity->canUser('viewUserEvaluation')): ?>
             <style>
             .evaluation-form {
                 position:fixed;
@@ -26,6 +27,7 @@ $infos = (array) $configuration->infos;
             }
             </style>
         <div id="registration-evaluation-form" class="evaluation-form evaluation-form--<?php echo $evaluationMethod->getSlug(); ?>">
+            <?php if($entity->canUser('evaluate')): ?>
             <div id="documentary-evaluation-info" class="alert info">
                 <div class="close" style="cursor: pointer;"></div>
                 <?php if($part_name = $evaluationMethod->getEvaluationFormInfoPartName()): ?>
@@ -52,6 +54,9 @@ $infos = (array) $configuration->infos;
                     <button class="btn btn-primary js-evaluation-submit js-next"><?php i::_e('Finalizar Avaliação e Avançar'); ?> &gt;&gt;</button>
                 </div>
             </form>
+            <?php elseif($entity->canUser('viewUserEvaluation')): ?>
+                <?php $this->part($evaluation_view_part_name, $params); ?>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
     <?php endif; ?>

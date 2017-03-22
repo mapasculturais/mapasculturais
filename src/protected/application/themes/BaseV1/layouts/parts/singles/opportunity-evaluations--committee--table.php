@@ -1,16 +1,23 @@
 <header id="header-inscritos" class="clearfix">
     <h3><?php \MapasCulturais\i::_e("Inscritos");?></h3>
-    <div class="alert info hide-tablet">
-        <?php \MapasCulturais\i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
+    <!--<a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php \MapasCulturais\i::_e("Baixar lista de avaliações");?></a>-->
+</header>
+<?php if($entity->isUserEvaluationsSent()): ?>
+    <div id='status-info' class="alert success">
+        <span><?php \MapasCulturais\i::_e("Suas avaliações já foram enviadas:");?></span>
+
         <div class="close"></div>
     </div>
-    <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php \MapasCulturais\i::_e("Baixar lista de inscritos");?></a>
-</header>
-<div id='status-info' class="alert info">
-    <p><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar inscrições</strong>:");?></p>
+<?php else: ?>
+    <div id='status-info' class="alert info">
+        <span><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar inscrições</strong>:");?></span>
 
-    <div class="close"></div>
-</div>
+        <div class="close"></div>
+    </div>
+<?php endif?>
+
+<?php $this->part('singles/opportunity-evaluations--committee--buttons', ['entity' => $entity]) ?>
+
 <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
         <tr>

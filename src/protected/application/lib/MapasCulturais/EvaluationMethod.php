@@ -81,6 +81,12 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         return "$slug--evaluation-form";
     }
 
+    function getEvaluationViewPartName(){
+        $slug = $this->getSlug();
+
+        return "$slug--evaluation-view";
+    }
+
     function getEvaluationFormInfoPartName(){
         $slug = $this->getSlug();
 

@@ -472,6 +472,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return $locked;
         }
     }
+    
+    function isUserEvaluationsSent($user = null){
+        $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
+        
+        if(!$relation){
+            return false;
+        }
+        
+        return $relation->status === EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
+    }
 
     protected function canUserModifyRegistrationFields($user){
         if($user->is('guest')){
@@ -511,6 +521,23 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserSendUserEvaluations($user){
+        $can_evaluate = $this->canUserEvaluateRegistrations($user);
+        
+        $evaluations_ok = true;
+        foreach($this->getSentRegistrations() as $reg){
+            if($reg->canUser('evaluate')){
+                $evaluation = $reg->getUserEvaluation($user);
+                if(is_null($evaluation) || $evaluation->status != RegistrationEvaluation::STATUS_EVALUATED){
+                    $evaluations_ok = false;
+                    break;
+                }
+            }
+        }
+        
+        return $can_evaluate && $evaluations_ok;
+    }
+
+    protected function canUserEvaluateRegistrations($user){
         if($user->is('guest')){
             return false;
         }
@@ -526,10 +553,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
 
         return $relation && $relation->status === AgentRelation::STATUS_ENABLED;
-    }
-
-    protected function canUserEvaluateRegistrations($user){
-        return $this->canUser('sendUserEvaluations', $user);
     }
 
     protected function canUserViewEvaluations($user){
