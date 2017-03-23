@@ -6,7 +6,7 @@ use MapasCulturais\App;
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
 
-    protected function _getCurrentSubsiteSpaceIds($implode = true){
+    protected function _getCurrentSubsiteSpaceIds(){
         $app = App::i();
         if($app->getCurrentSubsiteId()){
             $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds($implode);
@@ -62,6 +62,10 @@ class Event extends \MapasCulturais\Repository{
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
 
+        if(is_array($ids)){
+            $space_ids = implode(',', $ids);
+        }
+        
         $sql = "
             SELECT
                 e.id
@@ -70,7 +74,7 @@ class Event extends \MapasCulturais\Repository{
             JOIN
                 event_occurrence eo
                     ON eo.event_id = e.id
-                        AND eo.space_id IN (:space_ids)
+                        AND eo.space_id IN ($space_ids)
                         AND eo.status > 0
 
             WHERE
@@ -81,7 +85,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
                     WHERE
-                        space_id IN (:space_ids)
+                        space_id IN ($space_ids)
                 )
 
             $dql_limit $dql_offset
@@ -91,8 +95,7 @@ class Event extends \MapasCulturais\Repository{
 
         $params = [
             'date_from' => $date_from,
-            'date_to' => $date_to,
-            'space_ids' => implode(',', $ids)
+            'date_to' => $date_to
         ];
 
 
@@ -174,7 +177,7 @@ class Event extends \MapasCulturais\Repository{
         $params = [
             'date_from' => $date_from,
             'date_to' => $date_to,
-            'project_ids' => implode(',', $ids)
+            'project_ids' => $ids
         ];
 
         $result = $this->_getEventsBySQL($sql, $params);
