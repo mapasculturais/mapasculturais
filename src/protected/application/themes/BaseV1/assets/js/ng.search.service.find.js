@@ -302,7 +302,6 @@
                         }
                     }
                 });
-
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export

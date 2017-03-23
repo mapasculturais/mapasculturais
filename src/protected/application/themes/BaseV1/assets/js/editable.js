@@ -101,7 +101,6 @@ jQuery(function(){
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
-        
         var labels = MapasCulturais.gettext.editable;
         
         editable.container.$form.find('.editable-cancel').attr('title', labels['cancel']);
