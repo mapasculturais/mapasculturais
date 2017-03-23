@@ -63,7 +63,7 @@ class Event extends \MapasCulturais\Repository{
             $dql_offset = 'OFFSET ' . $offset;
 
         if(is_array($ids)){
-            $space_ids = implode(',', $ids);
+            $ids = implode(',', $ids);
         }
         
         $sql = "
@@ -74,7 +74,7 @@ class Event extends \MapasCulturais\Repository{
             JOIN
                 event_occurrence eo
                     ON eo.event_id = e.id
-                        AND eo.space_id IN ($space_ids)
+                        AND eo.space_id IN ($ids)
                         AND eo.status > 0
 
             WHERE
@@ -85,7 +85,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
                     WHERE
-                        space_id IN ($space_ids)
+                        space_id IN ($ids)
                 )
 
             $dql_limit $dql_offset
@@ -146,6 +146,10 @@ class Event extends \MapasCulturais\Repository{
         }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        
+        if(is_array($ids)){
+            $ids = implode(',', $ids);
+        }
 
         $sql = "
             SELECT
@@ -159,7 +163,7 @@ class Event extends \MapasCulturais\Repository{
                         AND eo.status > 0
             WHERE
                 e.status > 0 AND
-                e.project_id IN (:project_ids) AND
+                e.project_id IN ($ids) AND
                 e.id IN (
                     SELECT
                         event_id
@@ -176,8 +180,7 @@ class Event extends \MapasCulturais\Repository{
 
         $params = [
             'date_from' => $date_from,
-            'date_to' => $date_to,
-            'project_ids' => $ids
+            'date_to' => $date_to
         ];
 
         $result = $this->_getEventsBySQL($sql, $params);
