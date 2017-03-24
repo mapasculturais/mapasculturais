@@ -7,7 +7,7 @@ use MapasCulturais\App,
     MapasCulturais\Exceptions;
 
 
-class Plugin extends \MapasCulturais\Plugin{
+class Module extends \MapasCulturais\Module{
     
     /**
      * Retorna o projeto principal
