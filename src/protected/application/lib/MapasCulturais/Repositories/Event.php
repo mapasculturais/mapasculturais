@@ -6,10 +6,10 @@ use MapasCulturais\App;
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword;
 
-    protected function _getCurrentSubsiteSpaceIds(){
+    protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
         if($app->getCurrentSubsiteId()){
-            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds();
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds($implode);
         } else {
             $space_ids = "SELECT id FROM space WHERE status > 0";
         }
