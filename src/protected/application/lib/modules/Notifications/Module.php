@@ -1,9 +1,21 @@
 <?php 
- use MapasCulturais\Entities;
- use MapasCulturais\Entities\Notification;
- use MapasCulturais\i;
- $app = MapasCulturais\App::i();
- /* === NOTIFICATIONS  === */
+namespace Notifications;
+
+use MapasCulturais\App,
+    MapasCulturais\i,
+    MapasCulturais\Entities,
+    MapasCulturais\Entities\Notification;
+
+class Module extends \MapasCulturais\Module{
+    
+    public function register() {
+        ;
+    }
+    
+    function _init() {
+         $app = App::i();
+         /* === NOTIFICATIONS  === */
+         
         // para todos os requests
         $app->hook('workflow(<<*>>).create', function() use($app) {
 
@@ -294,6 +306,6 @@
                 $notification->save(true);
             }
         });
-
-
         /* ---------------------- */
+    }
+}
