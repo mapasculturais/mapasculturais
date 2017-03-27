@@ -116,7 +116,6 @@
 
             map.on('locationerror', function(e) {
                 /** @TODO feedback pro usuario **/
-                // console.log(e.message);
             });
 
             map.on('click', function(e) {
@@ -160,7 +159,7 @@
                     marker.setLatLng(foundLocation);
                 }
             }
-            
+
             $('.js-editable[data-edit="endereco"]').on('changeAddress', function(event, strAddress){
                 var streetName = $('#En_Nome_Logradouro').editable('getValue', true);
                 var number = $('#En_Num').editable('getValue', true);

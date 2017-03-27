@@ -51,7 +51,7 @@
 module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, ProjectEventsService, EditBox, $http, UrlService) {
     $scope.events = $scope.data.entity.events.slice();
     $scope.numSelectedEvents = 0;
-    
+
     var labels = MapasCulturais.gettext.moduleProject;
 
     $scope.events.forEach(function(evt){

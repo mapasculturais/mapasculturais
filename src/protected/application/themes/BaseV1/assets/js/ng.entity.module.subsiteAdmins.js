@@ -49,7 +49,7 @@
 
     module.controller('SubsiteAdminsController', ['$scope', '$rootScope', 'SubsiteAdminsService', 'EditBox', function($scope, $rootScope, SubsiteAdminsService, EditBox) {
         $scope.editbox = EditBox;
-        
+
         $scope.superAdmins = MapasCulturais.entity.superAdmins;
         $scope.admins = MapasCulturais.entity.admins;
 
@@ -88,7 +88,7 @@
                 $scope.superAdmins.splice(i,1);
             });
         };
-        
+
         $scope.deleteAdmin = function(admin){
             SubsiteAdminsService.remove(admin.profile.id,'admin').success(function(){
                 var i = $scope.admins.indexOf(admin);
@@ -110,7 +110,7 @@
             }
             return data;
         };
-        
+
         $scope.avatarUrl = function(entity){
             if(entity['@files:avatar.avatarSmall'])
                 return entity['@files:avatar.avatarSmall'].url;

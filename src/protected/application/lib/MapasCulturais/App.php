@@ -147,6 +147,8 @@ class App extends \Slim\Slim{
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
+    
+    protected $_modules = [];
 
     protected $_subsite = null;
 
@@ -207,8 +209,21 @@ class App extends \Slim\Slim{
 
 
         $this->_mscache->setNamespace(__DIR__);
+        
+        // list of modules
+        $available_modules = [];
+        if($handle = opendir(MODULES_PATH)){
+            while (false !== ($file = readdir($handle))) {
+                $dir = MODULES_PATH . $file . '/';
+                if ($file != "." && $file != ".." && is_dir($dir)) {
+                    $available_modules[] = $file;
+                    $config['namespaces'][$file] = $dir;
+                }
+            }
+            closedir($handle);
+        }
 
-        spl_autoload_register(function($class) use ($config){
+        spl_autoload_register(function($class) use ($config, $available_modules){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
                 $path = $this->_mscache->fetch($cache_id);
@@ -220,10 +235,11 @@ class App extends \Slim\Slim{
 
             foreach($config['plugins'] as $plugin){
                 $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
-
-                $namespaces[$plugin['namespace']] = $dir;
+                if(!isset($namespaces[$plugin['namespace']])){
+                    $namespaces[$plugin['namespace']] = $dir;
+                }
             }
-
+            
             foreach($namespaces as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
@@ -388,20 +404,37 @@ class App extends \Slim\Slim{
             'view' => $theme_instance,
             'mode' => $this->_config['app.mode']
         ]);
-
+        
         foreach($config['plugins'] as $slug => $plugin){
             $_namespace = $plugin['namespace'];
             $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
             $plugin_class_name = "$_namespace\\$_class";
+            
+            if(class_exists($plugin_class_name)){
+                $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
 
-            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+                $slug = is_numeric($slug) ? $_namespace : $slug;
 
-            $slug = is_numeric($slug) ? $_namespace : $slug;
-
-            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+            }
         }
-
+        
         $config = $this->_config;
+        
+        $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
+        foreach ($available_modules as $module){
+            $this->applyHookBoundTo($this, "app.module({$module}).init:before");
+            $module_class_name = "$module\Module";
+            if(isset($config["module.$module"])){
+                $this->_modules[$module] = new $module_class_name($config["module.$module"]);
+            } else {
+                $this->_modules[$module] = new $module_class_name;
+            }
+            $this->applyHookBoundTo($this, "app.module({$module}).init:after");
+        }
+        $this->applyHookBoundTo($this, 'app.modules.init:after');
+        
+
         // ===================================== //
 
         // custom log writer
