@@ -184,14 +184,18 @@
         $scope.createRelation = function(entity){
             var _scope = this.$parent;
             var groupName = _scope.attrs.group;
+            
+            _scope.result = [];
+            _scope.searchText = '';
+            $scope.spinners[groupName] = true;
 
             RelatedAgentsService.create(groupName, entity.id).
                     success(function(data){
                         var group = getGroup(groupName);
                         group.relations.push(data);
                         $scope.showCreateDialog[groupName] = false;
-                        _scope.$parent.searchText = '';
-                        _scope.$parent.result = [];
+                        _scope.searchText = '';
+                        _scope.result = [];
                         EditBox.close($scope.getCreateAgentRelationEditBoxId(groupName));
                     });
         };
@@ -223,14 +227,19 @@
 
         $scope.createAdminRelation = function(entity){
             var _scope = this.$parent;
+            
+            _scope.result = [];
+            _scope.searchText = '';
+            $scope.spinners['group-admin'] = true; // não está funcionando
+            
             var groupName = 'group-admin';
             var hasControl = true;
 
             RelatedAgentsService.create(groupName, entity.id, true).
                     success(function(data){
                         $scope.admins.push(data);
-                        _scope.$parent.searchText = '';
-                        _scope.$parent.result = [];
+                        _scope.searchText = '';
+                        _scope.result = [];
                         EditBox.close('add-related-agent');
                     });
         };

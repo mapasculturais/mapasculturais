@@ -1297,6 +1297,7 @@ class Theme extends MapasCulturais\Theme {
             'insertVideoUrl'    => i::__('Insira uma url de um vídeo do YouTube ou do Vimeo.'),
             'insertLinkTitle'    => i::__('Insira um título para seu link.'),
             'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
+            'Limpar'    => i::__('Limpar'),
         ]);
     }
 
@@ -1452,6 +1453,7 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
+           'Todas opções' => i::__('Todas opções'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

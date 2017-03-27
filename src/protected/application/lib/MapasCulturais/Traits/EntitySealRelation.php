@@ -6,7 +6,7 @@ use MapasCulturais\App,
 
 
 /**
- * Defines that this entity has agents related to it.
+ * Defines that this entity has seals related to it.
  *
  * @property-read \MapasCulturais\Entities\SealRelation[] $relatedSeals The seals related to this entity
  *

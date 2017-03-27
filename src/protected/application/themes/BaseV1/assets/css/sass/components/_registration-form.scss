@@ -264,6 +264,7 @@ article.project .highlighted-message .btn {
         	}
         }
         .attachment-description {
+            word-wrap: break-word;
         	font-size: $font-size-smaller;
         	color: #999;
         	margin-bottom: $line-height-half;
@@ -294,7 +295,7 @@ article.project .highlighted-message .btn {
                 margin-bottom: 0;
             }
         }
-        
+
         &.registration-view-mode {
             padding: .3em 1em;
             font-size: 0.75em;
