@@ -37,8 +37,8 @@ $url_search_subsite = $this->searchsubsiteUrl;
         <p><?php $this->dict('home: subsite'); ?></p>
         <h4><?php printf(\MapasCulturais\i::__('Encontre %s por'), $this->dict('entities: subsite', false)); ?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#subsite-terms"><?php \MapasCulturais\i::_E('Área de atuação'); ?></a></li>
-            <li><a href="#subsite-types"><?php \MapasCulturais\i::_E('Tipo'); ?></a></li>
+            <li class="active"><a href="#subsite-terms"><?php \MapasCulturais\i::_e('Área de atuação'); ?></a></li>
+            <li><a href="#subsite-types"><?php \MapasCulturais\i::_e('Tipo'); ?></a></li>
         </ul>
         <div id="subsite-terms" class="tag-box">
             <div>
@@ -61,7 +61,7 @@ $url_search_subsite = $this->searchsubsiteUrl;
             <a href="<?php echo $subsite->singleUrl ?>">
                 <div <?php echo $subsite_img_attributes;?>>
                     <div class="feature-content">
-                        <h3><?php \MapasCulturais\i::_E('destaque'); ?></h3>
+                        <h3><?php \MapasCulturais\i::_e('destaque'); ?></h3>
                         <h2><?php echo $subsite->name ?></h2>
                         <p><?php echo $subsite->shortDescription ?></p>
                     </div>
@@ -69,6 +69,6 @@ $url_search_subsite = $this->searchsubsiteUrl;
             </a>
         <?php endif; ?>
         <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('subsite', 'create') ?>"><?php $this->dict('entities: add new subsite') ?></a>
-        <a class="btn btn-accent btn-large" href="<?php echo $url_search_subsite ?>"><?php \MapasCulturais\i::_E('Ver tudo'); ?></a>
+        <a class="btn btn-accent btn-large" href="<?php echo $url_search_subsite ?>"><?php \MapasCulturais\i::_e('Ver tudo'); ?></a>
     </div>
 </article>
