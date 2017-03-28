@@ -799,10 +799,14 @@ return [
             return true;
         }
 
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+    },
+        
+    'update seal_relation set validate_date' => function() use ($conn) {
+        
         $conn->executeQuery("UPDATE seal_relation SET validate_date = seal_relation.create_timestamp + cast(cast(s.valid_period as text) || 'month' as interval) FROM (SELECT id, valid_period FROM seal) AS s WHERE s.id = seal_id AND validate_date IS NULL;");
     },
-
+            
     'refactor of entity meta keky value indexes' => function() use ($conn){
         $__try = function($sql) use ($conn){
             try{

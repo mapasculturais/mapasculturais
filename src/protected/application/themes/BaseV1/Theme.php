@@ -1362,6 +1362,7 @@ class Theme extends MapasCulturais\Theme {
             'insertVideoUrl'    => i::__('Insira uma url de um vídeo do YouTube ou do Vimeo.'),
             'insertLinkTitle'    => i::__('Insira um título para seu link.'),
             'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
+            'Limpar'    => i::__('Limpar'),
         ]);
 
         $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
@@ -1526,6 +1527,7 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
+           'Todas opções' => i::__('Todas opções'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
@@ -2296,39 +2298,6 @@ class Theme extends MapasCulturais\Theme {
 
         }
     }
-
-
-    function registerMetadata($entity_class, $key, $cfg) {
-        $app = \MapasCulturais\App::i();
-        $def = new \MapasCulturais\Definitions\Metadata($key, $cfg);
-        return $app->registerMetadata($def, $entity_class);
-
-    }
-
-    function registerEventMetadata($key, $cfg) {
-        return $this->registerMetadata('MapasCulturais\Entities\Event', $key, $cfg);
-    }
-
-    function registerSpaceMetadata($key, $cfg) {
-        return $this->registerMetadata('MapasCulturais\Entities\Space', $key, $cfg);
-    }
-
-    function registerAgentMetadata($key, $cfg) {
-        return $this->registerMetadata('MapasCulturais\Entities\Agent', $key, $cfg);
-    }
-
-    function registerProjectMetadata($key, $cfg) {
-        return $this->registerMetadata('MapasCulturais\Entities\Project', $key, $cfg);
-    }
-
-    function registerOpportunityMetadata($key, $cfg) {
-        return $this->registerMetadata('MapasCulturais\Entities\Opportunity', $key, $cfg);
-    }
-
-    function registerSealMetadata($key, $cfg) {
-        return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
-    }
-
     /*
      * This methods adds fields to the default query used in the search pages
      *

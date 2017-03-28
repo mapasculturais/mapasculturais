@@ -5,7 +5,8 @@ use MapasCulturais\Traits;
 
 abstract class Module {
     use Traits\MagicGetter,
-        Traits\MagicSetter;
+        Traits\MagicSetter,
+        Traits\RegisterFunctions;
     
     protected $_config;
     

@@ -1,5 +1,5 @@
 <div class="directive-find-entity">
-    <input ng-model="searchText" ng-change="find()" placeholder="buscar por nome"/>
+    <input ng-model="searchText" ng-change="find()" placeholder="buscar por nombre"/>
 
     <div class="no-results" ng-if="!spinnerCondition && noEntityFound">
         {{noResultsText}}
@@ -13,14 +13,14 @@
             <div class="objeto-meta">
                 <div>
                     <!-- @TODO: fazer o texto área de atuação utilizar o dicionário do tema -->
-                    <span class="label">área de atuação:</span>
+                    <span class="label">área de actuación:</span>
                     {{entity.terms.area.join(', ')}}
                 </div>
                 <div><span class="label">tipo:</span>{{entity.type.name}}</div>
             </div>
         </li>
         <ol ng-if="noMoreResults" class="no-more-results">
-            Sem mais resultados
+            No hay más resultados
         </ol>
     </ul>
 </div>

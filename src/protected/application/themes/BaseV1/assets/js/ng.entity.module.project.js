@@ -217,7 +217,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Edi
     $scope.data = angular.extend({
         uploadSpinner: false,
         spinner: false,
-
+        
         relationApiQuery: {}
     }, MapasCulturais);
 
