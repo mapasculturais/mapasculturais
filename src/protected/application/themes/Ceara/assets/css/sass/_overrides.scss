@@ -28,19 +28,33 @@
         }
     }
 }
+
+#organization-logo img {
+    width: 125px;
+}
+
+
 #brand-logo {
     a {
         img {
             @media screen and (min-width: $screen-tablet) {
-                width: 155px;
+                width: 142px;
+                margin-top: 12px;
             }
 
             @media screen and (min-width: $screen-desktop) {
-              width: 250px;
+                margin-top: 0;
+                width: 200px;
             }
 
-            @media screen and (min-width: 992px) and (max-width: 1014px) {
-              width: 227px;
+            @media screen and (min-width: 768px) and (max-width: 789px) {
+              width: 120px;
+              margin-top: 12px;
+            }
+
+            @media screen and (max-width: 768px) {
+              width: 70px;
+              margin-top: 4px;
             }
         }
     }
