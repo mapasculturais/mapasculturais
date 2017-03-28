@@ -25,7 +25,8 @@ use MapasCulturais\App;
 abstract class Theme extends \Slim\View {
     use Traits\MagicGetter,
         Traits\MagicSetter,
-        Traits\MagicCallers;
+        Traits\MagicCallers,
+        Traits\RegisterFunctions;
 
 
     /**
