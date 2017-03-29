@@ -1,10 +1,10 @@
 <?php
-if(!is_object($entity))
+if(!is_object($entity)){
     echo '<div class="alert info"><?php i::__("Nenhum link disponível");?></div>';
     return;
+}
 
 $links = $entity->getMetaLists('links');
-
 
 $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'>
                 <a class='js-metalist-item-display' href='{{value}}'>{{title}}</a>
