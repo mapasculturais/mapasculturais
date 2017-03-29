@@ -126,15 +126,9 @@ $button = "";
         </header>
         <?php foreach ($app->user->notifications as $notification): ?>
             <?php $posini = strpos($notification->message,"<a"); ?>
-            <?php if($posini > 0): ?>
-                <?php
-                $posfin = strpos($notification->message,"</a>");
-                $button = substr($notification->message,$posini,$posfin);
-                $msg = str_replace($button,"",$notification->message);
-                ?>
-            <?php else: ?>
-                <?php $msg = $notification->message;?>
-            <?php endif;?>
+            
+            <?php $msg = $notification->message;?>
+        
             <div class="activity clearfix">
                 <p>
                     <span class="small"><?php \MapasCulturais\i::_e("Em");?> <?php echo $notification->createTimestamp->format('d/m/Y - H:i') ?></span><br/>
