@@ -12,7 +12,11 @@ class Space extends \MapasCulturais\Repository{
             $cache_id = 'SUBSITE::SPACE-IDS';
 
             if($app->config['app.useSubsiteIdsCache'] && $app->cache->contains($cache_id)){
-                return $app->cache->fetch($cache_id);
+                $space_ids = $app->cache->fetch($cache_id);
+                if($implode && is_array($space_ids)){
+                    $space_ids = implode(',', $space_ids);
+                }
+                return $space_ids;
             }
             $_api_result = $app->controller('space')->apiQuery(['@select' => 'id']);
 
@@ -25,9 +29,6 @@ class Space extends \MapasCulturais\Repository{
                 $space_ids = [0];
             }
 
-            if($implode){
-                $space_ids = implode(',', $space_ids);
-            }
 
             $app->cache->save($cache_id, $space_ids, $app->config['app.subsiteIdsCache.lifetime']);
 
@@ -35,6 +36,9 @@ class Space extends \MapasCulturais\Repository{
             $space_ids = null;
         }
 
+        if($implode && is_array($space_ids)){
+            $space_ids = implode(',', $space_ids);
+        }
         return $space_ids;
     }
 
