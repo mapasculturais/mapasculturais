@@ -9,7 +9,7 @@
             <div class="placeholder">{{filter.placeholder}}</div>
             <div class="submenu-dropdown">
                 <ul class="filter-list">
-                    <li style="whiteentity nowrap" ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"
+                    <li ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"
                     ng-click="toggleSelection(data[entity].filters[filter.filter.param], option.value)">
                         <span>{{option.label}}</span>
                     </li>
