@@ -23,7 +23,8 @@ class Project extends EntityController {
         Traits\ControllerDraft,
         Traits\ControllerArchive,
         Traits\ControllerAPI,
-        Traits\ControllerAPINested;
+        Traits\ControllerAPINested,
+        Traits\ControllerOpportunities;
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){

@@ -1133,7 +1133,7 @@ class Theme extends MapasCulturais\Theme {
 
     function head() {
         parent::head();
-
+        
         $app = App::i();
 
         $this->printStyles('vendor');

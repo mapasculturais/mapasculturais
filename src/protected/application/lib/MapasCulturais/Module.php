@@ -10,6 +10,10 @@ abstract class Module {
     
     protected $_config;
     
+    abstract function _init();
+    
+    abstract function register();
+    
     function __construct(array $config = []) {
         $this->_config = $config;
         
@@ -32,9 +36,5 @@ abstract class Module {
     
     function getConfig(){
         return $this->_config;
-    }
-    
-    abstract function _init();
-    
-    abstract function register();
+    }   
 }

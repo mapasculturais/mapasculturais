@@ -9,7 +9,7 @@ use MapasCulturais\App;
 /**
  * Entity Revision
  *
- * @ORM\Table(name="entity_revision",indexes={@ORM\Index(name="entity_revision_idx", columns={"object_id", "object_type", "timestamp"})}))
+ * @ORM\Table(name="entity_revision",indexes={@ORM\Index(name="entity_revision_idx", columns={"object_id", "object_type"})}))
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\EntityRevision")
  */

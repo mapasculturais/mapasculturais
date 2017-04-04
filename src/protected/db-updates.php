@@ -785,6 +785,10 @@ return [
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
+            
+    'ALTER TABLE opportunity ALTER type DROP NOT NULL;' => function() use($conn){
+        $conn->executeUpdate('ALTER TABLE opportunity ALTER type DROP NOT NULL;');
+    },
 
     'create seal relation renovation flag field' => function() use($conn) {
         if(__column_exists('seal_relation', 'renovation_request')){

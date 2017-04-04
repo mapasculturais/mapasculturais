@@ -62,7 +62,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="smallint", nullable=false)
+     * @ORM\Column(name="type", type="smallint", nullable=true)
      */
     protected $_type;
 

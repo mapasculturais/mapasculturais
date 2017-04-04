@@ -119,7 +119,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         });
         
         if($this->fetchRegistrations()){
-            $this->registerOpportunityMetadata('fetch', [
+            $this->registerEvaluationMethodConfigurationMetadata('fetch', [
                 'label' => \MapasCulturais\i::__('Configuração do fatiamento das inscrições entre os avaliadores'),
                 'serialize' => function ($val) {
                     return json_encode($val);
@@ -130,6 +130,14 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
             ]);
         }
 
+    }
+    
+    function registerEvaluationMethodConfigurationMetadata($key, array $config){
+        $app = App::i();
+
+        $metadata = new Definitions\Metadata($key, $config);
+
+        $app->registerMetadata($metadata, 'MapasCulturais\Entities\EvaluationMethodConfiguration', $this->getSlug());
     }
 
     function usesEvaluationCommittee(){

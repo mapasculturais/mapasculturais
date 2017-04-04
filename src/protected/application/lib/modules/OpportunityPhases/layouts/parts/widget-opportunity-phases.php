@@ -62,7 +62,6 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             
             <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)" ><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
         <?php endif; ?>
-        <!--<h3>Fases <?= $_of_the_type[$opportunity->type->id] ?></h3>-->
         <ul>
 
         <?php foreach($phases as $phase): ?>

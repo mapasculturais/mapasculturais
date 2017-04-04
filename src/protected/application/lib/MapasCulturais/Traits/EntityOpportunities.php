@@ -19,8 +19,16 @@ trait EntityOpportunities{
         return true;
     }
     
+    public function getOpportunityClassName() {
+        return $this->getClassName() . 'Opportunity';
+    }
+    
     public function getOpportunities($status = Opportunity::STATUS_ENABLED){
         $result = [];
+        
+        if(!$this->_relatedOpportunities){
+            return [];
+        }
         
         foreach($this->_relatedOpportunities as $opp){
             if($opp->status >= $status){

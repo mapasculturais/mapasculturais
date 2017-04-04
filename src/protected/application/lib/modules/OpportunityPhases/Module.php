@@ -201,7 +201,7 @@ class Module extends \MapasCulturais\Module{
             $phase->ownerEntity = $parent->ownerEntity;
             
             $phase->name = $_phases[$num_phases];
-            $phase->shortDescription = 'Descrição da ' . $_phases[$num_phases];
+            $phase->shortDescription = sprintf(\MapasCulturais\i::__('Descrição da %s'), $_phases[$num_phases]);
             $phase->type = $parent->type;
             $phase->owner = $parent->owner;
             $phase->useRegistrations = true;
@@ -217,7 +217,7 @@ class Module extends \MapasCulturais\Module{
             $phase->registrationTo = $_to;
             
 
-            $phase->save();
+            $phase->save(true);
             
             $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
             

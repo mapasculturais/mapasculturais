@@ -15,10 +15,8 @@
         };
     }]);
 
-    app.controller('EntityController',['$scope', '$timeout', function($scope, $timeout){
-        $scope.data = {
-            teste: 'ALALALALALALA'
-        }
+    app.controller('EntityController',['$scope', '$timeout', 'EditBox', function($scope, $timeout, EditBox){
+        $scope.editbox = EditBox;        
     }]);
 
     app.controller('CompliantController',['$scope', '$timeout', 'CompliantService',function($scope, $timeout, CompliantService){

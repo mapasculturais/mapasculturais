@@ -1064,6 +1064,10 @@ class App extends \Slim\Slim{
 
         $this->view->register();
 
+        foreach($this->_modules as $module){
+            $module->register();
+        }
+
         foreach($this->_plugins as $plugin){
             $plugin->register();
         }
@@ -1290,8 +1294,12 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->_config['app.log.hook'])
-            $this->log->debug('APPLY HOOK >> ' . $name);
+        if ($this->_config['app.log.hook']){
+            $conf = $this->_config['app.log.hook'];
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+                $this->log->debug('APPLY HOOK >> ' . $name);
+            }
+        }
 
         $callables = $this->_getHookCallables($name);
         foreach ($callables as $callable) {
@@ -1312,8 +1320,12 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->_config['app.log.hook'])
-            $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
+        if ($this->_config['app.log.hook']){
+            $conf = $this->_config['app.log.hook'];
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+                $this->log->debug('APPLY HOOK >> ' . $name);
+            }
+        }
 
         $callables = $this->_getHookCallables($name);
         foreach ($callables as $callable) {

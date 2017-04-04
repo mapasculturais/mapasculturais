@@ -30,7 +30,8 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityArchive;
+        Traits\EntityArchive,
+        Traits\EntityOpportunities;
 
     /**
      * @var integer
@@ -138,6 +139,14 @@ class Project extends \MapasCulturais\Entity
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="project", fetch="LAZY", cascade={"persist"})
      */
     protected $_events;
+    
+    /**
+     * @var \MapasCulturais\Entities\ProjectOpportunity[] Opportunities
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $_relatedOpportunities;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
