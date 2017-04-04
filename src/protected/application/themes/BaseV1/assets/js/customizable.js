@@ -56,11 +56,6 @@ MapasCulturais.geocoder = {
 
         this.initialize();
 
-<<<<<<< Updated upstream
-=======
-        //console.log(addressElements);
-
->>>>>>> Stashed changes
         var params = {
             format: 'json',
             countrycodes: this.country
