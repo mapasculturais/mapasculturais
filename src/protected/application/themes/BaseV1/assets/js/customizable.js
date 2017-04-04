@@ -55,9 +55,7 @@ MapasCulturais.geocoder = {
     geocode: function(addressElements, callback) {
         
         this.initialize();
-        
-        //console.log(addressElements);
-        
+
         var params = {
             format: 'json',
             countrycodes: this.country
@@ -80,11 +78,10 @@ MapasCulturais.geocoder = {
             // if (addressElements.postalCode)
             //     params.postalcode = addressElements.postalCode;
         }
-        
-        //console.log(params);
-        
-        var result = jQuery.get('http://nominatim.openstreetmap.org/search', params, function(r) {
-            
+
+        var url_schema = window.location.href.url.split("/")[0];
+        var result = jQuery.get(url_schema + '//nominatim.openstreetmap.org/search', params, function(r) {
+
             // Consideramos o primeiro resultado
             if (r[0]) {
                 
