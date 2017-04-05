@@ -19,6 +19,13 @@ if ($this->isEditable()) {
 }
 
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
+$this->localizeScript('singleEvents', [
+            'correctErrors' => \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
+            'requestAddToSpace' => \MapasCulturais\i::__('Sua requisição para criar a ocorrência do evento no espaço %s foi enviada.'),
+            'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
+            'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
+            'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
+        ]);
 
 $this->includeAngularEntityAssets($entity);
 
@@ -61,8 +68,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                    data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modificar Ocorrência'); ?>"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'<?php \MapasCulturais\i::_e("Editar");?></a>
-               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'<?php \MapasCulturais\i::_e("Excluir");?></a>
+                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'><?php \MapasCulturais\i::_e("Editar");?></a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'><?php \MapasCulturais\i::_e("Excluir");?></a>
             </div>
         <?php endif; ?>
     </div>
@@ -162,16 +169,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     <?php if ($this->isEditable() || $entity->registrationInfo): ?>
-                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationInfo") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Inscrições");?>:</span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"registrationInfo") && $editEntity? 'required': '');?>" data-edit="registrationInfo" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Inscrições");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informações sobre as inscrições");?>"><?php echo $entity->registrationInfo; ?></span></p>
+                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"registrationInfo") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Inscrições");?>:</span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"registrationInfo") && $editEntity? 'required': '');?>" data-edit="registrationInfo" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Inscrições");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informações sobre as inscrições");?>">   <?php echo $this->autoLinkString($entity->registrationInfo); ?></span></p>
                     <?php endif; ?>
 
                     <?php if ($this->isEditable() || $entity->classificacaoEtaria): ?>
-                        <?php
-                        /*Agente padrão da Giovanna editando atrações da Virada*/
-                        if(!$entity->classificacaoEtaria && $entity->project && $entity->project->id == 4 && $entity->owner->id == 428){
-                            $entity->classificacaoEtaria = 'Livre';
-                        }
-                        ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"classificacaoEtaria") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Classificação Etária");?>: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Classificação Etária");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe a classificação etária do evento");?>"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
@@ -347,6 +348,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <!-- Image Gallery BEGIN -->
             <?php $this->part('gallery.php', array('entity' => $entity)); ?>
             <!-- Image Gallery END -->
+
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre.aba-content -->
@@ -485,7 +487,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
             </div>
             <div class="grupo-de-campos">
-                <span class="label">Frequência:</span><br>
+                <span class="label"><?php \MapasCulturais\i::_e("Frequência");?>:</span><br>
                     <select name="frequency" class="js-select-frequency">
                         <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}> <?php \MapasCulturais\i::_e("uma vez");?></option>
                         <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}> <?php \MapasCulturais\i::_e("todos os dias");?></option>
@@ -512,13 +514,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <div class="alignleft js-freq-hide js-weekly">
                 <span class="label"><?php \MapasCulturais\i::_e("Repete");?>:</span><br>
                 <div>
-                    <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> <?php \MapasCulturais\i::_e("D");?> </label>
-                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> <?php \MapasCulturais\i::_e("S");?> </label>
-                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> <?php \MapasCulturais\i::_e("T");?> </label>
-                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> <?php \MapasCulturais\i::_e("Q");?> </label>
-                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> <?php \MapasCulturais\i::_e("Q");?> </label>
-                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> <?php \MapasCulturais\i::_e("S");?> </label>
-                    <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> <?php \MapasCulturais\i::_e("S");?> </label>
+                    <?php $weekDaysInitials = explode('|', \MapasCulturais\i::__('D|S|T|Q|Q|S|S')); ?>
+                    <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> <?php echo $weekDaysInitials[0];?> </label>
+                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> <?php echo $weekDaysInitials[1];?> </label>
+                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> <?php echo $weekDaysInitials[2];?> </label>
+                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> <?php echo $weekDaysInitials[3];?> </label>
+                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> <?php echo $weekDaysInitials[4];?> </label>
+                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> <?php echo $weekDaysInitials[5];?> </label>
+                    <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> <?php echo $weekDaysInitials[6];?> </label>
                 </div>
                 <!-- for now we will not support monthly recurrences.
                 <div>
