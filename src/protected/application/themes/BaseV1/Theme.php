@@ -1969,8 +1969,12 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
     }
 
-    function addOpportunityEvaluationCommitteeToJs(\MapasCulturais\Entities\EvaluationMethodConfiguration $evaluation_configuration) {
-        $this->jsObject['entity']['evaluationCommittee'] = $evaluation_configuration->getAgentRelations(true);
+    function addOpportunityEvaluationCommitteeToJs(Entities\Opportunity $opportunity) {
+        $this->jsObject['entity']['evaluationCommittee'] = $opportunity->getEvaluationCommittee();
+    }
+    
+    function addOpportunityEvaluationsToJs(Entities\Opportunity $opportunity) {
+        $this->jsObject['opportunityEvaluations'] = $opportunity->getEvaluations(true);
     }
 
     function addSubsiteAdminsToJs($subsite) {
