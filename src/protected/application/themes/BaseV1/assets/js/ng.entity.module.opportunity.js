@@ -1156,7 +1156,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     };
 
     $scope.getEvaluationStatusLabel = function(registration){
-        var status = $scope.getEvaluationStatus(registration);
+        var status;
+        if(registration.valuer){
+            if (registration.evaluation){
+                status = registration.evaluation.status;
+            } else {
+                status = -1;
+            }
+        
+        } else {
+            status = $scope.getEvaluationStatus(registration);
+        }
+        
         var slugs = {
             '-1': 'pending',
             '0': 'draft',
@@ -1170,6 +1181,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }
 
     $scope.getEvaluationResultString = function(registration){
+        
+        if(registration.evaluation){
+            return registration.evaluation.resultString;
+        }
+        
         var userEvaluation = $scope.getUserEvaluation(registration);
         if(userEvaluation) {
             return userEvaluation.resultString;
@@ -1177,6 +1193,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             return '';
         }
     }
+    
+    
+    
 
     // EVALUATIONS - END
 
