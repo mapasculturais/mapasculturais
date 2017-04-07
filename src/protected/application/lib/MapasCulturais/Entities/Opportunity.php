@@ -254,6 +254,45 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $eval->setOpportunity($this, false);
         }
     }
+    
+    function getEvaluationCommittee($return_relation = true){
+        $result = $this->evaluationMethodConfiguration->getAgentRelations(true);
+        
+        if(!$return_relation) {
+            $result = array_map(function($r){ return $r->agent; }, $result);
+        }
+        
+        return $result;
+    }
+    
+    function getEvaluations($include_empty = false){
+        // @TODO: melhorar performance. talvez utilizando a ApiQuery na entidade RegistrationEvaluation ?
+        $committee = $this->getEvaluationCommittee(false);
+        
+        $registrations = $this->getSentRegistrations();
+        
+        $result = [];
+        
+        foreach($registrations as $reg){
+            foreach($committee as $agent){
+                $user = $agent->getOwnerUser();
+                if($reg->canUser('viewUserEvaluation', $user)){
+                    $evaluation = $reg->getUserEvaluation($user);
+                    if($evaluation || $include_empty){
+                        $item = [
+                            'valuer' => $agent->simplify('id,name,singleUrl'),
+                            'evaluation' => $evaluation,
+                            'registration' => $reg->simplify('id,number,category,singleUrl,owner')
+                        ];
+                        
+                        $result[] = $item;
+                    }
+                }
+            }
+        }
+        
+        return $result;
+    }
 
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
