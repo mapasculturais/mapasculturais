@@ -38,6 +38,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
+        <?php $this->part('singles/opportunity-header--owner-entity', ['entity' => $entity]) ?>
+        
         <!--.header-image-->
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
@@ -45,7 +47,8 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--opportunity.png']); ?>
 
             <?php $this->part('singles/type', ['entity' => $entity]) ?>
-
+            
+            
             <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
