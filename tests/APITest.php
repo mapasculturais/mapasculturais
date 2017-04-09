@@ -126,4 +126,44 @@ class APITest extends MapasCulturais_TestCase {
         $this->assertEquals($r1, $r2);
 
     }
+    
+    function testEventsOfProject(){
+        $this->resetTransactions();
+        // assert that users WITHOUT control of a project CANNOT create events to this project
+        $user1 = $this->getUser('normal', 0);
+        $user2 = $this->getUser('normal', 1);
+
+        $project = $user2->projects[0];
+
+        $project->createAgentRelation($user1->profile, "AGENTS WITH CONTROL", true, true);
+
+        $this->user = $user1;
+
+        // assert that users with control of a project CAN view draft events related to this project
+        $event_name = uniqid('EVENT:');
+                
+        $evt = $this->getNewEntity('Event');
+        $evt->name = $event_name;
+        $evt->project = $project;
+        $evt->status = \MapasCulturais\Entities\Event::STATUS_DRAFT;
+        $evt->save();
+        
+        $this->user = $user2;
+        
+        $this->app->recreatePermissionsCacheOfListedEntities();
+        
+        $r1 = $this->apiFind('event', "project=EQ({$project->id})&@select=id,status,name,project.{id,name}&@permissions=view&status=GTE(0)");
+        
+        $this->assertCount(1, $r1, 'assert that one result was returned');
+        
+        $this->assertEquals([
+            'id' => $evt->id,
+            'name' => $evt->name,
+            'status' => \MapasCulturais\Entities\Event::STATUS_DRAFT,
+            'project' => [
+                'id' => $project->id,
+                'name' => $project->name
+            ]
+        ], $r1[0], 'verify the returned event');
+    }
 }
