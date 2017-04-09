@@ -708,7 +708,7 @@ class ApiQuery {
         if($this->usesSealRelation && $this->_seals){
             $sl = $this->getAlias('sl');
             $slv = implode(',', $this->_seals);
-            $joins = " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
+            $joins .= " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
         }
 
         return $joins;
