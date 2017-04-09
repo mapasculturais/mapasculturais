@@ -439,7 +439,7 @@ class Subsite extends \MapasCulturais\Entity
         $app->em->flush();
     }
 
-
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
