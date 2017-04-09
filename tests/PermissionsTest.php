@@ -739,7 +739,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testProjectEventCreation(){
         $this->app->disableWorkflow();
         $this->resetTransactions();
-        // assert that a user WITHOUT control of a project CANNOT create events to this project
+        // assert that users WITHOUT control of a project CANNOT create events to this project
         $user1 = $this->getUser('normal', 0);
         $user2 = $this->getUser('normal', 1);
 
@@ -751,10 +751,10 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event = $this->getNewEntity('Event');
             $event->project = $project;
             $event->save();
-        }, 'Asserting that a user WITHOUT control of a project CANNOT create events to this project');
+        }, 'Asserting that users WITHOUT control of a project CANNOT create events related with this project');
 
 
-        // assert that a user WITH control of a project CAN create events to this project
+        // assert that usesr WITH control of a project CAN create events to this project
         $this->user = $user2;
 
         $project->createAgentRelation($user1->profile, "AGENTS WITH CONTROL", true, true);
@@ -765,7 +765,24 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event = $this->getNewEntity('Event');
             $event->project = $project;
             $event->save();
-        }, 'Asserting that a user WITH control of a project CAN create events to this project');
+        }, 'Asserting that users WITH control of a project CAN create events related to this project');
+        
+
+        // assert that users with control of a project CAN view draft events related to this project
+        $event_1 = $this->getNewEntity('Event');
+        $event_1->project = $project;
+        $event_1->status = \MapasCulturais\Entities\Event::STATUS_DRAFT;
+        $event_1->save();
+        
+        $event_2 = $this->getNewEntity('Event');
+        $event_2->status = \MapasCulturais\Entities\Event::STATUS_DRAFT;
+        $event_2->save();
+        
+        $this->user = $user2;
+        
+        $this->assertTrue($event_1->canUser('view'), 'assert that users with control of a project CAN view draft events related to this project');
+        $this->assertFalse($event_2->canUser('view'), 'assert that users with control of a project CANNOT view draft events not related to this project');
+        
         $this->app->enableWorkflow();
     }
 

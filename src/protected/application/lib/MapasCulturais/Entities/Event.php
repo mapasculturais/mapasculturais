@@ -394,6 +394,24 @@ class Event extends \MapasCulturais\Entity
 
         return $result ? $result : [];
     }
+    
+    function getExtraEntitiesToRecreatePermissionCache(){
+        $result = [];
+        if($this->project){
+            $result[] = $this->project;
+        }
+        
+        return $result;
+    }
+    
+    function getExtraPermissionCacheUsers(){
+        if($this->project){
+            return $this->project->getUsersWithControl();
+        } else {
+            return [];
+        }
+        
+    }
 
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
