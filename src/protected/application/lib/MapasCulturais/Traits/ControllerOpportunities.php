@@ -23,11 +23,7 @@ trait ControllerOpportunities {
         
         $opportunity->status = Entities\Opportunity::STATUS_DRAFT;
         
-        if($entity instanceof Entities\Agent){
-            $opportunity->ownerEntity = $entity;
-        } else {
-            $opportunity->ownerEntity = $entity->owner;
-        }
+        $opportunity->ownerEntity = $entity;
              
         $opportunity->save();
         
