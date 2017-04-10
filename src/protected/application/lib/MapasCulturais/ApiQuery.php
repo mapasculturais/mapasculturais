@@ -819,6 +819,11 @@ class ApiQuery {
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
             }
             
+            // convert Occurrences rules to object
+            if (key_exists('rule', $entity) && !empty($entity['rule'])) {
+                $entity['rule'] = json_decode($entity['rule']);
+            }
+            
             if($this->_selectingOriginSiteUrl && empty($entity['originSiteUrl'])){
                 $entity['originSiteUrl'] = $main_site_url;
             }

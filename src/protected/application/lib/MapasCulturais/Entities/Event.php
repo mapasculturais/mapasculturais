@@ -431,6 +431,10 @@ class Event extends \MapasCulturais\Entity
             return $can;
         }
     }
+    
+    protected function canUserUnpublish($user){
+        return $this->canUserPublish($user);
+    }
 
     protected function canUserPublish($user){
         if($user->is('guest')){
