@@ -2,6 +2,7 @@
 namespace EntityOpportunities;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
     public function __construct(array $config = array()) {
@@ -30,11 +31,16 @@ class Module extends \MapasCulturais\Module {
         
         $app->hook("template(<<$entities>>.single.tabs-content):end", function(){
             $entity = $this->controller->requestedEntity;
+            
+            $this->enqueueStyle('app', 'entity-opportunities', "css/entity-opportunities.css");
+            
             $this->part('entity-opportunities--content-single', ['entity' => $entity]);
         });
         
         $app->hook("template(<<$entities>>.edit.tabs-content):end", function(){
             $entity = $this->controller->requestedEntity;
+            
+            $this->enqueueStyle('app', 'entity-opportunities', "css/entity-opportunities.css");
             
             $this->part('entity-opportunities--content-edit', ['entity' => $entity]);
         });
@@ -45,6 +51,22 @@ class Module extends \MapasCulturais\Module {
     public function register() {
         $app = App::i();
         
+        foreach ($this->config['entities'] as $entity){
+            $method = "register{$entity}Metadata"; 
+            
+            $this->$method('opportunityTabName', [
+                'label' => i::__('Nome da aba oportunidade')
+            ]);
+            
+            $this->$method('useOpportunityTab', [
+                'label' => i::__('Usar a aba oportunidades?'),
+                'type' => 'select',
+                'options' => (object) [
+                    'true' => 'Sim',
+                    'false' => 'Não'
+                ]
+            ]);
+        }
     }
     
     

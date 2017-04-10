@@ -1,12 +1,14 @@
 <?php 
 use MapasCulturais\i;
-$evaluation_methods = $app->getRegisteredEvaluationMethods();
+use MapasCulturais\Entities\Opportunity;
+if($entity->opportunities && ($entity->useOpportunityTab !== 'false')): 
+
+    $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
 ?>
-<div id="entity-opportunities" class="aba-content">
-    <ul>
-        <?php foreach($entity->opportunities as $opp): ?>
-        <li><a href="<?php echo $opp->singleUrl ?>"><?php echo $opp->name ?></a></li>
-        <?php endforeach; ?>
-    </ul>
+<div id="entity-opportunities" class="aba-content ">
+    <?php foreach($entity->opportunities as $opportunity): ?>
+        <?php $this->part('entity-opportunities--item', ['opportunity' => $opportunity, 'entity' => $entity]) ?>
+    <?php endforeach; ?>
 </div>
+<?php endif; ?>
