@@ -27,6 +27,7 @@ define('APPLICATION_PATH', PROTECTED_PATH . 'application/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
+define('MODULES_PATH', APPLICATION_PATH.'lib/modules/');
 define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
 
  // Prepare a mock environment
