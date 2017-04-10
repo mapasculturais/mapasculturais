@@ -708,7 +708,7 @@ class ApiQuery {
         if($this->usesSealRelation && $this->_seals){
             $sl = $this->getAlias('sl');
             $slv = implode(',', $this->_seals);
-            $joins = " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
+            $joins .= " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
         }
 
         return $joins;
@@ -1628,6 +1628,7 @@ class ApiQuery {
         $user = App::i()->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
+        
         if($this->_permission && !$user->is('saasAdmin')){
             $alias = $this->getAlias('pcache');
             
@@ -1636,10 +1637,8 @@ class ApiQuery {
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
             
-            $join_with_filter = " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
-            
             if($this->_permission != 'view' && (!$this->usesOriginSubsite || !$this->adminInSubsites)) {
-                $this->joins .= $join_with_filter;
+                $this->joins .= " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
                 
             } else {
                 $this->select =  $this->select ? ", $alias.action " : $this->select;
