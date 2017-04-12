@@ -2,8 +2,6 @@
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
-
-// \dump($relation);
 $this->addEntityToJs($relation);
 
 if($this->isEditable()){
@@ -37,8 +35,29 @@ if ($header = $entity->getFile('header')){
 
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--seal.png']); ?>
+            <div class="display-seal-relation">
+                <div class="seal-avatar">
+                    <?php if($avatar = $entity->avatar): ?>
+                        <a href="<?php echo $entity->getSingleUrl(); ?>">
+                        <img src="<?php echo $avatar->transform('avatarMedium')->url; ?>" alt="" class="js-avatar-img" />
+                        </a>
+                    <?php else: ?>
+                        <img class="js-avatar-img" src="<?php $this->asset($default_image); ?>" />
+                    <?php endif; ?>
+                    <?php if($this->isEditable()): ?>
+                        <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#"><?php \MapasCulturais\i::_e("Editar");?></a>
+                        <div id="editbox-change-avatar" class="js-editbox mc-right" title="<?php \MapasCulturais\i::esc_attr_e("Editar avatar");?>">
+                            <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="agent-avatar">
+                    <?php $avatar_url = $relation->owner_relation->avatar ? $relation->owner_relation->avatar->transform('avatarMedium')->url : $this->asset('img/avatar--agent.png', false); ?>
+                    <a href="<?php echo $relation->owner_relation->getSingleUrl(); ?>" >
+                    <img src="<?php echo $avatar_url; ?>" class="js-avatar-img" />
+                    </a>                    
+                </div>
+            </div>
 
 			<?php $this->applyTemplateHook('name','before'); ?>
 			<h2><span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>"><a href="<?php echo $app->createUrl('seal', 'single', ['id' => $entity->id])?>"><?php echo $entity->name; ?></a></span></h2>
