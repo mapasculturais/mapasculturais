@@ -32,7 +32,7 @@ $this->includeAngularEntityAssets($entity);
 
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
-
+            
             <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--seal.png']); ?>
 
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
@@ -66,7 +66,7 @@ $this->includeAngularEntityAssets($entity);
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
-
+                    
 					<p>
 						<span class="label"><?php \MapasCulturais\i::_e("Validade");?>:</span>
 						<span class="js-editable" data-edit="validPeriod" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Periodo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o período de duração da validade do selo");?>">
@@ -90,7 +90,7 @@ $this->includeAngularEntityAssets($entity);
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
             </div>
             <!--.ficha-spcultura-->
-
+            
       <?php if($this->isEditable() || $entity->longDescription) {?>
   			<p>
   				<h3><?php \MapasCulturais\i::_e("Descrição");?></h3>

@@ -44,18 +44,16 @@ class Seal extends EntityController {
         parent::POST_index($data);
     }
 
-    function GET_sealRelation(){
+    public function GET_sealRelation(){
     	$app = App::i();
-        
     	$id = $this->data['id'];
-
-    	$rel = $app->repo('SealRelation')->find($id);
+    	$relation = $app->repo('SealRelation')->find($id);
+        $expirationDate = $this->VerifySealValidity($relation);
         
-    	$this->render('sealrelation', ['relation' => $rel]);
-
+    	$this->render('sealrelation', ['relation'=>$relation, 'expirationDate'=>$expirationDate]);
     }
 
-    function GET_printSealRelation(){
+    public function GET_printSealRelation(){
         $app = App::i();
 
     	$id = $this->data['id'];
@@ -69,5 +67,24 @@ class Seal extends EntityController {
         
     	$this->render('printsealrelation', ['relation' => $rel]);
 
+    }
+
+    /**
+     * Verifica a validade do selo a ser exibido
+     * 
+     * @param [entity] $relation - entity com a relacao doador/receptor do selo
+     * @return Array or Boolean
+     */
+    private function VerifySealValidity($relation){
+        if($relation->seal->validPeriod > 0){
+            $today = new \DateTime();
+            $expirationDate = date_add($relation->seal->createTimestamp, date_interval_create_from_date_string($relation->seal->validPeriod . " months"));
+            $expirated = $expirationDate < $today;
+            $date = array('expirated'=>$expirated, 'date'=>$expirationDate);
+
+            return $date;
+        }        
+
+        return false;
     }
 }
