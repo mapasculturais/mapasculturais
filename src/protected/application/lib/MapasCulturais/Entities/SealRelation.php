@@ -151,6 +151,29 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected function canUserPrint($user) {
         return $this->owner->canUser('@control', $user) || $this->seal->canUser('@control', $user);
     }
+    
+    protected function getExpireDatetime() {
+        
+        if($this->seal->validPeriod > 0){
+            $expirationDate = date_add($this->seal->createTimestamp, date_interval_create_from_date_string($this->seal->validPeriod . " months"));
+            return $expirationDate;
+        }
+        
+        return false;
+        
+    }
+    
+    protected function isExpired() {
+        if($this->seal->validPeriod > 0) {
+            
+            $today = new \DateTime();
+            $expirationDate = $this->getExpireDatetime();
+            return $expirationDate < $today;
+            
+        } else {
+            return false;
+        }
+    }
 
     public function save($flush = false) {
         $app = App::i();

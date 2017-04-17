@@ -49,9 +49,9 @@ class Seal extends EntityController {
     	$id = $this->data['id'];
     	$relation = $app->repo('SealRelation')->find($id);
         $expirationDate = $this->VerifySealValidity($relation);
-        $mensagemPrintSealRelation = $this->PrintSealRelation($relation, $app, $expirationDate['date']);
+        $mensagemPrintSealRelation = $this->getSealRelationCertificateText($relation, $app, $expirationDate['date']);
         
-    	$this->render('sealrelation', ['relation'=>$relation, 'expirationDate'=>$expirationDate, 'printSeal'=>$mensagemPrintSealRelation]);
+    	$this->render('sealrelation', ['relation'=>$relation, 'printSeal'=>$mensagemPrintSealRelation]);
     }
 
     public function GET_printSealRelation(){
@@ -71,25 +71,6 @@ class Seal extends EntityController {
     }
 
     /**
-     * Verifica a validade do selo a ser exibido
-     * 
-     * @param [entity] $relation - entity com a relacao doador/receptor do selo
-     * @return Array or Boolean
-     */
-    private function VerifySealValidity($relation){
-        if($relation->seal->validPeriod > 0){
-            $today = new \DateTime();
-            $expirationDate = date_add($relation->seal->createTimestamp, date_interval_create_from_date_string($relation->seal->validPeriod . " months"));
-            $expired = $expirationDate < $today;
-            $date = array('expired'=>$expired, 'date'=>$expirationDate);
-
-            return $date;
-        }        
-
-        return false;
-    }
-
-    /**
      * Retorna a mensagem de impressão do certificado
      *
      * @param entity $relation
@@ -97,7 +78,7 @@ class Seal extends EntityController {
      * @param expirationDate - obj com info da data de expiração do selo
      * @return mensagem de impressão ou falso
      */
-    private function PrintSealRelation($relation, $app, $expirationDate){
+    private function getSealRelationCertificateText($relation, $app, $expirationDate){
         $mensagem = $relation->seal->certificateText;
         $entity = $relation->seal;
         $dateInicio = $relation->createTimestamp->format("d/m/Y");

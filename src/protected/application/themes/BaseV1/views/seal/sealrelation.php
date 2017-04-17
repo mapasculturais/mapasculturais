@@ -10,22 +10,16 @@
 
     $this->includeMapAssets();
     $this->includeAngularEntityAssets($relation);
-    $entity = $relation->seal;
+    $seal = $relation->seal;
 ?>
 
 <article class="main-content seal">
     <!-- exibição dos avatares do selo e do agente -->
     <div class="display-seal-relation">
         <div class="seal-avatar">
-            <a href="<?php echo $entity->getSingleUrl(); ?>">
-                <?php $this->part('singles/avatar-seal', ['entity' => $entity, 'size'=> 'avatarBig', 'default_image' => 'img/avatar--seal.png']); ?>
+            <a href="<?php echo $seal->getSingleUrl(); ?>">
+                <?php $this->part('singles/avatar-seal', ['entity' => $seal, 'size'=> 'avatarBig', 'default_image' => 'img/avatar--seal.png']); ?>
             </a>
-            <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-avatar" href="#"><?php \MapasCulturais\i::_e("Editar");?></a>
-                <div id="editbox-change-avatar" class="js-editbox mc-right" title="<?php \MapasCulturais\i::esc_attr_e("Editar avatar");?>">
-                    <?php $this->ajaxUploader ($entity, 'avatar', 'image-src', 'div.avatar img.js-avatar-img', '', 'avatarBig'); ?>
-                </div>
-            <?php endif; ?>
         </div>
         <div class="agent-avatar">
             <a href="<?php echo $relation->owner_relation->getSingleUrl(); ?>" >
@@ -36,14 +30,18 @@
         <div id="seal-info-container">
             <div id="seal-name">
                 <?php $this->applyTemplateHook('name','before'); ?>
-                <h2><span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>"><a href="<?php echo $app->createUrl('seal', 'single', ['id' => $entity->id])?>"><?php echo $entity->name; ?></a></span></h2>
+                <h2>
+                    <span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>">
+                        <a href="<?php echo $app->createUrl('seal', 'single', ['id' => $seal->id])?>"><?php echo $seal->name; ?></a>
+                    </span>
+                </h2>
                 <?php $this->applyTemplateHook('name','after'); ?>
             </div>
             <!-- Data de expiração -->
             <div id="expiration-date">
-                    <?php if($relation->seal->validPeriod > 0):?>
+                    <?php if($seal->validPeriod > 0):?>
                         <span class="label">
-                                <?php if($expirationDate['expired']): ?>
+                                <?php if($seal->isExpired()): ?>
                                 <?php \MapasCulturais\i::_e('Expirado em:'); ?>
 
                                 <?php else:?>
@@ -51,20 +49,20 @@
                                 <?php endif;?>
                         </span>
                         <span class="js-editable" data-edit="validateDate" data-original-title="Data de Validade" data-emptytext="">
-                        <?php echo $expirationDate['date']->format('d-m-Y'); ?></span>&nbsp;   
+                        <?php echo $relation->getExpireDatetime()->format('d/m/Y'); ?></span>&nbsp;   
                     <?php endif; ?>
                 
-                <?php if($relation->seal->owner->userId <> $app->user->id): ?>
-                    <?php if(!$relation->renovation_request && $expirationDate['expired'] && $app->config['notifications.seal.toExpire']):?>
+                <?php if($seal->owner->userId <> $app->user->id): ?>
+                    <?php if(!$relation->renovation_request && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                         <a href="<?php echo $relation->getRequestSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
                             <?php \MapasCulturais\i::_e("Solicitar renovação");?>
                         </a>
-                    <?php elseif($relation->renovation_request && $expirationDate['expired'] && $app->config['notifications.seal.toExpire']):?>
+                    <?php elseif($relation->renovation_request && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                         <div class="alert warning">
                             <?php \MapasCulturais\i::_e("Renovação Solicitada");?>
                         <!--</div>-->
                     <?php endif;?>
-                <?php elseif($entity->owner->userId == $app->user->id && ($expirationDate['expired'] && $app->config['notifications.seal.toExpire'])):?>
+                <?php elseif($seal->owner->userId == $app->user->id && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                     <a href="<?php echo $relation->getRenewSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
                         <?php \MapasCulturais\i::_e("Renovar selo");?>
                     </a>
