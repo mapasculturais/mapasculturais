@@ -1,17 +1,30 @@
 .display-seal-relation {
-    //display: inline;
     width: 90%;
 }
 
-.seal-avatar{
+.seal-avatar {
     float: left;
     width: 15%;
-    margin-left: auto;
+    margin-left: 15rem;
     margin-right: auto;
 }
 
-.agent-avatar{
+.agent-avatar {
     width: 15%;
-    margin-left: auto;
+    margin-left: 25rem;
     margin-right: auto;
+}
+
+#seal-name, #seal-print-container {
+    margin-top: 3rem;
+    margin-bottom: 1px solid #eee !important;
+    margin-left: 15rem;
+}
+
+#expiration-date {
+    margin-left: 15rem;
+}
+
+#main-footer, body{
+    background-color: #eee;
 }

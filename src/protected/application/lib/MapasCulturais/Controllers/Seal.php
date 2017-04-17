@@ -49,8 +49,9 @@ class Seal extends EntityController {
     	$id = $this->data['id'];
     	$relation = $app->repo('SealRelation')->find($id);
         $expirationDate = $this->VerifySealValidity($relation);
+        $mensagemPrintSealRelation = $this->PrintSealRelation($relation, $app, $expirationDate['date']);
         
-    	$this->render('sealrelation', ['relation'=>$relation, 'expirationDate'=>$expirationDate]);
+    	$this->render('sealrelation', ['relation'=>$relation, 'expirationDate'=>$expirationDate, 'printSeal'=>$mensagemPrintSealRelation]);
     }
 
     public function GET_printSealRelation(){
@@ -79,12 +80,60 @@ class Seal extends EntityController {
         if($relation->seal->validPeriod > 0){
             $today = new \DateTime();
             $expirationDate = date_add($relation->seal->createTimestamp, date_interval_create_from_date_string($relation->seal->validPeriod . " months"));
-            $expirated = $expirationDate < $today;
-            $date = array('expirated'=>$expirated, 'date'=>$expirationDate);
+            $expired = $expirationDate < $today;
+            $date = array('expired'=>$expired, 'date'=>$expirationDate);
 
             return $date;
         }        
 
         return false;
+    }
+
+    /**
+     * Retorna a mensagem de impressão do certificado
+     *
+     * @param entity $relation
+     * @param entity $app
+     * @param expirationDate - obj com info da data de expiração do selo
+     * @return mensagem de impressão ou falso
+     */
+    private function PrintSealRelation($relation, $app, $expirationDate){
+        $mensagem = $relation->seal->certificateText;
+        $entity = $relation->seal;
+        $dateInicio = $relation->createTimestamp->format("d/m/Y");
+        $seloExpira = isset($expirationDate);
+        
+        if($seloExpira){
+            $dateFim = $expirationDate->format('d-m-Y');
+        }
+
+        if(!empty($mensagem)){
+            $mensagem = str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp",$mensagem);
+            $mensagem = str_replace("[sealName]",$relation->seal->name,$mensagem);
+            $mensagem = str_replace("[sealOwner]",$relation->seal->owner->name,$mensagem);
+            $mensagem = str_replace("[sealShortDescription]",$relation->seal->shortDescription,$mensagem);
+            $mensagem = str_replace("[sealRelationLink]",$app->createUrl('seal','printsealrelation',[$relation->id]),$mensagem);
+            $mensagem = str_replace("[entityDefinition]",$relation->owner->entityTypeLabel,$mensagem);
+            $mensagem = str_replace("[entityName]",$relation->owner->name,$mensagem);
+            $mensagem = str_replace("[dateIni]",$dateInicio,$mensagem);
+
+            if($seloExpira){
+                $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
+            }
+        }
+        else{
+            $mensagem = \MapasCulturais\i::__('Nome do Selo') . ': ' . $relation->seal->name .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Dono do Selo') . ': ' . $relation->seal->name .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Descri&ccedil;&atilde;o Curta') . ': ' . $relation->seal->shortDescription .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Tipo de Entidade') . ': ' . $relation->owner->entityTypeLabel .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Nome da Entidade') . ': ' . $relation->owner->name .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Data de Cria&ccedil;&atilde;o') . ': ' . $dateInicio .'<br/>';
+
+            if($seloExpira){
+                $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expira&ccedil;&atilde;o') . ': ' . $dateFim .'<br/>';
+            }
+        }
+
+        return $mensagem;
     }
 }
