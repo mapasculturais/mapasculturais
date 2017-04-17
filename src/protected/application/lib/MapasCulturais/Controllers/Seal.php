@@ -71,14 +71,14 @@ class Seal extends EntityController {
     }
 
     /**
-     * Retorna a mensagem de impressão do certificado
+     * Retorna a mensagem de impressão do certificado. Se uma mensagem não foi definida pelo usuário, retorna uma mensagem padrão com todos os campos
      *
      * @param entity $relation
      * @param entity $app
      * @param expirationDate - obj com info da data de expiração do selo
-     * @return mensagem de impressão ou falso
+     * @return mensagem de impressão
      */
-    private function getSealRelationCertificateText($relation, $app, $expirationDate){
+    private function getSealRelationCertificateText($relation, $app, $expirationDate, $addLinks = false){
         $mensagem = $relation->seal->certificateText;
         $entity = $relation->seal;
         $dateInicio = $relation->createTimestamp->format("d/m/Y");
@@ -103,15 +103,18 @@ class Seal extends EntityController {
             }
         }
         else{
+            
+            // Mensagem padrão
+            
             $mensagem = \MapasCulturais\i::__('Nome do Selo') . ': ' . $relation->seal->name .'<br/>';
             $mensagem = $mensagem . \MapasCulturais\i::__('Dono do Selo') . ': ' . $relation->seal->name .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('Descri&ccedil;&atilde;o Curta') . ': ' . $relation->seal->shortDescription .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Descrição Curta do selo') . ': ' . $relation->seal->shortDescription .'<br/>';
             $mensagem = $mensagem . \MapasCulturais\i::__('Tipo de Entidade') . ': ' . $relation->owner->entityTypeLabel .'<br/>';
             $mensagem = $mensagem . \MapasCulturais\i::__('Nome da Entidade') . ': ' . $relation->owner->name .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('Data de Cria&ccedil;&atilde;o') . ': ' . $dateInicio .'<br/>';
+            $mensagem = $mensagem . \MapasCulturais\i::__('Data de atribuição do selo') . ': ' . $dateInicio .'<br/>';
 
             if($seloExpira){
-                $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expira&ccedil;&atilde;o') . ': ' . $dateFim .'<br/>';
+                $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expiração') . ': ' . $dateFim .'<br/>';
             }
         }
 
