@@ -116,8 +116,8 @@ abstract class SealRelation extends \MapasCulturais\Entity
             $this->seal = $seal;
 
             $period = new \DateInterval("P" . ((string)$seal->validPeriod) . "M");
-            $dateFin = $this->createTimestamp->add($period);
-            $this->validateDate = $dateFin;
+            $this->validateDate = clone $this->createTimestamp;
+            $this->validateDate->add($period);
             
         } else {
             throw new \Exception();
