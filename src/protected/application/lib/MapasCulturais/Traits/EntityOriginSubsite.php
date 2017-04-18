@@ -25,5 +25,10 @@ trait EntityOriginSubsite{
             return $app->_config['app.subsite.mainUrl'];
         }
     }
+    
+    function setSubsite(\MapasCulturais\Entities\Subsite $subsite = null){
+        $this->subsite = $subsite;
+        $this->_subsiteId = $subsite ? $subsite->id : null;
+    }
 
 }
