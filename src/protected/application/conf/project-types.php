@@ -57,6 +57,13 @@ return array(
             )
         ),
 
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::url('instagram.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
+
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
                 'serialize' => function($value) { return json_encode($value); },

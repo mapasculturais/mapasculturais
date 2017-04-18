@@ -187,6 +187,12 @@ return array(
             'validations' => array(
                 "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
+        ),
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::url('instagram.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
         )
     ),
 
