@@ -1491,10 +1491,14 @@ class Theme extends MapasCulturais\Theme {
                                 foreach ($data->config['options'] as $meta_key => $value)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
+
                             case 'entitytype':
+
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
+
                                 $sort = [];
                                 foreach($mod_field['options'] as $k=>$v)
                                     $sort['label'][$k] = $v['label'];
