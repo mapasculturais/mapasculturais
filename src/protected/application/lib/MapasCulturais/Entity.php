@@ -545,8 +545,8 @@ abstract class Entity implements \JsonSerializable{
                 $this->checkPermission('create');
                 $is_new = true;
 
-                if($this->usesOriginSubsite()){
-                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                if($this->usesOriginSubsite() && $app->getCurrentSubsiteId()){
+                    $this->setSubsite($app->getCurrentSubsite());
                 }
 
             }else{
