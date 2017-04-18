@@ -18,12 +18,12 @@
     <div class="display-seal-relation">
         <div class="seal-avatar">
             <a href="<?php echo $seal->getSingleUrl(); ?>">
-                <?php $this->part('singles/avatar-seal', ['entity' => $seal, 'size'=> 'avatarBig', 'default_image' => 'img/avatar--seal.png']); ?>
+                <?php $this->part('singles/avatar-seal-relation', ['entity' => $seal, 'size'=> 'avatarBig', 'default_image' => 'img/avatar--seal.png']); ?>
             </a>
         </div>
         <div class="agent-avatar">
             <a href="<?php echo $relation->owner_relation->getSingleUrl(); ?>" >
-                <?php $this->part('singles/avatar-seal', ['entity' => $relation->owner_relation, 'size'=> 'avatarMedium', 'default_image' => 'img/avatar--seal.png']); ?>
+                <?php $this->part('singles/avatar-seal-relation', ['entity' => $relation->owner_relation, 'size'=> 'avatarMedium', 'default_image' => 'img/avatar--seal.png']); ?>
             </a>                    
         </div>
     </div>
