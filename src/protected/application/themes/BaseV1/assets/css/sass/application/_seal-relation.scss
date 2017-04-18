@@ -15,16 +15,31 @@
     margin-right: auto;
 }
 
-#seal-name, #seal-print-container {
+#main-footer, body{
+    background-color: #eee;
+}
+
+#seal-info-container {
+    border-top: 1px solid;
     margin-top: 3rem;
-    margin-bottom: 1px solid #eee !important;
-    margin-left: 15rem;
+    #seal-name {
+        margin-bottom: 3rem;
+        margin-left: 19rem;
+    }
+    .seal-text{
+        font-weight: bold;
+    }
+    #seal-print-container {
+        margin-top: 1rem;
+    }
+    #expiration-date, #seal-print-container {
+        margin-left: 5rem;
+        background-color: rgba(120, 120, 120, 0.04);
+    }
 }
 
 #expiration-date {
-    margin-left: 15rem;
-}
-
-#main-footer, body{
-    background-color: #eee;
+    margin-left: 5rem;
+    margin-top: 2rem;
+    background-color: rgba(120, 120, 120, 0.04);
 }

@@ -36,8 +36,14 @@
                     </span>
                 </h2>
                 <?php $this->applyTemplateHook('name','after'); ?>
+            <hr/>
             </div>
-            <!-- Data de expiração -->
+             <!--print seal relation -->
+            <div id="seal-print-container">
+                <?php echo $printSeal ?>
+            </div>       
+        </div><!-- fim seal info container -->
+        <!-- Data de expiração -->
             <div id="expiration-date">
                     <?php if($seal->validPeriod > 0):?>
                         <span class="label">
@@ -67,10 +73,5 @@
                         <?php \MapasCulturais\i::_e("Renovar selo");?>
                     </a>
                 <?php endif;?>
-            </div>        
-             <!--print seal relation -->
-            <div id="seal-print-container">
-                <?php echo $printSeal ?>
-            </div>        
-        </div><!-- fim seal info container -->
+            </div>
 </article>
