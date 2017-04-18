@@ -16,6 +16,7 @@ $this->addRelatedAdminAgentsToJs($entity);
 
                 <div class="descricao-do-agente">
                     <h1><a href="{{admin.agent.singleUrl}}">{{admin.agent.name}}</a></h1>
+                    <div class="alert warning" ng-if="admin.status < 0"><?php \MapasCulturais\i::_e("Aguardando confirmação.");?></div>
                     <div class="objeto-meta">
                         <div ng-if="admin.agent.terms.area">
                             <span class="label"><?php echo strtolower($this->dict('taxonomies:area: name', true)) ?>:</span>
