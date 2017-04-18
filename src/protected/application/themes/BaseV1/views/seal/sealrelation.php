@@ -55,7 +55,7 @@
                                 <?php endif;?>
                         </span>
                         <span class="js-editable" data-edit="validateDate" data-original-title="Data de Validade" data-emptytext="">
-                        <?php echo $relation->getExpireDatetime()->format('d/m/Y'); ?></span>&nbsp;   
+                        <?php echo $relation->validateDate->format('d/m/Y'); ?></span>&nbsp;   
                     <?php endif; ?>
                 
                 <?php if($seal->owner->userId <> $app->user->id): ?>
