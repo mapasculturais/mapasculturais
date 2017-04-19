@@ -43,9 +43,18 @@
 
         <?php if ($this->isEditable() || $entity->instagram): ?>
         <a class="icon icon-instagram js-editable" data-edit="instagram" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Instagram");?>"
-           href="<?php echo $entity->instagram ? $entity->instagram : '#" onclick="return false; ' ?>"
+           href="<?php
+              if($entity->instagram){
+                $user = str_replace('@', '', $entity->instagram);
+                $url = 'http://www.instagram.com/' . $user;
+              }
+              else{
+                $url = '#';
+              }
+
+              echo $url;
+            ?>"
            data-value="<?php echo $entity->instagram ?>"></a>
         <?php endif; ?>
-
     </div>
 <?php endif; ?>
