@@ -76,12 +76,8 @@ class Seal extends EntityController {
      * @param entity $relation
      * @param entity $app
      * @param expirationDate - obj com info da data de expiração do selo
-<<<<<<< HEAD
      * @param addLinks
-     * @return mensagem de impressão ou falso
-=======
      * @return mensagem de impressão
->>>>>>> 966560bb2a9be4e22a27b8d71b99b3fd1bcf3dd4
      */
     private function getSealRelationCertificateText($relation, $app, $expirationDate, $addLinks = false){
         $mensagem = $relation->seal->certificateText;
