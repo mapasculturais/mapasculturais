@@ -191,7 +191,7 @@ return array(
         'instagram' => array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'validations' => array(
-                "v::url('instagram.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             )
         )
     ),
