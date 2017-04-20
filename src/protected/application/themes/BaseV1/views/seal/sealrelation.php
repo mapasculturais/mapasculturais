@@ -25,13 +25,7 @@ if ($header = $entity->getFile('header')){
 ?>
 <article class="main-content seal">
     <header class="main-content-header">
-        <?php $this->applyTemplateHook('header-image','before'); ?>
-        <div class="header-image js-imagem-do-header" style="<?php echo $style ?>">
-            <?php if($relation->canUser('print')) :?>
-                <a class="btn btn-default js-open-editbox" href="<?php echo $app->createUrl('seal','printsealrelation',[$relation->id]);?>"><?php \MapasCulturais\i::_e("Imprimir Certificado");?></a>
-            <?php endif; ?>
-	</div>
-	<?php $this->applyTemplateHook('header-image','after'); ?>
+        <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
@@ -45,7 +39,7 @@ if ($header = $entity->getFile('header')){
 			<?php $this->applyTemplateHook('name','after'); ?>
 
             <?php if(is_object($relation->validateDate)): ?>
-                <?php   
+                <?php
                     $now = new \DateTime;
                     $diff = ($relation->validateDate->format("U") - $now->format("U"))/86400;
                 ?>
