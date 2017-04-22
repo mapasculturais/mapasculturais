@@ -83,7 +83,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      *
      * @ORM\Column(name="display_order", type="smallint", nullable=false)
      */
-    protected $displayOrder = 1;
+    protected $displayOrder = 255;
     
     /**
      * @var string

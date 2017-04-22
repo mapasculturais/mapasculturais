@@ -631,17 +631,17 @@ return [
     },
     
     
-    'alter table registration_file_and_files_add_order' => function () use($conn){
+    'altertable registration_file_and_files_add_order' => function () use($conn){
         if(__column_exists('registration_file_configuration', 'order')){
             echo "ALREADY APPLIED";
         } else {
-            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN display_order SMALLINT DEFAULT 1;");
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
         }
         
         if(__column_exists('registration_field_configuration', 'order')){
             echo "ALREADY APPLIED";
         } else {
-            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN display_order SMALLINT DEFAULT 1;");
+            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
         }
 
     },
