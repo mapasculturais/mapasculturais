@@ -331,11 +331,6 @@ class Project extends EntityController {
         $savedFields['fields'] = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
         $savedFields['files'] = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
         
-        //$data = $_POST['fields'];
-        
-        //\dump($_POST);
-        //\dump($data);
-        
         if (!is_array($_POST['fields']))
             return false; 
             

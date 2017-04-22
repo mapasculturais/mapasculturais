@@ -272,6 +272,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         var fields = _files.concat(_fields);
 
         $scope.sortableOptions = {
+            
+            // ao reordenar, atualiza displayOrder dos campos e salva
             stop: function(e, ui) {
                 
                 var ii = 1;
@@ -284,13 +286,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 var url = new UrlService('project');
                 var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
                 
-                $http.post(saveOrderUrl, {fields: fields})
-                .success(
-                    function(response){
-                        console.log(response);
-                    }
-                    );
-                
+                // requisição para salvar ordem
+                $http.post(saveOrderUrl, {fields: fields});
             }
         };
 
