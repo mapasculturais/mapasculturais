@@ -240,6 +240,7 @@ class Project extends EntityController {
                     $newField->required = $field->required;
                     $newField->categories = $field->categories;
                     $newField->fieldOptions = $field->fieldOptions;
+                    $newField->displayOrder = $field->displayOrder;
                     
                     $app->em->persist($newField);
                     
@@ -257,6 +258,7 @@ class Project extends EntityController {
                     $newFile->description = $file->description;
                     $newFile->required = $file->required;
                     $newFile->categories = $file->categories;
+                    $newFile->displayOrder = $file->displayOrder;
                     
                     $app->em->persist($newFile);
                     
