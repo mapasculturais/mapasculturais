@@ -314,4 +314,48 @@ class Project extends EntityController {
         
     }
     
+    function POST_saveFieldsOrder() {
+    
+        $this->requireAuthentication();
+        
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData)){
+            $app->pass();
+        }
+        
+        $savedFields = array();
+        
+        $savedFields['fields'] = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $savedFields['files'] = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        
+        //$data = $_POST['fields'];
+        
+        //\dump($_POST);
+        //\dump($data);
+        
+        if (!is_array($_POST['fields']))
+            return false; 
+            
+        foreach ($_POST['fields'] as $field) {
+        
+            $type = $field['fieldType'] == 'file' ? 'files' : 'fields';
+            
+            foreach ($savedFields[$type] as $savedField) {
+            
+                if ($field['id'] == $savedField->id) {
+                
+                    $savedField->displayOrder = (int) $field['displayOrder'];
+                    $savedField->save(true);
+                    
+                    break;
+                
+                }
+            
+            }
+        
+        }
+    
+    }
+    
 }

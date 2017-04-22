@@ -205,7 +205,7 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -264,12 +264,35 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         file.categories = file.categories || [];
         return file;
     }
-
+    
     var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
     var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
 
         // @TODO: USAR A FUNCAO getFields
         var fields = _files.concat(_fields);
+
+        $scope.sortableOptions = {
+            stop: function(e, ui) {
+                
+                var ii = 1;
+                
+                $.each(fields, function(i,f) {
+                    f.displayOrder=ii;
+                    ii++;
+                });
+                
+                var url = new UrlService('project');
+                var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
+                
+                $http.post(saveOrderUrl, {fields: fields})
+                .success(
+                    function(response){
+                        console.log(response);
+                    }
+                    );
+                
+            }
+        };
 
         $scope.data = {
             fieldSpinner: false,
