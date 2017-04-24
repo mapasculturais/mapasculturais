@@ -19,7 +19,7 @@
 	</div>
 </div>
 
-<?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->googleplus): ?>
+<?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->googleplus || $entity->instagram): ?>
     <div class="widget">
         <h3><?php \MapasCulturais\i::_e("Seguir");?></h3>
 
