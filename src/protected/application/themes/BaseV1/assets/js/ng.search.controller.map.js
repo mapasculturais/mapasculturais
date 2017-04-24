@@ -1,15 +1,18 @@
 
 (function(angular) {
     var app = angular.module('search.controller.map', ['ng-mapasculturais', 'search.service.findOne']);
+    app.controller('SearchResultURL', ['$scope', '$window', '$location', function($scope, $window, $location){
+        $scope.url = 'wwww.vai.com.br';
+    }]);
     app.controller('SearchMapController', ['$window', '$scope', '$rootScope', 'FindOneService', function($window, $scope, $rootScope, FindOneService) {
         $scope.init = function (){
-
             if($scope.data.global.map && $scope.data.global.map.zoom){
                 MapasCulturais.mapCenter = $scope.data.global.map.center;
             }else{
                 MapasCulturais.mapCenter = null;
             }
 
+            $scope.$window = $window;
             $scope.map = null;
             $scope.resultLayer = null;
             $scope.markers = [];
