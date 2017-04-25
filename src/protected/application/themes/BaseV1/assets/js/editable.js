@@ -10,6 +10,8 @@ jQuery(function(){
 
 
     MapasCulturais.Remove.init();
+    MapasCulturais.RemoveBanner.init();
+
 
 
     $('.js-registration-action').click(function(){
@@ -202,6 +204,29 @@ MapasCulturais.Remove = {
         });
     }
 }
+
+MapasCulturais.RemoveBanner = {
+    init: function(){
+        $('body').one('click', '.banner-delete', function(){
+            var href   = $(this).data('href');
+            var result = window.confirm('Deseja apagar este fundo?');
+            $(this).toggleClass('no-header-image');
+
+            if(result){
+                $.getJSON(href, function(r){
+                    if(r.error){
+                        MapasCulturais.Messages.error(r.data);
+                    }else{
+                        $('#header-banner').css('background-image', 'url()');
+                    }
+                });
+            }
+            else{
+                return false;
+            }
+        });
+    }
+};
 
 MapasCulturais.Editables = {
 
