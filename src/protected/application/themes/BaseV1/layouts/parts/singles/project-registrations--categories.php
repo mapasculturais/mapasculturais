@@ -1,4 +1,4 @@
-<?php 
+<?php
 $can_edit = $entity->canUser('modifyRegistrationFields');
 
 $ditable_class = $can_edit ? 'js-editable' : '';
@@ -10,7 +10,7 @@ if ($can_edit) {
 }
 ?>
 <div id="registration-categories" class="registration-fieldset">
-    <h4>3. <?php \MapasCulturais\i::_e("Opções");?></h4>
+    <h4><?php \MapasCulturais\i::_e("Opções");?></h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e('É possível criar opções para os proponentes escolherem na hora de se inscrever, como, por exemplo, "categorias" ou "modalidades". Se não desejar utilizar este recurso, deixe em branco o campo "Opções".');?></p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto.");?> </p>
     <p>
