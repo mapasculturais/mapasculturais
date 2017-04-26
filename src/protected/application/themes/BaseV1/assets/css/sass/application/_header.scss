@@ -198,12 +198,15 @@ body.action-search {
 }
 
 //background images
-.remove-background {
-    float: right;
+.display-background-button {
+    
+    position: absolute;
+    bottom: 1.5rem;
+    right: 6.5rem;
+}
 
-    .delete{
-        color: #000 !important;
-    }
+.hide-background-button{
+    display: none !important;
 }
 
 //** Entities Menu
