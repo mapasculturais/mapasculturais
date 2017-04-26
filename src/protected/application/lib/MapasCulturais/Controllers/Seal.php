@@ -102,21 +102,24 @@ class Seal extends EntityController {
             if($seloExpira){
                 $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
             }
+            
+            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/>',$mensagem);
+            
         }
         else{
             //geração de links caso $addLinks == true
             $nomeSelo = $addLinks ? $this->generateLink($app->createUrl('seal', 'single', ['id'=>$relation->seal->id], $relation->seal->name), $relation->seal->name) : $relation->seal->name;
             $donoSelo = $addLinks ? $this->generateLink($relation->seal->owner->getSingleUrl(), $relation->seal->owner->name) : $relation->seal->owner->name;
             $nomeEntidade = $addLinks ? $this->generateLink($relation->owner_relation->getSingleUrl(), $relation->owner_relation->name) : $relation->owner_relation->name;
-            $mensagem = \MapasCulturais\i::__('<b>Nome do Selo</b>') . ': ' . $nomeSelo .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('<b>Dono do Selo</b>') . ': ' . $donoSelo .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('<b>Descrição Curta</b>') . ': ' . $relation->seal->shortDescription .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('<b>Tipo de Entidade</b>') . ': ' . $relation->owner->entityTypeLabel .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('<b>Nome da Entidade</b>') . ': ' . $nomeEntidade .'<br/>';
-            $mensagem = $mensagem . \MapasCulturais\i::__('<b>Data de Criação</b>') . ': ' . $dateInicio .'<br/>';
+            $mensagem = '<p>' . \MapasCulturais\i::__('<b>Nome do Selo</b>') . ': ' . $nomeSelo .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Dono do Selo</b>') . ': ' . $donoSelo . '</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Descrição Curta</b>') . ': ' . $relation->seal->shortDescription .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Tipo de Entidade</b>') . ': ' . $relation->owner->entityTypeLabel .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Nome da Entidade</b>') . ': ' . $nomeEntidade .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Data de Criação</b>') . ': ' . $dateInicio .'</p>';
 
             if($seloExpira){
-                $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expiração') . ': ' . $dateFim .'<br/>';
+                $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expiração') . ': ' . $dateFim;
             }
         }
 

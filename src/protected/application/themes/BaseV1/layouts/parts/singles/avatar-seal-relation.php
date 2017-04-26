@@ -1,6 +1,6 @@
 <?php $this->applyTemplateHook('avatar','before'); ?>
 
-<?php $avatarSize = isset($size) ? $size : 'avatarBig' //Se não houver sido informado, o default a ser exibido é avatarBig?>
+<?php $avatarSize = isset($size) ? $size : 'avatarMedium' ?>
     <?php if($avatar = $entity->avatar): ?>
         <img src="<?php echo $avatar->transform($avatarSize)->url; ?>" alt="" class="js-avatar-img" />
     <?php else: ?>
