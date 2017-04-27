@@ -112,7 +112,7 @@ class Seal extends EntityController {
                 $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
             }
             
-            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/><br/>',$mensagem);
+            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/>',$mensagem);
             
         }
         else{
