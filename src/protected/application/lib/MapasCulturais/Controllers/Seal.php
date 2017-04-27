@@ -82,6 +82,15 @@ class Seal extends EntityController {
     private function getSealRelationCertificateText($relation, $app, $expirationDate, $addLinks = false){
         $mensagem = $relation->seal->certificateText;
         $entity = $relation->seal;
+        $nomeSelo = $addLinks ? $this->generateLink($app->createUrl('seal', 'single', ['id'=>$relation->seal->id], 
+                    $relation->seal->name), $relation->seal->name) : $relation->seal->name;
+
+        $donoSelo = $addLinks ? $this->generateLink($relation->seal->owner->getSingleUrl(), 
+                    $relation->seal->owner->name) : $relation->seal->owner->name;
+
+        $nomeEntidade = $addLinks ? $this->generateLink($relation->owner_relation->getSingleUrl(), 
+        $relation->owner_relation->name) : $relation->owner_relation->name;
+
         $dateInicio = $relation->createTimestamp->format("d/m/Y");
         $seloExpira = isset($expirationDate);
         
@@ -91,26 +100,22 @@ class Seal extends EntityController {
 
         if(!empty($mensagem)){
             $mensagem = str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp",$mensagem);
-            $mensagem = str_replace("[sealName]",$relation->seal->name,$mensagem);
-            $mensagem = str_replace("[sealOwner]",$relation->seal->owner->name,$mensagem);
+            $mensagem = str_replace("[sealName]",$nomeSelo,$mensagem);
+            $mensagem = str_replace("[sealOwner]",$donoSelo,$mensagem);
             $mensagem = str_replace("[sealShortDescription]",$relation->seal->shortDescription,$mensagem);
             $mensagem = str_replace("[sealRelationLink]",$app->createUrl('seal','printsealrelation',[$relation->id]),$mensagem);
             $mensagem = str_replace("[entityDefinition]",$relation->owner->entityTypeLabel,$mensagem);
-            $mensagem = str_replace("[entityName]",$relation->owner->name,$mensagem);
+            $mensagem = str_replace("[entityName]",$nomeEntidade,$mensagem);
             $mensagem = str_replace("[dateIni]",$dateInicio,$mensagem);
 
             if($seloExpira){
                 $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
             }
             
-            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/>',$mensagem);
+            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/><br/>',$mensagem);
             
         }
         else{
-            //geração de links caso $addLinks == true
-            $nomeSelo = $addLinks ? $this->generateLink($app->createUrl('seal', 'single', ['id'=>$relation->seal->id], $relation->seal->name), $relation->seal->name) : $relation->seal->name;
-            $donoSelo = $addLinks ? $this->generateLink($relation->seal->owner->getSingleUrl(), $relation->seal->owner->name) : $relation->seal->owner->name;
-            $nomeEntidade = $addLinks ? $this->generateLink($relation->owner_relation->getSingleUrl(), $relation->owner_relation->name) : $relation->owner_relation->name;
             $mensagem = '<p>' . \MapasCulturais\i::__('<b>Nome do Selo</b>') . ': ' . $nomeSelo .'</p>';
             $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Dono do Selo</b>') . ': ' . $donoSelo . '</p>';
             $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Descrição Curta</b>') . ': ' . $relation->seal->shortDescription .'</p>';
