@@ -78,9 +78,11 @@ MapasCulturais.EventOccurrenceManager = {
     formatDate : function (value){
         if(!value)
             return '';
-        else
+        else {
+            value = value.replace(/-/g, ' '); // Corrige Firefox
             return new Date(value + ' 12:00:00 GMT')
                 .toLocaleDateString(this.localeDateOptions.locale, this.localeDateOptions.dateOptions);
+        }
     },
     init : function(selector) {
         var labels = MapasCulturais.gettext.singleEvents;
