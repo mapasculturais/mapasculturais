@@ -35,7 +35,7 @@ if ($this->isEditable() || "$entity" != "$owner"):
         <div class="clearfix">
             <?php if (!$this->isEditable() && !$app->user->is('guest')): ?>
                 <a class="btn btn-small btn-default staging-hidden" href="#"><?php i::_e("Reportar erro"); ?></a>
-                <?php if($entity->canUser('@control')): ?>
+                <?php if($entity->canUser('changeOwner')): ?>
                     <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)"><?php i::_e("Ceder propriedade");?></a>
                 <?php else: ?>
                     <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)"><?php i::_e("Reivindicar propriedade");?></a>
