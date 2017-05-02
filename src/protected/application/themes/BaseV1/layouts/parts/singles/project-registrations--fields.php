@@ -1,6 +1,6 @@
 <div id="registration-attachments" class="registration-fieldset">
 
-    <h4>6. <?php \MapasCulturais\i::_e("Campos");?></h4>
+    <h4><?php \MapasCulturais\i::_e("Campos");?></h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("Configure aqui os campos do formulário de inscrição.");?></p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto.");?> </p>
     <div ng-controller="RegistrationConfigurationsController">
@@ -54,7 +54,7 @@
                         <div ng-if="field.fieldType !== 'file'">
                             <div class="js-open-editbox">
                                 <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em></div>
-                                <span ng-if="field.categories.length" class="attachment-description"> 
+                                <span ng-if="field.categories.length" class="attachment-description">
                                     <?php \MapasCulturais\i::_e("Somente para");?> <strong>{{field.categories.join(', ')}}</strong>
                                     <br>
                                 </span>
