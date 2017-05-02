@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-04-27 13:08-0300\n"
+"POT-Creation-Date: 2017-05-02 17:38-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -6474,7 +6474,7 @@ msgstr "Antes de cargar las bases es preciso salvar el proyecto."
 
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:9
 msgid "Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf."
-msgstr "Envíe un archivo con las bases. Formatos aceptados: .doc, .odt y .pdf."
+msgstr "Envíe un archivo con las bases. Formato aceptado: .pdf"
 
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--rules.php:10
 msgid "Enviar regulamento"
