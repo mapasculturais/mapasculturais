@@ -21,7 +21,7 @@ use MapasCulturais\Entities\Agent;
     </div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
-        <?php if(!$entity->isUserProfile): ?>
+        <?php if(!$entity->isUserProfile && !isset($only_edit_button)): ?>
 
             <?php if($entity->status === Agent::STATUS_ENABLED): ?>
 

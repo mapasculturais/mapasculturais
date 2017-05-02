@@ -1693,6 +1693,7 @@ class Theme extends MapasCulturais\Theme {
             'ownerUserId' => $entity->ownerUser->id,
             'definition' => $entity->getPropertiesMetadata(),
             'userHasControl' => $entity->canUser('@control'),
+            'canUserChangeOwner' => $entity->canUser('changeOwner'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
             'object' => $entity

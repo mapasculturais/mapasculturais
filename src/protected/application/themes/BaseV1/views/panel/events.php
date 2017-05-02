@@ -56,7 +56,7 @@ $this->layout = 'panel'
 	<!-- #permitido-->
 	<div id="permitido">
 		<?php foreach($app->user->hasControlEvents as $entity): ?>
-			<?php $this->part('panel-event', array('entity' => $entity)); ?>
+			<?php $this->part('panel-event', array('entity' => $entity, 'only_edit_button' => true)); ?>
 		<?php endforeach; ?>
 		<?php if(!$app->user->hasControlEvents): ?>
 			<div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum evento liberado.");?></div>
