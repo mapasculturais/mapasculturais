@@ -50,7 +50,7 @@ $this->layout = 'panel'
 	<!-- #permitido-->
 	<div id="permitido">
 		<?php foreach($app->user->hasControlSeals as $entity): ?>
-			<?php $this->part('panel-seal', array('entity' => $entity)); ?>
+			<?php $this->part('panel-seal', array('entity' => $entity, 'only_edit_button' => true)); ?>
 		<?php endforeach; ?>
 		<?php if(!$app->user->hasControlSeals): ?>
 			<div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum selo liberado.");?></div>

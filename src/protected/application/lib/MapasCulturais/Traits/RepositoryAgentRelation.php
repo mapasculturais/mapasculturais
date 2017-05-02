@@ -28,6 +28,7 @@ trait RepositoryAgentRelation{
      * @return \MapasCulturais\Entity[]
      */
     function findByAgentRelationUser($user, $has_control = false, $agent_relation_status = 1, $status = 1) {
+        
         $entityClass = $this->getClassName();
 
         if ($entityClass::usesTaxonomies()) {
@@ -61,9 +62,7 @@ trait RepositoryAgentRelation{
         }
 
 		$query = App::i()->em->createQuery($dql);
-        // if ($app->config['app.usePermissionsCache']) {
-        //     $query->useResultCache (true, $app->config['app.permissionsCache.lifetime']);
-        // }
+
         $query->setParameter('user', $user);
         $query->setParameter('hc', $has_control);
         $query->setParameter('ars', $agent_relation_status);
@@ -94,9 +93,7 @@ trait RepositoryAgentRelation{
                         er.status = :ars AND
                         er.hasControl = true ";
         $query = $app->em->createQuery($dql);
-        // if ($app->config['app.usePermissionsCache']) {
-        //     $query->useResultCache (true, $app->config['app.permissionsCache.lifetime']);
-        // }
+
         $query->setParameter('id', $app->view->controller->requestedEntity->id);
         $query->setParameter('ars', $agent_relation_status);
 
