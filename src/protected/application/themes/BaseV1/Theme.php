@@ -1453,7 +1453,7 @@ class Theme extends MapasCulturais\Theme {
                 '@ORDER' => 'createTimestamp DESC'
             ));
         }
-        
+
         if ($this->controller->id === 'site' && $this->controller->action === 'search'){
             $skeleton_field = [
                 'fieldType' => 'checklist',
@@ -1491,10 +1491,19 @@ class Theme extends MapasCulturais\Theme {
                                 foreach ($data->config['options'] as $meta_key => $value)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
+
                             case 'entitytype':
+
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
+
+                                $sort = [];
+                                foreach($mod_field['options'] as $k=>$v)
+                                    $sort['label'][$k] = $v['label'];
+                                array_multisort($sort['label'], SORT_ASC, $mod_field['options']);
+
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
                                 break;
                             case 'term':
@@ -1843,7 +1852,7 @@ class Theme extends MapasCulturais\Theme {
         } else {
             $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
         }
-        
+
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
         $this->jsObject['projectRegistrationsEnabled'] = App::i()->config['app.enableProjectRegistration'];
