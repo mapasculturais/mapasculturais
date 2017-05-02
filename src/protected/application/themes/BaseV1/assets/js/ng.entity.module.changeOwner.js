@@ -52,7 +52,7 @@
             apiQuery: { }
         };
         
-        if(!MapasCulturais.entity.userHasControl){
+        if(!MapasCulturais.entity.canUserChangeOwner){
             $scope.data.apiQuery['@permissions'] = '@control';
         }
         

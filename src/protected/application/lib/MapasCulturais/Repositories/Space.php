@@ -4,7 +4,8 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 class Space extends \MapasCulturais\Repository{
-    use Traits\RepositoryKeyword;
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryAgentRelation;
 
     public function getCurrentSubsiteSpaceIds($implode = false){
         $app = App::i();

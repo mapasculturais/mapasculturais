@@ -275,10 +275,6 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
-        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
-            return false;
-        }
-
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
