@@ -1749,11 +1749,15 @@ class ApiQuery {
     }
     
     protected function _parseSelect($select) {
-        $select = str_replace(' ', '', $select);
-        
-        if($select === '*'){
-            $select = implode(',', $this->_getAllPropertiesNames());
-        }
+
+        $app = App::i();
+        $select = array_unique(explode(',', str_replace(' ', '', $select)));
+
+        $idx = array_search('*', $select);
+        if($idx === 0 || $idx >= 1)
+            $select[$idx] = implode(',', $this->_getAllPropertiesNames());
+
+        $select = implode(',', $select);
         
         $replacer = function ($select, $prop, $_subquery_select, $_subquery_match){
             $replacement = $this->_preCreateSelectSubquery($prop, $_subquery_select, $_subquery_match);
