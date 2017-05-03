@@ -53,6 +53,16 @@
                         $rootScope.$emit('error', { message: "Cannot remove related agent", data: data, status: status });
                     });
             },
+            
+            renameGroup: function(group) {
+                return $http.post(this.getUrl('renameGroupAgentRelation'), {group: group}).
+                    success(function(data, status){
+                        $rootScope.$emit('relatedAgent.renamedGroup', data);
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', { message: "Cannot rename group", data: data, status: status });
+                    });
+            },
 
             giveControl: function(agentId){
                 return this.setControl(agentId, true);
@@ -134,6 +144,10 @@
         $scope.closeNewGroupEditBox = function(){
             EditBox.close('new-related-agent-group');
         };
+        
+        $scope.closeRenameGroupEditBox = function(){
+            EditBox.close('rename-related-agent-group');
+        };
 
         $scope.data.newGroupName = '';
 
@@ -142,7 +156,7 @@
         };
 
         $scope.createGroup = function(){
-            if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName && $scope.data.newGroupName.toLowerCase().trim() !== 'registration') ){
+            if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName ) && $scope.data.newGroupName.toLowerCase().trim() !== 'registration' && $scope.data.newGroupName.toLowerCase().trim() !== 'group-admin' ){
                 var newGroup = {name: $scope.data.newGroupName, relations: []};
 
                 $scope.groups = [newGroup].concat($scope.groups);
@@ -151,18 +165,37 @@
                 EditBox.close('new-related-agent-group');
             }
         };
-
+        
+        $scope.setRenameGroup = function(group){
+            $scope.data.editGroup = {};
+            angular.copy(group, $scope.data.editGroup);
+            $scope.data.editGroupIndex = $scope.groups.indexOf(group);
+        };
+        
+        $scope.renameGroup = function(e){
+            if($scope.data.editGroup.name.trim() && !groupExists( $scope.data.editGroup.name ) && $scope.data.editGroup.name.toLowerCase().trim() !== 'registration' && $scope.data.editGroup.name.toLowerCase().trim() !== 'group-admin' ){
+                RelatedAgentsService.renameGroup($scope.data.editGroup).success(function() {
+                    angular.copy($scope.data.editGroup, $scope.groups[$scope.data.editGroupIndex]);
+                    EditBox.close('rename-related-agent-group');
+                });
+            }
+        };
+        
         $scope.createRelation = function(entity){
             var _scope = this.$parent;
             var groupName = _scope.attrs.group;
+            
+            _scope.result = [];
+            _scope.searchText = '';
+            $scope.spinners[groupName] = true;
 
             RelatedAgentsService.create(groupName, entity.id).
                     success(function(data){
                         var group = getGroup(groupName);
                         group.relations.push(data);
                         $scope.showCreateDialog[groupName] = false;
-                        _scope.$parent.searchText = '';
-                        _scope.$parent.result = [];
+                        _scope.searchText = '';
+                        _scope.result = [];
                         EditBox.close($scope.getCreateAgentRelationEditBoxId(groupName));
                     });
         };
@@ -179,17 +212,34 @@
                         group.relations = oldRelations;
                     });
         };
+        
+        $scope.deleteGroup = function(group) {
+            if (confirm(labels['confirmDeleteGroup'].replace('%s', group.name))) {
+                var i = $scope.groups.indexOf(group);
+                group.relations.forEach(function(relation){
+                    //$scope.deleteRelation(relation);
+                    RelatedAgentsService.remove(relation.group, relation.agent.id);
+                });
+                
+                $scope.groups.splice(i,1);
+            }
+        };
 
         $scope.createAdminRelation = function(entity){
             var _scope = this.$parent;
+            
+            _scope.result = [];
+            _scope.searchText = '';
+            $scope.spinners['group-admin'] = true; // não está funcionando
+            
             var groupName = 'group-admin';
             var hasControl = true;
 
             RelatedAgentsService.create(groupName, entity.id, true).
                     success(function(data){
                         $scope.admins.push(data);
-                        _scope.$parent.searchText = '';
-                        _scope.$parent.result = [];
+                        _scope.searchText = '';
+                        _scope.result = [];
                         EditBox.close('add-related-agent');
                     });
         };

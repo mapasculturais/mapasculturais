@@ -91,6 +91,15 @@ class Subsite extends \MapasCulturais\Entity
     protected $aliasUrl;
 
     /**
+     * @var \MapasCulturais\Entities\Role[] Role
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_roles;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
@@ -138,14 +147,14 @@ class Subsite extends \MapasCulturais\Entity
     static function getValidations(){
         return [
             'name' => [
-                'required' => 'O nome da instalação é obrigatório'
+                'required' => \MapasCulturais\i::__('O nome da instalação é obrigatório')
             ],
             'url' => [
-                'required' => 'A url da instalação é obrigatória',
-                'unique' => 'Esta URL já está sendo utilizada'
+                'required' => \MapasCulturais\i::__('A url da instalação é obrigatória'),
+                'unique' => \MapasCulturais\i::__('Esta URL já está sendo utilizada')
             ],
             'aliasUrl' => [
-                'unique' => 'Esta URL já está sendo utilizada'
+                'unique' => \MapasCulturais\i::__('Esta URL já está sendo utilizada')
             ]
         ];
     }
@@ -430,6 +439,7 @@ class Subsite extends \MapasCulturais\Entity
         $app->em->flush();
     }
 
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

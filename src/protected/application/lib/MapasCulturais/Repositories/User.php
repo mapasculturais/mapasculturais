@@ -20,11 +20,19 @@ class User extends \MapasCulturais\Repository{
         return $user;
     }
     
-    public function getByRole($role) {
-        $user_query = $this->_em->createQuery('SELECT u FROM MapasCulturais\Entities\User u 
-            JOIN u.roles r WITH r.name =:role');
+    public function getByRole($role,$subsite_id = 0) {
+        $join_subsite = "";
+        if($subsite_id > 0) {
+            $join_subsite .= " JOIN r.subsite s WITH s.id =:subsite_id " ; 
+        }
         
+        $user_query = $this->_em->createQuery('SELECT r,u,a FROM MapasCulturais\Entities\Role r 
+                JOIN r.user u WITH r.name =:role' . $join_subsite . ' JOIN u.profile a ORDER BY a.name');
+
         $user_query->setParameter('role', $role);
+        if($subsite_id > 0) {
+            $user_query->setParameter('subsite_id', $subsite_id);
+        }
         $users = $user_query->getResult();
         return $users;
 

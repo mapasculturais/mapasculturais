@@ -1,5 +1,7 @@
 <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
+    <!--
     <h4><?php \MapasCulturais\i::_e("Campos adicionais do formulário de inscrição.");?></h4>
+    -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
 
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item registration-view-mode">

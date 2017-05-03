@@ -110,11 +110,6 @@ if ($header = $entity->getFile('header')){
             <?php endif; ?>
             <!--.descricao-->
 
-            <?php if ( $relation->validateDate ): ?>
-                <h3><?php \MapasCulturais\i::_e("Válido Até");?></h3>
-                <span class="js-editable" data-edit="validateDate" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Validade do Selo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a validade do selo");?>"><?php echo $relation->validateDate->format("d/m/Y"); ?></span>
-            <?php endif; ?>
-            <!--.validade-->
         </div>
         <!-- #sobre -->
 

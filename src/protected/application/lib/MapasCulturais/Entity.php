@@ -408,7 +408,7 @@ abstract class Entity implements \JsonSerializable{
 
         return $data_array;
     }
-    
+
     static public function getValidations(){
         return [];
     }
@@ -500,7 +500,7 @@ abstract class Entity implements \JsonSerializable{
     public function getEntityType(){
         return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
     }
-    
+
     public function getEntityTypeLabel($plural = false) {}
 
     function getEntityState() {
@@ -543,14 +543,16 @@ abstract class Entity implements \JsonSerializable{
         try{
             if($this->isNew()){
                 $this->checkPermission('create');
+                $is_new = true;
 
-
-                if($this->usesOriginSubsite()){
-                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                if($this->usesOriginSubsite() && $app->getCurrentSubsiteId()){
+                    $this->setSubsite($app->getCurrentSubsite());
                 }
 
             }else{
                 $this->checkPermission('modify');
+                $is_new = false;
+
             }
             $app->em->persist($this);
 
@@ -570,6 +572,12 @@ abstract class Entity implements \JsonSerializable{
                 if($flush){
                     $app->em->flush();
                 }
+            }
+            $this->refresh();
+            if($is_new){
+                $this->_newCreatedRevision();
+            } else {
+                $this->_newModifiedRevision();
             }
 
             // delete the entity cache
@@ -722,7 +730,7 @@ abstract class Entity implements \JsonSerializable{
         if(!method_exists($class, 'getValidations')) {
             return $errors;
         }
-        
+
         foreach($class::getValidations() as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
@@ -886,9 +894,17 @@ abstract class Entity implements \JsonSerializable{
 
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
+        }
         
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();
+        }
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
         }
     }
 
@@ -911,19 +927,22 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
         if (property_exists($this, 'updateTimestamp')) {
+            return;
             $this->updateTimestamp = new \DateTime;
             if($this->sentNotification){
                 $entity = $this;
                 $nid = $this->sentNotification;
                 $app->hook('entity(' . $hook_class_path . ').update:after', function() use($app, $entity, $nid) {
-                    if($this->equals($entity)){
+                    if($this->equals($entity) && $app->user->equals($this->getOwnerUser())){
                         $app->log->debug("notification id: $nid");
                         $notification = $app->repo('Notification')->find($nid);
-                        $notification->delete();
-                        $this->sentNotification = 0;
-                        $this->save();
+                        if($notification){
+                            $notification->delete();
+                            $this->sentNotification = 0;
+                            $this->save();
 
-                        $app->em->flush();
+                            $app->em->flush();
+                        }
                     }
                 });
             }
@@ -962,7 +981,5 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
-
     }
-
 }

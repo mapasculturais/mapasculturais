@@ -1,4 +1,4 @@
-#SaaS - Software As A Software
+# SaaS - Software As A Service
 
 O SaaS é uma formato de distribuição de um serviço que é um software em grandes escalas.
 Tem objetivo de otimizar a entrega de um determinado software e facilitar a sua gestão para os solicitantes do serviço/software.

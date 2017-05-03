@@ -12,7 +12,8 @@ use MapasCulturais\App;
  * @ORM\Table(name="agent_meta", indexes={
  *      @ORM\Index(name="agent_meta_owner_idx", columns={"object_id"}),
  *      @ORM\Index(name="agent_meta_owner_key_idx", columns={"object_id", "key"}),
- *      @ORM\Index(name="agent_meta_key_value_idx", columns={"key", "value"})
+ *      @ORM\Index(name="agent_meta_key_idx", columns={"key"}),
+ *      @ORM\Index(name="agent_meta_value_idx", columns={"value"}, flags={"fulltext"})
  * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")

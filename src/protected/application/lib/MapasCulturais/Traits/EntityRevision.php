@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Entities\EntityRevision as Revision;
 
 trait EntityRevision{
@@ -21,14 +22,12 @@ trait EntityRevision{
         $fields = $class_metadata->getFieldNames();
         $removedFields = ['id','_geoLocation','userId'];
         $entity_data = null;
-
         foreach($fields as $field) {
             if(!in_array($field,$removedFields)) {
                 $revisionData[$field] = $this->$field;
             }
         }
         $relations = $class_metadata->getAssociationMappings();
-
         if(array_key_exists("owner",$relations)) {
             if(isset($this->owner)) {
                 $entity_data = $this->owner->simplify("id,name,shortDescription");
@@ -123,7 +122,7 @@ trait EntityRevision{
         $action = $this->controller->action;
         $message = "";
         if($action == Revision::ACTION_CREATED) {
-            $message = "Registro criado.";
+            $message = i::__("Registro criado.");
         }
         $revision = new Revision($revisionData,$this,Revision::ACTION_CREATED,$message);
         $revision->save(true);
@@ -132,7 +131,7 @@ trait EntityRevision{
     public function _newModifiedRevision() {
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
-        $message = "Registro atualizado.";
+        $message = i::__("Registro atualizado.");
         
         $last_revision = $this->getLastRevision();
         $last_revision_data = $last_revision->getRevisionData();
@@ -144,42 +143,44 @@ trait EntityRevision{
             switch ($new_status){
                 case self::STATUS_ENABLED:
                     $action = Revision::ACTION_PUBLISHED;
-                    $message = "Registro publicado.";
+                    $message = i::__("Registro publicado.");
                     break;
                 
                 case self::STATUS_ARCHIVED:
                     $action = Revision::ACTION_ARCHIVED;
-                    $message = "Registro arquivado.";
+                    $message = i::__("Registro arquivado.");
                     break;
                 
                 case self::STATUS_DRAFT:
                     if($old_status == self::STATUS_TRASH){
-                        $message = "Registro removido da lixeira.";
+                        $message = i::__("Registro recuperado da lixeira.");
                         $action = Revision::ACTION_UNTRASHED;
                     } else if( $old_status == self::STATUS_ARCHIVED){
-                        $message = "Registro desarquivado.";
+                        $message = i::__("Registro desarquivado.");
                         $action = Revision::ACTION_UNARCHIVED;
                     } else {
                         $action = Revision::ACTION_UNPUBLISHED;
-                        $message = "Registro despublicado.";
+                        $message = i::__("Registro despublicado.");
                     }
                     break;
                     
                 case self::STATUS_TRASH:
                     $action = Revision::ACTION_TRASHED;
-                    $message = "Registro movido para a lixeira.";
+                    $message = i::__("Registro movido para a lixeira.");
                     break;
             }
         }
 
         $revision = new Revision($revisionData,$this,$action,$message);
-        $revision->save(true);
+        if($revision->modified) {
+            $revision->save(true);
+        }
     }
 
     public function _newDeletedRevision() {
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_DELETED;
-        $message = "Registro deletado.";
+        $message = i::__("Registro deletado.");
         $revision = new Revision($revisionData,$this,Revision::ACTION_DELETED,$message);
         $revision->save(true);
     }

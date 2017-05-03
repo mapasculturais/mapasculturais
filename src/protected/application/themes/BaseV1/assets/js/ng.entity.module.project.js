@@ -208,9 +208,9 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
 module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
-    
+
     var labels = MapasCulturais.gettext.moduleProject;
-    
+
     $scope.isEditable = MapasCulturais.isEditable;
     $scope.maxUploadSize = MapasCulturais.maxUploadSize;
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
@@ -387,7 +387,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.openFieldConfigurationEditBox = function(id, index, event){
             $scope.fieldConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
-            console.log('aaa');
             EditBox.open('editbox-registration-field-'+id, event);
         };
 
@@ -504,7 +503,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout', 'ProjectEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, ProjectEventsService, EditBox, $http, UrlService) {
     $scope.events = $scope.data.entity.events.slice();
     $scope.numSelectedEvents = 0;
-    
+
     var labels = MapasCulturais.gettext.moduleProject;
 
     $scope.events.forEach(function(evt){
@@ -665,7 +664,7 @@ module.controller('ProjectEventsController', ['$scope', '$rootScope', '$timeout'
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
     var registrationsUrl = new UrlService('registration');
-    
+
     var labels = MapasCulturais.gettext.moduleProject;
 
     $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
@@ -766,7 +765,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
             $scope.$apply();
             setTimeout(function(){
-                EditBox.close('editbox-file-'+id, event);
+                EditBox.close('editbox-file-'+id, evt);
             }, 700);
         });
     };
@@ -838,7 +837,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
         spinner: false,
 
         registrationCategories: categories,
-        registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
+        registrationCategoriesToFilter: [{value: null, label: labels['Todas opções']}].concat(categories),
 
         registration: {
             owner: null,
@@ -1089,7 +1088,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                         ownerRegistration.push($scope.data.entity.registrations[i].owner);
                     }
                 }
-                
+
                 if(MapasCulturais.entity.object.registrationLimitPerOwner > 0 && ownerRegistration.length >= MapasCulturais.entity.object.registrationLimitPerOwner) {
                     MapasCulturais.Messages.error(labels['limitReached']);
                 }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
@@ -1263,9 +1262,9 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
             relations = oldRelations;
         });
     };
-    
+
     // Load relatedSeals saved values
     jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
-    
+
 }]);
 })(angular);

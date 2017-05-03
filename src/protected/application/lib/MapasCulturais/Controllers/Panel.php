@@ -48,8 +48,8 @@ class Panel extends \MapasCulturais\Controller {
 
     function GET_listUsers(){
         $this->requireAuthentication();
-
         $app = App::i();
+        $subsite_id = $app->getCurrentSubsiteId();
 
         $roles = $app->getRoles();
 
@@ -60,7 +60,7 @@ class Panel extends \MapasCulturais\Controller {
         $vars = array();
 
         foreach ($roles as $roleSlug => $roleInfo) {
-            $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug);
+            $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug,$subsite_id);
 
             if ($roleSlug == 'superAdmin') {
                 $roles[$roleSlug]['permissionSuffix'] = 'SuperAdmin';

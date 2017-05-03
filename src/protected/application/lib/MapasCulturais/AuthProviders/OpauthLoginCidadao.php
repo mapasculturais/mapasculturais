@@ -38,11 +38,15 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         
         //  SaaS -- BEGIN
         $app->hook('template(subsite.<<*>>.tabs):end', function() use($app){
-            $this->part('singles/subsite--login-cidadao--tab');
+            if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
+                $this->part('singles/subsite--login-cidadao--tab');
+            }
         });
         
         $app->hook('template(subsite.<<*>>.tabs-content):end', function() use($app){
-            $this->part('singles/subsite--login-cidadao--content');
+            if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
+                $this->part('singles/subsite--login-cidadao--content');
+            }
         });
         
         $metadata = [

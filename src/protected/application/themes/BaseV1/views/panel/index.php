@@ -14,7 +14,7 @@ $button = "";
 
     <?php if($subsite && $subsite->canUser('modify')):?>
     <p class="highlighted-message" style="margin-top:-2em;">
-        Você é administrador deste subsite. Clique <a href="<?php echo $subsite->singleUrl ?>">aqui</a> para configurar.
+        <?php printf(\MapasCulturais\i::__('Você é administrador deste subsite. Clique %saqui%s para configurar.'), '<a href="' . $subsite->singleUrl . '">', '</a>'); ?>
     </p>
     <?php endif; ?>
 
@@ -91,12 +91,12 @@ $button = "";
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">Subsite</span>
+                        <span class="alignleft"><?php \MapasCulturais\i::_e('Subsite'); ?></span>
                         <div class="icon icon-subsite alignright"></div>
                     </div>
                     <div class="clearfix">
-                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'subsite') ?>" title="Ver meus subsite"><?php echo $count->subsite; ?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('subsite', 'create'); ?>" title="Adicionar subsite"></a>
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'subsite') ?>" title="<?php \MapasCulturais\i::esc_attr_e('Ver meus subsites'); ?>"><?php echo $count->subsite; ?></a>
+                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('subsite', 'create'); ?>" title="<?php \MapasCulturais\i::esc_attr_e('Adicionar subsite'); ?>"></a>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@ $button = "";
             <div>
                 <div>
                     <div class="clearfix">
-                        <span class="alignleft">Selos</span>
+                        <span class="alignleft"><?php \MapasCulturais\i::_e('Selos'); ?></span>
                         <div class="icon icon-seal alignright"></div>
                     </div>
                     <div class="clearfix">

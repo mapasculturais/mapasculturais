@@ -156,4 +156,162 @@ class Project extends EntityController {
 
         $this->apiResponse($projects);
     }
+    
+    function GET_exportFields() {
+        $this->requireAuthentication();
+        
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData)){
+            $app->pass();
+        }
+        
+        $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $files = $user = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        
+        $project =  $app->repo("Project")->find($this->urlData['id']);
+        
+        if (!$project->canUser('modify'))
+            return false; //TODO return error message?
+        
+        $projectMeta = array(
+            'registrationCategories', 
+            'useAgentRelationColetivo', 
+            'registrationLimitPerOwner', 
+            'registrationCategDescription', 
+            'registrationCategTitle', 
+            'useAgentRelationInstituicao', 
+            'introInscricoes',
+            'registrationSeals', 
+            'registrationLimit'
+        );
+        
+        $metadata = [];
+        
+        foreach ($projectMeta as $key) {
+            $metadata[$key] = $project->{$key};
+        }
+        
+        $result = array(
+            'files' => $files,
+            'fields' => $fields,
+            'meta' => $metadata
+        );
+        
+        header('Content-disposition: attachment; filename=project-'.$this->urlData['id'].'-fields.txt');
+        header('Content-type: text/plain');
+        echo json_encode($result);
+    }
+    
+    function POST_importFields() {
+        $this->requireAuthentication();
+        
+        $app = App::i();
+        
+        if(!key_exists('id', $this->urlData)){
+            $app->pass();
+        }
+        
+        $project_id = $this->urlData['id'];
+        
+        if (isset($_FILES['fieldsFile']) && isset($_FILES['fieldsFile']['tmp_name']) && is_readable($_FILES['fieldsFile']['tmp_name'])) {
+        
+            $importFile = fopen($_FILES['fieldsFile']['tmp_name'], "r"); 
+            $importSource = fread($importFile,filesize($_FILES['fieldsFile']['tmp_name']));
+            $importSource = json_decode($importSource);
+            
+            $project =  $app->repo("Project")->find($project_id);
+            
+            if (!$project->canUser('modifyRegistrationFields'))
+                return false; //TODO return error message?
+            
+            if (!is_null($importSource)) {
+            
+                
+                // Fields
+                foreach($importSource->fields as $field) {
+                
+                    $newField = new Entities\RegistrationFieldConfiguration;
+                    $newField->owner = $project;
+                    $newField->title = $field->title;
+                    $newField->description = $field->description;
+                    $newField->maxSize = $field->maxSize;
+                    $newField->fieldType = $field->fieldType;
+                    $newField->required = $field->required;
+                    $newField->categories = $field->categories;
+                    $newField->fieldOptions = $field->fieldOptions;
+                    
+                    $app->em->persist($newField);
+                    
+                    $newField->save();
+                
+                }
+                
+                //Files (attachments)
+                foreach($importSource->files as $file) {
+
+                    $newFile = new Entities\RegistrationFileConfiguration;
+                    
+                    $newFile->owner = $project;
+                    $newFile->title = $file->title;
+                    $newFile->description = $file->description;
+                    $newFile->required = $file->required;
+                    $newFile->categories = $file->categories;
+                    
+                    $app->em->persist($newFile);
+                    
+                    $newFile->save();
+                    
+                    if (is_object($file->template)) {
+                        
+                        $originFile = $app->repo("RegistrationFileConfigurationFile")->find($file->template->id);
+                        
+                        if (is_object($originFile)) { // se nao achamos o arquivo, talvez este campo tenha sido apagado
+                        
+                            $tmp_file = sys_get_temp_dir() . '/' . $file->template->name;
+                            
+                            if (file_exists($originFile->path)) {
+                                copy($originFile->path, $tmp_file);
+                                
+                                $newTemplateFile = array(
+                                    'name' => $file->template->name,
+                                    'type' => $file->template->mimeType,
+                                    'tmp_name' => $tmp_file,
+                                    'error' => 0,
+                                    'size' => filesize($tmp_file)
+                                );
+                                
+                                $newTemplate = new Entities\RegistrationFileConfigurationFile($newTemplateFile);
+                                
+                                $newTemplate->owner = $newFile;
+                                $newTemplate->description = $file->template->description;
+                                $newTemplate->group = $file->template->group;
+                                
+                                $app->em->persist($newTemplate);
+                            
+                                $newTemplate->save();
+                            }
+                            
+                        }
+                    
+                    }
+                }
+                
+                // Metadata
+                foreach($importSource->meta as $key => $value) {
+                    $project->$key = $value;
+                }
+                
+                $project->save(true);
+                
+                $app->em->flush();
+                
+            }
+        
+        }
+
+        $app->redirect($project->editUrl.'#tab=inscricoes');
+        
+    }
+    
 }
