@@ -125,6 +125,10 @@ class MetaList extends \MapasCulturais\Entity
     
     public function canUser($action, $userOrAgent = null) {
         $owner = $this->getOwner();
+
+        if(strtolower($action) === 'remove'){
+            $action = 'modify';
+        }
         
         return $owner ? $owner->canUser($action, $userOrAgent) : false;
     }
