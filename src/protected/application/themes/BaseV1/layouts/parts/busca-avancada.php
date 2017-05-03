@@ -32,10 +32,10 @@
                 <a class="hltip icon icon-share" title="<?php \MapasCulturais\i::esc_attr_e("Compartilhar resultado"); ?>"></a>
                 <form id="share-url" class="share-search-results">
                     <label for="search-url"><?php \MapasCulturais\i::_e("Compartilhar resultado: "); ?></label>
-                    <input id="search-url" name="search-url" type="text" ng-value="location.absUrl()" />
-                    <a target="_blank" ng-href="https://twitter.com/share?url={{location.absUrl()}}" class="icon icon-twitter"></a>
-                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{location.absUrl()}}" class="icon icon-facebook"></a>
-                    <a target="_blank" ng-href="https://plus.google.com/share?url={{location.absUrl()}}" class="icon icon-googleplus"></a>
+                    <input id="search-url" name="search-url" type="text" ng-value="shareurl" />
+                    <a target="_blank" ng-href="https://twitter.com/share?url={{shareurl}}" class="icon icon-twitter"></a>
+                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{shareurl}}" class="icon icon-facebook"></a>
+                    <a target="_blank" ng-href="https://plus.google.com/share?url={{shareurl}}" class="icon icon-googleplus"></a>
                 </form>
             </div>
         </div>
