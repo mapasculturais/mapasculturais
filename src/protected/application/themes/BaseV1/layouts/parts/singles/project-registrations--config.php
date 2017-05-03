@@ -16,6 +16,8 @@
 
         <?php $this->part('singles/project-registrations--categories', ['entity' => $entity]) ?>
 
+        <?php $this->part('singles/project-registrations--space-relations', ['entity' => $entity]) ?>
+
         <?php $this->part('singles/project-registrations--agent-relations', ['entity' => $entity]) ?>
         
         <?php $this->part('singles/project-registrations--seals', ['entity' => $entity]) ?>

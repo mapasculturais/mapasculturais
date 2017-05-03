@@ -224,6 +224,15 @@ return array(
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
     ),
+    'registration.spaceRelations' => array(
+        array(
+            'required' => false,
+            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'description' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'type' => 2,
+            'requiredProperties' => array('nome')
+        )
+    ),
 
     /* ============ ENTITY PROPERTIES SEALS ============= */
     'app.entityPropertiesLabels' => array(

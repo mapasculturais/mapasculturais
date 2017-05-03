@@ -182,6 +182,7 @@ class Project extends EntityController {
             'registrationCategTitle', 
             'useAgentRelationInstituicao', 
             'introInscricoes',
+            'useSpaceRelation',
             'registrationSeals', 
             'registrationLimit'
         );
