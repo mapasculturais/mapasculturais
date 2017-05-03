@@ -240,6 +240,7 @@ class Project extends EntityController {
                     $newField->required = $field->required;
                     $newField->categories = $field->categories;
                     $newField->fieldOptions = $field->fieldOptions;
+                    $newField->displayOrder = $field->displayOrder;
                     
                     $app->em->persist($newField);
                     
@@ -257,6 +258,7 @@ class Project extends EntityController {
                     $newFile->description = $file->description;
                     $newFile->required = $file->required;
                     $newFile->categories = $file->categories;
+                    $newFile->displayOrder = $file->displayOrder;
                     
                     $app->em->persist($newFile);
                     
@@ -312,6 +314,45 @@ class Project extends EntityController {
 
         $app->redirect($project->editUrl.'#tab=inscricoes');
         
+    }
+    
+    function POST_saveFieldsOrder() {
+    
+        $this->requireAuthentication();
+        
+        $app = App::i();
+
+        if(!key_exists('id', $this->urlData)){
+            $app->pass();
+        }
+        
+        $savedFields = array();
+        
+        $savedFields['fields'] = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $savedFields['files'] = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        
+        if (!is_array($_POST['fields']))
+            return false; 
+            
+        foreach ($_POST['fields'] as $field) {
+        
+            $type = $field['fieldType'] == 'file' ? 'files' : 'fields';
+            
+            foreach ($savedFields[$type] as $savedField) {
+            
+                if ($field['id'] == $savedField->id) {
+                
+                    $savedField->displayOrder = (int) $field['displayOrder'];
+                    $savedField->save(true);
+                    
+                    break;
+                
+                }
+            
+            }
+        
+        }
+    
     }
     
 }

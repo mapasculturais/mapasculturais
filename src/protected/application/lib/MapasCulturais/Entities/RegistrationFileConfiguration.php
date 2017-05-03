@@ -65,7 +65,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="categories", type="array", nullable=true)
      */
     protected $categories = [];
-
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="display_order", type="smallint", nullable=false)
+     */
+    protected $displayOrder = 255;
+    
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
@@ -112,7 +119,8 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'required' => $this->required,
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'displayOrder' => $this->displayOrder
         ];
     }
 
