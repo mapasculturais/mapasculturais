@@ -47,7 +47,7 @@ Exemplos de uso.
 $.getJSON(
   'http://mapasculturais.local/api/space/find',
   {
-    '@select': 'name', 
+    '@select': 'name',
     'id': 'eq(10)'
   },
   function (response){ console.log(response); });
@@ -58,7 +58,7 @@ $.getJSON(
 $.getJSON(
   'http://mapasculturais.local/api/agent/find',
   {
-    '@select': 'id, name, email', 
+    '@select': 'id, name, email',
     'email': 'like(*gmail.com)'
   },
   function (response){ console.log(response); });
@@ -79,9 +79,9 @@ $.getJSON(
 $.getJSON(
   'http://mapasculturais.local/api/agent/find',
   {
-    '@select': 'id, name', 
+    '@select': 'id, name',
     'emailPublico': 'OR(like(*gmail.com), like(*yahoo.com))'
-  }, 
+  },
   function (response){ console.log(response); });
 ```
 * **retornando o id, nome dos agentes com com id entre 100 e 200, exceto o de id 150**
@@ -91,9 +91,9 @@ $.getJSON(
 $.getJSON(
   'http://mapasculturais.local/api/agent/find',
   {
-    '@select': 'id, name', 
+    '@select': 'id, name',
     'id': 'AND(BET(100,200), !EQ(150))'
-  }, 
+  },
   function (response){ console.log(response); });
 ```
 * **retornando o id e nome dos agentes com com id entre 100 e 200, exceto o de id 150 e que tenham email do google ordenado pela data de criação do agente**
@@ -450,4 +450,143 @@ $.getJSON(
       "isEntityRelation":false
    }
 }
+```
+
+# API de Escrita
+Para conseguir criar, atualizar ou apagar entidades via API, primeiramente é necessário cadastrar o seu App indo no painel de usuário do Mapas Culturais e acessando "Meus Apps". Após criar um novo App, copie as duas chaves que são fornecidas (Pública e Prvada).
+A API de escrita do Mapas utiliza o padrão de JSON Web Tokens - [JWT](https://jwt.io) para identificar de maneira segura dois sistemas que queiram se comunicar.
+
+## Criando o JWT
+Um JWT é formado de 3 partes - Header, Payload e Assinatura - encodadas com a função _base64UrlEncode_(1) concatenadas utilizando um ponto (.) como aglutinador.
+
+_**1**_ - é um base64encode fazendo as seguintes subsituições na string:
+```
+  '=' -> '' // remove os caracteres '='
+  '+ -> '-'
+  '/' -> '_'
+```
+
+### Header
+O Header do JWT geralmente consiste em informar o tipo do token (JWT!) e o algorítimo de hash utilizado. Para a API do Mapas Culturais o header deve seguir o formato abaixo, utilizando um dos seguintes algorítmos de hash: _HS512, HS384, HS256, RS256_.
+```
+{
+  "typ": "JWT",
+  "alg": "HS256"
+}
+
+resultado do base64encode: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+```
+
+### Payload
+O Payload deve conter sua chave pública, identificada como "pk" e um timestamp(1) "tm" que é um timestamp Unix em microsegundos do momento em que a requisição foi enviada.
+```
+{
+  "tm": "1493823078.9774",
+  "pk": "chave publica"
+}
+
+resultado do base64encode: eyJ0bSI6IjE0OTM4MjMwNzguOTc3NCIsInBrIjoiY2hhdmUgcHVibGljYSJ9
+```
+_**1** - O timestamp é opcional, mas serve como um salt para empedir que o token gerado seja sempre o mesmo.
+
+### Assinatura
+A assinatura do JWT é o base64UrlEncode do resultado da concatenação do header e do payload (ambos encodados com o base64UrlEncode e utilizando um ponto como aglutinador) criptografado utilizando o hash informado no header com sua chave privada.
+
+```
+HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  'chave privada'
+)
+
+resultado do base64UrlEncode: 3UAdCFaqi1GkVMebr1a0WdOLc1QUUKPNlwlEXjb2peg
+```
+
+### Resultado
+O Token gerado para um momento de timestamp **1493823078.9774** e chaves: **chave publica** e **chave privada** é `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0bSI6IjE0OTM4MjMwNzguOTc3NCIsInBrIjoiY2hhdmUgcHVibGljYSJ9.3UAdCFaqi1GkVMebr1a0WdOLc1QUUKPNlwlEXjb2peg`
+
+
+## Fazendo requisições
+
+Toda requisição feita deve conter duas informações no seu _header_: o valor do JWT no _header_ "authorization" e um _header_ "MapasSDK-REQUEST" com valor "true"
+
+```javascript
+"authorization": eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0bSI6IjE0OTM4MjMwNzguOTc3NCIsInBrIjoiY2hhdmUgcHVibGljYSJ9.3UAdCFaqi1GkVMebr1a0WdOLc1QUUKPNlwlEXjb2peg,
+"MapasSDK-REQUEST": true
+```
+
+Os métodos da API são, lembrando que os tipos de entidade são Agent, Space, Project, Event, Subsite, Seal:
+
+### createEntity
+Caminho: "\<nome-da-entidade>/index"
+
+Tipo da requisição: POST
+
+Esse método é utilizado para criar um novo registro para uma Entidade, os dados da entidade a ser criada devem ser enviados no body da requisição.
+### patchEntity
+Caminho: "\<nome-da-entidade>/single/\<id>"
+
+Tipo da requisição: PATCH
+
+Esse método deve ser usado para alterações parciais de dados de um registro de uma certa Entidade.
+### updateEntity
+Caminho: "\<nome-da-entidade>/single/\<id>"
+
+Tipo da requisição: PUT
+
+Esse método é usado para alteração de dados de um único registro. **Atenção**: Todos os dados da entidade devem estar na requisição, inclusive aqueles que não serão alterados.
+### deleteEntity
+Caminho: "\<nome-da-entidade>/single/\<id>"
+
+Tipo da requisição: DELETE
+
+Apaga o registro informado.
+
+**Exemplos**:
+
+* criando um agente
+
+```PHP
+$data = [
+    'type' => '2',
+    'name' => 'Fulano ' . date('Y/m/d H:i:s'),
+    'shortDescription' => 'Oi',
+    'terms' => [
+        'area' => [
+            'Arqueologia'
+        ]
+    ],
+    'location' => [
+        '-46.685684400000014',
+        '-23.5404024'
+    ],
+    'endereco' => 'Rua Capital Federal'
+];
+
+$curl->setHeader('authorization', $jwt);
+$curl->setHeader('MapasSDK-REQUEST', true);
+
+$curl->post('http://mapas.cultura.gov.br/agent/index', $data);
+$curl->close();
+```
+
+* alterando um agente
+```PHP
+$data = [
+    shortDescription => 'Description'
+];
+
+$curl->setHeader('authorization', $jwt);
+$curl->setHeader('MapasSDK-REQUEST', true);
+
+$curl->patch('http://mapas.cultura.gov.br/agent/single/35', $data);
+$curl->close();
+```
+
+* apagando um espaço
+```PHP
+$curl->setHeader('authorization', $jwt);
+$curl->setHeader('MapasSDK-REQUEST', true);
+
+$curl->delete('http://mapas.cultura.gov.br/space/single/8');
+$curl->close();
 ```
