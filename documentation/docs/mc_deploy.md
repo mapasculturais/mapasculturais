@@ -78,13 +78,13 @@ E alterne para o branch v2 ou alguma tag de relase, disponível em https://githu
 Utilizando o branch V2:
 ```BASH
 mapas@server$ cd mapasculturais
-mapas@server$ git checkout v2
+mapas@server$ git checkout 3.0.11
 ```
 
-Utilizando um release (Ex: 2.0.1):
+Utilizando um release (Ex: 3.0.11):
 ```BASH
 mapas@server$ cd mapasculturais
-mapas@server$ git checkout 2.0.1
+mapas@server$ git checkout 3.0.11
 ```
 
 Agora vamos instalar as dependências de PHP utilizando o Composer.
