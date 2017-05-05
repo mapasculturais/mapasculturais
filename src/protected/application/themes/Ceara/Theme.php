@@ -46,15 +46,27 @@ class Theme extends BaseV1\Theme{
         }
     }
 
-
-
    function register() {
         parent::register();
-        
+
         $def = App::i()->getRegisteredTaxonomyBySlug('area');
         $terms = $def->restrictedTerms;
         $terms[] = 'Humor';
-	sort($terms);
+	      sort($terms);
         $def->restrictedTerms = $terms;
+
+        /* Adicionando novas linguagens na listagem de eventos*/
+        $language = App::i()->getRegisteredTaxonomyBySlug('linguagem');
+        $languages = $language->restrictedTerms;
+        $new_languages = Array('performance'=>'Performance',
+        'poesia'=>'Poesia',
+        'poema'=>'Poema',
+        'sarau'=>'Sarau',
+        'feira'=>'Feira',
+        'artesanato'=>'Artesanato',
+        'teatro infantil'=>'Teatro infantil',
+        'arte urbana'=>'Arte urbana');
+        $languages = array_merge($languages, $new_languages);
+        $language->restrictedTerms = $languages;
     }
 }
