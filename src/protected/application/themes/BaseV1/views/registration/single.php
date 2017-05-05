@@ -34,9 +34,11 @@ $_params = [
 
         <?php $this->part('singles/registration-single--header', $_params) ?>
 
-        <?php $this->part('singles/registration-single--categories', $_params) ?>
-
+        <?php $this->part('singles/registration-single--categories', $_params) ?>   
+        
         <?php $this->part('singles/registration-single--agents', $_params) ?>
+
+        <?php $this->part('singles/registration-single--spaces', $_params) ?>
         
         <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
         <?php //$this->part('singles/registration-single--seals', $_params) ?>

@@ -628,6 +628,22 @@ return [
         $__try("CREATE INDEX registration_meta_key_idx ON registration_meta key;");
         $__try("DROP INDEX notification_meta_key_value_idx;");
         $__try("CREATE INDEX notification_meta_key_idx ON notification_meta(key);");
-    }
-] + $updates ;
+    },
 
+    //Space_Relation
+
+    'CREATE SEQUENCE REGISTRATION SPACE RELATION registration_space_relation_id_seq' => function() use($conn){
+        $conn->executeQuery("CREATE SEQUENCE space_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+    },
+
+    'CREATE TABLE spacerelation' => function() use($conn){
+        $conn->executeQuery("CREATE TABLE space_relation (id INT NOT NULL, space_id INT DEFAULT NULL, object_id INT NOT NULL, 
+                             create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, 
+                             object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A3023575340 ON space_relation (space_id);");
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A30232D562B ON space_relation (object_id);");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    }    
+] + $updates ;
