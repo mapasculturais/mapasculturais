@@ -1,4 +1,4 @@
-<?php 
+<?php
 use MapasCulturais\i;
 $this->bodyProperties['ng-controller'] = "EntityController";
 
@@ -27,11 +27,11 @@ $this->includeMapAssets();
 
 <article class="main-content agent">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
-    <header class="main-content-header">    
+    <header class="main-content-header">
         <?php $this->applyTemplateHook('header-image','before'); ?>
 
         <div class="header-image js-imagem-do-header"></div>
-        
+
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
@@ -120,6 +120,13 @@ $this->includeMapAssets();
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                             </span>
                         </p>
+                    <?php endif;?>
+
+                    <?php if(isset($entity->estadoCivil) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span>
+                          <span class="label"><?php i::_e("Estado Civil");?>:</span>
+                          <span class="js-editable" data-edit="estadoCivil" data-original-title="<?php i::esc_attr_e("Estado Civil");?>" data-emptytext="<?php i::esc_attr_e("Selecione o estado civil se for pessoa física");?>"><?php echo $entity->estadoCivil; ?></span>
+                      </p>
                     <?php endif;?>
 
                     <?php if(isset($entity->genero) && $userCanView): ?>
@@ -240,7 +247,7 @@ $this->includeMapAssets();
     <?php if(isset($entity->_seals)):?>
         <div class="selos-add">
             <div class="widget">
-                <h3 text-align="left" vertical-align="bottom"><?php i::_e("Selos Aplicados");?> 
+                <h3 text-align="left" vertical-align="bottom"><?php i::_e("Selos Aplicados");?>
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
                     <div class="avatar-seal">

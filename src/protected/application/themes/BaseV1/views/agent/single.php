@@ -47,7 +47,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
-        
+
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
@@ -96,6 +96,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                             </span>
                         </p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Estado Civil");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"estadoCivil") && $editEntity? 'required': '');?>" data-edit="estadoCivil" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Estado Civil");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione o estado civil se for pessoa física");?>"><?php echo $entity->estadoCivil; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Gênero");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"genero") && $editEntity? 'required': '');?>" data-edit="genero" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Gênero");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione o gênero se for pessoa física");?>"><?php echo $entity->genero; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Orientação Sexual");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"orientacaoSexual") && $editEntity? 'required': '');?>" data-edit="orientacaoSexual" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Orientação Sexual");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a orientação sexual se for pessoa física");?>"><?php echo $entity->orientacaoSexual; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span> <span class="js-editable  <?php echo ($entity->isPropertyRequired($entity,"raca") && $editEntity? 'required': '');?>" data-edit="raca" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Raça/cor");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a raça/cor se for pessoa física");?>"><?php echo $entity->raca; ?></span></p>
@@ -147,7 +148,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
