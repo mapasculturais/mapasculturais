@@ -49,24 +49,48 @@ class Theme extends BaseV1\Theme{
    function register() {
         parent::register();
 
-        $def = App::i()->getRegisteredTaxonomyBySlug('area');
-        $terms = $def->restrictedTerms;
-        $terms[] = 'Humor';
-	      sort($terms);
-        $def->restrictedTerms = $terms;
+        /* Adicionando novas áreas de atuação*/
+        $area = App::i()->getRegisteredTaxonomyBySlug('area');
+        $terms = $area->restrictedTerms;
+        $new_terms = Array('humor'=>'Humor');
+	     sort($new_terms);
+        $area->restrictedTerms = $new_terms;
 
         /* Adicionando novas linguagens na listagem de eventos*/
         $language = App::i()->getRegisteredTaxonomyBySlug('linguagem');
         $languages = $language->restrictedTerms;
         $new_languages = Array('performance'=>'Performance',
-        'poesia'=>'Poesia',
-        'poema'=>'Poema',
-        'sarau'=>'Sarau',
-        'feira'=>'Feira',
-        'artesanato'=>'Artesanato',
-        'teatro infantil'=>'Teatro infantil',
-        'arte urbana'=>'Arte urbana');
+        'poesia'=>'Poesia','poema'=>'Poema','sarau'=>'Sarau',
+        'feira'=>'Feira','artesanato'=>'Artesanato',
+        'teatro infantil'=>'Teatro infantil','arte urbana'=>'Arte urbana');
         $languages = array_merge($languages, $new_languages);
         $language->restrictedTerms = $languages;
+
+        /* registrando o meta  dos novos campos no formulário de cadastro de agente*/
+        $this->registerAgentMetadata(
+          'rg', array(
+             'private' =>true,
+             'label' => 'Número de seu RG',
+             'type' => 'string'
+          )
+        );
+    }
+
+    function _init() {
+        parent::_init();
+        $app = App::i();
+
+        /* Adicionando novos campos no formulário de cadastro de agentes (RG)*/
+        $app->hook('template(agent.<<create|single|edit>>.tab-about-service):end', function() use($app){
+        $entity = $this->controller->requestedEntity;
+        if($this->isEditable()):
+         echo '<p class="privado">
+               <span class="icon icon-private-info"></span>
+               <span class="label">RG:</span>
+               <span class="js-editable" data-edit="rg" data-original-title="Insira o número de seu RG"
+               data-emptytext="Insira o número de seu RG da Carteira de Identidade">'. $entity->rg .'</span> </p>';
+            endif;
+         });
+
     }
 }
