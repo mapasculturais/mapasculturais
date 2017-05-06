@@ -114,6 +114,10 @@ $this->includeMapAssets();
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("CPF/CNPJ");?>:</span> <span class="js-editable" data-edit="documento" data-original-title="<?php i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
                     <?php endif;?>
 
+                    <?php if(isset($entity->identidade) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Documento de Identidade (RG)");?>:</span> <span class="js-editable" data-edit="identidade" data-original-title="<?php i::esc_attr_e("Documento de Identidade (RG)");?>" data-emptytext="<?php i::esc_attr_e("Insira o documento de identidade (RG) se for pessoa física");?>"><?php echo $entity->identidade; ?></span></p>
+                    <?php endif;?>
+
                     <?php if(isset($entity->dataDeNascimento) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Data de Nascimento/Fundação");?>:</span>
                             <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
