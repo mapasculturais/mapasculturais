@@ -129,6 +129,13 @@ $this->includeMapAssets();
                       </p>
                     <?php endif;?>
 
+                    <?php if(isset($entity->escolaridade) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span>
+                          <span class="label"><?php i::_e("Grau de Escolaridade");?>:</span>
+                          <span class="js-editable" data-edit="escolaridade" data-original-title="<?php i::esc_attr_e("Grau de Escolaridade");?>" data-emptytext="<?php i::esc_attr_e("Selecione seu grau de escolaridade se for pessoa física");?>"><?php echo $entity->escolaridade; ?></span>
+                      </p>
+                    <?php endif;?>
+
                     <?php if(isset($entity->genero) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Gênero");?>:</span> <span class="js-editable" data-edit="genero" data-original-title="<?php i::esc_attr_e("Gênero");?>" data-emptytext="<?php i::esc_attr_e("Selecione o gênero se for pessoa física");?>"><?php echo $entity->genero; ?></span></p>
                     <?php endif;?>

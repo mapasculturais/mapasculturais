@@ -23,6 +23,27 @@ return array(
 //            )
         ),
 
+        'escolaridade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Escolaridade'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Ensino Fundamental Completo' => \MapasCulturais\i::__('Ensino Fundamental Completo'),
+                'Ensino Fundamental Incompleto' => \MapasCulturais\i::__('Ensino Fundamental Incompleto'),
+                'Ensino Médio Completo' => \MapasCulturais\i::__('Ensino Médio Completo'),
+                'Ensino Médio Incompleto' => \MapasCulturais\i::__('Ensino Médio Incompleto'),
+                'Ensino Superior Completo' => \MapasCulturais\i::__('Ensino Superior Completo'),
+                'Ensino Superior Incompleto' => \MapasCulturais\i::__('Ensino Superior Incompleto'),
+                'Pós-graduação (Especialização) Completa' => \MapasCulturais\i::__('Pós-graduação (Especialização) Completa'),
+                'Pós-graduação (Especialização) Incompleta' => \MapasCulturais\i::__('Pós-graduação (Especialização) Incompleta'),
+                'Pós-graduação (Mestrado) Completa' => \MapasCulturais\i::__('Pós-graduação (Mestrado) Completo'),
+                'Pós-graduação (Mestrado) Incompleta' => \MapasCulturais\i::__('Pós-graduação (Mestrado) Incompleto'),
+                'Pós-graduação (Doutorado) Completa' => \MapasCulturais\i::__('Pós-graduação (Doutorado) Completo'),
+                'Pós-graduação (Doutorado) Incompleta' => \MapasCulturais\i::__('Pós-graduação (Doutorado) Incompleto')
+            )
+        ),
+
         'estadoCivil' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Estado Civil'),
