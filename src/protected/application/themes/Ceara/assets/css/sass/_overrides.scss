@@ -28,17 +28,60 @@
         }
     }
 }
+
+#organization-logo img {
+
+    @media screen and (min-width: $screen-tablet) {
+        width: 100px;
+        margin-top: 8px;
+    }
+
+    @media screen and (min-width: $screen-desktop) {
+        width: 150px;
+        margin-top: 0;
+    }
+
+    @media screen and (min-width: 992px) and (max-width: 1108px) {
+        margin-top: 8px;
+        width: 92px;
+    }
+}
+
+
 #brand-logo {
     a {
         img {
             @media screen and (min-width: $screen-tablet) {
-                margin-top: 12px;
+                width: 160px;
+                margin-top: 18px;
             }
+
+            @media screen and (min-width: $screen-desktop) {
+                margin-top: 5px;
+                width: 300px;
+            }
+
+            @media screen and (min-width: 992px) and (max-width: 1108px) {
+              width: 183px;
+              margin-top: 16px;
+            }
+
+            @media screen and (max-width: 767px) {
+              width: 70px;
+              margin-top: 4px;
+          }
         }
     }
 }
+
 #about-nav {
     @media screen and (min-width: $screen-tablet) {
-        padding: 1.5rem;
+        padding: 1.0rem;
+    }
+}
+
+#secondary-menu {
+    @media screen and (min-width: $screen-tablet) {
+        margin-top: 6px;
     }
 }

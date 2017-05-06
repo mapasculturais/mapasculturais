@@ -1,4 +1,4 @@
-<?php 
+<?php
 use MapasCulturais\i;
 $this->bodyProperties['ng-controller'] = "EntityController";
 
@@ -27,11 +27,11 @@ $this->includeMapAssets();
 
 <article class="main-content agent">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
-    <header class="main-content-header">    
+    <header class="main-content-header">
         <?php $this->applyTemplateHook('header-image','before'); ?>
 
         <div class="header-image js-imagem-do-header"></div>
-        
+
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
@@ -114,12 +114,30 @@ $this->includeMapAssets();
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("CPF/CNPJ");?>:</span> <span class="js-editable" data-edit="documento" data-original-title="<?php i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
                     <?php endif;?>
 
+                    <?php if(isset($entity->identidade) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Documento de Identidade (RG)");?>:</span> <span class="js-editable" data-edit="identidade" data-original-title="<?php i::esc_attr_e("Documento de Identidade (RG)");?>" data-emptytext="<?php i::esc_attr_e("Insira o documento de identidade (RG) se for pessoa física");?>"><?php echo $entity->identidade; ?></span></p>
+                    <?php endif;?>
+
                     <?php if(isset($entity->dataDeNascimento) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Data de Nascimento/Fundação");?>:</span>
                             <span class="js-editable" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                             </span>
                         </p>
+                    <?php endif;?>
+
+                    <?php if(isset($entity->estadoCivil) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span>
+                          <span class="label"><?php i::_e("Estado Civil");?>:</span>
+                          <span class="js-editable" data-edit="estadoCivil" data-original-title="<?php i::esc_attr_e("Estado Civil");?>" data-emptytext="<?php i::esc_attr_e("Selecione o estado civil se for pessoa física");?>"><?php echo $entity->estadoCivil; ?></span>
+                      </p>
+                    <?php endif;?>
+
+                    <?php if(isset($entity->escolaridade) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span>
+                          <span class="label"><?php i::_e("Grau de Escolaridade");?>:</span>
+                          <span class="js-editable" data-edit="escolaridade" data-original-title="<?php i::esc_attr_e("Grau de Escolaridade");?>" data-emptytext="<?php i::esc_attr_e("Selecione seu grau de escolaridade se for pessoa física");?>"><?php echo $entity->escolaridade; ?></span>
+                      </p>
                     <?php endif;?>
 
                     <?php if(isset($entity->genero) && $userCanView): ?>
@@ -240,7 +258,7 @@ $this->includeMapAssets();
     <?php if(isset($entity->_seals)):?>
         <div class="selos-add">
             <div class="widget">
-                <h3 text-align="left" vertical-align="bottom"><?php i::_e("Selos Aplicados");?> 
+                <h3 text-align="left" vertical-align="bottom"><?php i::_e("Selos Aplicados");?>
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
                     <div class="avatar-seal">
