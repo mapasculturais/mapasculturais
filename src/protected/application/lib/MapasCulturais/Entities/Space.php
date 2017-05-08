@@ -234,10 +234,15 @@ class Space extends \MapasCulturais\Entity
             ]
         ];
     }
-    
-    
-    
-    
+
+    public function save($flush = false) {
+        parent::save($flush);
+
+        if($this->parent) {
+            $this->parent->_newModifiedRevision();
+        }        
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.

@@ -56,7 +56,7 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
       onComplete: function(time) {
         var mendtime = moment(time, 'HH:mm');
         var mtime = moment($startsAt.val(), 'HH:mm');
-        
+
         if(mtime.isValid() && mendtime.isValid()) {
             if(mtime > mendtime){
                 mendtime = mendtime.add('days', 1);
@@ -129,7 +129,6 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parents('.js-dialog').find('.js-close').click();
 
                 //Por enquanto sempre inicializa o mapa
-                //console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
 
@@ -256,12 +255,6 @@ MapasCulturais.EventHumanReadableManager = {
         var date_e = $(selector).find('.js-end-date').val();
         var weekDays = [];
         $(selector).find('input[type="checkbox"]:checked').each(function() { if ($(this).is(':checked')) weekDays.push($(this).attr('name').replace(/[^\d]/g, '')) });
-
-        //console.log( date_s);
-        //console.log( hour);
-        //console.log( frequency);
-        //console.log( date_e);
-        //console.log( weekDays);
 
         var mdate_s = false;
         var mdate_e = false;

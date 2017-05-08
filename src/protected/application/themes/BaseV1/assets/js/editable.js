@@ -85,7 +85,7 @@ jQuery(function(){
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
-        
+
         editable.container.$form.find('.editable-cancel').attr('title', 'Cancelar Alteração (Esc)');
         //textarea display default Ctrl+Enter and Esc shortcuts
         switch (editable.input.type.trim()) {
@@ -348,7 +348,6 @@ MapasCulturais.Editables = {
                         });
                     }
 
-                    // console.log(field_name, select2_option.tags);
 
                     select2_option.createSearchChoice = function () {
                         return null;

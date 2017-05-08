@@ -275,10 +275,6 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
-        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
-            return false;
-        }
-
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
@@ -890,6 +886,10 @@ abstract class Entity implements \JsonSerializable{
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();
         }
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
+        }
     }
 
     /**
@@ -911,19 +911,22 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
         if (property_exists($this, 'updateTimestamp')) {
+            return;
             $this->updateTimestamp = new \DateTime;
             if($this->sentNotification){
                 $entity = $this;
                 $nid = $this->sentNotification;
                 $app->hook('entity(' . $hook_class_path . ').update:after', function() use($app, $entity, $nid) {
-                    if($this->equals($entity)){
+                    if($this->equals($entity) && $app->user->equals($this->getOwnerUser())){
                         $app->log->debug("notification id: $nid");
                         $notification = $app->repo('Notification')->find($nid);
-                        $notification->delete();
-                        $this->sentNotification = 0;
-                        $this->save();
+                        if($notification){
+                            $notification->delete();
+                            $this->sentNotification = 0;
+                            $this->save();
 
-                        $app->em->flush();
+                            $app->em->flush();
+                        }
                     }
                 });
             }

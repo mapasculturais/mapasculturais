@@ -164,7 +164,7 @@
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService){
         $scope.defaultLocationRadius = defaultLocationRadius;
-
+        $scope.shareurl = $location.absUrl();
         $rootScope.resetPagination = function(){
             $rootScope.pagination = {
                 agent: 1,

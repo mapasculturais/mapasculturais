@@ -4,12 +4,13 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 class Event extends \MapasCulturais\Repository{
-    use Traits\RepositoryKeyword;
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryAgentRelation;
 
     protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
         if($app->getCurrentSubsiteId()){
-            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds($implode);
         } else {
             $space_ids = "SELECT id FROM space WHERE status > 0";
         }
@@ -62,6 +63,10 @@ class Event extends \MapasCulturais\Repository{
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
 
+        if(is_array($ids)){
+            $ids = implode(',', $ids);
+        }
+        
         $sql = "
             SELECT
                 e.id
@@ -70,7 +75,7 @@ class Event extends \MapasCulturais\Repository{
             JOIN
                 event_occurrence eo
                     ON eo.event_id = e.id
-                        AND eo.space_id IN (:space_ids)
+                        AND eo.space_id IN ($ids)
                         AND eo.status > 0
 
             WHERE
@@ -81,7 +86,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
                     WHERE
-                        space_id IN (:space_ids)
+                        space_id IN ($ids)
                 )
 
             $dql_limit $dql_offset
@@ -91,8 +96,7 @@ class Event extends \MapasCulturais\Repository{
 
         $params = [
             'date_from' => $date_from,
-            'date_to' => $date_to,
-            'space_ids' => implode(',', $ids)
+            'date_to' => $date_to
         ];
 
 
@@ -143,6 +147,10 @@ class Event extends \MapasCulturais\Repository{
         }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        
+        if(is_array($ids)){
+            $ids = implode(',', $ids);
+        }
 
         $sql = "
             SELECT
@@ -156,7 +164,7 @@ class Event extends \MapasCulturais\Repository{
                         AND eo.status > 0
             WHERE
                 e.status > 0 AND
-                e.project_id IN (:project_ids) AND
+                e.project_id IN ($ids) AND
                 e.id IN (
                     SELECT
                         event_id
@@ -173,8 +181,7 @@ class Event extends \MapasCulturais\Repository{
 
         $params = [
             'date_from' => $date_from,
-            'date_to' => $date_to,
-            'project_ids' => implode(',', $ids)
+            'date_to' => $date_to
         ];
 
         $result = $this->_getEventsBySQL($sql, $params);

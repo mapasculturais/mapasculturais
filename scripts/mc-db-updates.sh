@@ -32,11 +32,15 @@ case $i in
     -n=*|--name=*)
         NAME="${i#*=}"
         shift # past argument=value
+    ;;    
+    -d=*|--domain=*)
+        DOMAIN="${i#*=}"
+        shift # past argument=value
     ;;
 
     -h|--help)
     	    echo "
-	mc-db-updates.sh [-p=8] [-n=recreate-] [-n='recreate pcache'] [-o=mapasculturais]
+	mc-db-updates.sh [-p=8] [-n=recreate-] [-n='recreate pcache'] [-o=mapasculturais]  [-d=dominio.da.app.saas.gov.br]
 
 	-p=  | --processes=  numero de processos (padrão é o número de cores + 3)
 	-n=  | --name=       o nome do db-update que deve rodar

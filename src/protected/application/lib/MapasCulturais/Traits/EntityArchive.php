@@ -23,6 +23,8 @@ trait EntityArchive{
 
     function archive($flush = true){
         $this->checkPermission('archive');
+        
+        $hook_class_path = $this->getHookClassPath();
 
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:before');
@@ -36,6 +38,8 @@ trait EntityArchive{
 
     function unarchive($flush = true){
         $this->checkPermission('unarchive');
+        
+        $hook_class_path = $this->getHookClassPath();
 
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unarchive:before');

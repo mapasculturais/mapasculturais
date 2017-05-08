@@ -16,7 +16,7 @@ use MapasCulturais\App;
  * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Subsite")
- * @ORM\HasLifecycleCallbacks 
+ * @ORM\HasLifecycleCallbacks
  */
 class Subsite extends \MapasCulturais\Entity
 {
@@ -91,12 +91,21 @@ class Subsite extends \MapasCulturais\Entity
     protected $aliasUrl;
 
     /**
+     * @var \MapasCulturais\Entities\Role[] Role
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     * })
+    */
+    protected $_roles;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="verified_seals", type="json_array", nullable=true)
      */
     protected $verifiedSeals = [];
-    
+
     function setVerifiedSeals($val) {
         if(is_string($val)) {
             if(trim($val)){
@@ -131,10 +140,10 @@ class Subsite extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
-    
+
+
     protected $filters = [];
-    
+
     static function getValidations(){
         return [
             'name' => [
@@ -150,12 +159,12 @@ class Subsite extends \MapasCulturais\Entity
         ];
     }
 
-    
+
     public function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
-    
+
     public function getEditUrl() {
         return $this->getSingleUrl();
     }
@@ -196,33 +205,33 @@ class Subsite extends \MapasCulturais\Entity
 
         return $this->_favicon;
     }
-    
+
     function getParentIds() {
         $app = App::i();
-        
+
         $cid = "subsite-parent-ids:{$this->id}";
-        
+
         if ($app->cache->contains($cid)) {
             $ids = $app->cache->fetch($cid);
         } else {
             // @TODO: quando o parent estiver implementado fazer percorrer a arvore....
             $ids = [$this->id];
-            
+
             $app->cache->save($cid, $ids, 300);
         }
-        
+
         return $ids;
     }
-    
-    
+
+
     public function applyApiFilters(){
         $app = App::i();
 
         $subsite_meta = $app->getRegisteredMetadata("MapasCulturais\Entities\Subsite");
-        
-        
+
+
         $IN = ['type'];
-        
+
         foreach($subsite_meta as $k => $v) {
             $meta_name = $k;
 
@@ -242,7 +251,7 @@ class Subsite extends \MapasCulturais\Entity
                     if($pos_meta_type > 0) {
                         $meta_type = substr($meta_name,0,$pos_meta_type);
                         $meta_name = substr($meta_name,$pos_meta_type+1);
-                        
+
                         if($this->$k) {
                             $meta_name = $meta_type == "term"? "term:".$meta_name: $meta_name;
                             $meta_cont = $this->$k;
@@ -250,7 +259,7 @@ class Subsite extends \MapasCulturais\Entity
                             $this->filters[$controller] = isset($this->filters[$controller]) ? $this->filters[$controller] : [];
                             if(in_array($meta_name, $IN)){
                                 $this->filters[$controller][$meta_name] = "IN(" . str_replace(";",",",$meta_cont) . ")";
-                                
+
                             } else {
                                 $this->filters[$controller][$meta_name] = "IIN(" . str_replace(";",",",$meta_cont) . ")";
                             }
@@ -259,64 +268,64 @@ class Subsite extends \MapasCulturais\Entity
                 }
             }
         }
-        
+
         $subsite_id = $app->getCurrentSubsiteId();
-        
+
         $app->applyHookBoundTo($this, 'subsite.applyFilters:before');
 
 //            \dump($this->filters);
         foreach($this->filters as $controller_id => $entity_filters){
             $entity_class_name = $app->controller($controller_id)->entityClassName;
             $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters, $this->id);
-            
+
             $this->_entityApiQueryFilters[$entity_class_name] = $query;
-            
+
             $app->hook("API.<<*>>({$controller_id}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($query) {
                 $query_dql = $query->getSubDQL();
                 $dql_where .=  " AND e.id IN({$query_dql})";
             });
         }
-        
+
         $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($subsite_id) {
             $dql_where .= " AND e._subsiteId = {$subsite_id}";
         });
-        
+
         $app->applyHookBoundTo($this, 'subsite.applyFilters:after');
     }
-    
+
     protected $_entityApiQueryFilters = [];
-    
+
     public function getApiQueryFilter($entity_class){
         return isset($this->_entityApiQueryFilters[$entity_class]) ? $this->_entityApiQueryFilters[$entity_class] : null;
     }
-    
-    
+
+
     public function applyConfigurations(&$config){
         $app = App::i();
 
         $app->applyHookBoundTo($this, 'subsite.applyConfigurations:before', ['config' => &$config]);
 
         $config['app.verifiedSealsIds'] = $this->verifiedSeals;
-        
-        
+
+
         if($this->longitude && $this->longitude) {
             $config['maps.center'] = array($this->latitude, $this->longitude);
         }
-        
+
         if($this->zoom_default) {
             $config['maps.zoom.default'] = $this->zoom_default;
         }
-        
+
         if($this->zoom_max){
             $config['maps.zoom.max'] = $this->zoom_max;
         }
-        
-        if($this->zoom_max){
-            $config['maps.zoom.min'] = $this->zoom_max;
+
+        if($this->zoom_min){
+            $config['maps.zoom.min'] = $this->zoom_min;
         }
-        
+
         $domain = $this->url;
-        
+
         foreach($app->plugins as $plugin){
             if(get_class($plugin) == 'SubsiteDomainSufix\Plugin'){
                 $sufix = $plugin->getSufix();
@@ -328,16 +337,16 @@ class Subsite extends \MapasCulturais\Entity
                 break;
             }
         }
-        
+
         $assets_folder = "assets/{$domain}/";
-        
-        $config['base.assetUrl'] = $app->baseUrl . $assets_folder; 
-        $config['themes.assetManager']->config['publishPath'] = BASE_PATH . $assets_folder; 
-        
+
+        $config['base.assetUrl'] = $app->baseUrl . $assets_folder;
+        $config['themes.assetManager']->config['publishPath'] = BASE_PATH . $assets_folder;
+
         // @TODO: passar esta parte abaixo para o tema
-                
+
         $entidades = explode(';', $this->entidades_habilitadas);
-        
+
         if(!in_array('Agentes', $entidades)){
             $config['app.enabled.agents'] = false;
         }
@@ -353,48 +362,84 @@ class Subsite extends \MapasCulturais\Entity
         if (!in_array('Eventos', $entidades)) {
             $config['app.enabled.events'] = false;
         }
-        
-        
-        
-        
+
+
+
+
         $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$config]);
 
     }
-    
-    
+
+
     public function getSassCacheId(){
         return "Subsite-{$this->id}:_variables.scss";
     }
-    
+
     protected function canUserDestroy($user) {
         return $user->is('saasSuperAdmin');
     }
-    
+
     protected function canUserRemove($user) {
         return $user->is('saasAdmin');
     }
-    
+
     protected function canUserModify($user) {
         return $user->is('superAdmin');
     }
-    
+
     function clearCache(){
         $this->checkPermission('modify');
-        
+
         $app = App::i();
-        
+
         $app->msCache->delete($this->getSassCacheId());
-        
+
         $subsite_cache = clone $app->cache;
         $subsite_cache->deleteAll();
-        
+
     }
-    
+
     public function save($flush = false) {
         parent::save($flush);
         $this->clearCache();
     }
 
+    /** @ORM\PreRemove */
+    public function _setNullSubsiteId() {
+        $app = App::i();
+        $subsite_id = $this->id;
+        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.subsite = NULL WHERE a._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Space s SET s.subsite = NULL WHERE s._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Event e SET e.subsite = NULL WHERE e._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Project p SET p.subsite = NULL WHERE p._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Seal s SET s.subsite = NULL WHERE s._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\Registration r SET r.subsite = NULL WHERE r._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $query = "UPDATE \MapasCulturais\Entities\UserApp u SET u.subsite = NULL WHERE u._subsiteId = {$subsite_id}";
+        $q = $app->em->createQuery($query);
+        $q->execute();
+
+        $app->em->flush();
+    }
+
+    
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
