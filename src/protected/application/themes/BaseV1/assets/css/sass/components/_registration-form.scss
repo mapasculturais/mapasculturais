@@ -84,7 +84,7 @@ article.project .highlighted-message .btn {
 	padding: $padding-small;
 	border: $thin-row;
 	border-radius: $border-radius-base;
-	&:hover {
+	&.project-edit-mode:hover {
 		background-color: #f4f4f4;
 	}
 	h4 {
@@ -283,11 +283,12 @@ article.project .highlighted-message .btn {
             bottom: $padding-base;
             right: $padding-base;
         }
-        &:hover {
-        	background: $gray-lighter;
-        }
+        
         &:last-child {
             border-bottom: none;
+        }
+        &.project-edit-mode:hover {
+        	background: $gray-lighter;
         }
         &.registration-edit-mode {
             padding-right: 1em 14rem 1em 1em;
@@ -310,5 +311,22 @@ article.project .highlighted-message .btn {
                 text-decoration: underline;
             }
         }
+        
+        &.attachment-list-item-type-section {
+        
+            border-top: $thick-row;
+            border-bottom: none;
+            padding-top: 1.5rem;
+            padding-bottom: 0px;
+            
+            .label {
+                font-size: 1.5em;
+            }
+        
+        }
+        &:first-child {
+            border-top: none;
+        }
+        
     }
 }
