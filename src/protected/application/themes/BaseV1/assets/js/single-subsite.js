@@ -67,6 +67,7 @@ $(function(){
         var examples = $this.data('examples');
         var val = $this.editable('getValue')[prop];
         var parents = editable.input.$input.parents();
+        var labels = MapasCulturais.gettext.entityApp;
         
         setTimeout(function(){
             var $container = $(parents[parents.length - 1]);
@@ -74,7 +75,7 @@ $(function(){
             
             if(examples && editable.input.$input.parent().find('.examples')){
                 examples = '"' + examples.join('", "') + '"';
-                editable.input.$input.after('<div class="examples hltip"><strong>exemplos:</strong> ' + examples + '</div>');
+                editable.input.$input.after('<div class="examples hltip"><strong>' + labels['examples'] + '</strong> ' + examples + '</div>');
                 
             }
         },5);

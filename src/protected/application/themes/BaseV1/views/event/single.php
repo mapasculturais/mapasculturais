@@ -25,6 +25,7 @@ $this->localizeScript('singleEvents', [
             'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
             'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
             'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
+            'Erro'=> \MapasCulturais\i::__('Erro'),
         ]);
 
 $this->includeAngularEntityAssets($entity);
@@ -442,6 +443,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Link List BEGIN -->
     <?php $this->part('link-list.php', array('entity' => $entity)); ?>
     <!-- Link List END -->
+
+    <!-- History BEGIN -->
+        <?php $this->part('history.php', array('entity' => $entity)); ?>
+    <!-- History END -->
 </div>
 <?php if ($this->isEditable()): ?>
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">

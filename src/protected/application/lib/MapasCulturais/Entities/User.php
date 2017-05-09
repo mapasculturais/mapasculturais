@@ -485,10 +485,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     public function getSubsite($status = null) {
         $result = [];
-
-        if ($this->is('saasAdmin')) {
+        
+        if ($this->is('saasAdmin') || $this->is('superSaasAdmin')) {
             $subsites = App::i()->repo('Subsite')->findAll();
-
             foreach ($subsites as $subsite) {
                 if (!is_null($status) && $subsite->status == $status) {
                     $result[] = $subsite;

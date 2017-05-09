@@ -10,6 +10,8 @@
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)"><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
+                
+                
             </p>
         <?php endif; ?>
         <!-- edit-box to add attachment -->
@@ -47,7 +49,7 @@
                 </edit-box>
 
                 <!-- added attachments list -->
-                <ul class="attachment-list">
+                <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
                     <li ng-repeat="field in data.fields" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item">
                         <div ng-if="field.fieldType !== 'file'">
                             <div class="js-open-editbox">

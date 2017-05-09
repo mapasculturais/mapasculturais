@@ -1,39 +1,40 @@
-<?php 
+<?php
 $_of_the_type = [
-    7	=> "do Ciclo",
-    10	=> "do Concurso",
-    28	=> "da Conferência Pública Estadual",
-    29	=> "da Conferência Pública Municipal",
-    27	=> "da Conferência Pública Nacional",
-    26	=> "da Conferência Pública Setorial",
-    19	=> "do Congresso",
-    6	=> "da Convenção",
-    23	=> "do Curso",
-    9	=> "do Edital",
-    2	=> "do Encontro",
-    13	=> "da Exibição",
-    11	=> "da Exposição",
-    14	=> "da Feira",
-    16	=> "da Festa Popular",
-    17	=> "da Festa Religiosa",
-    1	=> "do Festival",
-    22	=> "do Fórum",
-    15	=> "do Intercâmbio Cultural",
-    12	=> "da Jornada",
-    25	=> "da Jornada",
-    5	=> "da Mostra",
-    24	=> "da Oficina",
-    20	=> "da Palestra",
-    31	=> "da Parada e Desfile Cívico",
-    32	=> "da Parada e Desfile Festivo",
-    30	=> "da Parada e Desfile Militar",
-    33	=> "da Parada e Desfile Político",
-    34	=> "da Parada e Desfile de Ações Afirmativas",
-    8	=> "do Programa",
-    4	=> "da Reunião",
-    3	=> "do Sarau",
-    18	=> "do Seminário",
-    21	=> "do Simpósio"
+    7	=> \MapasCulturais\i::__("do Ciclo"),
+    10	=> \MapasCulturais\i::__("do Concurso"),
+    28	=> \MapasCulturais\i::__("da Conferência Pública Estadual"),
+    29	=> \MapasCulturais\i::__("da Conferência Pública Municipal"),
+    27	=> \MapasCulturais\i::__("da Conferência Pública Nacional"),
+    26	=> \MapasCulturais\i::__("da Conferência Pública Setorial"),
+    19	=> \MapasCulturais\i::__("do Congresso"),
+    6	=> \MapasCulturais\i::__("da Convenção"),
+    23	=> \MapasCulturais\i::__("do Curso"),
+    9	=> \MapasCulturais\i::__("do Edital"),
+    2	=> \MapasCulturais\i::__("do Encontro"),
+    13	=> \MapasCulturais\i::__("da Exibição"),
+    11	=> \MapasCulturais\i::__("da Exposição"),
+    14	=> \MapasCulturais\i::__("da Feira"),
+    16	=> \MapasCulturais\i::__("da Festa Popular"),
+    17	=> \MapasCulturais\i::__("da Festa Religiosa"),
+    1	=> \MapasCulturais\i::__("do Festival"),
+    22	=> \MapasCulturais\i::__("do Fórum"),
+    15	=> \MapasCulturais\i::__("do Intercâmbio Cultural"),
+    12	=> \MapasCulturais\i::__("da Jornada"),
+    25	=> \MapasCulturais\i::__("da Jornada"),
+    5	=> \MapasCulturais\i::__("da Mostra"),
+    24	=> \MapasCulturais\i::__("da Oficina"),
+    20	=> \MapasCulturais\i::__("da Palestra"),
+    31	=> \MapasCulturais\i::__("da Parada e Desfile Cívico"),
+    32	=> \MapasCulturais\i::__("da Parada e Desfile Festivo"),
+    30	=> \MapasCulturais\i::__("da Parada e Desfile Militar"),
+    33	=> \MapasCulturais\i::__("da Parada e Desfile Político"),
+    34	=> \MapasCulturais\i::__("da Parada e Desfile de Ações Afirmativas"),
+    8	=> \MapasCulturais\i::__("do Programa"),
+    4	=> \MapasCulturais\i::__("da Reunião"),
+    3	=> \MapasCulturais\i::__("do Sarau"),
+    18	=> \MapasCulturais\i::__("do Seminário"),
+    21	=> \MapasCulturais\i::__("do Simpósio"),
+    35  => \MapasCulturais\i::__("da Inscrição"),
 ];
 
 $viewing_phase = $this->controller->requestedEntity;
@@ -50,15 +51,15 @@ $viewing_phase = $this->controller->requestedEntity;
             <?php if($viewing_phase->equals($phase)): ?>
                 <li class="active">
                     <span><?= $phase->name ?></span>
-                    <?php 
+                    <?php
                     /* Translators: "de" como início de um intervalo de data *DE* 25/1 a 25/2 às 13:00 */
                     \MapasCulturais\i::_e('de'); ?>
                     <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Data inicial'); ?>"><?php echo $phase->registrationFrom ? $phase->registrationFrom->format( 'd/m/Y' ) : \MapasCulturais\i::__('Data inicial'); ?></strong>
-                    <?php 
+                    <?php
                     /* Translators: "a" indicando intervalo de data de 25/1 *A* 25/2 às 13:00 */
                     \MapasCulturais\i::_e('a'); ?>
                     <strong class="js-editable" data-type="date" data-yearrange="2000:+3" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Data final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('d/m/Y') : \MapasCulturais\i::__('Data final'); ?></strong>
-                    <?php 
+                    <?php
                     /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
                     \MapasCulturais\i::_e('às'); ?>
                     <strong class="js-editable" id="registrationTo_time" data-datetime-value="<?php echo $phase->registrationTo ? $phase->registrationTo->format('d/m/Y H:i') : ''; ?>" data-placeholder="<?php \MapasCulturais\i::esc_attr_e('Hora final'); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Hora final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('H:i') : ''; ?></strong>
@@ -69,15 +70,15 @@ $viewing_phase = $this->controller->requestedEntity;
                     <a href="<?= $phase->singleUrl ?>"><?= $phase->name ?></a>
                     <?php if($phase->registrationFrom && $phase->registrationTo): ?>
                         - <em>
-                            <?php 
+                            <?php
                             /* Translators: "de" como início de um intervalo de data *DE* 25/1 a 25/2 às 13:00 */
                             \MapasCulturais\i::_e('de'); ?>
                             <?= $phase->registrationFrom->format('d/m/Y') ?>
-                            <?php 
+                            <?php
                             /* Translators: "a" indicando intervalo de data de 25/1 *A* 25/2 às 13:00 */
                             \MapasCulturais\i::_e('a'); ?>
                             <?= $phase->registrationTo->format('d/m/Y') ?>
-                            <?php 
+                            <?php
                             /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
                             \MapasCulturais\i::_e('às'); ?>
                             <?= $phase->registrationTo->format('H:i') ?>
@@ -85,33 +86,33 @@ $viewing_phase = $this->controller->requestedEntity;
 
                     <?php elseif($phase->registrationTo): ?>
                         - <em>
-                            <?php 
+                            <?php
                             /* Translators: até uma data: até 3/11 */
                             \MapasCulturais\i::_e('até'); ?>
-                            <?= $phase->registrationTo->format('d/m/Y') ?> 
-                            <?php 
+                            <?= $phase->registrationTo->format('d/m/Y') ?>
+                            <?php
                             /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
-                            \MapasCulturais\i::_e('às'); ?> 
+                            \MapasCulturais\i::_e('às'); ?>
                             <?= $phase->registrationTo->format('H:i') ?>
                         </em>
 
                     <?php elseif($phase->registrationFrom): ?>
                         - <em>
-                             
-                            <?php 
+
+                            <?php
                             /* Translators: "a partir de" uma data: a partir de 25/11 */
                             \MapasCulturais\i::_e('a partir de'); ?>
-                            <?= $phase->registrationFrom->format('d/m/Y') ?> 
+                            <?= $phase->registrationFrom->format('d/m/Y') ?>
                         </em>
 
                     <?php endif; ?>
-                        
+
                     <?php if($phase->status === 0): ?>
                         <em><?php \MapasCulturais\i::_e('(rascunho)'); ?></em>
                     <?php endif; ?>
                 </li>
             <?php endif; ?>
-                
+
         <?php endforeach; ?>
         </ul>
     </div>

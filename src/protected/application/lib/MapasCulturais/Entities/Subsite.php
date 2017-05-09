@@ -147,14 +147,14 @@ class Subsite extends \MapasCulturais\Entity
     static function getValidations(){
         return [
             'name' => [
-                'required' => 'O nome da instalação é obrigatório'
+                'required' => \MapasCulturais\i::__('O nome da instalação é obrigatório')
             ],
             'url' => [
-                'required' => 'A url da instalação é obrigatória',
-                'unique' => 'Esta URL já está sendo utilizada'
+                'required' => \MapasCulturais\i::__('A url da instalação é obrigatória'),
+                'unique' => \MapasCulturais\i::__('Esta URL já está sendo utilizada')
             ],
             'aliasUrl' => [
-                'unique' => 'Esta URL já está sendo utilizada'
+                'unique' => \MapasCulturais\i::__('Esta URL já está sendo utilizada')
             ]
         ];
     }
