@@ -110,6 +110,23 @@ class Registration extends EntityController {
 
         parent::__construct();
     }
+    
+    function POST_createSpaceRelation(){
+        $this->requireAuthentication();
+       
+        $app = App::i();
+
+        $space = $app->repo('Space')->find($this->postData['id']);
+        $registration = $app->repo('Registration')->find($this->data['id']);
+
+        $relation = new \MapasCulturais\Definitions\RegistrationSpaceRelation;
+        $relation->space = $space;
+        $relation->owner = $registration;
+        $relation->save(true);
+
+        // $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        $this->_finishRequest($relation, true);
+    }
 
     function registerRegistrationMetadata(\MapasCulturais\Entities\Project $project){
         

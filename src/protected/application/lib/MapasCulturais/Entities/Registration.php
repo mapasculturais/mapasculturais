@@ -132,6 +132,14 @@ class Registration extends \MapasCulturais\Entity
     protected $__agentRelations;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationSpaceRelation[] Space Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationSpaceRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__spaceRelation;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
@@ -166,7 +174,7 @@ class Registration extends \MapasCulturais\Entity
             ]
         ];
     }
-
+    
     function jsonSerialize() {
         $json = [
             'id' => $this->id,
@@ -176,6 +184,7 @@ class Registration extends \MapasCulturais\Entity
             'owner' => $this->owner->simplify('id,name,singleUrl'),
             'agentRelations' => [],
             'files' => [],
+            'spaceRelation' => $this->getSpaceRelation(),
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
         ];
@@ -213,6 +222,10 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $json;
+    }
+
+    function getSpaceRelation(){
+        return is_null($this->__spaceRelation) ? false : $this->__spaceRelation;
     }
 
     function setOwnerId($id){

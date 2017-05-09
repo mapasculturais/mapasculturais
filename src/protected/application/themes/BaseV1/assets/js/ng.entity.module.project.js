@@ -97,6 +97,7 @@
             },
 
             save: function () {
+                console.log('salvou');
                 jQuery('a.js-submit-button').click();
             },
 
@@ -891,7 +892,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
             label: label
         });
     }
-
+    
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){
             $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
@@ -1057,6 +1058,32 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     if(response.status > 0)
                         MapasCulturais.Messages.success(labels['changesSaved']);
                 });
+            };
+
+            $scope.setSpaceRelation = function(entity, attrs){
+                var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
+                    editBoxId = 'editbox-select-registration-space-relation',
+                    controllerId = null,
+                    controllerName = 'createSpaceRelation',
+                    entityId = null,
+                    group = attrs.name,
+                    spaceId = entity.id;
+
+                try{ controllerId = MapasCulturais.request.controller; }catch (e){};
+                try{ entityId = MapasCulturais.entity.id; }catch (e){};
+
+                var createSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
+                
+                $http.post(createSpaceRelationUrl, {id: spaceId}).
+                        success(function(data, status){
+                            if(status === 202){
+                                MapasCulturais.Messages.alert(labels['requestSent'].replace('{{agent}}', '<strong>'+data.agent.name+'</strong>'));
+                            }
+                            $rootScope.$emit('relatedAgent.created', data);
+                        }).
+                        error(function(data, status){
+                            $rootScope.$emit('error', { message: "Cannot create related agent", data: data, status: status });
+                        });
             };
 
             $scope.unsetRegistrationAgent = function(entityId, groupName){

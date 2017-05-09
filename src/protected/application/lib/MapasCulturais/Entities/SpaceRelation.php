@@ -113,9 +113,9 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
     }
 
     function save($flush = false) {
-        try{
+        //try{
             parent::save($flush);
-            
+            /*
             if($this->owner->usesPermissionCache()){
                 $this->owner->deleteUsersWithControlCache();
                 $this->owner->addToRecreatePermissionsCacheList();
@@ -136,7 +136,7 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
 
            throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
 
-        }
+        }*/
     }
 
     function delete($flush = false) {
