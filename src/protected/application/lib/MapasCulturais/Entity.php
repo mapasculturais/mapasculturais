@@ -275,10 +275,6 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
-        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
-            return false;
-        }
-
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
@@ -621,15 +617,17 @@ abstract class Entity implements \JsonSerializable{
                 }  catch (\Exception $e) {}
             }
             $val = $nval;
-        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array($val, $allowed_classes)){
+        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array(\get_class($val), $allowed_classes)){
+
             throw new \Exception();
         }elseif(is_object($val)){
+
             if(in_array($val, Entity::$_jsonSerializeNestedObjects))
                 throw new \Exception();
-
         }
+
         return $val;
-    }
+    }   
 
     /**
      *

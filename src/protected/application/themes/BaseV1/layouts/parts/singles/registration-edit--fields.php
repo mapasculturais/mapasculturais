@@ -1,10 +1,10 @@
-<div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
+<div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset registration-edit-mode">
     <!--
     <h4><?php \MapasCulturais\i::_e("Campos adicionais");?></h4>
     <p class="registration-help"><?php \MapasCulturais\i::_e("Para efetuar sua inscrição, informe os campos abaixo.");?></p>
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController"> 
-        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode">
+        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
             <div ng-show="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
 

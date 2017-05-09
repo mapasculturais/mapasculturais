@@ -736,6 +736,11 @@ class App extends \Slim\Slim{
             'name' => \MapasCulturais\i::__('Seleção única (select)'),
             'requireValuesConfiguration' => true
         ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'section',
+            'name' => \MapasCulturais\i::__('Título de Seção')
+        ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
 //            'slug' => 'radio',

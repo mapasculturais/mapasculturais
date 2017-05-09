@@ -628,6 +628,23 @@ return [
         $__try("CREATE INDEX registration_meta_key_idx ON registration_meta key;");
         $__try("DROP INDEX notification_meta_key_value_idx;");
         $__try("CREATE INDEX notification_meta_key_idx ON notification_meta(key);");
-    }
+    },
+    
+    
+    'altertable registration_file_and_files_add_order' => function () use($conn){
+        if(__column_exists('registration_file_configuration', 'order')){
+            echo "ALREADY APPLIED";
+        } else {
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
+        }
+        
+        if(__column_exists('registration_field_configuration', 'order')){
+            echo "ALREADY APPLIED";
+        } else {
+            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
+        }
+
+    },
+    
 ] + $updates ;
 
