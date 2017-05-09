@@ -137,11 +137,14 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
-                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
-                'Lésbica' => \MapasCulturais\i::__('Lésbica'),
-                'Gay' => \MapasCulturais\i::__('Gay'),
-                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
                 'Assexual' => \MapasCulturais\i::__('Assexual'),
+                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
+                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
+                'Homossexual' => \MapasCulturais\i::__('Homossexual'),
+                'Transsexual' => \MapasCulturais\i::__('Transsexual'),
+                'Transfeminino' => \MapasCulturais\i::__('Transfeminino'),
+                'Transmasculino' => \MapasCulturais\i::__('Transmasculino'),
+                'Pansexual' => \MapasCulturais\i::__('Pansexual'),
                 'Outras' => \MapasCulturais\i::__('Outras')
             )
         ),
