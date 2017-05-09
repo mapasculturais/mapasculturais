@@ -47,7 +47,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
-        
+
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
@@ -91,6 +91,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     <?php if($this->isEditable()): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Nome");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeCompleto") && $editEntity? 'required': '');?>" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Completo ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira seu nome completo ou razão social");?>"><?php echo $entity->nomeCompleto; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("CPF/CNPJ");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Escolaridade");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"escolaridade") && $editEntity? 'required': '');?>" data-edit="escolaridade" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Escolaridade");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione seu nível de escolaridade se for pessoa física");?>"><?php echo $entity->escolaridade; ?></span></p>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento/Fundação");?>:</span>
                             <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"dataDeNascimento") && $this->isEditable()? 'required': '');?>" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
@@ -147,7 +148,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <!-- .tabs-content -->
     <?php $this->applyTemplateHook('tabs-content','after');?>
-    
+
     <?php $this->part('owner', array('entity' => $entity, 'owner' => $entity->owner)); ?>
 
     <?php $this->applyTemplateHook('main-content','end'); ?>

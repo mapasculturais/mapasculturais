@@ -1,4 +1,4 @@
-<?php 
+<?php
 $this->bodyProperties['ng-controller'] = "EntityController";
 
 $entity = $entityRevision;
@@ -26,11 +26,11 @@ $this->includeMapAssets();
 
 <article class="main-content agent">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
-    <header class="main-content-header">    
+    <header class="main-content-header">
         <?php $this->applyTemplateHook('header-image','before'); ?>
 
         <div class="header-image js-imagem-do-header"></div>
-        
+
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
@@ -111,6 +111,13 @@ $this->includeMapAssets();
 
                     <?php if(isset($entity->documento) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("CPF/CNPJ");?>:</span> <span class="js-editable" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
+                    <?php endif;?>
+
+                    <?php if(isset($entity->escolaridade) && $userCanView): ?>
+                        <p class="privado"><span class="icon icon-private-info"></span>
+                          <span class="label"><?php i::_e("Escolaridade");?>:</span>
+                          <span class="js-editable" data-edit="escolaridade" data-original-title="<?php i::esc_attr_e("Escolaridade");?>" data-emptytext="<?php i::esc_attr_e("Selecione seu nível de escolaridade se for pessoa física");?>"><?php echo $entity->escolaridade; ?></span>
+                      </p>
                     <?php endif;?>
 
                     <?php if(isset($entity->dataDeNascimento) && $userCanView): ?>
@@ -239,7 +246,7 @@ $this->includeMapAssets();
     <?php if(isset($entity->_seals)):?>
         <div class="selos-add">
             <div class="widget">
-                <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> 
+                <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?>
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
                     <div class="avatar-seal">
