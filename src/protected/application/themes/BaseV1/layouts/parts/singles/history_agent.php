@@ -113,6 +113,10 @@ $this->includeMapAssets();
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("CPF/CNPJ");?>:</span> <span class="js-editable" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CPF ou CNPJ com pontos, hífens e barras");?>"><?php echo $entity->documento; ?></span></p>
                     <?php endif;?>
 
+                    <?php if(isset($entity->identidade) && $userCanView): ?>
+                      <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Número da Identidade (RG)");?>:</span> <span class="js-editable" data-edit="identidade" data-original-title="<?php i::esc_attr_e("Número da Identidade (RG)");?>" data-emptytext="<?php i::esc_attr_e("Insira o número de sua identidade (RG) se for pessoa física");?>"><?php echo $entity->identidade; ?></span></p>
+                    <?php endif;?>
+
                     <?php if(isset($entity->escolaridade) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span>
                           <span class="label"><?php i::_e("Escolaridade");?>:</span>

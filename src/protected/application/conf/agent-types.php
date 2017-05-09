@@ -23,6 +23,11 @@ return array(
 //            )
         ),
 
+        'identidade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Identidade (RG)')
+        ),
+
         'escolaridade' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Escolaridade'),
