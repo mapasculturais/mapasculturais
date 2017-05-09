@@ -28,6 +28,21 @@ return array(
             'label' => \MapasCulturais\i::__('Identidade (RG)')
         ),
 
+        'estadoCivil' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Estado Civil'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Solteiro(a)' => \MapasCulturais\i::__('Solteiro(a)'),
+                'Casado(a)' => \MapasCulturais\i::__('Casado(a)'),
+                'Divorciado(a)' => \MapasCulturais\i::__('Divorciado(a)'),
+                'Viúvo(a)' => \MapasCulturais\i::__('Viúvo(a)'),
+                'Separado(a)' => \MapasCulturais\i::__('Separado(a)'),
+                'União Estável' => \MapasCulturais\i::__('União Estável')
+            )
+        ),
+
         'escolaridade' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Escolaridade'),

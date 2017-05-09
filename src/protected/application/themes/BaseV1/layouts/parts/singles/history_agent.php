@@ -117,6 +117,13 @@ $this->includeMapAssets();
                       <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Número da Identidade (RG)");?>:</span> <span class="js-editable" data-edit="identidade" data-original-title="<?php i::esc_attr_e("Número da Identidade (RG)");?>" data-emptytext="<?php i::esc_attr_e("Insira o número de sua identidade (RG) se for pessoa física");?>"><?php echo $entity->identidade; ?></span></p>
                     <?php endif;?>
 
+                    <?php if(isset($entity->estadoCivil) && $userCanView): ?>
+                    <p class="privado"><span class="icon icon-private-info"></span>
+                        <span class="label"><?php i::_e("Estado Civil");?>:</span>
+                        <span class="js-editable" data-edit="estadoCivil" data-original-title="<?php i::esc_attr_e("Estado Civil");?>" data-emptytext="<?php i::esc_attr_e("Selecione seu estado civil se for pessoa física");?>"><?php echo $entity->estadoCivil; ?></span>
+                    </p>
+                    <?php endif;?>
+
                     <?php if(isset($entity->escolaridade) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span>
                           <span class="label"><?php i::_e("Escolaridade");?>:</span>
