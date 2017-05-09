@@ -121,13 +121,15 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
-                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
-                'Mulher' => \MapasCulturais\i::__('Mulher'),
-                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
                 'Homem' => \MapasCulturais\i::__('Homem'),
+                'Mulher' => \MapasCulturais\i::__('Mulher'),
+                'Intergênero' => \MapasCulturais\i::__('Intergênero'),
+                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
+                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
                 'Não Binário' => \MapasCulturais\i::__('Não Binário'),
+                'Transgênero' => \MapasCulturais\i::__('Transgênero'),
                 'Travesti' => \MapasCulturais\i::__('Travesti'),
-                'Outras' => \MapasCulturais\i::__('Outras')
+                'Outros' => \MapasCulturais\i::__('Outros')
             )
         ),
 
@@ -137,13 +139,15 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
+                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
                 'Assexual' => \MapasCulturais\i::__('Assexual'),
                 'Bissexual' => \MapasCulturais\i::__('Bissexual'),
-                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
+                'Crossdresser' => \MapasCulturais\i::__('Crossdresser'),
+                'Demissexual' => \MapasCulturais\i::__('Demissexual'),
+                'Gay' => \MapasCulturais\i::__('Gay'),
                 'Homossexual' => \MapasCulturais\i::__('Homossexual'),
-                'Transsexual' => \MapasCulturais\i::__('Transsexual'),
-                'Transfeminino' => \MapasCulturais\i::__('Transfeminino'),
-                'Transmasculino' => \MapasCulturais\i::__('Transmasculino'),
+                'Lésbica' => \MapasCulturais\i::__('Lésbica'),
+                'Transsexual' => \MapasCulturais\i::__('Transexual'),
                 'Pansexual' => \MapasCulturais\i::__('Pansexual'),
                 'Outras' => \MapasCulturais\i::__('Outras')
             )
