@@ -10,9 +10,10 @@
                 <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
 
                 <div id="registration-space" class="js-registration-agent registration-agent">
+                    <p ng-if="data.entity.registrationSpace.status < 0" class="alert warning" style="display:block !important /* está oculto no scss */" ><?php \MapasCulturais\i::_e("Aguardando confirmação");?></p>
                     <div class="clearfix">
-                        <img ng-src="{{data.entity.registrationSpace.avatarUrl}}" class="registration-space-avatar" />
-                        <a ng-if="data.entity.registrationSpace" href="{{data.entity.registrationSpace.singleUrl}}">{{data.entity.registrationSpace.name}}</a>
+                        <img ng-src="{{data.entity.registrationSpace.space.avatarUrl}}" class="registration-space-avatar" />
+                        <a ng-if="data.entity.registrationSpace" href="{{data.entity.registrationSpace.space.singleUrl}}">{{data.entity.registrationSpace.space.name}}</a>
                         <span ng-if="!data.entity.registrationSpace"><?php \MapasCulturais\i::_e("Não informado");?></span>
                     </div>
                 </div>

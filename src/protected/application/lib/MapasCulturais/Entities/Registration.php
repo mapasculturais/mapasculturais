@@ -229,7 +229,7 @@ class Registration extends \MapasCulturais\Entity
         $relation = App::i()->repo('RegistrationSpaceRelation')->findBy(['owner' => $this]);
 
         if (is_array($relation) && isset($relation[0]) && $relation[0]->space)  { //TODO checar se é instancia da classe Space
-            return $relation[0]->space;
+            return $relation[0];
         } else {
             return null;
         }
@@ -697,6 +697,16 @@ class Registration extends \MapasCulturais\Entity
         }else{
             return $this->genericPermissionVerification($user);
         }
+    }
+
+    protected function canUserCreateSpaceRelation($user){
+        $result = $user->is('admin') || $this->userHasControl($user);
+        return $result;
+    }
+
+    function canUserRemoveSpaceRelation($user){
+        $result = $user->is('admin') || $this->userHasControl($user);
+        return $result;
     }
 
     //============================================================= //

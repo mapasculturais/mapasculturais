@@ -1075,12 +1075,17 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 
                 $http.post(createSpaceRelationUrl, {id: spaceId}).
                         success(function(response, status){
+                            console.log(response);
+                            if(status === 202){
+                                //MapasCulturais.Messages.alert(labels['spaceRelationRequestSent'].replace('{{space}}', '<strong>'+response.space.name+'</strong>'));
+                                MapasCulturais.Messages.alert(labels['spaceRelationRequestSent']);
+                            }
                             
                             if(response.space.avatar && response.space.avatar.avatarSmall){
                                 response.space.avatarUrl = response.space.avatar.avatarSmall.url;
                             }
 
-                            $scope.data.entity.registrationSpace = response.space;
+                            $scope.data.entity.registrationSpace = response;
 
                             EditBox.close(editBoxId);
 

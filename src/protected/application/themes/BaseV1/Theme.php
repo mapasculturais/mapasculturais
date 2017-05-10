@@ -1453,7 +1453,8 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
-           'Todas opções' => i::__('Todas opções'),
+            'Todas opções' => i::__('Todas opções'),
+            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

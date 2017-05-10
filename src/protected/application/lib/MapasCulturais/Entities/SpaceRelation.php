@@ -80,10 +80,8 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
 
         $space_control = !$app->isWorkflowEnabled() || $this->space->canUser('@control', $user);
 
-        if($this->hasControl)
-            return $this->owner->canUser('createSpaceRelationWithControl', $user) && $space_control;
-        else
-            return $this->owner->canUser('createSpaceRelation', $user) && $space_control;
+        return $this->owner->canUser('createSpaceRelation', $user) && $space_control;
+
     }
 
     protected function canUserRemove($user){
@@ -94,18 +92,8 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
         if($user->id == $this->space->getOwnerUser()->id)
             return true;
 
-        else if($this->hasControl)
-            return $this->owner->canUser('removeSpaceRelationWithControl', $user) || $space_control;
-
         else
             return $this->owner->canUser('removeSpaceRelation', $user) || $space_control;
-    }
-
-    protected function canUserChangeControl($user){
-        if($this->hasControl)
-            return $this->owner->canUser('removeSpaceRelationWithControl', $user);
-        else
-            return $this->owner->canUser('createSpaceRelationWithControl', $user);
     }
 
     public function _setTarget(\MapasCulturais\Entity $target){
@@ -113,9 +101,9 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
     }
 
     function save($flush = false) {
-        //try{
+        try{
             parent::save($flush);
-            /*
+            
             if($this->owner->usesPermissionCache()){
                 $this->owner->deleteUsersWithControlCache();
                 $this->owner->addToRecreatePermissionsCacheList();
@@ -136,7 +124,7 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
 
            throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
 
-        }*/
+        }
     }
 
     function delete($flush = false) {
