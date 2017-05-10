@@ -20,12 +20,12 @@ class RegistrationSpaceRelation extends SpaceRelation{
     protected $owner;
 
     public function save($flush = false) {
-        /*$old_relations = $this->repo()->findBy(['owner' => $this->owner]);
+        $old_relations = $this->repo()->findBy(['owner' => $this->owner]);
         foreach($old_relations as $rel){
             if(!$this->equals($rel)){
                 $rel->delete($flush);
             }
-        }*/
+        }
         parent::save($flush);
     }
 }

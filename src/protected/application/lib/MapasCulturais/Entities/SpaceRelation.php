@@ -142,7 +142,7 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
     function delete($flush = false) {
         $this->checkPermission('remove');
         // ($originType, $originId, $destinationType, $destinationId, $metadata)
-        $ruid = RequestSpaceRelation::generateRequestUid($this->owner->getClassName(), $this->owner->id, $this->space->getClassName(), $this->space->id, ['class' => $this->getClassName(), 'relationId' => $this->id]);
+        /*$ruid = RequestSpaceRelation::generateRequestUid($this->owner->getClassName(), $this->owner->id, $this->space->getClassName(), $this->space->id, ['class' => $this->getClassName(), 'relationId' => $this->id]);
         $requests = App::i()->repo('RequestSpaceRelation')->findBy(['requestUid' => $ruid]);
         foreach($requests as $r)
             $r->delete($flush);
@@ -152,6 +152,9 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
         if($this->owner->usesPermissionCache()){
             $this->owner->deleteUsersWithControlCache();
             $this->owner->addToRecreatePermissionsCacheList();
-        }
+        }*/
+
+        parent::delete($flush);     
+
     }
 }

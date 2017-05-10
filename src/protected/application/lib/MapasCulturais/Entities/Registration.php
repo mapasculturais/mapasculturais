@@ -184,7 +184,7 @@ class Registration extends \MapasCulturais\Entity
             'owner' => $this->owner->simplify('id,name,singleUrl'),
             'agentRelations' => [],
             'files' => [],
-            'spaceRelation' => $this->getSpaceRelation(),
+            //'spaceRelation' => [],
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
         ];
@@ -225,7 +225,16 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getSpaceRelation(){
-        return is_null($this->__spaceRelation) ? false : $this->__spaceRelation;
+        
+        $relation = App::i()->repo('RegistrationSpaceRelation')->findBy(['owner' => $this]);
+
+        if (is_array($relation) && isset($relation[0]) && $relation[0]->space)  { //TODO checar se é instancia da classe Space
+            return $relation[0]->space;
+        } else {
+            return null;
+        }
+        
+        //return is_null($this->__spaceRelation) ? false : $this->__spaceRelation;
     }
 
     function setOwnerId($id){

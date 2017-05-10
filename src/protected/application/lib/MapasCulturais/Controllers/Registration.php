@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
 
 /**
  * Registration Controller
@@ -119,12 +120,11 @@ class Registration extends EntityController {
         $space = $app->repo('Space')->find($this->postData['id']);
         $registration = $app->repo('Registration')->find($this->data['id']);
 
-        $relation = new \MapasCulturais\Definitions\RegistrationSpaceRelation;
+        $relation = new RegistrationSpaceRelationEntity();
         $relation->space = $space;
         $relation->owner = $registration;
         $relation->save(true);
-
-        // $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        
         $this->_finishRequest($relation, true);
     }
 

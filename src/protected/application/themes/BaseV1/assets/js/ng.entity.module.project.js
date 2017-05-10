@@ -97,7 +97,6 @@
             },
 
             save: function () {
-                console.log('salvou');
                 jQuery('a.js-submit-button').click();
             },
 
@@ -1068,21 +1067,27 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     entityId = null,
                     group = attrs.name,
                     spaceId = entity.id;
-
+                
                 try{ controllerId = MapasCulturais.request.controller; }catch (e){};
                 try{ entityId = MapasCulturais.entity.id; }catch (e){};
 
                 var createSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
                 
                 $http.post(createSpaceRelationUrl, {id: spaceId}).
-                        success(function(data, status){
-                            if(status === 202){
-                                MapasCulturais.Messages.alert(labels['requestSent'].replace('{{agent}}', '<strong>'+data.agent.name+'</strong>'));
+                        success(function(response, status){
+                            
+                            if(response.space.avatar && response.space.avatar.avatarSmall){
+                                response.space.avatarUrl = response.space.avatar.avatarSmall.url;
                             }
-                            $rootScope.$emit('relatedAgent.created', data);
+
+                            $scope.data.entity.registrationSpace = response.space;
+
+                            EditBox.close(editBoxId);
+
+                            $rootScope.$emit('relatedSpace.created', response);
                         }).
-                        error(function(data, status){
-                            $rootScope.$emit('error', { message: "Cannot create related agent", data: data, status: status });
+                        error(function(response, status){
+                            $rootScope.$emit('error', { message: "Cannot create related space", response: response, status: status });
                         });
             };
 
@@ -1222,6 +1227,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     alert('erro');
                 });
             };
+
         }]);
 
 module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
