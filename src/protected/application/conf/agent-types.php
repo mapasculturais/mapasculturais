@@ -23,6 +23,47 @@ return array(
 //            )
         ),
 
+        'identidade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Identidade (RG)')
+        ),
+
+        'estadoCivil' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Estado Civil'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Solteiro(a)' => \MapasCulturais\i::__('Solteiro(a)'),
+                'Casado(a)' => \MapasCulturais\i::__('Casado(a)'),
+                'Divorciado(a)' => \MapasCulturais\i::__('Divorciado(a)'),
+                'Viúvo(a)' => \MapasCulturais\i::__('Viúvo(a)'),
+                'Separado(a)' => \MapasCulturais\i::__('Separado(a)'),
+                'União Estável' => \MapasCulturais\i::__('União Estável')
+            )
+        ),
+
+        'escolaridade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Escolaridade'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Ensino Fundamental Completo' => \MapasCulturais\i::__('Ensino Fundamental Completo'),
+                'Ensino Fundamental Incompleto' => \MapasCulturais\i::__('Ensino Fundamental Incompleto'),
+                'Ensino Médio Completo' => \MapasCulturais\i::__('Ensino Médio Completo'),
+                'Ensino Médio Incompleto' => \MapasCulturais\i::__('Ensino Médio Incompleto'),
+                'Ensino Superior Completo' => \MapasCulturais\i::__('Ensino Superior Completo'),
+                'Ensino Superior Incompleto' => \MapasCulturais\i::__('Ensino Superior Incompleto'),
+                'Pós-graduação (Especialização) Completa' => \MapasCulturais\i::__('Pós-graduação (Especialização) Completa'),
+                'Pós-graduação (Especialização) Incompleta' => \MapasCulturais\i::__('Pós-graduação (Especialização) Incompleta'),
+                'Pós-graduação (Mestrado) Completa' => \MapasCulturais\i::__('Pós-graduação (Mestrado) Completo'),
+                'Pós-graduação (Mestrado) Incompleta' => \MapasCulturais\i::__('Pós-graduação (Mestrado) Incompleto'),
+                'Pós-graduação (Doutorado) Completa' => \MapasCulturais\i::__('Pós-graduação (Doutorado) Completo'),
+                'Pós-graduação (Doutorado) Incompleta' => \MapasCulturais\i::__('Pós-graduação (Doutorado) Incompleto')
+            )
+        ),
+
         'idade' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Idade'),
@@ -80,13 +121,14 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
-                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
-                'Mulher' => \MapasCulturais\i::__('Mulher'),
-                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
                 'Homem' => \MapasCulturais\i::__('Homem'),
+                'Mulher' => \MapasCulturais\i::__('Mulher'),
+                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
+                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
                 'Não Binário' => \MapasCulturais\i::__('Não Binário'),
+                'Transgênero' => \MapasCulturais\i::__('Transgênero'),
                 'Travesti' => \MapasCulturais\i::__('Travesti'),
-                'Outras' => \MapasCulturais\i::__('Outras')
+                'Outros' => \MapasCulturais\i::__('Outros')
             )
         ),
 
@@ -97,10 +139,13 @@ return array(
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
                 'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
-                'Lésbica' => \MapasCulturais\i::__('Lésbica'),
-                'Gay' => \MapasCulturais\i::__('Gay'),
-                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
                 'Assexual' => \MapasCulturais\i::__('Assexual'),
+                'Intersexual' => \MapasCulturais\i::__('Intersexual'),
+                'Gay' => \MapasCulturais\i::__('Gay'),
+                'Homossexual' => \MapasCulturais\i::__('Homossexual'),
+                'Lésbica' => \MapasCulturais\i::__('Lésbica'),
+                'Transsexual' => \MapasCulturais\i::__('Transexual'),
+                'Pansexual' => \MapasCulturais\i::__('Pansexual'),
                 'Outras' => \MapasCulturais\i::__('Outras')
             )
         ),
@@ -155,7 +200,7 @@ return array(
             'label' => \MapasCulturais\i::__('Endereço'),
             'type' => 'text'
         ),
-                    
+
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
             'private' => function(){

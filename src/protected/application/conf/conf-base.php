@@ -188,18 +188,18 @@ return array(
         'required' => true,
         'label' => \MapasCulturais\i::__('Agente responsável pela inscrição'),
         'agentRelationGroupName' => 'owner',
-        'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos CPF, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
+        'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos Nome, CPF, RG, Endereço, Data de Nascimento/Fundação, Raça, Gênero, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
         'type' => 1,
-        'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
+        'requiredProperties' => array('nomeCompleto','documento','identidade','endereco','dataDeNascimento','raca','genero','emailPrivado','telefone1')
     ),
     'registration.agentRelations' => array(
         array(
             'required' => false,
             'label' => \MapasCulturais\i::__('Instituição responsável'),
             'agentRelationGroupName' => 'instituicao',
-            'description' => \MapasCulturais\i::__('Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
+            'description' => \MapasCulturais\i::__('Agente coletivo (pessoa jurídica) com os campos Nome, Endereço, CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
             'type' => 2,
-            'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
+            'requiredProperties' => array('nomeCompleto','endereco','documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
         ),
         array(
             'required' => false,
