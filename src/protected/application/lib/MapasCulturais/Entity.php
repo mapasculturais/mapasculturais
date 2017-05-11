@@ -404,7 +404,7 @@ abstract class Entity implements \JsonSerializable{
 
         return $data_array;
     }
-    
+
     static public function getValidations(){
         return [];
     }
@@ -496,7 +496,7 @@ abstract class Entity implements \JsonSerializable{
     public function getEntityType(){
         return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
     }
-    
+
     public function getEntityTypeLabel($plural = false) {}
 
     function getEntityState() {
@@ -539,14 +539,16 @@ abstract class Entity implements \JsonSerializable{
         try{
             if($this->isNew()){
                 $this->checkPermission('create');
+                $is_new = true;
 
-
-                if($this->usesOriginSubsite()){
-                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                if($this->usesOriginSubsite() && $app->getCurrentSubsiteId()){
+                    $this->setSubsite($app->getCurrentSubsite());
                 }
 
             }else{
                 $this->checkPermission('modify');
+                $is_new = false;
+
             }
             $app->em->persist($this);
 
@@ -566,6 +568,12 @@ abstract class Entity implements \JsonSerializable{
                 if($flush){
                     $app->em->flush();
                 }
+            }
+            $this->refresh();
+            if($is_new){
+                $this->_newCreatedRevision();
+            } else {
+                $this->_newModifiedRevision();
             }
 
             // delete the entity cache
@@ -609,15 +617,17 @@ abstract class Entity implements \JsonSerializable{
                 }  catch (\Exception $e) {}
             }
             $val = $nval;
-        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array($val, $allowed_classes)){
+        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array(\get_class($val), $allowed_classes)){
+
             throw new \Exception();
         }elseif(is_object($val)){
+
             if(in_array($val, Entity::$_jsonSerializeNestedObjects))
                 throw new \Exception();
-
         }
+
         return $val;
-    }
+    }   
 
     /**
      *
@@ -718,7 +728,7 @@ abstract class Entity implements \JsonSerializable{
         if(!method_exists($class, 'getValidations')) {
             return $errors;
         }
-        
+
         foreach($class::getValidations() as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
@@ -882,6 +892,10 @@ abstract class Entity implements \JsonSerializable{
 
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
+        }
         
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();
@@ -965,7 +979,5 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
-
     }
-
 }

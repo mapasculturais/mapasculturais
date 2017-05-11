@@ -765,7 +765,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
             $scope.$apply();
             setTimeout(function(){
-                EditBox.close('editbox-file-'+id, event);
+                EditBox.close('editbox-file-'+id, evt);
             }, 700);
         });
     };
@@ -837,7 +837,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
         spinner: false,
 
         registrationCategories: categories,
-        registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
+        registrationCategoriesToFilter: [{value: null, label: labels['Todas opções']}].concat(categories),
 
         registration: {
             owner: null,

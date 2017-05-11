@@ -7,7 +7,7 @@ use MapasCulturais\App,
     MapasCulturais\Definitions,
     MapasCulturais\Exceptions;
 
-class Plugin extends \MapasCulturais\Plugin {
+class Module extends \MapasCulturais\Module{
 
     public function _init() {
 

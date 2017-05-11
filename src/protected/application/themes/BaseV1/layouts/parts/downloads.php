@@ -1,7 +1,7 @@
 <?php $downloads = $entity->getFiles('downloads'); ?>
 <?php if ($this->isEditable() || $downloads): ?>
     <div class="widget">
-        <h3 class="<?php if($this->isEditable()) echo \MapasCulturais\i::_e('editando') ?>">Downloads</h3>
+        <h3 class="<?php if($this->isEditable()) echo \MapasCulturais\i::_e('editando') ?>"><?php \MapasCulturais\i::_e("Downloads");?></h3>
         <?php if($this->isEditable()): ?>
             <a class="add js-open-editbox hltip" data-target="#editbox-download-file" href="#" title="<?php \MapasCulturais\i::esc_attr_e("Clique para adicionar arquivo para download");?>"></a>
             <div id="editbox-download-file" class="js-editbox mc-left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Arquivo");?>" data-submit-label="Enviar">

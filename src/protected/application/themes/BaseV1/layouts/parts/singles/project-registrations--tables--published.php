@@ -31,7 +31,7 @@
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td class="registration-agents-col">
                 <p>
-                    <span class="label">Responsável</span><br />
+                    <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
                     <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
                 </p>
 

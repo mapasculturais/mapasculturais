@@ -40,6 +40,8 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected $id;
 
     /**
+     * A entidade que recebe o selo
+     * 
      * @var integer
      *
      * @ORM\Column(name="object_id", type="integer", nullable=false)
@@ -71,6 +73,9 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected $seal;
 
     /**
+     * O agente que está aplicando o selo (que não necessariamente é o dono do selo, pode ser um agente com permissão
+     * ou o dono de um projeto que aplica o selo quando a inscrição é selecionada)
+     * 
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
@@ -81,6 +86,8 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected $agent;
 
     /**
+     * Gerada automaticamente no metodo save() com o profile do usuario logado.
+     * 
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
@@ -109,8 +116,8 @@ abstract class SealRelation extends \MapasCulturais\Entity
             $this->seal = $seal;
 
             $period = new \DateInterval("P" . ((string)$seal->validPeriod) . "M");
-            $dateFin = $this->createTimestamp->add($period);
-            $this->validateDate = $dateFin;
+            $this->validateDate = clone $this->createTimestamp;
+            $this->validateDate->add($period);
             
         } else {
             throw new \Exception();
@@ -143,6 +150,18 @@ abstract class SealRelation extends \MapasCulturais\Entity
     
     protected function canUserPrint($user) {
         return $this->owner->canUser('@control', $user) || $this->seal->canUser('@control', $user);
+    }
+    
+    protected function isExpired() {
+        if($this->seal->validPeriod > 0) {
+            
+            $today = new \DateTime();
+            $expirationDate = $this->validateDate;
+            return $expirationDate < $today;
+            
+        } else {
+            return false;
+        }
     }
 
     public function save($flush = false) {

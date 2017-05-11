@@ -31,7 +31,7 @@
                 ng-class="{'active':data.global.filterEntity === 'event',
                            'current-entity-parent':'<?php echo $this->controller->id;?>' == 'event'}"
                 ng-click="tabClick('event')">
-                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('site', 'search') . '##(global:(enabled:(event:!t),filterEntity:event))'; ?>">
                     <div class="icon icon-event"></div>
                     <div class="menu-item-label"><?php $this->dict('entities: Events') ?></div>
                 </a>
@@ -45,7 +45,7 @@
                 ng-class="{'active':data.global.filterEntity === 'space',
                            'current-entity-parent':'<?php echo $this->controller->id;?>' == 'space'}"
                 ng-click="tabClick('space')">
-                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('site', 'search') . '##(global:(enabled:(space:!t),filterEntity:space))'; ?>">
                     <div class="icon icon-space"></div>
                     <div class="menu-item-label"><?php $this->dict('entities: Spaces') ?></div>
                 </a>
@@ -59,7 +59,7 @@
                 ng-class="{'active':data.global.filterEntity === 'agent',
                            'current-entity-parent':'<?php echo $this->controller->id;?>' == 'agent'}"
                 ng-click="tabClick('agent')">
-                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('site', 'search') . '##(global:(enabled:(agent:!t),filterEntity:agent))'; ?>">
                     <div class="icon icon-agent"></div>
                     <div class="menu-item-label"><?php $this->dict('entities: Agents') ?></div>
                 </a>
@@ -73,7 +73,7 @@
                 ng-class="{'active':data.global.filterEntity === 'project',
                            'current-entity-parent':'<?php echo $this->controller->id;?>' == 'project'}"
                 ng-click="tabClick('project')">
-                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('site', 'search') . '##(global:(enabled:(project:!t),filterEntity:project,viewMode:list))'; ?>">
                     <div class="icon icon-project"></div>
                     <div class="menu-item-label"><?php $this->dict('entities: Projects') ?></div>
                 </a>

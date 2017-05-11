@@ -40,7 +40,8 @@ $_params = [
         
         <?php $this->part('singles/registration-edit--agents', $_params) ?>
         
-        <?php $this->part('singles/registration-edit--seals', $_params) ?>
+        <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
+        <?php //$this->part('singles/registration-edit--seals', $_params) ?>
         
         <?php $this->part('singles/registration-edit--fields', $_params) ?>
         

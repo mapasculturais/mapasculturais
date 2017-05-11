@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 $section = '';
 $groups = $this->getDictGroups();
 
@@ -7,13 +8,15 @@ $texts = \MapasCulturais\Themes\BaseV1\Theme::_dict();
 
 ?>
 <div id="texts" class="aba-content">
-    <p class="alert info">Nesta seção você configura os textos utilizados na interface do site. Cada texto tem uma explicação do local em que deverá aparecer a informação. A opção de “exibir opções avançadas” possibilita que outros campos apareçam para definição dos textos.</p>
+    <p class="alert info">
+        <?php i::_e('Nesta seção você configura os textos utilizados na interface do site. Cada texto tem uma explicação do local em que deverá aparecer a informação. A opção de “exibir opções avançadas” possibilita que outros campos apareçam para definição dos textos.'); ?>
+    </p>
 
     <?php foreach($groups as $gname => $group): ?>
         <section class="filter-section">
             <header>
                 <?php echo $group['title']; ?>
-                <label class="show-all"><input class="js-exibir-todos" type="checkbox"> exibir opções avançadas</label>
+                <label class="show-all"><input class="js-exibir-todos" type="checkbox"> <?php i::_e('exibir opções avançadas'); ?></label>
             </header>
             <p class="help"><?php echo $group['description']; ?></p>
             <?php foreach ($texts as $key => $def):

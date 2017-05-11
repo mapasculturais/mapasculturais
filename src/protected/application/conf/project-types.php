@@ -25,9 +25,9 @@ return array(
         ),
 
         'registrationLimit' => array(
-            'label' => 'Número máximo de inscrições no projeto',
+            'label' => \MapasCulturais\i::__('Número máximo de inscrições no projeto'),
             'validations' => array(
-                "v::intVal()" => "O número máximo de inscrições no projeto deve ser um número inteiro"
+                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições no projeto deve ser um número inteiro")
             )
         ),
 
@@ -99,6 +99,7 @@ return array(
         32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
         33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
         34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
+        35 => ['name' => \MapasCulturais\i::__("Inscrições")]
     )
     /* EXEMPLOS DE METADADOS:
 

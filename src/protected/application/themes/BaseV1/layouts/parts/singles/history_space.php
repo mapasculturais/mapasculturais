@@ -1,4 +1,5 @@
 <?php 
+use MapasCulturais\i;
 $this->bodyProperties['ng-controller'] = "EntityController";
 
 $entity = $entityRevision;
@@ -20,7 +21,7 @@ $this->includeMapAssets();
 <div id="editable-entity" class="clearfix sombra editable-entity-single" data-action="single" data-entity="entityRevision" data-id="<?php echo $entity->id ?>">
     <?php $this->part('editable-entity-logo') ?>
     <div class="controles">
-        <a class="btn btn-warning" href="<?php echo $app->createUrl('panel',$entity->controller_id . 's'); ?>"><?php \MapasCulturais\i::_e("Cancelar");?></a>
+        <a class="btn btn-warning" href="<?php echo $app->createUrl('panel',$entity->controller_id . 's'); ?>"><?php i::_e("Cancelar");?></a>
     </div>
 </div>
 
@@ -34,17 +35,18 @@ $this->includeMapAssets();
         <?php $this->applyTemplateHook('header-image','after'); ?>
 
         <?php $this->applyTemplateHook('entity-status','before'); ?>
-        <div class="alert info"><?php printf(\MapasCulturais\i::__("As informações deste registro é histórico gerado em %s."), $entity->createTimestamp->format('d/m/Y á\s H:i:s'));?>
+        <div class="alert info"><?php printf(i::__("As informações deste registro é histórico gerado em %s."), $entity->createTimestamp->format('d/m/Y á\s H:i:s'));?>
         <br>
         <?php if($entity->status === \MapasCulturais\Entity::STATUS_ENABLED): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(i::__("Este %s está como <b>publicado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_DRAFT): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s é um <b>rascunho<b>"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(i::__("Este %s é um <b>rascunho</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_TRASH): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está na <b>lixeira<b>"), strtolower($entity->entity->entityTypeLabel));?>
+            <?php printf(i::__("Este %s está na <b>lixeira</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
-            <?php printf(\MapasCulturais\i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
-        <?php endif; ?>, onde pode ser acessado clicando <a href='<?php echo $entity->entity->singleUrl;?>'>aqui</a>
+            <?php printf(i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
+        <?php endif; ?>, <?php printf(i::__("e pode ser acessado clicando <a href=\"%s\">aqui</a>"), $entity->entity->singleUrl); ?>
+
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
@@ -61,7 +63,7 @@ $this->includeMapAssets();
             <?php $this->applyTemplateHook('type','before'); ?>
             <div class="entity-type <?php echo $entity->controller_id ?>-type">
                 <div class="icon icon-<?php echo $entity->controller_id ?>"></div>
-                <a href="#" class='' data-original-title="<?php \MapasCulturais\i::esc_attr_e("Tipo");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione um tipo");?>" data-entity='<?php echo $entity->controller_id ?>' data-value='<?php echo $entity->_type ?>'>
+                <a href="#" class='' data-original-title="<?php i::esc_attr_e("Tipo");?>" data-emptytext="<?php i::esc_attr_e("Selecione um tipo");?>" data-entity='<?php echo $entity->controller_id ?>' data-value='<?php echo $entity->_type ?>'>
                     <?php echo $app->getRegisteredEntityTypeById($entity->entityClassName,$entity->_type)->name; ?>
                 </a>
             </div>
@@ -73,7 +75,7 @@ $this->includeMapAssets();
             <?php endif; ?>
 
             <?php $this->applyTemplateHook('name','before'); ?>
-            <h2><span class="" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>"><?php echo $entity->name; ?></span></h2>
+            <h2><span class="" data-edit="name" data-original-title="<?php i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php i::esc_attr_e("Nome de exibição");?>"><?php echo $entity->name; ?></span></h2>
             <?php $this->applyTemplateHook('name','after'); ?>
 
             <?php $this->applyTemplateHook('header-content','end'); ?>
@@ -87,7 +89,7 @@ $this->includeMapAssets();
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre"><?php i::_e("Sobre");?></a></li>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -98,7 +100,7 @@ $this->includeMapAssets();
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
 
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
@@ -106,51 +108,51 @@ $this->includeMapAssets();
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
                     <?php if(isset($entity->acessibilidade)): ?>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>: </span><span class="js-editable" data-edit="acessibilidade" data-original-title="Acessibilidade"><?php echo $entity->acessibilidade; ?></span></p>
+                        <p><span class="label"><?php i::_e("Acessibilidade");?>: </span><span class="js-editable" data-edit="acessibilidade" data-original-title="Acessibilidade"><?php echo $entity->acessibilidade; ?></span></p>
                     <?php endif; ?>
 
                     <?php if(isset($entity->acessibilidade_fisica)): ?>
                         <p>
-                            <span class="label"><?php \MapasCulturais\i::_e("Acessibilidade física");?>: </span><span class="js-editable" data-edit="acessibilidade_fisica" data-original-title="Acessibilidade Física" data-emptytext="Especifique a acessibilidade física <?php $this->dict('entities: of the space') ?>"><?php echo $entity->acessibilidade_fisica; ?></span>
+                            <span class="label"><?php i::_e("Acessibilidade física");?>: </span><span class="js-editable" data-edit="acessibilidade_fisica" data-original-title="Acessibilidade Física" data-emptytext="Especifique a acessibilidade física <?php $this->dict('entities: of the space') ?>"><?php echo $entity->acessibilidade_fisica; ?></span>
                         </p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('acessibilidade','after'); ?>
 
                     <?php if(isset($entity->capacidade)): ?>
                         <p>
-                            <span class="label"><?php \MapasCulturais\i::_e("Capacidade");?>: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade <?php $this->dict('entities: of the space') ?>"><?php echo $entity->capacidade; ?></span>
+                            <span class="label"><?php i::_e("Capacidade");?>: </span><span class="js-editable" data-edit="capacidade" data-original-title="Capacidade" data-emptytext="Especifique a capacidade <?php $this->dict('entities: of the space') ?>"><?php echo $entity->capacidade; ?></span>
                         </p>
                     <?php endif; ?>
 
                     <?php if(isset($entity->horario)): ?>
                         <p>
-                            <span class="label"><?php \MapasCulturais\i::_e("Horário de funcionamento");?>: </span><span class="js-editable" data-edit="horario" data-original-title="Horário de Funcionamento" data-emptytext="Insira o horário de abertura e fechamento"><?php echo $entity->horario; ?></span>
+                            <span class="label"><?php i::_e("Horário de funcionamento");?>: </span><span class="js-editable" data-edit="horario" data-original-title="Horário de Funcionamento" data-emptytext="Insira o horário de abertura e fechamento"><?php echo $entity->horario; ?></span>
                         </p>
                     <?php endif; ?>
 
                     <?php if(isset($entity->site)): ?>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
+                        <p><span class="label"><?php i::_e("Site");?>:</span>
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>
 
                     <?php if(isset($entity->emailPrivado) && $userCanView): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Email Privado");?>:</span> <span class="js-editable" data-edit="emailPrivado" data-original-title="<?php i::esc_attr_e("Email Privado");?>" data-emptytext="<?php i::esc_attr_e("Insira um email que não será exibido publicamente");?>"><?php echo $entity->emailPrivado; ?></span></p>
                     <?php endif;?>
 
                     <?php if(isset($entity->emailPublico)): ?>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Email");?>:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que será exibido publicamente");?>"><?php echo $entity->emailPublico; ?></span></p>
+                        <p><span class="label"><?php i::_e("Email");?>:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="<?php i::esc_attr_e("Email Público");?>" data-emptytext="<?php i::esc_attr_e("Insira um email que será exibido publicamente");?>"><?php echo $entity->emailPublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if(isset($entity->telefonePublico)): ?>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Telefone Público");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que será exibido publicamente");?>"><?php echo $entity->telefonePublico; ?></span></p>
+                        <p><span class="label"><?php i::_e("Telefone Público");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php i::esc_attr_e("Telefone Público");?>" data-emptytext="<?php i::esc_attr_e("Insira um telefone que será exibido publicamente");?>"><?php echo $entity->telefonePublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if(isset($entity->telefone1) && $userCanView): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Telefone 1");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone1; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Telefone 1");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone1" data-original-title="<?php i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone1; ?></span></p>
                     <?php endif;?>
 
                     <?php if(isset($entity->telefone2) && $userCanView): ?>
-                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Telefone 2");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone2; ?></span></p>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Telefone 2");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefone2" data-original-title="<?php i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>"><?php echo $entity->telefone2; ?></span></p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
@@ -163,15 +165,15 @@ $this->includeMapAssets();
                 <div class="servico clearfix">
                     <!--.mapa-->
                     <div class="infos">
-                        <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Endereço");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
-                        <p class="endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("CEP");?>:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CEP");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CEP");?>" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Logradouro");?>:</span> <span class="js-editable" id="En_Nome_Logradouro" data-edit="En_Nome_Logradouro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Logradouro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o logradouro");?>" data-showButtons="bottom"><?php echo $entity->En_Nome_Logradouro ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Número");?>:</span> <span class="js-editable" id="En_Num" data-edit="En_Num" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Número");?>" data-showButtons="bottom"><?php echo $entity->En_Num ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Complemento");?>:</span> <span class="js-editable" id="En_Complemento" data-edit="En_Complemento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Complemento");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um complemento");?>" data-showButtons="bottom"><?php echo $entity->En_Complemento ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Bairro");?>:</span> <span class="js-editable" id="En_Bairro" data-edit="En_Bairro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Bairro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Bairro");?>" data-showButtons="bottom"><?php echo $entity->En_Bairro ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Município");?>:</span> <span class="js-editable" id="En_Municipio" data-edit="En_Municipio" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Município");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Município");?>" data-showButtons="bottom"><?php echo $entity->En_Municipio ?></span></p>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Estado");?>:</span> <span class="js-editable" id="En_Estado" data-edit="En_Estado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Estado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Estado");?>" data-showButtons="bottom"><?php echo $entity->En_Estado ?></span></p>
+                        <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php i::esc_attr_e("Endereço");?>" data-emptytext="<?php i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
+                        <p class="endereco"><span class="label"><?php i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
+                        <p><span class="label"><?php i::_e("CEP");?>:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="<?php i::esc_attr_e("CEP");?>" data-emptytext="<?php i::esc_attr_e("Insira o CEP");?>" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
+                        <p><span class="label"><?php i::_e("Logradouro");?>:</span> <span class="js-editable" id="En_Nome_Logradouro" data-edit="En_Nome_Logradouro" data-original-title="<?php i::esc_attr_e("Logradouro");?>" data-emptytext="<?php i::esc_attr_e("Insira o logradouro");?>" data-showButtons="bottom"><?php echo $entity->En_Nome_Logradouro ?></span></p>
+                        <p><span class="label"><?php i::_e("Número");?>:</span> <span class="js-editable" id="En_Num" data-edit="En_Num" data-original-title="<?php i::esc_attr_e("Número");?>" data-emptytext="<?php i::esc_attr_e("Insira o Número");?>" data-showButtons="bottom"><?php echo $entity->En_Num ?></span></p>
+                        <p><span class="label"><?php i::_e("Complemento");?>:</span> <span class="js-editable" id="En_Complemento" data-edit="En_Complemento" data-original-title="<?php i::esc_attr_e("Complemento");?>" data-emptytext="<?php i::esc_attr_e("Insira um complemento");?>" data-showButtons="bottom"><?php echo $entity->En_Complemento ?></span></p>
+                        <p><span class="label"><?php i::_e("Bairro");?>:</span> <span class="js-editable" id="En_Bairro" data-edit="En_Bairro" data-original-title="<?php i::esc_attr_e("Bairro");?>" data-emptytext="<?php i::esc_attr_e("Insira o Bairro");?>" data-showButtons="bottom"><?php echo $entity->En_Bairro ?></span></p>
+                        <p><span class="label"><?php i::_e("Município");?>:</span> <span class="js-editable" id="En_Municipio" data-edit="En_Municipio" data-original-title="<?php i::esc_attr_e("Município");?>" data-emptytext="<?php i::esc_attr_e("Insira o Município");?>" data-showButtons="bottom"><?php echo $entity->En_Municipio ?></span></p>
+                        <p><span class="label"><?php i::_e("Estado");?>:</span> <span class="js-editable" id="En_Estado" data-edit="En_Estado" data-original-title="<?php i::esc_attr_e("Estado");?>" data-emptytext="<?php i::esc_attr_e("Insira o Estado");?>" data-showButtons="bottom"><?php echo $entity->En_Estado ?></span></p>
                     </div>
                     <!--.infos-->
                 </div>
@@ -182,19 +184,19 @@ $this->includeMapAssets();
 
             <?php $this->applyTemplateHook('tab-about-extra-info','before'); ?>
             <?php if ( isset($entity->longDescription) ): ?>
-                <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
-                <span class="descricao js-editable" data-edit="longDescription" data-original-title="Descrição <?php $this->dict('entities: of the Space') ?>" data-emptytext="Insira uma descrição <?php $this->dict('entities: of the space') ?>" ><?php echo nl2br($entity->longDescription); ?></span>
+                <h3><?php i::_e("Descrição");?></h3>
+                <span class="descricao js-editable" data-edit="longDescription" data-original-title="<?php $this->dict('entities: Description of the space') ?>" data-emptytext="<?php $this->dict('entities: Description of the space') ?>" ><?php echo nl2br($entity->longDescription); ?></span>
             <?php endif; ?>
 
             <?php if ( isset($entity->criterios) ): ?>
-                <h3><?php \MapasCulturais\i::_e("Critérios de uso");?> <?php $this->dict('entities: of the space') ?></h3>
-                <div class="descricao js-editable" data-edit="criterios" data-original-title="Critérios de uso <?php $this->dict('entities: of the space') ?>" data-emptytext="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-placeholder="Insira os critérios de uso <?php $this->dict('entities: of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
+                <h3><?php $this->dict('entities: Usage criteria of the space') ?></h3>
+                <div class="descricao js-editable" data-edit="criterios" data-original-title="<?php $this->dict('entities: Usage criteria of the space') ?>" data-emptytext="<?php $this->dict('entities: Usage criteria of the space') ?>" data-placeholder="<?php $this->dict('entities: Usage criteria of the space') ?>" data-showButtons="bottom" data-placement="bottom"><?php echo $entity->criterios; ?></div>
             <?php endif; ?>
             <?php $this->applyTemplateHook('tab-about-extra-info','after'); ?>
 
             <!-- Video Gallery BEGIN -->
             <?php if (isset($entity->videos)): ?>
-                <h3><?php \MapasCulturais\i::_e("Vídeos");?></h3>
+                <h3><?php i::_e("Vídeos");?></h3>
                 <a name="video"></a>
                 <div id="video-player" class="video" ng-non-bindable>
                     <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -223,7 +225,7 @@ $this->includeMapAssets();
 
     <footer id='entity-owner' class="owner clearfix js-owner" ng-controller="ChangeOwnerController">
         <img src="" class="avatar js-owner-avatar" />
-        <p class="small bottom"><?php \MapasCulturais\i::_e("Publicado por");?></p>
+        <p class="small bottom"><?php i::_e("Publicado por");?></p>
 
         <h6 class='js-owner-name'><a href="<?php echo $app->createUrl('entityRevision', 'history', [$entity->owner->revision]);?>"><?php echo $entity->owner->name ?></a></h6>
 
@@ -237,7 +239,7 @@ $this->includeMapAssets();
     <?php if(isset($entity->_seals)):?>
         <div class="selos-add">
             <div class="widget">
-                <h3 text-align="left" vertical-align="bottom"><?php \MapasCulturais\i::_e("Selos Aplicados");?> 
+                <h3 text-align="left" vertical-align="bottom"><?php i::_e("Selos Aplicados");?> 
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
                     <div class="avatar-seal">
@@ -270,7 +272,7 @@ $this->includeMapAssets();
 
     <?php if(isset($entity->_terms) && isset($entity->_terms->tag)): ?>
     <div class="widget">
-        <h3><?php \MapasCulturais\i::_e("Tags");?></h3>
+        <h3><?php i::_e("Tags");?></h3>
         <?php foreach($entity->_terms->tag as $tag): ?>
             <a class="tag tag-<?php echo $entity->controller_id ?>" href="">
                 <?php echo $tag; ?>
@@ -320,7 +322,7 @@ $this->includeMapAssets();
     <!-- Link List BEGIN -->
     <?php if (isset($entity->links)): ?>
         <div class="widget">
-            <h3><?php \MapasCulturais\i::_e("Links");?></h3>
+            <h3><?php i::_e("Links");?></h3>
             <ul class="js-metalist widget-list js-slimScroll">
                 <?php foreach($entity->links as $link): ?>
                     <li id="link-<?php echo $link->id ?>" class="widget-list-item" >
