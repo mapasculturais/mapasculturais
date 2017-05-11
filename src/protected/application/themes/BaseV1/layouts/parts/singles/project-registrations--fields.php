@@ -49,7 +49,7 @@
                 </edit-box>
 
                 <!-- added attachments list -->
-                <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
+                <ul class="attachment-list">
                     <li ng-repeat="field in data.fields" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item">
                         <div ng-if="field.fieldType !== 'file'">
                             <div class="js-open-editbox">

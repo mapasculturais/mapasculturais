@@ -79,13 +79,6 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $fieldType = null;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="display_order", type="smallint", nullable=false)
-     */
-    protected $displayOrder = 255;
-    
-    /**
      * @var string
      *
      * @ORM\Column(name="field_options", type="array", length=255, nullable=false)
@@ -152,8 +145,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
         'categories' => $this->categories,
-        'fieldName' => $this->getFieldName(),
-        'displayOrder' => $this->displayOrder
+        'fieldName' => $this->getFieldName()
         ];
     }
 

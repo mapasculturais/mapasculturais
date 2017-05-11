@@ -130,9 +130,9 @@
                 var fields = _files.concat(_fields);
 
                 fields.sort(function(a,b){
-                    if(a.displayOrder > b.displayOrder){
+                    if(a.title > b.title){
                         return 1;
-                    } else if(a.displayOrder < b.displayOrder){
+                    } else if(a.title < b.title){
                         return -1;
                     }else {
                         return 0;
@@ -205,7 +205,7 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -264,32 +264,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         file.categories = file.categories || [];
         return file;
     }
-    
+
     var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
     var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
 
         // @TODO: USAR A FUNCAO getFields
         var fields = _files.concat(_fields);
-
-        $scope.sortableOptions = {
-            
-            // ao reordenar, atualiza displayOrder dos campos e salva
-            stop: function(e, ui) {
-                
-                var ii = 1;
-                
-                $.each(fields, function(i,f) {
-                    f.displayOrder=ii;
-                    ii++;
-                });
-                
-                var url = new UrlService('project');
-                var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
-                
-                // requisição para salvar ordem
-                $http.post(saveOrderUrl, {fields: fields});
-            }
-        };
 
         $scope.data = {
             fieldSpinner: false,
@@ -320,9 +300,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         function sortFields(){
             $scope.data.fields.sort(function(a,b){
-                if(a.displayOrder > b.displayOrder){
+                if(a.title > b.title){
                     return 1;
-                } else if(a.displayOrder < b.displayOrder){
+                } else if(a.title < b.title){
                     return -1;
                 }else {
                     return 0;
