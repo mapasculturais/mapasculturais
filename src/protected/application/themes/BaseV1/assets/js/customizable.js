@@ -79,7 +79,7 @@ MapasCulturais.geocoder = {
             //     params.postalcode = addressElements.postalCode;
         }
 
-        var result = jQuery.get( window.location.protocol + '//nominatim.openstreetmap.org/search', params, function(r) {
+        var result = jQuery.get('//nominatim.openstreetmap.org/search', params, function(r) {
 
             // Consideramos o primeiro resultado
             if (r[0]) {
