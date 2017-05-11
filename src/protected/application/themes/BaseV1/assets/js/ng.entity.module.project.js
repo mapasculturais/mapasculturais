@@ -1075,7 +1075,6 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 
                 $http.post(createSpaceRelationUrl, {id: spaceId}).
                         success(function(response, status){
-                            console.log(response);
                             if(status === 202){
                                 //MapasCulturais.Messages.alert(labels['spaceRelationRequestSent'].replace('{{space}}', '<strong>'+response.space.name+'</strong>'));
                                 MapasCulturais.Messages.alert(labels['spaceRelationRequestSent']);
@@ -1096,11 +1095,35 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                         });
             };
 
+            $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
+                var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
+                    // editBoxId = 'editbox-select-registration-space-relation',
+                    controllerId = null,
+                    controllerName = 'removeSpaceRelation',
+                    entityId = null,
+                    group = attrs.name,
+                    spaceId = registrationEntity.space.id;
+
+                try{ controllerId = MapasCulturais.request.controller; }catch (e){};
+                try{ entityId = MapasCulturais.entity.id; }catch (e){};
+
+                const removeSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
+                
+                $http.post(removeSpaceRelationUrl, {id: spaceId}).
+                    success(function(data, status){
+                        $scope.data.entity.registrationSpace = undefined;
+                        $rootScope.$emit('relatedSpace.removed', data);
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', { message: "Cannot remove related space", data: data, status: status });
+                    });
+            }
+
             $scope.unsetRegistrationAgent = function(entityId, groupName){
                 if(groupName === 'owner')
                     return null;
 
-                var editBoxId = 'editbox-select-registration-' + groupName;
+                var editBoxId = 'editbox-select-registration-' + groupName;                
                 RelatedAgentsService.remove(groupName, entityId).success(function(){
                     for(var i in $scope.data.entity.registrationAgents){
                         var def = $scope.data.entity.registrationAgents[i];

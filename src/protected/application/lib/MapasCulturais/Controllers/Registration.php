@@ -128,6 +128,39 @@ class Registration extends EntityController {
         $this->_finishRequest($relation, true);
     }
 
+    /**
+     * Removes the space relation with the given id.
+     * 
+     * This action requires authentication.
+     * 
+     * @WriteAPI POST removeAgentRelation
+     */
+    public function POST_removeSpaceRelation(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!$this->urlData['id'])
+            $app->pass();
+
+        $registrationEntity = $this->repository->find($this->data['id']);
+        $space = $app->repo('Space')->find($this->postData['id']);
+        
+        if(is_object($registrationEntity) && !is_null($space)){
+            $spaceRelation = $app->repo('SpaceRelation')->findOneBy(array('objectId'=>$registrationEntity->id, 'space'=>(array('id'=>$space->id))));
+            $spaceRelation->delete(true);
+            
+            $this->refresh();
+            $this->deleteUsersWithControlCache();
+
+            if($this->usesPermissionCache()){
+                $this->addToRecreatePermissionsCacheList();
+            }
+            
+            $this->json(true);
+        }
+        //TODO throwing error?             
+    }   
+
     function registerRegistrationMetadata(\MapasCulturais\Entities\Project $project){
         
         $app = App::i();
