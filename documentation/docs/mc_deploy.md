@@ -73,12 +73,12 @@ mapas@server$ git clone https://github.com/hacklabr/mapasculturais.git
 ```
 
 
-E alterne para o branch v2 ou alguma tag de relase, disponível em https://github.com/hacklabr/mapasculturais/releases. Se for uma instalação de teste, você pode pular esta etapa.
+E alterne para o branch v3 ou alguma tag de relase, disponível em https://github.com/hacklabr/mapasculturais/releases. Se for uma instalação de teste, você pode pular esta etapa.
 
-Utilizando o branch V2:
+Utilizando o branch V3:
 ```BASH
 mapas@server$ cd mapasculturais
-mapas@server$ git checkout 3.0.11
+mapas@server$ git checkout v3
 ```
 
 Utilizando um release (Ex: 3.0.11):
