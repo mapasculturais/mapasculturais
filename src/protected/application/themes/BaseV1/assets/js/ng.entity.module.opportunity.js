@@ -218,7 +218,7 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -296,7 +296,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     ii++;
                 });
 
-                var url = new UrlService('project');
+                var url = new UrlService('opportunity');
                 var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
 
                 // requisição para salvar ordem
