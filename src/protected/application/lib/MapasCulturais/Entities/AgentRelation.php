@@ -153,7 +153,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
            $request = new RequestAgentRelation;
            $request->agentRelation = $this;
            $request->save(true);
-
+echo 'asd';
            throw new \MapasCulturais\Exceptions\WorkflowRequest([$request]);
 
         }

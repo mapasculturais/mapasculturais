@@ -123,7 +123,6 @@ class Registration extends EntityController {
         $relation = new RegistrationSpaceRelationEntity();
         $relation->space = $space;
         $relation->owner = $registration;
-        $relation->save(true);
         
         $this->_finishRequest($relation, true);
     }

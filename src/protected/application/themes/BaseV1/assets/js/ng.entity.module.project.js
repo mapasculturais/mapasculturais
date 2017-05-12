@@ -286,7 +286,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: []
         };
-
+        
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
 

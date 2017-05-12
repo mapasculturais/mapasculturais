@@ -176,7 +176,20 @@ article.project .highlighted-message .btn {
     }
 }
 
-.registration-list {
+.registration-space-avatar {
+    margin-left: 0.75rem;
+    margin-right: $line-height-half;
+    margin-top: 1rem;
+    float: left;
+    width: 2rem;
+    height: 2rem;
+}
+
+.btn-add-space-relation {
+    float: right;
+}
+
+.registration-list, .registration-space-relation {
 	margin: 0;
 	list-style: none;
     .registration-list-item {
