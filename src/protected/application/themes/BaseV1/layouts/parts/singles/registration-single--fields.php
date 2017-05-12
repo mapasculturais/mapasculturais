@@ -5,11 +5,14 @@
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
 
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-field-{{::field.id}}" data-field-id="{{::field.id}}" class="js-field attachment-list-item registration-view-mode">
-            <div ng-if="field.fieldType !== 'file'">
-                <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>
+            <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section'">
+                <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
                 <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
                 <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
                 <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado.");?></em></span>
+            </div>
+            <div ng-if="field.fieldType === 'section'">
+                <label class="label">{{field.title}}</label>
             </div>
             <div ng-if="field.fieldType === 'file'">
                 <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>
