@@ -824,11 +824,6 @@ class App extends \Slim\Slim{
             $this->registerRegistrationAgentRelation($def);
         }
 
-        // registratoin space relation
-        $def = new Definitions\RegistrationSpaceRelation($this->_config['registration.spaceRelations'][0]);
-        $projects_meta[$def->metadataName] = $def->getMetadataConfiguration();
-        $this->_register['registration_space_relation'] = $def;
-
 
         // all metalist groups
         $metalist_groups = [
