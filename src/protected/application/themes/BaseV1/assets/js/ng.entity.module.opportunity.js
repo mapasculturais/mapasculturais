@@ -218,7 +218,7 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -284,6 +284,26 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         // @TODO: USAR A FUNCAO getFields
         var fields = _files.concat(_fields);
 
+        $scope.sortableOptions = {
+
+            // ao reordenar, atualiza displayOrder dos campos e salva
+            stop: function(e, ui) {
+
+                var ii = 1;
+
+                $.each(fields, function(i,f) {
+                    f.displayOrder=ii;
+                    ii++;
+                });
+
+                var url = new UrlService('project');
+                var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
+
+                // requisição para salvar ordem
+                $http.post(saveOrderUrl, {fields: fields});
+            }
+        };
+
         $scope.data = {
             fieldSpinner: false,
             uploadSpinner: false,
@@ -313,15 +333,16 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         function sortFields(){
             $scope.data.fields.sort(function(a,b){
-                if(a.title > b.title){
+                if(a.displayOrder > b.displayOrder){
                     return 1;
-                } else if(a.title < b.title){
+                } else if(a.displayOrder < b.displayOrder){
                     return -1;
                 }else {
                     return 0;
                 }
             });
         }
+
 
         sortFields();
 
@@ -1084,7 +1105,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         spinner: false,
 
         registrationCategories: categories,
-        registrationCategoriesToFilter: [{value: null, label: 'Todas opções'}].concat(categories),
+        registrationCategoriesToFilter: [{value: null, label: labels['Todas opções']}].concat(categories),
 
         registration: {
             owner: null,

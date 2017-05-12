@@ -59,6 +59,12 @@ return array(
         27 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Nacional")),
         28 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Estadual")),
         29 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Municipal")),
+        30 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Militar")),
+        31 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Cívico")),
+        32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
+        33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
+        34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
+        35 => ['name' => \MapasCulturais\i::__("Inscrições")]
     )
     /* EXEMPLOS DE METADADOS:
 

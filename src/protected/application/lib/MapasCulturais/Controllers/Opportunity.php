@@ -239,6 +239,7 @@ class Opportunity extends EntityController {
                     $newField->required = $field->required;
                     $newField->categories = $field->categories;
                     $newField->fieldOptions = $field->fieldOptions;
+                    $newField->displayOrder = $field->displayOrder;
                     
                     $app->em->persist($newField);
                     
@@ -256,6 +257,7 @@ class Opportunity extends EntityController {
                     $newFile->description = $file->description;
                     $newFile->required = $file->required;
                     $newFile->categories = $file->categories;
+                    $newFile->displayOrder = $file->displayOrder;
                     
                     $app->em->persist($newFile);
                     
@@ -311,5 +313,49 @@ class Opportunity extends EntityController {
 
         $app->redirect($opportunity->editUrl.'#tab=inscricoes');
         
+    }
+
+    function POST_saveFieldsOrder() {
+
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $owner = $this->requestedEntity;
+
+        if(!$owner){
+            $app->pass();
+        }
+
+        $owner->checkPermission('modify');
+        
+        $savedFields = array();
+
+        $savedFields['fields'] = $owner->registrationFieldConfigurations;
+        $savedFields['files'] = $owner->registrationFileConfigurations;
+
+        if (!is_array($this->postData['fields'])){
+            return false;
+        }
+
+        foreach ($this->postData['fields'] as $field) {
+
+            $type = $field['fieldType'] == 'file' ? 'files' : 'fields';
+
+            foreach ($savedFields[$type] as $savedField) {
+
+                if ($field['id'] == $savedField->id) {
+
+                    $savedField->displayOrder = (int) $field['displayOrder'];
+                    $savedField->save(true);
+
+                    break;
+
+                }
+
+            }
+
+        }
+
     }
 }

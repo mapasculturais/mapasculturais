@@ -97,8 +97,8 @@ trait EntityAgentRelation {
 
         $cache_id = "$this::usersWithControl";
 
-        if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
+        if($app->config['app.usePermissionsCache'] && $app->msCache->contains($cache_id)){
+            return $app->msCache->fetch($cache_id);
         }else{
             $users = $this->getUsersWithControl();
             $ids = array_map(function($u){
@@ -116,7 +116,7 @@ trait EntityAgentRelation {
         // cache ids
         $cache_id = "$this::usersWithControl";
         
-        $app->cache->delete($cache_id);
+        $app->msCache->delete($cache_id);
     }
 
     function getUsersWithControl(array &$object_stack = []){
@@ -125,8 +125,8 @@ trait EntityAgentRelation {
         // cache ids
         $cache_id = "$this::usersWithControl";
 
-        if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
-            $ids = $app->cache->fetch($cache_id);
+        if($app->config['app.usePermissionsCache'] && $app->msCache->contains($cache_id)){
+            $ids = $app->msCache->fetch($cache_id);
             $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
             $q->useQueryCache(true);
             $q->setQueryCacheLifetime($app->config['app.permissionsCache.lifetime']);
@@ -171,7 +171,7 @@ trait EntityAgentRelation {
         }
 
         if($app->config['app.usePermissionsCache']){
-            $app->cache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
+            $app->msCache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
 
 

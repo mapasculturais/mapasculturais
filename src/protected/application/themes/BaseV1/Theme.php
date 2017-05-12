@@ -1689,7 +1689,9 @@ class Theme extends MapasCulturais\Theme {
                                 foreach ($data->config['options'] as $meta_key => $value)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($meta_key), 'label' => $value];
                                 break;
+
                             case 'entitytype':
+
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
 
                                 // ordena alfabeticamente
@@ -1703,6 +1705,12 @@ class Theme extends MapasCulturais\Theme {
                                 });
                                 foreach ($types as $type_key => $type_val)
                                     $mod_field['options'][] = ['value' => $sanitize_filter_value($type_key), 'label' => $type_val->name];
+
+                                $sort = [];
+                                foreach($mod_field['options'] as $k=>$v)
+                                    $sort['label'][$k] = $v['label'];
+                                array_multisort($sort['label'], SORT_ASC, $mod_field['options']);
+
                                 $this->addEntityTypesToJs("MapasCulturais\Entities\\".ucfirst($key));
                                 break;
                             case 'term':
@@ -1919,6 +1927,7 @@ class Theme extends MapasCulturais\Theme {
             'ownerUserId' => $entity->ownerUser->id,
             'definition' => $entity->getPropertiesMetadata(),
             'userHasControl' => $entity->canUser('@control'),
+            'canUserChangeOwner' => $entity->canUser('changeOwner'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
             'object' => $entity
@@ -1966,7 +1975,7 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addRelatedAdminAgentsToJs($entity) {
-        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true);
+        $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true, true);
     }
 
     function addOpportunityEvaluationCommitteeToJs(Entities\Opportunity $opportunity) {
