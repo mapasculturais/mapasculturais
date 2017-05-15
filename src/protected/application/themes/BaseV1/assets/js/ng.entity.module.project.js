@@ -1076,7 +1076,6 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 $http.post(createSpaceRelationUrl, {id: spaceId}).
                         success(function(response, status){
                             if(status === 202){
-                                //MapasCulturais.Messages.alert(labels['spaceRelationRequestSent'].replace('{{space}}', '<strong>'+response.space.name+'</strong>'));
                                 MapasCulturais.Messages.alert(labels['spaceRelationRequestSent']);
                             }
                             
@@ -1085,9 +1084,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             }
 
                             $scope.data.entity.registrationSpace = response;
-
                             EditBox.close(editBoxId);
-
                             $rootScope.$emit('relatedSpace.created', response);
                         }).
                         error(function(response, status){

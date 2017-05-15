@@ -228,7 +228,7 @@ class Registration extends \MapasCulturais\Entity
         
         $relation = App::i()->repo('RegistrationSpaceRelation')->findBy(['owner' => $this]);
 
-        if (is_array($relation) && isset($relation[0]) && $relation[0]->space)  { //TODO checar se é instancia da classe Space
+        if (is_array($relation) && isset($relation[0]) && $relation[0]->space)  {
             return $relation[0];
         } else {
             return null;

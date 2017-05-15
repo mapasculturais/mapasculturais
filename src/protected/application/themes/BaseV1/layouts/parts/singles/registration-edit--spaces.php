@@ -14,28 +14,30 @@
                         <div class="js-registration-agent registration-agent">
                             <div class="clearfix">
                                 <img ng-src="{{data.entity.registrationSpace.space.avatarUrl || data.assets.avatarSpace}}" class="registration-space-avatar" />
-                                <div class="no-space-relation-message">
+                                <div class="space-relation-message">
                                     <a ng-if="data.entity.registrationSpace" href="{{data.entity.registrationSpace.space.singleUrl}}">{{data.entity.registrationSpace.space.name}}</a>
                                     <span ng-if="!data.entity.registrationSpace"><?php \MapasCulturais\i::_e("Não informado");?></span>
                                 </div>
                             </div>
                         </div>
-                    <div ng-if="data.isEditable" class="btn-group ng-scope">
-                        <span ng-if="data.entity.registrationSpace">
-                            <a class="btn btn-data.entityault edit hltip" 
+                    <div ng-if="data.isEditable" class="btn-group">
+                        <span ng-if="data.entity.registrationSpace" class="space-edit-buttons">
+                            <a class="btn btn-default edit hltip" 
                                ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
                                title="<?php \MapasCulturais\i::esc_attr_e("Editar");?>"><?php \MapasCulturais\i::_e("Trocar Espaço");?>
                             </a>
-                            <a class="btn btn-data.entityault delete hltip" 
+                            <a class="btn btn-default delete hltip" 
                                ng-click="unsetRegistrationSpace(data.entity.registrationSpace, $event)" 
                                title="<?php \MapasCulturais\i::esc_attr_e("Excluir");?> "><?php \MapasCulturais\i::esc_attr_e("Excluir");?>
                             </a>
                         </span>
-                        <a class="btn btn-default add hltip ng-scope btn-add-space-relation" 
-                           ng-if="!data.entity.registrationSpace" 
-                           ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
-                           title="<?php \MapasCulturais\i::esc_attr_e("Adicionar");?>"><?php \MapasCulturais\i::_e("Adicionar");?>
-                        </a>
+                        <div class="space-add-button">
+                            <a class="btn btn-default add hltip" 
+                                ng-if="!data.entity.registrationSpace" 
+                                ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
+                                title="<?php \MapasCulturais\i::esc_attr_e("Adicionar");?>"><?php \MapasCulturais\i::_e("Adicionar");?>
+                            </a>
+                        </div>
                     </div>
                 </div>     
 
