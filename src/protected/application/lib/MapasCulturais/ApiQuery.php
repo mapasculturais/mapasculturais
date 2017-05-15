@@ -29,7 +29,7 @@ class ApiQuery {
      * Maximum number of results before use subquery instead of a list of ids in secondary queries
      * @var int 
      */
-    protected $maxBeforeSubquery = 1024;
+    protected $maxBeforeSubquery = 4096;
     
     /**
      * The ApiQuery Name
@@ -581,7 +581,7 @@ class ApiQuery {
             $dql .= " WHERE {$where} ";
         }
 
-        $result = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $dql);
+        $result = preg_replace('#([^a-z0-9_])e([\. ])#i', "$1{$alias}$2", $dql);
         return $result;
     }
 
