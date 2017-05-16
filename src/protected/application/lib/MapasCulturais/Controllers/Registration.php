@@ -156,8 +156,7 @@ class Registration extends EntityController {
             }
             
             $this->json(true);
-        }
-        //TODO throwing error?             
+        }        
     }   
 
     function registerRegistrationMetadata(\MapasCulturais\Entities\Project $project){

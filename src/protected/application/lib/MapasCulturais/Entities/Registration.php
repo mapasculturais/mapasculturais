@@ -95,6 +95,12 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $_agentsData = [];
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="space_data", type="json_array", nullable=true)
+     */
+    protected $_spaceData = [];
 
     /**
      * @var integer
@@ -305,7 +311,9 @@ class Registration extends \MapasCulturais\Entity
         $owner = $this->owner;
         $owner->definition = $definitions['owner'];
         $agents = [$owner];
-        foreach($this->relatedAgents as $groupName => $relatedAgents){
+        $relAgents = $this->relatedAgents;
+
+        foreach($relAgents as $groupName => $relatedAgents){
             $agent = clone $relatedAgents[0];
             $agent->groupName = $groupName;
             $agent->definition = $definitions[$groupName];
@@ -488,7 +496,8 @@ class Registration extends \MapasCulturais\Entity
 
         $errorsResult = [];
 
-        $project = $this->project;
+        $project = $this->project;        
+        $spaceRelationRequired = array_key_exists('useSpaceRelation', $project->metadata);
 
         $use_category = (bool) $project->registrationCategories;
 
@@ -540,6 +549,15 @@ class Registration extends \MapasCulturais\Entity
                 $errorsResult['registration-agent-' . $def->agentRelationGroupName] = implode(' ', $errors);
             }
 
+        }
+
+        // validate space
+        if($spaceRelationRequired){
+            $spaceDefined = $this->getSpaceRelation();
+
+            if(is_null($spaceDefined)){
+                $errorsResult[] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+            }            
         }
 
         // validate attachments
@@ -599,6 +617,40 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $errorsResult;
+    }
+
+    protected function _getSpaceWithDefinitions(){
+        $definitions = App::i()->getRegistrationAgentsDefinitions();
+        $owner = $this->owner;
+        $owner->definition = $definitions['owner'];
+        $agents = [$owner];
+        $relAgents = $this->relatedAgents;
+
+        foreach($relAgents as $groupName => $relatedAgents){
+            $agent = clone $relatedAgents[0];
+            $agent->groupName = $groupName;
+            $agent->definition = $definitions[$groupName];
+            $agents[] = $agent;
+        }
+        return $agents;
+    }
+
+    protected function _getSpaceData(){
+        $app = App::i();
+
+        $propertiesToExport = $app->config['registration.spaceProperties'];
+
+        $exportData = [];
+
+        foreach($this->_getAgentsWithDefinitions() as $agent){
+            $exportData[$agent->definition->agentRelationGroupName] = [];
+
+            foreach($propertiesToExport as $p){
+                $exportData[$agent->definition->agentRelationGroupName][$p] = $agent->$p;
+            }
+        }
+
+        return $exportData;
     }
 
     protected function _getAgentsData(){

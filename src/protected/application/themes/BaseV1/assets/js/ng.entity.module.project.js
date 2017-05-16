@@ -1231,8 +1231,6 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             });
                             $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
                             if(!focused){
-                                console.log($el);
-                                console.log($el.parents('li').get(0));
                                 $('html,body').animate({scrollTop: $el.parents('li').get(0).offsetTop - 10}, 300);
                                 focused = true;
                             }
