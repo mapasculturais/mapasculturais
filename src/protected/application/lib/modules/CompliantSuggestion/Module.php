@@ -9,6 +9,12 @@ use MapasCulturais\App,
 
 class Module extends \MapasCulturais\Module{
 
+    public function __construct(array $config = array()) {
+        $config = $config + ['compliant' => true, 'suggestion' => true];
+        
+        parent::__construct($config);
+    }
+
     public function _init() {
         $app = App::i();
 
