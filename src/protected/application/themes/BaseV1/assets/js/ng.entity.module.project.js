@@ -1076,7 +1076,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 $http.post(createSpaceRelationUrl, {id: spaceId}).
                         success(function(response, status){
                             if(status === 202){
-                                MapasCulturais.Messages.alert(labels['spaceRelationRequestSent']);
+                                MapasCulturais.Messages.alert(labels['spaceRelationRequestSent'].replace('{{space}}', '<strong>'+response.space.name+'</strong>'));
                             }
                             
                             if(response.space.avatar && response.space.avatar.avatarSmall){
@@ -1215,6 +1215,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     if(response.error){
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
+                            console.log(field, index);
                             var $el;
                             if(field === 'category'){
                                 $el = $('.js-editable-registrationCategory').parent();
@@ -1230,6 +1231,8 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             });
                             $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
                             if(!focused){
+                                console.log($el);
+                                console.log($el.parents('li').get(0));
                                 $('html,body').animate({scrollTop: $el.parents('li').get(0).offsetTop - 10}, 300);
                                 focused = true;
                             }
