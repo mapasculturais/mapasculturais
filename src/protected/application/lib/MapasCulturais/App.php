@@ -2482,10 +2482,4 @@ class App extends \Slim\Slim{
         }
         return null;
     }
-
-    function getAdmins() {
-        $app = App::i();
-        return $roles = $app->repo('Role')->findBy(['name' => 'superAdmin']);
-    }
-
 }
