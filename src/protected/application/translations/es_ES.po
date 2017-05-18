@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-05-18 12:43-0300\n"
+"POT-Creation-Date: 2017-05-18 16:45-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -7227,7 +7227,7 @@ msgstr ""
 
 #: application/themes/BaseV1/layouts/parts/singles/subsite-map.php:13
 msgid "Busque pelo nome da cidade ou estado"
-msgstr "Busque por el nombre de la ciudad o departamento"
+msgstr "Buscar por el nombre de la ciudad o departamento"
 
 #: application/themes/BaseV1/layouts/parts/singles/subsite-map.php:14
 msgid "buscar"
