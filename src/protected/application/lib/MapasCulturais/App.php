@@ -387,6 +387,18 @@ class App extends \Slim\Slim{
 
             $theme_class = $this->_subsite->namespace . "\Theme";
             $theme_instance = new $theme_class($config['themes.assetManager'], $this->_subsite);
+
+            $theme_path = $theme_class::getThemeFolder().'/';
+            if (file_exists($theme_path . 'conf-base.php')) {
+                $theme_config = require $theme_path . 'conf-base.php';
+                $this->_config = array_merge($this->_config, $theme_config);
+            }
+
+            if (file_exists($theme_path . 'config.php')) {
+                $theme_config = require $theme_path . 'config.php';
+                $this->_config = array_merge($this->_config, $theme_config);
+            }
+
         } else {
             $this->_cache->setNamespace($config['app.cache.namespace']);
 
