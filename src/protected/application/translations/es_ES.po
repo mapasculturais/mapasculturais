@@ -5242,7 +5242,7 @@ msgstr "Buscar"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:33
 msgid "Saiba mais"
-msgstr "Conocer más"
+msgstr "Conocé más"
 
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:38
 msgid "Encontre "
