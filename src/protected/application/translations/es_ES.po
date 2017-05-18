@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-05-10 15:35-0300\n"
+"POT-Creation-Date: 2017-05-18 12:43-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -5131,7 +5131,7 @@ msgstr "agentes de la "
 
 #: application/themes/BaseV1/layouts/parts/home-agents.php:40
 msgid "Encontre agentes por"
-msgstr "Buscar agentes por"
+msgstr "Encontrar agentes por"
 
 #: application/themes/BaseV1/layouts/parts/home-agents.php:42
 #: application/themes/BaseV1/layouts/parts/home-saas.php:40
@@ -5182,7 +5182,7 @@ msgstr "eventos de"
 
 #: application/themes/BaseV1/layouts/parts/home-events.php:38
 msgid "Encontre eventos por"
-msgstr "Encuentre eventos por"
+msgstr "Encontrar eventos por"
 
 #: application/themes/BaseV1/layouts/parts/home-events.php:62
 #: application/themes/BaseV1/layouts/parts/search/list-event.php:3
@@ -5204,7 +5204,7 @@ msgstr "proyectos de la "
 
 #: application/themes/BaseV1/layouts/parts/home-projects.php:37
 msgid "Encontre projetos por"
-msgstr "Busque proyectos por"
+msgstr "Encontrar proyectos por"
 
 #: application/themes/BaseV1/layouts/parts/home-projects.php:62
 #: application/themes/BaseV1/layouts/parts/search/list-project.php:4
@@ -5214,7 +5214,7 @@ msgstr "Agregar proyecto"
 #: application/themes/BaseV1/layouts/parts/home-saas.php:38
 #, php-format
 msgid "Encontre %s por"
-msgstr "Buscar %s por"
+msgstr "Encontrar %s por"
 
 #: application/themes/BaseV1/layouts/parts/home-seals.php:31
 msgid "selos cadastrados"
@@ -5233,7 +5233,7 @@ msgstr "Agregar sello"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:6
 msgid "Digite uma palavra-chave"
-msgstr "Escriba una palabra clave"
+msgstr "Escribí una palabra clave"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:8
 #: application/themes/BaseV1/layouts/parts/search/filter.php:14
@@ -5242,11 +5242,11 @@ msgstr "Buscar"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:33
 msgid "Saiba mais"
-msgstr "Conozca más"
+msgstr "Conocer más"
 
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:38
 msgid "Encontre "
-msgstr "Encuentre "
+msgstr "Encontrar"
 
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:38
 msgid " por "
