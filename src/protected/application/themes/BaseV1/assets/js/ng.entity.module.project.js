@@ -891,6 +891,8 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
             label: label
         });
     }
+
+    console.log(MapasCulturais.labels);
     
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){
@@ -1215,7 +1217,6 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     if(response.error){
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
-                            console.log(field, index);
                             var $el;
                             if(field === 'category'){
                                 $el = $('.js-editable-registrationCategory').parent();
@@ -1224,6 +1225,12 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             }else {
                                 $el = $('#' + field).find('div:first');
                             }
+
+                            //exibe msg de erro do espaço obrigatório
+                            if(field === 'spaceRequired'){
+                                $el = $('#registration-space-title');
+                            }
+
                             var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
                             message = message.replace(/"/g, '&quot;');
                             $scope.data.propLabels.forEach(function(prop){
@@ -1231,7 +1238,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             });
                             $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
                             if(!focused){
-                                $('html,body').animate({scrollTop: $el.parents('li').get(0).offsetTop - 10}, 300);
+                                $('html,body').animate({scrollTop: $el.parents('li').offsetTop - 10}, 300);
                                 focused = true;
                             }
                         });

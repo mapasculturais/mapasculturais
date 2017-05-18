@@ -1956,6 +1956,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
         $this->jsObject['entity']['registrationSpace'] = $entity->spaceRelation;
+        $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
 
         if($entity->project->canUser('@control')){
             $this->jsObject['registration'] = $entity;

@@ -4,7 +4,7 @@
     if($spaceRelation == 'optional' || $spaceRelation == 'required'):
 ?>
     <div class="registration-fieldset">
-        <h4><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4>        
+        <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4>        
                 <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
 
                 <div id="registration-space" class="registration-list-item registration-edit-mode ng-scope">

@@ -7,6 +7,7 @@
 <div class="registration-fieldset">
     <h4><?php \MapasCulturais\i::_e("Espaço Vinculado");?></h4>
     <!-- espaços relacionados a inscricao -->
+    {{data.entity.spaceData}}
     <div class="registration-list">
         <input type="hidden" id="ownerId" name="ownerId" class="js-editable" data-edit="ownerId"/>
             <div id="registration-agent-space" class="js-registration-agent registration-agent">

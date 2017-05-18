@@ -631,7 +631,6 @@ return [
     },
 
     //Space_Relation
-
     'CREATE SEQUENCE REGISTRATION SPACE RELATION registration_space_relation_id_seq' => function() use($conn){
         $conn->executeQuery("CREATE SEQUENCE space_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
     },
@@ -645,5 +644,10 @@ return [
         $conn->executeQuery("CREATE INDEX IDX_1A0E9A30232D562B ON space_relation (object_id);");
         $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-    }    
+    },
+
+    //Adiciona coluna space_data com metadados do espaço vinculado à inscrição
+    'ALTER TABLE registration' => function() use($conn){
+        $conn->executeQuery("ALTER TABLE registration ADD space_data JSON DEFAULT NULL;");
+    }
 ] + $updates ;

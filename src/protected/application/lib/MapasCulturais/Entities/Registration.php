@@ -238,9 +238,7 @@ class Registration extends \MapasCulturais\Entity
             return $relation[0];
         } else {
             return null;
-        }
-        
-        //return is_null($this->__spaceRelation) ? false : $this->__spaceRelation;
+        }      
     }
 
     function setOwnerId($id){
@@ -357,6 +355,10 @@ class Registration extends \MapasCulturais\Entity
             }
         }
         return $definitions;
+    }
+
+    function getSpaceData(){
+        return $this->_spaceData;
     }
 
     function getAgentsData(){
@@ -484,6 +486,7 @@ class Registration extends \MapasCulturais\Entity
         $this->status = self::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
+        $this->_spaceData = $this->_getSpaceData();
         $this->save(true);
         
         $app->enableAccessControl();
@@ -556,7 +559,7 @@ class Registration extends \MapasCulturais\Entity
             $spaceDefined = $this->getSpaceRelation();
 
             if(is_null($spaceDefined)){
-                $errorsResult[] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+                $errorsResult['spaceRequired'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
             }            
         }
 
@@ -638,19 +641,22 @@ class Registration extends \MapasCulturais\Entity
     protected function _getSpaceData(){
         $app = App::i();
 
-        $propertiesToExport = $app->config['registration.spaceProperties'];
+        $spacePropertiesToExport = $app->config['registration.spaceProperties'];
+        $spaceRelation = $app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this]);
 
-        $exportData = [];
+        if(!is_null($spaceRelation)){
+            $space = $spaceRelation[0]->space;
 
-        foreach($this->_getAgentsWithDefinitions() as $agent){
-            $exportData[$agent->definition->agentRelationGroupName] = [];
+            $exportData = [];
 
-            foreach($propertiesToExport as $p){
-                $exportData[$agent->definition->agentRelationGroupName][$p] = $agent->$p;
+            foreach($spacePropertiesToExport as $p){
+                $exportData[$p] = $space->$p;
             }
-        }
-
-        return $exportData;
+            
+            return $exportData;
+            }
+        
+        return null;
     }
 
     protected function _getAgentsData(){
