@@ -642,7 +642,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $spacePropertiesToExport = $app->config['registration.spaceProperties'];
-        $spaceRelation = $app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this]);
+        $spaceRelation = $app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this, 'status'=>\MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED]);
 
         if(!is_null($spaceRelation)){
             $space = $spaceRelation[0]->space;

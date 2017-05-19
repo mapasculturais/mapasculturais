@@ -176,6 +176,12 @@ article.project .highlighted-message .btn {
     }
 }
 
+.registration-space-details {
+    font-size: $font-size-smaller;
+    padding-top: $padding-base;
+    margin-left: 1rem;
+}
+
 .registration-space-avatar {
     margin-left: 0.75rem;
     margin-right: $line-height-half;
@@ -198,6 +204,11 @@ article.project .highlighted-message .btn {
 .space-relation-message {
     margin-top: 1rem;
     padding-top: 1rem;
+}
+
+.space-single-view-message {
+    margin-top: 1rem;
+    float: left;
 }
 
 .registration-list, .registration-space-relation {

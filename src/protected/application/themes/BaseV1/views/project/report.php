@@ -1,6 +1,7 @@
 <?php
 use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space as SpaceRelation;
 
 function echoStatus($registration){
     switch ($registration->status){
@@ -27,6 +28,8 @@ function echoStatus($registration){
 }
 
 $_properties = $app->config['registration.propertiesToExport'];
+
+$space_properties = $app->config['registration.spaceProperties'];
 
 ?>
 <style>
@@ -57,6 +60,11 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
                     <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
                 <?php endforeach; ?>
+            <?php endforeach; ?>
+
+            <!-- Cabeçalho com labels das informações dos espaços cadastrados-->
+            <?php foreach($space_properties as $prop): ?>
+                <th><?php echo 'Espaço ' ?> - <?php echo SpaceRelation::getPropertyLabel($prop); ?></th>
             <?php endforeach; ?>
         </tr>
     </thead>
@@ -108,7 +116,16 @@ $_properties = $app->config['registration.propertiesToExport'];
                         <?php echo str_repeat('<td></td>', count($_properties)) ?>
                     <?php endif; ?>
 
-                <?php endforeach ?>
+                <?php endforeach; ?>
+                <td></td>
+                 <!--Informações dos espaços cadastrados-->
+                <?php foreach($r->getSpaceData() as $field): ?>
+                    <?php if(is_array($field)): ?>
+                        <th><?php echo implode(', ', $field); ?></th>
+                    <?php else: ?>
+                        <th><?php echo $field; ?></th>
+                    <?php endif; ?>
+                <?php endforeach; ?>   
             </tr>
         <?php endforeach; ?>
     </tbody>

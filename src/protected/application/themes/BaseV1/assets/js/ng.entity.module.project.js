@@ -878,6 +878,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
 
         propLabels : [],
 
+        spaceLabels : [],
 
         fields: RegistrationService.getFields(),
 
@@ -892,6 +893,15 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
         });
     }
 
+    //labels espaços vinculados
+    for(var name in MapasCulturais.labels.space){
+        var label = MapasCulturais.labels.space[name];
+        $scope.data.spaceLabels.push({
+            name: name,
+            label: label
+        });
+    }
+    console.log($scope.data.spaceLabels);
     console.log(MapasCulturais.labels);
     
     if(MapasCulturais.entity.registrationAgents){
