@@ -901,8 +901,6 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
             label: label
         });
     }
-    console.log($scope.data.spaceLabels);
-    console.log(MapasCulturais.labels);
     
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){

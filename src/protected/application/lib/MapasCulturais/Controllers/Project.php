@@ -4,7 +4,6 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\Space as SpaceRelation;
 
 /**
  * Project Controller
@@ -83,61 +82,12 @@ class Project extends EntityController {
         $response['Pragma'] ='no-cache';
 
         $app->contentType('application/vnd.ms-excel; charset=UTF-8');
-
-        // $this->getSpaceHeaderLabels($entity->sentRegistrations);
-        // $labels = SpaceRel::getPropertiesLabels('En_CEP');
-        $reg = $entity->sentRegistrations;
-        foreach($reg as $r){
-            foreach($r->getSpaceData() as $k){
-                $var = $k;
-                
-            }
-        }
-        
         
         ob_start();
         $this->partial('report', ['entity' => $entity]);
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
-    }
-
-    /**
-     * Transforma os labels dos campos do Espaço Vinculado em formato legível
-     * e grava na chave do array. O valor correspondente ao label é então inserido
-     * como o value da respectiva chave.
-     *
-     * @param array $labels
-     * @return array
-     */
-    private function getSpaceHeaderLabels(array $registrations){
-        $return = array();
-        $labels = array();
-        $values = array();
-        $entityLabels = SpaceRelation::getPropertiesLabels();
-        
-        //converte os labels das entidades no formato legível
-        foreach($entityLabels as $label){
-            if($label !== ""){
-                array_push($labels, $label);
-            }
-        }
-
-        //value gravado na mesma posição dos labels
-        foreach($registrations as $r){
-            $temp = array();
-
-            foreach($r->getSpaceData() as $key => $value){
-                array_push($temp, $value);
-            }
-
-            $return['values'] = $temp;
-        }
-
-        $return['values'] = $values;
-        $return['labels'] = $labels;
-
-        return $return;
-    }
+    }    
 
     protected function _setEventStatus($status){
         $this->requireAuthentication();
