@@ -132,7 +132,7 @@ class Registration extends EntityController {
      * 
      * This action requires authentication.
      * 
-     * @WriteAPI POST removeAgentRelation
+     * @WriteAPI POST removeSpaceRelation
      */
     public function POST_removeSpaceRelation(){
         $this->requireAuthentication();
