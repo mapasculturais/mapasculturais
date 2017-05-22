@@ -1235,9 +1235,9 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             }
 
                             //exibe msg de erro do espaço obrigatório
-                            if(field === 'spaceRequired'){
+                            if(field === 'spaceRequired' || field === 'spaceUnauthorized'){
                                 $el = $('#registration-space-title');
-                            }
+                            }                            
 
                             var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
                             message = message.replace(/"/g, '&quot;');
