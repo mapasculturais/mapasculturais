@@ -565,7 +565,7 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['spaceRequired'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
         }
 
-        if(!is_null($spaceDefined) && $spaceDefined->status < 1){
+        if(!is_null($spaceDefined) && $spaceDefined->status < 0){
             $errorsResult['spaceUnauthorized'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
         }            
 
