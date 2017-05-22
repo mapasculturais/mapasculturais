@@ -190,7 +190,6 @@ class Registration extends \MapasCulturais\Entity
             'owner' => $this->owner->simplify('id,name,singleUrl'),
             'agentRelations' => [],
             'files' => [],
-            //'spaceRelation' => [],
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
         ];
@@ -230,8 +229,7 @@ class Registration extends \MapasCulturais\Entity
         return $json;
     }
 
-    function getSpaceRelation(){
-        
+    function getSpaceRelation(){        
         $relation = App::i()->repo('RegistrationSpaceRelation')->findBy(['owner' => $this]);
 
         if (is_array($relation) && isset($relation[0]) && $relation[0]->space)  {
@@ -358,6 +356,10 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getSpaceData(){
+        if(array_key_exists('acessibilidade_fisica', $this->_spaceData)){
+            $this->_spaceData['acessibilidade_fisica'] = str_replace(';', ', ', $this->_spaceData['acessibilidade_fisica']);
+        } 
+        
         return $this->_spaceData;
     }
 
@@ -500,7 +502,8 @@ class Registration extends \MapasCulturais\Entity
         $errorsResult = [];
 
         $project = $this->project;        
-        $spaceRelationRequired = array_key_exists('useSpaceRelation', $project->metadata);
+        // $spaceRelationRequired = array_key_exists('useSpaceRelation', $project->metadata);
+        
 
         $use_category = (bool) $project->registrationCategories;
 
@@ -555,13 +558,12 @@ class Registration extends \MapasCulturais\Entity
         }
 
         // validate space
-        if($spaceRelationRequired){
-            $spaceDefined = $this->getSpaceRelation();
+        $isSpaceRelationRequired = $project->metadata['useSpaceRelation'];
+        $spaceDefined = $this->getSpaceRelation();
 
-            if(is_null($spaceDefined)){
-                $errorsResult['spaceRequired'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
-            }            
-        }
+        if(is_null($spaceDefined) && $isSpaceRelationRequired === 'required'){
+            $errorsResult['spaceRequired'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+        }            
 
         // validate attachments
         foreach($project->registrationFileConfigurations as $rfc){
@@ -620,23 +622,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $errorsResult;
-    }
-
-    protected function _getSpaceWithDefinitions(){
-        $definitions = App::i()->getRegistrationAgentsDefinitions();
-        $owner = $this->owner;
-        $owner->definition = $definitions['owner'];
-        $agents = [$owner];
-        $relAgents = $this->relatedAgents;
-
-        foreach($relAgents as $groupName => $relatedAgents){
-            $agent = clone $relatedAgents[0];
-            $agent->groupName = $groupName;
-            $agent->definition = $definitions[$groupName];
-            $agents[] = $agent;
-        }
-        return $agents;
-    }
+    }    
 
     protected function _getSpaceData(){
         $app = App::i();
@@ -644,7 +630,7 @@ class Registration extends \MapasCulturais\Entity
         $spacePropertiesToExport = $app->config['registration.spaceProperties'];
         $spaceRelation = $app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this, 'status'=>\MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED]);
 
-        if(!is_null($spaceRelation)){
+        if(!empty($spaceRelation)){
             $space = $spaceRelation[0]->space;
 
             $exportData = [];

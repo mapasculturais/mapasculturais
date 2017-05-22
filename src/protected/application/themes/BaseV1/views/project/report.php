@@ -117,15 +117,15 @@ $space_properties = $app->config['registration.spaceProperties'];
                     <?php endif; ?>
 
                 <?php endforeach; ?>
-                <td></td>
+                
                  <!--Informações dos espaços cadastrados-->
                 <?php foreach($r->getSpaceData() as $field): ?>
                     <?php if(is_array($field)): ?>
-                        <th><?php echo implode(', ', $field); ?></th>
+                        <td><?php echo implode(', ', $field); ?></td>
                     <?php else: ?>
-                        <th><?php echo $field; ?></th>
+                        <td><?php echo $field; ?></td>
                     <?php endif; ?>
-                <?php endforeach; ?>   
+                <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>
     </tbody>
