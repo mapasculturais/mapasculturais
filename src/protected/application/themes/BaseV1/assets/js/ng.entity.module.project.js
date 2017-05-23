@@ -1077,6 +1077,11 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     entityId = null,
                     group = attrs.name,
                     spaceId = entity.id;
+
+                //retira msg de erro do espaço vinculado, caso haja
+                if($('#registration-space-title :first-child').hasClass('danger')){
+                    $('#registration-space-title :first-child').remove();
+                }
                 
                 try{ controllerId = MapasCulturais.request.controller; }catch (e){};
                 try{ entityId = MapasCulturais.entity.id; }catch (e){};
@@ -1104,12 +1109,16 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
 
             $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
                 var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
-                    // editBoxId = 'editbox-select-registration-space-relation',
                     controllerId = null,
                     controllerName = 'removeSpaceRelation',
                     entityId = null,
                     group = attrs.name,
                     spaceId = registrationEntity.space.id;
+
+                //retira msg de erro do espaço vinculado, caso haja
+                if($('#registration-space-title :first-child').hasClass('danger')){
+                    $('#registration-space-title :first-child').remove();
+                }
 
                 try{ controllerId = MapasCulturais.request.controller; }catch (e){};
                 try{ entityId = MapasCulturais.entity.id; }catch (e){};
@@ -1235,7 +1244,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                             }
 
                             //exibe msg de erro do espaço obrigatório
-                            if(field === 'spaceRequired' || field === 'spaceUnauthorized'){
+                            if(field === 'spaceRequired' || field === 'spaceUnauthorized' || field === 'invalidSpaceFields'){
                                 $el = $('#registration-space-title');
                             }                            
 
