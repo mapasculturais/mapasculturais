@@ -21,7 +21,9 @@
         <?php $this->part('singles/project-registrations--seals', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/project-registrations--fields', ['entity' => $entity]) ?>
-
+        
+        <?php $this->part('singles/project-registrations--importexport', ['entity' => $entity]) ?>
+        
     <?php endif; ?>
 
     <?php $this->part('singles/project-registrations--form', ['entity' => $entity]) ?>

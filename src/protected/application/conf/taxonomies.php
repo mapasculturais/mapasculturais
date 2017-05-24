@@ -1,7 +1,8 @@
 <?php
 return array(
     1 => array(
-        'slug' => \MapasCulturais\i::__('tag'),
+       // 'slug' => \MapasCulturais\i::__('tag'),
+'slug' => 'tag',
         'entities' => array(
             'MapasCulturais\Entities\Space',
             'MapasCulturais\Entities\Agent',
@@ -11,7 +12,8 @@ return array(
     ),
 
     2 => array(
-        'slug' => \MapasCulturais\i::__('area'),
+        //'slug' => \MapasCulturais\i::__('area'),
+'slug' => 'area',
         'required' => \MapasCulturais\i::__("Você deve informar ao menos uma área de atuação"),
         'entities' => array(
             'MapasCulturais\Entities\Space',
@@ -74,7 +76,7 @@ return array(
     ),
 
     3 => array(
-        'slug' => \MapasCulturais\i::__('linguagem'),
+        'slug' => 'linguagem',
         'required' => \MapasCulturais\i::__("Você deve informar ao menos uma linguagem"),
         'entities' => array(
             'MapasCulturais\Entities\Event'

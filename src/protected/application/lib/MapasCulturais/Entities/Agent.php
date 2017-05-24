@@ -27,6 +27,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
+        Traits\EntityRevision,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
         Traits\EntitySoftDelete,
@@ -194,7 +195,7 @@ class Agent extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\AgentAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
 
@@ -226,14 +227,24 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
-    
-    
+
+
     /**
      * @var integer
      *
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
 
 
     /**
@@ -245,14 +256,14 @@ class Agent extends \MapasCulturais\Entity
 
         parent::__construct();
     }
-    
+
     public function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Agentes');
         else
             return \MapasCulturais\i::__('Agente');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -267,7 +278,7 @@ class Agent extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     function setAsUserProfile(){
         $this->checkPermission('setAsUserProfile');
 

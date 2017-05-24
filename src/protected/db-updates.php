@@ -278,11 +278,33 @@ return [
     },
 
     'create update timestamp entities' => function () use($conn) {
-        if(!__column_exists('agent', 'update_timestamp')) $conn->executeQuery("ALTER TABLE agent ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
-    	if(!__column_exists('space', 'update_timestamp')) $conn->executeQuery("ALTER TABLE space ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
-    	if(!__column_exists('project', 'update_timestamp')) $conn->executeQuery("ALTER TABLE project ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
-    	if(!__column_exists('event', 'update_timestamp')) $conn->executeQuery("ALTER TABLE event ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
-    	if(!__column_exists('seal', 'update_timestamp')) $conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
+        if(__column_exists('agent', 'update_timestamp')){
+            echo " ALREADY APPLIED update_timestamp FIELD CREATION ON agent TABLE. ";
+        } else {
+    	    $conn->executeQuery("ALTER TABLE agent ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
+        }
+        if(__column_exists('space', 'update_timestamp')){
+            echo "ALREADY APPLIED update_timestamp FIELD CREATION ON space TABLE. ";
+        } else {
+    	    $conn->executeQuery("ALTER TABLE space ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
+        }
+        if(__column_exists('project', 'update_timestamp')){
+            echo "ALREADY APPLIED update_timestamp FIELD CREATION ON project TABLE. ";
+        } else {
+    	    $conn->executeQuery("ALTER TABLE project ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
+        }
+
+        if(__column_exists('event', 'update_timestamp')){
+            echo "ALREADY APPLIED update_timestamp FIELD CREATION ON event TABLE. ";
+        } else {
+    	    $conn->executeQuery("ALTER TABLE event ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
+        }
+        if(__column_exists('seal', 'update_timestamp')){
+            echo "ALREADY APPLIED update_timestamp FIELD CREATION ON seal TABLE. ";
+        } else {
+    	    $conn->executeQuery("ALTER TABLE seal ADD COLUMN update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;");
+        }
+
     },
 
     'alter table role add column subsite_id' => function () use($conn) {
@@ -382,8 +404,10 @@ return [
 
     'Created owner seal relation field' => function () use($conn) {
         if(__column_exists('seal_relation', 'owner_id')){
+            echo "ALREADY APPLIED";
             return true;
         }
+
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN owner_id INTEGER;");
         $agent_id = $conn->fetchColumn("select profile_id
                     from usr
@@ -435,7 +459,8 @@ return [
     },
 
     'Add notification type for compliant and suggestion messages' => function () use($conn) {
-        if(__table_exists('notification_meta')){
+        if(__table_exists('notification_meta')) {
+            echo "ALREADY APPLIED";
             return true;
         }
         $conn->executeQuery("CREATE TABLE notification_meta (id INT NOT NULL, object_id INT DEFAULT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
@@ -443,18 +468,6 @@ return [
         $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
     },
     
-    
-    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
-        if(__column_exists('file', 'path')){
-            return true;
-        }
-        $conn->executeQuery("CREATE INDEX file_owner_index ON file (object_type, object_id);");
-        $conn->executeQuery("CREATE INDEX file_group_index ON file (grp);");
-
-        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
-        
-    },
-
     'create avatar thumbs' => function() use($conn){
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
@@ -471,8 +484,36 @@ return [
         }
 
         $this->disableAccessControl();
-    },      
+    },
+    'create entity revision tables' => function() use($conn) {
+        if(__table_exists('entity_revision')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE SEQUENCE entity_revision_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("CREATE SEQUENCE revision_data_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("CREATE TABLE entity_revision (id INT NOT NULL, user_id INT DEFAULT NULL, object_id INT NOT NULL, object_type VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, action VARCHAR(255) NOT NULL, message TEXT NOT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE TABLE entity_revision_revision_data (revision_id INT NOT NULL, revision_data_id INT NOT NULL, PRIMARY KEY(revision_id, revision_data_id));");
+        $conn->executeQuery("CREATE TABLE entity_revision_data (id INT NOT NULL, timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("ALTER TABLE entity_revision ADD CONSTRAINT entity_revision_usr_fk FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_entity_revision_fk FOREIGN KEY (revision_id) REFERENCES entity_revision (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_revision_data_fk FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) NOT DEFERRABLE INITIALLY IMMEDIATE");
+    },
+       
+    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
+        if(__column_exists('file', 'path')){
+            return true;
+        }
+        $conn->executeQuery("CREATE INDEX file_owner_index ON file (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX file_group_index ON file (grp);");
+
+        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
+        
+    },
+            
     '*_meta drop all indexes again' => function () use($conn) {
+
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
             $table = "{$prefix}_meta";
             
@@ -589,7 +630,13 @@ return [
             echo "ALREADY APPLIED";
             return true;
         }
+
         $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+    },
+        
+    'update seal_relation set validate_date' => function() use ($conn) {
+        
+        $conn->executeQuery("UPDATE seal_relation SET validate_date = seal_relation.create_timestamp + cast(cast(s.valid_period as text) || 'month' as interval) FROM (SELECT id, valid_period FROM seal) AS s WHERE s.id = seal_id AND validate_date IS NULL;");
     },
             
     'refactor of entity meta keky value indexes' => function() use ($conn){
@@ -618,5 +665,23 @@ return [
         $__try("CREATE INDEX registration_meta_key_idx ON registration_meta key;");
         $__try("DROP INDEX notification_meta_key_value_idx;");
         $__try("CREATE INDEX notification_meta_key_idx ON notification_meta(key);");
-    }
+    },
+    
+    
+    'altertable registration_file_and_files_add_order' => function () use($conn){
+        if(__column_exists('registration_file_configuration', 'order')){
+            echo "ALREADY APPLIED";
+        } else {
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
+        }
+        
+        if(__column_exists('registration_field_configuration', 'order')){
+            echo "ALREADY APPLIED";
+        } else {
+            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
+        }
+
+    },
+    
 ] + $updates ;
+

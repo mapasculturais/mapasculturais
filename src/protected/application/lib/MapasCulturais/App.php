@@ -146,6 +146,8 @@ class App extends \Slim\Slim{
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
+    
+    protected $_modules = [];
 
     protected $_subsite = null;
 
@@ -188,7 +190,10 @@ class App extends \Slim\Slim{
                 header('Location: ' . $config['app.offlineUrl']);
             }
         }
-
+        
+        //Load defaut translation textdomain
+        i::load_default_textdomain($config['app.lcode']);
+        
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -203,8 +208,21 @@ class App extends \Slim\Slim{
 
 
         $this->_mscache->setNamespace(__DIR__);
+        
+        // list of modules
+        $available_modules = [];
+        if($handle = opendir(MODULES_PATH)){
+            while (false !== ($file = readdir($handle))) {
+                $dir = MODULES_PATH . $file . '/';
+                if ($file != "." && $file != ".." && is_dir($dir)) {
+                    $available_modules[] = $file;
+                    $config['namespaces'][$file] = $dir;
+                }
+            }
+            closedir($handle);
+        }
 
-        spl_autoload_register(function($class) use ($config){
+        spl_autoload_register(function($class) use ($config, $available_modules){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
                 $path = $this->_mscache->fetch($cache_id);
@@ -216,10 +234,11 @@ class App extends \Slim\Slim{
 
             foreach($config['plugins'] as $plugin){
                 $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
-
-                $namespaces[$plugin['namespace']] = $dir;
+                if(!isset($namespaces[$plugin['namespace']])){
+                    $namespaces[$plugin['namespace']] = $dir;
+                }
             }
-
+            
             foreach($namespaces as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
@@ -384,20 +403,37 @@ class App extends \Slim\Slim{
             'view' => $theme_instance,
             'mode' => $this->_config['app.mode']
         ]);
-
+        
         foreach($config['plugins'] as $slug => $plugin){
             $_namespace = $plugin['namespace'];
             $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
             $plugin_class_name = "$_namespace\\$_class";
+            
+            if(class_exists($plugin_class_name)){
+                $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
 
-            $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
+                $slug = is_numeric($slug) ? $_namespace : $slug;
 
-            $slug = is_numeric($slug) ? $_namespace : $slug;
-
-            $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+                $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
+            }
         }
-
+        
         $config = $this->_config;
+        
+        $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
+        foreach ($available_modules as $module){
+            $this->applyHookBoundTo($this, "app.module({$module}).init:before");
+            $module_class_name = "$module\Module";
+            if(isset($config["module.$module"])){
+                $this->_modules[$module] = new $module_class_name($config["module.$module"]);
+            } else {
+                $this->_modules[$module] = new $module_class_name;
+            }
+            $this->applyHookBoundTo($this, "app.module({$module}).init:after");
+        }
+        $this->applyHookBoundTo($this, 'app.modules.init:after');
+        
+
         // ===================================== //
 
         // custom log writer
@@ -435,7 +471,7 @@ class App extends \Slim\Slim{
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-
+        
         $this->register();
 
 
@@ -472,9 +508,6 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
-
-        //Load defaut translation textdomain
-        i::load_default_textdomain();
 
         return $this;
     }
@@ -657,6 +690,8 @@ class App extends \Slim\Slim{
         //workflow controllers
         $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
+        // history controller
+        $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
@@ -700,6 +735,11 @@ class App extends \Slim\Slim{
             'slug' => 'select',
             'name' => \MapasCulturais\i::__('Seleção única (select)'),
             'requireValuesConfiguration' => true
+        ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'section',
+            'name' => \MapasCulturais\i::__('Título de Seção')
         ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
@@ -1006,10 +1046,18 @@ class App extends \Slim\Slim{
     function getRegisteredGeoDivisions(){
         $result = [];
         foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $name) {
+            
+            $display = true;
+            if (substr($key, 0, 1) == '_') {
+                $display = false;
+                $key = substr($key, 1);
+            }
+            
             $d = new \stdClass();
             $d->key = $key;
             $d->name = $name;
             $d->metakey = 'geo' . ucfirst($key);
+            $d->display = $display;
             $result[] = $d;
         }
 
@@ -1315,7 +1363,7 @@ class App extends \Slim\Slim{
     /**********************************************
      * Getters
      **********************************************/
-    
+
     /**
      * Returns the current subsite ID, or null if current site is the main site
      *
@@ -1327,7 +1375,7 @@ class App extends \Slim\Slim{
             return $this->_subsite->id;
         }
 
-        return null; 
+        return null;
     }
 
     public function getCurrentSubsite(){
@@ -2394,18 +2442,20 @@ class App extends \Slim\Slim{
         if(array_key_exists($slug,$this->_config['mailer.templates'])) {
             $message = $this->_config['mailer.templates'][$slug];
             $message['body'] = $this->renderMustacheTemplate($message['template'],$templateData);
+            return $message;
+        } else {
+            throw new Exceptions\MailTemplateNotFound($slug);
         }
-        return $message;
     }
 
     /**************
      * GetText
      **************/
     /* deprecated, use MapasCulturais\i::get_locale();
-     * 
-     * 
-     * 
-     */ 
+     *
+     *
+     *
+     */
     static function getCurrentLCode(){
         return \MapasCulturais\i::get_locale();
     }
