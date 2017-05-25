@@ -180,13 +180,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
             $app = App::i();
             $app->disableAccessControl();
-            $this->status = self::STATUS_PENDING;
-            
-            
-            
-            
-            
-            
+            $this->status = self::STATUS_PENDING;      
             
             parent::save($flush);
             $app->enableAccessControl();
