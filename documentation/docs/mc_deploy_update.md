@@ -6,7 +6,7 @@ A seguir serão descritos os passos para efetuar a atualização com sucesso.
 
 ## Atualizando o código fonte
 
-O código pode ser atualizado através de um release, disponível em https://github.com/hacklabr/mapasculturais/releases, ou pode ser atualizado diretamente do branch `v2`.
+O código pode ser atualizado através de um release, disponível em https://github.com/hacklabr/mapasculturais/releases, ou pode ser atualizado diretamente do branch `v3`.
 
 O primeiro passo é atualizar as referências do novo código (pra saber que existem novas atualização no código e releases), isso pode ser feito utilizando o comando `git fetch`:
 
@@ -16,29 +16,29 @@ $ git fetch
 
 ### Atualizando através de uma TAG (release)
 
-Se for atualizar através de um release, o é `git checkout [release]`, onde `[release]` é o release desejado. A seguir um exemplo fazendo um checkout para a versão "2.1.0":
+Se for atualizar através de um release, o é `git checkout [release]`, onde `[release]` é o release desejado. A seguir um exemplo fazendo um checkout para a versão "3.0.14":
 
 ```
-$ git checkout 2.1.0
+$ git checkout 3.0.14
 ```
 
-### Atualizando através do branch V2 (versão estável)
+### Atualizando através do branch v3 (versão estável)
 
-Para atualizar o código fonte através do branch V2, primeiro é necessário verificar se o branch é o correto. É possível verificar com o comando `git status`, o resultado deve ser parecido com isto:
+Para atualizar o código fonte através do branch v3, primeiro é necessário verificar se o branch é o correto. É possível verificar com o comando `git status`, o resultado deve ser parecido com isto:
 
 ```
 $ git status
-On branch v2
-Your branch is up-to-date with 'origin/v2'.
+On branch v3
+Your branch is up-to-date with 'origin/v3'.
 
 nothing added to commit but untracked files present (use "git add" to track)
 
 ```
 
-Se o resultado estiver diferente disso (origin/v2), é possível alterar para o branch utilizando o comando `git checkout [nome_da_branch]`:
+Se o resultado estiver diferente disso (origin/v3), é possível alterar para o branch utilizando o comando `git checkout [nome_da_branch]`:
 
 ```
-$ git checkout v2
+$ git checkout v3
 ```
 
 Por fim, o comando `git pull` para atualizar os arquivos:
