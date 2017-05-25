@@ -86,10 +86,10 @@ class Seal extends EntityController {
                     $relation->seal->name), $relation->seal->name) : $relation->seal->name;
 
         $donoSelo = $addLinks ? $this->generateLink($relation->seal->owner->getSingleUrl(), 
-                    $relation->seal->owner->name) : $relation->seal->owner->name;
+                    $relation->seal->owner->name) : $relation->owner->name;
 
-        $nomeEntidade = $addLinks ? $this->generateLink($relation->owner_relation->getSingleUrl(), 
-        $relation->owner_relation->name) : $relation->owner_relation->name;
+        $nomeEntidade = $addLinks ? $this->generateLink($relation->owner->getSingleUrl(), 
+        $relation->owner->name) : $relation->owner->name;
 
         $dateInicio = $relation->createTimestamp->format("d/m/Y");
         $seloExpira = isset($expirationDate);
