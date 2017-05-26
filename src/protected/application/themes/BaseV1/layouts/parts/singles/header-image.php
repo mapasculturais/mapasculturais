@@ -14,6 +14,14 @@ if ($header = $entity->getFile('header')){
             <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
         </div>
     <?php endif; ?>
+
+    <?php if($this->isEditable() && $hasBackgroundImage): ?>
+        <div class="remove-background-button">            
+            <a class="btn btn-default delete banner-delete" title="<?php \MapasCulturais\i::esc_attr_e("Excluir capa");?>" 
+                data-href="<?php echo $header->deleteUrl; ?>"></a>
+        </div>
+    <?php endif; ?>
+
 </div>
 <?php endif; ?>
 <?php $this->applyTemplateHook('header-image','after'); ?>
