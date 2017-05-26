@@ -83,7 +83,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             <th><?php \MapasCulturais\i::_e("Ocorrências");?></th> 
                             <?php
                         }else{
-                            if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
+                            if(in_array($k,['singleUrl','occurrencesReadable','spaces','emailPrivado','telefone1','telefone2'])){
                                 continue;
                             }
                             ?>
