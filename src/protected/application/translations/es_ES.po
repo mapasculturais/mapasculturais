@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -1008,7 +1008,8 @@ msgstr "Meses"
 msgid "Anos"
 msgstr "Años"
 
-#: application/conf/space-types.php:60 application/themes/BaseV1/Theme.php:1645
+#: application/conf/space-types.php:60
+#: application/themes/BaseV1/Theme.php:1645
 #: application/themes/BaseV1/layouts/parts/search/infobox-space.php:19
 #: application/themes/BaseV1/layouts/parts/search/list-space-item.php:29
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:134
@@ -1099,7 +1100,8 @@ msgstr "La capacidad debe ser un número positivo."
 msgid "Horário de funcionamento"
 msgstr "Horario de funcionamento"
 
-#: application/conf/space-types.php:163 application/themes/BaseV1/Theme.php:282
+#: application/conf/space-types.php:163
+#: application/themes/BaseV1/Theme.php:282
 #: application/themes/BaseV1/Theme.php:283
 msgid "Critérios de uso do espaço"
 msgstr "Criterios de uso del espacio"
@@ -1128,7 +1130,8 @@ msgstr "Espacio Público Para Proyección de Películas"
 msgid "Sala de cinema"
 msgstr "Sala de cine"
 
-#: application/conf/space-types.php:209 application/themes/BaseV1/Theme.php:216
+#: application/conf/space-types.php:209
+#: application/themes/BaseV1/Theme.php:216
 msgid "Bibliotecas"
 msgstr "Bibliotecas"
 
@@ -1216,7 +1219,8 @@ msgstr "Archivo Público"
 msgid "Arquivo Privado"
 msgstr "Archivo Privado"
 
-#: application/conf/space-types.php:257 application/themes/BaseV1/Theme.php:216
+#: application/conf/space-types.php:257
+#: application/themes/BaseV1/Theme.php:216
 msgid "Museus"
 msgstr "Museos"
 
@@ -5127,7 +5131,7 @@ msgstr "agentes registrados"
 
 #: application/themes/BaseV1/layouts/parts/home-agents.php:36
 msgid "agentes da "
-msgstr "agentes de la "
+msgstr "agentes de "
 
 #: application/themes/BaseV1/layouts/parts/home-agents.php:40
 msgid "Encontre agentes por"
@@ -5178,7 +5182,7 @@ msgstr "evento agendados"
 
 #: application/themes/BaseV1/layouts/parts/home-events.php:34
 msgid "eventos da "
-msgstr "eventos de"
+msgstr "eventos de "
 
 #: application/themes/BaseV1/layouts/parts/home-events.php:38
 msgid "Encontre eventos por"
@@ -5200,7 +5204,7 @@ msgstr "proyectos registrados"
 
 #: application/themes/BaseV1/layouts/parts/home-projects.php:33
 msgid "projetos da "
-msgstr "proyectos de la "
+msgstr "proyectos de "
 
 #: application/themes/BaseV1/layouts/parts/home-projects.php:37
 msgid "Encontre projetos por"
@@ -5246,7 +5250,7 @@ msgstr "Conocé más"
 
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:38
 msgid "Encontre "
-msgstr "Encontrar"
+msgstr "Encontrar "
 
 #: application/themes/BaseV1/layouts/parts/home-spaces.php:38
 msgid " por "
