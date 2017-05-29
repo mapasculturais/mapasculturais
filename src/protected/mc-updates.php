@@ -13,7 +13,7 @@ return [
         DB_UPDATE::enqueue('File', 'id > 0', function(MapasCulturais\Entities\File $file) {
             try{
                 $file->getRelativePath(true);
-                $file->save();
+                $file->save(true);
             } catch (\Doctrine\ORM\EntityNotFoundException $e){
                 // para não matar o processo em arquivos órfãos
             }

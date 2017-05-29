@@ -37,4 +37,32 @@ class User extends \MapasCulturais\Repository{
         return $users;
 
     }
+
+
+    public function getAdmins($subsite_id){
+        $class = $this->getClassName();
+
+        $q = $this->_em->createQuery();
+
+        if(is_null($subsite_id)){
+            $_dql = 'r.subsiteId IS NULL';
+        } else {
+            $_dql = 'r.subsiteId = :subsiteId';
+            $q->setParameter('subsiteId', $subsite_id);
+        }
+
+        $dql = "
+            SELECT
+                e
+            FROM
+                {$class} e
+                JOIN e.roles r
+                    WITH r.name IN ('saasSuperAdmin', 'saasAdmin') OR
+                         (r.name IN ('superAdmin', 'admin') AND {$_dql})";
+
+
+        $q->setDQL($dql);
+
+        return $q->getResult();
+    }
 }

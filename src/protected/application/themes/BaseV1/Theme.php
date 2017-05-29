@@ -2168,7 +2168,10 @@ class Theme extends MapasCulturais\Theme {
         $cache_id = __METHOD__ . ':' . $entity_class;
 
         if($app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
+            $entity_id = $app->cache->fetch($cache_id);
+            if(!$entity_id)
+                return $entity_id;
+            return $app->repo($entity_class)->find($entity_id);
         }
 
         $controller = $app->getControllerByEntity($entity_class);
@@ -2201,7 +2204,7 @@ class Theme extends MapasCulturais\Theme {
             $result = null;
         }
 
-        $app->cache->save($cache_id, $result, 120);
+        $app->cache->save($cache_id, $result ? $result->id : $result, 120);
 
         return $result;
     }
