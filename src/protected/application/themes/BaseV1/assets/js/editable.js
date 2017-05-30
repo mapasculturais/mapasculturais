@@ -209,7 +209,7 @@ MapasCulturais.RemoveBanner = {
     init: function(){
         $('body').on('click', '.banner-delete', function(){
             var href   = $(this).data('href');
-            var result = window.confirm('Deseja apagar este fundo?');
+            var result = window.confirm(MapasCulturais.gettext.editable['removeAgentBackground']);
             $('#remove-background-button').toggleClass('display-background-button');
             $('#remove-background-button').toggleClass('hide-background-button');
 
