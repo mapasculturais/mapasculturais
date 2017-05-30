@@ -11,7 +11,6 @@ $metadata_name = 'useSpaceRelation';
 
 $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 
-$app = App::i();
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
 $message = $projectMeta['useSpaceRelation']['options'];
 ?>

@@ -502,8 +502,6 @@ class Registration extends \MapasCulturais\Entity
         $errorsResult = [];
 
         $project = $this->project;        
-        // $spaceRelationRequired = array_key_exists('useSpaceRelation', $project->metadata);
-        
 
         $use_category = (bool) $project->registrationCategories;
 
@@ -560,13 +558,26 @@ class Registration extends \MapasCulturais\Entity
         // validate space
         $isSpaceRelationRequired = $project->metadata['useSpaceRelation'];
         $spaceDefined = $this->getSpaceRelation();
-
+       
         if(is_null($spaceDefined) && $isSpaceRelationRequired === 'required'){
             $errorsResult['spaceRequired'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
         }
 
         if(!is_null($spaceDefined) && $spaceDefined->status < 0){
             $errorsResult['spaceUnauthorized'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
+        }
+
+        if(!is_null($spaceDefined) && $isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
+            $app = App::i();
+            $requiredSpaceProperties = $app->config['registration.spaceRelations'][0]['requiredProperties'];
+
+            foreach($requiredSpaceProperties as $r){
+                $isEmpty = $spaceDefined->space->$r;
+
+                if(empty($isEmpty)){
+                    $errorsResult['invalidSpaceFields'] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $requiredSpaceProperties));
+                }
+            }
         }            
 
         // validate attachments

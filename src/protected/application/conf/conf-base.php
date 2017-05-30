@@ -256,7 +256,7 @@ return array(
             'label' => \MapasCulturais\i::__('Espaço Relacionado'),
             'description' => \MapasCulturais\i::__('Espaço Relacionado'),
             'type' => 2,
-            'requiredProperties' => array('nome')
+            'requiredProperties' => array('endereco', 'telefone1')
         )
     ),
 
