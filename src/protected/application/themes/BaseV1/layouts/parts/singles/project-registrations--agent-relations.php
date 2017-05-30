@@ -7,7 +7,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 ?>
 <div id="registration-agent-relations" class="registration-fieldset">
-    <h4>4. <?php \MapasCulturais\i::_e("Agentes");?></h4>
+    <h4><?php \MapasCulturais\i::_e("Agentes");?></h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um agente coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.");?></p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto.");?> </p>
 

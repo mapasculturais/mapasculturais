@@ -7,6 +7,7 @@ $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->jsObject['angularAppDependencies'][] = 'entity.module.project';
+$this->jsObject['angularAppDependencies'][] = 'ui.sortable';
 
 $this->addEntityToJs($entity);
 

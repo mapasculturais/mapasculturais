@@ -145,8 +145,17 @@ abstract class Request extends \MapasCulturais\Entity{
     }
     
     function getExtraPermissionCacheUsers(){
-        $origin_users = $this->getOrigin()->getUsersWithControl();
-        $destination_users = $this->getDestination()->getUsersWithControl();
+        if($origin = $this->getOrigin()){
+            $origin_users = $origin->getUsersWithControl();
+        } else {
+            $origin_users = [];
+        }
+
+        if($destination = $this->getDestination()){
+            $destination_users = $this->getDestination()->getUsersWithControl();
+        } else {
+            $destination_users = [];
+        }
 
         return array_merge($origin_users, $destination_users);
     }

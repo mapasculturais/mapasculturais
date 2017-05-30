@@ -57,7 +57,7 @@ $app = \MapasCulturais\App::i();
 	<!-- #permitido-->
 	<div id="permitido">
 		<?php foreach($app->user->hasControlSpaces as $entity): ?>
-			<?php $this->part('panel-space', array('entity' => $entity)); ?>
+			<?php $this->part('panel-space', array('entity' => $entity, 'only_edit_button' => true)); ?>
 		<?php endforeach; ?>
 		<?php if(!$app->user->hasControlSpaces): ?>
 			<div class="alert info"><?php printf(\MapasCulturais\i::__('%s liberado.'), $this->dict('entities: no spaces')); ?></div>

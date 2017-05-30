@@ -24,7 +24,7 @@ class JWT extends \MapasCulturais\AuthProvider {
                     die;
                 }
 
-                \JWT::decode($token, $userapp->privateKey, ['HS512', 'HS256', 'HS1']);
+                \JWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
                 $user = $userapp->user;
                 $this->__user = $user;
                 return true;

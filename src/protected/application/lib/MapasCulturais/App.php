@@ -736,6 +736,11 @@ class App extends \Slim\Slim{
             'name' => \MapasCulturais\i::__('Seleção única (select)'),
             'requireValuesConfiguration' => true
         ]));
+        
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'section',
+            'name' => \MapasCulturais\i::__('Título de Seção')
+        ]));
 
 //        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
 //            'slug' => 'radio',
@@ -2437,8 +2442,10 @@ class App extends \Slim\Slim{
         if(array_key_exists($slug,$this->_config['mailer.templates'])) {
             $message = $this->_config['mailer.templates'][$slug];
             $message['body'] = $this->renderMustacheTemplate($message['template'],$templateData);
+            return $message;
+        } else {
+            throw new Exceptions\MailTemplateNotFound($slug);
         }
-        return $message;
     }
 
     /**************
@@ -2525,10 +2532,4 @@ class App extends \Slim\Slim{
         }
         return null;
     }
-
-    function getAdmins() {
-        $app = App::i();
-        return $roles = $app->repo('Role')->findBy(['name' => 'superAdmin']);
-    }
-
 }

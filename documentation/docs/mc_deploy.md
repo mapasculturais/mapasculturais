@@ -25,7 +25,7 @@ root@server# sudo apt-get install -y nodejs
 root@server# apt-get install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
 
 // Instale o php, php-fpm e extensões do php utilizadas no sistema
-root@server# apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc php5-fpm imagemagick libmagickcore-dev libmagickwand-dev php-imagick
+root@server# apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc php5-fpm imagemagick libmagickcore-dev libmagickwand-dev php5-imagick
 
 // Instale o nginx
 root@server# apt-get install nginx

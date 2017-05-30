@@ -34,6 +34,7 @@ Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e ba
 * [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
 * [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
 * [Mapas SDK](https://github.com/centroculturalsp/MapasSDK)
+* [Multiple Local Auth](https://github.com/LibreCoopUruguay/MultipleLocalAuth)
 
 
 ### Documentação 
