@@ -1,16 +1,16 @@
 <?php
-    $action = preg_replace("#^(\w+/)#", "", $this->template);
-    $this->bodyProperties['ng-app'] = "entity.app";
-    $this->bodyProperties['ng-controller'] = "EntityController";
-    $this->addEntityToJs($relation);
+	$action = preg_replace("#^(\w+/)#", "", $this->template);
+	$this->bodyProperties['ng-app'] = "entity.app";
+	$this->bodyProperties['ng-controller'] = "EntityController";
+	$this->addEntityToJs($relation);
 
-    if($this->isEditable()){
-        $this->addEntityTypesToJs($relation);
-    }
+	if($this->isEditable()){
+	    $this->addEntityTypesToJs($relation);
+	}
 
-    $this->includeMapAssets();
-    $this->includeAngularEntityAssets($relation);
-    $seal = $relation->seal;
+	$this->includeMapAssets();
+	$this->includeAngularEntityAssets($relation);
+	$seal = $relation->seal;
 ?>
 
 <article class="main-content seal">
@@ -24,7 +24,7 @@
         <div class="agent-avatar">
             <a href="<?php echo $relation->owner->getSingleUrl(); ?>" >
                 <?php $this->part('singles/avatar-seal-relation', ['entity' => $relation->owner, 'size'=> 'avatarMedium', 'default_image' => 'img/avatar--seal.png']); ?>
-            </a>                    
+            </a>
         </div>
     </div>
         <div id="seal-info-container">
@@ -41,7 +41,7 @@
                 <?php $this->applyTemplateHook('agent-name','before'); ?>
                 <h5>
                     <span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>">
-                        <a href="<?php echo $app->createUrl('seal', 'single', ['id' => $relation->owner->id])?>"><?php echo $relation->owner->name; ?></a>
+                        <a href="<?php echo $app->createUrl('seal', 'single', ['id' => $relation->owner->getSingleUrl()])?>"><?php echo $relation->owner->name; ?></a>
                     </span>
                 </h5>
                 <?php $this->applyTemplateHook('agent-name','after'); ?>
@@ -49,11 +49,11 @@
              <!--print seal relation -->
             <div id="seal-print-container">
                 <?php echo $printSeal ?>
-            </div>       
+            </div>
         </div><!-- fim seal info container -->
         <!-- Data de expiração -->
             <?php if($seal->validPeriod > 0):?>
-            <div id="expiration-date">  
+            <div id="expiration-date">
                 <?php if($seal->isExpired()): ?>
                     <?php \MapasCulturais\i::_e('<b>Expirado em:</b>'); ?>
 
