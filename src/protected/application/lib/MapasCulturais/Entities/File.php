@@ -286,7 +286,7 @@ abstract class File extends \MapasCulturais\Entity
     }
     
     public function getRelativePath($get_from_storage = true){
-        if(is_null($this->_path) && $get_from_storage){
+        if(empty($this->_path) && $get_from_storage){
             $this->_path = App::i()->storage->getPath($this, true);
         }
         

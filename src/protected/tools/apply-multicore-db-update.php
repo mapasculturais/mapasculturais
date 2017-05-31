@@ -17,6 +17,8 @@ class DB_UPDATE {
     const STEP = 50;
     
     static $query = [];
+
+    static $exceptions = [];
     
     static function enqueue($entity_class, $where, $cb){
         $entity_class = strpos($entity_class, 'MapasCulturais\Entities\\') === 0 ? $entity_class : 'MapasCulturais\Entities\\' . $entity_class;
@@ -84,6 +86,8 @@ class DB_UPDATE {
     }
     
     static function execute(){
+        $errors = [];
+
         $app = App::i();
         $conn = $app->em->getConnection();
 
@@ -128,11 +132,33 @@ class DB_UPDATE {
                     
                     foreach($entities as $entity){
                         $app->disableAccessControl();
-                        $__callback($entity);
+
+                        try{
+                            $__callback($entity);
+                        } catch (\Error $e){
+                            self::$exceptions[] = [
+                                'update' => $__name,
+                                'exception' => $e,
+                                'entity' => $entity,
+                            ];
+                        } catch (\Exception $e){
+                            self::$exceptions[] = [
+                                'update' => $__name,
+                                'exception' => $e,
+                                'entity' => $entity,
+                            ];
+                        }
                     }
                     
                     $app->em->flush();
                 }
+            }
+        }
+
+        if(self::$exceptions){
+            echo "\n\n=================================\nEXCEPTIONS: \n";
+            foreach(self::$exceptions as $e){
+                echo "\n {$e['update']}: {$e['entity']} \n\t{$e['exception']}\n";
             }
         }
     }

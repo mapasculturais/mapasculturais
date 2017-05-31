@@ -22,8 +22,8 @@
             </a>
         </div>
         <div class="agent-avatar">
-            <a href="<?php echo $relation->owner_relation->getSingleUrl(); ?>" >
-                <?php $this->part('singles/avatar-seal-relation', ['entity' => $relation->owner_relation, 'size'=> 'avatarMedium', 'default_image' => 'img/avatar--seal.png']); ?>
+            <a href="<?php echo $relation->owner->getSingleUrl(); ?>" >
+                <?php $this->part('singles/avatar-seal-relation', ['entity' => $relation->owner, 'size'=> 'avatarMedium', 'default_image' => 'img/avatar--seal.png']); ?>
             </a>                    
         </div>
     </div>
@@ -41,7 +41,7 @@
                 <?php $this->applyTemplateHook('agent-name','before'); ?>
                 <h5>
                     <span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>">
-                        <a href="<?php echo $app->createUrl('seal', 'single', ['id' => $relation->owner_relation->id])?>"><?php echo $relation->owner_relation->name; ?></a>
+                        <a href="<?php echo $relation->owner->getSingleUrl(); ?>"><?php echo $relation->owner->name; ?></a>
                     </span>
                 </h5>
                 <?php $this->applyTemplateHook('agent-name','after'); ?>

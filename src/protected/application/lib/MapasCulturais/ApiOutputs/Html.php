@@ -238,6 +238,8 @@ class Html extends \MapasCulturais\ApiOutput{
                 <h1><?php
 
                 echo sprintf(App::txts("%s $singular_object_name encontrado.", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></h1>
+                
+                <h4><?php echo \MapasCulturais\i::__('Planilha gerada em: ') . \date("d/m/Y H:i") ?></h4>
                 <?php $this->printTable($data) ?>
             </body>
         </html>
