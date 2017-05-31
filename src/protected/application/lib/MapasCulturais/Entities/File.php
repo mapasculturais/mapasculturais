@@ -246,7 +246,16 @@ abstract class File extends \MapasCulturais\Entity
     
         $app = App::i();
         $cache_id = "{$this}:url";
-
+        
+        /*
+        $file_group = $app->getRegisteredFileGroup($this->owner->entityClassName, $this->getGroup());
+        
+        \dump($this->owner->getEntityClassName()); 
+        \dump($file_group); 
+        
+        die;
+        */
+        
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
