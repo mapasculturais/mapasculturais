@@ -198,6 +198,16 @@ body.action-search {
 }
 
 
+//background images
+.remove-background-button {
+    float: right;
+
+    .no-header-image{
+        display: none;
+    }
+}
+
+
 //** Entities Menu
 .entities-menu {
     @media screen and (min-width: $screen-tablet) {
