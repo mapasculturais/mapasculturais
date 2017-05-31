@@ -176,6 +176,16 @@ class Event extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
 
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
+
     private $_newProject = false;
 
     public function getEntityTypeLabel($plural = false) {
@@ -395,6 +405,24 @@ class Event extends \MapasCulturais\Entity
 
         return $result ? $result : [];
     }
+    
+    function getExtraEntitiesToRecreatePermissionCache(){
+        $result = [];
+        if($this->project){
+            $result[] = $this->project;
+        }
+        
+        return $result;
+    }
+    
+    function getExtraPermissionCacheUsers(){
+        if($this->project){
+            return $this->project->getUsersWithControl();
+        } else {
+            return [];
+        }
+        
+    }
 
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
@@ -413,6 +441,10 @@ class Event extends \MapasCulturais\Entity
         }else{
             return $can;
         }
+    }
+    
+    protected function canUserUnpublish($user){
+        return $this->canUserPublish($user);
     }
 
     protected function canUserPublish($user){

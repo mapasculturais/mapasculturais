@@ -111,7 +111,7 @@ trait EntityPermissionCache {
             }
             
             foreach ($permissions as $permission) {
-                if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity()) {
+                if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity() && !method_exists($this, 'canUserView')) {
                     continue;
                 }
                 if($this->canUser($permission, $user)){
@@ -149,7 +149,7 @@ trait EntityPermissionCache {
         }
     }
     
-    function addToRecreatePermissionsCacheList(){
+    function addToRecreatePermissionsCacheList($skip_extra = false){
         $app = App::i();
         
         $app->addEntityToRecreatePermissionCacheList($this);
@@ -160,8 +160,19 @@ trait EntityPermissionCache {
             $rel_class = $def['targetEntity'];
             if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
                 foreach($this->$prop as $entity){
-                    $entity->addToRecreatePermissionsCacheList();
+                    if($entity instanceof \MapasCulturais\Entities\Project){
+                    }
+                    $entity->addToRecreatePermissionsCacheList(true);
                 }
+            }
+            
+        }
+        
+        if(!$skip_extra && method_exists($this, 'getExtraEntitiesToRecreatePermissionCache')){
+            $entities = $this->getExtraEntitiesToRecreatePermissionCache();
+
+            foreach($entities as $entity){
+                $entity->addToRecreatePermissionsCacheList(true);
             }
         }
     }

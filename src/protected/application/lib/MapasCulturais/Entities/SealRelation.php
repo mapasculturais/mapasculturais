@@ -116,8 +116,8 @@ abstract class SealRelation extends \MapasCulturais\Entity
             $this->seal = $seal;
 
             $period = new \DateInterval("P" . ((string)$seal->validPeriod) . "M");
-            $dateFin = $this->createTimestamp->add($period);
-            $this->validateDate = $dateFin;
+            $this->validateDate = clone $this->createTimestamp;
+            $this->validateDate->add($period);
             
         } else {
             throw new \Exception();
@@ -150,6 +150,18 @@ abstract class SealRelation extends \MapasCulturais\Entity
     
     protected function canUserPrint($user) {
         return $this->owner->canUser('@control', $user) || $this->seal->canUser('@control', $user);
+    }
+    
+    protected function isExpired() {
+        if($this->seal->validPeriod > 0) {
+            
+            $today = new \DateTime();
+            $expirationDate = $this->validateDate;
+            return $expirationDate < $today;
+            
+        } else {
+            return false;
+        }
     }
 
     public function save($flush = false) {

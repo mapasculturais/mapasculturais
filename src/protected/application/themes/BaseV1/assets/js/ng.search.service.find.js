@@ -252,7 +252,7 @@
                 }else if (entity === 'project'){
                     selectData += ',registrationFrom,registrationTo';
                 }else if(entity === 'event'){
-                    selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences';
+                    selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
                 }
 
                 if(data.global.viewMode === 'list'){
@@ -288,6 +288,11 @@
                     var def = Description[prop];
                     var selectProperty = def['@select'] || prop;
                     if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
+                        
+                        // Não adiciona os metadados geograficos que devem ser ocultos (que começam com "_")
+                        if (prop.substr(0,4) == 'geo_')
+                            return;
+                        
                         exportSelect.push(selectProperty); 
                     } else if(def.isEntityRelation) {
                         if(def.isOwningSide){
@@ -297,7 +302,6 @@
                         }
                     }
                 });
-
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export

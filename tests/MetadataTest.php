@@ -98,4 +98,27 @@ class MetadataTests extends MapasCulturais_TestCase{
         }
 
     }
+    
+    function testGetMetadata(){
+        // testa se o getter funciona para todos os roles
+
+        // guest user
+        $this->app->em->clear();
+        $this->user = null;
+        $event = $this->app->repo('Event')->find(522);
+        $this->assertEquals('Livre', $event->classificacaoEtaria);
+        
+        // normal user
+        $this->app->em->clear();
+        $this->user = 'normal';
+        $event = $this->app->repo('Event')->find(522);
+        $this->assertEquals('Livre', $event->classificacaoEtaria);
+        
+        // admin user
+        $this->app->em->clear();
+        $this->user = 'admin';
+        $event = $this->app->repo('Event')->find(522);
+        $this->assertEquals('Livre', $event->classificacaoEtaria);
+        
+    }
 }

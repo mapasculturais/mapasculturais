@@ -508,15 +508,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $message = $app->renderMailerTemplate('compliant',$dataValue);
 
         if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-            $admins = $app->getAdmins();
+            $admins = $app->repo('User')->getAdmins($entity->subsiteId);
 
-            foreach($admins as $administrator) {
+            foreach($admins as $user) {
                 /*
                 * Envia e-mail para o administrador para instalação Mapas
                 */
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
-                    'to' => $administrator->user->email,
+                    'to' => $user->email,
                     'subject' => $message['title'],
                     'body' => $message['body']
                 ]);
@@ -576,15 +576,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
             if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
 
-                $admins = $app->getAdmins();
+                $admins = $app->repo('User')->getAdmins($entity->subsiteId);
 
-                foreach($admins as $administrator) {
+                foreach($admins as $user) {
                     /*
                     * Envia e-mail para o administrador para instalação Mapas
                     */
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
-                        'to' => $administrator->user->email,
+                        'to' => $user->email,
                         'subject' => $message['title'],
                         'body' => $message['body']
                     ]);

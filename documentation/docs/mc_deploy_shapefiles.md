@@ -42,7 +42,7 @@ Ex:
   ```
 'app.geoDivisionsHierarchy' => array(
             'distrito' => 'Distrito', // irá gerar o metadado geoDistrito e exibí-lo automaticamente no perfil da entidade 
-            '_cidade' => 'Cidade' // irá gerar o metadado geoCidade mas não o exibirá na página de perfi da entidade
+            '_cidade' => 'Cidade' // irá gerar o metadado geo_cidade mas não o exibirá na página de perfi da entidade
         ),
 ```
 

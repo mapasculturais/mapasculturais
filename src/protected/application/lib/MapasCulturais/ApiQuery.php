@@ -29,7 +29,7 @@ class ApiQuery {
      * Maximum number of results before use subquery instead of a list of ids in secondary queries
      * @var int 
      */
-    protected $maxBeforeSubquery = 1024;
+    protected $maxBeforeSubquery = 4096;
     
     /**
      * The ApiQuery Name
@@ -581,7 +581,7 @@ class ApiQuery {
             $dql .= " WHERE {$where} ";
         }
 
-        $result = preg_replace('#([^a-z0-9_])e\.#i', "$1{$alias}.", $dql);
+        $result = preg_replace('#([^a-z0-9_])e([\. ])#i', "$1{$alias}$2", $dql);
         return $result;
     }
 
@@ -708,7 +708,7 @@ class ApiQuery {
         if($this->usesSealRelation && $this->_seals){
             $sl = $this->getAlias('sl');
             $slv = implode(',', $this->_seals);
-            $joins = " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
+            $joins .= " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
         }
 
         return $joins;
@@ -817,6 +817,11 @@ class ApiQuery {
         foreach ($entities as &$entity){
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
+            }
+            
+            // convert Occurrences rules to object
+            if (key_exists('rule', $entity) && !empty($entity['rule'])) {
+                $entity['rule'] = json_decode($entity['rule']);
             }
             
             if($this->_selectingOriginSiteUrl && empty($entity['originSiteUrl'])){
@@ -950,7 +955,10 @@ class ApiQuery {
                 {$this->permissionCacheClassName} pc 
             WHERE 
                 pc.action IN (:pcache_select) AND
-                pc.owner IN ($dql_in)";
+                pc.owner IN ($dql_in) AND
+                pc.user = {$user->id}";
+                
+        
                 
              
         $query = $this->em->createQuery($dql);
@@ -1620,6 +1628,7 @@ class ApiQuery {
         $user = App::i()->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
+        
         if($this->_permission && !$user->is('saasAdmin')){
             $alias = $this->getAlias('pcache');
             
@@ -1628,10 +1637,8 @@ class ApiQuery {
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
             
-            $join_with_filter = " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
-            
             if($this->_permission != 'view' && (!$this->usesOriginSubsite || !$this->adminInSubsites)) {
-                $this->joins .= $join_with_filter;
+                $this->joins .= " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
                 
             } else {
                 $this->select =  $this->select ? ", $alias.action " : $this->select;

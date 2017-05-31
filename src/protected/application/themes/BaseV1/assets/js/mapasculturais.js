@@ -276,7 +276,6 @@ MapasCulturais.utils = {
     },
 
     isObjectEquals: function(obj1, obj2){
-//        console.log(JSON.stringify(this.sortOjectProperties(obj1)), JSON.stringify(this.sortOjectProperties(obj2)));
         return JSON.stringify(this.sortOjectProperties(obj1)) === JSON.stringify(this.sortOjectProperties(obj2));
     },
 
@@ -958,14 +957,12 @@ MapasCulturais.Search = {
                 try{
                     MapasCulturais.Search.formats[format].onSave($selector);
                 }catch(e){
-                    console.log("EXECEPTION: ", e.message);
                 }
             });
             $selector.on('hidden',function(){
                 try{
                     MapasCulturais.Search.formats[format].onHidden($selector);
                 }catch(e){
-                    console.log("EXECEPTION: ", e.message);
                 }
             });
 
@@ -1443,3 +1440,67 @@ $(function() {
         document.getElementsByTagName('head')[0].appendChild(link);
     }
 }());
+
+$(function() {
+    if (MapasCulturais.request.controller === 'entityrevision') {
+        var obj = MapasCulturais.entity.object;
+        var nameContainer = obj.controllerId + '-map';
+        var $mapContainer = $('#' + nameContainer);
+        var mapsDefaults = MapasCulturais.mapsDefaults;
+
+        var defaultIconOptions = {
+            shadowUrl: MapasCulturais.assets.pinShadow,
+            iconSize: [35, 43], // size of the icon
+            shadowSize: [40, 16], // size of the shadow
+            iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
+            shadowAnchor: [6, 3], // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        };
+
+        var latitude = $('#latitude').val();
+        var longitude = $('#longitude').val();
+        var config = {
+            zoomControl: false,
+            zoomMax: obj.zoom_max || mapsDefaults.zoomMax,
+            zoomMin: obj.zoom_min || mapsDefaults.zoomMin,
+            zoom: mapsDefaults.zoomApproximate || mapsDefaults.zoomDefault,
+            center: new L.LatLng(latitude || mapsDefaults.latitude, longitude || mapsDefaults.longitude)
+        };
+
+        var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            maxZoom: config.zoomMax,
+            minZoom: config.zoomMin
+        });
+
+        var map = new L.Map(nameContainer, config).addLayer(openStreetMap);
+        $(this).data('leaflet-map', map);
+
+        var marker = new L.marker(map.getCenter(), { draggable: true });
+        var markerIcon = {};
+        var opts = (JSON.parse(JSON.stringify(defaultIconOptions)));
+        opts.iconUrl = MapasCulturais.assets.pinAgent;
+        markerIcon = {
+            icon: L.icon(opts)
+        };
+
+        if (Object.keys(markerIcon).length) {
+            marker.setIcon(markerIcon.icon);
+            map.addLayer(marker);
+        }
+
+        (new L.Control.Zoom({ position: 'bottomright' })).addTo(map);
+
+        var setState = function(event) {
+            var center = map.getCenter();
+            var zoom = event.target._zoom;
+
+            $('#latitude').editable('setValue', center.lat);
+            $('#longitude').editable('setValue', center.lng);
+            $('#zoom_default').editable('setValue', zoom);
+        };
+
+        map.on('zoomend', setState);
+        map.on('moveend', setState);
+    }
+});

@@ -18,38 +18,38 @@ if (!($app->user->is('superAdmin') || $app->user->is('admin'))) {
 		<li><a href="#arquivo"><?php \MapasCulturais\i::_e('Arquivo') ?></a></li>
     </ul>
     <div id="ativos">
-        <?php foreach($user->enabledSubsite as $entity): ?>
+        <?php foreach($app->user->enabledSubsite as $entity): ?>
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->enabledSubsite): ?>
+        <?php if(!$app->user->enabledSubsite): ?>
             <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum Subsite.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
     <div id="rascunhos">
-        <?php foreach($user->draftSubsite as $entity): ?>
+        <?php foreach($app->user->draftSubsite as $entity): ?>
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->draftSubsite): ?>
+        <?php if(!$app->user->draftSubsite): ?>
             <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum rascunho de subsite.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
     <div id="lixeira">
-        <?php foreach($user->trashedSubsite as $entity): ?>
+        <?php foreach($app->user->trashedSubsite as $entity): ?>
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->trashedSubsite): ?>
+        <?php if(!$app->user->trashedSubsite): ?>
             <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum subsite na lixeira.') ?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
 	<!-- #arquivo-->
     <div id="arquivo">
-        <?php foreach($user->archivedSubsite as $entity): ?>
+        <?php foreach($app->user->archivedSubsite as $entity): ?>
             <?php $this->part('panel-subsite', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->archivedSubsite): ?>
+        <?php if(!$app->user->archivedSubsite): ?>
             <div class="alert info"><?php \MapasCulturais\i::_e('Você não possui nenhum subsite arquivado.') ?></div>
         <?php endif; ?>
     </div>

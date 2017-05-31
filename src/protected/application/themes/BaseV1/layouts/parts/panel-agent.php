@@ -15,13 +15,13 @@ use MapasCulturais\Entities\Agent;
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
         <div><span class="label"><?php \MapasCulturais\i::_e("Tipo:");?></span> <?php echo $entity->type->name?></div>
         <div><span class="label"><?php \MapasCulturais\i::_e("Área(s) de atuação:");?></span> <?php echo implode(', ', $entity->terms['area'])?></div>
-        <?php if($entity->originSiteUrl): ?>
+        <?php if(isset($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span><?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
     </div>
     <div class="entity-actions">
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
-        <?php if(!$entity->isUserProfile): ?>
+        <?php if(!$entity->isUserProfile && !isset($only_edit_button)): ?>
 
             <?php if($entity->status === Agent::STATUS_ENABLED): ?>
 

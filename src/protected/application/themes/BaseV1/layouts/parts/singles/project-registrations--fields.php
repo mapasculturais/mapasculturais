@@ -1,6 +1,6 @@
-<div id="registration-attachments" class="registration-fieldset">
+<div id="registration-attachments" class="registration-fieldset project-edit-mode">
 
-    <h4>6. <?php \MapasCulturais\i::_e("Campos");?></h4>
+    <h4><?php \MapasCulturais\i::_e("Campos");?></h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("Configure aqui os campos do formulário de inscrição.");?></p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto.");?> </p>
     <div ng-controller="RegistrationConfigurationsController">
@@ -27,7 +27,7 @@
             <div ng-if="data.newFieldConfiguration.fieldType == 'textarea' || data.newFieldConfiguration.fieldType == 'text' ">
                 <input type="text" ng-model="data.newFieldConfiguration.maxSize" placeholder="<?php \MapasCulturais\i::esc_attr_e("Quantidade máxima de caracteres");?>"/>
             </div>
-            <p><label><input type="checkbox" ng-model="data.newFieldConfiguration.required"> <small><?php \MapasCulturais\i::_e("O preenchimento deste campo é obrigatório");?></small></label></p>
+            <p ng-if="data.newFieldConfiguration.fieldType !== 'section'"><label><input type="checkbox" ng-model="data.newFieldConfiguration.required"> <small><?php \MapasCulturais\i::_e("O preenchimento deste campo é obrigatório");?></small></label></p>
             <p ng-if="data.categories.length > 1">
                 <small><?php \MapasCulturais\i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>
                 <label><input type="checkbox" onclick="if (!this.checked)
@@ -49,12 +49,12 @@
                 </edit-box>
 
                 <!-- added attachments list -->
-                <ul class="attachment-list">
-                    <li ng-repeat="field in data.fields" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item">
+                <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
+                    <li ng-repeat="field in data.fields" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
                         <div ng-if="field.fieldType !== 'file'">
                             <div class="js-open-editbox">
-                                <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em></div>
-                                <span ng-if="field.categories.length" class="attachment-description"> 
+                                <div class="label">{{field.title}} <em  ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em></div>
+                                <span ng-if="field.categories.length" class="attachment-description">
                                     <?php \MapasCulturais\i::_e("Somente para");?> <strong>{{field.categories.join(', ')}}</strong>
                                     <br>
                                 </span>
@@ -78,7 +78,7 @@
                                 <div ng-if="field.fieldType == 'textarea' || fild.fieldType == 'text' ">
                                     <input type="text" ng-model="field.maxSize" placeholder="<?php \MapasCulturais\i::esc_attr_e("Quantidade máxima de caracteres");?>"/>
                                 </div>
-                                <p><label><input type="checkbox" ng-model="field.required"> <?php \MapasCulturais\i::_e("O preenchimento deste campo é obrigatório");?></label></p>
+                                <p ng-if="field.fieldType !== 'section'"><label><input type="checkbox" ng-model="field.required"> <?php \MapasCulturais\i::_e("O preenchimento deste campo é obrigatório");?></label></p>
                                 <p ng-if="data.categories.length > 1">
                                     <small><?php \MapasCulturais\i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>
                                     <label><input type="checkbox" onclick="if (!this.checked)

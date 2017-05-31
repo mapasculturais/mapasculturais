@@ -101,7 +101,6 @@ jQuery(function(){
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
-        
         var labels = MapasCulturais.gettext.editable;
         
         editable.container.$form.find('.editable-cancel').attr('title', labels['cancel']);
@@ -307,6 +306,7 @@ MapasCulturais.Editables = {
 
     createAll : function (){
         var entity = MapasCulturais.entity.definition;
+        var labels = MapasCulturais.gettext.editable;
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
@@ -349,7 +349,7 @@ MapasCulturais.Editables = {
                     config.viewformat = 'dd/mm/yyyy';
                     config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
-                    config.clear = 'Limpar';
+                    config.clear = labels['Limpar'];
                     break;
 
                 case 'multiselect':
@@ -370,7 +370,6 @@ MapasCulturais.Editables = {
                         });
                     }
 
-                    // console.log(field_name, select2_option.tags);
 
                     select2_option.createSearchChoice = function () {
                         return null;
@@ -669,7 +668,11 @@ MapasCulturais.Editables = {
 
 
                         if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
-                            document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                            if(response.status == 1) {
+                                document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
+                            } else {
+                                document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                            }
                         }
                     }
                     $submitButton.data('clicked',false);

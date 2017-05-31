@@ -57,7 +57,7 @@ class Subsite extends EntityController {
                 foreach (scandir(THEMES_PATH) as $ff) {
                     if ($ff != '.' && $ff != '..') {
                         $theme_folder = THEMES_PATH . $ff;
-                        if (is_dir($theme_folder)){
+                        if (is_dir($theme_folder) && file_exists($theme_folder . '/Theme.php')){
                             $content = file_get_contents($theme_folder . '/Theme.php');
 
                             if(preg_match('#namespace +([a-z0-9\\\]+) *;#i', $content, $matches)){

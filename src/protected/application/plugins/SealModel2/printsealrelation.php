@@ -1,5 +1,5 @@
 <div id="certificate-model2">
-    <img class ="background" src="<?php $view->asset('img/modelo_certificado_02.jpg') ?>"/>
+    <img class ="cert-background" src="<?php $view->asset('img/modelo_certificado_02.jpg') ?>"/>
     <p class="certificate-content"><?php echo nl2br($msg) ?></p>
     <div class="entity-url">
         <a  href="<?php echo $relation->owner->getSingleUrl(); ?>"
@@ -8,8 +8,8 @@
     <div class="footer">
         <div class="footer-signatures">
             <div class="certificate-seal-owner">
-                <p><?php echo $relation->seal->agent->name; ?><br>
-                <?php echo $relation->seal->agent->shortDescription; ?></p>
+                <p><?php echo $relation->seal->owner->name; ?><br>
+                <?php echo $relation->seal->owner->shortDescription; ?></p>
             </div>
             <?php $avatar = $relation->seal->getAvatar();
                 if ($avatar){ ?>

@@ -46,6 +46,7 @@ $this->includeMapAssets();
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
             <?php printf(i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php endif; ?>, <?php printf(i::__("e pode ser acessado clicando <a href=\"%s\">aqui</a>"), $entity->entity->singleUrl); ?>
+
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 

@@ -56,7 +56,7 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
       onComplete: function(time) {
         var mendtime = moment(time, 'HH:mm');
         var mtime = moment($startsAt.val(), 'HH:mm');
-        
+
         if(mtime.isValid() && mendtime.isValid()) {
             if(mtime > mendtime){
                 mendtime = mendtime.add('days', 1);
@@ -91,12 +91,14 @@ MapasCulturais.EventOccurrenceManager = {
                 if(response.error){
                     var $element = null,
                         message;
+                        
                     for(i in response.data) {
                         message = response.data[i].join(', ').toLowerCase();
 
                         if(i == 'space') $element = $form.find('.js-space');
                         else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Erro:'+message+'"/>');
+                     // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
@@ -130,7 +132,6 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parents('.js-dialog').find('.js-close').click();
 
                 //Por enquanto sempre inicializa o mapa
-                //console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
 

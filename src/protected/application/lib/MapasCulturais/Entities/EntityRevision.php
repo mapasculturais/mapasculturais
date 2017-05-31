@@ -93,6 +93,8 @@ class EntityRevision extends \MapasCulturais\Entity{
      */
     protected $user;
 
+    protected $modified = false;
+
     public function __construct(array $dataRevision, $entity, $action, $message = "") {
         parent::__construct();
         $app = App::i();
@@ -123,7 +125,7 @@ class EntityRevision extends \MapasCulturais\Entity{
                 $revisionData->save();
                 $this->data[] = $revisionData;
             }
-            $this->message = "Registro criado.";
+            $this->message = \MapasCulturais\i::__("Registro criado.");
         } elseif($action == self::ACTION_MODIFIED) {
             $lastRevision = $entity->getLastRevision();
             $lastRevisionData = $lastRevision->getRevisionData();
@@ -131,22 +133,35 @@ class EntityRevision extends \MapasCulturais\Entity{
                 $createTimestamp = $lastRevision->updateTimestamp;
             } elseif(isset($this->user->lastLoginTimestamp) && $this->user->lastLoginTimestamp) {
                 $createTimestamp = $this->user->lastLoginTimestamp;
-            }
-
+            }   
             foreach($dataRevision as $key => $data) {
                 $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
-                if(is_null($item) || json_encode($data) != json_encode($item->getValue())) {
+                if(!is_null($item)) {
+                    if(is_object($item->getValue())) {
+                        $itemValue = (array) $item->getValue();
+                        if(is_array($itemValue) && array_key_exists("_empty_",$itemValue)) {
+                            $itemValue = array("" => $itemValue['_empty_']);
+                        }
+                    } else {
+                        $itemValue = $item->getValue();
+                    }
+                } else {
+                    $itemValue = null;
+                }
+
+                if(json_encode($data) != json_encode($itemValue)) {
                     $revisionData = new EntityRevisionData;
                     $revisionData->key = $key;
-                    $revisionData->value = $data;
+                    $revisionData->setValue($data);
                     $revisionData->save();
                     $this->data[] = $revisionData;
-                } else {
+                    $this->modified = true;
+                } elseif(!is_null($item)) {
                     $this->data[] = $item;
                 }
             }
 
-            $this->message = "Registro atualizado.";
+            $this->message = \MapasCulturais\i::__("Registro atualizado.");
         } else {
             $lastRevision = $entity->getLastRevision();
             $lastRevisionData = $lastRevision->getRevisionData();

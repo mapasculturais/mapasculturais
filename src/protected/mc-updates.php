@@ -11,8 +11,12 @@ return [
             
     'generate file path' => function() {
         DB_UPDATE::enqueue('File', 'id > 0', function(MapasCulturais\Entities\File $file) {
-            $file->getRelativePath(true);
-            $file->save();
+            try{
+                $file->getRelativePath(true);
+                $file->save();
+            } catch (\Doctrine\ORM\EntityNotFoundException $e){
+                // para não matar o processo em arquivos órfãos
+            }
         });
     },
 

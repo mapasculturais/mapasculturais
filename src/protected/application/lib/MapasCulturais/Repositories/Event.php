@@ -4,12 +4,13 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 
 class Event extends \MapasCulturais\Repository{
-    use Traits\RepositoryKeyword;
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryAgentRelation;
 
     protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
         if($app->getCurrentSubsiteId()){
-            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
+            $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds($implode);
         } else {
             $space_ids = "SELECT id FROM space WHERE status > 0";
         }
@@ -54,14 +55,6 @@ class Event extends \MapasCulturais\Repository{
         else if($date_to instanceof \DateTime)
             $date_to = $date_to->format('Y-m-d');
 
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-        $rsm->addEntityResult('MapasCulturais\Entities\Event','e');
-
-        $metadata = $this->getClassMetadata();
-
-        foreach($metadata->fieldMappings as $map)
-            $rsm->addFieldResult('e', $map['columnName'], $map['fieldName']);
-
         $dql_limit = $dql_offset = '';
 
         if($limit)
@@ -70,15 +63,19 @@ class Event extends \MapasCulturais\Repository{
         if($offset)
             $dql_offset = 'OFFSET ' . $offset;
 
-        $strNativeQuery = "
+        if(is_array($ids)){
+            $ids = implode(',', $ids);
+        }
+        
+        $sql = "
             SELECT
-                e.*
+                e.id
             FROM
                 event e
             JOIN
                 event_occurrence eo
                     ON eo.event_id = e.id
-                        AND eo.space_id IN (:space_ids)
+                        AND eo.space_id IN ($ids)
                         AND eo.status > 0
 
             WHERE
@@ -89,7 +86,7 @@ class Event extends \MapasCulturais\Repository{
                     FROM
                         recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
                     WHERE
-                        space_id IN (:space_ids)
+                        space_id IN ($ids)
                 )
 
             $dql_limit $dql_offset
@@ -97,21 +94,13 @@ class Event extends \MapasCulturais\Repository{
             ORDER BY
                 eo.starts_on, eo.starts_at";
 
-        $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
-
-        if($app->config['app.useEventsCache'])
-            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
-
-        $query->setParameters([
+        $params = [
             'date_from' => $date_from,
-            'date_to' => $date_to,
-            'space_ids' => $ids
-        ]);
+            'date_to' => $date_to
+        ];
 
 
-        $result = $query->getResult();
-
-        $app->detachRS($result);
+        $result = $this->_getEventsBySQL($sql, $params);
 
         return $result;
     }
@@ -135,37 +124,37 @@ class Event extends \MapasCulturais\Repository{
             $ids = '0';
         }
 
-        if(is_null($date_from))
+        if(is_null($date_from)){
             $date_from = date('Y-m-d');
-        else if($date_from instanceof \DateTime)
+        }else if($date_from instanceof \DateTime){
             $date_from = $date_from->format('Y-m-d');
+        }
 
-        if(is_null($date_to))
+        if(is_null($date_to)){
             $date_to = $date_from;
-        else if($date_to instanceof \DateTime)
+        }else if($date_to instanceof \DateTime){
             $date_to = $date_to->format('Y-m-d');
-
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-        $rsm->addEntityResult('MapasCulturais\Entities\Event','e');
-
-        $metadata = $this->getClassMetadata();
-
-        foreach($metadata->fieldMappings as $map)
-            $rsm->addFieldResult('e', $map['columnName'], $map['fieldName']);
+        }
 
         $dql_limit = $dql_offset = '';
 
-        if($limit)
+        if($limit){
             $dql_limit = 'LIMIT ' . $limit;
+        }
 
-        if($offset)
+        if($offset){
             $dql_offset = 'OFFSET ' . $offset;
+        }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        
+        if(is_array($ids)){
+            $ids = implode(',', $ids);
+        }
 
-        $strNativeQuery = "
+        $sql = "
             SELECT
-                e.*
+                e.id
             FROM
                 event e
             JOIN
@@ -175,7 +164,7 @@ class Event extends \MapasCulturais\Repository{
                         AND eo.status > 0
             WHERE
                 e.status > 0 AND
-                e.project_id IN (:project_ids) AND
+                e.project_id IN ($ids) AND
                 e.id IN (
                     SELECT
                         event_id
@@ -190,59 +179,46 @@ class Event extends \MapasCulturais\Repository{
             ORDER BY
                 eo.starts_on, eo.starts_at";
 
-        $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
-
-        $app = \MapasCulturais\App::i();
-        if($app->config['app.useEventsCache'])
-            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
-
-        $query->setParameters([
+        $params = [
             'date_from' => $date_from,
-            'date_to' => $date_to,
-            'project_ids' => $ids
-        ]);
+            'date_to' => $date_to
+        ];
 
-
-        $result = $query->getResult();
-
-        $app->detachRS($result);
-
+        $result = $this->_getEventsBySQL($sql, $params);
+        
         return $result;
     }
 
 
     public function findByAgent(\MapasCulturais\Entities\Agent $agent, $date_from = null, $date_to = null, $limit = null, $offset = null){
-        if(is_null($date_from))
+        
+        if(is_null($date_from)){
             $date_from = date('Y-m-d');
-        else if($date_from instanceof \DateTime)
+        }else if($date_from instanceof \DateTime){
             $date_from = $date_from->format('Y-m-d');
+        }
 
-        if(is_null($date_to))
+        if(is_null($date_to)){
             $date_to = $date_from;
-        else if($date_to instanceof \DateTime)
+        }else if($date_to instanceof \DateTime){
             $date_to = $date_to->format('Y-m-d');
-
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-        $rsm->addEntityResult('MapasCulturais\Entities\Event','e');
-
-        $metadata = $this->getClassMetadata();
-
-        foreach($metadata->fieldMappings as $map)
-            $rsm->addFieldResult('e', $map['columnName'], $map['fieldName']);
+        }
 
         $dql_limit = $dql_offset = '';
 
-        if($limit)
+        if($limit){
             $dql_limit = 'LIMIT ' . $limit;
+        }
 
-        if($offset)
+        if($offset){
             $dql_offset = 'OFFSET ' . $offset;
+        }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
 
-        $strNativeQuery = "
+        $sql = "
             SELECT
-                e.*
+                e.id
             FROM
                 event e
             JOIN
@@ -274,75 +250,51 @@ class Event extends \MapasCulturais\Repository{
                         space_id IN ($space_ids)
                 )
 
-
-
             $dql_limit $dql_offset
 
             ORDER BY
                 eo.starts_on, eo.starts_at";
 
-        $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
-
-        $app = \MapasCulturais\App::i();
-        if($app->config['app.useEventsCache'])
-            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
-
-        $query->setParameters([
+        $params = [
             'date_from' => $date_from,
             'date_to' => $date_to,
             'agent_id' => $agent->id
-        ]);
+        ];
 
-
-        $result = $query->getResult();
-
-        $app->detachRS($result);
+        $result = $this->_getEventsBySQL($sql, $params);
 
         return $result;
     }
 
 
     public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false){
-        $app = App::i();
-        if(is_null($date_from))
+                
+        if(is_null($date_from)){
             $date_from = date('Y-m-d');
-        else if($date_from instanceof \DateTime)
+        } else if($date_from instanceof \DateTime){
             $date_from = $date_from->format('Y-m-d');
-
-        if(is_null($date_to))
-            $date_to = $date_from;
-        else if($date_to instanceof \DateTime)
-            $date_to = $date_to->format('Y-m-d');
-
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-        $rsm->addEntityResult('MapasCulturais\Entities\Event','e');
-
-        if($only_ids){
-            $select = 'id';
-            $rsm->addFieldResult('e', 'id', 'id');
-        }else{
-            $select = '*';
-            $metadata = $this->getClassMetadata();
-
-            foreach($metadata->fieldMappings as $map)
-                $rsm->addFieldResult('e', $map['columnName'], $map['fieldName']);
         }
 
-
+        if(is_null($date_to)){
+            $date_to = $date_from;
+        }else if($date_to instanceof \DateTime){
+            $date_to = $date_to->format('Y-m-d');
+        }
         $dql_limit = $dql_offset = '';
 
-        if($limit)
+        if($limit){
             $dql_limit = 'LIMIT ' . $limit;
+        }
 
-        if($offset)
+        if($offset){
             $dql_offset = 'OFFSET ' . $offset;
-
+        }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
 
-        $strNativeQuery = "
+        $sql = "
             SELECT
-                e.{$select}
+                e.id
             FROM
                 event e
             JOIN
@@ -367,26 +319,48 @@ class Event extends \MapasCulturais\Repository{
             ORDER BY
                 eo.starts_on, eo.starts_at";
 
-        $query = $this->_em->createNativeQuery($strNativeQuery, $rsm);
-
-
-        if($app->config['app.useEventsCache'])
-            $query->useResultCache (true, $app->config['app.eventsCache.lifetime']);
-
-        $query->setParameters([
-            'date_from' => $date_from,
-            'date_to' => $date_to
-        ]);
-
+        $params = ['date_from' => $date_from, 'date_to' => $date_to];
+        
         if($only_ids){
-            $result = array_map(function($e){ return $e['e_id']; }, $query->getScalarResult());
+            $result = $this->_getIdsBySQL($sql, $params);
         }else{
-            $result = $query->getResult();
-
-            $app->detachRS($result);
+            $result = $this->_getEventsBySQL($sql, $params);
         }
 
         return $result;
     }
+    
+    function _getEventsBySQL($sql, $params = []){
+        $ids = $this->_getIdsBySQL($sql, $params);
+        $events = $this->_getEventsByIds($ids);
+        
+        return $events;
+    }
+    
+    function _getIdsBySQL($sql, $params = []){
+        $conn = $this->_em->getConnection();
 
+        if($params){
+            $rs = $conn->fetchAll($sql, $params);
+        } else {
+            $rs = $conn->fetchAll($sql);
+        }
+        $ids = array_map(function($e){ return $e['id']; }, $rs);
+        
+        return $ids;
+    }
+
+    function _getEventsByIds($ids){
+        if(!$ids){
+            return [];
+        }
+        
+        $class = $this->getClassName();
+        $q = $this->_em->createQuery("SELECT e FROM $class e WHERE e.id IN(:ids)");
+        $q->setParameter('ids', $ids);
+        
+        $result = $q->getResult();
+        
+        return $result;
+    }
 }

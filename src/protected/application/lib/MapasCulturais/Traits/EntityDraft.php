@@ -24,6 +24,8 @@ trait EntityDraft{
     function publish($flush = false){
         $this->checkPermission('publish');
         
+        $hook_class_path = $this->getHookClassPath();
+        
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').publish:before');
 
@@ -37,6 +39,8 @@ trait EntityDraft{
     
     function unpublish($flush = false){
         $this->checkPermission('unpublish');
+        
+        $hook_class_path = $this->getHookClassPath();
         
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:before');

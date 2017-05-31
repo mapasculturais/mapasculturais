@@ -275,10 +275,6 @@ abstract class Entity implements \JsonSerializable{
             $user = $userOrAgent->getOwnerUser();
         }
 
-        if($action != 'view' && $action != 'create' && $this->usesOriginSubsite() && !$this->authorizedInThisSite() && !$app->user->is('saasAdmin')){
-            return false;
-        }
-
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
@@ -545,8 +541,8 @@ abstract class Entity implements \JsonSerializable{
                 $this->checkPermission('create');
                 $is_new = true;
 
-                if($this->usesOriginSubsite()){
-                    $this->_subsiteId = $app->getCurrentSubsiteId();
+                if($this->usesOriginSubsite() && $app->getCurrentSubsiteId()){
+                    $this->setSubsite($app->getCurrentSubsite());
                 }
 
             }else{
@@ -621,15 +617,17 @@ abstract class Entity implements \JsonSerializable{
                 }  catch (\Exception $e) {}
             }
             $val = $nval;
-        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array($val, $allowed_classes)){
+        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array(\get_class($val), $allowed_classes)){
+
             throw new \Exception();
         }elseif(is_object($val)){
+
             if(in_array($val, Entity::$_jsonSerializeNestedObjects))
                 throw new \Exception();
-
         }
+
         return $val;
-    }
+    }   
 
     /**
      *
@@ -661,8 +659,11 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if($this->usesMetadata()){
-            foreach($this->metadata as $meta_key => $meta_value)
+            $registered_metadata = $this->getRegisteredMetadata();
+            foreach($registered_metadata as $def){
+                $meta_key = $def->key;
                 $result[$meta_key] = $this->$meta_key;
+            }
         }
 
         if($controller_id = $this->getControllerId()){
@@ -898,6 +899,10 @@ abstract class Entity implements \JsonSerializable{
         
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();
+        }
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
         }
     }
 
