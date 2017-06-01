@@ -247,14 +247,14 @@ abstract class File extends \MapasCulturais\Entity
         $app = App::i();
         $cache_id = "{$this}:url";
         
-        /*
-        $file_group = $app->getRegisteredFileGroup($this->owner->entityClassName, $this->getGroup());
         
-        \dump($this->owner->getEntityClassName()); 
-        \dump($file_group); 
+        $file_group = $app->getRegisteredFileGroup($this->owner->controllerId, $this->getGroup());
         
-        die;
-        */
+        if (is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true) {
+            
+            return $app->createUrl($this->controllerId, 'privateFile', [$this->id]);
+        
+        }
         
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);

@@ -31,4 +31,33 @@ class File extends EntityController {
     function POST_single() {
         App::i()->pass();
     }
+    
+    function GET_privateFile() {
+    
+        $this->requireAuthentication();
+        
+        $file = $this->requestedEntity;
+
+        $file->checkPermission('view');
+        
+        $file_path = $this->requestedEntity->getPath();
+        
+        if (file_exists($file_path)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: ' . mime_content_type($file_path));
+            header('Content-Disposition: attachment; filename="' . $file->name . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file_path));
+            
+            readfile($file_path);
+            
+            exit;
+        }
+        
+        App::i()->pass();
+        
+    }
 }
