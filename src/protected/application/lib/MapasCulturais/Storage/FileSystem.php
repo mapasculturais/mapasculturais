@@ -35,6 +35,7 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function __construct(array $config = []) {
         $this->config = $config + [
             'dir' => BASE_PATH . 'files/',
+            'private_dir' => dirname(BASE_PATH) . '/private-files/',
             'baseUrl' => 'files/'
         ];
     }
@@ -153,8 +154,11 @@ class FileSystem extends \MapasCulturais\Storage{
             }
         }
         
-        $result = $relative ? $relative_path : $this->config['dir'] . $relative_path;
-
+        if ($relative)
+            $result =  $relative_path;
+        else
+            $result = $file->private ? $this->config['private_dir'] . $relative_path : $this->config['dir'] . $relative_path;
+        
         return str_replace('\\', '-', $result);
     }
 

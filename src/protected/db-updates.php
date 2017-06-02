@@ -706,6 +706,45 @@ return [
         
     },
     
+    'move private files' => function () use ($conn) {
+        
+        
+        $files = App::i()->repo('File')->findBy(['private' => true]);
+        
+        $StorageConfig = App::i()->storage->config;
+        
+        foreach($files as $file) {
+            
+            
+            // vou pegar a info de path direto do banco, sem usar o metodo do storage
+            // para evitar erro com inconsistencias no banco
+            $relative_path = $file->getRelativePath(false);
+            
+            if (!$relative_path) {
+                echo "ATENCAO: Seu banco possui arquivos que não tem a informação de path' \n";
+                continue;
+            }
+            
+            $targetPath = str_replace('\\', '-', $StorageConfig['private_dir'] . $relative_path);
+            
+            $oldPath = str_replace('\\', '-', $StorageConfig['dir'] . $relative_path);
+            
+            if (file_exists($oldPath)) {
+            
+                if(!is_dir(dirname($targetPath)))
+                    mkdir (dirname($targetPath), 0755, true);
+                
+                rename($oldPath, $targetPath);
+            
+            }
+            
+            
+        }
+        
+        
+        
+    },
+    
     
 ] + $updates ;
 
