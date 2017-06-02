@@ -38,7 +38,7 @@ class File extends EntityController {
         
         $file = $this->requestedEntity;
 
-        $file->checkPermission('view');
+        $file->checkPermission('viewPrivateFiles');
         
         $file_path = $this->requestedEntity->getPath();
         
