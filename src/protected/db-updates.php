@@ -695,5 +695,17 @@ return [
 
     },
     
+    'ALTER TABLE file ADD private and update' => function () use ($conn) {
+        if(__column_exists('file', 'private')){
+            return true;
+        }
+
+        $conn->executeQuery("ALTER TABLE file ADD private BOOLEAN NOT NULL DEFAULT FALSE;");
+        
+        $conn->executeQuery("UPDATE file SET private = true WHERE grp LIKE 'rfc_%' OR grp = 'zipArchive'");
+        
+    },
+    
+    
 ] + $updates ;
 
