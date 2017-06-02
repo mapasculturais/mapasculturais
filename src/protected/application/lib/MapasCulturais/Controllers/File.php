@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use MapasCulturais\App;
+
 /**
  * File Controller
  *
