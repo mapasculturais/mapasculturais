@@ -10,6 +10,8 @@ jQuery(function(){
 
 
     MapasCulturais.Remove.init();
+    MapasCulturais.RemoveBanner.init();
+
 
 
     $('.js-registration-action').click(function(){
@@ -202,6 +204,30 @@ MapasCulturais.Remove = {
         });
     }
 }
+
+MapasCulturais.RemoveBanner = {
+    init: function(){
+        $('body').on('click', '.banner-delete', function(){
+            var href   = $(this).data('href');
+            var result = window.confirm(MapasCulturais.gettext.editable['removeAgentBackground']);
+            $('#remove-background-button').toggleClass('display-background-button');
+            $('#remove-background-button').toggleClass('hide-background-button');
+
+            if(result){
+                $.getJSON(href, function(r){
+                    if(r.error){
+                        MapasCulturais.Messages.error(r.data);
+                    }else{
+                        $('#header-banner').css('background-image', 'url()');
+                    }
+                });
+            }
+            else{
+                return false;
+            }
+        });
+    }
+};
 
 MapasCulturais.Editables = {
 
@@ -782,6 +808,9 @@ MapasCulturais.AjaxUploader = {
 
                             break;
                             case 'background-image':
+                                $('#remove-background-button').toggleClass('hide-background-button');
+                                $('#remove-background-button').toggleClass('display-background-button');
+                                
                                 $target.each(function(){
                                     try{
                                         if($form.data('transform'))
@@ -790,6 +819,8 @@ MapasCulturais.AjaxUploader = {
                                             $(this).css('background-image', 'url(' + response[group].url + ')');
                                     }catch (e){}
                                 });
+
+                                $('#remove-background-button a').data('href', response[group].deleteUrl);
                             break;
 
                             case 'append':
