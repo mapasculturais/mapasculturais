@@ -31,7 +31,7 @@ $url_search_spaces = $this->searchSpacesUrl;
             </div>
             <div class="statistics">
                 <div class="statistic"><?php echo $num_verified_spaces; ?></div>
-                <div class="statistic-label"><?php $this->dict('entities: spaces') ?> da <?php $this->dict('home: abbreviation'); ?></div>
+                <div class="statistic-label"><?php $this->dict('entities: spaces') ?> <?php \MapasCulturais\i::_e(" da ");?> <?php $this->dict('home: abbreviation'); ?></div>
             </div>
         </div>
         <p><?php echo $app->view->renderMarkdown($this->dict('home: spaces',false)); ?></p>
