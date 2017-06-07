@@ -39,6 +39,7 @@ $_properties = $app->config['registration.propertiesToExport'];
     <thead>
         <tr>
             <th><?php \MapasCulturais\i::_e("Número");?></th>
+            <th><?php \MapasCulturais\i::_e("Link");?></th>
             <th><?php \MapasCulturais\i::_e("Status");?></th>
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
@@ -63,7 +64,8 @@ $_properties = $app->config['registration.propertiesToExport'];
     <tbody>
         <?php foreach($entity->sentRegistrations as $r): ?>
             <tr>
-                <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
+                <td><?php echo $r->number; ?></td>
+                <td><?php echo $r->singleUrl; ?></td>
                 <td><?php echo echoStatus($r); ?></td>
 
                 <?php if($entity->registrationCategories):?>
