@@ -252,7 +252,7 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }
 
         $agent->emailPrivado = $user->email;
-
+        $agent->save();
         $app->em->persist($agent);
         $app->em->flush();
 
