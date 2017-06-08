@@ -23,3 +23,4 @@ _apigen.phar
 .composer/
 .bash_history
 SaaS/*
+private-files
