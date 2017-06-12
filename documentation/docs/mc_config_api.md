@@ -163,7 +163,7 @@ $.getJSON(
   },
   function (response){ console.log(response); });
 ```
-* **retornando o id, nome dos eventos e sua lista de ocorrências contendo id, nome do local e o objeto rule das mesmas. No objeto rules, há o campo description, que contém uma versão legível para humanos da data, horários e frequência da ocorrência. A busca filtra por eventos de id entre 100 e 200.**
+* **retornando o id, nome dos eventos e sua lista de ocorrências contendo id, nome do local e o objeto rule das mesmas. No objeto rules, há o campo description, que contém uma versão legível para humanos da data, horários e frequência da ocorrência. A busca filtra eventos de id entre 100 e 200.**
 
 ```javascript
 $.getJSON(
@@ -171,6 +171,18 @@ $.getJSON(
   {
     '@select': 'id, name,occurrences.{id,space.{name},rule}',
     'id': 'BET(100,200)'
+  },
+  function (response){ console.log(response); });
+```
+* **retornando o id, nome dos eventos e o objeto terms, que agrupa taxonomias, neste caso linguagens (cada entidade tem as suas taxonomias). A busca filtra eventos que tenham a linguagem LIKE 'Cinema' e possuam id entre 100 e 200.**
+
+```javascript
+$.getJSON(
+  'http://mapasculturais.local/api/event/find',
+  {
+    '@select': 'id, name,terms',
+    'term:linguagem': 'LIKE(Cinema)',
+    'id': 'BET(100,200)'    
   },
   function (response){ console.log(response); });
 ```
