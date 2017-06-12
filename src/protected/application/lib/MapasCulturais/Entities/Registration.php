@@ -572,7 +572,9 @@ class Registration extends \MapasCulturais\Entity
             $requiredSpaceProperties = $app->config['registration.spaceRelations'][0]['requiredProperties'];
 
             foreach($requiredSpaceProperties as $r){
+                $app->disableAccessControl();
                 $isEmpty = $spaceDefined->space->$r;
+                $app->enableAccessControl();
 
                 if(empty($isEmpty)){
                     $errorsResult['invalidSpaceFields'] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $requiredSpaceProperties));
