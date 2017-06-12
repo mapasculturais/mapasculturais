@@ -44,18 +44,17 @@ class Seal extends EntityController {
         parent::POST_index($data);
     }
 
-    function GET_sealRelation(){
+    public function GET_sealRelation(){
     	$app = App::i();
-
     	$id = $this->data['id'];
-
-    	$rel = $app->repo('SealRelation')->find($id);
-
-    	$this->render('sealrelation', ['relation' => $rel]);
-
+    	$relation = $app->repo('SealRelation')->find($id);
+        $expirationDate = $this->VerifySealValidity($relation);
+        $mensagemPrintSealRelation = $this->getSealRelationCertificateText($relation, $app, $expirationDate['date'], true);
+        
+    	$this->render('sealrelation', ['relation'=>$relation, 'printSeal'=>$mensagemPrintSealRelation]);
     }
 
-    function GET_printSealRelation(){
+    public function GET_printSealRelation(){
         $app = App::i();
 
     	$id = $this->data['id'];
@@ -69,5 +68,79 @@ class Seal extends EntityController {
         
     	$this->render('printsealrelation', ['relation' => $rel]);
 
+    }
+
+    /**
+     * Retorna a mensagem de impressão do certificado. Se uma mensagem não foi definida pelo usuário, retorna uma mensagem padrão com todos os campos
+     *
+     * @param entity $relation
+     * @param entity $app
+     * @param expirationDate - obj com info da data de expiração do selo
+     * @param addLinks
+     * @return mensagem de impressão
+     */
+    private function getSealRelationCertificateText($relation, $app, $expirationDate, $addLinks = false){
+        $mensagem = $relation->seal->certificateText;
+        $entity = $relation->seal;
+        $nomeSelo = $addLinks ? $this->generateLink($app->createUrl('seal', 'single', ['id'=>$relation->seal->id], 
+                    $relation->seal->name), $relation->seal->name) : $relation->seal->name;
+
+        $donoSelo = $addLinks ? $this->generateLink($relation->seal->owner->getSingleUrl(), 
+                    $relation->seal->owner->name) : $relation->owner->name;
+
+        $nomeEntidade = $addLinks ? $this->generateLink($relation->owner->getSingleUrl(), 
+        $relation->owner->name) : $relation->owner->name;
+
+        $dateInicio = $relation->createTimestamp->format("d/m/Y");
+        $seloExpira = isset($expirationDate);
+        
+        if($seloExpira){
+            $dateFim = $expirationDate->format('d-m-Y');
+        }
+
+        if(!empty($mensagem)){
+            $mensagem = str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp",$mensagem);
+            $mensagem = str_replace("[sealName]",$nomeSelo,$mensagem);
+            $mensagem = str_replace("[sealOwner]",$donoSelo,$mensagem);
+            $mensagem = str_replace("[sealShortDescription]",$relation->seal->shortDescription,$mensagem);
+            $mensagem = str_replace("[sealRelationLink]",$app->createUrl('seal','printsealrelation',[$relation->id]),$mensagem);
+            $mensagem = str_replace("[entityDefinition]",$relation->owner->entityTypeLabel,$mensagem);
+            $mensagem = str_replace("[entityName]",$nomeEntidade,$mensagem);
+            $mensagem = str_replace("[dateIni]",$dateInicio,$mensagem);
+
+            if($seloExpira){
+                $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
+            }
+            
+            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/>',$mensagem);
+            
+        }
+        else{
+            $mensagem = '<p>' . \MapasCulturais\i::__('<b>Nome do Selo</b>') . ': ' . $nomeSelo .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Dono do Selo</b>') . ': ' . $donoSelo . '</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Descrição Curta</b>') . ': ' . $relation->seal->shortDescription .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Tipo de Entidade</b>') . ': ' . $relation->owner->entityTypeLabel .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Nome da Entidade</b>') . ': ' . $nomeEntidade .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Data de Criação</b>') . ': ' . $dateInicio .'</p>';
+
+            if($seloExpira){
+                $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expiração') . ': ' . $dateFim;
+            }
+        }
+
+        return $mensagem;
+    }
+
+    /**
+     * Gera links para os campos de impressão do certificado
+     *
+     * @param obj $app
+     * @param int $id id da entidade a ser criado o link
+     * @param obj $entity
+     * @param string $texto
+     * @return void
+     */
+    private function generateLink($url, $texto){
+        return '<a href=' . $url . '><i>' . $texto .'</i></a>';
     }
 }
