@@ -126,7 +126,7 @@
 
                 apiFind(requestEntity, sData, $rootScope.pagination[entity], requestAction).success(function(rs,status,header){
                     var metadata = JSON.parse(header('API-Metadata'));
-
+                    
                     numSuccessRequests++;
                     activeRequests--;
                     $rootScope.spinnerCount--;
@@ -134,10 +134,12 @@
                     results[entity] = rs;
 
                     endRequest();
-
+                   
                     if(requestEntity === 'space' && requestAction === 'findByEvents') {
                         countResults[entity].spaces = metadata.count;
-                    } else {
+                    }else if(requestEntity === 'event' && requestAction === 'findByLocation' && metadata == null){
+                        countResults['event'] = 0;
+                    }else{
                         countResults[entity] = metadata.count;
                     }
                     numCountSuccessRequests++;
