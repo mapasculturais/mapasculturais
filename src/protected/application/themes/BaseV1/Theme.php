@@ -1454,7 +1454,8 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
-           'Todas opções' => i::__('Todas opções'),
+            'Todas opções' => i::__('Todas opções'),
+            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -1964,6 +1965,9 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
+        $this->jsObject['entity']['registrationSpace'] = $entity->spaceRelation;
+        $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
+
         if($entity->project->canUser('@control')){
             $this->jsObject['registration'] = $entity;
         }

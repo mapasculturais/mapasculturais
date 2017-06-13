@@ -82,12 +82,12 @@ class Project extends EntityController {
         $response['Pragma'] ='no-cache';
 
         $app->contentType('application/vnd.ms-excel; charset=UTF-8');
-
+        
         ob_start();
         $this->partial('report', ['entity' => $entity]);
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
-    }
+    }    
 
     protected function _setEventStatus($status){
         $this->requireAuthentication();
@@ -182,6 +182,7 @@ class Project extends EntityController {
             'registrationCategTitle', 
             'useAgentRelationInstituicao', 
             'introInscricoes',
+            'useSpaceRelation',
             'registrationSeals', 
             'registrationLimit'
         );

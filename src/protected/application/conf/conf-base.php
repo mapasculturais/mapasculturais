@@ -198,6 +198,32 @@ return array(
         'facebook',
         'twitter'
     ),
+
+    'registration.spaceProperties' => array(
+        'id',
+        'name',
+        'location',
+        'endereco',
+        'En_CEP',
+        'En_Nome_Logradouro',
+        'En_Num',
+        'En_Complemento',
+        'En_Bairro',
+        'En_Municipio',
+        'En_Estado',
+        'telefone1',
+        'telefone2',
+        'telefonePublico',
+        'emailPrivado',
+        'emailPublico',
+        'acessibilidade',
+        'acessibilidade_fisica',
+        'site',
+        'googleplus',
+        'facebook',
+        'twitter'
+    ),
+
     'registration.ownerDefinition' => array(
         'required' => true,
         'label' => \MapasCulturais\i::__('Agente responsável pela inscrição'),
@@ -222,6 +248,15 @@ return array(
             'description' => \MapasCulturais\i::__('Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email Privado obrigatoriamente preenchidos'),
             'type' => 2,
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
+        )
+    ),
+    'registration.spaceRelations' => array(
+        array(
+            'required' => false,
+            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'description' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'type' => 2,
+            'requiredProperties' => array('endereco', 'telefone1')
         )
     ),
 
