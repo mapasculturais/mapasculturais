@@ -57,6 +57,13 @@ return array(
             )
         ),
 
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
+            )
+        ),
+
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
                 'serialize' => function($value) { return json_encode($value); },

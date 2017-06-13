@@ -318,4 +318,20 @@ trait EntityMetadata{
             $metadata_object->save();
         }
     }
+
+    /**
+     * Return Instagram URL if available
+     *
+     * @return string
+     */
+    public function getInstagramUrl(){
+        if($this->instagram){
+            $user = str_replace('@', '', $this->instagram);
+            $url = 'http://www.instagram.com/' . $user;
+
+            return $url;
+        }else{
+            return '#';
+        }
+    }
 }
