@@ -698,7 +698,7 @@ return [
 
     //Adiciona coluna space_data com metadados do espaço vinculado à inscrição
     'ALTER TABLE registration' => function() use($conn){
-        $conn->executeQuery("ALTER TABLE registration ADD space_data JSON DEFAULT NULL;");
+        $conn->executeQuery("ALTER TABLE registration ADD space_data text DEFAULT NULL;");
     },
 
     
