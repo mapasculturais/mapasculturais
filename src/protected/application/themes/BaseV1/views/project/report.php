@@ -49,11 +49,11 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <th><?php echo $field->title; ?></th>
             <?php endforeach; ?>
             
-            <th>Arquivos</th>
+            <th><?php \MapasCulturais\i::_e("Arquivos");?></th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
                 
-                <th><?php echo $def->label; ?> - Área de Atuação</th>
+                <th><?php echo $def->label; ?> <?php \MapasCulturais\i::_e("- Área de Atuação");?></th>
                 
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
                     <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
