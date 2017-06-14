@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-06-14 18:00-0300\n"
+"POT-Creation-Date: 2017-06-14 18:39-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -880,6 +880,50 @@ msgstr "Audio descripción"
 msgid "Padrão"
 msgstr "Estándar"
 
+#: application/conf/notification-types.php:11
+msgid "Denúncia"
+msgstr "Denuncia"
+
+#: application/conf/notification-types.php:12
+#: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:14
+msgid "Contato"
+msgstr "Contacto"
+
+#: application/conf/notification-types.php:19
+msgid "Conteúdo ofensivo ou inadequado"
+msgstr "Contenido ofensivo o inadecuado"
+
+#: application/conf/notification-types.php:20
+msgid "Conteúdo incorreto ou calunioso"
+msgstr "Contenido incorrecto o calumnioso"
+
+#: application/conf/notification-types.php:21
+msgid "Conteúdo que viola direitos"
+msgstr "Contenido que viola derechos"
+
+#: application/conf/notification-types.php:22
+#: application/conf/notification-types.php:34
+#: application/conf/space-types.php:72 application/conf/space-types.php:408
+#: application/conf/taxonomies.php:74 application/conf/taxonomies.php:104
+msgid "Outros"
+msgstr "Otros"
+
+#: application/conf/notification-types.php:30
+msgid "Sugestão"
+msgstr "Sugerencia"
+
+#: application/conf/notification-types.php:31
+msgid "Crítica"
+msgstr "Crítica"
+
+#: application/conf/notification-types.php:32
+msgid "Comentários"
+msgstr "Comentarios"
+
+#: application/conf/notification-types.php:33
+msgid "Reclamações"
+msgstr "Reclamos"
+
 #: application/conf/project-types.php:8
 msgid "Texto introdutório das inscrições"
 msgstr "Texto introductorio de las inscripciones"
@@ -1087,11 +1131,6 @@ msgstr "Accesibilidad"
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:14
 msgid "Acessibilidade física"
 msgstr "Accesibilidad física"
-
-#: application/conf/space-types.php:72 application/conf/space-types.php:408
-#: application/conf/taxonomies.php:74 application/conf/taxonomies.php:104
-msgid "Outros"
-msgstr "Otros"
 
 #: application/conf/space-types.php:74
 msgid "Banheiros adaptados"
@@ -2505,10 +2544,6 @@ msgstr "Agenda"
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:10
 msgid "Denunciar"
 msgstr "Denunciar"
-
-#: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:14
-msgid "Contato"
-msgstr "Contacto"
 
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:28
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:65
@@ -8493,9 +8528,6 @@ msgstr "Departamento"
 
 #~ msgid "Q"
 #~ msgstr "M"
-
-#~ msgid "Denúncia"
-#~ msgstr "Denuncia"
 
 #~ msgid "Nome:"
 #~ msgstr "Nombre:"
