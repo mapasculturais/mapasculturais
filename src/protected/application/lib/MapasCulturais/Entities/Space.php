@@ -252,7 +252,7 @@ class Space extends \MapasCulturais\Entity
         if($this->parent) {
             $this->parent->_newModifiedRevision();
         }        
-    }
+    }    
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
