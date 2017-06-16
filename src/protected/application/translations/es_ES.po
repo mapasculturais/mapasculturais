@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-05-30 12:12-0300\n"
+"POT-Creation-Date: 2017-06-14 18:39-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -322,6 +322,7 @@ msgstr "Departamento"
 #: application/themes/BaseV1/views/event/edit.php:183
 #: application/themes/BaseV1/views/event/single.php:181
 #: application/themes/BaseV1/views/event/single.php:183
+#: application/themes/culturaenlinea/config.php:103
 msgid "Site"
 msgstr "Página web"
 
@@ -360,6 +361,7 @@ msgstr "Individual"
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:72
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
 #: application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:54
+#: application/themes/culturaenlinea/config.php:176
 msgid "Coletivo"
 msgstr "Colectivo"
 
@@ -410,22 +412,28 @@ msgid "Distrito"
 msgstr "Distrito"
 
 #: application/conf/conf-base.php:169
+#: application/themes/culturaenlinea/config.php:125
 msgid "Não utilizar"
 msgstr "No utilizar"
 
-#: application/conf/conf-base.php:170 application/themes/BaseV1/Theme.php:1445
+#: application/conf/conf-base.php:170 application/themes/BaseV1/Theme.php:1446
+#: application/themes/culturaenlinea/config.php:126
 msgid "Obrigatório"
 msgstr "Obligatorio"
 
-#: application/conf/conf-base.php:171 application/themes/BaseV1/Theme.php:1446
+#: application/conf/conf-base.php:171 application/themes/BaseV1/Theme.php:1447
+#: application/themes/culturaenlinea/config.php:127
 msgid "Opcional"
 msgstr "Opcional"
 
-#: application/conf/conf-base.php:203 application/themes/BaseV1/Theme.php:1437
+#: application/conf/conf-base.php:203 application/themes/BaseV1/Theme.php:1438
+#: application/themes/culturaenlinea/config.php:11
+#: application/themes/culturaenlinea/config.php:159
 msgid "Agente responsável pela inscrição"
 msgstr "Agente responsable por la inscripción"
 
 #: application/conf/conf-base.php:205
+#: application/themes/culturaenlinea/config.php:161
 msgid ""
 "Agente individual (pessoa física) com os campos CPF, Data de Nascimento/"
 "Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos"
@@ -437,10 +445,12 @@ msgstr ""
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:42
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:40
 #: application/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:36
+#: application/themes/culturaenlinea/config.php:168
 msgid "Instituição responsável"
 msgstr "Institución responsable"
 
 #: application/conf/conf-base.php:214
+#: application/themes/culturaenlinea/config.php:170
 msgid ""
 "Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/"
 "Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos"
@@ -449,6 +459,7 @@ msgstr ""
 "Nacimiento / Fundación, Email Privado y Teléfono 1 completos"
 
 #: application/conf/conf-base.php:222
+#: application/themes/culturaenlinea/config.php:178
 msgid ""
 "Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email "
 "Privado obrigatoriamente preenchidos"
@@ -457,6 +468,8 @@ msgstr ""
 "Email privado completos"
 
 #: application/conf/conf-base.php:231
+#: application/themes/culturaenlinea/config.php:22
+#: application/themes/culturaenlinea/config.php:187
 msgid "Id"
 msgstr ""
 
@@ -470,14 +483,20 @@ msgstr ""
 #: application/themes/BaseV1/views/agent/single.php:92
 #: application/themes/BaseV1/views/generic/list.php:17
 #: application/themes/BaseV1/views/generic/list.php:32
+#: application/themes/culturaenlinea/config.php:23
+#: application/themes/culturaenlinea/config.php:188
 msgid "Nome"
 msgstr "Nombre"
 
 #: application/conf/conf-base.php:233
+#: application/themes/culturaenlinea/config.php:24
+#: application/themes/culturaenlinea/config.php:189
 msgid "Data de Criação"
 msgstr "Fecha de creación"
 
 #: application/conf/conf-base.php:234
+#: application/themes/culturaenlinea/config.php:25
+#: application/themes/culturaenlinea/config.php:190
 msgid "Data de Atualização"
 msgstr "Fecha de Actualización"
 
@@ -501,10 +520,14 @@ msgstr "Fecha de Actualización"
 #: application/themes/BaseV1/views/space/create.php:80
 #: application/themes/BaseV1/views/space/edit.php:80
 #: application/themes/BaseV1/views/space/single.php:80
+#: application/themes/culturaenlinea/config.php:26
+#: application/themes/culturaenlinea/config.php:191
 msgid "Descrição Curta"
 msgstr "Descripción breve"
 
 #: application/conf/conf-base.php:236
+#: application/themes/culturaenlinea/config.php:27
+#: application/themes/culturaenlinea/config.php:192
 msgid "Descrição Longa"
 msgstr "Descripción Larga"
 
@@ -512,10 +535,14 @@ msgstr "Descripción Larga"
 #: application/themes/BaseV1/views/seal/create.php:114
 #: application/themes/BaseV1/views/seal/edit.php:114
 #: application/themes/BaseV1/views/seal/single.php:114
+#: application/themes/culturaenlinea/config.php:28
+#: application/themes/culturaenlinea/config.php:193
 msgid "Conteúdo da Impressão do Certificado"
 msgstr "Contenido de impresión del Certificado"
 
 #: application/conf/conf-base.php:238
+#: application/themes/culturaenlinea/config.php:29
+#: application/themes/culturaenlinea/config.php:194
 msgid "Período de Validade"
 msgstr "Plazo de Validez"
 
@@ -523,16 +550,20 @@ msgstr "Plazo de Validez"
 #: application/themes/BaseV1/layouts/parts/singles/project-events.php:34
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:13
 #: application/themes/BaseV1/layouts/parts/singles/space-public.php:2
-#: application/themes/BaseV1/views/project/report.php:42
+#: application/themes/BaseV1/views/project/report.php:43
+#: application/themes/culturaenlinea/config.php:30
+#: application/themes/culturaenlinea/config.php:195
 msgid "Status"
 msgstr "Estado"
 
 #: application/conf/conf-base.php:430 application/themes/BaseV1/Theme.php:115
 #: application/themes/BaseV1/layouts/parts/panel-nav.php:4
+#: application/themes/culturaenlinea/config.php:101
 msgid "Painel"
 msgstr "Panel"
 
 #: application/conf/conf-base.php:431
+#: application/themes/culturaenlinea/config.php:102
 msgid "Autenticação"
 msgstr "Autentiación"
 
@@ -542,6 +573,7 @@ msgstr "Autentiación"
 #: application/themes/BaseV1/views/event/create.php:121
 #: application/themes/BaseV1/views/event/edit.php:121
 #: application/themes/BaseV1/views/event/single.php:121
+#: application/themes/culturaenlinea/config.php:104
 msgid "Evento"
 msgstr "Evento"
 
@@ -554,11 +586,14 @@ msgstr "Evento"
 #: application/themes/BaseV1/layouts/parts/search/list-event.php:2
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:65
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:66
+#: application/themes/culturaenlinea/config.php:104
+#: application/themes/culturaenlinea/layouts/parts/home-search.php:31
 msgid "Eventos"
 msgstr "Eventos"
 
 #: application/conf/conf-base.php:434
 #: application/lib/MapasCulturais/Entities/Agent.php:264
+#: application/themes/culturaenlinea/config.php:105
 msgid "Agente"
 msgstr "Agente"
 
@@ -578,6 +613,8 @@ msgstr "Agente"
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:50
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:51
 #: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:28
+#: application/themes/culturaenlinea/config.php:105
+#: application/themes/culturaenlinea/layouts/parts/home-search.php:35
 msgid "Agentes"
 msgstr "Agentes"
 
@@ -585,6 +622,7 @@ msgstr "Agentes"
 #: application/lib/MapasCulturais/Entities/Space.php:231
 #: application/themes/BaseV1/Theme.php:210
 #: application/themes/BaseV1/Theme.php:211
+#: application/themes/culturaenlinea/config.php:106
 msgid "Espaço"
 msgstr "Espacio"
 
@@ -594,6 +632,7 @@ msgstr "Espacio"
 #: application/themes/BaseV1/Theme.php:217
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:55
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:56
+#: application/themes/culturaenlinea/config.php:106
 msgid "Espaços"
 msgstr "Espacios"
 
@@ -608,6 +647,7 @@ msgstr "Espacios"
 #: application/themes/BaseV1/views/event/edit.php:405
 #: application/themes/BaseV1/views/event/single.php:378
 #: application/themes/BaseV1/views/event/single.php:405
+#: application/themes/culturaenlinea/config.php:107
 msgid "Projeto"
 msgstr "Proyecto"
 
@@ -620,6 +660,8 @@ msgstr "Proyecto"
 #: application/themes/BaseV1/layouts/parts/search/list-project.php:3
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:60
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:61
+#: application/themes/culturaenlinea/config.php:107
+#: application/themes/culturaenlinea/layouts/parts/home-search.php:43
 msgid "Projetos"
 msgstr "Proyectos"
 
@@ -627,6 +669,7 @@ msgstr "Proyectos"
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--manager.php:25
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--tables--published.php:5
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--user-registrations.php:7
+#: application/themes/culturaenlinea/config.php:108
 msgid "Inscrição"
 msgstr "Inscripción"
 
@@ -639,6 +682,7 @@ msgstr "Inscripción"
 #: application/themes/BaseV1/views/event/create.php:173
 #: application/themes/BaseV1/views/event/edit.php:173
 #: application/themes/BaseV1/views/event/single.php:173
+#: application/themes/culturaenlinea/config.php:108
 msgid "Inscrições"
 msgstr "Inscripciones"
 
@@ -649,15 +693,19 @@ msgstr "Inscripciones"
 #: application/themes/BaseV1/views/panel/seals.php:14
 #: application/themes/BaseV1/views/panel/spaces.php:15
 #: application/themes/BaseV1/views/panel/subsite.php:18
+#: application/themes/culturaenlinea/config.php:109
 msgid "Arquivo"
 msgstr "Archivo"
 
 #: application/conf/conf-base.php:438 application/conf/space-types.php:249
+#: application/themes/BaseV1/views/project/report.php:52
+#: application/themes/culturaenlinea/config.php:109
 msgid "Arquivos"
 msgstr "Archivos"
 
 #: application/conf/conf-base.php:439
 #: application/lib/MapasCulturais/Entities/Seal.php:190
+#: application/themes/culturaenlinea/config.php:110
 msgid "Selo"
 msgstr "Sello"
 
@@ -667,50 +715,62 @@ msgstr "Sello"
 #: application/themes/BaseV1/Theme.php:538
 #: application/themes/BaseV1/layouts/parts/home-seals.php:27
 #: application/themes/BaseV1/views/panel/index.php:108
+#: application/themes/culturaenlinea/config.php:110
+#: application/themes/culturaenlinea/project-types.php:61
 msgid "Selos"
 msgstr "Sellos"
 
 #: application/conf/conf-base.php:440
 #: application/themes/BaseV1/layouts/parts/history.php:12
+#: application/themes/culturaenlinea/config.php:111
 msgid "Histórico"
 msgstr "Histórico"
 
 #: application/conf/conf-base.php:440
+#: application/themes/culturaenlinea/config.php:111
 msgid "Revisões"
 msgstr "Revisiones"
 
 #: application/conf/conf-base.php:441
 #: application/themes/BaseV1/views/seal/printsealrelation.php:25
+#: application/themes/culturaenlinea/config.php:112
 msgid "Certificado"
 msgstr "Certificado"
 
 #: application/conf/conf-base.php:443 application/themes/BaseV1/Theme.php:497
 #: application/themes/BaseV1/Theme.php:499
 #: application/themes/BaseV1/views/panel/index.php:94
+#: application/themes/culturaenlinea/config.php:114
 msgid "Subsite"
 msgstr "Subsitio"
 
 #: application/conf/conf-base.php:444
+#: application/themes/culturaenlinea/config.php:115
 msgid "Listando"
 msgstr "Listando"
 
 #: application/conf/conf-base.php:445
+#: application/themes/culturaenlinea/config.php:116
 msgid "Índice"
 msgstr "Índice"
 
 #: application/conf/conf-base.php:446
+#: application/themes/culturaenlinea/config.php:117
 msgid "Apagando"
 msgstr "Eliminando"
 
 #: application/conf/conf-base.php:447
+#: application/themes/culturaenlinea/config.php:118
 msgid "Editando"
 msgstr "Editando"
 
 #: application/conf/conf-base.php:448
+#: application/themes/culturaenlinea/config.php:119
 msgid "Criando novo"
 msgstr "Creando nuevo"
 
 #: application/conf/conf-base.php:449
+#: application/themes/culturaenlinea/config.php:120
 msgid "Busca"
 msgstr "Busca"
 
@@ -820,6 +880,50 @@ msgstr "Audio descripción"
 msgid "Padrão"
 msgstr "Estándar"
 
+#: application/conf/notification-types.php:11
+msgid "Denúncia"
+msgstr "Denuncia"
+
+#: application/conf/notification-types.php:12
+#: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:14
+msgid "Contato"
+msgstr "Contacto"
+
+#: application/conf/notification-types.php:19
+msgid "Conteúdo ofensivo ou inadequado"
+msgstr "Contenido ofensivo o inadecuado"
+
+#: application/conf/notification-types.php:20
+msgid "Conteúdo incorreto ou calunioso"
+msgstr "Contenido incorrecto o calumnioso"
+
+#: application/conf/notification-types.php:21
+msgid "Conteúdo que viola direitos"
+msgstr "Contenido que viola derechos"
+
+#: application/conf/notification-types.php:22
+#: application/conf/notification-types.php:34
+#: application/conf/space-types.php:72 application/conf/space-types.php:408
+#: application/conf/taxonomies.php:74 application/conf/taxonomies.php:104
+msgid "Outros"
+msgstr "Otros"
+
+#: application/conf/notification-types.php:30
+msgid "Sugestão"
+msgstr "Sugerencia"
+
+#: application/conf/notification-types.php:31
+msgid "Crítica"
+msgstr "Crítica"
+
+#: application/conf/notification-types.php:32
+msgid "Comentários"
+msgstr "Comentarios"
+
+#: application/conf/notification-types.php:33
+msgid "Reclamações"
+msgstr "Reclamos"
+
 #: application/conf/project-types.php:8
 msgid "Texto introdutório das inscrições"
 msgstr "Texto introductorio de las inscripciones"
@@ -848,10 +952,12 @@ msgstr ""
 
 #: application/conf/project-types.php:28
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--agent-relations.php:36
+#: application/themes/culturaenlinea/project-types.php:28
 msgid "Número máximo de inscrições no projeto"
 msgstr "Número máximo de inscripciones en el proyecto"
 
 #: application/conf/project-types.php:30
+#: application/themes/culturaenlinea/project-types.php:30
 msgid "O número máximo de inscrições no projeto deve ser um número inteiro"
 msgstr ""
 "El número máximo de inscripciones al proyecto debe ser un número entero"
@@ -1008,7 +1114,7 @@ msgstr "Meses"
 msgid "Anos"
 msgstr "Años"
 
-#: application/conf/space-types.php:60 application/themes/BaseV1/Theme.php:1645
+#: application/conf/space-types.php:60 application/themes/BaseV1/Theme.php:1646
 #: application/themes/BaseV1/layouts/parts/search/infobox-space.php:19
 #: application/themes/BaseV1/layouts/parts/search/list-space-item.php:29
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:134
@@ -1025,11 +1131,6 @@ msgstr "Accesibilidad"
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:14
 msgid "Acessibilidade física"
 msgstr "Accesibilidad física"
-
-#: application/conf/space-types.php:72 application/conf/space-types.php:408
-#: application/conf/taxonomies.php:74 application/conf/taxonomies.php:104
-msgid "Outros"
-msgstr "Otros"
 
 #: application/conf/space-types.php:74
 msgid "Banheiros adaptados"
@@ -1860,6 +1961,10 @@ msgstr "Conferencia, Debate o Encuentro"
 msgid "Ocorrências"
 msgstr "Cuándo y dónde"
 
+#: application/lib/MapasCulturais/ApiOutputs/Html.php:242
+msgid "Planilha gerada em: "
+msgstr "Planilla generada en: "
+
 #: application/lib/MapasCulturais/App.php:705
 msgid "Campo de texto (textarea)"
 msgstr "Campo de texto (textarea)"
@@ -2272,11 +2377,11 @@ msgstr ""
 "dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
 "class='btn btn-small btn-primary' href='%s'>editar</a>"
 
-#: application/lib/MapasCulturais/Entity.php:771
+#: application/lib/MapasCulturais/Entity.php:770
 msgid "O Tipo é obrigatório"
 msgstr "El Tipo es obligatorio"
 
-#: application/lib/MapasCulturais/Entity.php:773
+#: application/lib/MapasCulturais/Entity.php:772
 msgid "Tipo inválido"
 msgstr "Tipo no válido"
 
@@ -2406,7 +2511,7 @@ msgstr "Ningún"
 #: application/lib/modules/AgendaSingles/layouts/parts/agenda-singles--content.php:41
 #: application/themes/BaseV1/Theme.php:586
 #: application/themes/BaseV1/Theme.php:590
-#: application/themes/BaseV1/Theme.php:1715
+#: application/themes/BaseV1/Theme.php:1716
 #: application/themes/BaseV1/layouts/parts/home-events.php:40
 #: application/themes/BaseV1/layouts/parts/search/infobox-event.php:36
 #: application/themes/BaseV1/layouts/parts/search/list-event-item.php:31
@@ -2416,7 +2521,7 @@ msgid "Linguagem"
 msgstr "Tipo de evento"
 
 #: application/lib/modules/AgendaSingles/layouts/parts/agenda-singles--content.php:44
-#: application/themes/BaseV1/Theme.php:1725
+#: application/themes/BaseV1/Theme.php:1726
 #: application/themes/BaseV1/layouts/parts/search/infobox-event.php:42
 #: application/themes/BaseV1/layouts/parts/search/list-event-item.php:36
 #: application/themes/BaseV1/layouts/parts/singles/project-events.php:37
@@ -2440,10 +2545,6 @@ msgstr "Agenda"
 msgid "Denunciar"
 msgstr "Denunciar"
 
-#: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:14
-msgid "Contato"
-msgstr "Contacto"
-
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:28
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:65
 #: application/themes/BaseV1/views/auth/fake-authentication.php:105
@@ -2452,7 +2553,7 @@ msgstr "E-mail"
 
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:33
 #: application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:70
-#: application/themes/BaseV1/Theme.php:1747
+#: application/themes/BaseV1/Theme.php:1748
 #: application/themes/BaseV1/layouts/parts/home-agents.php:43
 #: application/themes/BaseV1/layouts/parts/home-projects.php:39
 #: application/themes/BaseV1/layouts/parts/home-saas.php:41
@@ -2950,27 +3051,27 @@ msgstr ""
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:32
 msgid "do Programa"
-msgstr ""
+msgstr "del Programa"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:33
 msgid "da Reunião"
-msgstr ""
+msgstr "de la Reunión"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:34
 msgid "do Sarau"
-msgstr ""
+msgstr "del Salón"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:35
 msgid "do Seminário"
-msgstr ""
+msgstr "del Seminario"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:36
 msgid "do Simpósio"
-msgstr ""
+msgstr "del Simposio"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:37
 msgid "da Inscrição"
-msgstr ""
+msgstr "de la inscripción"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:45
 msgid "Adicionar fase"
@@ -2978,7 +3079,7 @@ msgstr "Agregar fase"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:56
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:75
-#: application/themes/BaseV1/Theme.php:1330
+#: application/themes/BaseV1/Theme.php:1331
 #: application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:17
 msgid "de"
 msgstr "de"
@@ -2996,7 +3097,7 @@ msgstr "Fecha inicial"
 
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:60
 #: application/lib/modules/ProjectPhases/layouts/parts/widget-project-phases.php:79
-#: application/themes/BaseV1/Theme.php:1332
+#: application/themes/BaseV1/Theme.php:1333
 #: application/themes/BaseV1/layouts/parts/search/filter.php:19
 #: application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
 msgid "a"
@@ -3436,15 +3537,16 @@ msgstr "texto de la sección \"desarrolladores\" de la home (página principal)"
 #: application/themes/BaseV1/Theme.php:180
 msgid ""
 "Existem algumas maneiras de desenvolvedores interagirem com o Mapas "
-"Culturais. A primeira é através da nossa <a href=\"https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md" target=\"_blank\">API</a>. "
-"Com ela você pode acessar os dados públicos no nosso banco de dados e "
-"utilizá-los para desenvolver aplicações externas. Além disso, o Mapas "
-"Culturais é construído a partir do sofware livre <a href=\"http://"
-"institutotim.org.br/project/mapas-culturais/\" target=\"_blank\">Mapas "
-"Culturais</a>, criado em parceria com o <a href=\"http://institutotim.org.br"
-"\" target=\"_blank\">Instituto TIM</a>, e você pode contribuir para o seu "
-"desenvolvimento através do <a href=\"https://github.com/hacklabr/"
-"mapasculturais/\" target=\"_blank\">GitHub</a>."
+"Culturais. A primeira é através da nossa <a href=\"https://github.com/"
+"hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md\" "
+"target=\"_blank\">API</a>. Com ela você pode acessar os dados públicos no "
+"nosso banco de dados e utilizá-los para desenvolver aplicações externas. "
+"Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="
+"\"http://institutotim.org.br/project/mapas-culturais/\" target=\"_blank"
+"\">Mapas Culturais</a>, criado em parceria com o <a href=\"http://"
+"institutotim.org.br\" target=\"_blank\">Instituto TIM</a>, e você pode "
+"contribuir para o seu desenvolvimento através do <a href=\"https://github."
+"com/hacklabr/mapasculturais/\" target=\"_blank\">GitHub</a>."
 msgstr ""
 "Hay varias formas en las que los desarrolladores interactúan con los mapas "
 "culturales. La primera es a través de nuestra <a href=\"https://github.com/"
@@ -3988,6 +4090,7 @@ msgstr "texto \"Mis Agentes\""
 #: application/themes/BaseV1/Theme.php:378
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:162
 #: application/themes/BaseV1/layouts/parts/panel-nav.php:14
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:164
 msgid "Meus Agentes"
 msgstr "Mis Agentes"
 
@@ -4033,6 +4136,7 @@ msgstr "texto \"Mis Proyectos\""
 #: application/themes/BaseV1/Theme.php:407
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:189
 #: application/themes/BaseV1/layouts/parts/panel-nav.php:32
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:191
 msgid "Meus Projetos"
 msgstr "Mis Proyectos"
 
@@ -4105,6 +4209,7 @@ msgstr "texto \"Mis Eventos\""
 #: application/themes/BaseV1/Theme.php:448
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:153
 #: application/themes/BaseV1/layouts/parts/panel-nav.php:8
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:155
 msgid "Meus Eventos"
 msgstr "Mis eventos"
 
@@ -4315,7 +4420,7 @@ msgstr "Usuarios y roles"
 
 #: application/themes/BaseV1/Theme.php:564
 #: application/themes/BaseV1/Theme.php:568
-#: application/themes/BaseV1/Theme.php:1669
+#: application/themes/BaseV1/Theme.php:1670
 #: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:33
 #: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:57
 msgid "Área de Atuação"
@@ -4339,7 +4444,7 @@ msgstr "Seleccione por lo menos un área"
 
 #: application/themes/BaseV1/Theme.php:578
 #: application/themes/BaseV1/Theme.php:582
-#: application/themes/BaseV1/Theme.php:1670
+#: application/themes/BaseV1/Theme.php:1671
 msgid "Selecione as áreas"
 msgstr "Seleccione las áreas"
 
@@ -4368,7 +4473,7 @@ msgstr "Seleccione por lo menos un tipo de evento"
 
 #: application/themes/BaseV1/Theme.php:600
 #: application/themes/BaseV1/Theme.php:604
-#: application/themes/BaseV1/Theme.php:1716
+#: application/themes/BaseV1/Theme.php:1717
 msgid "Selecione as linguagens"
 msgstr "Selecciones los tipos de eventos"
 
@@ -4492,7 +4597,7 @@ msgid "Enviar"
 msgstr "Enviar"
 
 #: application/themes/BaseV1/Theme.php:1236
-#: application/themes/BaseV1/Theme.php:1319
+#: application/themes/BaseV1/Theme.php:1320
 #: application/themes/BaseV1/layouts/parts/owner.php:43
 #: application/themes/BaseV1/layouts/parts/related-admin-agents.php:34
 #: application/themes/BaseV1/layouts/parts/related-agents.php:9
@@ -4584,7 +4689,7 @@ msgid "Sua requisição para associar este evento ao projeto %s foi enviada."
 msgstr "Su solicitud para asociar este evento al proyecto %s fue enviada."
 
 #: application/themes/BaseV1/Theme.php:1293
-#: application/themes/BaseV1/Theme.php:1454
+#: application/themes/BaseV1/Theme.php:1455
 #: application/themes/BaseV1/views/event/create.php:23
 #: application/themes/BaseV1/views/event/edit.php:23
 #: application/themes/BaseV1/views/event/single.php:23
@@ -4623,31 +4728,35 @@ msgstr ""
 msgid "Limpar"
 msgstr "Limpiar"
 
-#: application/themes/BaseV1/Theme.php:1311
+#: application/themes/BaseV1/Theme.php:1301
+msgid "Tem certeza que deseja remover a imagem de capa?"
+msgstr "¿Está seguro que desea quitar la imagen de portada?"
+
+#: application/themes/BaseV1/Theme.php:1312
 msgid "Eventos encontrados no espaço"
 msgstr "Eventos encontrados en el espacio"
 
-#: application/themes/BaseV1/Theme.php:1316
+#: application/themes/BaseV1/Theme.php:1317
 msgid "Clique e arraste para desenhar o círculo"
 msgstr "Haga clic y arrastre para diseñar el círculo"
 
-#: application/themes/BaseV1/Theme.php:1317
+#: application/themes/BaseV1/Theme.php:1318
 msgid "Solte o mouse para finalizar o desenho"
 msgstr "Suelte el mouse para finalizar el diseño"
 
-#: application/themes/BaseV1/Theme.php:1318
+#: application/themes/BaseV1/Theme.php:1319
 msgid "Cancelar desenho"
 msgstr "Cancelar diseño"
 
-#: application/themes/BaseV1/Theme.php:1320
+#: application/themes/BaseV1/Theme.php:1321
 msgid "Desenhar um círculo"
 msgstr "Diseñar un círculo"
 
-#: application/themes/BaseV1/Theme.php:1321
+#: application/themes/BaseV1/Theme.php:1322
 msgid "Raio"
 msgstr "Radio"
 
-#: application/themes/BaseV1/Theme.php:1322
+#: application/themes/BaseV1/Theme.php:1323
 msgid ""
 "Segundo seu navegador, você está aproximadamente neste ponto com margem de "
 "erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de "
@@ -4657,12 +4766,12 @@ msgstr ""
 "error de {{errorMargin}} metros. Buscando resultados dentro de un radio de "
 "{{radius}}KM de este punto."
 
-#: application/themes/BaseV1/Theme.php:1328
-#: application/themes/BaseV1/Theme.php:1679
+#: application/themes/BaseV1/Theme.php:1329
+#: application/themes/BaseV1/Theme.php:1680
 msgid "Todos"
 msgstr "Todos"
 
-#: application/themes/BaseV1/Theme.php:1404
+#: application/themes/BaseV1/Theme.php:1405
 msgid ""
 "Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
 "sucesso."
@@ -4670,15 +4779,15 @@ msgstr ""
 "Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
 "éxito."
 
-#: application/themes/BaseV1/Theme.php:1414
+#: application/themes/BaseV1/Theme.php:1415
 msgid "O proprietário da entidade foi modificado"
 msgstr "El propietario de la entidad fue modificado"
 
-#: application/themes/BaseV1/Theme.php:1415
+#: application/themes/BaseV1/Theme.php:1416
 msgid "O proprietário da entidade não pode ser modificado"
 msgstr "El propietario de la entidad no puede ser modificado"
 
-#: application/themes/BaseV1/Theme.php:1416
+#: application/themes/BaseV1/Theme.php:1417
 msgid ""
 "Sua requisição para mudança de propriedade deste {{type}} para o agente "
 "{{recipient}} foi enviada."
@@ -4686,68 +4795,68 @@ msgstr ""
 "Su solicitud para el cambio de propiedad de este  {{type}} para el agente "
 "{{recipient}} fue enviada."
 
-#: application/themes/BaseV1/Theme.php:1421
+#: application/themes/BaseV1/Theme.php:1422
 msgid "Selecione o tipo de campo"
 msgstr "Seleccione el tipo de campo"
 
-#: application/themes/BaseV1/Theme.php:1422
+#: application/themes/BaseV1/Theme.php:1423
 msgid "Campo criado."
 msgstr "Campo creado."
 
-#: application/themes/BaseV1/Theme.php:1423
+#: application/themes/BaseV1/Theme.php:1424
 msgid "Campo removido."
 msgstr "Campo eliminado."
 
-#: application/themes/BaseV1/Theme.php:1424
+#: application/themes/BaseV1/Theme.php:1425
 msgid "Alterações Salvas."
 msgstr "Cambios guardados."
 
-#: application/themes/BaseV1/Theme.php:1425
+#: application/themes/BaseV1/Theme.php:1426
 msgid "Anexo criado."
 msgstr "Adjunto creado."
 
-#: application/themes/BaseV1/Theme.php:1426
+#: application/themes/BaseV1/Theme.php:1427
 msgid "Anexo removido."
 msgstr "Adjunto eliminado."
 
-#: application/themes/BaseV1/Theme.php:1427
-#: application/themes/BaseV1/Theme.php:1436
+#: application/themes/BaseV1/Theme.php:1428
+#: application/themes/BaseV1/Theme.php:1437
 msgid "Deseja remover este anexo?"
 msgstr "Desea eliminar este adjunto?"
 
-#: application/themes/BaseV1/Theme.php:1428
+#: application/themes/BaseV1/Theme.php:1429
 msgid "Deseja remover este modelo?"
 msgstr "Desea eliminar este modelo?"
 
-#: application/themes/BaseV1/Theme.php:1429
+#: application/themes/BaseV1/Theme.php:1430
 msgid "Modelo removido."
 msgstr "Modelo eliminado."
 
-#: application/themes/BaseV1/Theme.php:1430
+#: application/themes/BaseV1/Theme.php:1431
 msgid "publicado"
 msgstr "publicado"
 
-#: application/themes/BaseV1/Theme.php:1431
+#: application/themes/BaseV1/Theme.php:1432
 msgid "rascunho"
 msgstr "borrador"
 
-#: application/themes/BaseV1/Theme.php:1432
+#: application/themes/BaseV1/Theme.php:1433
 msgid "Publicando..."
 msgstr "Publicando..."
 
-#: application/themes/BaseV1/Theme.php:1433
+#: application/themes/BaseV1/Theme.php:1434
 msgid "Eventos publicados."
 msgstr "Eventos publicados."
 
-#: application/themes/BaseV1/Theme.php:1434
+#: application/themes/BaseV1/Theme.php:1435
 msgid "Tornando rascunho..."
 msgstr "Convirtiendo en borrador..."
 
-#: application/themes/BaseV1/Theme.php:1435
+#: application/themes/BaseV1/Theme.php:1436
 msgid "Eventos transformados em rascunho."
 msgstr "Eventos transformados en borradores."
 
-#: application/themes/BaseV1/Theme.php:1438
+#: application/themes/BaseV1/Theme.php:1439
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:34
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:46
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--fields.php:85
@@ -4755,31 +4864,31 @@ msgstr "Eventos transformados en borradores."
 msgid "Todas"
 msgstr "Todas"
 
-#: application/themes/BaseV1/Theme.php:1439
+#: application/themes/BaseV1/Theme.php:1440
 msgid "Pendente"
 msgstr "Pendiente"
 
-#: application/themes/BaseV1/Theme.php:1440
+#: application/themes/BaseV1/Theme.php:1441
 msgid "Inválida"
 msgstr "No válida"
 
-#: application/themes/BaseV1/Theme.php:1441
+#: application/themes/BaseV1/Theme.php:1442
 msgid "Não selecionada"
 msgstr "No seleccionada"
 
-#: application/themes/BaseV1/Theme.php:1442
+#: application/themes/BaseV1/Theme.php:1443
 msgid "Suplente"
 msgstr "Suplente"
 
-#: application/themes/BaseV1/Theme.php:1443
+#: application/themes/BaseV1/Theme.php:1444
 msgid "Selecionada"
 msgstr "Seleccionada"
 
-#: application/themes/BaseV1/Theme.php:1444
+#: application/themes/BaseV1/Theme.php:1445
 msgid "Rascunho"
 msgstr "Borrador"
 
-#: application/themes/BaseV1/Theme.php:1447
+#: application/themes/BaseV1/Theme.php:1448
 msgid ""
 "Você tem certeza que deseja reabrir este formulário para edição? Ao fazer "
 "isso, ele sairá dessa lista."
@@ -4787,7 +4896,7 @@ msgstr ""
 "Usted está seguro que desea reabrir este formulario para edición? Al hacer "
 "esto, él saldrá de esta lista."
 
-#: application/themes/BaseV1/Theme.php:1448
+#: application/themes/BaseV1/Theme.php:1449
 msgid ""
 "Você não definiu um número de vagas. Para selecionar essa inscrição, "
 "configure um número de vagas na aba Inscrições, em Agentes."
@@ -4795,42 +4904,42 @@ msgstr ""
 "No ha establecido un número de vacantes. Para seleccionar esta inscripción, "
 "establecer un número de vacantes en la pestaña de registro de agentes."
 
-#: application/themes/BaseV1/Theme.php:1449
+#: application/themes/BaseV1/Theme.php:1450
 msgid "Você atingiu o limite máximo de 1 inscrição aprovada"
 msgstr "Usted ha alcanzado el límite máximo de 1 inscripción aprobada"
 
-#: application/themes/BaseV1/Theme.php:1450
+#: application/themes/BaseV1/Theme.php:1451
 msgid "Você atingiu o limite máximo de {{num}} inscrições aprovadas"
 msgstr "Usted alcanzó el límite máximo de  {{num}} inscripciones aprobadas"
 
-#: application/themes/BaseV1/Theme.php:1451
+#: application/themes/BaseV1/Theme.php:1452
 msgid "O limite de inscrições para o agente informado se esgotou."
 msgstr "El límite de inscripciones para el agente informado se ha agotado"
 
-#: application/themes/BaseV1/Theme.php:1452
+#: application/themes/BaseV1/Theme.php:1453
 msgid "O número de vagas da inscrição no projeto se esgotou."
 msgstr "El número de vacantes de la inscripción al proyecto se ha agotado"
 
-#: application/themes/BaseV1/Theme.php:1453
+#: application/themes/BaseV1/Theme.php:1454
 msgid ""
 "Para se inscrever neste projeto você deve selecionar um agente responsável."
 msgstr ""
 "Para inscribirse en este proyecto debe seleccionar un agente responsable."
 
-#: application/themes/BaseV1/Theme.php:1455
+#: application/themes/BaseV1/Theme.php:1456
 msgid "Inscrição enviada. Aguarde tela de sumário."
 msgstr "Inscripción enviada. Aguarde la pantalla de resumen."
 
-#: application/themes/BaseV1/Theme.php:1456
+#: application/themes/BaseV1/Theme.php:1457
 msgid "Todas opções"
 msgstr "Todas las opciones"
 
-#: application/themes/BaseV1/Theme.php:1464
-#: application/themes/BaseV1/Theme.php:1469
+#: application/themes/BaseV1/Theme.php:1465
+#: application/themes/BaseV1/Theme.php:1470
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
 msgstr "Su solicitud para relacionar el agente {{agent}} fue enviada."
 
-#: application/themes/BaseV1/Theme.php:1470
+#: application/themes/BaseV1/Theme.php:1471
 #, php-format
 msgid ""
 "Tem certeza que deseja remover o grupo %s? A relação com todos os agentes "
@@ -4839,50 +4948,50 @@ msgstr ""
 "¿Está seguro que desea eliminar el grupo %s? La relación con todos los "
 "agentes dentre de este grupo será eliminada."
 
-#: application/themes/BaseV1/Theme.php:1513
+#: application/themes/BaseV1/Theme.php:1514
 #: application/themes/BaseV1/views/event/create.php:497
 #: application/themes/BaseV1/views/event/edit.php:497
 #: application/themes/BaseV1/views/event/single.php:497
 msgid "uma vez"
 msgstr "una vez"
 
-#: application/themes/BaseV1/Theme.php:1514
+#: application/themes/BaseV1/Theme.php:1515
 #: application/themes/BaseV1/views/event/create.php:498
 #: application/themes/BaseV1/views/event/edit.php:498
 #: application/themes/BaseV1/views/event/single.php:498
 msgid "todos os dias"
 msgstr "todos los días"
 
-#: application/themes/BaseV1/Theme.php:1515
+#: application/themes/BaseV1/Theme.php:1516
 #: application/themes/BaseV1/views/event/create.php:499
 #: application/themes/BaseV1/views/event/edit.php:499
 #: application/themes/BaseV1/views/event/single.php:499
 msgid "semanal"
 msgstr "semanal"
 
-#: application/themes/BaseV1/Theme.php:1516
+#: application/themes/BaseV1/Theme.php:1517
 msgid "mensal"
 msgstr "mensual"
 
-#: application/themes/BaseV1/Theme.php:1636
-#: application/themes/BaseV1/Theme.php:1678
+#: application/themes/BaseV1/Theme.php:1637
+#: application/themes/BaseV1/Theme.php:1679
 msgid "Tipos"
 msgstr "Tipos"
 
-#: application/themes/BaseV1/Theme.php:1637
-#: application/themes/BaseV1/Theme.php:1748
+#: application/themes/BaseV1/Theme.php:1638
+#: application/themes/BaseV1/Theme.php:1749
 msgid "Selecione os tipos"
 msgstr "Seleccione los tipos"
 
-#: application/themes/BaseV1/Theme.php:1646
+#: application/themes/BaseV1/Theme.php:1647
 msgid "Exibir somente resultados com Acessibilidade"
 msgstr "Mostrar solamente resultados con Accesibilidad"
 
-#: application/themes/BaseV1/Theme.php:1726
+#: application/themes/BaseV1/Theme.php:1727
 msgid "Selecione a classificação"
 msgstr "Seleccione la clasificación"
 
-#: application/themes/BaseV1/Theme.php:1756
+#: application/themes/BaseV1/Theme.php:1757
 msgid "Inscrições Abertas"
 msgstr "Inscripciones Abiertas"
 
@@ -5046,38 +5155,47 @@ msgid "Adicionar Imagem na Galeria"
 msgstr "Agregar una imagen a la Galería"
 
 #: application/themes/BaseV1/layouts/parts/header-about-nav.php:4
+#: application/themes/culturaenlinea/layouts/parts/header-about-nav.php:3
 msgid "Sobre os Mapas Culturais"
 msgstr "Acerca de Cultura en Línea"
 
 #: application/themes/BaseV1/layouts/parts/header-about-nav.php:5
 #: application/themes/Subsite/layouts/parts/header-about-nav.php:22
+#: application/themes/culturaenlinea/layouts/parts/header-about-nav.php:4
 msgid "Como usar"
 msgstr "Cómo usar"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:14
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:14
 msgid "Logado como Admin"
 msgstr "Logueado como Admin"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:15
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:15
 msgid "Logado como Admin."
 msgstr "Logueado como Admin."
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:92
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:97
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:94
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:99
 msgid "Notificações"
 msgstr "Notificaciones"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:98
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:100
 msgid "Marcar todas como lidas"
 msgstr "Marcar todas como leídas"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:106
 #: application/themes/BaseV1/views/panel/index.php:139
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:108
 msgid "aceitar"
 msgstr "aceptar"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:110
 #: application/themes/BaseV1/views/panel/index.php:142
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:112
 msgid "cancelar"
 msgstr "cancelar"
 
@@ -5086,33 +5204,41 @@ msgstr "cancelar"
 #: application/themes/BaseV1/views/auth/fake-authentication.php:98
 #: application/themes/BaseV1/views/panel/index.php:143
 #: application/themes/BaseV1/views/panel/index.php:154
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:113
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:121
 msgid "ok"
 msgstr "ok"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:114
 #: application/themes/BaseV1/views/panel/index.php:145
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:116
 msgid "rejeitar"
 msgstr "rechazar"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:126
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:128
 msgid "Ver todas atividades"
 msgstr "Ver todas las actividades"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:196
 #: application/themes/BaseV1/layouts/parts/panel-nav.php:36
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:198
 msgid "Minhas Inscrições"
 msgstr "Mis Inscripciones"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:214
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:216
 msgid "Trocar Usuário"
 msgstr "Cambiar usuario"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:217
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:219
 msgid "Sair"
 msgstr "Salir"
 
 #: application/themes/BaseV1/layouts/parts/header-main-nav.php:228
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--form.php:20
+#: application/themes/culturaenlinea/layouts/parts/header-main-nav.php:230
 msgid "Entrar"
 msgstr "Entrar"
 
@@ -5168,6 +5294,7 @@ msgstr "Ver todo"
 #: application/themes/BaseV1/layouts/parts/home-nav.php:39
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:42
 #: application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:43
+#: application/themes/culturaenlinea/layouts/parts/home-nav.php:40
 msgid "Desenvolvedores"
 msgstr "Desarrolladores"
 
@@ -5190,6 +5317,7 @@ msgstr "Agregar evento"
 
 #: application/themes/BaseV1/layouts/parts/home-nav.php:6
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--intro.php:4
+#: application/themes/culturaenlinea/layouts/parts/home-nav.php:7
 msgid "Introdução"
 msgstr "Introducción"
 
@@ -5231,15 +5359,18 @@ msgid "Adicionar selo"
 msgstr "Agregar sello"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:6
+#: application/themes/culturaenlinea/layouts/parts/home-search.php:25
 msgid "Digite uma palavra-chave"
 msgstr "Escribí una palabra clave"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:8
 #: application/themes/BaseV1/layouts/parts/search/filter.php:14
+#: application/themes/culturaenlinea/layouts/parts/home-search.php:27
 msgid "Buscar"
 msgstr "Buscar"
 
 #: application/themes/BaseV1/layouts/parts/home-search.php:33
+#: application/themes/culturaenlinea/layouts/parts/home-search.php:52
 msgid "Saiba mais"
 msgstr "Conocé más"
 
@@ -5705,17 +5836,17 @@ msgstr "Sellos Disponibles"
 msgid "Excluir selo"
 msgstr "Borrar sello"
 
-#: application/themes/BaseV1/layouts/parts/related-seals.php:45
+#: application/themes/BaseV1/layouts/parts/related-seals.php:47
 #: application/themes/BaseV1/views/seal/sealrelation.php:68
 msgid "Solicitar renovação"
 msgstr "Solicitar renovación"
 
-#: application/themes/BaseV1/layouts/parts/related-seals.php:48
+#: application/themes/BaseV1/layouts/parts/related-seals.php:50
 #: application/themes/BaseV1/views/seal/sealrelation.php:72
 msgid "Renovação Solicitada"
 msgstr "Renovación Solicitada"
 
-#: application/themes/BaseV1/layouts/parts/related-seals.php:53
+#: application/themes/BaseV1/layouts/parts/related-seals.php:55
 #: application/themes/BaseV1/views/seal/sealrelation.php:77
 msgid "Renovar selo"
 msgstr "Renovar sello"
@@ -5749,7 +5880,7 @@ msgstr "Agregar"
 #: application/themes/BaseV1/layouts/parts/singles/avatar-seal-relation.php:10
 #: application/themes/BaseV1/layouts/parts/singles/avatar.php:9
 #: application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:3
-#: application/themes/BaseV1/layouts/parts/singles/header-image.php:12
+#: application/themes/BaseV1/layouts/parts/singles/header-image.php:18
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:34
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:64
 #: application/themes/BaseV1/layouts/parts/singles/project-registrations--seals.php:94
@@ -5849,9 +5980,13 @@ msgstr "Este %s está en la papelera"
 msgid "Este %s está arquivado"
 msgstr "Este %s está archivado"
 
-#: application/themes/BaseV1/layouts/parts/singles/header-image.php:13
+#: application/themes/BaseV1/layouts/parts/singles/header-image.php:19
 msgid "Editar Imagem da Capa"
 msgstr "Editar imagen de la portada"
+
+#: application/themes/BaseV1/layouts/parts/singles/header-image.php:25
+msgid "Excluir capa"
+msgstr "Excluir portada"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:38
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:34
@@ -7988,7 +8123,15 @@ msgstr "no válida"
 msgid "pendente"
 msgstr "pendiente"
 
-#: application/themes/BaseV1/views/project/report.php:83
+#: application/themes/BaseV1/views/project/report.php:42
+msgid "Link"
+msgstr ""
+
+#: application/themes/BaseV1/views/project/report.php:56
+msgid "- Área de Atuação"
+msgstr "- Área de Actuación"
+
+#: application/themes/BaseV1/views/project/report.php:85
 msgid "zip"
 msgstr ""
 
@@ -8187,6 +8330,10 @@ msgstr "Para configurar los administradores primero debe guardar el subsitio."
 msgid "Sobre o Site"
 msgstr "Acerca del Sitio"
 
+#: application/themes/culturaenlinea/config.php:6
+msgid "Departamento"
+msgstr "Departamento"
+
 #~ msgid "Imprimir Certificado"
 #~ msgstr "Imprimir Certificado"
 
@@ -8201,9 +8348,6 @@ msgstr "Acerca del Sitio"
 
 #~ msgid "Login with user"
 #~ msgstr "Acceder con usuario"
-
-#~ msgid "Departamento"
-#~ msgstr "Departamento"
 
 #~ msgid "Idade"
 #~ msgstr "Edad"
@@ -8384,9 +8528,6 @@ msgstr "Acerca del Sitio"
 
 #~ msgid "Q"
 #~ msgstr "M"
-
-#~ msgid "Denúncia"
-#~ msgstr "Denuncia"
 
 #~ msgid "Nome:"
 #~ msgstr "Nombre:"
