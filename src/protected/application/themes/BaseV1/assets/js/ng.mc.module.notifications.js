@@ -3,11 +3,11 @@
 
     var module = angular.module('mc.module.notifications', []);
     
-    var labels = MapasCulturais.gettext.moduleNotifications;
-
     module.factory('NotificationService', ['$log','$http', '$q', '$rootScope', function($log, $http, $q, $rootScope){
 
         var service = {};
+        
+        var labels = MapasCulturais.gettext.moduleNotifications;
 
         service.url = MapasCulturais.baseURL + 'notification/';
 
@@ -18,7 +18,7 @@
             ).success(function(data){
                 deferred.resolve(data);
             }).error(function(){
-                deferred.reject(label['error']);
+                deferred.reject(labels['error']);
             });
             return deferred.promise;
         };
@@ -29,7 +29,7 @@
             .success(function(data){
                 deferred.resolve(data);
             }).error(function(){
-                deferred.reject(label['error']);
+                deferred.reject(labels['error']);
             });
             return deferred.promise;
         };
