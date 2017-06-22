@@ -14,3 +14,7 @@
 </div>
 <!--.avatar-->
 <?php $this->applyTemplateHook('avatar','after'); ?>
+
+<div id="editbox-human-crop" class="js-editbox mc-right" title="<?php \MapasCulturais\i::esc_attr_e("Recortar imagem");?>">
+    <img id="human-crop-image" cropwidth="200" cropheight="200"/>
+</div>

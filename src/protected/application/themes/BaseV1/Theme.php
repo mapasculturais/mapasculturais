@@ -1211,6 +1211,10 @@ class Theme extends MapasCulturais\Theme {
         // It Javis ColorPicker
         $this->enqueueScript('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js');
         $this->enqueueStyle('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css');
+        
+        // Cropbox
+        $this->enqueueScript('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.js', array('jquery'));
+        $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
     }
 
     function includeCommonAssets() {
@@ -1504,7 +1508,8 @@ class Theme extends MapasCulturais\Theme {
             'response_template' => $response_template,
             'response_transform' => $response_transform,
             'add_description' => $add_description_input,
-            'file_types' => $file_types
+            'file_types' => $file_types,
+            'human_crop' => true
         ));
     }
 

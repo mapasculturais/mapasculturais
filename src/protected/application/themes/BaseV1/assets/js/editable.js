@@ -163,6 +163,69 @@ jQuery(function(){
             return false;
         });
     }
+    
+    
+    // Human Crop for images
+    $('input.human_crop').change(function() {
+        
+        var reader = new FileReader();
+        var $form = $(this).parents('form');
+        var $sendButton = $('#editbox-human-crop').find('button[type="submit"]');
+        $sendButton.html('Recortar');
+        
+        reader.onload = function(event) {
+            the_url = event.target.result
+            //console.log(event);
+            $('#human-crop-image').attr('src', the_url);
+            
+            $('#human-crop-image').cropbox({
+                width: 200,
+                height: 200
+            }, function() {
+                //on load
+                //console.log('Url: ' + this.getDataURL());
+            }).on('cropbox', function(e, data) {
+                //console.log('crop window: ' + data);
+            });
+            
+            $sendButton.click(function() {
+                var formData = new FormData();
+                var blob = $('#human-crop-image').cropbox('getBlob');
+                //console.log(blob);
+                formData.append('avatar', blob);
+                //console.log($form.ajaxForm);
+                //$form.ajaxForm.data = formData;
+                //$form.ajaxForm.contentType = false;
+                //$form.ajaxForm.processData = false;
+                MapasCulturais.EditBox.close('#editbox-human-crop');
+                MapasCulturais.AjaxUploader.init($form, {
+                    formData: formData,
+                    processData: false,
+                    //contentType: false
+                });
+                
+                //$._data($form[0], 'events')['submit'][0].data.processData = false;
+                //$._data($form[0], 'events')['submit'][0].data.contentType = false;
+                //$._data($form[0], 'events')['submit'][0].data.xhrFields = formData;
+                //
+                //console.log( $._data($form[0], 'events')['submit'][0].data );
+                
+                $form.on('form-pre-serialize', function(x, e, options, veto) {
+                    //console.log(e);
+                    //console.log(options);
+                    //options.processData = false;
+                });
+                
+            });
+            
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+        
+        
+        
+        MapasCulturais.EditBox.open('#editbox-human-crop');
+    });
 
 });
 
@@ -707,8 +770,10 @@ MapasCulturais.AjaxUploader = {
 
     },
     animationTime: 100,
-    init: function(selector) {
+    init: function(selector, extraOptions) {
         selector = selector || '.js-ajax-upload';
+        extraOptions = extraOptions || {};
+        
         $(selector).each(function(){
 
             if($(this).data('initialized'))
@@ -723,7 +788,7 @@ MapasCulturais.AjaxUploader = {
             MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
             var $this = $(this);
             // bind form using 'ajaxForm'
-            $(this).ajaxForm({
+            $(this).ajaxForm(Object.assign({
                 beforeSend: function(xhr){
                     $this.data('xhr', xhr);
                     //@TODO validate size and type before upload
@@ -823,7 +888,7 @@ MapasCulturais.AjaxUploader = {
 
                 // $.ajax options can be used here too, for example:
                 //timeout:   3000
-            });
+            },extraOptions));
         });
 
 
