@@ -29,35 +29,35 @@ return array(
 
     'mailer.templates' => [
         'welcome' => [
-            'title' => "Bem-vindo(a) ao Mapas Culturais",
+            'title' => \MapasCulturais\i::__("Bem-vindo(a) ao Mapas Culturais"),
             'template' => 'welcome.html'
         ],
         'last_login' => [
-            'title' => "Acesse a Mapas Culturais",
+            'title' => \MapasCulturais\i::__"Acesse a Mapas Culturais"),
             'template' => 'last_login.html'
         ],
         'new' => [
-            'title' => "Novo registro",
+            'title' => \MapasCulturais\i::__"Novo registro"),
             'template' => 'new.html'
         ],
         'update_required' => [
-            'title' => "Acesse a Mapas Culturais",
+            'title' => \MapasCulturais\i::__("Acesse a Mapas Culturais"),
             'template' => 'update_required.html'
         ],
         'compliant' => [
-            'title' => "Denúncia - Mapas Culturais",
+            'title' => \MapasCulturais\i::__("Denúncia - Mapas Culturais"),
             'template' => 'compliant.html'
         ],
         'suggestion' => [
-            'title' => "Mensagem - Mapas Culturais",
+            'title' => \MapasCulturais\i::__("Mensagem - Mapas Culturais"),
             'template' => 'suggestion.html'
         ],
         'seal_toexpire' => [
-            'title' => "Selo Certificador Expirando",
+            'title' => \MapasCulturais\i::__("Selo Certificador Expirando"),
             'template' => 'seal_toexpire.html'
         ],
         'seal_expired' => [
-            'title' => "Selo Certificador Expirado",
+            'title' => \MapasCulturais\i::__"Selo Certificador Expirado"),
             'template' => 'seal_expired.html'
         ]
 
