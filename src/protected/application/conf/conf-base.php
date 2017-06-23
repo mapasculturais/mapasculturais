@@ -33,11 +33,11 @@ return array(
             'template' => 'welcome.html'
         ],
         'last_login' => [
-            'title' => \MapasCulturais\i::__"Acesse a Mapas Culturais"),
+            'title' => \MapasCulturais\i::__("Acesse a Mapas Culturais"),
             'template' => 'last_login.html'
         ],
         'new' => [
-            'title' => \MapasCulturais\i::__"Novo registro"),
+            'title' => \MapasCulturais\i::__("Novo registro"),
             'template' => 'new.html'
         ],
         'update_required' => [
@@ -57,7 +57,7 @@ return array(
             'template' => 'seal_toexpire.html'
         ],
         'seal_expired' => [
-            'title' => \MapasCulturais\i::__"Selo Certificador Expirado"),
+            'title' => \MapasCulturais\i::__("Selo Certificador Expirado"),
             'template' => 'seal_expired.html'
         ]
 
