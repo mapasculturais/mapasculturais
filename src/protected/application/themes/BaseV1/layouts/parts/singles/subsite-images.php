@@ -115,8 +115,4 @@
 
         <?php $this->applyTemplateHook('favicon','after'); ?>
     </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> rc
 </div>
