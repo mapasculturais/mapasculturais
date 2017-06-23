@@ -17,7 +17,7 @@ if ($header = $entity->getFile('header')){
     <?php if ($this->isEditable()): ?>
         <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-header" href="#"><?php \MapasCulturais\i::_e("Editar");?></a>
         <div id="editbox-change-header" class="js-editbox mc-bottom" title="<?php \MapasCulturais\i::esc_attr_e("Editar Imagem da Capa");?>">
-            <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header'); ?>
+            <?php $this->ajaxUploader($entity, 'header', 'background-image', '.js-imagem-do-header', '', 'header', false, [850,192]); ?>
         </div>
     <?php endif; ?>
     <?php if($this->isEditable()): ?>

@@ -5,7 +5,7 @@
         <?php if($this->isEditable()): ?>
             <a class="add js-open-editbox hltip" data-target="#editbox-download-file" href="#" title="<?php \MapasCulturais\i::esc_attr_e("Clique para adicionar arquivo para download");?>"></a>
             <div id="editbox-download-file" class="js-editbox mc-left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Arquivo");?>" data-submit-label="Enviar">
-                <?php $this->ajaxUploader($entity, 'downloads', 'append', 'ul.js-downloads', '<li id="file-{{id}}" class="widget-list-item"><a href="{{url}}">{{description}}</a> <div class="botoes"><a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este vídeo?" class="icon icon-close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo"></a></div></li>', '', true, false)?>
+                <?php $this->ajaxUploader($entity, 'downloads', 'append', 'ul.js-downloads', '<li id="file-{{id}}" class="widget-list-item"><a href="{{url}}">{{description}}</a> <div class="botoes"><a data-href="{{deleteUrl}}" data-target="#file-{{id}}" data-configm-message="Remover este vídeo?" class="icon icon-close hltip js-remove-item" data-hltip-classes="hltip-ajuda" title="Excluir arquivo"></a></div></li>', '', true, false, false)?>
             </div>
         <?php endif; ?>
         <ul class="widget-list js-downloads js-slimScroll">
