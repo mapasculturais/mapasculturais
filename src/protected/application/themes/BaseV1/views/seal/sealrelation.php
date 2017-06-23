@@ -41,7 +41,7 @@
                 <?php $this->applyTemplateHook('agent-name','before'); ?>
                 <h5>
                     <span class="js-editable" data-edit="name" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Nome de exibição");?>">
-                        <a href="<?php echo $app->createUrl('seal', 'single', ['id' => $relation->owner->id])?>"><?php echo $relation->owner->name; ?></a>
+                        <a href="<?php echo $relation->owner->getSingleUrl(); ?>"><?php echo $relation->owner->name; ?></a>
                     </span>
                 </h5>
                 <?php $this->applyTemplateHook('agent-name','after'); ?>

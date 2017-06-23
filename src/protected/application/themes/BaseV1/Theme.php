@@ -1304,6 +1304,7 @@ class Theme extends MapasCulturais\Theme {
             'Limpar'    => i::__('Limpar'),
             'Crop'    => i::__('Recortar'),
             'CropHelp'    => i::__('Arraste para recortar'),
+            'removeAgentBackground' => i::__('Tem certeza que deseja remover a imagem de capa?'),
         ]);
     }
 

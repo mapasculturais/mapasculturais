@@ -618,7 +618,6 @@ abstract class Entity implements \JsonSerializable{
             }
             $val = $nval;
         }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array(\get_class($val), $allowed_classes)){
-
             throw new \Exception();
         }elseif(is_object($val)){
 
