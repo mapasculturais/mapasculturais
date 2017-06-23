@@ -1302,6 +1302,8 @@ class Theme extends MapasCulturais\Theme {
             'insertLinkTitle'    => i::__('Insira um título para seu link.'),
             'insertLinkUrl'    => i::__('A url do link é inválida, insira uma url completa como http://www.google.com/.'),
             'Limpar'    => i::__('Limpar'),
+            'Crop'    => i::__('Recortar'),
+            'CropHelp'    => i::__('Arraste para recortar'),
         ]);
     }
 
@@ -1499,7 +1501,7 @@ class Theme extends MapasCulturais\Theme {
             echo "\n</script>\n";
     }
 
-    function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $file_types = '.jpg ou .png') {
+    function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $humanCrop = false, $file_types = '.jpg ou .png') {
         $this->part('ajax-uploader', array(
             'file_owner' => $file_owner,
             'file_group' => $group_name,
@@ -1509,7 +1511,7 @@ class Theme extends MapasCulturais\Theme {
             'response_transform' => $response_transform,
             'add_description' => $add_description_input,
             'file_types' => $file_types,
-            'human_crop' => true
+            'human_crop' => $humanCrop
         ));
     }
 
