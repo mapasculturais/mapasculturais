@@ -50,7 +50,7 @@ $this->includeAngularEntityAssets($entity);
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
+        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>

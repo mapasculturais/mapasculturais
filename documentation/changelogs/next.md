@@ -15,6 +15,7 @@ Permite que o usuário recorte manualmente as fotos enviadas para o avatar e par
 Agora é possível adicionar uma descrição para as fotos da galeria, que são exibidas embaixo da imagem quando a galeria é aberta
 
 
-# Substituição do termo "ocorrência"
+# Substituição de textos
 
-Agora a interface não fala mais em "ocorrência" de eventos, mas em "local e data"
+* Agora a interface não fala mais em "ocorrência" de eventos, mas em "local e data"
+* A aba Permissões, que mostra os agentes que tem controle sobre a entidade, passa a se chamar Reponsáveis
