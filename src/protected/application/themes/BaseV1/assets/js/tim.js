@@ -42,6 +42,7 @@
                 delegate: 'a', // child items selector, by clicking on it popup will open
                 type: 'image',
                 closeMarkup: '<span class="mfp-close icon icon-close"></span>',
+                titleSrc: 'title',
                 gallery:{
                     enabled:true,
 
