@@ -23,6 +23,8 @@ class Html extends \MapasCulturais\ApiOutput{
         'area' => 'Áreas',
         'linguagem' => 'Linguagens',
         'weekly' => 'Semanal',
+        'once' => 'Uma vez',
+        'daily' => 'Diariamente',
         'agent'=>'Agente',
         'space'=>'Espaço',
         'event'=>'Evento',
@@ -56,11 +58,24 @@ class Html extends \MapasCulturais\ApiOutput{
             return;
     }
 
+    /**
+     * Retorna o numero do dia da semana de 0 a 6
+     *
+     * @param string $date data no formato Y-m-d
+     * @return date
+     */
     protected function getDayOfWeek($date){
         $timestamp = strtotime($date);
         return \date('w', $timestamp);
     }
 
+    /**
+     * Preenche os dias que o evento se repete
+     *
+     * @param string $field referente ao dia a ser preenchido
+     * @param obj $occurrence
+     * @return void
+     */
     protected function printDaysOfEvent($field, $occurrence){
         if($occurrence->rule->frequency === 'daily'){
             ?>
@@ -96,6 +111,13 @@ class Html extends \MapasCulturais\ApiOutput{
         return;
     }
 
+    /**
+     * Preenche os detalhes da ocorrência de acordo o $field enviado
+     *
+     * @param string $field    campo a ser preenchdio
+     * @param obj $occurrence
+     * @return void
+     */
     protected function printOccurenceDetails($field, $occurrence){
         if($field === 'Horário Inicial'){
             ?>
@@ -119,7 +141,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <?php
         }elseif($field === 'Frequência'){
             ?>
-                <td>Frequência</td>
+                <td><?php echo $this->translate[$occurrence->rule->frequency] ?></td>
             <?php
         }
 
@@ -144,6 +166,17 @@ class Html extends \MapasCulturais\ApiOutput{
         }
 
         return $itemKeys;
+    }
+
+    /**
+     * Converte os caracteres para UTF-16 para
+     * não haver quebra dos caracteres
+     *
+     * @param string $text
+     * @return string
+     */
+    protected function convertToUTF16($text){
+        return mb_convert_encoding($text,'utf-16','utf-8');
     }
 
     protected function printArrayTable($data){
@@ -177,14 +210,14 @@ class Html extends \MapasCulturais\ApiOutput{
                         if($k==='terms'){
                             $v = $item->$k;
 
-                            if(property_exists($v, 'area')){ ?><th><?php echo mb_convert_encoding($this->translate['area'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
-                            if(property_exists($v, 'tag')){ ?><th><?php echo mb_convert_encoding($this->translate['tag'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
-                            if(property_exists($v, 'linguagem')){ ?><th><?php echo mb_convert_encoding($this->translate['linguagem'],"HTML-ENTITIES","UTF-8"); ?></th><?php }
+                            if(property_exists($v, 'area')){ ?><th><?php echo $this->convertToUTF16($this->translate['area']); ?></th><?php }
+                            if(property_exists($v, 'tag')){ ?><th><?php echo $this->convertToUTF16($this->translate['tag']); ?></th><?php }
+                            if(property_exists($v, 'linguagem')){ ?><th><?php echo $this->convertToUTF16($this->translate['linguagem']); ?></th><?php }
 
                         }elseif(strpos($k,'@files')===0){
                             continue;
                         }elseif($k==='occurrences'){ ?>
-                            <th><?php echo $this->translate['occurrences']; ?></th> 
+                            <th><?php echo $this->convertToUTF16($this->translate['occurrences']); ?></th> 
                             <?php
                         }else{
                             if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
@@ -194,11 +227,11 @@ class Html extends \MapasCulturais\ApiOutput{
                             <th> 
                                 <?php 
                                 if(isset($label[$k]) && $label[$k]) {
-                                    echo $label[$k];
+                                    echo $this->convertToUTF16($label[$k]);
                                 } else if(isset($this->translate[$k])){
-                                    echo $this->translate[$k];
+                                    echo $this->convertToUTF16( $this->translate[$k]);
                                 } else {
-                                    echo $k;  
+                                    echo $this->convertToUTF16($k);  
                                 }
                                 ?>
                             </th>
@@ -216,26 +249,26 @@ class Html extends \MapasCulturais\ApiOutput{
                         <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
                             <?php if($k==='terms'): ?>
                                 <?php if(property_exists($v, 'area')): ?>
-                                    <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
+                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->area)); ?></td>
                                 <?php endif; ?>
                                 <?php if(property_exists($v, 'tag')): ?>
-                                    <td><?php echo mb_convert_encoding(implode(', ', $v->tag),"HTML-ENTITIES","UTF-8"); ?></td>
+                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->tag)); ?></td>
                                 <?php endif; ?>
                                 <?php if(property_exists($v, 'linguagem')): ?>
-                                    <td><?php echo mb_convert_encoding(implode(', ', $v->linguagem),"HTML-ENTITIES","UTF-8"); ?></td>
+                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->linguagem)); ?></td>
                                 <?php endif; ?> 
                             <?php elseif(strpos($k,'@files')===0):  continue; ?>
                             <?php elseif($k==='occurrences'): ?>
                                 <td>
-                                    <?php echo mb_convert_encoding($occ->rule->description,"HTML-ENTITIES","UTF-8");?>,
-                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo mb_convert_encoding($occ->space->name,"HTML-ENTITIES","UTF-8");?></a>
+                                    <?php echo $this->convertToUTF16($occ->rule->description);?>,
+                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo $this->convertToUTF16($occ->space->name);?></a>
                                     <?php if($occ->rule->price): ?>
-                                        <?php echo mb_convert_encoding($occ->rule->price,"HTML-ENTITIES","UTF-8");?> <br>
+                                        <?php echo $this->convertToUTF16($occ->rule->price);?> <br>
                                     <?php endif; ?>
                                 </td>
                             <?php elseif($k==='project'):?>
                                 <?php if(is_object($v)): ?>
-                                    <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
+                                    <td><a href="<?php echo $v->singleUrl?>"><?php echo $this->convertToUTF16($v->name);?></a></td>
                                 <?php else: ?>
                                     <td></td>
                                 <?php endif; ?>
@@ -249,7 +282,7 @@ class Html extends \MapasCulturais\ApiOutput{
                                 ?>
                             <?php else:
                                 if($k==='name' && !empty($item->singleUrl)){
-                                    $v = '<a href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                                    $v = '<a href="'.$item->singleUrl.'">'.$this->convertToUTF16($v).'</a>';
                                 }elseif(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                     continue;
                                 }
@@ -259,9 +292,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                     if(is_bool($v)){
                                         echo $v ? 'true' : 'false';
                                     }elseif(is_object($v) && $k==='type'){
-                                        echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
+                                        echo $this->convertToUTF16($v->name);
                                     }elseif(is_string($v) || is_numeric($v)){
-                                        echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
+                                        echo $this->convertToUTF16($v);
                                     }elseif(is_object($v) && isset($v->date)){
                                         echo date_format(date_create($v->date),'Y-m-d H:i:s');
                                     }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
@@ -277,8 +310,6 @@ class Html extends \MapasCulturais\ApiOutput{
                                                 $this->printTable($v);
                                             }
                                         }
-                                    }else{
-                                        //var_dump($v);
                                     }
                                     ?>
                                 </td>
@@ -318,8 +349,6 @@ class Html extends \MapasCulturais\ApiOutput{
                         $this->printTable($v);
                     }elseif(is_string($v) || is_numeric($v)){
                         echo $v;
-                    }else{
-                        //var_dump($v);
                     }
                     ?>
                 </td>
@@ -332,7 +361,7 @@ class Html extends \MapasCulturais\ApiOutput{
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
         $uriExplode = explode('/',$_SERVER['REQUEST_URI']);
         if($data && key_exists(2,$uriExplode) ){
-            $singular_object_name = mb_convert_encoding($this->translate[$uriExplode[2]],"HTML-ENTITIES","UTF-8");
+            $singular_object_name = $this->convertToUTF16($this->translate[$uriExplode[2]]);
             $plural_object_name = $singular_object_name.'s';
         }
         ?>
