@@ -13,3 +13,8 @@ Permite que o usuário recorte manualmente as fotos enviadas para o avatar e par
 # Campo de descrição para imagens da galeria
 
 Agora é possível adicionar uma descrição para as fotos da galeria, que são exibidas embaixo da imagem quando a galeria é aberta
+
+
+# Substituição do termo "ocorrência"
+
+Agora a interface não fala mais em "ocorrência" de eventos, mas em "local e data"
