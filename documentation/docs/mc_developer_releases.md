@@ -1,4 +1,4 @@
-# Como Contribuir
+# Fazendo um novo Release
 
 Este é o procedimento de lançamento de uma nova versão do Mapas Culturais.
 
