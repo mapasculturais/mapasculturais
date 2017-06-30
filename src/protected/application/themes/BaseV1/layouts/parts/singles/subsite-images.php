@@ -104,7 +104,7 @@
             <?php if($this->isEditable()): ?>
                 <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-favicon" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-favicon" class="js-editbox mc-right" title="Editar Favicon da Instalação">
-                    <?php $this->ajaxUploader($entity, 'favicon', 'image-src', 'div.favicon img.js-favicon-img', '', 'favicon',false,".ico/.icon/.jpg/.png"); ?>
+                    <?php $this->ajaxUploader($entity, 'favicon', 'image-src', 'div.favicon img.js-favicon-img', '', 'favicon',false,false,".ico/.icon/.jpg/.png"); ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -115,8 +115,4 @@
 
         <?php $this->applyTemplateHook('favicon','after'); ?>
     </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> rc
 </div>
