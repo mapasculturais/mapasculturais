@@ -541,7 +541,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <label for="description"><?php \MapasCulturais\i::_e("Descrição legível do horário");?>:</label>
                 <p class="form-help"><?php \MapasCulturais\i::_e("Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado");?>.</p>
                 <div class="grupo-descricao-automatica clearfix">
-                    <p id="descricao-ametutomatica" class="alert automatic"><?php \MapasCulturais\i::_e("Descrição gerada pelo sistema automaticamente");?>.</p>
+                    <p id="descricao-automatica" class="alert automatic"><?php \MapasCulturais\i::_e("Descrição gerada pelo sistema automaticamente");?>.</p>
                     <a class="btn btn-default insert"></a>
                 </div>
                 <input type="text" name="description" value="{{rule.description}}" placeholder="<?php \MapasCulturais\i::esc_attr_e("Coloque neste campo somente informações sobre a data e hora desta ocorrência do evento.");?>">
