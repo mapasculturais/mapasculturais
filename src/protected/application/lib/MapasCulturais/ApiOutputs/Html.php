@@ -56,62 +56,44 @@ class Html extends \MapasCulturais\ApiOutput{
             return;
     }
 
-    /**
-     * Gera um array bidimensional com os detalhes de cada
-     * ocorrência do item
-     *
-     * @param array $item
-     * @return array
-     */
-    protected function setItemOccurrencesDetails($item){
-        $occurenceDetails = array();
-
-        foreach($item['occurrences'] as $i){
-            $details = array(
-                'Data Inicial'=>$i['rule']->startsOn,
-                'Data Final'=>$i['rule']->until,
-                'Duração'=>$i['rule']->duration,
-                'Frequência'=>$i['rule']->frequency,
-                'Horário Inicial'=>$i['rule']->startsAt,
-                'Horário Final'=>$i['rule']->endsAt
-            );
-
-            if(isset($i['rule']->day)){
-                $details['days'] = $i['rule']->day;
-            }
-
-            array_push($occurenceDetails, $details);
-        }
-
-        $allItemOccurrenceDetails = array("occurrenceDetails" => $occurenceDetails);
-        $item = array_merge($item, $allItemOccurrenceDetails);
-        
-        return $item;
+    protected function getDayOfWeek($date){
+        $timestamp = strtotime($date);
+        return \date('w', $timestamp);
     }
 
-    protected function printDaysOfEvent($occurrence){
-        if($occurrence->rule->frequency === 'once'){
-            $timestamp = strtotime($occurrence->rule->startsOn);
-            $dayOfWeek = \date('w', $timestamp);
+    protected function printDaysOfEvent($field, $occurrence){
+        if($occurrence->rule->frequency === 'daily'){
+            ?>
+            <td>Sim</td>
+            <?php
+        }elseif($occurrence->rule->frequency === 'once'){
+            $dayOfWeek = $this->getDayOfWeek($occurrence->rule->startsOn);
 
-            for($i=0; $i<=$this->diasSemana -1; $i++){
-                $val = '';
-
-                if($i === $dayOfWeek){
-                    $val = 'Sim';
-                }
-                ?>
-                    <td><?php echo $val; ?></td>
-                <?php
-            }
-        }
-        if($occurrence->rule->frequency === 'weekly'){
-            for($i=0; $i<=$this->diasSemana -1; $i++){
+            if($this->diasSemana[$dayOfWeek] === $field){
                 ?>
                 <td>Sim</td>
                 <?php
+            }else{
+                ?>
+                <td></td>
+                <?php
+            }
+        }elseif($occurrence->rule->frequency === 'weekly'){
+            $daysOn = array_keys((array)$occurrence->rule->day);
+            $dayToPrint = array_search($field, $this->diasSemana);
+
+            if(in_array($dayToPrint, $daysOn)){
+                ?>
+                <td>Sim</td>
+                <?php
+            }else{
+                ?>
+                <td></td>
+                <?php
             }
         }
+
+        return;
     }
 
     protected function printOccurenceDetails($field, $occurrence){
@@ -137,7 +119,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <?php
         }elseif($field === 'Frequência'){
             ?>
-                <td><?php echo $this->translate[$occurrence->rule->frequency] ?></td>
+                <td>Frequência</td>
             <?php
         }
 
@@ -258,7 +240,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                     <td></td>
                                 <?php endif; ?>
                             <?php elseif(in_array($k, $this->diasSemana)): ?>
-                                <?php continue; //$this->printDaysOfEvent($occ); ?>
+                                <?php $this->printDaysOfEvent($k, $occ); 
+                                      continue;
+                                ?>
                             <?php elseif(in_array($k, $this->occurrenceDetails)): ?>
                                 <?php $this->printOccurenceDetails($k, $occ);
                                       continue;
