@@ -118,7 +118,7 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Preenche os detalhes da ocorrência de acordo o $field enviado
      *
-     * @param string $field    campo a ser preenchdio
+     * @param string $field    campo a ser preenchido
      * @param obj $occurrence
      * @return void
      */
@@ -155,7 +155,7 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Preenche as informações do espaço da ocorrência de acordo o $field enviado
      *
-     * @param string $field    campo a ser preenchdio
+     * @param string $field    campo a ser preenchido
      * @param obj $occurrence
      * @return void
      */
@@ -237,14 +237,16 @@ class Html extends \MapasCulturais\ApiOutput{
     	$entity = $app->view->controller->entityClassName;
     	$label = $entity::getPropertiesLabels();
         $first = true; 
-        if(count($data)){
-            $keys = array_keys($data[0]);
-        }
+        
         ?>
         <table border="1">
         <?php foreach($data as $item):
             if($first){
-                $first_item_keys = $this->setItemKeys($item);
+                if($entity === 'MapasCulturais\Entities\Event'){
+                    $first_item_keys = $this->setItemKeys($item);
+                }else{
+                    $first_item_keys = array_keys($item);
+                }
             } 
             
             $item = json_decode(json_encode($item));
@@ -297,89 +299,12 @@ class Html extends \MapasCulturais\ApiOutput{
             </thead>
             <tbody>
             <?php endif; ?>
-                <?php foreach($occs as $occ): ?>
-                    <tr>
-                        <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
-                            <?php if($k==='terms'): ?>
-                                <?php if(property_exists($v, 'area')): ?>
-                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->area)); ?></td>
-                                <?php endif; ?>
-                                <?php if(property_exists($v, 'tag')): ?>
-                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->tag)); ?></td>
-                                <?php endif; ?>
-                                <?php if(property_exists($v, 'linguagem')): ?>
-                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->linguagem)); ?></td>
-                                <?php endif; ?> 
-                            <?php elseif(strpos($k,'@files')===0):  continue; ?>
-                            <?php elseif($k==='occurrences'): ?>
-                                <td>
-                                    <?php echo $this->convertToUTF16($occ->rule->description);?>
-                                </td>
-                            <?php elseif($k==='project'):?>
-                                <?php if(is_object($v)): ?>
-                                    <td><a href="<?php echo $v->singleUrl?>"><?php echo $this->convertToUTF16($v->name);?></a></td>
-                                <?php else: ?>
-                                    <td></td>
-                                <?php endif; ?>
-                            <?php elseif($k==='preco'): ?>
-                                <td><?php echo $occ->rule->price ?></td>
-                            <?php elseif(in_array($k, $this->diasSemana)): ?>
-                                <?php $this->printDaysOfEvent($k, $occ); 
-                                      continue;
-                                ?>
-                            <?php elseif(in_array($k, $this->occurrenceDetails)): ?>
-                                <?php $this->printOccurenceDetails($k, $occ);
-                                      continue;
-                                ?>
-                            <?php elseif(in_array($k, $this->spaceDetails)): ?>
-                                <?php $this->printSpaceDetails($k, $occ);
-                                      continue;
-                                ?>
-                            <?php else:
-                                if($k==='name' && !empty($item->singleUrl)){
-                                    $v = '<a href="'.$item->singleUrl.'">'.$this->convertToUTF16($v).'</a>';
-                                }elseif(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
-                                    continue;
-                                }
-                                ?>
-                                <td>
-                                    <?php
-                                    if(is_bool($v)){
-                                        echo $v ? 'true' : 'false';
-                                    }elseif(is_object($v) && $k==='type'){
-                                        echo $this->convertToUTF16($v->name);
-                                    }elseif(is_string($v) || is_numeric($v)){
-                                        echo $this->convertToUTF16($v);
-                                    }elseif(is_object($v) && isset($v->date)){
-                                        echo date_format(date_create($v->date),'Y-m-d H:i:s');
-                                    }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
-                                        echo $v->latitude . ',' . $v->longitude;
-                                    }elseif(is_array($v) || is_object($v)){
-                                        if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
-                                            echo implode(', ',$v);	
-                                        } else {
-                                            
-                                            if(isset($v->name) && isset($v->singleUrl)){
-                                                echo "<a href=\"$v->singleUrl\">$v->name</a>";
-                                            } else {
-                                                $this->printTable($v);
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </td>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                        <td>
-                            <?php
-                            $vars = get_object_vars($item);
-                            if(!empty($vars['@files:avatar.avatarMedium'])){
-                                ?><img src="<?php echo $vars['@files:avatar.avatarMedium']->url; ?>" width="80"><?php
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?> <!-- end foreach occorencias -->
+                <?php if($entity === 'MapasCulturais\Entities\Event'){
+                    $this->printEventsBodyTable($occs, $first_item_keys, $item);
+                }else{
+                    $this->printBodyTable($first_item_keys, $item);
+                }
+                ?>
         <?php endforeach; ?> <!-- end foreach $item -->
         <?php if(!$first): ?>
             </tbody>
@@ -448,5 +373,187 @@ class Html extends \MapasCulturais\ApiOutput{
 
     protected function _outputError($data) {
         var_dump('ERROR', $data);
+    }
+
+    /**
+     * Corpo da tabela gerado na exportação dos eventos
+     *
+     * @param obj $occs ocorrências
+     * @param array $first_item_keys cabeçalhos da tabela
+     * @param obj $item
+     * @return void
+     */
+    protected function printEventsBodyTable($occs, $first_item_keys, $item){
+        foreach($occs as $occ): ?>
+                    <tr>
+                        <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
+                            <?php if($k==='terms'): ?>
+                                <?php if(property_exists($v, 'area')): ?>
+                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->area)); ?></td>
+                                <?php endif; ?>
+                                <?php if(property_exists($v, 'tag')): ?>
+                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->tag)); ?></td>
+                                <?php endif; ?>
+                                <?php if(property_exists($v, 'linguagem')): ?>
+                                    <td><?php echo $this->convertToUTF16(implode(', ', $v->linguagem)); ?></td>
+                                <?php endif; ?> 
+                            <?php elseif(strpos($k,'@files')===0):  continue; ?>
+                            <?php elseif($k==='occurrences'): ?>
+                                <td>
+                                    <?php echo $this->convertToUTF16($occ->rule->description);?>
+                                </td>
+                            <?php elseif($k==='project'):?>
+                                <?php if(is_object($v)): ?>
+                                    <td><a href="<?php echo $v->singleUrl?>"><?php echo $this->convertToUTF16($v->name);?></a></td>
+                                <?php else: ?>
+                                    <td></td>
+                                <?php endif; ?>
+                            <?php elseif($k==='preco'): ?>
+                                <td><?php echo $occ->rule->price ?></td>
+                            <?php elseif(in_array($k, $this->diasSemana)): ?>
+                                <?php $this->printDaysOfEvent($k, $occ); 
+                                      continue;
+                                ?>
+                            <?php elseif(in_array($k, $this->occurrenceDetails)): ?>
+                                <?php $this->printOccurenceDetails($k, $occ);
+                                      continue;
+                                ?>
+                            <?php elseif(in_array($k, $this->spaceDetails)): ?>
+                                <?php $this->printSpaceDetails($k, $occ);
+                                      continue;
+                                ?>
+                            <?php elseif($k==='name' && !empty($item->singleUrl)): ?>
+                                <td><a href="<?php echo $item->singleUrl; ?>"><?php echo $this->convertToUTF16($v); ?></a></td>
+                            <?php else:
+                                if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
+                                    continue;
+                                }
+                                ?>
+                                <td>
+                                    <?php
+                                    if(is_bool($v)){
+                                        echo $v ? 'true' : 'false';
+                                    }elseif(is_object($v) && $k==='type'){
+                                        echo $this->convertToUTF16($v->name);
+                                    }elseif(is_string($v) || is_numeric($v)){
+                                        echo $this->convertToUTF16($v);
+                                    }elseif(is_object($v) && isset($v->date)){
+                                        echo date_format(date_create($v->date),'Y-m-d H:i:s');
+                                    }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
+                                        echo $v->latitude . ',' . $v->longitude;
+                                    }elseif(is_array($v) || is_object($v)){
+                                        if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
+                                            echo implode(', ',$v);	
+                                        } else {
+                                            
+                                            if(isset($v->name) && isset($v->singleUrl)){
+                                                echo "<a href=\"$v->singleUrl\">$v->name</a>";
+                                            } else {
+                                                $this->printTable($v);
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                            <?php endif; ?>
+                        <?php endforeach; ?> <!-- end foreach first_item_keys -->
+                        <td>
+                            <?php
+                            $vars = get_object_vars($item);
+                            if(!empty($vars['@files:avatar.avatarMedium'])){
+                                ?><img src="<?php echo $vars['@files:avatar.avatarMedium']->url; ?>" width="80"><?php
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php return; 
+    }
+
+    /**
+     * Corpo da tabela gerado para espaço e agente
+     *
+     * @param array $first_item_keys cabeçalhos da tabela
+     * @param obj $item
+     * @return void
+     */
+    protected function printBodyTable($first_item_keys, $item){
+        ?>
+        <tr>
+                    <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
+                        <?php if($k==='terms'): ?>
+                            <?php if(property_exists($v, 'area')): ?>
+                                <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
+                            <?php endif; ?>
+                            <?php if(property_exists($v, 'tag')): ?>
+                                <td><?php echo mb_convert_encoding(implode(', ', $v->tag),"HTML-ENTITIES","UTF-8"); ?></td>
+                            <?php endif; ?>
+                            <?php if(property_exists($v, 'linguagem')): ?>
+                                <td><?php echo mb_convert_encoding(implode(', ', $v->linguagem),"HTML-ENTITIES","UTF-8"); ?></td>
+                            <?php endif; ?> 
+                        <?php elseif(strpos($k,'@files')===0):  continue; ?>
+                        <?php elseif($k==='occurrences'): ?>
+                            <td>
+                                <?php foreach($v as $occ): $occ->rule = $occ->rule;?>
+                                    <?php echo mb_convert_encoding($occ->rule->description,"HTML-ENTITIES","UTF-8");?>,
+                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo mb_convert_encoding($occ->space->name,"HTML-ENTITIES","UTF-8");?></a>
+                                    <?php if($occ->rule->price): ?>
+                                        <?php echo mb_convert_encoding($occ->rule->price,"HTML-ENTITIES","UTF-8");?> <br>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </td>
+                        <?php elseif($k==='project'):?>
+                            <?php if(is_object($v)): ?>
+                                <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
+                            <?php else: ?>
+                                <td></td>
+                            <?php endif; ?>
+                        <?php else:
+                            if($k==='name' && !empty($item->singleUrl)){
+                                $v = '<a href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                            }elseif(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
+                                continue;
+                            }
+                            ?>
+                            <td>
+                                <?php
+                                if(is_bool($v)){
+                                    echo $v ? 'true' : 'false';
+                                }elseif(is_object($v) && $k==='type'){
+                                    echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
+                                }elseif(is_string($v) || is_numeric($v)){
+                                    echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
+                                }elseif(is_object($v) && isset($v->date)){
+									echo date_format(date_create($v->date),'Y-m-d H:i:s');
+                                }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
+									echo $v->latitude . ',' . $v->longitude;
+                                }elseif(is_array($v) || is_object($v)){
+                                    if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
+                                    	echo implode(', ',$v);	
+                                    } else {
+                                        
+                                        if(isset($v->name) && isset($v->singleUrl)){
+                                            echo "<a href=\"$v->singleUrl\">$v->name</a>";
+                                        } else {
+                                            $this->printTable($v);
+                                        }
+                                    }
+                                }else{
+                                    //var_dump($v);
+                                }
+                                ?>
+                            </td>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <td>
+                        <?php
+                        $vars = get_object_vars($item);
+                        if(!empty($vars['@files:avatar.avatarMedium'])){
+                            ?><img src="<?php echo $vars['@files:avatar.avatarMedium']->url; ?>" width="80"><?php
+                        }
+                        ?>
+                    </td>
+        </tr>
+<?php return;
     }
 }
