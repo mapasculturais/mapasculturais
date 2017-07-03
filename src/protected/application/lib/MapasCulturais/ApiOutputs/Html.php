@@ -125,27 +125,27 @@ class Html extends \MapasCulturais\ApiOutput{
     protected function printOccurenceDetails($field, $occurrence){
         if($field === 'Horário Inicial'){
             ?>
-                <td><?php echo $occurrence->rule->startsOn ?></td>
+                <td><?php echo $occurrence->rule->startsOn ? $occurrence->rule->startsOn : ''; ?></td>
             <?php
         }elseif($field === 'Horário Final'){
             ?>
-                <td><?php echo $occurrence->rule->endsAt ?></td>
+                <td><?php echo $occurrence->rule->endsAt ? $occurrence->rule->endsAt : ''; ?></td>
             <?php
         }elseif($field === 'Data Inicial'){
             ?>
-                <td><?php echo $occurrence->rule->startsOn ?></td>
+                <td><?php echo $occurrence->rule->startsOn ? $occurrence->rule->startsOn : ''; ?></td>
             <?php
         }elseif($field === 'Data Final'){
             ?>
-                <td><?php echo $occurrence->rule->until ?></td>
+                <td><?php echo $occurrence->rule->until ? $occurrence->rule->until : ''; ?></td>
             <?php
         }elseif($field === 'Duração'){
             ?>
-                <td><?php echo $occurrence->rule->duration ?></td>
+                <td><?php echo $occurrence->rule->duration ? $occurrence->rule->duration : ''; ?></td>
             <?php
         }elseif($field === 'Frequência'){
             ?>
-                <td><?php echo $this->translate[$occurrence->rule->frequency] ?></td>
+                <td><?php echo $occurrence->rule->duration ? $this->translate[$occurrence->rule->frequency] : ''; ?></td>
             <?php
         }
 
@@ -162,35 +162,35 @@ class Html extends \MapasCulturais\ApiOutput{
     protected function printSpaceDetails($field, $occurrence){
         if($field === 'Espaço'){
             ?>
-                <td><a href="<?php echo $occurrence->space->singleUrl; ?>"><?php echo $this->convertToUTF16($occurrence->space->name); ?></a></td>
+                <td><a href="<?php echo $occurrence->space->singleUrl ? $occurrence->space->singleUrl : ''; ?>"><?php echo $occurrence->space->name ? $this->convertToUTF16($occurrence->space->name) : ''; ?></a></td>
             <?php
         }elseif($field === 'CEP'){
             ?>
-                <td><?php echo $occurrence->space->En_CEP; ?></td>
+                <td><?php echo $occurrence->space->En_CEP ? $occurrence->space->En_CEP : ''; ?></td>
             <?php
         }elseif($field === 'Logradouro'){
             ?>
-                <td><?php echo $this->convertToUTF16($occurrence->space->En_Nome_Logradouro); ?></td>
+                <td><?php echo $occurrence->space->En_Nome_Logradouro ? $this->convertToUTF16($occurrence->space->En_Nome_Logradouro) : ''; ?></td>
             <?php
         }elseif($field === 'Número'){
             ?>
-                <td><?php echo $occurrence->space->En_Num; ?></td>
+                <td><?php echo $occurrence->space->En_Num ? $occurrence->space->En_Num : ''; ?></td>
             <?php
         }elseif($field === 'Complemento'){
             ?>
-                <td><?php echo $this->convertToUTF16($occurrence->space->En_Complemento); ?></td>
+                <td><?php echo $occurrence->space->En_Complemento ? $this->convertToUTF16($occurrence->space->En_Complemento) : ''; ?></td>
             <?php
         }elseif($field === 'Bairro'){
             ?>
-                <td><?php echo $this->convertToUTF16($occurrence->space->En_Bairro); ?></td>
+                <td><?php echo $occurrence->space->En_Bairro ? $this->convertToUTF16($occurrence->space->En_Bairro) : ''; ?></td>
             <?php
         }elseif($field === 'Município'){
             ?>
-                <td><?php echo $this->convertToUTF16($occurrence->space->En_Municipio); ?></td>
+                <td><?php echo $occurrence->space->En_Municipio ? $this->convertToUTF16($occurrence->space->En_Municipio) : ''; ?></td>
             <?php
         }elseif($field === 'Estado'){
             ?>
-                <td><?php echo $occurrence->space->En_Estado; ?></td>
+                <td><?php echo $occurrence->space->En_Estado ? $occurrence->space->En_Estado : ''; ?></td>
             <?php
         }
 
