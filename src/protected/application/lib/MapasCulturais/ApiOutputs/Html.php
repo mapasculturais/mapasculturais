@@ -45,6 +45,10 @@ class Html extends \MapasCulturais\ApiOutput{
         'Repete-Quarta', 'Repete-Quinta', 'Repete-Sexta', 'Repete-Sábado'
     ];
 
+    protected $spaceDetails = [
+        'Espaço', 'CEP', 'Logradouro', 'Número', 'Complemento', 'Bairro', 'Município', 'Estado'
+    ];
+
     protected function getContentType() {
         return 'text/html';
     }
@@ -149,6 +153,51 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
+     * Preenche as informações do espaço da ocorrência de acordo o $field enviado
+     *
+     * @param string $field    campo a ser preenchdio
+     * @param obj $occurrence
+     * @return void
+     */
+    protected function printSpaceDetails($field, $occurrence){
+        if($field === 'Espaço'){
+            ?>
+                <td><a href="<?php echo $occurrence->space->singleUrl; ?>"><?php echo $this->convertToUTF16($occurrence->space->name); ?></a></td>
+            <?php
+        }elseif($field === 'CEP'){
+            ?>
+                <td><?php echo $occurrence->space->En_CEP; ?></td>
+            <?php
+        }elseif($field === 'Logradouro'){
+            ?>
+                <td><?php echo $this->convertToUTF16($occurrence->space->En_Nome_Logradouro); ?></td>
+            <?php
+        }elseif($field === 'Número'){
+            ?>
+                <td><?php echo $occurrence->space->En_Num; ?></td>
+            <?php
+        }elseif($field === 'Complemento'){
+            ?>
+                <td><?php echo $this->convertToUTF16($occurrence->space->En_Complemento); ?></td>
+            <?php
+        }elseif($field === 'Bairro'){
+            ?>
+                <td><?php echo $this->convertToUTF16($occurrence->space->En_Bairro); ?></td>
+            <?php
+        }elseif($field === 'Município'){
+            ?>
+                <td><?php echo $this->convertToUTF16($occurrence->space->En_Municipio); ?></td>
+            <?php
+        }elseif($field === 'Estado'){
+            ?>
+                <td><?php echo $occurrence->space->En_Estado; ?></td>
+            <?php
+        }
+
+        return;
+    }
+
+    /**
      * Seta o cabeçalho a ser impresso na tabela
      *
      * @param array $item
@@ -163,6 +212,10 @@ class Html extends \MapasCulturais\ApiOutput{
 
         foreach($this->diasSemana as $d){
             array_push($itemKeys, $d);
+        }
+
+        foreach($this->spaceDetails as $s){
+            array_push($itemKeys, $s);
         }
 
         return $itemKeys;
@@ -260,11 +313,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             <?php elseif(strpos($k,'@files')===0):  continue; ?>
                             <?php elseif($k==='occurrences'): ?>
                                 <td>
-                                    <?php echo $this->convertToUTF16($occ->rule->description);?>,
-                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo $this->convertToUTF16($occ->space->name);?></a>
-                                    <?php if($occ->rule->price): ?>
-                                        <?php echo $this->convertToUTF16($occ->rule->price);?> <br>
-                                    <?php endif; ?>
+                                    <?php echo $this->convertToUTF16($occ->rule->description);?>
                                 </td>
                             <?php elseif($k==='project'):?>
                                 <?php if(is_object($v)): ?>
@@ -272,12 +321,18 @@ class Html extends \MapasCulturais\ApiOutput{
                                 <?php else: ?>
                                     <td></td>
                                 <?php endif; ?>
+                            <?php elseif($k==='preco'): ?>
+                                <td><?php echo $occ->rule->price ?></td>
                             <?php elseif(in_array($k, $this->diasSemana)): ?>
                                 <?php $this->printDaysOfEvent($k, $occ); 
                                       continue;
                                 ?>
                             <?php elseif(in_array($k, $this->occurrenceDetails)): ?>
                                 <?php $this->printOccurenceDetails($k, $occ);
+                                      continue;
+                                ?>
+                            <?php elseif(in_array($k, $this->spaceDetails)): ?>
+                                <?php $this->printSpaceDetails($k, $occ);
                                       continue;
                                 ?>
                             <?php else:
