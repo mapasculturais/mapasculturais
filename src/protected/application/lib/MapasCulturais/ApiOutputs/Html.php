@@ -7,34 +7,6 @@ use MapasCulturais;
 
 class Html extends \MapasCulturais\ApiOutput{
 
-    protected $translate = [
-        'id' => 'Id',
-        'name' => 'Nome',
-        'singleUrl' => 'Link',
-        'type' => 'Tipo',
-        'shortDescription' => 'Descrição Curta',
-        'name' => 'Nome',
-        'terms' => 'Termos',
-        'endereco' => 'Endereço',
-        'classificacaoEtaria' => 'Classificação Etária',
-        'project' => 'Projeto',
-        'occurrences' => 'Descrição Legível do Horário',
-        'tag' => 'Tags',
-        'area' => 'Áreas',
-        'linguagem' => 'Linguagens',
-        'weekly' => 'Semanal',
-        'once' => 'Uma vez',
-        'daily' => 'Diariamente',
-        'agent'=>'Agente',
-        'space'=>'Espaço',
-        'event'=>'Evento',
-        'project'=>'Projeto',
-        'seal'=>'Selo',
-        'owner' => 'Publicado por',
-        'parent' => 'Entidade pai',
-        'createTimestamp' => 'Entidade pai',
-    ];
-
     protected $occurrenceDetails = [
         'Data Inicial', 'Data Final', 'Duração', 'Frequência', 
         'Horário Inicial', 'Horário Final'
@@ -60,6 +32,94 @@ class Html extends \MapasCulturais\ApiOutput{
             $this->printOneItemTable($data);
         else
             return;
+    }
+
+    /**
+     * Traduz os textos da tabela de acordo com o padrão
+     * de internacionalização configurado
+     *
+     * @param string $text
+     * @return void
+     */
+    protected function translate($text){
+        $translated = '';
+
+        switch($text){
+            case 'id':
+                $translated = 'Id';
+            break;
+            case 'name':
+                $translated = 'Nome';
+            break;
+            case 'singleUrl':
+                $translated = 'Link';
+            break;
+            case 'type':
+                $translated = 'Tipo';
+            break;
+            case 'shortDescription':
+                $translated = 'Descrição Curta';
+            break;
+            case 'terms':
+                $translated = 'Termos';
+            break;
+            case 'endereco':
+                $translated = 'Endereço';
+            break;
+            case 'classificacaoEtaria':
+                $translated = 'Classificação Etária';
+            break;
+            case 'project':
+                $translated = 'Projeto';
+            break;
+            case 'occurrences':
+                $translated = 'Descrição Legível do Horário';
+            break;
+            case 'tag':
+                $translated = 'Tags';
+            break;
+            case 'area':
+                $translated = 'Áreas';
+            break;
+            case 'linguagem':
+                $translated = 'Linguagens';
+            break;
+            case 'weekly':
+                $translated = 'Semanal';
+            break;
+            case 'once':
+                $translated = 'Uma vez';
+            break;
+            case 'daily':
+                $translated = 'Diariamente';
+            break;
+            case 'agent':
+                $translated = 'Agente';
+            break;
+            case 'space':
+                $translated = 'Espaço';
+            break;
+            case 'event':
+                $translated = 'Evento';
+            break;
+            case 'project':
+                $translated = 'Projeto';
+            break;
+            case 'seal':
+                $translated = 'Selo';
+            break;
+            case 'owner':
+                $translated = 'Publicado por';
+            break;
+            case 'parent':
+                $translated = 'Entidade pai';
+            break;
+            case 'createTimestamp':
+                $translated = 'Data de Criação';
+            break;
+        }
+
+        return \MapasCulturais\i::__($translated);
     }
 
     /**
@@ -125,7 +185,7 @@ class Html extends \MapasCulturais\ApiOutput{
     protected function printOccurenceDetails($field, $occurrence){
         if($field === 'Horário Inicial'){
             ?>
-                <td><?php echo $occurrence->rule->startsOn ? $occurrence->rule->startsOn : ''; ?></td>
+                <td><?php echo $occurrence->rule->startsOn ? $occurrence->rule->startsAt : ''; ?></td>
             <?php
         }elseif($field === 'Horário Final'){
             ?>
@@ -145,7 +205,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <?php
         }elseif($field === 'Frequência'){
             ?>
-                <td><?php echo $occurrence->rule->duration ? $this->translate[$occurrence->rule->frequency] : ''; ?></td>
+                <td><?php echo $occurrence->rule->duration ? $this->translate($occurrence->rule->frequency) : ''; ?></td>
             <?php
         }
 
@@ -162,7 +222,7 @@ class Html extends \MapasCulturais\ApiOutput{
     protected function printSpaceDetails($field, $occurrence){
         if($field === 'Espaço'){
             ?>
-                <td><a href="<?php echo $occurrence->space->singleUrl ? $occurrence->space->singleUrl : ''; ?>"><?php echo $occurrence->space->name ? $this->convertToUTF16($occurrence->space->name) : ''; ?></a></td>
+                <td><a href="<?php echo $occurrence->space->singleUrl ? $occurrence->space->singleUrl : ''; ?>"><?php echo $occurrence->space->name ? $occurrence->space->name : ''; ?></a></td>
             <?php
         }elseif($field === 'CEP'){
             ?>
@@ -198,12 +258,12 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Seta o cabeçalho a ser impresso na tabela
+     * Seta o cabeçalho a ser impresso na tabela de eventos
      *
      * @param array $item
      * @return array
      */
-    protected function setItemKeys($item){
+    protected function setEventKeys($item){
         $itemKeys = array_keys($item);
 
         foreach($this->occurrenceDetails as $o){
@@ -243,7 +303,7 @@ class Html extends \MapasCulturais\ApiOutput{
         <?php foreach($data as $item):
             if($first){
                 if($entity === 'MapasCulturais\Entities\Event'){
-                    $first_item_keys = $this->setItemKeys($item);
+                    $first_item_keys = $this->setEventKeys($item);
                 }else{
                     $first_item_keys = array_keys($item);
                 }
@@ -265,14 +325,14 @@ class Html extends \MapasCulturais\ApiOutput{
                         if($k==='terms'){
                             $v = $item->$k;
 
-                            if(property_exists($v, 'area')){ ?><th><?php echo $this->convertToUTF16($this->translate['area']); ?></th><?php }
-                            if(property_exists($v, 'tag')){ ?><th><?php echo $this->convertToUTF16($this->translate['tag']); ?></th><?php }
-                            if(property_exists($v, 'linguagem')){ ?><th><?php echo $this->convertToUTF16($this->translate['linguagem']); ?></th><?php }
+                            if(property_exists($v, 'area')){ ?><th><?php echo $this->convertToUTF16($this->translate('area')); ?></th><?php }
+                            if(property_exists($v, 'tag')){ ?><th><?php echo $this->convertToUTF16($this->translate('tag')); ?></th><?php }
+                            if(property_exists($v, 'linguagem')){ ?><th><?php echo $this->convertToUTF16($this->translate('linguagem')); ?></th><?php }
 
                         }elseif(strpos($k,'@files')===0){
                             continue;
                         }elseif($k==='occurrences'){ ?>
-                            <th><?php echo $this->convertToUTF16($this->translate['occurrences']); ?></th> 
+                            <th><?php echo $this->convertToUTF16($this->translate('occurrences')); ?></th> 
                             <?php
                         }else{
                             if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
@@ -283,8 +343,8 @@ class Html extends \MapasCulturais\ApiOutput{
                                 <?php 
                                 if(isset($label[$k]) && $label[$k]) {
                                     echo $this->convertToUTF16($label[$k]);
-                                } else if(isset($this->translate[$k])){
-                                    echo $this->convertToUTF16( $this->translate[$k]);
+                                } else if(!empty($this->translate($k))){
+                                    echo $this->convertToUTF16( $this->translate($k));
                                 } else {
                                     echo $this->convertToUTF16($k);  
                                 }
@@ -341,7 +401,7 @@ class Html extends \MapasCulturais\ApiOutput{
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
         $uriExplode = explode('/',$_SERVER['REQUEST_URI']);
         if($data && key_exists(2,$uriExplode) ){
-            $singular_object_name = $this->convertToUTF16($this->translate[$uriExplode[2]]);
+            $singular_object_name = $this->convertToUTF16($this->translate($uriExplode[2]));
             $plural_object_name = $singular_object_name.'s';
         }
         ?>
@@ -423,7 +483,7 @@ class Html extends \MapasCulturais\ApiOutput{
                                       continue;
                                 ?>
                             <?php elseif($k==='name' && !empty($item->singleUrl)): ?>
-                                <td><a href="<?php echo $item->singleUrl; ?>"><?php echo $this->convertToUTF16($v); ?></a></td>
+                                <td><a href="<?php echo $item->singleUrl; ?>"><?php echo $v; ?></a></td>
                             <?php else:
                                 if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                     continue;
