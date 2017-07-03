@@ -125,13 +125,15 @@ class Theme extends BaseV1\Theme{
                 $variables_scss .= "\$brand-subsite: " . ($this->subsiteInstance->cor_subsite?  $this->subsiteInstance->cor_subsite:  $app->config['themes.brand-subsite']) . " !default;\n";
                 $variables_scss .= "\$brand-primary: " . ($this->subsiteInstance->cor_intro?    $this->subsiteInstance->cor_intro:    $app->config['themes.brand-intro'])   . " !default;\n";
                 $variables_scss .= "\$brand-developer:" . ($this->subsiteInstance->cor_dev?     $this->subsiteInstance->cor_dev:      $app->config['themes.brand-developer']) . " !default;\n";
-
+                
                 file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
                 file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);
 
                 exec("sass " . $this->subsitePath . '/assets/css/sass/main.scss ' . $this->subsitePath . '/assets/css/main.css');
 
-                $entidades = explode(';', $this->subsiteInstance->entidades_habilitadas);
+                $entidades = $this->subsiteInstance->entidades_habilitadas;
+                $entidades = iconv('UTF-8', 'ASCII//TRANSLIT',$entidades);
+                $entidades = explode(';', $entidades);
                 $entities = is_array($entidades)? array_map('strtolower',$entidades): [];
 
                 $entities_second = $entities;
@@ -146,7 +148,6 @@ class Theme extends BaseV1\Theme{
                 /*  Creates entities pin single and grouped image only for each entity */
                 foreach($entities as $entity) {
                     $entity_file_svg = THEMES_PATH . "BaseV1/assets/img/pin-single-example.svg";
-                    $entity = iconv('UTF-8', 'ASCII//TRANSLIT', $entity);
                     $entity_first_sing_name = substr($entity, 0, -1);
                     $entity_first_name_color = "cor_" . $entity;
                     if($this->subsiteInstance->$entity_first_name_color) {
@@ -155,17 +156,14 @@ class Theme extends BaseV1\Theme{
                             $svg = file_get_contents($entity_file_svg);
                             $svg = preg_replace('/class="pin-single-example" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
 
-                            if(file_exists($entity_file_png)) {
-                                unlink($entity_file_png);
-                            }
-
                             $im = new \Imagick();
                             $im->setBackgroundColor(new \ImagickPixel('transparent'));
                             $im->readImageBlob($svg);
                             $im->setImageFormat("png24");
-                            $im->writeImage($entity_file_png);
-                            $im->clear();
-                            $im->destroy();
+                            if ($im->writeImage($entity_file_png)) {
+                                $im->clear();
+                                $im->destroy();
+                            }
 
                             if(file_exists($entity_file_png) && file_exists($entity_icon_img)) {
                                 $img = \WideImage\WideImage::load($entity_file_png);
@@ -189,14 +187,14 @@ class Theme extends BaseV1\Theme{
                                 if(file_exists($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png")) {
                                     unlink($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png");
                                 }
-                                $im->writeImage($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png");
-                                $im->clear();
-                                $im->destroy();
+                                if($im->writeImage($this->subsitePath . "/assets/img/agrupador-" . $entity_first_sing_name. ".png")) {
+                                    $im->clear();
+                                    $im->destroy();
+                                }
                             }
                         }
 
                         foreach($entities_second as $second_entity) {
-                            $second_entity = iconv('UTF-8', 'ASCII//TRANSLIT', $second_entity);
                             $entity_second_sing_name = substr($second_entity, 0, -1);
                             $entity_sec_name_color = "cor_" . $second_entity;
                             if($this->subsiteInstance->$entity_sec_name_color) {
@@ -216,14 +214,14 @@ class Theme extends BaseV1\Theme{
                                     if(file_exists($this->subsitePath . "/assets/img/agrupador-combinado-" . $entity_first_sing_name. "-" . $entity_second_sing_name . ".png")) {
                                         unlink($this->subsitePath . "/assets/img/agrupador-combinado-" . $entity_first_sing_name. "-" . $entity_second_sing_name . ".png");
                                     }
-                                    $im->writeImage($this->subsitePath . "/assets/img/agrupador-combinado-" . $entity_first_sing_name. "-" . $entity_second_sing_name . ".png");
-                                    $im->clear();
-                                    $im->destroy();
+                                    if($im->writeImage($this->subsitePath . "/assets/img/agrupador-combinado-" . $entity_first_sing_name. "-" . $entity_second_sing_name . ".png")) {
+                                        $im->clear();
+                                        $im->destroy();
+                                    }
                                 }
                             }
 
                             foreach($entities_third as $third_entity) {
-                                $third_entity = iconv('UTF-8', 'ASCII//TRANSLIT', $third_entity);
                                 $entity_third_sing_name = substr($third_entity, 0, -1);
                                 $entity_thi_name_color = "cor_" . $third_entity;
                                 if($this->subsiteInstance->$entity_thi_name_color) {
@@ -244,9 +242,10 @@ class Theme extends BaseV1\Theme{
                                         if(file_exists($this->subsitePath . "/assets/img/agrupador-combinado.png")) {
                                             unlink($this->subsitePath . "/assets/img/agrupador-combinado.png");
                                         }
-                                        $im->writeImage($this->subsitePath . "/assets/img/agrupador-combinado.png");
-                                        $im->clear();
-                                        $im->destroy();
+                                        if($im->writeImage($this->subsitePath . "/assets/img/agrupador-combinado.png")) {
+                                            $im->clear();
+                                            $im->destroy();
+                                        }
                                     }
                                 }
                             }
