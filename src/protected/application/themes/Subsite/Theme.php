@@ -117,14 +117,14 @@ class Theme extends BaseV1\Theme{
 
                 ";
 
-                $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->cor_agentes?  $this->subsiteInstance->cor_agentes:  $app->config['themes.brand-agent'])   . " !default;\n";
-                $variables_scss .= "\$brand-project: " . ($this->subsiteInstance->cor_projetos? $this->subsiteInstance->cor_projetos: $app->config['themes.brand-project']) . " !default;\n";
-                $variables_scss .= "\$brand-event:   " . ($this->subsiteInstance->cor_eventos?  $this->subsiteInstance->cor_eventos:  $app->config['themes.brand-event'])   . " !default;\n";
-                $variables_scss .= "\$brand-space:   " . ($this->subsiteInstance->cor_espacos?  $this->subsiteInstance->cor_espacos:  $app->config['themes.brand-space'])   . " !default;\n";
-                $variables_scss .= "\$brand-seal:    " . ($this->subsiteInstance->cor_selos?    $this->subsiteInstance->cor_selos:    $app->config['themes.brand-seal'])    . " !default;\n";
-                $variables_scss .= "\$brand-subsite: " . ($this->subsiteInstance->cor_subsite?  $this->subsiteInstance->cor_subsite:  $app->config['themes.brand-subsite']) . " !default;\n";
-                $variables_scss .= "\$brand-primary: " . ($this->subsiteInstance->cor_intro?    $this->subsiteInstance->cor_intro:    $app->config['themes.brand-intro'])   . " !default;\n";
-                $variables_scss .= "\$brand-developer:" . ($this->subsiteInstance->cor_dev?     $this->subsiteInstance->cor_dev:      $app->config['themes.brand-developer']) . " !default;\n";
+                $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->agents_color?     $this->subsiteInstance->agents_color:   $app->config['themes.brand-agent'])   . " !default;\n";
+                $variables_scss .= "\$brand-project: " . ($this->subsiteInstance->projects_color?   $this->subsiteInstance->projects_color: $app->config['themes.brand-project']) . " !default;\n";
+                $variables_scss .= "\$brand-event:   " . ($this->subsiteInstance->events_color?     $this->subsiteInstance->events_color:   $app->config['themes.brand-event'])   . " !default;\n";
+                $variables_scss .= "\$brand-space:   " . ($this->subsiteInstance->spaces_color?     $this->subsiteInstance->spaces_color:   $app->config['themes.brand-space'])   . " !default;\n";
+                $variables_scss .= "\$brand-seal:    " . ($this->subsiteInstance->seals_color?      $this->subsiteInstance->seals_color:    $app->config['themes.brand-seal'])    . " !default;\n";
+                $variables_scss .= "\$brand-subsite: " . ($this->subsiteInstance->cor_subsite?      $this->subsiteInstance->cor_subsite:    $app->config['themes.brand-subsite']) . " !default;\n";
+                $variables_scss .= "\$brand-primary: " . ($this->subsiteInstance->cor_intro?        $this->subsiteInstance->cor_intro:      $app->config['themes.brand-intro'])   . " !default;\n";
+                $variables_scss .= "\$brand-developer:" . ($this->subsiteInstance->cor_dev?         $this->subsiteInstance->cor_dev:        $app->config['themes.brand-developer']) . " !default;\n";
                 
                 file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
                 file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);
@@ -132,7 +132,6 @@ class Theme extends BaseV1\Theme{
                 exec("sass " . $this->subsitePath . '/assets/css/sass/main.scss ' . $this->subsitePath . '/assets/css/main.css');
 
                 $entidades = $this->subsiteInstance->entidades_habilitadas;
-                $entidades = iconv('UTF-8', 'ASCII//TRANSLIT',$entidades);
                 $entidades = explode(';', $entidades);
                 $entities = is_array($entidades)? array_map('strtolower',$entidades): [];
 
@@ -149,10 +148,11 @@ class Theme extends BaseV1\Theme{
                 foreach($entities as $entity) {
                     $entity_file_svg = THEMES_PATH . "BaseV1/assets/img/pin-single-example.svg";
                     $entity_first_sing_name = substr($entity, 0, -1);
-                    $entity_first_name_color = "cor_" . $entity;
+                    $entity_first_name_color = $entity . "_color";
                     if($this->subsiteInstance->$entity_first_name_color) {
                         $entity_icon_img = THEMES_PATH . "BaseV1/assets/img/icon-" . $entity_first_sing_name . ".png";
                         if(file_exists($entity_file_svg)) {
+                            
                             $svg = file_get_contents($entity_file_svg);
                             $svg = preg_replace('/class="pin-single-example" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
 
@@ -196,7 +196,7 @@ class Theme extends BaseV1\Theme{
 
                         foreach($entities_second as $second_entity) {
                             $entity_second_sing_name = substr($second_entity, 0, -1);
-                            $entity_sec_name_color = "cor_" . $second_entity;
+                            $entity_sec_name_color = $second_entity . "_color";
                             if($this->subsiteInstance->$entity_sec_name_color) {
                                 $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/agrupador-combinado-" . $entity_first_sing_name. "-" . $entity_second_sing_name . ".svg";
                                 if(file_exists($entity_file_svg)) {
@@ -223,7 +223,7 @@ class Theme extends BaseV1\Theme{
 
                             foreach($entities_third as $third_entity) {
                                 $entity_third_sing_name = substr($third_entity, 0, -1);
-                                $entity_thi_name_color = "cor_" . $third_entity;
+                                $entity_thi_name_color = $third_entity . "_color";
                                 if($this->subsiteInstance->$entity_thi_name_color) {
                                     $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/agrupador-combinado-"  . $entity_first_sing_name. "-" . $entity_second_sing_name . "-" . $entity_third_sing_name . ".svg";
                                     if(file_exists($entity_file_svg)) {

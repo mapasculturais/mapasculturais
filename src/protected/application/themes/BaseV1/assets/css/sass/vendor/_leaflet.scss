@@ -198,25 +198,25 @@
 }
 //** Cluster
 .leaflet-cluster.cluster-event {
-    background-image: url('../img/agrupador-evento.png');
+    background-image: url('../img/agrupador-event.png');
 }
 .leaflet-cluster.cluster-agent {
-    background-image: url('../img/agrupador-agente.png');
+    background-image: url('../img/agrupador-agent.png');
 }
 .leaflet-cluster.cluster-space {
-    background-image: url('../img/agrupador-espaco.png');
+    background-image: url('../img/agrupador-space.png');
 }
 .leaflet-cluster.cluster-space.cluster-agent {
-    background-image: url('../img/agrupador-combinado-espaco-agente.png');
+    background-image: url('../img/agrupador-combinado-space-agent.png');
 }
 .leaflet-cluster.cluster-space.cluster-event {
-    background-image: url('../img/agrupador-combinado-espaco-evento.png');
+    background-image: url('../img/agrupador-combinado-space-event.png');
 }
 .leaflet-cluster.cluster-space.cluster-agent.cluster-event {
     background-image: url('../img/agrupador-combinado.png');
 }
 .leaflet-cluster.cluster-agent.cluster-event {
-    background-image: url('../img/agrupador-combinado-agente-evento.png');
+    background-image: url('../img/agrupador-combinado-agent-event.png');
 }
 .leaflet-cluster {
     font-size: 9px;
