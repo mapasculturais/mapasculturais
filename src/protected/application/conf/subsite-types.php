@@ -133,19 +133,19 @@ return array(
             'label' => 'Entidades Habilitadas',
             'type' => 'multiselect',
             'options' => array(
-                'Agentes',
-                'Espaços',
-                'Projetos',
-                'Eventos'
+                'Agents',
+                'Spaces',
+                'Projects',
+                'Events'
             )
         ),
-        'cor_agentes' => $metadata_config_color,
-        'cor_espacos' => $metadata_config_color,
-        'cor_projetos' => $metadata_config_color,
-        'cor_eventos' => $metadata_config_color,
-        'cor_selos' => $metadata_config_color,
-        'cor_intro' => $metadata_config_color,
-        'cor_dev' => $metadata_config_color,
+        'agents_color'    => $metadata_config_color,
+        'spaces_color'    => $metadata_config_color,
+        'projects_color'  => $metadata_config_color,
+        'events_color'    => $metadata_config_color,
+        'seals_color'     => $metadata_config_color,
+        'cor_intro'     => $metadata_config_color,
+        'cor_dev'       => $metadata_config_color,
 
         'filtro_space_meta_En_Estado' => $metadata_config_estado,
 

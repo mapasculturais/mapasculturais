@@ -31,7 +31,7 @@ class Subsite extends EntityController {
         $app = App::i();
 
         $app->hook('entity(Subsite).new', function(){
-            $this->entidades_habilitadas = 'Agentes;Projetos;Espaços;Eventos';
+            $this->entidades_habilitadas = 'Agents;Projects;Spaces;Events';
         });
 
         $app->hook('PUT(subsite.single):data, POST(subsite.index):data', function(&$data){
