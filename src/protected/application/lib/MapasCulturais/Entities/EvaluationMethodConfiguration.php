@@ -122,6 +122,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $this->opportunity;
     }
 
+    protected function canUserModify($user){
+        return $this->opportunity->canUser('modify', $user);
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
