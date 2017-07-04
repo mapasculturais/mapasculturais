@@ -301,6 +301,8 @@ class Html extends \MapasCulturais\ApiOutput{
         ?>
         <table border="1">
         <?php foreach($data as $item):
+            unset($item['rules']);
+
             if($first){
                 if($entity === 'MapasCulturais\Entities\Event'){
                     $first_item_keys = $this->setEventKeys($item);
@@ -598,8 +600,6 @@ class Html extends \MapasCulturais\ApiOutput{
                                             $this->printTable($v);
                                         }
                                     }
-                                }else{
-                                    //var_dump($v);
                                 }
                                 ?>
                             </td>
