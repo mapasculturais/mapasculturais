@@ -4,6 +4,72 @@ $(function() {
         $('#agenda-count').text(count);
         $('#agenda-count-plural').css('display', count == 1 || count == MapasCulturais.gettext.agendaSingles['none'] ? 'none' : 'inline');
     }
+
+    function setSpreadsheetUrl(){
+        var apiExportURL = MapasCulturais.baseURL + 'api/';
+        var selectData = MapasCulturais.searchQueryFields;
+        var entity = 'event';
+
+        //itens referentes aos eventos
+        selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
+        var searchData = {};
+        searchData['@from'] = "2017-07-04";
+        searchData['@to'] = "2017-08-04";
+        searchData['@select'] = 'id,name,location';
+        searchData['@order'] = 'name ASC';
+        var action = 'findByEvents';
+        var Description = MapasCulturais.EntitiesDescription[entity];
+
+        var querystring = '';
+        var exportSelect = ['singleUrl,type,terms'];
+        var dontExportSelect = {
+            user: true,
+            publicLocation: true,
+            status: true
+        }
+        Object.keys(Description).forEach(function(prop) {
+            if(prop[0] == '_'){
+                return;
+            }
+            if (dontExportSelect[prop])
+                return;
+                
+            var def = Description[prop];
+            var selectProperty = def['@select'] || prop;
+            if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
+                
+                // Não adiciona os metadados geograficos que devem ser ocultos (que começam com "_")
+                if (prop.substr(0,4) == 'geo_')
+                    return;
+                
+                exportSelect.push(selectProperty); 
+            } else if(def.isEntityRelation) {
+                if(def.isOwningSide){
+                    exportSelect.push(prop + '.{id,name,singleUrl}');
+                } else if (prop == 'occurrences') {
+                    exportSelect.push('occurrences.{space.{id,name,singleUrl},rule}');
+                }
+            }
+        });
+        var queryString_apiExport = '@select='+exportSelect.join(',');
+
+        //removes type column from event export
+        if(apiExportURL.indexOf('event/findByLocation') !== -1)
+            queryString_apiExport = queryString_apiExport.replace(',type','');
+        else
+            apiExportURL += entity + '/' + action + '/?';
+
+        for(var att in searchData) {
+            querystring += "&"+att+"="+searchData[att];
+            if(att != '@select' && att!='@page' && att!='@limit' && att!='@files')
+                queryString_apiExport += "&"+att+"="+searchData[att];
+        }
+        console.log(apiExportURL+queryString_apiExport);
+        spreadsheetUrl = apiExportURL+queryString_apiExport;
+
+        $('#agenda-spreadsheet-button').attr('href', spreadsheetUrl);
+        //$rootScope.apiURL = apiExportURL+queryString_apiExport;
+    }
     
     function submit(){
         $('img.spinner').show();
@@ -38,7 +104,7 @@ $(function() {
     
     $('#tab-sobre').parent().after($('#tab-agenda').parent());
 
-
+    setSpreadsheetUrl();
     setAgendaCount();
     submit();
 });
