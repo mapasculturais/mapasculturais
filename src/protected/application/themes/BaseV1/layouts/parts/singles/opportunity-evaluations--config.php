@@ -21,6 +21,13 @@ $config_form_part_name = $evaluationMethod->getConfigurationFormPartName();
     <p class="js-editable"><?php echo $definition->name ?> - <em><?php echo $definition->description ?></em></p>
     
     <?php $this->part('singles/opportunity-evaluations--committee', ['entity' => $entity]) ?>
+
+    <?php if($config_form_part_name): ?>
+    <div>
+        <?php $this->part($config_form_part_name, ['entity' => $entity]) ?>
+    </div>
+    <hr>
+    <?php endif; ?>
     
     <div>
         <h4><?php i::_e('Textos informativos para a fichas de inscrição') ?></h4>
@@ -39,7 +46,5 @@ $config_form_part_name = $evaluationMethod->getConfigurationFormPartName();
             </label>
         </div>
     </div>
-    <?php if($config_form_part_name): ?>
-        <?php $this->part($config_form_part_name, ['entity' => $entity]) ?>
-    <?php endif; ?>
+
 </div>
