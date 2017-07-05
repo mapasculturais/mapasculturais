@@ -34,11 +34,7 @@ class EvaluationMethodConfiguration extends EntityController {
     public function GET_single() {
         App::i()->pass();
     }
-    
-    public function POST_index($data = null) {
-        App::i()->pass();
-    }
-    
+        
     public function DELETE_single() {
         App::i()->pass();
     }
