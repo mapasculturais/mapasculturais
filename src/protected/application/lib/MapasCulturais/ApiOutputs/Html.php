@@ -46,80 +46,80 @@ class Html extends \MapasCulturais\ApiOutput{
 
         switch($text){
             case 'id':
-                $translated = 'Id';
+                $translated = \MapasCulturais\i::__('Id');
             break;
             case 'name':
-                $translated = 'Nome';
+                $translated = \MapasCulturais\i::__('Nome');
             break;
             case 'singleUrl':
-                $translated = 'Link';
+                $translated = \MapasCulturais\i::__('Link');
             break;
             case 'type':
-                $translated = 'Tipo';
+                $translated = \MapasCulturais\i::__('Tipo');
             break;
             case 'shortDescription':
-                $translated = 'Descrição Curta';
+                $translated = \MapasCulturais\i::__('Descrição Curta');
             break;
             case 'terms':
-                $translated = 'Termos';
+                $translated = \MapasCulturais\i::__('Termos');
             break;
             case 'endereco':
-                $translated = 'Endereço';
+                $translated = \MapasCulturais\i::__('Endereço');
             break;
             case 'classificacaoEtaria':
-                $translated = 'Classificação Etária';
+                $translated = \MapasCulturais\i::__('Classificação Etária');
             break;
             case 'project':
-                $translated = 'Projeto';
+                $translated = \MapasCulturais\i::__('Projeto');
             break;
             case 'occurrences':
-                $translated = 'Descrição Legível do Horário';
+                $translated = \MapasCulturais\i::__('Descrição Legível do Horário');
             break;
             case 'tag':
-                $translated = 'Tags';
+                $translated = \MapasCulturais\i::__('Tags');
             break;
             case 'area':
-                $translated = 'Áreas';
+                $translated = \MapasCulturais\i::__('Áreas');
             break;
             case 'linguagem':
-                $translated = 'Linguagens';
+                $translated = \MapasCulturais\i::__('Linguagens');
             break;
             case 'weekly':
-                $translated = 'Semanal';
+                $translated = \MapasCulturais\i::__('Semanal');
             break;
             case 'once':
-                $translated = 'Uma vez';
+                $translated = \MapasCulturais\i::__('Uma vez');
             break;
             case 'daily':
-                $translated = 'Diariamente';
+                $translated = \MapasCulturais\i::__('Diariamente');
             break;
             case 'agent':
-                $translated = 'Agente';
+                $translated = \MapasCulturais\i::__('Agente');
             break;
             case 'space':
-                $translated = 'Espaço';
+                $translated = \MapasCulturais\i::__('Espaço');
             break;
             case 'event':
-                $translated = 'Evento';
+                $translated = \MapasCulturais\i::__('Evento');
             break;
             case 'project':
-                $translated = 'Projeto';
+                $translated = \MapasCulturais\i::__('Projeto');
             break;
             case 'seal':
-                $translated = 'Selo';
+                $translated = \MapasCulturais\i::__('Selo');
             break;
             case 'owner':
-                $translated = 'Publicado por';
+                $translated = \MapasCulturais\i::__('Publicado por');
             break;
             case 'parent':
-                $translated = 'Entidade pai';
+                $translated = \MapasCulturais\i::__('Entidade pai');
             break;
             case 'createTimestamp':
-                $translated = 'Data de Criação';
+                $translated = \MapasCulturais\i::__('Data de Criação');
             break;
         }
 
-        return \MapasCulturais\i::__($translated);
+        return $translated;
     }
 
     /**
@@ -142,15 +142,32 @@ class Html extends \MapasCulturais\ApiOutput{
      */
     protected function printDaysOfEvent($field, $occurrence){
         if($occurrence->rule->frequency === 'daily'){
-            ?>
-            <td>Sim</td>
-            <?php
+            
+            $inicio = strtotime($occurrence->rule->startsOn);
+            $fim = strtotime($occurrence->rule->until);
+            
+            echo '<td>';
+            while ($inicio <= $fim) {
+                
+                $dayOfWeek = \date('w', $inicio);
+
+                if($this->diasSemana[$dayOfWeek] === $field){ 
+                    
+                    echo \MapasCulturais\i::__('Sim');
+                    break;
+                }
+                  
+                $inicio += 24 * 60 * 60;
+                
+            }
+            echo '</td>';
+
         }elseif($occurrence->rule->frequency === 'once'){
             $dayOfWeek = $this->getDayOfWeek($occurrence->rule->startsOn);
 
             if($this->diasSemana[$dayOfWeek] === $field){
                 ?>
-                <td>Sim</td>
+                <td><?php \MapasCulturais\i::_e('Sim'); ?></td>
                 <?php
             }else{
                 ?>
@@ -163,7 +180,7 @@ class Html extends \MapasCulturais\ApiOutput{
 
             if(in_array($dayToPrint, $daysOn)){
                 ?>
-                <td>Sim</td>
+                <td><?php \MapasCulturais\i::_e('Sim'); ?></td>
                 <?php
             }else{
                 ?>
