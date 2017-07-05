@@ -2109,11 +2109,12 @@ class Theme extends MapasCulturais\Theme {
 
         // add current user registrations evaluations
 
-        if($entity->evaluationMethodConfiguration->canUser('@control')){
+        if($entity->canUser('viewEvaluations')){
             $this->jsObject['entity']['userEvaluations'] = [];
             foreach($this->jsObject['entity']['registrations'] as $registration){
                 $this->jsObject['entity']['userEvaluations'][$registration->id] = $registration->getUserEvaluation();
             }
+            $this->jsObject['evaluationConfiguration'] = $entity->evaluationMethodConfiguration;
         }
     }
 
@@ -2133,10 +2134,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
-        if($entity->opportunity->evaluationMethodConfiguration->canUser('@control')){
+        if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['registration'] = $entity;
             $this->jsObject['evaluation'] = $entity->getUserEvaluation();
-
+            $this->jsObject['evaluationConfiguration'] = $entity->opportunity->evaluationMethodConfiguration;
         }
         foreach($entity->_getDefinitionsWithAgents() as $def){
             $agent = $def->agent;
