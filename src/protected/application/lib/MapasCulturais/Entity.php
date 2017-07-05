@@ -791,6 +791,53 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
+     * Generate and insert unique id into the database field for this entity.
+     */
+    public function _createUniqueId(){
+        $app = App::i();
+        $app->log->debug("Estamos aqui");
+        $save_unq = true;
+        $unique_value = "";
+        if(empty($this->unique_id)) {
+            $app->log->debug("Estamos aqui 2");
+            if($save_unq && $this->En_Estado) {
+                $unique_value .= "|" . $this->En_Estado;   
+            } else {
+                $save_unq = false;
+            }
+            if($save_unq && $this->En_Municipio) {
+                $unique_value .= "|" . $this->En_Municipio;   
+            }else {
+                $save_unq = false;
+            }
+            if($save_unq && is_object($this->location)) {
+                $entity_location = trim((string)$this->location);
+                if($save_unq && !empty($entity_location)) {
+                    $entity_location = str_replace("(", "", $entity_location);
+                    $entity_location = str_replace(")", "", $entity_location);
+                    $entity_location = explode(",",$entity_location);
+                    $unique_value .= "|" . $entity_location[0];
+                    $unique_value .= "|" . $entity_location[1];
+                } else {
+                    $save_unq = false;
+                }
+            } else {
+                $save_unq = false;
+            }
+            if($save_unq && $this->name) {
+                $unique_value .= "|" . $this->name;
+            } else {
+                $save_unq = false;
+            }
+            if($save_unq && !empty($unique_value)) {
+                $app->log->debug("Estamos aqui 3");
+                $app->log->debug($this->requestedEntity . $unique_value);
+                $this->unique_id = $this->requestedEntity . $unique_value;
+            }
+        }
+    }
+
+    /**
      * Executed before the entity is inserted.
      *
      * @see http://docs.doctrine-project.org/en/latest/reference/events.html#lifecycle-events

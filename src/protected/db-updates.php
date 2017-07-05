@@ -710,5 +710,18 @@ return [
         $conn->executeQuery("UPDATE subsite_meta SET key = 'agents_color' where key = 'cor_agentes';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");       
     },
+    'create agent and space unique id field' => function() use($conn) {
+        if(__column_exists('agent', 'unique_id')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE agent ADD COLUMN unique_id TEXT;");
+
+        if(__column_exists('space', 'unique_id')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE space ADD COLUMN unique_id TEXT;");
+    },
 ] + $updates ;
 

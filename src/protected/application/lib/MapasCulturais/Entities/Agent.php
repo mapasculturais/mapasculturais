@@ -246,6 +246,13 @@ class Agent extends \MapasCulturais\Entity
      */
     protected $subsite;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unique_id", type="text", nullable=true)
+     */
+    protected $unique_id;
+
 
     /**
      * Constructor
@@ -452,6 +459,11 @@ class Agent extends \MapasCulturais\Entity
         if($this->equals($this->ownerUser->profile)){
             $this->parent = null;
         }
+    }
+
+    public function save($flush = false) {
+        parent::save($flush);
+        $this->_createUniqueId();        
     }
 
     //============================================================= //

@@ -218,6 +218,13 @@ class Space extends \MapasCulturais\Entity
      */
     protected $subsite;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unique_id", type="text", nullable=true)
+     */
+    protected $unique_id;
+
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;
@@ -247,11 +254,12 @@ class Space extends \MapasCulturais\Entity
     }
 
     public function save($flush = false) {
+        $this->_createUniqueId();
         parent::save($flush);
 
         if($this->parent) {
             $this->parent->_newModifiedRevision();
-        }        
+        }
     }    
 
     //============================================================= //
