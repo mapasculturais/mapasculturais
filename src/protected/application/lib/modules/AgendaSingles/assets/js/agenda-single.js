@@ -5,21 +5,20 @@ $(function() {
         $('#agenda-count-plural').css('display', count == 1 || count == MapasCulturais.gettext.agendaSingles['none'] ? 'none' : 'inline');
     }
 
+    function formatDate(date){
+        return date.split('/').reverse().join('-');
+    }
+
     function setSpreadsheetUrl(){
         var apiExportURL = MapasCulturais.baseURL + 'api/';
         var selectData = MapasCulturais.searchQueryFields;
         var entity = 'event';
-
-        //itens referentes aos eventos
-        selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
+        var dateFrom = formatDate($('#agenda-from-visible').val());
+        var dateTo = formatDate($('#agenda-to-visible').val());
         var searchData = {};
-        searchData['@from'] = "2017-07-04";
-        searchData['@to'] = "2017-08-04";
-        searchData['@select'] = 'id,name,location';
-        searchData['@order'] = 'name ASC';
-        var action = 'findByEvents';
+        var action = 'findByLocation';
         var Description = MapasCulturais.EntitiesDescription[entity];
-
+        //var owner = '&space=EQ('+MapasCulturais.entity.id+')';
         var querystring = '';
         var exportSelect = ['singleUrl,type,terms'];
         var dontExportSelect = {
@@ -27,6 +26,15 @@ $(function() {
             publicLocation: true,
             status: true
         }
+
+        console.log(MapasCulturais.entity);
+        //itens referentes aos eventos
+        selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
+        searchData['@from'] = dateFrom;
+        searchData['@to'] = dateTo;
+        searchData['space'] = 'EQ('+MapasCulturais.entity.id+')';
+        searchData['@select'] = 'id,name,location';
+        searchData['@order'] = 'name ASC';
         Object.keys(Description).forEach(function(prop) {
             if(prop[0] == '_'){
                 return;
@@ -64,11 +72,9 @@ $(function() {
             if(att != '@select' && att!='@page' && att!='@limit' && att!='@files')
                 queryString_apiExport += "&"+att+"="+searchData[att];
         }
-        console.log(apiExportURL+queryString_apiExport);
-        spreadsheetUrl = apiExportURL+queryString_apiExport;
-
+        
+        var spreadsheetUrl = apiExportURL+queryString_apiExport+'&@type=excel';
         $('#agenda-spreadsheet-button').attr('href', spreadsheetUrl);
-        //$rootScope.apiURL = apiExportURL+queryString_apiExport;
     }
     
     function submit(){
