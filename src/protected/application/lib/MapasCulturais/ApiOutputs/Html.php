@@ -309,12 +309,52 @@ class Html extends \MapasCulturais\ApiOutput{
         return mb_convert_encoding($text,'utf-16','utf-8');
     }
 
+    protected function checkSender($app){
+        $sender = array();
+
+        if(in_array('space', array_keys($app->view->controller->getData))){
+            $spaceId = $app->view->controller->getData['space'];
+            preg_match_all('!\d+!', $spaceId, $matches);
+
+            $sender['entity'] = 'space';
+            $sender['id'] = implode($matches[0]);
+            return $sender;
+        }elseif(in_array('agent', array_keys($app->view->controller->getData))){
+            $agentId = $app->view->controller->getData['agent'];
+            preg_match_all('!\d+!', $agentId, $matches);
+
+            $sender['entity'] = 'agent';
+            $sender['id'] = implode($matches[0]);
+            return $sender;
+        }else{
+            return false;
+        }
+    }
+
+    protected function filterOccurrencesByEntity($isRequestFromAgenda, $data){
+        if($isRequestFromAgenda['entity'] === 'space'){
+            for($i=0; count($data[0]['occurrences']) -1; $i++){
+                if($data[0]['occurrences'][$i]['rule']->spaceId !== $space_id){
+                    unset($data[0]['occurrences'][$i]);
+                }
+            }
+        }elseif($isRequestFromAgenda['entity'] === 'agent'){
+            
+        }
+
+        return $data;
+    }
+
     protected function printArrayTable($data){
     	$app = App::i();
     	$entity = $app->view->controller->entityClassName;
     	$label = $entity::getPropertiesLabels();
         $first = true; 
-        
+        $isRequestFromAgenda = $this->checkSender($app);
+
+        if($isRequestFromAgenda){
+            $data = $this->filterOccurrencesByEntity($isRequestFromAgenda, $data);
+        }
         ?>
         <table border="1">
         <?php foreach($data as $item):

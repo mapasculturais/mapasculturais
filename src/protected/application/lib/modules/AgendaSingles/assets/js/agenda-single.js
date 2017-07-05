@@ -18,7 +18,6 @@ $(function() {
         var searchData = {};
         var action = 'findByLocation';
         var Description = MapasCulturais.EntitiesDescription[entity];
-        //var owner = '&space=EQ('+MapasCulturais.entity.id+')';
         var querystring = '';
         var exportSelect = ['singleUrl,type,terms'];
         var dontExportSelect = {
@@ -27,12 +26,14 @@ $(function() {
             status: true
         }
 
-        console.log(MapasCulturais.entity);
+        //agente, espaço ou projeto
+        var entityToFilter = MapasCulturais.entity.object.controllerId;
+
         //itens referentes aos eventos
         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
         searchData['@from'] = dateFrom;
         searchData['@to'] = dateTo;
-        searchData['space'] = 'EQ('+MapasCulturais.entity.id+')';
+        searchData['owner'] = 'EQ('+MapasCulturais.entity.id+')';
         searchData['@select'] = 'id,name,location';
         searchData['@order'] = 'name ASC';
         Object.keys(Description).forEach(function(prop) {
@@ -55,7 +56,8 @@ $(function() {
                 if(def.isOwningSide){
                     exportSelect.push(prop + '.{id,name,singleUrl}');
                 } else if (prop == 'occurrences') {
-                    exportSelect.push('occurrences.{space.{id,name,singleUrl},rule}');
+                    exportSelect.push('occurrences.{space.{id,name,singleUrl,En_CEP,' + 
+                                'En_Nome_Logradouro,En_Num,En_Complemento,En_Bairro,En_Municipio,En_Estado},rule}');
                 }
             }
         });
