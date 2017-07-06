@@ -7,19 +7,35 @@ use MapasCulturais;
 
 class Html extends \MapasCulturais\ApiOutput{
 
-    protected $occurrenceDetails = [
-        'Data Inicial', 'Data Final', 'Duração', 'Frequência', 
-        'Horário Inicial', 'Horário Final'
-    ];
+    protected $occurrenceDetails = array();
+    protected $diasSemana = array();
+    protected $spaceDetails = array();
 
-    protected $diasSemana = [
-        'Repete-Domingo', 'Repete-Segunda', 'Repete-Terça', 
-        'Repete-Quarta', 'Repete-Quinta', 'Repete-Sexta', 'Repete-Sábado'
-    ];
+    public function __construct(){
+        array_push($this->occurrenceDetails, \MapasCulturais\i::__('Data Inicial'));
+        array_push($this->occurrenceDetails, \MapasCulturais\i::__('Data Final'));
+        array_push($this->occurrenceDetails, \MapasCulturais\i::__('Duração'));
+        array_push($this->occurrenceDetails, \MapasCulturais\i::__('Frequência'));
+        array_push($this->occurrenceDetails, \MapasCulturais\i::__('Horário Inicial'));
+        array_push($this->occurrenceDetails, \MapasCulturais\i::__('Horário Final'));
 
-    protected $spaceDetails = [
-        'Espaço', 'CEP', 'Logradouro', 'Número', 'Complemento', 'Bairro', 'Município', 'Estado'
-    ];
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Domingo'));
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Segunda'));
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Terça'));
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Quarta'));
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Quinta'));
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Sexta'));
+        array_push($this->diasSemana, \MapasCulturais\i::__('Repete-Sábado'));
+
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Espaço'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('CEP'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Logradouro'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Número'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Complemento'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Bairro'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Município'));
+        array_push($this->spaceDetails, \MapasCulturais\i::__('Estado'));
+    }
 
     protected function getContentType() {
         return 'text/html';
