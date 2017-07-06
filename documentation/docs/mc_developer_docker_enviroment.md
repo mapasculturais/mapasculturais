@@ -1,5 +1,7 @@
-Desenvolvimento com Docker
-==========================
+Desenvolvimento com Docker (página desatualizada)
+=================================================
+
+*ATENÇÃO* Essa documentação está desatualizada e precisa ser verificada. Na verdade, a imagem docker precisa ser atualizada. Se você quer ajudar com isso, entre em contato em (chat.mapasculturais.org)
 
 Por enquanto o Docker é utilizado somente para auxiliar o processo de
 desenvolvimento da plataforma.
