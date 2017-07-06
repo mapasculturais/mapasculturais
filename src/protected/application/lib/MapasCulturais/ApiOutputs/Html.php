@@ -309,37 +309,41 @@ class Html extends \MapasCulturais\ApiOutput{
         return mb_convert_encoding($text,'utf-16','utf-8');
     }
 
+    /**
+     * Checa se a requisição foi feita a partir da agenda do espaço
+     * e retorna seu id. 
+     *
+     * @param array $app
+     * @return string
+     */
     protected function checkSender($app){
-        $sender = array();
-
         if(in_array('space', array_keys($app->view->controller->getData))){
             $spaceId = $app->view->controller->getData['space'];
             preg_match_all('!\d+!', $spaceId, $matches);
-
-            $sender['entity'] = 'space';
-            $sender['id'] = implode($matches[0]);
-            return $sender;
-        }elseif(in_array('agent', array_keys($app->view->controller->getData))){
-            $agentId = $app->view->controller->getData['agent'];
-            preg_match_all('!\d+!', $agentId, $matches);
-
-            $sender['entity'] = 'agent';
-            $sender['id'] = implode($matches[0]);
-            return $sender;
-        }else{
-            return false;
+            
+            return implode($matches[0]);
         }
+        
+        return false;
     }
 
-    protected function filterOccurrencesByEntity($isRequestFromAgenda, $data){
-        if($isRequestFromAgenda['entity'] === 'space'){
-            for($i=0; count($data[0]['occurrences']) -1; $i++){
-                if($data[0]['occurrences'][$i]['rule']->spaceId !== $space_id){
-                    unset($data[0]['occurrences'][$i]);
+    /**
+     * Filtra as ocorrências apenas pelas quais ocorrerão no espaço selecionado
+     *
+     * @param string $space_id id do espaço
+     * @param array $data array com os eventos
+     * @return array
+     */
+    protected function filterOccurrencesBySpace($space_id, $data){
+        //iterador eventos
+        for($i=0; $i<=count($data) -1; $i++){
+            //iterador ocorrencias
+            $counter = count($data[$i]['occurrences']) -1;
+
+            for($j=0; $j<=$counter; $j++)
+                if($data[$i]['occurrences'][$j]['rule']->spaceId !== $space_id){
+                    unset($data[$i]['occurrences'][$j]);
                 }
-            }
-        }elseif($isRequestFromAgenda['entity'] === 'agent'){
-            
         }
 
         return $data;
@@ -353,7 +357,7 @@ class Html extends \MapasCulturais\ApiOutput{
         $isRequestFromAgenda = $this->checkSender($app);
 
         if($isRequestFromAgenda){
-            $data = $this->filterOccurrencesByEntity($isRequestFromAgenda, $data);
+            $data = $this->filterOccurrencesBySpace($isRequestFromAgenda, $data);
         }
         ?>
         <table border="1">

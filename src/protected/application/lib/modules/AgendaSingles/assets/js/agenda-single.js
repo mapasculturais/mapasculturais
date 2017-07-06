@@ -26,14 +26,26 @@ $(function() {
             status: true
         }
 
-        //agente, espaço ou projeto
-        var entityToFilter = MapasCulturais.entity.object.controllerId;
+        //event listener para mudança nos campos de data
+        $('#agenda-from-visible, #agenda-to-visible').on('change', function(){
+            setSpreadsheetUrl();
+        });
 
+        //agente(owner), espaço ou projeto
+        var entityToFilter;
+
+        if(MapasCulturais.entity.object.controllerId === 'space' || MapasCulturais.entity.object.controllerId === 'project'){
+            entityToFilter = MapasCulturais.entity.object.controllerId;
+        }else{
+            entityToFilter = 'owner';
+        }
+
+        console.log(entityToFilter);
         //itens referentes aos eventos
         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
         searchData['@from'] = dateFrom;
         searchData['@to'] = dateTo;
-        searchData['owner'] = 'EQ('+MapasCulturais.entity.id+')';
+        searchData[entityToFilter] = 'EQ('+MapasCulturais.entity.id+')';
         searchData['@select'] = 'id,name,location';
         searchData['@order'] = 'name ASC';
         Object.keys(Description).forEach(function(prop) {
