@@ -21,7 +21,7 @@ if ($this->isEditable()) {
 $this->enqueueScript('app', 'events', '/js/events.js', array('mapasculturais'));
 $this->localizeScript('singleEvents', [
             'correctErrors' => \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
-            'requestAddToSpace' => \MapasCulturais\i::__('Sua requisição para criar a ocorrência do evento no espaço %s foi enviada.'),
+            'requestAddToSpace' => \MapasCulturais\i::__('Sua requisição para adicionar este evento no espaço %s foi enviada.'),
             'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
             'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
             'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
@@ -66,11 +66,11 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <a class="btn btn-default edit js-open-dialog hltip"
                    data-dialog="#dialog-event-occurrence"
                    data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modificar Ocorrência'); ?>"
+                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modificar local e data'); ?>"
                    data-form-action="edit"
                    data-item="{{serialized}}"
-                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar Ocorrência'); ?>'><?php \MapasCulturais\i::_e("Editar");?></a>
-               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir esta Ocorrência?");?>" title='<?php \MapasCulturais\i::_e("Excluir Ocorrência");?>'><?php \MapasCulturais\i::_e("Excluir");?></a>
+                   href="#" title='<?php \MapasCulturais\i::esc_attr_e('Editar local e data'); ?>'><?php \MapasCulturais\i::_e("Editar");?></a>
+               <a class='btn btn-default delete js-event-occurrence-item-delete js-remove-item hltip' style="vertical-align:middle" data-href="{{deleteUrl}}" data-target="#event-occurrence-{{id}}" data-confirm-message="<?php \MapasCulturais\i::esc_attr_e("Excluir este local e data?");?>" title='<?php \MapasCulturais\i::_e("Excluir local e data");?>'><?php \MapasCulturais\i::_e("Excluir");?></a>
             </div>
         <?php endif; ?>
     </div>
@@ -145,7 +145,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
+        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -319,16 +319,16 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     <div class="textright">
                         <a class="btn btn-default add js-open-dialog hltip" data-dialog="#dialog-event-occurrence" href="#"
                            data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                           data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Adicionar Ocorrência'); ?>"
+                           data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Adicionar local e data'); ?>"
                            data-form-action='insert'
-                           title="<?php \MapasCulturais\i::esc_attr_e('Clique para adicionar ocorrências'); ?>">
-                            <?php \MapasCulturais\i::_e("Adicionar ocorrência");?>
+                           title="<?php \MapasCulturais\i::esc_attr_e('Clique para adicionar local e data'); ?>">
+                            <?php \MapasCulturais\i::_e("Adicionar local e data");?>
                         </a>
                     </div>
                 <?php endif; ?>
                 <div id="dialog-event-occurrence" class="js-dialog">
                     <?php if($this->controller->action == 'create'): ?>
-                        <span class="js-dialog-disabled" data-message="<?php \MapasCulturais\i::esc_attr_e("Para adicionar ocorrências, primeiro é preciso salvar o evento");?>"></span>
+                        <span class="js-dialog-disabled" data-message="<?php \MapasCulturais\i::esc_attr_e("Para adicionar local e data, primeiro é preciso salvar o evento");?>"></span>
                     <?php else: ?>
                         <div class="js-dialog-content"></div>
                     <?php endif; ?>

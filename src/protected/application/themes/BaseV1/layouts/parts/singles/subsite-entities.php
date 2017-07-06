@@ -48,22 +48,22 @@
         </br>
         <div class="color">
             <label><?php \MapasCulturais\i::_e("Agentes");?></label>
-            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_agentes") && $editEntity? 'required': '');?>" data-edit="cor_agentes" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Agentes');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Agentes');?>" data-type="color"><?php echo $entity->cor_agentes; ?></span>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"agents_color") && $editEntity? 'required': '');?>" data-edit="agents_color" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Agentes');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Agentes');?>" data-type="color"><?php echo $entity->agents_color; ?></span>
         </div>
 
         <div class="color">
             <label><?php \MapasCulturais\i::_e("Espaços");?></label>
-            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_espacos") && $editEntity? 'required': '');?>" data-edit="cor_espacos" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Espaços');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Espaços');?>" data-type="color"><?php echo $entity->cor_espacos; ?></span>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"spaces_color") && $editEntity? 'required': '');?>" data-edit="spaces_color" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Espaços');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Espaços');?>" data-type="color"><?php echo $entity->spaces_color; ?></span>
         </div>
 
         <div class="color">
             <label><?php \MapasCulturais\i::_e("Projetos");?></label>
-            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_projetos") && $editEntity? 'required': '');?>" data-edit="cor_projetos" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Projetos');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Projetos');?>" data-type="color"><?php echo $entity->cor_projetos; ?></span>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"project_color") && $editEntity? 'required': '');?>" data-edit="projects_color" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Projetos');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Projetos');?>" data-type="color"><?php echo $entity->projects_color; ?></span>
         </div>
 
         <div class="color">
             <label><?php \MapasCulturais\i::_e("Eventos");?></label>
-            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"cor_eventos") && $editEntity? 'required': '');?>" data-edit="cor_eventos" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Eventos');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Eventos');?>" data-type="color"><?php echo $entity->cor_eventos; ?></span>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"events_color") && $editEntity? 'required': '');?>" data-edit="events_color" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Eventos');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Eventos');?>" data-type="color"><?php echo $entity->events_color; ?></span>
         </div>
 
         <div class=" clear"></div>

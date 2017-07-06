@@ -694,6 +694,21 @@ return [
         }
 
     },
-    
+    'replace subsite entidades_habilitadas values' => function () use($conn) {
+        $rs = $conn->fetchAll("SELECT * FROM subsite_meta WHERE key = 'entidades_habilitadas'");
+        
+        foreach($rs as $r){
+            $r = (object) $r;
+            $value = preg_replace(['#Espa[^;]+os#i', '#Eventos#i', '#Agentes#i', '#Projetos#i'], ['Spaces', 'Events', 'Agents', 'Projects'], $r->value);
+            $conn->exec("UPDATE subsite_meta SET value = '{$value}' WHERE id = {$r->id}");
+        }
+    },
+    'replace subsite cor entidades values' => function () use($conn) {
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'spaces_color' where key = 'cor_espacos';");        
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'events_color' where key = 'cor_eventos';");
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'projects_color' where key = 'cor_projetos';");
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'agents_color' where key = 'cor_agentes';");
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");       
+    },
 ] + $updates ;
 
