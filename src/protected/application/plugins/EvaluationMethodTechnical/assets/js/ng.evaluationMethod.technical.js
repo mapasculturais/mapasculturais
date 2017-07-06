@@ -30,13 +30,15 @@
             $scope.editbox = EditBox;
 
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
-
-            MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
-                e.min = parseInt(e.min);
-                e.max = parseInt(e.max);
-                e.weight = parseInt(e.weight);
-                return e;
-            });
+            
+            if(MapasCulturais.evaluationConfiguration && MapasCulturais.evaluationConfiguration.criteria){
+                MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
+                    e.min = parseInt(e.min);
+                    e.max = parseInt(e.max);
+                    e.weight = parseInt(e.weight);
+                    return e;
+                });
+            }
             
             $scope.data = {
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
@@ -118,10 +120,12 @@
                 e.weight = parseInt(e.weight);
                 return e;
             });
-
-            for(var id in MapasCulturais.evaluation.evaluationData){
-                if(id != 'obs'){
-                    MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
+            
+            if(MapasCulturais.evaluation){
+                for(var id in MapasCulturais.evaluation.evaluationData){
+                    if(id != 'obs'){
+                        MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
+                    }
                 }
             }
             
@@ -130,8 +134,8 @@
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
 
             };
-            
-            $scope.evaluation = MapasCulturais.evaluation.evaluationData;
+
+            $scope.evaluation = MapasCulturais.evaluation ? MapasCulturais.evaluation.evaluationData : {};
 
             $scope.subtotalSection = function(section){
                 var total = 0;
@@ -152,6 +156,17 @@
                 for(var i in $scope.data.criteria){
                     var cri = $scope.data.criteria[i];
                     total += $scope.evaluation[cri.id] * cri.weight;
+                }
+
+                return total;
+            };
+
+            $scope.max = function(){
+                var total = 0;
+
+                for(var i in $scope.data.criteria){
+                    var cri = $scope.data.criteria[i];
+                    total += cri.max * cri.weight;
                 }
 
                 return total;

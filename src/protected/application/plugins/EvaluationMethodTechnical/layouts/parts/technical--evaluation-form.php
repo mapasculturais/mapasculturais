@@ -25,6 +25,9 @@ use MapasCulturais\i;
         <textarea name="data[obs]" ng-model="evaluation['obs']"></textarea>
     </label>
     <hr>
-    <div class='total'><?php i::_e('total'); ?>: {{total(total)}}</div>
+    <div class='total'>
+        <?php i::_e('Pontuação Total'); ?>: <strong>{{total(total)}}</strong><br>
+        <?php i::_e('Pontuação Máxima'); ?>: <strong>{{max(total)}}</strong>
+    </div>
 
 </div>

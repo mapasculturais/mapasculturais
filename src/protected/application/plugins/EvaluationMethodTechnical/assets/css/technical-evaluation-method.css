@@ -61,6 +61,7 @@
 }
 
 .technical-evaluation-form table tr td:last-of-type{
+    vertical-align: bottom;
     text-align: right;
     padding:0;
 }
