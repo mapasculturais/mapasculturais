@@ -162,6 +162,12 @@ class Html extends \MapasCulturais\ApiOutput{
             $inicio = strtotime($occurrence->rule->startsOn);
             $fim = strtotime($occurrence->rule->until);
             
+            /**
+             * Em caso de repetição diária, iteramos em todos os dias
+             * e checamos se o dia da semana atual ($field) existe em qq uma das repetições.
+             * Se sim, break. Ou seja, Esse loop vai iterar no máximo 7 vezes.
+             */ 
+            
             echo '<td>';
             while ($inicio <= $fim) {
                 
@@ -326,13 +332,14 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Checa se a requisição foi feita a partir da agenda do espaço
-     * e retorna seu id. 
+     * Checa se a requisição foi feita a partir da agenda da single do espaço
+     * e retorna seu id. Se não foi, retorna falso.
      *
      * @param array $app
-     * @return string
+     * @return int | false
      */
-    protected function checkSender($app){
+    protected function getSpaceSingleAgendaRequest(){
+        $app = App::i();
         if(in_array('space', array_keys($app->view->controller->getData))){
             $spaceId = $app->view->controller->getData['space'];
             preg_match_all('!\d+!', $spaceId, $matches);
@@ -344,8 +351,10 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Filtra as ocorrências apenas pelas quais ocorrerão no espaço selecionado
-     *
+     * Filtra as ocorrências apenas pelas quais ocorrem no espaço selecionado
+     * 
+     * Isto é útil para quando estamos filtrando eventos por um espaço e não queremos que apareçam suas ocorrências em outros espaços
+     * 
      * @param string $space_id id do espaço
      * @param array $data array com os eventos
      * @return array
@@ -370,11 +379,12 @@ class Html extends \MapasCulturais\ApiOutput{
     	$entity = $app->view->controller->entityClassName;
     	$label = $entity::getPropertiesLabels();
         $first = true; 
-        $isRequestFromAgenda = $this->checkSender($app);
+        $isRequestFromAgenda = $this->getSpaceSingleAgendaRequest();
 
         if($isRequestFromAgenda){
             $data = $this->filterOccurrencesBySpace($isRequestFromAgenda, $data);
         }
+        
         ?>
         <table border="1">
         <?php foreach($data as $item):
