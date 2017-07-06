@@ -38,10 +38,14 @@ Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e ba
 
 
 ### Documentação 
+
+A documentação pode ser navegada no endereço (http://docs.mapasculturais.org)
+
 Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
 - [Deploy](documentation/docs/mc_deploy.md)
 - [API](documentation/docs/mc_config_api.md)
 - [Guia do desenvolvedor](documentation/docs/mc_developer_guide.md)
+- [Como contribuir](documentation/docs/mc_developer_contribute.md)
 - [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
 - [Desenvolver um novo tema](documentation/docs/mc_developer_theme.md)
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](documentation/docs/mc_deploy_shapefiles.md)
@@ -99,6 +103,7 @@ Vale lembrar que os requisitos de hardware podem variar de acordo com a latênci
 
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * [Chat de discussão](http://chat.mapasculturais.org)
+* Telegram: [![Join the chat at https://telegram.me/#MapasCulturais](https://patrolavia.github.io/telegram-badge/chat.png)](https://telegram.me/joinchat/AVzIFAqpz3VFIPehrPpbZQ)
  
 
 ### Ambientes de desenvolvimento e teste

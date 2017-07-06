@@ -6,7 +6,15 @@ A seguir serão descritos os passos para efetuar a atualização com sucesso.
 
 ## Atualizando o código fonte
 
-O código pode ser atualizado através de um release, disponível em https://github.com/hacklabr/mapasculturais/releases, ou pode ser atualizado diretamente do branch `v2`.
+### Antes de começar
+
+Antes de mais nada, faça backup do seu ambiente e do seu banco de dados.
+
+O código deve ser atualizado através de um release, disponível em https://github.com/hacklabr/mapasculturais/releases. Veja qual é a nova versão e qual é a versão que você está utilizando.
+
+Visite a pasta de documentação [Release notes](https://github.com/hacklabr/mapasculturais/documentation/releases-notes) e verifique as anotações que existem para as versões entre a sua e a mais nova. Para algumas versões específicas, podem haver procedimentos específicos, ou apenas cuidados a serem tomados. Leia com atenção e veja se precisa preparar alguma coisa antes de começar o procedimento de atualização.
+
+### Atuaizando
 
 O primeiro passo é atualizar as referências do novo código (pra saber que existem novas atualização no código e releases), isso pode ser feito utilizando o comando `git fetch`:
 
@@ -14,51 +22,13 @@ O primeiro passo é atualizar as referências do novo código (pra saber que exi
 $ git fetch
 ```
 
-### Atualizando através de uma TAG (release)
-
-Se for atualizar através de um release, o é `git checkout [release]`, onde `[release]` é o release desejado. A seguir um exemplo fazendo um checkout para a versão "2.1.0":
+Para atualizar para uma nova versão estável, rode o comando `git checkout [release]`, onde `[release]` é o release desejado. A seguir um exemplo fazendo um checkout para a versão "3.2":
 
 ```
-$ git checkout 2.1.0
+$ git checkout 3.2
 ```
 
-### Atualizando através do branch V2 (versão estável)
-
-Para atualizar o código fonte através do branch V2, primeiro é necessário verificar se o branch é o correto. É possível verificar com o comando `git status`, o resultado deve ser parecido com isto:
-
-```
-$ git status
-On branch v2
-Your branch is up-to-date with 'origin/v2'.
-
-nothing added to commit but untracked files present (use "git add" to track)
-
-```
-
-Se o resultado estiver diferente disso (origin/v2), é possível alterar para o branch utilizando o comando `git checkout [nome_da_branch]`:
-
-```
-$ git checkout v2
-```
-
-Por fim, o comando `git pull` para atualizar os arquivos:
-
-```
-$ git pull
-```
-
-### Atualização do Tema
-
-Se sua instalação não utiliza um Tema customizado com repositório do Github, basta prosseguir para o próximo passo.
-
-Se houver alguma atualização no tema que está sendo utilizado, que venha de outro repositório que não seja o Mapas Culturais. Também é necessário entrar na pasta do tema e atualizar o tema utilizando o `git pull` (no exemplo, a pasta do tema é "Macondo"):
-
-```
-$ cd src/protected/application/themes/Macondo
-$ git pull
-```
-
-## Script de Atualização
+### Script de Atualização
 
 Após obter o código fonte, o próximo passo é rodar o script `deploy.sh` localizado na pasta `scripts`. Esse arquivo atualiza libs e dependências da aplicação e atualiza o banco de dados com novos campos e/ou tabelas. O comando pra executar esse script (a partir da raiz da aplicação) é:
 
