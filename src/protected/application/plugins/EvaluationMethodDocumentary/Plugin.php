@@ -41,7 +41,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
-    public function getConsolidatedResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
+    public function getEvaluationResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
         $data = (array) $evaluation->evaluationData;
         
         if(count($data) == 0){

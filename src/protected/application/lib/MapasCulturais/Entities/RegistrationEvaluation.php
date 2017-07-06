@@ -80,7 +80,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
 
         $evaluation_method = $this->getEvaluationMethod();
 
-        $this->result = $evaluation_method->getConsolidatedResult($this);
+        $this->result = $evaluation_method->getEvaluationResult($this);
     }
 
     /**

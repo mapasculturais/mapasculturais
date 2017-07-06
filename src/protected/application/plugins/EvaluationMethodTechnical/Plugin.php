@@ -71,7 +71,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
-    public function getConsolidatedResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
+    public function getEvaluationResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
         $total = 0;
 
         $cfg = $evaluation->getEvaluationMethodConfiguration();
@@ -89,7 +89,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function evaluationToString(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
-        $result = $this->getConsolidatedResult($evaluation);
+        $result = $this->getEvaluationResult($evaluation);
 
         if(is_null($result)){
             return i::__('Avaliação incompleta');
