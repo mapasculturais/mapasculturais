@@ -39,8 +39,7 @@ $(function() {
         }else{
             entityToFilter = 'owner';
         }
-
-        console.log(entityToFilter);
+        
         //itens referentes aos eventos
         selectData += ',classificacaoEtaria,project.name,project.singleUrl,occurrences.{*,space.{*}}';
         searchData['@from'] = dateFrom;
