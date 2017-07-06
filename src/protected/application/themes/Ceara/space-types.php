@@ -184,6 +184,12 @@ return array(
             'validations' => array(
                 "v::url('plus.google.com')" => "A url informada é inválida."
             )
+        ),
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
+            )
         )
     ),
 

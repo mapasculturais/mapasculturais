@@ -219,3 +219,9 @@ h1 .icon {
         content: $unicode-googleplus;
     }
 }
+.icon-instagram {
+    color: #f0f !important;
+    &:before {
+        content: $unicode-instagram;
+    }
+}

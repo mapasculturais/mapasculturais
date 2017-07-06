@@ -7,9 +7,12 @@ jQuery(function(){
     MapasCulturais.Editables.init('#editable-entity');
     MapasCulturais.AjaxUploader.init();
     MapasCulturais.MetalistManager.init();
-
+    
+    var labels = MapasCulturais.gettext.editable;
 
     MapasCulturais.Remove.init();
+    MapasCulturais.RemoveBanner.init();
+
 
 
     $('.js-registration-action').click(function(){
@@ -101,7 +104,6 @@ jQuery(function(){
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
-        var labels = MapasCulturais.gettext.editable;
         
         editable.container.$form.find('.editable-cancel').attr('title', labels['cancel']);
         //textarea display default Ctrl+Enter and Esc shortcuts
@@ -163,6 +165,68 @@ jQuery(function(){
             return false;
         });
     }
+    
+    
+    // Human Crop for images
+    $('input.human_crop').change(function() {
+        
+        if (!window.FileReader)
+            return; // browser não suporta
+        
+        var reader = new FileReader();
+        var $form = $(this).closest('form');
+        var $formEditBox = $form.closest('.js-editbox');
+        var $sendButton = $('#editbox-human-crop').find('button[type="submit"]');
+        
+        var cropWidth = $form.data('crop-width');
+        var cropHeight = $form.data('crop-height');
+        
+        $sendButton.html(labels['Crop']);
+        
+        reader.onload = function(event) {
+            the_url = event.target.result
+            $('#human-crop-image').attr('src', the_url);
+            
+            var croppedImage;
+            
+            var cropper = $('#human-crop-image').cropbox({
+                width: cropWidth,
+                height: cropHeight,
+                showControls: 'always',
+                zoom: 30,
+                //controls: '<div class="cropControls"><span>Arraste para cortar</span><button class="cropZoomIn" type="button"></button><button class="cropZoomOut" type="button"></button></div>',
+            }, function() {
+                // on load
+                $('.cropControls span').html(labels['CropHelp']); // it did not work set the controls options. the buttons did not work
+            }).on('cropbox', function(e, data, img) {
+                croppedImage = img.getBlob();
+            });
+            
+            $sendButton.one('click',function() {
+                var formData = new FormData();
+                formData.append($form.data('group'), croppedImage);
+
+                // Dont ask me how, but I found this way to manipulate AjaxForm options
+                $._data($form[0], 'events')['submit'][0].data.processData = false;
+                $._data($form[0], 'events')['submit'][0].data.formData = formData;
+                
+                $formEditBox.show();
+                MapasCulturais.EditBox.close('#editbox-human-crop');
+                
+            });
+            
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+        
+        // copy the classes from the original editBox, so we position our new editbox the same way
+        $('#editbox-human-crop').attr('class', $formEditBox.attr('class')).width(cropWidth).height(cropHeight + 80);
+        MapasCulturais.EditBox.open('#editbox-human-crop', $($form.data('target')));
+        
+        // hide original editBox
+        $formEditBox.hide();
+        
+    });
 
 });
 
@@ -202,6 +266,30 @@ MapasCulturais.Remove = {
         });
     }
 }
+
+MapasCulturais.RemoveBanner = {
+    init: function(){
+        $('body').on('click', '.banner-delete', function(){
+            var href   = $(this).data('href');
+            var result = window.confirm(MapasCulturais.gettext.editable['removeAgentBackground']);
+            $('#remove-background-button').toggleClass('display-background-button');
+            $('#remove-background-button').toggleClass('hide-background-button');
+
+            if(result){
+                $.getJSON(href, function(r){
+                    if(r.error){
+                        MapasCulturais.Messages.error(r.data);
+                    }else{
+                        $('#header-banner').css('background-image', 'url()');
+                    }
+                });
+            }
+            else{
+                return false;
+            }
+        });
+    }
+};
 
 MapasCulturais.Editables = {
 
@@ -708,8 +796,10 @@ MapasCulturais.AjaxUploader = {
 
     },
     animationTime: 100,
-    init: function(selector) {
+    init: function(selector, extraOptions) {
         selector = selector || '.js-ajax-upload';
+        extraOptions = extraOptions || {};
+        
         $(selector).each(function(){
 
             if($(this).data('initialized'))
@@ -724,7 +814,7 @@ MapasCulturais.AjaxUploader = {
             MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
             var $this = $(this);
             // bind form using 'ajaxForm'
-            $(this).ajaxForm({
+            $(this).ajaxForm(Object.assign({
                 beforeSend: function(xhr){
                     $this.data('xhr', xhr);
                     //@TODO validate size and type before upload
@@ -783,6 +873,9 @@ MapasCulturais.AjaxUploader = {
 
                             break;
                             case 'background-image':
+                                $('#remove-background-button').toggleClass('hide-background-button');
+                                $('#remove-background-button').toggleClass('display-background-button');
+                                
                                 $target.each(function(){
                                     try{
                                         if($form.data('transform'))
@@ -791,6 +884,8 @@ MapasCulturais.AjaxUploader = {
                                             $(this).css('background-image', 'url(' + response[group].url + ')');
                                     }catch (e){}
                                 });
+
+                                $('#remove-background-button a').data('href', response[group].deleteUrl);
                             break;
 
                             case 'append':
@@ -824,7 +919,7 @@ MapasCulturais.AjaxUploader = {
 
                 // $.ajax options can be used here too, for example:
                 //timeout:   3000
-            });
+            },extraOptions));
         });
 
 

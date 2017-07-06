@@ -28,7 +28,21 @@ return array(
             'validations' => array(
                 "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
-        )
+        ),
+
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
+            )
+        ),
+
+        'registrationSeals' => array(
+                'label' => \MapasCulturais\i::__('Selos'),
+                'serialize' => function($value) { return json_encode($value); },
+                'unserialize' => function($value) { return json_decode($value); }
+        ),
+
     ),
     'items' => array(
         1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),

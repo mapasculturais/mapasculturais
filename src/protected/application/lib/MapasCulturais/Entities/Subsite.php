@@ -347,19 +347,19 @@ class Subsite extends \MapasCulturais\Entity
 
         $entidades = explode(';', $this->entidades_habilitadas);
 
-        if(!in_array('Agentes', $entidades)){
+        if(!in_array('Agents', $entidades)){
             $config['app.enabled.agents'] = false;
         }
 
-        if (!in_array('Projetos', $entidades)) {
+        if (!in_array('Projects', $entidades)) {
             $config['app.enabled.projects'] = false;
         }
 
-        if (!in_array('Espaços', $entidades)) {
+        if (!in_array('Spaces', $entidades)) {
             $config['app.enabled.spaces'] = false;
         }
 
-        if (!in_array('Eventos', $entidades)) {
+        if (!in_array('Events', $entidades)) {
             $config['app.enabled.events'] = false;
         }
 
