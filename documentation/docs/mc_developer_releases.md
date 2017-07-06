@@ -38,3 +38,12 @@ Finalmente, fazemos o release, criando uma nova tag, e enviando as modificaçõe
 ```
 git flow release finish VERSION
 ```
+
+Envie tudo para o servidor
+
+```
+git push --all
+git push --tags
+```
+
+[Crie um release](https://github.com/hacklabr/mapasculturais/releases/new) no github a partir da tag recem criada e coloque o changelog na descrição.
