@@ -19,3 +19,9 @@ Agora é possível adicionar uma descrição para as fotos da galeria, que são 
 
 * Agora a interface não fala mais em "ocorrência" de eventos, mas em "local e data"
 * A aba Permissões, que mostra os agentes que tem controle sobre a entidade, passa a se chamar Reponsáveis
+
+
+# Exportação de planilha 
+
+* Adicionado a possibilidade de gerar uma planilha a partir dos perfis de espaço, agente e projeto
+* Mudando a estrutura da planilha de eventos, com os dados separados (ver https://github.com/hacklabr/mapasculturais/issues/1165)

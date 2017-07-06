@@ -300,7 +300,8 @@
                         if(def.isOwningSide){
                             exportSelect.push(prop + '.{id,name,singleUrl}');
                         } else if (prop == 'occurrences') {
-                            exportSelect.push('occurrences.{space.{id,name,singleUrl},rule}');
+                            exportSelect.push('occurrences.{space.{id,name,singleUrl,En_CEP,' + 
+                                'En_Nome_Logradouro,En_Num,En_Complemento,En_Bairro,En_Municipio,En_Estado},rule}');
                         }
                     }
                 });
