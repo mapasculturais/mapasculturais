@@ -2126,6 +2126,26 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    function getCurrentRegistrationEvaluation(Entities\Registration $entity){
+        $evaluation = null;
+
+        if(isset($entity->controller->urlData['uid'])){
+            $evaluation = App::i()->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $entity,
+                'user' => $entity->controller->urlData['uid']
+            ]);
+            if($evaluation && !$evaluation->registration->equals($entity)){
+                $evaluation = null;
+            }
+        } else {
+            $evaluation = $entity->getUserEvaluation();
+        }
+
+        $evaluation->checkPermission('view');
+
+        return $evaluation;
+    }
+
     function addRegistrationToJs(Entities\Registration $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
                 $entity->opportunity->registrationFileConfigurations->toArray() : array();
@@ -2144,7 +2164,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationAgents'] = array();
         if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['registration'] = $entity;
-            $this->jsObject['evaluation'] = $entity->getUserEvaluation();
+            $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);
             $this->jsObject['evaluationConfiguration'] = $entity->opportunity->evaluationMethodConfiguration;
         }
         foreach($entity->_getDefinitionsWithAgents() as $def){

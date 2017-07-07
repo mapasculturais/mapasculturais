@@ -42,7 +42,7 @@
         </tr>
         <tr ng-repeat="evaluation in ::data.opportunityEvaluations" id="registration-{{::evaluation.registration.id}}" class="{{getStatusSlug(evaluation.registration.status)}}" ng-show="showRegistration(evaluation.registration)" >
             <td class="registration-id-col"><strong>{{::evaluation.valuer.name}}</strong></td>
-            <td class="registration-id-col"><strong>{{::evaluation.registration.number}}</strong></td>
+            <td class="registration-id-col"><a href='{{::evaluation.evaluation.singleUrl}}'>{{::evaluation.registration.number}}</a></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{::evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>

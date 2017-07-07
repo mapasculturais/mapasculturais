@@ -132,8 +132,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $result['user'] = $this->user->id;
         $result['agent'] = $this->user->profile->simplify('id,name,singleUrl');
         $result['registration'] = $this->registration->simplify('id,number,singleUrl');
+        $result['singleUrl'] = $this->getSingleUrl();
 
         return $result;
+    }
+
+    function getSingleUrl() {
+        return App::i()->createUrl('registration', 'view', [$this->registration->id, 'uid' => $this->user->id]);
     }
 
     //============================================================= //

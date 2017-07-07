@@ -260,12 +260,18 @@ class Registration extends EntityController {
     
     function POST_saveEvaluation(){
         $registration = $this->getRequestedEntity();
+
+        if(isset($this->postData['uid'])){
+            $user = App::i()->repo('User')->find($this->postData['uid']);
+        } else {
+            $user = null;
+        }
         
         if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
             $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
-            $evaluation = $registration->saveUserEvaluation($this->postData['data'], null, $status);
+            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
         } else {
-            $evaluation = $registration->saveUserEvaluation($this->postData['data']);
+            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
         
         

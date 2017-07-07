@@ -9,6 +9,8 @@ $evaluation_view_part_name = $evaluationMethod->getEvaluationViewPartName();
 
 $params = ['opportunity' => $opportunity, 'entity' => $entity, 'evaluationMethod' => $evaluationMethod];
 
+$evaluation = $this->getCurrentRegistrationEvaluation($entity);
+
 $infos = (array) $configuration->infos;
 ?>
 <div class="sidebar registration sidebar-right">
@@ -48,6 +50,12 @@ $infos = (array) $configuration->infos;
 
             </div>
             <form>
+                <?php if($opportunity->canUser('@control') && $evaluation): ?>
+                <div>
+                    <strong><?php i::_e('Avaliador')?>:</strong> <?php echo $evaluation->user->profile->name ?>
+                    <input type="hidden" name="uid" value="<?php echo $evaluation->user->id; ?>" />
+                </div>
+                <?php endif; ?>
                 <?php $this->part($evaluation_form_part_name, $params); ?>
                 <hr>
                 <div style="text-align: right;">
