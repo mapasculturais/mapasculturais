@@ -794,12 +794,9 @@ abstract class Entity implements \JsonSerializable{
      * Generate and insert unique id into the database field for this entity.
      */
     public function _createUniqueId(){
-        $app = App::i();
-        $app->log->debug("Estamos aqui");
         $save_unq = true;
         $unique_value = "";
         if(empty($this->unique_id)) {
-            $app->log->debug("Estamos aqui 2");
             if($save_unq && $this->En_Estado) {
                 $unique_value .= "|" . $this->En_Estado;   
             } else {
@@ -830,9 +827,7 @@ abstract class Entity implements \JsonSerializable{
                 $save_unq = false;
             }
             if($save_unq && !empty($unique_value)) {
-                $app->log->debug("Estamos aqui 3");
-                $app->log->debug($this->requestedEntity . $unique_value);
-                $this->unique_id = $this->requestedEntity . $unique_value;
+                $this->unique_id = $this->getClassName(). $unique_value;
             }
         }
     }

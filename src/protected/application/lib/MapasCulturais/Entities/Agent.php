@@ -462,8 +462,8 @@ class Agent extends \MapasCulturais\Entity
     }
 
     public function save($flush = false) {
+        $this->_createUniqueId();    
         parent::save($flush);
-        $this->_createUniqueId();        
     }
 
     //============================================================= //
