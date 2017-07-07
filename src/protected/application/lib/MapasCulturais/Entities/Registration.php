@@ -181,6 +181,11 @@ class Registration extends \MapasCulturais\Entity
             'editUrl' => $this->editUrl
         ];
 
+        if($this->canUser('viewConsolidatedResult')){
+            $json['evaluationResultValue'] = $this->getEvaluationResultValue();
+            $json['evaluationResultString'] = $this->getEvaluationResultString();
+        }
+
         foreach($this->__metadata as $meta){
             if(substr($meta->key, 0, 6) === 'field_'){
                 $key = $meta->key;
@@ -328,6 +333,17 @@ class Registration extends \MapasCulturais\Entity
             }
         }
         return $definitions;
+    }
+
+    function getEvaluationResultValue(){
+        $method = $this->getEvaluationMethod();
+        return $method->getConsolidatedResult($this);
+    }
+
+    function getEvaluationResultString(){
+        $method = $this->getEvaluationMethod();
+        $value = $this->getEvaluationResultValue();
+        return $method->valueToString($value);
     }
 
     function getAgentsData(){
@@ -714,6 +730,14 @@ class Registration extends \MapasCulturais\Entity
         }
         
         return $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+    }
+
+    protected function canUserViewConsolidatedResult($user){
+        if($this->status <= 0) {
+            return false;
+        }
+        
+        return $this->getEvaluationMethod()->canUserViewConsolidatedResult($this, $user);
     }
     
     function getExtraPermissionCacheUsers(){

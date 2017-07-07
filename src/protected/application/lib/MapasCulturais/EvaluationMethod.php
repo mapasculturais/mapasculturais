@@ -10,13 +10,24 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function getName();
     abstract function getDescription();
 
+    abstract protected function _getConsolidatedResult(Entities\Registration $registration);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
-    abstract function evaluationToString(Entities\RegistrationEvaluation $evaluation);
+
+    abstract function valueToString($value);
+
+    function evaluationToString(Entities\RegistrationEvaluation $evaluation){
+        return $this->valueToString($evaluation->result);
+    }
     
     function fetchRegistrations(){
         return false;
     }
 
+    function getConsolidatedResult(Entities\Registration $registration){
+        $registration->checkPermission('viewConsolidatedResult');
+
+        return $this->_getConsolidatedResult($registration);
+    }
 
     public function canUserEvaluateRegistration(Entities\Registration $registration, $user){
         if($user->is('guest')){
@@ -73,6 +84,16 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         }
         
         return $can;
+    }
+
+    function canUserViewConsolidatedResult(Entities\Registration $registration){
+        $opp = $registration->opportunity;
+
+        if($opp->publishedRegistrations || $opp->canUser('@control')){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function getEvaluationFormPartName(){

@@ -41,6 +41,19 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
+    public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
+        $app = App::i();
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
+
+        $result = true;
+        foreach ($evaluations as $eval){
+            $result = $result && $this->getEvaluationResult($eval);
+        }
+
+        return $result;
+    }
+
     public function getEvaluationResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
         $data = (array) $evaluation->evaluationData;
         
@@ -57,12 +70,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return true;
     }
 
-    public function evaluationToString(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
-        if(is_null($evaluation->result)){
+    public function valueToString($value) {
+        if(is_null($value)){
             return '';
         }
 
-        if($evaluation->result){
+        if($value){
             return i::__('Inscrição válida');
         } else {
             return i::__('Inscrição inválida');
