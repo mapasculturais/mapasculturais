@@ -34,13 +34,16 @@
                 <?php \MapasCulturais\i::_e("Anexos");?>
             </th>
             <th class="registration-status-col">
+                <?php \MapasCulturais\i::_e("Avaliação");?>
+            </th>
+            <th class="registration-status-col">
                 <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan='5'>
+            <td colspan='6'>
                 <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição enviada.");?></span>
                 <span ng-if="usingFilters() && getFilteredRegistrations().length === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
                 <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1"><?php \MapasCulturais\i::_e("1 inscrição enviada.");?></span>
@@ -69,6 +72,9 @@
             </td>
             <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
                 <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
+            </td>
+            <td class="registration-status-col">
+                {{reg.evaluationResult}}
             </td>
             <td class="registration-status-col">
                 <?php if ($entity->publishedRegistrations): ?>
