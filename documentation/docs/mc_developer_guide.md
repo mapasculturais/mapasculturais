@@ -1,7 +1,7 @@
 # Mapas Culturais > Guia do Desenvolvedor
 ----
 
-O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcionamento do Mapas Culturais para quem quiser colaborar no desenvolvimento da plataforma. Este documento está ainda incompleto e em constante desenvolvimento.
+O intuito deste documento é dar uma visão panorâmica da arquitetura e funcionamento do Mapas Culturais para quem quiser colaborar no desenvolvimento da plataforma. Este documento está ainda incompleto e em constante desenvolvimento.
 
 - [Branches e desenvolvimento](#branches-e-desenvolvimento)
 - [Requisitos](#requisitos)
@@ -34,32 +34,20 @@ O intuíto deste documento é dar uma visão panorâmica da arquitetura e funcio
 
 ## Branches e desenvolvimento
 
-Atualmente a aplicação possui 4 branches principais: **Master**, **RC**, **v2** e **v1**. A saber:
+O desenvolvimento do Mapas Culturais segue o padrão [Git Workflow](https://danielkummer.github.io/git-flow-cheatsheet/), com as seguites branches principais:
 
-**Branch Master**: 
+**Branch develop**: 
 
   - Branch utilizado para desenvolvimento;
   - Tudo que existe de novo está nesse branch;
-  - Atenção: para desenvolvimento de novas features, o desenvolvedor deve criar um branch novo a partir da versão v2 (stable) e não do master;
+  - Atenção: para desenvolvimento de novas features, o desenvolvedor deve criar um branch novo a partir desta branch ou da branch master;
 
-**Branch RC** (release candidate): 
+**Branch master**:
 
-  - Branch utilizado para um conjunto estável de novas funcionalidades;
-  - Após um conjunto novo de funcionalidades nessa branch, a branch vira no novo stable;
+  - Branch com a versão estável da aplicação;
 
-**Branch v2**:
+Para fazer uma nova instalação, utilize o release (tag) mais atual.
 
-  - Atual stable da aplicação;
-  - Novas instalações devem ser feitas usando esse branch;
-  - Branches novos para novas funcionalidades devem partir desse branch;
-  -  Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e depois gerarem merge no **Branch v2**, no **Branch RC** e no **Branch Master**. Caso seja um bugfix estrutural ou de segurança que impacte todas as versões, deve gerar merge no **Branch v1** também. 
-
-**Branch v1**: 
-
-  - Antigo stable da aplicação;
-  - Bugfixes relativos a esse branch devem sair(um novo branch para o bug deve ser criado) e voltar para esse mesmo branch (uma vez o branch do bug finalizado, deve haver um merge para para o v1 novamente); 
-
-![Alt text](images/2016_05_19_branches.png)
 
 ## Requisitos
 
@@ -93,6 +81,7 @@ Ver arquivo [composer.json](../src/protected/composer.json)
 - [mustache/mustache](https://packagist.org/packages/mustache/mustache) - Utilizado para renderizar alguns templates.
 - [phpoffice/phpword](https://packagist.org/packages/phpoffice/phpword) - Utilizado para criar .docs ou .xls onde necessário.
 - [michelf/php-markdown](https://packagist.org/packages/michelf/php-markdown) - Utilizado para renderizar os markdowns das [páginas](#páginas)
+- [pomo/pomo](https://packagist.org/packages/pomo/pomo) - Biblioteca Gettext para PHP, usado para internacionalização
 
 ### Bibliotecas Javascript Utilizadas
 Ver [bibliotecas javascript utilizadas no tema](#bibliotecas-javascript-utilizadas-no-tema).
