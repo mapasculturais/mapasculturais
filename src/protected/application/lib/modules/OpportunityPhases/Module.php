@@ -196,11 +196,13 @@ class Module extends \MapasCulturais\Module{
             $opportunity_class_name = $parent->getSpecializedClassName();
             
             $phase = new $opportunity_class_name;
+
             $phase->status = Entities\Opportunity::STATUS_DRAFT;
             $phase->parent = $parent;
             $phase->ownerEntity = $parent->ownerEntity;
             
             $phase->name = $_phases[$num_phases];
+            $phase->registrationCategories = $parent->registrationCategories;
             $phase->shortDescription = sprintf(\MapasCulturais\i::__('Descrição da %s'), $_phases[$num_phases]);
             $phase->type = $parent->type;
             $phase->owner = $parent->owner;
@@ -285,10 +287,11 @@ class Module extends \MapasCulturais\Module{
             });
             
             if(count($registrations) < 1){
-                $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas ou suplentes na fase anterior'), 400);
+                $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas fase anterior'), 400);
             }
             
             $new_registrations = [];
+
             
             $app->disableAccessControl();
             foreach ($registrations as $r){
@@ -296,9 +299,15 @@ class Module extends \MapasCulturais\Module{
                 $reg->owner = $r->owner;
                 $reg->opportunity = $target_opportunity;
                 $reg->status = Entities\Registration::STATUS_DRAFT;
+
                 $reg->previousPhaseRegistrationId = $r->id;
+                $reg->category = $r->category;
                 $reg->save(true);
-                
+
+                if(isset($this->data['sent'])){
+                    $reg->send();
+                }
+
                 $r->nextPhaseRegistrationId = $reg->id;
                 $r->save(true);
                 
