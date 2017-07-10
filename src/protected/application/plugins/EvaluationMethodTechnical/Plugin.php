@@ -81,7 +81,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $result += $this->getEvaluationResult($eval);
         }
 
-        return $result / count($evaluations);
+        $num = count($evaluations);
+        if($num){
+            return $result / $num;
+        } else {
+            return null;
+        }
     }
 
     public function getEvaluationResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
