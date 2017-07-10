@@ -54,12 +54,4 @@ return [
 
         $app->auth->logout();
     },
-    'generate unique id for Agent and Space entities' => function () {
-        foreach (['Agent', 'Space'] as $class){
-            DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) {
-                $entity->_createUniqueId();
-                $entity->save(true);
-            });
-        }
-    },
 ];
