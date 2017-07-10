@@ -30,7 +30,6 @@ $(function(){
                 };
 
                 var val = MapasCulturais.evaluation ? MapasCulturais.evaluation.evaluationData[id] : null;
-
                 if(val){
                     data.empty = true;
                     data.invalid = false;
@@ -43,7 +42,8 @@ $(function(){
                         data.empty = false;
                         data.valid = true;
                     }
-                    data.obs = data.obs;
+
+                    data.obs = val.obs;
                 } else {
                     data.empty = true;
                     data.invalid = false;
