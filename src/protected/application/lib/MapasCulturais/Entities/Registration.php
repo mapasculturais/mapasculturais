@@ -463,7 +463,11 @@ class Registration extends \MapasCulturais\Entity
         $this->checkPermission('send');
         $app = App::i();
 
-        $app->disableAccessControl();
+        $_access_control_enabled = $app->isAccessControlEnabled();
+
+        if($_enabled){
+            $app->disableAccessControl();
+        }
 
         // copies agents data including configured private
 
@@ -476,8 +480,10 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
-        
-        $app->enableAccessControl();
+
+        if($_access_control_enabled){
+            $app->enableAccessControl();
+        }
         
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
