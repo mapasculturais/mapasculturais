@@ -8,11 +8,11 @@
 <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
         <tr>
-            <th class="registration-agents-col">
-                <?php \MapasCulturais\i::_e("Avaliador");?>
-            </th>
             <th class="registration-id-col">
                 <?php \MapasCulturais\i::_e("Inscrição");?>
+            </th>
+            <th class="registration-id-col">
+                <?php \MapasCulturais\i::_e("Avaliador");?>
             </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
                 <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
@@ -41,8 +41,8 @@
             </td>
         </tr>
         <tr ng-repeat="evaluation in ::data.opportunityEvaluations" id="registration-{{::evaluation.registration.id}}" class="{{getStatusSlug(evaluation.registration.status)}}" ng-show="showRegistration(evaluation.registration)" >
-            <td class="registration-id-col"><strong>{{::evaluation.valuer.name}}</strong></td>
-            <td class="registration-id-col"><a href='{{::evaluation.evaluation.singleUrl}}'>{{::evaluation.registration.number}}</a></td>
+            <td class="registration-id-col"><strong>{{::evaluation.registration.number}}</strong></td>
+            <td class="registration-id-col">{{::evaluation.valuer.name}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{::evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>
@@ -51,12 +51,10 @@
                 </p>
             </td>
             <td class="registration-status-col">
-                <div ng-show="::getEvaluationResultString(evaluation)">
-                    <strong>{{::getEvaluationStatusLabel(evaluation)}} / {{::getEvaluationResultString(evaluation)}}</strong>
-                </div>
-                <div ng-hide="::getEvaluationResultString(evaluation)">
-                    {{::getEvaluationStatusLabel(evaluation)}}
-                </div>
+                <a href='{{::evaluation.evaluation.singleUrl}}'>
+                    <strong ng-show="::getEvaluationResultString(evaluation)">{{::getEvaluationStatusLabel(evaluation)}} / {{::getEvaluationResultString(evaluation)}}</strong>
+                    <span ng-hide="::getEvaluationResultString(evaluation)">{{::getEvaluationStatusLabel(evaluation)}}</span>
+                </a>
             </td>
         </tr>
     </tbody>

@@ -74,7 +74,7 @@
                 <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
             </td>
             <td class="registration-status-col">
-                {{reg.evaluationResult}}
+                {{reg.evaluationResultString}}
             </td>
             <td class="registration-status-col">
                 <?php if ($entity->publishedRegistrations): ?>

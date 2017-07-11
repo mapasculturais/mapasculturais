@@ -2141,7 +2141,9 @@ class Theme extends MapasCulturais\Theme {
             $evaluation = $entity->getUserEvaluation();
         }
 
-        $evaluation->checkPermission('view');
+        if($evaluation){
+            $evaluation->checkPermission('modify');
+        }
 
         return $evaluation;
     }
@@ -2182,8 +2184,6 @@ class Theme extends MapasCulturais\Theme {
             }
             $this->jsObject['entity']['registrationAgents'][] = $def;
         }
-
-
     }
 
     /**
