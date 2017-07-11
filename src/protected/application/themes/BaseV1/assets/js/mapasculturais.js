@@ -266,6 +266,15 @@ $(function(){
             descAgent.show().css('top',-((descAgentHeight)+10));
         });
     }
+
+    function setEvaluationFormHeight(){
+        var h = $(window).height() - $('#main-header').height();
+        $('#registration-evaluation-form').height(h - 50);
+    }
+
+    setEvaluationFormHeight();
+
+    $(window).resize(setEvaluationFormHeight);
 });
 
 MapasCulturais.utils = {

@@ -17,17 +17,6 @@ $infos = (array) $configuration->infos;
     <?php if($action === 'single'): ?>
 
         <?php if($entity->canUser('viewUserEvaluation')): ?>
-            <style>
-            .evaluation-form {
-                position:fixed;
-                width:22%;
-            }
-            @media screen and (max-width: 1366px) and (min-width: 1200px) {
-                .evaluation-form {
-                    width:18%;
-                }
-            }
-            </style>
         <div id="registration-evaluation-form" class="evaluation-form evaluation-form--<?php echo $evaluationMethod->getSlug(); ?>">
             <?php if($entity->canUser('evaluate')): ?>
             <div id="documentary-evaluation-info" class="alert info">
