@@ -372,10 +372,6 @@ class Module extends \MapasCulturais\Module{
         // adiciona na ficha de inscrição das fases o link para a inscrição anterior
         $app->hook('view.partial(singles/registration-<<edit|single>>--header):before', function() use($app){
             $registration = $this->controller->requestedEntity;
-            if($prev_id = $registration->previousPhaseRegistrationId){
-                $previous_phase_registration = $app->repo('Registration')->find($prev_id);
-                $this->part('previous-phase-registration-link', ['previous_phase_registration' => $previous_phase_registration, 'registration' => $registration]);
-            }
             
             if($next_id = $registration->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($next_id);
