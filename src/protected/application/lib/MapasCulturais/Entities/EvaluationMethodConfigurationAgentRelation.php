@@ -27,6 +27,10 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     }
     
     function delete($flush = false) {
+        $evaluations = \MapasCulturais\App::i()->repo('RegistrationEvaluation')->findByOpportunityAndUser($this->owner->opportunity, $this->agent->user);
+        foreach($evaluations as $eval){
+            $eval->delete();
+        }
         parent::delete($flush);
         $this->owner->opportunity->addToRecreatePermissionsCacheList();
     }
