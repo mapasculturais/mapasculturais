@@ -9,6 +9,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->part('singles/opportunity-registrations--intro', ['entity' => $entity]); ?>
 
+    <div class="registration-fieldset">
     <!-- Video Gallery BEGIN -->
     <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
     <!-- Video Gallery END -->
@@ -16,6 +17,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Image Gallery BEGIN -->
     <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
     <!-- Image Gallery END -->
+    </div>
 
     <?php $this->part('singles/opportunity-registrations--rules', ['entity' => $entity]); ?>
     
@@ -26,6 +28,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php endif; ?>
     
     <?php if ($this->isEditable()): ?>
+        <?php $this->part('singles/opportunity-registrations--importexport', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/opportunity-registrations--categories', ['entity' => $entity]) ?>
 
@@ -34,8 +37,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/opportunity-registrations--seals', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/opportunity-registrations--fields', ['entity' => $entity]) ?>
-        
-        <?php $this->part('singles/opportunity-registrations--importexport', ['entity' => $entity]) ?>
         
     <?php endif; ?>
 
