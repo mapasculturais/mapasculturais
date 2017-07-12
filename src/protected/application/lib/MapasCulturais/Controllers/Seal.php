@@ -129,7 +129,7 @@ class Seal extends EntityController {
         }
 
         //hook para que plugins/temas possam adicionar metadados para substituição na mensagem
-        $app->applyHook('sealRelation.certificateText', [&$mensagem, $relation]);
+        $app->applyHook('sealRelation.addMetadado', [&$mensagem, $relation]);
 
         return $mensagem;
     }
