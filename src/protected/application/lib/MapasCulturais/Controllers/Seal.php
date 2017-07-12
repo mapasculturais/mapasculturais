@@ -80,13 +80,7 @@ class Seal extends EntityController {
      * @return mensagem de impressão
      */
     private function getSealRelationCertificateText($relation, $app, $expirationDate, $addLinks = false){
-        //$mensagem = $relation->seal->certificateText;
-        $mensagem = "Certificamos que a instituição de num [musCod] preencheu o Formulário de Visitação 
-        Anual 2015 e está em conformidade com o Decreto n° 8.124/2013, em seu Artigo 4°, inciso VIII, 
-        e com a Lei 11.904/2009, em seu artigo 36. Por meio desta Declaração, 
-        certifica-se a contribuição da supra citada instituição para o desenvolvimento e 
-        monitoramento da Política Nacional de Museus.";
-
+        $mensagem = $relation->seal->certificateText;
         $entity = $relation->seal;
         $nomeSelo = $addLinks ? $this->generateLink($app->createUrl('seal', 'single', ['id'=>$relation->seal->id], 
                     $relation->seal->name), $relation->seal->name) : $relation->seal->name;
@@ -135,7 +129,7 @@ class Seal extends EntityController {
         }
 
         //hook para que plugins/temas possam adicionar metadados para substituição na mensagem
-        $app->applyHook('sealRelation.certificateText', [&$mensagem, $relation]);
+        $app->applyHook('sealRelation.addMetadado', [&$mensagem, $relation]);
 
         return $mensagem;
     }
