@@ -7,11 +7,18 @@ pages:
     - 'Passo-a-passo': 'mc_deploy.md'
     - 'Aplicando um tema': 'mc_deploy_theme.md'
     - 'Inserindo shapefiles': 'mc_deploy_shapefiles.md'
+    - 'Atualizando': 'mc_deploy_update.md'
+    - 'Migração de servidor': 'mc_deploy_migration.md'
 - Configurações:
     - 'API': 'mc_config_api.md'
     - 'Autenticação': 'mc_config_authentication.md'
+    - 'Plugins': 'mc_config_plugins.md'
+    - 'Saas': 'mc_config_saas.md'
+    - 'Selos': 'mc_config_seal.md'
 - Desenvolvimento:
     - 'Guia do Desenvolvedor': 'mc_developer_guide.md'
+    - 'Como contribuir': 'mc_developer_contribute.md'
+    - 'Procedimento de Releases': 'mc_developer_releases.md'
     - 'Docker': 'mc_developer_docker_enviroment.md'
     - 'Keywords': 'mc_developer_keywords.md'
     - 'Entidades': 'mc_developer_entities.md'
@@ -21,6 +28,11 @@ pages:
     - 'Opções de Geocoding e busca por código postal': 'mc_developer_geocoding.md'
     - 'Personalizando montagem do endereço': 'mc_developer_address.md'
     - 'Internacionalização': 'mc_developer_i18n.md'
+- Uso:
+    - 'Histórico de modificações': 'mc_user_history.md'
+    - 'Permissões': 'mc_user_permissions.md'
+    - 'Perfis de usuários': 'mc_user_profiles.md'
+    - 'Selos': 'mc_user_seal.md'
 theme: 'mkdocs'
 markdown_extensions:
     - fenced_code
