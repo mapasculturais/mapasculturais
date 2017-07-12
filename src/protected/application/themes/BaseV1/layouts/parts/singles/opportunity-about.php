@@ -9,6 +9,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->part('singles/opportunity-registrations--intro', ['entity' => $entity]); ?>
 
+    <!-- Video Gallery BEGIN -->
+    <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
+    <!-- Video Gallery END -->
+
+    <!-- Image Gallery BEGIN -->
+    <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
+    <!-- Image Gallery END -->
+
     <?php $this->part('singles/opportunity-registrations--rules', ['entity' => $entity]); ?>
     
     <?php if(!$this->isEditable()): ?>
@@ -30,14 +38,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/opportunity-registrations--importexport', ['entity' => $entity]) ?>
         
     <?php endif; ?>
-    
-    <!-- Video Gallery BEGIN -->
-    <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
-    <!-- Video Gallery END -->
-
-    <!-- Image Gallery BEGIN -->
-    <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
-    <!-- Image Gallery END -->
 
     <?php $this->applyTemplateHook('tab-about','end'); ?>
 </div>
