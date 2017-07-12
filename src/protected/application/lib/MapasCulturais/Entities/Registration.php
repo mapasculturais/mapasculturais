@@ -465,7 +465,7 @@ class Registration extends \MapasCulturais\Entity
 
         $_access_control_enabled = $app->isAccessControlEnabled();
 
-        if($_enabled){
+        if($_access_control_enabled){
             $app->disableAccessControl();
         }
 

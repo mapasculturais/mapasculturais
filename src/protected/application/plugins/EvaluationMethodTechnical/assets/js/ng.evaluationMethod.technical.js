@@ -73,7 +73,12 @@
 
             $scope.addSection = function(){
                 var date = new Date;
-                $scope.data.sections.push({id: 's-' + date.getTime(), name: ''});
+                var new_id = 's-' + date.getTime();
+                $scope.data.sections.push({id: new_id, name: ''});
+
+                $timeout(function(){
+                    jQuery('#' + new_id + ' header input').focus();
+                },1);
             };
 
             $scope.deleteSection = function(section){
@@ -95,8 +100,13 @@
 
             $scope.addCriterion = function(section){
                 var date = new Date;
-                $scope.data.criteria.push({id: 'c-' + date.getTime(), sid: section.id, title: null, min: 0, max: 10, weight:1});
+                var new_id = 'c-' + date.getTime();
+                $scope.data.criteria.push({id: new_id, sid: section.id, title: null, min: 0, max: 10, weight:1});
                 $scope.save({criteria: $scope.data.criteria});
+
+                $timeout(function(){
+                    jQuery('#' + new_id + ' .criterion-title input').focus();S
+                },1);
             }
 
             $scope.deleteCriterion = function(section){

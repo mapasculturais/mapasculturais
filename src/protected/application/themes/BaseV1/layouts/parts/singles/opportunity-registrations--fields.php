@@ -14,10 +14,7 @@ $ditable_class = $can_edit ? 'js-editable' : '';
         <?php if ($this->controller->action == 'create'): ?>
             <p class="allert warning"><?php \MapasCulturais\i::_e("Antes de configurar os campos é preciso salvar o projeto.");?></p>
         <?php else: ?>
-            <p ng-if="data.entity.canUserModifyRegistrationFields">
-                <span class="label"><?php \MapasCulturais\i::_e("Campo de Nome de Projeto");?></span><br>
-                <span class="<?php echo $ditable_class ?>" data-edit="projectName" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Campo de Nome de Projeto");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Habilite o campo de Nome de Projeto");?>"><?php echo $entity->projectName ?></span>
-            </p>
+            <?php $this->part('singles/opportunity-registrations--fields--project-name', ['ditable_class' => $ditable_class, 'entity' => $entity]) ?>
 
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>

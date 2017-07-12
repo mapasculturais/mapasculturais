@@ -2077,7 +2077,7 @@ class Theme extends MapasCulturais\Theme {
     function addOpportunityToJs(Entities\Opportunity $entity){
         $app = App::i();
 
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
+            $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
 
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
@@ -2148,7 +2148,7 @@ class Theme extends MapasCulturais\Theme {
         return $evaluation;
     }
 
-    function addRegistrationToJs(Entities\Registration $entity){
+    function addRegistrationToJs(Entities\Registration $entity){ 
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
                 $entity->opportunity->registrationFileConfigurations->toArray() : array();
 

@@ -12,7 +12,7 @@
                 <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado.");?></em></span>
             </div>
             <div ng-if="field.fieldType === 'section'">
-                <label class="label">{{field.title}}</label>
+                <h4>{{field.title}}</h4>
             </div>
             <div ng-if="field.fieldType === 'file'">
                 <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>

@@ -739,6 +739,12 @@ return [
 
         }
     },
+
+    'fix opportunity parent FK' => function() {
+        __exec("ALTER TABLE opportunity DROP CONSTRAINT IF EXISTS FK_8389C3D7727ACA70;");
+        __exec("UPDATE opportunity SET parent_id = null WHERE parent_id NOT IN (SELECT id FROM opportunity)");
+        __exec("ALTER TABLE opportunity ADD CONSTRAINT opportunity_parent_fk FOREIGN KEY (parent_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
             
     'create opportunity sequence' => function () use ($conn) {
         if(__sequence_exists('opportunity_id_seq')){

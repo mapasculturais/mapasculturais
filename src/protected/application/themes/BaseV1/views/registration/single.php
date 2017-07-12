@@ -9,7 +9,7 @@ $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 $this->addEntityToJs($entity);
 
 $this->addOpportunityToJs($entity->opportunity);
-    
+
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
@@ -37,9 +37,6 @@ $_params = [
 
         <?php $this->part('singles/registration-single--agents', $_params) ?>
         
-        <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
-        <?php //$this->part('singles/registration-single--seals', $_params) ?>
-
         <?php $this->part('singles/registration-single--fields', $_params) ?>
 
         <?php $this->applyTemplateHook('form','end'); ?>
