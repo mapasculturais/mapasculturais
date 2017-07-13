@@ -51,6 +51,7 @@ return array(
         4 =>  array( 'name' => \MapasCulturais\i::__("Reunião")),
         5 =>  array( 'name' => \MapasCulturais\i::__("Mostra")),
         6 =>  array( 'name' => \MapasCulturais\i::__("Convenção")),
+        7 =>  array( 'name' => \MapasCulturais\i::__("Ciclo")),
         8 =>  array( 'name' => \MapasCulturais\i::__("Programa")),
         9 =>  array( 'name' => \MapasCulturais\i::__("Edital")),
         10 => array( 'name' => \MapasCulturais\i::__("Concurso")),
