@@ -1,27 +1,28 @@
 <?php
 use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\i;
 
 function echoStatus($registration){
     switch ($registration->status){
         case R::STATUS_APPROVED:
-            echo \MapasCulturais\i::_e('selecionada');
+            i::_e('selecionada');
             break;
 
         case R::STATUS_NOTAPPROVED:
-            echo \MapasCulturais\i::_e('não selecionada');
+            i::_e('não selecionada');
             break;
 
         case R::STATUS_WAITLIST:
-            echo \MapasCulturais\i::_e('suplente');
+            i::_e('suplente');
             break;
 
         case R::STATUS_INVALID:
-            echo \MapasCulturais\i::_e('inválida');
+            i::_e('inválida');
             break;
 
         case R::STATUS_SENT:
-            echo \MapasCulturais\i::_e('pendente');
+            i::_e('pendente');
             break;
     }
 }
@@ -38,8 +39,9 @@ $_properties = $app->config['registration.propertiesToExport'];
 <table>
     <thead>
         <tr>
-            <th><?php \MapasCulturais\i::_e("Número");?></th>
-            <th><?php \MapasCulturais\i::_e("Status");?></th>
+            <th><?php i::_e("Número") ?></th>
+            <th><?php i::_e("Avaliação") ?></th>
+            <th><?php i::_e("Status") ?></th>
             <?php if($entity->registrationCategories):?>
                 <th><?php echo $entity->registrationCategTitle ?></th>
             <?php endif; ?>
@@ -48,11 +50,11 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <th><?php echo $field->title; ?></th>
             <?php endforeach; ?>
             
-            <th>Arquivos</th>
+            <th><?php i::_e('Arquivos') ?></th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
                 
-                <th><?php echo $def->label; ?> - Área de Atuação</th>
+                <th><?php echo $def->label; ?> - <?php i::_e("Área de Atuação") ?></th>
                 
                 <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
                     <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
@@ -64,7 +66,8 @@ $_properties = $app->config['registration.propertiesToExport'];
         <?php foreach($entity->sentRegistrations as $r): ?>
             <tr>
                 <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
-                <td><?php echo echoStatus($r); ?></td>
+                <td><?php echo $r->getEvaluationResultString(); ?></td>
+                <td><?php echoStatus($r); ?></td>
 
                 <?php if($entity->registrationCategories):?>
                     <td><?php echo $r->category; ?></td>
@@ -80,7 +83,7 @@ $_properties = $app->config['registration.propertiesToExport'];
 
                 <td>
                     <?php if(key_exists('zipArchive', $r->files)): ?>
-                        <a href="<?php echo $r->files['zipArchive']->url; ?>"><?php \MapasCulturais\i::_e("zip");?></a>
+                        <a href="<?php echo $r->files['zipArchive']->url; ?>"><?php i::_e("zip");?></a>
                      <?php endif; ?>
                 </td>
 
