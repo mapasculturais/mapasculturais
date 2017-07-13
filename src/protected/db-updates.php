@@ -747,7 +747,7 @@ return [
     },
 
     'fix opportunity type 35' => function(){
-        __exec("UPDATE TABLE opportunity SET type = 45 WHERE type = 35");
+        __exec("UPDATE opportunity SET type = 45 WHERE type = 35");
     },
             
     'create opportunity sequence' => function () use ($conn) {
