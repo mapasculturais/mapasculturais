@@ -18,8 +18,14 @@ class Plugin extends \MapasCulturais\Plugin {
         $app->sealModels = [];
 
         $app->hook('template(seal.sealrelation.print-certificate):after', function($relation) use($app){
-            if($app->isEnabled('seals') && ($app->user->is('superAdmin') || 
-               $app->user->is('admin') || $app->user->profile->id == $relation->agent->id)) {
+            
+            if($app->isEnabled('seals') && 
+                $relation->seal->seal_model &&
+                (   $app->user->is('superAdmin') || 
+                    $app->user->is('admin') || 
+                    $app->user->profile->id == $relation->agent->id
+                )
+            ) {
                 
                 $this->part('seal-model--printCertificate', ['relation' => $relation]);
             }
@@ -65,28 +71,9 @@ class Plugin extends \MapasCulturais\Plugin {
             $this->requireAuthentication();
             $this->layout = 'nolayout';
 
-            $entity = $relation->seal;
-            $period = new \DateInterval("P" . $entity->validPeriod . "M");
-            $dateIni = $relation->createTimestamp->format("d/m/Y");
-            $dateFin = $relation->createTimestamp->add($period)->format("d/m/Y");
-
-            // todo: fazer o replace em qualquer propriedade baseado no que está dentro de [] ou configurar num array os replaces necessários
-            $replaces = [
-                "\t"                        =>"&nbsp;&nbsp;&nbsp;&nbsp",
-                "[sealName]"                => $relation->seal->name,
-                "[sealOwner]"               => $relation->seal->owner->name,
-                "[sealShortDescription]"    => $relation->seal->shortDescription,
-                "[sealRelationLink]"        => $app->createUrl('seal','printsealrelation',[$relation->id]),
-                "[entityDefinition]"        => $relation->owner->entityTypeLabel(),
-                "[entityName]"              => '<span class="entity-name">'.$relation->owner->name.'</span>',
-                "[dateIni]"                 => $dateIni,
-                "[dateFin]"                 => $dateFin,
-                "[musCod]"                  => $relation->owner->mus_cod
-            ];
-
-            $msg = $relation->seal->certificateText;
-            foreach ($replaces as $k => $v)
-                $msg = str_replace($k, $v, $msg);
+            
+            $msg = $relation->getCertificateText();
+            
             $msg = htmlspecialchars_decode(htmlentities($msg), ENT_NOQUOTES);
 
             include PLUGINS_PATH.$relation->seal->seal_model.'/printsealrelation.php';
