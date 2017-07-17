@@ -51,7 +51,7 @@ class Seal extends EntityController {
         $expirationDate = $this->VerifySealValidity($relation);
         $mensagemPrintSealRelation = $this->getSealRelationCertificateText($relation, $app, $expirationDate['date'], true);
         
-    	$this->render('sealrelation', ['relation'=>$relation, 'printSeal'=>$mensagemPrintSealRelation]);
+    	$this->render('sealrelation', ['relation'=>$relation, 'printSeal'=>$mensagemPrintSealRelation, 'seal'=>$relation->seal]);
     }
 
     public function GET_printSealRelation(){

@@ -17,6 +17,14 @@ class Plugin extends \MapasCulturais\Plugin {
 
         $app->sealModels = [];
 
+        $app->hook('template(seal.sealrelation.print-certificate):after', function($relation) use($app){
+            if($app->isEnabled('seals') && ($app->user->is('superAdmin') || 
+               $app->user->is('admin') || $app->user->profile->id == $relation->agent->id)) {
+                
+                $this->part('seal-model--printCertificate', ['relation' => $relation]);
+            }
+        });
+
         $app->hook( 'template(seal.<<create|edit>>.tabs-content):end', function() use($app){
             $view = $app->view->enqueueScript('app', 'seal_model_tab', 'js/seal-model-preview.js');
             $entity = $app->view->controller->requestedEntity;
