@@ -28,7 +28,7 @@ pages:
     - 'Opções de Geocoding e busca por código postal': 'mc_developer_geocoding.md'
     - 'Personalizando montagem do endereço': 'mc_developer_address.md'
     - 'Internacionalização': 'mc_developer_i18n.md'
-- Uso
+- Uso:
     - 'Histórico de modificações': 'mc_user_history.md'
     - 'Permissões': 'mc_user_permissions.md'
     - 'Perfis de usuários': 'mc_user_profiles.md'

@@ -251,7 +251,7 @@ class Space extends \MapasCulturais\Entity
 
         if($this->parent) {
             $this->parent->_newModifiedRevision();
-        }        
+        }
     }    
 
     //============================================================= //

@@ -10,7 +10,6 @@
 
     $this->includeMapAssets();
     $this->includeAngularEntityAssets($relation);
-    $seal = $relation->seal;
 ?>
 
 <article class="main-content seal">
@@ -47,13 +46,15 @@
                 <?php $this->applyTemplateHook('agent-name','after'); ?>
             </div>
              <!--print seal relation -->
+             <?php $this->applyTemplateHook('print-certificate','before'); ?>
             <div id="seal-print-container">
                 <?php echo $printSeal ?>
-            </div>       
+            </div>
+            <?php $this->applyTemplateHook('print-certificate','after',[$relation]); ?>
         </div><!-- fim seal info container -->
         <!-- Data de expiração -->
             <?php if($seal->validPeriod > 0):?>
-            <div id="expiration-date">  
+            <div id="expiration-date">
                 <?php if($seal->isExpired()): ?>
                     <?php \MapasCulturais\i::_e('<b>Expirado em:</b>'); ?>
 

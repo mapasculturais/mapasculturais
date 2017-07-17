@@ -203,4 +203,77 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         parent::delete($flush);
     }
+    
+    
+    /**
+     * Retorna a mensagem de impressão do certificado. Se uma mensagem não foi definida pelo usuário, retorna uma mensagem padrão com todos os campos
+     *
+     * @param addLinks
+     * @return mensagem de impressão
+     */
+    public function getCertificateText($addLinks = false){
+        
+        function generateLink($url, $texto){
+            return '<a href=' . $url . '><i>' . $texto .'</i></a>';
+        }
+        
+        $app = App::i();
+        $mensagem = $this->seal->certificateText;
+        $entity = $this->seal;
+        $nomeSelo = $addLinks ? generateLink($app->createUrl('seal', 'single', ['id'=>$this->seal->id], 
+                    $this->seal->name), $this->seal->name) : $this->seal->name;
+
+        $donoSelo = $addLinks ? generateLink($this->seal->owner->getSingleUrl(), 
+                    $this->seal->owner->name) : $this->owner->name;
+
+        $nomeEntidade = $addLinks ? generateLink($this->owner->getSingleUrl(), 
+        $this->owner->name) : $this->owner->name;
+
+        $dateInicio = $this->createTimestamp->format("d/m/Y");
+        $seloExpira = isset($expirationDate);
+        
+        
+        if($entity->validPeriod > 0){
+            $dateFim = $this->validateDate->format('d/m/Y');
+        }
+
+        if(!empty($mensagem)){
+            $mensagem = str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp",$mensagem);
+            $mensagem = str_replace("[sealName]",$nomeSelo,$mensagem);
+            $mensagem = str_replace("[sealOwner]",$donoSelo,$mensagem);
+            $mensagem = str_replace("[sealShortDescription]",$this->seal->shortDescription,$mensagem);
+            $mensagem = str_replace("[sealRelationLink]",$app->createUrl('seal','printsealrelation',[$this->id]),$mensagem);
+            $mensagem = str_replace("[entityDefinition]",$this->owner->entityTypeLabel,$mensagem);
+            $mensagem = str_replace("[entityName]",$nomeEntidade,$mensagem);
+            $mensagem = str_replace("[dateIni]",$dateInicio,$mensagem);
+
+            if($entity->validPeriod > 0){
+                $mensagem = str_replace("[dateFin]",$dateFim,$mensagem);
+            }
+            
+            $mensagem = preg_replace('/\v+|\\\r\\\n/','<br/>',$mensagem);
+            
+        }
+        else{
+            $mensagem = '<p>' . \MapasCulturais\i::__('<b>Nome do Selo</b>') . ': ' . $nomeSelo .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Dono do Selo</b>') . ': ' . $donoSelo . '</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Descrição Curta</b>') . ': ' . $this->seal->shortDescription .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Tipo de Entidade</b>') . ': ' . $this->owner->entityTypeLabel .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Nome da Entidade</b>') . ': ' . $nomeEntidade .'</p>';
+            $mensagem = $mensagem . '<p>' . \MapasCulturais\i::__('<b>Data de Criação</b>') . ': ' . $dateInicio .'</p>';
+            
+            // Tirando daqui porque já está na view/seal/sealrelation.php
+            //if($entity->validPeriod > 0){
+            //    $mensagem = $mensagem . \MapasCulturais\i::__('Data de Expiração') . ': ' . $dateFim;
+            //}
+        }
+
+        //hook para que plugins/temas possam adicionar metadados para substituição na mensagem
+        $app->applyHook('sealRelation.certificateText', [&$mensagem, $this]);
+
+        return $mensagem;
+    }
+    
+    
+    
 }
