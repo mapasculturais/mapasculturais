@@ -48,15 +48,19 @@ $method = $entity->getEvaluationMethod();
         <?php if($method->fetchRegistrations()): ?>
             <div id='status-info' class="alert info">
                 <p>
-                    <?php \MapasCulturais\i::_e("No campo <strong>fatiamento</strong> informe o <strong>final do número de inscrição</strong>, de acordo com os exemplos abaixo.") ?>
+                    <?php \MapasCulturais\i::_e("Se você quiser <strong>dividir as inscrições</strong> entre os avaliadores você pode utilizar os <strong>campos de fatiamento</strong> para cada avaliador. Você pode dividir as inscrições pelo final dos números das inscrições e/ou pela categoria definida nas inscrições."); ?>
+                </p>
+                <p>
+                    <?php \MapasCulturais\i::_e("No <strong>primeiro</strong> campo do fatiamento informe o <strong>final do número de inscrição</strong>, de acordo com os exemplos abaixo.") ?>
                     <ul>
-                        <!--<li><?php // \MapasCulturais\i::_e("<strong>1,2,3</strong> - para as inscrições com final 1, 2 e 3</li>");?></li>-->
                         <li><?php \MapasCulturais\i::_e("<strong>00-09</strong> - para as inscrições com final entre 0 e 9</li>");?></li>
                         <li><?php \MapasCulturais\i::_e("<strong>10-60</strong> - para as inscrições com final entre 10 e 60</li>");?></li>
                         <li><?php \MapasCulturais\i::_e("<strong>61-99</strong> - para as inscrições com final entre 61 e 99</li>");?></li>
                     </ul>
                 </p>
-
+                <p>
+                    <?php \MapasCulturais\i::_e("No <strong>segundo</strong> campo do fatiamento informe a(s) <strong>categoria(s) de inscrição</strong>.")?>
+                </p>
                 <div class="close"></div>
             </div>
         <?php endif; ?>
