@@ -40,12 +40,19 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         
         if($can && $this->fetchRegistrations()){
             
-            $fetch = []; 
+            $fetch = [];
             if(!is_null($config->fetch)){
                 foreach($config->fetch as $id => $val){
                     $fetch [(int)$id] = $val;
                 }
             }
+            $fetch_categories = [];
+            if(!is_null($config->fetchCategories)){
+                foreach($config->fetchCategories as $id => $val){
+                    $fetch_categories [(int)$id] = $val;
+                }
+            }
+
             if(isset($fetch[$user->id])){
                 $ufetch = $fetch[$user->id];
                 if(preg_match("#([0-9]+) *[-] *([0-9]+)*#", $ufetch, $matches)){
@@ -60,26 +67,28 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                         $s2 = "1$s2";
                     }
                     if($fin < $s1 || $fin > $s2){
-                        return false;
+                        $can = false;
                     }
-//                }else {
-//                    $vals = explode(',', $ufetch);
-//                    $ok = false;
-//                    foreach($vals as $v){
-//                        $len = strlen($v);
-//                        $fin = substr($registration->id, -$len);
-//                        
-//                        if($fin == $v){
-//                            $ok = true;
-//                        }
-//                    }
-//                    
-//                    
-//                    if(!$ok) {
-//                        return false;
-//                    }
                 }
-                
+            }
+
+            if(isset($fetch_categories[$user->id])){
+                $ucategories = $fetch_categories[$user->id];
+                if($ucategories){
+                    $categories = explode(';', $ucategories);
+                    $found = false;
+
+                    foreach($categories as $cat){
+                        $cat = trim($cat);
+                        if(strtolower($registration->category) === strtolower($cat)){
+                            $found = true;
+                        }
+                    }
+
+                    if(!$found) {
+                        $can = false;
+                    }
+                }
             } 
         }
         
@@ -142,6 +151,15 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         if($this->fetchRegistrations()){
             $this->registerEvaluationMethodConfigurationMetadata('fetch', [
                 'label' => \MapasCulturais\i::__('Configuração do fatiamento das inscrições entre os avaliadores'),
+                'serialize' => function ($val) {
+                    return json_encode($val);
+                },
+                'unserialize' => function($val) {
+                    return json_decode($val);
+                }
+            ]);
+            $this->registerEvaluationMethodConfigurationMetadata('fetchCategories', [
+                'label' => \MapasCulturais\i::__('Configuração do fatiamento das inscrições entre os avaliadores por categoria'),
                 'serialize' => function ($val) {
                     return json_encode($val);
                 },

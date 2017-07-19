@@ -6,7 +6,41 @@ $this->addOpportunityEvaluationCommitteeToJs($entity);
 $method = $entity->getEvaluationMethod();
 ?>
 <style>
-    .committee-avatar img { height: 32px; width:32px; }
+    .committee {
+        margin: 1em;
+        padding:1em;
+        background: #eee;
+        border-bottom: 1px solid #aaa;
+    }
+
+    .committee .committee--info img {
+        height: 48px;
+        width: 48px;
+        margin-right: 1em;
+        float:left;
+    }
+
+    .committee .committee--info .committee--name {
+        font-size:15px;
+        font-weight: bold;
+    }
+
+    .committee .committee--fetch {
+        margin-top:1em;
+    }
+
+    .committee .committee--fetch input:first-of-type {
+        width:75px;
+    }
+    .committee .committee--fetch input:last-of-type {
+        width: 80%;
+    }
+
+    .committee .committee--fetch input::placeholder {
+        color:#bbb;
+        font-style: italic;
+    }
+
 </style>
 <div class="agentes-relacionados">
     <div class="registration-fieldset">
@@ -26,40 +60,21 @@ $method = $entity->getEvaluationMethod();
                 <div class="close"></div>
             </div>
         <?php endif; ?>
-        <table style="width: 100%" ng-if="data.committee.length > 0">
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th><?php i::_e('Nome') ?></th>
-                    <th><?php echo strtolower($this->dict('taxonomies:area: name', true)) ?></th>
-                    <?php if($method->fetchRegistrations()): ?>
-                    <th>
-                        <span class="hltip" title="Fatiamento das inscrições: use para dividir as inscrições entre os avaliadores"> <?php i::_e('Fatiamento'); ?> </span>
-                    </th>
-                    <?php endif; ?>
-                    <th><?php i::_e('ações') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="admin in data.committee">
-                    <td class="committee-avatar"><img ng-src="{{avatarUrl(admin.agent)}}" /></td>
-                    <td class="committee-name">
-                        {{admin.agent.name}}
-                    </td>
-                    <td class="committee-areas">
-                        <span ng-if="admin.agent.terms.area" ng-repeat="area in admin.agent.terms.area">{{area}}<span ng-if="!$last && area">, </span></span>
-                    </td>
-                    <?php if($method->fetchRegistrations()): ?>
-                    <td>
-                        <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" />
-                    </td>
-                    <?php endif; ?>
-                    <td class="committee-actions">
-                        <span class="btn btn-danger delete" ng-click="deleteAdminRelation(admin)"><?php i::_e("Excluir");?></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="committee" ng-repeat="admin in data.committee">
+                <div class="committee--info ">
+                    <span class="btn btn-danger delete alignright" ng-click="deleteAdminRelation(admin)"><?php i::_e("Excluir");?></span>
+                    <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
+                    <span class="committee--name" >{{admin.agent.name}}</span>
+                    <div ng-if="admin.agent.terms.area">{{admin.agent.terms.area.join(', ')}}</div>
+                </div>
+                <?php if($method->fetchRegistrations()): ?>
+                    <div class="committee--fetch clear">
+                        <label class="hltip" title="Fatiamento das inscrições: use para dividir as inscrições entre os avaliadores"> <?php i::_e('Fatiamento'); ?> </label><br>
+                        <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" placeholder="<?php i::_e('0-9') ?>"/>
+                        <input ng-model="config['fetchCategories'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}"  placeholder="<?php i::_e('Categorias separadas por ponto e vírgula') ?>"/>
+                    </div>
+                <?php endif; ?>
+            </div>
         <p ng-if="committee.length < 1"><?php i::_e('Não há nenhum avaliador definido.'); ?></p>
         <span class="btn btn-default add" ng-click="editbox.open('add-committee-agent', $event)" ><?php i::esc_attr_e('Adicionar avaliador'); ?></span>
 

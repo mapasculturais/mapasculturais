@@ -886,9 +886,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         };
         
         $scope.fetch = emconfig.fetch || {};
+        $scope.fetchCategories = emconfig.fetchCategories || {};
         
         $scope.config = {
             fetch: emconfig.fetch,
+            fetchCategories: emconfig.fetchCategories,
             infos: emconfig.infos
         };
         
