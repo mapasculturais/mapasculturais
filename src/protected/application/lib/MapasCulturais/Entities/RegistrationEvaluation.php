@@ -122,7 +122,35 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     }
     
     protected function canUserModify($user) {
-        return $this->registration->canUser('evaluate', $user) && $this->status < self::STATUS_SENT;
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($this->registration->opportunity->canUser('@control', $user)){
+            return true;
+        }
+
+        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status < self::STATUS_SENT){
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function canUserView($user) {
+        if($user->is('guest')){
+            return false;
+        }
+        
+        if($this->registration->opportunity->canUser('@control', $user)){
+            return true;
+        }
+
+        if($this->registration->canUser('evaluate', $user) && $this->user->equals($user) && $this->status < self::STATUS_SENT){
+            return true;
+        }
+
+        return false;
     }
 
     public function jsonSerialize() {
