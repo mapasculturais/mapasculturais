@@ -4,6 +4,7 @@ namespace EvaluationMethodTechnical;
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 class Plugin extends \MapasCulturais\EvaluationMethod {
 
@@ -89,7 +90,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    public function getEvaluationResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
+    public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
         $total = 0;
 
         $cfg = $evaluation->getEvaluationMethodConfiguration();

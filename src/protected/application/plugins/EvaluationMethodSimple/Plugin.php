@@ -4,6 +4,7 @@ namespace EvaluationMethodSimple;
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 class Plugin extends \MapasCulturais\EvaluationMethod {
 
@@ -38,7 +39,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         ;
     }
 
-    public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration) {
         $app = App::i();
 
         $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
@@ -54,7 +55,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return $result;
     }
 
-    public function getEvaluationResult(\MapasCulturais\Entities\RegistrationEvaluation $evaluation) {
+    public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
         if ($evaluation->evaluationData->status) {
             return $evaluation->evaluationData->status;
         } else {
