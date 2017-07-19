@@ -33,4 +33,32 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
 
         return $q->getResult();
     }
+
+    /**
+     *
+     * @param \MapasCulturais\Entities\Opportunity $opportunity
+     * @return \MapasCulturais\Entities\Registration[]
+     */
+    function findByOpportunity(\MapasCulturais\Entities\Opportunity $opportunity){
+        if($user->is('guest') || !$opportunity->id){
+            return [];
+        }
+
+        $dql = "
+            SELECT
+                e
+            FROM
+                MapasCulturais\Entities\RegistrationEvaluation e
+                JOIN e.registration r
+            WHERE
+                r.opportunity = :opportunity";
+
+        $q = $this->_em->createQuery($dql);
+
+        $q->setParameters([
+            'opportunity' => $opportunity
+        ]);
+
+        return $q->getResult();
+    }
 }
