@@ -9,6 +9,7 @@ use MapasCulturais\App;
  * Registration
  * @property-read \MapasCulturais\Entities\Agent $owner The owner of this registration
  * @property-read \MapasCulturais\Entities\Opportunity $opportunity 
+ * @property string $category
  *
  * @ORM\Table(name="registration")
  * @ORM\Entity

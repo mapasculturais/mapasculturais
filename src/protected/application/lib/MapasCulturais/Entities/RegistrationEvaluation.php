@@ -55,7 +55,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $registration;
 
     /**
-     * @var \MapasCulturais\Entities\USer
+     * @var \MapasCulturais\Entities\User
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({

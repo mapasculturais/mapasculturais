@@ -264,7 +264,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         return $result;
     }
-    
+
+    /*
+     * @TODO: renomear esta funcao para um nome mais adequado.
+     */
     function getEvaluations($include_empty = false){
         // @TODO: melhorar performance. talvez utilizando a ApiQuery na entidade RegistrationEvaluation ?
         $committee = $this->getEvaluationCommittee(false);
