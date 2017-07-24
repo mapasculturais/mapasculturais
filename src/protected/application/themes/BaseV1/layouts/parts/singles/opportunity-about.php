@@ -28,6 +28,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php endif; ?>
     
     <?php if ($this->isEditable()): ?>
+
         <?php $this->part('singles/opportunity-registrations--importexport', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/opportunity-registrations--categories', ['entity' => $entity]) ?>
@@ -38,6 +39,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
         <?php $this->part('singles/opportunity-registrations--fields', ['entity' => $entity]) ?>
         
+        <p><a href="<?php echo $app->createUrl('registration', 'preview', ['opportunityId' => $entity->id]); ?>" target="_blank" class="btn btn-primary"><?php MapasCulturais\i::_e('Pré-visualizar ficha de inscrição') ?></a></p>
     <?php endif; ?>
 
     <?php $this->applyTemplateHook('tab-about','end'); ?>

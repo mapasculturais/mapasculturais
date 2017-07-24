@@ -42,8 +42,10 @@ $_params = [
         <?php //$this->part('singles/registration-edit--seals', $_params) ?>
         
         <?php $this->part('singles/registration-edit--fields', $_params) ?>
-        
-        <?php $this->part('singles/registration-edit--send-button', $_params) ?>
+
+        <?php if(!$entity->preview): ?>
+            <?php $this->part('singles/registration-edit--send-button', $_params) ?>
+        <?php endif; ?>
 
         <?php $this->applyTemplateHook('form','end'); ?>
     </article>
