@@ -72,16 +72,16 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
 
         $evaluation_columns = [
-            'status' => (object) [
-                'label' => i::__('Status'),
-                'getValue' => function(Entities\RegistrationEvaluation $evaluation) {
-                    return $evaluation->getStatusString();
-                }
-            ],
             'result' => (object) [
                 'label' => i::__('Resultado'),
                 'getValue' => function(Entities\RegistrationEvaluation $evaluation) {
                     return $evaluation->getResultString();
+                }
+            ],
+            'status' => (object) [
+                'label' => i::__('Status'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation) {
+                    return $evaluation->getStatusString();
                 }
             ],
         ];
@@ -101,7 +101,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
             'evaluation' => (object) [
                 'label' => i::__('Avaliação'),
-                'color' => '#FFCCCC',
+                'color' => '#00AA00',
                 'columns' => $evaluation_columns
             ]
         ];

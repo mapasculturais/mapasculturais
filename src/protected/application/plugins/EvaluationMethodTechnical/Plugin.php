@@ -71,7 +71,97 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function _init() {
-        ;
+        $app = App::i();
+
+        $app->hook('evaluationsReport(technical).sections', function(Entities\Opportunity $opportunity, &$sections){
+            $i = 0;
+            $get_next_color = function($last = false) use(&$i){
+                $colors = [
+                    '#FFAAAA',
+                    '#BB8888',
+                    '#FFAA66',
+                    '#AAFF00',
+                    '#AAFFAA'
+                ];
+
+                $result = $colors[$i];
+
+                $i++;
+
+                return $result;
+            };
+
+            $cfg = $opportunity->evaluationMethodConfiguration;
+
+            $result = [
+                'registration' => $sections['registration'],
+                'committee' => $sections['committee'],
+            ];
+            foreach($cfg->sections as $sec){
+                $section = (object) [
+                    'label' => $sec->name,
+                    'color' => $get_next_color(),
+                    'columns' => []
+                ];
+
+                foreach($cfg->criteria as $crit){
+                    if($crit->sid != $sec->id) {
+                        continue;
+                    }
+
+                    $section->columns[] = (object) [
+                        'label' => $crit->title . ' ' . sprintf(i::__('(peso: %s)'), $crit->weight),
+                        'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($crit) {
+                            return isset($evaluation->evaluationData->{$crit->id}) ? $evaluation->evaluationData->{$crit->id} : '';
+                        }
+                    ];
+                }
+
+                $max = 0;
+                foreach($cfg->criteria as $crit){
+                    if($crit->sid != $sec->id) {
+                        continue;
+                    }
+
+                    $max += $crit->max * $crit->weight;
+                }
+
+                $section->columns[] = (object) [
+                    'label' => sprintf(i::__('Subtotal (max: %s)'),$max),
+                    'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($sec, $cfg) {
+                        $rersult = 0;
+                        foreach($cfg->criteria as $crit){
+                            if($crit->sid != $sec->id) {
+                                continue;
+                            }
+
+                            $val = isset($evaluation->evaluationData->{$crit->id}) ? $evaluation->evaluationData->{$crit->id} : 0;
+
+                            $rersult += $val * $crit->weight;
+
+                        }
+
+                        return $rersult;
+                    }
+                ];
+
+                $result[] = $section;
+            }
+
+            $result['evaluation'] = $sections['evaluation'];
+//            $result['evaluation']->color = $get_next_color(true);
+
+
+            // adiciona coluna do parecer técnico
+            $result['evaluation']->columns[] = (object) [
+                'label' => i::__('Parecer Técnico'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($crit) {
+                    return isset($evaluation->evaluationData->obs) ? $evaluation->evaluationData->obs : '';
+                }
+            ];
+
+            $sections = $result;
+        });
     }
 
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {

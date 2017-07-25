@@ -12,6 +12,7 @@ use MapasCulturais\App;
  *
  * @property-read string $result
  * @property \MapasCulturais\Entities\Registration $registration
+ * @property array $evaluationData
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
