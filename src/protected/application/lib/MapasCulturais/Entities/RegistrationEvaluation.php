@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use MapasCulturais;
+use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
@@ -10,6 +11,7 @@ use MapasCulturais\App;
  * RegistrationMeta
  *
  * @property-read string $result
+ * @property \MapasCulturais\Entities\Registration $registration
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
@@ -115,6 +117,20 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $evaluation_method = $this->getEvaluationMethod();
 
         return $evaluation_method->evaluationToString($this);
+    }
+
+    public function getStatusString(){
+        switch ($this->status){
+            case self::STATUS_DRAFT:
+                return i::__('Rascunho');
+
+            case self::STATUS_EVALUATED:
+                return i::__('Avaliado');
+
+            case self::STATUS_SENT:
+                return i::__('Enviado');
+
+        }
     }
     
     protected function genericPermissionVerification($user) {

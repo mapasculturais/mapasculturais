@@ -2074,6 +2074,20 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
     }
 
+    function addOpportunityRegistrationsToJs(Entities\Opportunity $entity){
+        if($entity->canUser('@control')){
+            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
+        } else {
+            $this->jsObject['entity']['registrations'] = [];
+
+            foreach($entity->sentRegistrations as $reg){
+                if($reg->canUser('viewUserEvaluation')){
+                    $this->jsObject['entity']['registrations'][] = $reg;
+                }
+            }
+        }
+    }
+
     function addOpportunityToJs(Entities\Opportunity $entity){
         $app = App::i();
 
@@ -2101,17 +2115,8 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
 
-        if($entity->canUser('@control')){
-            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
-        } else {
-            $this->jsObject['entity']['registrations'] = [];
-        
-            foreach($entity->sentRegistrations as $reg){
-                if($reg->canUser('viewUserEvaluation')){
-                    $this->jsObject['entity']['registrations'][] = $reg;
-                }
-            }
-        }
+        $this->addOpportunityRegistrationsToJs($entity);
+
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
 
@@ -2142,7 +2147,7 @@ class Theme extends MapasCulturais\Theme {
         }
 
         if($evaluation){
-            $evaluation->checkPermission('modify');
+            $evaluation->checkPermission('view');
         }
 
         return $evaluation;

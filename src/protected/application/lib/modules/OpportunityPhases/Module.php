@@ -239,7 +239,9 @@ class Module extends \MapasCulturais\Module{
             $this->addEntityToJs($first);
             $this->addRegistrationToJs($first);
             $this->addOpportunityToJs($first->opportunity);
+            $this->addOpportunityRegistrationsToJs($current_registration->opportunity);
 
+            $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($current_registration);
             $this->jsObject['evaluationConfiguration'] = $current_registration->opportunity->evaluationMethodConfiguration;
 
             $this->jsObject['entity']['registrationFieldConfigurations'] = [];
@@ -284,8 +286,11 @@ class Module extends \MapasCulturais\Module{
                     $this->jsObject['entity']['registrationFileConfigurations'][] = $file;
                 }
 
+
             }
           
+            $this->jsObject['entity']['id'] = $current_registration->id;
+            $this->jsObject['entity']['object']->id = $current_registration->id;
         });
         
         // action para criar uma nova fase no oportunidade
@@ -568,6 +573,14 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Opportunity).canUser(view)', function($user, &$result){
             if($this->isOpportunityPhase && $this->status === -1){
                 $result = true;
+            }
+        });
+
+        $app->hook('entity(RegistrationEvaluation).canUser(view)', function($user, &$result) use($app){
+
+            if($registration_id = $this->registration->nextPhaseRegistrationId){
+                $next_phase_registration = $app->repo('Registration')->find($registration_id);
+                $result = $next_phase_registration->canUser('viewUserEvaluation', $user);
             }
         });
         

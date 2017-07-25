@@ -74,31 +74,58 @@ class Opportunity extends EntityController {
         $this->requireAuthentication();
         $app = App::i();
 
-
-        if(!key_exists('id', $this->urlData))
-            $app->pass();
-
         $entity = $this->requestedEntity;
 
-
-        if(!$entity)
+        if(!$entity){
             $app->pass();
-
+        }
 
         $entity->checkPermission('@control');
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
+
+        $this->reportOutput('report', ['entity' => $entity], $filename);
+
+    }
+
+
+    function GET_reportEvaluations(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+
+        if(!$entity)
+            $app->pass();
+
+
+        $entity->checkPermission('canUserViewEvaluations');
+
+        $app->controller('Registration')->registerRegistrationMetadata($entity);
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunity($entity);
+
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--avaliacoes"), $entity->id);
+
+        $this->reportOutput('report-evaluations', ['entity' => $entity, 'evaluations' => $evaluations], $filename);
+
+    }
+
+    protected function reportOutput($view, $view_params, $filename){
+        $app = App::i();
+
         $response = $app->response();
-        //$response['Content-Encoding'] = 'UTF-8';
+        $response['Content-Encoding'] = 'UTF-8';
         $response['Content-Type'] = 'application/force-download';
-        $response['Content-Disposition'] ='attachment; filename=mapas-culturais-dados-exportados.xls';
+        $response['Content-Disposition'] ='attachment; filename=' . $filename . '.xls';
         $response['Pragma'] ='no-cache';
 
         $app->contentType('application/vnd.ms-excel; charset=UTF-8');
 
         ob_start();
-        $this->partial('report', ['entity' => $entity]);
+        $this->partial($view, $view_params);
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }

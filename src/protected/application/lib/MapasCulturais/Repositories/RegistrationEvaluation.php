@@ -40,10 +40,6 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
      * @return \MapasCulturais\Entities\Registration[]
      */
     function findByOpportunity(\MapasCulturais\Entities\Opportunity $opportunity){
-        if($user->is('guest') || !$opportunity->id){
-            return [];
-        }
-
         $dql = "
             SELECT
                 e
