@@ -177,7 +177,7 @@ class Theme extends MapasCulturais\Theme {
             'home: opportunities' => [
                 'name' => i::__('texto da seção "oportunidades" da home'),
                 'description' => i::__(''),
-                'text' => i::__('Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e convocatórias. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.')
+                'text' => i::__('Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.')
             ],
             'home: home_devs' => [
                 'name' => i::__('texto da seção "desenvolvedores" da home'),
