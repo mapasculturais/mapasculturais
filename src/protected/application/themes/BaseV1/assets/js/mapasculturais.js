@@ -189,17 +189,6 @@ $(function(){
         }
     });
 
-    $('.button-form-opportunity-claim').on('click', function(){
-        var form_opportunity_claim = $(".js-opportunity-claim-form")
-        form_opportunity_claim.toggle();
-    });
-
-    $('.button-form-opportunity-claim').on('click', function(){
-        var form_opportunity_claim = $(".js-opportunity-claim-form")
-        form_opportunity_claim.toggle();
-    });
-
-
     $('body').on('click', '.js-modal-toggle', function(e) {
         var id = $(this).data('modalId');
         e.preventDefault();
