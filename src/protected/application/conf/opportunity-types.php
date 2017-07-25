@@ -58,6 +58,8 @@ return array(
                 'serialize' => function($value) { return json_encode($value); },
                 'unserialize' => function($value) { return json_decode($value); }
         ),
+
+        /** @TODO: colocar isso na entidade Opportunity (issue: #1273) **/
         'projectName' => array(
             'label' => \MapasCulturais\i::__('Nome do Projeto'),
             'type' => 'select',
