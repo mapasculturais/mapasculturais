@@ -43,6 +43,8 @@
 		background-color: $gray-light;
 		> tr {
 			th {
+                                position: relative;
+                                background-color: $gray-light;
 				border-left: 1px solid #fff;
 				border-bottom: none;
 				line-height: 1.875rem; // to match .dropdown's

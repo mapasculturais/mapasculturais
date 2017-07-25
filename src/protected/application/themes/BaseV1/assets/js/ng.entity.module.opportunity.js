@@ -1111,9 +1111,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService) {
     var adjustingBoxPosition = false,
-    categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
+    categories = MapasCulturais.entity.registrationCategories.length ? [{ value: undefined, label: 'Todas' }].concat(MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };
-    }) : [];
+    })) : [];
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
@@ -1148,6 +1148,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         relationApiQuery: {'@keywowrd': '*'}
     }, MapasCulturais);
+
 
     for(var name in MapasCulturais.labels.agent){
         var label = MapasCulturais.labels.agent[name];

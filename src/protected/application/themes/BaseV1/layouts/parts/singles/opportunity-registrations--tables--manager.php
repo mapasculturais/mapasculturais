@@ -18,14 +18,15 @@
     </ul>
     <div class="close"></div>
 </div>
+
 <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
-        <tr>
+        <tr class="teste123">
             <th class="registration-id-col">
                 <?php \MapasCulturais\i::_e("Inscrição");?>
             </th>
-            <th ng-if="data.entity.registrationCategories" class="registration-option-col">
-                <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
+            <th ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
+                <mc-select class="left transparent-placeholder" placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
             <th class="registration-agents-col">
                 <?php \MapasCulturais\i::_e("Agentes");?>
