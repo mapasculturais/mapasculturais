@@ -41,6 +41,10 @@ $method = $entity->getEvaluationMethod();
         font-style: italic;
     }
 
+    .mr10 {
+        margin-right: 10px;
+    }
+
 </style>
 <div class="agentes-relacionados">
     <div class="registration-fieldset">
@@ -67,6 +71,8 @@ $method = $entity->getEvaluationMethod();
             <div class="committee" ng-repeat="admin in data.committee">
                 <div class="committee--info ">
                     <span class="btn btn-danger delete alignright" ng-click="deleteAdminRelation(admin)"><?php i::_e("Excluir");?></span>
+                    <span ng-if="admin.hasControl" class="btn btn-warning delete alignright mr10" ng-click="disableAdminRelation(admin)"><?php i::_e("Desabilitar");?></span>
+                    <span ng-if="!admin.hasControl" class="btn btn-default add alignright mr10" ng-click="enableAdminRelation(admin)"><?php i::_e("Habilitar");?></span>
                     <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
                     <span class="committee--name" >{{admin.agent.name}}</span>
                     <div ng-if="admin.agent.terms.area">{{admin.agent.terms.area.join(', ')}}</div>

@@ -1061,6 +1061,22 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     });
         };
 
+        $scope.disableAdminRelation = function(relation){
+            relation.hasControl = false;
+            RelatedAgentsService.removeControl(relation.agent.id).
+                        error(function(){
+                            relation.hasControl = true;
+                        });
+        };
+
+        $scope.enableAdminRelation = function(relation){
+            relation.hasControl = true;
+            RelatedAgentsService.giveControl(relation.agent.id).
+                        error(function(){
+                            relation.hasControl = false;
+                        });
+        };
+
 
         $scope.toggleControl = function(relation){
             relation.hasControl = !relation.hasControl;
