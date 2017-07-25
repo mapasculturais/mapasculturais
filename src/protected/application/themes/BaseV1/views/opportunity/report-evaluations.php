@@ -40,9 +40,6 @@ $_properties = $app->config['registration.propertiesToExport'];
     <thead>
         <tr>
             <th><?php i::_e("Número") ?></th>
-            <?php if($entity->projectName): ?>
-                <th><?php i::_e("Nome do projeto") ?></th>
-            <?php endif; ?>
             <th><?php i::_e("Avaliação") ?></th>
             <th><?php i::_e("Status") ?></th>
             <?php if($entity->registrationCategories):?>
@@ -69,9 +66,6 @@ $_properties = $app->config['registration.propertiesToExport'];
         <?php foreach($entity->sentRegistrations as $r): ?>
             <tr>
                 <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
-                <?php if($entity->projectName): ?>
-                    <td><?php echo $r->projectName ?></td>
-                <?php endif; ?>
                 <td><?php echo $r->getEvaluationResultString(); ?></td>
                 <td><?php echoStatus($r); ?></td>
 
