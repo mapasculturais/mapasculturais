@@ -758,7 +758,14 @@ class App extends \Slim\Slim{
             'slug' => 'checkboxes',
             'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
             'requireValuesConfiguration' => true,
-            'serialize' => function (array $value) {
+            'serialize' => function ($value) {
+                if(!is_array($value)){
+                    if($value){
+                        $value = [$value];
+                    } else {
+                        $value = [];
+                    }
+                }
                 return json_encode($value);
             },
             'unserialize' => function ($value) {
