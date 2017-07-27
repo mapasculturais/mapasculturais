@@ -116,14 +116,16 @@ class Opportunity extends EntityController {
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
 
-        $response = $app->response();
-        $response['Content-Encoding'] = 'UTF-8';
-        $response['Content-Type'] = 'application/force-download';
-        $response['Content-Disposition'] ='attachment; filename=' . $filename . '.xls';
-        $response['Pragma'] ='no-cache';
+        if(!isset($this->urlData['output']) || $this->urlData['output'] == 'xls'){
+            $response = $app->response();
+            $response['Content-Encoding'] = 'UTF-8';
+            $response['Content-Type'] = 'application/force-download';
+            $response['Content-Disposition'] ='attachment; filename=' . $filename . '.xls';
+            $response['Pragma'] ='no-cache';
 
-        $app->contentType('application/vnd.ms-excel; charset=UTF-8');
-
+            $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+        }
+        
         ob_start();
         $this->partial($view, $view_params);
         $output = ob_get_clean();

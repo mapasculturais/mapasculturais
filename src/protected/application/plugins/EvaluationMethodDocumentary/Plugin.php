@@ -39,7 +39,71 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function _init() {
-        ;
+        $app = App::i();
+        $app->hook('evaluationsReport(documentary).sections', function(Entities\Opportunity $opportunity, &$sections) use($app) {
+            $columns = [];
+            $evaluations = $opportunity->getEvaluations();
+
+            foreach($evaluations as $eva){
+                $evaluation = $eva['evaluation'];
+                $data = (array) $evaluation->evaluationData;
+                foreach($data as $id => $d){
+                    $columns[$id] = $d['label'];
+                }
+            }
+
+            $result = [
+                'registration' => $sections['registration'],
+                'committee' => $sections['committee'],
+            ];
+
+
+            foreach($columns as $id => $col){
+                $result[$id] = (object) [
+                    'label' => $col,
+                    'color' => '#EEEEEE',
+                    'columns' => [
+                        'val' => (object) [
+                            'label' => i::__('Avaliação'),
+                            'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($id) {
+                                $evaluation_data = (array) $evaluation->evaluationData;
+
+                                if(isset($evaluation_data[$id])){
+                                     $data = $evaluation_data[$id];
+
+                                     if($data['evaluation'] == 'valid'){
+                                         return i::__('Válida');
+                                     } else if($data['evaluation'] == 'invalid') {
+                                         return i::__('Inválida');
+                                     } else {
+                                         return '';
+                                     }
+                                } else {
+                                    return '';
+                                }
+                            }
+                        ],
+                        'obs' => (object) [
+                            'label' => i::__('Observações'),
+                            'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($id) {
+                                
+                                $evaluation_data = (array) $evaluation->evaluationData;
+                                if (isset($evaluation_data[$id])) {
+                                    $data = $evaluation_data[$id];
+                                    return $data['obs'];
+                                } else {
+                                    return '';
+                                }
+                            }
+                        ],
+                    ]
+                ];
+            }
+
+            $result['evaluation'] = $sections['evaluation'];
+
+            $sections = $result;
+        });
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration) {
