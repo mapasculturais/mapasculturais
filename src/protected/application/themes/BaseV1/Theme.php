@@ -2157,15 +2157,6 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
                 $entity->opportunity->registrationFileConfigurations->toArray() : array();
 
-        usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
-            if($a->title > $b->title){
-                return 1;
-            }else if($a->title < $b->title){
-
-            }else{
-                return 0;
-            }
-        });
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
