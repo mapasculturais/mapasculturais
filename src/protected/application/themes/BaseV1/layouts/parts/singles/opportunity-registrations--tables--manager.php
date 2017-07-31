@@ -1,6 +1,8 @@
 <?php
 use MapasCulturais\i;
 
+$this->addOpportunitySelectFieldsToJs($entity);
+
 ?>
 <header id="header-inscritos" class="clearfix">
     <h3><?php i::_e("Inscritos");?></h3>
@@ -23,32 +25,57 @@ use MapasCulturais\i;
     <div class="close"></div>
 </div>
 
-<table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
+<p>
+    <strong> <?php i::_e("Colunas Habilitadas:") ?> </strong><br>
+    <label><input type="checkbox" ng-model="data.registrationTableColumns.number" /> <?php i::_e('Inscrição') ?> </label>
+    <label><input type="checkbox" ng-model="data.registrationTableColumns.category" /> <?php i::_e('Categorias') ?> </label>
+    <label><input type="checkbox" ng-model="data.registrationTableColumns.agents" /> <?php i::_e('Agentes') ?> </label>
+    <label><input type="checkbox" ng-model="data.registrationTableColumns.attachments" /> <?php i::_e('Anexos') ?> </label>
+    <label><input type="checkbox" ng-model="data.registrationTableColumns.evaluation" /> <?php i::_e('Avaliação') ?> </label>
+    <label><input type="checkbox" ng-model="data.registrationTableColumns.status" /> <?php i::_e('Status') ?> </label>
+
+    <label ng-repeat="field in data.opportunitySelectFields" ng-if="field.required">
+        <input type="checkbox" ng-model="data.registrationTableColumns[field.fieldName]" />{{field.title}}
+    </label>
+</p>
+
+<style>
+    table.fullscreen {
+        background-color: white;
+    }
+</style>
+
+<table id="registrations-table" class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published, 'fullscreen': data.fullscreenTable}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
-        <tr class="teste123">
-            <th class="registration-id-col">
+        <tr>
+            <th ng-show="data.registrationTableColumns.number" class="registration-id-col">
                 <?php i::_e("Inscrição");?>
             </th>
-            <th ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
+            <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
                 <mc-select class="left transparent-placeholder" placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
-            <th class="registration-agents-col">
+            <th ng-repeat="field in data.opportunitySelectFields" ng-show="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
+                <mc-select class="left transparent-placeholder" placeholder="{{field.title}}" model="filters[field.fieldName]" data="field.options" title="{{field.title}}"></mc-select>
+            </th>
+            <th ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <?php i::_e("Agentes");?>
             </th>
-            <th ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
+            <th ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
                 <?php i::_e("Anexos");?>
             </th>
-            <th class="registration-status-col">
+            <th ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
                 <?php i::_e("Avaliação");?>
             </th>
-            <th class="registration-status-col">
+            <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
                 <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan='6'>
+            <td colspan='{{numberOfEnabledColumns()}}'>
+                <input type="checkbox" class="hltip alignright" ng-model="data.fullscreenTable" title="<?php i::_e('Expandir tabela')?>">
+
                 <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0"><?php i::_e("Nenhuma inscrição enviada.");?></span>
                 <span ng-if="usingFilters() && getFilteredRegistrations().length === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
                 <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1"><?php i::_e("1 inscrição enviada.");?></span>
@@ -62,9 +89,12 @@ use MapasCulturais\i;
             </td>
         </tr>
         <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
-            <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
-            <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
-            <td class="registration-agents-col">
+            <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+            <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
+            <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
+                {{reg[field.fieldName]}}
+            </td>
+            <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <p>
                     <span class="label"><?php i::_e("Responsável");?></span><br />
                     <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
@@ -75,13 +105,13 @@ use MapasCulturais\i;
                     <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                 </p>
             </td>
-            <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
+            <td ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
                 <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
             </td>
-            <td class="registration-status-col">
+            <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
                 {{reg.evaluationResultString}}
             </td>
-            <td class="registration-status-col">
+            <td ng-show="data.registrationTableColumns.status" class="registration-status-col">
                 <?php if ($entity->publishedRegistrations): ?>
                     <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusNameById(reg.status)}}</span>
                 <?php else: ?>

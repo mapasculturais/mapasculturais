@@ -1539,6 +1539,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
         $this->localizeScript('moduleOpportunity', [
+            'allCategories' => i::__('Todas as categorias'),
             'selectFieldType' =>  i::__('Selecione o tipo de campo'),
             'fieldCreated' =>  i::__('Campo criado.'),
             'fieldRemoved' =>  i::__('Campo removido.'),
@@ -2083,6 +2084,18 @@ class Theme extends MapasCulturais\Theme {
             foreach($entity->sentRegistrations as $reg){
                 if($reg->canUser('viewUserEvaluation')){
                     $this->jsObject['entity']['registrations'][] = $reg;
+                }
+            }
+        }
+    }
+
+    function addOpportunitySelectFieldsToJs(Entities\Opportunity $entity){
+        $this->jsObject['opportunitySelectFields'] = isset($this->jsObject['opportunitySelectFields']) ? $this->jsObject['opportunitySelectFields'] : [];
+
+        foreach($entity->registrationFieldConfigurations as $field){
+            if($field->fieldType == 'select'){
+                if(!in_array($field, $this->jsObject['opportunitySelectFields'])){
+                    $this->jsObject['opportunitySelectFields'][] = $field;
                 }
             }
         }

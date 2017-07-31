@@ -1110,12 +1110,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }]);
 
 module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService) {
-    var adjustingBoxPosition = false,
-    categories = MapasCulturais.entity.registrationCategories.length ? [{ value: undefined, label: 'Todas' }].concat(MapasCulturais.entity.registrationCategories.map(function(e){
-        return { value: e, label: e };
-    })) : [];
-
     var labels = MapasCulturais.gettext.moduleOpportunity;
+
+    var adjustingBoxPosition = false,
+    categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
+        return { value: e, label: e };
+    }) : [];
+
+    MapasCulturais.opportunitySelectFields.forEach(function(e){
+        e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
+            return {value: e, label: e};
+        }));
+    });
+
 
     $scope.editbox = EditBox;
     $scope.data = angular.extend({
@@ -1123,7 +1130,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         spinner: false,
 
         registrationCategories: categories,
-        registrationCategoriesToFilter: [{value: null, label: labels['Todas opções']}].concat(categories),
+        registrationCategoriesToFilter: [{value: null, label: labels.allCategories}].concat(categories),
 
         registration: {
             owner: null,
@@ -1143,11 +1150,46 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         propLabels : [],
 
+        registrationTableColumns: {
+            number: true,
+            category: true,
+            agents: true,
+            attachments: true,
+            evaluation: true,
+            status: true
+        },
+
 
         fields: RegistrationService.getFields(),
 
-        relationApiQuery: {'@keywowrd': '*'}
+        relationApiQuery: {'@keywowrd': '*'},
+        
+        fullscreenTable: false
+
     }, MapasCulturais);
+
+    $scope.$watch('data.fullscreenTable', function(){
+        var $t = $('#registrations-table');
+        if($scope.data.fullscreenTable){
+            $t.css('margin-left', - $t.offset().left );
+            $t.css('width', document.body.offsetWidth - 10);
+        } else {
+            $t.css('margin-left', 0);
+            $t.css('width', '100%');
+        }
+    });
+
+
+    $scope.numberOfEnabledColumns = function(){
+        var result = 0;
+        for(var prop in $scope.data.registrationTableColumns){
+            if($scope.data.registrationTableColumns[prop]){
+                result++;
+            }
+        }
+
+        return result;
+    };
 
 
     for(var name in MapasCulturais.labels.agent){
@@ -1312,12 +1354,23 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 }
             };
 
-
+            $scope.filters = {};
             $scope.showRegistration = function(registration){
                 var status = !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
                 var category = !$scope.data.registrationCategory || $scope.data.registrationCategory === registration.category;
 
-                return status && category;
+                var result = status && category;
+                $scope.data.opportunitySelectFields.forEach(function(field){
+                    if($scope.data.registrationTableColumns[field.fieldName]){
+                        if($scope.filters[field.fieldName]){
+                            if(registration[field.fieldName] !== $scope.filters[field.fieldName]){
+                                result = false;
+                            }
+                        }
+                    }
+                });
+
+                return result;
             };
 
             $scope.getFilteredRegistrations = function(){
