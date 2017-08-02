@@ -20,6 +20,7 @@ class Seal extends EntityController {
     	Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
+        Traits\ControllerChangeOwner,
         Traits\ControllerSoftDelete,
         Traits\ControllerDraft,
         Traits\ControllerArchive,
