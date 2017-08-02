@@ -427,10 +427,11 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserDestroy($user){
-        if($this->isUserProfile)
+        if($this->isUserProfile){
             return false;
-        else
-            return $user->is('superAdmin');
+        }else{
+            return $user->is('superAdmin', $this->_subsiteId);
+        }
     }
 
     protected function canUserChangeOwner($user){
@@ -440,7 +441,7 @@ class Agent extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($user->is('admin', $this->_subsiteId))
             return true;
 
         return $this->getOwner()->canUser('modify') && $this->canUser('modify');

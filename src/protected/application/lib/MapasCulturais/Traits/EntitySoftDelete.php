@@ -124,6 +124,6 @@ trait EntitySoftDelete{
      * @return type
      */
     protected function canUserDestroy($user){
-        return $user->is('superAdmin');
+        return $this->isUserAdmin($user, 'superAdmin');
     }
 }

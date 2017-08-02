@@ -105,7 +105,7 @@ trait EntityOwnerAgent{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         if($this->getOwner()->userHasControl($user))
@@ -125,7 +125,7 @@ trait EntityOwnerAgent{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         if($this->getOwnerUser()->id == $user->id)

@@ -23,11 +23,13 @@ class ProjectAgentRelation extends AgentRelation {
     protected $owner;
     
     protected function canUserCreate($user){
-        if($user->is('admin'))
-            return true;
-        
         if($user->is('guest'))
             return false;
+
+        if($user->is('admin', $this->owner->getSubsiteId()) && $user->is('admin', $this->agent->getSubsiteId())){
+            return true;
+        }
+        
         
         if($this->status === self::STATUS_REGISTRATION && $user->id === $this->agent->user->id)
             return true;

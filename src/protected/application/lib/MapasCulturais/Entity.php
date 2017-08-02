@@ -227,8 +227,14 @@ abstract class Entity implements \JsonSerializable{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
-            return true;
+        if($this->usesOriginSubsite()){
+            if($user->is('admin', $this->_subsiteId)){
+                return true;
+            }
+        } else if($user->is('admin')){
+                return true;
+        }
+
 
         if($this->getOwnerUser()->id == $user->id)
             return true;
@@ -255,8 +261,10 @@ abstract class Entity implements \JsonSerializable{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin') || $this->getOwnerUser()->id == $user->id)
+        if($this->isUserAdmin($user) || $this->getOwnerUser()->id == $user->id) {
             return true;
+
+        }
 
         return false;
     }
@@ -278,7 +286,11 @@ abstract class Entity implements \JsonSerializable{
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
-            $result = $this->userHasControl($user) || $user->is('admin') || $user->is('superAdmin') || $user->is('superSaasAdmin');
+            if($this->userHasControl($user)){
+                $result = true;
+            } else if($this->isUserAdmin($user)){
+                $result = true;
+            }
         }
 
         if(method_exists($this, 'canUser' . $action)){
@@ -289,6 +301,19 @@ abstract class Entity implements \JsonSerializable{
         }
 
         $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
+
+        return $result;
+    }
+
+    public function isUserAdmin(UserInterface $user, $role = 'admin'){
+        $result = false;
+        if($this->usesOriginSubsite()){
+            if($user->is($role, $this->_subsiteId)){
+                $result = true;
+            }
+        } else if($user->is($role)) {
+            $result = true;
+        }
 
         return $result;
     }
