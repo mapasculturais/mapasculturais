@@ -1571,7 +1571,8 @@ class Theme extends MapasCulturais\Theme {
                     $mod_field = array_merge($skeleton_field, $field);
 
                     if (in_array($mod_field['fieldType'], ['checklist', 'singleselect'])){
-                        $mod_field['options'] = [];
+                        if(!isset($mod_field['options']))
+                          $mod_field['options'] = [];
                         if ($mod_field['fieldType'] == 'singleselect')
                             $mod_field['options'][] = ['value' => null, 'label' => $mod_field['placeholder']];
                         switch ($mod_field['type']) {
