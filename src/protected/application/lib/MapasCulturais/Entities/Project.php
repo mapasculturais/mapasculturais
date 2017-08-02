@@ -427,7 +427,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if ($user->is('admin')) {
+        if ($user->is('admin', $this->_subsiteId)) {
             return true;
         }
 
@@ -443,7 +443,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if ($user->is('admin')) {
+        if ($user->is('admin', $this->_subsiteId)) {
             return true;
         }
 
@@ -475,7 +475,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($user->is('admin', $this->_subsiteId)){
             return true;
         }
 

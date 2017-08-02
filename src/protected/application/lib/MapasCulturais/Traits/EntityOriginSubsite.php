@@ -31,4 +31,8 @@ trait EntityOriginSubsite{
         $this->_subsiteId = $subsite ? $subsite->id : null;
     }
 
+    function getSubsiteId() {
+        return $this->_subsiteId;
+    }
+
 }

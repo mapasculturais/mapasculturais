@@ -384,7 +384,7 @@ class Subsite extends \MapasCulturais\Entity
     }
 
     protected function canUserModify($user) {
-        return $user->is('superAdmin');
+        return $user->is('superAdmin', $this->id);
     }
 
     function clearCache(){

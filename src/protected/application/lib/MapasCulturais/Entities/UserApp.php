@@ -138,7 +138,7 @@ class UserApp extends \MapasCulturais\Entity {
             return false;
         }
         
-        if($user->is('admin')){
+        if($user->is('admin', $user->profile->getSubsiteId())){
             return true;
         }
         
