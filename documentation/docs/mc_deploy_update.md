@@ -10,9 +10,9 @@ A seguir serão descritos os passos para efetuar a atualização com sucesso.
 
 Antes de mais nada, faça backup do seu ambiente e do seu banco de dados.
 
-O código deve ser atualizado através de um release, disponível em https://github.com/hacklabr/mapasculturais/releases. Veja qual é a nova versão e qual é a versão que você está utilizando.
+O código deve ser atualizado através de um release, disponível em [https://github.com/hacklabr/mapasculturais/releases](https://github.com/hacklabr/mapasculturais/releases). Veja qual é a nova versão e qual é a versão que você está utilizando.
 
-Visite a pasta de documentação [Release notes](https://github.com/hacklabr/mapasculturais/documentation/releases-notes) e verifique as anotações que existem para as versões entre a sua e a mais nova. Para algumas versões específicas, podem haver procedimentos específicos, ou apenas cuidados a serem tomados. Leia com atenção e veja se precisa preparar alguma coisa antes de começar o procedimento de atualização.
+Visite a pasta de documentação [Release notes](https://github.com/hacklabr/mapasculturais/tree/master/documentation/releases-notes) e verifique as anotações que existem para as versões entre a sua e a mais nova. Para algumas versões específicas, podem haver procedimentos específicos, ou apenas cuidados a serem tomados. Leia com atenção e veja se precisa preparar alguma coisa antes de começar o procedimento de atualização.
 
 ### Atuaizando
 
