@@ -452,7 +452,7 @@ class Event extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin', $this->_subsiteId)){
+        if($this->isUserAdmin($user)){
             return true;
         }
 

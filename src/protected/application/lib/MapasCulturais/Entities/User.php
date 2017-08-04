@@ -237,7 +237,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function is($role_name, $subsite_id = false){
-        if($role_name === 'admin' && $this->is('superAdmin')){
+        if($role_name === 'admin' && $this->is('superAdmin', $subsite_id)){
             return true;
         }
 

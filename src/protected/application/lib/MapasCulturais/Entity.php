@@ -227,14 +227,10 @@ abstract class Entity implements \JsonSerializable{
         if($user->is('guest'))
             return false;
 
-        if($this->usesOriginSubsite()){
-            if($user->is('admin', $this->_subsiteId)){
-                return true;
-            }
-        } else if($user->is('admin')){
-                return true;
+        if($this->isUserAdmin($user)){
+            return true;
         }
-
+        
 
         if($this->getOwnerUser()->id == $user->id)
             return true;
@@ -314,6 +310,10 @@ abstract class Entity implements \JsonSerializable{
         } else if($user->is($role)) {
             $result = true;
         }
+
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').isUserAdmin(' . $role . ')', ['user' => $user, 'role' => $role, 'result' => &$result]);
 
         return $result;
     }

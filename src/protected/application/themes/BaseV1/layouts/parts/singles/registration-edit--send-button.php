@@ -16,7 +16,7 @@
         </p>
     <?php endif; ?>
 
-    <?php if(!$entity->project->isRegistrationOpen() && $app->user->is('superAdmin')): ?>
+    <?php if(!$entity->project->isRegistrationOpen() && $entity->project->isUserAdmin($app->user, 'superAdmin')): ?>
         <a ng-click="sendRegistration()" class="btn btn-danger hltip" data-hltip-classes="hltip-danger" hltitle="<?php \MapasCulturais\i::esc_attr_e('Somente super admins podem usar este botão e somente deve ser usado para enviar inscrições que não foram enviadas por problema do sistema.'); ?>" data-status="<?php echo MapasCulturais\Entities\Registration::STATUS_SENT ?>"><?php \MapasCulturais\i::_e("enviar esta inscrição");?></a>
     <?php endif ?>
 </div>

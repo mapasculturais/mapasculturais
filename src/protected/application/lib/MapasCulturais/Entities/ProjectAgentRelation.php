@@ -26,7 +26,7 @@ class ProjectAgentRelation extends AgentRelation {
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin', $this->owner->getSubsiteId()) && $user->is('admin', $this->agent->getSubsiteId())){
+        if($this->owner->isUserAdmin($user) && $this->agent->isUserAdmin($user)){
             return true;
         }
         

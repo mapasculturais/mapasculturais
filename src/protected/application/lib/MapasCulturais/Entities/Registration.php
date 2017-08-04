@@ -614,7 +614,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin', $this->project->getSubsiteId())){
+        if($this->project->isUserAdmin($user)){
             return true;
         }
 
@@ -650,7 +650,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('superAdmin', $this->project->getSubsiteId())){
+        if($this->project->isUserAdmin($user)){
             return true;
         }
 
@@ -662,7 +662,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($this->isUserAdmin($user)){
             return true;
         }
 
