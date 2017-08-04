@@ -173,7 +173,7 @@ trait EntityAgentRelation {
     }
 
     function userHasControl($user){
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         $ids = $this->getIdsOfUsersWithControl();

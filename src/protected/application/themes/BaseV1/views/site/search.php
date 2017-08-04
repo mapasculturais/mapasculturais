@@ -48,7 +48,7 @@ $this->includeMapAssets();
             <?php endif; ?>
 
 
-            <?php if($app->isEnabled('seals') && ($app->user->is('superAdmin') || $app->user->is('admin'))): ?>
+            <?php if($app->isEnabled('seals') && $app->user->is('admin')): ?>
                 <a class="hltip hltip-auto-update btn-map btn-map-seal"  ng-class="{active: data.global.enabled.seal}" ng-click="data.global.enabled.seal = !data.global.enabled.seal" title="{{(data.global.enabled.seal) && 'Ocultar' || 'Mostrar'}} <?php \MapasCulturais\i::_e("selos");?>"></a>
             <?php endif; ?>
 

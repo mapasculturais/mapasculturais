@@ -430,7 +430,7 @@ class Agent extends \MapasCulturais\Entity
         if($this->isUserProfile){
             return false;
         }else{
-            return $user->is('superAdmin', $this->_subsiteId);
+            return $this->isUserAdmin($user, 'superAdmin');
         }
     }
 
@@ -441,8 +441,9 @@ class Agent extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin', $this->_subsiteId))
+        if($this->isUserAdmin($user)){
             return true;
+        }
 
         return $this->getOwner()->canUser('modify') && $this->canUser('modify');
     }
