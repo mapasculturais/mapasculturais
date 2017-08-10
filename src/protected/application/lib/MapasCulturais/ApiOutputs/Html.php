@@ -124,6 +124,9 @@ class Html extends \MapasCulturais\ApiOutput{
             case 'seal':
                 $translated = \MapasCulturais\i::__('Selo');
             break;
+            case 'seals':
+                $translated = \MapasCulturais\i::__('Selos');
+            break;
             case 'owner':
                 $translated = \MapasCulturais\i::__('Publicado por');
             break;
@@ -132,6 +135,15 @@ class Html extends \MapasCulturais\ApiOutput{
             break;
             case 'createTimestamp':
                 $translated = \MapasCulturais\i::__('Data de Criação');
+            break;
+            case 'isVerified':
+                $translated = \MapasCulturais\i::__('Verificado');
+            break;
+            case 'verifiedSeals':
+                $translated = \MapasCulturais\i::__('Selos Verificadores');
+            break;
+            case 'isVerificationSeal':
+                $translated = \MapasCulturais\i::__('Selo Verificador');
             break;
         }
 
@@ -388,6 +400,7 @@ class Html extends \MapasCulturais\ApiOutput{
         ?>
         <table border="1">
         <?php foreach($data as $item):
+            $item = (array) $item;
             unset($item['rules']);
 
             if($first){
