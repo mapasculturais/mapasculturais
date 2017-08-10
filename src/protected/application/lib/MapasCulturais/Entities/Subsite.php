@@ -118,6 +118,9 @@ class Subsite extends \MapasCulturais\Entity
         } else {
             $val = [];
         }
+
+        $val = array_map(function($v) { return (int) $v; }, $val);
+
         $this->verifiedSeals = $val;
     }
 

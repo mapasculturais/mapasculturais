@@ -710,5 +710,15 @@ return [
         $conn->executeQuery("UPDATE subsite_meta SET key = 'agents_color' where key = 'cor_agentes';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");       
     },
+
+    'fix subsite verifiedSeals array' => function() use($app){
+        $subsites = $app->repo('Subsite')->findAll();
+        foreach($subsites as $subsite){
+            $subsite->setVerifiedSeals($subsite->verifiedSeals);
+            $subsite->save(true);
+        }
+
+        return false;
+    }
 ] + $updates ;
 
