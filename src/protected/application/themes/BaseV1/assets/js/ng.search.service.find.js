@@ -274,11 +274,13 @@
 
                 var querystring = '';
                 var Description = MapasCulturais.EntitiesDescription[exportEntity];
-                var exportSelect = ['singleUrl,type,terms'];
+                var exportSelect = ['singleUrl,isVerified,type,terms'];
                 var dontExportSelect = {
                     user: true,
                     publicLocation: true,
-                    status: true
+                    status: true,
+                    subsite: true,
+                    sentNotification: true
                 }
                 Object.keys(Description).forEach(function(prop) {
                     if(prop[0] == '_'){
@@ -305,6 +307,7 @@
                         }
                     }
                 });
+                
                 var queryString_apiExport = '@select='+exportSelect.join(',');
 
                 //removes type column from event export
