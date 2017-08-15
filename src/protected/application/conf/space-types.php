@@ -75,7 +75,7 @@ return array(
                 \MapasCulturais\i::__('Rampa de acesso'),
                 \MapasCulturais\i::__('Elevador'),
                 \MapasCulturais\i::__('Sinalização tátil'),
-                
+
                 // vindos do sistema de museus.cultura.gov.br
                 \MapasCulturais\i::__('Bebedouro adaptado'),
                 \MapasCulturais\i::__('Cadeira de rodas para uso do visitante'),
@@ -100,7 +100,7 @@ return array(
             'label' => \MapasCulturais\i::__('Endereço'),
             'type' => 'text'
         ),
-        
+
 
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
@@ -307,7 +307,8 @@ return array(
                 133 => array( 'name' => \MapasCulturais\i::__('Coreto' )),
                 134 => array( 'name' => \MapasCulturais\i::__('Ginásio Poliesportivo') ),
                 135 => array( 'name' => \MapasCulturais\i::__('Sala de Leitura' )),
-                
+                136 => array( 'name' => \MapasCulturais\i::__('Pontos de Memória' )),
+
                 199 => array( 'name' => \MapasCulturais\i::__('Outros Equipamentos Culturais' )), // adicionado na importação dos dados do Ceará para receber as endidades do tipo "equipamento"
             )
         ),
@@ -408,9 +409,9 @@ return array(
                 205 => array( 'name' => \MapasCulturais\i::__('Sitio Histórico' )),
                 206 => array( 'name' => \MapasCulturais\i::__('Documentação' )),
                 207 => array( 'name' => \MapasCulturais\i::__('Coleções' )),
-                
+
                 210 => array( 'name' => \MapasCulturais\i::__('Bens culturais de natureza imaterial' )), // adicionado na importação dos dados do Ceará para receber as endidades do tipo "patrimonio-imaterial"
-                
+
                 299 => array( 'name' => \MapasCulturais\i::__('Outros' )) // adicionado na importação dos dados do Ceará para receber as endidades do tipo "post"
             )
         ),
