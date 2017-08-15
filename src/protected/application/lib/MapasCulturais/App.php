@@ -1034,6 +1034,10 @@ class App extends \Slim\Slim{
 
         $this->view->register();
 
+        foreach($this->_modules as $module){
+            $module->register();
+        }
+
         foreach($this->_plugins as $plugin){
             $plugin->register();
         }
