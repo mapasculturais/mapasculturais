@@ -475,11 +475,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-<<<<<<< HEAD
         if ($this->isUserAdmin($user)) {
-=======
-        if($user->is('admin', $this->_subsiteId)){
->>>>>>> tipologia
             return true;
         }
 
