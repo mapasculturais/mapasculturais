@@ -53,5 +53,5 @@ return [
         }
 
         $app->auth->logout();
-    }
+    },
 ];

@@ -721,7 +721,10 @@ MapasCulturais.Editables = {
                             }
                             if(!firstShown) {
                                 firstShown = true;
-                                $field.editable('show');
+                                // removido o comportamento de abrir o primemiro campo vazio. estava gerando erro em alguns casos
+                                // mostrando um input text solto e também comportamento ruim quando havia campos obrigatorios
+                                // em outras abas
+                                //$field.editable('show');
                             }
                             $field.on('save', function(){
                                 $(this).parent().find('.danger.hltip').remove();
