@@ -281,7 +281,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function setRule($value) {
-        
+
         if ($value === '') {
             $this->rule = '';
             return;

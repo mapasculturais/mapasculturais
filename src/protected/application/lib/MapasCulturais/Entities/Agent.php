@@ -215,7 +215,7 @@ class Agent extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
@@ -314,7 +314,7 @@ class Agent extends \MapasCulturais\Entity
     function getSpaces(){
         if(!$this->isNew()){
             $this->refresh();
-        }       
+        }
         return $this->fetchByStatus($this->_spaces, self::STATUS_ENABLED, ['name' => 'ASC']);
     }
 
@@ -361,7 +361,7 @@ class Agent extends \MapasCulturais\Entity
         if($parent->equals($this->parent)) {
             return true;
         }
-        
+
         $this->nestedSetParent($parent);
         if($parent)
             $this->setUser($parent->user);

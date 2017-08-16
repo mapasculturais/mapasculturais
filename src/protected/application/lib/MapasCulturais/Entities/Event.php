@@ -155,7 +155,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
@@ -405,23 +405,23 @@ class Event extends \MapasCulturais\Entity
 
         return $result ? $result : [];
     }
-    
+
     function getExtraEntitiesToRecreatePermissionCache(){
         $result = [];
         if($this->project){
             $result[] = $this->project;
         }
-        
+
         return $result;
     }
-    
+
     function getExtraPermissionCacheUsers(){
         if($this->project){
             return $this->project->getUsersWithControl();
         } else {
             return [];
         }
-        
+
     }
 
     protected function canUserCreate($user){
@@ -442,7 +442,7 @@ class Event extends \MapasCulturais\Entity
             return $can;
         }
     }
-    
+
     protected function canUserUnpublish($user){
         return $this->canUserPublish($user);
     }
@@ -470,7 +470,7 @@ class Event extends \MapasCulturais\Entity
     protected function canUserView($user){
         if($this->status === self::STATUS_DRAFT){
             return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
-        } else { 
+        } else {
             return parent::canUserView($user);
         }
 
@@ -493,7 +493,7 @@ class Event extends \MapasCulturais\Entity
                     '_until' => $occurrence->_until,
                     'rule' => $occurrence->rule
                 ];
-                
+
                 $revisionData['occurrences'][$occurrence->space->id]['name'] = $occurrence->space->name;
                 $revisionData['occurrences'][$occurrence->space->id]['location'] = [
                                                                                     'latitude' => $occurrence->space->location->latitude,

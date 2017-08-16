@@ -21,7 +21,7 @@ class ProjectAgentRelation extends AgentRelation {
      * })
      */
     protected $owner;
-    
+
     protected function canUserCreate($user){
         if($user->is('guest'))
             return false;
@@ -29,8 +29,8 @@ class ProjectAgentRelation extends AgentRelation {
         if($this->owner->isUserAdmin($user) && $this->agent->isUserAdmin($user)){
             return true;
         }
-        
-        
+
+
         if($this->status === self::STATUS_REGISTRATION && $user->id === $this->agent->user->id)
             return true;
         else
