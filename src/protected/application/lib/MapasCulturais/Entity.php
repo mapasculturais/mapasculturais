@@ -230,7 +230,7 @@ abstract class Entity implements \JsonSerializable{
         if($this->isUserAdmin($user)){
             return true;
         }
-
+        
 
         if($this->getOwnerUser()->id == $user->id)
             return true;

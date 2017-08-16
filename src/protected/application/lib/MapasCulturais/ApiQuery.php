@@ -1944,6 +1944,13 @@ class ApiQuery {
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {
                 
         $_select_properties = explode(',', $_select);
+
+        if(in_array('*', $_select_properties)){
+            $_select_properties = array_unique(array_merge($this->_getAllPropertiesNames(), $_select_properties));
+            if(($k = array_search('*', $_select_properties)) !== false) {
+                unset($_select_properties[$k]);
+            }
+        }
         
         $select = array_map(function($property) use(&$_match) {
             // if the property is a subsquery 
@@ -1955,7 +1962,7 @@ class ApiQuery {
             } else {
                 return $property;
             }
-        }, explode(',', $_select));
+        }, $_select_properties);
 
         $first_time = !isset($this->_selectingRelations[$prop]);
         
