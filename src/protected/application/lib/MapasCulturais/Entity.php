@@ -101,6 +101,7 @@ abstract class Entity implements \JsonSerializable{
 
     }
 
+
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
     }
@@ -703,6 +704,14 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
+    static function processPropertyValue($property_name, $value){
+        if(is_string($value)){
+            $value = htmlentities($value);
+        }
+
+        return $value;
+    }
+
 
     /**
      * Validate that this property is unique in database
@@ -753,16 +762,46 @@ abstract class Entity implements \JsonSerializable{
             return $errors;
         }
 
-        foreach($class::getValidations() as $property => $validations){
+        $properties_validations = $class::getValidations();
+
+        $tags = ['style','script','embed','object','iframe','img','link'];
+        $validation = implode(',', array_map(function($tag){
+            return "v::contains('<{$tag}')";
+        }, $tags));
+        $htmltags_validation = "v::noneOf($validation)";
+
+        foreach($this->getPropertiesMetadata() as $prop => $metadata){
+            if(!$metadata['isEntityRelation']){
+                if(!isset($properties_validations[$prop])){
+                    $properties_validations[$prop] = [];
+                }
+
+                $properties_validations[$prop]['htmlentities'] = i::__('Não é permitido a inclusão de scripts');
+            }
+        }
+
+        $hook_class_path = $this->getHookClassPath();
+        App::i()->applyHookBoundTo($this, "entity(' . $hook_class_path . ').validations", [&$properties_validations]);
+
+        foreach($properties_validations as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
                 continue;
+
 
 
             foreach($validations as $validation => $error_message){
                 $validation = trim($validation);
 
                 $ok = true;
+
+                if($validation == 'htmlentities'){
+                    if(!is_string($this->$property)){
+                        continue;
+                    }
+                    
+                    $validation = $htmltags_validation;
+                }
 
                 if($validation == 'required'){
                     if (is_string($this->$property)) {
