@@ -875,6 +875,9 @@ class ApiQuery {
                 if(!isset($entity[$prop])){
                     $entity[$prop] = null;
                 }
+                $class = $this->entityClassName;
+                
+                $entity[$prop] = $class::processPropertyValue($prop, $entity[$prop]);
             }
         } 
     }
