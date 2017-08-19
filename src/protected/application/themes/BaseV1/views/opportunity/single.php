@@ -13,6 +13,8 @@ $this->addEntityToJs($entity);
 
 $this->addOpportunityToJs($entity);
 
+$this->addOpportunitySelectFieldsToJs($entity);
+
 if($this->isEditable()){
     $this->addEntityTypesToJs($entity);
     $this->addTaxonoyTermsToJs('tag');

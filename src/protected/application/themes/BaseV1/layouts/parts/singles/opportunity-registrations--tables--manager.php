@@ -1,8 +1,6 @@
 <?php
 use MapasCulturais\i;
 
-$this->addOpportunitySelectFieldsToJs($entity);
-
 ?>
 <header id="header-inscritos" class="clearfix">
     <h3><?php i::_e("Inscritos");?></h3>
