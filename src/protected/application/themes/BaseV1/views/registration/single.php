@@ -10,6 +10,8 @@ $this->addEntityToJs($entity);
 
 $this->addOpportunityToJs($entity->opportunity);
 
+$this->addOpportunitySelectFieldsToJs($entity->opportunity);
+
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
