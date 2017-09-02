@@ -988,25 +988,27 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
         if (property_exists($this, 'updateTimestamp')) {
-            return;
-            $this->updateTimestamp = new \DateTime;
+//            $this->updateTimestamp = new \DateTime;
+            /* @TODO: verificar o pq do código abaixo:
             if($this->sentNotification){
                 $entity = $this;
                 $nid = $this->sentNotification;
                 $app->hook('entity(' . $hook_class_path . ').update:after', function() use($app, $entity, $nid) {
                     if($this->equals($entity) && $app->user->equals($this->getOwnerUser())){
-                        $app->log->debug("notification id: $nid");
+                        // $app->log->debug("notification id: $nid");
                         $notification = $app->repo('Notification')->find($nid);
                         if($notification){
                             $notification->delete();
                             $this->sentNotification = 0;
-                            $this->save();
 
-                            $app->em->flush();
+                            // as duas linhas abaixo não devem ficar aqui:
+                            // $this->save();
+                            // $app->em->flush();
                         }
                     }
                 });
             }
+             */
         }
 
         if($this->usesPermissionCache()){
