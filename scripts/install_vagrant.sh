@@ -9,9 +9,10 @@ echo ''
 echo "MAPAS CULTURAIS: Installing Dependencies."
 echo ''
 
+sudo apt-get update
 
 # dependencias diversas
-sudo apt-get install -y git curl 
+sudo apt-get install -y git curl
 
 # instalando referências para a última versão do node
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
@@ -37,5 +38,4 @@ if ! type composer.phar 2>/dev/null; then
 	curl -sS https://getcomposer.org/installer | php
 	sudo mv composer.phar /usr/local/bin/composer.phar
 fi
-
 
