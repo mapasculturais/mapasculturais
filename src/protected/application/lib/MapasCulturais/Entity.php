@@ -677,7 +677,7 @@ abstract class Entity implements \JsonSerializable{
                 $prop = substr ($prop, 1);
 
             try{
-                $val = $this->$prop;
+                $val = $this->__get($prop);
                 $val = $this->_isPropertySerializable($val, $allowed_classes);
                 $result[$prop] = $val;
             }  catch (\Exception $e){}
