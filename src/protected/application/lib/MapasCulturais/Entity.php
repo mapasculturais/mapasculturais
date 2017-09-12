@@ -176,7 +176,7 @@ abstract class Entity implements \JsonSerializable{
                     break;
 
                     default:
-                        $e->$prop = $this->$prop;
+                        $e->$prop = $this->__get($prop);
                     break;
                 }
             }
@@ -988,7 +988,7 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
         if (property_exists($this, 'updateTimestamp')) {
-//            $this->updateTimestamp = new \DateTime;
+            $this->updateTimestamp = new \DateTime;
             /* @TODO: verificar o pq do código abaixo:
             if($this->sentNotification){
                 $entity = $this;
