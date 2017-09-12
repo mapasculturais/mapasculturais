@@ -15,6 +15,7 @@ trait MagicGetter{
     * Otherwise returns null.
      */
     public function __get($name){
+        $metadata = false;
 
         if(property_exists($this, 'container') && $val = $this->container[$name]){
             $value =  $val;
@@ -27,6 +28,7 @@ trait MagicGetter{
             $value =  $this->$name;
 
         }else if(method_exists($this,'usesMetadata') && $this->usesMetadata()){
+            $metadata = true;
             $value =  $this->__metadata__get($name);
 
         }else{
@@ -34,8 +36,9 @@ trait MagicGetter{
 
         }
 
-        if($this instanceof \MapasCulturais\Entity && is_string($value)){
-            $value = self::processPropertyValue($name, $value);
+        if($this instanceof \MapasCulturais\Entity && is_string($value) && !$metadata){
+            $class = $this->getClassName();
+            $value = $class::processPropertyValue($name, $value);
         }
 
         return $value;

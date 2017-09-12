@@ -316,6 +316,8 @@ class Subsite extends \MapasCulturais\Entity
             "singleUrl" => $this->singleUrl,
 
         ];
+
+        return $result;
     }
 
 

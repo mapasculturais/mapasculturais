@@ -166,10 +166,14 @@ class Theme extends BaseV1\Theme{
                             }
 
                             if(file_exists($entity_file_png) && file_exists($entity_icon_img)) {
-                                $img = \WideImage\WideImage::load($entity_file_png);
-                                $watermark = \WideImage\WideImage::load($entity_icon_img);
-                                $new = $img->merge($watermark);
-                                $new->saveToFile($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name . ".png");
+                                try{
+                                    $img = \WideImage\WideImage::load($entity_file_png);
+                                    $watermark = \WideImage\WideImage::load($entity_icon_img);
+                                    $new = $img->merge($watermark);
+                                    $new->saveToFile($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name . ".png");
+                                } catch(\Exception $e){
+                                    
+                                }
                             }
 
                             $entity_file_svg = THEMES_PATH . "/BaseV1/assets/img/pin-" . $entity_first_sing_name. ".svg";
