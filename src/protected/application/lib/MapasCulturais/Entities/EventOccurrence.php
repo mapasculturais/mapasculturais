@@ -281,7 +281,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function setRule($value) {
-        
+
         if ($value === '') {
             $this->rule = '';
             return;
@@ -403,8 +403,9 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->event->isUserAdmin($user) && $this->space->isUserAdmin($user)){
             return true;
+        }
 
         return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
@@ -413,8 +414,9 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->event->isUserAdmin($user) && $this->space->isUserAdmin($user)){
             return true;
+        }
 
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }

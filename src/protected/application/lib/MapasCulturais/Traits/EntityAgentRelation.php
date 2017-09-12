@@ -180,7 +180,7 @@ trait EntityAgentRelation {
     }
 
     function userHasControl($user){
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         $ids = $this->getIdsOfUsersWithControl();
@@ -266,22 +266,22 @@ trait EntityAgentRelation {
     }
 
     protected function canUserCreateAgentRelation($user){
-        $result = $user->is('admin') || $this->userHasControl($user);
+        $result = $this->isUserAdmin($user) || $this->userHasControl($user);
         return $result;
     }
 
     protected function canUserCreateAgentRelationWithControl($user){
-        $result = $user->is('admin') || $user->id === $this->ownerUser->id;
+        $result = $this->isUserAdmin($user) || $user->id === $this->ownerUser->id;
         return $result;
     }
 
     function canUserRemoveAgentRelation($user){
-        $result = $user->is('admin') || $this->userHasControl($user);
+        $result = $this->isUserAdmin($user) || $this->userHasControl($user);
         return $result;
     }
 
     function canUserRemoveAgentRelationWithControl($user){
-        $result = $user->is('admin') || $user->id === $this->ownerUser->id;
+        $result = $this->isUserAdmin($user) || $user->id === $this->ownerUser->id;
         return $result;
     }
 }

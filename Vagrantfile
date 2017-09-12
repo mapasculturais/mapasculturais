@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provider :virtualbox do |vb|
 
         # Set VM memory size
-        vb.customize ["modifyvm", :id, "--memory", "512"]
+        vb.customize ["modifyvm", :id, "--memory", "2048"]
 
         # these 2 commands massively speed up DNS resolution, which means outbound
         # connections don't take forever (eg the WP admin dashboard and update page)
@@ -29,12 +29,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     end
 
-    config.landrush.enabled = true
-    config.landrush.tld = 'fdev'
+    # config.landrush.enabled = true
+    # config.landrush.tld = 'fdev'
 
-    config.vm.network "private_network", ip: "192.168.50.5"
-    config.vm.hostname = "mapa.fdev"
-    config.hostsupdater.remove_on_suspend = true
+    #config.vm.network "private_network", ip: "10.0.2.15"
+    #config.vm.hostname = "localhost"
+    # config.hostsupdater.remove_on_suspend = true
 
     # config.landrush.host 'mapa.local', '192.168.50.5'
 

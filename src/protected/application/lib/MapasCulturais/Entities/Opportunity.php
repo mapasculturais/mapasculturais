@@ -530,7 +530,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if ($this->isUserAdmin($user)) {
             return true;
         }
 

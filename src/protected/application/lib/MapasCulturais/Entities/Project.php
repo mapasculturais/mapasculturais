@@ -186,12 +186,12 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__sealRelations;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
-    
+
     /**
      * @var integer
      *
@@ -215,7 +215,7 @@ class Project extends \MapasCulturais\Entity
         else
             return \MapasCulturais\i::__('Projeto');
     }
-    
+
     static function getValidations() {
         return [
             'name' => [
@@ -238,7 +238,7 @@ class Project extends \MapasCulturais\Entity
             ]
         ];
     }
-    
+
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
@@ -290,7 +290,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if ($user->is('admin')) {
+        if ($this->isUserAdmin($user)) {
             return true;
         }
 
@@ -306,7 +306,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if ($user->is('admin')) {
+        if ($this->isUserAdmin($user)) {
             return true;
         }
 

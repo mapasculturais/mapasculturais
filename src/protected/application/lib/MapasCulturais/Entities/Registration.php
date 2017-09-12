@@ -32,8 +32,8 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_WAITLIST = 8;
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
-    
-    
+
+
     /**
      * @var integer
      *
@@ -118,12 +118,12 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
-    
+
     /**
 
      * @var \MapasCulturais\Entities\RegistrationAgentRelation[] Agent Relations
@@ -155,7 +155,7 @@ class Registration extends \MapasCulturais\Entity
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
-    
+
     static function isPrivateEntity(){
         return true;
     }
@@ -379,7 +379,6 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
-        
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
@@ -648,7 +647,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($this->project->isUserAdmin($user)){
             return true;
         }
 
@@ -692,7 +691,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('superAdmin')){
+        if($this->project->isUserAdmin($user)){
             return true;
         }
 
@@ -704,7 +703,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($this->isUserAdmin($user)){
             return true;
         }
 

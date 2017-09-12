@@ -37,6 +37,7 @@ return [
         }
         $app->auth->logout();
     },
+
     'create entities updated revision' => function() {
         $app = \MapasCulturais\App::i();
         foreach (['Agent', 'Space', 'Event'] as $class){
@@ -54,4 +55,49 @@ return [
 
         $app->auth->logout();
     },
+
+    'fix update timestamp of revisioned entities' => function() {
+        $app = \MapasCulturais\App::i();
+        $conn = $app->em->getConnection();
+        foreach ([/* 'Agent', */'Space', 'Event'] as $class){
+            DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) use ($app, $conn, $class) {
+                $table = strtolower($class);
+
+                $_timestamp = $conn->fetchColumn("
+                    SELECT
+                        create_timestamp
+                    FROM
+                        entity_revision
+                    WHERE
+                        object_type = 'MapasCulturais\Entities\\{$class}' AND
+                        object_id = {$entity->id} AND
+                        action = 'modified'
+                    ORDER BY id DESC
+                    LIMIT 1");
+
+                if($_timestamp){
+                    $conn->executeQuery("
+                        UPDATE
+                            {$table}
+                        SET
+                            update_timestamp = '{$_timestamp}'
+                        WHERE
+                            id = {$entity->id}
+                    ");
+                } else {
+                    $conn->executeQuery("
+                        UPDATE
+                            {$table}
+                        SET
+                            update_timestamp = create_timestamp
+                        WHERE
+                            id = {$entity->id} AND
+                            update_timestamp IS NULL
+                    ");
+                }
+            });
+        }
+
+    },
+
 ];

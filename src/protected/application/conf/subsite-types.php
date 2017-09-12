@@ -251,6 +251,7 @@ return array(
                 60 => 'Museu Público',
                 501 => 'Palco de Rua',
                 115 => 'Ponto de Leitura Afro',
+                136 => 'Pontos de Memória',
                 119 => 'Praça dos esportes e da cultura',
                 124 => 'Rádio Comunitária',
                 14 => 'Sala de cinema',

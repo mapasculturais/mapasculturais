@@ -116,6 +116,13 @@ class Notification extends \MapasCulturais\Entity{
     }
 
 
+    public static function processPropertyValue($property_name, $value) {
+        if($property_name == 'message'){
+            return $value;
+        } else {
+            return parent::processPropertyValue($property_name, $value);
+        }
+    }
 
 
     //============================================================= //
