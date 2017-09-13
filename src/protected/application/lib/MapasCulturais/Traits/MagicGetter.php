@@ -36,11 +36,6 @@ trait MagicGetter{
 
         }
 
-        if($this instanceof \MapasCulturais\Entity && is_string($value) && !$metadata){
-            $class = $this->getClassName();
-            $value = $class::processPropertyValue($name, $value);
-        }
-
         return $value;
     }
 
