@@ -111,9 +111,18 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
-        $result = true;
+        if(count($evaluations) === 0){
+            return 0;
+        }
+
+        $result = 1;
+
         foreach ($evaluations as $eval){
-            $result = $result && $this->getEvaluationResult($eval);
+            if($eval->status === \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT){
+                return 0;
+            }
+
+            $result = ($result === 1 && $this->getEvaluationResult($eval) === 1) ? 1 : -1;
         }
 
         return $result;
@@ -123,28 +132,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $data = (array) $evaluation->evaluationData;
         
         if(count($data) == 0){
-            return true; // valid
+            return 1; // valid
         }
 
         foreach ($data as $id => $value) {
             if(isset($value['evaluation']) && $value['evaluation'] === STATUS_INVALID){
-                return false;
+                return -1;
             }
         }
 
-        return true;
+        return 1;
     }
 
     public function valueToString($value) {
-        if(is_null($value)){
-            return '';
-        }
 
-        if($value){
+        if($value === 1){
             return i::__('Inscrição válida');
-        } else {
+        } else if($value === -1){
             return i::__('Inscrição inválida');
         }
+
+        return '';
+
     }
     
     public function fetchRegistrations() {
