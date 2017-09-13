@@ -704,14 +704,6 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
-    static function processPropertyValue($property_name, $value){
-        if(is_string($value)){
-            $value = htmlentities($value);
-        }
-
-        return $value;
-    }
-
 
     /**
      * Validate that this property is unique in database
