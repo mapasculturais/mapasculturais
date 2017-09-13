@@ -647,7 +647,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->project->isUserAdmin($user)){
+        if($this->opportunity->isUserAdmin($user)){
             return true;
         }
 
