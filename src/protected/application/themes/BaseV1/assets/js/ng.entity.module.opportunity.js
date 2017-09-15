@@ -808,11 +808,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 
     if($scope.useCategories){
-        
+
         RegistrationService.getSelectedCategory().then(function(value){
             $scope.selectedCategory = value;
         });
-        
+
         $('.js-editable-registrationCategory').on('save', function(){
             RegistrationService.getSelectedCategory().then(function(value){
                 $scope.selectedCategory = value;
@@ -882,27 +882,27 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             entity: MapasCulturais.entity,
             categories: MapasCulturais.entity.registrationCategories,
             committee: MapasCulturais.entity.evaluationCommittee,
-            
+
         };
-        
+
         $scope.fetch = emconfig.fetch || {};
         $scope.fetchCategories = emconfig.fetchCategories || {};
-        
+
         $scope.config = {
             fetch: emconfig.fetch,
             fetchCategories: emconfig.fetchCategories,
             infos: emconfig.infos
         };
-        
+
         var lastConfig = angular.copy($scope.config);
-        
+
         $scope.$watch('config', function(o,n){
             if(angular.equals(lastConfig, $scope.config)){
                 return;
             }
-            
+
             lastConfig = angular.copy($scope.config);
-            
+
             var promise = EvaluationMethodConfigurationService.patch($scope.config);
             promise.then(function(){
                             MapasCulturais.Messages.success(labels['changesSaved']);
@@ -1163,7 +1163,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         fields: RegistrationService.getFields(),
 
         relationApiQuery: {'@keywowrd': '*'},
-        
+
         fullscreenTable: false
 
     }, MapasCulturais);
@@ -1245,11 +1245,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             } else {
                 status = -1;
             }
-        
+
         } else {
             status = $scope.getEvaluationStatus(registration);
         }
-        
+
         var slugs = {
             '-1': 'pending',
             '0': 'draft',
@@ -1263,11 +1263,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }
 
     $scope.getEvaluationResultString = function(registration){
-        
+
         if(registration.evaluation){
             return registration.evaluation.resultString;
         }
-        
+
         var userEvaluation = $scope.getUserEvaluation(registration);
         if(userEvaluation) {
             return userEvaluation.resultString;
@@ -1275,9 +1275,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             return '';
         }
     }
-    
-    
-    
+
+
+
 
     // EVALUATIONS - END
 
@@ -1409,7 +1409,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     }
                 }
             }
-            
+
 
             $scope.setRegistrationOwner = function(agent){
                 $scope.data.registration.owner = agent;
@@ -1706,53 +1706,4 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
 
 }]);
 
-module.controller('OpportunityClaimController',['$scope', '$timeout', 'OpportunityClaimService',function($scope, $timeout, OpportunityClaimService){
-    $scope.send = function( ) {
-        var message = $scope.data.message;
-        var registration_id = $(".js-submit-button.opportunity-claim-form").attr('id');
-        MapasCulturais.opportunity_claim_ok = true;
-
-        if(!message){
-            MapasCulturais.Messages.error('O preenchimento da mensagem da solicitação de recurso.');
-            MapasCulturais.opportunity_claim_ok = false;
-        }
-
-        if(MapasCulturais.opportunity_claim_ok) {
-            OpportunityClaimService.send(message,registration_id).
-                success(function (data) {});
-        }
-    }
-}]);
-
-module.factory('OpportunityClaimService', ['$http', '$rootScope', function($http, $rootScope){
-    var controllerId = null,
-        entityId = null,
-        baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
-
-    try{ controllerId = MapasCulturais.request.controller; }catch (e){};
-    try{ entityId = MapasCulturais.entity.id; }catch (e){};
-
-    return {
-        controllerId: controllerId,
-
-        entityId: entityId,
-
-        getUrl: function(action){
-            return baseUrl + controllerId + "/" + action;
-        },
-
-        send: function(message, registration_id) {
-            return $http.post(this.getUrl('sendOpportunityClaimMessage'), {message: message, registration_id: registration_id, entityId: this.entityId}).
-                success(function(data, status){
-                    if(status === 202){
-                        MapasCulturais.Messages.alert('Sua requisição para solicitar recursos foi feita sucesso.');
-                    }
-                    $rootScope.$emit('sendOpportunityClaimMessage.created', data);
-                }).
-                error(function(data, status){
-                    $rootScope.$emit('error', { message: "Cannot send opportunity claim message", data: data, status: status });
-                });
-        }
-    };
-}]);
 })(angular);

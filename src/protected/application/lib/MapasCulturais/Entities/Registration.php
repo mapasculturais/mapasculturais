@@ -8,7 +8,7 @@ use MapasCulturais\App;
 /**
  * Registration
  * @property-read \MapasCulturais\Entities\Agent $owner The owner of this registration
- * @property-read \MapasCulturais\Entities\Opportunity $opportunity 
+ * @property-read \MapasCulturais\Entities\Opportunity $opportunity
  * @property string $category
  *
  * @ORM\Table(name="registration")
@@ -403,10 +403,10 @@ class Registration extends \MapasCulturais\Entity
             $relation->save(true);
     	}
 
-    	$sealInstitutions = isset($opportunityMetadataSeals->institution) ? 
+    	$sealInstitutions = isset($opportunityMetadataSeals->institution) ?
                 $app->repo('Seal')->find($opportunityMetadataSeals->institution) : null;
-        
-    	$sealCollective = isset($opportunityMetadataSeals->collective) ? 
+
+    	$sealCollective = isset($opportunityMetadataSeals->collective) ?
                 $app->repo('Seal')->find($opportunityMetadataSeals->collective) : null;
 
         foreach($this->relatedAgents as $groupName => $relatedAgents){
@@ -484,7 +484,7 @@ class Registration extends \MapasCulturais\Entity
         if($_access_control_enabled){
             $app->enableAccessControl();
         }
-        
+
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
@@ -602,9 +602,9 @@ class Registration extends \MapasCulturais\Entity
                 $errorsResult['registration-field-' . $field->id] = $errors;
             }
         }
-        
+
         // @TODO: validar o campo projectName
-        
+
         if($opportunity->projectName == 2 && !$this->projectName){
             $errorsResult['projectName'] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), \MapasCulturais\i::__('Nome do Projeto'));
         }
@@ -658,11 +658,11 @@ class Registration extends \MapasCulturais\Entity
         if($this->opportunity->canUser('@control', $user)){
             return true;
         }
-        
+
         if($this->opportunity->canUser('evaluateRegistrations', $user)){
             return true;
         }
-        
+
         if($this->opportunity->canUser('viewEvaluations', $user)){
             return true;
         }
@@ -691,7 +691,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->project->isUserAdmin($user)){
+        if($this->opportunity->isUserAdmin($user)){
             return true;
         }
 
@@ -717,24 +717,24 @@ class Registration extends \MapasCulturais\Entity
             return $this->genericPermissionVerification($user);
         }
     }
-    
+
     protected function canUserEvaluate($user){
         $can = $this->canUserViewUserEvaluation($user);
-        
+
         $evaluation_sent = false;
-        
+
         if($evaluation = $this->getUserEvaluation($user)){
             $evaluation_sent = $evaluation->status === RegistrationEvaluation::STATUS_SENT;
         }
-        
+
         return $can && !$evaluation_sent;
     }
-    
+
     protected function canUserViewUserEvaluation($user){
         if($this->status <= 0) {
             return false;
         }
-        
+
         return $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
     }
 
@@ -742,18 +742,18 @@ class Registration extends \MapasCulturais\Entity
         if($this->status <= 0) {
             return false;
         }
-        
+
         return $this->getEvaluationMethod()->canUserViewConsolidatedResult($this, $user);
     }
-    
+
     function getExtraPermissionCacheUsers(){
         $users = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
-        
+
         $users = array_merge($users, $this->opportunity->getUsersWithControl());
-        
+
         return $users;
     }
-    
+
     /**
      * Returns the Evaluation Method Definition Object
      * @return \MapasCulturais\Definitions\EvaluationMethod
@@ -761,7 +761,7 @@ class Registration extends \MapasCulturais\Entity
     public function getEvaluationMethodDefinition() {
         return $this->opportunity->getEvaluationMethodDefinition();
     }
-    
+
     /**
      * Returns the Evaluation Method Configuration
      * @return \MapasCulturais\Definitions\EvaluationMethodConfiguration
@@ -777,9 +777,9 @@ class Registration extends \MapasCulturais\Entity
     public function getEvaluationMethod() {
         return $this->opportunity->getEvaluationMethod();
     }
-    
+
     /**
-     * 
+     *
      * @param \MapasCulturais\Entities\User $user
      * @return \MapasCulturais\Entities\RegistrationEvaluation
      */
@@ -792,7 +792,7 @@ class Registration extends \MapasCulturais\Entity
             'registration' => $this,
             'user' => $user
         ]);
-        
+
         return $evaluation;
     }
 
@@ -805,13 +805,13 @@ class Registration extends \MapasCulturais\Entity
 
         $evaluation->save(true);
     }
-    
+
     function saveUserEvaluation(array $data, User $user = null, $evaluation_status = null){
         $app = App::i();
         if(is_null($user)){
             $user = $app->user;
         }
-        
+
         $evaluation = $this->getUserEvaluation($user);
         if(!$evaluation){
             $evaluation = new RegistrationEvaluation;
@@ -820,7 +820,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $this->saveEvaluation($evaluation, $data, $evaluation_status);
-        
+
         return $evaluation;
     }
 

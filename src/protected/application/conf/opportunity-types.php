@@ -68,7 +68,7 @@ return array(
                 '1' => \MapasCulturais\i::__('Opcional'),
                 '2' => \MapasCulturais\i::__('Obrigatório'),
             ),
-            
+
             'unserialize' => function($val){
                 return intval($val);
             }
@@ -117,8 +117,8 @@ return array(
         43 => array( 'name' => \MapasCulturais\i::__("Oportunidade de trabalho")),
         44 => array( 'name' => \MapasCulturais\i::__("Outros eventos")),
         45 => array( 'name' => \MapasCulturais\i::__("Outros tipos de inscrição")),
-        
-        
+
+
     )
     /* EXEMPLOS DE METADADOS:
 

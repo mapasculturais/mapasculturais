@@ -147,7 +147,7 @@ class App extends \Slim\Slim{
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
-    
+
     protected $_modules = [];
 
     protected $_subsite = null;
@@ -191,10 +191,10 @@ class App extends \Slim\Slim{
                 header('Location: ' . $config['app.offlineUrl']);
             }
         }
-        
+
         //Load defaut translation textdomain
         i::load_default_textdomain($config['app.lcode']);
-        
+
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -209,7 +209,7 @@ class App extends \Slim\Slim{
 
 
         $this->_mscache->setNamespace(__DIR__);
-        
+
         // list of modules
         $available_modules = [];
         if($handle = opendir(MODULES_PATH)){
@@ -239,7 +239,7 @@ class App extends \Slim\Slim{
                     $namespaces[$plugin['namespace']] = $dir;
                 }
             }
-            
+
             foreach($namespaces as $namespace => $base_dir){
                 if(strpos($class, $namespace) === 0){
                     $path = str_replace('\\', '/', str_replace($namespace, $base_dir, $class) . '.php' );
@@ -404,12 +404,12 @@ class App extends \Slim\Slim{
             'view' => $theme_instance,
             'mode' => $this->_config['app.mode']
         ]);
-        
+
         foreach($config['plugins'] as $slug => $plugin){
             $_namespace = $plugin['namespace'];
             $_class = isset($plugin['class']) ? $plugin['class'] : 'Plugin';
             $plugin_class_name = "$_namespace\\$_class";
-            
+
             if(class_exists($plugin_class_name)){
                 $plugin_config = isset($plugin['config']) && is_array($plugin['config']) ? $plugin['config'] : [];
 
@@ -418,9 +418,9 @@ class App extends \Slim\Slim{
                 $this->_plugins[$slug] = new $plugin_class_name($plugin_config);
             }
         }
-        
+
         $config = $this->_config;
-        
+
         $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
         foreach ($available_modules as $module){
             $this->applyHookBoundTo($this, "app.module({$module}).init:before");
@@ -433,7 +433,7 @@ class App extends \Slim\Slim{
             $this->applyHookBoundTo($this, "app.module({$module}).init:after");
         }
         $this->applyHookBoundTo($this, 'app.modules.init:after');
-        
+
 
         // ===================================== //
 
@@ -472,7 +472,7 @@ class App extends \Slim\Slim{
         $this->_routesManager = new RoutesManager(key_exists('routes', $config) ? $config['routes'] : []);
 
         $this->applyHookBoundTo($this, 'mapasculturais.init');
-        
+
         $this->register();
 
 
@@ -681,10 +681,10 @@ class App extends \Slim\Slim{
         $this->registerController('seal',           'MapasCulturais\Controllers\Seal');
         $this->registerController('space',          'MapasCulturais\Controllers\Space');
         $this->registerController('project',        'MapasCulturais\Controllers\Project');
-        
+
         $this->registerController('opportunity',    'MapasCulturais\Controllers\Opportunity');
         $this->registerController('evaluationMethodConfiguration', 'MapasCulturais\Controllers\EvaluationMethodConfiguration');
-        
+
         $this->registerController('subsite',        'MapasCulturais\Controllers\Subsite');
 
 
@@ -748,7 +748,7 @@ class App extends \Slim\Slim{
             'name' => \MapasCulturais\i::__('Seleção única (select)'),
             'requireValuesConfiguration' => true
         ]));
-        
+
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'section',
             'name' => \MapasCulturais\i::__('Título de Seção')
@@ -1015,7 +1015,7 @@ class App extends \Slim\Slim{
                 $this->registerMetadata($metadata, $entity_class, $type_id);
             }
         }
-        
+
         // register Subsite types and Subsite metadata
         $entity_class = 'MapasCulturais\Entities\Subsite';
 
@@ -1092,13 +1092,13 @@ class App extends \Slim\Slim{
     function getRegisteredGeoDivisions(){
         $result = [];
         foreach($this->_config['app.geoDivisionsHierarchy'] as $key => $name) {
-            
+
             $display = true;
             if (substr($key, 0, 1) == '_') {
                 $display = false;
                 $key = substr($key, 1);
             }
-            
+
             $d = new \stdClass();
             $d->key = $key;
             $d->name = $name;
@@ -1125,7 +1125,7 @@ class App extends \Slim\Slim{
             return key_exists ($key, $this->_config) ? $this->_config[$key] : null;
 
     }
-    
+
     /**
      * Returns the configuration array or the specified configuration
      *
@@ -1172,7 +1172,7 @@ class App extends \Slim\Slim{
      */
     public function handleUpload($key, $file_class_name){
         if(is_array($_FILES) && key_exists($key, $_FILES)){
-            
+
             if(is_array($_FILES[$key]['name'])){
                 $result = [];
                 foreach(array_keys($_FILES[$key]['name']) as $i){
@@ -1188,11 +1188,11 @@ class App extends \Slim\Slim{
                 if($_FILES[$key]['error']){
                     throw new \MapasCulturais\Exceptions\FileUploadError($key, $_FILES[$key]['error']);
                 }
-                
+
                 $mime = mime_content_type($_FILES[$key]['tmp_name']);
                 $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name'], $mime);
                 $result = new $file_class_name($_FILES[$key]);
-                
+
             }
             return $result;
         }else{
@@ -1215,11 +1215,11 @@ class App extends \Slim\Slim{
             $cb = $this->_config['app.sanitize_filename_function'];
             $filename = $cb($filename);
         }
-        
+
         // If the file does not have an extension and is a image, lets put it
         // Wide Image relies on it and we know that cropped images come without extension (blob upload)
         if (empty(pathinfo($filename, PATHINFO_EXTENSION)) && $mimetype) {
-            
+
             $imagetypes = array(
                 'image/jpeg' => 'jpeg',
                 'image/bmp' => 'bmp',
@@ -1228,10 +1228,10 @@ class App extends \Slim\Slim{
                 'image/png' => 'png',
                 'image/x-png' => 'png',
             );
-            
+
             if (array_key_exists($mimetype, $imagetypes))
                 $filename .= '.' . $imagetypes[$mimetype];
-                       
+
         }
 
         return $filename;
@@ -1419,23 +1419,23 @@ class App extends \Slim\Slim{
 
         return $hook;
     }
-    
+
     /**********************************************
      * Permissions Cache
      **********************************************/
     protected $_entitiesToRecreatePermissionsCache = [];
-    
+
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
         $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
     }
-    
+
     public function recreatePermissionsCacheOfListedEntities(){
         foreach($this->_entitiesToRecreatePermissionsCache as $entity){
             $entity->createPermissionsCacheForUsers();
         }
         $this->_entitiesToRecreatePermissionsCache = [];
     }
-    
+
     /**********************************************
      * Getters
      **********************************************/
@@ -2348,8 +2348,8 @@ class App extends \Slim\Slim{
         return key_exists($entity, $this->_register['taxonomies']['by-entity']) && key_exists($taxonomy_slug, $this->_register['taxonomies']['by-entity'][$entity]) ?
                     $this->_register['taxonomies']['by-entity'][$entity][$taxonomy_slug] : null;
     }
-    
-    
+
+
     /**
      * Register an Evaluation Method
      * @param \MapasCulturais\Definitions\EvaluationMethod $def
@@ -2357,8 +2357,8 @@ class App extends \Slim\Slim{
     function registerEvaluationMethod(Definitions\EvaluationMethod $def){
         $this->_register['evaluation_method'][$def->slug] = $def;
     }
-    
-    
+
+
     /**
      * Returns the evaluation methods definitions
      * @return \MapasCulturais\Definitions\EvaluationMethod[];
@@ -2366,12 +2366,12 @@ class App extends \Slim\Slim{
     function getRegisteredEvaluationMethods(){
         return $this->_register['evaluation_method'];
     }
-    
+
     /**
      * Returns the evaluation method definition
-     * 
+     *
      * @param string $slug
-     * 
+     *
      * @return \MapasCulturais\Definitions\EvaluationMethod;
      */
     function getRegisteredEvaluationMethodBySlug($slug){
