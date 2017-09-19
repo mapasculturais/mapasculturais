@@ -343,10 +343,13 @@ class ApiQuery {
     
     protected $_subsiteId = false;
 
+    protected $_selectAll = false;
     
-    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false) {
+    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false) {
         $this->_subsiteId = $is_subsite_filter;
         
+        $this->_selectAll = $select_all;
+
         $this->initialize($entity_class_name, $api_params);
 
         $this->parseQueryParams();
@@ -883,6 +886,7 @@ class ApiQuery {
         $app = App::i();
         $metadata = [];
         $definitions = $app->getRegisteredMetadata($this->entityClassName);
+
         if ($this->_selectingMetadata && count($entities) > 0) {
             
             $permissions = $this->getViewPrivateDataPermissions($entities);
@@ -1079,7 +1083,8 @@ class ApiQuery {
                         $select = "$_target_property,$select";                        
                     }
                     
-                    $query = new ApiQuery($target_class, ['@select' => $select]);
+                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll']);
+
                     $query->name = "{$this->name}->$prop";
 
                     $query->where = "e.{$_target_property} IN ({$_subquery_where_id_in})";
@@ -1910,6 +1915,26 @@ class ApiQuery {
         }
 
         $this->_selecting = array_unique(explode(',', $select));
+
+
+        if($this->_selectAll){
+            foreach($this->_getAllPropertiesNames() as $k){
+                if(!in_array($k, $this->_selecting)){
+                    $sub = false;
+                    if($this->_subqueriesSelect){
+                        foreach($this->_subqueriesSelect as $sq){
+                            if($sq['property'] == $k){
+                                $sub = true;
+                            }
+                        }
+                    }
+                    if(!$sub){
+                        $this->_selecting[] = $k;
+                    }
+                }
+            }
+        }
+
         $entity_class = $this->entityClassName;
         foreach ($this->_selecting as $i => $prop) {
             if(!$prop){
@@ -1945,8 +1970,10 @@ class ApiQuery {
                 
         $_select_properties = explode(',', $_select);
 
+        $_select_all = false;
+
         if(in_array('*', $_select_properties)){
-            $_select_properties = array_unique(array_merge($this->_getAllPropertiesNames(), $_select_properties));
+            $_select_all = true;
             if(($k = array_search('*', $_select_properties)) !== false) {
                 unset($_select_properties[$k]);
             }
@@ -1981,6 +2008,7 @@ class ApiQuery {
             $this->_selectingRelations[$prop] = $uid;
             
             $this->_subqueriesSelect[$uid] = [
+                'selectAll' => $_select_all,
                 'property' => $prop,
                 'select' => array_unique($select),
                 'match' => $_match,
