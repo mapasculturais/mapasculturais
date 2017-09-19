@@ -31,7 +31,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // adiciona seção de configuração do formulário de recurso
-        $app->hook("view.partial(singles/opportunity-about--highlighted-message):after", function(){
+        $app->hook("view.partial(singles/opportunity-registrations--importexport):before", function(){
             $this->part('claim-configuration', ['opportunity' => $this->controller->requestedEntity]);
         });
 
