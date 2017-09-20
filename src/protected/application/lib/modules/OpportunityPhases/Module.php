@@ -604,11 +604,14 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('entity(RegistrationEvaluation).canUser(view)', function($user, &$result) use($app){
+        $app->hook('entity(Registration).canUser(view)', function($user, &$result) use($app){
+            if($result){
+                return;
+            }
 
-            if($registration_id = $this->registration->nextPhaseRegistrationId){
+            if($registration_id = $registration->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($registration_id);
-                $result = $next_phase_registration->canUser('viewUserEvaluation', $user);
+                $result = $next_phase_registration->canUser('view', $user);
             }
         });
         
