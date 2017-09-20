@@ -9,141 +9,141 @@ use MapasCulturais\App,
 
 
 class Module extends \MapasCulturais\Module{
-    
+
     /**
      * Retorna o oportunidade principal
-     * 
+     *
      * @return \MapasCulturais\Entities\Opportunity
      */
     static function getBaseOpportunity(){
         $opportunity = self::getRequestedOpportunity();
-        
+
         if(!$opportunity){
             return null;
         }
-        
+
         if($opportunity->isOpportunityPhase){
             $opportunity = $opportunity->parent;
         }
-        
+
         return $opportunity;
     }
-    
+
     /**
      * Retorna o oportunidade/fase que está sendo visualizado
-     * 
+     *
      * @return \MapasCulturais\Entities\Opportunity
      */
     static function getRequestedOpportunity(){
         $app = App::i();
-        
+
         $opportunity = $app->view->controller->requestedEntity;
-        
+
         if(!$opportunity){
             return null;
         }
-        
+
         return $opportunity;
     }
-    
+
     /**
      * Retorna a última fase do oportunidade
-     * 
+     *
      * @param \MapasCulturais\Entities\Opportunity $base_opportunity
      * @return \MapasCulturais\Entities\Opportunity
      */
     static function getLastPhase(Entities\Opportunity $base_opportunity){
         $app = App::i();
-        
+
         if ($base_opportunity->canUser('@control')) {
             $status = [0,-1];
         } else {
             $status = -1;
         }
-        
+
         $result = $app->repo('Opportunity')->findOneBy([
             'parent' => $base_opportunity,
             'status' => $status
         ],['registrationTo' => 'DESC', 'id' => 'DESC']);
-        
+
         return $result ? $result : $base_opportunity;
     }
-    
+
     /**
      * Retorna a última fase que teve seu período de inscrição terminado
      * @param \MapasCulturais\Entities\Opportunity $base_opportunity
-     * @return \MapasCulturais\Entities\Opportunity 
+     * @return \MapasCulturais\Entities\Opportunity
      */
     static function getLastCompletedPhase(Entities\Opportunity $base_opportunity){
         $now = new \DateTime;
-        
+
         if($base_opportunity->registrationTo > $now){
             return null;
         }
-        
+
         $result = $base_opportunity;
         $phases = self::getPhases($base_opportunity);
-        
+
         foreach($phases as $phase){
             if($phase->registrationTo <= $now){
                 $result = $phase;
             }
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Retorna a fase atual
      * @param \MapasCulturais\Entities\Opportunity $base_opportunity
-     * @return \MapasCulturais\Entities\Opportunity 
+     * @return \MapasCulturais\Entities\Opportunity
      */
     static function getCurrentPhase(Entities\Opportunity $base_opportunity){
         $now = new \DateTime;
-        
+
         $result = $base_opportunity;
         $phases = self::getPhases($base_opportunity);
-        
+
         foreach($phases as $phase){
             if($phase->registrationTo > $now){
                 continue;
             }
             $result = $phase;
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Retorna a fase anterior a fase informada
-     * 
+     *
      * @param \MapasCulturais\Entities\Opportunity $phase
      * @return \MapasCulturais\Entities\Opportunity a fase anterior
      */
     static function getPreviousPhase(Entities\Opportunity $phase){
-        if (!$phase->isOpportunityPhase) { 
+        if (!$phase->isOpportunityPhase) {
             return null;
         }
-        
+
         $base_opportunity = self::getBaseOpportunity();
-        
+
         $phases = self::getPhases($base_opportunity);
-        
+
         $result = $base_opportunity;
-        
+
         foreach($phases as $p){
             if($p->registrationTo < $phase->registrationTo){
                 $result = $p;
             }
         }
-        
+
         return $result;
     }
-    
-    
+
+
     /**
      * Retorna as fases do oportunidade informado
-     * 
+     *
      * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @return \MapasCulturais\Entities\Opportunity[]
      */
@@ -153,19 +153,19 @@ class Module extends \MapasCulturais\Module{
         } else {
             $status = -1;
         }
-        
+
         $app = App::i();
         $phases = $app->repo('Opportunity')->findBy([
             'parent' => $opportunity,
             'status' => $status
         ],['registrationTo' => 'ASC', 'id' => 'ASC']);
-        
-        $phases = array_filter($phases, function($item) { 
+
+        $phases = array_filter($phases, function($item) {
             if($item->isOpportunityPhase){
                 return $item;
             }
         });
-        
+
         return $phases;
     }
 
@@ -179,10 +179,10 @@ class Module extends \MapasCulturais\Module{
 
         return $previous;
     }
-    
+
     function _init () {
         $app = App::i();
-        
+
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
 
 
@@ -221,10 +221,10 @@ class Module extends \MapasCulturais\Module{
             if($entity->isOpportunityPhase){
                 $registrations = $this->jsObject['entity']['registrations'];
                 $this->jsObject['entity']['registrations'] = json_decode(json_encode($this->jsObject['entity']['registrations']));
-                
+
                 while($entity = $entity->parent){
                     $app->controller('registration')->registerRegistrationMetadata($entity);
-                    
+
                     $regs = [];
                     $this->addOpportunitySelectFieldsToJs($entity);
                     foreach($registrations as $i => $registration){
@@ -254,7 +254,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             $registrations = [$entity];
-            
+
             $first = $entity;
 
             while($entity = self::getPreviousPhaseRegistration($entity)){
@@ -263,7 +263,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             $registrations = array_reverse($registrations);
-//            
+//
             $this->addEntityToJs($first);
             $this->addRegistrationToJs($first);
             $this->addOpportunityToJs($first->opportunity);
@@ -274,7 +274,7 @@ class Module extends \MapasCulturais\Module{
 
             $this->jsObject['entity']['registrationFieldConfigurations'] = [];
             $this->jsObject['entity']['registrationFileConfigurations'] = [];
-            
+
             foreach($registrations as $i => $reg){
 
                 $opportunity = $reg->opportunity;
@@ -316,15 +316,15 @@ class Module extends \MapasCulturais\Module{
 
 
             }
-          
+
             $this->jsObject['entity']['id'] = $current_registration->id;
             $this->jsObject['entity']['object']->id = $current_registration->id;
         });
-        
+
         // action para criar uma nova fase no oportunidade
         $app->hook('GET(opportunity.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
-            
+
             $_phases = [
                 \MapasCulturais\i::__('Segunda fase'),
                 \MapasCulturais\i::__('Terceira fase'),
@@ -336,19 +336,19 @@ class Module extends \MapasCulturais\Module{
                 \MapasCulturais\i::__('Nona fase'),
                 \MapasCulturais\i::__('Décima fase')
             ];
-            
+
             $phases = self::getPhases($parent);
-            
+
             $num_phases = count($phases);
-            
+
             $opportunity_class_name = $parent->getSpecializedClassName();
-            
+
             $phase = new $opportunity_class_name;
 
             $phase->status = Entities\Opportunity::STATUS_DRAFT;
             $phase->parent = $parent;
             $phase->ownerEntity = $parent->ownerEntity;
-            
+
             $phase->name = $_phases[$num_phases];
             $phase->registrationCategories = $parent->registrationCategories;
             $phase->shortDescription = sprintf(\MapasCulturais\i::__('Descrição da %s'), $_phases[$num_phases]);
@@ -356,87 +356,89 @@ class Module extends \MapasCulturais\Module{
             $phase->owner = $parent->owner;
             $phase->useRegistrations = true;
             $phase->isOpportunityPhase = true;
-            
+
             $last_phase = self::getLastPhase($parent);
-            
+
             $_from = clone $last_phase->registrationTo;
             $_to = clone $last_phase->registrationTo;
             $_to->add(date_interval_create_from_date_string('1 days'));
-            
+
             $phase->registrationFrom = $_from;
             $phase->registrationTo = $_to;
-            
+
 
             $phase->save(true);
-            
+
             $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
-            
+
             $emconfig = new Entities\EvaluationMethodConfiguration;
-            
+
             $emconfig->opportunity = $phase;
-            
+
             $emconfig->type = $definition->slug;
-            
+
             $emconfig->save(true);
 
             $app->redirect($phase->editUrl);
         });
-        
+
         // redireciona para a página do oportunidade após deletar uma fase
         $app->hook('DELETE(opportunity):beforeRedirect', function($entity, &$redirect_url){
             if($entity->isOpportunityPhase){
                 $redirect_url = $entity->parent->singleUrl;
             }
         });
-        
+
         // adiciona o botão de importar inscrições da fase anterior
         $app->hook('view.partial(singles/opportunity-registrations--tables--manager):before', function(){
             if($this->controller->action === 'create'){
                 return;
             }
-            
+
             $opportunity = $this->controller->requestedEntity;
-        
+
             if($opportunity->isOpportunityPhase){
                 $this->part('import-last-phase-button', ['entity' => $opportunity]);
             }
         });
-        
+
         // adiciona na ficha de inscrição das fases o link para a inscrição anterior
         $app->hook('view.partial(singles/registration-<<edit|single>>--header):before', function() use($app){
             $registration = $this->controller->requestedEntity;
-            
+
             if($next_id = $registration->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($next_id);
-                $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                if($next_phase_registration->canUser('view')){
+                    $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                }
             }
         });
 
         // action para importar as inscrições da última fase concluida
         $app->hook('GET(opportunity.importLastPhaseRegistrations)', function() use($app) {
             $target_opportunity = self::getRequestedOpportunity();
-            
+
             $target_opportunity ->checkPermission('@control');
-            
+
             if($target_opportunity->previousPhaseRegistrationsImported){
                 $this->errorJson(\MapasCulturais\i::__('As inscrições já foram importadas para esta fase'), 400);
             }
-            
+
             $previous_phase = self::getPreviousPhase($target_opportunity);
-            
+
             $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
                 if($item->status === Entities\Registration::STATUS_APPROVED){
                     return $item;
                 }
             });
-            
+
             if(count($registrations) < 1){
                 $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas fase anterior'), 400);
             }
-            
+
             $new_registrations = [];
 
-            
+
             $app->disableAccessControl();
             foreach ($registrations as $r){
                 $reg = new Entities\Registration;
@@ -454,55 +456,55 @@ class Module extends \MapasCulturais\Module{
 
                 $r->nextPhaseRegistrationId = $reg->id;
                 $r->save(true);
-                
+
                 $new_registrations[] = $reg;
             }
-            
+
             $target_opportunity->previousPhaseRegistrationsImported = true;
-            
+
             $target_opportunity->save(true);
-            
+
             $app->enableAccessControl();
-            
+
             $this->finish($new_registrations);
         });
-        
+
         // desliga a edição do campo principal de data quando vendo uma fase
         $app->hook('view.partial(singles/opportunity-about--registration-dates).params', function(&$params){
             $opportunity = self::getRequestedOpportunity();
             $base_opportunity = self::getBaseOpportunity();
-            
+
             if(!$opportunity) {
                 return;
             }
-            
+
             if($opportunity->isOpportunityPhase){
                 $params['entity'] = $base_opportunity;
                 $params['disable_editable'] = true;
             }
         });
-        
+
         // subsitui a mensagem de oportunidade rascunho quando for uma fase de oportunidade
         $app->hook('view.partial(singles/entity-status).params', function(&$params, &$template_name){
             $opportunity = self::getRequestedOpportunity();
-            
+
             if(!$opportunity){
                 return;
             }
-            
+
             if($opportunity->isOpportunityPhase){
                 $template_name = 'opportunity-phase-status';
             }
         });
-        
+
         // muda o status de publicação dos oportunidades
         $app->hook('view.partial(singles/control--edit-buttons).params', function(&$params) use ($app){
             $opportunity = self::getRequestedOpportunity();
-            
+
             if(!$opportunity){
                 return;
             }
-            
+
             if($opportunity->isOpportunityPhase){
                 $params['status_enabled'] = -1;
             }
@@ -517,15 +519,15 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
         });
-        
+
         // adiciona a lista e botão para criar novas fases
         $app->hook('view.partial(singles/widget-opportunities).params', function(&$params, &$template) use ($app){
             if($this->controller->action === 'create'){
                 return;
             }
-            
+
             $opportunity = self::getRequestedOpportunity();
-            
+
             if($opportunity->isOpportunityPhase){
                 $template = '_empty';
                 return;
@@ -536,7 +538,7 @@ class Module extends \MapasCulturais\Module{
                     return $e;
                 }
             });
-            
+
             if($opportunity->isOpportunityPhase){
                 $opportunity = $opportunity->parent;
             }
@@ -544,29 +546,29 @@ class Module extends \MapasCulturais\Module{
             if(!$opportunity->useRegistrations || !$opportunity->canUser('@controll')){
                 return;
             }
-            
+
         });
-        
+
         // remove form de fazer inscrição das fases
         $app->hook('view.partial(singles/opportunity-registrations--form).params', function(&$data, &$template){
             $opportunity = self::getRequestedOpportunity();
-            
+
             if(!$opportunity){
                 return;
             }
-            
+
             if($opportunity->isOpportunityPhase){
                 echo '<br>';
                 $template = '_empty';
             }
         });
-        
+
         // adiciona a lista de fases e o botão 'adicionar fase'
         $app->hook('template(opportunity.<<single|edit>>.tab-about--highlighted-message):end', function() use($app){
             $opportunity = self::getBaseOpportunity();
-            
+
             $phases = self::getPhases($opportunity);
-            
+
             $app->view->part('widget-opportunity-phases', ['opportunity' => $opportunity, 'phases' => $phases]);
         });
 
@@ -574,29 +576,29 @@ class Module extends \MapasCulturais\Module{
         // desabilita o modo de edição das partes abaixo
         $app->hook('view.partial(<<singles/type|entity-parent>>).params', function(&$data, &$template){
             $opportunity = $this->controller->requestedEntity;
-            
+
             if(!$opportunity){
                 return;
             }
-            
+
             if($opportunity->isOpportunityPhase){
                 $data['disable_editable'] = true;
             }
         });
-        
+
         // remove a aba agenda de um oportunidade que é uma fase de outro oportunidade
         $app->hook('view.partial(<<agenda|singles/opportunity-events>>).params', function(&$data, &$template){
             $opportunity = $this->controller->requestedEntity;
-            
+
             if(!$opportunity){
                 return;
             }
-            
+
             if($opportunity->isOpportunityPhase){
                 $template = '_empty';
             }
         });
-        
+
         // faz com que a fase seja acessível mes
         $app->hook('entity(Opportunity).canUser(view)', function($user, &$result){
             if($this->isOpportunityPhase && $this->status === -1){
@@ -609,22 +611,22 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            if($registration_id = $registration->nextPhaseRegistrationId){
+            if($registration_id = $this->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($registration_id);
                 $result = $next_phase_registration->canUser('view', $user);
             }
         });
-        
+
         $app->hook('POST(registration.index):before', function() use($app) {
             $opportunity = $app->repo('Opportunity')->find($this->data['opportunityId']);
-            
+
             if($opportunity->isOpportunityPhase){
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
     }
-    
-    
+
+
     function register () {
         $app = App::i();
 
@@ -633,12 +635,12 @@ class Module extends \MapasCulturais\Module{
 
         $app->registerMetadata($def__is_opportunity_phase, 'MapasCulturais\Entities\Opportunity');
         $app->registerMetadata($def__previous_phase_imported, 'MapasCulturais\Entities\Opportunity');
-        
+
         $def__prev = new Definitions\Metadata('previousPhaseRegistrationId', ['label' => \MapasCulturais\i::__('Previous phase registration id')]);
         $def__next = new Definitions\Metadata('nextPhaseRegistrationId', ['label' => \MapasCulturais\i::__('Next phase registration id')]);
 
         $app->registerMetadata($def__prev, 'MapasCulturais\Entities\Registration');
         $app->registerMetadata($def__next, 'MapasCulturais\Entities\Registration');
     }
-    
+
 }
