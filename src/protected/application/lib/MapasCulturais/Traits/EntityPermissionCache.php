@@ -57,7 +57,10 @@ trait EntityPermissionCache {
     }
     
     function createPermissionsCacheForUsers($users = null, $flush = true, $delete_old = true) {
-        $this->refresh();
+        $app = App::i();
+        if($this->getEntityState() !== 2){
+            $this->refresh();
+        }
         
         if(!$this->id){
             return;
@@ -67,7 +70,6 @@ trait EntityPermissionCache {
             $this->deleteUsersWithControlCache();
         }
         
-        $app = App::i();
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();

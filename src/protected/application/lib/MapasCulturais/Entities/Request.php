@@ -123,7 +123,7 @@ abstract class Request extends \MapasCulturais\Entity{
     
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade="all", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 
