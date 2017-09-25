@@ -58,7 +58,6 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
         /*
          * @TODO: adicionar as colunas abaixo:
-         * - fatiamento?
          * - tempo de permanência na avaliacao
          */
         $committee_columns = [
@@ -258,7 +257,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         
         if($this->fetchRegistrations()){
             $this->registerEvaluationMethodConfigurationMetadata('fetch', [
-                'label' => i::__('Configuração do fatiamento das inscrições entre os avaliadores'),
+                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
                 'serialize' => function ($val) {
                     return json_encode($val);
                 },
@@ -267,7 +266,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                 }
             ]);
             $this->registerEvaluationMethodConfigurationMetadata('fetchCategories', [
-                'label' => i::__('Configuração do fatiamento das inscrições entre os avaliadores por categoria'),
+                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
                 'serialize' => function ($val) {
                     return json_encode($val);
                 },
