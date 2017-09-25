@@ -147,9 +147,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     public function valueToString($value) {
 
         if($value === 1){
-            return i::__('Inscrição válida');
+            return i::__('Válida');
         } else if($value === -1){
-            return i::__('Inscrição inválida');
+            return i::__('Inválida');
         }
 
         return '';
