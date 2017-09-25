@@ -643,8 +643,8 @@ MapasCulturais.Editables = {
 
                 if(MapasCulturais.entity.status == 0 && $button.data('status') == 1){
                     var message = MapasCulturais.request.controller === 'event' ?
-                        labels['confirmPublish'].replace('%s', MapasCulturais.entity.getTypeName(MapasCulturais.request.controller)) :
-                        labels['confirmPublishFinal'].replace('%s', MapasCulturais.entity.getTypeName(MapasCulturais.request.controller));
+                        labels['confirmPublish'].replace('%s', labels['this_' + MapasCulturais.request.controller]) :
+                        labels['confirmPublishFinal'].replace('%s', labels['this_' + MapasCulturais.request.controller]);
                     
                     if(!confirm(message)){
                         return;
