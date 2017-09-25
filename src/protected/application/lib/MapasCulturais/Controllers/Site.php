@@ -35,11 +35,12 @@ class Site extends \MapasCulturais\Controller {
         $app = \MapasCulturais\App::i();
 
         $status = $this->data['code'];
-        
-        $app->response->setStatus($status);
+
         if($app->request()->isAjax()){
-            throw $this->data['e'];
+            $app->halt($status, json_encode(['error' => $this->data['e']->message]) );
+            // throw $this->data['e'];
         } else{
+            $app->response->setStatus($status);
             $this->render('error-' . $status, $this->data);
         }
     }
