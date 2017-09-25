@@ -412,10 +412,11 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserCreate($user){
-        if($user->is('guest'))
+        if($user->is('guest')){
             return true;
-        else
-            return $this->genericPermissionVerification($user);
+        } else {
+            return parent::canUserCreate($user);
+        }
     }
 
     protected function canUserRemove($user){

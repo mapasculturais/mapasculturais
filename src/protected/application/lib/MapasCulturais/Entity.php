@@ -250,6 +250,27 @@ abstract class Entity implements \JsonSerializable{
         }
     }
 
+
+    protected function canUserCreate($user){
+        $result = $this->genericPermissionVerification($user);
+        if($result && $this->usesOwnerAgent()){
+            $owner = $this->getOwner();
+            if(!$owner || $owner->status < 1){
+                $result = false;
+            }
+        }
+
+        if($result && $this->usesNested()){
+            $parent = $this->getParent();
+            if($parent && $parent->status < 1){
+                $result = false;
+            }
+        }
+
+        return $result;
+    }
+
+
     protected function canUserModify($user) {
         return $this->genericPermissionVerification($user);
     }
