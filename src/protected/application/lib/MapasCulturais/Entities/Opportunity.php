@@ -256,7 +256,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
     
     function getEvaluationCommittee($return_relation = true){
-        $result = $this->evaluationMethodConfiguration->getAgentRelations(true);
+        $result = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
         
         if(!$return_relation) {
             $result = array_map(function($r){ return $r->agent; }, $result);

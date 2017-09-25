@@ -69,6 +69,7 @@ $method = $entity->getEvaluationMethod();
             </div>
         <?php endif; ?>
             <div class="committee" ng-repeat="admin in data.committee">
+                <div ng-if="admin.status === -5" class="alert warning"><?php i::_e('Aguardando confirmação do avaliador')?></div>
                 <div class="committee--info ">
                     <span class="btn btn-danger delete alignright" ng-click="deleteAdminRelation(admin)"><?php i::_e("Excluir");?></span>
                     <span ng-if="admin.hasControl" class="btn btn-warning delete alignright mr10" ng-click="disableAdminRelation(admin)"><?php i::_e("Desabilitar");?></span>
