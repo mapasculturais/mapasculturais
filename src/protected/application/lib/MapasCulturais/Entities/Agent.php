@@ -449,6 +449,13 @@ class Agent extends \MapasCulturais\Entity
         return $this->getOwner()->canUser('modify') && $this->canUser('modify');
     }
 
+    protected function canUserArchive($user){
+        if($this->isUserProfile){
+            return false;
+        } else {
+            return $this->genericPermissionVerification($user);
+        }
+    }
 
     /** @ORM\PrePersist */
     public function __setParent($args = null){
