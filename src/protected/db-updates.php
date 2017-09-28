@@ -727,6 +727,7 @@ return [
             __exec("DELETE FROM registration WHERE agent_id NOT IN (SELECT id FROM agent)");
 
             __exec("ALTER TABLE registration DROP CONSTRAINT fk_62a8a7a7c79c849a;");
+            
             __exec("ALTER TABLE registration RENAME COLUMN project_id TO opportunity_id;");
             __exec("ALTER TABLE registration ALTER id SET DEFAULT pseudo_random_id_generator();");
             __exec("ALTER TABLE registration ALTER status TYPE SMALLINT;");
@@ -749,6 +750,10 @@ return [
             __exec("CREATE INDEX IDX_60C85CB19A34590F ON registration_field_configuration (opportunity_id);");
 
         }
+    },
+    
+    'DROP CONSTRAINT registration_project_fk");' => function() {
+        __exec("ALTER TABLE registration DROP CONSTRAINT IF EXISTS registration_project_fk ;");
     },
 
     'fix opportunity parent FK' => function() {
@@ -862,7 +867,7 @@ return [
             return true;
         }
 
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");   
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
     },
         
     'update seal_relation set validate_date' => function() use ($conn) {
@@ -922,11 +927,11 @@ return [
         }
     },
     'replace subsite cor entidades values' => function () use($conn) {
-        $conn->executeQuery("UPDATE subsite_meta SET key = 'spaces_color' where key = 'cor_espacos';");        
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'spaces_color' where key = 'cor_espacos';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'events_color' where key = 'cor_eventos';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'projects_color' where key = 'cor_projetos';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'agents_color' where key = 'cor_agentes';");
-        $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");       
+        $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");
     },
 
     'fix subsite verifiedSeals array' => function() use($app){
