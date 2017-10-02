@@ -1330,14 +1330,27 @@ class App extends \Slim\Slim{
 
         foreach ($this->_hooks as $hook => $_callables) {
             if (preg_match($hook, $name)) {
-                foreach ($_callables as $callables) {
+                foreach ($_callables as $priority => $callables) {
                     foreach ($callables as $callable) {
-                        if (!in_array($callable, $exclude_list))
-                            $result[] = $callable;
+                        if (!in_array($callable, $exclude_list)){
+                            $result[] = (object) ['callable' => $callable, 'priority' => $priority];
+                        }
                     }
                 }
             }
         }
+        
+        usort($result, function($a,$b){
+            if($a->priority > $b->priority){
+                return 1;
+            } elseif ($a->priority < $b->priority) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        
+        $result = array_map(function($el) { return $el->callable; }, $result);
 
         $this->_hookCache[$name] = $result;
 
