@@ -73,7 +73,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * @ORM\Column(name="status", type="smallint", nullable=true)
      */
     protected $status = self::STATUS_DRAFT;
-
+    
     function getEvaluationData(){
         return (object) $this->evaluationData;
     }
@@ -198,15 +198,27 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     /** @ORM\PrePersist */
     public function prePersist($args = null){ parent::prePersist($args); }
     /** @ORM\PostPersist */
-    public function postPersist($args = null){ parent::postPersist($args); }
+    public function postPersist($args = null){
+        parent::postPersist($args);
+        
+        $this->registration->consolidateResult(true);
+    }
 
     /** @ORM\PreRemove */
     public function preRemove($args = null){ parent::preRemove($args); }
     /** @ORM\PostRemove */
-    public function postRemove($args = null){ parent::postRemove($args); }
+    public function postRemove($args = null){
+        parent::postRemove($args);
+        
+        $this->registration->consolidateResult(true);
+    }
 
     /** @ORM\PreUpdate */
     public function preUpdate($args = null){ parent::preUpdate($args); }
     /** @ORM\PostUpdate */
-    public function postUpdate($args = null){ parent::postUpdate($args); }
+    public function postUpdate($args = null){
+        parent::postUpdate($args);
+        
+        $this->registration->consolidateResult(true);
+    }
 }

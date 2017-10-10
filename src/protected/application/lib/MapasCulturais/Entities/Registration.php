@@ -96,7 +96,15 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\Column(name="agents_data", type="json_array", nullable=true)
      */
     protected $_agentsData = [];
+    
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="consolidated_result", type="string", length=255, nullable=true)
+     */
+    protected $consolidatedResult = self::STATUS_DRAFT;
+    
 
     /**
      * @var integer
@@ -154,6 +162,25 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+    
+    function consolidateResult($flush = false){
+        $app = App::i();
+        
+        $is_access_control_enabled = $app->isAccessControlEnabled();
+        if($is_access_control_enabled){
+            $app->disableAccessControl();
+        }
+        
+        $em = $this->getEvaluationMethod();
+        
+        $this->consolidatedResult = $em->getConsolidatedResult($this);
+        
+        $this->save($flush);
+        
+        if($is_access_control_enabled){
+            $app->enableAccessControl();
+        }
     }
 
     static function isPrivateEntity(){

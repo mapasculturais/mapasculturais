@@ -59,7 +59,7 @@ return [
     'fix update timestamp of revisioned entities' => function() {
         $app = \MapasCulturais\App::i();
         $conn = $app->em->getConnection();
-        foreach ([/* 'Agent', */'Space', 'Event'] as $class){
+        foreach (['Agent', 'Space', 'Event'] as $class){
             DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) use ($app, $conn, $class) {
                 $table = strtolower($class);
 
@@ -99,5 +99,12 @@ return [
         }
 
     },
+    
+    'consolidate registration result' => function(){
+        DB_UPDATE::enqueue('Registration', 'id > 0', function (MapasCulturais\Entities\Registration $entity){
+            $entity->consolidateResult(true);
+        });
+        
+    }
 
 ];

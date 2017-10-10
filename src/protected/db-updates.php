@@ -853,6 +853,12 @@ return [
     'ALTER TABLE opportunity ALTER type DROP NOT NULL;' => function() use($conn){
         $conn->executeUpdate('ALTER TABLE opportunity ALTER type DROP NOT NULL;');
     },
+    
+    'ALTER TABLE registration ADD consolidated_result' => function () {
+        if(!__column_exists('registration', 'consolidated_result')){
+            __exec("ALTER TABLE registration ADD consolidated_result VARCHAR(255) DEFAULT NULL;");
+        }
+    },
 
     'create seal relation renovation flag field' => function() use($conn) {
         if(__column_exists('seal_relation', 'renovation_request')){
