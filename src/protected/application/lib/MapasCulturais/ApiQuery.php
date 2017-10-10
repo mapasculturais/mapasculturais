@@ -9,13 +9,13 @@ class ApiQuery {
     
     /**
      * Number of query objects to generate query ids
-     * @var int 
+     * @var int
      */
     protected static $queryCounter = 0;
     
     /**
      * Id of this query
-     * @var int 
+     * @var int
      */
     protected $__queryNum;
 
@@ -27,7 +27,7 @@ class ApiQuery {
     
     /**
      * Maximum number of results before use subquery instead of a list of ids in secondary queries
-     * @var int 
+     * @var int
      */
     protected $maxBeforeSubquery = 4096;
     
@@ -45,15 +45,15 @@ class ApiQuery {
 
     /**
      * The Entity Class Name
-     * 
+     *
      * @example "MapasCulturais\Entities\Agent"
-     * @var string 
+     * @var string
      */
     protected $entityClassName;
 
     /**
      * The Entity Metadata Class Name
-     * 
+     *
      * @example "MapasCulturais\Entities\AgentMeta"
      * @var string
      */
@@ -61,7 +61,7 @@ class ApiQuery {
     
     /**
      * The Entity File Class Name
-     * 
+     *
      * @example "MapasCulturais\Entities\AgentFile"
      * @var string
      */
@@ -69,7 +69,7 @@ class ApiQuery {
     
     /**
      * The Entity Term Relation Class Name
-     * 
+     *
      * @example "MapasCulturais\Entities\AgentTermRelation"
      * @var string
      */
@@ -77,7 +77,7 @@ class ApiQuery {
     
     /**
      * The Entity Permission Cache Class Name
-     * 
+     *
      * @example "MapasCulturais\Entities\AgentPermissionCache"
      * @var string
      */
@@ -92,7 +92,7 @@ class ApiQuery {
     protected $sealRelationClassName;
     
     /**
-     * The entity controller 
+     * The entity controller
      * @var \MapasCulturais\Controllers\EntityController
      */
     protected $entityController;
@@ -135,19 +135,19 @@ class ApiQuery {
     
     /**
      * The entity uses seal relation?
-     * @var bool 
+     * @var bool
      */
     protected $usesSealRelation;
     
     /**
      * The entity uses types?
-     * @var bool 
+     * @var bool
      */
     protected $usesTypes;
     
     /**
      * The entity uses owner agent?
-     * @var bool 
+     * @var bool
      */
     protected $usesOwnerAgent;
     
@@ -171,49 +171,49 @@ class ApiQuery {
 
     /**
      * List of registered metadata to the requested entity for this context (subsite?)
-     * @var array 
+     * @var array
      */
     protected $registeredMetadata = [];
 
     /**
      * List of the registered taxonomies for this context
-     * @var array 
+     * @var array
      */
     protected $registeredTaxonomies = [];
     
     /**
      * List of subsite ids in which the logged in user is admin
-     * @var array 
+     * @var array
      */
     protected $adminInSubsites = [];
 
     /**
      * the parameter of api query
-     * 
+     *
      * @example ['@select' => 'id,name', '@order' => 'name ASC', 'id' => 'GT(10)', 'name' => 'ILIKE(fulano%)']
-     * @var array 
+     * @var array
      */
     protected $apiParams = [];
 
     /**
      * The SELECT part of the DQL that will be executed
-     * 
+     *
      * @example "e.id, e.name"
-     * @var string 
+     * @var string
      */
     public $select = "";
 
     /**
      * The JOINs fo the DQL that will be executed
-     * @var string 
+     * @var string
      */
     public $joins = "";
 
     /**
      * The WHERE part of the DQL that will be executed
-     * 
+     *
      * @example "e.id > 10"
-     * @var string 
+     * @var string
      */
     public $where = "";
 
@@ -225,37 +225,37 @@ class ApiQuery {
 
     /**
      * Mapping of the api query params to dql params
-     * @var array 
+     * @var array
      */
     protected $_keys = [];
 
     /**
      * List of parameters that will be used to run the DQL
-     * @var array 
+     * @var array
      */
     protected $_dqlParams = [];
 
     /**
      * Fields that are being selected
-     * @var array 
+     * @var array
      */
     protected $_selecting = ['id'];
 
     /**
      * Slice of the fields that are being selected that are properties of the entity
-     * @var array 
+     * @var array
      */
     protected $_selectingProperties = [];
 
     /**
      * Slice of the fields that are being selected that are metadata of the entity
-     * @var array 
+     * @var array
      */
     protected $_selectingMetadata = [];
     
     /**
      * Slice of the fields that are being selected that are relations of the entity
-     * @var array 
+     * @var array
      */
     protected $_selectingRelations = [];
     
@@ -267,13 +267,13 @@ class ApiQuery {
 
     /**
      * Files that are being selected
-     * @var array 
+     * @var array
      */
     protected $_selectingFiles = [];
     
     /**
      * Properties of files that are being selected
-     * @var type 
+     * @var type
      */
     protected $_selectingFilesProperties = ['url'];
 
@@ -283,13 +283,13 @@ class ApiQuery {
     
     /**
      * Subqueries configuration
-     * @var array 
+     * @var array
      */
     protected $_subqueriesSelect = [];
     
     /**
      * Result Order
-     * 
+     *
      * @example 'name ASC'
      * @var string
      */
@@ -301,33 +301,33 @@ class ApiQuery {
      */
     protected $_offset;
     
-    /** 
+    /**
      * Maximum results to return
-     * @var int 
+     * @var int
      */
     protected $_limit;
     
     /**
      * Page number. Used to create the query offset.
-     * @var int 
+     * @var int
      */
     protected $_page;
     
     /**
      * Keyword filter
-     * @var string 
+     * @var string
      */
     protected $_keyword;
     
     /**
      * Seals filter
-     * @var type 
+     * @var type
      */
     protected $_seals = [];
     
     /**
-     * 
-     * @var type 
+     *
+     * @var type
      */
     protected $_permissions = [];
     
@@ -357,7 +357,7 @@ class ApiQuery {
 
     /**
      * Initializes the ApiQuery properties
-     * 
+     *
      * @param string $class
      * @param array $api_params
      */
@@ -449,7 +449,7 @@ class ApiQuery {
             foreach($params as $k => $v){
                 $_s1[] = ":$k";
                 $_s2[] = '`'. $v . '`';
-            }        
+            }
             
             $log = str_replace($_s1, $_s2, $log);
             
@@ -764,14 +764,14 @@ class ApiQuery {
            $select = $_select;
         }
                 
-        // to prevent new queries when selecting only the id of relations 
+        // to prevent new queries when selecting only the id of relations
         foreach ($this->_subqueriesSelect as $key => &$cfg) {
             $prop = $cfg['property'];
             $mapping = null;
             if(isset($this->entityRelations[$prop])){
                 $mapping = $this->entityRelations[$prop];
             } else if(isset($this->entityRelations['_' . $prop])) {
-                $mapping = $this->entityRelations['_' . $prop];                
+                $mapping = $this->entityRelations['_' . $prop];
             }
             if ($mapping && $mapping['type'] === 2 && $mapping['isOwningSide']) {
                 $select .= ", IDENTITY(e.{$prop}) AS $prop";
@@ -879,7 +879,7 @@ class ApiQuery {
                     $entity[$prop] = null;
                 }
             }
-        } 
+        }
     }
 
     protected function appendMetadata(array &$entities) {
@@ -901,15 +901,15 @@ class ApiQuery {
             $in_entities_dql = $this->getSubqueryInIdentities($entities);
 
             $dql = "
-                SELECT 
-                    e.key, 
-                    e.value, 
-                    IDENTITY(e.owner) AS objectId 
-                FROM 
-                    {$this->metadataClassName} e 
-                WHERE 
-                    e.owner IN ({$in_entities_dql}) AND 
-                    e.key IN({$keys}) 
+                SELECT
+                    e.key,
+                    e.value,
+                    IDENTITY(e.owner) AS objectId
+                FROM
+                    {$this->metadataClassName} e
+                WHERE
+                    e.owner IN ({$in_entities_dql}) AND
+                    e.key IN({$keys})
                 ORDER BY e.id";
 
             $q = $this->em->createQuery($dql);
@@ -917,7 +917,7 @@ class ApiQuery {
             if($this->_usingSubquery){
                 $q->setParameters($meta_keys + $this->_dqlParams);
             } else {
-                $q->setParameters($meta_keys);                
+                $q->setParameters($meta_keys);
             }
             
             foreach ($q->getArrayResult() as $meta) {
@@ -945,7 +945,7 @@ class ApiQuery {
                         }
                     }else if($private && !$can_view){
                         unset($meta[$k]);
-                    }    
+                    }
                 }
                 
                 $entity += $meta;
@@ -971,12 +971,12 @@ class ApiQuery {
         }
         
         $dql = "
-            SELECT 
-                IDENTITY(pc.owner) AS ownerId, 
+            SELECT
+                IDENTITY(pc.owner) AS ownerId,
                 pc.action
-            FROM 
-                {$this->permissionCacheClassName} pc 
-            WHERE 
+            FROM
+                {$this->permissionCacheClassName} pc
+            WHERE
                 pc.action IN (:pcache_select) AND
                 pc.owner IN ($dql_in) AND
                 pc.user = {$user->id}";
@@ -1080,7 +1080,7 @@ class ApiQuery {
                     }
                     
                     if($select != '*'){
-                        $select = "$_target_property,$select";                        
+                        $select = "$_target_property,$select";
                     }
                     
                     $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll']);
@@ -1177,16 +1177,16 @@ class ApiQuery {
         $where = implode(' OR ', $where);
         
         $dql = "
-            SELECT 
-                f.id, 
+            SELECT
+                f.id,
                 f.name,
                 f.description,
                 f._path,
                 f.group as file_group,
                 fp.group as parent_group,
                 IDENTITY(f.owner) AS owner_id
-            FROM 
-                {$this->fileClassName} f 
+            FROM
+                {$this->fileClassName} f
                     LEFT JOIN f.parent fp
             WHERE
                 f.owner IN ({$sub}) AND ({$where})
@@ -1211,13 +1211,13 @@ class ApiQuery {
             
             $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
             
-            if($f['parent_group']) { 
+            if($f['parent_group']) {
                 $f['transformed'] = true;
                 $f['mainGroup'] = $f['parent_group'];
                 $f['group'] = $f['parent_group'] . '.' . str_replace('img:', '', $f['file_group']);
             } else {
                 $f['transformed'] = false;
-                $f['mainGroup'] = $f['file_group'];                
+                $f['mainGroup'] = $f['file_group'];
                 $f['group'] = $f['file_group'];
             }
                         
@@ -1260,7 +1260,7 @@ class ApiQuery {
                             $entity[$key][] = $file;
                         }
                     } else {
-                        // @TODO: implementar o novo método de retorno de imagens 
+                        // @TODO: implementar o novo método de retorno de imagens
                     }
                     
                 }
@@ -1285,13 +1285,13 @@ class ApiQuery {
             // --------------------
             
             $dql = "
-                SELECT 
+                SELECT
                     t.term,
                     t.taxonomy,
                     IDENTITY(tr.owner) AS owner_id
                 FROM {$term_relation_class_name} tr
                     JOIN tr.term t
-                WHERE 
+                WHERE
                     tr.owner IN ($dql_in)";
                 
             $query = $this->em->createQuery($dql);
@@ -1758,7 +1758,7 @@ class ApiQuery {
     
     protected $_filteringByPermissions = false;
             
-    protected function _addFilterByPermissions($value) { 
+    protected function _addFilterByPermissions($value) {
         $user = App::i()->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
@@ -1909,7 +1909,7 @@ class ApiQuery {
             $select = $replacer($select, $prop, $_subquery_select, $_subquery_match);
         }
 
-        // create subquery to format entity.id or entity.name        
+        // create subquery to format entity.id or entity.name
         while (preg_match('#([^,\.]+)\.([^,]+)#', $select, $matches)) {
             $_subquery_match = $matches[0];
             $prop = $matches[1];
@@ -1984,7 +1984,7 @@ class ApiQuery {
         }
         
         $select = array_map(function($property) use(&$_match) {
-            // if the property is a subsquery 
+            // if the property is a subsquery
             if (isset($this->_subqueriesSelect[$property])) {
                 $sq = $this->_subqueriesSelect[$property]['match'];
                 unset($this->_subqueriesSelect[$property]);
