@@ -5,6 +5,7 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Entities;
+use MapasCulturais\ApiQuery;
 
 /**
  * Opportunity Controller
@@ -154,6 +155,147 @@ class Opportunity extends EntityController {
         }, $registrations);
 
         $this->apiResponse($opportunities);
+    }
+    
+    protected function _getOpportunity(){
+        $this->requireAuthentication();
+        $app = App::i();
+        
+        if(!isset($this->data['@opportunity'])){
+            $this->apiErrorResponse('parameter @opportunity is required');
+        }
+        
+        if(!is_numeric($this->data['@opportunity'])){
+            $this->apiErrorResponse('parameter @opportunity must be an integer');
+        }
+
+        $opportunity = $app->repo('Opportunity')->find($this->data['@opportunity']);
+        
+        if(!$opportunity){
+            $this->apiErrorResponse('opportunity not found');
+        }
+        
+        return $opportunity;
+    }
+    
+    function getSelectFields(Entities\Opportunity $opportunity){
+        $app = App::i();
+        
+        $fields = [];
+        
+        foreach($opportunity->registrationFieldConfigurations as $field){
+            if($field->fieldType == 'select'){
+                if(!isset($fields[$field->fieldName])){
+                    $fields[$field->fieldName] = $field;
+                }
+            }
+        }
+        
+        $app->applyHookBoundTo($this, 'controller(opportunity).getSelectFields', [$opportunity, &$fields]);
+        
+        return $fields;
+    }
+    
+    function API_selectFields(){
+        $app = App::i();
+        
+        $opportunity = $this->_getOpportunity();
+        
+        $fields = $this->getSelectFields($opportunity);
+        
+        $this->apiResponse($fields);
+    }
+    
+    function API_findRegistrations() {
+        $app = App::i();
+        
+        $opportunity = $this->_getOpportunity();
+        
+        $data = $this->data;
+        $data['opportunity'] = "EQ({$opportunity->id})";
+        
+        $_opportunity = $opportunity;
+        $opportunity_tree = [];
+        while($parent = $_opportunity->parent){
+            $opportunity_tree[] = $parent;
+            $_opportunity = $parent;
+        }
+        
+        $opportunity_tree = array_reverse($opportunity_tree);
+        
+        $last_query_ids = null;
+        
+        $select_values = [];
+        
+        foreach($opportunity_tree as $current){
+            $app->controller('registration')->registerRegistrationMetadata($current);
+            $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,previousPhaseRegistrationId'];
+            
+            foreach($current->registrationFieldConfigurations as $field){
+                if($field->fieldType == 'select'){
+                    $cdata['@select'] .= ",{$field->fieldName}";
+                    
+                    if(isset($data[$field->fieldName])){
+                        $cdata[$field->fieldName] = $data[$field->fieldName];
+                        unset($data[$field->fieldName]);
+                    }
+                }
+            }
+            if(!is_null($last_query_ids)){
+                if($last_query_ids){
+                    $cdata['previousPhaseRegistrationId'] = "IN($last_query_ids)";
+                } else {
+                    $cdata['id'] = "IN(-1)";
+                }
+            }
+            $q = new ApiQuery('MapasCulturais\Entities\Registration', $cdata);
+            
+            $regs = $q->find();
+            
+            foreach($regs as $reg){
+                if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
+                    $select_values[$reg['id']] = $reg + $select_values[$reg['previousPhaseRegistrationId']];
+                } else {
+                    $select_values[$reg['id']] = $reg;
+                }
+            }
+            
+            $ids = array_map(function ($r) { return $r['id']; }, $regs);
+            $last_query_ids = implode(',', $ids);
+        }
+        
+        $app->controller('registration')->registerRegistrationMetadata($opportunity);
+        
+        unset($data['@opportunity']);
+        
+        if(!is_null($last_query_ids)){
+            if($last_query_ids){
+                $data['previousPhaseRegistrationId'] = "IN($last_query_ids)";
+            } else {
+                $data['id'] = "IN(-1)";
+            }
+        }
+        
+        if($select_values){
+            $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
+        }
+        
+        $query = new ApiQuery('MapasCulturais\Entities\Registration', $data);
+        
+        $registrations = $query->find();
+        
+        foreach($registrations as &$reg){
+            if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
+                $values = $select_values[$reg['previousPhaseRegistrationId']];
+                foreach($reg as $key => $val){
+                    if(is_null($val) && isset($values[$key])){
+                        $reg[$key] = $values[$key];
+                    }
+                }
+            }
+        }
+        
+        $this->apiResponse($registrations);
     }
 
     function GET_exportFields() {

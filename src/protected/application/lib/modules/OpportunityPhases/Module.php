@@ -201,7 +201,18 @@ class Module extends \MapasCulturais\Module{
                 $this->registerRegistrationMetadata($opportunity);
             }
         });
-
+        
+        $app->hook('controller(opportunity).getSelectFields', function(Entities\Opportunity $opportunity, array &$fields) use($app) {
+            while($opportunity = $opportunity->parent){
+                foreach($opportunity->registrationFieldConfigurations as $field){
+                    if($field->fieldType == 'select'){
+                        if(!isset($fields[$field->fieldName])){
+                            $fields[$field->fieldName] = $field;
+                        }
+                    }
+                }
+            }
+        });
 
         $app->hook('view.partial(singles/registration-single--<<header|categories|agents>>).params', function(&$params, &$template) use ($app) {
             if($params['opportunity']->isOpportunityPhase){
