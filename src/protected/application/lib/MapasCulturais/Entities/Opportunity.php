@@ -346,6 +346,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         return $users;
     }
+    
+    function getExtraEntitiesToRecreatePermissionCache(){
+        $entities = $this->getAllRegistrations();
+        if($this->parent){
+            $entities[] = $this->parent;
+        }
+        return $entities;
+    }
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);

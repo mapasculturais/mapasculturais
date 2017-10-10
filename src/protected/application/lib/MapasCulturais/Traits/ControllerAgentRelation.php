@@ -50,6 +50,9 @@ trait ControllerAgentRelation{
         }
 
         $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        
+        $app->permissionCacheUsersIds = [$agent->user->id];
+        
         $this->_finishRequest($relation, true);
 
     }
@@ -80,6 +83,9 @@ trait ControllerAgentRelation{
 
         $owner->removeAgentRelation($agent, $this->postData['group']);
 
+        
+        $app->permissionCacheUsersIds = [$agent->user->id];
+        
         $this->json(true);
     }
     
@@ -143,6 +149,7 @@ trait ControllerAgentRelation{
 
         $owner->setRelatedAgentControl($agent, $hasControl == 'true');
 
+        $app->permissionCacheUsersIds = [$agent->user->id];
         $this->json(true);
     }
 }

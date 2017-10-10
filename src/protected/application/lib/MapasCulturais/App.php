@@ -1424,6 +1424,7 @@ class App extends \Slim\Slim{
      * Permissions Cache
      **********************************************/
     protected $_entitiesToRecreatePermissionsCache = [];
+    protected $permissionCacheUsersIds = [];
 
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
         $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;

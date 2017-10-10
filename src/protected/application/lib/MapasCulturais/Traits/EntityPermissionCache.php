@@ -78,7 +78,13 @@ trait EntityPermissionCache {
         if(is_null($users)){
             if($delete_old){
                 $deleted = true;
-                $this->deletePermissionsCache();
+                if($app->permissionCacheUsersIds){
+                    foreach($app->permissionCacheUsersIds as $user_id){
+                        $this->deletePermissionsCache($user_id);
+                    }
+                } else {
+                    $this->deletePermissionsCache();
+                }
             }
             
             if($this->usesAgentRelation()){
@@ -98,6 +104,11 @@ trait EntityPermissionCache {
         
         $alredy_created_users = [];
         foreach ($users as $user) {
+            if($app->permissionCacheUsersIds){
+                if(!in_array($user->id, $app->permissionCacheUsersIds)){
+                    continue;
+                }
+            }
             if($delete_old && !$deleted){
                 $this->deletePermissionsCache($user->id);
             }
@@ -151,7 +162,15 @@ trait EntityPermissionCache {
         }
     }
     
+    private $_insideAddToRecreatePermissionsCacheList = false;
+    
     function addToRecreatePermissionsCacheList($skip_extra = false){
+        if($this->_insideAddToRecreatePermissionsCacheList){
+            return false;
+        }
+        
+        $this->_insideAddToRecreatePermissionsCacheList = true;
+        
         $app = App::i();
         
         $app->addEntityToRecreatePermissionCacheList($this);
@@ -162,8 +181,6 @@ trait EntityPermissionCache {
             $rel_class = $def['targetEntity'];
             if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
                 foreach($this->$prop as $entity){
-                    if($entity instanceof \MapasCulturais\Entities\Project){
-                    }
                     $entity->addToRecreatePermissionsCacheList(true);
                 }
             }
@@ -174,8 +191,10 @@ trait EntityPermissionCache {
             $entities = $this->getExtraEntitiesToRecreatePermissionCache();
 
             foreach($entities as $entity){
-                $entity->addToRecreatePermissionsCacheList(true);
+                $entity->addToRecreatePermissionsCacheList();
             }
         }
+        
+        $this->_insideAddToRecreatePermissionsCacheList = false;
     }
 }

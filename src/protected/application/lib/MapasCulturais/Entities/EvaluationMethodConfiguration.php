@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\HasLifecycleCallbacks
  */
 class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
@@ -124,6 +125,17 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
     protected function canUserModify($user){
         return $this->opportunity->canUser('modify', $user);
+    }
+    
+    function getExtraEntitiesToRecreatePermissionCache(){
+        return [$this->opportunity];
+    }
+    
+    
+    function save($flush = false){
+        parent::save($flush);
+        
+        $this->addToRecreatePermissionsCacheList();
     }
 
     //============================================================= //
