@@ -1741,6 +1741,10 @@ class ApiQuery {
                 throw new Exceptions\Api\PropertyDoesNotExists("property $key does not exists");
             }
         }
+        
+        if($class::isPrivateEntity() && !isset($this->apiParams['@permissions'])){
+            $this->_addFilterByPermissions('view');
+        }
     }
     
     protected function _addFilterBySeals($seals_ids){
@@ -1767,7 +1771,7 @@ class ApiQuery {
             $pkey = $this->addSingleParam($this->_permission);
             $_uid = $user->id;
             
-            if($this->_permission != 'view' && (!$this->usesOriginSubsite || !$this->adminInSubsites)) {
+            if(($this->_permission != 'view' || $class::isPrivateEntity()) && (!$this->usesOriginSubsite || !$this->adminInSubsites)) {
                 $this->joins .= " JOIN e.__permissionsCache $alias WITH $alias.action = $pkey AND $alias.userId = $_uid ";
                 
             } else {
