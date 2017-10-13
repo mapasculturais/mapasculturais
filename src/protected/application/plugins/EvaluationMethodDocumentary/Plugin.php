@@ -23,6 +23,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return i::__('Consiste num checkbox e um textarea para cada campo do formulário de inscrição.');
     }
 
+    public function cmpValues($value1, $value2){
+        $value1 = (float) $value1;
+        $value2 = (float) $value2;
+        
+        return parent::cmpValues($value1, $value2);
+    }
+
     public function getConfigurationFormPartName() {
         return ;
     }

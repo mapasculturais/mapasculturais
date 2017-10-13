@@ -11,11 +11,22 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function getSlug();
     abstract function getName();
     abstract function getDescription();
+    
 
     abstract protected function _getConsolidatedResult(Entities\Registration $registration);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
     abstract function valueToString($value);
+    
+    public function cmpValues($value1, $value2){
+        if($value1 > $value2){
+            return 1;
+        } elseif($value1 < $value2){
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
     function getReportConfiguration($opportunity, $call_hooks = true){
         $app = App::i();
@@ -196,7 +207,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                         }
                     }
                 }
-            } 
+            }
         }
 
         return $can;

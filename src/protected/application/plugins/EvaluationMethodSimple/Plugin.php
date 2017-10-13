@@ -20,6 +20,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return i::__('Consiste num select box com os status possíveis para uma inscrição.');
     }
 
+    public function cmpValues($value1, $value2){
+        $value1 = (float) $value1;
+        $value2 = (float) $value2;
+        
+        return parent::cmpValues($value1, $value2);
+    }
+
     public function getConfigurationFormPartName() {
         return null;
     }

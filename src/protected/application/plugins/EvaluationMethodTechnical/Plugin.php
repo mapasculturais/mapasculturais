@@ -20,6 +20,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return i::__('Consiste em avaliação por critérios e cotats.');
     }
 
+    public function cmpValues($value1, $value2){
+        $value1 = (float) $value1;
+        $value2 = (float) $value2;
+        
+        return parent::cmpValues($value1, $value2);
+    }
+    
     protected function _register() {
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
