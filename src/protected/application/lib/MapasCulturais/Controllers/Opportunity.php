@@ -157,6 +157,9 @@ class Opportunity extends EntityController {
         $this->apiResponse($opportunities);
     }
     
+    /**
+    * @return \MapasCulturais\Entities\Opportunity
+    */
     protected function _getOpportunity(){
         $this->requireAuthentication();
         $app = App::i();
@@ -296,6 +299,179 @@ class Opportunity extends EntityController {
         }
         
         $this->apiResponse($registrations);
+    }
+    
+    function API_findEvaluations(){
+        $app = App::i();
+        
+        $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';
+        
+        if(preg_match('#(valuer|registration|evaluation|category)( +(asc|desc))?#i', $_order, $matches)){
+            $order = $matches[1];
+            $by = isset($matches[3]) ? strtolower($matches[3]) : 'asc';
+        } else {
+            $this->apiErrorResponse('invalid @order value');
+        }
+        
+        $opportunity = $this->_getOpportunity();
+        
+        $cache_id = __METHOD__ . ':' . $app->user->id . ':' . $opportunity->id;
+        
+        if($app->cache->contains($cache_id)){
+            $_result = $app->cache->fetch($cache_id);
+        } else {
+            
+            $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
+                '@select' => 'id,agent',
+                'owner' => "EQ({$opportunity->evaluationMethodConfiguration->id})",
+            ]);
+            $committee_relations = $committee_relation_query->find();
+            $committee_ids = implode(',', array_map(function($e){return $e['agent']; }, $committee_relations));
+            
+            $committee_query = new ApiQuery('MapasCulturais\Entities\Agent', [
+                '@select' => 'id,name,user,singleUrl',
+                'id' => "IN({$committee_ids})",
+                '@permissions' => '@control'
+            ]);
+            
+            $committee = $committee_query->find();
+            
+            $valuer_by_user = [];
+            
+            foreach($committee as $valuer){
+                $valuer_by_user[$valuer['user']] = $valuer;
+            }
+            
+            $q = $app->em->createQuery("
+                SELECT
+                    r.id AS registration, a.userId AS user, a.id AS valuer
+                FROM
+                    MapasCulturais\Entities\RegistrationPermissionCache p
+                    JOIN p.owner r WITH r.opportunity = :opp
+                    JOIN p.user u
+                    INNER JOIN u.profile a WITH a.id IN (:aids)
+                WHERE p.action = 'viewUserEvaluation'
+            ");
+            
+            $params = [
+                'opp' => $opportunity,
+                'aids' => array_map(function ($el){ return $el['id']; }, $committee)
+            ];
+            
+            $q->setParameters($params);
+            
+            $permissions = $q->getArrayResult();
+            
+            $registrations_by_valuer = [];
+            
+            foreach($permissions as $p){
+                if(!isset($registrations_by_valuer[$p['valuer']])){
+                    $registrations_by_valuer[$p['valuer']] = [];
+                }
+                $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
+            }
+            
+            $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
+            if($registration_ids){
+                $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', [
+                    '@select' => 'id,status,category,consolidatedResult,singleUrl',
+                    'id' => "IN(" . implode(',', $registration_ids).  ")"
+                ]);
+                $registrations = $registrations_query->find();
+                
+                $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', [
+                    '@select' => 'id,result,evaluationData,registration,user,status',
+                    'registration' => "IN(" . implode(',', $registration_ids).  ")"
+                ]);
+                $evaluations = [];
+                foreach($evaluations_query->find() as $e){
+                    $e['agent'] = $valuer_by_user[$e['user']];
+                    // $e['evaluationData'] = json_decode($e['evaluationData']);
+                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+                }
+                
+            } else {
+                $registrations = [];
+                $evaluations = [];
+            }
+            
+            $_result = [];
+            
+            foreach($registrations as $registration){
+                foreach($valuer_by_user as $user_id => $valuer){
+                    if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])){
+                        $_result[] = [
+                            'registration' => $registration,
+                            'evaluation' => isset($evaluations[$user_id . ':' . $registration['id']]) ? $evaluations[$user_id . ':' . $registration['id']] : null,
+                            'valuer' => $valuer
+                        ];
+                    }
+                }
+            }
+            
+            $app->cache->save($cache_id, $_result, 300);
+        }
+        
+        if(isset($this->data['@omitEmpty'])){
+            $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
+        }
+        
+        list($order, $order_by) = explode(' ', $_order);
+        
+        $order_by = $order_by == 'asc' ? 1 : -1;
+        
+        switch ($order) {
+            case 'valuer':
+                usort($_result, function($e1, $e2) use($order_by){
+                    return strcasecmp($e1['valuer']['name'], $e2['valuer']['name']) * $order_by;
+                });
+                break;
+                
+            case 'category':
+                usort($_result, function($e1, $e2) use($order_by){
+                    return strcasecmp($e1['registration']['category'], $e2['registration']['category']) * $order_by;
+                });
+                break;
+                
+            case 'registration':
+                usort($_result, function($e1, $e2) use($order_by){
+                    if($e1['registration']['id'] > $e2['registration']['id']){
+                        return $order_by;
+                    } elseif($e1['registration']['id'] < $e2['registration']['id']){
+                        return $order_by * -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                break;
+                
+            case 'evaluation':
+                usort($_result, function($e1, $e2) use($order_by, $opportunity){
+                    $em = $opportunity->getEvaluationMethod();
+                    return $em->cmpValues($e1['evaluation']['result'], $e2['evaluation']['result']) * $order_by;
+                });
+                break;
+        }
+        
+        // paginação
+        if(isset($this->data['@limit'])){
+            $limit = $this->data['@limit'];
+            $page = isset($this->data['@page']) ? $this->data['@page'] : null;
+            
+            if (isset($this->data['@offset'])) {
+                $offset = $this->data['@offset'];
+            } else if ($page && $page > 1 && $limit) {
+                $offset = $limit * ($page - 1);
+            } else {
+                $offset = 0;
+            }
+            
+            $result = array_slice($_result, $offset, $limit);
+            
+        } else {
+            $result = $_result;
+        }
+        $this->apiResponse($result);
     }
 
     function GET_exportFields() {

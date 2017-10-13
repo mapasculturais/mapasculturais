@@ -285,7 +285,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                         $item = [
                             'valuer' => $agent->simplify('id,name,singleUrl'),
                             'evaluation' => $evaluation,
-                            'registration' => $reg->simplify('id,number,category,singleUrl,owner')
+                            'registration' => $reg->simplify('id,number,category,singleUrl,owner,consolidatedResult')
                         ];
                         
                         $result[] = $item;
