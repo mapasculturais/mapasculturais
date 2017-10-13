@@ -38,4 +38,9 @@ class EvaluationMethodConfiguration extends EntityController {
     public function DELETE_single() {
         App::i()->pass();
     }
+    
+    function PATCH_single($data = null) {
+        App::i()->skipPermissionCacheRecreation = true;
+        parent::PATCH_single();
+    }
 }

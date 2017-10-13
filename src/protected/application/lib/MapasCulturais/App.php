@@ -1425,12 +1425,16 @@ class App extends \Slim\Slim{
      **********************************************/
     protected $_entitiesToRecreatePermissionsCache = [];
     protected $permissionCacheUsersIds = [];
+    protected $skipPermissionCacheRecreation = false;
 
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
         $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
     }
 
     public function recreatePermissionsCacheOfListedEntities(){
+        if($this->skipPermissionCacheRecreation){
+            return;
+        }
         foreach($this->_entitiesToRecreatePermissionsCache as $entity){
             $entity->createPermissionsCacheForUsers();
         }
