@@ -2423,16 +2423,35 @@ class App extends \Slim\Slim{
             $message->setFrom($this->_config['mailer.from']);
         }
 
+        if($this->_config['mailer.alwaysTo']){
+            $message->setTo($this->_config['mailer.alwaysTo']);
+        }
+
         $type = $message->getHeaders()->get('Content-Type');
         $type->setValue('text/html');
         $type->setParameter('charset', 'utf-8');
 
+        $original = [];
         foreach($args as $key => $value){
+            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->_config['mailer.alwaysTo']){
+                $original[$key] = $value;
+                continue;
+            }
+
             $key = ucfirst($key);
             $method_name = 'set' . $key;
 
             if(method_exists($message, $method_name)){
                 $message->$method_name($value);
+            }
+        }
+
+        if($this->_config['mailer.alwaysTo']){
+            foreach($original as $key => $val){
+                if(is_array($val)){
+                    $val = implode(', ', $val);
+                }
+                $message->setBody("<strong>ORIGINALMENTE $key:</strong> $val <br>\n" . $message->getBody());
             }
         }
 
