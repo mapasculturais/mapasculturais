@@ -145,7 +145,7 @@ class Theme extends MapasCulturais\Theme {
                 'name' => i::__('Url da página da instituição responsável pelo site'),
                 'description' => i::__('usado principalmente na home para criar um link à página da instituição responsável pelo site'),
                 'examples' => [i::__($app->getBaseUrl())],
-                'text' => i::__($app->getBaseUrl()),
+                'text' => $app->getBaseUrl(),
                 'required' => true
             ],
             'home: colabore' => [
@@ -1217,7 +1217,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
     }
 
-    function includeCommonAssets() {
+    function includeCommonAssets() { 
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
