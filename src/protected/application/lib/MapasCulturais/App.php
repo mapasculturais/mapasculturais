@@ -2513,7 +2513,7 @@ class App extends \Slim\Slim{
 
         $headerData = $templateData;
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).headerData", [&$headerData]);
-        $_header = $mustache->render(file_get_contents($footer_name),$footerData);
+        $_header = $mustache->render(file_get_contents($header_name), $headerData);
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).header", [&$_header]);
 
         $footerData = $templateData;
@@ -2524,7 +2524,7 @@ class App extends \Slim\Slim{
         $templateData->_footer = $_footer;
         $templateData->_header = $_header;
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).templateData", [&$templateData]);
-        $content = $mustache->render(file_get_contents($file_name),$templateData);
+        $content = $mustache->render(file_get_contents($file_name), $templateData);
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).content", [&$content]);
 
         return $content;
