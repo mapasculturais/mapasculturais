@@ -2485,14 +2485,36 @@ class App extends \Slim\Slim{
         }
 
         $templateData = (object) $templateData;
-        if(!($file_name = $this->view->resolveFileName('templates/' . \MapasCulturais\i::get_locale(),$template))) {
-            if(!($file_name = $this->view->resolveFileName('templates/pt_BR',$template))) {
+        
+        $templateData->siteName = $this->view->dict('site: name', false);
+        $templateData->siteDescription = $this->view->dict('site: description', false);
+        $templateData->siteOwner = $this->view->dict('site: owner', false);
+        $templateData->baseUrl = $this->getBaseUrl();
+
+        if(!($footer_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_footer.html'))) {
+            if(!($footer_name = $this->view->resolveFileName('templates/pt_BR', '_footer.html'))) {
+                throw new \Exception('Email footer template not found');
+            }
+        }
+
+        if(!($file_name = $this->view->resolveFileName('templates/' . i::get_locale(), $template))) {
+            if(!($file_name = $this->view->resolveFileName('templates/pt_BR', $template))) {
                 throw new \Exception('Email Template undefined');
             }
         }
 
         $mustache = new \Mustache_Engine();
+        $_footer = $mustache->render(file_get_contents($footer_name),$templateData);
+        
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footer", [&$footer]);
+
+        $templateData->_footer = $_footer;
+
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).templateData", [&$templateData]);
+
         $content = $mustache->render(file_get_contents($file_name),$templateData);
+
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).content", [&$content]);
         return $content;
     }
 
