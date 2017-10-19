@@ -2497,6 +2497,12 @@ class App extends \Slim\Slim{
             }
         }
 
+        if(!($header_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_header.html'))) {
+            if(!($header_name = $this->view->resolveFileName('templates/pt_BR', '_header.html'))) {
+                throw new \Exception('Email header template not found');
+            }
+        }
+
         if(!($file_name = $this->view->resolveFileName('templates/' . i::get_locale(), $template))) {
             if(!($file_name = $this->view->resolveFileName('templates/pt_BR', $template))) {
                 throw new \Exception('Email Template undefined');
@@ -2504,17 +2510,23 @@ class App extends \Slim\Slim{
         }
 
         $mustache = new \Mustache_Engine();
-        $_footer = $mustache->render(file_get_contents($footer_name),$templateData);
-        
-        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footer", [&$footer]);
+
+        $headerData = $templateData;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).headerData", [&$headerData]);
+        $_header = $mustache->render(file_get_contents($footer_name),$footerData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).header", [&$_header]);
+
+        $footerData = $templateData;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footerData", [&$footerData]);
+        $_footer = $mustache->render(file_get_contents($footer_name),$footerData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footer", [&$_footer]);
 
         $templateData->_footer = $_footer;
-
+        $templateData->_header = $_header;
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).templateData", [&$templateData]);
-
         $content = $mustache->render(file_get_contents($file_name),$templateData);
-
         $this->applyHookBoundTo($this, "mustacheTemplate({$template}).content", [&$content]);
+
         return $content;
     }
 
