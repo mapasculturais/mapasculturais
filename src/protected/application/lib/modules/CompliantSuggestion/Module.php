@@ -60,7 +60,7 @@ class Module extends \MapasCulturais\Module{
         });
 
 
-        $app->hook('POST(<<agent|space|event|project>>.sendCompliantMessage>>)', function(){
+        $app->hook('POST(<<agent|space|event|project>>.sendCompliantMessage)', function(){
             $app = App::i();
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
