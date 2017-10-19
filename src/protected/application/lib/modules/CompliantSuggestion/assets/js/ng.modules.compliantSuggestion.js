@@ -15,7 +15,7 @@
             var copy        = $scope.data.copy;
             MapasCulturais.compliant_ok = true;
 
-            if(anonimous && !email){
+            if(!anonimous && !email){
                 MapasCulturais.Messages.error( labels.compliantEmailRequired );
                 MapasCulturais.compliant_ok = false;
             } else if(!type){
