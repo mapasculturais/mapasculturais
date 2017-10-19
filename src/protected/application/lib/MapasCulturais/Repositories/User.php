@@ -2,6 +2,7 @@
 namespace MapasCulturais\Repositories;
 
 use MapasCulturais\Entities;
+use MapasCulturais\App;
 
 class User extends \MapasCulturais\Repository{
 
@@ -63,6 +64,10 @@ class User extends \MapasCulturais\Repository{
 
         $q->setDQL($dql);
 
-        return $q->getResult();
+        $admins = $q->getResult();
+        
+        App::i()->applyHookBoundTo($this, "repo(User).getAdmins", [$subsite_id, &$admins]);
+
+        return $admins;
     }
 }
