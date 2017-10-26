@@ -161,7 +161,6 @@ class Opportunity extends EntityController {
     * @return \MapasCulturais\Entities\Opportunity
     */
     protected function _getOpportunity(){
-        $this->requireAuthentication();
         $app = App::i();
         
         if(!isset($this->data['@opportunity'])){
@@ -212,6 +211,8 @@ class Opportunity extends EntityController {
     function API_findRegistrations() {
         $app = App::i();
         
+        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true));
+        
         $opportunity = $this->_getOpportunity();
         
         $data = $this->data;
@@ -234,6 +235,10 @@ class Opportunity extends EntityController {
             $app->controller('registration')->registerRegistrationMetadata($current);
             $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,previousPhaseRegistrationId'];
             
+            if($current->publishedRegistrations){
+                $cdata['status'] = 'IN(10,8)';
+            }
+            
             foreach($current->registrationFieldConfigurations as $field){
                 if($field->fieldType == 'select'){
                     $cdata['@select'] .= ",{$field->fieldName}";
@@ -251,11 +256,13 @@ class Opportunity extends EntityController {
                     $cdata['id'] = "IN(-1)";
                 }
             }
-            $q = new ApiQuery('MapasCulturais\Entities\Registration', $cdata);
+            $_disable_access_control = $current->publishedRegistrations && !$current->canUser('viewEvaluations');
+            $q = new ApiQuery('MapasCulturais\Entities\Registration', $cdata, false, false, $_disable_access_control);
             
             $regs = $q->find();
             
             foreach($regs as $reg){
+                
                 if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
                     $select_values[$reg['id']] = $reg + $select_values[$reg['previousPhaseRegistrationId']];
                 } else {
@@ -283,12 +290,27 @@ class Opportunity extends EntityController {
             $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
         }
         
-        $query = new ApiQuery('MapasCulturais\Entities\Registration', $data);
+        if($opportunity->publishedRegistrations && !$opportunity->canUser('viewEvaluations')){
+            
+            if(isset($data['status'])){
+                $data['status'] = 'AND(IN(10,8),' . $data['status'] . ')';
+            } else {
+                $data['status'] = 'IN(10,8)';
+            }
+        }
+        $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);
         
         $registrations = $query->find();
+        $em = $opportunity->getEvaluationMethod();
         
         foreach($registrations as &$reg){
-            if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
+            $reg['number'] = 'on-' . $reg['id'];
+            
+            if(in_array('consolidatedResult', $query->selecting)){
+                $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
+            }
+            
+            if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
                 $values = $select_values[$reg['previousPhaseRegistrationId']];
                 foreach($reg as $key => $val){
                     if(is_null($val) && isset($values[$key])){
@@ -297,11 +319,13 @@ class Opportunity extends EntityController {
                 }
             }
         }
-        
+        $this->apiAddHeaderMetadata($this->data, $registrations, $query->getCountResult());
         $this->apiResponse($registrations);
     }
     
     function API_findEvaluations(){
+        $this->requireAuthentication();
+        
         $app = App::i();
         
         $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';

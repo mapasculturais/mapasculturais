@@ -286,4 +286,4 @@ trait EntityAgentRelation {
         $result = $this->isUserAdmin($user) || $user->id === $this->ownerUser->id;
         return $result;
     }
-}}}
+}

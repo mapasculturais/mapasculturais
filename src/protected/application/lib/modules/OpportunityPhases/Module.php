@@ -278,7 +278,6 @@ class Module extends \MapasCulturais\Module{
             $this->addEntityToJs($first);
             $this->addRegistrationToJs($first);
             $this->addOpportunityToJs($first->opportunity);
-            $this->addOpportunityRegistrationsToJs($current_registration->opportunity);
 
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($current_registration);
             $this->jsObject['evaluationConfiguration'] = $current_registration->opportunity->evaluationMethodConfiguration;
