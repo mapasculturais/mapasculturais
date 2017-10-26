@@ -803,6 +803,14 @@ return [
             $conn->executeQuery("UPDATE opportunity SET short_description = :desc WHERE id = :id", ['id' => $value['object_id'], 'desc' => $value['value']]);
         }
     },
+    
+    
+    
+    'ALTER TABLE registration ADD consolidated_result' => function () {
+        if(!__column_exists('registration', 'consolidated_result')){
+            __exec("ALTER TABLE registration ADD consolidated_result VARCHAR(255) DEFAULT NULL;");
+        }
+    },
 
     'create evaluation methods tables' => function (){
         if(__table_exists('evaluation_method_configuration')){
