@@ -12,8 +12,6 @@
         };
     }]);
 
-
-
     module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
         var url = new UrlService('registration');
         var labels = MapasCulturais.gettext.moduleOpportunity;
@@ -1109,9 +1107,77 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         };
     }]);
 
-module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService) {
-    var labels = MapasCulturais.gettext.moduleOpportunity;
+    module.factory('OpportunityApiService',['$http', 'UrlService', function($http, UrlService) {
+        var us = new UrlService('api/opportunity');
+        
+        return function($scope, varname, endpoint, params){
+            var url = us.create(endpoint);
+            var page = 1;
+            $scope.data = $scope.data || {};
+            $scope.data[varname] = [];
+            $scope.data[varname + '_lastpage'] = false;
+            
+            this.find = function(){
+                params['@page'] = page;
+                params['@limit'] = 50;
+                page++;
+                
+                return $http.get(url, {params: params}).success(function(response, status, headers){
+                    for (var i in response){
+                        response[i]['files'] = {};
+                        for(var prop in response[i]){
+                            if(prop.indexOf('@files:') === 0){
+                                response[i].files[prop.substr(7)] = response[i][prop];
+                            }
+                        }
+                    }
+                    $scope.data[varname+'APIMetadata'] = JSON.parse(headers()['api-metadata']);
+                    $scope.data[varname] = $scope.data[varname].concat(response);
+                });
+                
+            };
+        }
+    }]);
 
+module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
+    var labels = MapasCulturais.gettext.moduleOpportunity;
+    
+    var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
+    var api;
+    
+    $scope.filters = {};
+    
+    $scope.findRegistrations = function(){
+        $scope.data.findingRegistrations = true;
+        return api.find().success(function(){
+            $scope.data.findingRegistrations = false;
+        });
+    }
+    
+    $scope.$watch('filters', function(){
+        var qdata = {
+            'status': 'GT(0)',
+            '@files': '(zipArchive):url',
+            '@opportunity': MapasCulturais.entity.id,
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,' + select_fields.join(',')
+        };
+        for(var prop in $scope.filters){
+            if($scope.filters[prop]){
+                qdata[prop] = 'EQ(' + $scope.filters[prop] + ')'
+            }
+        }
+        api = new OpportunityApiService($scope, 'registrations', 'findRegistrations', qdata);
+        $scope.findRegistrations();
+    }, true);
+    
+    angular.element($window).bind("scroll", function(){
+        if(!$scope.data.findingRegistrations){
+            if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
+                $scope.findRegistrations();
+            }
+        }
+    });
+    
     var adjustingBoxPosition = false,
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };
@@ -1131,7 +1197,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         registrationCategories: categories,
         registrationCategoriesToFilter: [{value: null, label: labels.allCategories}].concat(categories),
-
+        registrations: [],
         registration: {
             owner: null,
             category: null,
@@ -1309,7 +1375,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     };
 
                     $scope.approvedRegistrations = function(){
-                        var registrations = $scope.data.entity.registrations,
+                        
+                        var registrations = $scope.data.registrations,
                         approved = 0;
 
                         for(var key in registrations){
@@ -1327,13 +1394,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     if(status.value === 10) {
                         RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                             if(registration.status === 0){
-                                $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                                $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
                             }
                         });
                     } else {
                         RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
                             if(registration.status === 0){
-                                $scope.data.entity.registrations.splice($scope.data.entity.registrations.indexOf(registration),1);
+                                $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
                             }
                         });
                     }
@@ -1354,27 +1421,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 }
             };
 
-            $scope.filters = {};
-            $scope.showRegistration = function(registration){
-                var status = !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
-                var category = !$scope.data.registrationCategory || $scope.data.registrationCategory === registration.category;
-
-                var result = status && category;
-                $scope.data.opportunitySelectFields.forEach(function(field){
-                    if($scope.data.registrationTableColumns[field.fieldName]){
-                        if($scope.filters[field.fieldName]){
-                            if(registration[field.fieldName] !== $scope.filters[field.fieldName]){
-                                result = false;
-                            }
-                        }
-                    }
-                });
-
-                return result;
-            };
-
             $scope.getFilteredRegistrations = function(){
-                return $scope.data.entity.registrations.filter(function(e){
+                // @TODO : FILTRAR NA API
+                return $scope.data.registrations.filter(function(e){
                     return $scope.showRegistration(e);
                 });
             };
@@ -1464,17 +1513,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 var registration = $scope.data.registration;
                 var ownerRegistration = [];
 
-                for(var i in $scope.data.entity.registrations) {
-                    if($scope.data.entity.registrations[i].owner.id == registration.owner.id) {
-                        ownerRegistration.push($scope.data.entity.registrations[i].owner);
+                // @TODO: buscar na api
+                for(var i in $scope.data.registrations) {
+                    if($scope.data.registrations[i].owner.id == registration.owner.id) {
+                        ownerRegistration.push($scope.data.registrations[i].owner);
                     }
                 }
 
                 if(MapasCulturais.entity.object.registrationLimitPerOwner > 0 && ownerRegistration.length >= MapasCulturais.entity.object.registrationLimitPerOwner) {
                     MapasCulturais.Messages.error(labels['limitReached']);
-                }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.entity.registrations.length >= MapasCulturais.entity.object.registrationLimit){
+                }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.registrations.length >= MapasCulturais.entity.object.registrationLimit){
                     MapasCulturais.Messages.error(labels['VacanciesOver']);
-                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.entity.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
+                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
                     RegistrationService.register(registration).success(function(rs){
                         document.location = rs.editUrl;
                     });
@@ -1580,8 +1630,17 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             };
         }]);
 
-    module.controller('RegistrationListController', ['$scope', '$interval', function($scope, $timeout){
-        $scope.registrations = MapasCulturais.entity.registrations;
+    module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
+        
+        var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
+        
+        var api = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {'@opportunity': MapasCulturais.entity.id, '@select': 'id,singleUrl,category,' + select_fields.join(',')});
+        
+        api.find().success(function(){
+            $scope.registrations = $scope.data.registrations;
+        });
+        
+        $scope.registrations = [];
         $scope.evaluations = MapasCulturais.entity.userEvaluations;
         $scope.data = {
             keyword: '',

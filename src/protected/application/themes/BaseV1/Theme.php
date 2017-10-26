@@ -2134,14 +2134,12 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
 
-        $this->addOpportunityRegistrationsToJs($entity);
-
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
 
         // add current user registrations evaluations
 
-        if($entity->canUser('viewEvaluations')){
+        if(false && $entity->canUser('viewEvaluations')){
             $this->jsObject['entity']['userEvaluations'] = [];
             foreach($this->jsObject['entity']['registrations'] as $registration){
                 $this->jsObject['entity']['userEvaluations'][$registration->id] = $registration->getUserEvaluation();
@@ -2172,7 +2170,7 @@ class Theme extends MapasCulturais\Theme {
         return $evaluation;
     }
 
-    function addRegistrationToJs(Entities\Registration $entity){ 
+    function addRegistrationToJs(Entities\Registration $entity){
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
                 $entity->opportunity->registrationFileConfigurations->toArray() : array();
 

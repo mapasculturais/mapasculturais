@@ -50,7 +50,7 @@ use MapasCulturais\i;
                 <?php i::_e("Inscrição");?>
             </th>
             <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
-                <mc-select class="left transparent-placeholder" placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
+                <mc-select class="left transparent-placeholder" placeholder="status" model="filters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
             <th ng-repeat="field in data.opportunitySelectFields" ng-show="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
                 <mc-select class="left transparent-placeholder" placeholder="{{field.title}}" model="filters[field.fieldName]" data="field.options" title="{{field.title}}"></mc-select>
@@ -65,28 +65,28 @@ use MapasCulturais\i;
                 <?php i::_e("Avaliação");?>
             </th>
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
-                <mc-select placeholder="status" model="data.registrationStatus" data="data.registrationStatuses"></mc-select>
+                <mc-select placeholder="status" model="filters['status']" data="data.registrationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
+    <tr>
+        <td colspan='{{numberOfEnabledColumns()}}'>
+            <input type="checkbox" class="hltip alignright" ng-model="data.fullscreenTable" title="<?php i::_e('Expandir tabela')?>">
+            
+            <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição enviada.");?></span>
+            <span ng-if="usingFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
+            <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição enviada.");?></span>
+            <span ng-if="usingFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
+            <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php i::_e("inscrições enviadas.");?>
+                <?php if($entity->registrationLimit > 0):?>
+                    | <?php i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
+                <?php endif;?>
+            </span>
+            <span ng-if="usingFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php i::_e("inscrições encontradas com os filtros selecionados.");?></span>
+        </td>
+    </tr>
     <tbody>
-        <tr>
-            <td colspan='{{numberOfEnabledColumns()}}'>
-                <input type="checkbox" class="hltip alignright" ng-model="data.fullscreenTable" title="<?php i::_e('Expandir tabela')?>">
-
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0"><?php i::_e("Nenhuma inscrição enviada.");?></span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1"><?php i::_e("1 inscrição enviada.");?></span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length === 1"><?php i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php i::_e("inscrições enviadas.");?>
-                    <?php if($entity->registrationLimit > 0):?>
-                         | <?php i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
-                    <?php endif;?>
-                </span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php i::_e("inscrições encontradas com os filtros selecionados.");?></span>
-            </td>
-        </tr>
-        <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
+        <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" >
             <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
@@ -118,4 +118,13 @@ use MapasCulturais\i;
             </td>
         </tr>
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan='{{numberOfEnabledColumns()}}' align="center">
+                <div ng-if="data.findingRegistrations">
+                    <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
+                </div>
+            </td>
+        </tr>
+    </tfoot>
 </table>
