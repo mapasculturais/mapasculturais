@@ -345,7 +345,13 @@ class ApiQuery {
 
     protected $_selectAll = false;
     
-    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false) {
+    protected $_accessControlEnabled = true;
+    
+    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false, $disable_access_control = false) {
+        if($disable_access_control){
+            $this->_accessControlEnabled = false;
+        }
+        
         $this->_subsiteId = $is_subsite_filter;
         
         $this->_selectAll = $select_all;
@@ -602,6 +608,10 @@ class ApiQuery {
 
         $result = preg_replace('#([^a-z0-9_])e([\. ])#i', "$1{$alias}$2", $dql);
         return $result;
+    }
+    
+    protected function getSelecting(){
+        return $this->_selecting;
     }
 
     protected function getSubqueryInIdentities(array $entities, $property = 'id') {
@@ -1083,8 +1093,8 @@ class ApiQuery {
                         $select = "$_target_property,$select";
                     }
                     
-                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll']);
-
+                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll'], !$this->_accessControlEnabled);
+                    
                     $query->name = "{$this->name}->$prop";
 
                     $query->where = "e.{$_target_property} IN ({$_subquery_where_id_in})";
@@ -1759,11 +1769,12 @@ class ApiQuery {
     protected $_filteringByPermissions = false;
             
     protected function _addFilterByPermissions($value) {
-        $user = App::i()->user;
+        $app = App::i();
+        $user = $app->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
         
-        if($this->_permission && !$user->is('saasAdmin')){
+        if($this->_accessControlEnabled && $this->_permission && !$user->is('saasAdmin')){
             $alias = $this->getAlias('pcache');
             
             $this->_filteringByPermissions = true;
