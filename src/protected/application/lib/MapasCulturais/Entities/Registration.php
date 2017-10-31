@@ -678,11 +678,7 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->opportunity->canUser('evaluateRegistrations', $user)){
-            return true;
-        }
-
-        if($this->opportunity->canUser('viewEvaluations', $user)){
+        if($this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user)){
             return true;
         }
 
