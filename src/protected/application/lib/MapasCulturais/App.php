@@ -1438,9 +1438,13 @@ class App extends \Slim\Slim{
         if($this->skipPermissionCacheRecreation){
             return;
         }
+        $conn = $this->em->getConnection();
+        $conn->beginTransaction();
         foreach($this->_entitiesToRecreatePermissionsCache as $entity){
             $entity->createPermissionsCacheForUsers();
         }
+        $conn->commit();
+        $this->em->flush();
         $this->_entitiesToRecreatePermissionsCache = [];
     }
 
