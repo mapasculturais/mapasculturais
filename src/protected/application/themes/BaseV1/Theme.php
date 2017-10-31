@@ -1993,14 +1993,6 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['agentAdminRelations'] = $entity->getAgentRelations(true, true);
     }
 
-    function addOpportunityEvaluationCommitteeToJs(Entities\Opportunity $opportunity) {
-        $this->jsObject['entity']['evaluationCommittee'] = $opportunity->getEvaluationCommittee();
-    }
-    
-    function addOpportunityEvaluationsToJs(Entities\Opportunity $opportunity) {
-        $this->jsObject['opportunityEvaluations'] = $opportunity->getEvaluations(true);
-    }
-
     function addSubsiteAdminsToJs($subsite) {
     	$app = App::i();
     	if (!$app->user->is('guest')) {
