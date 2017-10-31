@@ -48,7 +48,7 @@ use MapasCulturais\i;
         <div><label><input type="checkbox" ng-model="data.pending" /> <?php i::_e('somente pendentes'); ?></label></div>
         <input ng-model="data.keyword" ng-model-options="{ debounce: 333 }" id="registrations-list--filter" placeholder="<?php i::_e('Filtro'); ?>"/>
         <ul id="registrations-list" class="registrations-list">
-            <li ng-repeat="registration in registrations" ng-show="show(registration)" ng-class="{current: registration.id == data.current, visible:show(registration)}" class="registration-item" >
+            <li ng-repeat="registration in data.registrations" ng-show="show(registration)" ng-class="{current: registration.id == data.current, visible:show(registration)}" class="registration-item" >
                 <a href="{{::registration.singleUrl}}">
                     <div ng-if="evaluated(registration)" class="registration-evaluated">(<?php i::_e('Avaliação:')?> <strong>{{evaluations[registration.id].resultString}}</strong>)</div>
                     <div class="registration-number">{{::registration.number}}</div>

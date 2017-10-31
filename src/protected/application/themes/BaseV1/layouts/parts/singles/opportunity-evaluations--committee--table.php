@@ -18,7 +18,7 @@
 
 <?php $this->part('singles/opportunity-evaluations--committee--buttons', ['entity' => $entity]) ?>
 
-<table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
+<table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}">
     <thead>
         <tr>
             <th class="registration-id-col">
@@ -53,7 +53,7 @@
                 <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
-        <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" >
+        <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}">
             <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td class="registration-agents-col">

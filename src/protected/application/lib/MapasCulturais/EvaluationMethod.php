@@ -142,11 +142,19 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         return $this->_getConsolidatedResult($registration);
     }
 
+    static $total_aqui = 0;
+    private $_canUserEvaluateRegistrationCache = [];
+
     public function canUserEvaluateRegistration(Entities\Registration $registration, $user){
         if($user->is('guest')){
             return false;
         }
+        $cache_id = "$registration -> $user";
         
+        if(isset($this->_canUserEvaluateRegistrationCache[$cache_id])){
+            return $this->_canUserEvaluateRegistrationCache[$cache_id];
+        }
+
         $config = $registration->getEvaluationMethodConfiguration();
         
         $can = $config->canUser('@control');
@@ -209,7 +217,8 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                 }
             }
         }
-
+        
+        $this->_canUserEvaluateRegistrationCache[$cache_id] = $can;
         return $can;
     }
 

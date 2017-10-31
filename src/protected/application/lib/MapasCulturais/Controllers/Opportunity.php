@@ -198,6 +198,30 @@ class Opportunity extends EntityController {
         return $fields;
     }
     
+    function API_evaluationCommittee(){
+        $this->requireAuthentication();
+        
+        $opportunity = $this->_getOpportunity();
+        
+        $opportunity->checkPermission('@control');
+        
+        $relations = $opportunity->getEvaluationCommittee();
+        
+        if(is_array($relations)){
+            $result = array_map(function($e){
+                $r = $e->simplify('id,status,createdAt');
+                $r->owner = $e->owner->id;
+                $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar');
+                $r->agentUserId = $e->agent->userId;
+                return $r;
+            }, $relations);
+        } else {
+            $result = [];
+        }
+        
+        $this->apiResponse($result);
+    }
+    
     function API_selectFields(){
         $app = App::i();
         
@@ -207,6 +231,8 @@ class Opportunity extends EntityController {
         
         $this->apiResponse($fields);
     }
+    
+    
     
     function API_findRegistrations() {
         $app = App::i();
@@ -339,101 +365,123 @@ class Opportunity extends EntityController {
         
         $opportunity = $this->_getOpportunity();
         
-        $cache_id = __METHOD__ . ':' . $app->user->id . ':' . $opportunity->id;
+            
+        $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
+            '@select' => 'id,agent',
+            'owner' => "EQ({$opportunity->evaluationMethodConfiguration->id})",
+        ]);
+        $committee_relations = $committee_relation_query->find();
+        $committee_ids = implode(',', array_map(function($e){return $e['agent']; }, $committee_relations));
         
-        if($app->cache->contains($cache_id)){
-            $_result = $app->cache->fetch($cache_id);
-        } else {
-            
-            $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
-                '@select' => 'id,agent',
-                'owner' => "EQ({$opportunity->evaluationMethodConfiguration->id})",
-            ]);
-            $committee_relations = $committee_relation_query->find();
-            $committee_ids = implode(',', array_map(function($e){return $e['agent']; }, $committee_relations));
-            
-            $committee_query = new ApiQuery('MapasCulturais\Entities\Agent', [
+        if($committee_ids){
+            $vdata = [
                 '@select' => 'id,name,user,singleUrl',
                 'id' => "IN({$committee_ids})",
                 '@permissions' => '@control'
-            ]);
-            
-            $committee = $committee_query->find();
-            
-            $valuer_by_user = [];
-            
-            foreach($committee as $valuer){
-                $valuer_by_user[$valuer['user']] = $valuer;
-            }
-            
-            $q = $app->em->createQuery("
-                SELECT
-                    r.id AS registration, a.userId AS user, a.id AS valuer
-                FROM
-                    MapasCulturais\Entities\RegistrationPermissionCache p
-                    JOIN p.owner r WITH r.opportunity = :opp
-                    JOIN p.user u
-                    INNER JOIN u.profile a WITH a.id IN (:aids)
-                WHERE p.action = 'viewUserEvaluation'
-            ");
-            
-            $params = [
-                'opp' => $opportunity,
-                'aids' => array_map(function ($el){ return $el['id']; }, $committee)
             ];
             
-            $q->setParameters($params);
-            
-            $permissions = $q->getArrayResult();
-            
-            $registrations_by_valuer = [];
-            
-            foreach($permissions as $p){
-                if(!isset($registrations_by_valuer[$p['valuer']])){
-                    $registrations_by_valuer[$p['valuer']] = [];
-                }
-                $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
-            }
-            
-            $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
-            if($registration_ids){
-                $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', [
-                    '@select' => 'id,status,category,consolidatedResult,singleUrl',
-                    'id' => "IN(" . implode(',', $registration_ids).  ")"
-                ]);
-                $registrations = $registrations_query->find();
-                
-                $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', [
-                    '@select' => 'id,result,evaluationData,registration,user,status',
-                    'registration' => "IN(" . implode(',', $registration_ids).  ")"
-                ]);
-                $evaluations = [];
-                foreach($evaluations_query->find() as $e){
-                    $e['agent'] = $valuer_by_user[$e['user']];
-                    // $e['evaluationData'] = json_decode($e['evaluationData']);
-                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
-                }
-                
-            } else {
-                $registrations = [];
-                $evaluations = [];
-            }
-            
-            $_result = [];
-            
-            foreach($registrations as $registration){
-                foreach($valuer_by_user as $user_id => $valuer){
-                    if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])){
-                        $_result[] = [
-                            'registration' => $registration,
-                            'evaluation' => isset($evaluations[$user_id . ':' . $registration['id']]) ? $evaluations[$user_id . ':' . $registration['id']] : null,
-                            'valuer' => $valuer
-                        ];
-                    }
+            foreach($this->data as $k => $v){
+                if(strtolower(substr($k, 0, 7)) === 'valuer:'){
+                    $vdata[substr($k, 7)] = $v;
                 }
             }
             
-            $app->cache->save($cache_id, $_result, 300);
+            $committee_query = new ApiQuery('MapasCulturais\Entities\Agent', $vdata);
+            
+            $committee = $committee_query->find();
+        } else {
+            $committee = [];
+        }
+        
+        $valuer_by_user = [];
+        
+        foreach($committee as $valuer){
+            $valuer_by_user[$valuer['user']] = $valuer;
+        }
+        
+        $q = $app->em->createQuery("
+            SELECT
+                r.id AS registration, a.userId AS user, a.id AS valuer
+            FROM
+                MapasCulturais\Entities\RegistrationPermissionCache p
+                JOIN p.owner r WITH r.opportunity = :opp
+                JOIN p.user u
+                INNER JOIN u.profile a WITH a.id IN (:aids)
+            WHERE p.action = 'viewUserEvaluation'
+        ");
+        
+        $params = [
+            'opp' => $opportunity,
+            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
+        ];
+        
+        $q->setParameters($params);
+        
+        $permissions = $q->getArrayResult();
+        
+        $registrations_by_valuer = [];
+        
+        foreach($permissions as $p){
+            if(!isset($registrations_by_valuer[$p['valuer']])){
+                $registrations_by_valuer[$p['valuer']] = [];
+            }
+            $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
+        }
+        
+        $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
+        if($registration_ids){
+            $rdata = [
+                '@select' => 'id,status,category,consolidatedResult,singleUrl',
+                'id' => "IN(" . implode(',', $registration_ids).  ")"
+            ];
+            
+            foreach($this->data as $k => $v){
+                if(strtolower(substr($k, 0, 13)) === 'registration:'){
+                    $rdata[substr($k, 13)] = $v;
+                }
+            }
+            
+            $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
+            $registrations = $registrations_query->find();
+            
+            $edata = [
+                '@select' => 'id,result,evaluationData,registration,user,status',
+                'registration' => "IN(" . implode(',', $registration_ids).  ")"
+            ];
+            
+            foreach($this->data as $k => $v){
+                if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
+                    $edata[substr($k, 11)] = $v;
+                }
+            }
+            
+            $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
+            $evaluations = [];
+            foreach($evaluations_query->find() as $e){
+                $e['agent'] = $valuer_by_user[$e['user']];
+                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                // $e['evaluationData'] = json_decode($e['evaluationData']);
+                $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+            }
+            
+        } else {
+            $registrations = [];
+            $evaluations = [];
+        }
+        
+        $_result = [];
+        
+        foreach($registrations as &$registration){
+            $registration['number'] = 'on-' . $registration['id'];
+            foreach($valuer_by_user as $user_id => $valuer){
+                if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])){
+                    $_result[] = [
+                        'registration' => $registration,
+                        'evaluation' => isset($evaluations[$user_id . ':' . $registration['id']]) ? $evaluations[$user_id . ':' . $registration['id']] : null,
+                        'valuer' => $valuer
+                    ];
+                }
+            }
         }
         
         if(isset($this->data['@omitEmpty'])){
@@ -495,6 +543,7 @@ class Opportunity extends EntityController {
         } else {
             $result = $_result;
         }
+        $this->apiAddHeaderMetadata($this->data, $result, count($_result));
         $this->apiResponse($result);
     }
 

@@ -8,25 +8,25 @@ use MapasCulturais\i;
                 <?php \MapasCulturais\i::_e("Inscrição");?>
             </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
-                <mc-select placeholder="<?php i::_e('categoria') ?>" model="filters['category']" data="data.registrationCategoriesToFilter"></mc-select>
+                <mc-select placeholder="<?php i::_e('categoria') ?>" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter"></mc-select>
             </th>
             <th class="registration-agents-col">
                 <?php \MapasCulturais\i::_e("Agentes");?>
             </th>
             <th class="registration-status-col">
-                <mc-select placeholder="status" model="filters['status']" data="data.publishedRegistrationStatuses"></mc-select>
+                <mc-select placeholder="status" model="registrationsFilters['status']" data="data.publishedRegistrationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td colspan='5'>
-                <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
-                <span ng-if="usingFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
-                <span ng-if="usingFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições.");?></span>
-                <span ng-if="usingFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
+                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
+                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições.");?></span>
+                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
         <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" >

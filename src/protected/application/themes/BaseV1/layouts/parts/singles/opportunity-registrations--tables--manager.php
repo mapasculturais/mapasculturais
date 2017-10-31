@@ -50,10 +50,10 @@ use MapasCulturais\i;
                 <?php i::_e("Inscrição");?>
             </th>
             <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
-                <mc-select class="left transparent-placeholder" placeholder="status" model="filters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
+                <mc-select class="left transparent-placeholder" placeholder="status" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
             <th ng-repeat="field in data.opportunitySelectFields" ng-show="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
-                <mc-select class="left transparent-placeholder" placeholder="{{field.title}}" model="filters[field.fieldName]" data="field.options" title="{{field.title}}"></mc-select>
+                <mc-select class="left transparent-placeholder" placeholder="{{field.title}}" model="registrationsFilters[field.fieldName]" data="field.options" title="{{field.title}}"></mc-select>
             </th>
             <th ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <?php i::_e("Agentes");?>
@@ -65,7 +65,7 @@ use MapasCulturais\i;
                 <?php i::_e("Avaliação");?>
             </th>
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
-                <mc-select placeholder="status" model="filters['status']" data="data.registrationStatuses"></mc-select>
+                <mc-select placeholder="status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
@@ -73,16 +73,16 @@ use MapasCulturais\i;
         <td colspan='{{numberOfEnabledColumns()}}'>
             <input type="checkbox" class="hltip alignright" ng-model="data.fullscreenTable" title="<?php i::_e('Expandir tabela')?>">
             
-            <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição enviada.");?></span>
-            <span ng-if="usingFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
-            <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição enviada.");?></span>
-            <span ng-if="usingFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
-            <span ng-if="!usingFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php i::_e("inscrições enviadas.");?>
+            <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição.");?></span>
+            <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
+            <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição.");?></span>
+            <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
+            <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php i::_e("inscrições.");?>
                 <?php if($entity->registrationLimit > 0):?>
                     | <?php i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
                 <?php endif;?>
             </span>
-            <span ng-if="usingFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php i::_e("inscrições encontradas com os filtros selecionados.");?></span>
+            <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php i::_e("inscrições encontradas com os filtros selecionados.");?></span>
         </td>
     </tr>
     <tbody>
