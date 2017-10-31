@@ -128,7 +128,7 @@ trait EntityPermissionCache {
                     continue;
                 }
                 if($this->canUser($permission, $user)){
-                    
+//                    $app->log->debug("INSERT $this $user $permission");
                     $conn->insert('pcache', [
                         'user_id' => $user->id,
                         'action' => $permission,
@@ -141,10 +141,6 @@ trait EntityPermissionCache {
         }
         
         $this->__enabled = true;
-        
-        if($flush){
-            $app->em->flush();
-        }
         
     }
     
