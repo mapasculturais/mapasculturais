@@ -279,15 +279,7 @@ class Registration extends \MapasCulturais\Entity
         $agent = App::i()->repo('Opportunity')->find($id);
         $this->opportunity = $agent;
     }
-
-    function getSingleUrl(){
-        return App::i()->createUrl('registration', 'view', [$this->id]);
-    }
-
-    function getEditUrl(){
-        return App::i()->createUrl('registration', 'view', [$this->id]);
-    }
-
+    
     /**
      *
      * @return

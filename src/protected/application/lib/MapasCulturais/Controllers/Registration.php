@@ -111,6 +111,13 @@ class Registration extends EntityController {
         parent::__construct();
     }
 
+    public function createUrl($actionName, array $data = array()) {
+        if($actionName == 'single' || $actionName == 'edit'){
+            $actionName = 'view';
+        }
+        return parent::createUrl($actionName, $data);
+    }
+
     function registerRegistrationMetadata(\MapasCulturais\Entities\Opportunity $opportunity){
         
         $app = App::i();
