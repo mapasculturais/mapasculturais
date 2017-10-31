@@ -1370,6 +1370,9 @@ class App extends \Slim\Slim{
 
 
     function _getHookCallables($name) {
+        if(isset($this->_hookCache[$name])){
+            return $this->_hookCache[$name];
+        }
         $exclude_list = [];
         $result = [];
 
