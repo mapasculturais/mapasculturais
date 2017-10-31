@@ -26,6 +26,7 @@ return array(
     'mailer.server' => 'localhost',
     'mailer.port'   => '465',
     'mailer.from' => 'suporte@mapasculturais.org',
+    'mailer.alwaysTo' => false,
 
     'mailer.templates' => [
         'welcome' => [

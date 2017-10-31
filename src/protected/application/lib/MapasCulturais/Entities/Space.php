@@ -153,7 +153,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SpaceOpportunity[] Opportunities
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $_relatedOpportunities;

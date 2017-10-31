@@ -19,8 +19,8 @@ trait EntityOpportunities{
         return true;
     }
     
-    public function getOpportunityClassName() {
-        return $this->getClassName() . 'Opportunity';
+    static function getOpportunityClassName() {
+        return self::getClassName() . 'Opportunity';
     }
     
     public function getOpportunities($status = Opportunity::STATUS_ENABLED){

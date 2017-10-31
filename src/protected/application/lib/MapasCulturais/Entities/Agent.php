@@ -174,7 +174,7 @@ class Agent extends \MapasCulturais\Entity
 
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Opportunity", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentOpportunity", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $_ownedOpportunities;
 
@@ -464,6 +464,13 @@ class Agent extends \MapasCulturais\Entity
         return $this->getOwner()->canUser('modify') && $this->canUser('modify');
     }
 
+    protected function canUserArchive($user){
+        if($this->isUserProfile){
+            return false;
+        } else {
+            return $this->genericPermissionVerification($user);
+        }
+    }
 
     /** @ORM\PrePersist */
     public function __setParent($args = null){

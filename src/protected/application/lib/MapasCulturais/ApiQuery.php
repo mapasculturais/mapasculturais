@@ -346,10 +346,20 @@ class ApiQuery {
     protected $_selectAll = false;
     
     protected $_accessControlEnabled = true;
+
+    /**
+     *
+     * @var ApiQuery
+     */
+    protected $parentQuery;
     
-    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false, $disable_access_control = false) {
+    public function __construct($entity_class_name, $api_params, $is_subsite_filter = false, $select_all = false, $disable_access_control = false, $parentQuery = null) {
         if($disable_access_control){
             $this->_accessControlEnabled = false;
+        }
+
+        if($parentQuery){
+            $this->parentQuery = $parentQuery;
         }
         
         $this->_subsiteId = $is_subsite_filter;
@@ -377,6 +387,11 @@ class ApiQuery {
         $this->apiParams = $api_params;
         
         $class = $class::getClassName();
+
+        if($class == 'MapasCulturais\Entities\Opportunity' && $this->parentQuery){
+            $parent_class = $this->parentQuery->entityClassName;
+            $class = $parent_class::getOpportunityClassName();
+        }
         
         $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
         $this->entityRelations = $this->em->getClassMetadata($class)->associationMappings;
@@ -1093,7 +1108,7 @@ class ApiQuery {
                         $select = "$_target_property,$select";
                     }
                     
-                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll'], !$this->_accessControlEnabled);
+                    $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
                     
                     $query->name = "{$this->name}->$prop";
 

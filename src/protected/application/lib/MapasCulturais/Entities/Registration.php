@@ -382,7 +382,7 @@ class Registration extends \MapasCulturais\Entity
         return 'on-' . $this->id;
     }
 
-    function setStatus(){
+    function setStatus($status){
         // do nothing
     }
 
