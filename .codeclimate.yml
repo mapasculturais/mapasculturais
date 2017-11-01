@@ -1,9 +1,10 @@
+---
 engines:
-  
   # For detect violations of defined coding standard
   phpcodesniffer:
     enabled: true
-    file_extensions: "php, inc, lib"
+    config:
+      file_extensions: "php,inc,lib"
   
   # For analize PHP Bug Risk 
   phan:
@@ -31,6 +32,6 @@ ratings:
   - "**.sh"
   
 exclude_paths:
-  **/documentation/
-  **/db
+  - "**/documentation/"
+  - "**/db"
 
