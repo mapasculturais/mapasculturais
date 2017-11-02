@@ -163,6 +163,15 @@ class Registration extends \MapasCulturais\Entity
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }
+
+    function getSingleUrl(){
+        return App::i()->createUrl('registration', 'view', [$this->id]);
+    }
+
+    function getEditUrl(){
+        return App::i()->createUrl('registration', 'view', [$this->id]);
+    }
+
     
     function consolidateResult($flush = false){
         $app = App::i();
