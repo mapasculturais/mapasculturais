@@ -226,34 +226,6 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        // adiciona os campos de selecao unica das fases anteriores
-        $app->hook('view.partial(singles/opportunity-registrations--tables--manager):before', function () use($app) {
-            $entity = $this->controller->requestedEntity;
-            if($entity->isOpportunityPhase){
-                $registrations = $this->jsObject['entity']['registrations'];
-                $this->jsObject['entity']['registrations'] = json_decode(json_encode($this->jsObject['entity']['registrations']));
-
-                while($entity = $entity->parent){
-                    $app->controller('registration')->registerRegistrationMetadata($entity);
-
-                    $regs = [];
-                    $this->addOpportunitySelectFieldsToJs($entity);
-                    foreach($registrations as $i => $registration){
-                        $prev = self::getPreviousPhaseRegistration($registration);
-                        $regs[] = $prev;
-                        foreach($entity->registrationFieldConfigurations as $field){
-                            if($field->fieldType == 'select'){
-                                $field_name = $field->getFieldName();
-                                $this->jsObject['entity']['registrations'][$i]->$field_name = $prev->$field_name;
-                            }
-                        }
-                    }
-
-                    $registrations = $regs;
-                }
-            }
-        });
-
         // unifica as fichas de inscricão
         $app->hook('template(registration.view.form):begin', function() use($app){
             $entity = $this->controller->requestedEntity;
