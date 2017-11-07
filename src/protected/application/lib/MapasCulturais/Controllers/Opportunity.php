@@ -460,7 +460,6 @@ class Opportunity extends EntityController {
             foreach($evaluations_query->find() as $e){
                 $e['agent'] = $valuer_by_user[$e['user']];
                 $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
-                // $e['evaluationData'] = json_decode($e['evaluationData']);
                 $evaluations[$e['user'] . ':' . $e['registration']] = $e;
             }
             

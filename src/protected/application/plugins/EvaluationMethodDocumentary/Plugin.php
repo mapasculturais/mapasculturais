@@ -153,9 +153,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function valueToString($value) {
 
-        if($value === 1){
+        if($value == 1){
             return i::__('Válida');
-        } else if($value === -1){
+        } else if($value == -1){
             return i::__('Inválida');
         }
 
