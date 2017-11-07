@@ -14,9 +14,7 @@ $evaluation = $this->getCurrentRegistrationEvaluation($entity);
 $infos = (array) $configuration->infos;
 ?>
 <div class="sidebar registration sidebar-right">
-    <?php if($action === 'single'): ?>
-
-        <?php if($entity->canUser('viewUserEvaluation')): ?>
+    <?php if($action === 'single' && !$opportunity->publishedRegistrations && $entity->canUser('viewUserEvaluation')): ?>
         <div id="registration-evaluation-form" class="evaluation-form evaluation-form--<?php echo $evaluationMethod->getSlug(); ?>">
             <?php if($entity->canUser('evaluate')): ?>
                 <?php if($infos): ?>
@@ -57,6 +55,5 @@ $infos = (array) $configuration->infos;
                 <?php $this->part($evaluation_view_part_name, $params); ?>
             <?php endif; ?>
         </div>
-        <?php endif; ?>
     <?php endif; ?>
 </div>
