@@ -699,6 +699,10 @@ class Registration extends \MapasCulturais\Entity
             }
         }
 
+        if($this->canUserViewUserEvaluation($user)){
+            return true;
+        }
+
         return false;
     }
 
@@ -746,6 +750,10 @@ class Registration extends \MapasCulturais\Entity
         $can = $this->canUserViewUserEvaluation($user);
 
         $evaluation_sent = false;
+
+        if($this->opportunity->publishedRegistrations){
+            return false;
+        }
 
         if($evaluation = $this->getUserEvaluation($user)){
             $evaluation_sent = $evaluation->status === RegistrationEvaluation::STATUS_SENT;

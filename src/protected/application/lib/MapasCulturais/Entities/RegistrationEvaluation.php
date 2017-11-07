@@ -162,6 +162,10 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         if($user->is('guest')){
             return false;
         }
+
+        if($user->profile->canUser('@control')){
+            return true;
+        }
         
         if($this->registration->opportunity->canUser('@control', $user)){
             return true;
