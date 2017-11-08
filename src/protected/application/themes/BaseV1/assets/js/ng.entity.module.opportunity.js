@@ -869,7 +869,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         var labels = MapasCulturais.gettext.moduleOpportunity;
         var emconfig = MapasCulturais.entity.object.evaluationMethodConfiguration;
         
-        var committeeApi = new OpportunityApiService($scope, 'registrations', 'evaluationCommittee', {'@opportunity': getOpportunityId()});
+        var committeeApi = new OpportunityApiService($scope, 'committee', 'evaluationCommittee', {'@opportunity': getOpportunityId()});
 
         $scope.editbox = EditBox;
         RelatedAgentsService = angular.copy(RelatedAgentsService);
@@ -889,7 +889,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.data = {
             entity: MapasCulturais.entity,
             categories: MapasCulturais.entity.registrationCategories,
-            committee: MapasCulturais.entity.evaluationCommittee,
+            committee: [],
 
         };
         
@@ -1163,7 +1163,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     var registrationsApi;
     var evaluationsApi;
 
-    var committeeApi = new OpportunityApiService($scope, 'registrations', 'evaluationCommittee', {'@opportunity': getOpportunityId()});
+    var committeeApi = new OpportunityApiService($scope, 'evaluationCommittee', 'evaluationCommittee', {'@opportunity': getOpportunityId()});
     
     $scope.registrationsFilters = {};
     $scope.evaluationsFilters = {};
@@ -1694,28 +1694,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
         
-        var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
-            '@opportunity': getOpportunityId(),
-            '@limit': 10000,
-            '@select': 'id,singleUrl,owner.{id,name}'
-        });
-        
-        registrationsApi.find().success(function(){
-            $scope.registrations = $scope.data.registrations;
-        });
-
-        var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', {
-            '@opportunity': getOpportunityId(),
-            '@limit': 10000,
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
-        });
-        
-        evaluationsApi.find().success(function(){
-            $scope.data.evaluations.forEach(function(e){
-                $scope.evaluations[e.registration.id] = e.evaluation;
-            });
-        });
-
         $scope.registrations = [];
         $scope.evaluations = {};
         $scope.data = {
@@ -1726,6 +1704,28 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             registrations: [],
             evaluations: []
         }
+
+        var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
+            '@opportunity': getOpportunityId(),
+            '@limit': 10000,
+            '@select': 'id,singleUrl,owner.{id,name}'
+        });
+
+        var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', {
+            '@opportunity': getOpportunityId(),
+            '@limit': 10000,
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+        });
+
+        registrationsApi.find().success(function(){
+            $scope.registrations = $scope.data.registrations;
+        });
+
+        evaluationsApi.find().success(function(){
+            $scope.data.evaluations.forEach(function(e){
+                $scope.evaluations[e.registration.id] = e.evaluation;
+            });
+        });
 
         var last = '';
 

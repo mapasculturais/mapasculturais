@@ -2141,11 +2141,7 @@ class Theme extends MapasCulturais\Theme {
 
         // add current user registrations evaluations
 
-        if(false && $entity->canUser('viewEvaluations')){
-            $this->jsObject['entity']['userEvaluations'] = [];
-            foreach($this->jsObject['entity']['registrations'] as $registration){
-                $this->jsObject['entity']['userEvaluations'][$registration->id] = $registration->getUserEvaluation();
-            }
+        if($entity->canUser('viewEvaluations')){
             $this->jsObject['evaluationConfiguration'] = $entity->evaluationMethodConfiguration;
         }
     }
