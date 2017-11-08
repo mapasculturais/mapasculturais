@@ -9,6 +9,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->part('singles/opportunity-registrations--intro', ['entity' => $entity]); ?>
 
+    <?php $this->part('singles/opportunity-registrations--rules', ['entity' => $entity]); ?>
+
+    <?php if(!$this->isEditable()): ?>
+        <?php $this->part('singles/opportunity-registrations--user-registrations', ['entity' => $entity]) ?>
+
+        <?php $this->part('singles/opportunity-registrations--form', ['entity' => $entity]) ?>
+    <?php endif; ?>
+
     <div class="registration-fieldset">
     <!-- Video Gallery BEGIN -->
     <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?>
@@ -18,14 +26,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->part('gallery.php', array('entity'=>$entity)); ?>
     <!-- Image Gallery END -->
     </div>
-
-    <?php $this->part('singles/opportunity-registrations--rules', ['entity' => $entity]); ?>
-
-    <?php if(!$this->isEditable()): ?>
-        <?php $this->part('singles/opportunity-registrations--user-registrations', ['entity' => $entity]) ?>
-
-        <?php $this->part('singles/opportunity-registrations--form', ['entity' => $entity]) ?>
-    <?php endif; ?>
 
     <?php if ($this->isEditable()): ?>
 
