@@ -53,29 +53,29 @@
                 <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
-        <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}">
-            <td class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
-            <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
+        <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}">
+            <td class="registration-id-col"><a href="{{evaluation.registration.singleUrl}}">{{evaluation.registration.number}}</a></td>
+            <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>
                     <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
-                    <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
+                    <a href="{{evaluation.registration.owner.singleUrl}}">{{evaluation.registration.owner.name}}</a>
                 </p>
 
-                <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
+                <p ng-repeat="relation in evaluation.registration.agentRelations" ng-if="relation.agent">
                     <span class="label">{{relation.label}}</span><br />
                     <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                 </p>
             </td>
             <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
+                <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
             </td>
-            <td class="registration-status-col">
-                <div ng-show="::getEvaluationResultString(reg)">
-                    <strong>{{::getEvaluationStatusLabel(reg)}} / {{::getEvaluationResultString(reg)}}</strong>
+            <td class="registration-status-col"> 
+                <div ng-show="::getEvaluationResultString(evaluation)">
+                    <strong>{{::getEvaluationStatusLabel(evaluation)}} / {{::getEvaluationResultString(evaluation)}}</strong>
                 </div>
-                <div ng-hide="::getEvaluationResultString(reg)">
-                    {{::getEvaluationStatusLabel(reg)}}
+                <div ng-hide="::getEvaluationResultString(evaluation)">
+                    {{::getEvaluationStatusLabel(evaluation)}}
                 </div>
             </td>
         </tr>

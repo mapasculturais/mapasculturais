@@ -841,7 +841,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
         }
 
-        // console.log('>>> ', {result: result, useCategories: $scope.useCategories, categoriesLength: field.categories.length, categoriesIndexOf: field.categories.indexOf($scope.selectedCategory)});
         return result;
     };
 
@@ -1422,10 +1421,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         if(registration.evaluation){
             return registration.evaluation.resultString;
-        }
-
-        if(angular.isObject(registration.evaluation)) {
-            return userEvaluation.resultString;
         } else {
             return '';
         }

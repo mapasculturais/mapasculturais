@@ -39,7 +39,7 @@
             </td>
         </tr>
         
-        <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" class="{{getStatusSlug(evaluation.registration.status)}}" >
+        <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
             <td class="registration-id-col"><strong>{{evaluation.registration.number}}</strong></td>
             <td class="registration-id-col">{{evaluation.valuer.name}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
