@@ -577,7 +577,7 @@ MapasCulturais.Editables = {
                             if(!$timepicker.editable('getValue', true)){
                                 $timepicker.editable('setValue', '23:59');
                             }
-                            console.log('aqui');
+                            
                             $hidden.editable('setValue',
                                 moment(params.newValue).format('YYYY-MM-DD') + ' ' + $timepicker.editable('getValue', true)
                             );
