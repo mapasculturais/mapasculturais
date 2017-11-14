@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fe6132526effbafff5bc1533648df8a",
+    "content-hash": "9e532fa9219b5b7a7b809e2553586da0",
     "packages": [
         {
             "name": "creof/doctrine2-spatial",
@@ -61,7 +61,7 @@
                 "postgresql",
                 "spatial"
             ],
-            "time": "2017-01-10 17:13:16"
+            "time": "2017-01-10T17:13:16+00:00"
         },
         {
             "name": "creof/geo-parser",
@@ -2200,16 +2200,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.4",
+            "version": "v0.8.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82"
+                "reference": "91e53c16560bdb8b9592544bb38429ae00d6baee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/17cf432bb80d9198df239b80d00a29155bd74d82",
-                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/91e53c16560bdb8b9592544bb38429ae00d6baee",
+                "reference": "91e53c16560bdb8b9592544bb38429ae00d6baee",
                 "shasum": ""
             },
             "require": {
@@ -2239,7 +2239,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.9.x-dev"
+                    "dev-develop": "0.8.x-dev"
                 }
             },
             "autoload": {
@@ -2269,7 +2269,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-05-12T15:41:55+00:00"
+            "time": "2017-11-04T16:06:49+00:00"
         },
         {
             "name": "respect/validation",
@@ -3356,7 +3356,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "creof/doctrine2-spatial": 20,
-        "phpoffice/phpword": 20,
         "psy/psysh": 0
     },
     "prefer-stable": false,
