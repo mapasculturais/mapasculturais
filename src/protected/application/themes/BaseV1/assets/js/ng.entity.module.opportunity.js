@@ -1127,8 +1127,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return function($scope, varname, endpoint, params){
             var url = us.create(endpoint);
             var page = 1;
+            var meta_key = varname + 'APIMetadata';
             $scope.data = $scope.data || {};
             $scope.data[varname] = [];
+            $scope.data[varname+'APIMetadata'] = {};
             $scope.data[varname + '_lastpage'] = false;
 
             if(!params['@limit']){
@@ -1139,7 +1141,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 params['@page'] = page;
                 page++;
                 
-                return $http.get(url, {params: params}).success(function(response, status, headers){
+                return $http.get(url, {params: params, cache:true}).success(function(response, status, headers){
                     for (var i in response){
                         response[i]['files'] = {};
                         for(var prop in response[i]){
@@ -1148,11 +1150,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                             }
                         }
                     }
-                    $scope.data[varname+'APIMetadata'] = JSON.parse(headers()['api-metadata']);
+                    var metadata = JSON.parse(headers()['api-metadata']);
+                    
+                    $scope.data[meta_key] = metadata;
                     $scope.data[varname] = $scope.data[varname].concat(response);
                 });
                 
             };
+
+            this.finish = function(){
+                var meta = $scope.data[meta_key];
+                return meta.numPages && parseInt(meta.page) >= parseInt(meta.numPages);
+            }
         }
     }]);
 
@@ -1169,6 +1178,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.evaluationsFilters = {};
     
     $scope.findRegistrations = function(){
+        if(registrationsApi.finish()){
+            return null;
+        }
         $scope.data.findingRegistrations = true;
         return registrationsApi.find().success(function(){
             $scope.data.findingRegistrations = false;
@@ -1176,6 +1188,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }
     
     $scope.findEvaluations = function(){
+         if(evaluationsApi.finish()){
+            return null;
+        }
         $scope.data.findingEvaluations = true;
         return evaluationsApi.find().success(function(){
             $scope.data.findingEvaluations = false;
@@ -1247,6 +1262,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         spinner: false,
         
         evaluationCommittee: [],
+        evaluationCommitteeAPIMetadata: {},
 
         registrationCategories: categories,
         registrationCategoriesToFilter: [{value: null, label: labels.allCategories}].concat(categories),
