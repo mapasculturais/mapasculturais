@@ -33,7 +33,7 @@ $agentsRelated['owner'] = $entity->owner;
                 <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p> -->
                 <find-entity id='find-entity-registration-{{::def.agentRelationGroupName}}' name='{{::def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="Nenhum agente encontrado" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
             </edit-box>
-            <a ng-if="::def.agent" class="btn btn-default js-modal-toggle" data-modal-id="portifolio-{{::def.agentRelationGroupName}}" ><?php \MapasCulturais\i::_e("Visualizar Portfólio");?></a>
+            <a ng-if="::def.agent" class="btn btn-default" ng-click="data['modal-' + def.agentRelationGroupName] = true" data-modal-id="portifolio-{{::def.agentRelationGroupName}}" ><?php \MapasCulturais\i::_e("Visualizar Portfólio");?></a>
         </li>
     </ul>
 </div>
@@ -41,7 +41,7 @@ $agentsRelated['owner'] = $entity->owner;
 
 <?php foreach($agentsRelated as $group => $agent): ?>
 
-    <div id="portifolio-<?php echo $group ?>" class="modal-wrapper <?php echo $group ?>" hidden="true">
+<div id="portifolio-<?php echo $group ?>" class="modal-wrapper <?php echo $group ?> ng-hide" ng-show="data['modal-<?php echo $group ?>']" >
         <div class="modal">
             <!-- Video Gallery BEGIN -->
             <?php $this->part('video-gallery.php', array('entity'=> $agent)); ?>
@@ -66,7 +66,7 @@ $agentsRelated['owner'] = $entity->owner;
                 </div>
             </div>
             <footer>
-                <a class="btn btn-default js-modal-toggle" data-modal-id="portifolio-<?php echo $group ?>"><?php \MapasCulturais\i::_e("Fechar");?></a>
+                <a class="btn btn-default" ng-click="data['modal-<?php echo $group ?>'] = false" data-modal-id="portifolio-<?php echo $group ?>"><?php \MapasCulturais\i::_e("Fechar");?></a>
             </footer>
         </div>
     </div>
