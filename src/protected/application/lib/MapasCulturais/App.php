@@ -1448,7 +1448,7 @@ class App extends \Slim\Slim{
     }
 
     public function recreatePermissionsCacheOfListedEntities(){
-        if($this->skipPermissionCacheRecreation){
+        if($this->skipPermissionCacheRecreation || !$this->_entitiesToRecreatePermissionsCache){
             return;
         }
         $conn = $this->em->getConnection();
