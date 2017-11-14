@@ -285,8 +285,8 @@ class Module extends \MapasCulturais\Module{
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
 
                     $field_name = $field->fieldName;
-
-                    $this->jsObject['entity']['object']->$field_name = isset($reg->$field_name) ? $reg->$field_name : null;
+                    
+                    $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
                 }
 
                 foreach($opportunity->registrationFileConfigurations as $file){
