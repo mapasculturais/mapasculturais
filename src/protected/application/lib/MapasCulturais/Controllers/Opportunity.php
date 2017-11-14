@@ -218,7 +218,8 @@ class Opportunity extends EntityController {
         } else {
             $result = [];
         }
-        
+
+        $this->apiAddHeaderMetadata($this->data, $result, count($result));
         $this->apiResponse($result);
     }
     
