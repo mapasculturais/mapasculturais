@@ -36,7 +36,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$app->user->trashedOpportunities): ?>
-            <div class="alert info"><?php i::_e("Você não possui nehuma oportunidade na lixeira.");?></div>
+            <div class="alert info"><?php i::_e("Você não possui nenhuma oportunidade na lixeira.");?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -46,7 +46,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->archivedOpportunities): ?>
-            <div class="alert info"><?php i::_e("Você não possui nehuma oportunidade arquivada."); ?></div>
+            <div class="alert info"><?php i::_e("Você não possui nenhuma oportunidade arquivada."); ?></div>
         <?php endif; ?>
     </div>
     <!-- #arquivo-->
