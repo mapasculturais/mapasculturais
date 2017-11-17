@@ -936,7 +936,7 @@ return [
         
         foreach($rs as $r){
             $r = (object) $r;
-            $value = preg_replace(['#Espa[^;]+os#i', '#Eventos#i', '#Agentes#i', '#Projetos#i'], ['Spaces', 'Events', 'Agents', 'Projects'], $r->value);
+            $value = preg_replace(['#Espa[^;]+os#i', '#Eventos#i', '#Agentes#i', '#Projetos#i', '#Oportunidades"i'], ['Spaces', 'Events', 'Agents', 'Projects', 'Opportunities'], $r->value);
             $conn->exec("UPDATE subsite_meta SET value = '{$value}' WHERE id = {$r->id}");
         }
     },

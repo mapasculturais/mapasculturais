@@ -136,7 +136,8 @@ return array(
                 'Agents',
                 'Spaces',
                 'Projects',
-                'Events'
+                'Events',
+                'Opportunities'
             )
         ),
         'agents_color'    => $metadata_config_color,
