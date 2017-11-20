@@ -140,13 +140,14 @@ return array(
                 'Opportunities'
             )
         ),
-        'agents_color'    => $metadata_config_color,
-        'spaces_color'    => $metadata_config_color,
-        'projects_color'  => $metadata_config_color,
-        'events_color'    => $metadata_config_color,
-        'seals_color'     => $metadata_config_color,
-        'cor_intro'     => $metadata_config_color,
-        'cor_dev'       => $metadata_config_color,
+        'agents_color'        => $metadata_config_color,
+        'spaces_color'        => $metadata_config_color,
+        'projects_color'      => $metadata_config_color,
+        'events_color'        => $metadata_config_color,
+        'opportunities_color' => $metadata_config_color,
+        'seals_color'         => $metadata_config_color,
+        'cor_intro'           => $metadata_config_color,
+        'cor_dev'             => $metadata_config_color,
 
         'filtro_space_meta_En_Estado' => $metadata_config_estado,
 
