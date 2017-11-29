@@ -394,6 +394,18 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Sub-agentes'), i::__('Agentes Filhos'), i::__('Agentes')],
                 'text' => i::__('Agentes')
             ],
+            'entities: agent' => [
+                'name' => i::__('texto "agente"'),
+                'description' => i::__('nome da entidade Agente no singular em minúsculo'),
+                'examples' => [i::__('agente')],
+                'text' => i::__('agente')
+            ],
+            'entities: agents' => [
+                'name' => i::__('texto "agentes"'),
+                'description' => i::__('nome da entidade Agente no plural em minúsculo'),
+                'examples' => [i::__('agentes')],
+                'text' => i::__('agentes')
+            ],
 
 
 
@@ -435,7 +447,18 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Projetos do agente'), i::__('Editais do agente'), i::__('Convocatórias do agente')],
                 'text' => i::__('Projetos do agente')
             ],
-
+            'entities: project' => [
+                'name' => i::__('texto "projeto"'),
+                'description' => i::__('nome da entidade Projeto no singular em minúsculo'),
+                'examples' => [i::__('projeto')],
+                'text' => i::__('projeto')
+            ],
+            'entities: projects' => [
+                'name' => i::__('texto "projetos"'),
+                'description' => i::__('nome da entidade Projeto no plural em minúsculo'),
+                'examples' => [i::__('projetos')],
+                'text' => i::__('projetos')
+            ],
 
 // ======== Oportunidades
             'entities: Opportunities' => [
@@ -486,6 +509,19 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Oportunidades do evento'), i::__('Editais do evento'), i::__('Convocatórias do evento')],
                 'text' => i::__('Oportunidades do evento')
             ],
+            'entities: opportunity' => [
+                'name' => i::__('texto "oportunidade"'),
+                'description' => i::__('nome da entidade Oportunidade no singular em minúsculo'),
+                'examples' => [i::__('oportunidade')],
+                'text' => i::__('oportunidade')
+            ],
+            'entities: opportunities' => [
+                'name' => i::__('texto "oportunidades"'),
+                'description' => i::__('nome da entidade Oportunidade no plural em minúsculo'),
+                'examples' => [i::__('oportunidades')],
+                'text' => i::__('oportunidades')
+            ],
+
 
 
 // ======== Eventos
@@ -518,6 +554,18 @@ class Theme extends MapasCulturais\Theme {
                 'description' => i::__(''),
                 'examples' => [i::__('eventos encontrados'), i::__('ações encontradas')],
                 'text' => i::__('eventos encontrados')
+            ],
+            'entities: event' => [
+                'name' => i::__('texto "evento"'),
+                'description' => i::__('nome da entidade Evento no singular em minúsculo'),
+                'examples' => [i::__('evento')],
+                'text' => i::__('evento')
+            ],
+            'entities: events' => [
+                'name' => i::__('texto "eventos"'),
+                'description' => i::__('nome da entidade Evento no plural em minúsculo'),
+                'examples' => [i::__('eventos')],
+                'text' => i::__('eventos')
             ],
 
 
