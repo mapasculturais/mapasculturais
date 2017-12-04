@@ -8,7 +8,7 @@ if($this->controller->action === 'create')
 <?php endif;?>
 
 <?php $gallery = $entity->getFiles('gallery'); ?>
-<?php if(count($gallery) <= 0 && $this->controller == 'registration'):?>
+<?php if(is_array($gallery) && count($gallery) <= 0 && $this->controller == 'registration'):?>
     <div class="alert info"><?php i::__("Nenhuma imagem disponível");?></div>
 <?php endif;?>
 

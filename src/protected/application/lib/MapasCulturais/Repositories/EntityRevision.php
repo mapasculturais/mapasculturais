@@ -78,7 +78,7 @@ class EntityRevision extends \MapasCulturais\Repository{
 
         $query->setMaxResults(1);
         $return = $query->getOneOrNullResult();
-        if(is_array($return) && count($return > 0)) {
+        if(is_array($return) && count($return) > 0) {
             $return = $return['id'];
         } else {
             $return = 0;

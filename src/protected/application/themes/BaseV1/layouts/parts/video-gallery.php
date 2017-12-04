@@ -27,7 +27,7 @@ $template = "<li id='video-{{id}}'>
             </li>";
 ?>
 
-<?php if(count($videos) <= 0 && $this->controller == 'registration'):?>
+<?php if(is_array($videos) && count($videos) <= 0 && $this->controller == 'registration'):?>
     <div class="alert info"><?php i::__("Nenhum vídeo disponível");?></div>
 <?php endif;?>
 

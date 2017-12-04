@@ -20,7 +20,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
             </li>";
 ?>
 
-<?php if(count($links) <= 0 && $this->controller == 'registration'):?>
+<?php if(is_array($links) && count($links) <= 0 && $this->controller == 'registration'):?>
     <div class="alert info"><?php i::__("Nenhum link disponível");?></div>
 <?php endif;?>
 
