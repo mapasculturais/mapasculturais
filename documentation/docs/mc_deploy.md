@@ -288,11 +288,15 @@ $ mapas => select * from role;
 ### 8. Pós-instalação > Processo de autenticação
 
 
-O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao).
+O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um plugin ou a um sistema de autenticação terceiro. Atualmente, h um plugin e dois sistemas de autenticação estão aptos e testados para essa tarefa: 
+
+* [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) 
+* [Login Cidadão](https://github.com/redelivre/login-cidadao).
+* [Multiple Local Auth](https://github.com/LibreCoopUruguay/MultipleLocalAuth) - Implementa um login nativo da aplicaçao, sem depender de serviços externos, e suporta login via redes sociais.
 
 * Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
 
-#### 7.1 Requisitos para implementação dos sistemas de autenticação
+#### 7.1 Requisitos para implementação dos sistemas de autenticação de terceiros
 
 #### Mapas Open ID Conect
 
@@ -305,13 +309,13 @@ Fonte:  [https://github.com/hacklabr/mapasculturais-openid](https://github.com/h
 
 O Login Cidadão é  um software que implementa um sistema de autenticação unificado em grande escala, unificando políticas de segurança, transparência e privacidade, e colocando o cidadão como ponto de convergência para a integração descentralizada dos dados e aplicações. Seu código é livre e é baseado, principalmente, no framework Symfony (php)
 
-#### Login Cidadão > Instalação própria > Prós
+**Prós**
 
 Os pontos positivos relativos aos aspectos de implementação de uma instalação própria são:
 * Confidencialidade dos dados e soberania: todos os dados estarão fisicamente em posse do implementador;
 * Maior controle técnico de customização de layout e features. A posse desse customização, desde que com conhecimento adequado, é do implementador;
 
-#### Login Cidadão > Instalação própria > Contras
+**Contras**
 * Necessidade de servidor próprio e dedicado a instalação;
 * Manutenção com ônus financeiro uma vez que é necessário manter time (interno ou terceirizado) com conhecimentos técnicos adequado à operação técnica do software;
 * Necessidade de endereço (url) dedicada e de certificado SSL implementado (o que também pode gerar custos uma vez 99% dos certificados são pagos anualmente);
