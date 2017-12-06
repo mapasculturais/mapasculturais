@@ -1879,10 +1879,11 @@ class Theme extends MapasCulturais\Theme {
     	}
 
     	$query['@files'] = '(avatar.avatarSmall,avatar.avatarMedium):url';
-    	$sealId = implode(',',array_unique($sealId));
+        $sealId = array_unique($sealId);
 
-    	if(count($sealId) > 0 && !empty($sealId)) {
-    		$query['id'] = 'IN(' .$sealId . ')';
+    	if(count($sealId) > 0) {
+            $sealId = implode(',',$sealId);
+            $query['id'] = 'IN(' .$sealId . ')';
     	}
 
     	$query['@ORDER'] = 'createTimestamp DESC';
