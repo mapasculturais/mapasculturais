@@ -18,7 +18,7 @@ return array_merge($config,
         ),
 
 //        'app.log.query' => true,
-        'app.log.apiDql' => true,
+//        'app.log.apiDql' => true,
 
         
         'doctrine.isDev' => true,
