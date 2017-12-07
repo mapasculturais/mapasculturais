@@ -15,8 +15,10 @@ class Module extends \MapasCulturais\Module{
      *
      * @return \MapasCulturais\Entities\Opportunity
      */
-    static function getBaseOpportunity(){
-        $opportunity = self::getRequestedOpportunity();
+    static function getBaseOpportunity(Entities\Opportunity $opportunity = null){
+        if(is_null($opportunity)){
+            $opportunity = self::getRequestedOpportunity();
+        }
 
         if(!$opportunity){
             return null;
@@ -125,7 +127,7 @@ class Module extends \MapasCulturais\Module{
             return null;
         }
 
-        $base_opportunity = self::getBaseOpportunity();
+        $base_opportunity = self::getBaseOpportunity($phase);
 
         $phases = self::getPhases($base_opportunity);
 
