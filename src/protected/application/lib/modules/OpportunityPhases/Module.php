@@ -411,7 +411,7 @@ class Module extends \MapasCulturais\Module{
             $previous_phase = self::getPreviousPhase($target_opportunity);
 
             $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
-                if($item->status === Entities\Registration::STATUS_APPROVED){
+                if($item->status === Entities\Registration::STATUS_APPROVED || $item->status === Entities\Registration::STATUS_WAITLIST){
                     return $item;
                 }
             });
