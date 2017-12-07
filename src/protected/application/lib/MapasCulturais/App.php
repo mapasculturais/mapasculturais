@@ -1126,15 +1126,12 @@ class App extends \Slim\Slim{
 
     }
 
-    /**
-     * Returns the configuration array or the specified configuration
-     *
-     * @param string $key configuration key
-     *
-     * @return mixed
-     */
     public function getPlugins(){
         return $this->_plugins;
+    }
+
+    public function getModules(){
+        return $this->_modules;
     }
 
     /**
