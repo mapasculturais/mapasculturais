@@ -247,7 +247,7 @@ class Opportunity extends EntityController {
         
         $_opportunity = $opportunity;
         $opportunity_tree = [];
-        while($parent = $_opportunity->parent){
+        while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
         }
@@ -346,6 +346,7 @@ class Opportunity extends EntityController {
                 }
             }
         }
+        
         $this->apiAddHeaderMetadata($this->data, $registrations, $query->getCountResult());
         $this->apiResponse($registrations);
     }
