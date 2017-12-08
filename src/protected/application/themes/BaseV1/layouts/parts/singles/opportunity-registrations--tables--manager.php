@@ -42,7 +42,7 @@ use MapasCulturais\i;
         background-color: white;
     }
 </style>
-
+<div id="registrations-table-container">
 <table id="registrations-table" class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published, 'fullscreen': data.fullscreenTable}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
         <tr>
@@ -71,7 +71,7 @@ use MapasCulturais\i;
     </thead>
     <tr>
         <td colspan='{{numberOfEnabledColumns()}}'>
-            <input type="checkbox" class="hltip alignright" ng-model="data.fullscreenTable" title="<?php i::_e('Expandir tabela')?>">
+            <label class="alignright"><input type="checkbox" class="hltip" ng-model="data.fullscreenTable"> <?php i::_e('Expandir tabela')?></label>
             
             <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição.");?></span>
             <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
@@ -128,3 +128,4 @@ use MapasCulturais\i;
         </tr>
     </tfoot>
 </table>
+</div>
