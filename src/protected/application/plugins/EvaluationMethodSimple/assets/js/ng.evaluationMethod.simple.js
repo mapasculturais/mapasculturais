@@ -24,6 +24,14 @@
             registrationStatusesNames: statuses,
 
         };
-        
+
+        $scope.getStatusLabel = function(status){
+            for(var i in statuses){
+                if(statuses[i].value == status){
+                    return statuses[i].label;
+                }
+            }
+            return '';
+        };
     }]);
 })(angular);
