@@ -303,6 +303,8 @@ class Module extends \MapasCulturais\Module{
 
             $this->jsObject['entity']['id'] = $current_registration->id;
             $this->jsObject['entity']['object']->id = $current_registration->id;
+            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
+
         });
 
         // action para criar uma nova fase no oportunidade
