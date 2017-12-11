@@ -1266,15 +1266,16 @@ class App extends \Slim\Slim{
 
                 $this->_excludeHooks[$hook][] = $callable;
             }else {
+                $priority_key = "$priority";
                 $hook = $this->_compileHook($hook);
 
                 if (!key_exists($hook, $this->_hooks))
                     $this->_hooks[$hook] = [];
 
-                if (!key_exists($priority, $this->_hooks[$hook]))
-                    $this->_hooks[$hook][$priority] = [];
+                if (!key_exists($priority_key, $this->_hooks[$hook]))
+                    $this->_hooks[$hook][$priority_key] = [];
 
-                $this->_hooks[$hook][$priority][] = $callable;
+                $this->_hooks[$hook][$priority_key][] = $callable;
 
                 ksort($this->_hooks[$hook]);
             }
@@ -1339,7 +1340,7 @@ class App extends \Slim\Slim{
                 foreach ($_callables as $priority => $callables) {
                     foreach ($callables as $callable) {
                         if (!in_array($callable, $exclude_list)){
-                            $result[] = (object) ['callable' => $callable, 'priority' => $priority];
+                            $result[] = (object) ['callable' => $callable, 'priority' => (float) $priority];
                         }
                     }
                 }
