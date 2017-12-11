@@ -21,6 +21,7 @@ class Plugin extends \MapasCulturais\Plugin {
             
             if($app->isEnabled('seals') && 
                 $relation->seal->seal_model &&
+                !$app->user->is('guest') &&
                 (   $app->user->is('superAdmin') || 
                     $app->user->is('admin') || 
                     $app->user->profile->id == $relation->agent->id
