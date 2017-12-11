@@ -1397,9 +1397,8 @@ class App extends \Slim\Slim{
                 }
             }
         }
-
+        
         usort($result, function($a,$b){
-
             if($a->priority > $b->priority){
                 return 1;
             } elseif ($a->priority < $b->priority) {
@@ -1408,12 +1407,8 @@ class App extends \Slim\Slim{
                 return 0;
             }
         });
-
-        if (version_compare(PHP_VERSION, '7.0', '>=')) {
-            $result = array_map(function($el) { return $el->callable; }, $result);
-        } else {
-            $result = array_map(function($el) { return $el->callable; }, array_reverse($result));
-        }
+        
+        $result = array_map(function($el) { return $el->callable; }, $result);
 
         $this->_hookCache[$name] = $result;
 
