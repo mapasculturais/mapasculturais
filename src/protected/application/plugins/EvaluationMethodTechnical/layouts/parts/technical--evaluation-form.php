@@ -11,7 +11,7 @@ use MapasCulturais\i;
             </tr>
             <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
                 <td><label for="{{cri.id}}">{{cri.title}}:</label></td>
-                <td><input id="{{cri.id}}" name="data[{{cri.id}}]" type="number" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip" title="Configurações: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}"></td>
+                <td><input id="{{cri.id}}" name="data[{{cri.id}}]" type="number" step="0.1" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip" title="Configurações: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}"></td>
             </tr>
             <tr class="subtotal">
                 <td><?php i::_e('Subtotal')?></td>

@@ -1,3 +1,4 @@
+<?php $this->part('singles/opportunity-header--owner-entity', ['entity' => $opportunity]) ?>
 <header class="main-content-header">
     <div
         <?php if($header = $opportunity->getFile('header')): ?>
@@ -22,6 +23,8 @@
             <a><?php echo $opportunity->type->name; ?></a>
         </div>
         <!--.entity-type-->
+        <?php $this->part('entity-parent', ['entity' => $opportunity, 'child_entity_request' => null]) ?>
+
         <h2><a href="<?php echo $opportunity->singleUrl ?>"><?php echo $opportunity->name; ?></a></h2>
     </div>
 </header>

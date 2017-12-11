@@ -1126,15 +1126,12 @@ class App extends \Slim\Slim{
 
     }
 
-    /**
-     * Returns the configuration array or the specified configuration
-     *
-     * @param string $key configuration key
-     *
-     * @return mixed
-     */
     public function getPlugins(){
         return $this->_plugins;
+    }
+
+    public function getModules(){
+        return $this->_modules;
     }
 
     /**
@@ -1292,10 +1289,12 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
 
-    private $hook_count = 0;
+
+    protected $hook_count = 0;
+    
     function hook($name, $callable, $priority = 10) {
         $this->hook_count++;
-        $priority += ($hook_count / 100000);
+        $priority += ($this->hook_count / 100000);
 
         $this->_hookCache = [];
         $_hooks = explode(',', $name);

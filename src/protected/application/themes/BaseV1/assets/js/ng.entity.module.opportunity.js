@@ -1332,10 +1332,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     };
 
     $scope.$watch('data.fullscreenTable', function(){
-        var $t = $('#registrations-table');
+        var $t = $('#registrations-table-container');
         if($scope.data.fullscreenTable){
             $t.css('margin-left', - $t.offset().left );
-            $t.css('width', document.body.offsetWidth - 10);
+            $t.css('width', document.body.offsetWidth);
         } else {
             $t.css('margin-left', 0);
             $t.css('width', '100%');

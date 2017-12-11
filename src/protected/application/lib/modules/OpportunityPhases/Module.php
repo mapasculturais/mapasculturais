@@ -15,8 +15,10 @@ class Module extends \MapasCulturais\Module{
      *
      * @return \MapasCulturais\Entities\Opportunity
      */
-    static function getBaseOpportunity(){
-        $opportunity = self::getRequestedOpportunity();
+    static function getBaseOpportunity(Entities\Opportunity $opportunity = null){
+        if(is_null($opportunity)){
+            $opportunity = self::getRequestedOpportunity();
+        }
 
         if(!$opportunity){
             return null;
@@ -125,7 +127,7 @@ class Module extends \MapasCulturais\Module{
             return null;
         }
 
-        $base_opportunity = self::getBaseOpportunity();
+        $base_opportunity = self::getBaseOpportunity($phase);
 
         $phases = self::getPhases($base_opportunity);
 
@@ -301,6 +303,8 @@ class Module extends \MapasCulturais\Module{
 
             $this->jsObject['entity']['id'] = $current_registration->id;
             $this->jsObject['entity']['object']->id = $current_registration->id;
+            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
+
         });
 
         // action para criar uma nova fase no oportunidade
@@ -409,7 +413,7 @@ class Module extends \MapasCulturais\Module{
             $previous_phase = self::getPreviousPhase($target_opportunity);
 
             $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
-                if($item->status === Entities\Registration::STATUS_APPROVED){
+                if($item->status === Entities\Registration::STATUS_APPROVED || $item->status === Entities\Registration::STATUS_WAITLIST){
                     return $item;
                 }
             });
