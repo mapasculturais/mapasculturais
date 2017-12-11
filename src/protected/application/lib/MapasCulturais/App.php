@@ -1288,7 +1288,13 @@ class App extends \Slim\Slim{
      * @param  mixed    $callable   A callable object
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
+
+    protected $hook_count = 0;
+    
     function hook($name, $callable, $priority = 10) {
+        $this->hook_count++;
+        $priority += ($this->hook_count / 100000);
+
         $this->_hookCache = [];
         $_hooks = explode(',', $name);
         foreach ($_hooks as $hook) {
