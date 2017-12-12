@@ -1289,6 +1289,7 @@ class App extends \Slim\Slim{
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
 
+
     protected $hook_count = 0;
     
     function hook($name, $callable, $priority = 10) {

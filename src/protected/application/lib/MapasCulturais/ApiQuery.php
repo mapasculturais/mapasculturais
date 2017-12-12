@@ -1582,7 +1582,7 @@ class ApiQuery {
                     }
                 } , $values);
 
-                if(count($values) < 1){
+                if (is_array($values) && count($values) < 1){
                     throw new Exceptions\Api\InvalidArgument('expression IIN expects at last one value');
                 }
 

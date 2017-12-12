@@ -561,9 +561,9 @@ class Registration extends \MapasCulturais\Entity
                             $erroredProperties[] = '{{' . $requiredProperty . '}}';
                         }
                     }
-                    if(count($erroredProperties) === 1){
+                    if(is_array($erroredProperties) && count($erroredProperties) === 1){
                         $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $erroredProperties[0]);
-                    }elseif(count($erroredProperties) > 1){
+                    }elseif(is_array($erroredProperties) && count($erroredProperties) > 1){
                         $errors[] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $erroredProperties));
                     }
                 }

@@ -178,7 +178,7 @@ $app = MapasCulturais\App::i();
                                 ?>
                                 <div class="infos">
                                     <p class="descricao-legivel"><?php echo $occurrencesDescription;?></p>
-                                    <?php if(count($space->items) == 1 && !empty($space->items[0]->rule->price)): ?>
+                                    <?php if(is_array($space->items) && count($space->items) == 1 && !empty($space->items[0]->rule->price)): ?>
                                         <p><span class="label"><?php i::_e("Preço");?>:</span> <?php echo $space->items[0]->rule->price?></p>
                                     <?php endif;?>
                                     <p><span class="label"><?php i::_e("Endereço");?>:</span> <?php echo $space->endereco;?></p>

@@ -488,7 +488,7 @@ class Event extends \MapasCulturais\Entity
 
     public function getRevisionData() {
         $revisionData = [];
-        if(count($this->occurrences) > 0) {
+        if(is_array($revisionData) && count($this->occurrences) > 0) {
             foreach($this->occurrences as $occurrence) {
                 $revisionData['occurrences'][$occurrence->space->id]['items'][] = [
                     'id' => $occurrence->id,
