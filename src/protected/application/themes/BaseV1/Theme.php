@@ -738,6 +738,16 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
+        
+        if(!$app->user->is('guest') && $app->user->profile->status < 1){
+            $app->hook('view.partial(nav-main-user).params', function($params, &$name){
+                $name = 'header-profile-link';
+            });
+            
+            $app->hook('GET(panel.<<*>>):before, GET(<<*>>.create):before', function() use($app){
+                $app->redirect($app->user->profile->editUrl);
+            });
+        }
 
 
         $app->hook('mapasculturais.body:before', function() use($app) {

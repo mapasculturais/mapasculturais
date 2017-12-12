@@ -212,6 +212,28 @@ abstract class Entity implements \JsonSerializable{
 
         return $user;
     }
+    
+    function setStatus($status){
+        if($status != $this->status){
+            $class = $this->getClassName();
+            
+            switch($status){
+                case $class::STATUS_ARCHIVED:
+                    if($this->usesArchive()){
+                        $this->checkPermission('archive');
+                    }
+                    break;
+                
+                case $class::STATUS_TRASH:
+                    if($this->usesSoftDelete()){
+                        $this->checkPermission('remove');
+                    }
+                    break;
+                    
+            }
+        }
+        $this->status = $status;
+    }
 
     protected function fetchByStatus($collection, $status, $order = null){
         if(!is_object($collection) || !method_exists($collection, 'matching'))
@@ -249,6 +271,27 @@ abstract class Entity implements \JsonSerializable{
             return $this->canUser('@control', $user);
         }
     }
+
+
+    protected function canUserCreate($user){
+        $result = $this->genericPermissionVerification($user);
+        if($result && $this->usesOwnerAgent()){
+            $owner = $this->getOwner();
+            if(!$owner || $owner->status < 1){
+                $result = false;
+            }
+        }
+
+        if($result && $this->usesNested()){
+            $parent = $this->getParent();
+            if($parent && $parent->status < 1){
+                $result = false;
+            }
+        }
+
+        return $result;
+    }
+
 
     protected function canUserModify($user) {
         return $this->genericPermissionVerification($user);
