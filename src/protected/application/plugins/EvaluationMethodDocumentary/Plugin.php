@@ -118,7 +118,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
-        if(count($evaluations) === 0){
+        if(is_array($evaluations) && count($evaluations) === 0){
             return 0;
         }
 
@@ -138,7 +138,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
         $data = (array) $evaluation->evaluationData;
         
-        if(count($data) == 0){
+        if(is_array($data) && count($data) == 0){
             return 1; // valid
         }
 

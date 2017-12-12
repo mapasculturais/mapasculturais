@@ -11,7 +11,7 @@
                     class="search-field"
                     type="text"
                     name="palavra-chave-<?php echo strtolower($entity_name); ?>"
-                    placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar");?> <?php echo strtolower($display_name); ?>" />
+                    placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar");?> <?php $this->dict('entities: '.$entity_name);?>" />
         </form>
         <?php if($entity_name === 'event'): ?>
             <div class="filter search-filter--date">

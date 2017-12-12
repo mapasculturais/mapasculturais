@@ -6,7 +6,7 @@
 $downloads = $entity->getFiles('downloads'); 
 ?>
 
-<?php if(count($downloads) <= 0 && $this->controller == 'registration'):?>
+<?php if(is_array($downloads) && count($downloads) <= 0 && $this->controller == 'registration'):?>
     <div class="alert info"><?php i::__("Nenhum download disponível");?></div>
 <?php endif;?>
 

@@ -72,11 +72,12 @@
 
                 <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'agent') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project')">,</span>
                 <span ng-if="showFilters('project') && numProjects">{{numProjects}} projeto<span ng-show="numProjects!==1">s</span> </span>
-                
-                <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'agent') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project') && numResults(numOpportunities, 'opportunity')">,</span>
-                <span ng-if="showFilters('opportunity') && numOpportunities">{{numOpportunities}} oportunidade<span ng-show="numOpportunities!==1">s</span> </span>
+
+                <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'opportunity') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project') && numResults(numOpportunities, 'opportunity')">,</span>
+                <span ng-if="showFilters('opportunity') && numOpportunities">{{numOpportunities}} <span ng-show="numOpportunities===1"><?php $this->dict('entities: opportunity') ?></span><span ng-show="numOpportunities!==1"><?php $this->dict('entities: opportunities') ?></span> </span>
+
             </span>
-            <span ng-if="spinnerCount===0 
+            <span ng-if="spinnerCount===0
                             && (
                                        (numResults(numEvents.events, 'event')=== 0 && numEventsInList === 0 && showFilters('event'))
                                     || numResults(numAgents, 'agent') === 0 && showFilters('agent')
@@ -84,7 +85,7 @@
                                     || numProjects === 0 && showFilters('project')
                                 )
                             ">
-                    
+
                     <?php \MapasCulturais\i::_e("Nenhum resultado encontrado");?>
                     <span ng-if="resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event > 0" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}} <?php \MapasCulturais\i::_e("resultados sem localização");?>">
                         (<a ng-click="data.global.viewMode='list'">+{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}}</a>)
