@@ -87,6 +87,23 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->save(true);
             }, "Asserting that a super admin user CAN create $plural to another user.");
         }
+
+        /*
+         * Asserting that user cannot create entities owned by a not published agent
+         */
+        $owner = $this->getNewEntity('Agent');
+        $owner->status = 0; // status = draft
+        $owner->save(true);
+
+        $this->user = 'normal';
+
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class, $owner){
+                $entity = $this->getNewEntity($class, null, $owner);
+                $entity->save(true);
+            }, "Asserting that a user CANNOT create $plural owned by a not published agent");
+        }
+
         $this->app->enableWorkflow();
     }
 
