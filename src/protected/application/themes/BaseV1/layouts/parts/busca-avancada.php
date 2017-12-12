@@ -75,6 +75,7 @@
 
                 <!--,--><span ng-if="data.global.viewMode === 'map' && (numResults(numAgents, 'opportunity') || numResults(numSpaces, 'space') || numResults(numEvents.events, 'event')) && numResults(numProjects, 'project') && numResults(numOpportunities, 'opportunity')">,</span>
                 <span ng-if="showFilters('opportunity') && numOpportunities">{{numOpportunities}} <span ng-show="numOpportunities===1"><?php $this->dict('entities: opportunity') ?></span><span ng-show="numOpportunities!==1"><?php $this->dict('entities: opportunities') ?></span> </span>
+
             </span>
             <span ng-if="spinnerCount===0
                             && (

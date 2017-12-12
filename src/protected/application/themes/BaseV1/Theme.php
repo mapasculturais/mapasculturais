@@ -522,6 +522,55 @@ class Theme extends MapasCulturais\Theme {
                 'text' => i::__('oportunidades')
             ],
 
+// ======== Oportunidades
+            'entities: Opportunities' => [
+                'name' => i::__('texto "Oportunidades"'),
+                'description' => i::__('nome da entidade Oportunidade no plural'),
+                'examples' => [i::__('Oportunidades')],
+                'text' => i::__('Oportunidades')
+            ],
+            'entities: My Opportunities' => [
+                'name' => i::__('texto "Minhas Oportunidades"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Minhas Oportunidades')],
+                'text' => i::__('Minhas Oportunidades')
+            ],
+            'entities: My opportunities' => [
+                'name' => i::__('texto "Minhas oportunidades"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Minhas oportunidades')],
+                'text' => i::__('Minhas oportunidades')
+            ],
+            'entities: opportunity found' => [
+                'name' => i::__('texto "oportunidade encontrada"'),
+                'description' => i::__(''),
+                'examples' => [i::__('oportunidade encontrada')],
+                'text' => i::__('oportunidade encontrada')
+            ],
+            'entities: opportunities found' => [
+                'name' => i::__('texto "oportunidades encontradas"'),
+                'description' => i::__(''),
+                'examples' => [i::__('oportunidades encontradas')],
+                'text' => i::__('oportunidades encontradas')
+            ],
+            'entities: Opportunities of the agent' => [
+                'name' => i::__('texto "Oportunidades do agente"'),
+                'description' => i::__('Título da listagem das oportunidades do agente em seu perfil'),
+                'examples' => [i::__('Oportunidades do agente'), i::__('Editais do agente'), i::__('Convocatórias do agente')],
+                'text' => i::__('Oportunidades do agente')
+            ],
+            'entities: Opportunities of the space' => [
+                'name' => i::__('texto "Oportunidades do espaço"'),
+                'description' => i::__('Título da listagem das oportunidades do espaço'),
+                'examples' => [i::__('Oportunidades do espaço'), i::__('Editais do espaço'), i::__('Convocatórias do espaço')],
+                'text' => i::__('Oportunidades do espaço')
+            ],
+            'entities: Opportunities of the event' => [
+                'name' => i::__('texto "Oportunidades do evento"'),
+                'description' => i::__('Título da listagem das oportunidades do evento'),
+                'examples' => [i::__('Oportunidades do evento'), i::__('Editais do evento'), i::__('Convocatórias do evento')],
+                'text' => i::__('Oportunidades do evento')
+            ],
 
 
 // ======== Eventos

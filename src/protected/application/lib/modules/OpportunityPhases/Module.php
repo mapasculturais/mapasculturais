@@ -418,7 +418,7 @@ class Module extends \MapasCulturais\Module{
                 }
             });
 
-            if(is_array($registrations) && count($registrations) < 1){
+            if(count($registrations) < 1){
                 $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas fase anterior'), 400);
             }
 
