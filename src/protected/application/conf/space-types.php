@@ -308,6 +308,7 @@ return array(
                 134 => array( 'name' => \MapasCulturais\i::__('Ginásio Poliesportivo') ),
                 135 => array( 'name' => \MapasCulturais\i::__('Sala de Leitura' )),
                 136 => array( 'name' => \MapasCulturais\i::__('Pontos de Memória' )),
+                137 => array( 'name' => \MapasCulturais\i::__('Núcleos de Produção Digital' )),
 
                 199 => array( 'name' => \MapasCulturais\i::__('Outros Equipamentos Culturais' )), // adicionado na importação dos dados do Ceará para receber as endidades do tipo "equipamento"
             )
