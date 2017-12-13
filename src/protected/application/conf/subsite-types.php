@@ -249,6 +249,7 @@ return array(
                 82 => 'Mesquitas',
                 61 => 'Museu Privado',
                 60 => 'Museu Público',
+                137 => 'Núcleos de Produção Digital',
                 501 => 'Palco de Rua',
                 115 => 'Ponto de Leitura Afro',
                 136 => 'Pontos de Memória',
