@@ -1010,7 +1010,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 var status = !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
                 var category = !$scope.data.registrationCategory || $scope.data.registrationCategory === registration.category;
 
-                return status && category;
+                return status && category && registration !== null;
             };
 
             $scope.getFilteredRegistrations = function(){
