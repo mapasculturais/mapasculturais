@@ -1018,6 +1018,10 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     return $scope.showRegistration(e);
                 });
             };
+            
+            $scope.notNull = function(item){
+              return !(item === null)
+            }
 
             $scope.usingFilters = function(){
                 return $scope.data.registrationStatus || $scope.data.registrationCategory;
