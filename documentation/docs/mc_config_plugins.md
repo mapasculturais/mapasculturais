@@ -1,3 +1,5 @@
+> As alterações sugeridas aqui devem ser processadas no arquivos de configuração principal da aplicação presente em src/protected/application/conf/config.php
+
 ## Plugins e Módulos
 
 A definição de novos plugins no sistema Mapas Culturais mudou estruturalmente, funcionando na estrutura abaixo:
