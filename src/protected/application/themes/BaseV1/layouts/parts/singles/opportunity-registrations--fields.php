@@ -2,7 +2,7 @@
 
 $can_edit = $entity->canUser('modifyRegistrationFields');
 
-$ditable_class = $can_edit ? 'js-editable' : '';
+$editable_class = $can_edit ? 'js-editable' : '';
 ?>
 
 <div id="registration-attachments" class="registration-fieldset project-edit-mode">
@@ -14,7 +14,7 @@ $ditable_class = $can_edit ? 'js-editable' : '';
         <?php if ($this->controller->action == 'create'): ?>
             <p class="allert warning"><?php \MapasCulturais\i::_e("Antes de configurar os campos é preciso salvar o projeto.");?></p>
         <?php else: ?>
-            <?php $this->part('singles/opportunity-registrations--fields--project-name', ['ditable_class' => $ditable_class, 'entity' => $entity]) ?>
+            <?php $this->part('singles/opportunity-registrations--fields--project-name', ['editable_class' => $editable_class, 'entity' => $entity]) ?>
 
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
                 <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
