@@ -459,10 +459,14 @@ class Opportunity extends EntityController {
             
             $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
             $evaluations = [];
-            foreach($evaluations_query->find() as $e){
-                $e['agent'] = $valuer_by_user[$e['user']];
-                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
-                $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+            $eq = $evaluations_query->find();
+            
+            foreach($eq as $e){
+                if(isset($valuer_by_user[$e['user']])){
+                    $e['agent'] = $valuer_by_user[$e['user']];
+                    $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+                }
             }
             
         } else {
