@@ -1,4 +1,11 @@
-<?php $registrations = $app->repo('Registration')->findByOpportunityAndUser($entity, $app->user); ?>
+<?php
+$params = $app->request();
+$registrationsCount = $app->repo('Registration')->countOpportunityAndUserPaginated($entity, $app->user);
+$registrations = $app->repo('Registration')->findByOpportunityAndUserPaginated($entity, $app->user, ($params->get('page')) ? $params->get('page'): 1  );
+
+$pages = $registrationsCount / 5;
+$pages = ceil($pages);
+?>
 <?php if ($registrations): ?>
     <table class="my-registrations">
         <caption><?php \MapasCulturais\i::_e("Minhas inscrições");?></caption>
@@ -61,4 +68,16 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?php for($i = 1; $i <= $pages; $i++): ?>
+        <?php
+        $selected = "";
+        if($params->get('page') == $i){
+            $selected = "btn-primary";
+        }elseif($params->get('page') == null && $i == 1){
+            $selected = "btn-primary";
+        }?>
+
+        <a class="btn btn-small <?php echo $selected; ?>" href="<?php echo $entity->singleUrl ?>?page=<?php echo $i?>" ><?php echo $i; ?></a>
+<!--        --><?php //?>
+    <?php endfor; ?>
 <?php endif; ?>
