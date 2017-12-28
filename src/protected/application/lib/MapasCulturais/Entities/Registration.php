@@ -24,7 +24,9 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-    	Traits\EntitySealRelation;
+        Traits\EntitySealRelation {
+            Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
+        }
 
 
     const STATUS_SENT = self::STATUS_ENABLED;
@@ -776,6 +778,12 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $this->getEvaluationMethod()->canUserViewConsolidatedResult($this, $user);
+    }
+
+    protected function canUserViewPrivateData($user){
+        $can = $this->__canUserViewPrivateData($user);
+        
+        return $can || $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
     }
 
     function getExtraPermissionCacheUsers(){
