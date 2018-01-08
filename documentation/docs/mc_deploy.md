@@ -270,7 +270,7 @@ Quando executar essa linha você vai pegar o id.
 
 Insert:
 ```
-$ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin');
+$ mapas => INSERT INTO role (id, usr_id, name) VALUES (nextval('role_id_seq'), ID-DO-USUARIO, 'superAdmin');
 ```
 
 Update:
