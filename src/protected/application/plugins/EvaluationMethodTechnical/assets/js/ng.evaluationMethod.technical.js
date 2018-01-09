@@ -142,10 +142,15 @@
             $scope.data = {
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
-
+                empty: true
             };
 
-            $scope.evaluation = MapasCulturais.evaluation ? MapasCulturais.evaluation.evaluationData : {};
+            if(MapasCulturais.evaluation){
+                $scope.evaluation =  MapasCulturais.evaluation.evaluationData;
+                $scope.data.empty = false;
+            } else {
+                $scope.evaluation =  {};
+            }
 
             $scope.subtotalSection = function(section){
                 var total = 0;
