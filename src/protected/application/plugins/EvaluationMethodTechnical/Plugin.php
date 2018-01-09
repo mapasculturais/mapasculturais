@@ -183,7 +183,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $num = count($evaluations);
         if($num){
-            return $result / $num;
+            return number_format($result / $num, 2);
         } else {
             return null;
         }
