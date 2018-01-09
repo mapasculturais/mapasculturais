@@ -1063,13 +1063,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         };
 
         $scope.deleteAdminRelation = function(relation){
-            RelatedAgentsService.remove('group-admin', relation.agent.id).
+            if(confirm(labels.confirmRemoveValuer)){
+                RelatedAgentsService.remove('group-admin', relation.agent.id).
                     success(function(){
                         var i = $scope.data.committee.findIndex(function(el){
                             return el.id == relation.id;
                         });
                         $scope.data.committee.splice(i,1);
                     });
+            }
         };
 
         $scope.disableAdminRelation = function(relation){

@@ -1687,6 +1687,7 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste oportunidade você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
+            'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
 
             'evaluated' => i::__('Avaliada'),
             'sent' => i::__('Enviada'),
