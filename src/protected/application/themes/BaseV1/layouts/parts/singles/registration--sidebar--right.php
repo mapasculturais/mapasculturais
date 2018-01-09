@@ -14,9 +14,9 @@ $evaluation = $this->getCurrentRegistrationEvaluation($entity);
 $infos = (array) $configuration->infos;
 ?>
 <div class="sidebar registration sidebar-right">
-    <?php if($action === 'single' && !$opportunity->publishedRegistrations && $entity->canUser('viewUserEvaluation')): ?>
+    <?php if($action === 'single' && $entity->canUser('viewUserEvaluation')): ?>
         <div id="registration-evaluation-form" class="evaluation-form evaluation-form--<?php echo $evaluationMethod->getSlug(); ?>">
-            <?php if($entity->canUser('evaluate')): ?>
+            <?php if($entity->canUser('evaluate')): ?> 
                 <?php if($infos): ?>
                     <div id="documentary-evaluation-info" class="alert info">
                         <div class="close" style="cursor: pointer;"></div>
