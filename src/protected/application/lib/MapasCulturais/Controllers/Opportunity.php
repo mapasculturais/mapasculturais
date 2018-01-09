@@ -346,6 +346,14 @@ class Opportunity extends EntityController {
                 }
             }
         }
+
+        if(in_array('consolidatedResult', $query->selecting)){
+            /* @TODO: considerar parâmetro @order da api */
+
+            usort($registrations, function($e1, $e2) use($em){
+                return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
+            });
+        }
         
         $this->apiAddHeaderMetadata($this->data, $registrations, $query->getCountResult());
         $this->apiResponse($registrations);
