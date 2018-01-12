@@ -67,6 +67,10 @@ class Registration extends EntityController {
                 'application/vnd\.oasis\.opendocument\.text-template',
                 'application/vnd\.oasis\.opendocument\.text-web',
 
+                // compacted files
+                'application/x-rar',
+                'application/zip'
+
             ];
             $registration = $this->requestedEntity;
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
