@@ -379,7 +379,6 @@ class Opportunity extends EntityController {
             $vdata = [
                 '@select' => 'id,name,user,singleUrl',
                 'id' => "IN({$committee_ids})",
-                '@permissions' => '@control'
             ];
             
             foreach($this->data as $k => $v){
@@ -433,7 +432,7 @@ class Opportunity extends EntityController {
         $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
         if($registration_ids){
             $rdata = [
-                '@select' => 'id,status,category,consolidatedResult,singleUrl',
+                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name',
                 'id' => "IN(" . implode(',', $registration_ids).  ")"
             ];
             
