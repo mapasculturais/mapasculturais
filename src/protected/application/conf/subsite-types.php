@@ -211,7 +211,7 @@ return array(
                 106 => 'Ateliê',
                 112 => 'Banca de jornal',
                 200 => 'Bens culturais de natureza material',
-                2 => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)',
+                22 => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)',
                 23 => 'Biblioteca Escolar',
                 25 => 'Biblioteca Universitária',
                 26 => 'Biblioteca Especializada',
