@@ -171,6 +171,26 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         });
     }
 
+    function getValidationErrors(array $data){
+        $errors = [];
+
+        $empty = false;
+
+        foreach($data as $key => $val){
+            if($key === 'obs' && !trim($val)){
+                $empty = true;
+            } else if($key !== 'obs' && !is_numeric($val)){
+                $empty = true;
+            }
+        }
+
+        if($empty){
+            $errors[] = i::__('Todos os campos devem ser preenchidos');
+        }
+
+        return $errors;
+    }
+
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
         $app = App::i();
 
@@ -199,7 +219,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 return null;
             } else {
                 $val = $evaluation->evaluationData->$key;
-                $total += $cri->weight * $val;
+                $total += is_numeric($val) ? $cri->weight * $val : 0;
             }
         }
 

@@ -162,7 +162,7 @@
                     }
                 }
 
-                return total;
+                return total.toFixed(1);
             };
 
             $scope.total = function(){
@@ -173,7 +173,7 @@
                     total += $scope.evaluation[cri.id] * cri.weight;
                 }
 
-                return total;
+                return total.toFixed(1);
             };
 
             $scope.max = function(){

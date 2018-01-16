@@ -41,7 +41,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $result;
 
     /**
-     * @var string
+     * @var string|object
      *
      * @ORM\Column(name="evaluation_data", type="json_array", nullable=false)
      */

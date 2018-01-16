@@ -9,7 +9,7 @@ const STATUS_INVALID = 'invalid';
 const STATUS_VALID = 'valid';
 
 class Plugin extends \MapasCulturais\EvaluationMethod {
-    
+
 
     public function getSlug() {
         return 'documentary';
@@ -37,6 +37,24 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     protected function _register() {
         ;
     }
+
+
+    function getValidationErrors(array $data){
+        $errors = [];
+        $empty = true;
+        foreach($data as $prop => $val){
+            if($val['evaluation']){
+                $empty = false;
+            }
+        }
+
+        if($empty){
+            $errors[] = i::__('Nenhum campo foi avaliado');
+        }
+
+        return $errors;
+    }
+
 
     function enqueueScriptsAndStyles() {
         $app = App::i();
