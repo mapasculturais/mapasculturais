@@ -137,11 +137,12 @@ root@server# mkdir /var/log/mapasculturais
 root@server# chown mapas:www-data /var/log/mapasculturais
 ```
 
-Com o usuário criado, crie a pasta para os assets e para os uploads:
+Com o usuário criado, crie a pasta para os assets, para os uploads e para os uploads privados (arquivos protegidos, como anexos de inscrições em oportunidades):
 ```BASH
 root@server# su - mapas
 mapas@server$ mkdir mapasculturais/src/assets
 mapas@server$ mkdir mapasculturais/src/files
+mapas@server$ mkdir mapasculturais/private-files
 ```
 
 ### Configuração do nginx
