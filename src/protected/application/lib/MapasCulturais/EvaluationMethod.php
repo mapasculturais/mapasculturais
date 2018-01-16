@@ -17,7 +17,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
     abstract function valueToString($value);
-    
+
     public function cmpValues($value1, $value2){
         if($value1 > $value2){
             return 1;
@@ -26,6 +26,15 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         } else {
             return 0;
         }
+    }
+
+    /**
+     * @param Entities\RegistrationEvaluation $evaluation
+     *
+     * @return array of errors
+     */
+    function getValidationErrors(array $data){
+        return [];
     }
 
     function getReportConfiguration($opportunity, $call_hooks = true){
@@ -142,7 +151,6 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         return $this->_getConsolidatedResult($registration);
     }
 
-    static $total_aqui = 0;
     private $_canUserEvaluateRegistrationCache = [];
 
     public function canUserEvaluateRegistration(Entities\Registration $registration, $user){

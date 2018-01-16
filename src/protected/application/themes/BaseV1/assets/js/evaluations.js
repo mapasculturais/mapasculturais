@@ -19,6 +19,7 @@ $(function(){
         if(!data){
             MapasCulturais.Messages.success(labels.emptyForm);
         }
+
         $.post(url, data, function(r){
             MapasCulturais.Messages.success(labels.saveMessage);
             if($button.hasClass('js-next')){
@@ -27,14 +28,29 @@ $(function(){
                 var $link = $next.find('a');
                 document.location = $link.attr('href');
             }
+        }).fail(function(rs) {
+            if(rs.responseJSON && rs.responseJSON.error){
+                if(rs.responseJSON.data instanceof Array){
+                    rs.responseJSON.data.forEach(function(msg){
+                        console.log(msg);
+                        MapasCulturais.Messages.error(msg);
+                    });
+                } else {
+                    MapasCulturais.Messages.error(rs.responseJSON.data);
+                }
+            }
         });
     });
-    
+    var __onChangeTimeout;
     $form.on('change', function() {
-        var data = $form.serialize();
-        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [MapasCulturais.registration.id]);
-        $.post(url, data, function(r){
-            MapasCulturais.Messages.success(labels.saveMessage);
-        });
+        clearTimeout(__onChangeTimeout);
+        __onChangeTimeout = setTimeout(function(){
+            var data = $form.serialize();
+            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [MapasCulturais.registration.id]);
+            $.post(url, data, function(r){
+                MapasCulturais.Messages.success(labels.saveMessage);
+            });
+        },1000);
+
     });
 });

@@ -167,6 +167,9 @@ class Registration extends EntityController {
         return $registration;
     }
 
+    /**
+     * @return \MapasCulturais\Entities\Registration
+     */
     function getRequestedEntity() {
         $preview_entity = $this->getPreviewEntity();
         if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
@@ -315,15 +318,22 @@ class Registration extends EntityController {
         } else {
             $user = null;
         }
-        
+
+
         if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
-            $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
-            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            if($errors = $registration->getEvaluationMethod()->getValidationErrors($this->postData['data'])){
+                $this->errorJson($errors, 400);
+                return;
+            } else {
+                $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            }
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
-        
-        
+
         $this->json($evaluation);
+
+
     }
 }
