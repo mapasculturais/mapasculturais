@@ -432,7 +432,7 @@ class Opportunity extends EntityController {
         $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
         if($registration_ids){
             $rdata = [
-                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name',
+                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
                 'id' => "IN(" . implode(',', $registration_ids).  ")"
             ];
             
