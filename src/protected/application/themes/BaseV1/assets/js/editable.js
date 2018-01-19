@@ -1124,10 +1124,10 @@ $(function(){
         var cep = $('#En_CEP').editable('getValue', true);
         $.getJSON('/site/address_by_postalcode?postalcode='+cep, function(r){
             if (r.success) {
-                $('#En_Nome_Logradouro').editable('setValue', r.streetName);
-                $('#En_Bairro').editable('setValue', r.neighborhood);
-                $('#En_Municipio').editable('setValue', r.city);
-                $('#En_Estado').editable('setValue', r.state);
+                $('#En_Nome_Logradouro').editable('setValue', r.streetName != null ? r.streetName : '');
+                $('#En_Bairro').editable('setValue', r.neighborhood != null ? r.neighborhood : '');
+                $('#En_Municipio').editable('setValue', r.city != null ? r.city : '');
+                $('#En_Estado').editable('setValue', r.state != null ? r.state : '');
                 concatena_enderco();
             }
         });
