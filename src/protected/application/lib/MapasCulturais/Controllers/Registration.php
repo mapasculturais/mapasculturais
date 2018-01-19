@@ -328,7 +328,15 @@ class Registration extends EntityController {
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
-        
+
+        $status = $evaluation->result === '-1' ?  'invalid' : 'approved';
+
+        $method_name = 'setStatusTo' . ucfirst($status);
+
+        if(!method_exists($registration, $method_name))
+            $this->errorJson('Invalid status name');
+
+        $registration->$method_name();
         
         $this->json($evaluation);
     }
