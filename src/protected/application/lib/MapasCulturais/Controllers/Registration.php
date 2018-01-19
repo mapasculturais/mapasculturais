@@ -70,7 +70,6 @@ class Registration extends EntityController {
                 // compacted files
                 'application/x-rar',
                 'application/zip',
-                'application/octet-stream',
                 'application/x-rar-compressed',
                 'application/octet-stream'
 
