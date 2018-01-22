@@ -69,9 +69,11 @@ class Registration extends EntityController {
 
                 // compacted files
                 'application/x-rar',
-                'application/zip',
                 'application/x-rar-compressed',
-                'application/octet-stream'
+                'application/octet-stream',
+                'application/x-zip-compressed',
+                'application/x-zip',
+                'application/zip'
 
             ];
             $registration = $this->requestedEntity;
