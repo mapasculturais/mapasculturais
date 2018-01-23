@@ -171,10 +171,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         });
     }
 
-    function getValidationErrors(array $data){
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
 
         $empty = false;
+
 
         foreach($data as $key => $val){
             if($key === 'obs' && !trim($val)){
@@ -187,6 +188,22 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         if($empty){
             $errors[] = i::__('Todos os campos devem ser preenchidos');
         }
+
+        if(!$errors){
+            foreach($evaluation_method_configuration->criteria as $c){
+                if(isset($data[$c->id])){
+                    $val = (float) $data[$c->id];
+                    if($val > (float) $c->max){
+                        $errors[] = sprintf(i::__('O valor do campo "%s" é maior que o valor máximo permitido'), $c->title);
+                        break;
+                    } else if($val < (float) $c->min) {
+                        $errors[] = sprintf(i::__('O valor do campo "%s" é menor que o valor mínimo permitido'), $c->title);
+                        break;
+                    }
+                }
+            }
+        }
+
 
         return $errors;
     }

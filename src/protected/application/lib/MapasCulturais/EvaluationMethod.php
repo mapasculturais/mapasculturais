@@ -33,7 +33,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
      *
      * @return array of errors
      */
-    function getValidationErrors(array $data){
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         return [];
     }
 
