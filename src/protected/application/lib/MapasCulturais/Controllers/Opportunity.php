@@ -386,9 +386,12 @@ class Opportunity extends EntityController {
         if($committee_ids){
             $vdata = [
                 '@select' => 'id,name,user,singleUrl',
-                'id' => "IN({$committee_ids})",
-                '@permissions' => '@control'
+                'id' => "IN({$committee_ids})"
             ];
+
+            if(!$opportunity->canUser('@control')){
+                $vdata['@permissions'] = '@control';
+            }
             
             foreach($this->data as $k => $v){
                 if(strtolower(substr($k, 0, 7)) === 'valuer:'){
