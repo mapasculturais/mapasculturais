@@ -161,6 +161,9 @@ class Registration extends \MapasCulturais\Entity
     protected $subsite;
 
 
+    public $preview = false;
+
+
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();

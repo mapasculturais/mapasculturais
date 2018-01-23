@@ -172,6 +172,7 @@ class Registration extends EntityController {
      */
     function getRequestedEntity() {
         $preview_entity = $this->getPreviewEntity();
+
         if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
             if(!App::i()->request->isGet()){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
@@ -233,9 +234,8 @@ class Registration extends EntityController {
 
     function GET_view(){
         $this->requireAuthentication();
-
-        $entity = $this->requestedEntity;
         
+        $entity = $this->requestedEntity;
         if(!$entity){
             App::i()->pass();
         }
@@ -321,7 +321,7 @@ class Registration extends EntityController {
 
 
         if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
-            if($errors = $registration->getEvaluationMethod()->getValidationErrors($this->postData['data'])){
+            if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
                 $this->errorJson($errors, 400);
                 return;
             } else {
