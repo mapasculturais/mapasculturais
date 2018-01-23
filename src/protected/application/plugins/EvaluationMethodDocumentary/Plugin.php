@@ -39,7 +39,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
 
-    function getValidationErrors(array $data){
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
         $empty = true;
         foreach($data as $prop => $val){
