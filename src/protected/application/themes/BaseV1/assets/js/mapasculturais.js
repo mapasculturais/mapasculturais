@@ -367,7 +367,6 @@ MapasCulturais.Messages = {
                     $(this).remove();
                     if($container.find('>').length === 0){
                         $container.slideUp('fast');
-                        console.log('aqui');
                         $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) - marginTop}, 'fast', function(){
                             MapasCulturais.Messages.animated = false;
                         });
