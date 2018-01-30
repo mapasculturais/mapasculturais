@@ -175,8 +175,12 @@ class Registration extends EntityController {
         return $registration;
     }
 
+    /**
+     * @return \MapasCulturais\Entities\Registration
+     */
     function getRequestedEntity() {
         $preview_entity = $this->getPreviewEntity();
+
         if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
             if(!App::i()->request->isGet()){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
@@ -238,9 +242,8 @@ class Registration extends EntityController {
 
     function GET_view(){
         $this->requireAuthentication();
-
-        $entity = $this->requestedEntity;
         
+        $entity = $this->requestedEntity;
         if(!$entity){
             App::i()->pass();
         }
@@ -323,10 +326,16 @@ class Registration extends EntityController {
         } else {
             $user = null;
         }
-        
+
+
         if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
-            $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
-            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
+                $this->errorJson($errors, 400);
+                return;
+            } else {
+                $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            }
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
@@ -341,5 +350,7 @@ class Registration extends EntityController {
         $registration->$method_name();
         
         $this->json($evaluation);
+
+
     }
 }

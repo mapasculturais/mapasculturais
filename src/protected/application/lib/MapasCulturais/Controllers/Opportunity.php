@@ -346,6 +346,14 @@ class Opportunity extends EntityController {
                 }
             }
         }
+
+        if(in_array('consolidatedResult', $query->selecting)){
+            /* @TODO: considerar parâmetro @order da api */
+
+            usort($registrations, function($e1, $e2) use($em){
+                return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
+            });
+        }
         
         $this->apiAddHeaderMetadata($this->data, $registrations, $query->getCountResult());
         $this->apiResponse($registrations);
@@ -378,8 +386,12 @@ class Opportunity extends EntityController {
         if($committee_ids){
             $vdata = [
                 '@select' => 'id,name,user,singleUrl',
-                'id' => "IN({$committee_ids})",
+                'id' => "IN({$committee_ids})"
             ];
+
+            if(!$opportunity->canUser('@control')){
+                $vdata['@permissions'] = '@control';
+            }
             
             foreach($this->data as $k => $v){
                 if(strtolower(substr($k, 0, 7)) === 'valuer:'){
@@ -463,6 +475,7 @@ class Opportunity extends EntityController {
             foreach($eq as $e){
                 if(isset($valuer_by_user[$e['user']])){
                     $e['agent'] = $valuer_by_user[$e['user']];
+                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
                     $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
                     $evaluations[$e['user'] . ':' . $e['registration']] = $e;
                 }

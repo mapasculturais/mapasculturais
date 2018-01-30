@@ -66,7 +66,7 @@ class Module extends \MapasCulturais\Module{
         $result = $app->repo('Opportunity')->findOneBy([
             'parent' => $base_opportunity,
             'status' => $status
-        ],['registrationTo' => 'DESC', 'id' => 'DESC']);
+        ],['createTimestamp' => 'DESC', 'id' => 'DESC']);
 
         return $result ? $result : $base_opportunity;
     }
@@ -134,7 +134,7 @@ class Module extends \MapasCulturais\Module{
         $result = $base_opportunity;
 
         foreach($phases as $p){
-            if($p->registrationTo < $phase->registrationTo){
+            if($p->createTimestamp < $phase->createTimestamp){
                 $result = $p;
             }
         }
