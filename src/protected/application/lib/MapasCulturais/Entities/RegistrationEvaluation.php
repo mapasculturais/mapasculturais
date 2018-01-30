@@ -41,7 +41,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $result;
 
     /**
-     * @var string
+     * @var string|object
      *
      * @ORM\Column(name="evaluation_data", type="json_array", nullable=false)
      */
@@ -52,7 +52,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="registration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="registration_id", referencedColumnName="id", nullable=false)
      * })
      */
     protected $registration;
@@ -62,7 +62,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      * })
      */
     protected $user;

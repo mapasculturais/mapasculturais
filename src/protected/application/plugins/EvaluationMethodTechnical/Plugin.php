@@ -171,6 +171,43 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         });
     }
 
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
+        $errors = [];
+
+        $empty = false;
+
+
+        foreach($data as $key => $val){
+            if($key === 'obs' && !trim($val)){
+                $empty = true;
+            } else if($key !== 'obs' && !is_numeric($val)){
+                $empty = true;
+            }
+        }
+
+        if($empty){
+            $errors[] = i::__('Todos os campos devem ser preenchidos');
+        }
+
+        if(!$errors){
+            foreach($evaluation_method_configuration->criteria as $c){
+                if(isset($data[$c->id])){
+                    $val = (float) $data[$c->id];
+                    if($val > (float) $c->max){
+                        $errors[] = sprintf(i::__('O valor do campo "%s" é maior que o valor máximo permitido'), $c->title);
+                        break;
+                    } else if($val < (float) $c->min) {
+                        $errors[] = sprintf(i::__('O valor do campo "%s" é menor que o valor mínimo permitido'), $c->title);
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        return $errors;
+    }
+
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
         $app = App::i();
 
@@ -183,7 +220,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $num = count($evaluations);
         if($num){
-            return $result / $num;
+            return number_format($result / $num, 2);
         } else {
             return null;
         }
@@ -199,7 +236,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 return null;
             } else {
                 $val = $evaluation->evaluationData->$key;
-                $total += $cri->weight * $val;
+                $total += is_numeric($val) ? $cri->weight * $val : 0;
             }
         }
 

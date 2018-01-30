@@ -3,11 +3,15 @@ namespace EvaluationMethodDocumentary;
 
 use MapasCulturais\i;
 
-$evaluation = $entity->getUserEvaluation();
+$evaluation = $this->getCurrentRegistrationEvaluation($entity);
+
+if(!$evaluation){
+    return;
+}
 
 $data = $evaluation->evaluationData;
-//eval(\psy\sh());
-$class = $evaluation->result ? 'evaluation-valid' : 'evaluation-invalid'
+
+$class = $evaluation->result == 1 ? 'evaluation-valid' : 'evaluation-invalid';
 ?>
 <div id="documentary-evaluation-view" class="widget documentary-evaluation-view <?php echo $class ?>">
     
