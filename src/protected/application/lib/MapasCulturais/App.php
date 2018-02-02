@@ -776,6 +776,7 @@ class App extends \Slim\Slim{
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], \MapasCulturais\i::__('O arquivo não é um ZIP.'), true, null, true),
         ];
 
         // register file groups
@@ -806,6 +807,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('seal', $file_groups['gallery']);
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
+        $this->registerFileGroup('registration', $file_groups['zipArchive']);
 
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
