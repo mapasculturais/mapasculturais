@@ -18,7 +18,11 @@ use \MapasCulturais\App;
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
  *
  * @property-read array $tmpFile $_FILE
- * @ORM\Table(name="file")
+ * @ORM\Table(name="file",indexes={
+ *      @ORM\Index(name="file_owner_index", columns={"object_type", "object_id"}),
+ *      @ORM\Index(name="file_group_index", columns={"grp"}),
+ * })
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
  * @ORM\HasLifecycleCallbacks
@@ -30,8 +34,10 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
         "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
+        "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
-        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile"
+        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
+        "MapasCulturais\Entities\Subsite"                          = "\MapasCulturais\Entities\SubsiteFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
@@ -76,6 +82,14 @@ abstract class File extends \MapasCulturais\Entity
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     protected $name;
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path", type="string", length=1024, nullable=true)
+     */
+    protected $_path;
 
     /**
      * @var string
@@ -102,7 +116,7 @@ abstract class File extends \MapasCulturais\Entity
      *          )
      * @var array
      */
-    protected $tmpFile = ['name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
+    protected $tmpFile = ['error' => '', 'name' => '', 'type' => '', 'tmp_name' => '', 'size' => 0];
 
     /**
      * Creates a new file from upload
@@ -172,7 +186,7 @@ abstract class File extends \MapasCulturais\Entity
 
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
-            throw new \MapasCulturais\Exfilesceptions\PermissionDenied($this->ownerUser, $this, 'save');
+            throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
         parent::save($flush);
     }
@@ -184,7 +198,7 @@ abstract class File extends \MapasCulturais\Entity
         if($files){
             foreach($files as $file){
                 $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
-                
+
                 if($registeredGroup && $registeredGroup->unique || $file->group === 'zipArchive' || strpos($file->group, 'rfc_') === 0){
                     $result[trim($file->group)] = $file;
                 }else{
@@ -229,6 +243,7 @@ abstract class File extends \MapasCulturais\Entity
      * @return string the url to this file
      */
     public function getUrl(){
+    
         $app = App::i();
         $cache_id = "{$this}:url";
 
@@ -269,26 +284,35 @@ abstract class File extends \MapasCulturais\Entity
     public function getPath(){
         return App::i()->storage->getPath($this);
     }
+    
+    public function getRelativePath($get_from_storage = true){
+        if(empty($this->_path) && $get_from_storage){
+            $this->_path = App::i()->storage->getPath($this, true);
+        }
+        
+        return $this->_path;
+    }
 
     public function transform($transformation_name){
+        $result = null;
+        if(preg_match('#^image/#i',$this->mimeType)){
+            $app = App::i();
 
-        if(!preg_match('#^image/#i',$this->mimeType))
-                return null;
+            $wideimage_operations = $app->getRegisteredImageTransformation($transformation_name);
 
-        $app = App::i();
+            $app->disableAccessControl();
 
-        $wideimage_operations = $app->getRegisteredImageTransformation($transformation_name);
+            if(preg_match('#^cropCenter[ ]*\([ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*\)$#', $wideimage_operations, $match)){
+                $transformed = $this->_cropCenter($transformation_name, $match[1], $match[2]);
+            }else{
+                $transformed = $this->_transform($transformation_name, $wideimage_operations);
+            }
 
-        $app->disableAccessControl();
-
-        if(preg_match('#^cropCenter[ ]*\([ ]*(\d+)[ ]*,[ ]*(\d+)[ ]*\)$#', $wideimage_operations, $match)){
-            $transformed = $this->_cropCenter($transformation_name, $match[1], $match[2]);
-        }else{
-            $transformed = $this->_transform($transformation_name, $wideimage_operations);
+            $app->enableAccessControl();
+            $result = $transformed;
         }
 
-        $app->enableAccessControl();
-        return $transformed;
+        return $result;
     }
 
     /**
@@ -308,6 +332,7 @@ abstract class File extends \MapasCulturais\Entity
         $transformation_group_name = 'img:' . $transformation_name;
 
         $owner = $this->owner;
+        
 
         $wideimage_operations = strtolower(str_replace(' ', '', $wideimage_operations));
 
@@ -324,14 +349,19 @@ abstract class File extends \MapasCulturais\Entity
             }
         }
 
-        if($transformed = $this->repo()->findBy(['parent' => $this, 'group' => $transformation_group_name])){
+        if($transformed = $this->repo()->findOneBy(['parent' => $this, 'group' => $transformation_group_name])){
             return $transformed;
         }
 
-        if(!file_exists($this->getPath()))
+        $path = $this->getPath();
+        if(!file_exists($path)
+            || !is_writable($path)
+            || !is_writable(dirname($path))
+            || filesize($path) == 0) {
             return $this;
+        }
 
-        $new_image = \WideImage\WideImage::load($this->getPath());
+        $new_image = \WideImage\WideImage::load($path);
 
         eval('$new_image = $new_image->' . $wideimage_operations . ';');
 
@@ -366,6 +396,7 @@ abstract class File extends \MapasCulturais\Entity
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         $app = App::i();
+        
 
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:before', $args);
@@ -377,6 +408,11 @@ abstract class File extends \MapasCulturais\Entity
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after', $args);
 
+        if(!$this->_path){
+            $this->getRelativePath();
+            $this->save(true);
+        }
+        
         $this->owner->clearFilesCache();
     }
 

@@ -2,7 +2,6 @@
 use \Slim\Log;
 
 $config = include 'conf-base.php';
-
 return array_merge($config,
     array(
         'base.url' => 'http://localhost:8888/',
@@ -26,6 +25,7 @@ return array_merge($config,
             'user'      => 'mapasculturais_test',
             'password'  => 'mapasculturais_test',
             'host'      => 'localhost',
+
         ),
 
         'userIds' => array(
@@ -41,6 +41,8 @@ return array_merge($config,
 
         // disable cache
 
-        'app.usePermissionsCache' => false
+        'app.usePermissionsCache' => false,
+        'app.chace' => new \Doctrine\Common\Cache\ArrayCache()
+//        'app.cache' => function_exists('apc_store') ? new \Doctrine\Common\Cache\ApcCache() : new \Doctrine\Common\Cache\ArrayCache(),
     )
 );

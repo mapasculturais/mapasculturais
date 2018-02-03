@@ -1,0 +1,30 @@
+<div class="mc-directive mc-singleselect">
+    <table class="select-table">
+        <tr>
+            <td class="left">
+                <label ng-repeat="term in data.terms" ng-if="$even" class="mc-select-directive--option">
+                    <input name="{{data.name}}" value="{{term.value}}" type="radio" class="mc-input-radio" ng-model="data.value" ng-click="notOther()"> {{ term.label }}
+                </label>
+            </td>
+            <td class="right">
+                <label ng-repeat="term in data.terms" ng-if="$odd" class="mc-select-directive--option">
+                    <input name="{{data.name}}" value="{{term.value}}" type="radio" class="mc-input-radio" ng-model="data.value" ng-click="notOther()"> {{ term.label }}
+                </label>
+            </td>
+        </tr>
+    </table>
+    <div ng-if="allowOther" class="mc-select-directive--other">
+        <label>
+            <input name="{{data.name}}"
+                value=""
+                type="radio"
+                class="mc-input-radio"
+                ng-click="clickOther()"
+                ng-checked="data.showOther"> {{data.allowOtherText}}<span ng-show="data.showOther">:</span>
+        </label><br>
+
+        <label ng-show="data.showOther" class="colunm-full">
+            <input type="text" class="mc-input-text" ng-disabled="!data.showOther" ng-model="data.value">
+        </label>
+    </div>
+</div>

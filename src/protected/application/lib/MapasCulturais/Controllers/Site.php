@@ -10,6 +10,7 @@ namespace MapasCulturais\Controllers;
  *
  */
 class Site extends \MapasCulturais\Controller {
+    use \MapasCulturais\Traits\ControllerAPI;
 
     /**
      * Default action.
@@ -28,6 +29,24 @@ class Site extends \MapasCulturais\Controller {
 
     function GET_search() {
         $this->render('search');
+    }
+    
+    function ALL_error() {
+        $app = \MapasCulturais\App::i();
+
+        $status = $this->data['code'];
+
+        if($app->config['app.mode'] !== 'production'){
+            if(isset($this->data['e'])){
+                throw $this->data['e'];
+            }
+        }
+        if($app->request()->isAjax()){
+            $this->errorJson($this->data['e']->getMessage(), $status);
+        } else{
+            $app->response->setStatus($status);
+            $this->render('error-' . $status, $this->data);
+        }
     }
 
     function GET_page() {
@@ -80,6 +99,7 @@ class Site extends \MapasCulturais\Controller {
             }
             
             $content = $view->renderMarkdown($file_content);
+            $content = $view->renderMarkdown($content);
 
             $attrs = ['content' => $content, 'left' => $left, 'right' => $right];
             

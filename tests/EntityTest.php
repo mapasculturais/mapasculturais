@@ -108,4 +108,26 @@ class EntityTests extends MapasCulturais_TestCase {
         }
     }
 
+    function testUpdateTimestamp(){
+        $classes = ['Space', 'Project', 'Event', 'Agent'];
+        
+        $this->user = 'admin';
+
+        foreach($classes as $class){
+            $entities = $this->app->repo($class)->findAll();
+            
+            foreach($entities as $entity){
+                $timestamp = $entity->updateTimestamp;
+
+                $entity->name = $entity->name . ' changed';
+
+                $entity->save(true);
+
+                $entity->refresh();
+
+                $this->assertGreaterThan($timestamp, $entity->updateTimestamp);
+            }
+        }
+    }
+
 }

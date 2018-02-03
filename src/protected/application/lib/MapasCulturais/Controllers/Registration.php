@@ -15,7 +15,8 @@ use MapasCulturais\Entities;
  */
 class Registration extends EntityController {
     use Traits\ControllerUploads,
-        Traits\ControllerAgentRelation;
+        Traits\ControllerAgentRelation,
+    	Traits\ControllerSealRelation;
 
     function __construct() {
         $app = App::i();
@@ -70,7 +71,7 @@ class Registration extends EntityController {
             $registration = $this->requestedEntity;
             foreach($registration->project->registrationFileConfigurations as $rfc){
 
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, 'The uploaded file is not a valid document.', true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
@@ -92,7 +93,54 @@ class Registration extends EntityController {
             $this->tmpFile = $tmpFile;
         });
 
+        
+        $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
+            $registration = $this->getRequestedEntity();
+            
+            
+            if(!$registration || !$registration->id){
+                return;
+            }
+
+            $project = $registration->project;
+            
+            $this->registerRegistrationMetadata($project);
+            
+        });
+
         parent::__construct();
+    }
+
+    function registerRegistrationMetadata(\MapasCulturais\Entities\Project $project){
+        
+        $app = App::i();
+
+        foreach($project->registrationFieldConfigurations as $field){
+
+            $cfg = [
+                'label' => $field->title,
+                'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
+                'private' => false,
+            ];
+
+            $def = $field->getFieldTypeDefinition();
+
+            if($def->requireValuesConfiguration){
+                $cfg['options'] = $field->fieldOptions;
+            }
+
+            if(is_callable($def->serialize)){
+                $cfg['serialize'] = $def->serialize;
+            }
+
+            if(is_callable($def->unserialize)){
+                $cfg['unserialize'] = $def->unserialize;
+            }
+
+            $metadata = new Definitions\Metadata($field->fieldName, $cfg);
+
+            $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
+        }
     }
 
     function getRequestedProject(){

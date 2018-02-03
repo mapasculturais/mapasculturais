@@ -122,6 +122,16 @@ class MetaList extends \MapasCulturais\Entity
         $this->objectType = $owner->className;
         $this->objectId = $owner->id;
     }
+    
+    public function canUser($action, $userOrAgent = null) {
+        $owner = $this->getOwner();
+
+        if(strtolower($action) === 'remove'){
+            $action = 'modify';
+        }
+        
+        return $owner ? $owner->canUser($action, $userOrAgent) : false;
+    }
 
     /**
      * Returns the url to this file

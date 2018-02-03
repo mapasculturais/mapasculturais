@@ -5,65 +5,110 @@
 return array(
     'metadata' => array(
         'introInscricoes' => array(
-            'label' => 'Texto introdutório das inscrições',
+            'label' => \MapasCulturais\i::__('Texto introdutório das inscrições'),
             'type' => 'text'
         ),
 
         'registrationCategTitle' => array(
-            'label' => 'Título das opções (ex: Categorias)',
+            'label' => \MapasCulturais\i::__('Título das opções (ex: Categorias)'),
         ),
 
         'registrationCategDescription' => array(
-            'label' => 'Descrição das opções (ex: Selecione uma categoria)',
+            'label' => \MapasCulturais\i::__('Descrição das opções (ex: Selecione uma categoria)'),
         ),
 
         'registrationLimitPerOwner' => array(
-            'label' => 'Número máximo de inscrições por agente responsável',
+            'label' => \MapasCulturais\i::__('Número máximo de inscrições por agente responsável'),
             'validations' => array(
-                "v::int()" => "O número máximo de inscrições por agente responsável deve ser um número inteiro"
+                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
+            )
+        ),
+
+        'registrationLimit' => array(
+            'label' => \MapasCulturais\i::__('Número máximo de inscrições no projeto'),
+            'validations' => array(
+                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições no projeto deve ser um número inteiro")
             )
         ),
 
         'site' => array(
-            'label' => 'Site',
+            'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
-                "v::url()" => "A url informada é inválida."
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
 
         'facebook' => array(
-            'label' => 'Facebook',
+            'label' => \MapasCulturais\i::__('Facebook'),
             'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
+                "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'twitter' => array(
-            'label' => 'Twitter',
+            'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
+                "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'googleplus' => array(
-            'label' => 'Google+',
+            'label' => \MapasCulturais\i::__('Google+'),
             'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
+                "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
+        ),
+
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
+            )
+        ),
+
+        'registrationSeals' => array(
+                'label' => \MapasCulturais\i::__('Selos'),
+                'serialize' => function($value) { return json_encode($value); },
+                'unserialize' => function($value) { return json_decode($value); }
         ),
 
     ),
     'items' => array(
-        1 =>  array( 'name' => "Festival"),
-        2 =>  array( 'name' => "Encontro"),
-        3 =>  array( 'name' => "Sarau"),
-        4 =>  array( 'name' => "Reunião"),
-        5 =>  array( 'name' => "Mostra"),
-        6 =>  array( 'name' => "Convenção"),
-        7 =>  array( 'name' => "Ciclo"),
-        8 =>  array( 'name' => "Programa"),
-        9 =>  array( 'name' => "Edital"),
-        10 => array( 'name' => "Concurso"),
-        11 => array( 'name' => "Exposição"),
-        11 => array( 'name' => "Jornada"),
+        1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
+        2 =>  array( 'name' => \MapasCulturais\i::__("Encontro")),
+        3 =>  array( 'name' => \MapasCulturais\i::__("Sarau")),
+        4 =>  array( 'name' => \MapasCulturais\i::__("Reunião")),
+        5 =>  array( 'name' => \MapasCulturais\i::__("Mostra")),
+        6 =>  array( 'name' => \MapasCulturais\i::__("Convenção")),
+        7 =>  array( 'name' => \MapasCulturais\i::__("Ciclo")),
+        8 =>  array( 'name' => \MapasCulturais\i::__("Programa")),
+        9 =>  array( 'name' => \MapasCulturais\i::__("Edital")),
+        10 => array( 'name' => \MapasCulturais\i::__("Concurso")),
+        11 => array( 'name' => \MapasCulturais\i::__("Exposição")),
+        12 => array( 'name' => \MapasCulturais\i::__("Jornada")),
+        13 => array( 'name' => \MapasCulturais\i::__("Exibição")),
+        14 => array( 'name' => \MapasCulturais\i::__("Feira")),
+        15 => array( 'name' => \MapasCulturais\i::__("Intercâmbio Cultural")),
+        16 => array( 'name' => \MapasCulturais\i::__("Festa Popular")),
+        17 => array( 'name' => \MapasCulturais\i::__("Festa Religiosa")),
+        18 => array( 'name' => \MapasCulturais\i::__("Seminário")),
+        19 => array( 'name' => \MapasCulturais\i::__("Congresso")),
+        20 => array( 'name' => \MapasCulturais\i::__("Palestra")),
+        21 => array( 'name' => \MapasCulturais\i::__("Simpósio")),
+        22 => array( 'name' => \MapasCulturais\i::__("Fórum")),
+        23 => array( 'name' => \MapasCulturais\i::__("Curso")),
+        24 => array( 'name' => \MapasCulturais\i::__("Oficina")),
+        25 => array( 'name' => \MapasCulturais\i::__("Jornada")),
+        26 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Setorial")),
+        27 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Nacional")),
+        28 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Estadual")),
+        29 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Municipal")),
+        30 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Militar")),
+        31 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Cívico")),
+        32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
+        33 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Político")),
+        34 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile de Ações Afirmativas")),
+        35 => ['name' => \MapasCulturais\i::__("Inscrições")],
+        121 => ['name' => \MapasCulturais\i::__("Pesquisa")],
+        122 => ['name' => \MapasCulturais\i::__("Consulta")]
     )
     /* EXEMPLOS DE METADADOS:
 
@@ -101,7 +146,7 @@ return array(
         ),
         'default_value' => array(),
         'validations' => array(
-            'v::arr()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
+            'v::arrayType()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
         )
     ),
     'checkbox' => array(
@@ -161,7 +206,7 @@ return array(
         ),
 
         'validations' => array(
-            "v::string()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
+            "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
         )
     )
      */

@@ -30,7 +30,7 @@ trait EntityGeoLocation{
      * This entity has geoLocation
      * @return bool true
      */
-    static function usesGeoLocation(){
+    public static function usesGeoLocation(){
         return true;
     }
 
@@ -69,7 +69,7 @@ trait EntityGeoLocation{
                 $x = $location[0];
                 $y = $location[1];
             }else{
-                throw new \Exception(App::txt('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values'));
+                throw new \Exception(\MapasCulturais\i::__('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values'));
             }
             $location = new GeoPoint($x,$y);
         }

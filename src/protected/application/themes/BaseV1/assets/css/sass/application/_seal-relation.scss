@@ -1,0 +1,49 @@
+.display-seal-relation {
+    width: 90%;
+}
+
+.seal-avatar {
+    float: left;
+    width: 15%;
+    margin-left: 15rem;
+    margin-right: auto;
+}
+
+.agent-avatar {
+    width: 15%;
+    margin-left: 25rem;
+    margin-right: auto;
+}
+
+#main-footer, body{
+    background-color: #eee;
+}
+
+#seal-info-container {
+    margin-top: 3rem;
+    
+    #seal-name, #agent-name {
+        text-align: center;
+    }
+    .seal-text{
+        font-weight: bold;
+    }
+    #seal-print-container {
+        margin-top: 1rem;
+    }
+    #seal-print-container {
+        margin-left: 5rem;
+        background-color: rgba(120, 120, 120, 0.04);
+    }
+    #btn-print-certificate {
+        margin-top: 2rem;
+        margin-left: 5rem ;
+    }
+}
+
+#expiration-date {
+    width: 25%;
+    margin-left: 5rem;
+    margin-top: 2rem;
+    background-color: rgba(120, 120, 120, 0.04);
+}

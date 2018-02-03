@@ -90,8 +90,14 @@
 #nav-projects {
     background: $brand-project;
 }
+#nav-subsite {
+    background: $brand-subsite;
+}
+#nav-seals {
+    background: $brand-seal;
+}
 #nav-developers {
-    background: #96c;
+    background: $brand-developer;
 }
 .up {
     border-top-right-radius: 2px;
@@ -372,6 +378,10 @@
 #projects-filter:focus {
     background-color: $brand-project;
 }
+#seals-filter:hover,
+#seals-filter:focus {
+    background-color: $brand-seal;
+}
 //** Events section
 #home-events {
     background: $brand-event;
@@ -400,9 +410,23 @@
         border-bottom-color: $brand-project;
     }
 }
+//** Subsite section
+#home-subsite {
+    background: $brand-subsite;
+    .abas li.active {
+        border-bottom-color: $brand-subsite;
+    }
+}
+//** Seals section
+#home-seals {
+    background: $brand-seal;
+    .abas li.active {
+        border-bottom-color: $brand-seal;
+    }
+}
 //** Developers section
 #home-developers {
-    background: #96c;
+    background: $brand-developer;
     .box {
         float: none;
         width: auto;

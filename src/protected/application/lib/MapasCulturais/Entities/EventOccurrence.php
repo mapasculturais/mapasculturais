@@ -18,45 +18,6 @@ class EventOccurrence extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
-    protected static $validations = [
-        'startsOn' => [
-            'required' => 'Data de inicio é obrigatória',
-            '$value instanceof \DateTime' => 'Data de inicio inválida'
-        ],
-        'endsOn' => [
-            '$value instanceof \DateTime' => 'Data final inválida',
-        ],
-        'startsAt' => [
-            'required' => 'Hora de inicio é obrigatória',
-            '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => 'Hora de inicio inválida',
-        ],
-        'duration' => [
-            //'required' => 'A duração é obrigatória',
-            '$value instanceof \DateInterval' => 'Duração inválida',//'Hora final inválida'
-        ],
-        'frequency' => [
-            'required' => 'Frequência é obrigatória',
-            '$this->validateFrequency($value)' => 'Frequência inválida'
-        ],
-        'separation' => [
-            'v::positive()' => 'Erro interno'
-        ],
-        'until' => [
-            '$value instanceof \DateTime' => 'Data final inválida',
-            '$value >= $this->startsOn' => 'Data final antes da inicial'
-        ],
-        'event' => [
-            'required' => 'Evento é obrigatório'
-        ],
-        'space' => [
-            'required' => 'Espaço é obrigatório'
-        ],
-        'description' => [
-            'required' => 'A descrição legível do horário é obrigatória'
-        ]
-
-    ];
-
     private $flag_day_on = true;
 
     /**
@@ -174,7 +135,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="rule", type="text", nullable=false)
      */
-    protected $_rule;
+    protected $rule;
 
     /**
      * @var integer
@@ -182,6 +143,49 @@ class EventOccurrence extends \MapasCulturais\Entity
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_ENABLED;
+
+    static function getValidations() {
+        return [
+            'startsOn' => [
+                'required' => \MapasCulturais\i::__('Data de inicio é obrigatória'),
+                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data de inicio inválida')
+            ],
+            'endsOn' => [
+                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
+            ],
+            'startsAt' => [
+                'required' => \MapasCulturais\i::__('Hora de inicio é obrigatória'),
+                '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => \MapasCulturais\i::__('Hora de inicio inválida'),
+            ],
+            'duration' => [
+                //'required' => 'A duração é obrigatória',
+                '$value instanceof \DateInterval' => \MapasCulturais\i::__('Duração inválida'),//'Hora final inválida'
+            ],
+            'frequency' => [
+                'required' => \MapasCulturais\i::__('Frequência é obrigatória'),
+                '$this->validateFrequency($value)' => \MapasCulturais\i::__('Frequência inválida')
+            ],
+            'separation' => [
+                'v::positive()' => \MapasCulturais\i::__('Erro interno')
+            ],
+            'until' => [
+                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
+                '$value >= $this->startsOn' => \MapasCulturais\i::__('Data final antes da inicial')
+            ],
+            'event' => [
+                'required' => \MapasCulturais\i::__('Evento é obrigatório')
+            ],
+            'space' => [
+                'required' => \MapasCulturais\i::__('Espaço é obrigatório')
+            ],
+            'description' => [
+                'required' => \MapasCulturais\i::__('A descrição legível do horário é obrigatória')
+            ]
+
+        ];
+    }
+
+
 
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;
@@ -268,17 +272,18 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDescription(){
-        return isset($this->rule->description) ? $this->rule->description : "";
+        return isset($this->getRule()->description) ? $this->getRule()->description : "";
     }
 
 
     function getPrice(){
-        return key_exists('price', $this->_rule) ? $this->_rule['price'] : '';
+        return key_exists('price', $this->rule) ? $this->rule['price'] : '';
     }
 
     function setRule($value) {
+
         if ($value === '') {
-            $this->_rule = '';
+            $this->rule = '';
             return;
         }
         $value = (array) $value;
@@ -306,7 +311,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $this->until = $value['until'] ? $value['until'] : null;
         $this->frequency = $value['frequency'];
 
-        $this->_rule = json_encode($value);
+        $this->rule = json_encode($value);
 
         if ($this->validationErrors) {
             return;
@@ -368,13 +373,13 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getRule() {
-        return json_decode($this->_rule);
+        return json_decode($this->rule);
     }
 
     function jsonSerialize() {
         return [
             'id' => $this->id,
-            'rule'=> $this->rule,
+            'rule'=> $this->getRule(),
             'startsOn' => $this->startsOn,
             'startsAt' => $this->startsAt,
             'endsOn' => $this->endsOn,
@@ -386,7 +391,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             'count' =>  $this->count,
             'until' =>  $this->until,
             'spaceId' =>  $this->spaceId,
-            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location') : null,
+            'space' => $this->space ? $this->space->simplify('id,name,singleUrl,shortDescription,avatar,location,terms') : null,
             'event' => $this->event ? $this->event->simplify('id,name,singleUrl,shortDescription,avatar') : null,
             'editUrl' => $this->editUrl,
             'deleteUrl' => $this->deleteUrl,
@@ -398,8 +403,9 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->event->isUserAdmin($user) && $this->space->isUserAdmin($user)){
             return true;
+        }
 
         return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
@@ -408,8 +414,9 @@ class EventOccurrence extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->event->isUserAdmin($user) && $this->space->isUserAdmin($user)){
             return true;
+        }
 
         return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
     }
@@ -441,7 +448,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     function delete($flush = false) {
         $this->checkPermission('remove');
         // ($originType, $originId, $destinationType, $destinationId, $metadata)
-        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, ['event_occurrence_id' => $this->id, 'rule' => $this->rule]);
+        $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, ['event_occurrence_id' => $this->id, 'rule' => $this->getRule()]);
         $requests = App::i()->repo('RequestEventOccurrence')->findBy(['requestUid' => $ruid]);
         foreach($requests as $r)
             $r->delete($flush);

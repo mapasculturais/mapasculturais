@@ -13,7 +13,7 @@ use MapasCulturais\App,
  */
 trait EntityAgentRelation {
 
-    function usesAgentRelation(){
+    public static function usesAgentRelation(){
         return true;
     }
 
@@ -90,8 +90,8 @@ trait EntityAgentRelation {
 
         $cache_id = "$this::usersWithControl";
 
-        if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
+        if($app->config['app.usePermissionsCache'] && $app->msCache->contains($cache_id)){
+            return $app->msCache->fetch($cache_id);
         }else{
             $users = $this->getUsersWithControl();
             $ids = array_map(function($u){
@@ -102,15 +102,24 @@ trait EntityAgentRelation {
             return $ids;
         }
     }
+    
+    function deleteUsersWithControlCache(){
+        $app = \MapasCulturais\App::i();
 
-    function getUsersWithControl(){
+        // cache ids
+        $cache_id = "$this::usersWithControl";
+        
+        $app->msCache->delete($cache_id);
+    }
+
+    function getUsersWithControl(array &$object_stack = []){
         $app = \MapasCulturais\App::i();
 
         // cache ids
         $cache_id = "$this::usersWithControl";
 
-        if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_id)){
-            $ids = $app->cache->fetch($cache_id);
+        if($app->config['app.usePermissionsCache'] && $app->msCache->contains($cache_id)){
+            $ids = $app->msCache->fetch($cache_id);
             $q = $app->em->createQuery("SELECT u FROM MapasCulturais\Entities\User u WHERE u.id IN (:ids)");
             $q->useQueryCache(true);
             $q->setQueryCacheLifetime($app->config['app.permissionsCache.lifetime']);
@@ -120,26 +129,24 @@ trait EntityAgentRelation {
 
         $result = [$this->getOwnerUser()];
         $ids = [$result[0]->id];
-        if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
 
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
             foreach($this->getOwner()->getUsersWithControl() as $u){
                 if(!in_array($u->id, $ids)){
                     $ids[] = $u->id;
-                    if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                     $result[] = $u;
                 }
             }
         }
 
         if($this->usesNested()) {
+            $object_stack[] = $this->id;
+            
             $parent = $this->getParent();
-
-            if(is_object($parent) && !$parent->equals($this)){
-                foreach($parent->getUsersWithControl() as $u){
+            if(is_object($parent) && !$parent->equals($this) && !in_array($parent->id, $object_stack)){
+                foreach($parent->getUsersWithControl($object_stack) as $u){
                     if(!in_array($u->id, $ids)){
                         $ids[] = $u->id;
-                        if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                         $result[] = $u;
                     }
                 }
@@ -152,13 +159,12 @@ trait EntityAgentRelation {
             $u = $relation->agent->user;
             if(!in_array($u->id, $ids)){
                 $ids[] = $u->id;
-                if(is_object($ids[count($ids) - 1])) die(var_dump($ids));
                 $result[] = $u;
             }
         }
 
         if($app->config['app.usePermissionsCache']){
-            $app->cache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
+            $app->msCache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
 
 
@@ -167,7 +173,7 @@ trait EntityAgentRelation {
     }
 
     function userHasControl($user){
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         $ids = $this->getIdsOfUsersWithControl();
@@ -189,6 +195,14 @@ trait EntityAgentRelation {
             $relation->save($flush);
 
         $this->refresh();
+        
+        $this->deleteUsersWithControlCache();
+        
+        if($this->usesPermissionCache()){
+            $this->addToRecreatePermissionsCacheList();
+        }
+        
+        
         return $relation;
     }
 
@@ -201,9 +215,16 @@ trait EntityAgentRelation {
         }
         
         $this->refresh();
+        
+        $this->deleteUsersWithControlCache();
+        
+        if($this->usesPermissionCache()){
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     function setRelatedAgentControl($agent, $control){
+    	// canUserCreateAgentRelationWithControl
         if($control)
             $this->checkPermission('createAgentRelationWithControl');
         else
@@ -227,25 +248,33 @@ trait EntityAgentRelation {
         $q->execute();
 
         $em->flush();
+        
+        $this->refresh();
+        
+        $this->deleteUsersWithControlCache();
+        
+        if($this->usesPermissionCache()){
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     protected function canUserCreateAgentRelation($user){
-        $result = $user->is('admin') || $this->userHasControl($user);
+        $result = $this->isUserAdmin($user) || $this->userHasControl($user);
         return $result;
     }
 
     protected function canUserCreateAgentRelationWithControl($user){
-        $result = $user->is('admin') || $user->id === $this->ownerUser->id;
+        $result = $this->isUserAdmin($user) || $user->id === $this->ownerUser->id;
         return $result;
     }
 
     function canUserRemoveAgentRelation($user){
-        $result = $user->is('admin') || $this->userHasControl($user);
+        $result = $this->isUserAdmin($user) || $this->userHasControl($user);
         return $result;
     }
 
     function canUserRemoveAgentRelationWithControl($user){
-        $result = $user->is('admin') || $user->id === $this->ownerUser->id;
+        $result = $this->isUserAdmin($user) || $user->id === $this->ownerUser->id;
         return $result;
     }
 }

@@ -15,7 +15,7 @@ use MapasCulturais\Traits;
 class Notification extends EntityController {
     use Traits\ControllerAPI;
 
-    function POST_index() {
+    public function POST_index($data = null) {
         App::i()->pass();
     }
 

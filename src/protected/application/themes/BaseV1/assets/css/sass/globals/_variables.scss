@@ -20,6 +20,9 @@ $brand-event: #b3b921 !default;
 $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
+$brand-subsite:  #cc0033 !default;
+$brand-seal: #cc0033 !default;
+$brand-developer: #9966cc !default;
 
 $brand-info: #40b4b4 !default;
 $brand-warning: #cc9933 !default;
@@ -128,6 +131,23 @@ $unicode-add-button:            "\e050" !default;
 // .icon-agent on _icons.scss file
 // .btn-map-agent on _maps.scss file
 $unicode-agent:                 "\e08a" !default;
+
+//** Subsite icon
+// used on:
+// .icon-subsite on _icons.scss file
+// .btn-map-subsite on _maps.scss file
+$unicode-subsite:                  "\e0df" !default;
+
+//** Seal icon
+// used on:
+// .icon-seal on _icons.scss file
+// .btn-map-seal on _maps.scss file
+$unicode-seal:                 "\e078" !default;
+
+//** API icon
+// used on:
+// .icon-api on _icons.scss file
+$unicode-api:                   "\e102" !default;
 
 //** Attachment icon
 // used on .attachment-title on _registration-form.scss file
@@ -260,6 +280,13 @@ $unicode-radio-button-selected: "\5c"   !default;
 // used on .icon-search on _icons.scss
 $unicode-search:                "\55"   !default;
 
+//** Group icon
+// used on .icon-group on _icons.scss
+$unicode-group:                "\e08b"   !default;
+
+
+$unicode-show-advanced-filters:          "\54"   !default;
+
 //** Select arrow icon
 // used on:
 // .placeholder on _dropdown.scss file
@@ -311,6 +338,8 @@ $unicode-twitter:               "\e094" !default;
 $unicode-facebook:              "\e093" !default;
 // used on .icon-googleplus on _icons.scss file
 $unicode-googleplus:            "\e096" !default;
+// used on .icon-instagram on _icons.scss file
+$unicode-instagram:             "\e09a" !default;
 
 //== Components
 //
@@ -329,6 +358,7 @@ $caret-width-base:          8px !default;
 
 //** Border styles to create dividing rows.
 $thin-row: 1px solid $gray-lighter !default;
+$thick-row: 5px solid $gray-lighter !default;
 
 //== Tables
 //
@@ -403,12 +433,14 @@ $form-fields-height:                   2rem !default;
 //
 
 $z-index-descricao-do-agente:    800 !default;
+$z-index-descricao-do-selo:		  1000 !default;
+$z-index-descricao-do-subsite:    15000 !default;
 $z-index-home-watermark:         900 !default;
 $z-index-nav-title:             1000 !default;
 $z-index-home-nav:              1200 !default;
 $z-index-leaflet:               1300 !default;
 $z-index-editable-entity:       1400 !default;
-$z-index-infobox:               1500 !default;
+$z-index-infobox:               15000 !default;
 $z-index-main-header:           1700 !default;
 $z-index-submenu-dropdown:      1800 !default;
 $z-index-tip:                   1900 !default;

@@ -1,15 +1,18 @@
 MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
 jQuery(function(){
-    $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">Cancelar</button> <button type="submit" class="editable-submit">Enviar</button>';
+    $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">cancelar</button> <button type="submit" class="editable-submit">ok</button>';
     $.fn.select2.defaults.separator = '; ';
     $.fn.editabletypes.select2.defaults.viewseparator = '; ';
     MapasCulturais.Editables.init('#editable-entity');
     MapasCulturais.AjaxUploader.init();
     MapasCulturais.MetalistManager.init();
-
+    
+    var labels = MapasCulturais.gettext.editable;
 
     MapasCulturais.Remove.init();
+    MapasCulturais.RemoveBanner.init();
+
 
 
     $('.js-registration-action').click(function(){
@@ -31,32 +34,88 @@ jQuery(function(){
         return false;
     });
 
-    //Máscaras de telefone
-    var masks = ['(00) 00000-0000', '(00) 0000-00009'];
+    //Máscaras de telefone, CEP e hora
 
     $('.js-editable').on('shown', function(e, editable) {
-        if ($(this).hasClass('js-mask-phone')) {
-            editable.input.$input.mask(masks[1], {onKeyPress:
+        if ($(this).hasClass('js-editablemask')) {
+            var mask = $(this).data('mask');
+            editable.input.$input.mask(mask, {onKeyPress:
                function(val, e, field, options) {
-                   field.mask(val.length > 14 ? masks[0] : masks[1], options) ;
+                   field.mask(mask, options) ;
                }
             });
         }
+
+        if ($(this).hasClass('js-mask-phone')) {
+            /* Phone masks is an array of masks that are used depending on the size of the string.
+             * 
+             * If you have more than one, the first mask has to have one optional character, and the next mask will have
+             * this required character and, optionally, another optiona, and so on...
+             * 
+             * Example: ['00-0009', '000-009', '0000-000']
+             * 
+             */ 
+            if (MapasCulturais.phoneMasks === false) return;
+            var masks = MapasCulturais.phoneMasks ? MapasCulturais.phoneMasks : ['(00) 0000-00009', '(00) 00000-0000'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+                function(val, e, field, options) {
+                    if (masks.length > 1) {
+                        for (var ii=1; ii<masks.length; ii++) {
+                            field.mask(val.length > masks[ii-1].length - 1 ? masks[ii] : masks[ii-1], options);
+                        }
+                        
+                    }
+                    
+                }
+            });
+        }
+
+        if ($(this).hasClass('js-mask-cep')) {
+            if (MapasCulturais.postalCodeMask === false) return;
+            var masks = MapasCulturais.postalCodeMask ? [MapasCulturais.postalCodeMask] : ['00000-000'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+        if ($(this).hasClass('js-mask-time')) {
+            //Mask
+            var masks = ['00:00'];
+            editable.input.$input.mask(masks[0], {onKeyPress:
+               function(val, e, field, options) {
+                   field.mask(masks[0], options) ;
+               }
+            });
+        }
+
+        // Fixes editable input size based on placeholder length
+        var placeholder = editable.input.$input.attr('placeholder'),
+        possibleSize = placeholder ? Math.max(placeholder.length, editable.value.length + 5) : 0;
+        if (possibleSize > 20) {
+            editable.input.$input.attr('size', possibleSize);
+        }
+
+
+        // Fixes padding right hardcoded on 24px, now 0;
+        //editable.input.$input.css('padding-right', 10);
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
-        editable.container.$form.find('.editable-cancel').attr('title', 'Cancelar Alteração (Esc)');
+        
+        editable.container.$form.find('.editable-cancel').attr('title', labels['cancel']);
         //textarea display default Ctrl+Enter and Esc shortcuts
         switch (editable.input.type.trim()) {
             case 'text|select':
-                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Enter)');
+                editable.container.$form.find('.editable-submit').attr('title', labels['confirm']);
                 break;
             case 'textarea':
-                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                editable.container.$form.find('.editable-submit').attr('title', labels['confirmC']);
                 break;
             case 'select2':
-                editable.container.$form.find('.editable-submit').attr('title', 'Confirmar Alteração (Ctrl+Enter)');
+                editable.container.$form.find('.editable-submit').attr('title', labels['confirmC']);
                 setTimeout(function() {
                     editable.container.$form.find('.select2-input')
                         .focus()
@@ -106,11 +165,75 @@ jQuery(function(){
             return false;
         });
     }
+    
+    
+    // Human Crop for images
+    $('input.human_crop').change(function() {
+        
+        if (!window.FileReader)
+            return; // browser não suporta
+        
+        var reader = new FileReader();
+        var $form = $(this).closest('form');
+        var $formEditBox = $form.closest('.js-editbox');
+        var $sendButton = $('#editbox-human-crop').find('button[type="submit"]');
+        
+        var cropWidth = $form.data('crop-width');
+        var cropHeight = $form.data('crop-height');
+        
+        $sendButton.html(labels['Crop']);
+        
+        reader.onload = function(event) {
+            the_url = event.target.result
+            $('#human-crop-image').attr('src', the_url);
+            
+            var croppedImage;
+            
+            var cropper = $('#human-crop-image').cropbox({
+                width: cropWidth,
+                height: cropHeight,
+                showControls: 'always',
+                zoom: 30,
+                //controls: '<div class="cropControls"><span>Arraste para cortar</span><button class="cropZoomIn" type="button"></button><button class="cropZoomOut" type="button"></button></div>',
+            }, function() {
+                // on load
+                $('.cropControls span').html(labels['CropHelp']); // it did not work set the controls options. the buttons did not work
+            }).on('cropbox', function(e, data, img) {
+                croppedImage = img.getBlob();
+            });
+            
+            $sendButton.one('click',function() {
+                var formData = new FormData();
+                formData.append($form.data('group'), croppedImage);
+
+                // Dont ask me how, but I found this way to manipulate AjaxForm options
+                $._data($form[0], 'events')['submit'][0].data.processData = false;
+                $._data($form[0], 'events')['submit'][0].data.formData = formData;
+                
+                $formEditBox.show();
+                MapasCulturais.EditBox.close('#editbox-human-crop');
+                
+            });
+            
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+        
+        // copy the classes from the original editBox, so we position our new editbox the same way
+        $('#editbox-human-crop').attr('class', $formEditBox.attr('class')).width(cropWidth).height(cropHeight + 80);
+        MapasCulturais.EditBox.open('#editbox-human-crop', $($form.data('target')));
+        
+        // hide original editBox
+        $formEditBox.hide();
+        
+    });
+
 });
 
 $(window).on('beforeunload', function(){
+    var labels = MapasCulturais.gettext.editable;
     if($('.editable-unsaved').length){
-        return 'Há alterações não salvas nesta página.';
+        return labels['unsavedChanges'];
     }
 });
 
@@ -144,6 +267,30 @@ MapasCulturais.Remove = {
     }
 }
 
+MapasCulturais.RemoveBanner = {
+    init: function(){
+        $('body').on('click', '.banner-delete', function(){
+            var href   = $(this).data('href');
+            var result = window.confirm(MapasCulturais.gettext.editable['removeAgentBackground']);
+            $('#remove-background-button').toggleClass('display-background-button');
+            $('#remove-background-button').toggleClass('hide-background-button');
+
+            if(result){
+                $.getJSON(href, function(r){
+                    if(r.error){
+                        MapasCulturais.Messages.error(r.data);
+                    }else{
+                        $('#header-banner').css('background-image', 'url()');
+                    }
+                });
+            }
+            else{
+                return false;
+            }
+        });
+    }
+};
+
 MapasCulturais.Editables = {
 
     dataSelector: 'edit',
@@ -167,11 +314,14 @@ MapasCulturais.Editables = {
     },
 
     initSpacePublicEditable: function(){
+        
+        var labels = MapasCulturais.gettext.editable;
+        
         $('#editable-space-status').on('hidden', function(e, reason) {
             if($(this).editable('getValue', true) == '1'){
-                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-open"></div>Publicação livre</div><p class="venue-status-definition">Qualquer pessoa pode criar eventos.</p>');
+                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-open"></div>'+labels['freePublish']+'</div><p class="venue-status-definition">'+labels['freePlublishDescription']+'</p>');
             }else{
-                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-locked"></div>Publicação restrita</div><p class="venue-status-definition">Requer autorização para criar eventos.</p>');
+                $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-locked"></div>'+labels['restrictedPublish']+'</div><p class="venue-status-definition">'+labels['restrictedPublishDescription']+'</p>');
             }
         });
     },
@@ -244,10 +394,10 @@ MapasCulturais.Editables = {
 
     createAll : function (){
         var entity = MapasCulturais.entity.definition;
+        var labels = MapasCulturais.gettext.editable;
         MapasCulturais.Editables.getEditableElements().each(function(){
 
             var field_name = $(this).data(MapasCulturais.Editables.dataSelector);
-
             var input_type;
 
             if(!entity[field_name])
@@ -256,6 +406,7 @@ MapasCulturais.Editables = {
             var config = {
                 name: field_name,
                 type: 'text',
+                maxlength : 20,
                 emptytext: entity[field_name].label,
                 placeholder: entity[field_name].label
             };
@@ -265,6 +416,7 @@ MapasCulturais.Editables = {
             switch (entity[field_name].type){
                 case 'text':
                     config.type = 'textarea';
+                    config.tpl = '<textarea ></textarea>'
                     break;
 
                 case 'select':
@@ -283,10 +435,72 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = { weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
+                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
                     delete config.placeholder;
-                    config.clear = 'Limpar';
+                    config.clear = labels['Limpar'];
+                    break;
 
+                case 'multiselect':
+                    var select2_option = {
+                        tags: [],
+                        tokenSeparators: [";", ";"],
+                        separator: '; '
+                    };
+
+
+                    if (entity[field_name].options) {
+                        select2_option.tags = [];
+                        Object.keys(entity[field_name].options).forEach(function (k) {
+                            select2_option.tags.push({
+                                id: k,
+                                text: entity[field_name].options[k]
+                            });
+                        });
+                    }
+
+
+                    select2_option.createSearchChoice = function () {
+                        return null;
+                    };
+
+
+                    config.type = 'select2';
+                    config.select2 = select2_option;
+
+                    config.display = function (value, sourceData) {
+                        if (value) {
+                            var html = value.map(function (i) {
+                                return entity[field_name].options[i];
+                            }).join('; ');
+                        }
+
+                        $(this).html(html);
+
+                    }
+
+                    //change the default poshytip animation speed both from 300ms to:
+                    $.fn.poshytip.defaults.showAniDuration = 80;
+                    $.fn.poshytip.defaults.hideAniDuration = 40;
+                    break;
+
+                case 'tag':
+                    var select2_option = {
+                        tags: [],
+                        tokenSeparators: [";", ";"],
+                        separator: '; '
+                    };
+
+
+                    if (entity[field_name].options)
+                        select2_option.tags = Object.keys(entity[field_name].options);
+
+
+                    config.type = 'select2';
+                    config.select2 = select2_option;
+
+                    //change the default poshytip animation speed both from 300ms to:
+                    $.fn.poshytip.defaults.showAniDuration = 80;
+                    $.fn.poshytip.defaults.hideAniDuration = 40;
                     break;
 
                 case 'boolean':
@@ -391,7 +605,8 @@ MapasCulturais.Editables = {
 
 
     setButton : function (editableEntitySelector){
-        var $submitButton = $('.js-submit-button');
+        var $submitButton = $('.js-submit-button'),
+            $archiveButton = $('.js-archive-button');
 
         //Ctrl+S:save
         $(document.body).on('keydown', function(event){
@@ -407,12 +622,17 @@ MapasCulturais.Editables = {
         });
 
         $submitButton.click(function(){
+            $('.editable-empty.editable-unsaved').each(function(){
+                $(this).editable('setValue', '');
+            });
 
-            var target;
-            var $button = $(this);
-            var controller = MapasCulturais.request.controller;
-            var action = $(editableEntitySelector).data('action');
+            var target; //Vazio
+            var $button = $(this); // Retorna submitButton
+            var controller = MapasCulturais.request.controller; //Retorna controller da entidade atual
+            var action = $(editableEntitySelector).data('action'); //"edit"
             var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
+            
+            var labels = MapasCulturais.gettext.editable;
 
             if(action === 'create'){
                 target = MapasCulturais.createUrl(controller, 'index');
@@ -422,9 +642,9 @@ MapasCulturais.Editables = {
 
                 if(MapasCulturais.entity.status == 0 && $button.data('status') == 1){
                     var message = MapasCulturais.request.controller === 'event' ?
-                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? ' :
-                        'Você tem certeza que deseja publicar este ' + MapasCulturais.entity.getTypeName(MapasCulturais.request.controller) + '? Isto não poderá ser desfeito.';
-
+                        labels['confirmPublish'].replace('%s', MapasCulturais.entity.getTypeName(MapasCulturais.request.controller)) :
+                        labels['confirmPublishFinal'].replace('%s', MapasCulturais.entity.getTypeName(MapasCulturais.request.controller));
+                    
                     if(!confirm(message)){
                         return;
                     }
@@ -435,8 +655,6 @@ MapasCulturais.Editables = {
                 return false;
 
             $submitButton.data('clicked', 'sim');
-
-
 
             if($editables.length === 1){
                 $('body').append('<input type="hidden" id="fixeditable"/>');
@@ -458,13 +676,13 @@ MapasCulturais.Editables = {
                             if(createdRequests && createdRequests.indexOf('ChildEntity') >= 0){
                                 name = $('[data-field-name="parentId"]').text();
                                 $('.js-pending-parent').show();
-                                MapasCulturais.Messages.alert('Sua requisição para fazer deste '+typeName+' filho de <strong>'+name+'</strong> foi enviada.');
+                                MapasCulturais.Messages.alert(labels['requestChild'].replace('%s', typeName).replace('%s', '<strong>'+name+'</strong>'));
                             }
 
                             if(createdRequests && createdRequests.indexOf('EventProject') >= 0){
                                 name = $('[data-field-name="projectId"]').text();
                                 $('.js-pending-project').show();
-                                MapasCulturais.Messages.alert('Sua requisição para associar este evento ao projeto <strong>'+name+'</strong> foi enviada.');
+                                MapasCulturais.Messages.alert(labels['requestEventProject'].replace('%s', '<strong>'+name+'</strong>'));
                             }
                         }
                     }
@@ -488,9 +706,6 @@ MapasCulturais.Editables = {
                             }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
                                 firstShown = true; // don't show editable
                                 $field = $('#registration-agent-owner').parent().find('.registration-label span');
-                            }else if(MapasCulturais.request.controller === 'agent' && p === 'location'){
-                                firstShown = true; // don't show editable
-                                $field = $('.js-editable[data-edit="publicLocation"]');
                             }else{
                                 $field = $('.js-editable[data-edit="' + p + '"]');
                             }
@@ -505,7 +720,10 @@ MapasCulturais.Editables = {
                             }
                             if(!firstShown) {
                                 firstShown = true;
-                                $field.editable('show');
+                                // removido o comportamento de abrir o primemiro campo vazio. estava gerando erro em alguns casos
+                                // mostrando um input text solto e também comportamento ruim quando havia campos obrigatorios
+                                // em outras abas
+                                //$field.editable('show');
                             }
                             $field.on('save', function(){
                                 $(this).parent().find('.danger.hltip').remove();
@@ -513,7 +731,7 @@ MapasCulturais.Editables = {
                         }
 
                         if(field_found)
-                            MapasCulturais.Messages.error('Corrija os erros indicados abaixo.');
+                            MapasCulturais.Messages.error(labels['correctErrors']);
 
                         if(unknow_errors){
                             for(var i in unknow_errors){
@@ -523,13 +741,15 @@ MapasCulturais.Editables = {
 
                     }else{
 
+                        $('body').trigger('entity-saved', response);
+
                         $('.js-geo-division-address').each(function(){
                             var r = response[$(this).data('metakey')];
                             $(this).html(r ? r : '');
                             $(this).parent().css('display', r ? 'block' : 'none');
                         });
 
-                        MapasCulturais.Messages.success('Edições salvas.');
+                        MapasCulturais.Messages.success(labels['changesSaved']);
 
                         $('.editable-unsaved').
                                 css('background-color','').
@@ -539,7 +759,11 @@ MapasCulturais.Editables = {
 
 
                         if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
-                            document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                            if(response.status == 1) {
+                                document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
+                            } else {
+                                document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                            }
                         }
                     }
                     $submitButton.data('clicked',false);
@@ -551,7 +775,7 @@ MapasCulturais.Editables = {
                             $submitButton.click();
                         });
                     else{
-                        MapasCulturais.Messages.error('Um erro inesperado aconteceu.');
+                        MapasCulturais.Messages.error(labels['unexpectedError']);
                     }
                 }
             });
@@ -574,13 +798,16 @@ MapasCulturais.AjaxUploader = {
 
     },
     animationTime: 100,
-    init: function(selector) {
+    init: function(selector, extraOptions) {
         selector = selector || '.js-ajax-upload';
+        extraOptions = extraOptions || {};
+        
         $(selector).each(function(){
 
             if($(this).data('initialized'))
                 return;
 
+            $(this).show();
             $(this).data('initialized', true);
 
             var bar = $(this).parent().find('.js-ajax-upload-progress .bar');
@@ -589,7 +816,7 @@ MapasCulturais.AjaxUploader = {
             MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
             var $this = $(this);
             // bind form using 'ajaxForm'
-            $(this).ajaxForm({
+            $(this).ajaxForm(Object.assign({
                 beforeSend: function(xhr){
                     $this.data('xhr', xhr);
                     //@TODO validate size and type before upload
@@ -648,6 +875,9 @@ MapasCulturais.AjaxUploader = {
 
                             break;
                             case 'background-image':
+                                $('#remove-background-button').toggleClass('hide-background-button');
+                                $('#remove-background-button').toggleClass('display-background-button');
+                                
                                 $target.each(function(){
                                     try{
                                         if($form.data('transform'))
@@ -656,6 +886,8 @@ MapasCulturais.AjaxUploader = {
                                             $(this).css('background-image', 'url(' + response[group].url + ')');
                                     }catch (e){}
                                 });
+
+                                $('#remove-background-button a').data('href', response[group].deleteUrl);
                             break;
 
                             case 'append':
@@ -689,7 +921,7 @@ MapasCulturais.AjaxUploader = {
 
                 // $.ajax options can be used here too, for example:
                 //timeout:   3000
-            });
+            },extraOptions));
         });
 
 
@@ -698,11 +930,12 @@ MapasCulturais.AjaxUploader = {
 
 MapasCulturais.MetalistManager = {
     init : function() {
+        var labels = MapasCulturais.gettext.editable;
         // bind form using 'ajaxForm'
         $('.js-metalist-form').ajaxForm({
             //target:        '#output1',   // target element(s) to be updated with server response
             //beforeSubmit:  showRequest,  // pre-submit callback
-
+            
             beforeSubmit:function(arr, $form, options){
                 //por enquanto validando apenas o vídeo contendo vimeo ou youtube e o link contendo algum protocolo...
                 var group = $form.parents('.js-editbox').data('metalist-group');
@@ -712,26 +945,26 @@ MapasCulturais.MetalistManager = {
 
                 if(group === 'videos'){
                     if($.trim($form.find('input.js-metalist-title').val()) === ''){
-                        $errorTag.html('Insira um título para seu vídeo.').show();
+                        $errorTag.html(labels['insertVideoTitle']).show();
                         return false;
                     }
 
                     var parsedURL = purl($linkField.val());
                     if (parsedURL.attr('host').indexOf('youtube') === -1 && parsedURL.attr('host').indexOf('vimeo')  === -1){
-                        $errorTag.html('Insira uma url de um vídeo do YouTube ou do Vimeo.').show();
+                        $errorTag.html(labels['insertVideoUrl']).show();
 
                         return false;
                     }
                 }else if (group === 'links'){
 
                     if($.trim($form.find('input.js-metalist-title').val()) === ''){
-                        $errorTag.html('Insira um título para seu link.').show();
+                        $errorTag.html(labels['insertLinkTitle']).show();
                         return false;
                     }
 
                     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
                     if (!pattern.test($linkField.val())){
-                        $errorTag.html('A url do link é inválida, insira uma url completa como http://www.google.com/.').show();
+                        $errorTag.html(labels['insertLinkUrl']).show();
                         return false;
                     }
                 }
@@ -861,3 +1094,72 @@ MapasCulturais.MetalistManager = {
         }
     }
 };
+
+
+$(function(){
+    function concatena_enderco(){
+        var nome_logradouro = $('#En_Nome_Logradouro').editable('getValue', true);
+        var cep = $('#En_CEP').editable('getValue', true);
+        var numero = $('#En_Num').editable('getValue', true);
+        var complemento = $('#En_Complemento').editable('getValue', true);
+        var bairro = $('#En_Bairro').editable('getValue', true);
+        var municipio = $('#En_Municipio').editable('getValue', true);
+        var estado = $('#En_Estado').editable('getValue', true);
+        if(cep && nome_logradouro && numero && bairro && municipio && estado){
+            var endereco = MapasCulturais.buildAddress(nome_logradouro, numero, complemento, bairro, municipio, estado, cep);
+            $('#endereco').editable('setValue', endereco);
+            $('#endereco').trigger('changeAddress', endereco);
+            $('.js-endereco').html(endereco);
+        }
+
+
+    };
+
+    $('#En_Nome_Logradouro, #En_CEP, #En_Num, #En_Complemento, #En_Bairro, #En_Municipio,  #En_Estado').on('hidden', function(e, params) {
+        concatena_enderco();
+    });
+
+    $('#En_CEP').on('hidden', function(e, params){
+        var cep = $('#En_CEP').editable('getValue', true);
+        $.getJSON('/site/address_by_postalcode?postalcode='+cep, function(r){
+            if (r.success) {
+                $('#En_Nome_Logradouro').editable('setValue', r.streetName);
+                $('#En_Bairro').editable('setValue', r.neighborhood);
+                $('#En_Municipio').editable('setValue', r.city);
+                $('#En_Estado').editable('setValue', r.state);
+                concatena_enderco();
+            }
+        });
+
+    });
+});
+
+(function ($) {
+    "use strict";
+    var Color = function (options) {
+        this.init('color', options, Color.defaults);
+    };
+    $.fn.editableutils.inherit(Color, $.fn.editabletypes.abstractinput);
+    $.extend(Color.prototype, {
+        render: function() {
+            this.$input = this.$tpl.find('input');
+            this.$input.parent().colorpicker({
+                container: this.$tpl,
+                inline: true
+            })
+        },
+        autosubmit: function() {
+            this.$input.keydown(function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+            });
+        }
+    });
+
+    Color.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<div class="editable-color"><div><input type="text" value="" class="form-control" style="width:130px !important" /></div></div>'
+    });
+    $.fn.editabletypes.color = Color;
+
+}(window.jQuery));

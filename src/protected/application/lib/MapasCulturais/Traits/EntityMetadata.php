@@ -81,8 +81,14 @@ trait EntityMetadata{
      * @return mixed The metadata value.
      */
     function __metadata__get($name){
-        if($this->getRegisteredMetadata($name)){
-            return $this->getMetadata($name);
+        if($def = $this->getRegisteredMetadata($name)){
+            $value = $this->getMetadata($name);
+            
+            if(is_callable($def->unserialize)){
+                $cb = $def->unserialize;
+                $value = $cb($value);
+            }
+            return $value;
         }
 
     }
@@ -94,7 +100,11 @@ trait EntityMetadata{
      */
     function __metadata__set($name, $value){
 
-        if($this->getRegisteredMetadata($name)){
+        if($def = $this->getRegisteredMetadata($name)){
+            if(is_callable($def->serialize)){
+                $cb = $def->serialize;
+                $value = $cb($value);
+            }
             $this->setMetadata($name, $value);
             return true;
         }
@@ -150,7 +160,7 @@ trait EntityMetadata{
             return false;
         }
 
-        if($user->is('admin') || $this->getOwnerUser()->equals($user)){
+        if($this->isUserAdmin($user) || $this->canUser('@control', $user)){
             return true;
         }
 
@@ -247,7 +257,7 @@ trait EntityMetadata{
      * @param mixed the value of the metadata.
      */
     function setMetadata($meta_key, $value){
-
+    		
         $metadata_entity_class = $this->getMetadataClassName();
         $metadata_object = $this->getMetadata($meta_key, true);
 
@@ -306,6 +316,22 @@ trait EntityMetadata{
         foreach(array_keys($this->__changedMetadata) as $meta_key){
             $metadata_object = $this->getMetadata($meta_key, true);
             $metadata_object->save();
+        }
+    }
+
+    /**
+     * Return Instagram URL if available
+     *
+     * @return string
+     */
+    public function getInstagramUrl(){
+        if($this->instagram){
+            $user = str_replace('@', '', $this->instagram);
+            $url = 'http://www.instagram.com/' . $user;
+
+            return $url;
+        }else{
+            return '#';
         }
     }
 }

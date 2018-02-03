@@ -13,9 +13,9 @@ class FileUploadError extends \Exception{
         $this->errorCode = $errorCode;
 
         if($errorCode === UPLOAD_ERR_INI_SIZE){
-            $message = "The uploaded file is larger than the allowed size.";
+            $message = \MapasCulturais\i::__("O arquivo enviado é maior do que o permitido.");
         }else{
-            $message = 'Unexpected error.';
+            $message = \MapasCulturais\i::__('Erro inesperado.');
         }
 
         parent::__construct($message);

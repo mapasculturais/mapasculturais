@@ -13,7 +13,7 @@ trait EntityMetaLists{
      * This entity has metalists
      * @return bool true
      */
-    public function usesMetaLists(){
+    public static function usesMetaLists(){
         return true;
     }
 

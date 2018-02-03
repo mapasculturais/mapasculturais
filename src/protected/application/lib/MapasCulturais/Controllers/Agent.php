@@ -16,10 +16,11 @@ class Agent extends EntityController {
         Traits\ControllerTypes,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
-        Traits\ControllerVerifiable,
+        Traits\ControllerSealRelation,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
+        Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested;
 
@@ -50,10 +51,14 @@ class Agent extends EntityController {
 
         $agent = $this->requestedEntity;
 
-        if(!$agent || !$this->data['role'])
+        if(!$agent || !isset($this->data['role']))
             $app->pass();
 
-        $success = $agent->user->addRole($this->data['role']);
+        if(isset($this->data['subsiteId'])){
+            $success = $agent->user->addRole($this->data['role'], $this->data['subsiteId']);
+        } else {
+            $success = $agent->user->addRole($this->data['role']);
+        }
 
         if($this->isAjax()){
             if($success)
@@ -71,11 +76,15 @@ class Agent extends EntityController {
 
         $agent = $this->requestedEntity;
 
-        if(!$agent || !$this->data['role'])
+        if(!$agent || !isset($this->data['role']))
             $app->pass();
-
-        $success = $agent->user->removeRole($this->data['role']);
-
+        
+        if(isset($this->data['subsiteId'])){
+            $success = $agent->user->removeRole($this->data['role'], $this->data['subsiteId']);
+        } else {
+            $success = $agent->user->removeRole($this->data['role']);
+        }
+        
         if($this->isAjax()){
             if($success)
                 $this->json (true);

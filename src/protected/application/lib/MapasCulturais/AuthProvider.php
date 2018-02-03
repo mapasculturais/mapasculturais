@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais;
 
+use MapasCulturais\Entities\Notification;
+
 abstract class AuthProvider {
     use Traits\MagicCallers,
         Traits\MagicGetter,
@@ -17,9 +19,11 @@ abstract class AuthProvider {
         $this->_init();
         $this->_authenticatedUser = $this->_getAuthenticatedUser();
         $this->_guestUser = new GuestUser();
+        $app = App::i();
 
-        App::i()->hook('auth.successful', function(){
-            $user = App::i()->user;
+        $app->hook('auth.successful', function() use($app){
+            $user = $app->user;
+            $user->getEntitiesNotifications($app);
             $user->lastLoginTimestamp = new \DateTime;
             $user->save(true);
         });
@@ -33,12 +37,23 @@ abstract class AuthProvider {
      * @return \MapasCulturais\Entities\User
      */
     abstract protected function _createUser($data);
-    
+
     final protected function createUser($data){
         $app = App::i();
         $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
         $user = $this->_createUser($data);
         $app->applyHookBoundTo($this, 'auth.createUser:after', [$user, $data]);
+
+        $dataValue = ['name' => $user->profile->name];
+        $message = $app->renderMailerTemplate('welcome',$dataValue);
+
+        $app->createAndSendMailMessage([
+            'from' => $app->config['mailer.from'],
+            'to' => $user->email,
+            'subject' => $message['title'],
+            'body' => $message['body']
+        ]);
+
         return $user;
     }
 
@@ -62,7 +77,7 @@ abstract class AuthProvider {
         $app = App::i();
 
         if($app->request->isAjax()){
-            $app->halt(401, $app->txt('This action requires authentication'));
+            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }

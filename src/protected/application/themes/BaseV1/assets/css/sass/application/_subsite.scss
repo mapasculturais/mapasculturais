@@ -1,0 +1,26 @@
+.logo-container,
+.background-container,
+.institute-container,
+.favicon-container {
+	width: 33.3%;
+	float: left;
+	text-align: center;
+
+	.label {
+		font-size: 1rem;
+		font-family: "Open Sans", sans-serif;
+	}
+}
+
+.logo,
+.institute,
+.background,
+.favicon {
+    position: relative;
+	height:144px;
+	width:144px;
+    .btn.edit {
+        position: absolute;
+        left: 16.4%;
+    }
+}

@@ -1,0 +1,1 @@
+<li><a href="#agenda"><?php \MapasCulturais\i::_e("Agenda");?></a></li>

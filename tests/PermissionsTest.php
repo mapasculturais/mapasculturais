@@ -87,6 +87,23 @@ class PermissionsTest extends MapasCulturais_TestCase{
                 $entity->save(true);
             }, "Asserting that a super admin user CAN create $plural to another user.");
         }
+
+        /*
+         * Asserting that user cannot create entities owned by a not published agent
+         */
+        $owner = $this->getNewEntity('Agent');
+        $owner->status = 0; // status = draft
+        $owner->save(true);
+
+        $this->user = 'normal';
+
+        foreach($this->entities as $class => $plural){
+            $this->assertPermissionDenied(function() use ($class, $owner){
+                $entity = $this->getNewEntity($class, null, $owner);
+                $entity->save(true);
+            }, "Asserting that a user CANNOT create $plural owned by a not published agent");
+        }
+
         $this->app->enableWorkflow();
     }
 
@@ -154,108 +171,6 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
     function testCanUserRemove(){
         $this->app->disableWorkflow();
-        $this->app->enableWorkflow();
-    }
-
-    function testCanUserVerifyEntity(){
-        $this->app->disableWorkflow();
-        $this->resetTransactions();
-        $app = $this->app;
-
-        $this->user = null;
-
-        /*
-         * Asserting that guest users cannot verify entities
-         */
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionDenied(function() use ($class){
-                $entity = $this->getRandomEntity('Agent', 'e.isVerified = false');
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a guest user CANNOT verify $plural.");
-        }
-
-
-        /*
-         * Asserting that normal users cannot verify entities
-         */
-
-        $this->user = 'normal';
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionDenied(function() use ($class, $app){
-                $entity = $this->getNewEntity($class);
-                $entity->save(true);
-
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a normal user CANNOT verify their own $plural.");
-        }
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionDenied(function() use ($class, $app){
-                $entity = $this->getRandomEntity('Agent', 'e.isVerified = false AND e.userId != ' . $app->user->id);
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a normal user CANNOT verify $plural of other user.");
-        }
-
-
-        /*
-         * Asserting that staff users can verify entities
-         */
-
-        $this->resetTransactions();
-
-        $this->user = 'staff';
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionDenied(function() use ($class, $app){
-                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
-                if(!$entity){
-                    var_dump(array($class, $app->user->id));
-
-                }
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a staff user CANNOT verify $plural of other user.");
-        }
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionGranted(function() use ($class, $app){
-                $entity = $this->getNewEntity($class);
-                $entity->save(true);
-
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a staff user CAN verify their own $plural.");
-        }
-
-
-        /*
-         * Asserting that admin users can verify entities
-         */
-
-        $this->user = 'admin';
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionGranted(function() use ($class, $app){
-                $entity = $this->getRandomEntity($class, 'e.isVerified = false AND u.id != ' . $app->user->id);
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a admin user CAN verify $plural of other user.");
-        }
-
-        foreach($this->entities as $class => $plural){
-            $this->assertPermissionGranted(function() use ($class, $app){
-                $entity = $this->getNewEntity($class);
-                $entity->save(true);
-
-                $entity->verify();
-                $entity->save(true);
-            }, "Asserting that a staff user CAN verify their own $plural.");
-        }
         $this->app->enableWorkflow();
     }
 
@@ -841,7 +756,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testProjectEventCreation(){
         $this->app->disableWorkflow();
         $this->resetTransactions();
-        // assert that a user WITHOUT control of a project CANNOT create events to this project
+        // assert that users WITHOUT control of a project CANNOT create events to this project
         $user1 = $this->getUser('normal', 0);
         $user2 = $this->getUser('normal', 1);
 
@@ -853,10 +768,10 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event = $this->getNewEntity('Event');
             $event->project = $project;
             $event->save();
-        }, 'Asserting that a user WITHOUT control of a project CANNOT create events to this project');
+        }, 'Asserting that users WITHOUT control of a project CANNOT create events related with this project');
 
 
-        // assert that a user WITH control of a project CAN create events to this project
+        // assert that usesr WITH control of a project CAN create events to this project
         $this->user = $user2;
 
         $project->createAgentRelation($user1->profile, "AGENTS WITH CONTROL", true, true);
@@ -867,7 +782,24 @@ class PermissionsTest extends MapasCulturais_TestCase{
             $event = $this->getNewEntity('Event');
             $event->project = $project;
             $event->save();
-        }, 'Asserting that a user WITH control of a project CAN create events to this project');
+        }, 'Asserting that users WITH control of a project CAN create events related to this project');
+        
+
+        // assert that users with control of a project CAN view draft events related to this project
+        $event_1 = $this->getNewEntity('Event');
+        $event_1->project = $project;
+        $event_1->status = \MapasCulturais\Entities\Event::STATUS_DRAFT;
+        $event_1->save();
+        
+        $event_2 = $this->getNewEntity('Event');
+        $event_2->status = \MapasCulturais\Entities\Event::STATUS_DRAFT;
+        $event_2->save();
+        
+        $this->user = $user2;
+        
+        $this->assertTrue($event_1->canUser('view'), 'assert that users with control of a project CAN view draft events related to this project');
+        $this->assertFalse($event_2->canUser('view'), 'assert that users with control of a project CANNOT view draft events not related to this project');
+        
         $this->app->enableWorkflow();
     }
 
@@ -884,7 +816,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     function testCanUserAddRemoveRole(){
         $this->app->disableWorkflow();
         $this->resetTransactions();
-        $roles = ['staff', 'admin', 'superAdmin'];
+        $roles = ['admin', 'superAdmin'];
 
         /*
          * Guest user cannot add or remove roles
@@ -925,62 +857,12 @@ class PermissionsTest extends MapasCulturais_TestCase{
             }, "Asserting that normal user CANNOT remove the role $role of a user");
         }
 
-
-        /*
-         * Admin user can add and remove role staff
-         */
-        $this->user = 'admin';
-
-        foreach($roles as $role){
-            $this->resetTransactions();
-
-            switch ($role) {
-                case 'staff':
-                    $assertion = 'assertPermissionGranted';
-                    $can = 'CAN';
-                break;
-
-                default:
-                    $assertion = 'assertPermissionDenied';
-                    $can = 'CANNOT';
-                break;
-            }
-
-            $this->$assertion(function() use($role){
-                $user = $this->getUser('normal', 1);
-                $user->addRole($role);
-            }, "Asserting that admin user $can add the role $role to a user");
-        }
-
-        foreach($roles as $role){
-            $this->resetTransactions();
-
-            switch ($role) {
-                case 'staff':
-                    $assertion = 'assertPermissionGranted';
-                    $can = 'CAN';
-                break;
-
-                default:
-                    $assertion = 'assertPermissionDenied';
-                    $can = 'CANNOT';
-                break;
-            }
-
-            $this->$assertion(function() use($role){
-                $user = $this->getUser($role, 1);
-                $user->removeRole($role);
-            }, "Asserting that admin user $can remove the role $role of a user");
-        }
-
         /*
          * Admin user can add and remove role staff
          */
         $this->user = 'superAdmin';
 
         foreach($roles as $role){
-            $this->resetTransactions();
-
             $this->assertPermissionGranted(function() use($role){
                 $user = $this->getUser('normal', 1);
                 $user->addRole($role);

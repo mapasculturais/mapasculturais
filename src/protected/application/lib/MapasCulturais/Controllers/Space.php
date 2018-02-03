@@ -16,10 +16,11 @@ class Space extends EntityController {
         Traits\ControllerUploads,
         Traits\ControllerMetaLists,
         Traits\ControllerAgentRelation,
-        Traits\ControllerVerifiable,
+        Traits\ControllerSealRelation,
         Traits\ControllerSoftDelete,
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
+        Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested;
 
@@ -52,24 +53,30 @@ class Space extends EntityController {
         $events_repo = App::i()->repo('Event');
 
         $_event_ids = $events_repo->findByDateInterval($date_from, $date_to, null, null, true);
-        $event_data['id'] = 'IN(' . implode(',', $_event_ids) . ')';
-        $events = $eventController->apiQuery($event_data);
-        $event_ids = array_map(function ($e){ return $e['id']; }, $events);
+        if (count($_event_ids) > 0) {
+            $event_data['id'] = 'IN(' . implode(',', $_event_ids) . ')';
 
-        $spaces = $this->repository->findByEventsAndDateInterval($event_ids, $date_from, $date_to);
-        $space_ids = array_map(function($e){ return $e->id; }, $spaces);
+            $events = $eventController->apiQuery($event_data);
+            $event_ids = array_map(function ($e){ return $e['id']; }, $events);
 
-        if($space_ids){
-            $space_data = ['id' => 'IN(' . implode(',', $space_ids) .')'];
-            foreach($query_data as $key => $val)
-                if($key[0] === '@' || $key == '_geoLocation')
-                    $space_data[$key] = $val;
+            $spaces = $this->repository->findByEventsAndDateInterval($event_ids, $date_from, $date_to);
+            $space_ids = array_map(function($e){ return $e->id; }, $spaces);
 
-            unset($space_data['@keyword']);
-            $this->apiResponse($this->apiQuery($space_data));
-        }else{
-            $this->apiResponse(key_exists('@count', $query_data) ? 0 : []);
+            if($space_ids){
+                $space_data = ['id' => 'IN(' . implode(',', $space_ids) .')'];
+                foreach($query_data as $key => $val)
+                    if($key[0] === '@' || $key == '_geoLocation')
+                        $space_data[$key] = $val;
+
+                unset($space_data['@keyword']);
+                $response = $this->apiQuery($space_data);
+            }else{
+                $response = key_exists('@count', $query_data) ? 0 : [];
+            }
+        } else {
+            $response = key_exists('@count', $query_data) ? 0 : [];
         }
+
+        $this->apiResponse($response);
     }
 }
-

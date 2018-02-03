@@ -55,6 +55,9 @@
 .hidden {
     display: none;
 }
+.visible {
+    display: block !important;
+}
 /* Text meant only for screen readers */
 .screen-reader-text {
     text-indent: 100%;

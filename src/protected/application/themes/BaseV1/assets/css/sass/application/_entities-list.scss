@@ -99,6 +99,20 @@
         color: $brand-project;
     }
 }
+.seal {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-seal;
+    }
+}
+.objeto-meta a.tag {
+    color: #fff;
+}
+
+.subsite {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-subsite;
+    }
+}
 
 //== Entity Item in List View Mode
 //

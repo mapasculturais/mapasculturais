@@ -24,31 +24,13 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
+        Traits\EntitySealRelation,
         Traits\EntityNested,
-        Traits\EntityVerifiable,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
-
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do projeto é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'type' => [
-            'required' => 'O tipo do projeto é obrigatório',
-        ],
-        'registrationFrom' => [
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
-            '!empty($this->registrationTo)' => 'Data final obrigatória caso data inicial preenchida'
-        ],
-        'registrationTo' => [
-            '$this->validateDate($value)' => 'O valor informado não é uma data válida',
-            '$this->validateRegistrationDates()' => 'A data final das inscrições deve ser maior ou igual a data inicial'
-        ]
-    ];
+        Traits\EntityDraft,
+        Traits\EntityPermissionCache,
+        Traits\EntityOriginSubsite,
+        Traits\EntityArchive;
 
     /**
      * @var integer
@@ -88,6 +70,12 @@ class Project extends \MapasCulturais\Entity
      */
     protected $longDescription;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
+     */
+    protected $updateTimestamp;
 
     /**
      * @var \DateTime
@@ -160,7 +148,7 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -182,11 +170,11 @@ class Project extends \MapasCulturais\Entity
     public $registrationFileConfigurations;
 
     /**
-     * @var bool
+     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
      *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=false)
+     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
      */
-    protected $isVerified = false;
+    public $registrationFieldConfigurations;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
@@ -200,7 +188,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\ProjectAgentRelation[] Agent Relations
      *
@@ -208,7 +196,7 @@ class Project extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__agentRelations;
-    
+
 
     /**
      * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
@@ -218,8 +206,82 @@ class Project extends \MapasCulturais\Entity
     */
     protected $__termRelations;
 
+
+    /**
+     * @var \MapasCulturais\Entities\ProjectSealRelation[] ProjectSealRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__sealRelations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
+
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
+
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Projetos');
+        else
+            return \MapasCulturais\i::__('Projeto');
+    }
+
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do projeto é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'type' => [
+                'required' => \MapasCulturais\i::__('O tipo do projeto é obrigatório'),
+            ],
+            'registrationFrom' => [
+                '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
+                '!empty($this->registrationTo)' => \MapasCulturais\i::__('Data final obrigatória caso data inicial preenchida')
+            ],
+            'registrationTo' => [
+                '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
+                '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
+            ]
+        ];
+    }
+
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
+
+    /**
+     * Return project rergistrations
+     *
+     * @return \MapasCulturais\Entities\Registration[]
+     */
+    function getAllRegistrations(){
+        // ============ IMPORTANTE =============//
+        // @TODO implementar findSentByProject no repositório de inscrições
+        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+
+        return $registrations;
     }
 
     /**
@@ -228,9 +290,8 @@ class Project extends \MapasCulturais\Entity
      * @return \MapasCulturais\Entities\Registration[]
      */
     function getSentRegistrations(){
-        // ============ IMPORTANTE =============//
-        // @TODO implementar findSentByProject no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['project' => $this]);
+        $registrations = $this->getAllRegistrations();
+
         $result = [];
         foreach($registrations as $re){
             if($re->status > 0)
@@ -306,6 +367,16 @@ class Project extends \MapasCulturais\Entity
 
         $this->publishedRegistrations = true;
 
+        // atribui os selos as inscrições selecionadas
+        $app = App::i();
+        $registrations = $app->repo('Registration')->findBy(array('project' => $this, 'status' => Registration::STATUS_APPROVED));
+
+        foreach ($registrations as $registration) {
+            $registration->setAgentsSealRelation();
+        }
+
+        $app->addEntityToRecreatePermissionCacheList($this);
+
         $this->save(true);
     }
 
@@ -322,6 +393,19 @@ class Project extends \MapasCulturais\Entity
             if($this->useRegistrationAgentRelation($def))
                 $r[] = $def;
         return $r;
+    }
+
+    function getExtraPermissionCacheUsers(){
+        $users = [];
+        if($this->publishedRegistrations) {
+            $registrations = App::i()->repo('Registration')->findBy(['project' => $this, 'status' => Registration::STATUS_APPROVED]);
+
+            foreach($registrations as $r){
+                $users = array_merge($users, $r->getUsersWithControl());
+            }
+        }
+
+        return $users;
     }
 
     function isRegistrationFieldsLocked(){
@@ -343,7 +427,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if ($user->is('admin')) {
+        if ($this->isUserAdmin($user)) {
             return true;
         }
 
@@ -359,7 +443,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if ($user->is('admin')) {
+        if ($this->isUserAdmin($user)) {
             return true;
         }
 
@@ -391,7 +475,7 @@ class Project extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if ($this->isUserAdmin($user)) {
             return true;
         }
 

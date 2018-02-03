@@ -5,7 +5,7 @@ trait EntityAvatar{
     
     protected $_avatar;
     
-    function usesAvatar(){
+    public static function usesAvatar(){
         return true;
     }
 

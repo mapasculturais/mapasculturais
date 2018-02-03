@@ -17,10 +17,8 @@ class AuthTest extends MapasCulturais_TestCase{
 
         // superadmin
 
-        $user = $app->repo('User')->find(1);
-
-        $app->auth->authenticatedUser = $user;
-
+        $this->user = 'superAdmin';
+        
         $this->assertTrue($app->auth->isUserAuthenticated(), 'Asserting that the user is authenticated.');
         $this->assertFalse($app->user->is('guest'), 'Asserting that the user is not guest.');
         $this->assertTrue($app->user->is('admin'), 'Asserting that the user is admin.');

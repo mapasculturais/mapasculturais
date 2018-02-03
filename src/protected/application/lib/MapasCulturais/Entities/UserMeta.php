@@ -9,7 +9,12 @@ use MapasCulturais\App;
 /**
  * UserMeta
  *
- * @ORM\Table(name="agent_meta")
+ * @ORM\Table(name="user_meta", indexes={
+ *      @ORM\Index(name="user_meta_owner_idx", columns={"object_id"}),
+ *      @ORM\Index(name="user_meta_owner_key_idx", columns={"object_id", "key"}),
+ *      @ORM\Index(name="user_meta_key_idx", columns={"key"}),
+ *      @ORM\Index(name="user_meta_value_idx", columns={"value"}, flags={"fulltext"})
+ * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
@@ -21,7 +26,7 @@ class UserMeta extends \MapasCulturais\Entity {
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="agent_meta_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="user_meta_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 
@@ -42,9 +47,9 @@ class UserMeta extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\User")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $owner;

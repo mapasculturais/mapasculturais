@@ -2,22 +2,12 @@
     // to prevent jQuery bug
     $(document).unbind('DOMNodeInserted.mask');
 
-    // Analytics
-    if(MapasCulturais.mode !== 'development'){
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-53455459-1', 'auto');
-        ga('send', 'pageview');
-    }
-
-
     $(document).ready(function() {
 
         var deviceAgent = navigator.userAgent.toLowerCase();
-
+        
+        var labels = MapasCulturais.gettext.tim;
+        
         var isTouchDevice = 'ontouchstart' in document.documentElement ||
         (deviceAgent.match(/(iphone|ipod|ipad)/) ||
         deviceAgent.match(/(android)/)  ||
@@ -52,13 +42,14 @@
                 delegate: 'a', // child items selector, by clicking on it popup will open
                 type: 'image',
                 closeMarkup: '<span class="mfp-close icon icon-close"></span>',
+                titleSrc: 'title',
                 gallery:{
                     enabled:true,
 
                     arrowMarkup: '<button title="%title%" type="button" class="mfp-arrow mfp-arrow-%dir%"><span class="icon icon-arrow-%dir% mfp-prevent-close"></span></button>', // markup of an arrow button
-                    tPrev: 'Anterior', // title for left button
-                    tNext: 'Próxima', // title for right button
-                    tCounter: '%curr% de %total%' // markup of counter
+                    tPrev: labels['previous'], // title for left button
+                    tNext: labels['next'], // title for right button
+                    tCounter: labels['counter'] // markup of counter
                 }
             });
         }
@@ -338,7 +329,7 @@
         });
 
         if ($('.js-page-menu-item').length) {
-            $items = $('.js-page-menu-item');
+            var $items = $('.js-page-menu-item');
 
             // encontra o próximo item para o scroll para baixo
             var find_next_page_menu_item = function() {
@@ -376,9 +367,12 @@
                         $('nav#home-nav a.up').animate({opacity: 1}, speed) :
                         $('nav#home-nav a.up').animate({opacity: 0}, speed);
 
-                find_next_page_menu_item() ?
-                        $('nav#home-nav a.down').animate(speed) :
-                        $('nav#home-nav a.down').fadeOut(speed);
+                if(find_next_page_menu_item()){
+                    $('nav#home-nav a.down').animate(speed);
+                    $('nav#home-nav a.down').fadeIn(speed);
+                } else {
+                    $('nav#home-nav a.down').fadeOut(speed);
+                }
             };
 
             var scroll_timeout = null;

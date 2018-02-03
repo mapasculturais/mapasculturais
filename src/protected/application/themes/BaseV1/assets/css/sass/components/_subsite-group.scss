@@ -1,0 +1,40 @@
+.subsite {
+    .avatar {
+        position: relative;
+        &:hover {
+            .descricao-do-subsite {
+                display: block;
+            }
+        }
+        &.pending {
+            img {
+                opacity: .3;
+            }
+        }
+        .descricao-do-subsite {
+            display: none;
+            position: absolute;
+            z-index: $z-index-descricao-do-subsite;
+            top: 3.5rem;
+            right: -.75rem;
+            width: 200px;
+            padding: $padding-base;
+            font-size: $font-size-smaller;
+            background: #fff;
+            border-radius: $border-radius-base;
+            box-shadow: $box-shadow-dropdown;
+            &:before {
+                @include arrow(up, $caret-width-base, #fff);
+                right: $padding-large;
+            }
+            h1 {
+                font-size: $font-size-base;
+                line-height: $line-height-base;
+                margin-bottom: 0;
+            }
+            .btn {
+                margin-top: $line-height-half;
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
 <?php
-include('parts/header.php');
+$this->part('header', $render_data);
 echo $TEMPLATE_CONTENT;
-include('parts/footer.php');
+$this->part('footer', $render_data);

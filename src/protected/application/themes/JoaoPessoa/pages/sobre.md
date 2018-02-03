@@ -8,5 +8,5 @@ João Pessoa é a primeira capital do Nordeste a implementar a ferramenta na ges
 
 Você encontra mais informações sobre a ferramenta Mapas Culturais no site do [Instituto TIM](http://institutotim.org.br/).
 
-Para dúvidas e sugestões sobre JP Cultura, utilize o endereço [mapaculturaljp@gmail.com](mailto:mapaculturaljp@gmail.com).
+Para dúvidas e sugestões sobre JP Cultura, utilize o endereço [mapasjpcultura@gmail.com](mailto:mapasjpcultura@gmail.com).
 

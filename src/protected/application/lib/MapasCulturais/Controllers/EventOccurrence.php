@@ -12,8 +12,8 @@ use MapasCulturais\Traits;
 class EventOccurrence extends EntityController {
     use Traits\ControllerAPI;
     
-    function POST_index() {
-        App::i()->pass();
+    public function POST_index($data = null) {
+        $this->POST_create($data);
     }
 
     function GET_create() {
@@ -37,14 +37,18 @@ class EventOccurrence extends EntityController {
     }
 
 
-    function POST_create(){
+    function POST_create($data = null){
         $this->requireAuthentication();
-        $event = App::i()->repo('Event')->find($this->postData['eventId']);
+        
+        $app = App::i();
+        $app->applyHookBoundTo($this, "POST({$this->id}.create):data", ['data' => &$data]);
+        
+        $event = $app->repo('Event')->find($this->postData['eventId']);
         $occurrence = new \MapasCulturais\Entities\EventOccurrence;
         $occurrence->event = $event;
 
         if (@$this->postData['spaceId']) {
-            $occurrence->space = App::i()->repo('Space')->find($this->postData['spaceId']);
+            $occurrence->space = $app->repo('Space')->find($this->postData['spaceId']);
         }
         $postData = $this->postData;
         unset($postData['eventId']);
@@ -59,6 +63,10 @@ class EventOccurrence extends EntityController {
 
     function POST_edit(){
         $this->requireAuthentication();
+        
+        $app = App::i();
+        $app->applyHookBoundTo($this, "POST({$this->id}.edit):data", ['data' => &$data]);
+        
         $occurrence = $this->requestedEntity;
         $postData = $this->postData;
         unset($postData['eventId']);
@@ -66,7 +74,7 @@ class EventOccurrence extends EntityController {
         $occurrence->rule = $postData;
 
         if (@$this->postData['spaceId']) {
-            $occurrence->space = App::i()->repo('Space')->find($this->postData['spaceId']);
+            $occurrence->space = $app->repo('Space')->find($this->postData['spaceId']);
         }
 
         if ($errors = $occurrence->validationErrors) {

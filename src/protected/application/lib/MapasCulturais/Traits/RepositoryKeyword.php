@@ -17,7 +17,7 @@ trait RepositoryKeyword{
      * This repository uses Keyword
      * @return true
      */
-    function usesKeyword(){
+    public static function usesKeyword(){
         return true;
     }
 
@@ -58,6 +58,17 @@ trait RepositoryKeyword{
 
         return "unaccent(lower(e.name)) LIKE unaccent(lower(:keyword)) $where";
     }
+    
+    function getIdsByKeywordDQL($keyword){
+        $keyword = "%{$keyword}%";
+
+        $from = $this->_getKeywordDQLFrom($keyword);
+        $where = $this->_getKeywordDQLWhere($keyword);
+
+        $dql = "SELECT e.id FROM $from WHERE $where";
+        
+        return $dql;
+    }
 
     /**
      * Returns the found entities ids
@@ -66,12 +77,8 @@ trait RepositoryKeyword{
      * @return array
      */
     function getIdsByKeyword($keyword){
-        $keyword = "%{$keyword}%";
-
-        $from = $this->_getKeywordDQLFrom($keyword);
-        $where = $this->_getKeywordDQLWhere($keyword);
-
-        $dql = "SELECT DISTINCT e.id FROM $from WHERE $where";
+        $dql = $this->getIdsByKeywordDQL($keyword);
+        
         $query = $this->_em->createQuery($dql);
 
         $query->setParameter('keyword', $keyword);

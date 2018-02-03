@@ -1,0 +1,12 @@
+web:
+  image: hacklab/mapasculturais
+  ports:
+   - "80:80"
+  volumes:
+   - .:/srv/mapas/mapasculturais
+  links:
+   - db:postgis
+db:
+  image: mdillon/postgis
+  environment:
+   - POSTGRES_PASSWORD=postgis

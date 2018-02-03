@@ -43,9 +43,9 @@ $(function(){
 
 </script>
 <div class="panel-main-content">
-    <h1>Revista Em Cartaz</h1>
+    <h1><?php \MapasCulturais\i::_e("Revista Em Cartaz");?></h1>
     <div class="clearfix">
-            Filtrar Eventos
+            <?php \MapasCulturais\i::_e("Filtrar Eventos");?>
             <label for="data-de-inicio">de</label>
             <div class="emcartaz-datepicker-container">
                 <input id="from-visible" type="text" class="js-emcartaz-dates emcartaz-datepicker"
@@ -62,9 +62,9 @@ $(function(){
             <input id="to" name="until" type="hidden" value="<?php echo $to->format('Y-m-d'); ?>">
     </div>
 
-    <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-preview'); ?>')"> Visualizar  </a>
+    <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-preview'); ?>')"> <?php \MapasCulturais\i::_e("Visualizar");?>  </a>
     |
-    <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-download'); ?>')"> Baixar  </a>
+    <a href="#" onclick="go('<?php echo $app->createUrl('panel', 'em-cartaz-download'); ?>')"> <?php \MapasCulturais\i::_e("Baixar");?>  </a>
     <br><br>
     <div>
         <?php echo $content; ?>

@@ -10,26 +10,5 @@ jQuery(document).ready(function() {
 
 (function(angular) {
     var app = angular.module('ng-mapasculturais', []);
-    app.config(["$httpProvider", function($httpProvider) {
-
-            $httpProvider.responseInterceptors.push(['$q', '$rootScope', function($q, $rootScope) {
-
-                return function(promise) {
-                    $rootScope.$broadcast("event:startProgress");
-                    return promise
-                        .then(
-                            function(response) {
-                                $rootScope.$broadcast("event:endProgress");
-                                return response;
-                            },
-                            function(response) { //on error
-                                $rootScope.$broadcast("event:endProgress");
-                                return $q.reject(response);
-                            }
-                        );
-
-                };
-            }]);
-        }]);
+    app.config(["$httpProvider", function($httpProvider) {}]);
 })(angular);
-

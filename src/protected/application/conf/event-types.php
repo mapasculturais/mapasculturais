@@ -5,89 +5,95 @@
 return array(
     'metadata' => array(
         'subTitle' => array(
-            'label' => 'Sub-Título',
+            'label' => \MapasCulturais\i::__('Sub-Título'),
             'type' => 'text'
         ),
         'registrationInfo' => array(
-            'label' => 'Inscrições',
+            'label' => \MapasCulturais\i::__('Inscrições'),
             'type' => 'text'
         ),
         'classificacaoEtaria' => array(
-            'label' => 'Classificação Etária',
+            'label' => \MapasCulturais\i::__('Classificação Etária'),
             'type' => 'select',
             'options' => array(
-                'Livre' => 'Livre',
-                '18 anos' => '18 anos',
-                '16 anos' => '16 anos',
-                '14 anos' => '14 anos',
-                '12 anos' => '12 anos',
-                '10 anos' => '10 anos'
+                'Livre' => \MapasCulturais\i::__('Livre'),
+                '18 anos' => \MapasCulturais\i::__('18 anos'),
+                '16 anos' => \MapasCulturais\i::__('16 anos'),
+                '14 anos' => \MapasCulturais\i::__('14 anos'),
+                '12 anos' => \MapasCulturais\i::__('12 anos'),
+                '10 anos' => \MapasCulturais\i::__('10 anos')
             ),
             'validations' => array(
-                'required' => "A classificação etária é obrigatória."
+                'required' => \MapasCulturais\i::__("A classificação etária é obrigatória.")
             )
         ),
 
         'telefonePublico' => array(
-            'label' => 'Mais Informações',
+            'label' => \MapasCulturais\i::__('Mais Informações'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => 'Por favor, informe o telefone público no formato (xx) xxxx-xxxx.'
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
             )
         ),
 
         'preco' => array(
-            'label' => 'Preço'
+            'label' => \MapasCulturais\i::__('Preço')
         ),
 
         'traducaoLibras' => array(
-            'label' => 'Tradução para LIBRAS',
+            'label' => \MapasCulturais\i::__('Tradução para LIBRAS'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informado',
-                'Sim' => 'Sim',
-                'Não' => 'Não'
+                '' => \MapasCulturais\i::__('Não Informado'),
+                'Sim' => \MapasCulturais\i::__('Sim'),
+                'Não' => \MapasCulturais\i::__('Não')
             )
         ),
 
         'descricaoSonora' => array(
-            'label' => 'Áudio descrição',
+            'label' => \MapasCulturais\i::__('Áudio descrição'),
             'type' => 'select',
             'options' => array(
-                '' => 'Não Informado',
-                'Sim' => 'Sim',
-                'Não' => 'Não'
+                '' => \MapasCulturais\i::__('Não Informado'),
+                'Sim' => \MapasCulturais\i::__('Sim'),
+                'Não' => \MapasCulturais\i::__('Não')
             )
         ),
 
         'site' => array(
-            'label' => 'Site',
+            'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
-                "v::url()" => "A url informada é inválida."
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'facebook' => array(
-            'label' => 'Facebook',
+            'label' => \MapasCulturais\i::__('Facebook'),
             'validations' => array(
-                "v::url('facebook.com')" => "A url informada é inválida."
+                "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'twitter' => array(
-            'label' => 'Twitter',
+            'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
-                "v::url('twitter.com')" => "A url informada é inválida."
+                "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
         'googleplus' => array(
-            'label' => 'Google+',
+            'label' => \MapasCulturais\i::__('Google+'),
             'validations' => array(
-                "v::url('plus.google.com')" => "A url informada é inválida."
+                "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
+        'instagram' => array(
+            'label' => \MapasCulturais\i::__('Instagram'),
+            'validations' => array(
+                "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
+            )
+        )
 
     ),
     'items' => array(
-        1 =>  array('name' => 'Padrão'),
+        1 =>  array('name' => \MapasCulturais\i::__('Padrão')),
     )
     /* EXEMPLOS DE METADADOS:
 
@@ -95,8 +101,8 @@ return array(
         'label' => 'CNPJ',
         'type' => 'text',
         'validations' => array(
-            'unique' => 'Este CNPJ já está cadastrado em nosso sistema.',
-            'v::cnpj()' => 'O CNPJ é inválido.'
+            'unique' => \MapasCulturais\i::__('Este CNPJ já está cadastrado em nosso sistema.'),
+            'v::cnpj()' => \MapasCulturais\i::__('O CNPJ é inválido.')
         )
     ),
     'cpf' => array(
@@ -125,7 +131,7 @@ return array(
         ),
         'default_value' => array(),
         'validations' => array(
-            'v::arr()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
+            'v::arrayType()->notEmpty()' => 'Você deve marcar ao menos uma opção.'
         )
     ),
     'checkbox' => array(
@@ -185,7 +191,7 @@ return array(
         ),
 
         'validations' => array(
-            "v::string()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
+            "v::stringType()->in('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','OUT')" => 'O estado informado não existe.'
         )
     )
      */

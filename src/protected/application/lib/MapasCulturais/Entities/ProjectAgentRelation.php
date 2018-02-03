@@ -21,14 +21,16 @@ class ProjectAgentRelation extends AgentRelation {
      * })
      */
     protected $owner;
-    
+
     protected function canUserCreate($user){
-        if($user->is('admin'))
-            return true;
-        
         if($user->is('guest'))
             return false;
-        
+
+        if($this->owner->isUserAdmin($user) && $this->agent->isUserAdmin($user)){
+            return true;
+        }
+
+
         if($this->status === self::STATUS_REGISTRATION && $user->id === $this->agent->user->id)
             return true;
         else
@@ -57,7 +59,7 @@ class ProjectAgentRelation extends AgentRelation {
 
     function getGroup(){
         if($this->group == 'registration')
-            return App::txt("project registration");
+            return \MapasCulturais\i::__('Aprovados');
         else
             return $this->group;
 

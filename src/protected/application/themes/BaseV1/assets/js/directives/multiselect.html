@@ -1,0 +1,24 @@
+<table class="select-table">
+    <tr>
+        <td class="left">
+            <label ng-repeat="term in terms" ng-if="$even"> 
+                <input ng-checked="checked(term.value)" ng-click="toggleTerm(term.value)" type="checkbox" > {{ term.label }}
+            </label>
+        </td>
+        <td class="right">
+            <label ng-repeat="term in terms" ng-if="$odd"> 
+                <input ng-checked="checked(term.value)" ng-click="toggleTerm(term.value)" type="checkbox" > {{ term.label }}
+            </label>
+        </td>
+    </tr>
+</table>
+<div class="clear"></div>
+<label ng-if="allowOther" >
+    <input ng-model="cfg.show" type="checkbox" ng-checked="cfg.show"> {{cfg.allowOtherText}}<span ng-if="cfg.show">: <small style="float:right">Separe os valores com ponto e vírgula (;)</small></span>
+</label>
+
+<div ng-if="allowOther" class="row">
+    <label ng-show="cfg.show" class="colunm-full">
+        <input type="text" class="colunm3" ng-disabled="!cfg.show" ng-model="cfg.outros" ng-blur="update()" ng-keyup="update($event)">
+    </label>
+</div>

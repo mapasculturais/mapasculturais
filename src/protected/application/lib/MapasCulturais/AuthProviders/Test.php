@@ -21,7 +21,7 @@ class Test extends \MapasCulturais\AuthProvider{
 
     public function _requireAuthentication() {
         $app = \MapasCulturais\App::i();
-        $app->halt(401, $app->txt('This action requires authentication.'));
+        $app->halt(401, \MapasCulturais\i::__('This action requires authentication.'));
     }
 
     /**

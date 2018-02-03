@@ -18,14 +18,6 @@ class RegistrationAgentRelation extends AgentRelation{
      * })
      */
     protected $owner;
-    
-    /**
-     * @var \MapasCulturais\Entities\RegistrationAgentRelation[] Agent Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
-    */
-    protected $__agentRelations;
 
     public function save($flush = false) {
         $old_relations = $this->repo()->findBy(['group' => $this->group, 'owner' => $this->owner]);

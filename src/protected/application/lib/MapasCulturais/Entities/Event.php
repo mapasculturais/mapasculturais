@@ -25,24 +25,13 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityMetaLists,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
-        Traits\EntityVerifiable,
+        Traits\EntitySealRelation,
         Traits\EntitySoftDelete,
-        Traits\EntityDraft;
-
-
-
-    protected static $validations = [
-        'name' => [
-            'required' => 'O nome do evento é obrigatório'
-        ],
-        'shortDescription' => [
-            'required' => 'A descrição curta é obrigatória',
-            'v::string()->length(0,400)' => 'A descrição curta deve ter no máximo 400 caracteres'
-        ],
-        'project' => [
-            '$this->validateProject()' => 'Você não pode criar eventos neste projeto.'
-        ]
-    ];
+        Traits\EntityDraft,
+        Traits\EntityPermissionCache,
+        Traits\EntityOriginSubsite,
+        Traits\EntityArchive,
+        Traits\EntityRevision;
 
     /**
      * @var integer
@@ -111,7 +100,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -121,19 +110,12 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
      */
     protected $project = null;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=false)
-     */
-    protected $isVerified = false;
 
 
     /**
@@ -148,7 +130,7 @@ class Event extends \MapasCulturais\Entity
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
     */
     protected $__files;
-    
+
     /**
      * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
      *
@@ -165,18 +147,79 @@ class Event extends \MapasCulturais\Entity
     */
     protected $__termRelations;
 
+
+    /**
+     * @var \MapasCulturais\Entities\EventSealRelation[] EventSealRelation
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__sealRelations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
+     */
+    protected $updateTimestamp;
+
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
+
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
+
     private $_newProject = false;
+
+    public function getEntityTypeLabel($plural = false) {
+        if ($plural)
+            return \MapasCulturais\i::__('Eventos');
+        else
+            return \MapasCulturais\i::__('Evento');
+    }
+
+    static function getValidations() {
+        return [
+            'name' => [
+                'required' => \MapasCulturais\i::__('O nome do evento é obrigatório')
+            ],
+            'shortDescription' => [
+                'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+            ],
+            'project' => [
+                '$this->validateProject()' => \MapasCulturais\i::__('Você não pode criar eventos neste projeto.')
+            ]
+        ];
+    }
 
     function publish($flush = false){
         $this->checkPermission('publish');
-        
+
         $app = App::i();
-        
+
         $app->disableAccessControl();
-        
+
         $this->status = self::STATUS_ENABLED;
         $this->save($flush);
-        
+
         $app->enableAccessControl();
     }
 
@@ -259,7 +302,7 @@ class Event extends \MapasCulturais\Entity
         $rsm->addFieldResult('e', 'until', '_until');
         $rsm->addFieldResult('e', 'starts_at', '_startsAt');
         $rsm->addFieldResult('e', 'ends_at', '_endsAt');
-        $rsm->addFieldResult('e', 'rule', '_rule');
+        $rsm->addFieldResult('e', 'rule', 'rule');
 
         $dql_limit = $dql_offset = '';
 
@@ -363,6 +406,24 @@ class Event extends \MapasCulturais\Entity
         return $result ? $result : [];
     }
 
+    function getExtraEntitiesToRecreatePermissionCache(){
+        $result = [];
+        if($this->project){
+            $result[] = $this->project;
+        }
+
+        return $result;
+    }
+
+    function getExtraPermissionCacheUsers(){
+        if($this->project){
+            return $this->project->getUsersWithControl();
+        } else {
+            return [];
+        }
+
+    }
+
     protected function canUserCreate($user){
         $can = $this->_canUser($user, 'create'); // this is a method of Trait\EntityOwnerAgent
 
@@ -381,35 +442,75 @@ class Event extends \MapasCulturais\Entity
             return $can;
         }
     }
-    
+
+    protected function canUserUnpublish($user){
+        return $this->canUserPublish($user);
+    }
+
     protected function canUserPublish($user){
         if($user->is('guest')){
             return false;
         }
-        
-        if($user->is('admin')){
+
+        if($this->isUserAdmin($user)){
             return true;
         }
-        
+
         if($this->canUser('@control', $user)){
             return true;
         }
-        
+
         if($this->project && $this->project->canUser('@control', $user)){
             return true;
         }
-        
+
         return false;
     }
-    
+
     protected function canUserView($user){
-        if($this->status === self::STATUS_ENABLED){
-            return true;
-        }else if($this->status === self::STATUS_DRAFT){
+        if($this->status === self::STATUS_DRAFT){
             return $this->canUser('@control', $user) || ($this->project && $this->project->canUser('@control', $user));
+        } else {
+            return parent::canUserView($user);
         }
-        
+
         return false;
+    }
+
+    public function getRevisionData() {
+        $revisionData = [];
+        if(count($this->occurrences) > 0) {
+            foreach($this->occurrences as $occurrence) {
+                $revisionData['occurrences'][$occurrence->space->id]['items'][] = [
+                    'id' => $occurrence->id,
+                    'description' => $occurrence->description,
+                    '_startsOn' => $occurrence->_startsOn,
+                    '_endsOn' => $occurrence->_endsOn,
+                    '_startsAt' => $occurrence->_startsAt,
+                    '_endsAt' => $occurrence->_endsAt,
+                    'frequency' => $occurrence->frequency,
+                    'count' => $occurrence->count,
+                    '_until' => $occurrence->_until,
+                    'rule' => $occurrence->rule
+                ];
+
+                $revisionData['occurrences'][$occurrence->space->id]['name'] = $occurrence->space->name;
+                $revisionData['occurrences'][$occurrence->space->id]['location'] = [
+                                                                                    'latitude' => $occurrence->space->location->latitude,
+                                                                                    'longitude' => $occurrence->space->location->longitude
+                                                                                    ];
+                $revisionData['occurrences'][$occurrence->space->id]['endereco'] = $occurrence->space->endereco;
+                $revisionData['occurrences'][$occurrence->space->id]['revision'] = App::i()->repo('EntityRevision')->findEntityLastRevisionId($occurrence->space->getClassName(),$occurrence->space->id);
+            }
+        }
+
+        if($this->project) {
+            $entity_data = $this->project->simplify("id,name");
+            $entity_data->{'revision'} = App::i()->repo('EntityRevision')->findEntityLastRevisionId($this->project->getClassName(),$entity_data->id);
+            $revisionData['project'] = $entity_data;
+        }
+
+        return $revisionData;
     }
 
     //============================================================= //

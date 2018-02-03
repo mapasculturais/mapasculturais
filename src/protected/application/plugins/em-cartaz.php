@@ -87,7 +87,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             if (!empty($occurrence->rule->description)) {
                 $occurenceDescription .= trim($occurrence->rule->description) . '. ';
             } else {
-                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . $app->txt($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
+                $occurenceDescription .= $occurrence->startsOn->format('d \d\e') . ' ' . \MapasCulturais\i::__($occurrence->startsOn->format('F')) . ' às ' . $occurrence->startsAt->format('H:i').'. ';
             }
             if (!empty($occurrence->rule->price)) {
                 $occurenceDescription .= trim($occurrence->rule->price) . '. ';
@@ -139,7 +139,8 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
     foreach($linguagens as $linguagem){
 
         $query = array(
-            'isVerified' => 'eq(true)',
+            '@version' => '1',
+            '@verified' => 'IN(1)',
             '@from'=>$from->format('Y-m-d'),
             '@to'=>$to->format('Y-m-d'),
             '@select' => 'id,name,shortDescription,singleUrl,classificacaoEtaria,location,metadata,occurrences,project,relatedAgents',
@@ -162,7 +163,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         $projects = array();
 
         foreach($events as $i => $event){
-            if(false && $event->project){
+            if($event->project){
                 if(!isset($projects[$event->project->id])){
                     $projects[$event->project->id] = array(
                         'project' => $event->project,
@@ -181,6 +182,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
         }
 
         foreach($projects as $project){
+
             $textRunObj = $section->createTextRun();
 
             if($this->action === 'em-cartaz-preview'){

@@ -4,6 +4,8 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
+
 
 /**
  * Notification
@@ -16,9 +18,11 @@ use MapasCulturais\App;
  *
  * @ORM\Table(name="notification")
  * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Notification")
  */
 class Notification extends \MapasCulturais\Entity{
+    use Traits\EntityPermissionCache;
+    
     const STATUS_PENDING = 1;
     const STATUS_VIEWED = 2;
 
@@ -37,7 +41,7 @@ class Notification extends \MapasCulturais\Entity{
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
-    protected $createTimestamp = 'now()';
+    protected $createTimestamp;
 
     /**
      * @var \DateTime
@@ -80,6 +84,16 @@ class Notification extends \MapasCulturais\Entity{
      */
     protected $request;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+     */
+    protected $__metadata;
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
 
     function getOwnerUser() {
         return $this->user;
@@ -102,8 +116,6 @@ class Notification extends \MapasCulturais\Entity{
     }
 
 
-
-
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
@@ -124,4 +136,3 @@ class Notification extends \MapasCulturais\Entity{
     /** @ORM\PostUpdate */
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }
-

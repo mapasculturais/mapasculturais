@@ -1,5 +1,5 @@
 <?php
-$this->part('header');
-$this->part('panel-nav');
+$this->part('header', $render_data);
+$this->part('panel-nav', $render_data);
 echo $TEMPLATE_CONTENT;
-$this->part('footer');
+$this->part('footer', $render_data);

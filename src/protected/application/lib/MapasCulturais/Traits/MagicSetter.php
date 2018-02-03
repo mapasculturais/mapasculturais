@@ -22,7 +22,7 @@ trait MagicSetter{
             $this->$name = $value;
             return true;
 
-        }else if($this->usesMetadata() && $this->getRegisteredMetadata($name)){
+        }else if(method_exists($this,'usesMetadata') && $this->usesMetadata() && $this->getRegisteredMetadata($name)){
             return $this->__metadata__set($name, $value);
 
         }elseif($name[0] !== '_'){

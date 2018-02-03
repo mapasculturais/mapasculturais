@@ -1,3 +1,10 @@
+.alignleftmg {
+    float: left;
+}
+.alignrightmg {
+    float: right;
+}
+
 /* =Como usar
 -------------------------------------------------------------- */
 .como-usar {
@@ -24,8 +31,21 @@
     font-family: $font-stack-base;
     font-weight: normal;
 }
+.como-usar-content.titulo {
+    color: $brand-primary;
+    font-family: $font-stack-base;
+    font-weight: normal;    
+}
 .como-usar-img {
     box-shadow: $box-shadow-image;
+}
+
+.como-usar-img.alignleftmg {
+    margin-right: 2rem;    
+}
+
+.como-usar-img.alignrightmg {
+    margin-left: 2rem;    
 }
 
 /* =Sobre

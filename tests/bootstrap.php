@@ -26,6 +26,9 @@ define('PROTECTED_PATH', BASE_PATH . 'protected/');
 define('APPLICATION_PATH', PROTECTED_PATH . 'application/');
 define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
+define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
+define('MODULES_PATH', APPLICATION_PATH.'lib/modules/');
+define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
 
  // Prepare a mock environment
 \Slim\Environment::mock(array_merge(array(
@@ -80,7 +83,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
      * @param mixed $user
      * @return \MapasCulturais\Entity
      */
-    function getNewEntity($class, $user = null){
+    function getNewEntity($class, $user = null, $owner = null){
         if(!is_null($user)){
             $_user = $this->app->user->is('guest') ? null : $this->app->user;
             $this->user = $user;
@@ -89,12 +92,19 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         $app = MapasCulturais\App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
 
-        $type = array_shift($app->getRegisteredEntityTypes($classname));
+        $_types = $app->getRegisteredEntityTypes($classname);
+        $type = array_shift($_types);
 
         $entity = new $classname;
         $entity->name = "Test $class "  . uniqid();
         $entity->type = $type;
         $entity->shortDescription = 'A litle short description';
+
+        if($owner){
+            $entity->owner = $owner;
+        } else if($app->user->is('guest') && $user && $classname::usesOwnerAgent()){
+            $entity->owner = $user->profile;
+        }
 
         if(!is_null($user)){
             $this->user = $_user;
@@ -102,6 +112,33 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         return $entity;
     }
 
+    
+    function assertStatus($method, $status, $url, $message){
+        $c = $this->$method($url);
+        $this->assertEquals($status, $c->http_status_code, $message);
+        return $c;
+    }
+
+    function assertGet200($url, $message){
+        return $this->assertStatus('get', 200, $url, $message);
+    }
+
+    function assertGet401($url, $message){
+        return $this->assertStatus('get', 401, $url, $message);
+    }
+
+    function assertGet403($url, $message){
+        return $this->assertStatus('get', 403, $url, $message);
+    }
+
+    function assertGet404($url, $message){
+        return $this->assertStatus('get', 404, $url, $message);
+    }
+
+    function assertGet503($url, $message){
+        return $this->assertStatus('get', 503, $url, $message);
+    }
+    
     function assertPermissionDenied($callable, $msg = ''){
         $exception = null;
         try{
@@ -134,6 +171,8 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
             $callable = \Closure::bind($callable, $this);
             $callable();
         }catch (\MapasCulturais\Exceptions\WorkflowRequest $ex) {
+            $exception = $ex;
+        }catch(\Exception $ex){
             $exception = $ex;
         }
 

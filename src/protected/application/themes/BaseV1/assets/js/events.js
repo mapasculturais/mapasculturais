@@ -58,6 +58,9 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
         var mtime = moment($startsAt.val(), 'HH:mm');
 
         if(mtime.isValid() && mendtime.isValid()) {
+            if(mtime > mendtime){
+                mendtime = mendtime.add('days', 1);
+            }
             $duration.val(Math.abs(mendtime.diff(mtime, 'minutes')));
         }
       }});
@@ -75,11 +78,14 @@ MapasCulturais.EventOccurrenceManager = {
     formatDate : function (value){
         if(!value)
             return '';
-        else
+        else {
+            value = value.replace(/-/g, ' '); // Corrige Firefox
             return new Date(value + ' 12:00:00 GMT')
                 .toLocaleDateString(this.localeDateOptions.locale, this.localeDateOptions.dateOptions);
+        }
     },
     init : function(selector) {
+        var labels = MapasCulturais.gettext.singleEvents;
         $(selector).ajaxForm({
             success: function (response, statusText, xhr, $form)  {
 
@@ -87,16 +93,18 @@ MapasCulturais.EventOccurrenceManager = {
                 if(response.error){
                     var $element = null,
                         message;
+                        
                     for(i in response.data) {
                         message = response.data[i].join(', ').toLowerCase();
 
                         if(i == 'space') $element = $form.find('.js-space');
                         else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="Erro:'+message+'"/>');
+                     // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
+                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
                         //$form.find('[name="'+i+'"]')
                     }
                     $form.parent().scrollTop(0);
-                    $form.find('div.alert.danger').html('Corrija os erros indicados abaixo.')
+                    $form.find('div.alert.danger').html(labels['correctErrors'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -126,13 +134,12 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parents('.js-dialog').find('.js-close').click();
 
                 //Por enquanto sempre inicializa o mapa
-                //console.log('#occurrence-map-'+response.id, $('#occurrence-map-'+response.id), $('#occurrence-map-'+response.id).find('.toggle-mapa'));
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
 
 
                 if(xhr.status === 202){
-                    MapasCulturais.Messages.alert('Sua requisição para criar a ocorrência do evento no espaço <strong>' + response.space.name + '</strong> foi enviada.');
+                    MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
                 }
 
             },
@@ -140,12 +147,12 @@ MapasCulturais.EventOccurrenceManager = {
                 $form.parent().scrollTop(0);
 
                 if(xhr.status === 403){
-                    $form.find('div.alert.danger').html('Você não tem permissão para criar eventos nesse espaço.')
+                    $form.find('div.alert.danger').html(labels['notAllowed'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
                 }else{
-                    $form.find('div.alert.danger').html('Erro inesperado.')
+                    $form.find('div.alert.danger').html(labels['unexpectedError'])
                         .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
                         .delay(MapasCulturais.Messages.delayToFadeOut)
                         .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
@@ -155,7 +162,7 @@ MapasCulturais.EventOccurrenceManager = {
             beforeSubmit: function(arr, $form, options) {
 
                 if ($form.find('input[name="description"]').data('synced') != 1)
-                    return confirm('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?');
+                    return confirm(labels['confirmDescription']);
 
                 return true;
 
@@ -245,8 +252,6 @@ MapasCulturais.EventHumanReadableManager = {
     },
     getSuggestion: function(selector) {
 
-        var human = '';
-
         var date_s = $(selector).find('.js-start-date').val();
         var hour = $(selector).find('#horario-de-inicio').val();
         var frequency = $(selector).find('select[name="frequency"]').val();
@@ -254,72 +259,13 @@ MapasCulturais.EventHumanReadableManager = {
         var weekDays = [];
         $(selector).find('input[type="checkbox"]:checked').each(function() { if ($(this).is(':checked')) weekDays.push($(this).attr('name').replace(/[^\d]/g, '')) });
 
-        //console.log( date_s);
-        //console.log( hour);
-        //console.log( frequency);
-        //console.log( date_e);
-        //console.log( weekDays);
-
         var mdate_s = false;
         var mdate_e = false;
 
         if (date_s) mdate_s = moment(date_s, 'DD/MM/YYYY');
         if (date_e) mdate_e = moment(date_e, 'DD/MM/YYYY');
 
-        if (frequency == 'once') {
-            if (!mdate_s) return '...';
-            human += 'Dia ' + mdate_s.format('D [de] MMMM [de] YYYY');
-        } else {
-
-            if (!mdate_s || !mdate_e) return '...';
-
-            if (frequency == 'daily') {
-                human += 'Diariamente';
-            } else if (frequency == 'weekly') {
-
-
-                if (weekDays.length > 0) {
-
-                    if (weekDays[0] == '0' || weekDays[0] == '6') {
-                        human += 'Todo ';
-                    } else {
-                        human += 'Toda ';
-                    }
-
-                    var count = 1;
-                    $.each(weekDays, function(i, v) {
-                        var wformat = weekDays.length > 1 ? 'ddd' : 'dddd';
-                        human += moment().day(v).format(wformat);
-                        count ++;
-                        if (count == weekDays.length)
-                            human += ' e ';
-                        else if (count < weekDays.length)
-                            human += ', '
-                    });
-                }
-            }
-
-            if (mdate_s.year() != mdate_e.year()) {
-                human += ' de ' + mdate_s.format('D [de] MMMM [de] YYYY') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
-            } else {
-                if (mdate_s.month() != mdate_e.month()) {
-                    human += ' de ' + mdate_s.format('D [de] MMMM') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
-                } else {
-                    human += ' de ' + mdate_s.format('D') + ' a ' + mdate_e.format('D [de] MMMM [de] YYYY');
-                }
-            }
-
-
-        }
-
-        if (hour) {
-            if (hour.substring(0,2) == '01')
-                human += ' à ' + hour;
-            else
-                human += ' às ' + hour;
-        }
-
-        return human;
+        return MapasCulturais.createHumanReadableOccurrences(frequency, mdate_s, mdate_e, weekDays, hour);
 
     }
 };

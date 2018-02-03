@@ -98,8 +98,23 @@ class FileSystem extends \MapasCulturais\Storage{
      * @return string The URL to the file.
      */
     protected function _getUrl(\MapasCulturais\Entities\File $file) {
-        return App::i()->baseUrl . $this->config['baseUrl'] . $this->getPath($file, true);
+        $relative_path = $this->getPath($file, true);
+        return $this->getUrlFromRelativePath($relative_path);
     }
+    
+    
+    /**
+     * Returns the URL based on a relative path.
+     *
+     * @param \MapasCulturais\Entities\File $file
+     *
+     * @return string The URL to the file.
+     */
+    protected function _getUrlFromRelativePath($relative_path) {
+        return App::i()->baseUrl . $this->config['baseUrl'] . $relative_path;
+    }
+        
+    
 
     /**
      * Returns the path to the file.
@@ -112,14 +127,21 @@ class FileSystem extends \MapasCulturais\Storage{
      * @return string The path to the file.
      */
     protected function _getPath(\MapasCulturais\Entities\File $file, $relative = false){
+        $relative_path = $file->getRelativePath(false);
+        
+        if($relative && $relative_path){
+            return $relative_path;
+        }
         $parent = $file->parent ? $file->parent : $file->owner;
 
-        if($parent && is_object($parent) && $parent instanceof \MapasCulturais\Entities\File){
-            $relative_path = dirname($this->getPath($parent, true)) . '/file/' . $parent->id . '/' . $file->name;;
-        }else{
-            $relative_path = strtolower(str_replace("MapasCulturais\Entities\\", "" , $parent->getClassName())) . '/' . $parent->id . '/' . $file->name;
+        if(!$relative_path){
+            if($parent && is_object($parent) && $parent instanceof \MapasCulturais\Entities\File){
+                $relative_path = dirname($this->getPath($parent, true)) . '/file/' . $parent->id . '/' . $file->name;;
+            }else{
+                $relative_path = strtolower(str_replace("MapasCulturais\Entities\\", "" , $parent->getClassName())) . '/' . $parent->id . '/' . $file->name;
+            }
         }
-
+        
         $result = $relative ? $relative_path : $this->config['dir'] . $relative_path;
 
         return str_replace('\\', '-', $result);

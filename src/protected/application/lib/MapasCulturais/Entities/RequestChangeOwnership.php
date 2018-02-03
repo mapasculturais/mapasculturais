@@ -27,7 +27,7 @@ class RequestChangeOwnership extends Request{
     function _doApproveAction() {
         $entity = $this->origin;
         $entity->owner = $this->destination;
-        $entity->save();
+        $entity->save(true);
     }
 
     protected function canUserCreate($user) {

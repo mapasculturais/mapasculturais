@@ -179,4 +179,20 @@
             background-color: $brand-space;
         }
     }
+    .btn-map-subsite {
+        &:before {
+            content: $unicode-subsite;
+        }
+        &.active, &:hover {
+            background-color: $brand-subsite;
+        }
+    }
+    .btn-map-seal {
+        &:before {
+            content: $unicode-seal;
+        }
+        &.active, &:hover {
+            background-color: $brand-seal;
+        }
+    }
 }

@@ -10,11 +10,13 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     protected function _init() {
         $app = App::i();
 
+        $url = $app->createUrl('auth');
+        
         $config = array_merge([
             'timeout' => '24 hours',
             'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
             'login_url' => 'https://www.google.com/accounts/o8/id',
-            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $app->createUrl('auth'))
+            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
 
         ], $this->_config);
 
@@ -27,6 +29,7 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
             ],
             'security_salt' => $config['salt'],
             'security_timeout' => $config['timeout'],
+            'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
             'path' => $config['path'],
             'callback_url' => $app->createUrl('auth','response')
         ];

@@ -24,7 +24,7 @@ trait EntitySoftDelete{
      *
      * @return bool true
      */
-    static function usesSoftDelete(){
+    public static function usesSoftDelete(){
         return true;
     }
 
@@ -46,12 +46,9 @@ trait EntitySoftDelete{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:before');
         
-        $entity_class = $this->getClassName();
-
-        $this->status = $entity_class::STATUS_TRASH;
+        $this->status = self::STATUS_TRASH;
         
         $this->save($flush);
-        
         
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:after');
     }
@@ -74,9 +71,7 @@ trait EntitySoftDelete{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:before');
         
-        $entity_class = $this->getClassName();
-        
-        $this->status = $entity_class::STATUS_ENABLED;
+        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
 
         $this->save($flush);
         
@@ -129,6 +124,6 @@ trait EntitySoftDelete{
      * @return type
      */
     protected function canUserDestroy($user){
-        return $user->is('superAdmin');
+        return $this->isUserAdmin($user, 'superAdmin');
     }
 }

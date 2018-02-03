@@ -15,24 +15,28 @@ trait MagicGetter{
     * Otherwise returns null.
      */
     public function __get($name){
+        $metadata = false;
 
         if(property_exists($this, 'container') && $val = $this->container[$name]){
-            return $val;
+            $value =  $val;
         }elseif(method_exists($this, 'get' . $name)){
             $getter = 'get' . $name;
             $result = $this->$getter();
-            return $result;
+            $value =  $result;
 
         }else if($name[0] !== '_' && property_exists($this, $name)){
-            return $this->$name;
+            $value =  $this->$name;
 
         }else if(method_exists($this,'usesMetadata') && $this->usesMetadata()){
-            return $this->__metadata__get($name);
+            $metadata = true;
+            $value =  $this->__metadata__get($name);
 
         }else{
-            return null;
+            $value = null;
 
         }
+
+        return $value;
     }
 
     /**

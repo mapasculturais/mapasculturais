@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# see https://wiki.postgresql.org/wiki/Apt
+
 # script to add apt.postgresql.org to sources.list
 
 # from command line

@@ -19,7 +19,11 @@ class Registration extends \MapasCulturais\Entity
     use Traits\EntityMetadata,
         Traits\EntityFiles,
         Traits\EntityOwnerAgent,
-        Traits\EntityAgentRelation;
+        Traits\EntityAgentRelation,
+        Traits\EntityPermissionCache,
+        Traits\EntityOriginSubsite,
+    	Traits\EntitySealRelation;
+
 
     const STATUS_SENT = self::STATUS_ENABLED;
     const STATUS_APPROVED = 10;
@@ -27,17 +31,11 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
-    protected static $validations = [
-        'owner' => [
-            'required' => "O agente responsável é obrigatório.",
-            '$this->validateOwnerLimit()' => 'Foi excedido o limite de inscrições para este agente responsável.',
-        ]
-    ];
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", options={"default": "random_id_generator('registration', 10000)"})
+     * @ORM\Column(name="id", type="integer", options={"default": "pseudo_random_id_generator()"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="MapasCulturais\DoctrineMappings\RandomIdGenerator")
@@ -56,7 +54,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Project
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })
@@ -67,7 +65,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      * })
@@ -119,10 +117,54 @@ class Registration extends \MapasCulturais\Entity
     */
     protected $__files;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    protected $__permissionsCache;
+
+    /**
+
+     * @var \MapasCulturais\Entities\RegistrationAgentRelation[] Agent Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__agentRelations;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
+     */
+    protected $_subsiteId;
+
+     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    protected $subsite;
+
 
     function __construct() {
         $this->owner = App::i()->user->profile;
         parent::__construct();
+    }
+
+    static function isPrivateEntity(){
+        return true;
+    }
+
+    static function getValidations() {
+        return [
+            'owner' => [
+                'required' => \MapasCulturais\i::__("O agente responsável é obrigatório."),
+                '$this->validateOwnerLimit()' => \MapasCulturais\i::__('Foi excedido o limite de inscrições para este agente responsável.'),
+            ]
+        ];
     }
 
     function jsonSerialize() {
@@ -137,6 +179,13 @@ class Registration extends \MapasCulturais\Entity
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl
         ];
+
+        foreach($this->__metadata as $meta){
+            if(substr($meta->key, 0, 6) === 'field_'){
+                $key = $meta->key;
+                $json[$meta->key] = $this->$key;
+            }
+        }
 
         if($this->project->publishedRegistrations || $this->project->canUser('@control')) {
             $json['status'] = $this->status;
@@ -160,7 +209,7 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
         }else{
-            $json['owner'] = null;
+            $json = null;
         }
 
         return $json;
@@ -249,7 +298,6 @@ class Registration extends \MapasCulturais\Entity
         foreach($definitions as $groupName => $def){
             $metadata_name = $def->metadataName;
             $meta_val = $this->project->$metadata_name;
-
             $definitions[$groupName]->use = $meta_val;
 
             if($meta_val === 'dontUse'){
@@ -289,10 +337,6 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
-    function randomIdGeneratorFormat($id){
-        return intval($this->project->id . str_pad($id,5,'0',STR_PAD_LEFT));
-    }
-
     function randomIdGeneratorInitialRange(){
         return 1000;
     }
@@ -301,7 +345,7 @@ class Registration extends \MapasCulturais\Entity
         return 'on-' . $this->id;
     }
 
-    function setStatus(){
+    function setStatus($status){
         // do nothing
     }
 
@@ -311,10 +355,56 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $this->checkPermission('changeStatus');
         }
+
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
         $this->save(true);
+        $app->enableAccessControl();
+
+        $app->addEntityToRecreatePermissionCacheList($this->project);
+    }
+
+    function setAgentsSealRelation() {
+    	$app = App::i();
+    	$app->disableAccessControl();
+
+    	/*
+    	 * Related Seals added to registration to Agents (Owner/Institution/Collective) atributed on aproved registration
+    	 */
+    	$projectMetadataSeals = $this->project->registrationSeals;
+
+    	if(isset($projectMetadataSeals->owner)) {
+    		$relation_class = $this->owner->getSealRelationEntityClassName();
+    		$relation = new $relation_class;
+
+	    	$sealOwner			= App::i()->repo('Seal')->find($projectMetadataSeals->owner);
+	        $relation->seal		= $sealOwner; // o selo aplicado
+	        $relation->owner	= $this->owner; // o agente que recebe o selo
+	        $relation->agent	= $this->project->owner; //  o agente que aplica o selo (o dono do projeto)
+	    	$relation->save(true);
+    	}
+
+    	$sealInstitutions	= isset($projectMetadataSeals->institution)? App::i()->repo('Seal')->find($projectMetadataSeals->institution):null;
+    	$sealCollective		= isset($projectMetadataSeals->collective)? App::i()->repo('Seal')->find($projectMetadataSeals->collective):null;
+
+        foreach($this->relatedAgents as $groupName => $relatedAgents){
+        	if (trim($groupName) == 'instituicao' && isset($projectMetadataSeals->institution) && is_object($sealInstitutions)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
+        		$relation->seal = $sealInstitutions;
+        		$relation->owner = $agent;
+                $relation->agent = $this->project->owner;
+        		$relation->save(true);
+        	} elseif (trim($groupName) == 'coletivo' && isset($projectMetadataSeals->collective) && is_object($sealCollective)) {
+        		$agent = $relatedAgents[0];
+        		$relation = new $relation_class;
+        		$relation->seal = $sealCollective;
+        		$relation->owner = $agent;
+                $relation->agent = $this->project->owner;
+        		$relation->save(true);
+        	}
+        }
         $app->enableAccessControl();
     }
 
@@ -365,7 +455,10 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->save(true);
+
         $app->enableAccessControl();
+
+        $app->addEntityToRecreatePermissionCacheList($this->project);
     }
 
     function getSendValidationErrors(){
@@ -375,12 +468,15 @@ class Registration extends \MapasCulturais\Entity
 
         $project = $this->project;
 
-        if($project->registrationCategories && !$this->category){
-            $errorsResult['category'] = [sprintf($app->txt('The field "%s" is required.'), $project->registrationCategTitle)];
+        $use_category = (bool) $project->registrationCategories;
+
+        if($use_category && !$this->category){
+            $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $project->registrationCategTitle)];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
 
+        // validate agents
         foreach($definitionsWithAgents as $def){
             $errors = [];
 
@@ -388,17 +484,17 @@ class Registration extends \MapasCulturais\Entity
 
             if($def->use === 'required'){
                 if(!$def->agent){
-                    $errors[] = sprintf($app->txt('The agent "%s" is required.'), $def->label);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O agente "%s" é obrigatório.'), $def->label);
                 }
             }
 
             if($def->agent){
                 if($def->relationStatus < 0){
-                    $errors[] = sprintf($app->txt('The agent "%s" did not confirm your request.'), $def->agent->name);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
                 }else{
                     if($def->agent->type->id !== $def->type){
                         $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
-                        $errors[] = sprintf($app->txt('This agent must be of type "%s".'), $typeDescription);
+                        $errors[] = sprintf(\MapasCulturais\i::__('Este agente deve ser do tipo "%s".'), $typeDescription);
                     }
 
                     $erroredProperties  = [];
@@ -411,9 +507,9 @@ class Registration extends \MapasCulturais\Entity
                         }
                     }
                     if(count($erroredProperties) === 1){
-                        $errors[] = sprintf($app->txt('The field "%s" is required.'), $erroredProperties[0]);
+                        $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $erroredProperties[0]);
                     }elseif(count($erroredProperties) > 1){
-                        $errors[] = sprintf($app->txt('The fields %s are required.'), implode(', ', $erroredProperties));
+                        $errors[] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $erroredProperties));
                     }
                 }
             }
@@ -424,15 +520,59 @@ class Registration extends \MapasCulturais\Entity
 
         }
 
+        // validate attachments
         foreach($project->registrationFileConfigurations as $rfc){
+
+            if($use_category && count($rfc->categories) > 0 && !in_array($this->category, $rfc->categories)){
+                continue;
+            }
+
             $errors = [];
             if($rfc->required){
                 if(!isset($this->files[$rfc->fileGroupName])){
-                    $errors[] = sprintf($app->txt('The file "%s" is required.'), $rfc->title);
+                    $errors[] = sprintf(\MapasCulturais\i::__('O arquivo "%s" é obrigatório.'), $rfc->title);
                 }
             }
             if($errors){
                 $errorsResult['registration-file-' . $rfc->id] = $errors;
+            }
+        }
+
+        // validate fields
+        foreach ($project->registrationFieldConfigurations as $field) {
+
+            if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
+                continue;
+            }
+
+            $errors = [];
+
+            $prop_name = $field->getFieldName();
+            $val = $this->$prop_name;
+
+            $empty = (is_string($val) && !trim($val)) || !$val;
+
+            if ($field->required) {
+                if ($empty) {
+                    $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $field->title);
+                }
+            }
+            if (!$empty){
+                foreach($field->getFieldTypeDefinition()->validations as $validation => $error_message){
+                    if(strpos($validation,'v::') === 0){
+                        $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
+
+                        eval("\$ok = {$validation}->validate(\$this->{$prop_name});");
+
+                        if (!$ok) {
+                            $errors[] = $error_message;
+                        }
+                    }
+                }
+            }
+
+            if ($errors) {
+                $errorsResult['registration-field-' . $field->id] = $errors;
             }
         }
 
@@ -474,7 +614,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($this->project->isUserAdmin($user)){
             return true;
         }
 
@@ -509,8 +649,8 @@ class Registration extends \MapasCulturais\Entity
         if($user->is('guest')){
             return false;
         }
-        
-        if($user->is('superAdmin')){
+
+        if($this->project->isUserAdmin($user)){
             return true;
         }
 
@@ -522,7 +662,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($user->is('admin')){
+        if($this->isUserAdmin($user)){
             return true;
         }
 

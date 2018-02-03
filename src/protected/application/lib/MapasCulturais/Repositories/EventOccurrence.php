@@ -34,7 +34,7 @@ class EventOccurrence extends \MapasCulturais\Repository {
         $rsm->addFieldResult('eo', 'until', '_until');
         $rsm->addFieldResult('eo', 'starts_at', '_startsAt');
         $rsm->addFieldResult('eo', 'ends_at', '_endsAt');
-        $rsm->addFieldResult('eo', 'rule', '_rule');
+        $rsm->addFieldResult('eo', 'rule', 'rule');
 
         $rsm->addFieldResult('eo', 'space_id', 'spaceId');
         $rsm->addFieldResult('eo', 'event_id', 'eventId');
@@ -46,7 +46,12 @@ class EventOccurrence extends \MapasCulturais\Repository {
 
         if ($offset)
             $dql_offset = 'OFFSET ' . $offset;
-
+        
+        $subsite_space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds();
+        
+        if(!is_null($subsite_space_ids)){
+            $space_ids = array_intersect($subsite_space_ids, $space_ids);
+        } 
         $strNativeQuery = "
             SELECT
                 eo.*

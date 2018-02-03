@@ -1,8 +1,19 @@
 MapasCulturais = MapasCulturais || {};
 
+function charCounter(obj){
+    if($('#charCounter').text() == '')
+        return;
+
+    var max = $('#charCounter').text().split('/');
+        $('#charCounter').text(($(obj).val().length + '/' + max[1]));
+}
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
+
+    var labels = MapasCulturais.gettext.mapas;
+
     MapasCulturais.TemplateManager.init();
     MapasCulturais.Modal.initKeyboard('.js-dialog');
     MapasCulturais.Modal.initDialogs('.js-dialog');
@@ -19,6 +30,10 @@ $(function(){
     $('.alert .close').click(function(){
         $(this).parent().slideUp('fast');
     }).css('cursor', 'pointer');
+
+    if(MapasCulturais.request.controller === 'app'){
+        MapasCulturais.App.init();
+    }
 
     // dropdown
 
@@ -108,9 +123,8 @@ $(function(){
 
         });
     }
-
+   
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
-
 
     // identify Internet Explorer
     if(navigator.appName != 'Microsoft Internet Explorer' && !(navigator.appName == 'Netscape' && navigator.userAgent.indexOf('Trident') !== -1)){
@@ -130,14 +144,44 @@ $(function(){
     if(MapasCulturais.entity){
         MapasCulturais.entity.getTypeName = function(){
             switch(MapasCulturais.request.controller){
-                case 'agent' : return 'agente'; break;
-                case 'space' : return 'espaço'; break;
-                case 'event' : return 'evento'; break;
-                case 'project' : return 'projeto'; break;
+                case 'agent' : return labels['agente']; break;
+                case 'space' : return labels['espaço']; break;
+                case 'event' : return labels['evento']; break;
+                case 'project' : return labels['projeto']; break;
+                case 'seal' : return labels['selo']; break;
             }
         };
     }
 
+
+    // confirm
+
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+
+
+
+    // confirm
+
+    $('a.js-confirm-before-go').click(function() {
+        if (!confirm($(this).data('confirm-text')))
+            return false;
+    });
+
+
+    // positioning agent details box on mobile
+
+    if ($(window).width() < 768) {
+        $('.agentes-relacionados .avatar').on('click hover', function () {
+            $('.descricao-do-agente').hide();
+
+            var descAgent = $(this).find('.descricao-do-agente');
+            var descAgentHeight = descAgent.outerHeight();
+            descAgent.show().css('top',-((descAgentHeight)+10));
+        });
+    }
 });
 
 MapasCulturais.utils = {
@@ -159,7 +203,6 @@ MapasCulturais.utils = {
     },
 
     isObjectEquals: function(obj1, obj2){
-//        console.log(JSON.stringify(this.sortOjectProperties(obj1)), JSON.stringify(this.sortOjectProperties(obj2)));
         return JSON.stringify(this.sortOjectProperties(obj1)) === JSON.stringify(this.sortOjectProperties(obj2));
     },
 
@@ -267,7 +310,28 @@ MapasCulturais.TemplateManager = {
     }
 };
 
-MapasCulturais.defaultAvatarURL = MapasCulturais.assetURL +'/img/avatar.png';
+MapasCulturais.App = {
+    init: function(){
+        $('.js-select-on-click').on('click', function(){
+            var selector = $(this).data('selectTarget');
+            $(selector).trigger('doubleClick');
+        });
+
+        if($('.js-input--app-key').length && $('.js-input--app-key--toggle').length){
+            $('.js-input--app-key--toggle').on('click', function(){
+                if($('.js-input--app-key').attr('type') === 'password'){
+                    $('.js-input--app-key').attr('type', 'text');
+                }else{
+                    $('.js-input--app-key').attr('type', 'password');
+                }
+
+                return false;
+            });
+        }
+    }
+};
+
+MapasCulturais.defaultAvatarURL = MapasCulturais.assets.avatarAgent;
 
 function editableEntityAddHash(){
     $('#editable-entity').find('.js-toggle-edit').each(function(){
@@ -473,6 +537,8 @@ MapasCulturais.EditBox = {
 
     initBoxes: function(selector){
 
+        var labels = MapasCulturais.gettext.mapas;
+
         $(selector).each(function(){
             var $dialog = $(this);
 
@@ -495,8 +561,8 @@ MapasCulturais.EditBox = {
             if($dialog.attr('title')){
                 $dialog.prepend('<header><h1>' + $(this).attr('title') + '</h1></header>');
             }
-            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : 'Enviar';
-            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : 'Cancelar';
+            var submit_label = $dialog.data('submit-label') ? $dialog.data('submit-label') : labels['Enviar'];
+            var cancel_label = $dialog.data('cancel-label') ? $dialog.data('cancel-label') : labels['Cancelar'];
 
             $dialog.append('<footer><button class="mc-cancel btn btn-default">' + cancel_label + '</button> <button type="submit" class="mc-submit">' + submit_label + '</button> </footer><div class="mc-arrow"></div>');
 
@@ -818,14 +884,12 @@ MapasCulturais.Search = {
                 try{
                     MapasCulturais.Search.formats[format].onSave($selector);
                 }catch(e){
-                    console.log("EXECEPTION: ", e.message);
                 }
             });
             $selector.on('hidden',function(){
                 try{
                     MapasCulturais.Search.formats[format].onHidden($selector);
                 }catch(e){
-                    console.log("EXECEPTION: ", e.message);
                 }
             });
 
@@ -1035,7 +1099,7 @@ MapasCulturais.Search = {
                 }catch(e){}
 
                 excludedIds = excludedIds.concat (
-                    $selector.parents('.js-related-group').find('.agentes .avatar').map(
+                    $selector.parents('.js-related-group').find('.agentes .avatar .selos').map(
                         function(){ return $(this).data('id'); }
                 ).toArray());
 
@@ -1229,3 +1293,141 @@ MapasCulturais.cookies = {
             ].join(''));
     }
 };
+
+$(function() {
+    if (MapasCulturais.request.controller === 'entityrevision') {
+        var obj = MapasCulturais.entity.object;
+        var nameContainer = obj.controllerId + '-map';
+        var $mapContainer = $('#' + nameContainer);
+        var mapsDefaults = MapasCulturais.mapsDefaults;
+
+        var defaultIconOptions = {
+            shadowUrl: MapasCulturais.assets.pinShadow,
+            iconSize: [35, 43], // size of the icon
+            shadowSize: [40, 16], // size of the shadow
+            iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
+            shadowAnchor: [6, 3], // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        };
+
+        var latitude = $('#latitude').val();
+        var longitude = $('#longitude').val();
+        var config = {
+            zoomControl: false,
+            zoomMax: obj.zoom_max || mapsDefaults.zoomMax,
+            zoomMin: obj.zoom_min || mapsDefaults.zoomMin,
+            zoom: mapsDefaults.zoomApproximate || mapsDefaults.zoomDefault,
+            center: new L.LatLng(latitude || mapsDefaults.latitude, longitude || mapsDefaults.longitude)
+        };
+
+        var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            maxZoom: config.zoomMax,
+            minZoom: config.zoomMin
+        });
+
+        var map = new L.Map(nameContainer, config).addLayer(openStreetMap);
+        $(this).data('leaflet-map', map);
+
+        var marker = new L.marker(map.getCenter(), { draggable: true });
+        var markerIcon = {};
+        var opts = (JSON.parse(JSON.stringify(defaultIconOptions)));
+        opts.iconUrl = MapasCulturais.assets.pinAgent;
+        markerIcon = {
+            icon: L.icon(opts)
+        };
+
+        if (Object.keys(markerIcon).length) {
+            marker.setIcon(markerIcon.icon);
+            map.addLayer(marker);
+        }
+
+        (new L.Control.Zoom({ position: 'bottomright' })).addTo(map);
+
+        var setState = function(event) {
+            var center = map.getCenter();
+            var zoom = event.target._zoom;
+
+            $('#latitude').editable('setValue', center.lat);
+            $('#longitude').editable('setValue', center.lng);
+            $('#zoom_default').editable('setValue', zoom);
+        };
+
+        map.on('zoomend', setState);
+        map.on('moveend', setState);
+    }
+});
+
+(function() {
+    if(MapasCulturais.assets.favicon) {
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        link.href = MapasCulturais.assets.favicon;
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
+}());
+
+$(function() {
+    if (MapasCulturais.request.controller === 'entityrevision') {
+        var obj = MapasCulturais.entity.object;
+        var nameContainer = obj.controllerId + '-map';
+        var $mapContainer = $('#' + nameContainer);
+        var mapsDefaults = MapasCulturais.mapsDefaults;
+
+        var defaultIconOptions = {
+            shadowUrl: MapasCulturais.assets.pinShadow,
+            iconSize: [35, 43], // size of the icon
+            shadowSize: [40, 16], // size of the shadow
+            iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
+            shadowAnchor: [6, 3], // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        };
+
+        var latitude = $('#latitude').val();
+        var longitude = $('#longitude').val();
+        var config = {
+            zoomControl: false,
+            zoomMax: obj.zoom_max || mapsDefaults.zoomMax,
+            zoomMin: obj.zoom_min || mapsDefaults.zoomMin,
+            zoom: mapsDefaults.zoomApproximate || mapsDefaults.zoomDefault,
+            center: new L.LatLng(latitude || mapsDefaults.latitude, longitude || mapsDefaults.longitude)
+        };
+
+        var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            maxZoom: config.zoomMax,
+            minZoom: config.zoomMin
+        });
+
+        var map = new L.Map(nameContainer, config).addLayer(openStreetMap);
+        $(this).data('leaflet-map', map);
+
+        var marker = new L.marker(map.getCenter(), { draggable: true });
+        var markerIcon = {};
+        var opts = (JSON.parse(JSON.stringify(defaultIconOptions)));
+        opts.iconUrl = MapasCulturais.assets.pinAgent;
+        markerIcon = {
+            icon: L.icon(opts)
+        };
+
+        if (Object.keys(markerIcon).length) {
+            marker.setIcon(markerIcon.icon);
+            map.addLayer(marker);
+        }
+
+        (new L.Control.Zoom({ position: 'bottomright' })).addTo(map);
+
+        var setState = function(event) {
+            var center = map.getCenter();
+            var zoom = event.target._zoom;
+
+            $('#latitude').editable('setValue', center.lat);
+            $('#longitude').editable('setValue', center.lng);
+            $('#zoom_default').editable('setValue', zoom);
+        };
+
+        map.on('zoomend', setState);
+        map.on('moveend', setState);
+    }
+});

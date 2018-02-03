@@ -58,7 +58,7 @@ abstract class Storage{
         if($owner){
             $app->applyHookBoundTo($this, 'storage.add(' . $owner->getHookClassPath() . ':' . $file->group . '):after', ['file' => $file, 'result' => &$result]);
         }
-
+        
         return $result;
     }
 
@@ -118,6 +118,10 @@ abstract class Storage{
         }
         return $result;
     }
+    
+    public function getUrlFromRelativePath($relative_path){
+        return $this->_getUrlFromRelativePath($relative_path);
+    }
 
     /**
      * Returns the full path to the file.
@@ -149,5 +153,6 @@ abstract class Storage{
     abstract protected function _add(\MapasCulturais\Entities\File $file);
     abstract protected function _remove(\MapasCulturais\Entities\File $file);
     abstract protected function _getUrl(\MapasCulturais\Entities\File $file);
+    abstract protected function _getUrlFromRelativePath($relative_path);
     abstract protected function _getPath(\MapasCulturais\Entities\File $file, $relative = false);
 }

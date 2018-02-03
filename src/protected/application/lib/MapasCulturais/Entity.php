@@ -54,6 +54,7 @@ abstract class Entity implements \JsonSerializable{
     const STATUS_DRAFT = 0;
     const STATUS_DISABLED = -9;
     const STATUS_TRASH = -10;
+    const STATUS_ARCHIVED = -2;
 
     /**
      * array of validation definition
@@ -90,16 +91,23 @@ abstract class Entity implements \JsonSerializable{
         if(property_exists($this, 'createTimestamp'))
                 $this->createTimestamp = new \DateTime;
 
-        if($this->usesTaxonomies())
-            $this->populateTermsProperty();
+        if($this->usesOwnerAgent() && !$app->user->is('guest')){
+            $this->setOwner($app->user->profile);
+        }
 
         $hook_class_path = $this->getHookClassPath();
 
         App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
+
     }
+
 
     function __toString() {
         return $this->getClassName() . ':' . $this->id;
+    }
+
+    static function isPrivateEntity(){
+        return false;
     }
 
     function refresh(){
@@ -112,6 +120,10 @@ abstract class Entity implements \JsonSerializable{
 
     function isNew(){
         return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
+    }
+
+    function isArchived(){
+        return $this->status === self::STATUS_ARCHIVED;
     }
 
     function simplify($properties = 'id,name'){
@@ -164,7 +176,7 @@ abstract class Entity implements \JsonSerializable{
                     break;
 
                     default:
-                        $e->$prop = $this->$prop;
+                        $e->$prop = $this->__get($prop);
                     break;
                 }
             }
@@ -200,6 +212,28 @@ abstract class Entity implements \JsonSerializable{
 
         return $user;
     }
+    
+    function setStatus($status){
+        if($status != $this->status){
+            $class = $this->getClassName();
+            
+            switch($status){
+                case $class::STATUS_ARCHIVED:
+                    if($this->usesArchive()){
+                        $this->checkPermission('archive');
+                    }
+                    break;
+                
+                case $class::STATUS_TRASH:
+                    if($this->usesSoftDelete()){
+                        $this->checkPermission('remove');
+                    }
+                    break;
+                    
+            }
+        }
+        $this->status = $status;
+    }
 
     protected function fetchByStatus($collection, $status, $order = null){
         if(!is_object($collection) || !method_exists($collection, 'matching'))
@@ -216,8 +250,10 @@ abstract class Entity implements \JsonSerializable{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->isUserAdmin($user)){
             return true;
+        }
+        
 
         if($this->getOwnerUser()->id == $user->id)
             return true;
@@ -236,34 +272,65 @@ abstract class Entity implements \JsonSerializable{
         }
     }
 
+
+    protected function canUserCreate($user){
+        $result = $this->genericPermissionVerification($user);
+        if($result && $this->usesOwnerAgent()){
+            $owner = $this->getOwner();
+            if(!$owner || $owner->status < 1){
+                $result = false;
+            }
+        }
+
+        if($result && $this->usesNested()){
+            $parent = $this->getParent();
+            if($parent && $parent->status < 1){
+                $result = false;
+            }
+        }
+
+        return $result;
+    }
+
+
+    protected function canUserModify($user) {
+        return $this->genericPermissionVerification($user);
+    }
+
     protected function canUserRemove($user){
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin') || $this->getOwnerUser()->id == $user->id)
+        if($this->isUserAdmin($user) || $this->getOwnerUser()->id == $user->id) {
             return true;
+
+        }
 
         return false;
     }
 
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
-        if(!$app->isAccessControlEnabled())
+        if(!$app->isAccessControlEnabled()){
             return true;
+        }
 
-        $user = is_null($userOrAgent) ? $app->user : $userOrAgent->getOwnerUser();
-
-        $use_cache = false; //$app->config['app.usePermissionsCache'];
-        $cache_id = "{$this}->{$user}->$action";
-
-        if($use_cache & $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
+        if(is_null($userOrAgent)){
+            $user = $app->user;
+        } else if($userOrAgent instanceof UserInterface) {
+            $user = $userOrAgent;
+        } else {
+            $user = $userOrAgent->getOwnerUser();
         }
 
         $result = false;
 
         if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
-            $result = $this->userHasControl($user) || $user->is('admin');
+            if($this->userHasControl($user)){
+                $result = true;
+            } else if($this->isUserAdmin($user)){
+                $result = true;
+            }
         }
 
         if(method_exists($this, 'canUser' . $action)){
@@ -273,9 +340,24 @@ abstract class Entity implements \JsonSerializable{
             $result = $this->genericPermissionVerification($user);
         }
 
-        if($use_cache){
-            $app->cache->save($cache_id, $result, $app->config['app.permissionsCache.lifetime']);
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
+
+        return $result;
+    }
+
+    public function isUserAdmin(UserInterface $user, $role = 'admin'){
+        $result = false;
+        if($this->usesOriginSubsite()){
+            if($user->is($role, $this->_subsiteId)){
+                $result = true;
+            }
+        } else if($user->is($role)) {
+            $result = true;
         }
+
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').isUserAdmin(' . $role . ')', ['user' => $user, 'role' => $role, 'result' => &$result]);
 
         return $result;
     }
@@ -306,12 +388,12 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         $label = '';
 
-        $class = get_called_class();
+        $prop_labels = $app->config['app.entityPropertiesLabels'];
 
-        if(isset($app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels'][$class::getClassName()][$property_name];
-        }elseif(isset($app->config['app.entityPropertiesLabels']['@default'][$property_name])){
-            $label = $app->config['app.entityPropertiesLabels']['@default'][$property_name];
+        if(isset($prop_labels [self::getClassName()][$property_name])){
+            $label = $prop_labels[self::getClassName()][$property_name];
+        }elseif(isset($prop_labels ['@default'][$property_name])){
+            $label = $prop_labels ['@default'][$property_name];
         }
 
         return $label;
@@ -392,6 +474,30 @@ abstract class Entity implements \JsonSerializable{
         return $data_array;
     }
 
+    static public function getValidations(){
+        return [];
+    }
+
+    public function isPropertyRequired($entity,$property) {
+        $app = App::i();
+        $return = false;
+
+        $__class = get_called_class();
+        $class = $__class::getClassName();
+
+        $metadata = $class::getPropertiesMetadata();
+        if(array_key_exists($property,$metadata) && array_key_exists('required',$metadata[$property])) {
+            $return = $metadata[$property]['required'];
+        }
+
+        $v = $class::getValidations();
+        if(!$return && array_key_exists($property,$v) && array_key_exists('required',$v[$property])) {
+            $return = true;
+        }
+
+        return $return;
+    }
+
     /**
      * Returns this entity as an array.
      *
@@ -457,7 +563,13 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getEntityType(){
-	return App::i()->txt(str_replace('MapasCulturais\Entities\\','',$this->getClassName()));
+        return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
+    }
+
+    public function getEntityTypeLabel($plural = false) {}
+
+    function getEntityState() {
+        return App::i()->em->getUnitOfWork()->getEntityState($this);
     }
 
     /**
@@ -467,7 +579,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function save($flush = false){
         $app = App::i();
-
 
         $requests = [];
 
@@ -488,17 +599,26 @@ abstract class Entity implements \JsonSerializable{
         if (method_exists($this, '_saveOwnerAgent')) {
             try {
                 $this->_saveOwnerAgent();
+
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
 
         try{
-            if($this->isNew())
+            if($this->isNew()){
                 $this->checkPermission('create');
-            else
-                $this->checkPermission('modify');
+                $is_new = true;
 
+                if($this->usesOriginSubsite() && $app->getCurrentSubsiteId()){
+                    $this->setSubsite($app->getCurrentSubsite());
+                }
+
+            }else{
+                $this->checkPermission('modify');
+                $is_new = false;
+
+            }
             $app->em->persist($this);
 
             if($flush){
@@ -517,6 +637,12 @@ abstract class Entity implements \JsonSerializable{
                 if($flush){
                     $app->em->flush();
                 }
+            }
+            $this->refresh();
+            if($is_new){
+                $this->_newCreatedRevision();
+            } else {
+                $this->_newModifiedRevision();
             }
 
             // delete the entity cache
@@ -560,13 +686,14 @@ abstract class Entity implements \JsonSerializable{
                 }  catch (\Exception $e) {}
             }
             $val = $nval;
-        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array($val, $allowed_classes)){
+        }elseif(is_object($val) && !is_subclass_of($val, __CLASS__) && !in_array(\get_class($val), $allowed_classes)){
             throw new \Exception();
         }elseif(is_object($val)){
+
             if(in_array($val, Entity::$_jsonSerializeNestedObjects))
                 throw new \Exception();
-
         }
+
         return $val;
     }
 
@@ -593,15 +720,18 @@ abstract class Entity implements \JsonSerializable{
                 $prop = substr ($prop, 1);
 
             try{
-                $val = $this->$prop;
+                $val = $this->__get($prop);
                 $val = $this->_isPropertySerializable($val, $allowed_classes);
                 $result[$prop] = $val;
             }  catch (\Exception $e){}
         }
 
         if($this->usesMetadata()){
-            foreach($this->metadata as $meta_key => $meta_value)
-                $result[$meta_key] = $meta_value;
+            $registered_metadata = $this->getRegisteredMetadata();
+            foreach($registered_metadata as $def){
+                $meta_key = $def->key;
+                $result[$meta_key] = $this->$meta_key;
+            }
         }
 
         if($controller_id = $this->getControllerId()){
@@ -655,7 +785,6 @@ abstract class Entity implements \JsonSerializable{
      * )
      * </code>
      *
-     * @see \MapasCulturais\App::txt() The MapasCulturais GetText method
      * @see \MapasCulturais\Traits\Metadata::getMetadataValidationErrors() Metadata Validation Errors
      *
      * @return array
@@ -663,10 +792,37 @@ abstract class Entity implements \JsonSerializable{
     public function getValidationErrors(){
         $errors = $this->_validationErrors;
         $class = get_called_class();
-        foreach($class::$validations as $property => $validations){
+
+        if(!method_exists($class, 'getValidations')) {
+            return $errors;
+        }
+
+        $properties_validations = $class::getValidations();
+
+        $tags = ['style','script','embed','object','iframe','img','link'];
+        $validation = implode(',', array_map(function($tag){
+            return "v::contains('<{$tag}')";
+        }, $tags));
+        $htmltags_validation = "v::noneOf($validation)";
+
+        foreach($this->getPropertiesMetadata() as $prop => $metadata){
+            if(!$metadata['isEntityRelation']){
+                if(!isset($properties_validations[$prop])){
+                    $properties_validations[$prop] = [];
+                }
+
+                $properties_validations[$prop]['htmlentities'] = i::__('Não é permitido a inclusão de scripts');
+            }
+        }
+
+        $hook_class_path = $this->getHookClassPath();
+        App::i()->applyHookBoundTo($this, "entity(' . $hook_class_path . ').validations", [&$properties_validations]);
+
+        foreach($properties_validations as $property => $validations){
 
             if(!$this->$property && !key_exists('required', $validations))
                 continue;
+
 
 
             foreach($validations as $validation => $error_message){
@@ -674,9 +830,20 @@ abstract class Entity implements \JsonSerializable{
 
                 $ok = true;
 
+                if($validation == 'htmlentities'){
+                    if(!is_string($this->$property)){
+                        continue;
+                    }
+                    
+                    $validation = $htmltags_validation;
+                }
 
                 if($validation == 'required'){
-                    $ok = (bool) $this->$property;
+                    if (is_string($this->$property)) {
+                        $ok = trim($this->$property) !== '';
+                    } else {
+                        $ok = (bool) $this->$property || $this->$property === 0;
+                    }
 
                 }elseif($validation == 'unique'){
                     $ok = $this->validateUniquePropertyValue($property);
@@ -692,16 +859,16 @@ abstract class Entity implements \JsonSerializable{
                     if (!key_exists($property, $errors))
                         $errors[$property] = [];
 
-                    $errors[$property][] = App::txt($error_message);
+                    $errors[$property][] = $error_message;
 
                 }
             }
         }
 
         if($this->usesTypes() && !$this->_type)
-            $errors['type'] = [App::txt('The type is required')];
+            $errors['type'] = [\MapasCulturais\i::__('O Tipo é obrigatório')];
         elseif($this->usesTypes() && !$this->validateType())
-            $errors['type'] = [App::txt('Invalid type')];
+            $errors['type'] = [\MapasCulturais\i::__('Tipo inválido')];
 
         if($this->usesMetadata())
             $errors = $errors + $this->getMetadataValidationErrors();
@@ -740,6 +907,14 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
+
+
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -787,6 +962,14 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
+
+
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -807,6 +990,18 @@ abstract class Entity implements \JsonSerializable{
 
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
+        }
+
+        if($this->usesPermissionCache()){
+            $this->deletePermissionsCache();
+        }
+
+        if($this->usesRevision()) {
+            //$this->_newDeletedRevision();
+        }
     }
 
     /**
@@ -827,7 +1022,36 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:before', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
+        if (property_exists($this, 'updateTimestamp')) {
+            $this->updateTimestamp = new \DateTime;
+            /* @TODO: verificar o pq do código abaixo:
+            if($this->sentNotification){
+                $entity = $this;
+                $nid = $this->sentNotification;
+                $app->hook('entity(' . $hook_class_path . ').update:after', function() use($app, $entity, $nid) {
+                    if($this->equals($entity) && $app->user->equals($this->getOwnerUser())){
+                        // $app->log->debug("notification id: $nid");
+                        $notification = $app->repo('Notification')->find($nid);
+                        if($notification){
+                            $notification->delete();
+                            $this->sentNotification = 0;
 
+                            // as duas linhas abaixo não devem ficar aqui:
+                            // $this->save();
+                            // $app->em->flush();
+                        }
+                    }
+                });
+            }
+             */
+        }
+
+        if($this->usesPermissionCache()){
+            if($this->usesAgentRelation()){
+                $this->deleteUsersWithControlCache();
+            }
+            $this->addToRecreatePermissionsCacheList();
+        }
     }
 
     /**
@@ -855,7 +1079,5 @@ abstract class Entity implements \JsonSerializable{
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:after', $args);
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
-
     }
-
 }

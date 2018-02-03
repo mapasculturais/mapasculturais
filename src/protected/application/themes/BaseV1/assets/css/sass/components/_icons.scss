@@ -44,6 +44,11 @@ h1 .icon {
         content: $unicode-space;
     }
 }
+.icon-api {
+    &:before {
+        content: $unicode-api;
+    }
+}
 .icon-event {
     &:before {
         content: $unicode-event;
@@ -78,6 +83,11 @@ h1 .icon {
         content: $unicode-notifications;
     }
 }
+.icon-seal {
+    &:before {
+        content: $unicode-seal;
+    }
+}
 .icon-project {
     &:before {
         content: $unicode-project;
@@ -96,6 +106,11 @@ h1 .icon {
 .icon-panel {
     &:before {
         content: $unicode-panel;
+    }
+}
+.icon-group {
+    &:before {
+        content: $unicode-group;
     }
 }
 .icon-home {
@@ -133,6 +148,7 @@ h1 .icon {
         content: $unicode-show-search-on-list;
     }
 }
+
 .icon-show-map {
     &:before {
         content: $unicode-show-map;
@@ -146,6 +162,11 @@ h1 .icon {
 .icon-agent {
     &:before {
         content: $unicode-agent;
+    }
+}
+.icon-subsite {
+    &:before {
+        content: $unicode-subsite;
     }
 }
 .icon-help {
@@ -191,5 +212,11 @@ h1 .icon {
     color: #dd4b39 !important;
     &:before {
         content: $unicode-googleplus;
+    }
+}
+.icon-instagram {
+    color: #f0f !important;
+    &:before {
+        content: $unicode-instagram;
     }
 }

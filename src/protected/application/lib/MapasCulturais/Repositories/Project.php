@@ -3,6 +3,7 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 
 class Project extends \MapasCulturais\Repository{
-    use Traits\RepositoryKeyword;
+    use Traits\RepositoryKeyword,
+        Traits\RepositoryAgentRelation;
 }
 

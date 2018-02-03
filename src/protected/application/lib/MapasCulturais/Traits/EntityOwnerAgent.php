@@ -21,7 +21,7 @@ trait EntityOwnerAgent{
      *
      * @return boolean true
      */
-    function usesOwnerAgent(){
+    public static function usesOwnerAgent(){
         return true;
     }
 
@@ -33,6 +33,8 @@ trait EntityOwnerAgent{
     function getOwner(){
         if(!$this->id && !$this->owner){
             return App::i()->user->profile;
+        } else if(!$this->owner && $this->_newOwner) {
+            return $this->_newOwner;
         } else {
             return $this->owner;
         }
@@ -103,7 +105,7 @@ trait EntityOwnerAgent{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         if($this->getOwner()->userHasControl($user))
@@ -123,7 +125,7 @@ trait EntityOwnerAgent{
         if($user->is('guest'))
             return false;
 
-        if($user->is('admin'))
+        if($this->isUserAdmin($user))
             return true;
 
         if($this->getOwnerUser()->id == $user->id)

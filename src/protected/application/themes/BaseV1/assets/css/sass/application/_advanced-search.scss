@@ -57,15 +57,31 @@
 //** entity filter id's to set its background-color
 #filter-events {
     background: $brand-event;
+
+    .advanced-filters {
+        background: $brand-event;
+    }
 }
 #filter-agents {
     background: $brand-agent;
+
+    .advanced-filters {
+        background: $brand-agent;
+    }
 }
 #filter-spaces {
     background: $brand-space;
+
+    .advanced-filters {
+        background: $brand-space;
+    }
 }
 #filter-projects {
     background: $brand-project;
+
+    .advanced-filters {
+        background: $brand-project;
+    }
 }
 //** each filter set has a class .filter
 .filter {
@@ -78,9 +94,9 @@
         padding: 0 $padding-base;
         border-left: 1px dotted $brand-accent;
     }
-    &:first-child {
-        border: none;
-    }
+    // &:first-child {
+    //     border: none;
+    // }
     .label,label {
         display: none;
     }
@@ -155,5 +171,82 @@
     @media screen and (min-width: $screen-desktop) {
         float: right;
         text-align: center;
+    }
+}
+
+//
+// componentes/_icons.scss
+// --------------------------------------------------
+.icon-show-advanced-filters {
+    &:before {
+        content: $unicode-show-advanced-search;
+        font-size: 2em;
+    }
+}
+
+//
+// application/_advanced-search.scss
+// --------------------------------------------------
+
+.entity-filter {
+    position: relative;
+    clear: both;
+    min-height: 2px;
+    padding: 0;
+    color: $brand-accent;
+    font-size: $font-size-small;
+    @media screen and (min-width: $screen-desktop) {
+        padding: $padding-base 0;
+        .simple-filters {
+            display: block !important;
+            height: 34px;
+        }
+    }
+    .advanced-filters {
+
+    }
+}
+.filter {
+    @media screen and (min-width: $screen-desktop) {
+        width: 16.6%;
+    }
+}
+//** Verified button filter set.
+.verified-filter {
+    @media screen and (min-width: $screen-desktop) {
+        float: left;
+    }
+}
+
+.show-advanced-filters {
+    float: right;
+    margin: .2em 1em 0 0;
+    .icon {
+        cursor: pointer;
+    }
+
+    .advanced-filters {
+        position: absolute;
+        right:1em;
+        margin-top:80px;
+        min-width: 250px;
+        padding: 1em;
+        .advanced-filter {
+            padding-bottom: 1em;
+            input {
+                margin: 0;
+                width:100%;
+            }
+
+            .dropdown {
+                background: white;
+                width:100%;
+
+                .submenu-dropdown {
+                    background: white;
+                }
+            }
+
+        }
     }
 }

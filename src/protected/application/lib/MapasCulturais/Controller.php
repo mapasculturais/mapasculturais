@@ -87,7 +87,9 @@ abstract class Controller{
 
 
     protected $action = null;
-
+    
+    protected $method = null;
+    
     // =================== GETTERS ================== //
 
     /**
@@ -223,7 +225,7 @@ abstract class Controller{
     public function callAction($method, $action_name, $arguments) {
         $app = App::i();
 
-        if(@$app->config['app.log.requestData']){
+        if(@$app->config['app.log.requestData'] && $app->config['slim.log.level'] === \Slim\Log::DEBUG){
             $app->log->debug('===== POST DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
             $app->log->debug(print_r($this->postData,true));
 
@@ -237,6 +239,8 @@ abstract class Controller{
         $this->action = $action_name;
 
         $method = strtoupper($method);
+        
+        $this->method = $method;
 
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";
@@ -267,7 +271,7 @@ abstract class Controller{
             $app->applyHookBoundTo($this, $hook . ':before', $arguments);
 
             if($call_method)
-                call_user_func_array($call_method, $arguments);
+                $call_method();
             else
                 $app->applyHookBoundTo($this, $call_hook, $arguments);
 
@@ -290,7 +294,6 @@ abstract class Controller{
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
-        $app->view->setController($this);
         $app->render($template, $data);
     }
 
@@ -305,7 +308,6 @@ abstract class Controller{
         $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', ['template' => &$template, 'data' => &$data]);
 
         $template = $this->id . '/' . $template;
-        $app->view->setController($this);
         $app->view->partial = true;
         $app->render($template, $data);
     }

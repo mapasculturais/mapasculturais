@@ -25,7 +25,8 @@ use MapasCulturais\App;
 abstract class Theme extends \Slim\View {
     use Traits\MagicGetter,
         Traits\MagicSetter,
-        Traits\MagicCallers;
+        Traits\MagicCallers,
+        Traits\RegisterFunctions;
 
 
     /**
@@ -93,7 +94,15 @@ abstract class Theme extends \Slim\View {
         $this->_assetManager = $asset_manager;
 
         $app = App::i();
+        
+        $app->hook('app.register', function() use($app){
+            $def = new Definitions\Metadata('sentNotification', ['label' => 'sent notification', 'type' => 'boolean']);
 
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Agent');
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
+        });
+        
+        
         $this->documentMeta = new \ArrayObject;
         $this->bodyClasses = new \ArrayObject;
         $this->bodyProperties = new \ArrayObject;
@@ -216,7 +225,7 @@ abstract class Theme extends \Slim\View {
      *
      * This method extracts the property "data" array to make the variables accessible inside the template.
      *
-     * @param string $template the template to render
+     * @param string $__template the template to render
      *
      * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
      * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
@@ -225,13 +234,16 @@ abstract class Theme extends \Slim\View {
      *
      * @return string The rendered template.
      */
-    public function fullRender($template){
+    public function fullRender($__template){
         $app = App::i();
 
-        $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        $__template_filename = strtolower(substr($__template, -4)) === '.php' ? $__template : $__template . '.php';
+        $render_data = [];
 
-        foreach($this->data->keys() as $k)
+        foreach($this->data->keys() as $k){
+            $render_data[$k] = $this->data->get($k);
             $$k = $this->data->get($k);
+        }
 
         if ($this->controller){
             $this->bodyClasses[] = "controller-{$this->controller->id}";
@@ -242,37 +254,37 @@ abstract class Theme extends \Slim\View {
             $this->bodyClasses[] = 'entity';
 
         // render the template
-        $templatePath = $this->resolveFilename('views', $template_filename);
+        $__templatePath = $this->resolveFilename('views', $__template_filename);
 
-        if(strtolower(substr($templatePath, -4)) !== '.php')
-                $templatePath .= '.php';
+        if(!$__templatePath){
+            throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
+        }
 
+        $__template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $__templatePath);
 
-        $template_name = preg_replace('#(.*\/)([^\/]+\/[^\/\.]+)(\.php)?$#', '$2', $templatePath);
+        $app->applyHookBoundTo($this, 'view.render(' . $__template_name . '):before', ['template' => $__template_name]);
 
-        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):before', ['template' => $template_name]);
+        $TEMPLATE_CONTENT = $this->partialRender($__template_name, $this->data);
 
-        $TEMPLATE_CONTENT = $this->partialRender($template_name, $this->data);
-
-        $layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
+        $__layout_filename = strtolower(substr($this->_layout, -4)) === '.php' ? $this->_layout : $this->_layout . '.php';
 
         // render the layout with template
-        $layoutPath = $this->resolveFilename('layouts', $layout_filename);
+        $__layoutPath = $this->resolveFilename('layouts', $__layout_filename);
 
-        if(strtolower(substr($layoutPath, -4)) !== '.php')
-                $layoutPath .= '.php';
+        if(strtolower(substr($__layoutPath, -4)) !== '.php')
+                $__layoutPath .= '.php';
 
         ob_start(function($output){
             return $output;
         });
 
-        include $layoutPath;
+        include $__layoutPath;
 
-        $html = ob_get_clean();
+        $__html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.render(' . $template_name . '):after', ['template' => $template_name, 'html' => &$html]);
+        $app->applyHookBoundTo($this, 'view.render(' . $__template_name . '):after', ['template' => $__template_name, 'html' => &$__html]);
 
-        return $html;
+        return $__html;
     }
 
     /**
@@ -282,8 +294,8 @@ abstract class Theme extends \Slim\View {
      *
      * This method extracts the data array to make the variables accessible inside the template.
      *
-     * @param string $template the template to render
-     * @param array $data the data to be passed to template.
+     * @param string $__template the template to render
+     * @param array $__data the data to be passed to template.
      *
      * @hook **view.partial:before ($template_name)** - executed before the template render.
      * @hook **view.partial({$template_name}):before ($template_name)** - executed before the template render.
@@ -292,44 +304,70 @@ abstract class Theme extends \Slim\View {
      *
      * @return string The rendered template.
      */
-    public function partialRender($template, $data = [], $_is_part = false){
+    public function partialRender($__template, $__data = [], $_is_part = false){
         $app = App::i();
+        
+        if($__data instanceof \Slim\Helper\Set){
+            $_data = $__data;
+            $__data = [];
+            
+            foreach($_data->keys() as $k){
+                $__data[$k] = $_data->get($k);
+            }
 
-        $template_filename = strtolower(substr($template, -4)) === '.php' ? $template : $template . '.php';
+        }
+        
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data, &$__template]);
 
-        if(is_array($data))
-            extract($data);
-        elseif($data instanceof \Slim\Helper\Set)
-            foreach($this->data->keys() as $k)
-                $$k = $this->data->get($k);
-
+        if(strtolower(substr($__template, -4)) === '.php'){
+            $__template_filename = $__template;
+            $__template = substr($__template, 0, -4);
+        } else {
+            $__template_filename = $__template . '.php';
+        }
+        
+        if(is_array($__data)){
+            extract($__data);
+        }
 
         // render the template
         if($_is_part){
-            $templatePath = $this->resolveFilename('layouts', 'parts/' . $template_filename);
+            $__templatePath = $this->resolveFilename('layouts', 'parts/' . $__template_filename);
         }else{
-            $templatePath = $this->resolveFilename('views', $template_filename);
+            $__templatePath = $this->resolveFilename('views', $__template_filename);
+
+        }
+        
+        if(!$__templatePath){
+            throw new Exceptions\TemplateNotFound("Template $__template_filename not found");
+
         }
 
+        $__template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $__templatePath),0,-4);
 
-        if(strtolower(substr($templatePath, -4)) !== '.php' && strtolower(substr($templatePath, -5)) !== '.html')
-                $templatePath .= '.php';
 
-        $template_name = substr(preg_replace('#^'.$this->templatesDirectory.'/?#', '', $templatePath),0,-4);
-
-        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):before', ['template' => $template_name]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . '):before', ['template' => $__template]);
 
         ob_start(function($output){
             return $output;
         });
+        
+        if($app->config['themes.active.debugParts']){
+            $template_debug = str_replace(THEMES_PATH, '', $__template_name);
+            echo '<!-- ' . $template_debug . ".php # BEGIN -->";
+        }
 
-        include $templatePath;
+        include $__templatePath;
+        
+        if($app->config['themes.active.debugParts']){
+            echo '<!-- ' . $template_debug . ".php # END -->";
+        }
 
-        $html = ob_get_clean();
+        $__html = ob_get_clean();
 
-        $app->applyHookBoundTo($this, 'view.partial(' . $template_name . '):after', ['template' => $template_name, 'html' => &$html]);
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . '):after', ['template' => $__template, 'html' => &$__html]);
 
-        return $html;
+        return $__html;
     }
 
     /**
@@ -396,6 +434,41 @@ abstract class Theme extends \Slim\View {
         }
         $this->_assetManager->enqueueStyle($group, $style_name, $style_filename, $dependences, $media);
     }
+    
+    /**
+     * Add localization strings to a javascript object
+     *
+     * It simmply adds the strings to the jsObject property that can be accessed throug the MapasCulturais javascript object.
+     * 
+     * Example: 
+     * 
+     * $this->localizeScript('myScript', ['noresults' => \MapasCulturais\i::__('Nenhum resultado')]);
+     *
+     * In javascript this will be available:
+     * 
+     * MapasCulturais.gettext.myScript['noresults']
+     * 
+     * @param string $group All strings will be grouped in this property. Make this unique to avoid conflict with other scripts
+     * @param array $vars Array with translated strgins with key beeing the variable name anda value beeing the translated string
+     */
+    public function localizeScript($group, $vars) {
+        
+        if (!is_string($group) || empty($group))
+            throw new \Exception('localizeScript expects $group to be a string');
+        
+        if (!is_array($vars))
+            throw new \Exception('localizeScript expects $vars to be an array');
+        
+        if (!isset($this->jsObject['gettext']))
+            $this->jsObject['gettext'] = [];
+        
+        if ( isset($this->jsObject['gettext'][$group]) && is_array($this->jsObject['gettext'][$group]) ) {
+            $this->jsObject['gettext'][$group] = array_merge($vars, $this->jsObject['gettext'][$group]);
+        } else {
+            $this->jsObject['gettext'][$group] = $vars;
+        }
+        
+    }
 
     function printScripts($group){
         $this->_assetManager->printScripts($group);
@@ -461,6 +534,20 @@ abstract class Theme extends \Slim\View {
             }
         }
 
+        if(preg_match_all('#\{\{downloads:([^\}]+)\}\}#', $markdown, $matches)){
+            $subsite = $app->getCurrentSubsite();
+            $files = $subsite->getFiles('downloads');
+            if($subsite) {
+                foreach($matches[0] as $i => $tag){
+                    foreach($files as $file) {
+                        if($file->description == $matches[1][$i]) {
+                            $markdown = str_replace($tag, $file->url, $markdown);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         $markdown = str_replace('{{baseURL}}', $app->getBaseUrl(), $markdown);
         $markdown = str_replace('{{assetURL}}', $app->getAssetUrl(), $markdown);
         return \Michelf\MarkdownExtra::defaultTransform($markdown);
@@ -500,5 +587,31 @@ abstract class Theme extends \Slim\View {
 
         $this->printDocumentMeta();
 
+    }
+    
+    function applyTemplateHook($name, $sufix = '', $args = []){
+        $hook = "template({$this->controller->id}.{$this->controller->action}.$name)";
+        if($sufix){
+            $hook .= ':' . $sufix;
+        }
+        App::i()->applyHookBoundTo($this, $hook, $args);
+    }
+    
+    /**
+     * Replace links in text with html links
+     *
+     * http://stackoverflow.com/questions/1959062/how-to-add-anchor-tag-to-a-url-from-text-input
+     * 
+     * @param  string $text
+     * @param  bool $force By default will check for isEditable and only add links if not on edit mode. Set force to true to force replace
+     * @return string
+     */
+    function autoLinkString($text, $force = false) {
+       
+        if ($this->isEditable() && true !== $force)
+            return $text;
+        
+        return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4">$1$2$3$4</a>', $text);
+        
     }
 }

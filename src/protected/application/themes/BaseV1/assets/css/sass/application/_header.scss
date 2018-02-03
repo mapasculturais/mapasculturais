@@ -197,6 +197,17 @@ body.action-search {
     }
 }
 
+//background images
+.display-background-button {
+    
+    position: absolute;
+    bottom: 1.5rem;
+    right: 6.5rem;
+}
+
+.hide-background-button{
+    display: none !important;
+}
 
 //** Entities Menu
 .entities-menu {
@@ -223,7 +234,7 @@ body.action-search {
 }
 //** Events
 #entities-menu-event {
-    &.active, &:hover {
+    &.active, &:hover, &.current-entity-parent {
         border-top-color: $brand-event;
         color: $brand-event;
         a {
@@ -238,7 +249,7 @@ body.action-search {
 }
 //** Agents
 #entities-menu-agent {
-    &.active, &:hover {
+    &.active, &:hover, &.current-entity-parent {
         border-top-color: $brand-agent;
         color: $brand-event;
         a {
@@ -253,7 +264,7 @@ body.action-search {
 }
 //** Spaces
 #entities-menu-space {
-    &.active, &:hover {
+    &.active, &:hover, &.current-entity-parent {
         border-top-color: $brand-space;
         color: $brand-space;
         a {
@@ -268,9 +279,9 @@ body.action-search {
 }
 //** Projects
 #entities-menu-project {
-    &.active, &:hover {
+    &.active, &:hover, &.current-entity-parent {
         border-top-color: $brand-project;
-        color: $brand-event;
+        color: $brand-project;
         a {
             color: $brand-project;
         }
@@ -278,6 +289,37 @@ body.action-search {
     &.active {
         &:after {
             @include arrow(up, $caret-width-base, $brand-project);
+        }
+    }
+}
+
+//** Subsite
+#entities-menu-subsite {
+    &.active, &:hover {
+        border-top-color: $brand-subsite;
+        color: $brand-subsite;
+        a {
+            color: $brand-subsite;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-subsite)
+        }
+    }
+}
+//** Seals
+#entities-menu-seal {
+    &.active, &:hover, &.current-entity-parent {
+        border-top-color: $brand-seal;
+        color: $brand-seal;
+        a {
+            color: $brand-seal;
+        }
+    }
+    .active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-seal);
         }
     }
 }

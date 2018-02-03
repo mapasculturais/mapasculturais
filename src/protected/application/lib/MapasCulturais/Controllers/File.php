@@ -8,7 +8,7 @@ namespace MapasCulturais\Controllers;
  *
  */
 class File extends EntityController {
-    function POST_index() {
+    public function POST_index($data = null) {
         App::i()->pass();
     }
 
