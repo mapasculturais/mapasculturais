@@ -40,54 +40,6 @@ class Registration extends \MapasCulturais\Repository{
 
     /**
      *
-     * @param \MapasCulturais\Entities\Opportunity $opportunity
-     * @param \MapasCulturais\Entities\User $user
-     * @param integer $page  Current page (defaults to 1)
-     * @param integer $limit The total number per page (defaults to 5)
-     * @return \MapasCulturais\Entities\Registration[]
-     */
-
-    function findByOpportunityAndUserPaginated(\MapasCulturais\Entities\Opportunity $opportunity, $user, $page = 1, $limit = 5){
-        if($user->is('guest') || !$opportunity->id){
-            return [];
-        }
-
-        $dql = "
-            SELECT
-                r
-            FROM
-                MapasCulturais\Entities\Registration r
-                LEFT JOIN  MapasCulturais\Entities\RegistrationAgentRelation rar WITH rar.owner = r
-            WHERE
-                r.opportunity = :opportunity AND
-                (
-                    r.owner IN (:agents) OR
-                    rar.agent IN (:agents)
-                )";
-
-
-        $offset = $limit * ($page - 1);
-        $q = $this->_em->createQuery($dql)
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        $q->setParameters([
-            'opportunity' => $opportunity,
-            'agents' => $user->agents ? $user->agents->toArray() : [-1]
-        ]);
-
-
-        return $q->getResult();
-    }
-
-    function countOpportunityAndUserPaginated(\MapasCulturais\Entities\Opportunity $opportunity, $user){
-
-        $values = $this->findByOpportunityAndUser($opportunity, $user);
-        return count($values);
-    }
-
-    /**
-     *
      * @param \MapasCulturais\Entities\User $user
      * @param mixed $status = all all|sent|Entities\Registration::STATUS_*|[Entities\Registration::STATUS_*, Entities\Registration::STATUS_*]
      * @return \MapasCulturais\Entities\Registration[]
