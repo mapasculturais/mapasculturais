@@ -121,4 +121,36 @@ function printSubsiteFilter($property){
         <?php $this->applyTemplateHook('subsite-filters-seal','end'); ?>
     </section>
     <?php $this->applyTemplateHook('subsite-filters-seal','after'); ?>
+
+    <div ng-controller="ConfigFilterSubsiteController">
+        <h2>Filtragem dos dados</h2>
+        <section class="ficha-spcultura" ng-repeat="(entity, entitiy_filter) in filters">
+            <header class="agentes-relacionados">
+                {{ entity }}
+                <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entitiy_filter)"></button>
+            </header>
+            <div class="servico" ng-repeat="filter in entitiy_filter">
+                <button class="delete hltip alignright" hltitle="Remover filtro" ng-click="delete_filter(entitiy_filter, filter)"></button>
+                <p>
+                    <span class="label">Descrição do filtro:</span>
+                    <span
+                        class="js-editable"
+                        data-emptytext="Descrição"
+                        data-edit="user_filters__{{ entity }}:+filter_{{ $index }}+label"></span>
+                        <!-- data-edit="user_filters__{{ entity }}"></span> -->
+                </p>
+                <!-- @todo: listar os campos na configuração -->
+                <p>
+                    <span class="label">Campo</span>
+                    <span
+                        class="js-editable"
+                        data-emptytext="Campo"
+                    ></span>
+                </p>
+                <!-- CAMPO - AVANÇADO? -->
+            </div>
+            <p class="aligncenter" ng-hide="entitiy_filter.length">Sem filtros configurados</p>
+        </section>
+    </div>
+
 </div>
