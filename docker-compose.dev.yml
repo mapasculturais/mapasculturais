@@ -20,6 +20,8 @@ services:
       - POSTGRES_PASSWORD=senhaMapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+    ports:
+       - "5432:5432"
     build:
       context: .
       dockerfile: docker/dev/Dockerfile-db
