@@ -63,7 +63,7 @@ class Theme extends BaseV1\Theme{
                 $config = array_merge($config, $theme_config);
             }
         });
-        
+
         $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->url;
 
         $this->addPath($this->subsitePath);
@@ -154,7 +154,7 @@ class Theme extends BaseV1\Theme{
                     if($this->subsiteInstance->$entity_first_name_color) {
                         $entity_icon_img = THEMES_PATH . "BaseV1/assets/img/icon-" . $entity_first_sing_name . ".png";
                         if(file_exists($entity_file_svg)) {
-                            
+
                             $svg = file_get_contents($entity_file_svg);
                             $svg = preg_replace('/class="pin-single-example" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
 
@@ -174,7 +174,7 @@ class Theme extends BaseV1\Theme{
                                     $new = $img->merge($watermark);
                                     $new->saveToFile($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name . ".png");
                                 } catch(\Exception $e){
-                                    
+
                                 }
                             }
 
@@ -271,6 +271,18 @@ class Theme extends BaseV1\Theme{
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->_publishAssets();
         });
+
+        //
+        $app->hook('GET(subsite.single):before', function() use($app) {
+
+            $app->view->jsObject['user_filters__subsite']['event'] = $this->requestedEntity->user_filters__event;
+            $app->view->jsObject['user_filters__subsite']['space'] = $this->requestedEntity->user_filters__space;
+            $app->view->jsObject['user_filters__subsite']['agent'] = $this->requestedEntity->user_filters__agent;
+            $app->view->jsObject['user_filters__subsite']['project'] = $this->requestedEntity->user_filters__project;
+            $app->view->jsObject['user_filters__subsite']['opportunity'] = $this->requestedEntity->user_filters__opportunity;
+
+        });
+
     }
 
     protected function _publishAssets() {
@@ -285,5 +297,13 @@ class Theme extends BaseV1\Theme{
         } else {
             $this->jsObject['assets']['favicon'] = $this->asset('img/favicon.ico', false);
         }
+    }
+
+    // protected function _getFilters(){
+    //     return;
+    // }
+    public function addEntityToJs(\MapasCulturais\Entity $entity) {
+        parent::addEntityToJs($entity);
+
     }
 }
