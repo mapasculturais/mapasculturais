@@ -180,7 +180,7 @@ $.getJSON(
 $.getJSON(
   'http://mapasculturais.local/api/event/find',
   {
-    '@select': 'id, name,terms',
+    '@select': 'id, name,terms' ,
     'term:linguagem': 'LIKE(Cinema)',
     'id': 'BET(100,200)'    
   },
@@ -192,8 +192,8 @@ $.getJSON(
 $.getJSON(
   'http://mapasculturais.local/api/event/find',
   {
-    '@files': 'header.header, avatar.avatarBig)
-    '@select': 'id, name, shortDescription'
+    '@files': 'header.header, avatar.avatarBig',
+    '@select': 'id, name, shortDescription',
     'id': 'BET(100,200)'
   },
   function (response){ console.log(response); });
