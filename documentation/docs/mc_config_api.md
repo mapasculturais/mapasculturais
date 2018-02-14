@@ -187,7 +187,7 @@ $.getJSON(
   function (response){ console.log(response); });
 ```
 
-* **retornando o id, nome e a descrição curta dos eventos, junto com os endereços (URL) para o arquivos do header e avatar. A busca filtra eventos de id entre 100 e 200.**
+* **retornando o id, nome e a descrição curta dos eventos, junto com os endereços (URL) para os arquivos do header e avatar. A busca filtra eventos de id entre 100 e 200.**
 ```javascript
 $.getJSON(
   'http://mapasculturais.local/api/event/find',
