@@ -1587,11 +1587,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             $scope.register = function(){
                 var registration = $scope.data.registration;
                 var ownerRegistration = [];
-
                 // @TODO: buscar na api
                 for(var i in $scope.data.registrations) {
-                    if($scope.data.registrations[i].owner.id == registration.owner.id) {
-                        ownerRegistration.push($scope.data.registrations[i].owner);
+                    if(registration.owner){
+                        if($scope.data.registrations[i].owner.id == registration.owner.id) {
+                            ownerRegistration.push($scope.data.registrations[i].owner);
+                        }
                     }
                 }
 
