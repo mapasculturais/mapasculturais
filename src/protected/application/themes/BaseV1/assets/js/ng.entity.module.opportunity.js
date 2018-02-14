@@ -1604,6 +1604,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         document.location = rs.editUrl;
                     });
                 }else {
+                    setTimeout(function(){
+                        $('#select-registration-owner-button').trigger("click");
+                    }, 0);
                     MapasCulturais.Messages.error(labels['needResponsible']);
                 }
             };

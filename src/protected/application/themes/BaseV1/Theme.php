@@ -1684,7 +1684,7 @@ class Theme extends MapasCulturais\Theme {
             'reachedMaxPlural' =>  i::__('Você atingiu o limite máximo de {{num}} inscrições aprovadas'),
             'limitReached' =>  i::__('O limite de inscrições para o agente informado se esgotou.'),
             'VacanciesOver' =>  i::__('O número de vagas da inscrição no oportunidade se esgotou.'),
-            'needResponsible' =>  i::__('Para se inscrever neste oportunidade você deve selecionar um agente responsável.'),
+            'needResponsible' =>  i::__('Para se inscrever nesta oportunidade você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
