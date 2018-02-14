@@ -123,9 +123,24 @@ trait ControllerAPI{
         $this->apiResponse($data);
     }
 
-    public function API_describe(){
+    public function API_describe(){        
         $class = $this->entityClassName;
-        $this->apiResponse($class::getPropertiesMetadata());
+        $data_array = $class::getPropertiesMetadata();                
+        $file_groups = App::i()->getRegisteredFileGroupsByEntity( $class );
+
+        $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
+        $array = [];
+        foreach ($file_groups as $key => $value) {
+            $arr = [$key];
+            foreach ($image_transformations as $k => $v) {
+                if ((strlen($k) > strlen($key)) && (substr($k, 0, strlen($key)) == $key)) {
+                    array_push($arr, $k);
+                }
+            }
+            $array[$key] = $arr;
+        }
+        $data_array["@file"] = $array;
+        $this->apiResponse($data_array);
     }
 
     public function getApiCacheId($qdata, $options = []){
