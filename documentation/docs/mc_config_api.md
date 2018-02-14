@@ -472,7 +472,27 @@ $.getJSON(
       "label":"Distrito",
       "isMetadata":true,
       "isEntityRelation":false
-   }
+   },
+    "@file": {
+        "header": [
+            "header"
+        ],
+        "avatar": [
+            "avatar",
+            "avatarSmall",
+            "avatarMedium",
+            "avatarBig",
+            "avatarEvent"
+        ],
+        "downloads": [
+            "downloads"
+        ],
+        "gallery": [
+            "gallery",
+            "galleryThumb",
+            "galleryFull"
+        ]
+    }
 }
 ```
 
