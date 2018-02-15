@@ -1168,16 +1168,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
     var labels = MapasCulturais.gettext.moduleOpportunity;
-    
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
     var registrationsApi;
     var evaluationsApi;
 
     var committeeApi = new OpportunityApiService($scope, 'evaluationCommittee', 'evaluationCommittee', {'@opportunity': getOpportunityId()});
-    
+
     $scope.registrationsFilters = {};
     $scope.evaluationsFilters = {};
-    
+
     $scope.findRegistrations = function(){
         if(registrationsApi.finish()){
             return null;
@@ -1187,7 +1187,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             $scope.data.findingRegistrations = false;
         });
     }
-    
+
     $scope.findEvaluations = function(){
          if(evaluationsApi.finish()){
             return null;
@@ -1197,7 +1197,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             $scope.data.findingEvaluations = false;
         });
     }
-    
+
     $scope.$watch('registrationsFilters', function(){
         var qdata = {
             'status': 'GT(0)',
@@ -1213,7 +1213,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', qdata);
         $scope.findRegistrations();
     }, true);
-    
+
     $scope.$watch('evaluationsFilters', function(){
         var qdata = {
             '@opportunity': getOpportunityId(),
@@ -1227,7 +1227,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', qdata);
         $scope.findEvaluations();
     }, true);
-    
+
     angular.element($window).bind("scroll", function(){
         // @TODO: refatorar este if
         if(document.location.hash.indexOf("tab=inscritos") >= 0){
@@ -1244,7 +1244,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             }
         }
     });
-    
+
     var adjustingBoxPosition = false,
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };
@@ -1261,7 +1261,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.data = angular.extend({
         uploadSpinner: false,
         spinner: false,
-        
+
         evaluationCommittee: [],
         evaluationCommitteeAPIMetadata: {},
 
@@ -1303,7 +1303,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         fullscreenTable: false
 
     }, MapasCulturais);
-    
+
     committeeApi.find().success(function(result){
         $scope.data.evaluationCommittee = result.map(function(e){
             return {
@@ -1461,7 +1461,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     };
 
                     $scope.approvedRegistrations = function(){
-                        
+
                         var registrations = $scope.data.registrations,
                         approved = 0;
 
@@ -1589,7 +1589,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 var ownerRegistration = [];
                 // @TODO: buscar na api
                 for(var i in $scope.data.registrations) {
-                    if(registration.owner){
+                    if(registration.owner && $scope.data.registrations[i].owner){
                         if($scope.data.registrations[i].owner.id == registration.owner.id) {
                             ownerRegistration.push($scope.data.registrations[i].owner);
                         }
