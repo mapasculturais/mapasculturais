@@ -14,7 +14,7 @@
                         <span class="label"><?php \MapasCulturais\i::_e("Inscrições:");?></span>
                         <?php
                             if($entity->isRegistrationOpen()) echo'open ';
-                            $app->log->debug("Estamos aqu2");
+                            
                             if($entity->registrationFrom && !$entity->registrationTo) {
                                 echo \MapasCulturais\i::_e("a partir de ") .$entity->registrationFrom->format('d/m/Y');
                             } elseif(!$entity->registrationFrom && $entity->registrationTo) {

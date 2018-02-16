@@ -18,8 +18,9 @@ root@server# apt-get update
 **root@server# apt-get install git curl npm ruby2.0 ruby2.0-dev
 
 // Atualizar referências para a versão de ruby 2.0
-update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 10
-update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 10
+**root@server# update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 10
+**root@server# update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 10
+
 
 // Instale a versão stable mais nova do nodejs
 root@server# curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
@@ -54,12 +55,13 @@ root@server# update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 Instalando os minificadores de código Javascript e CSS: uglify-js, uglifycss e autoprefixer
 ```BASH
-root@server# npm install -g uglify-js uglifycss autoprefixer
+root@server# npm install -g uglify-js2 uglifycss autoprefixer
+root@server# update-alternatives --install /usr/bin/uglifyjs uglifyjs /usr/bin/uglifyjs2 10
 ```
 
 Instalando o SASS, utilizado para compilar os arquivos CSS
 ```BASH
-root@server# gem install sass
+root@server# gem install sass -v 3.4.22
 ```
 
 ## 2. Clonando o Repositório
@@ -144,11 +146,12 @@ root@server# mkdir /var/log/mapasculturais
 root@server# chown mapas:www-data /var/log/mapasculturais
 ```
 
-Com o usuário criado, crie a pasta para os assets e para os uploads:
+Com o usuário criado, crie a pasta para os assets, para os uploads e para os uploads privados (arquivos protegidos, como anexos de inscrições em oportunidades):
 ```BASH
 root@server# su - mapas
 mapas@server$ mkdir mapasculturais/src/assets
 mapas@server$ mkdir mapasculturais/src/files
+mapas@server$ mkdir mapasculturais/private-files
 ```
 
 ### Configuração do nginx
@@ -247,7 +250,7 @@ root@server# service php5-fpm restart
 ```
 ### 6. Pós-instalação > API de CEP
 
-No arquivo de configuração da aplicação (mapasculturais/src/protected/application/conf/config.php), há possibilidade de setar um token para consulta de uma API que ajuda na geolocalização de endereço. O administrador da plataforma deve entrar no portal cep aberto (http://www.cepaberto.com), efetuar o cadastro e inserir o token no arquivo de configuração, descomentando a linha. 
+No arquivo de configuração da aplicação (mapasculturais/src/protected/application/conf/config.php), há possibilidade de setar um token para consulta de uma API que ajuda na geolocalização de endereço. O administrador da plataforma deve entrar no portal cep aberto (http://www.cepaberto.com), efetuar o cadastro e inserir o token no arquivo de configuração, descomentando a linha.
 
 ```
         // 'cep.token' => '[token]',
@@ -295,11 +298,15 @@ $ mapas => select * from role;
 ### 8. Pós-instalação > Processo de autenticação
 
 
-O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um sistema de autenticação terceiro. Atualmente, dois sistemas de autenticação estão aptos e testados para essa tarefa: [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) e [Login Cidadão](https://github.com/redelivre/login-cidadao).
+O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um plugin ou a um sistema de autenticação terceiro. Atualmente, h um plugin e dois sistemas de autenticação estão aptos e testados para essa tarefa: 
+
+* [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) 
+* [Login Cidadão](https://github.com/redelivre/login-cidadao).
+* [Multiple Local Auth](https://github.com/LibreCoopUruguay/MultipleLocalAuth) - Implementa um login nativo da aplicaçao, sem depender de serviços externos, e suporta login via redes sociais.
 
 * Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
 
-#### 7.1 Requisitos para implementação dos sistemas de autenticação
+#### 7.1 Requisitos para implementação dos sistemas de autenticação de terceiros
 
 #### Mapas Open ID Conect
 
@@ -312,13 +319,13 @@ Fonte:  [https://github.com/hacklabr/mapasculturais-openid](https://github.com/h
 
 O Login Cidadão é  um software que implementa um sistema de autenticação unificado em grande escala, unificando políticas de segurança, transparência e privacidade, e colocando o cidadão como ponto de convergência para a integração descentralizada dos dados e aplicações. Seu código é livre e é baseado, principalmente, no framework Symfony (php)
 
-#### Login Cidadão > Instalação própria > Prós
+**Prós**
 
 Os pontos positivos relativos aos aspectos de implementação de uma instalação própria são:
 * Confidencialidade dos dados e soberania: todos os dados estarão fisicamente em posse do implementador;
 * Maior controle técnico de customização de layout e features. A posse desse customização, desde que com conhecimento adequado, é do implementador;
 
-#### Login Cidadão > Instalação própria > Contras
+**Contras**
 * Necessidade de servidor próprio e dedicado a instalação;
 * Manutenção com ônus financeiro uma vez que é necessário manter time (interno ou terceirizado) com conhecimentos técnicos adequado à operação técnica do software;
 * Necessidade de endereço (url) dedicada e de certificado SSL implementado (o que também pode gerar custos uma vez 99% dos certificados são pagos anualmente);

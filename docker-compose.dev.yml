@@ -1,0 +1,30 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "8090:80"
+    volumes:
+      - ./src/protected/application:/srv/mapas/mapasculturais/src/protected/application
+    links:
+      - db:mapas
+    environment:
+      - POSTGRES_PASSWORD=senhaMapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+  db:
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=senhaMapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile-db
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+volumes:
+  postgres:

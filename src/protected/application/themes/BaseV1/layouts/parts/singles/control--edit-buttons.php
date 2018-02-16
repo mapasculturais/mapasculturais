@@ -12,7 +12,11 @@
             <a class="btn btn-warning" href="<?php echo $app->createUrl('panel',$this->controller->id . 's'); ?>"><?php \MapasCulturais\i::_e("Cancelar");?></a>
         <?php endif; ?>
     <?php else: ?>
-        <a class="btn btn-default js-submit-button js-archive-button" data-status="<?php echo $entity->isArchived() ? $status_enabled : $status_archived; ?>"><?php echo $entity->isArchived() ? \MapasCulturais\i::__("Desarquivar") : \MapasCulturais\i::__("Arquivar"); ?></a>
+        <?php if($entity->isArchived()): ?>
+            <a class="btn btn-default js-submit-button js-archive-button" data-status="<?php echo $status_enabled; ?>"><?php echo \MapasCulturais\i::__("Desarquivar"); ?></a>
+        <?php elseif($entity->canUser('archive')): ?>
+            <a class="btn btn-default js-submit-button js-archive-button" data-status="<?php echo $status_archived; ?>"><?php echo \MapasCulturais\i::__("Arquivar"); ?></a>
+        <?php endif; ?>
         <a class="btn btn-primary js-submit-button" data-status="<?php echo $entity->isArchived() ? $status_archived : $status_enabled; ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>
     <?php endif; ?>
 

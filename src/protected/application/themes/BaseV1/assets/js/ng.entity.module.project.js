@@ -1010,7 +1010,7 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                 var status = !$scope.data.registrationStatus || $scope.data.registrationStatus === registration.status;
                 var category = !$scope.data.registrationCategory || $scope.data.registrationCategory === registration.category;
 
-                return status && category;
+                return status && category && registration !== null;
             };
 
             $scope.getFilteredRegistrations = function(){
@@ -1018,6 +1018,10 @@ module.controller('ProjectController', ['$scope', '$rootScope', '$timeout', 'Reg
                     return $scope.showRegistration(e);
                 });
             };
+            
+            $scope.notNull = function(item){
+              return !(item === null)
+            }
 
             $scope.usingFilters = function(){
                 return $scope.data.registrationStatus || $scope.data.registrationCategory;

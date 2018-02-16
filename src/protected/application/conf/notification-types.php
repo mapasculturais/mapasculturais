@@ -8,18 +8,18 @@ return array(
             'label' => 'Tipo',
             'type'  => 'select',
             'options' =>  array(
-                '1' => 'Denúncia',
-                '2' => 'Contato'
+                '1' => \MapasCulturais\i::__('Denúncia'),
+                '2' => \MapasCulturais\i::__('Contato')
             )
         ],
         'compliant_type' => [
             'label' => 'Tipo',
             'type' => 'select',
             'options' => array(
-                "0" => "Conteúdo ofensivo ou inadequado",
-                "1" => "Conteúdo incorreto ou calunioso",
-                "2" => "Conteúdo que viola direitos",
-                "3" => "Outros"
+                "0" => \MapasCulturais\i::__("Conteúdo ofensivo ou inadequado"),
+                "1" => \MapasCulturais\i::__("Conteúdo incorreto ou calunioso"),
+                "2" => \MapasCulturais\i::__("Conteúdo que viola direitos"),
+                "3" => \MapasCulturais\i::__("Outros")
             )
         ],
 
@@ -27,11 +27,11 @@ return array(
             'label' => 'Tipo',
             'type' => 'select',
             'options' => array(
-                "0" => "Sugestão",
-                "1" => "Crítica",
-                "2" => "Comentários",
-                "3" => "Reclamações",
-                "4" => "Outros"
+                "0" => \MapasCulturais\i::__("Sugestão"),
+                "1" => \MapasCulturais\i::__("Crítica"),
+                "2" => \MapasCulturais\i::__("Comentários"),
+                "3" => \MapasCulturais\i::__("Reclamações"),
+                "4" => \MapasCulturais\i::__("Outros")
             )
         ]
     )

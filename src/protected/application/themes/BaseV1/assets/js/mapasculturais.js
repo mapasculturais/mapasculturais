@@ -123,81 +123,8 @@ $(function(){
 
         });
     }
-
-    $('.button-form-compliant-suggestion.compliant').on('click', function(){
-        var form_compliant = $(".js-compliant-form");
-        form_compliant.toggle();
-
-        var form_suggestion = $(".js-suggestion-form");
-        form_suggestion.hide();
-
-        var btn_suggestion = $(".button-form-compliant-suggestion.suggestion");
-        var btn_compliant = $(".button-form-compliant-suggestion.compliant");
-
-        showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant);
-    });
-
-    $('.button-form-compliant-suggestion.suggestion').on('click', function(){
-        var form_suggestion = $(".js-suggestion-form");
-        form_suggestion.toggle();
-
-        var form_compliant = $(".js-compliant-form");
-        form_compliant.hide();
-
-        var btn_compliant = $(".button-form-compliant-suggestion.compliant");
-        var btn_suggestion = $(".button-form-compliant-suggestion.suggestion");
-
-        showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant);
-    });
-
-    function showHideCS(form_compliant,form_suggestion,btn_suggestion,btn_compliant) {
-        if(form_compliant.is(":hidden")) {
-            btn_suggestion.show();
-        } else {
-            btn_suggestion.hide()
-        }
-
-        if(form_suggestion.is(":hidden")) {
-            btn_compliant.show();
-        } else {
-            btn_compliant.hide();
-        }
-    }
-
-    $('.js-submit-button.compliant-form').on('click', function(){
-        if(MapasCulturais.compliant_ok) {
-            $(".js-compliant-form")[0].reset();
-            $('.compliant-type').val('');;
-            $('.compliant-box').show();
-            $('.js-submit-button.compliant-form').hide();
-        }
-    });
-
-    $('.close.compliant-form').on('click', function(){
-        if(MapasCulturais.compliant_ok) {
-            $('.compliant-box').hide();
-            $('.js-submit-button.compliant-form').show();
-        }
-    });
-
-    $('.js-submit-button.suggestion-form').on('click', function(){
-        if(MapasCulturais.suggestion_ok) {
-            $(".js-suggestion-form")[0].reset();
-            $('.suggestion-type').val('');;
-            $('.suggestion-box').show();
-            $('.js-submit-button.suggestion-form').hide();
-        }
-    });
-
-    $('.close.suggestion-form').on('click', function(){
-        if(MapasCulturais.suggestion_ok) {
-            $('.suggestion-box').hide();
-            $('.js-submit-button.suggestion-form').show();
-        }
-    });
-
+   
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
-
 
     // identify Internet Explorer
     if(navigator.appName != 'Microsoft Internet Explorer' && !(navigator.appName == 'Netscape' && navigator.userAgent.indexOf('Trident') !== -1)){

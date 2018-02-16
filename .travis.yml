@@ -5,12 +5,19 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
 
 matrix:
   fast_finish: true
   allow_failures:
-        - php: 7.1
+    - php: 7.2
 
+addons:
+  postgresql: 9.6
+  apt:
+    packages:
+    - postgresql-9.6-postgis-2.3
+    
 install:
   - composer self-update && composer --version
   - pushd src/protected; composer install --prefer-dist --no-dev; popd
@@ -21,17 +28,3 @@ before_script:
 
 script:
   - ./scripts/run-tests.sh
-
-notifications:
-  slack:
-    secure: 43vNQD7zOqTTbMnJnnSAOq1avTE0MkxcUAUNX7za6XHg6Q3Caa27K0hP0KQUjgZqqUWeg1jNo2mpq+mIsJCwpebfIA9ZPjmeKq5ryXNmdW7xbqVx7sq3KPKJxTYwJ0RBzuz3LTZALfhRJs8gD6ys+U5E5bOe/ZiGLyq/eQ9hfcw=
-  hipchat:
-    on_success: change
-    rooms:
-      secure: 6KVjKLIde59VWYmJbXx0okMUEhU9gjcl55X+AdW4q1zLo8/cHNhW9iz4De45CfE0gruBgw14h0hOU8QPxJx/4KwgVoSm9PoJopHmYy7SKmSBCwlcxm6Symw9IYVQo5B/hfZlr+gqtUPT8emiBVzvhnTk6DVjZhJbFg2oyp7s+uA=
-  webhooks:
-    urls:
-    - https://webhooks.gitter.im/e/68552e7377e32b765b22
-    on_success: change
-    on_failure: always
-    on_start: false

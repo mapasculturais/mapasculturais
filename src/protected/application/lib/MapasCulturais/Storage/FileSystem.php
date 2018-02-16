@@ -35,6 +35,7 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function __construct(array $config = []) {
         $this->config = $config + [
             'dir' => BASE_PATH . 'files/',
+            'private_dir' => dirname(BASE_PATH) . '/private-files/',
             'baseUrl' => 'files/'
         ];
     }
@@ -127,14 +128,25 @@ class FileSystem extends \MapasCulturais\Storage{
      * @return string The path to the file.
      */
     protected function _getPath(\MapasCulturais\Entities\File $file, $relative = false){
+        
+        
+        /** 
+         * First, we try to get the path info from the $file object
+         * If the file already exists in the filesystem, it should have this information stored in the database
+         */ 
         $relative_path = $file->getRelativePath(false);
         
         if($relative && $relative_path){
             return $relative_path;
         }
-        $parent = $file->parent ? $file->parent : $file->owner;
-
+        
+        /**
+         * If file path is empty, this file is being created now and we are going to return the path
+         */ 
         if(!$relative_path){
+            
+            $parent = $file->parent ? $file->parent : $file->owner;
+            
             if($parent && is_object($parent) && $parent instanceof \MapasCulturais\Entities\File){
                 $relative_path = dirname($this->getPath($parent, true)) . '/file/' . $parent->id . '/' . $file->name;;
             }else{
@@ -142,8 +154,11 @@ class FileSystem extends \MapasCulturais\Storage{
             }
         }
         
-        $result = $relative ? $relative_path : $this->config['dir'] . $relative_path;
-
+        if ($relative)
+            $result =  $relative_path;
+        else
+            $result = $file->private ? $this->config['private_dir'] . $relative_path : $this->config['dir'] . $relative_path;
+        
         return str_replace('\\', '-', $result);
     }
 
