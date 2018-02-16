@@ -694,7 +694,7 @@ return [
         }
 
     },
-<<<<<<< HEAD
+
     'replace subsite entidades_habilitadas values' => function () use($conn) {
         $rs = $conn->fetchAll("SELECT * FROM subsite_meta WHERE key = 'entidades_habilitadas'");
         
@@ -721,7 +721,6 @@ return [
 
         return false;
     }
-=======
     
     'ALTER TABLE file ADD private and update' => function () use ($conn) {
         if(__column_exists('file', 'private')){
@@ -772,8 +771,6 @@ return [
         
         
     },
-    
-    
->>>>>>> e61c5018f1d490a4c2fad3234bd1ad1c3dbf2271
+
 ] + $updates ;
 
