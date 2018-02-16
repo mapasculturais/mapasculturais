@@ -776,6 +776,7 @@ class App extends \Slim\Slim{
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], \MapasCulturais\i::__('O arquivo não é um ZIP.'), true, null, true),
         ];
 
         // register file groups
@@ -806,6 +807,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('seal', $file_groups['gallery']);
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
+        $this->registerFileGroup('registration', $file_groups['zipArchive']);
 
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
@@ -1249,7 +1251,13 @@ class App extends \Slim\Slim{
      * @param  mixed    $callable   A callable object
      * @param  int      $priority   The hook priority; 0 = high, 10 = low
      */
+
+    protected $hook_count = 0;
+    
     function hook($name, $callable, $priority = 10) {
+        $this->hook_count++;
+        $priority += ($this->hook_count / 100000);
+
         $this->_hookCache = [];
         $_hooks = explode(',', $name);
         foreach ($_hooks as $hook) {
@@ -1260,15 +1268,16 @@ class App extends \Slim\Slim{
 
                 $this->_excludeHooks[$hook][] = $callable;
             }else {
+                $priority_key = "$priority";
                 $hook = $this->_compileHook($hook);
 
                 if (!key_exists($hook, $this->_hooks))
                     $this->_hooks[$hook] = [];
 
-                if (!key_exists($priority, $this->_hooks[$hook]))
-                    $this->_hooks[$hook][$priority] = [];
+                if (!key_exists($priority_key, $this->_hooks[$hook]))
+                    $this->_hooks[$hook][$priority_key] = [];
 
-                $this->_hooks[$hook][$priority][] = $callable;
+                $this->_hooks[$hook][$priority_key][] = $callable;
 
                 ksort($this->_hooks[$hook]);
             }
@@ -1330,14 +1339,27 @@ class App extends \Slim\Slim{
 
         foreach ($this->_hooks as $hook => $_callables) {
             if (preg_match($hook, $name)) {
-                foreach ($_callables as $callables) {
+                foreach ($_callables as $priority => $callables) {
                     foreach ($callables as $callable) {
-                        if (!in_array($callable, $exclude_list))
-                            $result[] = $callable;
+                        if (!in_array($callable, $exclude_list)){
+                            $result[] = (object) ['callable' => $callable, 'priority' => (float) $priority];
+                        }
                     }
                 }
             }
         }
+        
+        usort($result, function($a,$b){
+            if($a->priority > $b->priority){
+                return 1;
+            } elseif ($a->priority < $b->priority) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        
+        $result = array_map(function($el) { return $el->callable; }, $result);
 
         $this->_hookCache[$name] = $result;
 
@@ -2410,16 +2432,35 @@ class App extends \Slim\Slim{
             $message->setFrom($this->_config['mailer.from']);
         }
 
+        if($this->_config['mailer.alwaysTo']){
+            $message->setTo($this->_config['mailer.alwaysTo']);
+        }
+
         $type = $message->getHeaders()->get('Content-Type');
         $type->setValue('text/html');
         $type->setParameter('charset', 'utf-8');
 
+        $original = [];
         foreach($args as $key => $value){
+            if(in_array(strtolower($key), ['to', 'cc', 'bcc']) && $this->_config['mailer.alwaysTo']){
+                $original[$key] = $value;
+                continue;
+            }
+
             $key = ucfirst($key);
             $method_name = 'set' . $key;
 
             if(method_exists($message, $method_name)){
                 $message->$method_name($value);
+            }
+        }
+
+        if($this->_config['mailer.alwaysTo']){
+            foreach($original as $key => $val){
+                if(is_array($val)){
+                    $val = implode(', ', $val);
+                }
+                $message->setBody("<strong>ORIGINALMENTE $key:</strong> $val <br>\n" . $message->getBody());
             }
         }
 
@@ -2453,14 +2494,48 @@ class App extends \Slim\Slim{
         }
 
         $templateData = (object) $templateData;
-        if(!($file_name = $this->view->resolveFileName('templates/' . \MapasCulturais\i::get_locale(),$template))) {
-            if(!($file_name = $this->view->resolveFileName('templates/pt_BR',$template))) {
+        
+        $templateData->siteName = $this->view->dict('site: name', false);
+        $templateData->siteDescription = $this->view->dict('site: description', false);
+        $templateData->siteOwner = $this->view->dict('site: owner', false);
+        $templateData->baseUrl = $this->getBaseUrl();
+
+        if(!($footer_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_footer.html'))) {
+            if(!($footer_name = $this->view->resolveFileName('templates/pt_BR', '_footer.html'))) {
+                throw new \Exception('Email footer template not found');
+            }
+        }
+
+        if(!($header_name = $this->view->resolveFileName('templates/' . i::get_locale(), '_header.html'))) {
+            if(!($header_name = $this->view->resolveFileName('templates/pt_BR', '_header.html'))) {
+                throw new \Exception('Email header template not found');
+            }
+        }
+
+        if(!($file_name = $this->view->resolveFileName('templates/' . i::get_locale(), $template))) {
+            if(!($file_name = $this->view->resolveFileName('templates/pt_BR', $template))) {
                 throw new \Exception('Email Template undefined');
             }
         }
 
         $mustache = new \Mustache_Engine();
-        $content = $mustache->render(file_get_contents($file_name),$templateData);
+
+        $headerData = $templateData;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).headerData", [&$headerData]);
+        $_header = $mustache->render(file_get_contents($header_name), $headerData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).header", [&$_header]);
+
+        $footerData = $templateData;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footerData", [&$footerData]);
+        $_footer = $mustache->render(file_get_contents($footer_name),$footerData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).footer", [&$_footer]);
+
+        $templateData->_footer = $_footer;
+        $templateData->_header = $_header;
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).templateData", [&$templateData]);
+        $content = $mustache->render(file_get_contents($file_name), $templateData);
+        $this->applyHookBoundTo($this, "mustacheTemplate({$template}).content", [&$content]);
+
         return $content;
     }
 

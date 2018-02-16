@@ -211,7 +211,7 @@ class EventTest extends MapasCulturais_TestCase{
         $this->assertEquals(0, count($occurrences));
 
         $occurrences = $this->app->repo('EventOccurrence')->findOneBy(array('frequency' => 'weekly'));
-        $this->assertEquals(1, count($occurrences));
+        $this->assertNotNull($occurrences);
     }
 
     function testEventRules(){
