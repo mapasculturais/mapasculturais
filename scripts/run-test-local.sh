@@ -48,14 +48,16 @@ do
     esac
 done
 
-if [ -f /tmp/mapasculturais-tests-authenticated-user.id ] #FOR TRAVIS-CI?
+if [ -f /tmp/mapasculturais-tests-authenticated-user.id ]
 then
     rm "/tmp/mapasculturais-tests-authenticated-user.id"
 fi
 
+echo "BASE TEST: $_NOME_BASE_TEST, USER: $_USER, HOST: $_HOST"
+
 if [ $_CREATE_DB == true ]
 then
-    echo "Password for user $_USER dropdb:\n"    
+    echo "Password for user $_USER dropdb:\n"
     dropdb   -h $_HOST -p $_PORT -U $_USER --if-exists $_NOME_BASE_TEST
     echo "Password for user $_USER createdb:\n"
     createdb -h $_HOST -p $_PORT -U $_USER $_NOME_BASE_TEST --owner $_USER

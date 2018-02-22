@@ -32,3 +32,18 @@ Os testes também podem serem executados localmente, para isso realize os seguin
 
 
 ### docker
+Os testes utilizando os containers docker apresentam passos similares a execução dos testes localmente, apresentando as seguintes diferenças:
+
+A base de testes, mapasculturais_test é criada ao instanciar um novo container da imagem da base dados do mapas culturais ( arquivo [Dockerfile-db](../../docker/dev/Dockerfile-db)), para mais informações sobre como executar os containers dockers veja o documento [guia do docker](../../docs/mc_developer_tests.md). Dessa forma a criação da base utilizando o comando ```./run-test-local.sh --createdb``` é desnecessário.
+
+Para executar os teste, devemos executar os testes dentro do container, para isso basta executar o seguinte comando:
+
+```
+
+docker exec -it <container (ID ou nome)> <comando>:
+
+docker exec -it mapasculturais_web_1 ./scripts/run-test-local.sh
+
+```
+
+
