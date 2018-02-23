@@ -44,10 +44,10 @@ class FileGroup extends \MapasCulturais\Definition{
      *
      */
     function getError(\MapasCulturais\Entities\File $file){
-        $ok = false;
+        $ok = true;
         foreach($this->_validations as $validation){
             if(preg_match("#$validation#i", $file->mimeType)){
-                $ok = true;
+                $ok = false;
                 break;
             }
         }
