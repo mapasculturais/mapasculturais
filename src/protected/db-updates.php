@@ -915,6 +915,10 @@ return [
         $__try("DROP INDEX notification_meta_key_value_idx;");
         $__try("CREATE INDEX notification_meta_key_idx ON notification_meta(key);");
     },
+
+    'DROP index registration_meta_value_idx' => function () use ($conn){
+        __try("DROP INDEX registration_meta_value_idx;");
+    },
     
     
     'altertable registration_file_and_files_add_order' => function () use($conn){
