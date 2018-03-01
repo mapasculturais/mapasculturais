@@ -1,3 +1,3 @@
 * Corrige campo de bairro quando se utiliza um CEP geral de uma cidade e a informação de bairro vem vazia
 
-* Faz com que a pesquisa por palavra-chave dos eventos seja realizada além de pelo nome do espaço, também pelo nome do espaço.
+* Faz com que a pesquisa por palavra-chave para eventos seja executada  usando o nome do espaço e o nome do evento.
