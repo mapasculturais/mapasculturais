@@ -26,7 +26,7 @@
                 <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
-        <tr ng-repeat="reg in data.entity.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" ng-if="reg.status == 10 || reg.status == 8" >
+        <tr ng-repeat="reg in data.entity.registrations | filter:notNull" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" ng-if="reg.status == 10 || reg.status == 8" >
             <td class="registration-id-col"><strong>{{reg.number}}</strong></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td class="registration-agents-col">
