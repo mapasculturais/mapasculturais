@@ -57,9 +57,14 @@ article.event {
         background-color: $brand-event;
     }
 }
-article.project, article.registration {
+article.project {
     .header-image {
         background-color: $brand-project;
+    }
+}
+article.opportunity, article.registration {
+    .header-image {
+        background-color: $brand-opportunity;
     }
 }
 article.subsite {
@@ -111,8 +116,11 @@ article.seal {
             color: inherit;
         }
     }
-    .project-type, .registration-type {
+    .project-type {
         color: $brand-project;
+    }
+    .opportunity-type, .registration-type {
+        color: $brand-opportunity;
     }
     .agent-type {
         color: $brand-agent;

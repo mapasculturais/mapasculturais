@@ -1,0 +1,38 @@
+.opportunity-phases {
+    margin-top: 1em;
+}
+
+.opportunity-phases li {
+    margin-bottom:.5em;
+}
+
+.opportunity-phases li.active {
+    padding: .5em;
+    background: rgba(0,0,0,.05);
+}
+
+ul.evaluation-methods {
+    margin: 0;
+}
+ul.evaluation-methods li {
+    list-style: none;
+    font-size: .8em;
+    padding: 0 .5em;
+}
+
+ul.evaluation-methods li a {
+    text-decoration: none;
+    font-weight: normal;
+}
+
+ul.evaluation-methods li p {
+    margin-bottom: .5em;
+}
+
+ul.evaluation-methods li:hover {
+    background: #f1f1f1;
+}
+
+ul.evaluation-methods li a span {
+    font-weight: bold;
+}

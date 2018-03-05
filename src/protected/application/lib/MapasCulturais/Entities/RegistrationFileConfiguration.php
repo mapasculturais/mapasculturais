@@ -29,11 +29,11 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $id;
 
     /**
-     * @var \MapasCulturais\Entities\Project
+     * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id")
      * })
      */
     protected $owner;
@@ -84,7 +84,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     static function getValidations() {
         return [
             'owner' => [ 
-                'required' => \MapasCulturais\i::__("O projeto é obrigatório.")
+                'required' => \MapasCulturais\i::__("A oportunidade é obrigatória.")
             ],
             'title' => [ 
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
@@ -97,8 +97,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     }
 
     public function setOwnerId($id){
-//        $this->owner = $this->repo()->find('project', $id);
-        $this->owner = App::i()->repo('Project')->find($id);
+        $this->owner = App::i()->repo('Opportunity')->find($id);
     }
     
     public function setCategories($value) {

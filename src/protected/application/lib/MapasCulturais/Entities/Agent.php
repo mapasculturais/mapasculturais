@@ -35,6 +35,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityArchive,
         Traits\EntityOriginSubsite,
+        Traits\EntityOpportunities,
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }
@@ -173,9 +174,23 @@ class Agent extends \MapasCulturais\Entity
 
 
     /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentOpportunity", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $_ownedOpportunities;
+
+
+    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $_events;
+    
+    /**
+     * @var \MapasCulturais\Entities\AgentOpportunity[] Opportunities
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $_relatedOpportunities;
 
 
     /**

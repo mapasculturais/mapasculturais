@@ -19,6 +19,8 @@ $em = $app->em;
 
 <?php $this->part('home-projects'); ?>
 
+<?php $this->part('home-opportunities'); ?>
+
 <?php $this->part('home-developers'); ?>
 
 <?php $this->part('home-nav'); ?>

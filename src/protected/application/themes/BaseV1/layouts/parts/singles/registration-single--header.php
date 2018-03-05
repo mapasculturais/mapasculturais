@@ -11,10 +11,8 @@
         <?php echo $entity->number ?>
     </div>
     <div class="alignright">
-        <?php if($project->publishedRegistrations): ?>
+        <?php if($opportunity->publishedRegistrations): ?>
             <span class="status status-{{getStatusSlug(<?php echo $entity->status ?>)}}">{{getStatusNameById(<?php echo $entity->status ?>)}}</span>
-        <?php elseif($project->canUser('@control')): ?>
-            <mc-select class="{{getStatusSlug(data.registration.status)}}" model="data.registration" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
         <?php endif; ?>
     </div>
 </div>

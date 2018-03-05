@@ -122,6 +122,15 @@ body.action-single {
         color: $brand-project;
     }
 }
+.sidebar.opportunity {
+    border-top-color: $brand-opportunity;
+    &:before {
+        border-top-color: $brand-opportunity !important;
+    }
+    .widget-list-item > a {
+        color: $brand-opportunity;
+    }
+}
 
 .sidebar.seal {
     border-top-color: $brand-seal;
@@ -135,5 +144,5 @@ body.action-single {
 
 
 .sidebar.registration {
-    @extend .sidebar.project;
+    @extend .sidebar.opportunity;
 }

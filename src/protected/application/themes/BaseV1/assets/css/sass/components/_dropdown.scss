@@ -72,6 +72,24 @@
         }
     }
 }
+
+mc-select{
+
+    &.left{
+        .submenu-dropdown{
+            right:initial;
+        }
+    }
+
+    ul{
+        max-height:400px;
+        overflow-y: auto;
+        li {
+            white-space: nowrap;
+        }
+    }
+}
+
 .dropdown-select {
     box-sizing: border-box;
     color: $btn-default-color;

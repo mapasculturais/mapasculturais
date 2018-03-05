@@ -1,0 +1,86 @@
+.technical-evaluation-configuration .btn {
+    margin-left:10px;
+}
+
+.technical-evaluation-configuration input {
+    border:1px solid transparent;
+    cursor: pointer;
+}
+
+.technical-evaluation-configuration input:focus {
+    border:1px solid #888;
+    cursor: text;
+}
+
+.technical-evaluation-configuration input.section-name{
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 80%;
+}
+
+.technical-evaluation-configuration table {
+    width:100%;
+}
+.technical-evaluation-configuration table th .btn {
+    text-align: right
+}
+
+.technical-evaluation-configuration table input {
+    width: 100%;
+}
+
+.technical-evaluation-configuration .criterion-title {
+    width: 60%;
+}
+
+.technical-evaluation-configuration .criterion-num {
+    width: 10%;
+}
+
+.technical-evaluation-configuration .criterion-num input{
+    font-weight: bold;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* evaluation form */
+
+.technical-evaluation-form table{
+    width:100%;
+    border:1px solid #bbb;
+    padding:5px;
+}
+
+.technical-evaluation-form table th{
+    background-color: #ddd;
+}
+
+.technical-evaluation-form table td{
+    padding:0 10px;
+    text-align: left;
+}
+
+.technical-evaluation-form table tr td:last-of-type{
+    vertical-align: bottom;
+    text-align: right;
+    padding:0;
+}
+
+.technical-evaluation-form table td input{
+    width:50px;
+}
+
+
+.technical-evaluation-form table tr.subtotal {
+    background-color: #ddd;
+}
+
+.technical-evaluation-form table tr.subtotal td{
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.technical-evaluation-form textarea {
+    width: 100%;
+    height:150px;
+}
