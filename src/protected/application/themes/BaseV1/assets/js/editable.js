@@ -7,7 +7,7 @@ jQuery(function(){
     MapasCulturais.Editables.init('#editable-entity');
     MapasCulturais.AjaxUploader.init();
     MapasCulturais.MetalistManager.init();
-    
+
     var labels = MapasCulturais.gettext.editable;
 
     MapasCulturais.Remove.init();
@@ -54,7 +54,7 @@ jQuery(function(){
              * 
              * Example: ['00-0009', '000-009', '0000-000']
              * 
-             */ 
+             */
             if (MapasCulturais.phoneMasks === false) return;
             var masks = MapasCulturais.phoneMasks ? MapasCulturais.phoneMasks : ['(00) 0000-00009', '(00) 00000-0000'];
             editable.input.$input.mask(masks[0], {onKeyPress:
@@ -63,9 +63,9 @@ jQuery(function(){
                         for (var ii=1; ii<masks.length; ii++) {
                             field.mask(val.length > masks[ii-1].length - 1 ? masks[ii] : masks[ii-1], options);
                         }
-                        
+
                     }
-                    
+
                 }
             });
         }
@@ -104,7 +104,7 @@ jQuery(function(){
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
     $('.editable').on('shown', function(e, editable) {
-        
+
         editable.container.$form.find('.editable-cancel').attr('title', labels['cancel']);
         //textarea display default Ctrl+Enter and Esc shortcuts
         switch (editable.input.type.trim()) {
@@ -165,30 +165,30 @@ jQuery(function(){
             return false;
         });
     }
-    
-    
+
+
     // Human Crop for images
     $('input.human_crop').change(function() {
-        
+
         if (!window.FileReader)
             return; // browser não suporta
-        
+
         var reader = new FileReader();
         var $form = $(this).closest('form');
         var $formEditBox = $form.closest('.js-editbox');
         var $sendButton = $('#editbox-human-crop').find('button[type="submit"]');
-        
+
         var cropWidth = $form.data('crop-width');
         var cropHeight = $form.data('crop-height');
-        
+
         $sendButton.html(labels['Crop']);
-        
+
         reader.onload = function(event) {
             the_url = event.target.result
             $('#human-crop-image').attr('src', the_url);
-            
+
             var croppedImage;
-            
+
             var cropper = $('#human-crop-image').cropbox({
                 width: cropWidth,
                 height: cropHeight,
@@ -201,7 +201,7 @@ jQuery(function(){
             }).on('cropbox', function(e, data, img) {
                 croppedImage = img.getBlob();
             });
-            
+
             $sendButton.one('click',function() {
                 var formData = new FormData();
                 formData.append($form.data('group'), croppedImage);
@@ -209,23 +209,23 @@ jQuery(function(){
                 // Dont ask me how, but I found this way to manipulate AjaxForm options
                 $._data($form[0], 'events')['submit'][0].data.processData = false;
                 $._data($form[0], 'events')['submit'][0].data.formData = formData;
-                
+
                 $formEditBox.show();
                 MapasCulturais.EditBox.close('#editbox-human-crop');
-                
+
             });
-            
+
         }
-        
+
         reader.readAsDataURL(this.files[0]);
-        
+
         // copy the classes from the original editBox, so we position our new editbox the same way
         $('#editbox-human-crop').attr('class', $formEditBox.attr('class')).width(cropWidth).height(cropHeight + 80);
         MapasCulturais.EditBox.open('#editbox-human-crop', $($form.data('target')));
-        
+
         // hide original editBox
         $formEditBox.hide();
-        
+
     });
 
 });
@@ -314,9 +314,9 @@ MapasCulturais.Editables = {
     },
 
     initSpacePublicEditable: function(){
-        
+
         var labels = MapasCulturais.gettext.editable;
-        
+
         $('#editable-space-status').on('hidden', function(e, reason) {
             if($(this).editable('getValue', true) == '1'){
                 $('#editable-space-status').html('<div class="venue-status"><div class="icon icon-publication-status-open"></div>'+labels['freePublish']+'</div><p class="venue-status-definition">'+labels['freePlublishDescription']+'</p>');
@@ -554,7 +554,7 @@ MapasCulturais.Editables = {
                     $timepicker.editable();
                     $hidden.editable({name: $datepicker.data('edit')});
                     $datepicker.editable(config);
-                    
+
                     if($timepicker.data('datetime-value'))
                         $hidden.editable('setValue', moment($timepicker.data('datetime-value')).format('YYYY-MM-DD HH:mm'));
                     else
@@ -577,7 +577,7 @@ MapasCulturais.Editables = {
                             if(!$timepicker.editable('getValue', true)){
                                 $timepicker.editable('setValue', '23:59');
                             }
-                            
+
                             $hidden.editable('setValue',
                                 moment(params.newValue).format('YYYY-MM-DD') + ' ' + $timepicker.editable('getValue', true)
                             );
@@ -632,7 +632,7 @@ MapasCulturais.Editables = {
             var controller = MapasCulturais.request.controller; //Retorna controller da entidade atual
             var action = $(editableEntitySelector).data('action'); //"edit"
             var $editables = MapasCulturais.Editables.getEditableElements().add('.js-include-editable');
-            
+
             var labels = MapasCulturais.gettext.editable;
 
             if(action === 'create'){
@@ -645,7 +645,7 @@ MapasCulturais.Editables = {
                     var message = MapasCulturais.request.controller === 'event' ?
                         labels['confirmPublish'].replace('%s', labels['this_' + MapasCulturais.request.controller]) :
                         labels['confirmPublishFinal'].replace('%s', labels['this_' + MapasCulturais.request.controller]);
-                    
+
                     if(!confirm(message)){
                         return;
                     }
@@ -698,6 +698,7 @@ MapasCulturais.Editables = {
                         var field_found = false;
                         var firstShown = false;
                         for(var p in response.data){
+                            $field = $('.js-editable[data-edit="' + p + '"]');
                             if(MapasCulturais.request.controller === 'event' && p === 'project'){
                                 $field = $('.editable[data-field-name="projectId"');
                             }else if(p.substr(0,5) == 'term-'){
@@ -707,14 +708,20 @@ MapasCulturais.Editables = {
                             }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
                                 firstShown = true; // don't show editable
                                 $field = $('#registration-agent-owner').parent().find('.registration-label span');
-                            }else{
-                                $field = $('.js-editable[data-edit="' + p + '"]');
                             }
+
                             for(var k in response.data[p]){
                                 if($field.length){
                                     field_found = true;
                                     var errorHtml = '<span title="' + response.data[p][k] + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>';
-                                    $field.parent().append(errorHtml);
+                                    try {
+                                        if($field.parents("edit-box")["0"].localName === "edit-box"){
+                                            $field.parents("edit-box").append(errorHtml);
+                                        }
+                                    }
+                                    catch(e){
+                                        $field.parent().append(errorHtml);
+                                    }
                                 }else{
                                     unknow_errors.push(response.data[p][k]);
                                 }
@@ -802,7 +809,7 @@ MapasCulturais.AjaxUploader = {
     init: function(selector, extraOptions) {
         selector = selector || '.js-ajax-upload';
         extraOptions = extraOptions || {};
-        
+
         $(selector).each(function(){
 
             if($(this).data('initialized'))
@@ -878,7 +885,7 @@ MapasCulturais.AjaxUploader = {
                             case 'background-image':
                                 $('#remove-background-button').toggleClass('hide-background-button');
                                 $('#remove-background-button').toggleClass('display-background-button');
-                                
+
                                 $target.each(function(){
                                     try{
                                         if($form.data('transform'))
@@ -936,7 +943,7 @@ MapasCulturais.MetalistManager = {
         $('.js-metalist-form').ajaxForm({
             //target:        '#output1',   // target element(s) to be updated with server response
             //beforeSubmit:  showRequest,  // pre-submit callback
-            
+
             beforeSubmit:function(arr, $form, options){
                 //por enquanto validando apenas o vídeo contendo vimeo ou youtube e o link contendo algum protocolo...
                 var group = $form.parents('.js-editbox').data('metalist-group');
