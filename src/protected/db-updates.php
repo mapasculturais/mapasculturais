@@ -961,7 +961,7 @@ return [
         }
 
         return false;
-    }
+    },
     
     'ALTER TABLE file ADD private and update' => function () use ($conn) {
         if(__column_exists('file', 'private')){
