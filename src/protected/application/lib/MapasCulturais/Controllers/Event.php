@@ -21,7 +21,8 @@ class Event extends EntityController {
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
         Traits\ControllerArchive,
-        Traits\ControllerAPI;
+        Traits\ControllerAPI,
+        Traits\ControllerOpportunities;
 
     /**
      * Creates a new Event

@@ -2,12 +2,13 @@
 return array(
     1 => array(
        // 'slug' => \MapasCulturais\i::__('tag'),
-'slug' => 'tag',
+    'slug' => 'tag',
         'entities' => array(
             'MapasCulturais\Entities\Space',
             'MapasCulturais\Entities\Agent',
             'MapasCulturais\Entities\Event',
-            'MapasCulturais\Entities\Project'
+            'MapasCulturais\Entities\Project',
+            'MapasCulturais\Entities\Opportunity',
         )
     ),
 
@@ -24,9 +25,9 @@ return array(
             \MapasCulturais\i::__('Arqueologia'),
             \MapasCulturais\i::__('Arquitetura-Urbanismo'),
             \MapasCulturais\i::__('Arquivo'),
-           \MapasCulturais\i::__( 'Arte de Rua'),
-           \MapasCulturais\i::__( 'Arte Digital'),
-           \MapasCulturais\i::__( 'Artes Visuais'),
+            \MapasCulturais\i::__('Arte de Rua'),
+            \MapasCulturais\i::__('Arte Digital'),
+            \MapasCulturais\i::__('Artes Visuais'),
             \MapasCulturais\i::__('Artesanato'),
             \MapasCulturais\i::__('Audiovisual'),
             \MapasCulturais\i::__('Cinema'),

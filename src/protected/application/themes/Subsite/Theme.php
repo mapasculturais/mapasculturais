@@ -117,15 +117,17 @@ class Theme extends BaseV1\Theme{
 
                 ";
 
-                $variables_scss .= "\$brand-agent:   " . ($this->subsiteInstance->agents_color?     $this->subsiteInstance->agents_color:   $app->config['themes.brand-agent'])   . " !default;\n";
-                $variables_scss .= "\$brand-project: " . ($this->subsiteInstance->projects_color?   $this->subsiteInstance->projects_color: $app->config['themes.brand-project']) . " !default;\n";
-                $variables_scss .= "\$brand-event:   " . ($this->subsiteInstance->events_color?     $this->subsiteInstance->events_color:   $app->config['themes.brand-event'])   . " !default;\n";
-                $variables_scss .= "\$brand-space:   " . ($this->subsiteInstance->spaces_color?     $this->subsiteInstance->spaces_color:   $app->config['themes.brand-space'])   . " !default;\n";
-                $variables_scss .= "\$brand-seal:    " . ($this->subsiteInstance->seals_color?      $this->subsiteInstance->seals_color:    $app->config['themes.brand-seal'])    . " !default;\n";
-                $variables_scss .= "\$brand-subsite: " . ($this->subsiteInstance->cor_subsite?      $this->subsiteInstance->cor_subsite:    $app->config['themes.brand-subsite']) . " !default;\n";
-                $variables_scss .= "\$brand-primary: " . ($this->subsiteInstance->cor_intro?        $this->subsiteInstance->cor_intro:      $app->config['themes.brand-intro'])   . " !default;\n";
-                $variables_scss .= "\$brand-developer:" . ($this->subsiteInstance->cor_dev?         $this->subsiteInstance->cor_dev:        $app->config['themes.brand-developer']) . " !default;\n";
-                
+                $variables_scss .= "\$brand-agent:      " . ($this->subsiteInstance->agents_color?        $this->subsiteInstance->agents_color:        $app->config['themes.brand-agent'])       . " !default;\n";
+                $variables_scss .= "\$brand-project:    " . ($this->subsiteInstance->projects_color?      $this->subsiteInstance->projects_color:      $app->config['themes.brand-project'])     . " !default;\n";
+                $variables_scss .= "\$brand-event:      " . ($this->subsiteInstance->events_color?        $this->subsiteInstance->events_color:        $app->config['themes.brand-event'])       . " !default;\n";
+                $variables_scss .= "\$brand-space:      " . ($this->subsiteInstance->spaces_color?        $this->subsiteInstance->spaces_color:        $app->config['themes.brand-space'])       . " !default;\n";
+                $variables_scss .= "\$brand-seal:       " . ($this->subsiteInstance->seals_color?         $this->subsiteInstance->seals_color:         $app->config['themes.brand-seal'])        . " !default;\n";
+                $variables_scss .= "\$brand-opportunity:" . ($this->subsiteInstance->opportunities_color? $this->subsiteInstance->opportunities_color: $app->config['themes.brand-opportunity']) . " !default;\n";
+                $variables_scss .= "\$brand-subsite:    " . ($this->subsiteInstance->cor_subsite?         $this->subsiteInstance->cor_subsite:         $app->config['themes.brand-subsite'])     . " !default;\n";
+                $variables_scss .= "\$brand-primary:    " . ($this->subsiteInstance->cor_intro?           $this->subsiteInstance->cor_intro:           $app->config['themes.brand-intro'])       . " !default;\n";
+                $variables_scss .= "\$brand-developer:  " . ($this->subsiteInstance->cor_dev?             $this->subsiteInstance->cor_dev:             $app->config['themes.brand-developer'])   . " !default;\n";
+
+
                 file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
                 file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);
 

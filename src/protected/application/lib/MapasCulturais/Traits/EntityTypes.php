@@ -64,6 +64,6 @@ trait EntityTypes{
     }
 
     public function validateType(){
-        return is_numeric($this->_type) && (bool) App::i()->getRegisteredEntityTypeById($this, $this->_type);
+        return (bool) App::i()->getRegisteredEntityTypeById($this, $this->_type);
     }
 }

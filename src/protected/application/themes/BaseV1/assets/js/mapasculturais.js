@@ -35,22 +35,6 @@ $(function(){
         MapasCulturais.App.init();
     }
 
-    // dropdown
-
-    if(MapasCulturais.request.controller === 'project') {
-        var $els = $('#tab-inscricoes,#tab-inscritos').parent();
-        if(!MapasCulturais.entity.useRegistrations){
-            $els.hide();
-        }
-        $('#editable-use-registrations').on('hidden', function(e, reason) {
-            if($(this).editable('getValue', true) == '1'){
-                $els.fadeIn('fast');
-            }else{
-                $els.fadeOut('fast');
-            }
-        });
-    }
-
     //main nav submenus toggle on click
     $('body').on('click', '.js-submenu-toggle', function(){
         var $self = $(this),
@@ -123,7 +107,7 @@ $(function(){
 
         });
     }
-   
+
     MapasCulturais.spinnerURL = MapasCulturais.assetURL + '/img/spinner.gif';
 
     // identify Internet Explorer
@@ -182,6 +166,15 @@ $(function(){
             descAgent.show().css('top',-((descAgentHeight)+10));
         });
     }
+
+    function setEvaluationFormHeight(){
+        var h = $(window).height() - $('#main-header').height();
+        $('#registration-evaluation-form').height(h - 50);
+    }
+
+    setEvaluationFormHeight();
+
+    $(window).resize(setEvaluationFormHeight);
 });
 
 MapasCulturais.utils = {
@@ -349,6 +342,7 @@ jQuery(document).ready(function(){
 
 
 MapasCulturais.Messages = {
+    animated: false,
     delayToFadeOut: 5000,
     fadeOutSpeed: 'slow',
     showMessage: function(type, message) {
@@ -356,25 +350,41 @@ MapasCulturais.Messages = {
         var $message = $('<div class="alert ' + type + '">"').html(message);
         var $mainSection = $('#main-section');
         var delayToFadeOut = this.delayToFadeOut;
+        var marginTop = 42;
         $container.append($message);
+        
 
         if($container.hasClass('js-not-editable')){
+            
+            function animateAndShow(cb){
+                MapasCulturais.Messages.animated = true;
+                $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) + marginTop}, 'fast', cb);
+            }
             $container.slideDown('fast');
-            $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) + 42}, 'fast', function(){
+            
+            var cb = function( animate ){
                 $message.css('display', 'inline-block').css('display', 'inline-block').delay(delayToFadeOut).fadeOut(this.fadeOutSpeed, function() {
                     $(this).remove();
                     if($container.find('>').length === 0){
                         $container.slideUp('fast');
-                        $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) - 42}, 'fast');
+                        $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) - marginTop}, 'fast', function(){
+                            MapasCulturais.Messages.animated = false;
+                        });
                     }
                 });
-            });
+            };
+            
+            if(MapasCulturais.Messages.animated) {
+                cb();
+            } else {
+                animateAndShow(cb);
+            }
         }else{
             $message.css('display', 'inline-block').css('display', 'inline-block').delay(delayToFadeOut).fadeOut(this.fadeOutSpeed, function() {
                 $(this).remove();
             });
         }
-
+        $(window).scroll();
     },
     success: function(message) {
         this.showMessage('success', message);

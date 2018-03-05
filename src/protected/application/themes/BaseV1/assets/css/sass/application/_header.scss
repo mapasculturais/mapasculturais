@@ -218,7 +218,7 @@ body.action-search {
     li {
         -webkit-transition: all .3s;
                 transition: all .3s;
-        width: 25%;
+        width: 20%;
         @media screen and (min-width: $screen-tablet) {
             width: 4.5rem;
         }
@@ -289,6 +289,21 @@ body.action-search {
     &.active {
         &:after {
             @include arrow(up, $caret-width-base, $brand-project);
+        }
+    }
+}
+//** Opportunity
+#entities-menu-opportunity {
+    &.active, &:hover, &.current-entity-parent {
+        border-top-color: $brand-opportunity;
+        color: $brand-opportunity;
+        a {
+            color: $brand-opportunity;
+        }
+    }
+    &.active {
+        &:after {
+            @include arrow(up, $caret-width-base, $brand-opportunity);
         }
     }
 }

@@ -27,11 +27,11 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $id;
 
     /**
-     * @var \MapasCulturais\Entities\Project
+     * @var \MapasCulturais\Entities\Opportunity
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id")
      * })
      */
     protected $owner;
@@ -53,7 +53,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="max_size", type="string", nullable=true)
+     * @ORM\Column(name="max_size", type="integer", nullable=true)
      */
     protected $maxSize;
 
@@ -107,8 +107,8 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function setOwnerId($id){
-//        $this->owner = $this->repo()->find('project', $id);
-        $this->owner = App::i()->repo('Project')->find($id);
+//        $this->owner = $this->repo()->find('opportunity', $id);
+        $this->owner = App::i()->repo('Opportunity')->find($id);
     }
     
     public function setFieldOptions($value){

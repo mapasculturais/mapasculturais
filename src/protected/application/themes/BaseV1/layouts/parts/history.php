@@ -7,7 +7,7 @@ $app = \MapasCulturais\App::i();
 $entityRevisions = $app->repo("EntityRevision")->findEntityRevisions($entity);
 $currentDate = null;
 ?>
-<?php if(count($entityRevisions) > 0): ?>
+<?php if(is_array($entityRevisions) && count($entityRevisions) > 0): ?>
 <div class="widget">
     <h3><?php \MapasCulturais\i::_e("Histórico");?></h3>
     <ul class="widget-list js-slimScroll horizontalScroll">

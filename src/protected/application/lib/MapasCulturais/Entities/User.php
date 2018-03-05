@@ -483,6 +483,45 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $projects;
     }
 
+    public function getOpportunities(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Opportunity');
+    }
+    function getEnabledOpportunities(){
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Opportunity', Opportunity::STATUS_ENABLED, '=');
+    }
+    function getDraftOpportunities(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Opportunity', Opportunity::STATUS_DRAFT, '=');
+    }
+    function getTrashedOpportunities(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Opportunity', Opportunity::STATUS_TRASH, '=');
+    }
+    function getDisabledOpportunities(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Opportunity', Opportunity::STATUS_DISABLED, '=');
+    }
+
+    function getArchivedOpportunities(){
+        $this->checkPermission('modify');
+
+        return $this->_getEntitiesByStatus(__NAMESPACE__ . '\Opportunity', Opportunity::STATUS_ARCHIVED,'=');
+    }
+
+    function getHasControlOpportunities(){
+        $this->checkPermission('modify');
+
+        $opportunities = App::i()->repo('Opportunity')->findByAgentRelationUser($this, true);
+
+        if(!$opportunities)
+            $opportunities = [];
+
+        return $opportunities;
+    }
+
     public function getSubsite($status = null) {
         $result = [];
         

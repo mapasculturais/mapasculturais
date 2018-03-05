@@ -4,7 +4,7 @@ use MapasCulturais\Entities\Registration;
 $app = MapasCulturais\App::i();
 
 $url = $registration->status == Registration::STATUS_DRAFT ? $registration->editUrl : $registration->singleUrl;
-$proj = $registration->project;
+$proj = $registration->opportunity;
 ?>
 <article class="objeto clearfix">
     <?php if($avatar = $proj->avatar): ?>

@@ -384,6 +384,11 @@ class Subsite extends \MapasCulturais\Entity
             $config['app.enabled.events'] = false;
         }
 
+        if (!in_array('Opportunities', $entidades)) {
+            $config['app.enabled.opportunities'] = false;
+        }
+
+
 
 
 
