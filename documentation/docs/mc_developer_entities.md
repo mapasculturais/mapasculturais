@@ -1,7 +1,7 @@
 Entidades dos Mapas Culturais
 =============================
 
-O banco de dados é composto, basicamente, por quatro entidades: Agentes, Espaços, Eventos, Projetos e Selos.
+O banco de dados é composto, basicamente, por cinco entidades: Agentes, Espaços, Eventos, Projetos e Selos.
 
 As quatro principais entidade agentes, espaços, eventos e projetos possuem em comum:
 -------------------------------------
