@@ -1349,7 +1349,7 @@ class App extends \Slim\Slim{
     }
 
     /**
-     * Invoke hook biding callbacks to the target object
+     * Invoke hook binding callbacks to the target object
      *
      * @param  object $target_object Object to bind hook
      * @param  string   $name       The hook name
