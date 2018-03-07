@@ -893,12 +893,12 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
-        
+
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
             $app->hook('view.partial(nav-main-user).params', function($params, &$name){
                 $name = 'header-profile-link';
             });
-            
+
             $app->hook('GET(panel.<<*>>):before, GET(<<*>>.create):before', function() use($app){
                 $app->redirect($app->user->profile->editUrl);
             });
@@ -1146,6 +1146,18 @@ class Theme extends MapasCulturais\Theme {
             }
 
         });
+
+        //
+        $app->hook('GET(subsite.single):before', function() use($app) {
+
+            $app->view->jsObject['user_filters__subsite']['event'] = $this->requestedEntity->user_filters__event;
+            $app->view->jsObject['user_filters__subsite']['space'] = $this->requestedEntity->user_filters__space;
+            $app->view->jsObject['user_filters__subsite']['agent'] = $this->requestedEntity->user_filters__agent;
+            $app->view->jsObject['user_filters__subsite']['project'] = $this->requestedEntity->user_filters__project;
+            $app->view->jsObject['user_filters__subsite']['opportunity'] = $this->requestedEntity->user_filters__opportunity;
+
+        });
+
     }
 
 
@@ -1227,7 +1239,7 @@ class Theme extends MapasCulturais\Theme {
                 }
             }
         }
-        
+
         // after plugin registration that creates the configuration types
         $app->hook('app.register', function(){
             $this->view->registerMetadata('MapasCulturais\Entities\EvaluationMethodConfiguration', 'infos', [
@@ -1240,7 +1252,7 @@ class Theme extends MapasCulturais\Theme {
 
     function head() {
         parent::head();
-        
+
         $app = App::i();
 
         $this->printStyles('vendor');
@@ -1382,13 +1394,13 @@ class Theme extends MapasCulturais\Theme {
         // It Javis ColorPicker
         $this->enqueueScript('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js');
         $this->enqueueStyle('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css');
-        
+
         // Cropbox
         $this->enqueueScript('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.js', array('jquery'));
         $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
     }
 
-    function includeCommonAssets() { 
+    function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');

@@ -60,13 +60,10 @@
     }]);
 
     module.controller('ConfigFilterSubsiteController', ['$scope', '$timeout', 'EditBox', function($scope, $timeout, EditBox){
+
         console.log(MapasCulturais);
 
-        $scope.editbox = EditBox;
-
         $scope.filters = MapasCulturais.user_filters__subsite;
-
-        // $scope.user_filters__new = MapasCulturais.user_filters__new;
 
         $scope.config_filters = [];
         $scope.config_filters.event = MapasCulturais.EntitiesDescription.event;
@@ -75,16 +72,45 @@
         $scope.config_filters.project = MapasCulturais.EntitiesDescription.project;
         $scope.config_filters.opportunity = MapasCulturais.EntitiesDescription.opportunity;
 
-        $scope.add_filter = function(entitiy_filter) {
-            entitiy_filter.push([]);
-            $timeout(function(){
-                MapasCulturais.Editables.createAll();
-            }, 666);
+        $scope.add_filter = function(entity, attrs) {
+            $scope.filter_entity = entity;
+            // todo: set options
+            $scope.new_filter = [];
+            EditBox.open('new-filter');
         };
-
 
         $scope.delete_filter = function(entitiy_filter, filter) {
             entitiy_filter.splice(entitiy_filter.indexOf(filter), 1);
+        };
+
+        $scope.save_filter = function(attrs) {
+            console.log($scope);
+            console.log('var_name', 'user_filters__' + $scope.filter_entity);
+            var filters = $('#user_filters__' + $scope.filter_entity).val();
+            console.log(filters);
+            if (!filters){
+                filters = {};
+                console.log('a');
+            }
+            else{
+                filters = JSON.parse(filters);
+                console.log('b');
+            }
+            console.log('filters_before', filters);
+            filters.push($scope.new_filter);
+            console.log('filters_after', filters);
+            filter_str = JSON.stringify(filters);
+            console.log('str', JSON.stringify(filters));
+            $('#user_filters__' + $scope.filter_entity).val(JSON.stringify(filters));
+            EditBox.close(attrs.id);
+        };
+
+        $scope.up_filter = function(entity, entitiy_filter) {
+            // todo: index filter -1
+        };
+
+        $scope.down_filter = function(entity, entitiy_filter) {
+            // todo: index filter +1
         };
 
     }]);
