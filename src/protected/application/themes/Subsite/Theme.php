@@ -272,17 +272,6 @@ class Theme extends BaseV1\Theme{
             $this->_publishAssets();
         });
 
-        //
-        $app->hook('GET(subsite.single):before', function() use($app) {
-
-            $app->view->jsObject['user_filters__subsite']['event'] = $this->requestedEntity->user_filters__event;
-            $app->view->jsObject['user_filters__subsite']['space'] = $this->requestedEntity->user_filters__space;
-            $app->view->jsObject['user_filters__subsite']['agent'] = $this->requestedEntity->user_filters__agent;
-            $app->view->jsObject['user_filters__subsite']['project'] = $this->requestedEntity->user_filters__project;
-            $app->view->jsObject['user_filters__subsite']['opportunity'] = $this->requestedEntity->user_filters__opportunity;
-
-        });
-
     }
 
     protected function _publishAssets() {

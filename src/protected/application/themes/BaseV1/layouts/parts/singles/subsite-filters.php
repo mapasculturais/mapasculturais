@@ -124,32 +124,71 @@ function printSubsiteFilter($property){
 
     <div ng-controller="ConfigFilterSubsiteController">
         <h2>Filtragem dos dados</h2>
+        <edit-box
+            id='new-filter'
+            close-on-cancel='true'
+            position="left"
+            on-submit="save_filter"
+            cancel-label="Cancelar"
+            submit-label="Adicionar"
+            class-add="modal">
+            <h4>{{ filter_entity }}</h4>
+            <p>
+                <span class="label">Descrição: </span>
+                <input type="text" ng-model="new_filter.label"/>
+            </p>
+            <p>
+                <span class="label">Ajuda: </span>
+                <input type="text" ng-model="new_filter.placeholder"/>
+            </p>
+            <p>
+                <span class="label">Campo: </span>
+                <select  ng-model="new_filter.param"/>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </p>
+            <p>
+                <span class="label">Tipo: </span>
+                <select  ng-model="new_filter.fieldType"/>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </p>
+            <p>
+                <span class="label">Operador: </span>
+                <select  ng-model="new_filter.value"/>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </p>
+        </edit-box>
         <section class="ficha-spcultura" ng-repeat="(entity, entitiy_filter) in filters">
+            <input
+                type="hidden"
+                class="js-editable"
+                data-emptytext=""
+                data-edit="user_filters__{{ entity }}"
+                id="user_filters__{{ entity }}"></input>
             <header class="agentes-relacionados">
                 {{ entity }}
-                <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entitiy_filter)"></button>
+                <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entity, $event)"></button>
             </header>
             <div class="servico" ng-repeat="filter in entitiy_filter">
-                <button class="delete hltip alignright" hltitle="Remover filtro" ng-click="delete_filter(entitiy_filter, filter)"></button>
-                <p>
-                    <span class="label">Descrição do filtro:</span>
-                    <span
-                        class="js-editable"
-                        data-emptytext="Descrição"
-                        data-edit="user_filters__{{ entity }}:+filter_{{ $index }}+label"></span>
-                        <!-- data-edit="user_filters__{{ entity }}"></span> -->
-                </p>
-                <!-- @todo: listar os campos na configuração -->
-                <p>
-                    <span class="label">Campo</span>
-                    <span
-                        class="js-editable"
-                        data-emptytext="Campo"
-                    ></span>
-                </p>
-                <!-- CAMPO - AVANÇADO? -->
+                <button
+                    class="delete hltip alignright"
+                    hltitle="Remover filtro"
+                    ng-click="delete_filter(entitiy_filter, filter)"></button>
             </div>
-            <p class="aligncenter" ng-hide="entitiy_filter.length">Sem filtros configurados</p>
+            <div class="servico">
+                <p class="aligncenter" ng-hide="entitiy_filter.length">Sem filtros configurados</p>
+            </div>
         </section>
     </div>
 
