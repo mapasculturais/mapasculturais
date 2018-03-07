@@ -95,7 +95,17 @@ article.opportunity .highlighted-message .btn {
 	}
 	h4 {
 		margin-bottom: $line-height-half;
+
+      &.opportunity-toggle-form {
+        margin-bottom: 0 !important;
+        cursor: pointer;
+      }
 	}
+
+    .opportunity-togglable-form-content {
+      margin-top: $line-height-half;
+    }
+
     .dropdown {
         width: 125px;
     }
