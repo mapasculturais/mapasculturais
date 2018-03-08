@@ -17,7 +17,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function getDescription() {
-        return i::__('Consiste em avaliação por critérios e cotats.');
+        return i::__('Consiste em avaliação por critérios e cotas.');
     }
 
     public function cmpValues($value1, $value2){
