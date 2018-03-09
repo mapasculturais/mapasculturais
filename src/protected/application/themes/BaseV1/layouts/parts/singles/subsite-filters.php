@@ -131,7 +131,8 @@ function printSubsiteFilter($property){
             on-submit="save_filter"
             cancel-label="Cancelar"
             submit-label="Adicionar"
-            class-add="modal">
+            >
+            <!-- class-add="modal" -->
             <h4>{{ filter_entity }}</h4>
             <p>
                 <span class="label">Descrição: </span>
@@ -180,14 +181,22 @@ function printSubsiteFilter($property){
                 {{ entity }}
                 <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entity, $event)"></button>
             </header>
+            <p>{{ entitiy_filter }}</p>
             <div class="servico" ng-repeat="filter in entitiy_filter">
+                <p>
+                    <span class="label">Descrição:</span> {{filter.label}}<br/>
+                    <span class="label">Ajuda:</span> {{filter.placeholder}}<br/>
+                    <span class="label">Campo:</span> {{filter.param}}<br/>
+                    <span class="label">Tipo:</span> {{filter.fieldType}}<br/>
+                    <span class="label">Operador:</span> {{filter.value}}
+                </p>
                 <button
                     class="delete hltip alignright"
                     hltitle="Remover filtro"
                     ng-click="delete_filter(entitiy_filter, filter)"></button>
             </div>
             <div class="servico">
-                <p class="aligncenter" ng-hide="entitiy_filter.length">Sem filtros configurados</p>
+                <p class="aligncenter" ng-hide="Object.keys(entitiy_filter).length">Sem filtros configurados</p>
             </div>
         </section>
     </div>

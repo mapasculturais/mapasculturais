@@ -65,6 +65,15 @@
 
         $scope.filters = MapasCulturais.user_filters__subsite;
 
+        for (var entity in $scope.filters){
+            console.log(entity);
+            console.log($scope.filters[entity]);
+            if ($scope.filters[entity][0])
+                $scope.filters[entity] = JSON.parse($scope.filters[entity]);
+            else
+                $scope.filters[entity] = {};
+        }
+
         $scope.config_filters = [];
         $scope.config_filters.event = MapasCulturais.EntitiesDescription.event;
         $scope.config_filters.space = MapasCulturais.EntitiesDescription.space;
@@ -75,33 +84,44 @@
         $scope.add_filter = function(entity, attrs) {
             $scope.filter_entity = entity;
             // todo: set options
-            $scope.new_filter = [];
+            $scope.new_filter = {};
             EditBox.open('new-filter');
         };
 
         $scope.delete_filter = function(entitiy_filter, filter) {
+            console.log('filters', entitiy_filter, filter);
             entitiy_filter.splice(entitiy_filter.indexOf(filter), 1);
         };
 
         $scope.save_filter = function(attrs) {
             console.log($scope);
-            console.log('var_name', 'user_filters__' + $scope.filter_entity);
+
+            if (!(
+                $scope.new_filter.label &&
+                $scope.new_filter.placeholder &&
+                $scope.new_filter.param &&
+                $scope.new_filter.fieldType &&
+                $scope.new_filter.value
+            )){
+                $scope.filter_error = true;
+                console.log('falta campo');
+                // todo: remove error message
+                return;
+            };
+
             var filters = $('#user_filters__' + $scope.filter_entity).val();
-            console.log(filters);
-            if (!filters){
+
+            if (!filters)
                 filters = {};
-                console.log('a');
-            }
-            else{
+            else
                 filters = JSON.parse(filters);
-                console.log('b');
-            }
-            console.log('filters_before', filters);
-            filters.push($scope.new_filter);
-            console.log('filters_after', filters);
-            filter_str = JSON.stringify(filters);
-            console.log('str', JSON.stringify(filters));
-            $('#user_filters__' + $scope.filter_entity).val(JSON.stringify(filters));
+
+            filters[Object.keys(filters).length] = $scope.new_filter;
+
+            $scope.filters[$scope.filter_entity] = filters;
+
+            $('#user_filters__' + $scope.filter_entity).editable('setValue', JSON.stringify(filters));
+
             EditBox.close(attrs.id);
         };
 
