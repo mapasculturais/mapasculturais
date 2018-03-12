@@ -17,9 +17,10 @@
     </div>
 </div>
 
-<div class="registration-fieldset">
-    <?php if($entity->projectName): ?>
+
+<?php if($entity->projectName): ?>
+    <div class="registration-fieldset">
         <div class="label"><?php \MapasCulturais\i::_e("Nome do Projeto"); ?> </div>
         <h5> <?php echo $entity->projectName; ?> </h5>
-    <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
