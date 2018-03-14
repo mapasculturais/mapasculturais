@@ -1756,7 +1756,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         $scope.evaluated = function(registration){
             return  $scope.evaluations[registration.id] && $scope.evaluations[registration.id].result !== null;
-        }
+        };
+
+        $scope.status_str = function(registration) {
+            return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+        };
 
         $scope.show = function(registration){
             if(registration.status === 0){
