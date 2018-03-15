@@ -135,4 +135,7 @@ use MapasCulturais\i;
         </tr>
     </tfoot>
 </table>
+
+    <button class="btn btn-primary" ng-click="confirmEvaluation()"> {{ data.confirmEvaluationLabel }} </button>
+
 </div>
