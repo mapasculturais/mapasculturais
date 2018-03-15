@@ -1256,8 +1256,16 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }));
     });
 
-
     $scope.editbox = EditBox;
+
+    $scope.confirmEvaluation = function () {
+        this.data.evaluations.forEach( function(evl) {
+            var register = evl.registration;
+            var result = { value: parseInt(evl.evaluation.result) };
+            $scope.setRegistrationStatus( register, result, true );
+        });
+    };
+
     $scope.data = angular.extend({
         uploadSpinner: false,
         spinner: false,
@@ -1295,6 +1303,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             status: true
         },
 
+        confirmEvaluationLabel: labels['confirmEvaluationLabel'],
 
         fields: RegistrationService.getFields(),
 
@@ -1428,70 +1437,75 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
     }
 
-
-
-
     // EVALUATIONS - END
 
 
-    $scope.getStatusSlug = function(status){
-                /*
-                        const STATUS_SENT = self::STATUS_ENABLED;
-                        const STATUS_APPROVED = 10;
-                        const STATUS_WAITLIST = 8;
-                        const STATUS_NOTAPPROVED = 3;
-                        const STATUS_INVALID = 2;
-                        */
-                        switch (status){
-                            case 0: return 'draft'; break;
-                            case 1: return 'sent'; break;
-                            case 2: return 'invalid'; break;
-                            case 3: return 'notapproved'; break;
-                            case 8: return 'waitlist'; break;
-                            case 10: return 'approved'; break;
-                        }
-                    };
+    $scope.getStatusSlug = function(status) {
+        /*
+            const STATUS_SENT = self::STATUS_ENABLED;
+            const STATUS_APPROVED = 10;
+            const STATUS_WAITLIST = 8;
+            const STATUS_NOTAPPROVED = 3;
+            const STATUS_INVALID = 2;
+       */
+        switch (status) {
+            case 0: return 'draft'; break;
+            case 1: return 'sent'; break;
+            case 2: return 'invalid'; break;
+            case 3: return 'notapproved'; break;
+            case 8: return 'waitlist'; break;
+            case 10: return 'approved'; break;
+        }
+    };
 
-                    $scope.getStatusNameById = function(id){
-                        var statuses = $scope.data.registrationStatusesNames
-                        for(var s in statuses){
-                            if(statuses[s].value == id)
-                                return statuses[s].label;
-                        }
-                    };
+    $scope.getStatusNameById = function(id) {
+        var statuses = $scope.data.registrationStatusesNames;
+        for(var s in statuses){
+            if(statuses[s].value == id)
+                return statuses[s].label;
+        }
+    };
 
-                    $scope.approvedRegistrations = function(){
+    $scope.approvedRegistrations = function(){
 
-                        var registrations = $scope.data.registrations,
-                        approved = 0;
+        var registrations = $scope.data.registrations,
+        approved = 0;
 
-                        for(var key in registrations){
-                            if(registrations[key].hasOwnProperty('status') && registrations[key].status === 10) {
-                                approved++;
-                            }
-                        }
+        for(var key in registrations){
+            if(registrations[key].hasOwnProperty('status') && registrations[key].status === 10) {
+                approved++;
+            }
+        }
 
-                        return approved;
-                    }
+        return approved;
+    }
 
             // PLEASE REFACTOR ME
-            $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))){
-                    if(status.value === 10) {
-                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                            if(registration.status === 0){
-                                $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
-                            }
-                        });
-                    } else {
-                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                            if(registration.status === 0){
-                                $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
-                            }
-                        });
-                    }
+
+    $scope.setRegistrationStatus = function(registration, status, is_bulk) {
+
+        if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))){
+            var slug = $scope.getStatusSlug(status.value);
+
+            if(status.value === 10) {
+                RegistrationService.setStatusTo(registration, slug).success(function(entity){
+                    if(registration.status === 0){
+                        $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
+                        }});
+                } else {
+                RegistrationService.setStatusTo(registration, slug).success(function(entity){
+                    if(registration.status === 0){
+                        $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
+                    }});
                 }
-            };
+
+                if(is_bulk) {
+                    $("#registration-" +  registration.id).attr('class', slug);
+                    var t = $("#registration-" +  registration.id + " .registration-status-col").first().text();
+                    $("#registration-" +  registration.id + " .registration-status-col .dropdown.js-dropdown div").text(t);
+                }
+        }
+    };
 
             $scope.getRegistrationStatus = function(registration){
                 return registration.status;
