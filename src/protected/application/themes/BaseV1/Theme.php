@@ -1151,19 +1151,12 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('GET(subsite.single):before', function() use($app) {
 
             $entities = [
-                'event' => 'Eventos',
-                'space' => 'Espaços',
-                'agent' => 'Agentes',
-                'project' => 'Projetos',
-                'opportunity' => 'Oportunidades'
+                'event' => $app->view->dict('entities: Events', false),
+                'space' => $app->view->dict('entities: Spaces', false),
+                'agent' => $app->view->dict('entities: Agents', false),
+                'project' => $app->view->dict('entities: Projects', false),
+                'opportunity' => $app->view->dict('entities: Opportunities', false),
             ];
-            // $entities = [
-            //     'event' => $this->dict('entities: Event', false),
-            //     'space' => $this->dict('entities: Spaces', false),
-            //     'agent' => $this->dict('entities: Agents', false),
-            //     'project' => $this->dict('entities: Projects', false),
-            //     'opportunity' => $this->dict('entities: Opportunities', false),
-            // ];
 
             $app->view->jsObject['readable_names'] = $entities;
 
@@ -1171,26 +1164,24 @@ class Theme extends MapasCulturais\Theme {
             $app->log->debug(json_encode($entities));
 
 
-            $conf_metadata = function($props){
-                $new_props = [];
+            $conf_data = function($metadatas, $terms){
+                $new_data = [];
 
-                foreach ($props as $prop => $conf) {
+                // add registered terms to list
+                foreach ($terms as $term => $conf) {
 
-                    if (!$conf['label'] || $conf['isEntityRelation'])
+                    if ($conf->slug)
                         continue;
 
-                    // @todo: implementar campo de data BET e remover esse if
-                    if (isset($conf['type']) && $conf['type'] === 'datetime')
-                        continue;
-
-                    $new_props[$prop] = [
-                        'label' => $conf['label'],
+                    $new_data[$term] = [
+                        'label' => ucwords($conf->slug)
                     ];
+                    if ($conf->restrictedTerms)
+                        $new_data['options'] = $conf->restrictedTerms;
 
-                    if (isset($conf['options']))
-                        $new_props[$prop]['options'] = $conf['options'];
 
-                    $new_props[$prop]['types'] = [
+                    // @todo: reduce type options foreach field properties
+                    $new_data[$term]['types'] = [
                         'checklist' => 'Checklist',
                         'singleselect' => 'Select',
                         'text' => 'Texto',
@@ -1199,8 +1190,38 @@ class Theme extends MapasCulturais\Theme {
                     ];
                 }
 
-                return $new_props;
+                // add metadata to list
+                foreach ($metadatas as $metadata => $conf) {
+
+                    if (!$conf['label'] || $conf['isEntityRelation'])
+                        continue;
+
+                    // @todo: dev field of type date/datetime to use BET() and remove this code
+                    if (isset($conf['type']) && ($conf['type'] === 'datetime' || $conf['type'] === 'date'))
+                        continue;
+
+
+                    $new_data[$metadata] = [
+                        'label' => $conf['label'],
+                    ];
+
+                    if (isset($conf['options']))
+                        $new_data[$metadata]['options'] = $conf['options'];
+
+
+                    // @todo: reduce type options foreach field properties
+                    $new_data[$metadata]['types'] = [
+                        'checklist' => 'Checklist',
+                        'singleselect' => 'Select',
+                        'text' => 'Texto',
+                        'checkbox' => 'Checkbox',
+                        'checkbox-verified' => 'Resultados Verificados'
+                    ];
+                }
+
+                return $new_data;
             };
+
 
             foreach ($entities as $entity => $name) {
 
@@ -1208,7 +1229,13 @@ class Theme extends MapasCulturais\Theme {
 
                 $class_name = '\MapasCulturais\Entities\\'.ucwords($entity);
 
-                $app->view->jsObject['user_filters__conf'][$entity] = $conf_metadata($class_name::getPropertiesMetadata());
+                $app->view->jsObject['user_filters__conf'][$entity] = $conf_data($class_name::getPropertiesMetadata(),
+                                                                                 $app->getRegisteredTaxonomies(substr($class_name, 1)));
+
+                // $app->log->debug('-----AQUI-----');
+                // $app->log->debug();
+                // $app->log->debug('-----fim do aqui-----');
+
 
             }
 
