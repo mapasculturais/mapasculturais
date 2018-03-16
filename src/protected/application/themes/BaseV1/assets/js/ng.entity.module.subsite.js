@@ -61,68 +61,47 @@
 
     module.controller('ConfigFilterSubsiteController', ['$scope', '$timeout', 'EditBox', function($scope, $timeout, EditBox){
 
-        console.log(MapasCulturais);
-
         $scope.filters = MapasCulturais.user_filters__subsite;
+        $scope.conf_filters = MapasCulturais.user_filters__conf;
+        $scope.readable_names = MapasCulturais.readable_names;
 
         for (var entity in $scope.filters){
-            console.log(entity);
-            console.log($scope.filters[entity]);
+
             if ($scope.filters[entity][0])
                 $scope.filters[entity] = JSON.parse($scope.filters[entity]);
             else
-                $scope.filters[entity] = {};
+                $scope.filters[entity] = [];
         }
-
-        $scope.config_filters = [];
-        $scope.config_filters.event = MapasCulturais.EntitiesDescription.event;
-        $scope.config_filters.space = MapasCulturais.EntitiesDescription.space;
-        $scope.config_filters.agent = MapasCulturais.EntitiesDescription.agent;
-        $scope.config_filters.project = MapasCulturais.EntitiesDescription.project;
-        $scope.config_filters.opportunity = MapasCulturais.EntitiesDescription.opportunity;
 
         $scope.add_filter = function(entity, attrs) {
             $scope.filter_entity = entity;
-            // todo: set options
             $scope.new_filter = {};
+            $('#filter-error').hide();
             EditBox.open('new-filter');
         };
 
         $scope.delete_filter = function(entitiy_filter, filter) {
-            console.log('filters', entitiy_filter, filter);
+
             entitiy_filter.splice(entitiy_filter.indexOf(filter), 1);
+
         };
 
         $scope.save_filter = function(attrs) {
-            console.log($scope);
 
             if (!(
                 $scope.new_filter.label &&
-                $scope.new_filter.placeholder &&
-                $scope.new_filter.param &&
-                $scope.new_filter.fieldType &&
-                $scope.new_filter.value
+                $scope.new_filter.field
             )){
-                $scope.filter_error = true;
-                console.log('falta campo');
-                // todo: remove error message
+                $('#filter-error').show(400);
                 return;
             };
 
-            var filters = $('#user_filters__' + $scope.filter_entity).val();
+            $scope.filters[$scope.filter_entity].push($scope.new_filter);
 
-            if (!filters)
-                filters = {};
-            else
-                filters = JSON.parse(filters);
-
-            filters[Object.keys(filters).length] = $scope.new_filter;
-
-            $scope.filters[$scope.filter_entity] = filters;
-
-            $('#user_filters__' + $scope.filter_entity).editable('setValue', JSON.stringify(filters));
+            $('#user_filters__' + $scope.filter_entity).editable('setValue', JSON.stringify($scope.filters[$scope.filter_entity]));
 
             EditBox.close(attrs.id);
+
         };
 
         $scope.up_filter = function(entity, entitiy_filter) {
@@ -132,6 +111,10 @@
         $scope.down_filter = function(entity, entitiy_filter) {
             // todo: index filter +1
         };
+
+
+        console.log('MapasCulturais', MapasCulturais);
+        console.log('$scope', $scope);
 
     }]);
 
