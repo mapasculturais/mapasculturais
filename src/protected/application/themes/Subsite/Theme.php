@@ -295,4 +295,31 @@ class Theme extends BaseV1\Theme{
         parent::addEntityToJs($entity);
 
     }
+
+    protected function _getFilters(){
+
+        // $prepare_filters = function($filters){
+        //     $complete_filter = [];
+        //     foreach ($filters as $filter) {
+        //         $complete_filter[$filter['field']] = [
+        //             'label' => $filter['placeholder'],
+        //             'placeholder' => $filter['placeholder'],
+        //             'fieldType' => $filter['fieldType'],
+        //             'isArray' =>
+        //         ];
+        //     }
+        //     return ;
+        // };
+
+        $all_filters =[
+            'event' => $this->subsiteInstance->user_filters__event,
+            'space' => $this->subsiteInstance->user_filters__space,
+            'agent' => $this->subsiteInstance->user_filters__agent,
+            'project' => $this->subsiteInstance->user_filters__project,
+            'opportunity' => $this->subsiteInstance->user_filters__opportunity
+        ];
+
+        return $all_filters;
+    }
+
 }

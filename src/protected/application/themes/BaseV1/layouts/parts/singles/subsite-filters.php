@@ -181,7 +181,7 @@ function printSubsiteFilter($property){
                     <span class="label">Descrição:</span> {{ filter.label }}<br/>
                     <span class="label">Campo:</span> {{ filter.field }}<br/>
                     <span class="label">Tipo:</span> {{ filter.fieldType }}<br/>
-                    <span class="label">Filtro Avançado:</span> {{ filter.isInline }}
+                    <span class="label">Filtro Avançado:</span> <span ng-if="filter.isInline">Sim</span><span ng-if="!filter.isInline">Não</span>
                 </p>
                 <button
                     class="delete hltip alignright"
