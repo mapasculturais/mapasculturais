@@ -133,42 +133,35 @@ function printSubsiteFilter($property){
             submit-label="Adicionar"
             >
             <!-- class-add="modal" -->
-            <h4>{{ filter_entity }}</h4>
+            <h4>{{ readable_names[filter_entity] }}</h4>
+
             <p>
                 <span class="label">Descrição: </span>
                 <input type="text" ng-model="new_filter.label"/>
             </p>
-            <p>
-                <span class="label">Ajuda: </span>
-                <input type="text" ng-model="new_filter.placeholder"/>
-            </p>
+
             <p>
                 <span class="label">Campo: </span>
-                <select  ng-model="new_filter.param"/>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                <select ng-model="new_filter.field">
+                    <option ng-repeat="(field, conf) in conf_filters[filter_entity]" ng-value="field">{{ conf.label }}</option>
                 </select>
             </p>
+
             <p>
-                <span class="label">Tipo: </span>
-                <select  ng-model="new_filter.fieldType"/>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                <span class="label">Tipo do campo: </span>
+                <select ng-model="new_filter.fieldType">
+                    <option ng-repeat="(key, value) in conf_filters[filter_entity][new_filter.field]['types']" ng-value="key">{{ value }}</option>
                 </select>
             </p>
+
             <p>
-                <span class="label">Operador: </span>
-                <select  ng-model="new_filter.value"/>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+                <a class="hltip btn" ng-class="{'selected': new_filter.isInline}" title="{{filter.placeholder}}" ng-click="new_filter.isInline = !new_filter.isInline">
+                    <span class="icon icon-check" ng-class="{'selected': new_filter.isInline}"></span>Filtro Avançado
+                </a>
             </p>
+            <div id="filter-error" class="widget" style="display: none">
+                <p class="alert danger">Preencha todos os campos para adicionar um filtro.</p>
+            </div>
         </edit-box>
         <section class="ficha-spcultura" ng-repeat="(entity, entitiy_filter) in filters">
             <input
@@ -176,19 +169,19 @@ function printSubsiteFilter($property){
                 class="js-editable"
                 data-emptytext=""
                 data-edit="user_filters__{{ entity }}"
-                id="user_filters__{{ entity }}"></input>
+                id="user_filters__{{ entity }}" />
             <header class="agentes-relacionados">
-                {{ entity }}
-                <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entity, $event)"></button>
+                <h4>{{ readable_names[entity] }}
+                    <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entity, $event)"></button>
+                </h4>
             </header>
-            <p>{{ entitiy_filter }}</p>
-            <div class="servico" ng-repeat="filter in entitiy_filter">
+            <!-- <p>{{ entitiy_filter }}</p> -->
+            <div class="servico" ng-repeat="filter in entitiy_filter track by $index">
                 <p>
-                    <span class="label">Descrição:</span> {{filter.label}}<br/>
-                    <span class="label">Ajuda:</span> {{filter.placeholder}}<br/>
-                    <span class="label">Campo:</span> {{filter.param}}<br/>
-                    <span class="label">Tipo:</span> {{filter.fieldType}}<br/>
-                    <span class="label">Operador:</span> {{filter.value}}
+                    <span class="label">Descrição:</span> {{ filter.label }}<br/>
+                    <span class="label">Campo:</span> {{ filter.field }}<br/>
+                    <span class="label">Tipo:</span> {{ filter.fieldType }}<br/>
+                    <span class="label">Filtro Avançado:</span> {{ filter.isInline }}
                 </p>
                 <button
                     class="delete hltip alignright"
@@ -196,7 +189,7 @@ function printSubsiteFilter($property){
                     ng-click="delete_filter(entitiy_filter, filter)"></button>
             </div>
             <div class="servico">
-                <p class="aligncenter" ng-hide="Object.keys(entitiy_filter).length">Sem filtros configurados</p>
+                <p class="aligncenter" ng-hide="entitiy_filter.length">Sem filtros configurados</p>
             </div>
         </section>
     </div>

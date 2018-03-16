@@ -1150,11 +1150,67 @@ class Theme extends MapasCulturais\Theme {
         //
         $app->hook('GET(subsite.single):before', function() use($app) {
 
-            $app->view->jsObject['user_filters__subsite']['event'] = $this->requestedEntity->user_filters__event;
-            $app->view->jsObject['user_filters__subsite']['space'] = $this->requestedEntity->user_filters__space;
-            $app->view->jsObject['user_filters__subsite']['agent'] = $this->requestedEntity->user_filters__agent;
-            $app->view->jsObject['user_filters__subsite']['project'] = $this->requestedEntity->user_filters__project;
-            $app->view->jsObject['user_filters__subsite']['opportunity'] = $this->requestedEntity->user_filters__opportunity;
+            $entities = [
+                'event' => 'Eventos',
+                'space' => 'Espaços',
+                'agent' => 'Agentes',
+                'project' => 'Projetos',
+                'opportunity' => 'Oportunidades'
+            ];
+            // $entities = [
+            //     'event' => $this->dict('entities: Event', false),
+            //     'space' => $this->dict('entities: Spaces', false),
+            //     'agent' => $this->dict('entities: Agents', false),
+            //     'project' => $this->dict('entities: Projects', false),
+            //     'opportunity' => $this->dict('entities: Opportunities', false),
+            // ];
+
+            $app->view->jsObject['readable_names'] = $entities;
+
+            $app->log->debug("AQUI\n");
+            $app->log->debug(json_encode($entities));
+
+
+            $conf_metadata = function($props){
+                $new_props = [];
+
+                foreach ($props as $prop => $conf) {
+
+                    if (!$conf['label'] || $conf['isEntityRelation'])
+                        continue;
+
+                    // @todo: implementar campo de data BET e remover esse if
+                    if (isset($conf['type']) && $conf['type'] === 'datetime')
+                        continue;
+
+                    $new_props[$prop] = [
+                        'label' => $conf['label'],
+                    ];
+
+                    if (isset($conf['options']))
+                        $new_props[$prop]['options'] = $conf['options'];
+
+                    $new_props[$prop]['types'] = [
+                        'checklist' => 'Checklist',
+                        'singleselect' => 'Select',
+                        'text' => 'Texto',
+                        'checkbox' => 'Checkbox',
+                        'checkbox-verified' => 'Resultados Verificados'
+                    ];
+                }
+
+                return $new_props;
+            };
+
+            foreach ($entities as $entity => $name) {
+
+                $app->view->jsObject['user_filters__subsite'][$entity] = $this->requestedEntity->{'user_filters__'.$entity};
+
+                $class_name = '\MapasCulturais\Entities\\'.ucwords($entity);
+
+                $app->view->jsObject['user_filters__conf'][$entity] = $conf_metadata($class_name::getPropertiesMetadata());
+
+            }
 
         });
 
