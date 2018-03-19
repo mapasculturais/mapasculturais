@@ -11,8 +11,7 @@ use MapasCulturais\App;
  * @ORM\Table(name="registration_meta", indexes={
  *      @ORM\Index(name="registration_meta_owner_idx", columns={"object_id"}),
  *      @ORM\Index(name="registration_meta_owner_key_idx", columns={"object_id", "key"}),
- *      @ORM\Index(name="registration_meta_key_idx", columns={"key"}),
- *      @ORM\Index(name="registration_meta_value_idx", columns={"value"}, flags={"fulltext"})
+ *      @ORM\Index(name="registration_meta_key_idx", columns={"key"})
  * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
