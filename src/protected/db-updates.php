@@ -47,7 +47,16 @@ function __exec($sql){
     $em = $app->em;
     $conn = $em->getConnection();
 
-    $conn->executeQuery($sql);
+    try{
+        $conn->executeQuery($sql);
+    } catch (Exception $ex) {
+        echo "
+SQL ========================= 
+$sql
+-----------------------------
+";
+        throw $ex;
+    }
 }
 
 function __try($sql, $cb = null){
@@ -57,15 +66,12 @@ function __try($sql, $cb = null){
         if($cb){
             $cb($ex, $sql);
         } else {
-            $trace = $ex->getTraceAsString();
+            $msg = $ex->getMessage();
             echo "
 ERROR ==============================
-
 $sql
-
 ------------------------------------
-$ex
-$trace
+$msg
 ====================================
 
 ";
@@ -680,6 +686,9 @@ return [
 
     'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){
+            __exec("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
+            __exec("DELETE FROM registration WHERE project_id NOT IN (SELECT id FROM project)");
+
             // cria tabelas das oportunidades
             __exec("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
             __exec("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories text DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, object_id INT NOT NULL, PRIMARY KEY(id));");
