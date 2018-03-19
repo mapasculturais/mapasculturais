@@ -1691,6 +1691,7 @@ class Theme extends MapasCulturais\Theme {
             'evaluated' => i::__('Avaliada'),
             'sent' => i::__('Enviada'),
             'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
+            'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

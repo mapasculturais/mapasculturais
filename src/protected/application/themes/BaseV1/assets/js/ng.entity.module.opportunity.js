@@ -1258,12 +1258,28 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     $scope.editbox = EditBox;
 
-    $scope.confirmEvaluation = function () {
-        this.data.evaluations.forEach( function(evl) {
-            var register = evl.registration;
-            var result = { value: parseInt(evl.evaluation.result) };
-            $scope.setRegistrationStatus( register, result, true );
+    $scope.confirmEvaluations = function () {
+        MapasCulturais.confirm(labels['applyEvaluations'], function() {
+            $scope.totalEvaluations().map(function(e) {
+                var register = e.registration;
+                var result = { value: parseInt(e.evaluation.result) };
+                $scope.setRegistrationStatus( register, result, true );
+            });
         });
+    };
+
+    $scope.hasEvaluations = function() {
+        return ($scope.totalEvaluations().length > 0);
+    };
+
+    $scope.totalEvaluations = function() {
+        var total_evaluations = $scope.data.evaluations.filter(function(ev) {
+            if(ev.evaluation && ev.evaluation != null) {
+                return ev.evaluation;
+            }
+        });
+
+        return total_evaluations;
     };
 
     $scope.data = angular.extend({
@@ -1309,7 +1325,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         relationApiQuery: {'@keywowrd': '*'},
 
-        fullscreenTable: false
+        fullscreenTable: false,
 
     }, MapasCulturais);
 
