@@ -93,8 +93,8 @@ use MapasCulturais\i;
         </td>
     </tr>
     <tbody>
-        <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" >
-            <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+    <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
+        <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
                 {{reg[field.fieldName]}}
@@ -138,6 +138,10 @@ use MapasCulturais\i;
     </tfoot>
 </table>
 
-    <button class="btn btn-primary" ng-click="confirmEvaluation()"> {{ data.confirmEvaluationLabel }} </button>
+    <?php if( $entity->evaluationMethodConfiguration->getType()->id === "simple" ): ?>
+        <div ng-if="hasEvaluations()">
+            <button class="btn btn-primary" ng-click="confirmEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
+        </div>
+    <?php endif; ?>
 
 </div>
