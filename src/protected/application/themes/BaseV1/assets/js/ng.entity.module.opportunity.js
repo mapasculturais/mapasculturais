@@ -1169,6 +1169,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
+    var opportunity_main_tab = $("#opportunity-main-info");
+    if( $.trim($(opportunity_main_tab).text()).length === 0 ) {
+        $(opportunity_main_tab).hide();
+    }
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
     var registrationsApi;
     var evaluationsApi;
@@ -1494,32 +1499,25 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
 
         return approved;
-    }
+    };
 
-            // PLEASE REFACTOR ME
 
     $scope.setRegistrationStatus = function(registration, status, is_bulk) {
 
-        if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))){
+        if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))) {
             var slug = $scope.getStatusSlug(status.value);
 
-            if(status.value === 10) {
-                RegistrationService.setStatusTo(registration, slug).success(function(entity){
-                    if(registration.status === 0){
-                        $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
-                        }});
-                } else {
-                RegistrationService.setStatusTo(registration, slug).success(function(entity){
-                    if(registration.status === 0){
-                        $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
-                    }});
+            RegistrationService.setStatusTo(registration, slug).success(function(entity) {
+                if(registration.status === 0){
+                    $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
                 }
+            });
 
-                if(is_bulk) {
-                    $("#registration-" +  registration.id).attr('class', slug);
-                    var t = $("#registration-" +  registration.id + " .registration-status-col").first().text();
-                    $("#registration-" +  registration.id + " .registration-status-col .dropdown.js-dropdown div").text(t);
-                }
+            if(is_bulk) {
+                $("#registration-" +  registration.id).attr('class', slug);
+                var t = $("#registration-" +  registration.id + " .registration-status-col").first().text();
+                $("#registration-" +  registration.id + " .registration-status-col .dropdown.js-dropdown div").text(t);
+            }
         }
     };
 
