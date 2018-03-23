@@ -353,8 +353,8 @@ abstract class Entity implements \JsonSerializable{
      * Other entities can extend this method and change the verification
      * 
      */ 
-    public function canUserViewPrivateFiles($user) {
-        return $this->canUserView($user);
+    protected function canUserViewPrivateFiles($user) {
+        return $this->canUser('view', $user);
     }
 
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
