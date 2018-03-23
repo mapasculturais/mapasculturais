@@ -17,44 +17,12 @@ return array_merge($config,
         //    'Subsite' => THEMES_PATH . '/Subsite/'
         //),
 
-
-        'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
-            'publishPath' => BASE_PATH . 'assets/',
-
-            'mergeScripts' => true,
-            'mergeStyles' => true,
-
-            'process.js' => 'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /assets/{FILENAME}.map -b -p ' . substr_count(BASE_PATH, '/'),
-            'process.css' => 'uglifycss {IN} > {OUT} ',
-            'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
-        ]),
-
         // development, staging, production
         'app.mode' => 'production',
 
         'doctrine.isDev' => false,
-        'slim.debug' => false,
+        'slim.debug' => true,
         'maps.includeGoogleLayers' => true,
-
-        'app.geoDivisionsHierarchy' => [
-            'pais' => \MapasCulturais\i::__('País'),
-            'regiao' => \MapasCulturais\i::__('Região'),
-            'estado' => \MapasCulturais\i::__('Estado'),
-            'mesorregiao' => \MapasCulturais\i::__('Mesorregião'),
-            'microrregiao' => \MapasCulturais\i::__('Microrregião'),
-            'municipio' => \MapasCulturais\i::__('Município'),
-            'zona' => \MapasCulturais\i::__('Zona'),
-            'subprefeitura' => \MapasCulturais\i::__('Subprefeitura'),
-            'distrito' => \MapasCulturais\i::__('Distrito')
-        ],
-        // latitude, longitude
-        'maps.center' => [-13.987376214146455, -54.38232421875],
-
-        // zoom do mapa
-        'maps.zoom.default' => 5,
-
-        'plugins.enabled' => array('agenda-singles', 'endereco'),
-
         'auth.provider' => 'Fake',
 
         // Token da API de Cep
