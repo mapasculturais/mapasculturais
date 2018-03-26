@@ -1316,6 +1316,7 @@ $(function() {
             zoomControl: false,
             zoomMax: obj.zoom_max || mapsDefaults.zoomMax,
             zoomMin: obj.zoom_min || mapsDefaults.zoomMin,
+            zoom: mapsDefaults.zoomApproximate || mapsDefaults.zoomDefault,
             center: new L.LatLng(latitude || mapsDefaults.latitude, longitude || mapsDefaults.longitude)
         };
 
