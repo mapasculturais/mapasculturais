@@ -32,7 +32,8 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
-        Traits\EntityRevision;
+        Traits\EntityRevision,
+        Traits\EntityOpportunities;
 
     /**
      * @var integer
@@ -148,6 +149,14 @@ class Space extends \MapasCulturais\Entity
      * @ORM\Column(name="agent_id", type="integer", nullable=false)
      */
     protected $_ownerId;
+    
+    /**
+     * @var \MapasCulturais\Entities\SpaceOpportunity[] Opportunities
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $_relatedOpportunities;
 
 
     /**

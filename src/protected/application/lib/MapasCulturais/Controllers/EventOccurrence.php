@@ -13,7 +13,7 @@ class EventOccurrence extends EntityController {
     use Traits\ControllerAPI;
     
     public function POST_index($data = null) {
-        App::i()->pass();
+        $this->POST_create($data);
     }
 
     function GET_create() {

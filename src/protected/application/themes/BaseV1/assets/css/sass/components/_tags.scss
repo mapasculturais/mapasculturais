@@ -49,12 +49,16 @@
 .tag-project {
     background-color: $brand-project;
 }
-.tag-project {
+.tag-opportunity {
+    background-color: $brand-opportunity;
+}
+.tag-seal {
     background-color: $brand-seal;
 }
 .tag-event,
 .tag-agent,
 .tag-space,
+.tag-opportunity,
 .tag-project {
     color: #fff;
 }

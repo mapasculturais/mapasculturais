@@ -99,6 +99,11 @@
         color: $brand-project;
     }
 }
+.opportunity {
+    .objeto:hover h1 a,.objeto-meta a {
+        color: $brand-opportunity;
+    }
+}
 .seal {
     .objeto:hover h1 a,.objeto-meta a {
         color: $brand-seal;

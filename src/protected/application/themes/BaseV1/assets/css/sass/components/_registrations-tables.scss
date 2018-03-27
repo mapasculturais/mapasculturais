@@ -2,7 +2,7 @@
 // Registrations Tables
 // --------------------------------------------------
 
-//**  Stuff that shows on projects tab "Inscritos" before the table.
+//**  Stuff that shows on opportunities tab "Inscritos" before the table.
 #header-inscritos {
 	h3 {
 		@media screen and (min-width: 536px) {
@@ -23,7 +23,19 @@
 	}
 }
 
-//**  Table that shows on projects tab "Inscritos".
+/* Filtro da lista de inscritos */
+#filtro-inscritos {
+	border-top: 1px solid $gray;
+	border-bottom:1px solid $gray;
+	padding: 10px 0 10px 0;
+	margin: 10px 0 10px 0;
+
+	input {
+		width: 100%;
+	}
+}
+
+//**  Table that shows on opportunities tab "Inscritos".
 .registrations-table {
 	display: none;
 	width: 100%;
@@ -43,6 +55,8 @@
 		background-color: $gray-light;
 		> tr {
 			th {
+                                position: relative;
+                                background-color: $gray-light;
 				border-left: 1px solid #fff;
 				border-bottom: none;
 				line-height: 1.875rem; // to match .dropdown's
@@ -147,7 +161,7 @@
 			line-height: 1.5;
 		}
 		a {
-			color: $brand-project;
+			color: $brand-opportunity;
 			&.icon-download {
 				width: 100%;
 				vertical-align: top;
@@ -186,7 +200,7 @@
 			text-align: left;
 		}
 	}
-	//** Table that shows on projects tab "Resultados".
+	//** Table that shows on opportunities tab "Resultados".
 	&.registrations-results {
 		.registration-id-col {
 			width: 22%;
@@ -236,7 +250,7 @@
 		float: right;
 	}
 }
-//** Table that shows on projects tab "Inscrições when user is logged in and has already started at least one registration.
+//** Table that shows on opportunities tab "Inscrições when user is logged in and has already started at least one registration.
 .my-registrations {
 	@extend .registrations-table;
 	.registration-agents-col {

@@ -1,5 +1,5 @@
 
-    <?php if(count($entities) > 0): ?>
+    <?php if(is_array($entities) && count($entities) > 0): ?>
     <div class="widget">
         <h3>Projetos</h3>
         <h3><?php $this->dict($title); ?></h3>

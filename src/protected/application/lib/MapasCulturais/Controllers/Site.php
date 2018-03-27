@@ -35,11 +35,16 @@ class Site extends \MapasCulturais\Controller {
         $app = \MapasCulturais\App::i();
 
         $status = $this->data['code'];
-        
-        $app->response->setStatus($status);
+
+        if($app->config['app.mode'] !== 'production'){
+            if(isset($this->data['e'])){
+                throw $this->data['e'];
+            }
+        }
         if($app->request()->isAjax()){
-            throw $this->data['e'];
+            $this->errorJson($this->data['e']->getMessage(), $status);
         } else{
+            $app->response->setStatus($status);
             $this->render('error-' . $status, $this->data);
         }
     }

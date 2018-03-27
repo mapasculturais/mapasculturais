@@ -136,16 +136,18 @@ return array(
                 'Agents',
                 'Spaces',
                 'Projects',
-                'Events'
+                'Events',
+                'Opportunities'
             )
         ),
-        'agents_color'    => $metadata_config_color,
-        'spaces_color'    => $metadata_config_color,
-        'projects_color'  => $metadata_config_color,
-        'events_color'    => $metadata_config_color,
-        'seals_color'     => $metadata_config_color,
-        'cor_intro'     => $metadata_config_color,
-        'cor_dev'       => $metadata_config_color,
+        'agents_color'        => $metadata_config_color,
+        'spaces_color'        => $metadata_config_color,
+        'projects_color'      => $metadata_config_color,
+        'events_color'        => $metadata_config_color,
+        'opportunities_color' => $metadata_config_color,
+        'seals_color'         => $metadata_config_color,
+        'cor_intro'           => $metadata_config_color,
+        'cor_dev'             => $metadata_config_color,
 
         'filtro_space_meta_En_Estado' => $metadata_config_estado,
 
@@ -209,7 +211,7 @@ return array(
                 106 => 'Ateliê',
                 112 => 'Banca de jornal',
                 200 => 'Bens culturais de natureza material',
-                2 => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)',
+                22 => 'Biblioteca Comunitária (incluí­dos os pontos de leitura)',
                 23 => 'Biblioteca Escolar',
                 25 => 'Biblioteca Universitária',
                 26 => 'Biblioteca Especializada',
@@ -249,6 +251,7 @@ return array(
                 82 => 'Mesquitas',
                 61 => 'Museu Privado',
                 60 => 'Museu Público',
+                137 => 'Núcleos de Produção Digital',
                 501 => 'Palco de Rua',
                 115 => 'Ponto de Leitura Afro',
                 136 => 'Pontos de Memória',

@@ -1,6 +1,7 @@
+<?php $this->part('singles/opportunity-header--owner-entity', ['entity' => $opportunity]) ?>
 <header class="main-content-header">
     <div
-        <?php if($header = $project->getFile('header')): ?>
+        <?php if($header = $opportunity->getFile('header')): ?>
             class="header-image"
             style="background-image: url(<?php echo $header->transform('header')->url; ?>);"
         <?php endif; ?>
@@ -8,7 +9,7 @@
     </div>
     <!--.header-image-->
     <div class="header-content">
-    <?php if($avatar = $project->avatar): ?>
+    <?php if($avatar = $opportunity->avatar): ?>
         <div class="avatar com-imagem">
             <img src="<?php echo $avatar->transform('avatarBig')->url; ?>" alt="" class="js-avatar-img" />
     <?php else: ?>
@@ -19,9 +20,11 @@
         <!--.avatar-->
         <div class="entity-type registration-type">
             <div class="icon icon-project"></div>
-            <a><?php echo $project->type->name; ?></a>
+            <a><?php echo $opportunity->type->name; ?></a>
         </div>
         <!--.entity-type-->
-        <h2><a href="<?php echo $project->singleUrl ?>"><?php echo $project->name; ?></a></h2>
+        <?php $this->part('entity-parent', ['entity' => $opportunity, 'child_entity_request' => null]) ?>
+
+        <h2><a href="<?php echo $opportunity->singleUrl ?>"><?php echo $opportunity->name; ?></a></h2>
     </div>
 </header>

@@ -21,7 +21,7 @@ class Theme extends MapasCulturais\Theme {
         'magnific-popup' => '0.9.9',
         'x-editable' => 'jquery-editable-dev-1.5.2'
     );
-    
+
     // The default fields that are queried to display the search results both on map and list modes
     public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl');
 
@@ -145,7 +145,7 @@ class Theme extends MapasCulturais\Theme {
                 'name' => i::__('Url da página da instituição responsável pelo site'),
                 'description' => i::__('usado principalmente na home para criar um link à página da instituição responsável pelo site'),
                 'examples' => [i::__($app->getBaseUrl())],
-                'text' => i::__($app->getBaseUrl()),
+                'text' => $app->getBaseUrl(),
                 'required' => true
             ],
             'home: colabore' => [
@@ -173,6 +173,11 @@ class Theme extends MapasCulturais\Theme {
                 'name' => i::__('texto da seção "projetos" da home'),
                 'description' => i::__(''),
                 'text' => i::__('Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e divulgue seus projetos.')
+            ],
+            'home: opportunities' => [
+                'name' => i::__('texto da seção "oportunidades" da home'),
+                'description' => i::__(''),
+                'text' => i::__('Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.')
             ],
             'home: home_devs' => [
                 'name' => i::__('texto da seção "desenvolvedores" da home'),
@@ -389,6 +394,18 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Sub-agentes'), i::__('Agentes Filhos'), i::__('Agentes')],
                 'text' => i::__('Agentes')
             ],
+            'entities: agent' => [
+                'name' => i::__('texto "agente"'),
+                'description' => i::__('nome da entidade Agente no singular em minúsculo'),
+                'examples' => [i::__('agente')],
+                'text' => i::__('agente')
+            ],
+            'entities: agents' => [
+                'name' => i::__('texto "agentes"'),
+                'description' => i::__('nome da entidade Agente no plural em minúsculo'),
+                'examples' => [i::__('agentes')],
+                'text' => i::__('agentes')
+            ],
 
 
 
@@ -430,8 +447,130 @@ class Theme extends MapasCulturais\Theme {
                 'examples' => [i::__('Projetos do agente'), i::__('Editais do agente'), i::__('Convocatórias do agente')],
                 'text' => i::__('Projetos do agente')
             ],
+            'entities: project' => [
+                'name' => i::__('texto "projeto"'),
+                'description' => i::__('nome da entidade Projeto no singular em minúsculo'),
+                'examples' => [i::__('projeto')],
+                'text' => i::__('projeto')
+            ],
+            'entities: projects' => [
+                'name' => i::__('texto "projetos"'),
+                'description' => i::__('nome da entidade Projeto no plural em minúsculo'),
+                'examples' => [i::__('projetos')],
+                'text' => i::__('projetos')
+            ],
 
+// ======== Oportunidades
+            'entities: Opportunities' => [
+                'name' => i::__('texto "Oportunidades"'),
+                'description' => i::__('nome da entidade Oportunidade no plural'),
+                'examples' => [i::__('Oportunidades')],
+                'text' => i::__('Oportunidades')
+            ],
+            'entities: My Opportunities' => [
+                'name' => i::__('texto "Minhas Oportunidades"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Minhas Oportunidades')],
+                'text' => i::__('Minhas Oportunidades')
+            ],
+            'entities: My opportunities' => [
+                'name' => i::__('texto "Minhas oportunidades"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Minhas oportunidades')],
+                'text' => i::__('Minhas oportunidades')
+            ],
+            'entities: opportunity found' => [
+                'name' => i::__('texto "oportunidade encontrada"'),
+                'description' => i::__(''),
+                'examples' => [i::__('oportunidade encontrada')],
+                'text' => i::__('oportunidade encontrada')
+            ],
+            'entities: opportunities found' => [
+                'name' => i::__('texto "oportunidades encontradas"'),
+                'description' => i::__(''),
+                'examples' => [i::__('oportunidades encontradas')],
+                'text' => i::__('oportunidades encontradas')
+            ],
+            'entities: Opportunities of the agent' => [
+                'name' => i::__('texto "Oportunidades do agente"'),
+                'description' => i::__('Título da listagem das oportunidades do agente em seu perfil'),
+                'examples' => [i::__('Oportunidades do agente'), i::__('Editais do agente'), i::__('Convocatórias do agente')],
+                'text' => i::__('Oportunidades do agente')
+            ],
+            'entities: Opportunities of the space' => [
+                'name' => i::__('texto "Oportunidades do espaço"'),
+                'description' => i::__('Título da listagem das oportunidades do espaço'),
+                'examples' => [i::__('Oportunidades do espaço'), i::__('Editais do espaço'), i::__('Convocatórias do espaço')],
+                'text' => i::__('Oportunidades do espaço')
+            ],
+            'entities: Opportunities of the event' => [
+                'name' => i::__('texto "Oportunidades do evento"'),
+                'description' => i::__('Título da listagem das oportunidades do evento'),
+                'examples' => [i::__('Oportunidades do evento'), i::__('Editais do evento'), i::__('Convocatórias do evento')],
+                'text' => i::__('Oportunidades do evento')
+            ],
+            'entities: opportunity' => [
+                'name' => i::__('texto "oportunidade"'),
+                'description' => i::__('nome da entidade Oportunidade no singular em minúsculo'),
+                'examples' => [i::__('oportunidade')],
+                'text' => i::__('oportunidade')
+            ],
+            'entities: opportunities' => [
+                'name' => i::__('texto "oportunidades"'),
+                'description' => i::__('nome da entidade Oportunidade no plural em minúsculo'),
+                'examples' => [i::__('oportunidades')],
+                'text' => i::__('oportunidades')
+            ],
 
+// ======== Oportunidades
+            'entities: Opportunities' => [
+                'name' => i::__('texto "Oportunidades"'),
+                'description' => i::__('nome da entidade Oportunidade no plural'),
+                'examples' => [i::__('Oportunidades')],
+                'text' => i::__('Oportunidades')
+            ],
+            'entities: My Opportunities' => [
+                'name' => i::__('texto "Minhas Oportunidades"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Minhas Oportunidades')],
+                'text' => i::__('Minhas Oportunidades')
+            ],
+            'entities: My opportunities' => [
+                'name' => i::__('texto "Minhas oportunidades"'),
+                'description' => i::__(''),
+                'examples' => [i::__('Minhas oportunidades')],
+                'text' => i::__('Minhas oportunidades')
+            ],
+            'entities: opportunity found' => [
+                'name' => i::__('texto "oportunidade encontrada"'),
+                'description' => i::__(''),
+                'examples' => [i::__('oportunidade encontrada')],
+                'text' => i::__('oportunidade encontrada')
+            ],
+            'entities: opportunities found' => [
+                'name' => i::__('texto "oportunidades encontradas"'),
+                'description' => i::__(''),
+                'examples' => [i::__('oportunidades encontradas')],
+                'text' => i::__('oportunidades encontradas')
+            ],
+            'entities: Opportunities of the agent' => [
+                'name' => i::__('texto "Oportunidades do agente"'),
+                'description' => i::__('Título da listagem das oportunidades do agente em seu perfil'),
+                'examples' => [i::__('Oportunidades do agente'), i::__('Editais do agente'), i::__('Convocatórias do agente')],
+                'text' => i::__('Oportunidades do agente')
+            ],
+            'entities: Opportunities of the space' => [
+                'name' => i::__('texto "Oportunidades do espaço"'),
+                'description' => i::__('Título da listagem das oportunidades do espaço'),
+                'examples' => [i::__('Oportunidades do espaço'), i::__('Editais do espaço'), i::__('Convocatórias do espaço')],
+                'text' => i::__('Oportunidades do espaço')
+            ],
+            'entities: Opportunities of the event' => [
+                'name' => i::__('texto "Oportunidades do evento"'),
+                'description' => i::__('Título da listagem das oportunidades do evento'),
+                'examples' => [i::__('Oportunidades do evento'), i::__('Editais do evento'), i::__('Convocatórias do evento')],
+                'text' => i::__('Oportunidades do evento')
+            ],
 
 
 // ======== Eventos
@@ -464,6 +603,18 @@ class Theme extends MapasCulturais\Theme {
                 'description' => i::__(''),
                 'examples' => [i::__('eventos encontrados'), i::__('ações encontradas')],
                 'text' => i::__('eventos encontrados')
+            ],
+            'entities: event' => [
+                'name' => i::__('texto "evento"'),
+                'description' => i::__('nome da entidade Evento no singular em minúsculo'),
+                'examples' => [i::__('evento')],
+                'text' => i::__('evento')
+            ],
+            'entities: events' => [
+                'name' => i::__('texto "eventos"'),
+                'description' => i::__('nome da entidade Evento no plural em minúsculo'),
+                'examples' => [i::__('eventos')],
+                'text' => i::__('eventos')
             ],
 
 
@@ -732,12 +883,26 @@ class Theme extends MapasCulturais\Theme {
         return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
     }
 
+    function getSearchOpportunitiesUrl(){
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";;
+    }
+
     function getSearchSealsUrl(){
     	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
     }
 
     protected function _init() {
         $app = App::i();
+        
+        if(!$app->user->is('guest') && $app->user->profile->status < 1){
+            $app->hook('view.partial(nav-main-user).params', function($params, &$name){
+                $name = 'header-profile-link';
+            });
+            
+            $app->hook('GET(panel.<<*>>):before, GET(<<*>>.create):before', function() use($app){
+                $app->redirect($app->user->profile->editUrl);
+            });
+        }
 
 
         $app->hook('mapasculturais.body:before', function() use($app) {
@@ -759,14 +924,15 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['notificationsInterval'] = $app->config['notifications.interval'];
 
         $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
-        
+
         $this->jsObject['EntitiesDescription'] = [
-        		"agent" => \MapasCulturais\Entities\Agent::getPropertiesMetadata(),
-        		"event" => \MapasCulturais\Entities\Event::getPropertiesMetadata(),
-        		"space" => \MapasCulturais\Entities\Space::getPropertiesMetadata(),
-        		"project" => \MapasCulturais\Entities\Project::getPropertiesMetadata(),
-                "subsite" => \MapasCulturais\Entities\Subsite::getPropertiesMetadata(),
-        		"seal" => \MapasCulturais\Entities\Seal::getPropertiesMetadata()
+        		"agent"         => Entities\Agent::getPropertiesMetadata(),
+        		"event"         => Entities\Event::getPropertiesMetadata(),
+        		"space"         => Entities\Space::getPropertiesMetadata(),
+        		"project"       => Entities\Project::getPropertiesMetadata(),
+        		"opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+                        "subsite"       => Entities\Subsite::getPropertiesMetadata(),
+        		"seal"          => Entities\Seal::getPropertiesMetadata()
         ];
 
         $app->hook('view.render(<<*>>):before', function() use($app) {
@@ -784,6 +950,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
             $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
             $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+            $this->jsObject['assets']['avatarOpportunity'] = $this->asset('img/avatar--opportunity.png', false);
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
@@ -828,6 +995,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['labels'] = array(
                 'agent' => \MapasCulturais\Entities\Agent::getPropertiesLabels(),
                 'project' => \MapasCulturais\Entities\Project::getPropertiesLabels(),
+                'opportunity' => \MapasCulturais\Entities\Opportunity::getPropertiesLabels(),
                 'event' => \MapasCulturais\Entities\Event::getPropertiesLabels(),
                 'space' => \MapasCulturais\Entities\Space::getPropertiesLabels(),
                 'subsite' => \MapasCulturais\Entities\Subsite::getPropertiesLabels(),
@@ -842,12 +1010,6 @@ class Theme extends MapasCulturais\Theme {
             $this->includeVendorAssets();
             $this->includeCommonAssets();
             $this->_populateJsObject();
-        });
-
-        $app->hook('view.render(<<agent|space|project|event|seal|subsite>>/<<single|edit|create>>):before', function() {
-            $this->jsObject['assets']['verifiedSeal'] = $this->asset('img/verified-seal.png', false);
-            $this->jsObject['assets']['unverifiedSeal'] = $this->asset('img/unverified-seal.png', false);
-            $this->assetManager->publishAsset('img/verified-seal-small.png', 'img/verified-seal-small.png');
         });
 
         $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
@@ -876,7 +1038,7 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        $app->hook('entity(<<agent|space|event|project|seal>>).insert:after', function() use($app){
+        $app->hook('entity(<<agent|space|event|project|opportunity|seal>>).insert:after', function() use($app){
             if(!$app->user->is('guest')){
                 if($app->config['notifications.entities.new']) {
                     $user = $this->ownerUser;
@@ -901,13 +1063,13 @@ class Theme extends MapasCulturais\Theme {
         });
 
         // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project|subsite|seal>>).file(avatar).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|opportunity|subsite|seal>>).file(avatar).insert:after', function() {
             $this->transform('avatarSmall');
             $this->transform('avatarMedium');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project|subsite|seal>>).file(header).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|opportunity|subsite|seal>>).file(header).insert:after', function() {
             $this->transform('header');
         });
 
@@ -927,7 +1089,7 @@ class Theme extends MapasCulturais\Theme {
             $this->transform('favicon');
         });
 
-        $app->hook('entity(<<agent|space|event|project|seal>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|project|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -1065,11 +1227,20 @@ class Theme extends MapasCulturais\Theme {
                 }
             }
         }
+        
+        // after plugin registration that creates the configuration types
+        $app->hook('app.register', function(){
+            $this->view->registerMetadata('MapasCulturais\Entities\EvaluationMethodConfiguration', 'infos', [
+                'label' => i::__("Textos informativos para as fichas de avaliação"),
+                'serialize' => function($val){ return json_encode($val); },
+                'unserialize' => function($val){ return json_decode($val); },
+            ]);
+        });
     }
 
     function head() {
         parent::head();
-
+        
         $app = App::i();
 
         $this->printStyles('vendor');
@@ -1217,7 +1388,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
     }
 
-    function includeCommonAssets() {
+    function includeCommonAssets() { 
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
@@ -1231,13 +1402,14 @@ class Theme extends MapasCulturais\Theme {
         ]);
         $this->enqueueScript('app', 'mapasculturais', 'js/mapasculturais.js', array('tim'));
         $this->localizeScript('mapas', [
-            'agente'    => i::__('agente'),
-            'espaço'    => i::__('espaço'),
-            'evento'    => i::__('evento'),
-            'projeto'   => i::__('projeto'),
-            'selo'      => i::__('selo'),
-            'Enviar'    => i::__('Enviar'),
-            'Cancelar'  => i::__('Cancelar')
+            'agente'        => i::__('agente'),
+            'espaço'        => i::__('espaço'),
+            'evento'        => i::__('evento'),
+            'projeto'       => i::__('projeto'),
+            'opportunity'   => i::__('oportunidade'),
+            'selo'          => i::__('selo'),
+            'Enviar'        => i::__('Enviar'),
+            'Cancelar'      => i::__('Cancelar')
         ]);
         $locale_specific_js = file_exists(dirname(__FILE__)  . '/assets/js/locale-specific/' . i::get_locale() . '.js') ? 'js/locale-specific/' . i::get_locale() . '.js' : 'js/locale-specific/default.js' ;
         $this->enqueueScript('app', 'mapasculturais-locale-specific', $locale_specific_js, array('mapasculturais'));
@@ -1290,8 +1462,13 @@ class Theme extends MapasCulturais\Theme {
             'restrictedPublish'    => i::__('Publicação restrita'),
             'freePlublishDescription'    => i::__('Qualquer pessoa pode criar eventos.'),
             'restrictedPublishDescription'    => i::__('Requer autorização para criar eventos.'),
-            'confirmPublish'    => i::__('Você tem certeza que deseja publicar este %s?'),
-            'confirmPublishFinal'    => i::__('Você tem certeza que deseja publicar este %s? Isto não poderá ser desfeito.'),
+            'this_agent' => i::__('este agente'),
+            'this_space' => i::__('este espaço'),
+            'this_event' => i::__('este evento'),
+            'this_project' => i::__('este projeto'),
+            'this_opportunity' => i::__('esta oportunidade'),
+            'confirmPublish'    => i::__('Você tem certeza que deseja publicar %s?'),
+            'confirmPublishFinal'    => i::__('Você tem certeza que deseja publicar %s? Isto não poderá ser desfeito.'),
             'requestChild'    => i::__('Sua requisição para fazer deste %s filho de %s foi enviada.'),
             'requestEventProject'    => i::__('Sua requisição para associar este evento ao projeto %s foi enviada.'),
             'correctErrors'    => i::__('Corrija os erros indicados abaixo.'),
@@ -1305,6 +1482,11 @@ class Theme extends MapasCulturais\Theme {
             'Crop'    => i::__('Recortar'),
             'CropHelp'    => i::__('Arraste para recortar'),
             'removeAgentBackground' => i::__('Tem certeza que deseja remover a imagem de capa?'),
+        ]);
+
+        $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
+        $this->localizeScript('evaluations', [
+            'saveMessage' => i::__('A avaiação foi salva')
         ]);
     }
 
@@ -1349,6 +1531,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
         $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
         $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
+        $this->jsObject['assets']['avatarOpportunity'] = $this->asset('img/avatar--opportunity.png', false);
         $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
 
         $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
@@ -1383,6 +1566,9 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function includeAngularEntityAssets($entity) {
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
+
         $this->jsObject['templateUrl']['editBox'] = $this->asset('js/directives/edit-box.html', false);
         $this->jsObject['templateUrl']['findEntity'] = $this->asset('js/directives/find-entity.html', false);
         $this->jsObject['templateUrl']['MCSelect'] = $this->asset('js/directives/mc-select.html', false);
@@ -1460,7 +1646,52 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
-           'Todas opções' => i::__('Todas opções'),
+            'Todas opções' => i::__('Todas opções'),
+        ]);
+
+        $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
+        $this->localizeScript('moduleOpportunity', [
+            'allCategories' => i::__('Todas as categorias'),
+            'selectFieldType' =>  i::__('Selecione o tipo de campo'),
+            'fieldCreated' =>  i::__('Campo criado.'),
+            'fieldRemoved' =>  i::__('Campo removido.'),
+            'changesSaved' =>  i::__('Alterações Salvas.'),
+            'attachmentCreated' =>  i::__('Anexo criado.'),
+            'attachmentRemoved' =>  i::__('Anexo removido.'),
+            'confirmAttachmentRemoved' =>  i::__('Deseja remover este anexo?'),
+            'confirmRemoveModel' =>  i::__('Deseja remover este modelo?'),
+            'modelRemoved' =>  i::__('Modelo removido.'),
+            'statusPublished' =>  i::__('publicado'),
+            'statusDraft' =>  i::__('rascunho'),
+            'publishing...' =>  i::__('Publicando...'),
+            'eventsPublished' =>  i::__('Eventos publicados.'),
+            'savingAsDraft' =>  i::__('Tornando rascunho...'),
+            'savedAsDraft' =>  i::__('Eventos transformados em rascunho.'),
+            'confirmRemoveAttachment' =>  i::__('Deseja remover este anexo?'),
+            'registrationOwnerDefault' =>  i::__('Agente responsável pela inscrição'),
+            'allStatus' =>  i::__('Todas'),
+            'pending' =>  i::__('Pendente'),
+            'invalid' =>  i::__('Inválida'),
+            'notSelected' =>  i::__('Não selecionada'),
+            'suplente' =>  i::__('Suplente'),
+            'selected' =>  i::__('Selecionada'),
+            'draft' =>  i::__('Rascunho'),
+            'requiredLabel' =>  i::__('Obrigatório'),
+            'optionalLabel' =>  i::__('Opcional'),
+            'confirmReopen' =>  i::__('Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, ele sairá dessa lista.'),
+            'defineVacancies' =>  i::__('Você não definiu um número de vagas. Para selecionar essa inscrição, configure um número de vagas na aba Inscrições, em Agentes.'),
+            'reachedMax' =>  i::__('Você atingiu o limite máximo de 1 inscrição aprovada'),
+            'reachedMaxPlural' =>  i::__('Você atingiu o limite máximo de {{num}} inscrições aprovadas'),
+            'limitReached' =>  i::__('O limite de inscrições para o agente informado se esgotou.'),
+            'VacanciesOver' =>  i::__('O número de vagas da inscrição no oportunidade se esgotou.'),
+            'needResponsible' =>  i::__('Para se inscrever nesta oportunidade você deve selecionar um agente responsável.'),
+            'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
+            'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
+            'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
+            'evaluated' => i::__('Avaliada'),
+            'sent' => i::__('Enviada'),
+            'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
+            'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -1489,10 +1720,11 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['roles'] = $roles;
         $this->jsObject['request']['id'] = $entity->id;
+
+        $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
     }
 
     protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
-
         if ($print_script_tag)
             echo "\n<script type=\"text/javascript\">\n";
 
@@ -1585,7 +1817,7 @@ class Theme extends MapasCulturais\Theme {
                             case 'entitytype':
 
                                 $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
-                                
+
                                 // ordena alfabeticamente
                                 uasort($types, function($a, $b) {
                                     if ($a->name == $b->name)
@@ -1777,6 +2009,33 @@ class Theme extends MapasCulturais\Theme {
                         'value' => 'IN(1)'
                     ]
                 ]
+            ],
+            'opportunity' => [
+                'tipos' => [
+                    'label' => i::__('Tipo'),
+                    'placeholder' => i::__('Selecione os tipos'),
+                    'type' => 'entitytype',
+                    'filter' => [
+                        'param' => 'type',
+                        'value' => 'IN({val})'
+                    ]
+                ],
+                'inscricoes' => [
+                    'label' => i::__('Inscrições Abertas'),
+                    'fieldType' => 'custom.opportunity.ropen'
+                ],
+                'verificados' => [
+                    'label' => $this->dict('search: verified results', false),
+                    'tag' => $this->dict('search: verified', false),
+                    'placeholder' => $this->dict('search: display only verified results', false),
+                    'fieldType' => 'checkbox-verified',
+                    'addClass' => 'verified-filter',
+                    'isArray' => false,
+                    'filter' => [
+                        'param' => '@verified',
+                        'value' => 'IN(1)'
+                    ]
+                ]
             ]
         ];
 
@@ -1879,10 +2138,11 @@ class Theme extends MapasCulturais\Theme {
     	}
 
     	$query['@files'] = '(avatar.avatarSmall,avatar.avatarMedium):url';
-    	$sealId = implode(',',array_unique($sealId));
+        $sealId = array_unique($sealId);
 
-    	if(count($sealId) > 0 && !empty($sealId)) {
-    		$query['id'] = 'IN(' .$sealId . ')';
+    	if(count($sealId) > 0) {
+            $sealId = implode(',',$sealId);
+            $query['id'] = 'IN(' .$sealId . ')';
     	}
 
     	$query['@ORDER'] = 'createTimestamp DESC';
@@ -1920,8 +2180,39 @@ class Theme extends MapasCulturais\Theme {
     function addProjectToJs(Entities\Project $entity){
         $app = App::i();
 
-        $this->jsObject['entity']['useRegistrations'] = $entity->useRegistrations;
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
+    }
+
+    function addOpportunityRegistrationsToJs(Entities\Opportunity $entity){
+        if($entity->canUser('@control')){
+            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
+        } else {
+            $this->jsObject['entity']['registrations'] = [];
+
+            foreach($entity->sentRegistrations as $reg){
+                if($reg->canUser('viewUserEvaluation')){
+                    $this->jsObject['entity']['registrations'][] = $reg;
+                }
+            }
+        }
+    }
+
+    function addOpportunitySelectFieldsToJs(Entities\Opportunity $entity){
+        $this->jsObject['opportunitySelectFields'] = isset($this->jsObject['opportunitySelectFields']) ? $this->jsObject['opportunitySelectFields'] : [];
+
+        foreach($entity->registrationFieldConfigurations as $field){
+            if($field->fieldType == 'select'){
+                if(!in_array($field, $this->jsObject['opportunitySelectFields'])){
+                    $this->jsObject['opportunitySelectFields'][] = $field;
+                }
+            }
+        }
+    }
+
+    function addOpportunityToJs(Entities\Opportunity $entity){
+        $app = App::i();
+
+            $this->jsObject['entity']['registrationFileConfigurations'] = $entity->registrationFileConfigurations ? $entity->registrationFileConfigurations->toArray() : array();
         $this->jsObject['entity']['registrationFieldConfigurations'] = $entity->registrationFieldConfigurations ? $entity->registrationFieldConfigurations->toArray() : array();
 
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
@@ -1936,8 +2227,6 @@ class Theme extends MapasCulturais\Theme {
 
         $field_types = array_values($app->getRegisteredRegistrationFieldTypes());
 
-
-
         usort($field_types, function ($a,$b){
             return strcmp($a->name, $b->name);
         });
@@ -1947,33 +2236,49 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
 
-        if($entity->canUser('@control')){
-            $this->jsObject['entity']['registrations'] = $entity->allRegistrations ? $entity->allRegistrations : array();
-        } else {
-            $this->jsObject['entity']['registrations'] = $entity->sentRegistrations ? $entity->sentRegistrations : array();
-        }
-
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
         $this->jsObject['entity']['canUserModifyRegistrationFields'] = $entity->canUser('modifyRegistrationFields');
-        $this->jsObject['projectRegistrationsEnabled'] = App::i()->config['app.enableProjectRegistration'];
+
+        // add current user registrations evaluations
+
+        if($entity->canUser('viewEvaluations')){
+            $this->jsObject['evaluationConfiguration'] = $entity->evaluationMethodConfiguration;
+        }
+    }
+
+    function getCurrentRegistrationEvaluation(Entities\Registration $entity){
+        $evaluation = null;
+
+        if(isset($entity->controller->urlData['uid'])){
+            $evaluation = App::i()->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $entity,
+                'user' => $entity->controller->urlData['uid']
+            ]);
+            if($evaluation && !$evaluation->registration->equals($entity)){
+                $evaluation = null;
+            }
+        } else {
+            $evaluation = $entity->getUserEvaluation();
+        }
+
+        if($evaluation){
+            $evaluation->checkPermission('view');
+        }
+
+        return $evaluation;
     }
 
     function addRegistrationToJs(Entities\Registration $entity){
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->project->registrationFileConfigurations ? $entity->project->registrationFileConfigurations->toArray() : array();
-        usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
-            if($a->title > $b->title){
-                return 1;
-            }else if($a->title < $b->title){
+        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
+                $entity->opportunity->registrationFileConfigurations->toArray() : array();
 
-            }else{
-                return 0;
-            }
-        });
-        $this->jsObject['entity']['registrationCategories'] = $entity->project->registrationCategories;
+        $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
-        if($entity->project->canUser('@control')){
+        if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['registration'] = $entity;
+            $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);
+            $this->jsObject['evaluationConfiguration'] = $entity->opportunity->evaluationMethodConfiguration;
         }
         foreach($entity->_getDefinitionsWithAgents() as $def){
             $agent = $def->agent;
@@ -2150,7 +2455,6 @@ class Theme extends MapasCulturais\Theme {
 
         }
     }
-
     /*
      * This methods adds fields to the default query used in the search pages
      *
@@ -2162,16 +2466,16 @@ class Theme extends MapasCulturais\Theme {
     function addSearchQueryFields($fields) {
         if (!$fields || empty($fields))
             return false;
-        
+
         if (is_string($fields))
             $fields = explode(',', $fields);
-        
+
         $this->searchQueryFields = array_merge($this->searchQueryFields, $fields);
         $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
-        
+
     }
-    
-    
-    
+
+
+
 
 }

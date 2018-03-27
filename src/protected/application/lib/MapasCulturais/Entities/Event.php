@@ -31,7 +31,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
-        Traits\EntityRevision;
+        Traits\EntityRevision,
+        Traits\EntityOpportunities;
 
     /**
      * @var integer
@@ -116,6 +117,14 @@ class Event extends \MapasCulturais\Entity
      * })
      */
     protected $project = null;
+    
+    /**
+     * @var \MapasCulturais\Entities\EventOpportunity[] Opportunities
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $_relatedOpportunities;
 
 
     /**
@@ -479,7 +488,7 @@ class Event extends \MapasCulturais\Entity
 
     public function getRevisionData() {
         $revisionData = [];
-        if(count($this->occurrences) > 0) {
+        if(is_array($revisionData) && count($this->occurrences) > 0) {
             foreach($this->occurrences as $occurrence) {
                 $revisionData['occurrences'][$occurrence->space->id]['items'][] = [
                     'id' => $occurrence->id,
