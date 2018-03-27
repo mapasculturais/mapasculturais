@@ -1451,7 +1451,12 @@ class App extends \Slim\Slim{
     protected $skipPermissionCacheRecreation = false;
 
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
-        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+        //$this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+        $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+        $pendingCache->objectId = $entity->id;
+        $pendingCache->objectType = $entity->getClassName();
+        $pendingCache->user = $this->user;
+        $pendingCache->save(true);
     }
 
     public function recreatePermissionsCacheOfListedEntities(){
