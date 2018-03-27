@@ -4,7 +4,7 @@
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
 
-        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-file-{{fileConfiguration.id}}" class="attachment-list-item registration-view-mode attachment-list-item-type-{{field.fieldType}}">
+        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-field-{{::field.id}}" data-field-id="{{::field.id}}" class="js-field attachment-list-item registration-view-mode">
             <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section'">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
                 <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
@@ -12,11 +12,11 @@
                 <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado.");?></em></span>
             </div>
             <div ng-if="field.fieldType === 'section'">
-                <label class="label">{{field.title}}</label>
+                <h4>{{field.title}}</h4>
             </div>
             <div ng-if="field.fieldType === 'file'">
-                <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
-                <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank">{{field.file.name}}</a>
+                <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>
+                <a ng-if="field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank">{{::field.file.name}}</a>
                 <span ng-if="!field.file"><em><?php \MapasCulturais\i::_e("Arquivo não enviado.");?></em></span>
             </div>
         </li>

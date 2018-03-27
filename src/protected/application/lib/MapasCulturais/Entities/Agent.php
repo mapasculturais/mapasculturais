@@ -35,6 +35,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityArchive,
         Traits\EntityOriginSubsite,
+        Traits\EntityOpportunities,
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }
@@ -173,9 +174,23 @@ class Agent extends \MapasCulturais\Entity
 
 
     /**
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentOpportunity", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    */
+    protected $_ownedOpportunities;
+
+
+    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Event", mappedBy="owner", cascade="remove", orphanRemoval=true)
     */
     protected $_events;
+    
+    /**
+     * @var \MapasCulturais\Entities\AgentOpportunity[] Opportunities
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $_relatedOpportunities;
 
 
     /**
@@ -412,10 +427,11 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function canUserCreate($user){
-        if($user->is('guest'))
+        if($user->is('guest')){
             return true;
-        else
-            return $this->genericPermissionVerification($user);
+        } else {
+            return parent::canUserCreate($user);
+        }
     }
 
     protected function canUserRemove($user){
@@ -448,6 +464,13 @@ class Agent extends \MapasCulturais\Entity
         return $this->getOwner()->canUser('modify') && $this->canUser('modify');
     }
 
+    protected function canUserArchive($user){
+        if($this->isUserProfile){
+            return false;
+        } else {
+            return $this->genericPermissionVerification($user);
+        }
+    }
 
     /** @ORM\PrePersist */
     public function __setParent($args = null){

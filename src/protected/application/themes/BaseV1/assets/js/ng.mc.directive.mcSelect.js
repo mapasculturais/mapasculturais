@@ -19,7 +19,7 @@
 
                         $scope.selectItem = function (item, $event) {
                             if (angular.isFunction($scope.setter)) {
-                                $scope.setter($scope.model, item);
+                                $scope.setter($scope.model, item, null);
                             } else {
                                 $scope.model = item.value;
                             }

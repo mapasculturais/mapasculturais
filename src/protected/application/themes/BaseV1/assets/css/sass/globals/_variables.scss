@@ -20,6 +20,7 @@ $brand-event: #b3b921 !default;
 $brand-agent: #1dabc6 !default;
 $brand-space: #e83f96 !default;
 $brand-project: #cc0033 !default;
+$brand-opportunity: #ED2CD4 !default;
 $brand-subsite:  #cc0033 !default;
 $brand-seal: #cc0033 !default;
 $brand-developer: #9966cc !default;
@@ -269,6 +270,10 @@ $unicode-notifications:               "\e065" !default;
 // used on .icon-project on _icons.scss file
 $unicode-project:               "\68"   !default;
 
+//** Opportunity icon
+// used on .icon-project on _icons.scss file 
+$unicode-opportunity:               "\e007"   !default;
+
 //** Radio icon
 // used on .icon-radio-button on _forms.scss file
 $unicode-radio-button:          "\5b"   !default;
@@ -477,7 +482,7 @@ $alert-danger-border:         darken(#fcc, 10%) !default;
 //
 //## Define registration form header colors.
 
-$registration-header-bg:      $brand-project !default;
+$registration-header-bg:      $brand-opportunity !default;
 $registration-header-color:	  #fff !default;
 
 

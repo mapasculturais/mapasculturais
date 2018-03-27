@@ -82,13 +82,21 @@
             linguagens: [],
             types: [],
             isVerified: false,
+            showAdvancedFilters:false,
+            filters: {}
+        },
+        opportunity: {
+            keyword: '',
+            linguagens: [],
+            types: [],
+            isVerified: false,
             ropen: false,
             showAdvancedFilters:false,
             filters: {}
         }
     };
 
-    var entities = ['space', 'event', 'agent', 'project'];
+    var entities = ['space', 'event', 'agent', 'project', 'opportunity'];
 
     // adiciona os filtros avançados utilizados pelo tema ao skeleton acima
     entities.forEach(function(entity){
@@ -170,7 +178,8 @@
                 agent: 1,
                 space: 1,
                 event: 1,
-                project: 1
+                project: 1,
+                opportunity: 1,
             };
         }
 
@@ -260,7 +269,7 @@
         $scope.tabClick = function(entity){
             var g = $scope.data.global;
             g.filterEntity = entity;
-            if(entity === 'project')
+            if(entity === 'project' || entity === 'opportunity')
                 g.viewMode = 'list';
 
             if(g.viewMode === 'map'){
@@ -371,6 +380,7 @@
         $scope.spaces = [];
         $scope.events = [];
         $scope.projects = [];
+        $scope.opportunities = [];
 
 
         $rootScope.$on('searchResultsReady', function(ev, results){
@@ -384,17 +394,20 @@
                 $scope.events = $scope.events.concat(results.event ? results.event : []);
                 $scope.spaces = $scope.spaces.concat(results.space ? results.space : []);
                 $scope.projects = $scope.projects.concat(results.project ? results.project : []);
+                $scope.opportunities = $scope.opportunities.concat(results.opportunity ? results.opportunity : []);
             }else{
                 $scope.agents = results.agent ? results.agent : [];
                 $scope.events = results.event ? results.event : [];
                 $scope.spaces = results.space ? results.space : [];
                 $scope.projects = results.project ? results.project : [];
+                $scope.opportunities = results.opportunity ? results.opportunity : [];
             }
         });
 
         var infiniteScrollTimeout = null;
 
         $scope.addMore = function(entity){
+            var entityName = "";
             if($scope.data.global.viewMode !== 'list')
                 return;
 
@@ -404,7 +417,13 @@
             if($rootScope.isPaginating)
                 return;
 
-            if($scope[entity + 's'].length === 0 || $scope[entity + 's'].length < 10)
+            if(entity == 'opportunity') {
+                entityName = 'opportunities';
+            } else {
+                entityName = entity + 's'
+            }
+
+            if($scope[entityName].length === 0 || $scope[entityName].length < 10)
                 return;
 
             $rootScope.pagination[entity]++;
@@ -429,6 +448,7 @@
         };
         $scope.numEventsInList = 0;
         $scope.numProjects = 0;
+        $scope.numOpportunities = 0;
 
         $rootScope.$on('searchCountResultsReady', function(ev, results){
             $scope.numAgents = parseInt(results.agent);
@@ -450,6 +470,7 @@
                 };
             }
             $scope.numProjects = parseInt(results.project);
+            $scope.numOpportunities = parseInt(results.opportunity);
         });
 
         $rootScope.$on('findOneResultReady', function(ev, result){
@@ -513,6 +534,16 @@
 
             var from = moment(project.registrationFrom.date).format('DD/MM/YYYY');
             var to = moment(project.registrationTo.date).format('DD/MM/YYYY');
+
+            return from !== to ? labels['dateFrom'] + ' ' + from + ' ' + labels['dateTo'] + ' ' + to : from;
+        };
+
+        $scope.readableOpportunitytRegistrationDates = function(opportunity){
+            if(!opportunity.registrationFrom)
+                return false;
+
+            var from = moment(opportunity.registrationFrom.date).format('DD/MM/YYYY');
+            var to = moment(opportunity.registrationTo.date).format('DD/MM/YYYY');
 
             return from !== to ? labels['dateFrom'] + ' ' + from + ' ' + labels['dateTo'] + ' ' + to : from;
         };

@@ -29,6 +29,7 @@ define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
 define('MODULES_PATH', APPLICATION_PATH.'lib/modules/');
 define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
+define('MODULES_PATH', APPLICATION_PATH . 'lib/modules/');
 
  // Prepare a mock environment
 \Slim\Environment::mock(array_merge(array(
@@ -83,7 +84,7 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
      * @param mixed $user
      * @return \MapasCulturais\Entity
      */
-    function getNewEntity($class, $user = null){
+    function getNewEntity($class, $user = null, $owner = null){
         if(!is_null($user)){
             $_user = $this->app->user->is('guest') ? null : $this->app->user;
             $this->user = $user;
@@ -99,8 +100,10 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
         $entity->name = "Test $class "  . uniqid();
         $entity->type = $type;
         $entity->shortDescription = 'A litle short description';
-        
-        if($app->user->is('guest') && $user && $classname::usesOwnerAgent()){
+
+        if($owner){
+            $entity->owner = $owner;
+        } else if($app->user->is('guest') && $user && $classname::usesOwnerAgent()){
             $entity->owner = $user->profile;
         }
 

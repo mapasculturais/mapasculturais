@@ -22,14 +22,16 @@ trait EntityAgentRelation {
     }
 
     function getAgentRelations($has_control = null, $include_pending_relations = false){
-        if(!$this->id)
+        if(!$this->id){
             return [];
+        }
 
         $relation_class = $this->getAgentRelationEntityClassName();
-        if(!class_exists($relation_class))
-            return [];
         
-        $statuses = $include_pending_relations ? [$relation_class::STATUS_ENABLED, $relation_class::STATUS_PENDING] : [$relation_class::STATUS_ENABLED];
+        if(!class_exists($relation_class)){
+            return [];
+        }
+        
         $agent_statuses = [Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED];
         $relations = [];
         
@@ -40,7 +42,12 @@ trait EntityAgentRelation {
         }
         
         foreach($__relations as $ar){
-            if(in_array($ar->status, $statuses) && (is_null($has_control) || $ar->hasControl === $has_control) && in_array($ar->agent->status, $agent_statuses)){
+            if($include_pending_relations){
+                $arstatus_ok = $ar->status > 0 || $ar->status === $relation_class::STATUS_PENDING;
+            } else {
+                $arstatus_ok = $ar->status > 0;
+            }
+            if($arstatus_ok && (is_null($has_control) || $ar->hasControl === $has_control) && in_array($ar->agent->status, $agent_statuses)){
                 $relations[] = $ar;
             }
         }
@@ -131,10 +138,12 @@ trait EntityAgentRelation {
         $ids = [$result[0]->id];
 
         if($this->getClassName() !== 'MapasCulturais\Entities\Agent'){
-            foreach($this->getOwner()->getUsersWithControl() as $u){
-                if(!in_array($u->id, $ids)){
-                    $ids[] = $u->id;
-                    $result[] = $u;
+            if($_owner = $this->getOwner()){
+                foreach($_owner->getUsersWithControl() as $u){
+                    if(!in_array($u->id, $ids)){
+                        $ids[] = $u->id;
+                        $result[] = $u;
+                    }
                 }
             }
         }

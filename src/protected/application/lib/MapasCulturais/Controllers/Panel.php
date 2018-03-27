@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Subsite;
 
@@ -36,12 +37,13 @@ class Panel extends \MapasCulturais\Controller {
 
         $count = new \stdClass();
 
-        $count->spaces		= $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->agents		= $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->events		= $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->projects	= $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
-        $count->subsite        = $app->controller('subsite')->apiQuery(['@count'=>1]);
-        $count->seals		= $app->controller('seal')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->spaces          = $app->controller('space')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->agents          = $app->controller('agent')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->events          = $app->controller('event')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->projects        = $app->controller('project')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->opportunities   = $app->controller('opportunity')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
+        $count->subsite         = $app->controller('subsite')->apiQuery(['@count'=>1]);
+        $count->seals           = $app->controller('seal')->apiQuery(['@count'=>1, 'user' => 'EQ(' . $app->user->id . ')']);
 
         $this->render('index', ['count'=>$count]);
     }
@@ -233,6 +235,24 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('projects', ['user' => $user]);
     }
+    
+    /**
+     * Render the opportunities list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/opportunity'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'opportunities');
+     * </code>
+     *
+     */
+    function GET_opportunities(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+
+        $this->render('opportunities', ['user' => $user]);
+    }
 
     /**
      * Render the seal list of the user panel.
@@ -253,9 +273,9 @@ class Panel extends \MapasCulturais\Controller {
     }
 
     /**
-     * Render the project list of the user panel.
+     * Render the registration list of the user panel.
      *
-     * This method requires authentication and renders the template 'panel/projects'
+     * This method requires authentication and renders the template 'panel/registrations'
      *
      * <code>
      * // creates the url to this action
@@ -271,13 +291,13 @@ class Panel extends \MapasCulturais\Controller {
     }
 
     /**
-     * Render the project list of the user panel.
+     * Render the integrations list of the user panel.
      *
-     * This method requires authentication and renders the template 'panel/projects'
+     * This method requires authentication and renders the template 'panel/apps'
      *
      * <code>
      * // creates the url to this action
-     * $url = $app->createUrl('panel', 'registrations');
+     * $url = $app->createUrl('panel', 'apps');
      * </code>
      *
      */

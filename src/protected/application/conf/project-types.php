@@ -4,33 +4,6 @@
  */
 return array(
     'metadata' => array(
-        'introInscricoes' => array(
-            'label' => \MapasCulturais\i::__('Texto introdutório das inscrições'),
-            'type' => 'text'
-        ),
-
-        'registrationCategTitle' => array(
-            'label' => \MapasCulturais\i::__('Título das opções (ex: Categorias)'),
-        ),
-
-        'registrationCategDescription' => array(
-            'label' => \MapasCulturais\i::__('Descrição das opções (ex: Selecione uma categoria)'),
-        ),
-
-        'registrationLimitPerOwner' => array(
-            'label' => \MapasCulturais\i::__('Número máximo de inscrições por agente responsável'),
-            'validations' => array(
-                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
-            )
-        ),
-
-        'registrationLimit' => array(
-            'label' => \MapasCulturais\i::__('Número máximo de inscrições no projeto'),
-            'validations' => array(
-                "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições no projeto deve ser um número inteiro")
-            )
-        ),
-
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(

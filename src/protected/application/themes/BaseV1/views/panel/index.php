@@ -86,6 +86,22 @@ $button = "";
                 </div>
             </div>
         <?php endif; ?>
+ 
+       <?php if($app->isEnabled('opportunities')): ?>
+            <div>
+                <div>
+                    <div class="clearfix">
+                        <span class="alignleft"><?php $this->dict('entities: Opportunities') ?></span>
+                        <div class="icon icon-opportunity alignright"></div>
+                    </div>
+                    <div class="clearfix">
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'opportunities') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver minhas oportunidades");?>"><?php echo $count->opportunities; ?></a>
+                        <span class="user-stats-value hltip">|</span>
+                        <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'opportunities') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Oportunidades Cedidas");?>"><?php echo count($app->user->hasControlOpportunities);?></a>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <?php if($app->isEnabled('subsite') && $app->user->is('saasAdmin')): ?>
             <div>

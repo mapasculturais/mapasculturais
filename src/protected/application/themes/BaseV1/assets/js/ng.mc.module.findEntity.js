@@ -185,10 +185,6 @@
 
                             var s = $scope.searchText.trim().replace(' ', '*');
 
-                            if (parseInt(s) != s && s.length < 2) {
-                                return;
-                            }
-
                             var query = angular.isObject($scope.apiQuery) ? $scope.apiQuery : {};
 
                             if ($scope.lastS != s) {
@@ -230,8 +226,8 @@
 
                         };
 
-                        jQuery(el).on('find', function () {
-                            $scope.find();
+                        jQuery(el).on('find', function (evt, timeout) {
+                            $scope.find(timeout);
                         });
                     }
                 };

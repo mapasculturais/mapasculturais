@@ -5,16 +5,16 @@ use MapasCulturais\App;
 
 /**
  * Implements actions to work with entities that uses agent relations.
- * 
+ *
  * Use this trait only in subclasses of **\MapasCulturais\EntityController**
- * 
+ *
  * @see \MapasCulturais\Traits\EntityAgentRelation
  */
 trait ControllerAgentRelation{
 
     /**
      * This controller uses agent relations
-     * 
+     *
      * @return true
      */
     public static function usesAgentRelation(){
@@ -23,11 +23,11 @@ trait ControllerAgentRelation{
 
     /**
      * Creates a new agent relation with the entity with the given id.
-     * 
+     *
      * This action requires authentication.
-     * 
+     *
      * @see \MapasCulturais\Controllers\EntityController::_finishRequest()
-     * 
+     *
      * @WriteAPI POST createAgentRelation
      */
     public function POST_createAgentRelation(){
@@ -50,15 +50,18 @@ trait ControllerAgentRelation{
         }
 
         $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        
+        $app->permissionCacheUsersIds = [$agent->user->id];
+        
         $this->_finishRequest($relation, true);
 
     }
 
     /**
      * Removes the agent relation with the given id.
-     * 
+     *
      * This action requires authentication.
-     * 
+     *
      * @WriteAPI POST removeAgentRelation
      */
     public function POST_removeAgentRelation(){
@@ -79,16 +82,18 @@ trait ControllerAgentRelation{
         $agent = $app->repo('Agent')->find($this->data['agentId']);
 
         $owner->removeAgentRelation($agent, $this->postData['group']);
-
+        
+        $app->permissionCacheUsersIds = [$agent->user->id];
+        
         $this->json(true);
     }
     
     /**
      * Rename a group agent relation.
-     * 
+     *
      * This action requires authentication.
-     * 
-     * 
+     *
+     *
      * @WriteAPI POST renameGroupAgentRelation
      */
     public function POST_renameGroupAgentRelation(){
@@ -118,9 +123,6 @@ trait ControllerAgentRelation{
                 $this->finish($numUpdated, 200, true);
         
         }
-        
-       
-
     }
 
     public function POST_setRelatedAgentControl(){
@@ -142,7 +144,7 @@ trait ControllerAgentRelation{
         $hasControl = $this->postData['hasControl'];
 
         $owner->setRelatedAgentControl($agent, $hasControl == 'true');
-
+        $app->permissionCacheUsersIds = [$agent->user->id];
         $this->json(true);
     }
 }

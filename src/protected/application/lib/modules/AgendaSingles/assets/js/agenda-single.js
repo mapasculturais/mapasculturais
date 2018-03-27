@@ -92,7 +92,11 @@ $(function() {
     
     function submit(){
         $('img.spinner').show();
-        var url = MapasCulturais.baseURL+MapasCulturais.request.controller+'/agendaSingle/'+MapasCulturais.entity.id;
+        if(MapasCulturais.request.controller == 'registration') {
+            var url = MapasCulturais.baseURL+'agent/agendaSingle/'+MapasCulturais.entity.ownerId;
+        } else {
+            var url = MapasCulturais.baseURL+MapasCulturais.request.controller+'/agendaSingle/'+MapasCulturais.entity.id;
+        }
 
         $.get(url, {from:$('#agenda-from').val(),to:$('#agenda-to').val()}, function(result){
             $('#agenda-content').html(result);

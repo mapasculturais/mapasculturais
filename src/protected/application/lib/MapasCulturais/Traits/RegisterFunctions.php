@@ -27,6 +27,10 @@ trait RegisterFunctions {
         return $this->registerMetadata('MapasCulturais\Entities\Project', $key, $cfg);
     }
 
+    function registerOpportunityMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\Opportunity', $key, $cfg);
+    }
+
     function registerSealMetadata($key, $cfg) {
         return $this->registerMetadata('MapasCulturais\Entities\Seal', $key, $cfg);
     }

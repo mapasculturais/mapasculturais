@@ -12,6 +12,7 @@ require __DIR__ . '/../application/bootstrap.php';
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 
+MapasCulturais\App::i()->disableAccessControl();
 
 class DB_UPDATE {
     const STEP = 50;
@@ -40,6 +41,8 @@ class DB_UPDATE {
     static function save(){
         foreach(self::$save as $name => $q){
             if($q['save'] && $q['result'] !== false){
+                MapasCulturais\App::i()->disableAccessControl();
+
                 $up = new Entities\DbUpdate();
                 $up->name = $name;
                 $up->save(true);

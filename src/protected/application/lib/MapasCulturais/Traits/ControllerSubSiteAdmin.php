@@ -31,7 +31,6 @@ trait ControllerSubsiteAdmin{
         $agent = 0;
 
         $app = App::i();
-        $app->log->debug("Cheguei aqui ------------------------------------------>");
         if(!$this->urlData['id'])
             $app->pass();
 
@@ -42,10 +41,7 @@ trait ControllerSubsiteAdmin{
         }
 
         $subsite = $this->getRequestedEntity();
-        $app->log->debug("id_subsite ------------------------------------------>");
-        $app->log->debug($subsite->id);
-        $app->log->debug("Role");
-        $app->log->debug($this->data['role']);
+
         $role = $agent->user->addRole($this->data['role'], $subsite->id);
 
         $this->_finishRequest($role, true);
@@ -67,7 +63,6 @@ trait ControllerSubsiteAdmin{
         $agent = 0;
 
         $app = App::i();
-        $app->log->debug("Cheguei aqui 2 ------------------------------------------>");
         if(!$this->urlData['id'])
             $app->pass();
 
@@ -78,12 +73,7 @@ trait ControllerSubsiteAdmin{
         }
 
         $subsite = $this->getRequestedEntity();
-        $app->log->debug("id_subsite 2 ------------------------------------------>");
-        $app->log->debug($subsite->id);
-        $app->log->debug("Role 2");
-        $app->log->debug($this->data['role']);
-        $app->log->debug("Usuário");
-        $app->log->debug($agent->user->id);
+
         $role = $agent->user->removeRole($this->data['role'], $subsite->id);
 
         $this->json(true);

@@ -4,13 +4,13 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
-$this->jsObject['angularAppDependencies'][] = 'entity.module.project';
-
-$project = $entity->project;
+$this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
 $this->addEntityToJs($entity);
 
-$this->addProjectToJs($project);
+$this->addOpportunityToJs($entity->opportunity);
+
+$this->addOpportunitySelectFieldsToJs($entity->opportunity);
 
 $this->addRegistrationToJs($entity);
 
@@ -19,15 +19,15 @@ $this->includeAngularEntityAssets($entity);
 
 $_params = [
     'entity' => $entity,
-    'project' => $project,
-    'action' => $action
+    'action' => $action,
+    'opportunity' => $entity->opportunity
 ];
 
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<article class="main-content registration" ng-controller="ProjectController">
+<article class="main-content registration" ng-controller="OpportunityController">
 
     <?php $this->part('singles/registration--header', $_params); ?>
     
@@ -44,8 +44,10 @@ $_params = [
         <?php //$this->part('singles/registration-edit--seals', $_params) ?>
         
         <?php $this->part('singles/registration-edit--fields', $_params) ?>
-        
-        <?php $this->part('singles/registration-edit--send-button', $_params) ?>
+
+        <?php if(!$entity->preview): ?>
+            <?php $this->part('singles/registration-edit--send-button', $_params) ?>
+        <?php endif; ?>
 
         <?php $this->applyTemplateHook('form','end'); ?>
     </article>

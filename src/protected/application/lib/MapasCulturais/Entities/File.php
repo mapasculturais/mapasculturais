@@ -18,6 +18,7 @@ use \MapasCulturais\App;
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
  *
  * @property-read array $tmpFile $_FILE
+ * 
  * @ORM\Table(name="file",indexes={
  *      @ORM\Index(name="file_owner_index", columns={"object_type", "object_id"}),
  *      @ORM\Index(name="file_group_index", columns={"grp"}),
@@ -30,6 +31,7 @@ use \MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\Opportunity"                   = "\MapasCulturais\Entities\OpportunityFile",
         "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",
         "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
@@ -37,7 +39,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
-        "MapasCulturais\Entities\Subsite"                          = "\MapasCulturais\Entities\SubsiteFile"
+        "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
@@ -97,6 +99,13 @@ abstract class File extends \MapasCulturais\Entity
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     protected $description;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="private", type="boolean", nullable=false)
+     */
+    protected $private = false;
 
     /**
      * @var \DateTime
@@ -188,6 +197,13 @@ abstract class File extends \MapasCulturais\Entity
         if(preg_match('#.php$#', $this->mimeType))
             throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
+        $app = App::i();
+        
+        $file_group = $app->getRegisteredFileGroup($this->owner->controllerId, $this->getGroup());
+        
+        if (is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true)
+            $this->private = true;
+        
         parent::save($flush);
     }
 
@@ -246,7 +262,13 @@ abstract class File extends \MapasCulturais\Entity
     
         $app = App::i();
         $cache_id = "{$this}:url";
-
+        
+        if ($this->private === true) {
+            
+            return $app->createUrl($this->controllerId, 'privateFile', [$this->id]);
+        
+        }
+        
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }

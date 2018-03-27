@@ -93,6 +93,11 @@ h1 .icon {
         content: $unicode-project;
     }
 }
+.icon-opportunity {
+    &:before {
+        content: $unicode-opportunity;
+    }
+}
 .icon-download {
     &:before {
         content: $unicode-download;
