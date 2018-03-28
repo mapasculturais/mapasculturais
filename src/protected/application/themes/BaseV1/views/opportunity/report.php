@@ -3,7 +3,7 @@ use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\i;
 
-function echoStatus($registration){
+function echoStatus($registration) {
     switch ($registration->status){
         case R::STATUS_APPROVED:
             i::_e('selecionada');
@@ -27,8 +27,21 @@ function echoStatus($registration){
     }
 }
 
-$_properties = $app->config['registration.propertiesToExport'];
+function showIfField($hasField, $showField) {
+    if($hasField)
+        echo "<th>" . $showField . "</th>";
+}
 
+$_properties = $app->config['registration.propertiesToExport'];
+$custom_fields = [];
+foreach($entity->registrationFieldConfigurations as $field) :
+    $custom_fields[$field->displayOrder] = [
+        'title' => $field->title,
+        'field_name' => $field->getFieldName()
+    ];
+endforeach;
+
+ksort($custom_fields);
 ?>
 <style>
     tbody td, table th{
@@ -36,24 +49,25 @@ $_properties = $app->config['registration.propertiesToExport'];
         border:1px solid black !important;
     }
 </style>
+
 <table>
     <thead>
         <tr>
-            <th><?php i::_e("Número") ?></th>
-            <?php if($entity->projectName): ?>
-                <th><?php i::_e("Nome do projeto") ?></th>
-            <?php endif; ?>
-            <th><?php i::_e("Avaliação") ?></th>
-            <th><?php i::_e("Status") ?></th>
-            <?php if($entity->registrationCategories):?>
-                <th><?php echo $entity->registrationCategTitle ?></th>
-            <?php endif; ?>
-                
-            <?php foreach($entity->registrationFieldConfigurations as $field): ?>
-                <th><?php echo $field->title; ?></th>
-            <?php endforeach; ?>
+            <th> <?php i::_e("Número") ?> </th>
 
-            <th><?php i::_e('Arquivos') ?></th>
+            <?php showIfField($entity->projectName, i::__("Nome do projeto")); ?>
+
+            <th> <?php i::_e("Avaliação") ?> </th>
+            <th><?php i::_e("Status") ?></th>
+
+            <?php showIfField($entity->registrationCategories, $entity->registrationCategTitle); ?>
+
+            <?php
+            foreach($custom_fields as $field)
+                echo "<th>" . $field['title'] . "</th>";
+            ?>
+
+            <th><?php i::_e('Anexos') ?></th>
             <?php foreach($entity->getUsedAgentRelations() as $def): ?>
                 <th><?php echo $def->label; ?></th>
                 
@@ -75,17 +89,18 @@ $_properties = $app->config['registration.propertiesToExport'];
                 <td><?php echo $r->getEvaluationResultString(); ?></td>
                 <td><?php echoStatus($r); ?></td>
 
-                <?php if($entity->registrationCategories):?>
-                    <td><?php echo $r->category; ?></td>
-                <?php endif; ?>
-                    
-                <?php foreach($entity->registrationFieldConfigurations as $field): $field_name = $field->getFieldName(); ?>
-                    <?php if(is_array($r->$field_name)): ?>
-                        <th><?php echo implode(', ', $r->$field_name); ?></th>
-                    <?php else: ?>
-                        <th><?php echo $r->$field_name; ?></th>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                <?php showIfField($entity->registrationCategories, $r->category); ?>
+
+                <?php
+                foreach($custom_fields as $field):
+                    $_field_val = $r->$field["field_name"];
+
+                    echo "<th>";
+                        echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
+                    echo "</th>";
+
+                    endforeach;
+                ?>
 
                 <td>
                     <?php if(key_exists('zipArchive', $r->files)): ?>
