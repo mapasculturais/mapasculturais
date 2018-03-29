@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Registration extends \MapasCulturais\Repository{
     /**

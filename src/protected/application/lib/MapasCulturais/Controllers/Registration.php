@@ -67,6 +67,14 @@ class Registration extends EntityController {
                 'application/vnd\.oasis\.opendocument\.text-template',
                 'application/vnd\.oasis\.opendocument\.text-web',
 
+                // compacted files
+                'application/x-rar',
+                'application/x-rar-compressed',
+                'application/octet-stream',
+                'application/x-zip-compressed',
+                'application/x-zip',
+                'application/zip'
+
             ];
             $registration = $this->requestedEntity;
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
@@ -318,8 +326,7 @@ class Registration extends EntityController {
         } else {
             $user = null;
         }
-
-
+        
         if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
             if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
                 $this->errorJson($errors, 400);
@@ -333,7 +340,40 @@ class Registration extends EntityController {
         }
 
         $this->json($evaluation);
+    }
+
+    function POST_saveEvaluationAndChangeStatus(){
+        $registration = $this->getRequestedEntity();
+
+        if(isset($this->postData['uid'])){
+            $user = App::i()->repo('User')->find($this->postData['uid']);
+        } else {
+            $user = null;
+        }
+
+        if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
+            if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
+                $this->errorJson($errors, 400);
+                return;
+            } else {
+                $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            }
+        } else {
+            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
+        }
 
 
+        $status = $evaluation->result === '-1' ?  'invalid' : 'approved';
+
+        $method_name = 'setStatusTo' . ucfirst($status);
+
+        if(!method_exists($registration, $method_name))
+            $this->errorJson('Invalid status name');
+
+        $registration->$method_name();
+
+
+        $this->json($evaluation);
     }
 }

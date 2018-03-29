@@ -828,6 +828,11 @@ class Registration extends \MapasCulturais\Entity
      * @return \MapasCulturais\EvaluationMethod
      */
     public function getEvaluationMethod() {
+        if($this->opportunity == null){
+            $app = App::i();
+            $app->redirect('/painel');
+        }
+
         return $this->opportunity->getEvaluationMethod();
     }
 

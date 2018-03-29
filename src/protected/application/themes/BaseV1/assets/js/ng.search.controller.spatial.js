@@ -196,13 +196,12 @@
                             text : $scope.data.global.locationFilters.address.text,
                             center : {
                                 lat: results.lat,
-                                lng: results.lng
+                                lng: results.lon
                             },
                             radius : $scope.defaultLocationRadius
                         }
                     };
                     $scope.$apply();
-
                 }
             });
         };
