@@ -14,17 +14,20 @@ services:
       - POSTGRES_PASSWORD=senhaMapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+    depends_on:
+      - db
   db:
     restart: always
-    environment:
+    environment:      
       - POSTGRES_PASSWORD=senhaMapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
-    ports:
-       - "5432:5432"
+      - POSTGRES_DB_TEST=mapasculturais_test
     build:
       context: .
       dockerfile: docker/dev/Dockerfile-db
+    ports:
+      - "5432:5432"
     volumes:
       - 'postgres:/var/lib/postgresql/data'
 

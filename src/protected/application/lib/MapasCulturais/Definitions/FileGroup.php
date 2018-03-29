@@ -22,21 +22,25 @@ class FileGroup extends \MapasCulturais\Definition{
     protected $errorMessage = '';
 
     protected $_validations = [];
+    
+    protected $private = false;
 
     /**
      *
      * @param string $name The group name
      * @param array $validations An array with regex to validate file mime type
-     * @param type $error_message The error message to display if the file mime type is not valid
-     * @param type $unique If this group contains just one file. If this is set to true the uploaded file always replaces the existent file.
-     * @param type $max_files Maximum files in this group.
+     * @param string $error_message The error message to display if the file mime type is not valid
+     * @param bool $unique If this group contains just one file for each owner. If this is set to true the uploaded file always replaces the existent file. 
+     * @param null|int $max_files Maximum files in this group.
+     * @param bool $private Wether files in this group are private and can only be accessed by user with the right permissions.
      */
-    function __construct($name, array $validations = [], $error_message = '', $unique = false, $max_files = null) {
+    function __construct($name, array $validations = [], $error_message = '', $unique = false, $max_files = null, $private = false) {
         $this->name = $name;
         $this->_validations = $validations;
         $this->errorMessage = $error_message;
         $this->unique = $unique;
         $this->maxFiles = $max_files;
+        $this->private = $private;
     }
 
     /**
