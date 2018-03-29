@@ -928,8 +928,7 @@ return [
     'DROP index registration_meta_value_idx' => function () use ($conn){
         __try("DROP INDEX registration_meta_value_idx;");
     },
-    
-    
+
     'altertable registration_file_and_files_add_order' => function () use($conn){
         if(__column_exists('registration_file_configuration', 'order')){
             echo "ALREADY APPLIED";
