@@ -185,8 +185,6 @@ class EventOccurrence extends \MapasCulturais\Entity
         ];
     }
 
-
-
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;
         if (in_array($value, ['daily', 'weekly', 'monthly'])) {
@@ -308,8 +306,12 @@ class EventOccurrence extends \MapasCulturais\Entity
         }
 
         $this->startsOn = $value['startsOn'];
-        $this->until = $value['until'] ? $value['until'] : null;
         $this->frequency = $value['frequency'];
+        $this->until = null;
+
+        if($this->frequency != "once") {
+            $this->until = $value['until'] ? $value['until'] : "none";
+        }
 
         $this->rule = json_encode($value);
 
