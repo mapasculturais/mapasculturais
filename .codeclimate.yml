@@ -1,0 +1,37 @@
+---
+engines:
+  # For detect violations of defined coding standard
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php,inc,lib"
+  
+  # For analize PHP Bug Risk 
+  phan:
+    enabled: true
+    config:
+      file_extensions: "php"
+
+  # For several potential problems: Clarity, style, bug risk, compatibility
+  phpmd: 
+    enabled: true
+  
+  # For code duplication
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - "php"
+  # For suggest possible improvements to bahs/sh shell scripts
+  shellcheck:
+    enabled: true
+
+ratings:
+  paths:
+  - "**.php"
+  - "**.sh"
+  
+exclude_paths:
+  - "**/documentation/"
+  - "**/db"
+

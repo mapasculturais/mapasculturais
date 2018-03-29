@@ -1,0 +1,11 @@
+.git
+.bundle
+*.md
+Makefile
+bin/prep-release
+bin/release
+circle.yml
+pkg
+tags
+*.sw*
+*~

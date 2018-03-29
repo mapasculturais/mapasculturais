@@ -344,6 +344,18 @@ abstract class Entity implements \JsonSerializable{
 
         return $result;
     }
+    
+    /**
+     * Wether a user can access the private files owned by this entity
+     * 
+     * Default is to 'view', as it is used to protect the files attached to the registrations
+     * 
+     * Other entities can extend this method and change the verification
+     * 
+     */ 
+    public function canUserViewPrivateFiles($user) {
+        return $this->canUserView($user);
+    }
 
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
         $result = false;
