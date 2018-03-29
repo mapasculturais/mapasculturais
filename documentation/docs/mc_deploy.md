@@ -16,8 +16,11 @@ root@server# apt-get update
 
 // Instale as dependências diversas
 **root@server# apt-get install git curl npm ruby2.0 ruby2.0-dev
-**root@server# sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 10
-**root@server# sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 10
+
+// Atualizar referências para a versão de ruby 2.0
+**root@server# update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby2.0 10
+**root@server# update-alternatives --install /usr/bin/gem gem /usr/bin/gem2.0 10
+
 
 // Instale a versão stable mais nova do nodejs
 root@server# curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
@@ -25,6 +28,9 @@ root@server# sudo apt-get install -y nodejs
 
 // Instale o postgresql e postgis
 root@server# apt-get install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.1-scripts
+
+// Inicialize o postgresql
+/etc/init.d/postgresql start
 
 // Instale o php, php-fpm e extensões do php utilizadas no sistema
 root@server# apt-get install php5 php5-gd php5-cli php5-json php5-curl php5-pgsql php-apc php5-fpm imagemagick libmagickcore-dev libmagickwand-dev php5-imagick
@@ -140,11 +146,12 @@ root@server# mkdir /var/log/mapasculturais
 root@server# chown mapas:www-data /var/log/mapasculturais
 ```
 
-Com o usuário criado, crie a pasta para os assets e para os uploads:
+Com o usuário criado, crie a pasta para os assets, para os uploads e para os uploads privados (arquivos protegidos, como anexos de inscrições em oportunidades):
 ```BASH
 root@server# su - mapas
 mapas@server$ mkdir mapasculturais/src/assets
 mapas@server$ mkdir mapasculturais/src/files
+mapas@server$ mkdir mapasculturais/private-files
 ```
 
 ### Configuração do nginx
@@ -273,7 +280,7 @@ Quando executar essa linha você vai pegar o id.
 
 Insert:
 ```
-$ mapas => INSERT INTO role (usr_id, name) VALUES ($id_do_usuario, 'superAdmin');
+$ mapas => INSERT INTO role (id, usr_id, name) VALUES (nextval('role_id_seq'), ID-DO-USUARIO, 'superAdmin');
 ```
 
 Update:

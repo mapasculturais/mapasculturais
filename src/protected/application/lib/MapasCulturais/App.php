@@ -776,6 +776,7 @@ class App extends \Slim\Slim{
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], \MapasCulturais\i::__('O arquivo não é um ZIP.'), true, null, true),
         ];
 
         // register file groups
@@ -806,6 +807,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('seal', $file_groups['gallery']);
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
+        $this->registerFileGroup('registration', $file_groups['zipArchive']);
 
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
@@ -1282,6 +1284,23 @@ class App extends \Slim\Slim{
         }
     }
 
+    function _logHook($name){
+        $n = 1;
+
+        if(strpos($name, 'template(') === 0){
+            $n = 2;
+        }
+
+        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $filename = $bt[$n]['file'];
+        $fileline = $bt[$n]['line'];
+        $lines = file($filename);
+        $line = trim($lines[$fileline - 1]);
+
+        $this->log->debug("hook >> $name (\033[33m$filename:$fileline\033[0m)");
+        $this->log->debug("     >> \033[32m$line\033[0m\n");
+    }
+
     /**
      * Invoke hook
      * @param  string   $name       The hook name
@@ -1293,8 +1312,14 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->_config['app.log.hook'])
-            $this->log->debug('APPLY HOOK >> ' . $name);
+
+        if ($this->_config['app.log.hook']){
+            $conf = $this->_config['app.log.hook'];
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+                $this->_logHook($name);
+                
+            }
+        }
 
         $callables = $this->_getHookCallables($name);
         foreach ($callables as $callable) {
@@ -1315,8 +1340,12 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
-        if ($this->_config['app.log.hook'])
-            $this->log->debug('APPLY HOOK BOUND TO >> ' . $name);
+        if ($this->_config['app.log.hook']){
+            $conf = $this->_config['app.log.hook'];
+            if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
+                $this->_logHook($name);
+            }
+        }
 
         $callables = $this->_getHookCallables($name);
         foreach ($callables as $callable) {
