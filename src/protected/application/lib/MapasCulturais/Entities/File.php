@@ -97,6 +97,13 @@ abstract class File extends \MapasCulturais\Entity
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     protected $description;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="private", type="boolean", nullable=false)
+     */
+    protected $private = false;
 
     /**
      * @var \DateTime
@@ -188,6 +195,13 @@ abstract class File extends \MapasCulturais\Entity
         if(preg_match('#.php$#', $this->mimeType))
             throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
 
+        $app = App::i();
+        
+        $file_group = $app->getRegisteredFileGroup($this->owner->controllerId, $this->getGroup());
+        
+        if (is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true)
+            $this->private = true;
+        
         parent::save($flush);
     }
 
@@ -246,7 +260,13 @@ abstract class File extends \MapasCulturais\Entity
     
         $app = App::i();
         $cache_id = "{$this}:url";
-
+        
+        if ($this->private === true) {
+            
+            return $app->createUrl($this->controllerId, 'privateFile', [$this->id]);
+        
+        }
+        
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }
