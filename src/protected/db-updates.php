@@ -686,7 +686,7 @@ return [
 
     'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){
-            __exec("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
+            __exec("DELETE FROM registration_meta WHERE object_id IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
             __exec("DELETE FROM registration WHERE project_id NOT IN (SELECT id FROM project)");
 
             // cria tabelas das oportunidades

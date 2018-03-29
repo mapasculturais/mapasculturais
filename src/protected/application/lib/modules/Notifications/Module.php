@@ -69,8 +69,8 @@ class Module extends \MapasCulturais\Module{
                         $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
                         
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
-                        $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                        $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->opportunity->singleUrl}\">{$origin->opportunity->name}</a>");
+                        $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s na oportunidade %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->opportunity->singleUrl}\">{$origin->opportunity->name}</a>");
                     }else{
                         /* Translators: "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}." */
                         $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
@@ -158,7 +158,7 @@ class Module extends \MapasCulturais\Module{
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = sprintf(i::__("%s aceitou o relacionamento do agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                        $message = sprintf(i::__("%s aceitou o relacionamento do agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->opportunity->singleUrl}\">{$origin->opportunity->name}</a>");
                     }else{
                         $message = sprintf(i::__("%s aceitou o relacionamento do agente %s com o %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
                     }
@@ -242,13 +242,13 @@ class Module extends \MapasCulturais\Module{
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->canUser('@control')){
                         if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = sprintf(i::__("%s cancelou o relacionamento do agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                            $message = sprintf(i::__("%s cancelou o relacionamento do agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->opportunity->singleUrl}\">{$origin->opportunity->name}</a>");
                         }else{
                             $message = sprintf(i::__("%s cancelou o pedido de relacionamento do agente %s com o %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
                         }
                     }else{
                         if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                            $message = sprintf(i::__("%s rejeitou o relacionamento do agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                            $message = sprintf(i::__("%s rejeitou o relacionamento do agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->opportunity->singleUrl}\">{$origin->opportunity->name}</a>");
                         }else{
                             $message = sprintf(i::__("%s rejeitou o relacionamento do agente %s com o %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
                         }
