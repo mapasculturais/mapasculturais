@@ -61,7 +61,7 @@ class EventOccurrence extends EntityController {
         }
     }
 
-    function POST_edit(){
+    function POST_edit($data = null){
         $this->requireAuthentication();
         
         $app = App::i();
@@ -80,8 +80,7 @@ class EventOccurrence extends EntityController {
         if ($errors = $occurrence->validationErrors) {
             $this->errorJson($errors);
         } else {
-            $occurrence->save(true);
-            $this->json($occurrence);
+            $this->_finishRequest($occurrence);
         }
     }
 
