@@ -426,6 +426,14 @@ class Html extends \MapasCulturais\ApiOutput{
                     <?php foreach($first_item_keys as $k): ?><?php
                         if($k==='terms'){
                             $v = $item->$k;
+                            
+                            \dump($v);
+                            
+                            $itens = array($v);
+                                                        
+                            foreach ($v as $key => $item) {
+                                \dump($key);
+                            }
 
                             if(property_exists($v, 'area')){ ?><th><?php echo $this->convertToUTF16($this->translate('area')); ?></th><?php }
                             if(property_exists($v, 'tag')){ ?><th><?php echo $this->convertToUTF16($this->translate('tag')); ?></th><?php }
@@ -454,7 +462,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             </th>
                         <?php
                         }
-                    ?><?php endforeach; ?>
+                    ?><?php endforeach; die; ?>
                     <th></th>
                 </tr>
 
