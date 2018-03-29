@@ -137,8 +137,7 @@ MapasCulturais.EventOccurrenceManager = {
                 MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
                 MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
 
-
-                if(xhr.status === 202){
+                if(response.pending){
                     MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
                 }
 
