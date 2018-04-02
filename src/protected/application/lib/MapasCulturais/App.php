@@ -1471,21 +1471,33 @@ class App extends \Slim\Slim{
 
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
         //$this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
-        $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-        $pendingCache->objectId = $entity->id;
-        $pendingCache->objectType = $entity->getClassName();
-        $pendingCache->user = $this->user;
-        $pendingCache->save(true);
+        if (is_int($entity->id)) {
+			$pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+			$pendingCache->objectId = $entity->id;
+			$pendingCache->objectType = $entity->getClassName();
+			//$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
+			$pendingCache->save();
+		}
     }
 
     public function recreatePermissionsCacheOfListedEntities(){
-        if($this->skipPermissionCacheRecreation || !$this->_entitiesToRecreatePermissionsCache){
+        if($this->skipPermissionCacheRecreation){
             return;
         }
+		
+		$step = 10;
+		
+		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
+		
         $conn = $this->em->getConnection();
         $conn->beginTransaction();
-        foreach($this->_entitiesToRecreatePermissionsCache as $entity){
-            $entity->createPermissionsCacheForUsers();
+        foreach($queue as $pendingCache){
+			$entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
+			if ($entity) {
+				$entity->createPermissionsCacheForUsers();
+				$this->em->remove($pendingCache);
+			}
+            
         }
         $conn->commit();
         $this->em->flush();
