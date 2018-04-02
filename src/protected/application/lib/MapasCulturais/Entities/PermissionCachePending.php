@@ -45,5 +45,5 @@ class PermissionCachePending extends \MapasCulturais\Entity{
      *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
      * })
      */
-    protected $user;
+    //protected $user;
 }
