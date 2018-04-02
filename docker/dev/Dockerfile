@@ -65,6 +65,7 @@ RUN (cd src/protected \
     && mkdir -p src/assets && mkdir -p src/files
 
 COPY src/protected/application/conf/config.docker.php src/protected/application/conf/config.php
+COPY src/protected/application/conf/conf-test.docker.php src/protected/application/conf/conf-test-local.php
 
 USER root
 
