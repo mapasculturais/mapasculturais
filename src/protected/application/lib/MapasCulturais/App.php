@@ -1324,6 +1324,23 @@ class App extends \Slim\Slim{
         }
     }
 
+    function _logHook($name){
+        $n = 1;
+
+        if(strpos($name, 'template(') === 0){
+            $n = 2;
+        }
+
+        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $filename = $bt[$n]['file'];
+        $fileline = $bt[$n]['line'];
+        $lines = file($filename);
+        $line = trim($lines[$fileline - 1]);
+
+        $this->log->debug("hook >> $name (\033[33m$filename:$fileline\033[0m)");
+        $this->log->debug("     >> \033[32m$line\033[0m\n");
+    }
+
     /**
      * Invoke hook
      * @param  string   $name       The hook name
@@ -1335,10 +1352,12 @@ class App extends \Slim\Slim{
         else if (!is_array($hookArg))
             $hookArg = [$hookArg];
 
+
         if ($this->_config['app.log.hook']){
             $conf = $this->_config['app.log.hook'];
             if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
-                $this->log->debug('APPLY HOOK >> ' . $name);
+                $this->_logHook($name);
+                
             }
         }
 
@@ -1364,7 +1383,7 @@ class App extends \Slim\Slim{
         if ($this->_config['app.log.hook']){
             $conf = $this->_config['app.log.hook'];
             if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
-                $this->log->debug('APPLY HOOK >> ' . $name);
+                $this->_logHook($name);
             }
         }
 
