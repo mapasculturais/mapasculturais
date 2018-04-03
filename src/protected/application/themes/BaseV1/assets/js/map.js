@@ -265,9 +265,8 @@
             var geoDivisionsObj = {};
             for(var div_key in MapasCulturais.geoDivisionsHierarchy){
                 var div = MapasCulturais.geoDivisionsHierarchy[div_key];
-                console.log(div);
                 if (!div.showLayer) 
-                    continue;                
+                    continue;
                 geoDivisionsObj['<span class="js-geo-division" data-type="' + div_key + '">' + div.name + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
             };
 
