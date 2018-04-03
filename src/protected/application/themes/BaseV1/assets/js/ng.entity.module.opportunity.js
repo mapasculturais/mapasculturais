@@ -36,13 +36,19 @@
                     category: params.category
                 };
 
-                return $http.post(this.getUrl(), data).
+                return $http.post( this.getUrl(), data).
                 success(function (data, status) {
                     $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
                 }).
                 error(function (data, status) {
                     $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
                 });
+            },
+
+            setMultipleStatus: function(registrations) {
+                var endPoint = url.create('setMultipleStatus');
+
+                return $http.post(endPoint, { evaluations: registrations }).success(function (data) { });
             },
 
             setStatusTo: function(registration, registrationStatus){
@@ -1271,6 +1277,16 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 $scope.setRegistrationStatus( register, result, true );
             });
         });
+    };
+
+    $scope.applyEvaluations = function() {
+        var _arr = [];
+        $scope.totalEvaluations().map(function(e) {
+            var result = parseInt(e.evaluation.result);
+            _arr.push({ reg_id: e.registration.id, result: result });
+        });
+
+        RegistrationService.setMultipleStatus(_arr);
     };
 
     $scope.hasEvaluations = function() {

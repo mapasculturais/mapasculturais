@@ -296,6 +296,22 @@ class Registration extends EntityController {
         }
     }
 
+    function POST_setMultipleStatus() {
+        $this->requireAuthentication();
+
+        $_registrations = $this->data;
+
+        if(!is_null($_registrations) && is_array($_registrations) && (count($_registrations) > 0)) {
+            foreach($_registrations['evaluations'] as $reg) {
+                $_id = (int) $reg["reg_id"];
+                $_status_result = (int) $reg["result"];
+
+                $ref = App::i()->em->getReference($this->entityClassName, $_id);
+                $ref->_setStatusTo($_status_result);
+            }
+        }
+    }
+
     function POST_send(){
         $this->requireAuthentication();
         $app = App::i();
