@@ -1484,7 +1484,7 @@ class App extends \Slim\Slim{
             return;
         }
 
-		$step = 10;
+		$step = 20;
 
 		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
 
