@@ -360,3 +360,12 @@ article.opportunity .highlighted-message .btn {
         width:18%;
     }
 }
+
+.evaluations-config--intro {
+    label { font-size: .8em; }
+    textarea {
+        min-width: 300px;
+        width: 50%;
+        height:80px;
+    }
+}

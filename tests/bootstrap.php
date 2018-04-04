@@ -41,6 +41,11 @@ define('MODULES_PATH', APPLICATION_PATH . 'lib/modules/');
 
 $config = include __DIR__ . '/../src/protected/application/conf/conf-test.php';
 
+if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){
+    $config = include __DIR__ . '/../src/protected/application/conf/'. $_ENV['MAPASCULTURAIS_CONFIG_FILE'];    
+}else if(isset($_SERVER['MAPASCULTURAIS_CONFIG_FILE'])){
+    $config = include __DIR__ . '/../src/protected/application/conf/' . $_SERVER['MAPASCULTURAIS_CONFIG_FILE'];
+}
 
 // create the App instance
 $app = MapasCulturais\App::i()->init($config);
