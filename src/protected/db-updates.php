@@ -928,8 +928,7 @@ return [
     'DROP index registration_meta_value_idx' => function () use ($conn){
         __try("DROP INDEX registration_meta_value_idx;");
     },
-    
-    
+
     'altertable registration_file_and_files_add_order' => function () use($conn){
         if(__column_exists('registration_file_configuration', 'order')){
             echo "ALREADY APPLIED";
@@ -1020,6 +1019,23 @@ return [
         
         
         
+    },
+	
+	'create permission cache pending table2' => function() use ($conn) {
+
+        if(__table_exists('permission_cache_pending')){
+            echo "TABLE permission_cache_pending ALREADY EXISTS";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE TABLE permission_cache_pending (
+			id INT NOT NULL, 
+			object_id INT NOT NULL, 
+			object_type VARCHAR(255) NOT NULL, 
+			
+			PRIMARY KEY(id)
+		);");
+
     },
 
 ] + $updates ;
