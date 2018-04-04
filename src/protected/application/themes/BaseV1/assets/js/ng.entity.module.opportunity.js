@@ -1573,7 +1573,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 EditBox.close('editbox-select-registration-owner');
 
                 RegistrationService.save();
-            };
+            };            
 
             $scope.setRegistrationAgent = function(entity, attrs){
                 if(attrs.name === 'owner'){
@@ -1735,6 +1735,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     alert('erro');
                 });
             };
+
+            $timeout(function() {
+                $scope.setRegistrationOwner(MapasCulturais.userProfile);
+            });
+
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
