@@ -1402,7 +1402,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         return result;
     };
 
-
     for(var name in MapasCulturais.labels.agent){
         var label = MapasCulturais.labels.agent[name];
         $scope.data.propLabels.push({
