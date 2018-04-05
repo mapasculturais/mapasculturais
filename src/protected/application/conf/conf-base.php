@@ -246,7 +246,11 @@ return array(
             'status' => \MapasCulturais\i::__('Status')
         ),
 
-        //        'MapasCulturais\Entities\Agent' => array()
+        'MapasCulturais\Entities\Agent' => array(
+            'publicLocation' => \MapasCulturais\i::__('Localização publicada'),
+            'location' => \MapasCulturais\i::__('Localização'),
+            'userId' => \MapasCulturais\i::__('ID usuário'),
+        )
     ),
 
     'notifications.entities.new'    => false, // Send notification when a entity is included
