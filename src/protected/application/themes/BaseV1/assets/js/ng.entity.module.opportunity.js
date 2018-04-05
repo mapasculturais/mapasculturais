@@ -1627,8 +1627,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     $('#find-entity-registration-owner').trigger('find',0);
             });
 
-            $scope.register = function(){
-                var registration = $scope.data.registration;
+            $scope.register = function(){                
+                var registration = $scope.data.registration;                
                 var ownerRegistration = [];
                 // @TODO: buscar na api
                 for(var i in $scope.data.registrations) {
@@ -1752,7 +1752,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             };
 
             $timeout(function() {
-                $scope.setRegistrationOwner(MapasCulturais.userProfile);
+                //Se não existir agentes registrado ao carregar o modúlo, adiciona o agente padrão ao registro.
+                if (!MapasCulturais.entity.registrationAgents) {
+                    $scope.setRegistrationOwner(MapasCulturais.userProfile);
+                }
             });
 
         }]);
