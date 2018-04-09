@@ -307,6 +307,8 @@ class Registration extends EntityController {
                 $ref = App::i()->em->getReference($this->entityClassName, $reg);
                 $ref->_setStatusTo($status);
             }
+
+            return $this->json($final_statuses);
         }
     }
 
