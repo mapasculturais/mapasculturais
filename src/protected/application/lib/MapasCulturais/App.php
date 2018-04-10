@@ -1302,7 +1302,7 @@ class App extends \Slim\Slim{
 
 
     protected $hook_count = 0;
-    
+
     function hook($name, $callable, $priority = 10) {
         $this->hook_count++;
         $priority += ($this->hook_count / 100000);
@@ -1365,7 +1365,7 @@ class App extends \Slim\Slim{
             $conf = $this->_config['app.log.hook'];
             if(is_bool($conf) || preg_match('#' . str_replace('*', '.*', $conf) . '#', $name)){
                 $this->_logHook($name);
-                
+
             }
         }
 
@@ -1426,7 +1426,7 @@ class App extends \Slim\Slim{
                 }
             }
         }
-        
+
         usort($result, function($a,$b){
             if($a->priority > $b->priority){
                 return 1;
@@ -1436,7 +1436,7 @@ class App extends \Slim\Slim{
                 return 0;
             }
         });
-        
+
         $result = array_map(function($el) { return $el->callable; }, $result);
 
         $this->_hookCache[$name] = $result;
@@ -1478,17 +1478,34 @@ class App extends \Slim\Slim{
     protected $skipPermissionCacheRecreation = false;
 
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
-        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+        //$this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+        if (is_int($entity->id)) {
+			$pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+			$pendingCache->objectId = $entity->id;
+			$pendingCache->objectType = $entity->getClassName();
+			//$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
+			$pendingCache->save();
+		}
     }
 
     public function recreatePermissionsCacheOfListedEntities(){
-        if($this->skipPermissionCacheRecreation || !$this->_entitiesToRecreatePermissionsCache){
+        if($this->skipPermissionCacheRecreation){
             return;
         }
+
+		$step = 20;
+
+		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
+
         $conn = $this->em->getConnection();
         $conn->beginTransaction();
-        foreach($this->_entitiesToRecreatePermissionsCache as $entity){
-            $entity->createPermissionsCacheForUsers();
+        foreach($queue as $pendingCache){
+			$entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
+			if ($entity) {
+				$entity->createPermissionsCacheForUsers();
+				$this->em->remove($pendingCache);
+			}
+
         }
         $conn->commit();
         $this->em->flush();
@@ -2612,7 +2629,7 @@ class App extends \Slim\Slim{
         }
 
         $templateData = (object) $templateData;
-        
+
         $templateData->siteName = $this->view->dict('site: name', false);
         $templateData->siteDescription = $this->view->dict('site: description', false);
         $templateData->siteOwner = $this->view->dict('site: owner', false);

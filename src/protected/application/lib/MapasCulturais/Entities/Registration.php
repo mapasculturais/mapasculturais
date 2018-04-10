@@ -400,7 +400,7 @@ class Registration extends \MapasCulturais\Entity
         // do nothing
     }
 
-    protected function _setStatusTo($status){
+    function _setStatusTo($status){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
             $this->checkPermission('send');
         }else{

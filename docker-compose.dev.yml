@@ -7,22 +7,28 @@ services:
     ports:
       - "8090:80"
     volumes:
-      - ./src/protected/application:/srv/mapas/mapasculturais/src/protected/application
+      - ./src/protected:/srv/mapas/mapasculturais/src/protected
+      - ./scripts:/srv/mapas/mapasculturais/scripts
     links:
       - db:mapas
     environment:
       - POSTGRES_PASSWORD=senhaMapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+    depends_on:
+      - db
   db:
     restart: always
-    environment:
+    environment:      
       - POSTGRES_PASSWORD=senhaMapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+      - POSTGRES_DB_TEST=mapasculturais_test
     build:
       context: .
       dockerfile: docker/dev/Dockerfile-db
+    ports:
+      - "5432:5432"
     volumes:
       - 'postgres:/var/lib/postgresql/data'
 
