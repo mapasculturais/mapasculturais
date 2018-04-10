@@ -37,15 +37,16 @@ return array_merge($config,
         'maps.includeGoogleLayers' => true,
 
         'app.geoDivisionsHierarchy' => [
-            'pais' => \MapasCulturais\i::__('País'),
-            'regiao' => \MapasCulturais\i::__('Região'),
-            'estado' => \MapasCulturais\i::__('Estado'),
-            'mesorregiao' => \MapasCulturais\i::__('Mesorregião'),
-            'microrregiao' => \MapasCulturais\i::__('Microrregião'),
-            'municipio' => \MapasCulturais\i::__('Município'),
-            'zona' => \MapasCulturais\i::__('Zona'),
-            'subprefeitura' => \MapasCulturais\i::__('Subprefeitura'),
-            'distrito' => \MapasCulturais\i::__('Distrito')
+            'pais'              => ['name' => \MapasCulturais\i::__('País'),            'showLayer' => true],
+            'regiao'            => ['name' => \MapasCulturais\i::__('Região'),          'showLayer' => true],
+            'estado'            => ['name' => \MapasCulturais\i::__('Estado'),          'showLayer' => true],
+            'mesorregiao'       => ['name' => \MapasCulturais\i::__('Mesorregião'),     'showLayer' => true],
+            'microrregiao'      => ['name' => \MapasCulturais\i::__('Microrregião'),    'showLayer' => true],
+            'municipio'         => ['name' => \MapasCulturais\i::__('Município'),       'showLayer' => true],
+            'zona'              => ['name' => \MapasCulturais\i::__('Zona'),            'showLayer' => true],
+            'subprefeitura'     => ['name' => \MapasCulturais\i::__('Subprefeitura'),   'showLayer' => true],
+            'distrito'          => ['name' => \MapasCulturais\i::__('Distrito'),        'showLayer' => true],
+            'setor_censitario'  => ['name' => \MapasCulturais\i::__('Setor Censitario'),'showLayer' => false]
         ],
         // latitude, longitude
         'maps.center' => [-13.987376214146455, -54.38232421875],

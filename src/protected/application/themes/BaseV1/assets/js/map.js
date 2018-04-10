@@ -263,9 +263,16 @@
             (new L.Control.FullScreen({position: 'bottomright', title: 'Tela Cheia'})).addTo(map);
             (new L.Control.Zoom({position: 'bottomright'})).addTo(map);
             var geoDivisionsObj = {};
-            for(var div_id in MapasCulturais.geoDivisionsHierarchy){
-                var div_label = MapasCulturais.geoDivisionsHierarchy[div_id];
-                geoDivisionsObj['<span class="js-geo-division" data-type="' + div_id + '">' + div_label + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+            for(var div_key in MapasCulturais.geoDivisionsHierarchy){
+                var div = MapasCulturais.geoDivisionsHierarchy[div_key];
+                
+                if (typeof div == 'string' || div instanceof String) { // for backward compability version < 4.0, div is string not a array.
+                    geoDivisionsObj['<span class="js-geo-division" data-type="' + div_key + '">' + div + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};    
+                } else {
+                    if (!div.showLayer) 
+                        continue;
+                    geoDivisionsObj['<span class="js-geo-division" data-type="' + div_key + '">' + div.name + '</span>'] = {onAdd:function(map){return;}, onRemove:function(map){return;}};
+                }
             };
 
             var layersControl = new L.Control.Layers(camadasBase, geoDivisionsObj);
