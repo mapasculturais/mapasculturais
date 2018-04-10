@@ -35,7 +35,7 @@ Ex:
 
   Essa configuração criará, automaticamente, os metadados geoZona, geoSubprefeitura e geoDistrito.
    
-  A propriedade 'showLayer' recebe um boolean para que os polígonos presentes na tabela geo_division e registrado no arquivo de configuração seja exibido como uma camada na visualização do mapa.
+  A propriedade 'showLayer' recebe um boolean que indica se os polígonos, presentes na tabela geo_division e registrados no arquivo de configuração, serão exibidos como uma camada na visualização do mapa.
   
   Se não quiser que o metadado criado seja exibido na página de perfil da entidade, adicione um "_" na frente do slug.
   
