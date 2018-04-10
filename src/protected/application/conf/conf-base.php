@@ -161,15 +161,16 @@ return array(
      *
      */
     'app.geoDivisionsHierarchy' => [
-        'pais'          => \MapasCulturais\i::__('País'),          // metadata: geoPais
-        'regiao'        => \MapasCulturais\i::__('Região'),        // metadata: geoRegiao
-        'estado'        => \MapasCulturais\i::__('Estado'),        // metadata: geoEstado
-        'mesorregiao'   => \MapasCulturais\i::__('Mesorregião'),   // metadata: geoMesorregiao
-        'microrregiao'  => \MapasCulturais\i::__('Microrregião'),  // metadata: geoMicrorregiao
-        'municipio'     => \MapasCulturais\i::__('Município'),     // metadata: geoMunicipio
-        'zona'          => \MapasCulturais\i::__('Zona'),          // metadata: geoZona
-        'subprefeitura' => \MapasCulturais\i::__('Subprefeitura'), // metadata: geoSubprefeitura
-        'distrito'      => \MapasCulturais\i::__('Distrito')       // metadata: geoDistrito
+        'pais'              => ['name' => \MapasCulturais\i::__('País'),            'showLayer' => true],
+        'regiao'            => ['name' => \MapasCulturais\i::__('Região'),          'showLayer' => true],
+        'estado'            => ['name' => \MapasCulturais\i::__('Estado'),          'showLayer' => true],
+        'mesorregiao'       => ['name' => \MapasCulturais\i::__('Mesorregião'),     'showLayer' => true],
+        'microrregiao'      => ['name' => \MapasCulturais\i::__('Microrregião'),    'showLayer' => true],
+        'municipio'         => ['name' => \MapasCulturais\i::__('Município'),       'showLayer' => true],
+        'zona'              => ['name' => \MapasCulturais\i::__('Zona'),            'showLayer' => true],
+        'subprefeitura'     => ['name' => \MapasCulturais\i::__('Subprefeitura'),   'showLayer' => true],
+        'distrito'          => ['name' => \MapasCulturais\i::__('Distrito'),        'showLayer' => true],
+        'setor_censitario'  => ['name' => \MapasCulturais\i::__('Setor Censitario'),'showLayer' => false]
     ],
 
     'registration.agentRelationsOptions' => array(
