@@ -20,6 +20,17 @@
         }
     }
 
+    function _getStatusSlug(status) {
+        switch (status) {
+            case 0: return 'draft'; break;
+            case 1: return 'sent'; break;
+            case 2: return 'invalid'; break;
+            case 3: return 'notapproved'; break;
+            case 8: return 'waitlist'; break;
+            case 10: return 'approved'; break;
+        }
+    }
+
     module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
         var url = new UrlService('registration');
         var labels = MapasCulturais.gettext.moduleOpportunity;
@@ -48,7 +59,16 @@
             setMultipleStatus: function(registrations) {
                 var endPoint = url.create('setMultipleStatus');
 
-                return $http.post(endPoint, { evaluations: registrations }).success(function (data) { });
+                return $http.post(endPoint, { evaluations: registrations }).
+                success(function (data) {
+                    for(var aval in data) {
+                        var slug = _getStatusSlug(data[aval]);
+                        $("#registration-" +  aval).attr('class', slug);
+
+                        var txt = $("#registration-" +  aval + " .registration-status-col").first().text();
+                        $("#registration-" + aval + " .registration-status-col .dropdown.js-dropdown div").text(txt);
+                    }
+                });
             },
 
             setStatusTo: function(registration, registrationStatus){
@@ -1484,14 +1504,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             const STATUS_NOTAPPROVED = 3;
             const STATUS_INVALID = 2;
        */
-        switch (status) {
-            case 0: return 'draft'; break;
-            case 1: return 'sent'; break;
-            case 2: return 'invalid'; break;
-            case 3: return 'notapproved'; break;
-            case 8: return 'waitlist'; break;
-            case 10: return 'approved'; break;
-        }
+        return _getStatusSlug(status);
     };
 
     $scope.getStatusNameById = function(id) {
