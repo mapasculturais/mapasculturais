@@ -60,6 +60,10 @@ return array(
         'seal_expired' => [
             'title' => \MapasCulturais\i::__("Selo Certificador Expirado"),
             'template' => 'seal_expired.html'
+        ],
+        'opportunity_claim' => [
+            'title' => \MapasCulturais\i::__("Solicitação de Recurso de Oportunidade"),
+            'template' => 'opportunity_claim.html'
         ]
 
     ],
@@ -90,13 +94,14 @@ return array(
     'app.offlineUrl' => '/offline',
     'app.offlineBypassFunction' => null,
 
-    'app.enabled.agents'   => true,
-    'app.enabled.spaces'   => true,
+    'app.enabled.agents' => true,
+    'app.enabled.spaces' => true,
     'app.enabled.projects' => true,
-    'app.enabled.events'   => true,
-    'app.enabled.subsite'     => true,
-    'app.enabled.seals'   => true,
-    'app.enabled.apps'     => true,
+    'app.enabled.opportunities' => true,
+    'app.enabled.events' => true,
+    'app.enabled.subsite' => true,
+    'app.enabled.seals' => true,
+    'app.enabled.apps' => true,
 
     //'app.subsite.mainUrl' => 'mapas.mary',
     'themes.active' => 'MapasCulturais\Themes\BaseV1',
@@ -114,6 +119,7 @@ return array(
 
     'themes.brand-space'        => '#e83f96',
     'themes.brand-project'      => '#cc0033',
+    'themes.brand-opportunity'  => '#ffaa00',
     'themes.brand-event'        => '#b3b921',
     'themes.brand-subsite'      => '#ff5545',
     'themes.brand-seal'         => '#ff5545',
@@ -143,27 +149,28 @@ return array(
     'cep.token'         => '',
 
     'export.excelName'      => 'mapas-culturais-dados-exportados.xls',
-    
+
     /* Divisões geográficas
-     * Veja http://docs.mapasculturais.org/mc_deploy_shapefiles/ para informações de como 
+     * Veja http://docs.mapasculturais.org/mc_deploy_shapefiles/ para informações de como
      * inserir shapefiles aos bancos e cadastrá-los aqui
-     * 
+     *
      * coloque um underline "_" na frente do slug da division para
      * que o metadado gerado não seja exibido na página de perfil da entidade.
-     * 
-     * Ex: '_estado'        => \MapasCulturais\i::__('Estado'), 
-     * 
-     */ 
+     *
+     * Ex: '_estado'        => \MapasCulturais\i::__('Estado'),
+     *
+     */
     'app.geoDivisionsHierarchy' => [
-        'pais'          => \MapasCulturais\i::__('País'),          // metadata: geoPais
-        'regiao'        => \MapasCulturais\i::__('Região'),        // metadata: geoRegiao
-        'estado'        => \MapasCulturais\i::__('Estado'),        // metadata: geoEstado
-        'mesorregiao'   => \MapasCulturais\i::__('Mesorregião'),   // metadata: geoMesorregiao
-        'microrregiao'  => \MapasCulturais\i::__('Microrregião'),  // metadata: geoMicrorregiao
-        'municipio'     => \MapasCulturais\i::__('Município'),     // metadata: geoMunicipio
-        'zona'          => \MapasCulturais\i::__('Zona'),          // metadata: geoZona
-        'subprefeitura' => \MapasCulturais\i::__('Subprefeitura'), // metadata: geoSubprefeitura
-        'distrito'      => \MapasCulturais\i::__('Distrito')       // metadata: geoDistrito
+        'pais'              => ['name' => \MapasCulturais\i::__('País'),            'showLayer' => true],
+        'regiao'            => ['name' => \MapasCulturais\i::__('Região'),          'showLayer' => true],
+        'estado'            => ['name' => \MapasCulturais\i::__('Estado'),          'showLayer' => true],
+        'mesorregiao'       => ['name' => \MapasCulturais\i::__('Mesorregião'),     'showLayer' => true],
+        'microrregiao'      => ['name' => \MapasCulturais\i::__('Microrregião'),    'showLayer' => true],
+        'municipio'         => ['name' => \MapasCulturais\i::__('Município'),       'showLayer' => true],
+        'zona'              => ['name' => \MapasCulturais\i::__('Zona'),            'showLayer' => true],
+        'subprefeitura'     => ['name' => \MapasCulturais\i::__('Subprefeitura'),   'showLayer' => true],
+        'distrito'          => ['name' => \MapasCulturais\i::__('Distrito'),        'showLayer' => true],
+        'setor_censitario'  => ['name' => \MapasCulturais\i::__('Setor Censitario'),'showLayer' => false]
     ],
 
     'registration.agentRelationsOptions' => array(
@@ -203,7 +210,7 @@ return array(
         'required' => true,
         'label' => \MapasCulturais\i::__('Agente responsável pela inscrição'),
         'agentRelationGroupName' => 'owner',
-        'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos CPF, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
+        'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos CPF, Data de Nascimento/Fundação, Gênero, Orientação Sexual, Raça/Cor, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
         'type' => 1,
         'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
     ),
@@ -240,10 +247,12 @@ return array(
             'status' => \MapasCulturais\i::__('Status')
         ),
 
-        //        'MapasCulturais\Entities\Agent' => array()
+        'MapasCulturais\Entities\Agent' => array(
+            'publicLocation' => \MapasCulturais\i::__('Localização publicada'),
+            'location' => \MapasCulturais\i::__('Localização'),
+            'userId' => \MapasCulturais\i::__('ID usuário'),
+        )
     ),
-
-    // 'app.projectRegistrationAgentRelationGroupName' \MapasCulturais\i::__(Inscrições"),
 
     'notifications.entities.new'    => false, // Send notification when a entity is included
     'notifications.interval'        => 60,  // seconds
@@ -358,8 +367,7 @@ return array(
 
     ),
     'plugins' => [
-        'ProjectPhases' => ['namespace' => 'ProjectPhases'],
-        'AgendaSingles' => ['namespace' => 'AgendaSingles'],
+         'EvaluationMethodSimple' => ['namespace' => 'EvaluationMethodSimple'],
 //        'OriginSite'    => ['namespace' => 'OriginSite','config' => ['siteId' => @$_SERVER['HTTP_HOST']]]
         //['namespace' => 'PluginNamespace', 'path' => 'path/to/plugin', 'config' => ['plugin' => 'config']]
     ],
@@ -374,18 +382,20 @@ return array(
             // 'agente/007'                => array('agent', 'single', array('id' => '007')),
             // 'teste/de/shortcut/longo'   => array('agent', 'single', array('id' => 'shortcut longo')),
             //'historico' => array('entityRevision','history',array('entity' => 'event','id' => '6')),
-            'historico' => array('entityRevision','history'),
-            'evento'    => array('event',   'single'),
-            'usuario'   => array('user',    'single'),
-            'agente'    => array('agent',   'single'),
-            'espaco'    => array('space',   'single'),
-            'projeto'   => array('project', 'single'),
-            'instalacao'=> array('subsite',	  'single'),
-        	'selo'     	=> array('seal',	  'single'),
-            'sair'      => array('auth',    'logout'),
-            'busca'     => array('site',    'search'),
-            'sobre'     => array('site',    'page', array('sobre')),
-            'como-usar' => array('site',    'page', array('como-usar')),
+            'historico'     => array('entityRevision','history'),
+            'evento'        => array('event', 'single'),
+            'usuario'       => array('user', 'single'),
+            'agente'        => array('agent', 'single'),
+            'espaco'        => array('space', 'single'),
+            'projeto'       => array('project', 'single'),
+            'oportunidade'  => array('opportunity', 'single'),
+            'salva-avaliacao'  => array('registration', 'saveEvaluation'),
+            'instalacao'    => array('subsite', 'single'),
+            'selo'          => array('seal', 'single'),
+            'sair'          => array('auth', 'logout'),
+            'busca'         => array('site', 'search'),
+            'sobre'         => array('site', 'page', array('sobre')),
+            'como-usar'     => array('site', 'page', array('como-usar')),
 
             // workflow actions
             'aprovar-notificacao' => array('notification', 'approve'),
@@ -404,6 +414,7 @@ return array(
             'espacos'        => 'space',
             'arquivos'       => 'file',
             'projetos'       => 'project',
+            'oportunidades'  => 'opportunity',
             'selos'          => 'seal',
             'inscricoes'     => 'registration',
             'instalacoes'    => 'subsite',
@@ -419,6 +430,7 @@ return array(
             'agentes'       => 'agents',
             'eventos'       => 'events',
             'projetos'      => 'projects',
+            'oportunidades' => 'oportunities',
             'subsite'       => 'subsite',
             'selos'         => 'seals',
             'inscricoes'    => 'registrations',
@@ -432,14 +444,15 @@ return array(
             'panel'         => \MapasCulturais\i::__('Painel'),
             'auth'          => \MapasCulturais\i::__('Autenticação'),
             'site'          => \MapasCulturais\i::__('Site'),
-            'event'         => \MapasCulturais\i::__('Evento'),    'events'        => \MapasCulturais\i::__('Eventos'),
-            'agent'         => \MapasCulturais\i::__('Agente'),    'agents'        => \MapasCulturais\i::__('Agentes'),
-            'space'         => \MapasCulturais\i::__('Espaço'),    'spaces'        => \MapasCulturais\i::__('Espaços'),
-            'project'       => \MapasCulturais\i::__('Projeto'),   'projects'      => \MapasCulturais\i::__('Projetos'),
-            'registration'  => \MapasCulturais\i::__('Inscrição'), 'registrations' => \MapasCulturais\i::__('Inscrições'),
-            'file'          => \MapasCulturais\i::__('Arquivo'),   'files'         => \MapasCulturais\i::__('Arquivos'),
-            'seal'          => \MapasCulturais\i::__('Selo'),      'seals'         => \MapasCulturais\i::__('Selos'),
-            'entityRevision'=> \MapasCulturais\i::__('Histórico'), 'revisions'     => \MapasCulturais\i::__('Revisões'),
+            'event'         => \MapasCulturais\i::__('Evento'),       'events'        => \MapasCulturais\i::__('Eventos'),
+            'agent'         => \MapasCulturais\i::__('Agente'),       'agents'        => \MapasCulturais\i::__('Agentes'),
+            'space'         => \MapasCulturais\i::__('Espaço'),       'spaces'        => \MapasCulturais\i::__('Espaços'),
+            'project'       => \MapasCulturais\i::__('Projeto'),      'projects'      => \MapasCulturais\i::__('Projetos'),
+            'opportunity'   => \MapasCulturais\i::__('Oportunidade'), 'opportunities' => \MapasCulturais\i::__('Oportunidades'),
+            'registration'  => \MapasCulturais\i::__('Inscrição'),    'registrations' => \MapasCulturais\i::__('Inscrições'),
+            'file'          => \MapasCulturais\i::__('Arquivo'),      'files'         => \MapasCulturais\i::__('Arquivos'),
+            'seal'          => \MapasCulturais\i::__('Selo'),         'seals'         => \MapasCulturais\i::__('Selos'),
+            'entityRevision'=> \MapasCulturais\i::__('Histórico'),    'revisions'     => \MapasCulturais\i::__('Revisões'),
             'sealrelation'  => \MapasCulturais\i::__('Certificado'),
             //actions
             'subsite'       => \MapasCulturais\i::__('Subsite'),

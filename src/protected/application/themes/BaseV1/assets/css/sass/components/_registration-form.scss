@@ -20,8 +20,14 @@ article.project .highlighted-message .btn {
         margin-left: -125px;
     }
 }
+article.opportunity .highlighted-message .btn {
+    @media screen and (min-width: $screen-tablet) {
+        float: right;
+        margin-left: -125px;
+    }
+}
 
-//## Registration form that shows on projects tab "Inscritos" when logged in and on view mode.
+//## Registration form that shows on opportunities tab "Inscritos" when logged in and on view mode.
 
 .registration-form {
     display: none; //it shows only on tablet screen size and wider screens
@@ -59,7 +65,7 @@ article.project .highlighted-message .btn {
 }
 
 
-//## Registration form that shows on projects tab "Inscritos" when editing.
+//## Registration form that shows on opportunities tab "Inscritos" when editing.
 .registration .alert.success {
     @media print {
         border: none;
@@ -89,7 +95,17 @@ article.project .highlighted-message .btn {
 	}
 	h4 {
 		margin-bottom: $line-height-half;
+
+      &.opportunity-toggle-form {
+        margin-bottom: 0 !important;
+        cursor: pointer;
+      }
 	}
+
+    .opportunity-togglable-form-content {
+      margin-top: $line-height-half;
+    }
+
     .dropdown {
         width: 125px;
     }
@@ -328,5 +344,28 @@ article.project .highlighted-message .btn {
             border-top: none;
         }
         
+    }
+}
+
+
+.evaluation-form {
+    position:fixed;
+    width:22%;
+    overflow-y: scroll;
+    padding:10px;
+}
+
+@media screen and (max-width: 1366px) and (min-width: 1200px) {
+    .evaluation-form {
+        width:18%;
+    }
+}
+
+.evaluations-config--intro {
+    label { font-size: .8em; }
+    textarea {
+        min-width: 300px;
+        width: 50%;
+        height:80px;
     }
 }

@@ -1,6 +1,10 @@
 <?php
-$links = $entity->getMetaLists('links');
+if(!is_object($entity)){
+    echo '<div class="alert info"><?php i::__("Nenhum link disponível");?></div>';
+    return;
+}
 
+$links = $entity->getMetaLists('links');
 
 $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'>
                 <a class='js-metalist-item-display' href='{{value}}'>{{title}}</a>
@@ -15,6 +19,10 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                 </div>
             </li>";
 ?>
+
+<?php if(is_array($links) && count($links) <= 0 && $this->controller == 'registration'):?>
+    <div class="alert info"><?php i::__("Nenhum link disponível");?></div>
+<?php endif;?>
 
 <?php if ($this->isEditable() || $links): ?>
     <div class="widget" ng-non-bindable>

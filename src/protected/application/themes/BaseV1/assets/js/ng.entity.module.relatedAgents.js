@@ -22,16 +22,15 @@
         try{ controllerId = MapasCulturais.request.controller; }catch (e){};
         try{ entityId = MapasCulturais.entity.id; }catch (e){};
 
-        return {
-            controllerId: controllerId,
-
-            entityId: entityId,
-
-            getUrl: function(action){
-                return baseUrl + controllerId + '/' + action + '/' + entityId;
+        return new (function(){
+            this.controllerId = controllerId;
+            this.entityId = entityId;
+            
+            this.getUrl = function(action){
+                return MapasCulturais.createUrl(this.controllerId, action, [this.entityId]);
             },
 
-            create: function(group, agentId, hasControl){
+            this.create = function(group, agentId, hasControl){
                 return $http.post(this.getUrl('createAgentRelation'), {group: group, agentId: agentId, has_control: hasControl }).
                         success(function(data, status){
                             if(status === 202){
@@ -44,7 +43,7 @@
                         });
             },
 
-            remove: function(group, agentId){
+            this.remove = function(group, agentId){
                 return $http.post(this.getUrl('removeAgentRelation'), {group: group, agentId: agentId}).
                     success(function(data, status){
                         $rootScope.$emit('relatedAgent.removed', data);
@@ -54,7 +53,7 @@
                     });
             },
             
-            renameGroup: function(group) {
+            this.renameGroup = function(group) {
                 return $http.post(this.getUrl('renameGroupAgentRelation'), {group: group}).
                     success(function(data, status){
                         $rootScope.$emit('relatedAgent.renamedGroup', data);
@@ -62,17 +61,17 @@
                     error(function(data, status){
                         $rootScope.$emit('error', { message: "Cannot rename group", data: data, status: status });
                     });
-            },
+            };
 
-            giveControl: function(agentId){
+            this.giveControl = function(agentId){
                 return this.setControl(agentId, true);
-            },
+            };
 
-            removeControl: function(agentId){
+            this.removeControl = function(agentId){
                 return this.setControl(agentId, false);
-            },
+            };
 
-            setControl: function(agentId, hasControl){
+            this.setControl = function(agentId, hasControl){
                 return $http({
                     method: 'POST',
                     url: this.getUrl('setRelatedAgentControl'),
@@ -86,8 +85,8 @@
                         status: status
                     });
                 });
-            }
-        };
+            };
+        });
     }]);
 
     module.controller('RelatedAgentsController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EditBox', function($scope, $rootScope, RelatedAgentsService, EditBox) {

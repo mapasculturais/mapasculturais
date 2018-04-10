@@ -2,7 +2,16 @@
 if($this->controller->action === 'create')
     return;
 ?>
+<?php if(!is_object($entity)):?>
+    <div class="alert info"><?php MapasCulturais\i::__("Nenhuma imagem disponível");?></div>
+    <?php return;?>
+<?php endif;?>
+
 <?php $gallery = $entity->getFiles('gallery'); ?>
+<?php if(is_array($gallery) && count($gallery) <= 0 && $this->controller == 'registration'):?>
+    <div class="alert info"><?php i::__("Nenhuma imagem disponível");?></div>
+<?php endif;?>
+
 <?php if ($this->isEditable() || $gallery): ?>
     <h3><?php \MapasCulturais\i::_e("Galeria");?></h3>
     <div class="clearfix js-gallery">

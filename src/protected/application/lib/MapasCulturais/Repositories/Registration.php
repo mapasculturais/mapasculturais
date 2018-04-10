@@ -1,16 +1,17 @@
 <?php
 namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Registration extends \MapasCulturais\Repository{
     /**
      *
-     * @param \MapasCulturais\Entities\Project $project
+     * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @param \MapasCulturais\Entities\User $user
      * @return \MapasCulturais\Entities\Registration[]
      */
-    function findByProjectAndUser(\MapasCulturais\Entities\Project $project, $user){
-        if($user->is('guest') || !$project->id){
+    function findByOpportunityAndUser(\MapasCulturais\Entities\Opportunity $opportunity, $user){
+        if($user->is('guest') || !$opportunity->id){
             return [];
         }
 
@@ -21,7 +22,7 @@ class Registration extends \MapasCulturais\Repository{
                 MapasCulturais\Entities\Registration r
                 LEFT JOIN  MapasCulturais\Entities\RegistrationAgentRelation rar WITH rar.owner = r
             WHERE
-                r.project = :project AND
+                r.opportunity = :opportunity AND
                 (
                     r.owner IN (:agents) OR
                     rar.agent IN (:agents)
@@ -30,7 +31,7 @@ class Registration extends \MapasCulturais\Repository{
         $q = $this->_em->createQuery($dql);
 
         $q->setParameters([
-            'project' => $project,
+            'opportunity' => $opportunity,
             'agents' => $user->agents ? $user->agents->toArray() : [-1]
         ]);
 
@@ -85,8 +86,8 @@ class Registration extends \MapasCulturais\Repository{
         return $q->getResult();
     }
 
-    function countByProject(\MapasCulturais\Entities\Project $project, $include_draft = false){
-        if(!$project->id){
+    function countByOpportunity(\MapasCulturais\Entities\Opportunity $opportunity, $include_draft = false){
+        if(!$opportunity->id){
             return 0;
         }
 
@@ -96,27 +97,27 @@ class Registration extends \MapasCulturais\Repository{
             $dql_status = "AND r.status > 0";
         }
 
-        $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.project = :proj $dql_status";
+        $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.opportunity = :oppor $dql_status";
 
         $q = $this->_em->createQuery($dql);
 
-        $q->setParameter('proj', $project);
+        $q->setParameter('oppor', $opportunity);
 
         $num = $q->getSingleScalarResult();
 
         return $num;
     }
 
-    function countByProjectAndOwner(\MapasCulturais\Entities\Project $project, \MapasCulturais\Entities\Agent $owner){
-        if(!$project->id || !$owner->id){
+    function countByOpportunityAndOwner(\MapasCulturais\Entities\Opportunity $opportunity, \MapasCulturais\Entities\Agent $owner){
+        if(!$opportunity->id || !$owner->id){
             return 0;
         }
 
-        $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.project = :proj AND r.owner = :owner";
+        $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.opportunity = :oppor AND r.owner = :owner";
 
         $q = $this->_em->createQuery($dql);
 
-        $q->setParameter('proj', $project);
+        $q->setParameter('oppor', $opportunity);
         $q->setParameter('owner', $owner);
 
         $num = $q->getSingleScalarResult();

@@ -18,13 +18,16 @@ return array_merge($config,
         ),
 
 //        'app.log.query' => true,
+//        'app.log.apiDql' => true,
+
+        
         'doctrine.isDev' => true,
 
         'doctrine.database' => array(
             'dbname'    => 'mapasculturais_test',
-            'user'      => 'mapas',
-            'password'  => 'senhaMapas',
-            'host'      => 'db',
+            'user'      => 'mapasculturais_test',
+            'password'  => 'mapasculturais_test',
+            'host'      => 'localhost',
 
         ),
 

@@ -80,6 +80,20 @@
             </li>
             <?php $this->applyTemplateHook('nav.main.projects','after'); ?>
         <?php endif; ?>
+            
+        <?php if($app->isEnabled('opportunities')): ?>
+            <?php $this->applyTemplateHook('nav.main.opportunities','before'); ?>
+            <li id="entities-menu-opportunity"
+                ng-class="{'active':data.global.filterEntity === 'opportunity',
+                           'current-entity-parent':'<?php echo $this->controller->id;?>' == 'opportunity'}"
+                ng-click="tabClick('opportunity')">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(opportunity:!t),filterEntity:opportunity,viewMode:list))'; ?>">
+                    <div class="icon icon-opportunity"></div>
+                    <div class="menu-item-label"><?php $this->dict('entities: Opportunities') ?></div>
+                </a>
+            </li>
+            <?php $this->applyTemplateHook('nav.main.opportunities','after'); ?>
+        <?php endif; ?>
 
     </ul>
     <!--.menu.entities-menu-->

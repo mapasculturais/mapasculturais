@@ -1,5 +1,37 @@
 /* =Edit box
 -------------------------------------------------------------- */
+
+%edit-box-base {
+    position: absolute;
+    display: none;
+    padding: $padding-base;
+    background: #fff;
+    border: none;
+    border-top: 4px solid $brand-primary;
+    border-radius: $border-radius-base;
+    box-shadow: $box-shadow-modal;
+    header {
+        margin-bottom: $line-height-half;
+        padding-bottom: $padding-base;
+        border-bottom: $thin-row;
+    }
+    header h1 {
+        font-size: $font-size-base;
+        line-height: 1rem;
+        margin-bottom: 0;
+    }
+    header p {
+        margin-bottom: 0;
+        font-size: $font-size-smaller;
+    }
+    footer {
+        text-align: right;
+    }
+    footer button {
+        margin-bottom: 0;
+    }
+}
+
 .mc-editable {
     display: inline-block;
     padding: 0 3px;
@@ -24,36 +56,10 @@
     }
 }
 .edit-box {
-    position: absolute;
-    z-index: $z-index-infobox;
     width: 375px;
-    display: none;
-    padding: $padding-base;
-    background: #fff;
-    border: none;
-    border-top: 4px solid $brand-primary;
-    border-radius: $border-radius-base;
-    box-shadow: $box-shadow-modal;
-}
-.edit-box header {
-    margin-bottom: $line-height-half;
-    padding-bottom: $padding-base;
-    border-bottom: $thin-row;
-}
-.edit-box header h1 {
-    font-size: $font-size-base;
-    line-height: 1rem;
-    margin-bottom: 0;
-}
-.edit-box header p {
-    margin-bottom: 0;
     font-size: $font-size-smaller;
-}
-.edit-box footer {
-    text-align: right;
-}
-.edit-box footer button {
-    margin-bottom: 0;
+    z-index: $z-index-infobox;
+    @extend %edit-box-base;
 }
 .edit-box.mc-top .mc-arrow,
 .edit-box.mc-bottom .mc-arrow {
@@ -98,4 +104,57 @@
     width: 16px;
     margin: 10px auto;
     float: left;
+}
+
+// Modal
+
+.modal-wrapper {
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    top: -80px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-index-tip;
+    @media screen and (min-width: $screen-tablet) {
+        position: fixed;
+        top: 0;
+    }
+    overflow-x: auto;
+}
+
+.modal {
+    @extend %edit-box-base;
+    display: block;
+    margin: 15px;
+    z-index: $z-index-tip;
+    @media screen and (min-width: $screen-tablet) {
+        width: 600px;
+        top: 50px;
+        left: 50%;
+        margin: 0 0 0 -300px;
+    }
+    @media screen and (min-width: $screen-desktop) {
+        top: 100px;
+    }
+    @media screen and (min-width: $screen-lg-desktop) {
+        top: 150px;
+    }
+    .header-content {
+        border-bottom: 1px solid $gray-lighter;
+        margin: 1.5rem 0;
+        min-height: initial;
+        padding-bottom: 1.5rem;
+        padding-left: 0;
+        padding-top: 0;
+    }
+    .widget {
+        border-color: $gray-lighter;
+        > h3 {
+            margin-bottom: 0.25rem;
+        }
+        p {
+            margin-bottom: 0;
+        }
+    }
 }

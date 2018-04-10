@@ -131,7 +131,7 @@ class RoutesManager{
         })->via('GET', 'POST', 'PUT', 'DELETE', 'PATCH');
         
         $app->notFound(function() use ($app) {
-            $this->callAction($app->controller('site'), 'error', ['code' => 404], false);
+            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\TemplateNotFound], false);
         });
     }
 

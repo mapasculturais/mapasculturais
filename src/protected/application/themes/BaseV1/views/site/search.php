@@ -11,6 +11,7 @@ $this->addTaxonoyTermsToJs('linguagem');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Space');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Agent');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Project');
+// $this->addEntityTypesToJs('MapasCulturais\Entities\Opportunity');
 $this->addEntityTypesToJs('MapasCulturais\Entities\Seal');
 
 $this->includeSearchAssets();
@@ -70,6 +71,7 @@ $this->includeMapAssets();
 <!-- Here ends the map view and starts the list view -->
     <div id="lista" ng-show="data.global.viewMode==='list'" ng-animate="{show:'animate-show', hide:'animate-hide'}">
         
+        <?php $this->part('search/list-opportunity'); ?>
         <?php $this->part('search/list-project'); ?>
         <?php $this->part('search/list-agent'); ?>
         <?php $this->part('search/list-space'); ?>

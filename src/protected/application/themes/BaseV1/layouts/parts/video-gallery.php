@@ -1,8 +1,13 @@
 <?php
-if($this->controller->action === 'create')
+if($this->controller->action === 'create' || !is_object($entity))
     return;
+?>
+<?php if(!is_object($entity)):?>
+    <div class="alert info"><?php i::__("Nenhum vídeo disponível");?></div>
+    <?php return;?>
+<?php endif;?>
 
-
+<?php
 $videos = $entity->getMetaLists('videos');
 $spinner_url = $this->asset("img/spinner_192.gif", false);
 $template = "<li id='video-{{id}}'>
@@ -21,6 +26,11 @@ $template = "<li id='video-{{id}}'>
                 </div>
             </li>";
 ?>
+
+<?php if(is_array($videos) && count($videos) <= 0 && $this->controller == 'registration'):?>
+    <div class="alert info"><?php i::__("Nenhum vídeo disponível");?></div>
+<?php endif;?>
+
 <?php if ($this->isEditable() || $videos): ?>
     <h3><?php \MapasCulturais\i::_e("Vídeos");?></h3>
     <a name="video"></a>

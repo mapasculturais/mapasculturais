@@ -15,7 +15,9 @@
         };
     }]);
 
-    app.controller('EntityController',['$scope', '$timeout', function($scope, $timeout){
+
+    app.controller('EntityController',['$scope', 'EditBox', function($scope, EditBox){
+        $scope.editbox = EditBox;
         $scope.data = {};
     }]);
 

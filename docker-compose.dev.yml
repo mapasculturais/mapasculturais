@@ -7,7 +7,8 @@ services:
     ports:
       - "8090:80"
     volumes:
-      - ./src/protected/application:/srv/mapas/mapasculturais/src/protected/application
+      - ./src/protected:/srv/mapas/mapasculturais/src/protected
+      - ./scripts:/srv/mapas/mapasculturais/scripts
     links:
       - db:mapas
     environment:
