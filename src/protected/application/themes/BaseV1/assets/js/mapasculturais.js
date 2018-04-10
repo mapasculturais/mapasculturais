@@ -1315,8 +1315,8 @@ $(function() {
             shadowUrl: MapasCulturais.assets.pinShadow,
             iconSize: [35, 43], // size of the icon
             shadowSize: [40, 16], // size of the shadow
-            iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
-            shadowAnchor: [6, 3], // the same for the shadow
+            iconAnchor: [20, 43], // point of the icon which will correspond to marker's location            
+            shadowAnchor: [6, 16], // the same for the shadow            
             popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
         };
 
@@ -1389,8 +1389,8 @@ $(function() {
             shadowUrl: MapasCulturais.assets.pinShadow,
             iconSize: [35, 43], // size of the icon
             shadowSize: [40, 16], // size of the shadow
-            iconAnchor: [20, 30], // point of the icon which will correspond to marker's location
-            shadowAnchor: [6, 3], // the same for the shadow
+            iconAnchor: [20, 43], // point of the icon which will correspond to marker's location            
+            shadowAnchor: [6, 16], // the same for the shadow            
             popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
         };
 

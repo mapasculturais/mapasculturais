@@ -25,7 +25,10 @@ $agentsRelated['owner'] = $entity->owner;
                     </div>
                 </div>
                 <div class="registration-agent-details">
-                    <div ng-repeat="prop in data.propLabels" ng-if="::def.agent[prop.name]"><span class="label">{{::prop.label}}</span>: {{::prop.name === 'location' ? getReadableLocation(def.agent[prop.name]) : def.agent[prop.name]}}</div>
+                    <div ng-repeat="prop in data.propLabels" ng-if="::def.agent[prop.name]">
+                        <span class="label"> {{::prop.label}}</span>:
+                        {{::prop.name === 'location' ? getReadableLocation(def.agent[prop.name]) : def.agent[prop.name]}}
+                    </div>
                 </div>
             </div>
 

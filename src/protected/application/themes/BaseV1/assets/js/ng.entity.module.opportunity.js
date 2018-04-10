@@ -36,13 +36,19 @@
                     category: params.category
                 };
 
-                return $http.post(this.getUrl(), data).
+                return $http.post( this.getUrl(), data).
                 success(function (data, status) {
                     $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
                 }).
                 error(function (data, status) {
                     $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
                 });
+            },
+
+            setMultipleStatus: function(registrations) {
+                var endPoint = url.create('setMultipleStatus');
+
+                return $http.post(endPoint, { evaluations: registrations }).success(function (data) { });
             },
 
             setStatusTo: function(registration, registrationStatus){
@@ -1273,6 +1279,16 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         });
     };
 
+    $scope.applyEvaluations = function() {
+        var _arr = [];
+        $scope.totalEvaluations().map(function(e) {
+            var result = parseInt(e.evaluation.result);
+            _arr.push({ reg_id: e.registration.id, result: result });
+        });
+
+        RegistrationService.setMultipleStatus(_arr);
+    };
+
     $scope.hasEvaluations = function() {
         return ($scope.totalEvaluations().length > 0);
     };
@@ -1385,7 +1401,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         return result;
     };
-
 
     for(var name in MapasCulturais.labels.agent){
         var label = MapasCulturais.labels.agent[name];
@@ -1573,7 +1588,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 EditBox.close('editbox-select-registration-owner');
 
                 RegistrationService.save();
-            };
+            };            
 
             $scope.setRegistrationAgent = function(entity, attrs){
                 if(attrs.name === 'owner'){
@@ -1612,8 +1627,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     $('#find-entity-registration-owner').trigger('find',0);
             });
 
-            $scope.register = function(){
-                var registration = $scope.data.registration;
+            $scope.register = function(){                
+                var registration = $scope.data.registration;                
                 var ownerRegistration = [];
                 // @TODO: buscar na api
                 for(var i in $scope.data.registrations) {
@@ -1735,6 +1750,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     alert('erro');
                 });
             };
+
+            $timeout(function() {
+                //Se não existir agentes registrado ao carregar o modúlo, adiciona o agente padrão ao registro.
+                if (!MapasCulturais.entity.registrationAgents) {
+                    $scope.setRegistrationOwner(MapasCulturais.userProfile);
+                }
+            });
+
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){

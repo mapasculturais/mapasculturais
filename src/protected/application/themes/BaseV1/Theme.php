@@ -1124,6 +1124,8 @@ class Theme extends MapasCulturais\Theme {
                     LEFT JOIN e.__metadata m
                     WITH
                         m.key = 'subTitle'
+                     JOIN e.occurrences oc 
+                     JOIN oc.space sp
                 ";
         });
 
@@ -1137,6 +1139,7 @@ class Theme extends MapasCulturais\Theme {
                 $where .= " OR p.id IN ( " . implode(',', $project_ids) . ")";
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
+            $where .= " OR unaccent(lower(sp.name)) LIKE unaccent(lower(:keyword))";
         });
 
         $theme = $this;
@@ -1775,6 +1778,7 @@ class Theme extends MapasCulturais\Theme {
     protected function _populateJsObject() {
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
+        $this->jsObject['userProfile'] = $app->user->profile; //get standard agent for user
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
 
         $this->jsObject['request'] = array(
