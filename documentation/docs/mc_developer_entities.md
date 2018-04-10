@@ -1,7 +1,7 @@
 Entidades dos Mapas Culturais
 =============================
 
-O banco de dados é composto, basicamente, por quatro entidades: Agentes, Espaços, Eventos, Projetos e Selos.
+O banco de dados é composto, basicamente, por cinco entidades: Agentes, Espaços, Eventos, Projetos e Selos.
 
 As quatro principais entidade agentes, espaços, eventos e projetos possuem em comum:
 -------------------------------------
@@ -19,7 +19,7 @@ As quatro principais entidade agentes, espaços, eventos e projetos possuem em c
 * Download (lista de arquivos)
 * Links (lista)
 * Facebook
-* Tweeter
+* Twitter
 * Google+
 * Publicado por (Agente responsável pela entidade)
 
@@ -223,14 +223,14 @@ Projetos possuem exclusivamente:
 		* Responsável
 		* Instituição Responsável
 		* Coletivo
-		* Numero máximo de inscrições por Agente Responsável
+		* Número máximo de inscrições por Agente Responsável
 		* Arquivos Anexos:
 			* Obrigatório/Opcional
 			* Com ou sem arquivo de Modelo (formulário)
 	* Status:
 		* Inválida - em desacordo com o regulamento (ex. documentação incorreta).
 		* Pendente - ainda não avaliada.
-		* Não selecionada * avaliada, mas não selecionada.
+		* Não selecionada - avaliada, mas não selecionada.
 		* Suplente - avaliada, mas aguardando vaga.
 		* Selecionada - avaliada e selecionada.
 		* Rascunho - utilize essa opção para permitir que o responsável edite e reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida nesta tabela.

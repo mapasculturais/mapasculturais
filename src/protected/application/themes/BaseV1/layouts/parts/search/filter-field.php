@@ -61,6 +61,11 @@
     <span class="label show-label" ng-click="data.project.ropen = !data.project.ropen">{{filter.label}}</span>
 </div>
 
+<div ng-if="filter.fieldType === 'custom.opportunity.ropen'">
+    <span class="icon icon-check" ng-class="{'selected': data.opportunity.ropen}" ng-click="data.opportunity.ropen = !data.opportunity.ropen"></span>
+    <span class="label show-label" ng-click="data.opportunity.ropen = !data.opportunity.ropen">{{filter.label}}</span>
+</div>
+
 <!-- <div ng-if="filter.fieldType === 'dateFromTo'">
     <label  class="show-label">{{filter.label.split('/')[0]}}</label>
     <input  class="data"

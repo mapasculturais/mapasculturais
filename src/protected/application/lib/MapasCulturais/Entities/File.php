@@ -18,6 +18,7 @@ use \MapasCulturais\App;
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
  *
  * @property-read array $tmpFile $_FILE
+ * 
  * @ORM\Table(name="file",indexes={
  *      @ORM\Index(name="file_owner_index", columns={"object_type", "object_id"}),
  *      @ORM\Index(name="file_group_index", columns={"grp"}),
@@ -30,6 +31,7 @@ use \MapasCulturais\App;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\Opportunity"                   = "\MapasCulturais\Entities\OpportunityFile",
         "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",
         "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
         "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
@@ -37,7 +39,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
-        "MapasCulturais\Entities\Subsite"                          = "\MapasCulturais\Entities\SubsiteFile"
+        "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity

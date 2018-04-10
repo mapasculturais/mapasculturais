@@ -97,3 +97,15 @@
     line-height: 0;
     border-color: transparent transparent $brand-accent transparent;
 }
+
+.bg-agent { background-color: $brand-agent !important; }
+.bg-event { background-color: $brand-event !important; }
+.bg-space { background-color: $brand-space !important; }
+.bg-project { background-color: $brand-project !important; }
+.bg-opportunity { background-color: $brand-opportunity !important; }
+
+.color-agent { color: $brand-agent !important; }
+.color-event { color: $brand-event !important; }
+.color-space { color: $brand-space !important; }
+.color-project { color: $brand-project !important; }
+.color-opportunity { color: $brand-opportunity !important; }

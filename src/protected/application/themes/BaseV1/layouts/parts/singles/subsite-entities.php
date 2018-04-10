@@ -66,6 +66,11 @@
             <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"events_color") && $editEntity? 'required': '');?>" data-edit="events_color" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Eventos');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Eventos');?>" data-type="color"><?php echo $entity->events_color; ?></span>
         </div>
 
+        <div class="color">
+            <label><?php \MapasCulturais\i::_e("Oportunidades");?></label>
+            <span class="js-editable inline js-color <?php echo ($entity->isPropertyRequired($entity,"opportunities_color") && $editEntity? 'required': '');?>" data-edit="opportunities_color" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Oportunidades');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Oportunidades');?>" data-type="color"><?php echo $entity->opportunities_color; ?></span>
+        </div>
+
         <div class=" clear"></div>
     </div>
 </div>

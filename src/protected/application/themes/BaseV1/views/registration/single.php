@@ -4,29 +4,28 @@ $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
-$this->jsObject['angularAppDependencies'][] = 'entity.module.project';
-
-$project = $entity->project;
+$this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
 $this->addEntityToJs($entity);
 
-$this->addProjectToJs($project);
+$this->addOpportunityToJs($entity->opportunity);
+
+$this->addOpportunitySelectFieldsToJs($entity->opportunity);
 
 $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
+$this->includeEditableEntityAssets();
 
 $_params = [
     'entity' => $entity,
-    'project' => $project,
-    'action' => $action
+    'action' => $action,
+    'opportunity' => $entity->opportunity
 ];
-
-
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
-<article class="main-content registration" ng-controller="ProjectController">
+<article class="main-content registration" ng-controller="OpportunityController">
     <?php $this->part('singles/registration--header', $_params); ?>
 
     <article>
@@ -38,9 +37,6 @@ $_params = [
 
         <?php $this->part('singles/registration-single--agents', $_params) ?>
         
-        <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
-        <?php //$this->part('singles/registration-single--seals', $_params) ?>
-
         <?php $this->part('singles/registration-single--fields', $_params) ?>
 
         <?php $this->applyTemplateHook('form','end'); ?>

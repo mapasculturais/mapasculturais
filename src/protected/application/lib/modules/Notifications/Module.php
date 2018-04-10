@@ -47,7 +47,28 @@ class Module extends \MapasCulturais\Module{
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
-                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
+                    if($origin->getClassName() === 'MapasCulturais\Entities\EvaluationMethodConfiguration'){
+                        $opportunity = $origin->opportunity;
+                        $prev = $opportunity;
+                        
+                        while($_prev = $prev->parent){
+                            $prev = $_prev;
+                        }
+                        
+                        if($prev->equal($opportunity)){
+                            $opportunity_link = "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>";
+                        } else {
+                            $opportunity_link = "<a href=\"{$opportunity->singleUrl}\">{$prev->name} &raquo; {$opportunity->name}</a>";
+                        }
+                        
+                        $owner_entity = $prev->ownerEntity;
+                        $owner_entity_label = strtolower($owner_entity->getEntityTypeLabel());
+                        $owner_entity_link = "<a href=\"{$owner_entity->singleUrl}\">{$owner_entity->name}</a>";
+                        
+                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s."), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link);
+                        $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
+                        
+                    } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
                         $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
                         $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
                     }else{

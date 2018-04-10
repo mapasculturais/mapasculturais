@@ -178,7 +178,7 @@ $app = MapasCulturais\App::i();
                                 ?>
                                 <div class="infos">
                                     <p class="descricao-legivel"><?php echo $occurrencesDescription;?></p>
-                                    <?php if(count($space->items) == 1 && !empty($space->items[0]->rule->price)): ?>
+                                    <?php if(is_array($space->items) && count($space->items) == 1 && !empty($space->items[0]->rule->price)): ?>
                                         <p><span class="label"><?php i::_e("Preço");?>:</span> <?php echo $space->items[0]->rule->price?></p>
                                     <?php endif;?>
                                     <p><span class="label"><?php i::_e("Endereço");?>:</span> <?php echo $space->endereco;?></p>
@@ -286,6 +286,20 @@ $app = MapasCulturais\App::i();
     <?php endif; ?>
 </div>
 <div class="sidebar event sidebar-right">
+    
+    <!-- Opportunities BEGIN -->
+    <?php if(isset($entity->_opportunities)): ?>
+        <div class="widget">
+            <h3><?php $this->dict('entities: Opportunities of the event'); ?></h3>
+            <ul class="widget-list js-slimScroll">
+                <?php foreach($entities->_opportunities as $opportunity): ?>
+                    <li class="widget-list-item"><a href=""><span><?php echo $opportunity->name; ?></span></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+    <!-- Opportunities END -->
+    
     <!-- Related Agents BEGIN -->
     <?php if(isset($entity->_agents)):?>
         <div class="agentes-relacionados">

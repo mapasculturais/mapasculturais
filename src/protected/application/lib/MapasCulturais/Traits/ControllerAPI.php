@@ -711,7 +711,7 @@ trait ControllerAPI{
                 $paginator = new Paginator($query, $fetchJoinCollection = true);
                 $entity = null;
 
-                if(count($paginator)){
+                if(is_array($paginator) && count($paginator)){
                     $r = $paginator->getIterator()->current();
 
                     if($permissions){
@@ -850,7 +850,7 @@ trait ControllerAPI{
 
                 $values = $this->_API_find_addValueToParamList($values);
 
-                if(count($values) < 1){
+                if(is_array($values) && count($values) < 1){
                     $this->apiErrorResponse ('expression IN expects at last one value');
                 }
 
@@ -870,7 +870,7 @@ trait ControllerAPI{
                     }
                 } , $values);
 
-                if(count($values) < 1)
+                if(is_array($values) && count($values) < 1)
                     $this->apiErrorResponse ('expression IN expects at last one value');
 
                 $dql = "\n(\n\t" . ($not ? implode("\n\t AND ", $values) : implode("\n\t OR ", $values) ) . "\n)";
@@ -879,7 +879,7 @@ trait ControllerAPI{
             }elseif($operator == "BET"){
                 $values = $this->_API_find_splitParam($value);
 
-                if(count($values) !== 2)
+                if(is_array($values) && count($values) !== 2)
                     $this->apiErrorResponse ('expression BET expects 2 arguments');
 
                 elseif($values[0][0] === '@' || $values[1][0] === '@')
@@ -943,7 +943,7 @@ trait ControllerAPI{
             }elseif($operator == 'GEONEAR'){
                 $values = $this->_API_find_splitParam($value);
 
-                if(count($values) !== 3)
+                if(is_array($values) && count($values) !== 3)
                     $this->apiErrorResponse ('expression GEONEAR expects 3 arguments: longitude, latitude and radius in meters');
 
                 list($longitude, $latitude, $radius) = $this->_API_find_addValueToParamList($values);
@@ -1003,7 +1003,7 @@ trait ControllerAPI{
     private function _API_find_splitParam($val){
         $result = explode("\n",str_replace('\\,', ',', preg_replace('#(^[ ]*|([^\\\]))\,#',"$1\n", $val)));
 
-        if(count($result) === 1 && !$result[0]){
+        if(is_array($result) && count($result) === 1 && !$result[0]){
             return [];
         }else{
             $_result = [];

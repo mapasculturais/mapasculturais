@@ -31,9 +31,15 @@
             <?php $this->applyTemplateHook('nav.panel.projects','before'); ?>
             <li><a <?php if($this->template == 'panel/projects') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'projects') ?>"><span class="icon icon-project"></span> <?php \MapasCulturais\i::_e("Meus Projetos");?></a></li>
             <?php $this->applyTemplateHook('nav.panel.projects','after'); ?>
+        <?php endif; ?>
+
+        <?php if($app->isEnabled('opportunities')): ?>
+            <?php $this->applyTemplateHook('nav.panel.opportunities','before'); ?>
+            <li><a <?php if($this->template == 'panel/opportunities') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'opportunities') ?>"><span class="icon icon-opportunity"></span> <?php \MapasCulturais\i::_e("Minhas Oportunidades");?></a></li>
+            <?php $this->applyTemplateHook('nav.panel.opportunities','after'); ?>
 
             <?php $this->applyTemplateHook('nav.panel.registrations','before'); ?>
-            <li><a <?php if($this->template == 'panel/registrations') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'registrations') ?>"><span class="icon icon-project"></span> <?php \MapasCulturais\i::_e("Minhas Inscrições");?></a></li>
+            <li><a <?php if($this->template == 'panel/registrations') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'registrations') ?>"><span class="icon icon-opportunity"></span> <?php \MapasCulturais\i::_e("Minhas Inscrições");?></a></li>
             <?php $this->applyTemplateHook('nav.panel.registrations','after'); ?>
         <?php endif; ?>
 
