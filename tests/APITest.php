@@ -165,7 +165,7 @@ class APITest extends MapasCulturais_TestCase {
 
         $this->user = $user2;
 
-        $this->app->recreatePermissionsCacheOfListedEntities();
+        $evt->createPermissionsCacheForUsers();
 
         $r1 = $this->apiFind('event', "project=EQ({$project->id})&@select=id,status,name,project.{id,name}&@permissions=view&status=GTE(0)");
 
