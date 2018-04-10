@@ -34,7 +34,8 @@ Ex:
   Onde 'zona', 'subprefeitura' e 'distrito' são os valores da coluna 'type' da tabela geo_division.
 
   Essa configuração criará, automaticamente, os metadados geoZona, geoSubprefeitura e geoDistrito.
-   A propriedade 'showLayer' recebe um boolean para que os polígonos presentes na tabela geo_division e registrado no arquivo de configuração seja exibido como uma camada na visualização do mapa.
+   
+  A propriedade 'showLayer' recebe um boolean para que os polígonos presentes na tabela geo_division e registrado no arquivo de configuração seja exibido como uma camada na visualização do mapa.
   
   Se não quiser que o metadado criado seja exibido na página de perfil da entidade, adicione um "_" na frente do slug.
   
@@ -44,6 +45,7 @@ Ex:
 'app.geoDivisionsHierarchy' => [
             'distrito' => ['name' => \MapasCulturais\i::__('distrito'), 'showLayer' => true], // irá gerar o metadado geoDistrito e exibí-lo automaticamente no perfil da entidade 
             '_cidade'  => ['name' => \MapasCulturais\i::__('cidade'),   'showLayer' => true] // irá gerar o metadado geo_cidade mas não o exibirá na página de perfi da entidade
+            'setor_censitario'  => ['name' => \MapasCulturais\i::__('setor_censitario'),   'showLayer' => false] // irá gerar o metadado geoSetor_censitario mas não o exibirá como uma camada na visulização dos mapas.
         ],
 ```
 
