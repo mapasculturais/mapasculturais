@@ -1222,14 +1222,22 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
         foreach ($geoDivisionsHierarchyCfg as $slug => $division) {
+            
+            // Begin backward compability version < 4.0, $division is string not a array.
+            $label = $division; 
+            if (is_array($division)) { 
+                $label = $division['name'];
+            } 
+            // End backward compability
+
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
 
                 foreach ($entity_types as $type) {
-                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $division['name']));
+                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $label));
                     $app->registerMetadata($metadata, $entity_class, $type->id);
 
-                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug). '_cod', array('label' => $division['name']));
+                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug). '_cod', array('label' => $label));
                     $app->registerMetadata($metadata, $entity_class, $type->id);
                 }
             }
