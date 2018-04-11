@@ -7,8 +7,8 @@
     <footer>
         <div ng-show="spinnerCondition" class="mc-spinner"><img ng-src="{{spinnerUrl}}" /></div>
         <button ng-if="args.cancelLabel" type="button" class="mc-cancel btn btn-default" ng-click="cancel()" ng-bind-html='args.cancelLabel'></button>
-        <button ng-if="args.submitLabel" type="submit" ng-click="submit()">{{args.submitLabel}}</button>
-        </button>
+        <button ng-if="args.submitLabel" type="submit" class="submit-attach-opportunity" ng-click="submit()" >{{args.submitLabel}}</button>
+        <button ng-if="args.loadingLabel"type="button" class="btn btn-warning hidden carregando-arquivo" disabled="disabled"> {{ args.loadingLabel }} </button>
     </footer>
     <div class="mc-arrow"></div>
 </div>
