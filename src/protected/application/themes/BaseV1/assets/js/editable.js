@@ -845,12 +845,21 @@ MapasCulturais.AjaxUploader = {
                     percent.html(percentVal);
 
                     if(response.error){
+                        var _animation = this.animationTime;
+
                         MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), false);
                         var group = $form.data('group');
                         var error_message = typeof response.data == 'string' ? response.data : response.data[group];
-                        $form.find('div.alert.danger').html(error_message).fadeIn(this.animationTime).delay(5000).fadeOut(this.animationTime);
+                        $form.find('div.alert.danger').html(error_message).fadeIn(_animation).delay(5000).fadeOut(_animation);
+
+                        setTimeout(function () {
+                            $('.carregando-arquivo').hide();
+                            $('.submit-attach-opportunity').show();
+                        }, _animation);
+
                         return;
                     }
+
 
                     var $target = $($form.data('target'));
                     var group = $form.find('input:file').attr('name');
