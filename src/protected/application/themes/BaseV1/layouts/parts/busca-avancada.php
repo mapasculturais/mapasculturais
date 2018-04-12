@@ -128,6 +128,15 @@
 
             <a class="tag-selected tag-clear" ng-if="hasFilter()" ng-click="cleanAllFilters()"><?php \MapasCulturais\i::_e("Remover todos filtros");?></a>
         </div>
+        <!--#selected-filters-->
+        <div id="search-sort" ng-if="data[data.global.filterEntity].sort && data.global.viewMode == 'list'" >
+            <select ng-model="data[data.global.filterEntity].sort.sortBy"
+                ng-options="selectedItem.field as selectedItem.label for selectedItem in data[data.global.filterEntity].sort.sortFields">
+            </select>
+            <a class="icon icon-sort-list" ng-click="toggleSortOrder()" ng-if="data[data.global.filterEntity].sort.type=='ASC'" title="<?php \MapasCulturais\i::esc_attr_e("alterar para ordem ascendente"); ?>">z-a</a>
+            <a class="icon icon-sort-list" ng-click="toggleSortOrder()" ng-if="data[data.global.filterEntity].sort.type=='DESC'" title="<?php \MapasCulturais\i::esc_attr_e("alterar para ordem decrescente"); ?>">a-z</a>
+        </div>
+        <!--#search-sort-->
     </div>
     <!--#header-search-results-->
 </div>
