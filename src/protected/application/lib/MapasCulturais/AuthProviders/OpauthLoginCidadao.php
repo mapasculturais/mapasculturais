@@ -97,6 +97,13 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
                 $app->redirect ($this->createUrl(''));
             }
         });
+        
+        if($config['logout_url']){
+            $app->hook('auth.logout:after', function() use($app, $config){
+                $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
+            });
+        }
+        
     }
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
