@@ -151,7 +151,7 @@
         <?php else: ?>
             <?php $this->applyTemplateHook('nav.main.login','before'); ?>
             <li class="login" ng-app="ng-mapasculturais">
-                <a href="<?php echo $app->createUrl('panel') ?>" ng-controller="PostLoginController" ng-click="setLastUrl()">
+                <a ng-controller="PostLoginController" ng-click="setLastUrl()" data-auth="<?php echo $app->createUrl('panel') ?>">
                     <div class="icon icon-login"></div>
                     <div class="menu-item-label"><?php \MapasCulturais\i::_e("Entrar");?></div>
                 </a>

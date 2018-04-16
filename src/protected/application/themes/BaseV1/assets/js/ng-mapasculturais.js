@@ -23,9 +23,17 @@ jQuery(document).ready(function() {
     /* Acompanha navegação do usuário até ir para página de login */
     app.controller('PostLoginController', ['$scope', '$location', '$http', function ($scope, $location, $http) {
         $scope.after_login = $location.absUrl();
+
         $scope.setLastUrl = function () {
-          $http.post(MapasCulturais.createUrl('panel', 'setUrlCookie'), {redirect_url_auth: $scope.after_login});
+            var endPoint = MapasCulturais.createUrl('panel', 'setUrlCookie');
+            var params   = {redirect_url_auth: $scope.after_login};
+            var auth_url = $("#main-nav ul.menu li.login a").attr('data-auth');
+
+            $http.post(endPoint, params).then(function(){
+               window.location = auth_url;
+            });
         };
+
         $scope.$watch(function() {
             return $location.absUrl();
         }, function () {
