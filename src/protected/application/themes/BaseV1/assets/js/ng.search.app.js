@@ -606,8 +606,10 @@
             }
         }
 
-        $scope.toggleSortOrder = function() {            
-            $scope.data[$scope.data.global.filterEntity].sort.type = $scope.data[$scope.data.global.filterEntity].sort.type == 'ASC' ? 'DESC' : 'ASC';
+        $scope.toggleSortOrder = function(orde) {            
+            if (orde != $scope.data[$scope.data.global.filterEntity].sort.type ) {
+                $scope.data[$scope.data.global.filterEntity].sort.type = $scope.data[$scope.data.global.filterEntity].sort.type == 'ASC' ? 'DESC' : 'ASC';
+            }
         }
 
     }]);
