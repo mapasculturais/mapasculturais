@@ -7,13 +7,45 @@ use MapasCulturais\App,
     MapasCulturais\Entities,
     MapasCulturais\Definitions,
     MapasCulturais\Exceptions;
+use Respect\Validation\Rules\Email;
 
 class Module extends \MapasCulturais\Module{
 
     public function __construct(array $config = array()) {
         $config = $config + ['compliant' => true, 'suggestion' => true];
-        
+
         parent::__construct($config);
+    }
+
+    private function setRecipients($_app, $_entity) {
+
+        if ($_app instanceof \MapasCulturais\App && $_entity instanceof \MapasCulturais\Entity) {
+            $_subsite_admins = $_app->repo('User')->getAdmins($_entity->subsiteId);
+            $destinatarios = array();
+
+            foreach($_subsite_admins as $user) {
+                $destinatarios[] = $user->email;
+            }
+
+            $_responsible = $_app->repo('Agent')->find($_entity->owner->id);
+            $_other_recipients = [
+                'entity_public'       => $_entity->emailPublico,
+                'entity_private'      => $_entity->emailPrivado,
+                'responsible_public'  => $_responsible->emailPublico,
+                'responsible_private' => $_responsible->emailPrivado
+            ];
+
+            $mail_validator = new Email();
+            foreach ($_other_recipients as $_recipient) {
+                if ($mail_validator->validate($_recipient) && !in_array($_recipient, $destinatarios)) {
+                    $destinatarios[] = $_recipient;
+                }
+            }
+
+            return $destinatarios;
+        }
+
+        return array();
     }
 
     public function _init() {
@@ -46,7 +78,6 @@ class Module extends \MapasCulturais\Module{
                     'compliantEmailRequired' => i::__('O preenchimento do e-mail é obrigatório.'),
                     'compliantTypeRequired' => i::__('O preenchimento do tipo de denúncia é obrigatório.'),
                     'compliantMessageRequired' => i::__('O preenchimento da mensagem da denúncia é obrigatório.'),
-                    'compliantMessageRequired' => i::__('O preenchimento da mensagem da denúncia é obrigatório.'),
                     'compliantSent' => i::__('A denúncia foi enviada.'),
 
                     'suggestionEmailRequired' => i::__('O preenchimento do e-mail é obrigatório.'),
@@ -60,7 +91,7 @@ class Module extends \MapasCulturais\Module{
         });
 
 
-        $app->hook('POST(<<agent|space|event|project>>.sendCompliantMessage)', function(){
+        $app->hook('POST(<<agent|space|event|project>>.sendCompliantMessage)', function() use ($plugin) {
             $app = App::i();
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
@@ -88,11 +119,8 @@ class Module extends \MapasCulturais\Module{
             $message = $app->renderMailerTemplate('compliant',$dataValue);
 
             if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-                $admins = $app->repo('User')->getAdmins($entity->subsiteId);
-                $tos = [];
-                foreach($admins as $user) {
-                    $tos[] = $user->email;
-                }
+                $tos = $plugin->setRecipients($app, $entity);
+
                 /*
                 * Envia e-mail para o administrador para instalação Mapas
                 */
@@ -124,8 +152,9 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('POST(<<agent|space|event|project>>.sendSuggestionMessage)', function() {
+        $app->hook('POST(<<agent|space|event|project>>.sendSuggestionMessage)', function() use ($plugin) {
             $app = App::i();
+
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             $message = "";
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
@@ -150,15 +179,13 @@ class Module extends \MapasCulturais\Module{
                 'message'       => $this->data['message']
             ];
 
+
             $message = $app->renderMailerTemplate('suggestion',$dataValue);
             if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
                 if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
 
-                    $admins = $app->repo('User')->getAdmins($entity->subsiteId);
-                    $tos = [];
-                    foreach($admins as $user) {
-                        $tos[] = $user->email;
-                    }
+                    $tos = $plugin->setRecipients($app, $entity);
+
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $tos,
