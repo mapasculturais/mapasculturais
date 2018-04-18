@@ -1536,7 +1536,9 @@ class Theme extends MapasCulturais\Theme {
             /* Translators: de uma data. Ex: *de* 12/12 a 13/12 */
             'dateFrom' => i::__('de'),
             /* Translators: a uma data. Ex: de 12/12 *a* 13/12 */
-            'dateTo' => i::__('a')
+            'dateTo' => i::__('a'),
+            'CreateDate' => i::__('Data de criação'),
+            'name' => i::__('Nome'),
         ]);
     }
 
