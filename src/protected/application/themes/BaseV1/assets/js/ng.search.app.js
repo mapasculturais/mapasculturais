@@ -64,8 +64,8 @@
             showAdvancedFilters:false,
             filters: {},
             sort: {
-                type: 'ASC', //DESC or ASC
-                sortBy: 'name',
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
                 sortFields: [
                     {"label":labels['name'],"field":"name"},
                     {"label":labels['CreateDate'],"field":"createTimestamp"}
@@ -77,8 +77,8 @@
             showAdvancedFilters:false,
             filters: {},
             sort: {
-                type: 'ASC', //DESC or ASC
-                sortBy: 'name',
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
                 sortFields: [
                     {"label":labels['name'],"field":"name"},
                     {"label":labels['CreateDate'],"field":"createTimestamp"}
@@ -90,15 +90,8 @@
             from: moment().format('YYYY-MM-DD'),
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
             showAdvancedFilters:false,
-            filters: {},
-            sort: {
-                type: 'ASC', //DESC or ASC
-                sortBy: 'name',
-                sortFields: [
-                    {"label":labels['name'],"field":"name"},
-                    {"label":labels['CreateDate'],"field":"createTimestamp"}
-                ]
-            }
+            filters: {}
+            
         },
         project: {
             keyword: '',
@@ -108,8 +101,8 @@
             showAdvancedFilters:false,
             filters: {},
             sort: {
-                type: 'ASC', //DESC or ASC
-                sortBy: 'name',
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
                 sortFields: [
                     {"label":labels['name'],"field":"name"},
                     {"label":labels['CreateDate'],"field":"createTimestamp"}
@@ -125,8 +118,8 @@
             showAdvancedFilters:false,
             filters: {},
             sort: {
-                type: 'ASC', //DESC or ASC
-                sortBy: 'name',
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
                 sortFields: [
                     {"label":labels['name'],"field":"name"},
                     {"label":labels['CreateDate'],"field":"createTimestamp"}
