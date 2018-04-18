@@ -170,7 +170,7 @@
         'search.controller.spatial',
         'mc.module.notifications']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', 'loginService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService, loginService) {
         $scope.defaultLocationRadius = defaultLocationRadius;
         $scope.shareurl = $location.absUrl();
         $rootScope.resetPagination = function(){
@@ -565,6 +565,10 @@
             } else {
                 return !$scope.collapsedFilters && !$scope.showInfobox();
             }
+        };
+
+        $scope.setRedirectUrl = function() {
+            loginService.setLastUrl();
         }
 
     }]);
