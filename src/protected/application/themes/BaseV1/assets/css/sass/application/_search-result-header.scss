@@ -5,7 +5,7 @@
 
 #search-results-header {
     position: relative;
-    max-height: 2*$line-height-base;
+    /* max-height: 2*$line-height-base; */
     padding: 0 141px 0 0;
     background-color: $gray-lighter;
     color: $brand-accent;
@@ -108,67 +108,75 @@
 }
 
 #search-sort {
-    float: right; 
-    padding: 0.5rem 0.5rem 0 0.5rem; 
+    float: left; 
+    padding-right: 0.5em; 
+    margin-right: 0.5em; 
     box-sizing: border-box;
+	border-right: 2px solid #d3d3d3;
+	
+	.switch-field {
+	    font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;    
+	    overflow: hidden;
+	    display: inline;
+	    position: relative;
+	}
+	  
+	.switch-field input {
+	  position: absolute !important;
+	  clip: rect(0, 0, 0, 0);
+	  height: 1px;
+	  width: 1px;
+	  border: 0;
+	  overflow: hidden;
+	}
+
+	.switch-field label {
+	float: right;
+	}
+
+	.switch-field label {
+	display: inline-block;
+	width: 16px;
+	background-color: #e4e4e4;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 0.8em;
+	font-weight: normal;
+	text-align: center;
+	text-shadow: none;
+	padding: 0px 4px;
+	border: 1px solid #ccc;    
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition:    all 0.1s ease-in-out;
+	-ms-transition:     all 0.1s ease-in-out;
+	-o-transition:      all 0.1s ease-in-out;
+	transition:         all 0.1s ease-in-out;
+	}
+
+	.switch-field label:hover {
+	  cursor: pointer;
+	}
+
+	.switch-field input:checked + label {
+	background-color: rgb(180, 180, 180);
+	-webkit-box-shadow: none;
+	box-shadow: none;    
+	}
+
+	.switch-field label:first-of-type {
+	border-radius: 0 4px 4px 0;
+	}
+
+	/*.switch-field label:last-of-type {
+	border-radius: 4px 0 0 4px;
+	}*/
+
+	.switch-field select {
+	  border-radius: 0px;
+	  font-size: 0.8em;
+	  height: 24px;
+	  margin-bottom: 0px;
+	  
+	}
+	
 }
 
-.switch-field {
-    font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;    
-    overflow: hidden;
-    display: inline;
-    position: relative;
-  }
-  
-  .switch-field input {
-      position: absolute !important;
-      clip: rect(0, 0, 0, 0);
-      height: 1px;
-      width: 1px;
-      border: 0;
-      overflow: hidden;
-  }
-  
-  .switch-field label {
-    float: right;
-  }
-  
-  .switch-field label {
-    display: inline-block;
-    width: 16px;
-    background-color: #e4e4e4;
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 11px;
-    font-weight: normal;
-    text-align: center;
-    text-shadow: none;
-    padding: 3px 6px;
-    border: 1px solid rgba(0, 0, 0, 0.2);    
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition:    all 0.1s ease-in-out;
-    -ms-transition:     all 0.1s ease-in-out;
-    -o-transition:      all 0.1s ease-in-out;
-    transition:         all 0.1s ease-in-out;
-  }
-  
-  .switch-field label:hover {
-      cursor: pointer;
-  }
-  
-  .switch-field input:checked + label {
-    background-color: rgb(180, 180, 180);
-    -webkit-box-shadow: none;
-    box-shadow: none;    
-  }
-  
-  .switch-field label:first-of-type {
-    border-radius: 0 4px 4px 0;
-  }
-  
-  /*.switch-field label:last-of-type {
-    border-radius: 4px 0 0 4px;
-  }*/
-
-  .switch-field select {
-      border-radius: 0px;
-  }
