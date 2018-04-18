@@ -20,24 +20,24 @@ jQuery(document).ready(function() {
         };
     }]);
 
-    /* Acompanha navegação do usuário até ir para página de login */
-    app.controller('PostLoginController', ['$scope', '$location', '$http', function ($scope, $location, $http) {
-        $scope.after_login = $location.absUrl();
-
-        $scope.setLastUrl = function () {
-            var endPoint = MapasCulturais.createUrl('panel', 'setUrlCookie');
-            var params   = {redirect_url_auth: $scope.after_login};
-            var auth_url = $("#main-nav ul.menu li.login a").attr('data-auth');
-
-            $http.post(endPoint, params).then(function(){
-               window.location = auth_url;
-            });
-        };
-
-        $scope.$watch(function() {
+    app.factory('loginService', ['$rootScope', '$http', '$location', function ($rootScope, $http, $location) {
+        $rootScope.after_login = $location.absUrl();
+        $rootScope.$watch(function() {
             return $location.absUrl();
         }, function () {
-            $scope.after_login = $location.absUrl();
+            $rootScope.after_login = $location.absUrl();
         });
+
+        return {
+            setLastUrl: function () {
+                var endPoint = MapasCulturais.createUrl('panel', 'setUrlCookie');
+                var params   = {redirect_url_auth: $rootScope.after_login};
+                var auth_url = $("#main-nav ul.menu li.login a").attr('data-auth');
+
+                $http.post(endPoint, params).then(function(){
+                    window.location = auth_url;
+                });
+            }
+        };
     }]);
 })(angular);
