@@ -121,8 +121,8 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
      * Defines the URL to redirect after authentication
      * @param string $redirect_path
      */
-    protected function _setRedirectPath($redirect_path){
-        $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
+    protected function _setRedirectPath($redirect_path) {
+        parent::_setRedirectPath($redirect_path);
     }
     /**
      * Returns the URL to redirect after authentication
