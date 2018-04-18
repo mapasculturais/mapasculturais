@@ -9,3 +9,4 @@
 * Acrescenra taxonomias personallizadas na extração de planilhas
 * Na página de inscrição em uma oportunidade, o campo "Agente responsável" já vem com o Agente Padrão do usuário logado preenchido
 * Adiciona opção para ordenação na busca quando a opção de visualização por lista é selecionada.
+* Após fazer login, redireciona usuário para página em que estava navegando

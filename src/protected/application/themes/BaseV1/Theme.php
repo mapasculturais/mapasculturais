@@ -880,11 +880,11 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function getSearchProjectsUrl(){
-        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";
     }
 
     function getSearchOpportunitiesUrl(){
-        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";;
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";
     }
 
     function getSearchSealsUrl(){
