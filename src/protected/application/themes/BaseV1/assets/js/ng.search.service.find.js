@@ -59,9 +59,9 @@
 
                 lastQueries.enabledEntities = angular.copy(data.global.enabled);
             }else{
-
+                
                 var listQueryData = data2searchData(activeEntity, data[activeEntity]);
-
+                
                 if(activeEntity !== lastQueries.listedEntity)
                     $rootScope.pagination[activeEntity] = 1;
 
@@ -70,7 +70,7 @@
                 if( isDiff ){
                     $rootScope.isPaginating = true;
                     lastQueries.listedEntity = activeEntity;
-                    lastQueries.list = angular.copy(listQueryData);
+                    lastQueries.list = angular.copy(listQueryData);                    
                     callApi(activeEntity, angular.copy(listQueryData));
                 }else{
                     $rootScope.isPaginating = false;
@@ -215,8 +215,8 @@
                             if (filter.type === 'term'){
                                 var search_value = entityData.filters[search_filter].map(function(e){
                                     return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
-                                })
-;                                searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
+                                });
+                                searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
                             } else
                                 searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
                         }
@@ -229,18 +229,19 @@
                     var radius = data.global.locationFilters[type].radius;
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
+                if(entityData.sort) {
+                    searchData['@order'] = `${entityData.sort.sortBy} ${entityData.sort.type}`;                    
+                }
                 return searchData;
             }
 
             function apiFind(entity, searchData, page, action) {
-
-
                 if(MapasCulturais.searchFilters && MapasCulturais.searchFilters[entity]){
                     angular.extend(searchData, MapasCulturais.searchFilters[entity]);
                 }
 
                 var selectData = MapasCulturais.searchQueryFields;
-
+                
                 var apiExportURL = MapasCulturais.baseURL + 'api/';
                 var exportEntity = entity;
                 if(entity === 'space'){
@@ -269,7 +270,6 @@
                 }
 
                 action = action || 'find';
-                searchData['@order'] = 'name ASC';
                 delete searchData['@count'];
 
                 var querystring = '';
@@ -323,7 +323,7 @@
                 }
 
                 $rootScope.apiURL = apiExportURL+queryString_apiExport;
-
+                
                 return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});
             }
 

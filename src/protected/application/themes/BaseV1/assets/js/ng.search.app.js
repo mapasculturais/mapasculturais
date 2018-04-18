@@ -53,7 +53,6 @@
                     lng: null
                 }
             },
-
             enabled: {
                 agent: false,
                 space: false,
@@ -63,12 +62,28 @@
         agent: {
             keyword: '',
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: [
+                    {"label":labels['name'],"field":"name"},
+                    {"label":labels['CreateDate'],"field":"createTimestamp"}
+                ]
+            }
         },
         space: {
             keyword: '',
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: [
+                    {"label":labels['name'],"field":"name"},
+                    {"label":labels['CreateDate'],"field":"createTimestamp"}
+                ]
+            }
         },
         event: {
             keyword: '',
@@ -76,6 +91,7 @@
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
             showAdvancedFilters:false,
             filters: {}
+            
         },
         project: {
             keyword: '',
@@ -83,7 +99,15 @@
             types: [],
             isVerified: false,
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: [
+                    {"label":labels['name'],"field":"name"},
+                    {"label":labels['CreateDate'],"field":"createTimestamp"}
+                ]
+            }
         },
         opportunity: {
             keyword: '',
@@ -92,7 +116,15 @@
             isVerified: false,
             ropen: false,
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: [
+                    {"label":labels['name'],"field":"name"},
+                    {"label":labels['CreateDate'],"field":"createTimestamp"}
+                ]
+            }
         }
     };
 
@@ -564,6 +596,12 @@
                 return true;
             } else {
                 return !$scope.collapsedFilters && !$scope.showInfobox();
+            }
+        }
+
+        $scope.toggleSortOrder = function(orde) {            
+            if (orde != $scope.data[$scope.data.global.filterEntity].sort.type ) {
+                $scope.data[$scope.data.global.filterEntity].sort.type = $scope.data[$scope.data.global.filterEntity].sort.type == 'ASC' ? 'DESC' : 'ASC';
             }
         }
 
