@@ -6,10 +6,10 @@ use MapasCulturais\App,
     MapasCulturais\i,
     MapasCulturais\Entities,
     MapasCulturais\Definitions,
-    MapasCulturais\Exceptions;
-use Respect\Validation\Rules\Email;
+    MapasCulturais\Exceptions,
+    Respect\Validation\Rules\Email;
 
-class Module extends \MapasCulturais\Module{
+class Module extends \MapasCulturais\Module {
 
     public function __construct(array $config = array()) {
         $config = $config + ['compliant' => true, 'suggestion' => true];
@@ -17,7 +17,7 @@ class Module extends \MapasCulturais\Module{
         parent::__construct($config);
     }
 
-    private function setRecipients($_app, $_entity) {
+    private function setRecipients($_app, $_entity, $onlyAdmins = false) {
 
         if ($_app instanceof \MapasCulturais\App && $_entity instanceof \MapasCulturais\Entity) {
             $_subsite_admins = $_app->repo('User')->getAdmins($_entity->subsiteId);
@@ -27,18 +27,20 @@ class Module extends \MapasCulturais\Module{
                 $destinatarios[] = $user->email;
             }
 
-            $_responsible = $_app->repo('Agent')->find($_entity->owner->id);
-            $_other_recipients = [
-                'entity_public'       => $_entity->emailPublico,
-                'entity_private'      => $_entity->emailPrivado,
-                'responsible_public'  => $_responsible->emailPublico,
-                'responsible_private' => $_responsible->emailPrivado
-            ];
+            if(!$onlyAdmins) {
+                $_responsible = $_app->repo('Agent')->find($_entity->owner->id);
+                $_other_recipients = [
+                    'entity_public'       => $_entity->emailPublico,
+                    'entity_private'      => $_entity->emailPrivado,
+                    'responsible_public'  => $_responsible->emailPublico,
+                    'responsible_private' => $_responsible->emailPrivado
+                ];
 
-            $mail_validator = new Email();
-            foreach ($_other_recipients as $_recipient) {
-                if ($mail_validator->validate($_recipient) && !in_array($_recipient, $destinatarios)) {
-                    $destinatarios[] = $_recipient;
+                $mail_validator = new Email();
+                foreach ($_other_recipients as $_recipient) {
+                    if ($mail_validator->validate($_recipient) && !in_array($_recipient, $destinatarios)) {
+                        $destinatarios[] = $_recipient;
+                    }
                 }
             }
 
@@ -119,7 +121,7 @@ class Module extends \MapasCulturais\Module{
             $message = $app->renderMailerTemplate('compliant',$dataValue);
 
             if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-                $tos = $plugin->setRecipients($app, $entity);
+                $tos = $plugin->setRecipients($app, $entity, true);
 
                 /*
                 * Envia e-mail para o administrador para instalação Mapas
