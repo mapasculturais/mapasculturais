@@ -200,8 +200,8 @@
             });
             
             var tabActive = location.hash.match(new RegExp('tab=([^&]*)'));
-            tabActive = (tabActive == null) ? 'sobre' : tabActive[1];
-            tabActive = ($(`.aba-content#${tabActive}`).length) ? tabActive : 'sobre';
+            tabActive = (tabActive == null) ? $('.tabs-content .aba-content').attr('id') : tabActive[1];
+            tabActive = ($(`.aba-content#${tabActive}`).length) ? tabActive : $('.tabs-content .aba-content').attr('id');
             
             $('.tabs-content .aba-content').hide();
             $(`.tabs-content #${tabActive}`).show();
