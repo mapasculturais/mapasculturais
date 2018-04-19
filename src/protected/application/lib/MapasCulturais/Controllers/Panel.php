@@ -19,6 +19,12 @@ use MapasCulturais\Entities\Subsite;
  */
 class Panel extends \MapasCulturais\Controller {
 
+    function POST_setUrlCookie() {
+        if( is_array($this->data) && isset($this->data['redirect_url_auth']) ) {
+            setcookie('mapasculturais_user_nav_url', $this->data['redirect_url_auth'], 0 , '/');
+        }
+    }
+
     /**
      * Render the user panel.
      *

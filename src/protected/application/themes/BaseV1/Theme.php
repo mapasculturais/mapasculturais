@@ -880,11 +880,11 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function getSearchProjectsUrl(){
-        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";
     }
 
     function getSearchOpportunitiesUrl(){
-        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";;
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";
     }
 
     function getSearchSealsUrl(){
@@ -1536,7 +1536,9 @@ class Theme extends MapasCulturais\Theme {
             /* Translators: de uma data. Ex: *de* 12/12 a 13/12 */
             'dateFrom' => i::__('de'),
             /* Translators: a uma data. Ex: de 12/12 *a* 13/12 */
-            'dateTo' => i::__('a')
+            'dateTo' => i::__('a'),
+            'CreateDate' => i::__('Data de criação'),
+            'name' => i::__('Nome'),
         ]);
     }
 

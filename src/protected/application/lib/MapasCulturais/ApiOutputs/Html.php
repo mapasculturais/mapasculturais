@@ -426,6 +426,14 @@ class Html extends \MapasCulturais\ApiOutput{
                     <?php foreach($first_item_keys as $k): ?><?php
                         if($k==='terms'){
                             $v = $item->$k;
+                                            
+                            foreach ($v as $term => $item1) {
+                                if($term == 'area' || $term == 'tag' || $term == 'linguagem')
+                                    continue;
+                                
+                                $name_taxo = App::i()->getRegisteredTaxonomyBySlug($term)->description;
+                                echo "<th>" . $this->convertToUTF16($name_taxo) . "</th>";
+                            }
 
                             if(property_exists($v, 'area')){ ?><th><?php echo $this->convertToUTF16($this->translate('area')); ?></th><?php }
                             if(property_exists($v, 'tag')){ ?><th><?php echo $this->convertToUTF16($this->translate('tag')); ?></th><?php }
@@ -643,6 +651,16 @@ class Html extends \MapasCulturais\ApiOutput{
         ?>
         <tr>
                     <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
+                        <?php 
+                        
+                            if($k === 'terms'){
+                            foreach ($item->terms as $term => $item1) {
+                                if($term == 'area' || $term == 'tag' || $term == 'linguagem')
+                                    continue;
+                                echo "<td>" . $this->convertToUTF16(implode(", ",$item1)) . "</td>";
+                            }
+                        }
+                        ?>
                         <?php if($k==='terms'): ?>
                             <?php if(property_exists($v, 'area')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>

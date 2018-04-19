@@ -88,8 +88,17 @@ abstract class AuthProvider {
      * Defines the URL to redirect after authentication
      * @param string $redirect_path
      */
-    protected function _setRedirectPath($redirect_path){
+    protected function _setRedirectPath($redirect_path) {
+        if (isset($_COOKIE['mapasculturais_user_nav_url'])) {
+            $_SESSION['mapasculturais.auth.redirect_path'] = $_COOKIE['mapasculturais_user_nav_url'];
+            return;
+        }
+
         $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
+    }
+
+    protected function getRedirectPath() {
+        return $_SESSION['mapasculturais.auth.redirect_path'];
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){

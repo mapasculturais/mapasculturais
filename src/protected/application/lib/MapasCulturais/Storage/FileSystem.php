@@ -148,7 +148,7 @@ class FileSystem extends \MapasCulturais\Storage{
             $parent = $file->parent ? $file->parent : $file->owner;
             
             if($parent && is_object($parent) && $parent instanceof \MapasCulturais\Entities\File){
-                $relative_path = dirname($this->getPath($parent, true)) . '/file/' . $parent->id . '/' . $file->name;;
+                $relative_path = dirname($this->getPath($parent, true)) . '/file/' . $parent->id . '/' . $file->name;
             }else{
                 $relative_path = strtolower(str_replace("MapasCulturais\Entities\\", "" , $parent->getClassName())) . '/' . $parent->id . '/' . $file->name;
             }

@@ -95,7 +95,7 @@
         </table>
     </label>
     <br />
-    <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("ok"); ?>" />
+    <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("Logar"); ?>" />
 </form>
 
 <hr/>
