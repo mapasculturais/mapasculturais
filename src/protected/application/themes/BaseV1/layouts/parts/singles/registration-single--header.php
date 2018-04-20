@@ -1,6 +1,6 @@
 <div class="alert success">
-    <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>
-    <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i:s'); ?>
+    <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>    
+    <?php echo $entity->sentTimestamp->format( i::__('d/m/Y à\s H:i:s', 'culturaenlinea') ); ?>
 </div>
 
 <h3 class="registration-header"><?php \MapasCulturais\i::_e("Formulário de Inscrição");?></h3>
