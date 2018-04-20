@@ -735,6 +735,11 @@ class ApiQuery {
         
         if($this->_subsiteId){
             $where = "($where) OR e._subsiteId = {$this->_subsiteId}";
+
+            if($this->entityClassName == "MapasCulturais\Entities\Agent" && App::i()->auth->isUserAuthenticated()) { // entidade é agent e o usuário esta logado?
+                $userID = App::i()->user->id;
+                $where = "$where OR e.userId = {$userID}"; //Adiciona todos os agentes pertecentes ao usuário a resposta.
+            }
         }
 
         return $where;
