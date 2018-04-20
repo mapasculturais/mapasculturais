@@ -684,6 +684,22 @@ return [
      * - files do grupo rules
      */
 
+    'create permission cache pending table2' => function() use ($conn) {
+
+        if(__table_exists('permission_cache_pending')){
+            echo "TABLE permission_cache_pending ALREADY EXISTS";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE TABLE permission_cache_pending (
+            id INT NOT NULL, 
+            object_id INT NOT NULL, 
+            object_type VARCHAR(255) NOT NULL, 
+            
+            PRIMARY KEY(id)
+        );");
+    },
+
     'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){
             __exec("DELETE FROM registration_meta WHERE object_id IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
@@ -961,16 +977,6 @@ return [
         $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");
     },
 
-    'fix subsite verifiedSeals array' => function() use($app){
-        $subsites = $app->repo('Subsite')->findAll();
-        foreach($subsites as $subsite){
-            $subsite->setVerifiedSeals($subsite->verifiedSeals);
-            $subsite->save(true);
-        }
-
-        return false;
-    },
-    
     'ALTER TABLE file ADD private and update' => function () use ($conn) {
         if(__column_exists('file', 'private')){
             return true;
@@ -980,6 +986,16 @@ return [
         
         $conn->executeQuery("UPDATE file SET private = true WHERE grp LIKE 'rfc_%' OR grp = 'zipArchive'");
         
+    },
+
+    'fix subsite verifiedSeals array' => function() use($app){
+        $subsites = $app->repo('Subsite')->findAll();
+        foreach($subsites as $subsite){
+            $subsite->setVerifiedSeals($subsite->verifiedSeals);
+            $subsite->save(true);
+        }
+
+        return false;
     },
     
     'move private files' => function () use ($conn) {
@@ -1021,21 +1037,6 @@ return [
         
     },
 	
-	'create permission cache pending table2' => function() use ($conn) {
 
-        if(__table_exists('permission_cache_pending')){
-            echo "TABLE permission_cache_pending ALREADY EXISTS";
-            return true;
-        }
-
-        $conn->executeQuery("CREATE TABLE permission_cache_pending (
-			id INT NOT NULL, 
-			object_id INT NOT NULL, 
-			object_type VARCHAR(255) NOT NULL, 
-			
-			PRIMARY KEY(id)
-		);");
-
-    },
 
 ] + $updates ;
