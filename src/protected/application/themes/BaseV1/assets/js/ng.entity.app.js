@@ -1,7 +1,9 @@
 (function(angular){
     "use strict";
 
-    var app = angular.module('entity.app', MapasCulturais.angularAppDependencies);
+    var entity_deps = MapasCulturais.angularAppDependencies;
+    entity_deps.push('ng-mapasculturais');
+    var app = angular.module('entity.app', entity_deps);
 
     app.factory('UrlService', [function(){
         return function(controller){
@@ -16,9 +18,12 @@
     }]);
 
 
-    app.controller('EntityController',['$scope', 'EditBox', function($scope, EditBox){
+    app.controller('EntityController',['$scope', 'EditBox', 'loginService', function($scope, EditBox, loginService){
         $scope.editbox = EditBox;
         $scope.data = {};
+        $scope.setRedirectUrl = function() {
+            loginService.setLastUrl();
+        }
     }]);
 
     app.directive('onRepeatDone', ['$rootScope', '$timeout', function($rootScope, $timeout) {

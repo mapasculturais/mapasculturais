@@ -33,8 +33,6 @@
                 });
             }
         }
-        ;
-
 
         var editBox = {
             openEditboxes: {},
@@ -71,7 +69,6 @@
                         this.close(id);
                     }
 
-
                     this.openEditboxes[editboxId] = true;
 
                     var $box = jQuery('#' + editboxId).find('>div.edit-box');
@@ -82,24 +79,23 @@
                     var $firstInput = $($box.find('input,select,textarea').get(0));
                     $firstInput.focus();
 
-
                     setTimeout(function () {
                         setPosition($box, $event.target);
                     });
-
+                    jQuery('.carregando-arquivo').hide();
                 },
-                close: function (editboxId) {
-                    if (typeof this.openEditboxes[editboxId] === 'undefined')
-                        throw new Error('EditBox with id ' + editboxId + ' does not exists');
+            close: function (editboxId) {
+                if (typeof this.openEditboxes[editboxId] === 'undefined')
+                    throw new Error('EditBox with id ' + editboxId + ' does not exists');
 
-                    this.openEditboxes[editboxId] = false;
+                this.openEditboxes[editboxId] = false;
 
-                    var $box = jQuery('#' + editboxId).find('>div.edit-box');
-                    $box.hide();
+                var $box = jQuery('#' + editboxId).find('>div.edit-box');
+                $box.hide();
 
-                    jQuery('#' + editboxId).trigger('close');
-                }
-            };
+                jQuery('#' + editboxId).trigger('close');
+            }
+        };
 
             jQuery('body').on('keyup', 'edit-box', function (event) {
                 if (event.keyCode === 27) {
