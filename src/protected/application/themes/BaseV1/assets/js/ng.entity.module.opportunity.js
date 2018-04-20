@@ -789,9 +789,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.showField = function (field) {
 
-    }
+    };
 
     $scope.sendFile = function(attrs){
+        $('.carregando-arquivo').show();
+        $('.submit-attach-opportunity').hide();
+
         var $form = $('#' + attrs.id + ' form');
         $form.submit();
         if(!$form.data('onSuccess')){
@@ -815,7 +818,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     };
 
-    var initAjaxUploader = function(id, index){
+    var initAjaxUploader = function(id, index) {
         var $form = $('#editbox-file-' + id + ' form');
         if($form.data('initialized'))
             return;
@@ -831,6 +834,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
             $scope.$apply();
             setTimeout(function(){
+                $('.carregando-arquivo').hide();
+                $('.submit-attach-opportunity').show();
                 EditBox.close('editbox-file-'+id, evt);
             }, 700);
         });

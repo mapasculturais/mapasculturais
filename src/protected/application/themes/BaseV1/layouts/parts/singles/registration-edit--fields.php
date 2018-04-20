@@ -55,7 +55,12 @@
                     <a class="btn btn-default delete hltip" ng-if="!field.required && field.file" ng-click="removeFile(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("excluir anexo");?>"><?php \MapasCulturais\i::_e("Excluir");?></a>
                 </div>
 
-                <edit-box id="editbox-file-{{field.id}}" position="bottom" title="{{field.title}} {{field.required ? '*' : ''}}" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true' on-submit="sendFile" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar anexo");?>" index="{{$index}}" spinner-condition="data.uploadSpinner">
+                <edit-box id="editbox-file-{{field.id}}" position="bottom" title="{{field.title}} {{field.required ? '*' : ''}}"
+                          cancel-label ="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>"
+                          submit-label ="<?php \MapasCulturais\i::esc_attr_e("Enviar anexo");?>"
+                          loading-label="<?php \MapasCulturais\i::esc_attr_e("Carregando ...");?>"
+                          on-submit="sendFile" close-on-cancel='true' index="{{$index}}" spinner-condition="data.uploadSpinner">
+
                     <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{field.groupName}}"  enctype="multipart/form-data">
                         <div class="alert danger hidden"></div>
                         <p class="form-help"><?php \MapasCulturais\i::_e("Tamanho máximo do arquivo:");?> {{maxUploadSizeFormatted}}</p>
