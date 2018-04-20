@@ -821,6 +821,23 @@ return [
         }
     },
 
+    'create permission cache pending table2' => function() use ($conn) {
+
+        if(__table_exists('permission_cache_pending')){
+            echo "TABLE permission_cache_pending ALREADY EXISTS";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE TABLE permission_cache_pending (
+			id INT NOT NULL, 
+			object_id INT NOT NULL, 
+			object_type VARCHAR(255) NOT NULL,
+			
+			PRIMARY KEY(id)
+		);");
+
+    },
+
     'create evaluation methods tables' => function (){
         if(__table_exists('evaluation_method_configuration')){
             echo "evaluation_method_configuration table already exists";
@@ -1019,23 +1036,6 @@ return [
         
         
         
-    },
-	
-	'create permission cache pending table2' => function() use ($conn) {
-
-        if(__table_exists('permission_cache_pending')){
-            echo "TABLE permission_cache_pending ALREADY EXISTS";
-            return true;
-        }
-
-        $conn->executeQuery("CREATE TABLE permission_cache_pending (
-			id INT NOT NULL, 
-			object_id INT NOT NULL, 
-			object_type VARCHAR(255) NOT NULL, 
-			
-			PRIMARY KEY(id)
-		);");
-
     },
 
 ] + $updates ;
