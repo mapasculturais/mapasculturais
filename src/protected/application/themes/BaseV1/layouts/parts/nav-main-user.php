@@ -13,6 +13,11 @@
         <li>
             <a href="<?php echo $app->createUrl('panel'); ?>"><?php echo $this->dict('site: panel');?></a>
         </li>
+        
+        <li>
+            <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"></span><?php \MapasCulturais\i::_e("Meu Perfil");?></a>
+        </li>
+        
         <?php if($app->isEnabled('events')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
             <li>
@@ -26,11 +31,6 @@
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
-                <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
-            </li>
-
-            <li>
-                <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"></span><?php \MapasCulturais\i::_e("Meu Perfil");?></a>
                 <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
