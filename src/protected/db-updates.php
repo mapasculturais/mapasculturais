@@ -610,7 +610,7 @@ return [
         __try("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __try("ALTER TABLE subsite_meta ADD PRIMARY KEY (id);");
 
-        __try("CREATE INDEX subsite_meta_owner_key_idx  ON subsite_meta (object_id, key);");
+        __try("CREATE INDEX subsite_meta_owner_key_idx ON subsite_meta (object_id, key);");
         __try("CREATE INDEX subsite_meta_owner_idx ON subsite_meta (object_id);");
 
         __try("ALTER TABLE agent_meta DROP CONSTRAINT agent_agent_meta_fk;");
@@ -642,7 +642,7 @@ return [
         __try("ALTER TABLE space_meta ALTER key TYPE VARCHAR(255);");
         __try("ALTER TABLE space_meta DROP CONSTRAINT IF EXISTS FK_BC846EBF232D562B;");
         __try("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX space_meta_owner_key_idx  ON space_meta (object_id, key);");
+        __try("CREATE INDEX space_meta_owner_key_idx ON space_meta (object_id, key);");
         __try("CREATE INDEX space_meta_owner_idx ON space_meta (object_id);");
 
         __try("ALTER TABLE project_meta DROP CONSTRAINT project_project_meta_fk;");
