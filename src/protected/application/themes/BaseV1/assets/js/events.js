@@ -2,6 +2,10 @@ $(function(){
     MapasCulturais.EventOccurrenceManager.initMapTogglers('.toggle-mapa');
 });
 
+MapasCulturais.eventModal = function (){
+    console.log('asafe');
+};
+
 MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));

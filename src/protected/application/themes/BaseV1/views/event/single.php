@@ -562,3 +562,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <script type="text/html" id="event-occurrence-item" class="js-mustache-template">
     <?php echo $eventOccurrenceItemTemplate; ?>
 </script>
+
+<div id="modalTeste" class="js-dialog">
+    <h1>Modal Teste</h1>
+</div>
