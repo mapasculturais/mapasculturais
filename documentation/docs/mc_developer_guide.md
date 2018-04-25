@@ -432,11 +432,40 @@ De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáv
    Este objeto é bastante útil no fluxo do desenvolvimento, pois podemos utilizar várias de suas propriedades para debugar e nos situarmos melhor no contexto em que estamos da aplicação, como:
     - `$app->getView()->_libVersions` -  Propriedade do tema padrão (BaseV1), mantém um array com os nomes e versões exatas das bibliotecas javascript que o tema adiciona e usa.
     - `$app->getView()->template` -  Retorna uma string identificando o template que está sendo renderizado naquele momento. Em geral padronizada para `"{controller}/{action}"`
-    - `$app->getView()->getAssetManager()` - Nos traz uma instância de `MapasCulturais\App\FileSystem` contendo informações detalhadas sobre os scripts JS e estilos CSS que foram carregados naquela view através das propriedades `_enqueuedScripts` e `_enqueuedStyles`, respectivamente.
-    A propriedade `config` ainda nos dá, dentre outras informações, o caminho completo do sistema para a pasta pública dos assets.
+    - `$app->getView()->getAssetManager()` - Nos traz uma instância de `MapasCulturais\App\FileSystem` contendo informações detalhadas sobre os scripts JS e estilos CSS que foram carregados naquela view através das propriedades `_enqueuedScripts` e `_enqueuedStyles`, respectivamente - inclusive separadas pelos grupos `app` (do próprio Mapas) e `vendor` (bibliotecas de terceiros).       
+       A propriedade `config` ainda nos dá, dentre outras informações, o caminho completo do sistema para a pasta pública dos assets.
     - `$app->getView()->bodyClasses` - Traz informações sobre o controller e action da requisição, e são utilizadas no atributo `class` da tag HTML `body`, possibilitando um maior nível de customização do layout com base na view.
     - `$app->getView()->getTemplatesDirectory()` - Informa o path completo da pasta onde estão os templates carregados.
     - `$app->getView()->_dict` -> Exibe as strings internacionalizadas que foram carregadas para o tema
+
+
+Outra propriedade bastante útil do objeto do tema é a `jsObject`, por sua vez uma instância de `ArrayObject`    .
+Esta propriedade é manipulada diversas vezes ao longo do *lifecycle* da aplicação, de modo que seus dados são dinâmicos de acordo com a entidade em questão, além de manterem também chaves com o mesmo valor ao longo das rotas e requisições.
+
+Por exemplo, as seguintes chaves mantém seus valores independentemente das entidades:
+``` 
+ $app->getView()->jsObject['baseURL']
+ $app->getView()->jsObject['labels'] 
+ $app->getView()->jsObject['mapsDefaults'] 
+ $app->getView()->jsObject['routes'] 
+ ```
+ Já as chaves de *jsObject* `gettext`, `isEditable`, `isSearch`, `request`, `userProfile` e `entity` variam de acordo com o controller e entidade, tornando esse objeto ainda mais flexível para o desenvolvedor.
+ 
+ Seguindo ainda com o objeto de view, podemos também fazer uso de informações do controller:
+ 
+ - **$app->getView()->getController()** Retorna o controller da requisição atual, bem como a entidade correspondente ao mesmo (na propriedade *entityClassName*); 
+ - **$app->getView()->getController()->getUrlData()** retorna os parâmetros passados pela URL. Se foram mapeados pelo hook do $app (neste sentido, um hook do Slim Framework), vêm com o nome mapeado. Caso contrário, os parâmetros são trazidos num array em ordem crescente.
+ 
+ Por exemplo, se mapearmos apenas o $id no hook, utilizando o método acima para a requisição ${URLBASE}/agente/1/outroParam/EmaisOutro/14, teremos o seguinte retorno:
+ ```
+ array:4 [▼
+   "id" => "1"
+   0 => "outroParam"
+   1 => "EmaisOutro"
+   2 => "14"
+ ]
+ ```
+
 
 ### Verificando se um usuário está logado
 Para saber se um usuário está logado você pode verificar se o usuário não é *guest*. 
