@@ -426,6 +426,14 @@ De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáv
 - **$app->user** - o usuário que está vendo o site. Este objeto é uma instância da classe *MapasCulturais\Entities\User* (se o usuário estiver logado), ou instância da classe *MapasCulturais\GuestUser*, se o usuário não estiver logado.
 - **$app->user->profile** - o agente padrão do usuário. Instância da classe *MapasCulturais\Entities\Agent*. *(somente para usuários logados)*
 - **$entity** - é a entidade que está sendo visualizada, editada ou criada. *(somente para as actions single, edit e create dos controladores das entidades agent, space, project e event. Dentro das partes somente se esta foi [enviada](#enviando-variáveis-para-dentro-das-partes))*
+- **$app->view** - instância da classe *MapasCulturais\Theme*, que por sua vez herda da classe Slim\View.
+   É inicializado logo no bootstrap do `$app`, e podemos utilizá-lo também através do método `$app->getView()`.
+   
+   Este objeto é bastante útil no fluxo do desenvolvimento, pois podemos utilizar várias de suas propriedades para debugar e nos situarmos melhor no contexto em que estamos da aplicação, como:
+    - `$app->getView()->_libVersions` -  Propriedade do tema padrão (BaseV1), mantém um array com os nomes e versões exatas das bibliotecas javascript que o tema adiciona e usa.
+    - `$app->getView()->template` -  Retorna uma string identificando o template que está sendo renderizado naquele momento. Em geral padronizada para `"{controller}/{action}"`
+    - `$app->getView()->getAssetManager()` - Nos traz uma instância de `MapasCulturais\App\FileSystem` contendo informações detalhadas sobre os scripts JS e estilos CSS que foram carregados naquela view através das propriedades `_enqueuedScripts` e `_enqueuedStyles`, respectivamente.
+    A propriedade `config` ainda nos dá, dentre outras informações, o caminho completo do sistema para a pasta pública dos assets.
 
 ### Verificando se um usuário está logado
 Para saber se um usuário está logado você pode verificar se o usuário não é *guest*. 
