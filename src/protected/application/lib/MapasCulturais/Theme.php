@@ -438,7 +438,7 @@ abstract class Theme extends \Slim\View {
     /**
      * Add localization strings to a javascript object
      *
-     * It simmply adds the strings to the jsObject property that can be accessed throug the MapasCulturais javascript object.
+     * It simply adds the strings to the jsObject property that can be accessed throug the MapasCulturais javascript object.
      * 
      * Example: 
      * 

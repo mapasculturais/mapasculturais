@@ -1611,7 +1611,7 @@ class App extends \Slim\Slim{
 
     /**
      * Returns the view object
-     * @return \MapasCulturais\View
+     * @return \MapasCulturais\Theme
      */
     public function getView(){
         return $this->view;
