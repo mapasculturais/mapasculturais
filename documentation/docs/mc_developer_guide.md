@@ -434,6 +434,9 @@ De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáv
     - `$app->getView()->template` -  Retorna uma string identificando o template que está sendo renderizado naquele momento. Em geral padronizada para `"{controller}/{action}"`
     - `$app->getView()->getAssetManager()` - Nos traz uma instância de `MapasCulturais\App\FileSystem` contendo informações detalhadas sobre os scripts JS e estilos CSS que foram carregados naquela view através das propriedades `_enqueuedScripts` e `_enqueuedStyles`, respectivamente.
     A propriedade `config` ainda nos dá, dentre outras informações, o caminho completo do sistema para a pasta pública dos assets.
+    - `$app->getView()->bodyClasses` - Traz informações sobre o controller e action da requisição, e são utilizadas no atributo `class` da tag HTML `body`, possibilitando um maior nível de customização do layout com base na view.
+    - `$app->getView()->getTemplatesDirectory()` - Informa o path completo da pasta onde estão os templates carregados.
+    - `$app->getView()->_dict` -> Exibe as strings internacionalizadas que foram carregadas para o tema
 
 ### Verificando se um usuário está logado
 Para saber se um usuário está logado você pode verificar se o usuário não é *guest*. 
