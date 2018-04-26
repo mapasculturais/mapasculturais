@@ -425,6 +425,7 @@ De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáv
 - **$app** - instância da classe *MapasCulturais\App*.
 - **$app->user** - o usuário que está vendo o site. Este objeto é uma instância da classe *MapasCulturais\Entities\User* (se o usuário estiver logado), ou instância da classe *MapasCulturais\GuestUser*, se o usuário não estiver logado.
 - **$app->user->profile** - o agente padrão do usuário. Instância da classe *MapasCulturais\Entities\Agent*. *(somente para usuários logados)*
+- **$app->getCurrentSubsite()** - Se estiver utilizando o SaaS, retorna a instância do subsite atual
 - **$entity** - é a entidade que está sendo visualizada, editada ou criada. *(somente para as actions single, edit e create dos controladores das entidades agent, space, project e event. Dentro das partes somente se esta foi [enviada](#enviando-variáveis-para-dentro-das-partes))*
 - **$app->view** - instância da classe *MapasCulturais\Theme*, que por sua vez herda da classe Slim\View.
    É inicializado logo no bootstrap do `$app`, e podemos utilizá-lo também através do método `$app->getView()`.
@@ -453,10 +454,15 @@ Por exemplo, as seguintes chaves mantém seus valores independentemente das enti
  
  Seguindo ainda com o objeto de view, podemos também fazer uso de informações do controller:
  
- - **$app->getView()->getController()** Retorna o controller da requisição atual, bem como a entidade correspondente ao mesmo (na propriedade *entityClassName*); 
- - **$app->getView()->getController()->getUrlData()** retorna os parâmetros passados pela URL. Se foram mapeados pelo hook do $app (neste sentido, um hook do Slim Framework), vêm com o nome mapeado. Caso contrário, os parâmetros são trazidos num array em ordem crescente.
+ - **$app->getView()->getController()** Retorna o controller da requisição atual, bem como a entidade correspondente ao mesmo (na propriedade *entityClassName*);
+ - **$app->getView()->getRequestedEntity()** Traz o registro da entidade correspondente à resposta da requisição.
  
- Por exemplo, se mapearmos apenas o $id no hook, utilizando o método acima para a requisição ${URLBASE}/agente/1/outroParam/EmaisOutro/14, teremos o seguinte retorno:
+ Ao utilizarmos este método para uma requisição a `${URLBASE}/oportunidade/43` por exemplo, e esta oportunidade for vinculada a uma entidade Projeto, teremos a instância de id 43 de ProjectOpportunity,
+ obviamente com todos seus registros salvos, como data de criação e atualização, tags, nome, descrição, metadados e owner (referente à outra instância de um objeto Agente), dentre outros.
+ 
+ - **$app->getView()->getController()->getUrlData()** Retorna os parâmetros passados pela URL. Se foram mapeados pelo hook do $app (neste sentido, um hook do Slim Framework), vêm com o nome mapeado. Caso contrário, os parâmetros são trazidos num array em ordem crescente.
+ 
+ Por exemplo, se mapearmos apenas o $id no hook, utilizando o método acima para a requisição `${URLBASE}/agente/1/outroParam/EmaisOutro/14`, teremos o seguinte retorno:
  ```
  array:4 [▼
    "id" => "1"
@@ -466,6 +472,9 @@ Por exemplo, as seguintes chaves mantém seus valores independentemente das enti
  ]
  ```
 
+- **$app->getView()->getController()->getRepository()** - Retorna o objeto repositório da entidade gerenciada pelo Doctrine correspondente àquele controller e view.
+A diferença entre utilizar este método ou invocar diretamente `$app->repo(${nome-da-classe-da-entidade})` é que este último retorna o repositório da entidade passada por parâmetro, e não está atrelada ao contexto da requisição, tal qual o primeiro.
+    - Além do nome da entidade gerenciada e do próprio entityManager do Doctrine, o objeto repositório traz os metadados da classe, incluindo detalhes como o namespace da entidade, todo o mapeamento que o Doctrine fez de cada atributo, os *callbacks* de lifecycle, nome da tabela correspondente e até mesmo detalhes sobre as constantes, métodos e propriedades. 
 
 ### Verificando se um usuário está logado
 Para saber se um usuário está logado você pode verificar se o usuário não é *guest*. 
