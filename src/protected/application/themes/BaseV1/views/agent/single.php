@@ -180,6 +180,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->spaces, 'title' => 'entities: Spaces of the agent')); ?>
     <!-- Children END -->
 
+    <!-- Relations Groups BEGIN -->
+        <?php $this->part('singles/list-relations.php', array('entities'=>$entity)); ?>
+    <!-- Relations Groups END -->
+    
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->projects, 'title' => 'entities: Projects of the agent')); ?>
     <!-- Children END -->
