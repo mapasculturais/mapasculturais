@@ -1083,16 +1083,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             var _scope = this.$parent;
             var groupName = 'group-admin';
             var hasControl = true;
-            var isNewAgent = true;
+            var isAgentRelation = false;
 
             EditBox.close('add-committee-agent');
 
-            $scope.data.committee.forEach(function(item){
-                if (item.agent.id == entity.id)
-                    isNewAgent = false;
-            });
+            isAgentRelation = $scope.data.committee.some( item => item.agent.id === entity.id);
 
-            if (isNewAgent) {
+            if (!isAgentRelation) {
                 RelatedAgentsService.create(groupName, entity.id, true).
                 success(function(data){
                     $scope.data.committee.push(data);
