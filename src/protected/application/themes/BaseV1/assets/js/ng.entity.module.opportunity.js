@@ -1083,14 +1083,25 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             var _scope = this.$parent;
             var groupName = 'group-admin';
             var hasControl = true;
+            var isNewAgent = true;
 
-            RelatedAgentsService.create(groupName, entity.id, true).
-                    success(function(data){
-                        $scope.data.committee.push(data);
-                        _scope.$parent.searchText = '';
-                        _scope.$parent.result = [];
-                        EditBox.close('add-committee-agent');
-                    });
+            EditBox.close('add-committee-agent');
+
+            $scope.data.committee.forEach(function(item){
+                if (item.agent.id == entity.id)
+                    isNewAgent = false;
+            });
+
+            if (isNewAgent) {
+                RelatedAgentsService.create(groupName, entity.id, true).
+                success(function(data){
+                    $scope.data.committee.push(data);
+                    _scope.$parent.searchText = '';
+                    _scope.$parent.result = [];
+                });
+            } else {
+                MapasCulturais.Messages.error(labels['agentRelationIsAlreadyExists']);
+            }
         };
 
         $scope.deleteAdminRelation = function(relation){
