@@ -10,3 +10,5 @@
 * Na página de inscrição em uma oportunidade, o campo "Agente responsável" já vem com o Agente Padrão do usuário logado preenchido
 * Adiciona opção para ordenação na busca quando a opção de visualização por lista é selecionada.
 * Após fazer login, redireciona usuário para página em que estava navegando
+* Envia e-mails com as mensagens de denúncia apenas para os admins do subsite, e e-mails das mensagens de contato para os admins do subsite, a entidade e responsável  
+* No perfil do agente, exibe os grupos que ele faz parte em relacionamentos com outras entidades
