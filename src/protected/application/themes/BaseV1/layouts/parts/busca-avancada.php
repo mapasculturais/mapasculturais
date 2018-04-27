@@ -1,6 +1,6 @@
 <div id="header-search-row" class="clearfix" ng-class="{'sombra':data.global.viewMode !== 'list'}">
     <?php if($app->isEnabled('events')): ?>
-        <?php $this->part('search/filter', ['display_name' => 'Eventos', 'entity_name' => 'event']); ?>
+        <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Eventos'), 'entity_name' => 'event']); ?>
     <?php endif; ?>
     <?php if($app->isEnabled('spaces')): ?>
         <?php
@@ -12,14 +12,14 @@
     <?php endif; ?>
     <?php if($app->isEnabled('agents')): ?>
         <?php
-            $this->part('search/filter', ['display_name' => 'Agentes', 'entity_name' => 'agent']);
+            $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Agentes'), 'entity_name' => 'agent']);
         ?>
     <?php endif; ?>
     <?php if($app->isEnabled('projects')): ?>
-        <?php $this->part('search/filter', ['display_name' => 'Projetos', 'entity_name' => 'project']); ?>
+        <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Projetos'), 'entity_name' => 'project']); ?>
     <?php endif; ?>
     <?php if($app->isEnabled('opportunities')): ?>
-        <?php $this->part('search/filter', ['display_name' => 'Oportunidades', 'entity_name' => 'opportunity']); ?>
+        <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Oportunidades'), 'entity_name' => 'opportunity']); ?>
     <?php endif; ?>
 
     <div id="search-results-header" class="clearfix">

@@ -104,7 +104,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->emailPublico): ?>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Email");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPublico") && $this->isEditable()? 'required': '');?>" data-edit="emailPublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que será exibido publicamente");?>"><?php echo $entity->emailPublico; ?></span></p>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("E-mail");?>:</span> <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPublico") && $this->isEditable()? 'required': '');?>" data-edit="emailPublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que será exibido publicamente");?>"><?php echo $entity->emailPublico; ?></span></p>
                     <?php endif; ?>
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
@@ -180,6 +180,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->spaces, 'title' => 'entities: Spaces of the agent')); ?>
     <!-- Children END -->
 
+    <!-- Relations Groups BEGIN -->
+        <?php $this->part('singles/list-relations.php', array('entities'=>$entity)); ?>
+    <!-- Relations Groups END -->
+    
     <!-- Children BEGIN -->
         <?php $this->part('singles/list-entities.php', array('entities'=>$entity->projects, 'title' => 'entities: Projects of the agent')); ?>
     <!-- Children END -->
