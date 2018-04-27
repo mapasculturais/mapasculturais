@@ -25,7 +25,7 @@ if($this->controller->action === 'create')
         </p>
         <p>
             <?php i::_e("E-mail");?>:<br />
-            <input ng-model="data.email" type="text" rows="5" name="email" class="input-email">
+            <input ng-model="data.email" type="email" rows="5" name="email" class="input-email">
         </p>
         <?php endif;?>
         <p>
@@ -67,7 +67,7 @@ if($this->controller->action === 'create')
             <p>
                 <label>
                     <?php i::_e("E-mail");?>:<br />
-                    <input ng-model="data.email" type="text" rows="5" name="email" class="input-email">
+                    <input ng-model="data.email" type="email" rows="5" name="email" class="input-email">
                 </label>
             </p>
         <?php else: ?>
