@@ -1081,22 +1081,24 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         $scope.createAdminRelation = function(entity){
             var _scope = this.$parent;
-            var groupName = 'group-admin';
-            var hasControl = true;
             var isAgentRelation = false;
-
-            EditBox.close('add-committee-agent');
+            _scope.spinnerCondition = true;
+            _scope.noEntityFound  = true;
 
             isAgentRelation = $scope.data.committee.some( item => item.agent.id === entity.id);
 
             if (!isAgentRelation) {
-                RelatedAgentsService.create(groupName, entity.id, true).
-                success(function(data){
+                RelatedAgentsService.create('group-admin', entity.id, true).success(function(data) {
                     $scope.data.committee.push(data);
+                    _scope.spinnerCondition = false;
+                    _scope.noEntityFound  = false;
                     _scope.$parent.searchText = '';
                     _scope.$parent.result = [];
+                    EditBox.close('add-committee-agent');
                 });
             } else {
+                _scope.spinnerCondition = false;
+                _scope.noEntityFound  = false;
                 MapasCulturais.Messages.error(labels['agentRelationIsAlreadyExists']);
             }
         };
