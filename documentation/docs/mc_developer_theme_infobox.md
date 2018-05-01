@@ -55,7 +55,7 @@ class Theme extends BaseV1\Theme{
 
 ## Personalizando os templates
 
-Há duas maneiras de personalizar os templates da infobox e da listagem. A primeira, e mais indicada, é através dos hooks disponíveis nestes templates. A segunda é sobreescrevendo os templates completamente no seu tema ou plugin.
+Há duas maneiras de personalizar os templates da infobox e da listagem. A primeira, e mais indicada, é através dos hooks disponíveis nestes templates. A segunda é sobrescrevendo os templates completamente no seu tema ou plugin.
 
 Os templates estão localizados na pasta BaseV1/layouts/parts/search e são:
 
@@ -73,7 +73,7 @@ Para o resultado em lista:
 
 Estes templates são apenas HTML, e os loops e conteúdos dinâmicos são feitos pelo AngularJS.
 
-Ao abrir esses templates você vai perceber que eles possuem hooks que você pode usar para inserir código novo, sem precisar sobreescrever o template. Por exemplo, na listagem de espaços, há os hooks list.space.meta:begin e list.space.meta:end, que te permite adicionar novas informações no começo ou no final de onde aparecem os metadados das entidades.
+Ao abrir esses templates você vai perceber que eles possuem hooks que você pode usar para inserir código novo, sem precisar sobrescrever o template. Por exemplo, na listagem de espaços, há os hooks list.space.meta:begin e list.space.meta:end, que te permite adicionar novas informações no começo ou no final de onde aparecem os metadados das entidades.
 
 ### Utilizando hooks
 
@@ -127,7 +127,7 @@ $app->hook('template(site.search.list.<<space|agent>>.meta):begin', function() {
 
 ```
 
-### Sobreescrevendo os templates
+### Sobrescrevendo os templates
 
-Se preferir, você pode simplesmente sobreescrever os templates que quer modificar fazendo uma cópia do arquivo no seu tema ou plugin, mantendo a mesma estrutura de pastas.
+Se preferir, você pode simplesmente sobrescrever os templates que quer modificar fazendo uma cópia do arquivo no seu tema ou plugin, mantendo a mesma estrutura de pastas.
 
