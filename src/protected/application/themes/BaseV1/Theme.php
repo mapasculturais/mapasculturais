@@ -1504,7 +1504,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
         $this->localizeScript('evaluations', [
-            'saveMessage' => i::__('A avaiação foi salva')
+            'saveMessage' => i::__('A avaliação foi salva')
         ]);
     }
 
@@ -1689,6 +1689,7 @@ class Theme extends MapasCulturais\Theme {
             'savedAsDraft' =>  i::__('Eventos transformados em rascunho.'),
             'confirmRemoveAttachment' =>  i::__('Deseja remover este anexo?'),
             'registrationOwnerDefault' =>  i::__('Agente responsável pela inscrição'),
+            'agentRelationIsAlreadyExists' =>  i::__('O Agente selecionado já foi adicionado na comissão de avaliadores'),
             'allStatus' =>  i::__('Todas'),
             'pending' =>  i::__('Pendente'),
             'invalid' =>  i::__('Inválida'),
