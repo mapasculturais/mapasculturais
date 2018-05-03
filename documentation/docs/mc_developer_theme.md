@@ -9,7 +9,7 @@ Veja também como [criar campos de informações adicionais no seu tema](mc_deve
 
 - [Estrutura do Tema](#estrutura-do-tema)
 - [Criando o tema](#criando-o-tema)
-    - [Estílos](#estílos)
+    - [Estilos](#estilos)
         - [Definição das variáveis SASS](#definição-das-variáveis-sass)
         - [Sobrescrevendo estilos](#sobrescrevendo-estilos)
         - [Compilando os arquivos SASS](#compilando-os-arquivos-sass)
@@ -71,7 +71,7 @@ $brand-seal: 	#795099 !default;
 $brand-devs:    #CE5AA1 !default;
 ```
 
-¹ Para saber com mais precisão onde uma variável é utilizada e, por consequência, o que será afetado e onde estarão os efetitos de uma modificação, a melhor maneira é fazer uma busca pelo nome da variável (por exemplo _$brand-primary_) dentro da pasta [sass](../../src/protected/application/themes/BaseV1/assets/css/sass/) do tema BaseV1.
+¹ Para saber com mais precisão aonde uma variável é utilizada e, por consequência, o que será afetado e aonde estarão os efeitos de uma modificação, a melhor maneira é fazer uma busca pelo nome da variável (por exemplo _$brand-primary_) dentro da pasta [sass](../../src/protected/application/themes/BaseV1/assets/css/sass/) do tema BaseV1.
 
 ² Alterar as cores dos **eventos**, **agentes** e/ou **espaços** implica em recriar os arquivos dos _pins_ (ver os arquivos de imagens que começam com _pin-_ e _agrupador-_)  utilizados nos mapas para estas entidades.
 
@@ -99,7 +99,7 @@ sass --watch sass/main.scss:main.css
 
 ### Imagens
 #### Substituindo imagens
-Qualquer imagem utilizada pelo tema _BaseV1_ pode ser substituida facilmente bastando, para isto, colocar uma imagem de mesmo nome na pasta **assets/img** do tema filho.
+Qualquer imagem utilizada pelo tema _BaseV1_ pode ser substituída facilmente bastando, para isto, colocar uma imagem de mesmo nome na pasta **assets/img** do tema filho.
 
 Por exemplo, para personalizar as imagens utilizadas como selo de que o conteúdo é verificado/oficial, basca colocar os arquivos com o brasão da instituição na pasta **assets/img**, obviamente respeitando os tamanhos e proporções (largura e altura).
 ```
@@ -116,9 +116,9 @@ Para utilizar uma nova imagem no tema filho, primeiro coloque o arquivo da image
 ```
 
 #### Utilizando imagens nos estilos
-Para utilizar uma imagem nos estilos é necessário _pedir_ para a aplicação _publicar_ esta imagem antes de utilizá-la. Para tal basta chamar, no método **_publishAssets** do arquivo **Theme.php** do tema filho, a função **asset** do tema passando _false_ como segundo parâmtro, que indicando que não é para imprimir a url do asset publicado.
+Para utilizar uma imagem nos estilos é necessário _pedir_ para a aplicação _publicar_ esta imagem antes de utilizá-la. Para tal basta chamar, no método **_publishAssets** do arquivo **Theme.php** do tema filho, a função **asset** do tema passando _false_ como segundo parâmetro, que indicando que não é para imprimir a url do asset publicado.
 
-exemplos:
+Exemplos:
 ```PHP
     protected function _publishAssets() {
         // somente publica o asset
@@ -130,7 +130,7 @@ exemplos:
 ```
 
 ### Substituindo _partes_ dos templates
-Da mesma forma como acontece com as imagens, quaquer arquivo **.php** das pastas **views** e **layouts** pode ser substituido facilmente, bastando para isto, que seja criado um arquivo com o mesmo nome no tema filho.
+Da mesma forma como acontece com as imagens, qualquer arquivo **.php** das pastas **views** e **layouts** pode ser substituído facilmente, bastando para isto, que seja criado um arquivo com o mesmo nome no tema filho.
 
 Os três arquivos mais comumente substituídos, e que já são incluídos no template de tema _TemplateV1_, são os seguintes:
 ```
@@ -142,7 +142,7 @@ layouts/parts/header-logo.php           // logo do site, a esquerda do header
 ### Textos
 Os textos utilizados na home e em alguns outros lugares do site, como nos textos das [páginas "Sobre" e "Como Usar"](#páginas-sobre-e-como-usar), são definidos no método **_getTexts** arquivo **Theme.php**. O template de tema _TemplateV1_ contém todos os textos _configuráveis_ comentados com os valores padrão.
 
-abaixo configuramos alguns textos de acordo com nossa instalação fictícia:
+Abaixo configuramos alguns textos de acordo com nossa instalação fictícia:
 ```PHP
             'site: name' => 'Macondo Cultural',
             'site: in the region' => 'na cidade de Macondo',
