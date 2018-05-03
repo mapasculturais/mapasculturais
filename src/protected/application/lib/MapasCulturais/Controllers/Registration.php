@@ -79,7 +79,7 @@ class Registration extends EntityController {
             $registration = $this->requestedEntity;
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
 
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
@@ -294,6 +294,42 @@ class Registration extends EntityController {
         }else{
             $app->redirect($app->request->getReferer());
         }
+    }
+
+    function POST_setMultipleStatus() {
+        $this->requireAuthentication();
+
+        $_registrations = $this->data;
+
+        if(!is_null($_registrations) && is_array($_registrations) && (count($_registrations) > 0)) {
+            $final_statuses = $this->getSmallerStatuses($_registrations['evaluations']);
+            foreach ($final_statuses as $reg => $status) {
+                $ref = App::i()->em->getReference($this->entityClassName, $reg);
+                $ref->_setStatusTo($status);
+            }
+
+            return $this->json($final_statuses);
+        }
+    }
+
+    private function getSmallerStatuses($registrations) {
+        if (is_array($registrations)) {
+            $filtered = [];
+            foreach($registrations as $reg) {
+                $_id = intval($reg["reg_id"]);
+                $_result = intval($reg["result"]);
+
+                if (key_exists($_id, $filtered)) {
+                    if ($filtered[$_id] > $_result)
+                        $filtered[$_id] = $_result;
+                } else {
+                    $filtered[$_id] = $_result;
+                }
+            }
+            return $filtered;
+        }
+
+        return array();
     }
 
     function POST_send(){

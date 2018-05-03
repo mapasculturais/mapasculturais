@@ -176,6 +176,10 @@
             // Bind the click event handler
             $(this).on('click', 'a', function(e) {
                 // Make the old tab inactive.
+                    // Front
+                $('.abas li').removeClass('active');
+                $('.tabs-content .aba-content').hide();
+                    // Admin
                 $active.parent().removeClass('active');
                 $content.hide();
 
@@ -198,6 +202,17 @@
                     $(this).click();
                 }
             });
+            
+            var tabActive = location.hash.match(new RegExp('tab=([^&]*)'));
+            tabActive = (tabActive == null) ? $('.abas li a').attr('id') : tabActive[1];
+            tabActive = ($(`.abas li a[href=#${tabActive}]`).length) ? tabActive : $('.abas li a').attr('id');
+            tabActive = tabActive.replace('tab-', '');
+
+            $('.tabs-content .aba-content').hide();
+            $(`.tabs-content #${tabActive}`).show();
+            
+            $('.abas li').removeClass('active');
+            $(`.abas li a#tab-${tabActive}`).parent().addClass('active');
         });
 
 

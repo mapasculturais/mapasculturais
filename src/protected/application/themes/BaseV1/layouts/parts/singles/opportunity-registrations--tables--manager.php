@@ -23,12 +23,19 @@ use MapasCulturais\i;
     <div class="close"></div>
 </div>
 
+<div id="filtro-inscritos">
+    <span class="label"> Filtrar inscrição: </span>
+    <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
+</div>
+
 <p>
     <strong> <?php i::_e("Colunas Habilitadas:") ?> </strong><br>
     <label><input type="checkbox" ng-model="data.registrationTableColumns.number" /> <?php i::_e('Inscrição') ?> </label>
     <label><input type="checkbox" ng-model="data.registrationTableColumns.category" /> <?php i::_e('Categorias') ?> </label>
     <label><input type="checkbox" ng-model="data.registrationTableColumns.agents" /> <?php i::_e('Agentes') ?> </label>
-    <label><input type="checkbox" ng-model="data.registrationTableColumns.attachments" /> <?php i::_e('Anexos') ?> </label>
+    <label ng-if="data.entity.registrationFileConfigurations.length > 0">
+        <input type="checkbox" ng-model="data.registrationTableColumns.attachments" /> <?php i::_e('Anexos') ?>
+    </label>
     <label><input type="checkbox" ng-model="data.registrationTableColumns.evaluation" /> <?php i::_e('Avaliação') ?> </label>
     <label><input type="checkbox" ng-model="data.registrationTableColumns.status" /> <?php i::_e('Status') ?> </label>
 
@@ -86,12 +93,13 @@ use MapasCulturais\i;
         </td>
     </tr>
     <tbody>
-        <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" >
-            <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+    <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
+        <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
                 {{reg[field.fieldName]}}
             </td>
+
             <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <p>
                     <span class="label"><?php i::_e("Responsável");?></span><br />
@@ -109,6 +117,7 @@ use MapasCulturais\i;
             <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
                 {{reg.evaluationResultString}}
             </td>
+
             <td ng-show="data.registrationTableColumns.status" class="registration-status-col">
                 <?php if ($entity->publishedRegistrations): ?>
                     <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusNameById(reg.status)}}</span>
@@ -128,4 +137,13 @@ use MapasCulturais\i;
         </tr>
     </tfoot>
 </table>
+
+    <?php
+    $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
+    if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
+        <div ng-if="hasEvaluations()">
+            <button class="btn btn-primary" ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
+        </div>
+    <?php endif; ?>
+
 </div>

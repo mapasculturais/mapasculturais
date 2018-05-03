@@ -43,6 +43,7 @@ A documentação pode ser navegada no endereço (http://docs.mapasculturais.org)
 
 Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
 - [Deploy](documentation/docs/mc_deploy.md)
+- [Deploy Docker](documentation/docs/mc_developer_docker_enviroment.md)
 - [API](documentation/docs/mc_config_api.md)
 - [Guia do desenvolvedor](documentation/docs/mc_developer_guide.md)
 - [Como contribuir](documentation/docs/mc_developer_contribute.md)

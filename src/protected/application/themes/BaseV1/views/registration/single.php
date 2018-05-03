@@ -22,8 +22,6 @@ $_params = [
     'action' => $action,
     'opportunity' => $entity->opportunity
 ];
-
-
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 

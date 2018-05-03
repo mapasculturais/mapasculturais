@@ -1,6 +1,6 @@
 <div class="alert success">
-    <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>
-    <?php echo $entity->sentTimestamp->format('d/m/Y à\s H:i:s'); ?>
+    <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>    
+    <?php echo $entity->sentTimestamp->format(\MapasCulturais\i::__('d/m/Y à\s H:i:s')); ?>
 </div>
 
 <h3 class="registration-header"><?php \MapasCulturais\i::_e("Formulário de Inscrição");?></h3>
@@ -16,3 +16,11 @@
         <?php endif; ?>
     </div>
 </div>
+
+
+<?php if($entity->projectName): ?>
+    <div class="registration-fieldset">
+        <div class="label"><?php \MapasCulturais\i::_e("Nome do Projeto"); ?> </div>
+        <h5> <?php echo $entity->projectName; ?> </h5>
+    </div>
+<?php endif; ?>

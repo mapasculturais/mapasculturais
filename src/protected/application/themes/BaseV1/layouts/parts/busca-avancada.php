@@ -1,6 +1,6 @@
 <div id="header-search-row" class="clearfix" ng-class="{'sombra':data.global.viewMode !== 'list'}">
     <?php if($app->isEnabled('events')): ?>
-        <?php $this->part('search/filter', ['display_name' => 'Eventos', 'entity_name' => 'event']); ?>
+        <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Eventos'), 'entity_name' => 'event']); ?>
     <?php endif; ?>
     <?php if($app->isEnabled('spaces')): ?>
         <?php
@@ -12,19 +12,33 @@
     <?php endif; ?>
     <?php if($app->isEnabled('agents')): ?>
         <?php
-            $this->part('search/filter', ['display_name' => 'Agentes', 'entity_name' => 'agent']);
+            $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Agentes'), 'entity_name' => 'agent']);
         ?>
     <?php endif; ?>
     <?php if($app->isEnabled('projects')): ?>
-        <?php $this->part('search/filter', ['display_name' => 'Projetos', 'entity_name' => 'project']); ?>
+        <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Projetos'), 'entity_name' => 'project']); ?>
     <?php endif; ?>
     <?php if($app->isEnabled('opportunities')): ?>
-        <?php $this->part('search/filter', ['display_name' => 'Oportunidades', 'entity_name' => 'opportunity']); ?>
+        <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Oportunidades'), 'entity_name' => 'opportunity']); ?>
     <?php endif; ?>
 
     <div id="search-results-header" class="clearfix">
         <div id="search-tools" class="clearfix">
-            <div id="view-tools" class="clearfix" ng-if="!showFilters('project')">
+			<div id="search-sort" ng-if="data[data.global.filterEntity].sort && data.global.viewMode == 'list'" >
+	            <div class="switch-field">
+	                <select ng-model="data[data.global.filterEntity].sort.sortBy"
+	                    ng-options="selectedItem.field as selectedItem.label for selectedItem in data[data.global.filterEntity].sort.sortFields">
+	                </select>
+
+	                <input type="radio" id="switch_right" name="switch_2" value="z-a" checked ng-click="toggleSortOrder('DESC')"/>
+	                <label for="switch_right">z-a</label>
+	                <input type="radio" id="switch_left" name="switch_2" value="a-z" ng-click="toggleSortOrder('ASC')"/>
+	                <label for="switch_left">a-z</label>
+	            </div>
+
+	        </div>
+	        <!--#search-sort-->
+			<div id="view-tools" class="clearfix" ng-if="!showFilters('project')">
                 <a class="hltip icon icon-show-search-on-list"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="<?php \MapasCulturais\i::esc_attr_e("Ver resultados em lista"); ?>"></a>
                 <a class="hltip icon icon-show-search-on-map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="<?php \MapasCulturais\i::esc_attr_e("Ver resultados no mapa"); ?>"></a>
             </div>
@@ -41,6 +55,7 @@
                     <a target="_blank" ng-href="https://plus.google.com/share?url={{shareurl}}" class="icon icon-googleplus"></a>
                 </form>
             </div>
+			
         </div>
         <!--#search-tools-->
         <div id="search-results">
@@ -128,6 +143,8 @@
 
             <a class="tag-selected tag-clear" ng-if="hasFilter()" ng-click="cleanAllFilters()"><?php \MapasCulturais\i::_e("Remover todos filtros");?></a>
         </div>
+        <!--#selected-filters-->
+        
     </div>
     <!--#header-search-results-->
 </div>

@@ -47,7 +47,16 @@ function __exec($sql){
     $em = $app->em;
     $conn = $em->getConnection();
 
-    $conn->executeQuery($sql);
+    try{
+        $conn->executeQuery($sql);
+    } catch (Exception $ex) {
+        echo "
+SQL ========================= 
+$sql
+-----------------------------
+";
+        throw $ex;
+    }
 }
 
 function __try($sql, $cb = null){
@@ -57,15 +66,12 @@ function __try($sql, $cb = null){
         if($cb){
             $cb($ex, $sql);
         } else {
-            $trace = $ex->getTraceAsString();
+            $msg = $ex->getMessage();
             echo "
 ERROR ==============================
-
 $sql
-
 ------------------------------------
-$ex
-$trace
+$msg
 ====================================
 
 ";
@@ -678,8 +684,27 @@ return [
      * - files do grupo rules
      */
 
+    'create permission cache pending table2' => function() use ($conn) {
+
+        if(__table_exists('permission_cache_pending')){
+            echo "TABLE permission_cache_pending ALREADY EXISTS";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE TABLE permission_cache_pending (
+            id INT NOT NULL, 
+            object_id INT NOT NULL, 
+            object_type VARCHAR(255) NOT NULL, 
+            
+            PRIMARY KEY(id)
+        );");
+    },
+
     'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){
+            __exec("DELETE FROM registration_meta WHERE object_id IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
+            __exec("DELETE FROM registration WHERE project_id NOT IN (SELECT id FROM project)");
+
             // cria tabelas das oportunidades
             __exec("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
             __exec("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories text DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, object_id INT NOT NULL, PRIMARY KEY(id));");
@@ -825,15 +850,15 @@ return [
         __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_key_idx ON evaluationMethodConfiguration_meta (object_id, key);");
         __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE evaluationMethodConfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("CREATE SEQUENCE evaluation_method_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("ALTER SEQUENCE evaluation_method_configuration_id_seq OWNED BY evaluation_method_configuration.id;");
+        __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
+
 
         $opportunities = $this->repo('Opportunity')->findAll();
 
         foreach($opportunities as $opportunity){
-            $emc = new Entities\EvaluationMethodConfiguration;
-
-            $emc->opportunity = $opportunity;
-            $emc->type = 'simple';
-            $emc->save(true);
+            __exec("INSERT INTO evaluation_method_configuration ( opportunity_id, type) VALUES ($opportunity->id, 'simple');");
         }
     },
 
@@ -919,8 +944,7 @@ return [
     'DROP index registration_meta_value_idx' => function () use ($conn){
         __try("DROP INDEX registration_meta_value_idx;");
     },
-    
-    
+
     'altertable registration_file_and_files_add_order' => function () use($conn){
         if(__column_exists('registration_file_configuration', 'order')){
             echo "ALREADY APPLIED";
@@ -935,6 +959,7 @@ return [
         }
 
     },
+
     'replace subsite entidades_habilitadas values' => function () use($conn) {
         $rs = $conn->fetchAll("SELECT * FROM subsite_meta WHERE key = 'entidades_habilitadas'");
         
@@ -952,6 +977,17 @@ return [
         $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");
     },
 
+    'ALTER TABLE file ADD private and update' => function () use ($conn) {
+        if(__column_exists('file', 'private')){
+            return true;
+        }
+
+        $conn->executeQuery("ALTER TABLE file ADD private BOOLEAN NOT NULL DEFAULT FALSE;");
+        
+        $conn->executeQuery("UPDATE file SET private = true WHERE grp LIKE 'rfc_%' OR grp = 'zipArchive'");
+        
+    },
+
     'fix subsite verifiedSeals array' => function() use($app){
         $subsites = $app->repo('Subsite')->findAll();
         foreach($subsites as $subsite){
@@ -960,5 +996,45 @@ return [
         }
 
         return false;
-    }
+    },
+    
+    'move private files' => function () use ($conn) {
+        
+        
+        $files = App::i()->repo('File')->findBy(['private' => true]);
+        
+        $StorageConfig = App::i()->storage->config;
+        
+        foreach($files as $file) {
+            
+            
+            // vou pegar a info de path direto do banco, sem usar o metodo do storage
+            // para evitar erro com inconsistencias no banco
+            $relative_path = $file->getRelativePath(false);
+            
+            if (!$relative_path) {
+                echo "ATENCAO: Seu banco possui arquivos que não tem a informação de path' \n";
+                continue;
+            }
+            
+            $targetPath = str_replace('\\', '-', $StorageConfig['private_dir'] . $relative_path);
+            
+            $oldPath = str_replace('\\', '-', $StorageConfig['dir'] . $relative_path);
+            
+            if (file_exists($oldPath)) {
+            
+                if(!is_dir(dirname($targetPath)))
+                    mkdir (dirname($targetPath), 0755, true);
+                
+                rename($oldPath, $targetPath);
+            
+            }
+            
+            
+        }
+        
+        
+        
+    },
+
 ] + $updates ;

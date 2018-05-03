@@ -95,7 +95,17 @@ article.opportunity .highlighted-message .btn {
 	}
 	h4 {
 		margin-bottom: $line-height-half;
+
+      &.opportunity-toggle-form {
+        margin-bottom: 0 !important;
+        cursor: pointer;
+      }
 	}
+
+    .opportunity-togglable-form-content {
+      margin-top: $line-height-half;
+    }
+
     .dropdown {
         width: 125px;
     }
@@ -348,5 +358,14 @@ article.opportunity .highlighted-message .btn {
 @media screen and (max-width: 1366px) and (min-width: 1200px) {
     .evaluation-form {
         width:18%;
+    }
+}
+
+.evaluations-config--intro {
+    label { font-size: .8em; }
+    textarea {
+        min-width: 300px;
+        width: 50%;
+        height:80px;
     }
 }
