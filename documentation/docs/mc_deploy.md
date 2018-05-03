@@ -48,7 +48,7 @@ Também é importante ter o pacote zip instalado no seu servidor. Ele é usado p
 root@server# apt-get install zip
 ```
 
-No Ubuntu o executável do NodeJS se chama *nodejs*, porém para o correto funcionamento das bibliotecas utilizadas, o executá ml deve se chamar *node*. Para isto criamos um link simbólico com o comando abaixo
+No Ubuntu o executável do NodeJS se chama *nodejs*, porém para o correto funcionamento das bibliotecas utilizadas, o executável deve se chamar *node*. Para isto criamos um link simbólico com o comando abaixo
 ```
 root@server# update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 ```
