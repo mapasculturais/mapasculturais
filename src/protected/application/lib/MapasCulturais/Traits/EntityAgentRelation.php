@@ -87,9 +87,35 @@ trait EntityAgentRelation {
 
     }
 
+    function getGroupRelationsAgent(){
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm->addScalarResult('object_type', 'object_type');
+
+        $strNativeQuery = "SELECT object_type FROM public.agent_relation GROUP BY object_type;";
+
+        $query = App::i()->getEm()->createNativeQuery($strNativeQuery, $rsm);
+        $entitiesTypes = $query->getArrayResult();
+        
+        $groups = [];
+        foreach ($entitiesTypes as $entitieType) {
+            $group = App::i()->repo($entitieType['object_type'] . 'AgentRelation')->findBy(['agent' => $this]);
+            if($group){
+                foreach ($group as $groupEntitie) {
+                    $entitie = App::i()->repo($entitieType['object_type'])->find($groupEntitie->objectId);
+                    $groups[] = array(
+                        'group'   => $groupEntitie->group,
+                        'entitie' => $entitie->name,
+                        'url'     => $entitie->singleUrl
+                    );
+                }
+            }
+        }    
+        
+        return $groups;
+    }
+
     function getAgentRelationsGrouped($group = null, $include_pending_relations = false){
         return $this->getRelatedAgents($group, true, $include_pending_relations);
-
     }
 
     function getIdsOfUsersWithControl(){

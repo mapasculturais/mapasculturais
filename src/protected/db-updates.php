@@ -1036,7 +1036,5 @@ return [
         
         
     },
-	
-
 
 ] + $updates ;
