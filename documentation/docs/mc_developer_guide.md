@@ -34,7 +34,7 @@ O intuito deste documento é dar uma visão panorâmica da arquitetura e funcion
 
 ## Branches e desenvolvimento
 
-O desenvolvimento do Mapas Culturais segue o padrão [Git Workflow](https://danielkummer.github.io/git-flow-cheatsheet/), com as seguites branches principais:
+O desenvolvimento do Mapas Culturais segue o padrão [Git Workflow](https://danielkummer.github.io/git-flow-cheatsheet/), com as seguintes branches principais:
 
 **Branch develop**: 
 
@@ -71,7 +71,7 @@ Para fazer uma nova instalação, utilize o release (tag) mais atual.
 
 ### Bibliotecas PHP Utilizadas
 Ver arquivo [composer.json](../src/protected/composer.json)
-- [Slim](https://packagist.org/packages/slim/slim) - Microframework em cima do qual foi escria a classe [App](#app) do MapasCulturais.
+- [Slim](https://packagist.org/packages/slim/slim) - Microframework em cima do qual foi escrita a classe [App](#app) do MapasCulturais.
 - [Doctrine/ORM](https://packagist.org/packages/doctrine/orm) - ORM utilizado para o mapeamento das entidades.
 - [Opauth/OpenId](https://packagist.org/packages/opauth/openid) - Utilizado para autenticação via OpenId.
 - [respect/validation](https://packagist.org/packages/respect/validation) - Utilizado para as validações das propriedades e metadados das entidades.
@@ -93,7 +93,7 @@ Ver [bibliotecas javascript utilizadas no tema](#bibliotecas-javascript-utilizad
 ## Traits
 Os [traits](http://php.net/manual/pt_BR/language.oop5.traits.php) ficam no namespace **MapasCulturais\Traits** e seus arquivos na pasta [src/protected/application/lib/MapasCulturais/Traits](../src/protected/application/lib/MapasCulturais/Traits). 
 
-Se houver no nome do trait um prefixo (*Entity, Controller ou Repository*) significa que este trait só deve ser utilizado em classes que estendam a classe com o nome do prefixo dentro do namespace MapasCulturais (ex: o trait *EntityAvatar* só deve ser utilizado em classes que estendem a classe *MapasCulturais\Entity*). Já se não houver um prefixo significa que é um [trait genérico](#traits-genéricos) e que pode ser utilizado em qualquer classe (exemplos: Singleton e MagigGetter).
+Se houver no nome do trait um prefixo (*Entity, Controller ou Repository*) significa que este trait só deve ser utilizado em classes que estendam a classe com o nome do prefixo dentro do namespace MapasCulturais (ex: o trait *EntityAvatar* só deve ser utilizado em classes que estendem a classe *MapasCulturais\Entity*). Já se não houver um prefixo significa que é um [trait genérico](#traits-genéricos) e que pode ser utilizado em qualquer classe (exemplos: Singleton e MagicGetter).
 
 
 ### Traits Genéricos
@@ -112,10 +112,10 @@ As classes de modelo ficam no namespace **MapasCulturais\Entities** e seus arqui
 
 Estas classes devem estender a classe abstrata [MapasCulturais\Entity](#classe-entity) e usar os [Docblock Annotations](http://docs.doctrine-project.org/en/latest/reference/annotations-reference.html) do [Doctrine](http://docs.doctrine-project.org/en/latest/index.html) para fazer o [mapeamento](http://docs.doctrine-project.org/en/latest/reference/basic-mapping.html) com a representação desta entidade no banco de dados (geralmente uma tabela). 
 
-Estas podem também usar os [traits criados para entidades](#traits-das-entidades) (os que têm o prefixo **Entity** no nome, como por exmplo o *EntityFiles*, que é para ser usado em entidades que têm arquivos anexos).
+Estas podem também usar os [traits criados para entidades](#traits-das-entidades) (os que têm o prefixo **Entity** no nome, como por exemplo o *EntityFiles*, que é para ser usado em entidades que têm arquivos anexos).
 
 ### Classe Entity
-A classe abstrata [MapasCulturais\Entity](../src/protected/application/lib/MapasCulturais/Entity.php) é a classe que serve de base para todoas as entidades do sistema. Implementa uma série de métodos úteis para, entre outros, [verificação de permissões](#verificação-de-permissões), serialização e [validações](#validações).
+A classe abstrata [MapasCulturais\Entity](../src/protected/application/lib/MapasCulturais/Entity.php) é a classe que serve de base para todas as entidades do sistema. Implementa uma série de métodos úteis para, entre outros, [verificação de permissões](#verificação-de-permissões), serialização e [validações](#validações).
 
 ### Traits das Entidades
 
@@ -123,9 +123,9 @@ A classe abstrata [MapasCulturais\Entity](../src/protected/application/lib/Mapas
 - **EntityFiles** - Deve ser usado em entidades que podem ter arquivos anexados.
 - **EntityAvatar** - Deve ser usado em entidades que tenham avatar. Requer o trait *EntityFiles*.
 - **EntityGeoLocation** - Deve ser usado em entidades georreferenciadas. Requer as propriedades *location*, do tipo *point*, e *_geoLocation*, do tipo *geography*.
-- **EntityMetadata** - Deve ser usado em entidades que tenham metadados. Requer de uma entidade auxiliar. Se existir no mesmo namespace uma classe com o nome da entidade acrescida do sufixo *Meta* (exemplo: para a entidade *Agent*, uma classe *AgentMeta*), esta será usada, senão a entidade Metadata será usada como auxiliar.
+- **EntityMetadata** - Deve ser usado em entidades que tenham metadados. Requer de uma entidade auxiliar. Se existir no mesmo namespace uma classe com o nome da entidade acrescida do sufixo *Meta* (exemplo: para a entidade *Agent*, uma classe *AgentMeta*), esta será usada, senão a entidade *Metadata* será usada como auxiliar.
 - **EntityMetaLists** - Deve ser usado em entidades que tenham metadados com múltiplos valores por chave. (exemplo de uso: links).
-- **EntityNested** - Deve ser usado em entidades hierarquicas. Requer as [associações autoreferenciadas](http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#one-to-many-self-referencing) *children* e *parent*.
+- **EntityNested** - Deve ser usado em entidades hierárquicas. Requer as [associações autorreferenciadas](http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#one-to-many-self-referencing) *children* e *parent*.
 - **EntityOwnerAgent** - Deve ser usado em entidades que tenham a associação [ManyToOne](http://docs.doctrine-project.org/en/latest/reference/association-mapping.html#many-to-one-unidirectional) *owner* apontando para a entidade *MapasCulturais\Entity\Agent*. Requer também um mapeamento do tipo *int* chamado *_ownerId* que representa o id do agente que é dono desta entidade.
 - **EntitySoftDelete** - Usado em entidades que necessitem de lixeira. Requer um mapeamento do tipo *int* chamado *status*.
 - **EntityTaxonomies** - Deve ser usado em entidades que precisem de taxonomias (tags, área de atuação, etc.).
@@ -133,14 +133,15 @@ A classe abstrata [MapasCulturais\Entity](../src/protected/application/lib/Mapas
 - **EntityVerifiable** - Deve ser usado em entidades *verificáveis*, o seja, que podem ser marcadas como *oficiais* pelos admins ou membros da equipe.
 
 ### Verificação de Permissões
-A verificação das permissões são feitas através do método **checkPermission** passando como parâmetro para este o nome da ação que você deseja checar se o usuário tem ou não permissão para executar. Este método, por ua vez, chama o método [canUser](#método-canuser) que retornará um booleando *true* se o usuário pode executar a ação ou *false* se o usuário não pode executar a ação. Caso o usuário não possa executar a ação, o método **checkPermission** lançará uma exceção do tipo [PermissionDenied](#permissiondenied).
+A verificação das permissões é feita através do método **checkPermission**, passando como parâmetro para este o nome da ação que você deseja checar se o usuário tem ou não permissão para executar. Este método, por sua vez, chama o método [canUser](#método-canuser) que retornará um booleano *true* se o usuário pode executar a ação ou *false* se o usuário não pode executar a ação. 
+Caso o usuário não possa executar a ação, o método **checkPermission** lançará uma exceção do tipo [PermissionDenied](#permissiondenied).
 
 #### Método canUser
 O método **canUser** recebe como primeiro parâmetro o nome da ação e opcionalmente, como segundo parâmetro, um usuário. Se nenhum usuário for enviado, será usado o usuário logado ou *guest*. O retorno desta função é um booleano indicando se o usuário pode ou não executar a ação.
 
-Este método procurará por um método auxilar chamado *canUser acrescido do nome da ação* (exemplo: para a ação **remove**, um método chamado **canUserRemove**) e caso não ache será usado o método [genericPermissionVerification](#método-genericpermissionverification).
+Este método procurará por um método auxiliar chamado *canUser* acrescido do nome da ação (exemplo: para a ação **remove**, um método chamado **canUserRemove**) e caso não ache será usado o método [genericPermissionVerification](#método-genericpermissionverification).
 
-No exemplo a seguir dizemos que somente admins podem alterar o satatus da entidade Exemplo.
+No exemplo a seguir dizemos que somente admins podem alterar o status da entidade Exemplo.
 ```PHP
 class Exemplo extends MapasCulturais\Entity{
     use MapasCulturais\Traits\MagicSetter
@@ -204,19 +205,19 @@ Por enquanto ainda não utilizamos um gerenciador de pacotes para as bibliotecas
 
 
 #### theme.php
-Este arquivo fica na pasta raíz do tema (**src/protected/application/themes/active**) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a [API de plugins](mc_config_api.md).
+Este arquivo fica na pasta raiz do tema (**src/protected/application/themes/active**) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a [API de plugins](mc_config_api.md).
 
 #### Estrutura de pastas do tema
-dentro da pasta raíz do tema
-- **assets/** - *onde deve ficar tudo que é acessível pelo público dentro da url **/public** do site*
+Dentro da pasta raiz do tema
+- **assets/** - *aonde deve ficar tudo que é acessível pelo público dentro da url **/public** do site*
   - **css/**
   - **fonts/**
   - **img/**
   - **vendor/**
-- **layouts/** - *onde ficam os layouts do site*
-    - **parts/** - *onde ficam os template parts utilizados pelo tema*
-- **views/** - *onde ficam as viões dos controles*
-- **pages/** - onde ficam os arquivos de páginas
+- **layouts/** - *aonde ficam os layouts do site*
+    - **parts/** - *aonde ficam os template parts utilizados pelo tema*
+- **views/** - *aonde ficam as visões dos controles*
+- **pages/** - *aonde ficam os arquivos de páginas*
 
 ### Páginas
 As páginas do sistema são arquivos **.md** (Markdown) salvos dentro da pasta **pages/** do tema. Para criar uma nova página basta criar um novo arquivo **.md** dentro desta pasta. Estes arquivos são renderizadas pela biblioteca [PHP Markdown Extra](https://michelf.ca/projects/php-markdown/extra/).
@@ -229,7 +230,7 @@ Para uma página cujo nome de arquivo é **nome-da-pagina.md**, a url de acesso 
 O texto do **primeiro h1** do conteúdo da página será utilizado como título da página (tag **title**). Isto é feito via javascript.
 
 
-No exemplo a seguir o título da página será **Título da Págna**
+No exemplo a seguir o título da página será **Título da Página**
 ```Markdown
 # Título da Página
 
@@ -243,7 +244,7 @@ O Conteúdo das sidebars estão nos arquivos **_right.md** e **_left.md**
 #### Substituindo uma sidebar
 Você pode substituir uma sidebar envolvendo o conteúdo que você deseja que substitua o conteúdo padrão com as tags **<%left left%>** para a sidebar da esquerda e **<%right right%>** para a sidebar da direita.
 
-No exemplo a seguir substituimos a sidebar da direita por um menu com três links:
+No exemplo a seguir substituímos a sidebar da direita por um menu com três links:
 ```Markdown
 <%right 
 - [Primeiro link](#primeiro)
@@ -256,10 +257,10 @@ right%>
 Conteúdo da página ....
 ```
 
-#### Extendendo uma sidebar
+#### Estendendo uma sidebar
 Você pode extender uma sidebar, adicionando conteúdo antes ou depois do conteúdo padrão, colocando um **:after** ou **:before** logo depois da tag de abertura.
 
-No exemplo a seguir extendemos a sidebar da esquerda adicionando um menu com 2 links no final da sidebar:
+No exemplo a seguir estendemos a sidebar da esquerda adicionando um menu com 2 links no final da sidebar:
 ```Markdown
 <%left:after
 ## submenu da página
@@ -302,7 +303,7 @@ As visões são chamadas de dentro das [actions do controller](#actions) atravé
 Quando a visão é chamada pelo método render, o conteúdo renderizado da visão é guardado na variável **$TEMPLATE_CONTENT** e enviado para o layout.
 
 #### Visões das actions single, create e edit
-Os arquivos de visão **single.php**, **create.php** e **edit.php** dos controladores **agent**, **space**, **event** e **project** são, não relidade, o mesmo arquivo. O arquivo *real* é o **single.php** e os dois outros são *links simbólicos* para o primeiro.
+Os arquivos de visão **single.php**, **create.php** e **edit.php** dos controladores **agent**, **space**, **event** e **project** são, na realidade, o mesmo arquivo. O arquivo *real* é o **single.php** e os dois outros são *links simbólicos* para o primeiro.
 
 Para saber, de dentro de um destes arquivos, em qual action você está, você pode usar a propriedade **$this->controller->action**:
 
@@ -326,7 +327,7 @@ Se você só deseja saber se está no modo de edição use a função **is_edita
 ```
 
 ### Partes
-As partes são blocos de código que podem ser incluidos em diferentes views, layouts ou mesmo dentro de outras partes. Estes blocos de código devem ficar, por padrão, na pasta **layouts/parts/** do tema.
+As partes são blocos de código que podem ser incluídos em diferentes views, layouts ou mesmo dentro de outras partes. Estes blocos de código devem ficar, por padrão, na pasta **layouts/parts/** do tema.
 
 Para usar uma parte cujo nome de arquivo é **uma-parte.php** basta chamar o método **part** da seguinte forma:
 
@@ -336,9 +337,9 @@ Para usar uma parte cujo nome de arquivo é **uma-parte.php** basta chamar o mé
 ```
 
 #### Enviando variáveis para dentro das partes
-Você pode enviar variáveis para usar dentro das partes. Isto é útil em várias situações, por exmplo quando você quer que uma parte seja usada dentro de um loop e você tem que enviar o item atual do loop para usar dentro da parte.
+Você pode enviar variáveis para usar dentro das partes. Isto é útil em várias situações, por exemplo quando você quer que uma parte seja usada dentro de um loop e você tem que enviar o item atual do loop para usar dentro da parte.
 
-No exemplo a seguir, passamos uma variável chamada **user_name**, com o valor **"Fulano de Tal"**, para dentro da parte **uma-parte**.
+No exemplo a seguir, passamos uma variável chamada **user_name** com o valor **"Fulano de Tal"** para dentro da parte **uma-parte**.
 ```PHP
 // dentro de algum arquivo de view, layout ou mesmo outra parte
 $this->part('uma-parte', ['user_name' => 'Fulano de Tal']);
@@ -375,7 +376,7 @@ O exemplo a seguir cria um link para o arquivo **documento.pdf** que está na pa
 ```
 
 #### Método enqueueStyle
-Este método é utilizado para adicionar arquivos .css que serão utilizados pela visão, layout ou parte. Este método aceitas 5 parâmetros (**$group**, **$script_name**, **$script_filename**, *array* **$dependences**, **$media**), sendo os dois último opcional.
+Este método é utilizado para adicionar arquivos .css que serão utilizados pela visão, layout ou parte. Este método aceitas 5 parâmetros (**$group**, **$script_name**, **$script_filename**, *array* **$dependences**, **$media**), sendo os dois últimos opcionais.
 
 Há três grupos de estilos no sistema: **vendor**, que são estilos utilizados pelas bibliotecas, **fonts** que são as fontes utilizadas, e **app**, que são os estilos escritos exclusivamente para o tema. 
 
@@ -418,11 +419,11 @@ Os grupos de estilos e scripts serão impressos na seguinte ordem e dentro dos g
 De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáveis estão acessíveis:
 - **$this** - instância da classe *MapasCulturais\View*.
     - **$this->assetUrl** - url dos assets.
-    - **$this->baseUrl** - url da raíz do site.
+    - **$this->baseUrl** - url da raiz do site.
     - **$this->controller** - o controller que mandou renderizar a visão.
     - **$this->controller->action** - a action que mandou renderizar a visão.
 - **$app** - instância da classe *MapasCulturais\App*.
-- **$app->user** - o usuário que estã vendo o site. Este objeto é instância da classe *MapasCulturais\Entities\User*, se o usuário estiver logado, ou instância da classe *MapasCulturais\GuestUser*, se o usuário não estiver logado.
+- **$app->user** - o usuário que está vendo o site. Este objeto é uma instância da classe *MapasCulturais\Entities\User* (se o usuário estiver logado), ou instância da classe *MapasCulturais\GuestUser*, se o usuário não estiver logado.
 - **$app->user->profile** - o agente padrão do usuário. Instância da classe *MapasCulturais\Entities\Agent*. *(somente para usuários logados)*
 - **$entity** - é a entidade que está sendo visualizada, editada ou criada. *(somente para as actions single, edit e create dos controladores das entidades agent, space, project e event. Dentro das partes somente se esta foi [enviada](#enviando-variáveis-para-dentro-das-partes))*
 

@@ -218,12 +218,11 @@ body.action-search {
     li {
         -webkit-transition: all .3s;
                 transition: all .3s;
-        width: 20%;
-        @media screen and (min-width: $screen-tablet) {
-            width: 4.5rem;
+        @media screen and (max-width: $screen-tablet) {
+            width: 20%;
         }
         @media screen and (min-width: $screen-desktop) {
-            width: 6.5rem;
+            width: 7.1rem;
         }
         &.active:after {
             bottom: 0;

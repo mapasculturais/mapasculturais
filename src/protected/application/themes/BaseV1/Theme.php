@@ -880,11 +880,11 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function getSearchProjectsUrl(){
-        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";;
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:project,viewMode:list))";
     }
 
     function getSearchOpportunitiesUrl(){
-        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";;
+        return App::i()->createUrl('site', 'search')."##(global:(filterEntity:opportunity,viewMode:list))";
     }
 
     function getSearchSealsUrl(){
@@ -1017,11 +1017,12 @@ class Theme extends MapasCulturais\Theme {
             $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
             $rsm->addScalarResult('type', 'type');
             $rsm->addScalarResult('name', 'name');
+            $rsm->addScalarResult('cod', 'cod');
 
             $x = $this->location->longitude;
             $y = $this->location->latitude;
 
-            $strNativeQuery = "SELECT type, name FROM geo_division WHERE ST_Contains(geom, ST_Transform(ST_GeomFromText('POINT($x $y)',4326),4326))";
+            $strNativeQuery = "SELECT type, name, cod FROM geo_division WHERE ST_Contains(geom, ST_Transform(ST_GeomFromText('POINT($x $y)',4326),4326))";
 
             $query = $app->getEm()->createNativeQuery($strNativeQuery, $rsm);
 
@@ -1035,6 +1036,9 @@ class Theme extends MapasCulturais\Theme {
             foreach ($divisions as $div) {
                 $metakey = 'geo' . ucfirst($div['type']);
                 $this->$metakey = $div['name'];
+
+                $metakey2 = 'geo' . ucfirst($div['type']) . '_cod';
+                $this->$metakey2 = $div['cod'];
             }
         });
 
@@ -1120,6 +1124,8 @@ class Theme extends MapasCulturais\Theme {
                     LEFT JOIN e.__metadata m
                     WITH
                         m.key = 'subTitle'
+                     JOIN e.occurrences oc 
+                     JOIN oc.space sp
                 ";
         });
 
@@ -1133,6 +1139,7 @@ class Theme extends MapasCulturais\Theme {
                 $where .= " OR p.id IN ( " . implode(',', $project_ids) . ")";
             }
             $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
+            $where .= " OR unaccent(lower(sp.name)) LIKE unaccent(lower(:keyword))";
         });
 
         $theme = $this;
@@ -1312,12 +1319,23 @@ class Theme extends MapasCulturais\Theme {
     function register() {
         $app = App::i();
         $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
-        foreach ($geoDivisionsHierarchyCfg as $slug => $name) {
+        foreach ($geoDivisionsHierarchyCfg as $slug => $division) {
+            
+            // Begin backward compability version < 4.0, $division is string not a array.
+            $label = $division; 
+            if (is_array($division)) { 
+                $label = $division['name'];
+            } 
+            // End backward compability
+
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
                 $entity_types = $app->getRegisteredEntityTypes($entity_class);
 
                 foreach ($entity_types as $type) {
-                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $name));
+                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $label));
+                    $app->registerMetadata($metadata, $entity_class, $type->id);
+
+                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug). '_cod', array('label' => $label));
                     $app->registerMetadata($metadata, $entity_class, $type->id);
                 }
             }
@@ -1581,7 +1599,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
         $this->localizeScript('evaluations', [
-            'saveMessage' => i::__('A avaiação foi salva')
+            'saveMessage' => i::__('A avaliação foi salva')
         ]);
     }
 
@@ -1613,7 +1631,9 @@ class Theme extends MapasCulturais\Theme {
             /* Translators: de uma data. Ex: *de* 12/12 a 13/12 */
             'dateFrom' => i::__('de'),
             /* Translators: a uma data. Ex: de 12/12 *a* 13/12 */
-            'dateTo' => i::__('a')
+            'dateTo' => i::__('a'),
+            'CreateDate' => i::__('Data de criação'),
+            'name' => i::__('Nome'),
         ]);
     }
 
@@ -1741,7 +1761,7 @@ class Theme extends MapasCulturais\Theme {
             'needResponsible' =>  i::__('Para se inscrever neste projeto você deve selecionar um agente responsável.'),
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
-           'Todas opções' => i::__('Todas opções'),
+            'Todas opções' => i::__('Todas opções'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
@@ -1764,6 +1784,7 @@ class Theme extends MapasCulturais\Theme {
             'savedAsDraft' =>  i::__('Eventos transformados em rascunho.'),
             'confirmRemoveAttachment' =>  i::__('Deseja remover este anexo?'),
             'registrationOwnerDefault' =>  i::__('Agente responsável pela inscrição'),
+            'agentRelationIsAlreadyExists' =>  i::__('O Agente selecionado já foi adicionado na comissão de avaliadores'),
             'allStatus' =>  i::__('Todas'),
             'pending' =>  i::__('Pendente'),
             'invalid' =>  i::__('Inválida'),
@@ -1783,9 +1804,10 @@ class Theme extends MapasCulturais\Theme {
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
-
             'evaluated' => i::__('Avaliada'),
             'sent' => i::__('Enviada'),
+            'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
+            'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -1854,6 +1876,7 @@ class Theme extends MapasCulturais\Theme {
     protected function _populateJsObject() {
         $app = App::i();
         $this->jsObject['userId'] = $app->user->is('guest') ? null : $app->user->id;
+        $this->jsObject['userProfile'] = $app->user->profile; //get standard agent for user
         $this->jsObject['vectorLayersURL'] = $app->baseUrl . $app->config['vectorLayersPath'];
 
         $this->jsObject['request'] = array(
@@ -2569,6 +2592,24 @@ class Theme extends MapasCulturais\Theme {
 
     }
 
+    private function isHome() {
+        $app = \MapasCulturais\App::i();
+        $view = $app->getView();
+
+        return ( $view->template === "site/index" && $view->getController()->action === "index" );
+    }
+
+    public function getLoginLinkAttributes() {
+        $app = \MapasCulturais\App::i();
+        $loginURL = $app->createUrl('panel');
+        $link_attributes = 'data-auth="'. $loginURL .'"';
+
+        if ($this->isHome()) {
+            $link_attributes = 'href="'. $loginURL .'"';
+        }
+
+        return $link_attributes;
+    }
 
 
 

@@ -20,6 +20,17 @@
         }
     }
 
+    function _getStatusSlug(status) {
+        switch (status) {
+            case 0: return 'draft'; break;
+            case 1: return 'sent'; break;
+            case 2: return 'invalid'; break;
+            case 3: return 'notapproved'; break;
+            case 8: return 'waitlist'; break;
+            case 10: return 'approved'; break;
+        }
+    }
+
     module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
         var url = new UrlService('registration');
         var labels = MapasCulturais.gettext.moduleOpportunity;
@@ -36,12 +47,27 @@
                     category: params.category
                 };
 
-                return $http.post(this.getUrl(), data).
+                return $http.post( this.getUrl(), data).
                 success(function (data, status) {
                     $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
                 }).
                 error(function (data, status) {
                     $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
+                });
+            },
+
+            setMultipleStatus: function(registrations) {
+                var endPoint = url.create('setMultipleStatus');
+
+                return $http.post(endPoint, { evaluations: registrations }).
+                success(function (data) {
+                    for(var aval in data) {
+                        var slug = _getStatusSlug(data[aval]);
+                        $("#registration-" +  aval).attr('class', slug);
+
+                        var txt = $("#registration-" +  aval + " .registration-status-col").first().text();
+                        $("#registration-" + aval + " .registration-status-col .dropdown.js-dropdown div").text(txt);
+                    }
                 });
             },
 
@@ -763,9 +789,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.showField = function (field) {
 
-    }
+    };
 
     $scope.sendFile = function(attrs){
+        $('.carregando-arquivo').show();
+        $('.submit-attach-opportunity').hide();
+
         var $form = $('#' + attrs.id + ' form');
         $form.submit();
         if(!$form.data('onSuccess')){
@@ -789,7 +818,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     };
 
-    var initAjaxUploader = function(id, index){
+    var initAjaxUploader = function(id, index) {
         var $form = $('#editbox-file-' + id + ' form');
         if($form.data('initialized'))
             return;
@@ -805,6 +834,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
             $scope.$apply();
             setTimeout(function(){
+                $('.carregando-arquivo').hide();
+                $('.submit-attach-opportunity').show();
                 EditBox.close('editbox-file-'+id, evt);
             }, 700);
         });
@@ -1050,16 +1081,26 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         $scope.createAdminRelation = function(entity){
             var _scope = this.$parent;
-            var groupName = 'group-admin';
-            var hasControl = true;
+            var isAgentRelation = false;
+            _scope.spinnerCondition = true;
+            _scope.noEntityFound  = true;
 
-            RelatedAgentsService.create(groupName, entity.id, true).
-                    success(function(data){
-                        $scope.data.committee.push(data);
-                        _scope.$parent.searchText = '';
-                        _scope.$parent.result = [];
-                        EditBox.close('add-committee-agent');
-                    });
+            isAgentRelation = $scope.data.committee.some( item => item.agent.id === entity.id);
+
+            if (!isAgentRelation) {
+                RelatedAgentsService.create('group-admin', entity.id, true).success(function(data) {
+                    $scope.data.committee.push(data);
+                    _scope.spinnerCondition = false;
+                    _scope.noEntityFound  = false;
+                    _scope.$parent.searchText = '';
+                    _scope.$parent.result = [];
+                    EditBox.close('add-committee-agent');
+                });
+            } else {
+                _scope.spinnerCondition = false;
+                _scope.noEntityFound  = false;
+                MapasCulturais.Messages.error(labels['agentRelationIsAlreadyExists']);
+            }
         };
 
         $scope.deleteAdminRelation = function(relation){
@@ -1169,6 +1210,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
+    var opportunity_main_tab = $("#opportunity-main-info");
+    if( $.trim($(opportunity_main_tab).text()).length === 0 ) {
+        $(opportunity_main_tab).hide();
+    }
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
     var registrationsApi;
     var evaluationsApi;
@@ -1256,8 +1302,42 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }));
     });
 
-
     $scope.editbox = EditBox;
+
+    $scope.confirmEvaluations = function () {
+        MapasCulturais.confirm(labels['applyEvaluations'], function() {
+            $scope.totalEvaluations().map(function(e) {
+                var register = e.registration;
+                var result = { value: parseInt(e.evaluation.result) };
+                $scope.setRegistrationStatus( register, result, true );
+            });
+        });
+    };
+
+    $scope.applyEvaluations = function() {
+        var _arr = [];
+        $scope.totalEvaluations().map(function(e) {
+            var result = parseInt(e.evaluation.result);
+            _arr.push({ reg_id: e.registration.id, result: result });
+        });
+
+        RegistrationService.setMultipleStatus(_arr);
+    };
+
+    $scope.hasEvaluations = function() {
+        return ($scope.totalEvaluations().length > 0);
+    };
+
+    $scope.totalEvaluations = function() {
+        var total_evaluations = $scope.data.evaluations.filter(function(ev) {
+            if(ev.evaluation && ev.evaluation != null) {
+                return ev.evaluation;
+            }
+        });
+
+        return total_evaluations;
+    };
+
     $scope.data = angular.extend({
         uploadSpinner: false,
         spinner: false,
@@ -1295,12 +1375,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             status: true
         },
 
+        confirmEvaluationLabel: labels['confirmEvaluationLabel'],
 
         fields: RegistrationService.getFields(),
 
         relationApiQuery: {'@keywowrd': '*'},
 
-        fullscreenTable: false
+        fullscreenTable: false,
 
     }, MapasCulturais);
 
@@ -1355,7 +1436,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         return result;
     };
-
 
     for(var name in MapasCulturais.labels.agent){
         var label = MapasCulturais.labels.agent[name];
@@ -1428,70 +1508,61 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
     }
 
-
-
-
     // EVALUATIONS - END
 
 
-    $scope.getStatusSlug = function(status){
-                /*
-                        const STATUS_SENT = self::STATUS_ENABLED;
-                        const STATUS_APPROVED = 10;
-                        const STATUS_WAITLIST = 8;
-                        const STATUS_NOTAPPROVED = 3;
-                        const STATUS_INVALID = 2;
-                        */
-                        switch (status){
-                            case 0: return 'draft'; break;
-                            case 1: return 'sent'; break;
-                            case 2: return 'invalid'; break;
-                            case 3: return 'notapproved'; break;
-                            case 8: return 'waitlist'; break;
-                            case 10: return 'approved'; break;
-                        }
-                    };
+    $scope.getStatusSlug = function(status) {
+        /*
+            const STATUS_SENT = self::STATUS_ENABLED;
+            const STATUS_APPROVED = 10;
+            const STATUS_WAITLIST = 8;
+            const STATUS_NOTAPPROVED = 3;
+            const STATUS_INVALID = 2;
+       */
+        return _getStatusSlug(status);
+    };
 
-                    $scope.getStatusNameById = function(id){
-                        var statuses = $scope.data.registrationStatusesNames
-                        for(var s in statuses){
-                            if(statuses[s].value == id)
-                                return statuses[s].label;
-                        }
-                    };
+    $scope.getStatusNameById = function(id) {
+        var statuses = $scope.data.registrationStatusesNames;
+        for(var s in statuses){
+            if(statuses[s].value == id)
+                return statuses[s].label;
+        }
+    };
 
-                    $scope.approvedRegistrations = function(){
+    $scope.approvedRegistrations = function(){
 
-                        var registrations = $scope.data.registrations,
-                        approved = 0;
+        var registrations = $scope.data.registrations,
+        approved = 0;
 
-                        for(var key in registrations){
-                            if(registrations[key].hasOwnProperty('status') && registrations[key].status === 10) {
-                                approved++;
-                            }
-                        }
+        for(var key in registrations){
+            if(registrations[key].hasOwnProperty('status') && registrations[key].status === 10) {
+                approved++;
+            }
+        }
 
-                        return approved;
-                    }
+        return approved;
+    };
 
-            // PLEASE REFACTOR ME
-            $scope.setRegistrationStatus = function(registration, status){
-                if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))){
-                    if(status.value === 10) {
-                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                            if(registration.status === 0){
-                                $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
-                            }
-                        });
-                    } else {
-                        RegistrationService.setStatusTo(registration, $scope.getStatusSlug(status.value)).success(function(entity){
-                            if(registration.status === 0){
-                                $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
-                            }
-                        });
-                    }
+
+    $scope.setRegistrationStatus = function(registration, status, is_bulk) {
+
+        if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))) {
+            var slug = $scope.getStatusSlug(status.value);
+
+            RegistrationService.setStatusTo(registration, slug).success(function(entity) {
+                if(registration.status === 0){
+                    $scope.data.registrations.splice($scope.data.registrations.indexOf(registration),1);
                 }
-            };
+            });
+
+            if(is_bulk) {
+                $("#registration-" +  registration.id).attr('class', slug);
+                var t = $("#registration-" +  registration.id + " .registration-status-col").first().text();
+                $("#registration-" +  registration.id + " .registration-status-col .dropdown.js-dropdown div").text(t);
+            }
+        }
+    };
 
             $scope.getRegistrationStatus = function(registration){
                 return registration.status;
@@ -1545,7 +1616,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 EditBox.close('editbox-select-registration-owner');
 
                 RegistrationService.save();
-            };
+            };            
 
             $scope.setRegistrationAgent = function(entity, attrs){
                 if(attrs.name === 'owner'){
@@ -1584,8 +1655,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     $('#find-entity-registration-owner').trigger('find',0);
             });
 
-            $scope.register = function(){
-                var registration = $scope.data.registration;
+            $scope.register = function(){                
+                var registration = $scope.data.registration;                
                 var ownerRegistration = [];
                 // @TODO: buscar na api
                 for(var i in $scope.data.registrations) {
@@ -1707,6 +1778,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     alert('erro');
                 });
             };
+
+            $timeout(function() {
+                //Se não existir agentes registrado ao carregar o modúlo, adiciona o agente padrão ao registro.
+                if (!MapasCulturais.entity.registrationAgents) {
+                    $scope.setRegistrationOwner(MapasCulturais.userProfile);
+                }
+            });
+
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
@@ -1756,7 +1835,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         $scope.evaluated = function(registration){
             return  $scope.evaluations[registration.id] && $scope.evaluations[registration.id].result !== null;
-        }
+        };
+
+        $scope.status_str = function(registration) {
+            return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+        };
 
         $scope.show = function(registration){
             if(registration.status === 0){

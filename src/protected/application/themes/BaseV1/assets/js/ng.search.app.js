@@ -53,7 +53,6 @@
                     lng: null
                 }
             },
-
             enabled: {
                 agent: false,
                 space: false,
@@ -63,12 +62,28 @@
         agent: {
             keyword: '',
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: {
+                    0: {"label":labels['name'],"field":"name"},
+                    1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
+            }
         },
         space: {
             keyword: '',
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: {
+                    0: {"label":labels['name'],"field":"name"},
+                    1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
+            }
         },
         event: {
             keyword: '',
@@ -76,6 +91,7 @@
             to: moment().add(1, 'month').format('YYYY-MM-DD'),
             showAdvancedFilters:false,
             filters: {}
+            
         },
         project: {
             keyword: '',
@@ -83,7 +99,15 @@
             types: [],
             isVerified: false,
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: {
+                   0: {"label":labels['name'],"field":"name"},
+                   1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
+            }
         },
         opportunity: {
             keyword: '',
@@ -92,7 +116,15 @@
             isVerified: false,
             ropen: false,
             showAdvancedFilters:false,
-            filters: {}
+            filters: {},
+            sort: {
+                type: 'DESC', //DESC or ASC
+                sortBy: 'createTimestamp',
+                sortFields: {
+                   0: {"label":labels['name'],"field":"name"},
+                   1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
+            }
         }
     };
 
@@ -132,7 +164,7 @@
 
         if(typeof input === 'undefined' || typeof skeleton === 'undefined' || input === skeleton) return;
 
-        if(!angular.isObject(input)|| angular.isArray(skeleton)) {
+        if(!angular.isObject(input)|| angular.isArray(skeleton)) {        
             return input;
         }
 
@@ -170,7 +202,7 @@
         'search.controller.spatial',
         'mc.module.notifications']);
 
-    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService){
+    app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', 'loginService', function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService, loginService) {
         $scope.defaultLocationRadius = defaultLocationRadius;
         $scope.shareurl = $location.absUrl();
         $rootScope.resetPagination = function(){
@@ -249,7 +281,7 @@
                 if(key === 'global') return;
                 this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
             }, ctx);
-
+            
             return ctx.has || $scope.data.global.locationFilters.enabled !== null;
         };
 
@@ -564,6 +596,16 @@
                 return true;
             } else {
                 return !$scope.collapsedFilters && !$scope.showInfobox();
+            }
+        };
+
+        $scope.setRedirectUrl = function() {
+            loginService.setLastUrl();
+        }
+
+        $scope.toggleSortOrder = function(orde) {            
+            if (orde != $scope.data[$scope.data.global.filterEntity].sort.type ) {
+                $scope.data[$scope.data.global.filterEntity].sort.type = $scope.data[$scope.data.global.filterEntity].sort.type == 'ASC' ? 'DESC' : 'ASC';
             }
         }
 
