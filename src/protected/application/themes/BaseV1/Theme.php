@@ -2497,6 +2497,24 @@ class Theme extends MapasCulturais\Theme {
 
     }
 
+    private function isHome() {
+        $app = \MapasCulturais\App::i();
+        $view = $app->getView();
+
+        return ( $view->template === "site/index" && $view->getController()->action === "index" );
+    }
+
+    public function getLoginLinkAttributes() {
+        $app = \MapasCulturais\App::i();
+        $loginURL = $app->createUrl('panel');
+        $link_attributes = 'data-auth="'. $loginURL .'"';
+
+        if ($this->isHome()) {
+            $link_attributes = 'href="'. $loginURL .'"';
+        }
+
+        return $link_attributes;
+    }
 
 
 
