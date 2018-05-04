@@ -98,11 +98,16 @@
                 return;
             };
 
+            $scope.new_filter.type = $scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['type'];
+
+            
+
             $scope.filters[$scope.filter_entity].push($scope.new_filter);
 
             $('#user_filters__' + $scope.filter_entity).editable('setValue', JSON.stringify($scope.filters[$scope.filter_entity]));
 
             EditBox.close(attrs.id);
+            console.log('$scope', $scope);
 
         };
 

@@ -1226,8 +1226,7 @@ class Theme extends MapasCulturais\Theme {
                                 'checklist' => 'Checklist',
                                 'singleselect' => 'Select',
                                 'text' => 'Texto',
-                                'checkbox' => 'Checkbox',
-                                'checkbox-verified' => 'Resultados Verificados'
+                                'checkbox' => 'Checkbox'
                             ];
                             break;
                         case 'string':
@@ -1241,8 +1240,7 @@ class Theme extends MapasCulturais\Theme {
                                 'checklist' => 'Checklist',
                                 'singleselect' => 'Select',
                                 'text' => 'Texto',
-                                'checkbox' => 'Checkbox',
-                                'checkbox-verified' => 'Resultados Verificados'
+                                'checkbox' => 'Checkbox'
                             ];
                             break;
                         default:
@@ -1250,8 +1248,7 @@ class Theme extends MapasCulturais\Theme {
                                 'checklist' => 'Checklist',
                                 'singleselect' => 'Select',
                                 'text' => 'Texto',
-                                'checkbox' => 'Checkbox',
-                                'checkbox-verified' => 'Resultados Verificados'
+                                'checkbox' => 'Checkbox'
                             ];
                             break;
                     }
@@ -1267,12 +1264,25 @@ class Theme extends MapasCulturais\Theme {
 
                 $class_name = '\MapasCulturais\Entities\\'.ucwords($entity);
 
-                $app->view->jsObject['user_filters__conf'][$entity] = $conf_data($class_name::getPropertiesMetadata(),
-                                                                                 $app->getRegisteredTaxonomies(substr($class_name, 1)));
+                $app->view->jsObject['user_filters__conf'][$entity] = $conf_data($class_name::getPropertiesMetadata(),$app->getRegisteredTaxonomies(substr($class_name, 1)));
 
-                // $app->log->debug('-----AQUI-----');
-                // $app->log->debug();
-                // $app->log->debug('-----fim do aqui-----');
+                $app->view->jsObject['user_filters__conf'][$entity]['tipos'] = [
+                    'label' => 'Tipos',
+                    'type' => 'entitytype',
+                    'types' => [
+                        'checklist' => 'Checklist',
+                        'singleselect' => 'Select',
+                        'text' => 'Texto'
+                    ]
+                ];
+
+                $app->view->jsObject['user_filters__conf'][$entity]['verificados'] = [
+                    'label' => 'Resultados Verificados',
+                    'type' => 'metadata',
+                    'types' => [
+                        'checkbox-verified' => 'Resultados Verificados'
+                    ]
+                ];
 
 
             }

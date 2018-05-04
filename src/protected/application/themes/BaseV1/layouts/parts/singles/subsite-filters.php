@@ -159,7 +159,7 @@ function printSubsiteFilter($property){
                     <span class="icon icon-check" ng-class="{'selected': new_filter.isInline}"></span>Filtro Avançado
                 </a>
             </p>
-            <input type="hidden" ng-value="conf_filters[filter_entity]['type']" ng-model="new_filter.type" />
+            
             <div id="filter-error" class="widget" style="display: none">
                 <p class="alert danger">Preencha todos os campos para adicionar um filtro.</p>
             </div>
