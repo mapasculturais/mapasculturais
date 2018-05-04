@@ -2,8 +2,12 @@
     (Explicar aqui todos os níveis de permissões do mapas)
 # Permissões a nível de código
 
-Após compreender o esquema de permissões do Mapas Culturais, vejamos como utilizá-los quando estamos programando.
+Após compreender o esquema de permissões do Mapas Culturais, veja abaixo métodos úteis para gerenciamento da permissão durante o desenvolvimendo:
 
+#### - getAuth
+O método `$app->getAuth()` retorna o AuthProvider em uso.
+
+Se o usuário estiver logado, retorna também a instância da entidade User correspondente, obtida por meio de `$app->getAuth()->getAuthenticatedUser()`.
 #### - requireAuthentication
 O método `$controller->requireAuthentication()` é definido na classe abstrata \MapasCulturais\Controller, e, portanto,
 é aproveitado e pode ser sobrescrito por qualquer controller que a estenda.
@@ -31,15 +35,20 @@ Por exemplo, este trecho de código do método `_setStatusTo($status)` da entida
 
 Como vemos, o método desabilita o controle de acesso, altera uma propriedade gerenciada do banco de dados e salva. Logo depois, habilita novamente o controle de acesso.
 
+#### - canUser
+Toda entidade possui métodos que começam com `canUser*`, retornando **bool** checando se o usuário atual (logado ou não) tem permissão de realizar alguma ação com essa entidade.
 
+Esses métodos, 'variação' de `canUser()` são encapsulados como **protected** e, portanto, não podem ser chamadas diretamente. 
+Servem só pra implementarem as permissões. Assim, devemos utilizar sempre o `canUser()`.
+
+ - **canUser($action)** - *alias* pra poder testar qualquer *$action*
+ - **canUserView()** - Verifica se o usuário pode ver a entidade.
+
+#### - checkPermission
+Checa se usuário tem permissão para a ação passada como parâmetro. Se não tiver, lança uma exceção de permissão negada.
+
+Verifica a permissão utilizando o método `canUser($action)`.
+ 
 ## Entidades com permissão de edição:
-Toda entidade possui métodos que começam com `canUser*`, retornando **bool** checando se o usuário atual (logado ou não) tem permissão de realizar alguma action com essa entidade
-
-canUser($action) - alias pra poder testar qualquer action
-
-canUserView() - se o usuário pode ver essa entidade. Esses métodos são protected e não devem ser chamadas diretamente. Servem só pra implementarem as permissões. Sempre usar o canUser()
 
 ## Usuários com permissão de edição a entidade:
-
-$entity->checkPermission($action) - checa se tem permissão e, se não tiver, throw execption de permissão negada
-Este método, por sua vez, invoca o método canUser
