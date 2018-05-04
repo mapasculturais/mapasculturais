@@ -309,22 +309,49 @@ class Theme extends BaseV1\Theme{
 
         foreach ($all_filters as $entity => $filters){
 
-            if ((count($filters) == 1 && empty($filters[0]))){
+            if ((count($filters) == 1 && empty($filters[0])))
+            {
                 $all_filters[$entity] = $original_filters[$entity];
-            } else {
-                foreach ($filters as $filter => $conf) {
-                    $conf = json_decode($conf, true)[0];
-                    $app->log->debug('AQUI');
-                    $app->log->debug(json_encode($conf));
+            } else
+            {
+                unset($all_filters[$entity][0]);
+                $filters = json_decode($filters[0], true);
+
+                foreach ($filters as $k => $filter) {
+
                     $complete_filter = [
-                        'label' => $conf['label'],
-                        'placeholder' => $conf['label'],
-                        'fieldType' => $conf['fieldType'],
-                        'isInline' => isset($conf['isInline']) ? $conf['isInline'] : true,
-                        'type' => $conf['type']
+                        'label' => $filter['label'],
+                        'placeholder' => $filter['label'],
+                        'fieldType' => $filter['fieldType'],
+                        'isInline' => isset($filter['isInline']) ? $filter['isInline'] : true,
+                        'type' => $filter['type']
                     ];
-                    // todo: complete the fucking filter
-                    $all_filters[$entity][$filter] = $complete_filter;
+
+                    switch ($filter['field']) {
+                        case 'verificados':
+                            $complete_filter['filter'] = [
+                                'param' => '@verified',
+                                'value' => 'IN(1)'
+                            ];
+                            break;
+
+                        case 'tipos':
+                            $complete_filter['filter'] = [
+                                'param' => 'type',
+                                'value' => 'IN({val})'
+                            ];
+                            break;
+
+                        default:
+                            $complete_filter['filter'] = [
+                                'param' => $filter['field'],
+                                'value' => 'IN({val})'
+                            ];
+                            break;
+                    }
+
+                    $all_filters[$entity][$filter['field']] = $complete_filter;
+
                 }
             }
         }
