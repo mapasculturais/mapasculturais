@@ -288,9 +288,6 @@ class Theme extends BaseV1\Theme{
         }
     }
 
-    // protected function _getFilters(){
-    //     return;
-    // }
     public function addEntityToJs(\MapasCulturais\Entity $entity) {
         parent::addEntityToJs($entity);
 
@@ -298,18 +295,7 @@ class Theme extends BaseV1\Theme{
 
     protected function _getFilters(){
 
-        // $prepare_filters = function($filters){
-        //     $complete_filter = [];
-        //     foreach ($filters as $filter) {
-        //         $complete_filter[$filter['field']] = [
-        //             'label' => $filter['placeholder'],
-        //             'placeholder' => $filter['placeholder'],
-        //             'fieldType' => $filter['fieldType'],
-        //             'isArray' =>
-        //         ];
-        //     }
-        //     return ;
-        // };
+        $app = App::i();
 
         $all_filters =[
             'event' => $this->subsiteInstance->user_filters__event,
@@ -318,6 +304,30 @@ class Theme extends BaseV1\Theme{
             'project' => $this->subsiteInstance->user_filters__project,
             'opportunity' => $this->subsiteInstance->user_filters__opportunity
         ];
+
+        $original_filters = parent::_getFilters();
+
+        foreach ($all_filters as $entity => $filters){
+
+            if ((count($filters) == 1 && empty($filters[0]))){
+                $all_filters[$entity] = $original_filters[$entity];
+            } else {
+                foreach ($filters as $filter => $conf) {
+                    $conf = json_decode($conf, true)[0];
+                    $app->log->debug('AQUI');
+                    $app->log->debug(json_encode($conf));
+                    $complete_filter = [
+                        'label' => $conf['label'],
+                        'placeholder' => $conf['label'],
+                        'fieldType' => $conf['fieldType'],
+                        'isInline' => isset($conf['isInline']) ? $conf['isInline'] : true,
+                        'type' => $conf['type']
+                    ];
+                    // todo: complete the fucking filter
+                    $all_filters[$entity][$filter] = $complete_filter;
+                }
+            }
+        }
 
         return $all_filters;
     }

@@ -1124,7 +1124,7 @@ class Theme extends MapasCulturais\Theme {
                     LEFT JOIN e.__metadata m
                     WITH
                         m.key = 'subTitle'
-                     JOIN e.occurrences oc 
+                     JOIN e.occurrences oc
                      JOIN oc.space sp
                 ";
         });
@@ -1177,11 +1177,12 @@ class Theme extends MapasCulturais\Theme {
                 // add registered terms to list
                 foreach ($terms as $term => $conf) {
 
-                    if ($conf->slug)
+                    if (!$conf->slug)
                         continue;
 
                     $new_data[$term] = [
-                        'label' => ucwords($conf->slug)
+                        'label' => ucwords($conf->slug),
+                        'type' => 'type'
                     ];
                     if ($conf->restrictedTerms)
                         $new_data['options'] = $conf->restrictedTerms;
@@ -1210,6 +1211,7 @@ class Theme extends MapasCulturais\Theme {
 
                     $new_data[$metadata] = [
                         'label' => $conf['label'],
+                        'type' => 'metadata'
                     ];
 
                     if (isset($conf['options']))
@@ -1217,13 +1219,42 @@ class Theme extends MapasCulturais\Theme {
 
 
                     // @todo: reduce type options foreach field properties
-                    $new_data[$metadata]['types'] = [
-                        'checklist' => 'Checklist',
-                        'singleselect' => 'Select',
-                        'text' => 'Texto',
-                        'checkbox' => 'Checkbox',
-                        'checkbox-verified' => 'Resultados Verificados'
-                    ];
+
+                    switch($conf['type']) {
+                        case 'select':
+                            $new_data[$metadata]['types'] = [
+                                'checklist' => 'Checklist',
+                                'singleselect' => 'Select',
+                                'text' => 'Texto',
+                                'checkbox' => 'Checkbox',
+                                'checkbox-verified' => 'Resultados Verificados'
+                            ];
+                            break;
+                        case 'string':
+                        case 'text':
+                            $new_data[$metadata]['types'] = [
+                                'text' => 'Texto'
+                            ];
+                            break;
+                        case 'boolean':
+                            $new_data[$metadata]['types'] = [
+                                'checklist' => 'Checklist',
+                                'singleselect' => 'Select',
+                                'text' => 'Texto',
+                                'checkbox' => 'Checkbox',
+                                'checkbox-verified' => 'Resultados Verificados'
+                            ];
+                            break;
+                        default:
+                            $new_data[$metadata]['types'] = [
+                                'checklist' => 'Checklist',
+                                'singleselect' => 'Select',
+                                'text' => 'Texto',
+                                'checkbox' => 'Checkbox',
+                                'checkbox-verified' => 'Resultados Verificados'
+                            ];
+                            break;
+                    }
                 }
 
                 return $new_data;
@@ -1320,12 +1351,12 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
         foreach ($geoDivisionsHierarchyCfg as $slug => $division) {
-            
+
             // Begin backward compability version < 4.0, $division is string not a array.
-            $label = $division; 
-            if (is_array($division)) { 
+            $label = $division;
+            if (is_array($division)) {
                 $label = $division['name'];
-            } 
+            }
             // End backward compability
 
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {

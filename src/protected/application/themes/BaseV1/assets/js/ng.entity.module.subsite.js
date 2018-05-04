@@ -92,7 +92,9 @@
                 $scope.new_filter.label &&
                 $scope.new_filter.field
             )){
-                $('#filter-error').show(400);
+                $('#filter-error').show(400, function(){
+                    $('#filter-error').delay(6000).hide(400);
+                });
                 return;
             };
 
