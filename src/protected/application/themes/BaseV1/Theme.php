@@ -1182,7 +1182,7 @@ class Theme extends MapasCulturais\Theme {
 
                     $new_data[$term] = [
                         'label' => ucwords($conf->slug),
-                        'type' => 'type'
+                        'type' => 'term'
                     ];
                     if ($conf->restrictedTerms)
                         $new_data['options'] = $conf->restrictedTerms;
@@ -1279,6 +1279,7 @@ class Theme extends MapasCulturais\Theme {
                 $app->view->jsObject['user_filters__conf'][$entity]['verificados'] = [
                     'label' => 'Resultados Verificados',
                     'type' => 'metadata',
+                    'addClass' => 'verified-filter',
                     'types' => [
                         'checkbox-verified' => 'Resultados Verificados'
                     ]

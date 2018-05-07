@@ -159,7 +159,7 @@ function printSubsiteFilter($property){
                     <span class="icon icon-check" ng-class="{'selected': new_filter.isInline}"></span>Filtro Avançado
                 </a>
             </p>
-            
+
             <div id="filter-error" class="widget" style="display: none">
                 <p class="alert danger">Preencha todos os campos para adicionar um filtro.</p>
             </div>
@@ -176,18 +176,31 @@ function printSubsiteFilter($property){
                     <button class="add hltip alignright" hltitle="Adicionar filtro" ng-click="add_filter(entity, $event)"></button>
                 </h4>
             </header>
-            <!-- <p>{{ entitiy_filter }}</p> -->
+
             <div class="servico" ng-repeat="filter in entitiy_filter track by $index">
-                <p>
+                <p class="alignleft">
                     <span class="label">Descrição:</span> {{ filter.label }}<br/>
                     <span class="label">Campo:</span> {{ filter.field }}<br/>
                     <span class="label">Tipo:</span> {{ filter.fieldType }}<br/>
                     <span class="label">Filtro Avançado:</span> <span ng-if="filter.isInline">Sim</span><span ng-if="!filter.isInline">Não</span>
                 </p>
-                <button
-                    class="delete hltip alignright"
-                    hltitle="Remover filtro"
-                    ng-click="delete_filter(entitiy_filter, filter)"></button>
+                <div class="actions alignright">
+                    <button
+                        class="hltip btn icon icon-arrow-up"
+                        hltitle="Mover para cima"
+                        ng-click="move_filter(entitiy_filter, filter, -1)"
+                        ng-class="{'disabled': $first}"></button>
+                    <button
+                        class="hltip btn icon icon-select-arrow"
+                        hltitle="Mover para baixo"
+                        ng-click="move_filter(entitiy_filter, filter, 1)"
+                        ng-class="{'disabled': $last}"></button>
+                    <button
+                        class="delete hltip btn"
+                        hltitle="Remover filtro"
+                        ng-click="delete_filter(entitiy_filter, filter)"></button>
+                </div>
+                <div style="clear: both"></div>
             </div>
             <div class="servico">
                 <p class="aligncenter" ng-hide="entitiy_filter.length">Sem filtros configurados</p>

@@ -73,17 +73,27 @@
                 $scope.filters[entity] = [];
         }
 
+        var update_filters = function(){
+            for(var entity in $scope.filters){
+                $('#user_filters__' + entity).editable('setValue', JSON.stringify($scope.filters[entity]));
+            }
+        };
+
         $scope.add_filter = function(entity, attrs) {
             $scope.filter_entity = entity;
             $scope.new_filter = {};
-            $('#filter-error').hide();
             EditBox.open('new-filter');
         };
 
         $scope.delete_filter = function(entitiy_filter, filter) {
-
             entitiy_filter.splice(entitiy_filter.indexOf(filter), 1);
+            update_filters();
+        };
 
+        $scope.move_filter = function(entitiy_filter, filter, quant){
+            var index_filter = entitiy_filter.indexOf(filter);
+            entitiy_filter.splice(index_filter + quant, 0, entitiy_filter.splice(index_filter, 1)[0]);
+            update_filters();
         };
 
         $scope.save_filter = function(attrs) {
@@ -100,24 +110,18 @@
 
             $scope.new_filter.type = $scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['type'];
 
-            
+            if ($scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['addClass'])
+                $scope.new_filter.add_class = $scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['addClass'];
 
             $scope.filters[$scope.filter_entity].push($scope.new_filter);
 
-            $('#user_filters__' + $scope.filter_entity).editable('setValue', JSON.stringify($scope.filters[$scope.filter_entity]));
+            update_filters();
 
             EditBox.close(attrs.id);
             console.log('$scope', $scope);
 
         };
 
-        $scope.up_filter = function(entity, entitiy_filter) {
-            // todo: index filter -1
-        };
-
-        $scope.down_filter = function(entity, entitiy_filter) {
-            // todo: index filter +1
-        };
 
 
         console.log('MapasCulturais', MapasCulturais);
