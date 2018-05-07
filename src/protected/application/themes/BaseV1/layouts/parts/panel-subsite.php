@@ -1,3 +1,5 @@
+<?php $entity_url = $this->getEntityURL($entity->url); ?>
+
 <article class="objeto clearfix">
     <?php if(isset($entity->{'@files:avatar.avatarSmall'}) && $avatar = $entity->{'@files:avatar.avatarSmall'}): ?>
         <div class="thumb" style="background-image: url(<?php echo $avatar->url; ?>)"></div>
@@ -6,13 +8,17 @@
     <?php endif; ?>
     <h1><a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a></h1>
 	<div class="objeto-meta">
-                <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
-                <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
-                <?php if($entity->type): ?>
-		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
-                <?php endif; ?>
-        <div><span class="label">URL:</span> <a href="<?php echo "http://" . $entity->url;?>"><?php echo "http://" . $entity->url;?></a></div>
-        </br>
+        <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
+        <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
+        <?php if($entity->type): ?>
+            <div>
+                <span class="label"> <?php \MapasCulturais\i::_e("Tipo"); ?>: </span> <?php echo $entity->type->name; ?>
+            </div>
+        <?php endif; ?>
+        <div>
+            <span class="label"><?php \MapasCulturais\i::_e("URL"); ?>:</span>
+            <a href="<?php echo $entity_url; ?>"><?php echo $entity_url; ?> </a>
+        </div> </br>
 		<div><span class="label"><?php \MapasCulturais\i::_e("Data de Criação:");?></span> <?php echo $entity->createTimestamp->format('d/m/Y H:i:s');?></div>
 	</div>
     <div class="entity-actions">
