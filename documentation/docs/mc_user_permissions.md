@@ -1,5 +1,9 @@
-# Lógica de Permissões
-    (Explicar aqui todos os níveis de permissões do mapas)
+# Permissões por perfil de usuário
+O Mapas Culturais apresenta uma hierarquia de permissões composta por cinco tipos de perfil,\
+de modo que cada nova camada de perfil adiciona novas capacidades, além de possuir todas as permissões do perfil da camada imediatamente abaixo.
+
+[Consulte aqui](mc_user_profile.md) a documentação de permissões por perfil.
+
 # Permissões a nível de código
 
 Após compreender o esquema de permissões do Mapas Culturais, veja abaixo métodos úteis para gerenciamento da permissão durante o desenvolvimendo:
