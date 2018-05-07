@@ -2516,6 +2516,22 @@ class Theme extends MapasCulturais\Theme {
         return $link_attributes;
     }
 
+    public function getEntityURL($url)
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+            return $url;
+        } else {
+            return $this->getSiteScheme() . $url;
+        }
+    }
+
+    private function getSiteScheme()
+    {
+        $app = \MapasCulturais\App::i();
+        $req = $app->request;
+
+        return $req->getScheme() . "://";
+    }
 
 
 }
