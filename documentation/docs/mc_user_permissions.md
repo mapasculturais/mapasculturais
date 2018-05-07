@@ -1,12 +1,28 @@
 # Permissões por perfil de usuário
 O Mapas Culturais apresenta uma hierarquia de permissões composta por cinco tipos de perfil,\
-de modo que cada nova camada de perfil adiciona novas capacidades, além de possuir todas as permissões do perfil da camada imediatamente abaixo.
+de modo que cada nova camada de perfil acrescenta novas capacidades, além de possuir todas as permissões do perfil da camada imediatamente abaixo.
 
 [Consulte aqui](mc_user_profile.md) a documentação de permissões por perfil.
 
 # Permissões a nível de código
 
 Após compreender o esquema de permissões do Mapas Culturais, veja abaixo métodos úteis para gerenciamento da permissão durante o desenvolvimendo:
+
+### - is($role)
+O método `$user->is($role)` é oriundo da interface UserInterface,  e implementado na entidade User.
+
+É largamente utilizado ao longo da aplicação para conceder a permissão a alguma ação com base no perfil do usuário atual.
+
+Por exemplo, conforme vimos, o perfil super admin pode gerenciar outros usuários admin.
+No código, está implementado da seguinte maneira:
+
+```
+    protected function canUserRemoveRoleAdmin($user){
+        return $user->is('superAdmin') && $user->id != $this->id;
+    }
+```
+
+E, para verificarmos se o usuário não está logado: `$user->is('guest'))`
 
 #### - getAuth
 O método `$app->getAuth()` retorna o AuthProvider em uso.
@@ -52,7 +68,3 @@ Servem só pra implementarem as permissões. Assim, devemos utilizar sempre o `c
 Checa se usuário tem permissão para a ação passada como parâmetro. Se não tiver, lança uma exceção de permissão negada.
 
 Verifica a permissão utilizando o método `canUser($action)`.
- 
-## Entidades com permissão de edição:
-
-## Usuários com permissão de edição a entidade:
