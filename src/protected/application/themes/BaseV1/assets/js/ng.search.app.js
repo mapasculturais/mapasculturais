@@ -66,10 +66,10 @@
             sort: {
                 type: 'DESC', //DESC or ASC
                 sortBy: 'createTimestamp',
-                sortFields: [
-                    {"label":labels['name'],"field":"name"},
-                    {"label":labels['CreateDate'],"field":"createTimestamp"}
-                ]
+                sortFields: {
+                    0: {"label":labels['name'],"field":"name"},
+                    1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
             }
         },
         space: {
@@ -79,10 +79,10 @@
             sort: {
                 type: 'DESC', //DESC or ASC
                 sortBy: 'createTimestamp',
-                sortFields: [
-                    {"label":labels['name'],"field":"name"},
-                    {"label":labels['CreateDate'],"field":"createTimestamp"}
-                ]
+                sortFields: {
+                    0: {"label":labels['name'],"field":"name"},
+                    1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
             }
         },
         event: {
@@ -103,10 +103,10 @@
             sort: {
                 type: 'DESC', //DESC or ASC
                 sortBy: 'createTimestamp',
-                sortFields: [
-                    {"label":labels['name'],"field":"name"},
-                    {"label":labels['CreateDate'],"field":"createTimestamp"}
-                ]
+                sortFields: {
+                   0: {"label":labels['name'],"field":"name"},
+                   1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
             }
         },
         opportunity: {
@@ -120,10 +120,10 @@
             sort: {
                 type: 'DESC', //DESC or ASC
                 sortBy: 'createTimestamp',
-                sortFields: [
-                    {"label":labels['name'],"field":"name"},
-                    {"label":labels['CreateDate'],"field":"createTimestamp"}
-                ]
+                sortFields: {
+                   0: {"label":labels['name'],"field":"name"},
+                   1: {"label":labels['CreateDate'],"field":"createTimestamp"}
+                }
             }
         }
     };
@@ -164,7 +164,7 @@
 
         if(typeof input === 'undefined' || typeof skeleton === 'undefined' || input === skeleton) return;
 
-        if(!angular.isObject(input)|| angular.isArray(skeleton)) {
+        if(!angular.isObject(input)|| angular.isArray(skeleton)) {        
             return input;
         }
 
@@ -281,7 +281,7 @@
                 if(key === 'global') return;
                 this.has = this.has || !angular.equals(_diffFilter($scope.data[key], skeletonData[key]), {});
             }, ctx);
-
+            
             return ctx.has || $scope.data.global.locationFilters.enabled !== null;
         };
 

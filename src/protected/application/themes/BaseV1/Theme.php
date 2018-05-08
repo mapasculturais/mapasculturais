@@ -1504,7 +1504,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'evaluations', 'js/evaluations.js');
         $this->localizeScript('evaluations', [
-            'saveMessage' => i::__('A avaiação foi salva')
+            'saveMessage' => i::__('A avaliação foi salva')
         ]);
     }
 
@@ -1689,6 +1689,7 @@ class Theme extends MapasCulturais\Theme {
             'savedAsDraft' =>  i::__('Eventos transformados em rascunho.'),
             'confirmRemoveAttachment' =>  i::__('Deseja remover este anexo?'),
             'registrationOwnerDefault' =>  i::__('Agente responsável pela inscrição'),
+            'agentRelationIsAlreadyExists' =>  i::__('O Agente selecionado já foi adicionado na comissão de avaliadores'),
             'allStatus' =>  i::__('Todas'),
             'pending' =>  i::__('Pendente'),
             'invalid' =>  i::__('Inválida'),
@@ -2496,7 +2497,41 @@ class Theme extends MapasCulturais\Theme {
 
     }
 
+    private function isHome() {
+        $app = \MapasCulturais\App::i();
+        $view = $app->getView();
 
+        return ( $view->template === "site/index" && $view->getController()->action === "index" );
+    }
+
+    public function getLoginLinkAttributes() {
+        $app = \MapasCulturais\App::i();
+        $loginURL = $app->createUrl('panel');
+        $link_attributes = 'data-auth="'. $loginURL .'"';
+
+        if ($this->isHome()) {
+            $link_attributes = 'href="'. $loginURL .'"';
+        }
+
+        return $link_attributes;
+    }
+
+    public function getEntityURL($url)
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+            return $url;
+        } else {
+            return $this->getSiteScheme() . $url;
+        }
+    }
+
+    private function getSiteScheme()
+    {
+        $app = \MapasCulturais\App::i();
+        $req = $app->request;
+
+        return $req->getScheme() . "://";
+    }
 
 
 }

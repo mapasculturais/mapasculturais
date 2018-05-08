@@ -19,9 +19,7 @@ Será necessário alterar o arquivo de configuração da instalação ```config.
 ## Perfis
 A funcionalidade do SaaS demandou a criação de alguns perfis de usuário que obterão acesso as funcionalidades de gestão das instalações de Mapas Culturais no sistema.
 
-### [Super Administrador SaaS](https://github.com/hacklabr/mapasculturais/blob/devel-SaaS/documentation/docs/mc_user_profiles.md#saas-super-administrador)
-
-### [Administrador Saas](https://github.com/hacklabr/mapasculturais/blob/devel-SaaS/documentation/docs/mc_user_profiles.md#saas-administrador)
+Ver documentação de [Perfis de usuário](mc_user_profile.md).
 
 ## Aba 'Filtros' da Instalação
 Nesta seção são definidos que serão aplicados no Mapa onde são exibidas a geolocalização das informações relacionadas numa instalação. São definidas as tipologias que serão exibidas e os filtros da entidade espaço, eventos e quais selos certificadores serão exibidos no mapa de localização.
