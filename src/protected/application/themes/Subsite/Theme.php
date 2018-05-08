@@ -309,23 +309,31 @@ class Theme extends BaseV1\Theme{
 
         foreach ($all_filters as $entity => $filters){
 
-            if ((count($filters) == 1 && empty($filters[0])))
+            $filters = json_decode($filters[0], true);
+
+            if (!$filters)
             {
                 $all_filters[$entity] = $original_filters[$entity];
-            } else
+            }
+            else
             {
-                unset($all_filters[$entity][0]);
-                $filters = json_decode($filters[0], true);
 
+                unset($all_filters[$entity][0]);
                 foreach ($filters as $k => $filter) {
 
                     $complete_filter = [
                         'label' => $filter['label'],
                         'placeholder' => $filter['label'],
                         'fieldType' => $filter['fieldType'],
-                        'isInline' => isset($filter['isInline']) ? $filter['isInline'] : true,
-                        'type' => $filter['type']
+                        'isInline' => isset($filter['isInline']) ? !$filter['isInline'] : true,
+                        'type' => $filter['type'],
+                        'isArray' => ($filter['fieldType'] != 'checkbox' && $filter['fieldType'] != 'checkbox-verified')
                     ];
+
+                    if (isset($filter['addClass'])){
+                        $complete_filter['addClass'] = $filter['addClass'];
+                    }
+
 
                     switch ($filter['field']) {
                         case 'verificados':
