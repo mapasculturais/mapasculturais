@@ -111,7 +111,7 @@
             $scope.new_filter.type = $scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['type'];
 
             if ($scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['addClass'])
-                $scope.new_filter.add_class = $scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['addClass'];
+                $scope.new_filter.addClass = $scope.conf_filters[$scope.filter_entity][$scope.new_filter.field]['addClass'];
 
             $scope.filters[$scope.filter_entity].push($scope.new_filter);
 
