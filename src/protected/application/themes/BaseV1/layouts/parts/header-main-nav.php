@@ -151,7 +151,7 @@
         <?php else: ?>
             <?php $this->applyTemplateHook('nav.main.login','before'); ?>
             <li class="login">
-                <a ng-click="setRedirectUrl()" data-auth="<?php echo $app->createUrl('panel') ?>">
+                <a ng-click="setRedirectUrl()" <?php echo $this->getLoginLinkAttributes() ?> >
                     <div class="icon icon-login"></div>
                     <div class="menu-item-label"><?php \MapasCulturais\i::_e("Entrar");?></div>
                 </a>

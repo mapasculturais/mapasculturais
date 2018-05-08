@@ -760,6 +760,10 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if($user->is('guest')){
+            return false;
+        }
+
         if($evaluation = $this->getUserEvaluation($user)){
             $evaluation_sent = $evaluation->status === RegistrationEvaluation::STATUS_SENT;
         }
