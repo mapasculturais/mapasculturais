@@ -26,13 +26,16 @@
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
-                <a class="add" href="#"
-                    data-dialog="#dialog-event-occurrence" href="#"
-                   data-dialog-callback="MapasCulturais.eventOccurrenceUpdateDialog"
-                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Adicionar local e data'); ?>"
-                   data-form-action='insert'
-                   title="<?php \MapasCulturais\i::esc_attr_e('Clique para adicionar local e data'); ?>">a</a>
-
+                <a class="add js-open-dialog" href="#"
+                    data-dialog="#modalTeste" href="#"
+                    data-dialog-block="true"
+                    data-dialog-callback="MapasCulturais.modalTeste"
+                    data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>"
+                    data-form-action='insert'></a>
+                    
+                <div id="modalTeste" class="js-dialog">
+                    <h1>Modal Teste</h1>
+                </div>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
         <?php endif; ?>
