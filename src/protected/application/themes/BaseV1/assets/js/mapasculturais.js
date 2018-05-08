@@ -473,6 +473,10 @@ MapasCulturais.Modal = {
         //alert('closing');
         $dialog.find('.editable').editable('hide');
         $dialog.hide();
+        if($('#blockdiv').is(':visible')){
+            $('#blockdiv').hide();
+            $('body').css('overflow','visible');
+        }
         return;
     },
 
@@ -497,6 +501,11 @@ MapasCulturais.Modal = {
         return;
     }
 };
+
+MapasCulturais.modalTeste = function(){
+    $('#blockdiv').show();
+    $('body').css('overflow','hidden');
+}
 
 
 MapasCulturais.EditBox = {
