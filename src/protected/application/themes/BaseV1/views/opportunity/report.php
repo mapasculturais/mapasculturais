@@ -93,11 +93,12 @@ ksort($custom_fields);
 
                 <?php
                 foreach($custom_fields as $field):
-                    $_field_val = $r->$field["field_name"];
+                    $_field_name = $field["field_name"];
+                    $_field_val = $r->$_field_name;
 
-                    echo "<th>";
+                    echo "<td>";
                         echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
-                    echo "</th>";
+                    echo "</td>";
 
                     endforeach;
                 ?>
