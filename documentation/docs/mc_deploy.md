@@ -48,7 +48,7 @@ Também é importante ter o pacote zip instalado no seu servidor. Ele é usado p
 root@server# apt-get install zip
 ```
 
-No Ubuntu o executável do NodeJS se chama *nodejs*, porém para o correto funcionamento das bibliotecas utilizadas, o executáel deve se chamar *node*. Para isto criamos um link simbólico com o comando abaixo
+No Ubuntu o executável do NodeJS se chama *nodejs*, porém para o correto funcionamento das bibliotecas utilizadas, o executável deve se chamar *node*. Para isto criamos um link simbólico com o comando abaixo
 ```
 root@server# update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 ```
@@ -82,7 +82,7 @@ mapas@server$ git clone https://github.com/hacklabr/mapasculturais.git
 ```
 
 
-E alterne para o branch v2 ou alguma tag de relase, disponível em https://github.com/hacklabr/mapasculturais/releases. Se for uma instalação de teste, você pode pular esta etapa.
+E alterne para o branch v2 ou alguma tag de release, disponível em https://github.com/hacklabr/mapasculturais/releases. Se for uma instalação de teste, você pode pular esta etapa.
 
 Utilizando o branch V2:
 ```BASH
@@ -109,7 +109,7 @@ root@server# exit
 mapas@server$
 ```
 
-Primeiro vamos criar o usuário no banco de dados com o mesno nome do usuário do sistema
+Primeiro vamos criar o usuário no banco de dados com o mesmo nome do usuário do sistema
 ```BASH
 root@server# sudo -u postgres psql -c "CREATE USER mapas"
 ```
@@ -155,7 +155,7 @@ mapas@server$ mkdir mapasculturais/private-files
 ```
 
 ### Configuração do nginx
-Precisamos criar o *virtual host* do nginx para a aplicação. Para isto crie, como root, o arquivo **/etc/nginx/sites-available/mapas.conf** com o conteudo abaixo:
+Precisamos criar o *virtual host* do nginx para a aplicação. Para isto crie, como root, o arquivo **/etc/nginx/sites-available/mapas.conf** com o conteúdo abaixo:
 ```
 server {
   set $site_name meu.dominio.gov.br;
@@ -302,7 +302,7 @@ O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu func
 
 * [Mapas Culturais Open ID](https://github.com/hacklabr/mapasculturais-openid) 
 * [Login Cidadão](https://github.com/redelivre/login-cidadao).
-* [Multiple Local Auth](https://github.com/LibreCoopUruguay/MultipleLocalAuth) - Implementa um login nativo da aplicaçao, sem depender de serviços externos, e suporta login via redes sociais.
+* [Multiple Local Auth](https://github.com/LibreCoopUruguay/MultipleLocalAuth) - Implementa um login nativo da aplicação, sem depender de serviços externos, e suporta login via redes sociais.
 
 * Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
 
@@ -310,7 +310,7 @@ O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu func
 
 #### Mapas Open ID Conect
 
-Esté é um sistema em Python/Django e está ativo em algumas implementações, mas seu código tem pouca documentação e está descontinuado. Não recomenda-se a instalação com esse sistema a menos que o implementador possa contar com um time de desenvolvedores que impulsonem a retomada da ferramenta.
+Este é um sistema em Python/Django e está ativo em algumas implementações, mas seu código tem pouca documentação e está descontinuado. Não recomenda-se a instalação com esse sistema a menos que o implementador possa contar com um time de desenvolvedores que impulsionem a retomada da ferramenta.
 
 >
 Fonte:  [https://github.com/hacklabr/mapasculturais-openid](https://github.com/hacklabr/mapasculturais-openid).
