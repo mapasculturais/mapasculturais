@@ -62,9 +62,15 @@ Esses métodos, 'variação' de `canUser()` são encapsulados como **protected**
 Servem só pra implementarem as permissões. Assim, devemos utilizar sempre o `canUser()`.
 
  - **canUser($action)** - *alias* pra poder testar qualquer *$action*
- - **canUserView()** - Verifica se o usuário pode ver a entidade.
+ - **canUserView()** - Verifica se o usuário pode ver a entidade. (para testar essa permissão, devemos chamar `$entity->canUser('view')`)
 
 #### - checkPermission
 Checa se usuário tem permissão para a ação passada como parâmetro. Se não tiver, lança uma exceção de permissão negada.
 
 Verifica a permissão utilizando o método `canUser($action)`.
+
+Exemplo
+
+```
+$entity->checkPermission('view'); 
+```
