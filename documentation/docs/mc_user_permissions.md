@@ -11,7 +11,7 @@ Após compreender o esquema de permissões do Mapas Culturais, veja abaixo méto
 ### - is($role)
 O método `$user->is($role)` é oriundo da interface UserInterface,  e implementado na entidade User.
 
-É largamente utilizado ao longo da aplicação para conceder a permissão a alguma ação com base no perfil do usuário atual.
+É largamente utilizado ao longo da aplicação para verificar a permissão a alguma ação com base no perfil do usuário atual.
 
 Por exemplo, conforme vimos, o perfil super admin pode gerenciar outros usuários admin.
 No código, está implementado da seguinte maneira:
