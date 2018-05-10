@@ -1037,4 +1037,14 @@ return [
         
     },
 
+    'create permission cache sequence' => function() use ($conn) {
+
+        $conn->executeQuery("CREATE SEQUENCE permission_cache_pending_seq
+                                START WITH 1
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+    },
+
 ] + $updates ;

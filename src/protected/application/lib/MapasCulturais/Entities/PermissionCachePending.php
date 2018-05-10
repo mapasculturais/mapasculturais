@@ -19,7 +19,7 @@ class PermissionCachePending extends \MapasCulturais\Entity{
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="role_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="permission_cache_pending_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 
