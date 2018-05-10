@@ -412,6 +412,7 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
+        $app->addEntityToRecreatePermissionCacheList($this);
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
@@ -519,6 +520,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
+        $app->addEntityToRecreatePermissionCacheList($this);
     }
 
     function getSendValidationErrors(){
