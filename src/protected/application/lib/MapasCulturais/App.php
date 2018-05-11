@@ -1518,8 +1518,8 @@ class App extends \Slim\Slim{
                 $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
                 if ($entity) {
                     $entity->createPermissionsCacheForUsers();
-                    $this->em->remove($pendingCache);
                 }
+                $this->em->remove($pendingCache);
             }
 
             $conn->commit();
