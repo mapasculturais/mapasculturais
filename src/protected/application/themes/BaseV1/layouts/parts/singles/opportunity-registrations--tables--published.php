@@ -30,7 +30,7 @@ use MapasCulturais\i;
             </td>
         </tr>
 
-        <tr ng-repeat="reg in data.entity.registrations | filter:notNull" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-show="showRegistration(reg)" ng-if="reg.status == 10 || reg.status == 8" >
+        <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-if="reg.status == 10 || reg.status == 8">
             <td class="registration-id-col"><strong>{{reg.number}}</strong></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td class="registration-agents-col">
@@ -44,13 +44,11 @@ use MapasCulturais\i;
                     <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                 </p>
             </td>
+
             <td class="registration-status-col">
-                <?php if ($entity->publishedRegistrations): ?>
-                    <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusNameById(reg.status)}}</span>
-                <?php else: ?>
-                    <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
-                <?php endif; ?>
+                <span class="status status-{{getStatusSlug(reg.status)}}"> {{getStatusNameById(reg.status)}} </span>
             </td>
         </tr>
+
     </tbody>
 </table>
