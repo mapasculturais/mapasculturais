@@ -1,6 +1,9 @@
 <?php
 use MapasCulturais\i;
 ?>
+<p ng-if="data.registrationsAPIMetadata.count > 0">
+    <?php i::_e('Veja abaixo as inscrições suplentes/selecionadas'); ?>
+</p>
 <table class="js-registration-list registrations-table published-registration-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
         <tr>
