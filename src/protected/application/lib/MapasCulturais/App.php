@@ -223,6 +223,21 @@ class App extends \Slim\Slim{
             closedir($handle);
         }
 
+        // list of themes
+        foreach (scandir(THEMES_PATH) as $ff) {
+            if ($ff != '.' && $ff != '..' ) {
+                $theme_folder = THEMES_PATH . $ff;
+                if (is_dir($theme_folder) && file_exists($theme_folder . '/Theme.php')) {
+                    $content = file_get_contents($theme_folder . '/Theme.php');
+                    if(preg_match('#namespace +([a-z0-9\\\]+) *;#i', $content, $matches)) {
+                        $namespace = $matches[1];
+                        if ( !array_key_exists($namespace, $config['namespaces']) )
+                            $config['namespaces'][$namespace] = $theme_folder;
+                    }
+                }
+            }
+        }
+
         spl_autoload_register(function($class) use ($config, $available_modules){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
