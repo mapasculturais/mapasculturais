@@ -1509,22 +1509,23 @@ class App extends \Slim\Slim{
         }
 
 		$step = 20;
-
 		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
+		if (is_array($queue) && count($queue) > 0) {
+            $conn = $this->em->getConnection();
+            $conn->beginTransaction();
 
-        $conn = $this->em->getConnection();
-        $conn->beginTransaction();
-        foreach($queue as $pendingCache){
-			$entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
-			if ($entity) {
-				$entity->createPermissionsCacheForUsers();
-				$this->em->remove($pendingCache);
-			}
+            foreach($queue as $pendingCache) {
+                $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
+                if ($entity) {
+                    $entity->createPermissionsCacheForUsers();
+                    $this->em->remove($pendingCache);
+                }
+            }
 
+            $conn->commit();
+            $this->em->flush();
+            $this->_entitiesToRecreatePermissionsCache = [];
         }
-        $conn->commit();
-        $this->em->flush();
-        $this->_entitiesToRecreatePermissionsCache = [];
     }
 
     /**********************************************
@@ -1626,7 +1627,7 @@ class App extends \Slim\Slim{
 
     /**
      * Returns the view object
-     * @return \MapasCulturais\View
+     * @return \MapasCulturais\Theme
      */
     public function getView(){
         return $this->view;

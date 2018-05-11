@@ -425,7 +425,56 @@ De dentro dos arquivos das visões (views, layouts e parts) as seguintes variáv
 - **$app** - instância da classe *MapasCulturais\App*.
 - **$app->user** - o usuário que está vendo o site. Este objeto é uma instância da classe *MapasCulturais\Entities\User* (se o usuário estiver logado), ou instância da classe *MapasCulturais\GuestUser*, se o usuário não estiver logado.
 - **$app->user->profile** - o agente padrão do usuário. Instância da classe *MapasCulturais\Entities\Agent*. *(somente para usuários logados)*
+- **$app->getCurrentSubsite()** - Se estiver utilizando o SaaS, retorna a instância do subsite atual
 - **$entity** - é a entidade que está sendo visualizada, editada ou criada. *(somente para as actions single, edit e create dos controladores das entidades agent, space, project e event. Dentro das partes somente se esta foi [enviada](#enviando-variáveis-para-dentro-das-partes))*
+- **$app->view** - instância da classe *MapasCulturais\Theme*, que por sua vez herda da classe Slim\View.
+   É inicializado logo no bootstrap do `$app`, e podemos utilizá-lo também através do método `$app->getView()`.
+   
+   Este objeto é bastante útil no fluxo do desenvolvimento, pois podemos utilizar várias de suas propriedades para debugar e nos situarmos melhor no contexto em que estamos da aplicação, como:
+    - `$app->getView()->_libVersions` -  Propriedade do tema padrão (BaseV1), mantém um array com os nomes e versões exatas das bibliotecas javascript que o tema adiciona e usa.
+    - `$app->getView()->template` -  Retorna uma string identificando o template que está sendo renderizado naquele momento. Em geral padronizada para `"{controller}/{action}"`
+    - `$app->getView()->getAssetManager()` - Nos traz uma instância de `MapasCulturais\App\FileSystem` contendo informações detalhadas sobre os scripts JS e estilos CSS que foram carregados naquela view através das propriedades `_enqueuedScripts` e `_enqueuedStyles`, respectivamente - inclusive separadas pelos grupos `app` (do próprio Mapas) e `vendor` (bibliotecas de terceiros).       
+       A propriedade `config` ainda nos dá, dentre outras informações, o caminho completo do sistema para a pasta pública dos assets.
+    - `$app->getView()->bodyClasses` - Traz informações sobre o controller e action da requisição, e são utilizadas no atributo `class` da tag HTML `body`, possibilitando um maior nível de customização do layout com base na view.
+    - `$app->getView()->getTemplatesDirectory()` - Informa o path completo da pasta onde estão os templates carregados.
+    - `$app->getView()->_dict` -> Exibe as strings internacionalizadas que foram carregadas para o tema
+
+
+Outra propriedade bastante útil do objeto do tema é a `jsObject`, por sua vez uma instância de `ArrayObject`    .
+Esta propriedade é manipulada diversas vezes ao longo do *lifecycle* da aplicação, de modo que seus dados são dinâmicos de acordo com a entidade em questão, além de manterem também chaves com o mesmo valor ao longo das rotas e requisições.
+
+Por exemplo, as seguintes chaves mantém seus valores independentemente das entidades:
+``` 
+ $app->getView()->jsObject['baseURL']
+ $app->getView()->jsObject['labels'] 
+ $app->getView()->jsObject['mapsDefaults'] 
+ $app->getView()->jsObject['routes'] 
+ ```
+ Já as chaves de *jsObject* `gettext`, `isEditable`, `isSearch`, `request`, `userProfile` e `entity` variam de acordo com o controller e entidade, tornando esse objeto ainda mais flexível para o desenvolvedor.
+ 
+ Seguindo ainda com o objeto de view, podemos também fazer uso de informações do controller:
+ 
+ - **$app->getView()->getController()** Retorna o controller da requisição atual, bem como a entidade correspondente ao mesmo (na propriedade *entityClassName*);
+ - **$app->getView()->getRequestedEntity()** Traz o registro da entidade correspondente à resposta da requisição.
+ 
+ Ao utilizarmos este método para uma requisição a `${URLBASE}/oportunidade/43` por exemplo, e esta oportunidade for vinculada a uma entidade Projeto, teremos a instância de id 43 de ProjectOpportunity,
+ obviamente com todos seus registros salvos, como data de criação e atualização, tags, nome, descrição, metadados e owner (referente à outra instância de um objeto Agente), dentre outros.
+ 
+ - **$app->getView()->getController()->getUrlData()** Retorna os parâmetros passados pela URL. Se foram mapeados pelo hook do $app (neste sentido, um hook do Slim Framework), vêm com o nome mapeado. Caso contrário, os parâmetros são trazidos num array em ordem crescente.
+ 
+ Por exemplo, se mapearmos apenas o $id no hook, utilizando o método acima para a requisição `${URLBASE}/agente/1/outroParam/EmaisOutro/14`, teremos o seguinte retorno:
+ ```
+ array:4 [▼
+   "id" => "1"
+   0 => "outroParam"
+   1 => "EmaisOutro"
+   2 => "14"
+ ]
+ ```
+
+- **$app->getView()->getController()->getRepository()** - Retorna o objeto repositório da entidade gerenciada pelo Doctrine correspondente àquele controller e view.
+A diferença entre utilizar este método ou invocar diretamente `$app->repo(${nome-da-classe-da-entidade})` é que este último retorna o repositório da entidade passada por parâmetro, e não está atrelada ao contexto da requisição, tal qual o primeiro.
+    - Além do nome da entidade gerenciada e do próprio entityManager do Doctrine, o objeto repositório traz os metadados da classe, incluindo detalhes como o namespace da entidade, todo o mapeamento que o Doctrine fez de cada atributo, os *callbacks* de lifecycle, nome da tabela correspondente e até mesmo detalhes sobre as constantes, métodos e propriedades. 
 
 ### Verificando se um usuário está logado
 Para saber se um usuário está logado você pode verificar se o usuário não é *guest*. 
