@@ -892,6 +892,26 @@ class Registration extends \MapasCulturais\Entity
         return $evaluation;
     }
 
+    public function evaluationUserChangeStatus($user, Registration $registration, $status) {
+        if ($registration->canUser('evaluate', $user)) {
+            $method_name = 'setStatusTo' . ucfirst($status);
+
+            if (!method_exists($registration, $method_name)) {
+                $this->errorJson('Invalid status name');
+                return false;
+            } else {
+                $app = App::i();
+                $app->disableAccessControl();
+                $registration->$method_name();
+                $app->enableAccessControl();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
