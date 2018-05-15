@@ -87,7 +87,7 @@
                 ng-class="{'active':data.global.filterEntity === 'opportunity',
                            'current-entity-parent':'<?php echo $this->controller->id;?>' == 'opportunity'}"
                 ng-click="tabClick('opportunity')">
-                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('busca') . '##(global:(enabled:(opportunity:!t),filterEntity:opportunity,viewMode:list))'; ?>">
+                <a href="<?php if ($this->controller->action !== 'search') echo $app->createUrl('site', 'search') . '##(global:(enabled:(opportunity:!t),filterEntity:opportunity,viewMode:list))'; ?>">
                     <div class="icon icon-opportunity"></div>
                     <div class="menu-item-label"><?php $this->dict('entities: Opportunities') ?></div>
                 </a>
