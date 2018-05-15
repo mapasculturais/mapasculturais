@@ -18,7 +18,9 @@ Os arquivos de tema da aplicação ficam em:
 
 Lá estão os temas válidos da aplicação. Certifique-se de ter um tema desejavel neste diretorio para que seja ativado. 
 
-Para ativar o tema edite o arquivo config.php. Este arquivo estende o arquivo conf-base.php. Já o arquivo conf-template.php é apenas um exemplo que pode ser usado para elaborar um novo config.php
+Os temas presente no diretório `themes` serão ativados automaticamente deste que a declaração do namespace siga o padrão especificado  [Estrutura do Tema](./mc_developer_theme.md#estrutura-do-tema)
+
+A ativação do tema através do arquivo config.php sobrescreve as configurações carregadas automaticamente. Este arquivo estende o arquivo conf-base.php. Já o arquivo conf-template.php é apenas um exemplo que pode ser usado para elaborar um novo config.php
 
 ```
 $ vi mapasculturais/src/protected/application/conf/config.php
