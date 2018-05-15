@@ -295,8 +295,6 @@ class Theme extends BaseV1\Theme{
 
     protected function _getFilters(){
 
-        $app = App::i();
-
         $all_filters =[
             'event' => $this->subsiteInstance->user_filters__event,
             'space' => $this->subsiteInstance->user_filters__space,
@@ -309,7 +307,7 @@ class Theme extends BaseV1\Theme{
 
         foreach ($all_filters as $entity => $filters){
 
-            $filters = json_decode($filters[0], true);
+            $filters = !empty($filters) ? json_decode($filters[0], true) : null;
 
             if (!$filters)
             {
