@@ -35,6 +35,11 @@
                     
                 <div id="modalTeste" class="js-dialog">
                     <h1>Modal Teste</h1>
+                    <?php
+                    $agentEntity = new MapasCulturais\Entities\Agent();
+                    $entity = $app->getRegisteredMetadata($agentEntity);
+                    \dump($entity);
+                    ?>
                 </div>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
