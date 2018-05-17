@@ -1499,7 +1499,8 @@ class App extends \Slim\Slim{
 			$pendingCache->objectId = $entity->id;
 			$pendingCache->objectType = $entity->getClassName();
 			//$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
-			$pendingCache->save();
+            $_flush_if_registration = ($entity::getClassName() === 'MapasCulturais\Entities\Registration');
+            $pendingCache->save($_flush_if_registration);
 		}
     }
 
