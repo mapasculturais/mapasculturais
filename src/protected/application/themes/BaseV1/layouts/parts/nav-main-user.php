@@ -26,19 +26,19 @@
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
-                <a class="add js-open-dialog" href="#"
-                    data-dialog="#modalTeste" href="#"
+                <a class="add js-open-dialog" href="javascript:void(0)"
+                    data-dialog="#modalTeste"
                     data-dialog-block="true"
                     data-dialog-callback="MapasCulturais.modalTeste"
                     data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>"
                     data-form-action='insert'></a>
                     
                 <div id="modalTeste" class="js-dialog">
-                    <h1>Modal Teste</h1>
+                    <h1>Acrescentar entidade</h1>
                     <?php
                     $agentEntity = new MapasCulturais\Entities\Agent();
                     $entity = $app->getRegisteredMetadata($agentEntity);
-                    \dump($entity);
+                    \dump($agentEntity->getValidations());
                     ?>
                 </div>
             </li>
