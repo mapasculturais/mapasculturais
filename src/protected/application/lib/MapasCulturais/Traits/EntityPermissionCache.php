@@ -99,6 +99,9 @@ trait EntityPermissionCache {
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
         }
+
+        //Removendo os usuarios guest da lista
+        $users = array_filter($users, function($item){ return !$item->is('guest'); });
                 
         $this->__enabled = false;
         
