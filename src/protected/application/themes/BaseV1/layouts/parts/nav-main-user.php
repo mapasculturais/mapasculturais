@@ -27,19 +27,38 @@
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
                 <a class="add js-open-dialog" href="javascript:void(0)"
-                    data-dialog="#modalTeste"
+                    data-dialog="#addEntity"
                     data-dialog-block="true"
-                    data-dialog-callback="MapasCulturais.modalTeste"
+                    data-dialog-callback="MapasCulturais.addEntity"
                     data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>"
                     data-form-action='insert'></a>
                     
-                <div id="modalTeste" class="js-dialog">
-                    <h1>Acrescentar entidade</h1>
+                <div id="addEntity" class="js-dialog">
                     <?php
-                    $agentEntity = new MapasCulturais\Entities\Agent();
-                    $entity = $app->getRegisteredMetadata($agentEntity);
-                    \dump($agentEntity->getValidations());
+                    $_ent = new MapasCulturais\Entities\Agent();
+                    $_required_keys = array_keys($_ent->getValidations());
+                    $_entity_name = (new \ReflectionClass($_ent))->getShortName();
+                    $_v = $app->getView();
+                    $acao = "http://$_SERVER[HTTP_HOST]/agentes/";
                     ?>
+                    <h2> Criar <?php echo $_entity_name; ?> </h2>
+                    <hr>
+                    <form action="<?php echo $acao; ?>" method="POST">
+
+                        <?php $this->part('widget-areas', array('entity'=>$_ent)); ?>
+
+                        <?php
+                        // $entity = $app->getRegisteredMetadata($_ent);
+                        $__known_files = ['avatar','name','type'];
+                        foreach ($_required_keys as $required) {
+                            if ($_ent->isPropertyRequired($_ent, $required) && in_array($required, $__known_files)) {
+                                $this->part("singles/$required", ['entity' => $_ent]);
+                            }
+                        }
+                        ?>
+                        <button type="submit">criar</button>
+                    </form>
+
                 </div>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>

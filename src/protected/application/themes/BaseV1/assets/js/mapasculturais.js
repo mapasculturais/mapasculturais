@@ -502,7 +502,7 @@ MapasCulturais.Modal = {
     }
 };
 
-MapasCulturais.modalTeste = function(){
+MapasCulturais.addEntity = function(){
     $('#blockdiv').show();
     $('body').css('overflow','hidden');
 }
