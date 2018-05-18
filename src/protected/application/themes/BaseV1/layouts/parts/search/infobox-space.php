@@ -8,7 +8,7 @@
                 <div class="objeto-meta">
                     <?php $this->applyTemplateHook('space-infobox-new-fields-before','begin'); ?>
                     <?php $this->applyTemplateHook('space-infobox-new-fields-before','end'); ?>
-                    <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="toggleSelection(data.space.types, getId(types.space, openEntity.space.type.name))">{{openEntity.space.type.name}}</a></div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="toggleSelection(data.space.filters.type, openEntity.space.type.id.toString())">{{openEntity.space.type.name}}</a></div>
                     <div>
                         <span class="label"><?php \MapasCulturais\i::_e("Área de atuação");?>:</span>
                         <span ng-repeat="area in openEntity.space.terms.area">
