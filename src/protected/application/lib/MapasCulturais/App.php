@@ -1493,19 +1493,24 @@ class App extends \Slim\Slim{
     protected $skipPermissionCacheRecreation = false;
 
     public function addEntityToRecreatePermissionCacheList(Entity $entity){
-        //$this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
-        if (is_int($entity->id)) {
-			$pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-			$pendingCache->objectId = $entity->id;
-			$pendingCache->objectType = $entity->getClassName();
-			//$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
-			$pendingCache->save();
-		}
+        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
     }
 
     public function recreatePermissionsCacheOfListedEntities(){
         if($this->skipPermissionCacheRecreation){
             return;
+        }
+
+        if (is_array($this->_entitiesToRecreatePermissionsCache)) {
+            foreach($this->_entitiesToRecreatePermissionsCache as $entity) {
+                if (is_int($entity->id)) {
+                    $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+                    $pendingCache->objectId = $entity->id;
+                    $pendingCache->objectType = $entity->getClassName();
+                    //$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
+                    $pendingCache->save(true);
+                }
+            }
         }
 
 		$step = 20;
