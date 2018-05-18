@@ -66,7 +66,7 @@ return array(
             'template' => 'opportunity_claim.html'
         ],
         'request_relation' => [
-            'title' => \MapasCulturais\i::__("Solicitação de requisição para relacionar agente"),
+            'title' => \MapasCulturais\i::__("Solicitação de requisição"),
             'template' => 'request_relation.html'
         ]
 
