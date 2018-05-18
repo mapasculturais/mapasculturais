@@ -11,14 +11,30 @@ class Module extends \MapasCulturais\Module{
     public function register() {
         ;
     }
+
+    public function sendMail($to, $msg) {
+        $app = App::i();
+        $dataValue = [
+            'message'    => $msg
+        ];
+        
+        $message = $app->renderMailerTemplate('request_relation', $dataValue);
+        $mail = [
+            'from'    => $app->config['mailer.from'],
+            'to'      => $to,
+            'subject' => $message['title'],
+            'body'    => $message['body']
+        ];
+        $app->sendMailMessage($app->createMailMessage($mail));
+    }
     
     function _init() {
          $app = App::i();
+         $module = $this;
          /* === NOTIFICATIONS  === */
          
         // para todos os requests
-        $app->hook('workflow(<<*>>).create', function() use($app) {
-
+        $app->hook('workflow(<<*>>).create', function() use($app, $module) {
             if ($this->notifications) {
                 $app->disableAccessControl();
                 foreach ($this->notifications as $n) {
@@ -126,6 +142,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $module->sendMail($user->email, $message);
             }
 
             if (!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)) {
