@@ -24,40 +24,52 @@
 
         <?php if($app->isEnabled('agents')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
+
+            <?php
+            // $entity = $app->getRegisteredMetadata($_ent);
+            $_ent = new MapasCulturais\Entities\Agent();
+            $_required_keys = array_keys($_ent->getValidations());
+            $_entity_name = (new \ReflectionClass($_ent))->getShortName();
+            // $acao = "http://$_SERVER[HTTP_HOST]/agentes/";
+            // $_v = $app->getView();
+            // $_current_action = $this->controller->action;
+            // $params = [ 'entity' => $_ent ];
+            ?>
+
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
-                <a class="add js-open-dialog" href="javascript:void(0)"
-                    data-dialog="#addEntity"
-                    data-dialog-block="true"
-                    data-dialog-callback="MapasCulturais.addEntity"
-                    data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>"
-                    data-form-action='insert'></a>
-                    
-                <div id="addEntity" class="js-dialog">
-                    <?php
-                    $_ent = new MapasCulturais\Entities\Agent();
-                    $_required_keys = array_keys($_ent->getValidations());
-                    $_entity_name = (new \ReflectionClass($_ent))->getShortName();
-                    $_v = $app->getView();
-                    $acao = "http://$_SERVER[HTTP_HOST]/agentes/";
-                    ?>
-                    <h2> Criar <?php echo $_entity_name; ?> </h2>
-                    <hr>
-                    <form action="<?php echo $acao; ?>" method="POST">
+                <a class="add js-open-dialog" href="#" data-dialog="#addEntity" data-dialog-callback="MapasCulturais.addEntity"
+                   data-dialog-block="true" data-form-action='insert'
+                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
+                </a>
+
+                <?php /*
+                <div id="addEntity" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_entity_name - dados básicos"; ?> "> <hr>
+                    <form action="<?php // echo $acao; ?>" method="POST">
 
                         <?php $this->part('widget-areas', array('entity'=>$_ent)); ?>
 
                         <?php
-                        // $entity = $app->getRegisteredMetadata($_ent);
-                        $__known_files = ['avatar','name','type'];
+                        $__known_files = ['name','type', 'shortDescription'];
                         foreach ($_required_keys as $required) {
                             if ($_ent->isPropertyRequired($_ent, $required) && in_array($required, $__known_files)) {
-                                $this->part("singles/$required", ['entity' => $_ent]);
+                                if ("shortDescription" === $required) { ?>
+                                    <p> <?php echo $this->renderShortDescriptionMarkUp(); ?> </p>
+                                <?php } else {
+                                    $this->part("singles/$required", ['entity' => $_ent]);
+                                }
                             }
                         }
                         ?>
-                        <button type="submit">criar</button>
+
+                        <div id="editable-entity" class="clearfix" data-action="create" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $_ent->id ?>"
+                             style="background: white !important; text-align: left !important; margin-top: 20px !important; position: relative !important; border: none !important">
+                            <a class="btn btn-primary js-submit-button hltip" hltitle="salva ai byla"><?php \MapasCulturais\i::_e("Publicar");?></a>
+                        </div>
+
                     </form>
+
+                    */ ?>
 
                 </div>
             </li>

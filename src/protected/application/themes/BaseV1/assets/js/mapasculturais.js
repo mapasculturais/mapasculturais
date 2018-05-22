@@ -432,8 +432,12 @@ MapasCulturais.Modal = {
             var $dialog = $(this);
             /*$dialog.hide();  Moved to style.css */
 
+
+            var _title = $(this).attr('title');
             $dialog.data('dialog-init', 1);
-            $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
+            if (_title)
+                $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
+
             $dialog.prepend('<a href="#" class="js-close icon icon-close"></a>');
 
             // close button
