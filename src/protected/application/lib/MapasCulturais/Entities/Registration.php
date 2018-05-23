@@ -412,6 +412,7 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
+        $app->addEntityToRecreatePermissionCacheList($this);
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
@@ -519,6 +520,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
+        $app->addEntityToRecreatePermissionCacheList($this);
     }
 
     function getSendValidationErrors(){
@@ -888,6 +890,26 @@ class Registration extends \MapasCulturais\Entity
         $this->saveEvaluation($evaluation, $data, $evaluation_status);
 
         return $evaluation;
+    }
+
+    public function evaluationUserChangeStatus($user, Registration $registration, $status) {
+        if ($registration->canUser('evaluate', $user)) {
+            $method_name = 'setStatusTo' . ucfirst($status);
+
+            if (!method_exists($registration, $method_name)) {
+                $this->errorJson('Invalid status name');
+                return false;
+            } else {
+                $app = App::i();
+                $app->disableAccessControl();
+                $registration->$method_name();
+                $app->enableAccessControl();
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //============================================================= //

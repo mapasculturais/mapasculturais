@@ -40,7 +40,7 @@
                 if (this.openEditboxes[editboxId] && document.getElementById(editboxId))
                     throw new Error('EditBox with id ' + editboxId + ' already exists');
 
-                $('.js-editable-field').on('shown', function(){ 
+                $('.js-editable-field').on('shown', function(){
                     var maxSize = $(this).data('maxlength');
                     $('#charCounter').text('');
                     if(maxSize){
@@ -113,6 +113,7 @@
             templateUrl: MapasCulturais.templateUrl.editBox,
             transclude: true,
             scope: {
+                classAdd: '=',
                 spinnerCondition: '=',
                 onOpen: '=',
                 onSubmit: '=',

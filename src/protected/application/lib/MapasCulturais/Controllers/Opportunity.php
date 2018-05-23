@@ -374,15 +374,21 @@ class Opportunity extends EntityController {
         }
         
         $opportunity = $this->_getOpportunity();
-        
-            
+
         $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
             '@select' => 'id,agent',
             'owner' => "EQ({$opportunity->evaluationMethodConfiguration->id})",
         ]);
         $committee_relations = $committee_relation_query->find();
-        $committee_ids = implode(',', array_map(function($e){return $e['agent']; }, $committee_relations));
-        
+
+        $committee_ids = implode(
+            ',',
+            array_map( 
+                function($e){return $e['agent']; },
+                array_filter( $committee_relations, function($e){ return empty($e['agent']) ? false : $e['agent']; })
+            )
+        );
+
         if($committee_ids){
             $vdata = [
                 '@select' => 'id,name,user,singleUrl',
