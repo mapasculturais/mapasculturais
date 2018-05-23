@@ -125,9 +125,22 @@ trait ControllerAPI{
 
     public function API_describe(){        
         $class = $this->entityClassName;
-        $data_array = $class::getPropertiesMetadata();                
+        $data_array = $class::getPropertiesMetadata();
         $file_groups = App::i()->getRegisteredFileGroupsByEntity( $class );
 
+        //Show URL's shortcuts for entity:
+        $entityShortcuts = strtolower(str_replace("MapasCulturais\\Entities\\", "", $class));
+        foreach (App::i()->config['routes']['shortcuts'] as $key => $short) {
+            if ($short[0] === $entityShortcuts) {
+                $data_array[ $short[1]."Url" ] = [
+                    'isMetadata' => false,
+                    'isEntityRelation' => false,
+                    'required'  => false,
+                    'type' => "string",
+                    'label' => $short[1]
+                ];
+            }
+        }
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
         $array = [];
         foreach ($file_groups as $key => $value) {
