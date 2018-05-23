@@ -26,53 +26,62 @@
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
 
             <?php
-            // $entity = $app->getRegisteredMetadata($_ent);
-            $_ent = new MapasCulturais\Entities\Agent();
+            $_e_ = "agent";
+            $_e_class = $this->entityClassesShortcuts[$_e_];
+            $_ent = new $_e_class();
+
             $_required_keys = array_keys($_ent->getValidations());
             $_entity_name = (new \ReflectionClass($_ent))->getShortName();
-            // $acao = "http://$_SERVER[HTTP_HOST]/agentes/";
-            // $_v = $app->getView();
-            // $_current_action = $this->controller->action;
-            // $params = [ 'entity' => $_ent ];
+            $_e_n = $this->mapaClasses[$_e_];
+            $url = $app->createUrl($_e_);
             ?>
 
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
+
+                <?php if ( "edit" != $this->controller->action ):?>
+
                 <a class="add js-open-dialog" href="#" data-dialog="#addEntity" data-dialog-callback="MapasCulturais.addEntity"
                    data-dialog-block="true" data-form-action='insert'
                    data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
                 </a>
 
-                <?php /*
-                <div id="addEntity" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_entity_name - dados básicos"; ?> "> <hr>
-                    <form action="<?php // echo $acao; ?>" method="POST">
+                <div id="addEntity" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_e_n - dados básicos"; ?> "> <hr>
 
-                        <?php $this->part('widget-areas', array('entity'=>$_ent)); ?>
+                    <form action="<?php echo $url; ?>" method="POST">
+                        <input type="text" name="name" value="boris">
+                        <input type="text" name="shortDescription" value="minha pequisa descricao">
+                        <input type="text" name="parent_id" value="2">
+                        <input type="text" name="terms[area][]" value="Turismo">
+
+                        <input type="submit" value="Adicionar">
 
                         <?php
+                        /*
                         $__known_files = ['name','type', 'shortDescription'];
                         foreach ($_required_keys as $required) {
                             if ($_ent->isPropertyRequired($_ent, $required) && in_array($required, $__known_files)) {
                                 if ("shortDescription" === $required) { ?>
                                     <p> <?php echo $this->renderShortDescriptionMarkUp(); ?> </p>
                                 <?php } else {
-                                    $this->part("singles/$required", ['entity' => $_ent]);
+                                    $this->part("singles/$required", ['entity' => $_ent, '_entity' => $_e_]);
                                 }
                             }
-                        }
+                        } */
                         ?>
 
                         <div id="editable-entity" class="clearfix" data-action="create" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $_ent->id ?>"
                              style="background: white !important; text-align: left !important; margin-top: 20px !important; position: relative !important; border: none !important">
-                            <a class="btn btn-primary js-submit-button hltip" hltitle="salva ai byla"><?php \MapasCulturais\i::_e("Publicar");?></a>
+                            <a class="btn btn-primary js-submit-button hltip" hltitle="Publicar entidade"><?php \MapasCulturais\i::_e("Publicar");?></a>
                         </div>
 
                     </form>
 
-                    */ ?>
-
                 </div>
+
+                <?php endif;  ?>
             </li>
+
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
         <?php endif; ?>
 
