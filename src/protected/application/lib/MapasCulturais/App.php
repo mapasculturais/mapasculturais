@@ -719,6 +719,7 @@ class App extends \Slim\Slim{
 
         // history controller
         $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
+        $this->registerController('permissionCache',   'MapasCulturais\Controllers\PermissionCache');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
