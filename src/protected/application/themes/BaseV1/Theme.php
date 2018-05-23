@@ -2677,4 +2677,17 @@ class Theme extends MapasCulturais\Theme {
         return $req->getScheme() . "://";
     }
 
+    public $entityClassesShortcuts = [
+//        'user' => 'MapasCulturais\Entities\User',
+        'agent' => 'MapasCulturais\Entities\Agent',
+        'space' => 'MapasCulturais\Entities\Space',
+        'project' => 'MapasCulturais\Entities\Project',
+//        'event' => 'MapasCulturais\Entities\Event',
+//        'occurrence' => 'MapasCulturais\Entities\EventOccurrence',
+//        'event-occurrence' => 'MapasCulturais\Entities\EventOccurrence',
+    ];
+
+    public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto'];
+
+
 }
