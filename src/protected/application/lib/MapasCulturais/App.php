@@ -1497,7 +1497,7 @@ class App extends \Slim\Slim{
         $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
     }
 
-    public function recreatePermissionsCacheOfListedEntities(){
+    public function recreatePermissionsCacheOfListedEntities($step = 20){
         if($this->skipPermissionCacheRecreation){
             return;
         }
@@ -1514,7 +1514,6 @@ class App extends \Slim\Slim{
             }
         }
 
-		$step = 20;
 		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
 		if (is_array($queue) && count($queue) > 0) {
             $conn = $this->em->getConnection();
