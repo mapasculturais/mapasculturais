@@ -33,9 +33,9 @@
             
             if(MapasCulturais.evaluationConfiguration && MapasCulturais.evaluationConfiguration.criteria){
                 MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
-                    e.min = parseInt(e.min);
-                    e.max = parseInt(e.max);
-                    e.weight = parseInt(e.weight);
+                    e.min = parseFloat(e.min);
+                    e.max = parseFloat(e.max);
+                    e.weight = parseFloat(e.weight);
                     return e;
                 });
             }
@@ -65,7 +65,7 @@
                     criteria: $scope.data.criteria,
                     quotas: $scope.data.quotas,
                 };
-                
+
                 TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
                     MapasCulturais.Messages.success(labels.changesSaved);
                 });
