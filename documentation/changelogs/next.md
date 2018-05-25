@@ -12,3 +12,5 @@
 * Após fazer login, redireciona usuário para página em que estava navegando
 * Envia e-mails com as mensagens de denúncia apenas para os admins do subsite, e e-mails das mensagens de contato para os admins do subsite, a entidade e responsável  
 * No perfil do agente, exibe os grupos que ele faz parte em relacionamentos com outras entidades
+* Faz com que os temas presente no diretório `themes` sejam ativados automaticamente.
+* Adiciona o campo referente ao shortcuts (singleUrl por exemplo) ao chamar a API describe.

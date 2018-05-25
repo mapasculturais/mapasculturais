@@ -129,7 +129,15 @@
     input {
         margin-bottom: 0;
         border: none;
+
     }
+
+    .filter-search input {
+        border: 1px solid #ccc;
+        width: 95%;
+        margin: 5px;
+    }
+
     .search-field {
         width: 100%;
     }

@@ -12,6 +12,11 @@ namespace MapasCulturais\Controllers;
 class Site extends \MapasCulturais\Controller {
     use \MapasCulturais\Traits\ControllerAPI;
 
+    //version mapas culturais:
+    const MAJOR = 4;
+    const MINOR = 0;
+    const PATCH = 0;
+
     /**
      * Default action.
      *
@@ -100,12 +105,28 @@ class Site extends \MapasCulturais\Controller {
             
             $content = $view->renderMarkdown($file_content);
             $content = $view->renderMarkdown($content);
-
+            $content .= "<div class='version'>" . sprintf('v%s.%s.%s',self::MAJOR, self::MINOR, self::PATCH) . "</div>";
             $attrs = ['content' => $content, 'left' => $left, 'right' => $right];
             
             $this->render('page', $attrs);
         }else{
             $app->pass();
         }
+    }
+
+    function GET_version() {
+        $data['name'] = 'Mapas Culturais';
+        $data['version'] = sprintf('v%s.%s.%s',self::MAJOR, self::MINOR, self::PATCH);
+
+        $tagVersion = trim(exec('git describe --tags --abbrev=0'));
+        if ($tagVersion != "") {
+            $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
+            $commitBranch = trim(exec('git rev-parse --abbrev-ref HEAD'));
+            $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
+            $commitDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['git-info'] = ['tag'=>$tagVersion, 'commint hash'=>$commitHash, 'commint date' => $commitDate->format('Y-m-d H:m:s'), 'branch' => $commitBranch];
+        }
+
+        $this->json($data);
     }
 }
