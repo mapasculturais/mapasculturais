@@ -16,14 +16,16 @@
     <input class="search-field" ng-model="data[entity].filters[filter.filter.param]" placeholder="{{filter.placeholder}}"/>
 </div>
 
-
 <div ng-if="filter.fieldType === 'checklist'">
     <span class="label">{{filter.label}}</span>
     <div class="dropdown">
-        <div class="placeholder">{{filter.placeholder}}</div>
+        <div class="placeholder" ng-click="filter_dropdown = ''">{{filter.placeholder}}</div>
         <div class="submenu-dropdown">
+            <div class="filter-search">
+                <input type="text" ng-model="filter_dropdown"/>
+            </div>
             <ul class="filter-list">
-                <li ng-repeat="option in filter.options" ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"
+                <li ng-repeat="option in filter.options | filter:filter_dropdown" ng-class="{'selected':isSelected(data[entity].filters[filter.filter.param], option.value)}"
                 ng-click="toggleSelection(data[entity].filters[filter.filter.param], option.value)">
                     <span>{{option.label}}</span>
                 </li>

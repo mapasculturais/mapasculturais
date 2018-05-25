@@ -346,6 +346,56 @@ return array(
             'unserialize' => function($v) {
                 return (array) json_decode($v);
             },
+        ],
+        'user_filters__event' => [
+            'label' => 'Filtros dispoíveis por Evento',
+            'type' => 'array',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return (array) json_decode($v);
+            },
+        ],
+        'user_filters__space' => [
+            'label' => 'Filtros dispoíveis por Espaço',
+            'type' => 'array',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return (array) json_decode($v);
+            },
+        ],
+        'user_filters__agent' => [
+            'label' => 'Filtros dispoíveis por Agente',
+            'type' => 'array',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return (array) json_decode($v);
+            },
+        ],
+        'user_filters__project' => [
+            'label' => 'Filtros dispoíveis por Projeto',
+            'type' => 'array',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return (array) json_decode($v);
+            },
+        ],
+        'user_filters__opportunity' => [
+            'label' => 'Filtros dispoíveis por Oportunidade',
+            'type' => 'array',
+            'serialize' => function($v) {
+                return json_encode($v);
+            },
+            'unserialize' => function($v) {
+                return (array) json_decode($v);
+            },
         ]
     )
 );

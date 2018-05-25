@@ -893,12 +893,12 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
-        
+
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
             $app->hook('view.partial(nav-main-user).params', function($params, &$name){
                 $name = 'header-profile-link';
             });
-            
+
             $app->hook('GET(panel.<<*>>):before, GET(<<*>>.create):before', function() use($app){
                 $app->redirect($app->user->profile->editUrl);
             });
@@ -1124,7 +1124,7 @@ class Theme extends MapasCulturais\Theme {
                     LEFT JOIN e.__metadata m
                     WITH
                         m.key = 'subTitle'
-                     JOIN e.occurrences oc 
+                     JOIN e.occurrences oc
                      JOIN oc.space sp
                 ";
         });
@@ -1153,6 +1153,143 @@ class Theme extends MapasCulturais\Theme {
             }
 
         });
+
+        //
+        $app->hook('GET(subsite.single):before', function() use($app) {
+
+            $entities = [
+                'event' => $app->view->dict('entities: Events', false),
+                'space' => $app->view->dict('entities: Spaces', false),
+                'agent' => $app->view->dict('entities: Agents', false),
+                'project' => $app->view->dict('entities: Projects', false),
+                'opportunity' => $app->view->dict('entities: Opportunities', false),
+            ];
+
+            $app->view->jsObject['readable_names'] = $entities;
+
+            $app->log->debug("AQUI\n");
+            $app->log->debug(json_encode($entities));
+
+
+            $conf_data = function($metadatas, $terms){
+                $new_data = [];
+
+                // add registered terms to list
+                foreach ($terms as $term => $conf) {
+
+                    if (!$conf->slug)
+                        continue;
+
+                    $new_data[$term] = [
+                        'label' => ucwords($conf->slug),
+                        'type' => 'term'
+                    ];
+                    if ($conf->restrictedTerms)
+                        $new_data['options'] = $conf->restrictedTerms;
+
+
+                    // @todo: reduce type options foreach field properties
+                    $new_data[$term]['types'] = [
+                        'checklist' => 'Checklist',
+                        'singleselect' => 'Select',
+                        'text' => 'Texto',
+                        'checkbox' => 'Checkbox',
+                        'checkbox-verified' => 'Resultados Verificados'
+                    ];
+                }
+
+                // add metadata to list
+                foreach ($metadatas as $metadata => $conf) {
+
+                    if (!$conf['label'] || $conf['isEntityRelation'])
+                        continue;
+
+                    // @todo: dev field of type date/datetime to use BET() and remove this code
+                    if (isset($conf['type']) && ($conf['type'] === 'datetime' || $conf['type'] === 'date'))
+                        continue;
+
+
+                    $new_data[$metadata] = [
+                        'label' => $conf['label'],
+                        'type' => 'metadata'
+                    ];
+
+                    if (isset($conf['options']))
+                        $new_data[$metadata]['options'] = $conf['options'];
+
+
+                    // @todo: reduce type options foreach field properties
+
+                    switch($conf['type']) {
+                        case 'select':
+                            $new_data[$metadata]['types'] = [
+                                'checklist' => 'Checklist',
+                                'singleselect' => 'Select',
+                                'text' => 'Texto',
+                                'checkbox' => 'Checkbox'
+                            ];
+                            break;
+                        case 'string':
+                        case 'text':
+                            $new_data[$metadata]['types'] = [
+                                'text' => 'Texto'
+                            ];
+                            break;
+                        case 'boolean':
+                            $new_data[$metadata]['types'] = [
+                                'checklist' => 'Checklist',
+                                'singleselect' => 'Select',
+                                'text' => 'Texto',
+                                'checkbox' => 'Checkbox'
+                            ];
+                            break;
+                        default:
+                            $new_data[$metadata]['types'] = [
+                                'checklist' => 'Checklist',
+                                'singleselect' => 'Select',
+                                'text' => 'Texto',
+                                'checkbox' => 'Checkbox'
+                            ];
+                            break;
+                    }
+                }
+
+                return $new_data;
+            };
+
+
+            foreach ($entities as $entity => $name) {
+
+                $app->view->jsObject['user_filters__subsite'][$entity] = $this->requestedEntity->{'user_filters__'.$entity};
+
+                $class_name = '\MapasCulturais\Entities\\'.ucwords($entity);
+
+                $app->view->jsObject['user_filters__conf'][$entity] = $conf_data($class_name::getPropertiesMetadata(),$app->getRegisteredTaxonomies(substr($class_name, 1)));
+
+                $app->view->jsObject['user_filters__conf'][$entity]['tipos'] = [
+                    'label' => 'Tipos',
+                    'type' => 'entitytype',
+                    'types' => [
+                        'checklist' => 'Checklist',
+                        'singleselect' => 'Select',
+                        'text' => 'Texto'
+                    ]
+                ];
+
+                $app->view->jsObject['user_filters__conf'][$entity]['verificados'] = [
+                    'label' => 'Resultados Verificados',
+                    'type' => 'metadata',
+                    'addClass' => 'verified-filter',
+                    'types' => [
+                        'checkbox-verified' => 'Resultados Verificados'
+                    ]
+                ];
+
+
+            }
+
+        });
+
     }
 
 
@@ -1225,12 +1362,12 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
         $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
         foreach ($geoDivisionsHierarchyCfg as $slug => $division) {
-            
+
             // Begin backward compability version < 4.0, $division is string not a array.
-            $label = $division; 
-            if (is_array($division)) { 
+            $label = $division;
+            if (is_array($division)) {
                 $label = $division['name'];
-            } 
+            }
             // End backward compability
 
             foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
@@ -1245,7 +1382,7 @@ class Theme extends MapasCulturais\Theme {
                 }
             }
         }
-        
+
         // after plugin registration that creates the configuration types
         $app->hook('app.register', function(){
             $this->view->registerMetadata('MapasCulturais\Entities\EvaluationMethodConfiguration', 'infos', [
@@ -1258,7 +1395,7 @@ class Theme extends MapasCulturais\Theme {
 
     function head() {
         parent::head();
-        
+
         $app = App::i();
 
         $this->printStyles('vendor');
@@ -1400,13 +1537,13 @@ class Theme extends MapasCulturais\Theme {
         // It Javis ColorPicker
         $this->enqueueScript('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js');
         $this->enqueueStyle('vendor', 'bootstrap-colorpicker', '/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css');
-        
+
         // Cropbox
         $this->enqueueScript('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.js', array('jquery'));
         $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
     }
 
-    function includeCommonAssets() { 
+    function includeCommonAssets() {
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
@@ -2516,6 +2653,22 @@ class Theme extends MapasCulturais\Theme {
         return $link_attributes;
     }
 
+    public function getEntityURL($url)
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+            return $url;
+        } else {
+            return $this->getSiteScheme() . $url;
+        }
+    }
+
+    private function getSiteScheme()
+    {
+        $app = \MapasCulturais\App::i();
+        $req = $app->request;
+
+        return $req->getScheme() . "://";
+    }
 
 
 }
