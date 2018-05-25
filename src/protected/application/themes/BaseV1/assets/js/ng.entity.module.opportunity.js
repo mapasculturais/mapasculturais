@@ -391,6 +391,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.createFieldConfiguration = function(){
             $scope.data.fieldSpinner = true;
+            $scope.data.newFieldConfiguration.displayOrder = $scope.data.fields.length +1;
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
@@ -461,6 +462,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
+            $scope.data.newFileConfiguration.displayOrder = $scope.data.fields.length +1;
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
