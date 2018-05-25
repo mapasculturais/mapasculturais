@@ -522,6 +522,30 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $opportunities;
     }
 
+    function getOpportunitiesCanBeEvaluated(){
+        $this->checkPermission('modify');
+        $opportunities = [];
+        $app = App::i();
+
+        $opportunitiesPermission = $app->repo('MapasCulturais\Entities\PermissionCache')->findBy([
+            'action' => 'evaluateRegistrations',
+            'userId' => $app->user->id
+        ]);
+
+        if (count($opportunitiesPermission) > 0 ) {
+            foreach ($opportunitiesPermission as $opportunity) {
+                $opportunitiesCanEvalute[] = $opportunity->objectId;
+            }
+
+            $opportunities = $app->repo('Opportunity')->findBy([
+                'id' => $opportunitiesCanEvalute,
+                'status' => Opportunity::STATUS_ENABLED
+            ]);
+        }
+
+        return $opportunities;
+    }
+
     public function getSubsite($status = null) {
         $result = [];
         
