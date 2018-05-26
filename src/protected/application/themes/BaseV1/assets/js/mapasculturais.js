@@ -509,7 +509,7 @@ MapasCulturais.Modal = {
 MapasCulturais.addEntity = function(){
     $('#blockdiv').show();
     $('body').css('overflow','hidden');
-}
+};
 
 
 MapasCulturais.EditBox = {
