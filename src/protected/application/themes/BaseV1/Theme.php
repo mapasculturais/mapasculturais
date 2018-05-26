@@ -2653,6 +2653,7 @@ class Theme extends MapasCulturais\Theme {
         return $link_attributes;
     }
 
+    // TODO: ver se eh viavel utilizar esta funcao em todo local que hoje usa esse markup
     public function renderShortDescriptionMarkUp() {
         $html = '<span class="js-editable" data-edit="shortDescription"';
         $html .= 'data-original-title="' . \MapasCulturais\i::esc_attr__("Descrição Curta") . '"';
@@ -2688,6 +2689,71 @@ class Theme extends MapasCulturais\Theme {
     ];
 
     public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto'];
+
+    public function getShortDescription()
+    {
+        $_placeholder =  \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
+        $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder'></textarea>";
+
+        return $markup;
+    }
+
+    public function renderCreateModal($entity) {
+        $app = App::i();
+        $_e_ = $entity;
+        $_e_class = $this->entityClassesShortcuts[$_e_];
+        $_ent = new $_e_class();
+
+        $_required_keys = array_keys($_ent->getValidations());
+        $_entity_name = (new \ReflectionClass($_ent))->getShortName();
+        $_e_n = $this->mapaClasses[$_e_];
+        $url = $app->createUrl($_e_);
+        ?>
+        <div id="addEntity" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_e_n - dados básicos"; ?> "> <hr>
+
+            <form action="<?php echo $url; ?>" method="POST">
+                <?php
+                $__known_files = ['name', 'shortDescription'];
+                foreach ($_required_keys as $required) {
+                    if ($_ent->isPropertyRequired($_ent, $required) && in_array($required, $__known_files)) {
+                        $type = "text";
+
+                        echo "<label style='font-weight: bolder; display: block'> $required </label> ";
+                        if ("shortDescription" === $required) {
+                            echo $this->getShortDescription();
+                        } else {
+                            ?>
+                            <input style="width: 100%" type="<?php echo $type; ?>" name="<?php echo $required; ?>">
+                            <?php
+                        }
+                    }
+                }
+                ?>
+
+                <label for="">tipo</label>
+                <select name="type" id="">
+                    <option value="1">individual</option>
+                    <option value="2">coletivo</option>
+                </select>
+
+                <br>
+                <label for="terms"> Area de Atuacao </label> <br>
+                <input type="text" name="terms[area][]" value="Turismo">
+                <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
+
+                <input type="submit" value="Adicionar">
+                <?php /*
+                        <hr>
+                        <div id="editable-entity" class="clearfix" data-action="create" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $_ent->id ?>"
+                             style="background: white !important; text-align: left !important; margin-top: 20px !important; position: relative !important; border: none !important">
+                            <a class="btn btn-primary js-submit-button hltip" hltitle="Publicar entidade"><?php \MapasCulturais\i::_e("Publicar");?></a>
+                        </div> */ ?>
+
+            </form>
+
+        </div>
+    <?php
+    }
 
 
 }
