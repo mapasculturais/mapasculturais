@@ -27,16 +27,7 @@
 
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
-
-                <?php if ( "edit" != $this->controller->action ): ?>
-
-                <a class="add js-open-dialog" href="#" data-dialog="#addEntity" data-dialog-callback="MapasCulturais.addEntity"
-                   data-dialog-block="true" data-form-action='insert'
-                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
-                    <?php $this->renderCreateModal("agent"); ?>
-                </a>
-
-                <?php endif;  ?>
+                <?php $this->renderModalFor('agent'); ?>
             </li>
 
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
@@ -46,7 +37,7 @@
             <?php $this->applyTemplateHook('nav.dropdown.spaces','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><?php $this->dict('entities: My Spaces') ?></a>
-                <a class="add"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
+                <?php $this->renderModalFor('space'); ?>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
         <?php endif; ?>
@@ -64,7 +55,8 @@
             <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><?php \MapasCulturais\i::_e("Meus Projetos");?></a>
-                <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
+                <?php $this->renderModalFor('project'); ?>
+                <?php /* <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a> */ ?>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
 
