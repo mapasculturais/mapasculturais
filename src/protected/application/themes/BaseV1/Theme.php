@@ -2679,26 +2679,57 @@ class Theme extends MapasCulturais\Theme {
     }
 
     public $entityClassesShortcuts = [
-//        'user' => 'MapasCulturais\Entities\User',
         'agent' => 'MapasCulturais\Entities\Agent',
         'space' => 'MapasCulturais\Entities\Space',
-        'project' => 'MapasCulturais\Entities\Project',
-//        'event' => 'MapasCulturais\Entities\Event',
-//        'occurrence' => 'MapasCulturais\Entities\EventOccurrence',
-//        'event-occurrence' => 'MapasCulturais\Entities\EventOccurrence',
+        'project' => 'MapasCulturais\Entities\Project'
     ];
 
     public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto'];
 
+    // TODO: adaptar pra i18n
+    public $mapaCamposObrigatorios = [
+        'name' => 'Nome',
+        'shortDescription' => 'Descrição curta',
+        'type' => 'Tipo',
+        'terms' => 'Área de Atuação'
+    ];
+
     public function getShortDescription()
     {
         $_placeholder =  \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
-        $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder'></textarea>";
+        $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder' maxlength='400'></textarea>";
 
         return $markup;
     }
 
-    public function renderCreateModal($entity) {
+    public function getEntityType($entity) {
+        if (!in_array($entity, array_keys($this->entityClassesShortcuts))) {
+            return false;
+        }
+
+        // TODO: verificar como é a lógica das entidades para gerar esses dados
+        if ("agent" === $entity) {
+            echo '<select name="type">
+                    <option value="1"> individual </option>
+                    <option value="2"> coletivo </option>
+                </select>';
+        }
+    }
+
+    public function renderModalFor($entity) {
+
+        if ("edit" != $this->controller->action):
+            ?>
+            <a class="add js-open-dialog" href="javascript:void(0)" data-dialog="#add-<?php echo $entity; ?>" data-dialog-callback="MapasCulturais.addEntity"
+               data-dialog-block="true" data-form-action='insert' data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
+                <?php $this->modalCreateEntity($entity); ?>
+            </a>
+            <?php
+        endif;
+
+    }
+
+    public function modalCreateEntity($entity) {
         $app = App::i();
         $_e_ = $entity;
         $_e_class = $this->entityClassesShortcuts[$_e_];
@@ -2709,39 +2740,34 @@ class Theme extends MapasCulturais\Theme {
         $_e_n = $this->mapaClasses[$_e_];
         $url = $app->createUrl($_e_);
         ?>
-        <div id="addEntity" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_e_n - dados básicos"; ?> "> <hr>
-
+        <div id="add-<?php echo $entity ?>" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_e_n - dados básicos"; ?> "> <hr>
+            
             <form action="<?php echo $url; ?>" method="POST">
                 <?php
-                $__known_files = ['name', 'shortDescription'];
+                $__known_files = ['name', 'shortDescription','type'];
                 foreach ($_required_keys as $required) {
                     if ($_ent->isPropertyRequired($_ent, $required) && in_array($required, $__known_files)) {
                         $type = "text";
+                        $_field_ = $this->mapaCamposObrigatorios[$required];
 
-                        echo "<label style='font-weight: bolder; display: block'> $required </label> ";
+                        echo "<label style='display: block'> $_field_ </label> ";
                         if ("shortDescription" === $required) {
                             echo $this->getShortDescription();
-                        } else {
-                            ?>
+                        } else if ("type" === $required) {
+                            $this->getEntityType($entity);
+                        } else { ?>
                             <input style="width: 100%" type="<?php echo $type; ?>" name="<?php echo $required; ?>">
                             <?php
                         }
                     }
+                    echo "<br>";
                 }
                 ?>
 
-                <label for="">tipo</label>
-                <select name="type" id="">
-                    <option value="1">individual</option>
-                    <option value="2">coletivo</option>
-                </select>
-
-                <br>
-                <label for="terms"> Area de Atuacao </label> <br>
-                <input type="text" name="terms[area][]" value="Turismo">
+                <?php /* <label for="terms"> Área de Atuação </label> <br> <input type="text" name="terms[area][]" value="Turismo"> */ ?>
                 <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
 
-                <input type="submit" value="Adicionar">
+                <input type="submit" value="Adicionar <?php echo $_e_n; ?>">
                 <?php /*
                         <hr>
                         <div id="editable-entity" class="clearfix" data-action="create" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $_ent->id ?>"
@@ -2750,7 +2776,6 @@ class Theme extends MapasCulturais\Theme {
                         </div> */ ?>
 
             </form>
-
         </div>
     <?php
     }
