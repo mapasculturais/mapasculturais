@@ -332,4 +332,22 @@ class Panel extends \MapasCulturais\Controller {
 
         $this->render('subsite', ['user' => $user]);
     }
+
+    /**
+     * Render the user management of the user panel (Only SuperAdmin, Admin and Owner Subsite panel).
+     *
+     * This method requires authentication and renders the template 'panel/user-management'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'userManagement');
+     * </code>
+     *
+     */
+    function GET_userManagement(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+
+        $this->render('user-management', ['user' => $user]);
+    }
 }

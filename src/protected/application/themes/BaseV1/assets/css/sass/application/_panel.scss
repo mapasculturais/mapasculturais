@@ -119,3 +119,32 @@
         }
     }
 }
+
+.panel-main-content {
+
+    .user-managerment {
+        text-align: center;
+        max-width: 500px;        
+        padding-right: 125px;
+    }
+
+    .user-managerment #campo-de-busca {
+        float: left;
+        width: 100%;
+        height: 2.5rem;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;        
+        font-size: 0.875rem;
+    }
+
+    .user-managerment #search-filter {
+        float: right;
+        width: 122px;
+        height: 2.5rem;
+        margin-right: -125px;
+        font-size: 0.875rem;
+        line-height: 2.5rem;
+        font-weight: bold;
+        text-align: left;
+    }
+}
