@@ -622,9 +622,11 @@ class Registration extends \MapasCulturais\Entity
             if (!$empty){
                 foreach($field->getFieldTypeDefinition()->validations as $validation => $error_message){
                     if(strpos($validation,'v::') === 0){
-                        $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
 
-                        eval("\$ok = {$validation}->validate(\$this->{$prop_name});");
+                        $validator = str_replace('v::', '\MapasCulturais\Validator::', $validation);
+                        $validator = str_replace('()', "()->validate(\"$val\")", $validator);
+
+                        eval("\$ok = $validator;");
 
                         if (!$ok) {
                             $errors[] = $error_message;
@@ -637,7 +639,6 @@ class Registration extends \MapasCulturais\Entity
                 $errorsResult['registration-field-' . $field->id] = $errors;
             }
         }
-
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
