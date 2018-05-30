@@ -36,6 +36,18 @@
                 <p ng-if="field.fieldType === 'checkboxes'">
                     <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="checklist" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}" style="white-space: pre;">{{entity[field.fieldName].join("\n")}}</span>
                 </p>
+
+                <p ng-if="field.fieldType === 'number'">
+                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="number" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                </p>
+
+                <p ng-if="field.fieldType === 'cpf'">
+                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                </p>
+
+                <p ng-if="field.fieldType === 'cnpj'">
+                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                </p>
             </div>
          
             <div ng-show="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
