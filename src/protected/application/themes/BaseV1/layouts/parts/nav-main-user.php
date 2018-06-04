@@ -17,7 +17,7 @@
             <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'events') ?>"><?php \MapasCulturais\i::_e("Meus Eventos");?></a>
-                <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
+                <?php $this->renderModalFor('event'); ?>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
         <?php endif; ?>

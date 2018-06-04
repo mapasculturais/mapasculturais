@@ -2681,10 +2681,11 @@ class Theme extends MapasCulturais\Theme {
     public $entityClassesShortcuts = [
         'agent' => 'MapasCulturais\Entities\Agent',
         'space' => 'MapasCulturais\Entities\Space',
-        'project' => 'MapasCulturais\Entities\Project'
+        'project' => 'MapasCulturais\Entities\Project',
+        'event' => 'MapasCulturais\Entities\Event'
     ];
 
-    public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto'];
+    public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto', 'event' => 'Evento'];
 
     // TODO: adaptar pra i18n
     public $mapaCamposObrigatorios = [
@@ -2697,7 +2698,7 @@ class Theme extends MapasCulturais\Theme {
     public function getShortDescription()
     {
         $_placeholder =  \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
-        $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder' maxlength='400'></textarea>";
+        $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder' maxlength='400' required></textarea>";
 
         return $markup;
     }
@@ -2716,19 +2717,44 @@ class Theme extends MapasCulturais\Theme {
     }
 
     private function getEntityAreas($entity, $type = "") {
-        $_entities_areas = ["agent", "space"];
-        if (in_array($type, $_entities_areas) && $entity instanceof \MapasCulturais\Entity) {
+        if ($entity instanceof \MapasCulturais\Entity) {
+            $_entities_areas = ["agent", "space"];
             $app = App::i();
-            $taxonomies = $app->getRegisteredTaxonomy($entity, 'area');
-            if(is_object($taxonomies)) {
-                $_areas = array_values($taxonomies->restrictedTerms);
-                echo "<br> <label> Área de Atuação </label> <br>";
-                echo "<select name='terms[area][]'>";
-                foreach ($_areas as $area)
-                    echo "<option value='$area'> $area </option>";
-                echo "</select>";
+
+            $title = "";
+            $_attr = "";
+            $options = [];
+
+            if (in_array($type, $_entities_areas)) {
+                $taxonomies = $app->getRegisteredTaxonomy($entity, 'area');
+                if(is_object($taxonomies)) {
+                    $_attr = 'terms[area][]';
+                    $options = array_values($taxonomies->restrictedTerms);
+                    $title = $app->getView()->dict('taxonomies:area: name', false);
+                }
+            } else if ("event" === $type) {
+                $_attr = 'terms[linguagem][]';
+                $taxonomies = $app->getRegisteredTaxonomy($entity, 'linguagem');
+                $options = array_values($taxonomies->restrictedTerms);
+                $title = $app->getView()->dict('taxonomies:linguagem: name', false);
+            } else {
+                return false;
             }
+
+            $this->renderEntityDropdown($title,$_attr,$options);
         }
+    }
+
+    private function renderEntityDropdown($title, $attr, $options) {
+        if (empty($title) || empty($attr) || (count($options) <= 0))
+            return false;
+
+        $dropdown = "<br> <label> $title </label> <br> <select name='$attr'>";
+        foreach ($options as $option)
+            $dropdown .= "<option value='$option'> $option </option>";
+        $dropdown .= "</select>";
+
+        echo $dropdown;
     }
 
     private function getEntityType($entity) {
@@ -2766,10 +2792,10 @@ class Theme extends MapasCulturais\Theme {
                             echo $this->getShortDescription();
                         } else if ("type" === $required) {
                             $this->getEntityType($_new_entity);
-                            $this->getEntityAreas($_new_entity, $entity);
                         } else { ?>
-                            <input style="width: 100%" type="<?php echo $type; ?>" name="<?php echo $required; ?>">
+                            <input style="width: 100%" type="<?php echo $type; ?>" name="<?php echo $required; ?>" required>
                             <?php
+                            $this->getEntityAreas($_new_entity, $entity);
                         }
                     }
                     echo "<br>";
