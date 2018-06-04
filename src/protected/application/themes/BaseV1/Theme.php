@@ -2737,6 +2737,13 @@ class Theme extends MapasCulturais\Theme {
                 $taxonomies = $app->getRegisteredTaxonomy($entity, 'linguagem');
                 $options = array_values($taxonomies->restrictedTerms);
                 $title = $app->getView()->dict('taxonomies:linguagem: name', false);
+                $extra = "classificacaoEtaria";
+                $_types = $app->getRegisteredMetadata($entity)[$extra];
+
+                if (is_object($_types)) {
+                    $classificacao = $_types->config;
+                    $this->renderEntityDropdown($classificacao['label'],$extra,$classificacao['options']);
+                }
             } else {
                 return false;
             }
@@ -2775,7 +2782,7 @@ class Theme extends MapasCulturais\Theme {
         $_new_entity = new $_entity_class();
 
         $_required_keys = array_keys($_new_entity->getValidations());
-        $_name = $this->mapaClasses[$entity];
+        $_name = $_new_entity->getEntityTypeLabel();
         $url = $app->createUrl($entity);
         ?>
         <div id="add-<?php echo $entity ?>" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
