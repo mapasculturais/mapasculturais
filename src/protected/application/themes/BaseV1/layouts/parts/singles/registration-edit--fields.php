@@ -3,7 +3,7 @@
     <h4><?php \MapasCulturais\i::_e("Campos adicionais");?></h4>
     <p class="registration-help"><?php \MapasCulturais\i::_e("Para efetuar sua inscrição, informe os campos abaixo.");?></p>
     -->
-    <ul class="attachment-list" ng-controller="RegistrationFieldsController"> 
+    <ul class="attachment-list" ng-controller="RegistrationFieldsController">
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
             <div ng-show="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
@@ -42,11 +42,11 @@
                 </p>
 
                 <p ng-if="field.fieldType === 'cpf'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    <span class='js-editablemask js-editable js-editable-field js-include-editable' data-mask="999.999.999-99" id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>
 
                 <p ng-if="field.fieldType === 'cnpj'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    <span class='js-editablemask js-editable js-editable-field js-include-editable' data-placeholder="__.___.___/____-__" data-mask="99.999.999/9999-99" id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>
             </div>
          
