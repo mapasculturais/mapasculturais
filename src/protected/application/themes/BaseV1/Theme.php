@@ -1677,6 +1677,7 @@ class Theme extends MapasCulturais\Theme {
             'CreateDate' => i::__('Data de criação'),
             'name' => i::__('Nome'),
         ]);
+        App::i()->log->debug("includeSearchAssets =>  OI");
     }
 
     function includeMapAssets() {
@@ -1720,6 +1721,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
 
         $this->enqueueScript('app', 'map', 'js/map.js');
+        App::i()->log->debug("includeMapAssets =>  OI");
     }
 
     function includeAngularEntityAssets($entity) {
@@ -1934,7 +1936,9 @@ class Theme extends MapasCulturais\Theme {
             ));
         }
 
-        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+        if (($this->controller->id === 'site' && $this->controller->action === 'search') ||
+            ($this->controller->id == 'panel' && $this->controller->action === 'userManagement')) {
+            
             $skeleton_field = [
                 'fieldType' => 'checklist',
                 'isInline' => true,
@@ -1975,7 +1979,7 @@ class Theme extends MapasCulturais\Theme {
 
                             case 'entitytype':
 
-                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));
+                                $types = App::i()->getRegisteredEntityTypes("MapasCulturais\Entities\\".ucfirst($key));                                
 
                                 // ordena alfabeticamente
                                 uasort($types, function($a, $b) {

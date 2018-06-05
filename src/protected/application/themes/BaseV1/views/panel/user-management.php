@@ -1,9 +1,18 @@
 <?php
-  $this->layout = 'panel';
-  $first = true;
-  $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() == null);
+  $this->layout = 'panel'; 
+
+  
+  $this->bodyProperties['ng-app'] = "search.app";
+  $this->bodyProperties['ng-controller'] = "SearchController";
+  
+  
+  
+  $this->includeSearchAssets();
+  
+  $this->includeMapAssets();  
 ?>
-<div class="panel-list panel-main-content">
+
+<div class="panel-list panel-main-content" ng-controller="SearchController">
   <div class="box">
     <header class="panel-header clearfix">
       <h2
@@ -43,5 +52,22 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
+
+  <form class="form-palavra-chave filter search-filter--keyword">
+    <input ng-model="data.agent.keyword" class="search-field"         
+          type="text" name="palavra-chave-agent"
+          placeholder="<?php \MapasCulturais\i::esc_attr_e("Buscar");?> <?php $this->dict('entities: agent');?>" />
+    </input>
+  </form>
+  <article class="objeto clearfix" ng-repeat="agent in agents" id="agent-result-{{agent.id}}">
+    <h1><a href="{{agent.singleUrl}}">{{agent.name}}</a></h1>
+    <div class="objeto-content clearfix">
+        <a href="{{agent.singleUrl}}" class="js-single-url">
+            <img class="objeto-thumb" ng-src="{{agent['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--agent')}}">
+        </a>
+        <p class="objeto-resumo">{{agent.shortDescription}}</p>        
+    </div>
+  </article>
+
 </div>
