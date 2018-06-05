@@ -12,6 +12,28 @@ $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
 
+    $("form.create-entity").submit(function (e) {
+        e.preventDefault();
+        var _url = $(this).data('entity');
+        var _entity = $(this).serializeArray();
+        $.ajax({
+            url: _url, type: 'POST',
+            data: _entity,
+            success: function(r) {
+                if (r.id) {
+                    var name = r.name;
+                    var msg = name + " criado com sucesso!";
+                    MapasCulturais.Messages.success(msg);
+                    alert(msg);
+                    $('.entity-modal').find('.js-close').click();
+                } else if (r.error && r.data) {
+                    alert("Preencha todos os campos obrigatórios!");
+                    return false;
+                }
+            }
+        });
+    });
+
     var labels = MapasCulturais.gettext.mapas;
 
     MapasCulturais.TemplateManager.init();
