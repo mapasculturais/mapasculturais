@@ -2818,7 +2818,7 @@ class Theme extends MapasCulturais\Theme {
         $url = $app->createUrl($entity);
         ?>
         <div id="add-<?php echo $entity ?>" class="js-dialog entity-modal" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
-            <form action="<?php echo $url; ?>" method="POST">
+            <form class="create-entity" data-entity="<?php echo $url; ?>">
                 <?php
                 foreach ($_required_keys as $_field_) {
                     if ($_new_entity->isPropertyRequired($_new_entity, $_field_)) {
