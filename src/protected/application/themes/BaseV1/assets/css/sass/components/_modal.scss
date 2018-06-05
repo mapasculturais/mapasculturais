@@ -125,3 +125,24 @@
 #dialog-event-occurrence label {
     white-space: nowrap;
 }
+
+
+.entity-modal {
+    width: 800px;
+
+    label {
+        display: inline-block;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    .required {
+        color: darkred;
+    }
+    .entity-modalmodal-footer {
+        color: $gray;
+        font-size: $font-size-smaller;
+    }
+}
