@@ -2687,16 +2687,7 @@ class Theme extends MapasCulturais\Theme {
 
     public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto', 'event' => 'Evento'];
 
-    // TODO: adaptar pra i18n
-    public $mapaCamposObrigatorios = [
-        'name' => 'Nome',
-        'shortDescription' => 'Descrição curta',
-        'type' => 'Tipo',
-        'terms' => 'Área de Atuação'
-    ];
-
-    public function getShortDescription()
-    {
+    public function getShortDescription() {
         $_placeholder =  \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
         $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder' maxlength='400' required></textarea>";
 
@@ -2714,6 +2705,15 @@ class Theme extends MapasCulturais\Theme {
             <?php
         endif;
 
+    }
+
+    private function entityRequiredFields()  {
+        return [
+            'name' => i::__('Nome'),
+            'shortDescription' => i::__('Descrição curta'),
+            'type' => i::__('Tipo'),
+            'terms' => i::__('Área de Atuação')
+        ];
     }
 
     private function getEntityAreas($entity, $type = "") {
@@ -2765,14 +2765,46 @@ class Theme extends MapasCulturais\Theme {
     }
 
     private function getEntityType($entity) {
-        if ($entity instanceof \MapasCulturais\Entity) {
-            $app = App::i();
-            $_types = $app->getRegisteredEntityTypes($entity);
-            echo "<select name='type'>";
-            foreach ($_types as $tipo)
-                echo "<option value='$tipo->id'> $tipo->name </option>";
+         $app = App::i();
+         $_types = $app->getRegisteredEntityTypes($entity);
 
-            echo "</select>";
+         if (!is_null($_types) && is_array($_types)) {
+             $html = "<br><select name='type'>";
+             foreach ($_types as $tipo) {
+                 if (is_object($tipo)) {
+                     $html .= "<option value='$tipo->id'> $tipo->name </option>";
+                 }
+             }
+             $html .= "</select>";
+
+             echo $html;
+         }
+    }
+
+    private function modalFooter() {
+        $msg = i::__('Todos os campos são obrigatórios.');
+        echo "<p class='entity-modalmodal-footer'> <span class='required'>*</span> $msg </p>";
+    }
+
+    private function renderFieldMarkUp($field, $entity) {
+        $__known_types = [ 'name', 'shortDescription', 'type'];
+        if (in_array($field, $__known_types)) {
+            $title = $this->entityRequiredFields()[$field];
+            echo "<label> $title </label> <span class='required'>*</span>";
+
+            switch ($field) {
+                case "name":
+                    $className = strtolower($entity->getEntityTypeLabel());
+                    $placeholder = sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
+                    echo "<input type='text' name='$field' placeholder='$placeholder' required>";
+                    break;
+                case "shortDescription":
+                    echo $this->getShortDescription();
+                    break;
+                case "type":
+                    $this->getEntityType($entity);
+                    break;
+            }
         }
     }
 
@@ -2785,30 +2817,19 @@ class Theme extends MapasCulturais\Theme {
         $_name = $_new_entity->getEntityTypeLabel();
         $url = $app->createUrl($entity);
         ?>
-        <div id="add-<?php echo $entity ?>" class="js-dialog" style="width: 800px" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
+        <div id="add-<?php echo $entity ?>" class="js-dialog entity-modal" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
             <form action="<?php echo $url; ?>" method="POST">
                 <?php
-                $__known_files = ['name', 'shortDescription','type'];
-                foreach ($_required_keys as $required) {
-                    if ($_new_entity->isPropertyRequired($_new_entity, $required) && in_array($required, $__known_files)) {
-                        $type = "text";
-                        $_field_ = $this->mapaCamposObrigatorios[$required];
-
-                        echo "<label style='display: block'> $_field_ </label> ";
-                        if ("shortDescription" === $required) {
-                            echo $this->getShortDescription();
-                        } else if ("type" === $required) {
-                            $this->getEntityType($_new_entity);
-                        } else { ?>
-                            <input style="width: 100%" type="<?php echo $type; ?>" name="<?php echo $required; ?>" required>
-                            <?php
-                            $this->getEntityAreas($_new_entity, $entity);
-                        }
+                foreach ($_required_keys as $_field_) {
+                    if ($_new_entity->isPropertyRequired($_new_entity, $_field_)) {
+                        $this->renderFieldMarkUp($_field_, $_new_entity);
                     }
-                    echo "<br>";
                 }
+                $this->getEntityAreas($_new_entity, $entity);
                 ?>
                 <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
+
+                <?php $this->modalFooter(); ?>
 
                 <input type="submit" value="Adicionar <?php echo $_name; ?>">
             </form>
