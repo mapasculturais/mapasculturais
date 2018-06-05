@@ -2783,7 +2783,7 @@ class Theme extends MapasCulturais\Theme {
 
     private function modalFooter() {
         $msg = i::__('Todos os campos são obrigatórios.');
-        echo "<p class='entity-modalmodal-footer'> <span class='required'>*</span> $msg </p>";
+        echo "<p class='entity-modal-footer'> <span class='required'>*</span> $msg </p>";
     }
 
     private function renderFieldMarkUp($field, $entity) {
@@ -2794,7 +2794,7 @@ class Theme extends MapasCulturais\Theme {
 
             switch ($field) {
                 case "name":
-                    $className = strtolower($entity->getEntityTypeLabel());
+                    $className = mb_strtolower($entity->getEntityTypeLabel());
                     $placeholder = sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
                     echo "<input type='text' name='$field' placeholder='$placeholder' required>";
                     break;
