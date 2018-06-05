@@ -2756,7 +2756,8 @@ class Theme extends MapasCulturais\Theme {
         if (empty($title) || empty($attr) || (count($options) <= 0))
             return false;
 
-        $dropdown = "<br> <label> $title </label> <br> <select name='$attr'>";
+        $this->renderTitle($title);
+        $dropdown = "<select name='$attr'>";
         foreach ($options as $option)
             $dropdown .= "<option value='$option'> $option </option>";
         $dropdown .= "</select>";
@@ -2786,11 +2787,15 @@ class Theme extends MapasCulturais\Theme {
         echo "<p class='entity-modal-footer'> <span class='required'>*</span> $msg </p>";
     }
 
+    private function renderTitle($title) {
+        echo "<label> $title </label> <span class='required'>*</span>";
+    }
+
     private function renderFieldMarkUp($field, $entity) {
         $__known_types = [ 'name', 'shortDescription', 'type'];
         if (in_array($field, $__known_types)) {
             $title = $this->entityRequiredFields()[$field];
-            echo "<label> $title </label> <span class='required'>*</span>";
+            $this->renderTitle($title);
 
             switch ($field) {
                 case "name":
