@@ -14,7 +14,7 @@
                     <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-tpl="<textarea onkeyup='charCounter(this);' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></textarea><span id='charCounter'></span>" data-original-title="{{field.title}}" data-maxlength="{{ field.maxSize }}"  data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>
                 <p ng-if="field.fieldType === 'text'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-tpl="<input type='text' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></input>" data-maxlength="{{ field.maxSize }}" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>
 
                 <p ng-if="field.fieldType === 'date'">
@@ -49,7 +49,7 @@
                     <span class='js-editablemask js-editable js-editable-field js-include-editable' data-placeholder="__.___.___/____-__" data-mask="99.999.999/9999-99" id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
                 </p>
             </div>
-         
+
             <div ng-show="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                 <div class="attachment-description">
