@@ -62,7 +62,7 @@
             <?php $this->applyTemplateHook('nav.panel.apps','after'); ?>
         <?php endif; ?>
 
-        <?php if($app->isEnabled('apps')): ?>
+        <?php if($app->user->is('admin')): ?>
             <?php $this->applyTemplateHook('nav.panel.userManagement','before'); ?>
             <li><a <?php if($this->template == 'panel/user-management') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement') ?>"><span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Gestão Usuários");?></a></li>
             <?php $this->applyTemplateHook('nav.panel.userManagement','after'); ?>
