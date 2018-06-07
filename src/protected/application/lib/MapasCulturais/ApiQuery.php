@@ -3,6 +3,7 @@
 namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
+use \MapasCulturais\Entities\File;
 
 class ApiQuery {
     use Traits\MagicGetter;
@@ -1208,13 +1209,14 @@ class ApiQuery {
         
         $dql = "
             SELECT
-                f.id,
+                f.id,               
                 f.name,
                 f.description,
                 f._path,
                 f.group as file_group,
                 fp.group as parent_group,
-                IDENTITY(f.owner) AS owner_id
+                IDENTITY(f.owner) AS owner_id,
+                f.private
             FROM
                 {$this->fileClassName} f
                     LEFT JOIN f.parent fp
@@ -1238,9 +1240,13 @@ class ApiQuery {
             if(!isset($files[$owner_id])){
                 $files[$owner_id] = [];
             }
-            
-            $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
-            
+
+            if ($f['private'] === TRUE) {
+               $f['url'] = $app->storage->getPrivateUrlById($f['id']);
+            } else {
+                $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
+            }
+
             if($f['parent_group']) {
                 $f['transformed'] = true;
                 $f['mainGroup'] = $f['parent_group'];
