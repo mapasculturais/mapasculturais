@@ -109,6 +109,10 @@ abstract class Storage{
 
         $owner = $file->getOwner();
 
+        if ($file->private === true) {
+            $result = $this->_getPrivateUrl($file);
+        }
+
         $result = $this->_getUrl($file);
 
         $app->applyHookBoundTo($this, 'storage.url', ['file' => $file, 'url' => &$result]);
@@ -122,6 +126,12 @@ abstract class Storage{
     public function getUrlFromRelativePath($relative_path){
         return $this->_getUrlFromRelativePath($relative_path);
     }
+
+    public function getPrivateUrlById($file_id){
+        return $this->_getPrivateUrlById($file_id);
+    }
+
+
 
     /**
      * Returns the full path to the file.
@@ -153,6 +163,8 @@ abstract class Storage{
     abstract protected function _add(\MapasCulturais\Entities\File $file);
     abstract protected function _remove(\MapasCulturais\Entities\File $file);
     abstract protected function _getUrl(\MapasCulturais\Entities\File $file);
+    abstract protected function _getPrivateUrl(\MapasCulturais\Entities\File $file);
+    abstract protected function _getPrivateUrlById($file_id);
     abstract protected function _getUrlFromRelativePath($relative_path);
     abstract protected function _getPath(\MapasCulturais\Entities\File $file, $relative = false);
 }
