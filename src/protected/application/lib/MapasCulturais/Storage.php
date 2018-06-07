@@ -111,9 +111,9 @@ abstract class Storage{
 
         if ($file->private === true) {
             $result = $this->_getPrivateUrl($file);
+        } else {
+            $result = $this->_getUrl($file);
         }
-
-        $result = $this->_getUrl($file);
 
         $app->applyHookBoundTo($this, 'storage.url', ['file' => $file, 'url' => &$result]);
 
