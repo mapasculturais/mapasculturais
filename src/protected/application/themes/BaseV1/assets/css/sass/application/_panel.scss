@@ -123,28 +123,70 @@
 .panel-main-content {
 
     .user-managerment {
-        text-align: center;
-        max-width: 500px;        
-        padding-right: 125px;
-    }
 
-    .user-managerment #campo-de-busca {
-        float: left;
-        width: 100%;
-        height: 2.5rem;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;        
-        font-size: 0.875rem;
-    }
+        .user-managerment-search {
+            text-align: center;
+            max-width: 500px;        
+            padding-right: 125px;
 
-    .user-managerment #search-filter {
-        float: right;
-        width: 122px;
-        height: 2.5rem;
-        margin-right: -125px;
-        font-size: 0.875rem;
-        line-height: 2.5rem;
-        font-weight: bold;
-        text-align: left;
+            #campo-de-busca {
+                float: left;
+                width: 100%;
+                height: 2.5rem;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;        
+                font-size: 0.875rem;
+            }
+
+            #search-filter {
+                float: right;
+                width: 122px;
+                height: 2.5rem;
+                margin-right: -125px;
+                font-size: 0.875rem;
+                line-height: 2.5rem;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
+        
+        .lista {
+            padding-left: 0px;
+        }
+
+        .entity-list-header {
+            border-left-style: solid;
+            border-left-width: 1rem;
+            border-right-style: solid;
+            border-right-width: 0rem;
+
+            h1 {
+                font-size: 1.0rem;
+                .icon {
+                    font-size: 1.0rem;
+                }
+            }
+        }
+
+        article {
+            text-align: left;
+            font-size: 12px;
+
+            .objeto-left{
+                float: left;
+                width: 30%;
+                
+            }
+
+            .objeto-right {
+                float: right;
+                width: 70%;                
+            }
+
+            .area-atuacao, .tags {
+                max-height: 88px;
+                overflow-y: auto; 
+            }
+        }
     }
 }
