@@ -1,9 +1,30 @@
 (function (angular) {
     "use strict";        
     
-    var module = angular.module('ng.usermanager.app', ['search.service.find']);    
-    module.controller('UserManagermentController', ['$scope', '$rootScope', '$window', '$timeout', 'searchService', function ($scope, $rootScope, $window, $timeout, searchService) {    
-        console.log("INICIANDO CONTROLLER!");
+    var module = angular.module('ng.usermanager.app', ['search.service.find']);
+
+    module.factory('userManagermentService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q) {
+        
+        var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL + 'api/' : MapasCulturais.baseURL + '/api/';
+
+        return {
+            
+            getUrl: function(entity, action){
+                return baseUrl + `${entity}/` + action;
+            },
+            
+            getUser: function(idUser) {
+                return $http.get(this.getUrl('user', 'findOne') + `?@select=*&id=EQ(${idUser})`);
+            },
+
+            getAgents: function(agentsIds) {
+                return $http.get(this.getUrl('agent', 'find') + `?@select=id,name,,subsite.name,singleUrl&id=IN(${agentsIds.join()})`);                
+            }
+            
+        };
+    }]);
+
+    module.controller('UserManagermentController', ['$scope', '$rootScope', '$window', '$timeout', 'searchService', 'userManagermentService', function ($scope, $rootScope, $window, $timeout, searchService, userManagermentService) {
         var timeoutTime = 300;
 
         $rootScope.resetPagination = function() {
@@ -44,13 +65,43 @@
                 $scope.projects = results.project ? results.project : [];
                 $scope.opportunities = results.opportunity ? results.opportunity : [];
             }
-            console.log($scope.agents);
         });
-        
 
-        $scope.test = function() {
-            console.log("controle-OK");
+        $scope.loadAgent = function ( ) {
+            $scope.user.agents.spinnerShow = true;
+            userManagermentService.getAgents($scope.user.agents)
+                .success(function (data) {
+                    console.log("success");
+                    $scope.user.agents.list = data;
+                    $scope.user.agents.spinnerShow = false;
+                    console.log($scope.user.agents);
+                })
+                .error(function (data) {
+                    $scope.user.agents.spinnerShow = false;
+                });
+            
+            // for (var agent in $scope.user.agents) {
+            //     var idAgent = $scope.user.agents[agent];
+            //     agents[idAgent] = "AgentAPI";
+            // }
         }
+        
+        $scope.getUserByAgent = function($idAgent) {
+            $scope.user = {};
+            userManagermentService.getUser($idAgent).
+                success(function (data) {
+                    $scope.user = data;
+                    $scope.user.lastLoginTimestamp.date = Date.parse($scope.user.lastLoginTimestamp.date);
+                    $scope.user.createTimestamp.date = Date.parse($scope.user.createTimestamp.date);
+                    MapasCulturais.Modal.open('#user-managerment-dialog');
+                    
+                    $scope.loadAgent();
+
+                }).error(function(data) {
+                    console.log("erro!");
+                });
+        }
+
 
         if($('#user-managerment-search-form').length){
             $('#campo-de-busca').focus();

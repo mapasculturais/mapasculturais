@@ -2,13 +2,16 @@
 namespace MapasCulturais\Controllers;
 use MapasCulturais\Controller;
 use MapasCulturais\App;
+use MapasCulturais\Traits;
 /**
  * User Controller
  *
  * By default this controller is registered with the id 'user'.
  *
  */
-class User extends Controller {
+class User extends EntityController {
+    use Traits\ControllerAPI;
+    
     function usesAPI(){
         return true;
     }
