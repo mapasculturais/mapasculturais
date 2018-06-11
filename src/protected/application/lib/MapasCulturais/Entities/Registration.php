@@ -523,6 +523,31 @@ class Registration extends \MapasCulturais\Entity
         $app->addEntityToRecreatePermissionCacheList($this);
     }
 
+    function cleanMaskedRegistrationFields(){
+        $app = App::i();
+        $fieldsValues = $this->getMetadata();
+
+        $fieldsConfigurations = $this->opportunity->registrationFieldConfigurations;
+
+        $app->disableAccessControl();
+        foreach ($fieldsValues as $fieldName => $value){
+
+            foreach ($fieldsConfigurations as $fieldConf){
+
+                if('field_'.$fieldConf->id  === $fieldName){
+                    switch ($fieldConf->getFieldTypeDefinition()->slug){
+                        case 'cpf':
+                        case 'cnpj':
+                            $value = preg_replace( '/[^0-9]/', '', $value );
+                            $this->setMetadata($fieldName, $value);
+                            break;
+                    }
+                }
+            }
+        }
+        $app->enableAccessControl();
+    }
+
     function getSendValidationErrors(){
         $app = App::i();
 
