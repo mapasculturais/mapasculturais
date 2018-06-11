@@ -27,7 +27,12 @@ $(function(){
                     alert(msg);
                     $('.entity-modal').find('.js-close').click();
                 } else if (r.error && r.data) {
-                    alert("Preencha todos os campos obrigatórios!");
+                    for (var erro in r.data) {
+                        var _msg = r.data[erro];
+                        MapasCulturais.Messages.error(_msg);
+                        alert(_msg);
+                    }
+
                     return false;
                 }
             }
@@ -530,7 +535,6 @@ MapasCulturais.Modal = {
 
 MapasCulturais.addEntity = function(){
     $('#blockdiv').show();
-    $('body').css('overflow','hidden');
 };
 
 

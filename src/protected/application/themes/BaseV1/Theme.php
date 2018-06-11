@@ -2744,22 +2744,24 @@ class Theme extends MapasCulturais\Theme {
             foreach ($app->getRegisteredMetadata($entity) as $meta) {
                 if (is_object($meta) && $meta instanceof MapasCulturais\Definitions\Metadata ) {
                     if ($meta->is_required) {
-                        $title = $meta->label;
+                        $_title = $meta->label;
                         $_key = $meta->key;
                         $tipo = $meta->type;
 
                         if ($tipo === "select" && is_array($meta->config)) {
-                            $this->renderEntityDropdown($title, $_key, $meta->config['options']);
+                            $this->renderEntityDropdown($_title, $_key, $meta->config['options']);
                         } else if ($tipo === "string" || $tipo === "int") {
-                            $this->renderTitle($title);
+                            $this->renderTitle($_title);
                             echo "<input type='text' name='$_key' placeholder='Campo obrigatório' required>";
                         } else if ($tipo === "text") {
-                            $this->renderTitle($title);
-                            echo "<textarea name='$_key' maxlength='400'></textarea>";
+                            $this->renderTitle($_title);
+                            echo "<textarea name='$_key' maxlength='400'></textarea><br>";
                         } else if ($tipo === "multiselect" && is_array($meta->config)) {
-                            $this->renderTitle($title);
+                            $this->renderTitle($_title);
+                            echo "<br>";
                             foreach ($meta->config['options'] as $option) {
-                                echo "<input type='checkbox' name='$_key' value='$option'> $option";
+                                echo "<label for='$_key'> $option </label>";
+                                echo "<input type='checkbox' name='$_key' value='$option'> <br>";
                             }
                         }
                     }
