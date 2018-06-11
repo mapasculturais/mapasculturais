@@ -41,18 +41,9 @@ jQuery(function(){
             var mask = $(this).data('mask');
 
             editable.input.$input.mask(mask, {
-                // onKeyPress: (val, e, field, options) => field.mask(mask, options),
                 placeholder: $(this).data('placeholder'),
                 clearIfNotMatch: true,
             });
-            //
-            // editable.input.$input.unmask();
-            // console.log(editable.$element[0].innerText);
-            //
-            // $('.controller-registration').on('submit', 'form.editableform', () => {
-            //     editable.input.$input.unmask();
-            //     console.log('asdasd');
-            // });
         }
 
         if ($(this).hasClass('js-mask-phone')) {
