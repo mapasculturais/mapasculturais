@@ -2737,15 +2737,33 @@ class Theme extends MapasCulturais\Theme {
                 $taxonomies = $app->getRegisteredTaxonomy($entity, 'linguagem');
                 $options = array_values($taxonomies->restrictedTerms);
                 $title = $app->getView()->dict('taxonomies:linguagem: name', false);
-                $extra = "classificacaoEtaria";
-                $_types = $app->getRegisteredMetadata($entity)[$extra];
-
-                if (is_object($_types)) {
-                    $classificacao = $_types->config;
-                    $this->renderEntityDropdown($classificacao['label'],$extra,$classificacao['options']);
-                }
             } else {
                 return false;
+            }
+
+            foreach ($app->getRegisteredMetadata($entity) as $meta) {
+                if (is_object($meta) && $meta instanceof MapasCulturais\Definitions\Metadata ) {
+                    if ($meta->is_required) {
+                        $title = $meta->label;
+                        $_key = $meta->key;
+                        $tipo = $meta->type;
+
+                        if ($tipo === "select" && is_array($meta->config)) {
+                            $this->renderEntityDropdown($title, $_key, $meta->config['options']);
+                        } else if ($tipo === "string" || $tipo === "int") {
+                            $this->renderTitle($title);
+                            echo "<input type='text' name='$_key' placeholder='Campo obrigatório' required>";
+                        } else if ($tipo === "text") {
+                            $this->renderTitle($title);
+                            echo "<textarea name='$_key' maxlength='400'></textarea>";
+                        } else if ($tipo === "multiselect" && is_array($meta->config)) {
+                            $this->renderTitle($title);
+                            foreach ($meta->config['options'] as $option) {
+                                echo "<input type='checkbox' name='$_key' value='$option'> $option";
+                            }
+                        }
+                    }
+                }
             }
 
             $this->renderEntityDropdown($title,$_attr,$options);
