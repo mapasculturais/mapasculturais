@@ -126,13 +126,17 @@
     white-space: nowrap;
 }
 
-
 .entity-modal {
     width: 800px;
 
+    input[type='checkbox'] {
+        float: left;
+        width: 3%;
+    }
+
     label { display: inline-block; }
 
-    input { width: 100%; }
+    input, textarea { width: 100%; }
 
     select { display: block !important; }
 
