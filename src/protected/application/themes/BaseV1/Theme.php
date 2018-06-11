@@ -2694,17 +2694,17 @@ class Theme extends MapasCulturais\Theme {
         return $markup;
     }
 
-    public function renderModalFor($entity) {
-
+    public function renderModalFor($entity, $showIcon = true) {
         if ("edit" != $this->controller->action):
+            $href_class = ($showIcon) ? "add" : "";
             ?>
-            <a class="add js-open-dialog" href="javascript:void(0)" data-dialog="#add-<?php echo $entity; ?>" data-dialog-callback="MapasCulturais.addEntity"
-               data-dialog-block="true" data-form-action='insert' data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
+            <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)" data-dialog="#add-<?php echo $entity; ?>"
+               data-dialog-callback="MapasCulturais.addEntity" data-dialog-block="true" data-form-action='insert'
+               data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
                 <?php $this->modalCreateEntity($entity); ?>
             </a>
             <?php
         endif;
-
     }
 
     private function entityRequiredFields()  {

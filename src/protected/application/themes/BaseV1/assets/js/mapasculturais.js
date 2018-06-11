@@ -24,7 +24,13 @@ $(function(){
                     var name = r.name;
                     var msg = name + " criado com sucesso!";
                     MapasCulturais.Messages.success(msg);
-                    alert(msg);
+                    if (r.editUrl) {
+                        var _message = msg + " Deseja editar " + name + " agora?";
+                        if( confirm(_message) ) {
+                            window.location = r.editUrl;
+                        }
+                    }
+
                     $('.entity-modal').find('.js-close').click();
                 } else if (r.error && r.data) {
                     for (var erro in r.data) {
