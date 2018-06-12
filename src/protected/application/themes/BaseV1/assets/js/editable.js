@@ -39,10 +39,10 @@ jQuery(function(){
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-editablemask')) {
             var mask = $(this).data('mask');
-            editable.input.$input.mask(mask, {onKeyPress:
-               function(val, e, field, options) {
-                   field.mask(mask, options) ;
-               }
+
+            editable.input.$input.mask(mask, {
+                placeholder: $(this).data('placeholder'),
+                clearIfNotMatch: true,
             });
         }
 

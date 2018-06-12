@@ -771,6 +771,30 @@ class App extends \Slim\Slim{
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'number',
+            'name' => \MapasCulturais\i::__('Campo numérico'),
+            'validations' => [
+                'v::numeric()' => \MapasCulturais\i::__('O valor inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'cpf',
+            'name' => \MapasCulturais\i::__('Campo de CPF'),
+            'validations' => [
+                'v::cpf()' => \MapasCulturais\i::__('O cpf inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'cnpj',
+            'name' => \MapasCulturais\i::__('Campo de CNPJ'),
+            'validations' => [
+                'v::cnpj()' => \MapasCulturais\i::__('O cnpj inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'checkboxes',
             'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
             'requireValuesConfiguration' => true,

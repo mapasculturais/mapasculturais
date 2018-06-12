@@ -765,6 +765,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if(field && field.fieldOptions){
                 var cfg = {};
                 cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
+
+                if(field.fieldType === "date"){
+                    cfg.datepicker = {weekStart: 1, yearRange: jQuery(this).data('yearrange') ? jQuery(this).data('yearrange') : "1900:+0"};
+                }
                 jQuery(this).editable(cfg);
             } else {
                 jQuery(this).editable();
