@@ -72,7 +72,7 @@ use MapasCulturais\i;
                 <?php i::_e("Avaliação");?>
             </th>
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
-                <mc-select placeholder="status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
+                <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
