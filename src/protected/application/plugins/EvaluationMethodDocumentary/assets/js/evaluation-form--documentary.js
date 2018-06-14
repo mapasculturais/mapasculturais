@@ -44,10 +44,12 @@ $(function(){
                     }
 
                     data.obs = val.obs;
+                    data.obs_items = val.obs_items;
                 } else {
                     data.empty = true;
                     data.invalid = false;
                     data.obs = '';
+                    data.obs_items = '';
                 }
 
                 $form = $(Mustache.render(template, data));

@@ -1,5 +1,5 @@
-<?php 
-namespace EvaluationMethodDocumentary; 
+<?php
+namespace EvaluationMethodDocumentary;
 
 use MapasCulturais\i;
 
@@ -25,6 +25,10 @@ use MapasCulturais\i;
             </label>
         </p>
         <input type="hidden" name="data[{{id}}][label]" value="{{label}}">
+        <label class="textarea-label">
+            <?php i::_e('Descumprimento do(s) item(s) do edital:') ?><br>
+            <textarea class="textarea-small" rows="2" name="data[{{id}}][obs_items]">{{obs_items}}</textarea>
+        </label>
         <label class="textarea-label">
             <?php i::_e('Justificativa / Observações') ?><br>
             <textarea name="data[{{id}}][obs]">{{obs}}</textarea>

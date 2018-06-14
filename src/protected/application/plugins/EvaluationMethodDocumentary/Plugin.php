@@ -121,6 +121,19 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                                 }
                             }
                         ],
+                        'obs_items' => (object) [
+                            'label' => i::__('Descumprimento do(s) item(s) do edital'),
+                            'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($id) {
+
+                                $evaluation_data = (array) $evaluation->evaluationData;
+                                if (isset($evaluation_data[$id])) {
+                                    $data = $evaluation_data[$id];
+                                    return $data['obs_items'];
+                                } else {
+                                    return '';
+                                }
+                            }
+                        ],
                     ]
                 ];
             }
