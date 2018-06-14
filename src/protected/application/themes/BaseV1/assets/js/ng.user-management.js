@@ -242,6 +242,11 @@
             });
         }
 
+        $('.user-managerment-infos table.entity-table caption').click(function() {
+            $(this).closest('table').find('tbody').fadeToggle("fast", "linear");
+            $(this).closest('table').find('thead').fadeToggle("fast", "linear");
+        });
+
     }]);
 })(angular);
 
