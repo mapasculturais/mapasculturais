@@ -20,7 +20,7 @@
         });
         $scope.data = {
             registration: evaluation ? evaluation.evaluationData.status : null,
-            
+            obs: evaluation ? evaluation.evaluationData.obs : null,
             registrationStatusesNames: statuses,
 
         };
