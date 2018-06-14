@@ -193,6 +193,14 @@
         }
         
         .user-managerment-infos {
+            .user-info {
+                margin: 2rem;
+                padding-bottom: 10px;
+
+                .label {
+                    line-height: 2em;
+                }
+            }
             .tabs-content {
                 .icon-agent {
                     width: 1.5rem;
@@ -203,7 +211,7 @@
                 .icon-agent.active {
                     color: #fff;
                     background: #000000;
-                    border: 1px solid #000000;                    
+                    border: 1px solid #000000;
                 }
             
                 .agents-table {
@@ -214,14 +222,25 @@
 
                 .entity-table {
                     *border-collapse: collapse; /* IE7 and lower */
-                    border-spacing: 0;                    
+                    border-spacing: 0;
                     border: solid #ccc 1px;
                     -moz-border-radius: 6px;
                     -webkit-border-radius: 6px;
                     border-radius: 6px;
                     -webkit-box-shadow: 0 1px 1px #ccc; 
                     -moz-box-shadow: 0 1px 1px #ccc; 
-                    box-shadow: 0 1px 1px #ccc; 
+                    box-shadow: 0 1px 1px #ccc;
+                    width: 100%;
+
+                    caption {
+                        cursor: pointer;
+                    }
+
+                    thead tr td {
+                        text-align: center;
+                        font-weight: bolder;
+                        background: #e5e5e5;                        
+                    }
 
                     tr:hover {
                         background: #fbf8e9;
