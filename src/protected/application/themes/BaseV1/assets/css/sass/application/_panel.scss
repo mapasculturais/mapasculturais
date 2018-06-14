@@ -124,6 +124,48 @@
 
     .user-managerment {
 
+        .lista {
+            padding-left: 0px;
+            article {
+                text-align: left;
+                font-size: 12px;
+    
+                .objeto-left{
+                    float: left;
+                    width: 30%;
+                    
+                }
+    
+                .objeto-right {
+                    float: right;
+                    width: 70%;                
+                }
+    
+                .area-atuacao, .tags {
+                    max-height: 88px;
+                    overflow-y: auto; 
+                }
+            }
+
+            .objeto {
+                
+                .objeto-header {
+                    width: 100%;
+                    h1 {
+                        width: 70%;
+                        display: inline-block;
+                    }
+                    .objeto-header-actions {
+                        display: inline-block;
+                        width: 25%;
+                    }
+                }
+                .objeto-content {
+                    width: 100%;
+                }
+            }
+        }
+
         .user-managerment-search {
             text-align: center;
             max-width: 500px;        
@@ -147,11 +189,107 @@
                 line-height: 2.5rem;
                 font-weight: bold;
                 text-align: left;
-            }
+            }            
         }
         
-        .lista {
-            padding-left: 0px;
+        .user-managerment-infos {
+            .tabs-content {
+                .icon-agent {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    border-radius: 2px;
+                    text-align: center;
+                }
+                .icon-agent.active {
+                    color: #fff;
+                    background: #000000;
+                    border: 1px solid #000000;                    
+                }
+            
+                .agents-table {
+                    float: left;
+                    margin-left: 0.5em;
+                    border: solid 1px #ccc;
+                }
+
+                .entity-table {
+                    *border-collapse: collapse; /* IE7 and lower */
+                    border-spacing: 0;                    
+                    border: solid #ccc 1px;
+                    -moz-border-radius: 6px;
+                    -webkit-border-radius: 6px;
+                    border-radius: 6px;
+                    -webkit-box-shadow: 0 1px 1px #ccc; 
+                    -moz-box-shadow: 0 1px 1px #ccc; 
+                    box-shadow: 0 1px 1px #ccc; 
+
+                    tr:hover {
+                        background: #fbf8e9;
+                        -o-transition: all 0.1s ease-in-out;
+                        -webkit-transition: all 0.1s ease-in-out;
+                        -moz-transition: all 0.1s ease-in-out;
+                        -ms-transition: all 0.1s ease-in-out;
+                        transition: all 0.1s ease-in-out;     
+                    }
+
+                    td, th {
+                        border-left: 1px solid #ccc;
+                        border-top: 1px solid #ccc;
+                        padding: 10px;
+                        text-align: left;    
+                    }
+
+                    th {
+                        background-color: #dce9f9;
+                        background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+                        background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+                        background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+                        background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+                        background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+                        background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+                        -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+                        -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+                        box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+                        border-top: none;
+                        text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+                    }
+
+                    td:first-child, .bordered th:first-child {
+                        border-left: none;
+                    }
+
+                    th:first-child {
+                        -moz-border-radius: 6px 0 0 0;
+                        -webkit-border-radius: 6px 0 0 0;
+                        border-radius: 6px 0 0 0;
+                    }
+
+                    th:last-child {
+                        -moz-border-radius: 0 6px 0 0;
+                        -webkit-border-radius: 0 6px 0 0;
+                        border-radius: 0 6px 0 0;
+                    }
+                    
+                    th:only-child{
+                        -moz-border-radius: 6px 6px 0 0;
+                        -webkit-border-radius: 6px 6px 0 0;
+                        border-radius: 6px 6px 0 0;
+                    }
+
+                    tr:last-child td:first-child {
+                        -moz-border-radius: 0 0 0 6px;
+                        -webkit-border-radius: 0 0 0 6px;
+                        border-radius: 0 0 0 6px;
+                    }
+
+                    tr:last-child td:last-child {
+                        -moz-border-radius: 0 0 6px 0;
+                        -webkit-border-radius: 0 0 6px 0;
+                        border-radius: 0 0 6px 0;
+                    }
+                    
+                }
+            }
         }
 
         .entity-list-header {
@@ -167,26 +305,6 @@
                 }
             }
         }
-
-        article {
-            text-align: left;
-            font-size: 12px;
-
-            .objeto-left{
-                float: left;
-                width: 30%;
-                
-            }
-
-            .objeto-right {
-                float: right;
-                width: 70%;                
-            }
-
-            .area-atuacao, .tags {
-                max-height: 88px;
-                overflow-y: auto; 
-            }
-        }
+        
     }
 }
