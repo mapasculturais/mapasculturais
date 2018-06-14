@@ -1,26 +1,55 @@
 (function (angular) {
-    "use strict";        
+    "use strict";
     
     var module = angular.module('ng.usermanager.app', ['search.service.find']);
 
+    module.filter('capitalize', function() {
+        return function(input) {
+          return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+        }
+    });
+
     module.factory('userManagermentService', ['$http', '$rootScope', '$q', function($http, $rootScope, $q) {
         
-        var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL + 'api/' : MapasCulturais.baseURL + '/api/';
+        var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
 
         return {
             
             getUrl: function(entity, action){
-                return baseUrl + `${entity}/` + action;
-            },
-            
-            getUser: function(idUser) {
-                return $http.get(this.getUrl('user', 'findOne') + `?@select=*&id=EQ(${idUser})`);
+                return `${baseUrl}${entity}/${action}`;
             },
 
-            getAgents: function(agentsIds) {
-                return $http.get(this.getUrl('agent', 'find') + `?@select=id,name,,subsite.name,singleUrl&id=IN(${agentsIds.join()})`);                
-            }
+            getAgents: function(userId) {
+                return $http.get(this.getUrl('api/agent', 'find') + `?@select=id,name,subsite.name,singleUrl&user=EQ(${userId})`);
+            },
+
+            getRelatedsAgentControl: function(userId) {
+                return $http.get(this.getUrl('user', 'relatedsAgentsControl') + `?userId=${userId}`);
+            },
+
+            getSpaces: function(userId) {
+                return $http.get(this.getUrl('api/space', 'find') + `?@select=id,name,subsite.name,singleUrl&user=EQ(${userId})`);
+            },
             
+            getRelatedsSpacesControl: function(userId) {
+                return $http.get(this.getUrl('user', 'relatedsSpacesControl') + `?userId=${userId}`);
+            },
+
+            getEvents: function(userId) {
+                return $http.get(this.getUrl('user', 'events') + `?userId=${userId}`);
+            },
+
+            getRelatedsEventsControl: function(userId) {
+                return $http.get(this.getUrl('user', 'relatedsEventsControl') + `?userId=${userId}`);
+            },
+
+            getPermissions: function(userId) {
+                return $http.get(this.getUrl('user', 'roles') + `?userId=${userId}`);
+            },
+
+            getHistory: function(userId) {
+                return $http.get(this.getUrl('user', 'history') + `?userId=${userId}`);
+            },
         };
     }]);
 
@@ -67,43 +96,117 @@
             }
         });
 
-        $scope.loadAgent = function ( ) {
+        $scope.load = function ($userId) {
+            $scope.user = { 'id':$userId, 
+                            'agents': {'spinnerShow':true},
+                            'spaces': {'spinnerShow':true},
+                            'events': {'spinnerShow':true},
+                       'permissions': {'spinnerShow':true},
+                           'history': {'spinnerShow':true}
+                         }
+            $scope.loadAgent($userId);
+            $scope.loadSpace($userId);
+            $scope.loadEvents($userId);
+            $scope.loadPermissions($userId);
+            $scope.loadHistory($userId);
+        }
+
+        $scope.loadAgent = function ($userId) {
             $scope.user.agents.spinnerShow = true;
-            userManagermentService.getAgents($scope.user.agents)
+            userManagermentService.getAgents($userId)
                 .success(function (data) {
-                    console.log("success");
                     $scope.user.agents.list = data;
-                    $scope.user.agents.spinnerShow = false;
-                    console.log($scope.user.agents);
+                    $scope.loadRelatedsAgentControl($userId);
                 })
                 .error(function (data) {
                     $scope.user.agents.spinnerShow = false;
                 });
-            
-            // for (var agent in $scope.user.agents) {
-            //     var idAgent = $scope.user.agents[agent];
-            //     agents[idAgent] = "AgentAPI";
-            // }
         }
-        
-        $scope.getUserByAgent = function($idAgent) {
-            $scope.user = {};
-            userManagermentService.getUser($idAgent).
-                success(function (data) {
-                    $scope.user = data;
-                    $scope.user.lastLoginTimestamp.date = Date.parse($scope.user.lastLoginTimestamp.date);
-                    $scope.user.createTimestamp.date = Date.parse($scope.user.createTimestamp.date);
-                    MapasCulturais.Modal.open('#user-managerment-dialog');
-                    
-                    $scope.loadAgent();
 
-                }).error(function(data) {
-                    console.log("erro!");
+        $scope.loadRelatedsAgentControl =  function($userId) {
+            $scope.user.agents.spinnerShow = true;
+            $scope.user.agents.relatedsAgents = [];
+            userManagermentService.getRelatedsAgentControl($userId)
+                .success(function (data) {
+                    $scope.user.agents.relatedsAgents = data;
+                })
+                .then(function (data) {
+                    $scope.user.agents.spinnerShow = false;
                 });
         }
 
+        $scope.loadSpace = function ($userId) {
+            $scope.user.spaces.spinnerShow = true;
+            userManagermentService.getSpaces($userId)
+                .success(function (data) {
+                    $scope.user.spaces.list = data;                    
+                    $scope.loadRelatedsSpacesControl($userId);
+                })
+                .error(function (data) {
+                    $scope.user.spaces.spinnerShow = false;
+                });
+        }
 
-        if($('#user-managerment-search-form').length){
+        $scope.loadRelatedsSpacesControl =  function($userId) {
+            $scope.user.spaces.spinnerShow = true;
+            $scope.user.spaces.relatedsSpaces = [];
+            userManagermentService.getRelatedsSpacesControl($userId)
+                .success(function (data) {
+                    $scope.user.spaces.relatedsSpaces = data;
+                })
+                .then(function (data) {
+                    $scope.user.spaces.spinnerShow = false;
+                });
+        }
+
+        $scope.loadEvents = function ($userId) {
+            $scope.user.events.spinnerShow = true;
+            userManagermentService.getEvents($userId)
+                .success(function (data) {
+                    $scope.user.events.list = data;
+                    $scope.loadRelatedsEventsControl($userId);
+                })
+                .error(function (data) {
+                    $scope.user.spaces.spinnerShow = false;
+                });
+        }
+
+        $scope.loadRelatedsEventsControl =  function($userId) {
+            $scope.user.events.spinnerShow = true;
+            $scope.user.events.relatedsSpaces = [];
+            userManagermentService.getRelatedsEventsControl($userId)
+                .success(function (data) {
+                    $scope.user.events.relatedsSpaces = data;
+                })
+                .then(function (data) {
+                    $scope.user.events.spinnerShow = false;
+                });
+        }
+
+        $scope.loadPermissions = function($userId) {
+            $scope.user.permissions.spinnerShow = true;
+            userManagermentService.getPermissions($userId)
+                .success(function (data) {
+                    $scope.user.permissions.list = data;
+                })
+                .then(function (data) {
+                    $scope.user.permissions.spinnerShow = false;
+                });
+        }
+
+        $scope.loadHistory = function($userId) {
+            $scope.user.history.spinnerShow = true;
+            userManagermentService.getHistory($userId)
+                .success(function (data) {
+                    $scope.user.history.list = data;
+                })
+                .then(function (data) {
+                    $scope.user.history.spinnerShow = false;
+                });
+        }
+        
+
+        if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();
             $('#search-filter .submenu-dropdown li').click(function() {
                 var params = {
@@ -123,6 +226,9 @@
                 $scope.timer = $timeout(function() {
                     $rootScope.$emit('searchDataChange', $scope.data);
                 }, timeoutTime);
+                var $dropdown = $(this).parents('.dropdown'),
+                $submenu = $dropdown.find('.submenu-dropdown');
+                $submenu.hide();
             }).on('keydown', function(event){
                 if(event.keyCode === 13 || event.keyCode === 32){
                     event.preventDefault();

@@ -1,10 +1,11 @@
 <?php
   use MapasCulturais\App;
   $this->layout = 'panel';
-  $first = true;
+  if(!$app->user->is('admin'))
+    $app->pass();
+  
   $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() == null);
-  
-  
+    
   $this->includeMapAssets();
   $this->includeCommonAssets();  
   $this->includeSearchAssets();  
@@ -17,93 +18,16 @@
 <div class="panel-list panel-main-content" ng-controller="UserManagermentController">
   <div class="box user-managerment">
     <header class="panel-header clearfix">
-      <h2
-        ><?php \MapasCulturais\i::_e("Gerenciador de usuários"); ?>
+      <h2>
+        <?php \MapasCulturais\i::_e("Gerenciador de usuários"); ?>
       </h2>
     </header>
 
-    <div id="user-managerment-dialog" class="js-dialog entity-modal" title="user">
-      <div class="js-dialog-content">
-        <div style="float: left;">
-          <p>
-            <span class="label">email:</span>
-            <span class="js-editable editable editable-click editable-empty" data-edit="email" data-original-title="email" data-emptytext="">
-              {{user.email}}
-            </span>
-            <br>
-            <span class="label">id:</span> 
-            <span class="js-editable editable editable-click editable-empty" data-edit="" data-original-title="id" data-emptytext="">
-              {{user.id}}
-            </span>
-            <br>
-            <span class="label">autenticação:</span> 
-            <span class="js-editable editable editable-click editable-empty" data-edit="" data-original-title="autenticação" data-emptytext="">
-              {{user.authProvider}} <!-- // como pegar pelo ID no registerAuthProvider? -->
-            </span>
-            <br>
-            <span class="label">id autenticação:</span>
-            <span class="js-editable editable editable-click editable-empty" data-edit="" data-original-title="id autenticação" data-emptytext="">
-              {{user.authUid}}
-            </span>
-            <br>
-            <span class="label">status:</span>
-            <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="status" data-emptytext="">
-              {{user.status}}
-            </span>
-            <br>
-            <span class="label">último login:</span>
-            <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="último login" data-emptytext="">
-              {{user.lastLoginTimestamp.date | date:'MM/dd/yyyy'}}
-            </span>
-            <br>
-            <span class="label">data criação:</span>
-            <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="data criação" data-emptytext="">
-              {{user.createTimestamp.date | date:'MM/dd/yyyy'}}
-            </span>
-          </p>
-        </div>
-        
-        <div style="float: left;">
-          <ul class="abas clearfix clear">
-            <li class="active"><a href="#agente"><?php \MapasCulturais\i::_e("Agentes");?></a></li>
-            <li><a href="#evento"><?php \MapasCulturais\i::_e("Eventos");?></a></li>
-            <li><a href="#espacos"><?php \MapasCulturais\i::_e("Espaços");?></a></li>
-            <li><a href="#permissoes"><?php \MapasCulturais\i::_e("Permissões");?></a></li>          
-            <li><a href="#atividade"><?php \MapasCulturais\i::_e("Atividades");?></a></li>
-          </ul>
-        </div>
-        <div class="tabs-content">
-          <div id="agente" class="aba-content">
-            <span ng-show="user.agents.spinnerShow">
-              <img src="<?php $this->asset('img/spinner.gif') ?>" />
-              <span><?php \MapasCulturais\i::_e("obtendo agentes..."); ?></span>
-            </span>
-            <div>
-            <table>
-              <thead>
-                <tr>
-                  <td>id</td>
-                  <td>Nome</td>
-                  <td>Subsite</td>                
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="agent in user.agents.list">
-                  <td><a href={{agent.singleUrl}}>{{agent.id}}</a></td>
-                  <td>{{agent.name}}</td>
-                  <td>{{agent.subsite.name}}</td>
-                </tr>
-              </tbody>
-              </table>
-            </div>
-          </div>
-          <div id="evento" class="aba-content">
-            evento
-          </div>
-        </div>
-
-      </div>
-    </div>
+    <?php
+      if(isset($user)) {
+        $this->part('user-management/info-user', ['user' => $user]);
+      } else {
+    ?>
 
     <div class="user-managerment-search clearfix">
       <form id="user-managerment-search-form" class="clearfix" ng-non-bindable>
@@ -141,14 +65,14 @@
     </div>
 
     <div id="lista" ng-animate="{show:'animate-show', hide:'animate-hide'}">
-      <?php $this->part('user-management/list-agent'); ?>
-      <?php $this->part('user-management/list-opportunity'); ?>
-      <?php $this->part('user-management/list-project'); ?>
-      
-      <?php $this->part('user-management/list-space'); ?>
-      <?php $this->part('user-management/list-event'); ?>
+      <?php $this->part('user-management/search-list/list-agent'); ?>
+      <?php $this->part('user-management/search-list/list-event'); ?>
+      <?php $this->part('user-management/search-list/list-space'); ?>
+      <?php $this->part('user-management/search-list/list-project'); ?>
+      <?php $this->part('user-management/search-list/list-opportunity'); ?>
     </div>
-    <button ng-click="getUserByAgent(8006)" class="btn-warning"> teste </butoon>
+    <?php 
+    } 
+    ?>
   </div>
-
 </div>

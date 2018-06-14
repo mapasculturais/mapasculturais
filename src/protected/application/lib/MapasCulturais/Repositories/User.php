@@ -70,4 +70,27 @@ class User extends \MapasCulturais\Repository{
 
         return $admins;
     }
+
+    public function getRoles($user_id) {
+        $user_query = $this->_em->createQuery('SELECT r.id id, r.name role, s.name subsite FROM MapasCulturais\Entities\Role r
+                JOIN r.user u WITH u.id =:user_id JOIN r.subsite s');
+
+        $user_query->setParameter('user_id', $user_id);
+        $users = $user_query->getResult();
+        return $users;
+    }
+
+    public function getHistory($user_id) {
+        $query = $this->_em->createQuery(
+                //"SELECT e
+                   "SELECT e.id, e.objectId, e.objectType, e.action, e.message, e.createTimestamp                   
+                    FROM MapasCulturais\Entities\EntityRevision e
+                    JOIN e.user u WITH u.id =:user_id
+                    ORDER BY e.id DESC");
+
+        $query->setParameter('user_id', $user_id);
+        $history = $query->getResult();
+        return $history;
+    }
+
 }

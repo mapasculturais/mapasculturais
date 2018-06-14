@@ -344,10 +344,14 @@ class Panel extends \MapasCulturais\Controller {
      * </code>
      *
      */
-    function GET_userManagement(){
+    function GET_userManagement() {
         $this->requireAuthentication();
-        $user = $this->_getUser();
-
-        $this->render('user-management', ['user' => $user]);
+        $app = App::i();
+        if(!isset($this->getData['userId'])) {
+            $this->render('user-management');
+        } else {
+            $user = $app->repo('User')->find($this->getData['userId']);
+            $this->render('user-management', ['user' => $user]);
+        }
     }
 }

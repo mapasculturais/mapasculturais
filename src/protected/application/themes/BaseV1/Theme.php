@@ -23,7 +23,7 @@ class Theme extends MapasCulturais\Theme {
     );
 
     // The default fields that are queried to display the search results both on map and list modes
-    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl, user'); //user funciona bem para agente e outras entidade, não creio que seja a melhor opção.
+    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl, user, owner.userId'); //user funciona bem para agente e outras entidade, não creio que seja a melhor opção.
 
     static function getThemeFolder() {
         return __DIR__;
