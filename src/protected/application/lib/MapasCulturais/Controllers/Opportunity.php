@@ -510,6 +510,15 @@ class Opportunity extends EntityController {
         if(isset($this->data['@omitEmpty'])){
             $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
         }
+
+        if(isset($this->data['evaluated'])){
+            if ( $this->data['evaluated'] === 'EQ(1)') {
+                $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
+            }
+            if ( $this->data['evaluated'] === 'EQ(-1)') {
+                $_result = array_filter($_result, function($e) { if($e['evaluation'] == null) return $e; });
+            }
+        }
         
         list($order, $order_by) = explode(' ', $_order);
         
