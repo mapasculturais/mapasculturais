@@ -1,5 +1,8 @@
-<div class="user-managerment-infos" ng-init="load(<?=$user->id?>)">
-  <div class="user-info">
+<?php
+  $current_user = $app->user;
+?>
+<div class="user-managerment-infos" ng-init="load(<?=$user->id?>)">  
+  <div class="user-info">    
     <div style="float:left">
       <span class="label">id:</span> 
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="id" data-emptytext="">
@@ -22,7 +25,12 @@
     <div style="float:left"> 
       <span class="label">status:</span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="status" data-emptytext="">
-        <?=$user->status?>
+        <?php 
+          if ($user->status == 1)
+            echo \MapasCulturais\i::_e("Ativo");
+          else 
+          echo \MapasCulturais\i::_e("Inativo");
+        ?>
       </span> <br />
       <span class="label">último login:</span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="último login" data-emptytext="">
@@ -218,12 +226,8 @@
       </div>
     </div>
   
-    <div id="permissoes" class="aba-content">
-      <span ng-show="user.permissions.spinnerShow">
-        <img src="<?php $this->asset('img/spinner.gif') ?>" />
-        <span><?php \MapasCulturais\i::_e("obtendo lista de permissões..."); ?></span>
-      </span>
-      <div ng-show="!user.permissions.spinnerShow">
+    <div id="permissoes" class="aba-content">      
+      <div>
         <table class="permissions-table entity-table">
           <caption>
             <?=\MapasCulturais\i::_e("Permissões");?>
@@ -236,13 +240,73 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="permission in user.permissions.list">
-              <td>{{permission.id}}</td>
-              <td>{{permission.subsite}}</td>
-              <td>{{permission.role}}</td>
+          <?php
+            foreach ($roles as $role) {
+          ?>
+            <tr>
+              <td style="white-space: nowrap;  width:1%;"><?=$role['id']?></td>
+              <td><?=$role['subsite']?></td>
+              <td style="white-space: nowrap;  width:1%;">
+                <?php if ( $current_user->is('superAdmin', $role['subsite_id']) ) { ?>
+
+                  <div id="funcao-do-agente-user-managerment" class="dropdown dropdown-select">
+                    <div class="placeholder js-selected">
+                      <span data-role="<?=$role['role']?>" data-subsite="<?=$role['subsite_id']?>"><?php echo $role['role']; ?></span>
+                    </div>
+
+                    <div class="submenu-dropdown js-options">
+                      <ul>
+                        <li data-subsite="<?=$role['subsite_id']?>">
+                          <span><?php \MapasCulturais\i::_e("Normal");?></span>
+                        </li>
+
+                        <?php if ($user->canUser('addRoleAdmin')): ?>
+                          <li data-role="admin" data-subsite="<?=$role['subsite_id']?>">
+                            <span><?php echo $app->getRoleName('admin') ?></span>
+                          </li>
+                        <?php endif; ?>
+
+                        <?php if ($user->canUser('addRoleSuperAdmin')): ?>
+                          <li data-role="superAdmin" data-subsite="<?=$role['subsite_id']?>">
+                            <span><?php echo $app->getRoleName('superAdmin') ?></span>
+                          </li>
+                        <?php endif; ?>
+
+                        <?php if ($user->canUser('addRoleSubsiteAdmin')): ?>
+                          <li data-role="subsiteAdmin" data-subsite="<?=$role['subsite_id']?>">
+                            <span><?php echo $app->getRoleName('subsiteAdmin') ?></span>
+                          </li>
+                        <?php endif; ?>
+                            
+                        <?php if ($user->canUser('addRoleSaasAdmin')): ?>
+                          <li data-role="saasAdmin" data-subsite="<?=$role['subsite_id']?>">
+                            <span><?php echo $app->getRoleName('saasAdmin') ?></span>
+                          </li>
+                        <?php endif; ?>
+                        
+                        <?php if ($user->canUser('addRoleSaasSuperAdmin')): ?>
+                          <li data-role="saasSuperAdmin" data-subsite="<?=$role['subsite_id']?>">
+                            <span><?php echo $app->getRoleName('saasSuperAdmin') ?></span>
+                          </li>
+                        <?php endif; ?>
+                      </ul>
+                    </div>
+                  </div>
+
+                <?php 
+                  } else {
+                    echo $role['role'];
+                  }
+                ?>
+              </td>
             </tr>
+          <?php
+            }
+          ?>
           </tbody>
         </table>
+      
+      <a class="btn btn-accent add" href="#addPermission"><?php \MapasCulturais\i::_e("Adicionar permissão");?></a>
       </div>
     </div>
 
