@@ -43,10 +43,6 @@
                 return $http.get(this.getUrl('user', 'relatedsEventsControl') + `?userId=${userId}`);
             },
 
-            getPermissions: function(userId) {
-                return $http.get(this.getUrl('user', 'roles') + `?userId=${userId}`);
-            },
-
             getHistory: function(userId) {
                 return $http.get(this.getUrl('user', 'history') + `?userId=${userId}`);
             },
@@ -107,7 +103,6 @@
             $scope.loadAgent($userId);
             $scope.loadSpace($userId);
             $scope.loadEvents($userId);
-            $scope.loadPermissions($userId);
             $scope.loadHistory($userId);
         }
 
@@ -183,17 +178,6 @@
                 });
         }
 
-        $scope.loadPermissions = function($userId) {
-            $scope.user.permissions.spinnerShow = true;
-            userManagermentService.getPermissions($userId)
-                .success(function (data) {
-                    $scope.user.permissions.list = data;
-                })
-                .then(function (data) {
-                    $scope.user.permissions.spinnerShow = false;
-                });
-        }
-
         $scope.loadHistory = function($userId) {
             $scope.user.history.spinnerShow = true;
             userManagermentService.getHistory($userId)
@@ -246,6 +230,30 @@
             $(this).closest('table').find('tbody').fadeToggle("fast", "linear");
             $(this).closest('table').find('thead').fadeToggle("fast", "linear");
         });
+
+        if($('#funcao-do-agente-user-managerment').length){
+            $('#funcao-do-agente-user-managerment .js-options li').click(function(){
+                var roleToRemove = $('#funcao-do-agente-user-managerment .js-selected span').data('role');
+                var roleToAdd = $(this).data('role');
+                var label = $(this).find('span').html();
+
+                var subsite_id = $('#funcao-do-agente-user-managerment .js-selected span').data('subsite');
+    
+                var change = function(){
+                    $('#funcao-do-agente-user-managerment .js-selected span').html(label);
+                    $('#funcao-do-agente-user-managerment .js-selected span').data('role', roleToAdd);
+                };
+    
+                if(roleToRemove)
+                    $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.userProfileId, {role: roleToRemove, subsiteId: subsite_id}, function(r){ if(r && !r.error) change(); });
+    
+                if(roleToAdd)
+                    $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.userProfileId, {role: roleToAdd, subsiteId: subsite_id}, function(r){ if(r && !r.error) change(); });
+                
+                console.log("aqui.")
+                MapasCulturais.Messages.success("Permissão atribuida");
+            });
+        }
 
     }]);
 })(angular);

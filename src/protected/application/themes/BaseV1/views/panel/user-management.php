@@ -14,7 +14,7 @@
   $this->bodyProperties['ng-app'] = "ng.usermanager.app";
   //$this->bodyProperties['ng-controller'] = "UserManagermentController";
 ?>
-
+<div id="editable-entity"></div>
 <div class="panel-list panel-main-content" ng-controller="UserManagermentController">
   <div class="box user-managerment">
     <header class="panel-header clearfix">
@@ -25,7 +25,8 @@
 
     <?php
       if(isset($user)) {
-        $this->part('user-management/info-user', ['user' => $user]);
+        $this->jsObject['userProfileId'] = $user->profile->id;
+        $this->part('user-management/info-user', ['user' => $user, 'roles' => $roles]);
       } else {
     ?>
 

@@ -71,16 +71,6 @@ class User extends Controller {
         $this->json($user->getHasControlEvents( ));
     }
 
-    public function GET_roles() {
-        //$this->requireAuthentication();
-        $app = App::i();
-        if(!isset($this->getData['userId'])) {
-            $app->pass();
-        }
-        $roles = $app->repo('User')->getRoles($this->getData['userId']);
-        $this->json($roles);
-    }
-
     public function GET_history() {
         //$this->requireAuthentication();
         $app = App::i();

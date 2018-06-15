@@ -351,7 +351,8 @@ class Panel extends \MapasCulturais\Controller {
             $this->render('user-management');
         } else {
             $user = $app->repo('User')->find($this->getData['userId']);
-            $this->render('user-management', ['user' => $user]);
+            $roles = $app->repo('User')->getRoles($this->getData['userId']);
+            $this->render('user-management', ['user' => $user, 'roles' => $roles]);
         }
     }
 }
