@@ -28,21 +28,36 @@ use MapasCulturais\i;
     <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
 </div>
 
-<p>
-    <strong> <?php i::_e("Colunas Habilitadas:") ?> </strong><br>
-    <label><input type="checkbox" ng-model="data.registrationTableColumns.number" /> <?php i::_e('Inscrição') ?> </label>
-    <label><input type="checkbox" ng-model="data.registrationTableColumns.category" /> <?php i::_e('Categorias') ?> </label>
-    <label><input type="checkbox" ng-model="data.registrationTableColumns.agents" /> <?php i::_e('Agentes') ?> </label>
-    <label ng-if="data.entity.registrationFileConfigurations.length > 0">
-        <input type="checkbox" ng-model="data.registrationTableColumns.attachments" /> <?php i::_e('Anexos') ?>
-    </label>
-    <label><input type="checkbox" ng-model="data.registrationTableColumns.evaluation" /> <?php i::_e('Avaliação') ?> </label>
-    <label><input type="checkbox" ng-model="data.registrationTableColumns.status" /> <?php i::_e('Status') ?> </label>
+<div class="dropdown" style="width:100%; margin:10px 0px;">
+    <div class="placeholder" ng-click="filter_dropdown = ''"><?php i::_e("Colunas Habilitadas:") ?></div>
+    <div class="submenu-dropdown" style="background: #fff;">
+        <div class="filter-search" style="padding: 5px;">
+            <input type="text" ng-model="filter_dropdown" style="width:100%;"/>
+        </div>
+        <ul class="filter-list">
 
-    <label ng-repeat="field in data.opportunitySelectFields" ng-if="field.required">
-        <input type="checkbox" ng-model="data.registrationTableColumns[field.fieldName]" />{{field.title}}
-    </label>
-</p>
+            <li ng-repeat="field in data.defaultSelectFields | filter:filter_dropdown" ng-if="field.required"
+                ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
+                ng-click="toggleSelection(data.registrationTableColumns, field.fieldName)" >
+                <span>{{field.title}}</span>
+            </li>
+            <li ng-repeat="field in data.opportunitySelectFields | filter:filter_dropdown" ng-if="field.required"
+                ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
+                ng-click="toggleSelection(data.registrationTableColumns, field.fieldName)" >
+                <span>{{field.title}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--
+<div id="selected-filters">
+     <span>
+        <a class="tag-selected tag-opportunity" >Artes Integradas</a>
+        <a class="tag-selected tag-opportunity" >Artes Visuais</a>
+     </span>
+</div>
+-->
 
 <style>
     table.fullscreen {
