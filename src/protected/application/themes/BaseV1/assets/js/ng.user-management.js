@@ -189,7 +189,6 @@
                 });
         }
         
-
         if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();
             $('#search-filter .submenu-dropdown li').click(function() {
@@ -231,29 +230,40 @@
             $(this).closest('table').find('thead').fadeToggle("fast", "linear");
         });
 
-        if($('#funcao-do-agente-user-managerment').length){
+        $('#user-managerment-addRole').click(function() {
+            var subsite_id = $('#subsiteList').val();
+            var roleToAdd = $('#permissionList').val();
+            $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.userProfileId, {role: roleToAdd, subsiteId: subsite_id}, function(r){
+                if(r && !r.error)
+                    MapasCulturais.Modal.close('#add-roles');
+                    location.reload();
+            });
+        });
+
+        if($('#funcao-do-agente-user-managerment').length) {
             $('#funcao-do-agente-user-managerment .js-options li').click(function(){
                 var roleToRemove = $('#funcao-do-agente-user-managerment .js-selected span').data('role');
                 var roleToAdd = $(this).data('role');
                 var label = $(this).find('span').html();
-
                 var subsite_id = $('#funcao-do-agente-user-managerment .js-selected span').data('subsite');
-    
-                var change = function(){
-                    $('#funcao-do-agente-user-managerment .js-selected span').html(label);
-                    $('#funcao-do-agente-user-managerment .js-selected span').data('role', roleToAdd);
+                
+                var element_selected = $(this).parent().parent().parent().find('.js-selected span');
+                var change = function() {
+                    element_selected.html(label);
+                    element_selected.data('role', roleToAdd);
+                    //$('#funcao-do-agente-user-managerment .js-selected span').html(label);
+                    //$('#funcao-do-agente-user-managerment .js-selected span').data('role', roleToAdd);
                 };
-    
                 if(roleToRemove)
                     $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.userProfileId, {role: roleToRemove, subsiteId: subsite_id}, function(r){ if(r && !r.error) change(); });
     
                 if(roleToAdd)
                     $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.userProfileId, {role: roleToAdd, subsiteId: subsite_id}, function(r){ if(r && !r.error) change(); });
-                
-                console.log("aqui.")
+
                 MapasCulturais.Messages.success("Permissão atribuida");
             });
         }
+
 
     }]);
 })(angular);

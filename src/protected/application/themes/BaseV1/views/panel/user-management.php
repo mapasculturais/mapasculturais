@@ -7,9 +7,10 @@
   $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() == null);
     
   $this->includeMapAssets();
-  $this->includeCommonAssets();  
-  $this->includeSearchAssets();  
-  $this->enqueueScript('app', 'ng.usermanager.app', 'js/ng.user-management.js', array('ng-mapasculturais'));
+  $this->includeCommonAssets();
+  $this->includeSearchAssets();
+  $this->includeMapAssets();  
+  $this->enqueueScript('app', 'ng.usermanager.app', 'js/ng.user-management.js');
   
   $this->bodyProperties['ng-app'] = "ng.usermanager.app";
   //$this->bodyProperties['ng-controller'] = "UserManagermentController";
