@@ -2,7 +2,7 @@
   $current_user = $app->user;
 ?>
 <div class="user-managerment-infos" ng-init="load(<?=$user->id?>)">  
-  <div class="user-info">    
+  <div class="user-info">
     <div style="float:left">
       <span class="label">id:</span> 
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="id" data-emptytext="">
@@ -22,7 +22,7 @@
       </span> <br />
     </div>
 
-    <div style="float:left"> 
+    <div style="float:left">
       <span class="label">status:</span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="status" data-emptytext="">
         <?php 
@@ -226,8 +226,9 @@
       </div>
     </div>
   
-    <div id="permissoes" class="aba-content">      
+    <div id="permissoes" class="aba-content">
       <div>
+
         <table class="permissions-table entity-table">
           <caption>
             <?=\MapasCulturais\i::_e("Permissões");?>
@@ -305,8 +306,53 @@
           ?>
           </tbody>
         </table>
-      
-      <a class="btn btn-accent add" href="#addPermission"><?php \MapasCulturais\i::_e("Adicionar permissão");?></a>
+
+        <a class="add js-open-dialog" data-dialog="#add-roles" data-dialog-block="true">
+          <?php \MapasCulturais\i::_e("Adicionar");?>
+        </a>
+
+        <div id="add-roles" class="js-dialog entity-modal" title="<?php \MapasCulturais\i::_e("Adicionar permissão");?>">
+          <div>
+            <label for="subsiteList"  style="width:125px; display:inline-block">
+              <?php \MapasCulturais\i::_e("Subsite:");?>
+            </label>
+            <select id="subsiteList" >
+              <?php
+                $subsites = $app->repo('User')->getSubsitesNoRoles($user->id);
+                foreach($subsites as $subsite) { ?>
+                  <option value="<?=$subsite->id?>"> <?=$subsite->id.'-'.$subsite->name?> </option>
+              <?php } ?>
+            </select>
+            <br />
+            <label for="permissionList" style="width:125px; display:inline-block">
+              <?php \MapasCulturais\i::_e("Permissão:");?>
+            </label>
+            <select id="permissionList">
+              <?php if ($user->canUser('addRoleAdmin')): ?>
+                <option value="admin"><?=$app->getRoleName('admin')?></option>
+              <?php endif; ?>
+
+              <?php if ($user->canUser('addRoleSuperAdmin')): ?>
+                <option value="superAdmin"><?=$app->getRoleName('superAdmin') ?></option>
+              <?php endif; ?>
+
+              <?php if ($user->canUser('addRoleSubsiteAdmin')): ?>
+                <option value="subsiteAdmin"><?=$app->getRoleName('subsiteAdmin') ?></option>
+              <?php endif; ?>
+
+              <?php if ($user->canUser('addRoleSaasAdmin')): ?>
+                <option value="saasAdmin"><?=$app->getRoleName('saasAdmin') ?></option>
+              <?php endif; ?>
+
+              <?php if ($user->canUser('addRoleSaasSuperAdmin')): ?>
+                <option value="saasSuperAdmin"><?=$app->getRoleName('saasSuperAdmin') ?></option>
+              <?php endif; ?>
+            </select>
+            <br>
+            <button class="btn add" id="user-managerment-addRole" ><?php \MapasCulturais\i::_e("Adicionar permissão");?></button>
+          </div>
+       </div>
+
       </div>
     </div>
 

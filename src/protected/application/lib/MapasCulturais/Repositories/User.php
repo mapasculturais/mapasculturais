@@ -80,9 +80,17 @@ class User extends \MapasCulturais\Repository{
         return $users;
     }
 
+    public function getSubsitesNoRoles($user_id) {
+        $query = $this->_em->createQuery('SELECT s FROM MapasCulturais\Entities\Subsite s WHERE s.id NOT IN (
+                SELECT b.id FROM MapasCulturais\Entities\Role r JOIN r.subsite b JOIN r.user u WITH u.id =:user_id)');
+
+        $query->setParameter('user_id', $user_id);
+        return $query->getResult();
+    }
+
     public function getHistory($user_id) {
         $query = $this->_em->createQuery(
-                   "SELECT e.id, e.objectId, e.objectType, e.action, e.message, e.createTimestamp                   
+                   "SELECT e.id, e.objectId, e.objectType, e.action, e.message, e.createTimestamp
                     FROM MapasCulturais\Entities\EntityRevision e
                     JOIN e.user u WITH u.id =:user_id
                     ORDER BY e.id DESC");
