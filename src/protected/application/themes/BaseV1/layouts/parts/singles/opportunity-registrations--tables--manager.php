@@ -38,7 +38,6 @@ use MapasCulturais\i;
             <input type="text" ng-model="filter_dropdown" style="width:100%;"/>
         </div>
         <ul class="filter-list">
-
             <li ng-repeat="field in data.defaultSelectFields | filter:filter_dropdown" ng-if="field.required"
                 ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
                 ng-click="toggleSelection(data.registrationTableColumns, field.fieldName)" >
@@ -53,14 +52,14 @@ use MapasCulturais\i;
     </div>
 </div>
 
-<!--
-<div id="selected-filters">
+
+<div id="selected-filters" style="width:100%; margin:10px 0px;">
      <span>
-        <a class="tag-selected tag-opportunity" >Artes Integradas</a>
-        <a class="tag-selected tag-opportunity" >Artes Visuais</a>
+        <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelection(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+        <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelection(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
      </span>
 </div>
--->
+
 
 <style>
     table.fullscreen {
