@@ -719,6 +719,7 @@ class App extends \Slim\Slim{
 
         // history controller
         $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
+        $this->registerController('permissionCache',   'MapasCulturais\Controllers\PermissionCache');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
@@ -767,6 +768,30 @@ class App extends \Slim\Slim{
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'section',
             'name' => \MapasCulturais\i::__('Título de Seção')
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'number',
+            'name' => \MapasCulturais\i::__('Campo numérico'),
+            'validations' => [
+                'v::numeric()' => \MapasCulturais\i::__('O valor inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'cpf',
+            'name' => \MapasCulturais\i::__('Campo de CPF'),
+            'validations' => [
+                'v::cpf()' => \MapasCulturais\i::__('O cpf inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'cnpj',
+            'name' => \MapasCulturais\i::__('Campo de CNPJ'),
+            'validations' => [
+                'v::cnpj()' => \MapasCulturais\i::__('O cnpj inserido não é válido')
+            ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
@@ -1496,7 +1521,7 @@ class App extends \Slim\Slim{
         $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
     }
 
-    public function recreatePermissionsCacheOfListedEntities(){
+    public function recreatePermissionsCacheOfListedEntities($step = 20){
         if($this->skipPermissionCacheRecreation){
             return;
         }
@@ -1513,7 +1538,6 @@ class App extends \Slim\Slim{
             }
         }
 
-		$step = 20;
 		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
 		if (is_array($queue) && count($queue) > 0) {
             $conn = $this->em->getConnection();

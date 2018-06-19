@@ -246,7 +246,7 @@
         $scope.deleteAdminRelation = function(admin){
             var admins = $scope.admins;
             var oldRelations = admins.slice();
-            var i = admins.indexOf(admin);
+            var i = admins.map(function(e){ return e.agent.id; }).indexOf(admin.id);
 
             admins.splice(i,1);
 
