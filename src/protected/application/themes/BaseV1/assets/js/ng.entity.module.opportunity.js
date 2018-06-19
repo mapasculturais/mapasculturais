@@ -391,6 +391,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.createFieldConfiguration = function(){
             $scope.data.fieldSpinner = true;
+            $scope.data.newFieldConfiguration.displayOrder = $scope.data.fields.length +1;
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
 
@@ -461,6 +462,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.createFileConfiguration = function(){
             $scope.data.uploadSpinner = true;
+            $scope.data.newFileConfiguration.displayOrder = $scope.data.fields.length +1;
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
@@ -763,6 +765,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if(field && field.fieldOptions){
                 var cfg = {};
                 cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
+
+                if(field.fieldType === "date"){
+                    cfg.datepicker = {weekStart: 1, yearRange: jQuery(this).data('yearrange') ? jQuery(this).data('yearrange') : "1900:+0"};
+                }
                 jQuery(this).editable(cfg);
             } else {
                 jQuery(this).editable();
@@ -1839,6 +1845,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         $scope.status_str = function(registration) {
             return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+        };
+
+        $scope.getEvaluationResult = function(registration) {
+
+            if($scope.evaluations[registration.id] == null){
+                return 0;
+            }
+            return $scope.evaluations[registration.id].result;
         };
 
         $scope.show = function(registration){

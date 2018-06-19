@@ -5,11 +5,11 @@
             <div class="objeto-meta">
                 <?php $this->applyTemplateHook('agent-infobox-new-fields-before','begin'); ?>
                 <?php $this->applyTemplateHook('agent-infobox-new-fields-before','end'); ?>
-                <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="data.agent.type=openEntity.agent.type.id">{{openEntity.agent.type.name}}</a></div>
+                <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="toggleSelection(data.agent.filters.type, openEntity.agent.type.id.toString())">{{openEntity.agent.type.name}}</a></div>
                 <div>
                     <span class="label"><?php \MapasCulturais\i::_e("Áreas de atuação");?>:</span>
                         <span ng-repeat="area in openEntity.agent.terms.area">
-                            <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
+                            <a ng-click="toggleSelection(data.agent.filters.area, area)">{{area}}</a>{{$last ? '' : ', '}}
                         </span>
                 </div>
                 <div>

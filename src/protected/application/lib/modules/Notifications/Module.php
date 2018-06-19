@@ -86,7 +86,7 @@ class Module extends \MapasCulturais\Module{
                         $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
                         
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $subject = i::__("Requisição para relacionar agente inscrição em projeto");
+                        $subject = i::__("Requisição para relacionar agente em uma inscrição");
                         $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
                         $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
                     }else{
@@ -103,7 +103,7 @@ class Module extends \MapasCulturais\Module{
                     $message_to_requester = sprintf(i::__("Sua requisição para alterar a propriedade do %s %s para o agente %s foi enviada."), $origin_type, $origin_link, $destination_link);
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
-                    $subject = i::__("Requisição de filiação");
+                    $subject = sprintf(i::__("Requisição para criação de um %s filho"), $origin_type);                    
                     $message = sprintf(i::__("%s quer que o %s %s seja um %s filho de %s."), $profile_link, $origin_type, $origin_link, $origin_type, $destination_link);                    
                     $message_to_requester = sprintf(i::__("Sua requisição para fazer do %s %s um %s filho de %s foi enviada."), $origin_type, $origin_link, $origin_type, $destination_link);
                     break;

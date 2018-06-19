@@ -345,7 +345,9 @@ class Registration extends EntityController {
         if($errors = $registration->getSendValidationErrors()){
             $this->errorJson($errors);
         }else{
+            $registration->cleanMaskedRegistrationFields();
             $registration->send();
+
             if($app->request->isAjax()){
                 $this->json($registration);
             }else{

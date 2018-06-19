@@ -3,7 +3,7 @@
 O SaaS é uma formato de distribuição de um serviço que é um software em grandes escalas.
 Tem objetivo de otimizar a entrega de um determinado software e facilitar a sua gestão para os solicitantes do serviço/software.
 No caso do software Mapas Culturais é disponibilizar uma forma fácil e rápida de criar novas instalações a partir de uma instalação física do software.
-As instalação física será a principal que será utilizada para gerenciar todas as sub-instalações criadas via SaaS.
+A instalação física será a principal que será utilizada para gerenciar todas as sub-instalações criadas via SaaS.
 
 ## Configuração
 Será necessário alterar o arquivo de configuração da instalação ```config.php``` incluindo as namespaces os temas padrões que serão utilizados na instalação com SaaS:
