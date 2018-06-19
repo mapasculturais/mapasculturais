@@ -539,8 +539,12 @@ MapasCulturais.Modal = {
     }
 };
 
-MapasCulturais.addEntity = function(){
-    $('#blockdiv').show();
+MapasCulturais.addEntity = function(e) {
+    var _modal = e.context.dataset.dialog;
+    if (_modal) {
+        $('#blockdiv').show();
+        MapasCulturais.Modal.open(_modal);
+    }
 };
 
 

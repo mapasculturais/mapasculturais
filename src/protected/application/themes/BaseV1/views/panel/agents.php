@@ -5,7 +5,14 @@ $this->layout = 'panel'
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2><?php \MapasCulturais\i::_e("Meus agentes");?></h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('agent', 'create'); ?>"><?php \MapasCulturais\i::_e("Adicionar novo agente");?></a>
+		<?php /* <a class="btn btn-default add" href="<?php echo $app->createUrl('agent', 'create'); ?>"><?php \MapasCulturais\i::_e("Adicionar novo agente");?></a> */ ?>
+
+        <div class="btn btn-default add">
+            <?php
+            $label = \MapasCulturais\i::__("Adicionar novo agente");
+            $this->renderModalFor('agent', false, $label);
+            ?>
+        </div>
 	</header>
     <ul class="abas clearfix clear">
 
