@@ -273,12 +273,6 @@
                           </li>
                         <?php endif; ?>
 
-                        <?php if ($user->canUser('addRoleSubsiteAdmin')): ?>
-                          <li data-role="subsiteAdmin" data-subsite="<?=$role['subsite_id']?>">
-                            <span><?php echo $app->getRoleName('subsiteAdmin') ?></span>
-                          </li>
-                        <?php endif; ?>
-                            
                         <?php if ($user->canUser('addRoleSaasAdmin')): ?>
                           <li data-role="saasAdmin" data-subsite="<?=$role['subsite_id']?>">
                             <span><?php echo $app->getRoleName('saasAdmin') ?></span>
@@ -318,7 +312,7 @@
             </label>
             <select id="subsiteList" >
               <?php
-                $subsites = $app->repo('User')->getSubsitesNoRoles($user->id);
+                $subsites = $app->repo('User')->getSubsitesCanAddRoles($current_user->id);
                 foreach($subsites as $subsite) { ?>
                   <option value="<?=$subsite->id?>"> <?=$subsite->id.'-'.$subsite->name?> </option>
               <?php } ?>
@@ -334,10 +328,6 @@
 
               <?php if ($user->canUser('addRoleSuperAdmin')): ?>
                 <option value="superAdmin"><?=$app->getRoleName('superAdmin') ?></option>
-              <?php endif; ?>
-
-              <?php if ($user->canUser('addRoleSubsiteAdmin')): ?>
-                <option value="subsiteAdmin"><?=$app->getRoleName('subsiteAdmin') ?></option>
               <?php endif; ?>
 
               <?php if ($user->canUser('addRoleSaasAdmin')): ?>
