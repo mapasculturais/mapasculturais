@@ -4,16 +4,11 @@
   if(!$app->user->is('admin'))
     $app->pass();
   
-  $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() == null);
-    
-  $this->includeMapAssets();
-  $this->includeCommonAssets();
-  $this->includeSearchAssets();
   $this->includeMapAssets();  
-  $this->enqueueScript('app', 'ng.usermanager.app', 'js/ng.user-management.js');
+  $this->includeSearchAssets(); 
   
-  $this->bodyProperties['ng-app'] = "ng.usermanager.app";
-  //$this->bodyProperties['ng-controller'] = "UserManagermentController";
+  $this->bodyProperties['ng-app'] = "usermanager.app";
+  
 ?>
 <div id="editable-entity"></div>
 <div class="panel-list panel-main-content" ng-controller="UserManagermentController">

@@ -1575,9 +1575,9 @@ class Theme extends MapasCulturais\Theme {
         if (App::i()->config['app.useGoogleGeocode'])
             $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
 
-
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'usermanager.app', 'js/ng.user-management.js', array('mapasculturais'));
         $this->localizeScript('moduleNotifications', [
             'error'    => i::__('There was an error'),
         ]);
@@ -1934,7 +1934,8 @@ class Theme extends MapasCulturais\Theme {
             ));
         }
 
-        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+        if (($this->controller->id === 'site' && $this->controller->action === 'search') || 
+            ($this->controller->id === 'panel' && $this->controller->action === 'userManagement')) {
             $skeleton_field = [
                 'fieldType' => 'checklist',
                 'isInline' => true,

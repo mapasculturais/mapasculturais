@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     
-    var module = angular.module('ng.usermanager.app', ['search.service.find']);
+    var module = angular.module('usermanager.app', ['search.service.find', 'mc.module.notifications']);
 
     module.filter('capitalize', function() {
         return function(input) {
@@ -241,22 +241,19 @@
         });
 
         if($('#funcao-do-agente-user-managerment').length) {
-            $('#funcao-do-agente-user-managerment .js-options li').click(function(){
-                var roleToRemove = $('#funcao-do-agente-user-managerment .js-selected span').data('role');
+            $('#funcao-do-agente-user-managerment .js-options li').click(function() {
+                var element_selected = $(this).parent().parent().parent().find('.js-selected span');
+                var roleToRemove = element_selected.data('role');
                 var roleToAdd = $(this).data('role');
                 var label = $(this).find('span').html();
-                var subsite_id = $('#funcao-do-agente-user-managerment .js-selected span').data('subsite');
-                
-                var element_selected = $(this).parent().parent().parent().find('.js-selected span');
+                var subsite_id = element_selected.data('subsite');
                 var change = function() {
                     element_selected.html(label);
                     element_selected.data('role', roleToAdd);
-                    //$('#funcao-do-agente-user-managerment .js-selected span').html(label);
-                    //$('#funcao-do-agente-user-managerment .js-selected span').data('role', roleToAdd);
                 };
                 if(roleToRemove)
                     $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.userProfileId, {role: roleToRemove, subsiteId: subsite_id}, function(r){ if(r && !r.error) change(); });
-    
+
                 if(roleToAdd)
                     $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.userProfileId, {role: roleToAdd, subsiteId: subsite_id}, function(r){ if(r && !r.error) change(); });
 
@@ -267,6 +264,3 @@
 
     }]);
 })(angular);
-
-        
-
