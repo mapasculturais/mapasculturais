@@ -80,12 +80,23 @@ class User extends \MapasCulturais\Repository{
         return $users;
     }
 
-    public function getSubsitesNoRoles($user_id) {
-        $query = $this->_em->createQuery('SELECT s FROM MapasCulturais\Entities\Subsite s WHERE s.id NOT IN (
+    public function getSubsitesCanAddRoles($user_id) {
+        $user = App::i()->user;
+        $query = $this->_em->createQuery('SELECT s FROM MapasCulturais\Entities\Subsite s WHERE s.id IN (
                 SELECT b.id FROM MapasCulturais\Entities\Role r JOIN r.subsite b JOIN r.user u WITH u.id =:user_id)');
 
         $query->setParameter('user_id', $user_id);
-        return $query->getResult();
+        
+        $subsitesAllowed = [];
+        $subsites = $query->getResult();
+
+        foreach ($subsites as $subsite) {
+             if($user->is("superAdmin", $subsite->id)) {
+                $subsitesAllowed[] = $subsite;
+             }
+        }
+        return $subsitesAllowed;
+        //return $subsites;
     }
 
     public function getHistory($user_id) {
