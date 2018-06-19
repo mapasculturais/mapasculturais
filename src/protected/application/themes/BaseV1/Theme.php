@@ -2694,19 +2694,6 @@ class Theme extends MapasCulturais\Theme {
         return $markup;
     }
 
-    public function renderModalFor($entity, $showIcon = true) {
-        if ("edit" != $this->controller->action):
-            $href_class = ($showIcon) ? "add" : "";
-            ?>
-            <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)" data-dialog="#add-<?php echo $entity; ?>"
-               data-dialog-callback="MapasCulturais.addEntity" data-dialog-block="true" data-form-action='insert'
-               data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
-                <?php $this->modalCreateEntity($entity); ?>
-            </a>
-            <?php
-        endif;
-    }
-
     private function entityRequiredFields()  {
         return [
             'name' => i::__('Nome'),
@@ -2833,7 +2820,23 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    public function modalCreateEntity($entity) {
+    public function renderModalFor($entity, $showIcon = true, $label = "") {
+        if ("edit" != $this->controller->action) {
+            $href_class = ($showIcon) ? "add" : "";
+            $_unidID = uniqid("-");
+            $_modal_id = "add-" . $entity . $_unidID;
+            ?>
+            <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)"  data-dialog-block="true"
+               data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity" data-form-action='insert'
+               data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
+                <?php echo $label ?>
+                <?php $this->modalCreateEntity($entity, $_modal_id); ?>
+            </a>
+            <?php
+        }
+    }
+
+    public function modalCreateEntity($entity, $_id) {
         $app = App::i();
         $_entity_class = $this->entityClassesShortcuts[$entity];
         $_new_entity = new $_entity_class();
@@ -2842,8 +2845,8 @@ class Theme extends MapasCulturais\Theme {
         $_name = $_new_entity->getEntityTypeLabel();
         $url = $app->createUrl($entity);
         ?>
-        <div id="add-<?php echo $entity ?>" class="js-dialog entity-modal" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
-            <form class="create-entity" data-entity="<?php echo $url; ?>">
+        <div id="<?php echo $_id; ?>" class="js-dialog entity-modal" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
+            <form class="create-entity" data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>">
                 <?php
                 foreach ($_required_keys as $_field_) {
                     if ($_new_entity->isPropertyRequired($_new_entity, $_field_)) {
