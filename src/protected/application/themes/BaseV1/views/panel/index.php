@@ -30,7 +30,7 @@ $button = "";
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver Meus eventos");?>"><?php echo $count->events; ?></a>
                         <span class="user-stats-value hltip">|</span>
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Eventos Cedidos");?>"><?php echo count($app->user->hasControlEvents);?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('event', 'create'); ?>" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar eventos");?>"></a>
+                        <?php $this->renderModalFor('event', false, false, "icon icon-add alignright"); ?>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@ $button = "";
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver meus agentes");?>"><?php echo $count->agents; ?></a>
                         <span class="user-stats-value hltip">|</span>
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'agents') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Agentes Cedidos");?>"><?php echo count($app->user->hasControlAgents);?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('agent', 'create'); ?>" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agentes");?>"></a>
+                        <?php $this->renderModalFor('agent', false, false, "icon icon-add alignright"); ?>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@ $button = "";
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver");?> <?php $this->dict('entities: My spaces')?>"><?php echo $count->spaces; ?></a>
                         <span class="user-stats-value hltip">|</span>
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'spaces') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Espaços Cedidos");?>"><?php echo count($app->user->hasControlSpaces);?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('space', 'create'); ?>" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar");?> <?php $this->dict('entities: spaces') ?>"></a>
+                        <?php $this->renderModalFor('space', false, false, "icon icon-add alignright"); ?>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@ $button = "";
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver meus projetos");?>"><?php echo $count->projects; ?></a>
                         <span class="user-stats-value hltip">|</span>
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'projects') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Projetos Cedidos");?>"><?php echo count($app->user->hasControlProjects);?></a>
-                        <a class="icon icon-add alignright hltip" href="<?php echo $app->createUrl('project', 'create'); ?>" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar projetos");?>"></a>
+                        <?php $this->renderModalFor('project', false, false, "icon icon-add alignright"); ?>
                     </div>
                 </div>
             </div>

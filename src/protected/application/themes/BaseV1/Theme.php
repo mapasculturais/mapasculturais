@@ -2835,9 +2835,10 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    public function renderModalFor($entity, $showIcon = true, $label = "") {
+    public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "") {
         if ("edit" != $this->controller->action) {
-            $href_class = ($showIcon) ? "add" : "";
+            $href_class = ($showIcon) ? "add " : " ";
+            $href_class .= $extra_classes;
             $_unidID = uniqid("-");
             $_modal_id = "add-" . $entity . $_unidID;
             ?>

@@ -1,11 +1,12 @@
 <?php
 $this->layout = 'panel';
 $app = \MapasCulturais\App::i();
+$label = \MapasCulturais\i::__("Adicionar ") . $this->dict('entities: new space', false);
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2><?php $this->dict('entities: My spaces') ?></h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('space', 'create'); ?>">Adicionar <?php $this->dict('entities: new space') ?></a>
+        <div class="btn btn-default add"> <?php $this->renderModalFor('space', false, $label); ?> </div>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo $meta->count; ?>)</a></li>
