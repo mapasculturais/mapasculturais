@@ -2859,8 +2859,15 @@ class Theme extends MapasCulturais\Theme {
         $_required_keys = array_keys($_new_entity->getValidations());
         $_name = $_new_entity->getEntityTypeLabel();
         $url = $app->createUrl($entity);
+
+        $_modal_title = "Criar $_name - dados básicos";
+        $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
         ?>
-        <div id="<?php echo $_id; ?>" class="js-dialog entity-modal" title="<?php echo "Criar $_name - dados básicos"; ?> "> <hr>
+
+        <div id="<?php echo $_id; ?>" class="js-dialog entity-modal" title="<?php echo $_modal_title; ?>"> <hr>
+
+            <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
+
             <form class="create-entity" data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>">
                 <?php
                 foreach ($_required_keys as $_field_) {
@@ -2874,8 +2881,12 @@ class Theme extends MapasCulturais\Theme {
 
                 <?php $this->modalFooter(); ?>
 
+                <?php $app->applyHook('mapasculturais.add_entity_modal.footer'); ?>
+
                 <input type="submit" value="Adicionar <?php echo $_name; ?>">
             </form>
+
+            <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?> </div>
         </div>
     <?php
     }
