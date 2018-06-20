@@ -2728,12 +2728,28 @@ class Theme extends MapasCulturais\Theme {
                 return false;
             }
 
+            $this->renderEntityRequiredMetadata($entity);
+            $this->renderEntityDropdown($title,$_attr,$options);
+        }
+    }
+
+    private function renderEntityRequiredMetadata($entity) {
+        if ($entity instanceof \MapasCulturais\Entity) {
+            $app = App::i();
+
             foreach ($app->getRegisteredMetadata($entity) as $meta) {
                 if (is_object($meta) && $meta instanceof MapasCulturais\Definitions\Metadata ) {
-                    if ($meta->is_required) {
+                    $show_meta = $meta->is_required;
+                    $class = "entity-required-field";
+
+                    $app->applyHook('mapasculturais.add_entity_modal', [$meta, &$show_meta, &$class]);
+
+                    if ($show_meta) {
                         $_title = $meta->label;
                         $_key = $meta->key;
                         $tipo = $meta->type;
+
+                        echo "<div class='$class'>";
 
                         if ($tipo === "select" && is_array($meta->config)) {
                             $this->renderEntityDropdown($_title, $_key, $meta->config['options']);
@@ -2751,11 +2767,10 @@ class Theme extends MapasCulturais\Theme {
                                 echo "<input type='checkbox' name='$_key' value='$option'> <br>";
                             }
                         }
+                        echo "</div>";
                     }
                 }
             }
-
-            $this->renderEntityDropdown($title,$_attr,$options);
         }
     }
 
