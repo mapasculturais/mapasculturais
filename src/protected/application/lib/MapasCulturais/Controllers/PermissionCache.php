@@ -11,7 +11,7 @@ class PermissionCache extends \MapasCulturais\Controller {
     public function GET_recreate() {
         try {
 
-            $size = 100;
+            $size = 250;
             if( isset($this->data['size']) ) {
                 $size = (int) $this->data['size'];
             }
