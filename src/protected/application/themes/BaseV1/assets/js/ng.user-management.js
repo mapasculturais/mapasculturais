@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     
-    var module = angular.module('usermanager.app', ['search.service.find', 'mc.module.notifications']);
+    var module = angular.module('usermanager.app', ['search.service.find', 'infinite-scroll', 'mc.module.notifications']);
 
     module.filter('capitalize', function() {
         return function(input) {
@@ -20,7 +20,7 @@
             },
 
             getAgents: function(userId) {
-                return $http.get(this.getUrl('api/agent', 'find') + `?@select=id,name,subsite.name,singleUrl&user=EQ(${userId})`);
+                return $http.get(this.getUrl('api/agent', 'find') + `?@select=id,name,subsite.name,singleUrl,deleteUrl,archiveUrl,publishUrl,unarchiveUrl,undeleteUrl,destroyUrl,status,__agentRelations.hasControl,__agentRelations.agent.userId&user=EQ(${userId})`);
             },
 
             getRelatedsAgentControl: function(userId) {
@@ -28,7 +28,7 @@
             },
 
             getSpaces: function(userId) {
-                return $http.get(this.getUrl('api/space', 'find') + `?@select=id,name,subsite.name,singleUrl&user=EQ(${userId})`);
+                return $http.get(this.getUrl('api/space', 'find') + `?@select=id,name,subsite.name,singleUrl,deleteUrl,archiveUrl,publishUrl,unarchiveUrl,undeleteUrl,destroyUrl,status,__agentRelations.hasControl,__agentRelations.agent.userId&user=EQ(${userId})`);
             },
             
             getRelatedsSpacesControl: function(userId) {
@@ -70,7 +70,9 @@
                     enabled: null
                 }
             }
-        }        
+        }
+
+        $scope.spinnerShow = true;
 
         $rootScope.$on('searchResultsReady', function(ev, results){
             if($scope.data.global.viewMode !== 'list')
@@ -90,7 +92,35 @@
                 $scope.projects = results.project ? results.project : [];
                 $scope.opportunities = results.opportunity ? results.opportunity : [];
             }
+            $scope.spinnerShow = false;
         });
+
+        $scope.addMore = function(entity) {
+            $scope.spinnerShow = true;
+            var entityName = "";
+            if($scope.data.global.viewMode !== 'list')
+                return;
+
+            if(entity !== $scope.data.global.filterEntity)
+                return;
+
+            if($rootScope.isPaginating)
+                return;
+
+            if(entity == 'opportunity') {
+                entityName = 'opportunities';
+            } else {
+                entityName = entity + 's'
+            }
+
+            if($scope[entityName].length === 0 || $scope[entityName].length < 10)
+                return;
+
+            $rootScope.pagination[entity]++;
+            // para não chamar 2 vezes o search quando está carregando a primeira página (o filtro mudou)
+            if($rootScope.pagination[entity] > 1)
+                $rootScope.$emit('resultPagination', $scope.data);
+        };
 
         $scope.load = function ($userId) {
             $scope.user = { 'id':$userId, 
@@ -134,7 +164,7 @@
             $scope.user.spaces.spinnerShow = true;
             userManagermentService.getSpaces($userId)
                 .success(function (data) {
-                    $scope.user.spaces.list = data;                    
+                    $scope.user.spaces.list = data;
                     $scope.loadRelatedsSpacesControl($userId);
                 })
                 .error(function (data) {
@@ -189,9 +219,38 @@
                 });
         }
         
+        $scope.hasAdmin = function($subsite) {
+            if(!$subsite)
+                return false;
+                
+            for (var i = 0; i < MapasCulturais.subsitesAdmin.length; i++) {
+                var element = MapasCulturais.subsitesAdmin[i];
+                if (element.id == $subsite.id) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        $scope.hasControl = function($list, $entity) {
+            var $useId = MapasCulturais.userId;
+            if (!$list) {
+                return false;
+            }
+
+            for (var i = 0; i < $list.length; i++) {
+                var element = $list[i];
+                if(element.hasControl == true && element[$entity].userId == $useId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();
             $('#search-filter .submenu-dropdown li').click(function() {
+                $scope.spinnerShow = true;
                 var params = {
                     entity: $(this).data('entity'),
                     keyword: $('#campo-de-busca').val()
@@ -212,14 +271,17 @@
                 var $dropdown = $(this).parents('.dropdown'),
                 $submenu = $dropdown.find('.submenu-dropdown');
                 $submenu.hide();
-            }).on('keydown', function(event){
-                if(event.keyCode === 13 || event.keyCode === 32){
+            });
+            
+            $('#campo-de-busca').on('keydown', function(event){
+                if(event.keyCode === 13 || event.keyCode === 32) {
                     event.preventDefault();
-                    $(this).click();
+                    $('#search-filter .submenu-dropdown li#agents-filter').click();
                 } else if(event.keyCode === 27) {
                     $(this).attr('css', '');
                     $(this).blur();
                     $('#campo-de-busca').focus();
+                    $('#campo-de-busca').val('')
                     return false;
                 }
             });

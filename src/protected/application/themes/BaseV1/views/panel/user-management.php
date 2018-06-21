@@ -15,6 +15,7 @@
   <div class="box user-managerment">
     <header class="panel-header clearfix">
       <h2>
+        <a class="icon icon-return" href="<?php echo $app->createUrl('panel', 'userManagement') ?>"> </a>
         <?php \MapasCulturais\i::_e("Gerenciador de usuários"); ?>
       </h2>
     </header>

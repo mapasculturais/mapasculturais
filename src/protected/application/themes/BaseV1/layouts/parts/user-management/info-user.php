@@ -1,5 +1,10 @@
 <?php
+  use MapasCulturais\Entities\Agent;
+  use MapasCulturais\Entities\Space;
   $current_user = $app->user;
+  
+  $subsitesAdmin = $app->repo('User')->getSubsitesAdminRoles($current_user->id);
+  $this->jsObject['subsitesAdmin'] = $subsitesAdmin;
 ?>
 <div class="user-managerment-infos" ng-init="load(<?=$user->id?>)">  
   <div class="user-info">
@@ -71,6 +76,7 @@
               <td>id</td>
               <td>Nome</td>
               <td>Subsite</td>
+              <td>Operações</td>
             </tr>
           </thead>
           <tbody>
@@ -87,6 +93,15 @@
               </td>
               <td>{{agent.name}}</td>
               <td style="width:1%;">{{agent.subsite.name}}</td>
+              <td>
+                <span ng-if="hasAdmin(agent.subsite) || hasControl(agent.agentRelations, 'agent')">
+                  <a class="btn btn-small btn-danger" ng-if="agent.status == <?=Agent::STATUS_ENABLED?>" href="{{agent.deleteUrl}}"><?php \MapasCulturais\i::_e("excluir");?></a>
+                  <a class="btn btn-small btn-success" ng-if="agent.status == <?=Agent::STATUS_ENABLED?>" href="{{agent.archiveUrl}}"><?php \MapasCulturais\i::_e("arquivar");?></a>
+                  <a class="btn btn-small btn-warning" ng-if="agent.status == <?=Agent::STATUS_DRAFT?>" href="{{agent.publishUrl}}"><?php \MapasCulturais\i::_e("publicar");?></a>
+                  <a class="btn btn-small btn-success" ng-if="agent.status == <?=Agent::STATUS_ARCHIVED?>" href="{{agent.unarchiveUrl}}"><?php \MapasCulturais\i::_e("desarquivar");?></a>
+                  <a class="btn btn-small btn-success" ng-if="agent.status == <?=Agent::STATUS_ARCHIVED?>" href="{{agent.undeleteUrl}}"><?php \MapasCulturais\i::_e("recuperar");?></a>
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -131,6 +146,7 @@
               <td>id</td>
               <td>Nome</td>
               <td>Subsite</td>
+              <td></td>
             </tr>
           </thead>
           <tbody>
@@ -141,6 +157,16 @@
               </td>
               <td>{{space.name}}</td>
               <td>{{space.subsite.name}}</td>
+              <td>
+                <span ng-if="hasAdmin(space.subsite) || hasControl(space.agentRelations, 'agent')">
+                  <a class="btn btn-small  btn-danger" ng-if="space.status == <?=Space::STATUS_ENABLED?>"  href="{{space.deleteUrl}}">   <?php \MapasCulturais\i::_e("excluir");?></a>
+                  <a class="btn btn-small btn-success" ng-if="space.status == <?=Space::STATUS_ENABLED?>"  href="{{space.archiveUrl}}">  <?php \MapasCulturais\i::_e("arquivar");?></a>
+                  <a class="btn btn-small btn-warning" ng-if="space.status == <?=Space::STATUS_DRAFT?>"    href="{{space.publishUrl}}">  <?php \MapasCulturais\i::_e("publicar");?></a>
+                  <a class="btn btn-small  btn-danger" ng-if="space.status == <?=Space::STATUS_DRAFT?>"    href="{{space.deleteUrl}}">   <?php \MapasCulturais\i::_e("excluir");?></a>
+                  <a class="btn btn-small btn-success" ng-if="space.status == <?=Space::STATUS_ARCHIVED?>" href="{{space.unarchiveUrl}}"><?php \MapasCulturais\i::_e("desarquivar");?></a>
+                  <a class="btn btn-small btn-success" ng-if="space.status == <?=Space::STATUS_ARCHIVED?>" href="{{space.undeleteUrl}}"> <?php \MapasCulturais\i::_e("recuperar");?></a>
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
