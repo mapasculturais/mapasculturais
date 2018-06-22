@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-06-12 16:09-0300\n"
+"POT-Creation-Date: 2018-06-21 23:59-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -325,8 +325,8 @@ msgstr "Departamento"
 #: themes/BaseV1/views/event/edit.php:183
 #: themes/BaseV1/views/event/single.php:181
 #: themes/BaseV1/views/event/single.php:183
-#: themes/mapasculturais-culturaenlinea/config.php:103
-#: themes/mapasculturais-culturaenlinea/event-types.php:63
+#: themes/culturaenlinea/config.php:103
+#: themes/culturaenlinea/event-types.php:63 themes/teatros/config.php:103
 msgid "Site"
 msgstr "Página web"
 
@@ -338,8 +338,7 @@ msgstr "Página web"
 #: conf/project-types.php:10 conf/project-types.php:17
 #: conf/project-types.php:23 conf/project-types.php:29 conf/seal-types.php:10
 #: conf/space-types.php:170 conf/space-types.php:176 conf/space-types.php:182
-#: conf/space-types.php:188
-#: themes/mapasculturais-culturaenlinea/event-types.php:65
+#: conf/space-types.php:188 themes/culturaenlinea/event-types.php:65
 msgid "A url informada é inválida."
 msgstr "La url ingresada no es válida."
 
@@ -362,20 +361,18 @@ msgid "Google+"
 msgstr "Google+"
 
 #: conf/agent-types.php:241 conf/event-types.php:88 conf/project-types.php:34
-#: conf/space-types.php:192
-#: themes/mapasculturais-culturaenlinea/agent-types.php:208
-#: themes/mapasculturais-culturaenlinea/event-types.php:87
-#: themes/mapasculturais-culturaenlinea/project-types.php:60
-#: themes/mapasculturais-culturaenlinea/space-types.php:206
+#: conf/space-types.php:192 themes/culturaenlinea/agent-types.php:208
+#: themes/culturaenlinea/event-types.php:87
+#: themes/culturaenlinea/project-types.php:60
+#: themes/culturaenlinea/space-types.php:206
 msgid "Instagram"
 msgstr "Instagram"
 
 #: conf/agent-types.php:243 conf/event-types.php:90 conf/project-types.php:36
-#: conf/space-types.php:194
-#: themes/mapasculturais-culturaenlinea/agent-types.php:210
-#: themes/mapasculturais-culturaenlinea/event-types.php:89
-#: themes/mapasculturais-culturaenlinea/project-types.php:62
-#: themes/mapasculturais-culturaenlinea/space-types.php:208
+#: conf/space-types.php:194 themes/culturaenlinea/agent-types.php:210
+#: themes/culturaenlinea/event-types.php:89
+#: themes/culturaenlinea/project-types.php:62
+#: themes/culturaenlinea/space-types.php:208
 msgid ""
 "O usuário informado é inválido. Informe no formato @usuario e tente novamente"
 msgstr ""
@@ -390,37 +387,36 @@ msgstr "Individual"
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:72
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:54
-#: themes/mapasculturais-culturaenlinea/config.php:176
+#: themes/culturaenlinea/config.php:176 themes/teatros/config.php:176
 msgid "Coletivo"
 msgstr "Colectivo"
 
-#: conf/conf-base.php:33 themes/mapasculturais-culturaenlinea/config.php:205
+#: conf/conf-base.php:33 themes/culturaenlinea/config.php:205
 msgid "Bem-vindo(a) ao Mapas Culturais"
 msgstr "Bienvenido a Cultura en Línea"
 
 #: conf/conf-base.php:37 conf/conf-base.php:45
-#: themes/mapasculturais-culturaenlinea/config.php:209
-#: themes/mapasculturais-culturaenlinea/config.php:217
+#: themes/culturaenlinea/config.php:209 themes/culturaenlinea/config.php:217
 msgid "Acesse a Mapas Culturais"
 msgstr "Acceda a Cultura en Línea"
 
-#: conf/conf-base.php:41 themes/mapasculturais-culturaenlinea/config.php:213
+#: conf/conf-base.php:41 themes/culturaenlinea/config.php:213
 msgid "Novo registro"
 msgstr "Nuevo registro"
 
-#: conf/conf-base.php:49 themes/mapasculturais-culturaenlinea/config.php:221
+#: conf/conf-base.php:49 themes/culturaenlinea/config.php:221
 msgid "Denúncia - Mapas Culturais"
 msgstr "Denuncia - Cultura en Línea"
 
-#: conf/conf-base.php:53 themes/mapasculturais-culturaenlinea/config.php:225
+#: conf/conf-base.php:53 themes/culturaenlinea/config.php:225
 msgid "Mensagem - Mapas Culturais"
 msgstr "Mensaje - Cultura en Línea"
 
-#: conf/conf-base.php:57 themes/mapasculturais-culturaenlinea/config.php:229
+#: conf/conf-base.php:57 themes/culturaenlinea/config.php:229
 msgid "Selo Certificador Expirando"
 msgstr "Sello Certificador Vencido"
 
-#: conf/conf-base.php:61 themes/mapasculturais-culturaenlinea/config.php:233
+#: conf/conf-base.php:61 themes/culturaenlinea/config.php:233
 msgid "Selo Certificador Expirado"
 msgstr "Sello Certificador Vencido"
 
@@ -430,7 +426,6 @@ msgstr "Solicitu de Recurso de Oportunidad"
 
 #: conf/conf-base.php:69
 #, fuzzy
-#| msgid "Solicitar renovação"
 msgid "Solicitação de requisição"
 msgstr "Solicitar renovación"
 
@@ -476,26 +471,27 @@ msgstr "Distrito"
 msgid "Setor Censitario"
 msgstr "Sección censal"
 
-#: conf/conf-base.php:181 themes/mapasculturais-culturaenlinea/config.php:125
+#: conf/conf-base.php:181 themes/culturaenlinea/config.php:125
+#: themes/teatros/config.php:125
 msgid "Não utilizar"
 msgstr "No utilizar"
 
 #: conf/conf-base.php:182 conf/opportunity-types.php:69
 #: themes/BaseV1/Theme.php:1795 themes/BaseV1/Theme.php:1837
-#: themes/mapasculturais-culturaenlinea/config.php:126
+#: themes/culturaenlinea/config.php:126 themes/teatros/config.php:126
 msgid "Obrigatório"
 msgstr "Obligatorio"
 
 #: conf/conf-base.php:183 conf/opportunity-types.php:68
 #: themes/BaseV1/Theme.php:1796 themes/BaseV1/Theme.php:1838
-#: themes/mapasculturais-culturaenlinea/config.php:127
+#: themes/culturaenlinea/config.php:127 themes/teatros/config.php:127
 msgid "Opcional"
 msgstr "Opcional"
 
 #: conf/conf-base.php:215 themes/BaseV1/Theme.php:1787
-#: themes/BaseV1/Theme.php:1828
-#: themes/mapasculturais-culturaenlinea/config.php:11
-#: themes/mapasculturais-culturaenlinea/config.php:159
+#: themes/BaseV1/Theme.php:1828 themes/culturaenlinea/config.php:11
+#: themes/culturaenlinea/config.php:159 themes/teatros/config.php:11
+#: themes/teatros/config.php:159
 msgid "Agente responsável pela inscrição"
 msgstr "Agente responsable por la inscripción"
 
@@ -513,11 +509,12 @@ msgstr ""
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:42
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:40
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:36
-#: themes/mapasculturais-culturaenlinea/config.php:168
+#: themes/culturaenlinea/config.php:168 themes/teatros/config.php:168
 msgid "Instituição responsável"
 msgstr "Institución responsable"
 
-#: conf/conf-base.php:226 themes/mapasculturais-culturaenlinea/config.php:170
+#: conf/conf-base.php:226 themes/culturaenlinea/config.php:170
+#: themes/teatros/config.php:170
 msgid ""
 "Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/"
 "Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos"
@@ -525,7 +522,8 @@ msgstr ""
 "Agente colectivo (persona jurídica) con los campos RUT, Fecha de "
 "Nacimiento / Fundación, Email Privado y Teléfono 1 completos"
 
-#: conf/conf-base.php:234 themes/mapasculturais-culturaenlinea/config.php:178
+#: conf/conf-base.php:234 themes/culturaenlinea/config.php:178
+#: themes/teatros/config.php:178
 msgid ""
 "Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email "
 "Privado obrigatoriamente preenchidos"
@@ -534,8 +532,8 @@ msgstr ""
 "Email privado completos"
 
 #: conf/conf-base.php:243 lib/MapasCulturais/ApiOutputs/Html.php:65
-#: themes/mapasculturais-culturaenlinea/config.php:22
-#: themes/mapasculturais-culturaenlinea/config.php:187
+#: themes/culturaenlinea/config.php:22 themes/culturaenlinea/config.php:187
+#: themes/teatros/config.php:22 themes/teatros/config.php:187
 msgid "Id"
 msgstr "Id"
 
@@ -543,26 +541,28 @@ msgstr "Id"
 #: lib/MapasCulturais/EvaluationMethod.php:85
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:23
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:63
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:69
 #: themes/BaseV1/Theme.php:1678 themes/BaseV1/layouts/parts/panel-search.php:14
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:110
 #: themes/BaseV1/views/agent/create.php:92
 #: themes/BaseV1/views/agent/edit.php:92
 #: themes/BaseV1/views/agent/single.php:92
 #: themes/BaseV1/views/generic/list.php:17
-#: themes/BaseV1/views/generic/list.php:32
-#: themes/mapasculturais-culturaenlinea/config.php:23
-#: themes/mapasculturais-culturaenlinea/config.php:188
+#: themes/BaseV1/views/generic/list.php:32 themes/culturaenlinea/config.php:23
+#: themes/culturaenlinea/config.php:188 themes/teatros/config.php:23
+#: themes/teatros/config.php:188
 msgid "Nome"
 msgstr "Nombre"
 
 #: conf/conf-base.php:245 lib/MapasCulturais/ApiOutputs/Html.php:137
-#: themes/mapasculturais-culturaenlinea/config.php:24
-#: themes/mapasculturais-culturaenlinea/config.php:189
+#: themes/culturaenlinea/config.php:24 themes/culturaenlinea/config.php:189
+#: themes/teatros/config.php:24 themes/teatros/config.php:189
 msgid "Data de Criação"
 msgstr "Fecha de creación"
 
-#: conf/conf-base.php:246 themes/mapasculturais-culturaenlinea/config.php:25
-#: themes/mapasculturais-culturaenlinea/config.php:190
+#: conf/conf-base.php:246 themes/culturaenlinea/config.php:25
+#: themes/culturaenlinea/config.php:190 themes/teatros/config.php:25
+#: themes/teatros/config.php:190
 msgid "Data de Atualização"
 msgstr "Fecha de actuaización"
 
@@ -584,27 +584,29 @@ msgstr "Fecha de actuaización"
 #: themes/BaseV1/views/seal/single.php:64
 #: themes/BaseV1/views/space/create.php:80
 #: themes/BaseV1/views/space/edit.php:80
-#: themes/BaseV1/views/space/single.php:80
-#: themes/mapasculturais-culturaenlinea/config.php:26
-#: themes/mapasculturais-culturaenlinea/config.php:191
+#: themes/BaseV1/views/space/single.php:80 themes/culturaenlinea/config.php:26
+#: themes/culturaenlinea/config.php:191 themes/teatros/config.php:26
+#: themes/teatros/config.php:191
 msgid "Descrição Curta"
 msgstr "Descripción breve"
 
-#: conf/conf-base.php:248 themes/mapasculturais-culturaenlinea/config.php:27
-#: themes/mapasculturais-culturaenlinea/config.php:192
+#: conf/conf-base.php:248 themes/culturaenlinea/config.php:27
+#: themes/culturaenlinea/config.php:192 themes/teatros/config.php:27
+#: themes/teatros/config.php:192
 msgid "Descrição Longa"
 msgstr "Descripción Larga"
 
 #: conf/conf-base.php:249 themes/BaseV1/views/seal/create.php:114
 #: themes/BaseV1/views/seal/edit.php:114
-#: themes/BaseV1/views/seal/single.php:114
-#: themes/mapasculturais-culturaenlinea/config.php:28
-#: themes/mapasculturais-culturaenlinea/config.php:193
+#: themes/BaseV1/views/seal/single.php:114 themes/culturaenlinea/config.php:28
+#: themes/culturaenlinea/config.php:193 themes/teatros/config.php:28
+#: themes/teatros/config.php:193
 msgid "Conteúdo da Impressão do Certificado"
 msgstr "Contenido de impresión del Certificado"
 
-#: conf/conf-base.php:250 themes/mapasculturais-culturaenlinea/config.php:29
-#: themes/mapasculturais-culturaenlinea/config.php:194
+#: conf/conf-base.php:250 themes/culturaenlinea/config.php:29
+#: themes/culturaenlinea/config.php:194 themes/teatros/config.php:29
+#: themes/teatros/config.php:194
 msgid "Período de Validade"
 msgstr "Plazo de Validez"
 
@@ -614,9 +616,8 @@ msgstr "Plazo de Validez"
 #: themes/BaseV1/layouts/parts/singles/project-events.php:34
 #: themes/BaseV1/layouts/parts/singles/space-public.php:2
 #: themes/BaseV1/views/opportunity/report.php:61
-#: themes/mapasculturais-culturaenlinea/config.php:30
-#: themes/mapasculturais-culturaenlinea/config.php:195
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:13
+#: themes/culturaenlinea/config.php:30 themes/culturaenlinea/config.php:195
+#: themes/teatros/config.php:30 themes/teatros/config.php:195
 msgid "Status"
 msgstr "Estado"
 
@@ -630,11 +631,12 @@ msgstr "ID usuario"
 
 #: conf/conf-base.php:448 themes/BaseV1/Theme.php:115
 #: themes/BaseV1/layouts/parts/panel-nav.php:4
-#: themes/mapasculturais-culturaenlinea/config.php:101
+#: themes/culturaenlinea/config.php:101 themes/teatros/config.php:101
 msgid "Painel"
 msgstr "Panel"
 
-#: conf/conf-base.php:449 themes/mapasculturais-culturaenlinea/config.php:102
+#: conf/conf-base.php:449 themes/culturaenlinea/config.php:102
+#: themes/teatros/config.php:102
 msgid "Autenticação"
 msgstr "Autenticación"
 
@@ -644,7 +646,7 @@ msgstr "Autenticación"
 #: themes/BaseV1/views/event/create.php:121
 #: themes/BaseV1/views/event/edit.php:121
 #: themes/BaseV1/views/event/single.php:121
-#: themes/mapasculturais-culturaenlinea/config.php:104
+#: themes/culturaenlinea/config.php:104 themes/teatros/config.php:104
 msgid "Evento"
 msgstr "Evento"
 
@@ -656,18 +658,20 @@ msgstr "Evento"
 #: themes/BaseV1/layouts/parts/search/list-event.php:2
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:65
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:66
-#: themes/mapasculturais-culturaenlinea/config.php:104
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-search.php:31
+#: themes/culturaenlinea/config.php:104
+#: themes/culturaenlinea/layouts/parts/home-search.php:31
+#: themes/teatros/config.php:104
 msgid "Eventos"
 msgstr "Eventos"
 
 #: conf/conf-base.php:452 lib/MapasCulturais/ApiOutputs/Html.php:113
 #: lib/MapasCulturais/Entities/Agent.php:279
-#: themes/mapasculturais-culturaenlinea/config.php:105
+#: themes/culturaenlinea/config.php:105 themes/teatros/config.php:105
 msgid "Agente"
 msgstr "Agente"
 
 #: conf/conf-base.php:452 lib/MapasCulturais/Entities/Agent.php:277
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:31
 #: themes/BaseV1/Theme.php:364 themes/BaseV1/Theme.php:365
 #: themes/BaseV1/Theme.php:394 themes/BaseV1/Theme.php:395
 #: themes/BaseV1/layouts/parts/busca-avancada.php:15
@@ -683,17 +687,17 @@ msgstr "Agente"
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:50
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:51
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:27
-#: themes/mapasculturais-culturaenlinea/config.php:105
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-search.php:35
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:10
+#: themes/culturaenlinea/config.php:105
+#: themes/culturaenlinea/layouts/parts/home-search.php:35
+#: themes/teatros/config.php:105
 msgid "Agentes"
 msgstr "Agentes"
 
 #: conf/conf-base.php:453 lib/MapasCulturais/ApiOutputs/Html.php:30
 #: lib/MapasCulturais/ApiOutputs/Html.php:116
 #: lib/MapasCulturais/Entities/Space.php:240 themes/BaseV1/Theme.php:215
-#: themes/BaseV1/Theme.php:216
-#: themes/mapasculturais-culturaenlinea/config.php:106
+#: themes/BaseV1/Theme.php:216 themes/culturaenlinea/config.php:106
+#: themes/teatros/config.php:106
 msgid "Espaço"
 msgstr "Espacio"
 
@@ -701,7 +705,7 @@ msgstr "Espacio"
 #: themes/BaseV1/Theme.php:221 themes/BaseV1/Theme.php:222
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:55
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:56
-#: themes/mapasculturais-culturaenlinea/config.php:106
+#: themes/culturaenlinea/config.php:106 themes/teatros/config.php:106
 msgid "Espaços"
 msgstr "Espacios"
 
@@ -717,7 +721,7 @@ msgstr "Espacios"
 #: themes/BaseV1/views/event/edit.php:405
 #: themes/BaseV1/views/event/single.php:378
 #: themes/BaseV1/views/event/single.php:405
-#: themes/mapasculturais-culturaenlinea/config.php:107
+#: themes/culturaenlinea/config.php:107 themes/teatros/config.php:107
 msgid "Projeto"
 msgstr "Proyecto"
 
@@ -729,8 +733,9 @@ msgstr "Proyecto"
 #: themes/BaseV1/layouts/parts/search/list-project.php:3
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:60
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:61
-#: themes/mapasculturais-culturaenlinea/config.php:107
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-search.php:43
+#: themes/culturaenlinea/config.php:107
+#: themes/culturaenlinea/layouts/parts/home-search.php:43
+#: themes/teatros/config.php:107
 msgid "Projetos"
 msgstr "Proyectos"
 
@@ -752,14 +757,14 @@ msgid "Oportunidades"
 msgstr "Oportunidades"
 
 #: conf/conf-base.php:456
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:25
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:10
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:25
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:33
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:57
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:11
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:8
-#: themes/mapasculturais-culturaenlinea/config.php:108
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:7
+#: themes/culturaenlinea/config.php:108 themes/teatros/config.php:108
 msgid "Inscrição"
 msgstr "Inscripción"
 
@@ -772,7 +777,7 @@ msgstr "Inscripción"
 #: themes/BaseV1/views/event/create.php:173
 #: themes/BaseV1/views/event/edit.php:173
 #: themes/BaseV1/views/event/single.php:173
-#: themes/mapasculturais-culturaenlinea/config.php:108
+#: themes/culturaenlinea/config.php:108 themes/teatros/config.php:108
 msgid "Inscrições"
 msgstr "Inscripciones"
 
@@ -784,18 +789,18 @@ msgstr "Inscripciones"
 #: themes/BaseV1/views/panel/seals.php:14
 #: themes/BaseV1/views/panel/spaces.php:15
 #: themes/BaseV1/views/panel/subsite.php:18
-#: themes/mapasculturais-culturaenlinea/config.php:109
+#: themes/culturaenlinea/config.php:109 themes/teatros/config.php:109
 msgid "Arquivo"
 msgstr "Archivo"
 
 #: conf/conf-base.php:457 conf/space-types.php:255
-#: themes/mapasculturais-culturaenlinea/config.php:109
+#: themes/culturaenlinea/config.php:109 themes/teatros/config.php:109
 msgid "Arquivos"
 msgstr "Archivos"
 
 #: conf/conf-base.php:458 lib/MapasCulturais/ApiOutputs/Html.php:125
 #: lib/MapasCulturais/Entities/Seal.php:190
-#: themes/mapasculturais-culturaenlinea/config.php:110
+#: themes/culturaenlinea/config.php:110 themes/teatros/config.php:110
 msgid "Selo"
 msgstr "Sello"
 
@@ -803,61 +808,70 @@ msgstr "Sello"
 #: conf/project-types.php:41 lib/MapasCulturais/ApiOutputs/Html.php:128
 #: lib/MapasCulturais/Entities/Seal.php:188 themes/BaseV1/Theme.php:688
 #: themes/BaseV1/Theme.php:689 themes/BaseV1/layouts/parts/home-seals.php:27
-#: themes/BaseV1/views/panel/index.php:124
-#: themes/mapasculturais-culturaenlinea/config.php:110
-#: themes/mapasculturais-culturaenlinea/project-types.php:67
+#: themes/BaseV1/views/panel/index.php:124 themes/culturaenlinea/config.php:110
+#: themes/culturaenlinea/project-types.php:67 themes/teatros/config.php:110
+#: themes/teatros/project-types.php:61
 msgid "Selos"
 msgstr "Sellos"
 
 #: conf/conf-base.php:459 themes/BaseV1/layouts/parts/history.php:12
-#: themes/mapasculturais-culturaenlinea/config.php:111
+#: themes/culturaenlinea/config.php:111 themes/teatros/config.php:111
 msgid "Histórico"
 msgstr "Histórico"
 
-#: conf/conf-base.php:459 themes/mapasculturais-culturaenlinea/config.php:111
+#: conf/conf-base.php:459 themes/culturaenlinea/config.php:111
+#: themes/teatros/config.php:111
 msgid "Revisões"
 msgstr "Revisiones"
 
 #: conf/conf-base.php:460 themes/BaseV1/views/seal/printsealrelation.php:25
-#: themes/mapasculturais-culturaenlinea/config.php:112
+#: themes/culturaenlinea/config.php:112 themes/teatros/config.php:112
 msgid "Certificado"
 msgstr "Certificado"
 
 #: conf/conf-base.php:462 themes/BaseV1/Theme.php:648
 #: themes/BaseV1/Theme.php:650 themes/BaseV1/views/panel/index.php:110
-#: themes/mapasculturais-culturaenlinea/config.php:114
+#: themes/culturaenlinea/config.php:114 themes/teatros/config.php:114
 msgid "Subsite"
 msgstr "Subsitio"
 
-#: conf/conf-base.php:463 themes/mapasculturais-culturaenlinea/config.php:115
+#: conf/conf-base.php:463 themes/culturaenlinea/config.php:115
+#: themes/teatros/config.php:115
 msgid "Listando"
 msgstr "Listando"
 
-#: conf/conf-base.php:464 themes/mapasculturais-culturaenlinea/config.php:116
+#: conf/conf-base.php:464 themes/culturaenlinea/config.php:116
+#: themes/teatros/config.php:116
 msgid "Índice"
 msgstr "Índice"
 
-#: conf/conf-base.php:465 themes/mapasculturais-culturaenlinea/config.php:117
+#: conf/conf-base.php:465 themes/culturaenlinea/config.php:117
+#: themes/teatros/config.php:117
 msgid "Apagando"
 msgstr "Eliminando"
 
-#: conf/conf-base.php:466 themes/mapasculturais-culturaenlinea/config.php:118
+#: conf/conf-base.php:466 themes/culturaenlinea/config.php:118
+#: themes/teatros/config.php:118
 msgid "Editando"
 msgstr "Editando"
 
-#: conf/conf-base.php:467 themes/mapasculturais-culturaenlinea/config.php:119
+#: conf/conf-base.php:467 themes/culturaenlinea/config.php:119
+#: themes/teatros/config.php:119
 msgid "Criando novo"
 msgstr "Creando nuevo"
 
-#: conf/conf-base.php:468 themes/mapasculturais-culturaenlinea/config.php:120
+#: conf/conf-base.php:468 themes/culturaenlinea/config.php:120
+#: themes/teatros/config.php:120
 msgid "Busca"
 msgstr "Busca"
 
-#: conf/config.dev.php:6 conf/config.docker.php:6 conf/config.template.php:6
+#: conf/config.dev.php:6 conf/config.docker.php:9 conf/config.php:9
+#: conf/config.template.php:6
 msgid "Nome do site"
 msgstr "Nombre del sitio"
 
-#: conf/config.dev.php:7 conf/config.docker.php:7 conf/config.template.php:7
+#: conf/config.dev.php:7 conf/config.docker.php:10 conf/config.php:10
+#: conf/config.template.php:7
 msgid "Descrição do site"
 msgstr "Descripción del sitio"
 
@@ -944,7 +958,7 @@ msgstr "No informado"
 #: lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--content-edit.php:12
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:186
 msgid "Sim"
-msgstr "Sí"
+msgstr "Sim"
 
 #: conf/event-types.php:49 conf/event-types.php:59 conf/space-types.php:65
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:187
@@ -1026,12 +1040,13 @@ msgstr ""
 
 #: conf/opportunity-types.php:24
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:36
-#: themes/mapasculturais-culturaenlinea/project-types.php:28
+#: themes/culturaenlinea/project-types.php:28
+#: themes/teatros/project-types.php:28
 msgid "Número máximo de inscrições no projeto"
 msgstr "Número máximo de inscripciones en el proyecto"
 
-#: conf/opportunity-types.php:26
-#: themes/mapasculturais-culturaenlinea/project-types.php:30
+#: conf/opportunity-types.php:26 themes/culturaenlinea/project-types.php:30
+#: themes/teatros/project-types.php:30
 msgid "O número máximo de inscrições no projeto deve ser um número inteiro"
 msgstr ""
 "El número máximo de inscripciones al proyecto debe ser un número entero"
@@ -1597,11 +1612,11 @@ msgstr "Sala de lectura"
 
 #: conf/space-types.php:310
 msgid "Pontos de Memória"
-msgstr ""
+msgstr "Puntos de la Memoria"
 
 #: conf/space-types.php:311
 msgid "Núcleos de Produção Digital"
-msgstr ""
+msgstr "Núcleos de Producción Digital"
 
 #: conf/space-types.php:313
 msgid "Outros Equipamentos Culturais"
@@ -1625,7 +1640,7 @@ msgstr "Espacios Religiosos"
 
 #: conf/space-types.php:328
 msgid "Templo"
-msgstr ""
+msgstr "Templo"
 
 #: conf/space-types.php:329
 msgid "Terreiro"
@@ -1641,7 +1656,7 @@ msgstr ""
 
 #: conf/space-types.php:332
 msgid "Igreja"
-msgstr ""
+msgstr "Iglesia"
 
 #: conf/space-types.php:333
 msgid "Centro Espírita"
@@ -1769,7 +1784,7 @@ msgstr ""
 
 #: conf/space-types.php:381
 msgid "Escolas livres"
-msgstr ""
+msgstr "Escuelas libres"
 
 #: conf/space-types.php:384
 msgid "Escola livre de Artes Cênicas"
@@ -1833,7 +1848,7 @@ msgstr "Bien Paisajístico"
 
 #: conf/space-types.php:409
 msgid "Bem Móvel ou Integrado"
-msgstr ""
+msgstr "Bien Móvil o integrado"
 
 #: conf/space-types.php:410
 msgid "Sitio Histórico"
@@ -3009,6 +3024,10 @@ msgstr "Denunciar"
 
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:27
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:69
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:27
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:48
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:72
+#: plugins/MultipleLocalAuth/views/auth/pass-recover.php:16
 #: themes/BaseV1/views/agent/create.php:107
 #: themes/BaseV1/views/agent/edit.php:107
 #: themes/BaseV1/views/agent/single.php:107
@@ -3035,6 +3054,7 @@ msgstr "Recibir copia de la renuncia"
 #: lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--content-edit.php:18
 #: lib/modules/OpportunityPhases/layouts/parts/widget-opportunity-phases.php:48
 #: plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:11
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:54
 #: themes/BaseV1/Theme.php:1567 themes/BaseV1/Theme.php:1663
 #: themes/BaseV1/layouts/parts/owner.php:43
 #: themes/BaseV1/layouts/parts/related-admin-agents.php:34
@@ -3557,6 +3577,8 @@ msgid "Sobre"
 msgstr "Acerca de"
 
 #: lib/modules/OpportunityPhases/layouts/parts/opportunity-phases-tabs.php:10
+#: plugins/ProjectCuradores/Plugin.php:49
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:2
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:2
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:6
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:15
@@ -3736,6 +3758,7 @@ msgstr "Fecha inicial"
 #: themes/BaseV1/layouts/parts/search/filter.php:19
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:10
 #: themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
+#: themes/culturaenlinea/layouts/parts/search/filter.php:19
 msgid "a"
 msgstr "hasta"
 
@@ -4034,9 +4057,318 @@ msgstr "Total"
 msgid "Máxima"
 msgstr "Máxima"
 
+#: plugins/MultipleLocalAuth/Provider.php:106
+msgid "Senha alterada com sucesso. Agora você pode fazer login"
+msgstr "Contraseña cambiada con éxito! Usted puede ingresar ahora"
+
+#: plugins/MultipleLocalAuth/Provider.php:119
+msgid "Minha conta"
+msgstr "Mi cuenta"
+
+#: plugins/MultipleLocalAuth/Provider.php:152
+msgid "A senha deve conter no mínimo 6 caracteres"
+msgstr "La contraseña debe contener como mínimo 6 caracteres"
+
+#: plugins/MultipleLocalAuth/Provider.php:155
+msgid "As senhas não conferem"
+msgstr "Las contraseñas no coinciden"
+
+#: plugins/MultipleLocalAuth/Provider.php:173
+msgid "Por favor, informe seu nome"
+msgstr "Por favor, introduzca su nombre"
+
+#: plugins/MultipleLocalAuth/Provider.php:178
+msgid "Este endereço de email já está em uso"
+msgstr "Esta dirección de email ya está en uso"
+
+#: plugins/MultipleLocalAuth/Provider.php:182
+msgid "Por favor, informe um email válido"
+msgstr "Por favor, introduzca un email válido"
+
+#: plugins/MultipleLocalAuth/Provider.php:207
+msgid "Email alterado com sucesso"
+msgstr "Email cambiado con éxito"
+
+#: plugins/MultipleLocalAuth/Provider.php:210
+msgid "Informe um email válido"
+msgstr "Introduzca un email válido"
+
+#: plugins/MultipleLocalAuth/Provider.php:227
+msgid "Email e senha alterados com sucecsso"
+msgstr "Email y contraseña cambiados con éxito"
+
+#: plugins/MultipleLocalAuth/Provider.php:227
+msgid "Senha alterada com sucesso"
+msgstr "Contraseña cambiada con éxito"
+
+#: plugins/MultipleLocalAuth/Provider.php:234
+msgid "Senha inválida"
+msgstr "Contraseña incorrecta"
+
+#: plugins/MultipleLocalAuth/Provider.php:269
+#: plugins/MultipleLocalAuth/Provider.php:279
+msgid "Email ou token inválidos"
+msgstr "Email o touken no válidos"
+
+#: plugins/MultipleLocalAuth/Provider.php:290
+msgid "Este token expirou"
+msgstr "Este token ha caducado"
+
+#: plugins/MultipleLocalAuth/Provider.php:305
+msgid "Senha alterada com sucesso! Você pode fazer login agora"
+msgstr "Contraseña cambiada con éxito! Usted puede ingresar ahora"
+
+#: plugins/MultipleLocalAuth/Provider.php:318
+msgid "Email não encontrado"
+msgstr "Email no encontrado"
+
+#: plugins/MultipleLocalAuth/Provider.php:337
+#, php-format
+msgid "Pedido de recuperação de senha para %s"
+msgstr "Pedio de recuperación de contraseña para %s"
+
+#: plugins/MultipleLocalAuth/Provider.php:338
+#, php-format
+msgid ""
+"Alguém solicitou a recuperação da senha utilizada em %s por este email.\n"
+"\n"
+"Para recuperá-la, acesse o link: %s. /n/n Se você não pediu a recuperação "
+"desta senha, apenas ignore esta mensagem."
+msgstr ""
+"Alguien solicitó la recuperación de la contraseña utilizada en %s por este "
+"email.\n"
+"\n"
+"Para recuperarla, acceda al enlace: %s. /n/n Si no pidió la recuperación de "
+"esta contraseña, ignore este mensaje."
+
+#: plugins/MultipleLocalAuth/Provider.php:355
+msgid ""
+"Sucesso: Um e-mail foi enviado com instruções para recuperação da senha."
+msgstr ""
+"Muy bien: un e-mail fue enviado con instrucción para recuperar su contraseña."
+
+#: plugins/MultipleLocalAuth/Provider.php:358
+msgid ""
+"Erro ao enviar email de recuperação. Entre em contato com os administradors "
+"do site."
+msgstr ""
+"Error al enviar email de recuperación. Entre en contacto con el "
+"administrador del sitio."
+
+#: plugins/MultipleLocalAuth/Provider.php:403
+#: plugins/MultipleLocalAuth/Provider.php:416
+msgid "Usuário ou senha inválidos"
+msgstr "Usuario o contraseña incorrectos"
+
+#: plugins/MultipleLocalAuth/Provider.php:617
+msgid "É preciso estar autenticado para realizar esta ação"
+msgstr "Es preciso estar autenticado para realizar esta acción"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:22
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:33
+#: themes/BaseV1/layouts/parts/header-main-nav.php:156
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:21
+msgid "Entrar"
+msgstr "Entrar"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:30
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:75
+#: plugins/MultipleLocalAuth/views/auth/pass-recover.php:19
+msgid "Senha"
+msgstr "Contraseña"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:35
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:43
+msgid "Esqueci minha senha"
+msgstr "Olvidé mi contraseña"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:47
+msgid "Para recuperar sua senha, informe o e-mail utilizado no cadastro."
+msgstr ""
+"Para recuperar su contraseña, introduzca el e-mail utilizado al registrarse."
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:52
+#: plugins/MultipleLocalAuth/views/auth/pass-recover.php:3
+msgid "Recuperar senha"
+msgstr "Recuperar contraseña"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:63
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:81
+msgid "Registrar-se"
+msgstr "Registrarse"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:78
+#: plugins/MultipleLocalAuth/views/auth/pass-recover.php:22
+msgid "Confirmar senha"
+msgstr "Confirmar contraseña"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:88
+msgid "Redes Sociais"
+msgstr "Redes Sociales"
+
+#: plugins/MultipleLocalAuth/views/auth/multiple-local.php:91
+msgid "Utilize sua conta em outros serviços para autenticar-se"
+msgstr "Utilice su cuenta en otros servicios para autenticarse"
+
+#: plugins/MultipleLocalAuth/views/auth/pass-recover.php:25
+#: themes/BaseV1/layouts/parts/singles/control--view-buttons.php:10
+msgid "Recuperar"
+msgstr "Recuperar"
+
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:15
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:18
+#: themes/BaseV1/layouts/parts/singles/history_agent.php:142
+#: themes/BaseV1/layouts/parts/singles/history_space.php:142
+msgid "Email"
+msgstr "E-mail"
+
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:22
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:35
+msgid "Guardar alteraçoes"
+msgstr "Guardar cambios"
+
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:24
+msgid "Trocar Senha"
+msgstr "Cambiar contraseña"
+
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:26
+msgid "Senha atual"
+msgstr "Contraseña actual"
+
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:29
+msgid "Nova senha"
+msgstr "Nueva contraseña"
+
+#: plugins/MultipleLocalAuth/views/panel/my-account.php:32
+msgid "Confirmar nova senha"
+msgstr "Confirmar nueva contraseña"
+
 #: plugins/OriginSite/Plugin.php:39
 msgid "Origin Site"
 msgstr "Sitio original"
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:4
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:8
+msgid ""
+"Não é possível alterar o status das inscrições através desse dispositivo. "
+"Tente a partir de um dispositivo com tela maior."
+msgstr ""
+"No es posible cambiar el estado de las inscripciones a través de este "
+"dispositivo. Intente a partir de un dispositivo con pantalla más grande."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:7
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:11
+msgid "Baixar lista de inscritos"
+msgstr "Descargar lista de inscriptos"
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:10
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:14
+msgid ""
+"Altere os status das inscrições na última coluna da tabela de acordo com o "
+"seguinte critério:"
+msgstr ""
+"Cambie el estado de las inscripciones en la última columna de la tabla de "
+"acuerdo con el siguiente criterio:"
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:12
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:16
+msgid "Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
+msgstr "No válida - no cumple con las bases (ejem. documentación incorrecta)."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:13
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:17
+msgid "Pendente - ainda não avaliada."
+msgstr "Pendiente - aún no validada."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:14
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:18
+msgid "Não selecionada - avaliada, mas não selecionada."
+msgstr "No seleccionada - evaluada, pero no seleccionada."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:15
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:19
+msgid "Suplente - avaliada, mas aguardando vaga."
+msgstr "Suplente - evaluada, pero aguardando vacante."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:16
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:20
+msgid "Selecionada - avaliada e selecionada."
+msgstr "Seleccionada - evaluada y seleccionada."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:17
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:21
+msgid ""
+"Rascunho - utilize essa opção para permitir que o responsável edite e "
+"reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais "
+"exibida nesta tabela."
+msgstr ""
+"Borrador - utilice esta opción para permitir que el responsable edite y "
+"reenvíe una inscripción. Al seleccionar esta opción, la inscripción no será "
+"más exhibida en esta tabla."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:34
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:34
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:37
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:69
+#: themes/BaseV1/views/opportunity/report.php:70
+msgid "Anexos"
+msgstr "Adjuntos"
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:44
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:44
+msgid "Nenhuma inscrição enviada."
+msgstr "Ninguna inscripción enviada."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:45
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:45
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:84
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:28
+msgid "Nenhuma inscrição encontrada com os filtros selecionados."
+msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:46
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:46
+msgid "1 inscrição enviada."
+msgstr "1 inscripción enviada."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:47
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:47
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:86
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:30
+msgid "1 inscrição encontrada com os filtros selecionados."
+msgstr "1 inscripción encontrada con los filtros seleccionados."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:48
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:48
+msgid "inscrições enviadas."
+msgstr "inscripciones enviadas."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:50
+msgid "Número máximo de vagas no projeto:"
+msgstr "Número máximo de vacantes en el proyecto:"
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:53
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:38
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:53
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:92
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:32
+msgid "inscrições encontradas com os filtros selecionados."
+msgstr "inscripciones encontradas con los filtros seleccionados."
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:61
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:48
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:61
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:105
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:41
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:32
+msgid "Responsável"
+msgstr "Responsable"
+
+#: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:71
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:71
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:115
+msgid "Baixar arquivos"
+msgstr "Descargar archivos"
 
 #: plugins/SealModelTab/Plugin.php:90
 msgid "Modelo de selo"
@@ -4969,7 +5301,6 @@ msgstr "texto \"Mis Agentes\""
 #: themes/BaseV1/Theme.php:382 themes/BaseV1/Theme.php:383
 #: themes/BaseV1/layouts/parts/nav-main-user.php:28
 #: themes/BaseV1/layouts/parts/panel-nav.php:14
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:164
 msgid "Meus Agentes"
 msgstr "Mis Agentes"
 
@@ -5039,7 +5370,6 @@ msgstr "texto \"Mis Proyectos\""
 #: themes/BaseV1/Theme.php:423 themes/BaseV1/Theme.php:424
 #: themes/BaseV1/layouts/parts/nav-main-user.php:55
 #: themes/BaseV1/layouts/parts/panel-nav.php:32
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:191
 msgid "Meus Projetos"
 msgstr "Mis Proyectos"
 
@@ -5261,7 +5591,6 @@ msgstr "texto \"Mis Eventos\""
 #: themes/BaseV1/Theme.php:586 themes/BaseV1/Theme.php:587
 #: themes/BaseV1/layouts/parts/nav-main-user.php:19
 #: themes/BaseV1/layouts/parts/panel-nav.php:8
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:155
 msgid "Meus Eventos"
 msgstr "Mis eventos"
 
@@ -6074,74 +6403,59 @@ msgid "Tamanho máximo do arquivo: "
 msgstr "Tamaño máximo de archivo: "
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:42
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:25
 msgid "Ver resultados em lista"
 msgstr "Ver resultados en lista"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:43
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:26
 msgid "Ver resultados no mapa"
 msgstr "Ver resultados en el mapa"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:46
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:29
 msgid "Exportar dados"
 msgstr "Exportar datos"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:49
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:32
 msgid "Compartilhar resultado"
 msgstr "Compartir resultado"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:51
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:34
 msgid "Compartilhar resultado: "
 msgstr "Compartir resultado: "
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:64
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:46
 msgid "obtendo resultados..."
 msgstr "obteniendo resultados..."
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:69
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:51
 msgid "agentes sem localização"
 msgstr "agentes sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:75
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:57
 msgid "sem localização"
 msgstr "sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:82
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:64
 msgid "eventos sem localização"
 msgstr "eventos sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:104
 #: themes/BaseV1/layouts/parts/busca-avancada.php:110
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:82
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:88
 msgid "Nenhum resultado encontrado"
 msgstr "Ningún resultado encontrado"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:105
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:83
 msgid "resultados sem localização"
 msgstr "resultados sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:140
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:118
 msgid "Área Delimitada"
 msgstr "Área Delimitada"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:141
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:119
 msgid "Próximo a mim"
 msgstr "Próximo a mi"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:144
-#: themes/mapasculturais-culturaenlinea/layouts/parts/busca-avancada.php:122
 msgid "Remover todos filtros"
 msgstr "Remover todos los filtros"
 
@@ -6243,47 +6557,40 @@ msgid "Adicionar Imagem na Galeria"
 msgstr "Agregar una imagen a la Galería"
 
 #: themes/BaseV1/layouts/parts/header-about-nav.php:4
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-about-nav.php:3
+#: themes/culturaenlinea/layouts/parts/header-about-nav.php:3
 msgid "Sobre os Mapas Culturais"
 msgstr "Acerca de Cultura en Línea"
 
 #: themes/BaseV1/layouts/parts/header-about-nav.php:5
 #: themes/Subsite/layouts/parts/header-about-nav.php:22
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-about-nav.php:4
+#: themes/culturaenlinea/layouts/parts/header-about-nav.php:4
 msgid "Como usar"
 msgstr "Cómo usar"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:14
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:14
 msgid "Logado como Admin"
 msgstr "Logueado como Admin"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:15
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:15
 msgid "Logado como Admin."
 msgstr "Logueado como Admin."
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:106
 #: themes/BaseV1/layouts/parts/header-main-nav.php:111
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:94
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:99
 msgid "Notificações"
 msgstr "Notificaciones"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:112
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:100
 msgid "Marcar todas como lidas"
 msgstr "Marcar todas como leídas"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:120
 #: themes/BaseV1/views/panel/index.php:155
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:108
 msgid "aceitar"
 msgstr "aceptar"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:124
 #: themes/BaseV1/views/panel/index.php:158
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:112
 msgid "cancelar"
 msgstr "cancelar"
 
@@ -6291,27 +6598,17 @@ msgstr "cancelar"
 #: themes/BaseV1/layouts/parts/header-main-nav.php:133
 #: themes/BaseV1/views/panel/index.php:159
 #: themes/BaseV1/views/panel/index.php:170
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:113
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:121
 msgid "ok"
 msgstr "ok"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:128
 #: themes/BaseV1/views/panel/index.php:161
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:116
 msgid "rejeitar"
 msgstr "rechazar"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:140
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:128
 msgid "Ver todas atividades"
 msgstr "Ver todas las actividades"
-
-#: themes/BaseV1/layouts/parts/header-main-nav.php:156
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:21
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:230
-msgid "Entrar"
-msgstr "Entrar"
 
 #: themes/BaseV1/layouts/parts/header.php:27
 msgid "Corrija os erros abaixo e tente novamente."
@@ -6367,7 +6664,7 @@ msgstr "Ver todo"
 #: themes/BaseV1/layouts/parts/home-nav.php:46
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:42
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:43
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-nav.php:40
+#: themes/culturaenlinea/layouts/parts/home-nav.php:40
 msgid "Desenvolvedores"
 msgstr "Desarrolladores"
 
@@ -6390,7 +6687,7 @@ msgstr "Agregar evento"
 
 #: themes/BaseV1/layouts/parts/home-nav.php:6
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--intro.php:4
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-nav.php:7
+#: themes/culturaenlinea/layouts/parts/home-nav.php:7
 msgid "Introdução"
 msgstr "Introducción"
 
@@ -6444,18 +6741,19 @@ msgid "Adicionar selo"
 msgstr "Agregar sello"
 
 #: themes/BaseV1/layouts/parts/home-search.php:6
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-search.php:25
+#: themes/culturaenlinea/layouts/parts/home-search.php:25
 msgid "Digite uma palavra-chave"
 msgstr "Escriba una palabra clave"
 
 #: themes/BaseV1/layouts/parts/home-search.php:8
 #: themes/BaseV1/layouts/parts/search/filter.php:14
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-search.php:27
+#: themes/culturaenlinea/layouts/parts/home-search.php:27
+#: themes/culturaenlinea/layouts/parts/search/filter.php:14
 msgid "Buscar"
 msgstr "Buscar"
 
 #: themes/BaseV1/layouts/parts/home-search.php:37
-#: themes/mapasculturais-culturaenlinea/layouts/parts/home-search.php:52
+#: themes/culturaenlinea/layouts/parts/home-search.php:52
 msgid "Saiba mais"
 msgstr "Conozca más"
 
@@ -6569,17 +6867,14 @@ msgstr "Para agregar enlaces, primero debe guardar."
 #: themes/BaseV1/layouts/parts/nav-main-user.php:62
 #: themes/BaseV1/layouts/parts/nav-main-user.php:76
 #: themes/BaseV1/layouts/parts/panel-nav.php:42
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:198
 msgid "Minhas Inscrições"
 msgstr "Mis Inscripciones"
 
 #: themes/BaseV1/layouts/parts/nav-main-user.php:94
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:216
 msgid "Trocar Usuário"
 msgstr "Cambiar usuario"
 
 #: themes/BaseV1/layouts/parts/nav-main-user.php:97
-#: themes/mapasculturais-culturaenlinea/layouts/parts/header-main-nav.php:219
 msgid "Sair"
 msgstr "Salir"
 
@@ -7000,6 +7295,7 @@ msgid "Filtros Avançados"
 msgstr "Filtros Avanzados"
 
 #: themes/BaseV1/layouts/parts/search/filter.php:9
+#: themes/culturaenlinea/layouts/parts/search/filter.php:9
 msgid "Palavra-chave"
 msgstr "Palabra clave"
 
@@ -7085,10 +7381,6 @@ msgstr "Los íconos de lápiz indican contenidos editables."
 #: themes/BaseV1/layouts/parts/singles/control--roles.php:21
 msgid "Normal"
 msgstr "Normal"
-
-#: themes/BaseV1/layouts/parts/singles/control--view-buttons.php:10
-msgid "Recuperar"
-msgstr "Recuperar"
 
 #: themes/BaseV1/layouts/parts/singles/control--view-buttons.php:13
 msgid "Excluir Definitivamente"
@@ -7272,11 +7564,6 @@ msgstr "Ingrese un e-mail que será exhibido públicamente"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:142
 #: themes/BaseV1/layouts/parts/singles/history_space.php:142
-msgid "Email"
-msgstr "E-mail"
-
-#: themes/BaseV1/layouts/parts/singles/history_agent.php:142
-#: themes/BaseV1/layouts/parts/singles/history_space.php:142
 #: themes/BaseV1/layouts/parts/singles/space-servico.php:38
 #: themes/BaseV1/views/agent/create.php:107
 #: themes/BaseV1/views/agent/edit.php:107
@@ -7455,7 +7742,7 @@ msgstr "ocultar mapa"
 
 #: themes/BaseV1/layouts/parts/singles/list-relations.php:8
 msgid "Grupos que participa"
-msgstr ""
+msgstr "Grupos en los que participa"
 
 #: themes/BaseV1/layouts/parts/singles/list-relations.php:13
 msgid "em"
@@ -7540,22 +7827,6 @@ msgstr "Evaluaciones."
 msgid "Número máximo de vagas na oportunidade:"
 msgstr "Número máximo de vacantes en la oportunidad:"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:38
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:53
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:92
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:32
-msgid "inscrições encontradas com os filtros selecionados."
-msgstr "inscripciones encontradas con los filtros seleccionados."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:48
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:61
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:105
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:41
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:32
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:25
-msgid "Responsável"
-msgstr "Responsable"
-
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:3
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:5
 msgid "Enviar Avaliações"
@@ -7576,42 +7847,6 @@ msgid ""
 msgstr ""
 "Después de evaluar todas las inscripciones haga clic en el botón <strong> "
 "Enviar inscripciones </strong>:"
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:34
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:37
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:69
-#: themes/BaseV1/views/opportunity/report.php:70
-msgid "Anexos"
-msgstr "Adjuntos"
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:44
-msgid "Nenhuma inscrição enviada."
-msgstr "Ninguna inscripción enviada."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:45
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:84
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:28
-msgid "Nenhuma inscrição encontrada com os filtros selecionados."
-msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:46
-msgid "1 inscrição enviada."
-msgstr "1 inscripción enviada."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:47
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:86
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:30
-msgid "1 inscrição encontrada com os filtros selecionados."
-msgstr "1 inscripción encontrada con los filtros seleccionados."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:48
-msgid "inscrições enviadas."
-msgstr "inscripciones enviadas."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:71
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:115
-msgid "Baixar arquivos"
-msgstr "Descargar archivos"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:51
 msgid "Comissão de Avaliação"
@@ -8135,55 +8370,9 @@ msgstr "(Sellos atribuidos a instituciones)"
 msgid "(Selos atribuídos a agentes coletivos)"
 msgstr "(Sellos atribuidos a agentes colectivos)"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:8
-msgid ""
-"Não é possível alterar o status das inscrições através desse dispositivo. "
-"Tente a partir de um dispositivo com tela maior."
-msgstr ""
-"No es posible cambiar el estado de las inscripciones a través de este "
-"dispositivo. Intente a partir de un dispositivo con pantalla más grande."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:11
-msgid "Baixar lista de inscritos"
-msgstr "Descargar lista de inscriptos"
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:14
-msgid ""
-"Altere os status das inscrições na última coluna da tabela de acordo com o "
-"seguinte critério:"
-msgstr ""
-"Cambie el estado de las inscripciones en la última columna de la tabla de "
-"acuerdo con el siguiente criterio:"
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:16
-msgid "Inválida - em desacordo com o regulamento (ex. documentação incorreta)."
-msgstr "No válida - no cumple con las bases (ejem. documentación incorrecta)."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:17
-msgid "Pendente - ainda não avaliada."
-msgstr "Pendiente - aún no validada."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:18
-msgid "Não selecionada - avaliada, mas não selecionada."
-msgstr "No seleccionada - evaluada, pero no seleccionada."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:19
-msgid "Suplente - avaliada, mas aguardando vaga."
-msgstr "Suplente - evaluada, pero aguardando vacante."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:20
-msgid "Selecionada - avaliada e selecionada."
-msgstr "Seleccionada - evaluada y seleccionada."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:21
-msgid ""
-"Rascunho - utilize essa opção para permitir que o responsável edite e "
-"reenvie uma inscrição. Ao selecionar esta opção, a inscrição não será mais "
-"exibida nesta tabela."
-msgstr ""
-"Borrador - utilice esta opción para permitir que el responsable edite y "
-"reenvíe una inscripción. Al seleccionar esta opción, la inscripción no será "
-"más exhibida en esta tabla."
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:27
+msgid "Filtrar inscrição:"
+msgstr "Filtrar inscripciones:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:28
 msgid "Busque pelo nome do responsável, status ou número de inscrição"
@@ -8218,7 +8407,7 @@ msgstr "Inscripciones."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:5
 msgid "Veja abaixo as inscrições suplentes/selecionadas"
-msgstr ""
+msgstr "Vea abajo las inscripciones suplentes / seleccionadas"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:14
 msgid "categoria"
@@ -8226,22 +8415,18 @@ msgstr "categoría"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:4
 #: themes/BaseV1/views/panel/registrations.php:10
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:3
 msgid "Minhas inscrições"
 msgstr "Mis Inscripciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:52
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:43
 msgid "Enviada em"
 msgstr "Enviada en"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:54
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:45
 msgid "Não enviada."
 msgstr "No enviada."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:55
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/project-registrations--user-registrations.php:46
 msgid "Editar e enviar"
 msgstr "Editar e enviar"
 
@@ -8421,7 +8606,6 @@ msgstr "Tamaño máximo de archivo:"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:1
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:6
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-single--header.php:6
 msgid "Formulário de Inscrição"
 msgstr "Formulario de inscripción"
 
@@ -8431,7 +8615,6 @@ msgstr "Items con asterisco son obligatorios."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:4
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:9
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-single--header.php:9
 msgid "Número da Inscrição"
 msgstr "Número de Inscripción"
 
@@ -8464,7 +8647,6 @@ msgid "Selos atribuídos a agentes coletivos"
 msgstr "Sellos atribuidos a agentes colectivos"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:3
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-edit--send-button.php:3
 msgid ""
 "Certifique-se que você preencheu as informações corretamente antes de enviar "
 "sua inscrição."
@@ -8473,12 +8655,10 @@ msgstr ""
 "inscripción."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:3
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-edit--send-button.php:3
 msgid "Depois de enviada, não será mais possível editá-la."
 msgstr "Después de enviada, no será posible editarla."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:4
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-edit--send-button.php:4
 msgid "Enviar inscrição"
 msgstr "Enviar inscripción"
 
@@ -8487,12 +8667,10 @@ msgid "%d de {%B} de %G às %H:%M"
 msgstr "%d de {%B} de %G a las %H:%M"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:14
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-edit--send-button.php:14
 msgid "As inscrições encerraram-se em"
 msgstr "Las inscripciones se cerrarán en"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:20
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-edit--send-button.php:20
 msgid ""
 "Somente super admins podem usar este botão e somente deve ser usado para "
 "enviar inscrições que não foram enviadas por problema do sistema."
@@ -8502,7 +8680,6 @@ msgstr ""
 "sistema."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:20
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-edit--send-button.php:20
 msgid "enviar esta inscrição"
 msgstr "enviar esta inscripción"
 
@@ -8523,7 +8700,6 @@ msgid "Arquivo não enviado."
 msgstr "Archivo no enviado."
 
 #: themes/BaseV1/layouts/parts/singles/registration-single--header.php:2
-#: themes/mapasculturais-culturaenlinea/layouts/parts/singles/registration-single--header.php:2
 msgid "Inscrição enviada no dia"
 msgstr "Inscripción enviada el día"
 
@@ -8738,15 +8914,15 @@ msgstr "Filtro Avanzado"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:164
 msgid "Preencha todos os campos para adicionar um filtro"
-msgstr ""
+msgstr "Complete todos los campos para agregar un filtro"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:192
 msgid "Mover para cima"
-msgstr ""
+msgstr "Mover hacia arriba"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:197
 msgid "Mover para baixo"
-msgstr ""
+msgstr "Mover hacia abajo"
 
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:202
 msgid "Remover filtro"
@@ -9503,7 +9679,6 @@ msgstr "No hay %s"
 
 #: themes/BaseV1/views/panel/opportunities.php:15
 #, fuzzy
-#| msgid "Avaliador"
 msgid "Avaliar"
 msgstr "Evaluador"
 
@@ -9526,6 +9701,14 @@ msgstr "Usted no posee ninguna oportunidad archivada."
 #: themes/BaseV1/views/panel/opportunities.php:60
 msgid "Você não possui nehuma oportunidade liberada."
 msgstr "Usted no posee ninguna oportunidad liberada."
+
+#: themes/BaseV1/views/panel/opportunities.php:70
+msgid "Você não possui nenhuma"
+msgstr "Ustede no posee ninguna "
+
+#: themes/BaseV1/views/panel/opportunities.php:70
+msgid "liberada para avaliação."
+msgstr "liberada para la evaluación."
 
 #: themes/BaseV1/views/panel/projects.php:7
 msgid "Adicionar novo projeto"
@@ -9794,11 +9977,11 @@ msgstr "Para configurar los administradores primero debe guardar el subsitio."
 msgid "Sobre o Site"
 msgstr "Acerca del Sitio"
 
-#: themes/mapasculturais-culturaenlinea/config.php:6
+#: themes/culturaenlinea/config.php:6 themes/teatros/config.php:6
 msgid "Departamento"
 msgstr "Departamento"
 
-#: themes/mapasculturais-culturaenlinea/config.php:161
+#: themes/culturaenlinea/config.php:161 themes/teatros/config.php:161
 msgid ""
 "Agente individual (pessoa física) com os campos CPF, Data de Nascimento/"
 "Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos"
@@ -9810,132 +9993,6 @@ msgstr ""
 #~| msgid "Comissão de Avaliação"
 #~ msgid "Requisição de filiação"
 #~ msgstr "Comité evaluador"
-
-#~ msgid "Senha alterada com sucesso. Agora você pode fazer login"
-#~ msgstr "Contraseña cambiada con éxito! Usted puede ingresar ahora"
-
-#~ msgid "Minha conta"
-#~ msgstr "Mi cuenta"
-
-#~ msgid "A senha deve conter no mínimo 6 caracteres"
-#~ msgstr "La contraseña debe contener como mínimo 6 caracteres"
-
-#~ msgid "As senhas não conferem"
-#~ msgstr "Las contraseñas no coinciden"
-
-#~ msgid "Por favor, informe seu nome"
-#~ msgstr "Por favor, introduzca su nombre"
-
-#~ msgid "Este endereço de email já está em uso"
-#~ msgstr "Esta dirección de email ya está en uso"
-
-#~ msgid "Por favor, informe um email válido"
-#~ msgstr "Por favor, introduzca un email válido"
-
-#~ msgid "Email alterado com sucesso"
-#~ msgstr "Email cambiado con éxito"
-
-#~ msgid "Informe um email válido"
-#~ msgstr "Introduzca un email válido"
-
-#~ msgid "Email e senha alterados com sucecsso"
-#~ msgstr "Email y contraseña cambiados con éxito"
-
-#~ msgid "Senha alterada com sucesso"
-#~ msgstr "Contraseña cambiada con éxito"
-
-#~ msgid "Senha inválida"
-#~ msgstr "Contraseña incorrecta"
-
-#~ msgid "Email ou token inválidos"
-#~ msgstr "Email o touken no válidos"
-
-#~ msgid "Este token expirou"
-#~ msgstr "Este token ha caducado"
-
-#~ msgid "Senha alterada com sucesso! Você pode fazer login agora"
-#~ msgstr "Contraseña cambiada con éxito! Usted puede ingresar ahora"
-
-#~ msgid "Email não encontrado"
-#~ msgstr "Email no encontrado"
-
-#~ msgid "Pedido de recuperação de senha para %s"
-#~ msgstr "Pedio de recuperación de contraseña para %s"
-
-#~ msgid ""
-#~ "Alguém solicitou a recuperação da senha utilizada em %s por este email.\n"
-#~ "\n"
-#~ "Para recuperá-la, acesse o link: %s. /n/n Se você não pediu a recuperação "
-#~ "desta senha, apenas ignore esta mensagem."
-#~ msgstr ""
-#~ "Alguien solicitó la recuperación de la contraseña utilizada en %s por "
-#~ "este email.\n"
-#~ "\n"
-#~ "Para recuperarla, acceda al enlace: %s. /n/n Si no pidió la recuperación "
-#~ "de esta contraseña, ignore este mensaje."
-
-#~ msgid ""
-#~ "Sucesso: Um e-mail foi enviado com instruções para recuperação da senha."
-#~ msgstr ""
-#~ "Muy bien: un e-mail fue enviado con instrucción para recuperar su "
-#~ "contraseña."
-
-#~ msgid ""
-#~ "Erro ao enviar email de recuperação. Entre em contato com os "
-#~ "administradors do site."
-#~ msgstr ""
-#~ "Error al enviar email de recuperación. Entre en contacto con el "
-#~ "administrador del sitio."
-
-#~ msgid "Usuário ou senha inválidos"
-#~ msgstr "Usuario o contraseña incorrectos"
-
-#~ msgid "É preciso estar autenticado para realizar esta ação"
-#~ msgstr "Es preciso estar autenticado para realizar esta acción"
-
-#~ msgid "Senha"
-#~ msgstr "Contraseña"
-
-#~ msgid "Esqueci minha senha"
-#~ msgstr "Olvidé mi contraseña"
-
-#~ msgid "Para recuperar sua senha, informe o e-mail utilizado no cadastro."
-#~ msgstr ""
-#~ "Para recuperar su contraseña, introduzca el e-mail utilizado al "
-#~ "registrarse."
-
-#~ msgid "Recuperar senha"
-#~ msgstr "Recuperar contraseña"
-
-#~ msgid "Registrar-se"
-#~ msgstr "Registrarse"
-
-#~ msgid "Confirmar senha"
-#~ msgstr "Confirmar contraseña"
-
-#~ msgid "Redes Sociais"
-#~ msgstr "Redes Sociales"
-
-#~ msgid "Utilize sua conta em outros serviços para autenticar-se"
-#~ msgstr "Utilice su cuenta en otros servicios para autenticarse"
-
-#~ msgid "Guardar alteraçoes"
-#~ msgstr "Guardar cambios"
-
-#~ msgid "Trocar Senha"
-#~ msgstr "Cambiar contraseña"
-
-#~ msgid "Senha atual"
-#~ msgstr "Contraseña actual"
-
-#~ msgid "Nova senha"
-#~ msgstr "Nueva contraseña"
-
-#~ msgid "Confirmar nova senha"
-#~ msgstr "Confirmar nueva contraseña"
-
-#~ msgid "Número máximo de vagas no projeto:"
-#~ msgstr "Número máximo de vacantes en el proyecto:"
 
 #~ msgid "A avaiação foi salva"
 #~ msgstr "La evaluación fue aprobada."
