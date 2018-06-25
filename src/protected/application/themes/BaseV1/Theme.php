@@ -2848,14 +2848,26 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    private function getModalEntityName($entity_id, $entity) {
+        $app = App::i();
+        $_key = "entities: " . ucwords($entity_id);
+        $_name = $app->view->dict($_key, false);
+
+        if (empty($_name)) {
+            $_name = $entity->getEntityTypeLabel();
+        }
+
+        return $_name;
+    }
+
     public function modalCreateEntity($entity, $_id) {
         $app = App::i();
         $_entity_class = $this->entityClassesShortcuts[$entity];
         $_new_entity = new $_entity_class();
 
         $_required_keys = array_keys($_new_entity->getValidations());
-        $_name = $_new_entity->getEntityTypeLabel();
         $url = $app->createUrl($entity);
+        $_name = $this->getModalEntityName($entity, $_new_entity);
 
         $_modal_title = "Criar $_name - dados básicos";
         $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
