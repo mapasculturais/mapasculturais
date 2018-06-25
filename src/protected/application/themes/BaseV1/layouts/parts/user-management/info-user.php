@@ -1,6 +1,7 @@
 <?php
   use MapasCulturais\Entities\Agent;
   use MapasCulturais\Entities\Space;
+  use MapasCulturais\Entities\Event;
   $current_user = $app->user;
   
   $subsitesAdmin = $app->repo('User')->getSubsitesAdminRoles($current_user->id);
@@ -146,7 +147,7 @@
               <td>id</td>
               <td>Nome</td>
               <td>Subsite</td>
-              <td></td>
+              <td>Operações</td>
             </tr>
           </thead>
           <tbody>
@@ -210,6 +211,7 @@
             <tr>
               <td>id</td>
               <td>Nome</td>
+              <td>Operações</td>
               <!-- <td>Subsite</td> -->
             </tr>
           </thead>
@@ -220,6 +222,12 @@
                 <a href={{event.singleUrl}}>{{event.id}}</a>
               </td>
               <td>{{event.name}}</td>
+              <td>
+                <span ng-if="hasAdmin(event.subsite)">
+                  <a class="btn btn-small btn-danger"  ng-if="space.status == <?=Event::STATUS_ENABLED?>" href="{{event.deleteUrl}}"><?php \MapasCulturais\i::_e("excluir");?></a>
+                  <a class="btn btn-small btn-danger"  ng-if="space.status == <?=Event::STATUS_DRAFT?>"   href="{{event.deleteUrl}}"><?php \MapasCulturais\i::_e("excluir");?></a>
+                </span>
+              </td>
               <!-- <td>{{event.subsite.name}}</td> -->
             </tr>
           </tbody>
