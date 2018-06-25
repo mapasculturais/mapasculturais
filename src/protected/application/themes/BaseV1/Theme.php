@@ -1167,10 +1167,6 @@ class Theme extends MapasCulturais\Theme {
 
             $app->view->jsObject['readable_names'] = $entities;
 
-            $app->log->debug("AQUI\n");
-            $app->log->debug(json_encode($entities));
-
-
             $conf_data = function($metadatas, $terms){
                 $new_data = [];
 
