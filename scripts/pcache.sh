@@ -15,7 +15,7 @@ fi
 if [[ $3 ]]; then
     SERVER_PORT=$3;
 else
-    SERVER_PORT="8000";
+    SERVER_PORT="80";
 fi
 
 
