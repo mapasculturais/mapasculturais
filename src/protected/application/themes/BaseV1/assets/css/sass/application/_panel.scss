@@ -227,8 +227,8 @@
                     -moz-border-radius: 6px;
                     -webkit-border-radius: 6px;
                     border-radius: 6px;
-                    -webkit-box-shadow: 0 1px 1px #ccc; 
-                    -moz-box-shadow: 0 1px 1px #ccc; 
+                    -webkit-box-shadow: 0 1px 1px #ccc;
+                    -moz-box-shadow: 0 1px 1px #ccc;
                     box-shadow: 0 1px 1px #ccc;
                     width: 100%;
 
@@ -239,7 +239,7 @@
                     thead tr td {
                         text-align: center;
                         font-weight: bolder;
-                        background: #e5e5e5;                        
+                        background: #e5e5e5;
                     }
 
                     tr:hover {
@@ -255,7 +255,12 @@
                         border-left: 1px solid #ccc;
                         border-top: 1px solid #ccc;
                         padding: 10px;
-                        text-align: left;    
+                        text-align: left;
+                    }
+
+                    td.fit {
+                        white-space: nowrap;
+                        width:1%;
                     }
 
                     th {

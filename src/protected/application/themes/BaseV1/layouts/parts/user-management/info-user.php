@@ -82,7 +82,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="agent in user.agents.list">
-              <td style="white-space: nowrap;  width:1%;">
+              <td class="fit">
                 <span ng-if="<?=$user->profile->id?> == agent.id">
                   <a class="icon icon-agent active" title="<?php \MapasCulturais\i::esc_attr_e("Este é o agente padrão.");?>"></a>
                   <a href={{agent.singleUrl}}>{{agent.id}}</a>
@@ -93,8 +93,8 @@
                 </span>
               </td>
               <td>{{agent.name}}</td>
-              <td style="width:1%;">{{agent.subsite.name}}</td>
-              <td>
+              <td class="fit">{{agent.subsite.name}}</td>
+              <td class="fit">
                 <span ng-if="hasAdmin(agent.subsite) || hasControl(agent.agentRelations, 'agent')">
                   <a class="btn btn-small btn-danger" ng-if="agent.status == <?=Agent::STATUS_ENABLED?>" href="{{agent.deleteUrl}}"><?php \MapasCulturais\i::_e("excluir");?></a>
                   <a class="btn btn-small btn-success" ng-if="agent.status == <?=Agent::STATUS_ENABLED?>" href="{{agent.archiveUrl}}"><?php \MapasCulturais\i::_e("arquivar");?></a>
@@ -158,7 +158,7 @@
               </td>
               <td>{{space.name}}</td>
               <td>{{space.subsite.name}}</td>
-              <td>
+              <td class="fit">
                 <span ng-if="hasAdmin(space.subsite) || hasControl(space.agentRelations, 'agent')">
                   <a class="btn btn-small  btn-danger" ng-if="space.status == <?=Space::STATUS_ENABLED?>"  href="{{space.deleteUrl}}">   <?php \MapasCulturais\i::_e("excluir");?></a>
                   <a class="btn btn-small btn-success" ng-if="space.status == <?=Space::STATUS_ENABLED?>"  href="{{space.archiveUrl}}">  <?php \MapasCulturais\i::_e("arquivar");?></a>
@@ -222,7 +222,7 @@
                 <a href={{event.singleUrl}}>{{event.id}}</a>
               </td>
               <td>{{event.name}}</td>
-              <td>
+              <td class="fit">
                 <span ng-if="hasAdmin(event.subsite)">
                   <a class="btn btn-small btn-danger"  ng-if="space.status == <?=Event::STATUS_ENABLED?>" href="{{event.deleteUrl}}"><?php \MapasCulturais\i::_e("excluir");?></a>
                   <a class="btn btn-small btn-danger"  ng-if="space.status == <?=Event::STATUS_DRAFT?>"   href="{{event.deleteUrl}}"><?php \MapasCulturais\i::_e("excluir");?></a>
