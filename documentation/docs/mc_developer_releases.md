@@ -39,6 +39,8 @@ Finalmente, fazemos o release, criando uma nova tag, e enviando as modificaçõe
 git flow release finish VERSION
 ```
 
+E na sequencia o arquivo `version.txt` é atualizado com o número da versão do release.
+
 Envie tudo para o servidor
 
 ```
