@@ -75,7 +75,14 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
      * })
      */
     protected $user;
-    
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="object_id", type="integer", nullable=false)
+     */
+    protected $objectId;
+
     protected function canUserCreate($user){
         return true;
     }
