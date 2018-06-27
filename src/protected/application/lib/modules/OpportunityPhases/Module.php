@@ -529,7 +529,7 @@ class Module extends \MapasCulturais\Module{
                 $opportunity = $opportunity->parent;
             }
 
-            if(!$opportunity->useRegistrations || !$opportunity->canUser('@controll')){
+            if(!$opportunity->useRegistrations || !$opportunity->canUser('@control')){
                 return;
             }
 
