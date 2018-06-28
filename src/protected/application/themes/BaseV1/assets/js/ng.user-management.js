@@ -129,83 +129,8 @@
                             'events': {'spinnerShow':true},
                        'permissions': {'spinnerShow':true},
                            'history': {'spinnerShow':true}
-                         }
-            $scope.loadAgent($userId);
-            $scope.loadSpace($userId);
-            $scope.loadEvents($userId);
+                         }            
             $scope.loadHistory($userId);
-        }
-
-        $scope.loadAgent = function ($userId) {
-            $scope.user.agents.spinnerShow = true;
-            userManagermentService.getAgents($userId)
-                .success(function (data) {
-                    $scope.user.agents.list = data;
-                    $scope.loadRelatedsAgentControl($userId);
-                })
-                .error(function (data) {
-                    $scope.user.agents.spinnerShow = false;
-                });
-        }
-
-        $scope.loadRelatedsAgentControl =  function($userId) {
-            $scope.user.agents.spinnerShow = true;
-            $scope.user.agents.relatedsAgents = [];
-            userManagermentService.getRelatedsAgentControl($userId)
-                .success(function (data) {
-                    $scope.user.agents.relatedsAgents = data;
-                })
-                .then(function (data) {
-                    $scope.user.agents.spinnerShow = false;
-                });
-        }
-
-        $scope.loadSpace = function ($userId) {
-            $scope.user.spaces.spinnerShow = true;
-            userManagermentService.getSpaces($userId)
-                .success(function (data) {
-                    $scope.user.spaces.list = data;
-                    $scope.loadRelatedsSpacesControl($userId);
-                })
-                .error(function (data) {
-                    $scope.user.spaces.spinnerShow = false;
-                });
-        }
-
-        $scope.loadRelatedsSpacesControl =  function($userId) {
-            $scope.user.spaces.spinnerShow = true;
-            $scope.user.spaces.relatedsSpaces = [];
-            userManagermentService.getRelatedsSpacesControl($userId)
-                .success(function (data) {
-                    $scope.user.spaces.relatedsSpaces = data;
-                })
-                .then(function (data) {
-                    $scope.user.spaces.spinnerShow = false;
-                });
-        }
-
-        $scope.loadEvents = function ($userId) {
-            $scope.user.events.spinnerShow = true;
-            userManagermentService.getEvents($userId)
-                .success(function (data) {
-                    $scope.user.events.list = data;
-                    $scope.loadRelatedsEventsControl($userId);
-                })
-                .error(function (data) {
-                    $scope.user.spaces.spinnerShow = false;
-                });
-        }
-
-        $scope.loadRelatedsEventsControl =  function($userId) {
-            $scope.user.events.spinnerShow = true;
-            $scope.user.events.relatedsSpaces = [];
-            userManagermentService.getRelatedsEventsControl($userId)
-                .success(function (data) {
-                    $scope.user.events.relatedsSpaces = data;
-                })
-                .then(function (data) {
-                    $scope.user.events.spinnerShow = false;
-                });
         }
 
         $scope.loadHistory = function($userId) {
@@ -323,6 +248,13 @@
             });
         }
 
-
+        $(".tablinks").click(function() {
+            var tab = $(this).data('tab');
+            var entity = $(this).data('entity');
+            $(`#${entity} .tab-content-table`).hide();
+            $(`#${entity} .tab-table button`).removeClass("active");
+            $(`#${entity} #${tab}`).show();
+            $(this).addClass("active");
+        });
     }]);
 })(angular);
