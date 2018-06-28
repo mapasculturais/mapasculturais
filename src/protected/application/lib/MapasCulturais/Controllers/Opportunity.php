@@ -92,6 +92,32 @@ class Opportunity extends EntityController {
 
     }
 
+    function GET_reportDrafts(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+
+        if(!$entity){
+            $app->pass();
+        }
+
+        $entity->checkPermission('@control');
+
+        $app->controller('Registration')->registerRegistrationMetadata($entity);
+
+        $registrationList = $entity->allRegistrations;
+
+        $registrationsDraftList = array_filter($registrationList, function($reg) {
+            return $reg->status == Entities\Registration::STATUS_DRAFT;
+        });
+
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
+
+        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+
+    }
+
 
     function GET_reportEvaluations(){
         $this->requireAuthentication();
