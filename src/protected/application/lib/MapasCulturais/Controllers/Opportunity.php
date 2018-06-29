@@ -86,38 +86,22 @@ class Opportunity extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
+        $view_params = ['entity' => $entity];
 
-        $this->reportOutput('report', ['entity' => $entity], $filename);
 
-    }
-
-    function GET_reportDrafts(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $entity = $this->requestedEntity;
-
-        if(!$entity){
-            $app->pass();
+        if (isset($this->data['status'])){
+            $status = (int) $this->data['status'];
+            $registrationsList = $entity->getRegistrationsByStatus($status);
+            $view_params['registrationsList'] = $registrationsList;
+        } else {
+            $view_params['registrationsList'] = $entity->sentRegistrations;
         }
 
-        $entity->checkPermission('@control');
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
 
-        $app->controller('Registration')->registerRegistrationMetadata($entity);
-
-        $registrationList = $entity->allRegistrations;
-
-        $registrationsDraftList = array_filter($registrationList, function($reg) {
-            return $reg->status == Entities\Registration::STATUS_DRAFT;
-        });
-
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
-
-        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+        $this->reportOutput('report', $view_params, $filename);
 
     }
-
 
     function GET_reportEvaluations(){
         $this->requireAuthentication();

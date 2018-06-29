@@ -3,6 +3,26 @@ use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\i;
 
+/**
+ * Return value property of Agent
+ * If registration status is DRAFT get property by agent else get property by registartion agent metadata
+ * @param $registration
+ * @param $agent
+ * @param $agentData
+ * @param $prop
+ * @return string
+ */
+function getAgentValue($registration, $agent, $agentData, $prop) {
+    $value =  (isset($agentData[$prop])) ? $agentData[$prop] : '';
+    if($registration->status == R::STATUS_DRAFT){
+        $value = $agent->$prop;
+    }
+    if ($prop === 'location' && is_array($value)) {
+        $value = "{$value['latitude']},{$value['longitude']}";
+    }
+    return $value;
+}
+
 function echoStatus($registration) {
     switch ($registration->status){
         case R::STATUS_APPROVED:
@@ -23,6 +43,10 @@ function echoStatus($registration) {
 
         case R::STATUS_SENT:
             i::_e('pendente');
+            break;
+
+        case R::STATUS_DRAFT:
+            i::_e('rascunho');
             break;
     }
 }
@@ -80,7 +104,7 @@ ksort($custom_fields);
         </tr>
     </thead>
     <tbody>
-        <?php foreach($entity->sentRegistrations as $r): ?>
+        <?php foreach($registrationsList as $r): ?>
             <tr>
                 <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
                 <?php if($entity->projectName): ?>
@@ -112,19 +136,21 @@ ksort($custom_fields);
                 foreach($r->_getDefinitionsWithAgents() as $def):
                     if($def->use == 'dontUse') continue;
                     $agent = $def->agent;
+                    $agentData = (!empty($r->agentsData) && isset($r->agentsData[$def->agentRelationGroupName])) ? $r->agentsData[$def->agentRelationGroupName] : [] ;
                 ?>
 
                     <?php if($agent): ?>
-                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
+
+                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo getAgentValue($r,$agent,$agentData,'name');;?></a></td>
                         
                         <td><?php echo implode(', ', $agent->terms['area']); ?></td>
 
                         <?php
                         foreach($_properties as $prop):
                             if($prop === 'name') continue;
-                        $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
+                            $val = getAgentValue($r,$agent,$agentData,$prop);
                         ?>
-                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
+                        <td><?php echo $val; ?></td>
 
                         <?php endforeach; ?>
 
