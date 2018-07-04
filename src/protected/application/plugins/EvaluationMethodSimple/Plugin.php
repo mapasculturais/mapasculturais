@@ -68,7 +68,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 'label' => i::__('Observações'),
                 'getValue' => function (Entities\RegistrationEvaluation $evaluation) {
                     $evaluation_data = (array)$evaluation->evaluationData;
-                    if (isset($evaluation_data)) {
+                    if (isset($evaluation_data) && isset($evaluation_data['obs'])) {
                         return $evaluation_data['obs'];
                     } else {
                         return '';

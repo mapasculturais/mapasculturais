@@ -86,12 +86,22 @@ class Opportunity extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
+        $view_params = ['entity' => $entity];
+
+
+        if (isset($this->data['status'])){
+            $status = (int) $this->data['status'];
+            $registrationsList = $entity->getRegistrationsByStatus($status);
+            $view_params['registrationsList'] = $registrationsList;
+        } else {
+            $view_params['registrationsList'] = $entity->sentRegistrations;
+        }
+
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
 
-        $this->reportOutput('report', ['entity' => $entity], $filename);
+        $this->reportOutput('report', $view_params, $filename);
 
     }
-
 
     function GET_reportEvaluations(){
         $this->requireAuthentication();

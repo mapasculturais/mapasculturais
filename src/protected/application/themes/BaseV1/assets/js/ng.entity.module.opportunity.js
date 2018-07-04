@@ -1253,7 +1253,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     $scope.$watch('registrationsFilters', function(){
         var qdata = {
-            'status': 'GT(0)',
+            'status': 'GT(-1)',
             '@files': '(zipArchive):url',
             '@opportunity': getOpportunityId(),
             '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
