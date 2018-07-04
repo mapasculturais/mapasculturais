@@ -541,6 +541,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                 'id' => $opportunitiesCanEvalute,
                 'status' => Opportunity::STATUS_ENABLED
             ]);
+
+            foreach ($opportunities as $key => $opportunity) {
+                if(!$opportunity->evaluationMethodConfiguration->canUser('@control')) {
+                    unset($opportunities[$key]);
+                }
+            }
         }
 
         return $opportunities;
