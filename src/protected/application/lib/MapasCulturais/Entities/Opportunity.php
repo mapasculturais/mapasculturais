@@ -387,6 +387,19 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $result;
     }
 
+    /**
+     * Returns registrations by status
+     * @param $status
+     * @return \MapasCulturais\Entities\Registration[]
+     */
+    function getRegistrationsByStatus($status){
+        return array_filter($this->getAllRegistrations(), function($reg) use ($status) {
+            return $reg->status === $status;
+        });
+    }
+
+
+
     function setRegistrationFrom($date){
         if($date instanceof \DateTime){
             $this->registrationFrom = $date;
