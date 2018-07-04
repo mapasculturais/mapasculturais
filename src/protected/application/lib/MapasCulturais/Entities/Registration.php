@@ -371,7 +371,7 @@ class Registration extends \MapasCulturais\Entity
 
     function getEvaluationResultValue(){
         $method = $this->getEvaluationMethod();
-        return $method->getConsolidatedResult($this);
+        return ($this->status !== self::STATUS_DRAFT) ? $method->getConsolidatedResult($this) : null;
     }
 
     function getEvaluationResultString(){
