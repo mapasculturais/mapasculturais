@@ -412,6 +412,7 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
+        $app->addEntityToRecreatePermissionCacheList($this);
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
     }
 
@@ -519,6 +520,32 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $app->addEntityToRecreatePermissionCacheList($this->opportunity);
+        $app->addEntityToRecreatePermissionCacheList($this);
+    }
+
+    function cleanMaskedRegistrationFields(){
+        $app = App::i();
+        $fieldsValues = $this->getMetadata();
+
+        $fieldsConfigurations = $this->opportunity->registrationFieldConfigurations;
+
+        $app->disableAccessControl();
+        foreach ($fieldsValues as $fieldName => $value){
+
+            foreach ($fieldsConfigurations as $fieldConf){
+
+                if('field_'.$fieldConf->id  === $fieldName){
+                    switch ($fieldConf->getFieldTypeDefinition()->slug){
+                        case 'cpf':
+                        case 'cnpj':
+                            $value = preg_replace( '/[^0-9]/', '', $value );
+                            $this->setMetadata($fieldName, $value);
+                            break;
+                    }
+                }
+            }
+        }
+        $app->enableAccessControl();
     }
 
     function getSendValidationErrors(){
@@ -620,9 +647,11 @@ class Registration extends \MapasCulturais\Entity
             if (!$empty){
                 foreach($field->getFieldTypeDefinition()->validations as $validation => $error_message){
                     if(strpos($validation,'v::') === 0){
-                        $validation = str_replace('v::', 'MapasCulturais\Validator::', $validation);
 
-                        eval("\$ok = {$validation}->validate(\$this->{$prop_name});");
+                        $validator = str_replace('v::', '\MapasCulturais\Validator::', $validation);
+                        $validator = str_replace('()', "()->validate(\"$val\")", $validator);
+
+                        eval("\$ok = $validator;");
 
                         if (!$ok) {
                             $errors[] = $error_message;
@@ -635,7 +664,6 @@ class Registration extends \MapasCulturais\Entity
                 $errorsResult['registration-field-' . $field->id] = $errors;
             }
         }
-
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
@@ -789,8 +817,16 @@ class Registration extends \MapasCulturais\Entity
 
     protected function canUserViewPrivateData($user){
         $can = $this->__canUserViewPrivateData($user);
-        
-        return $can || $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+
+        $canUserEvaluateNextPhase = false;
+        if($this->getMetadata('nextPhaseRegistrationId') !== null) {
+            $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
+            $canUserEvaluateNextPhase = $this->getEvaluationMethod()->canUserEvaluateRegistration($next_phase_registration, $user);
+        }
+
+        $canUserEvaluate = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user) || $canUserEvaluateNextPhase;
+
+        return $can || $canUserEvaluate;
     }
 
     function getExtraPermissionCacheUsers(){
@@ -888,6 +924,26 @@ class Registration extends \MapasCulturais\Entity
         $this->saveEvaluation($evaluation, $data, $evaluation_status);
 
         return $evaluation;
+    }
+
+    public function evaluationUserChangeStatus($user, Registration $registration, $status) {
+        if ($registration->canUser('evaluate', $user)) {
+            $method_name = 'setStatusTo' . ucfirst($status);
+
+            if (!method_exists($registration, $method_name)) {
+                $this->errorJson('Invalid status name');
+                return false;
+            } else {
+                $app = App::i();
+                $app->disableAccessControl();
+                $registration->$method_name();
+                $app->enableAccessControl();
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //============================================================= //

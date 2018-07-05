@@ -4,7 +4,7 @@
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
 
-        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-field-{{::field.id}}" data-field-id="{{::field.id}}" class="js-field attachment-list-item registration-view-mode">
+        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-field-{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
             <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section'">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
                 <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>

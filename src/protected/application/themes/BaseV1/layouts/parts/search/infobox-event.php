@@ -35,12 +35,12 @@
                         <div ng-show="event.terms.linguagem && event.terms.linguagem.length">
                             <span class="label"><?php \MapasCulturais\i::_e("Linguagem");?>:</span>
                             <span ng-repeat="linguagem in event.terms.linguagem">
-                                <a ng-click="toggleSelection(data.event.linguagens, getId(linguagens, linguagem))">{{linguagem}}</a>{{$last ? '' : ', '}}
+                                <a ng-click="toggleSelection(data.event.filters.linguagem, linguagem)">{{linguagem}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
                         <div>
                             <span class="label"><?php \MapasCulturais\i::_e("Classificação");?>:</span>
-                            <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a>
+                            <a ng-click="toggleSelection(data.event.filters.classificacaoEtaria, event.classificacaoEtaria)">{{event.classificacaoEtaria}}</a>
                         </div>
                         <div>
                             <span class="label">Tags:</span>
