@@ -129,6 +129,27 @@
 .entity-modal {
     width: 800px;
 
+    .flash-message {
+        text-align: center;
+        border: 1.5px solid $green-dark;
+        background: beige;
+        padding: 20px 0 5px 0;
+        font-size: 1.1vw;
+
+        .entidade {
+            font-weight: bolder;
+        }
+
+        .edit-entity {
+            width: 20%;
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
+            background: $brand-primary;
+            color: white;
+        }
+    }
+
     input[type='checkbox'] {
         float: left;
         width: 3%;
