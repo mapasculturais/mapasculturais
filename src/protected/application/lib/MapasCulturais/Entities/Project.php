@@ -258,7 +258,7 @@ class Project extends \MapasCulturais\Entity
         if($date instanceof \DateTime){
             $this->registrationTo = $date;
         }elseif($date){
-            $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
+            $this->registrationTo =  new \DateTime($date);
         }else{
             $this->registrationTo = null;
         }

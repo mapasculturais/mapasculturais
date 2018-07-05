@@ -11,8 +11,14 @@ use MapasCulturais\i;
             <input ng-model="data.keyword" ng-model-options="{ debounce: 333 }" id="registrations-list--filter" placeholder="<?php i::_e('Filtre pelo nome do agente'); ?>" />
             <ul id="registrations-list" class="registrations-list">
                 <li ng-repeat="registration in data.registrations" ng-show="show(registration)" class="registration-item"
-                    ng-class="{current: registration.id == data.current, visible:show(registration), missing: !evaluated(registration)}">
 
+                    ng-class="{
+                        current: registration.id == data.current,
+                        visible:show(registration),
+                        missing: !evaluated(registration),
+                        valid: getEvaluationResult(registration) === '1',
+                        invalid: getEvaluationResult(registration) === '-1'
+                        }">
                     <a href="{{::registration.singleUrl}}">
                         <div class="registration-evaluated"> (<?php i::_e('Avaliação:'); ?> <strong> {{status_str(registration)}}</strong>) </div>
                         <div class="registration-number">{{::registration.number}}</div>

@@ -63,7 +63,7 @@ class Theme extends BaseV1\Theme{
                 $config = array_merge($config, $theme_config);
             }
         });
-        
+
         $this->subsitePath = SAAS_PATH . '/' . $this->subsiteInstance->url;
 
         $this->addPath($this->subsitePath);
@@ -154,7 +154,7 @@ class Theme extends BaseV1\Theme{
                     if($this->subsiteInstance->$entity_first_name_color) {
                         $entity_icon_img = THEMES_PATH . "BaseV1/assets/img/icon-" . $entity_first_sing_name . ".png";
                         if(file_exists($entity_file_svg)) {
-                            
+
                             $svg = file_get_contents($entity_file_svg);
                             $svg = preg_replace('/class="pin-single-example" fill="\#([0-9a-f]{6})"/','fill="' . $this->subsiteInstance->$entity_first_name_color .'"',$svg);
 
@@ -174,7 +174,7 @@ class Theme extends BaseV1\Theme{
                                     $new = $img->merge($watermark);
                                     $new->saveToFile($this->subsitePath . "/assets/img/pin-" . $entity_first_sing_name . ".png");
                                 } catch(\Exception $e){
-                                    
+
                                 }
                             }
 
@@ -271,6 +271,7 @@ class Theme extends BaseV1\Theme{
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->_publishAssets();
         });
+
     }
 
     protected function _publishAssets() {
@@ -286,4 +287,82 @@ class Theme extends BaseV1\Theme{
             $this->jsObject['assets']['favicon'] = $this->asset('img/favicon.ico', false);
         }
     }
+
+    public function addEntityToJs(\MapasCulturais\Entity $entity) {
+        parent::addEntityToJs($entity);
+
+    }
+
+    protected function _getFilters(){
+
+        $all_filters =[
+            'event' => $this->subsiteInstance->user_filters__event,
+            'space' => $this->subsiteInstance->user_filters__space,
+            'agent' => $this->subsiteInstance->user_filters__agent,
+            'project' => $this->subsiteInstance->user_filters__project,
+            'opportunity' => $this->subsiteInstance->user_filters__opportunity
+        ];
+
+        $original_filters = parent::_getFilters();
+
+        foreach ($all_filters as $entity => $filters){
+
+            $filters = !empty($filters) ? json_decode($filters[0], true) : null;
+
+            if (!$filters)
+            {
+                $all_filters[$entity] = $original_filters[$entity];
+            }
+            else
+            {
+
+                unset($all_filters[$entity][0]);
+                foreach ($filters as $k => $filter) {
+
+                    $complete_filter = [
+                        'label' => $filter['label'],
+                        'placeholder' => $filter['label'],
+                        'fieldType' => $filter['fieldType'],
+                        'isInline' => isset($filter['isInline']) ? !$filter['isInline'] : true,
+                        'type' => $filter['type'],
+                        'isArray' => ($filter['fieldType'] != 'checkbox' && $filter['fieldType'] != 'checkbox-verified')
+                    ];
+
+                    if (isset($filter['addClass'])){
+                        $complete_filter['addClass'] = $filter['addClass'];
+                    }
+
+
+                    switch ($filter['field']) {
+                        case 'verificados':
+                            $complete_filter['filter'] = [
+                                'param' => '@verified',
+                                'value' => 'IN(1)'
+                            ];
+                            break;
+
+                        case 'tipos':
+                            $complete_filter['filter'] = [
+                                'param' => 'type',
+                                'value' => 'IN({val})'
+                            ];
+                            break;
+
+                        default:
+                            $complete_filter['filter'] = [
+                                'param' => $filter['field'],
+                                'value' => 'IN({val})'
+                            ];
+                            break;
+                    }
+
+                    $all_filters[$entity][$filter['field']] = $complete_filter;
+
+                }
+            }
+        }
+
+        return $all_filters;
+    }
+
 }

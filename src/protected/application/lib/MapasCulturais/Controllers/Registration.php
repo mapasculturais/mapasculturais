@@ -345,7 +345,9 @@ class Registration extends EntityController {
         if($errors = $registration->getSendValidationErrors()){
             $this->errorJson($errors);
         }else{
+            $registration->cleanMaskedRegistrationFields();
             $registration->send();
+
             if($app->request->isAjax()){
                 $this->json($registration);
             }else{
@@ -399,17 +401,9 @@ class Registration extends EntityController {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
 
-
         $status = $evaluation->result === '-1' ?  'invalid' : 'approved';
-
-        $method_name = 'setStatusTo' . ucfirst($status);
-
-        if(!method_exists($registration, $method_name))
-            $this->errorJson('Invalid status name');
-
-        $registration->$method_name();
-
-
-        $this->json($evaluation);
+        if ($registration->evaluationUserChangeStatus($user, $registration, $status)) {
+            $this->json($evaluation);
+        }
     }
 }

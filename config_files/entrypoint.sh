@@ -28,7 +28,7 @@ sleep 10s
 set -e
 
 
-chown -R mapas:www-data /srv/mapas/mapasculturais/src/protected/application
+chown -R mapas:www-data /srv/mapas/mapasculturais/src/protected
 
 cp /srv/mapas/mapasculturais/src/protected/application/conf/config.docker.php /srv/mapas/mapasculturais/src/protected/application/conf/config.php
 

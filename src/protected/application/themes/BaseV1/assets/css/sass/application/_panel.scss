@@ -24,6 +24,14 @@
     	width: 100%;
     	padding: $padding-large;
     }
+    
+    div.version {
+        font-size: 0.8rem;
+        color: #ccc;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
 }
 .panel-header {
     h2 {

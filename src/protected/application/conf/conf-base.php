@@ -64,6 +64,10 @@ return array(
         'opportunity_claim' => [
             'title' => \MapasCulturais\i::__("Solicitação de Recurso de Oportunidade"),
             'template' => 'opportunity_claim.html'
+        ],
+        'request_relation' => [
+            'title' => \MapasCulturais\i::__("Solicitação de requisição"),
+            'template' => 'request_relation.html'
         ]
 
     ],
