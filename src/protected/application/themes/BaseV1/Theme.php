@@ -2878,6 +2878,13 @@ class Theme extends MapasCulturais\Theme {
             <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
 
             <form class="create-entity" data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>">
+
+                <p class="flash-message hidden">
+                    <span class="entidade">Entidade criada com sucesso!</span><br>
+                    Deseja ir para a página de edição de <span class="new-name">nome</span> agora?
+                    <input class="edit-entity" type="button" value="Ir para página de edição" />
+                </p>
+
                 <?php
                 foreach ($_required_keys as $_field_) {
                     if ($_new_entity->isPropertyRequired($_new_entity, $_field_)) {

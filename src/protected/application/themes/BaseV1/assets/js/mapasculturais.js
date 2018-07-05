@@ -16,6 +16,7 @@ $(function(){
         e.preventDefault();
         var _url = $(this).data('entity');
         var _entity = $(this).serializeArray();
+        var self = this;
         $.ajax({
             url: _url, type: 'POST',
             data: _entity,
@@ -24,14 +25,19 @@ $(function(){
                     var name = r.name;
                     var msg = name + " criado com sucesso!";
                     MapasCulturais.Messages.success(msg);
+
                     if (r.editUrl) {
-                        var _message = msg + " Deseja editar " + name + " agora?";
-                        if( confirm(_message) ) {
-                            window.location = r.editUrl;
-                        }
+                        $(self).find('.flash-message').show();
+                        $(self).find('.flash-message .entidade').text(msg);
+                        $(self).find('.flash-message .new-name').text(name);
+                        var _href = $(self).find('.flash-message .edit-entity');
+
+                        $(_href).on('click', function() {
+                            location.href = r.editUrl;
+                        });
+                        // $('.entity-modal').find('.js-close').click();
                     }
 
-                    $('.entity-modal').find('.js-close').click();
                 } else if (r.error && r.data) {
                     for (var erro in r.data) {
                         var _msg = r.data[erro];
