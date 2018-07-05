@@ -10,6 +10,7 @@ use MapasCulturais\i;
         <div class="close"></div>
     </div>
     <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php i::_e("Baixar inscritos");?></a>
+    <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('reportDrafts', [$entity->id]); ?>"><?php i::_e("Baixar rascunhos");?></a>
     <?php $this->applyTemplateHook('header-inscritos','end'); ?>
 </header>
 <div id='status-info' class="alert info">
