@@ -2797,6 +2797,11 @@ class Theme extends MapasCulturais\Theme {
              $html .= "</select>";
 
              echo $html;
+
+             if ("agente" == strtolower($entity->getEntityTypeLabel())) {
+                 $app->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['entity'=> $entity]);
+             }
+
          }
     }
 
