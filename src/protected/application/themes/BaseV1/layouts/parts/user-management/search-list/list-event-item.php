@@ -2,8 +2,8 @@
   <h1>
     {{event.name}}
     <span class="event-subtitle">{{event.subTitle}}</span>
-    <a class="btn btn-default icon-event" href="{{event.singleUrl}}"><?php \MapasCulturais\i::_e("Agente");?></a>
-    <a class="btn btn-default icon-info" href="<?php echo $app->createUrl('panel', 'userManagement')?>/?userId={{event.user}}">Info</a>
+    <a class="btn btn-default icon icon-event" href="{{event.singleUrl}}"><?php \MapasCulturais\i::_e("Agente");?></a>
+    <a class="btn btn-default icon icon-user" href="<?php echo $app->createUrl('panel', 'userManagement')?>/?userId={{event.user}}">Info</a>
   </h1>
 
   <div class="objeto-content clearfix">
