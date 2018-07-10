@@ -16,18 +16,29 @@
     <header class="panel-header clearfix">
       <h2>
         <a class="icon icon-return" href="<?php echo $app->createUrl('panel', 'userManagement') ?>"> </a>
-        <?php \MapasCulturais\i::_e("Gerenciador de usuários"); ?>
+        <a href="<?php echo $app->createUrl('panel', 'userManagement') ?>">
+          <?php \MapasCulturais\i::_e("Gerenciador de usuários"); ?>
+        </a>
       </h2>
+
+      <?php if(!isset($admin)): ?>
+        <a href="<?php echo $app->createUrl('panel', 'userManagement') ?>?admin" class="icon icon-group" style="float: right; font-weight: normal;">
+        <?php \MapasCulturais\i::_e("Administradores");?>
+      </a>
+      <?php endif;?>
+
     </header>
 
     <?php
       if(isset($user)) {
         $this->jsObject['userProfileId'] = $user->profile->id;
         $this->part('user-management/info-user', ['user' => $user, 'roles' => $roles]);
+      } else if(isset($admin)) {
+        $this->part('user-management/info-admin');
       } else {
     ?>
 
-    <div class="user-managerment-search clearfix">
+    <div class="user-managerment-search clearfix">    
       <form id="user-managerment-search-form" class="clearfix" ng-non-bindable>
         <input tabindex="1" id="campo-de-busca" class="search-field" type="text" name="campo-de-busca" placeholder="<?php \MapasCulturais\i::esc_attr_e("Digite uma palavra-chave");?>"/>
       
@@ -46,6 +57,7 @@
           </div>
         </div>
       </form>
+      <br />
     </div>
 
     <div id="lista" ng-animate="{show:'animate-show', hide:'animate-hide'}">

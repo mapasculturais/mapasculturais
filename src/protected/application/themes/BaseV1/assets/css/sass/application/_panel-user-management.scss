@@ -98,6 +98,64 @@
         
     }
 
+    .user-managerment-admin {
+        .option-roles {
+            float: left;
+            margin-right: 2%;
+            width: 25%;
+
+            select {
+                width: 100%;
+            }
+        }
+
+        div.entity-table-content {
+            float: left;
+            max-height: 400px;
+            width: 73%;
+            overflow-y: scroll;
+            margin-top: 24px;
+        }
+
+        table.user-admin-table {
+            width: 100%;
+            td {
+                text-align: left;
+            }
+        }
+
+        .icon-minus:before {
+            content: "\e04f";
+        }
+
+        .icon-subsite {
+            &:before {
+                content: $unicode-subsite;
+                padding: 4px 6px 0px 2px;
+            }
+            display: block;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            border-bottom: 1px solid #DDD;
+            cursor: pointer;
+        }
+
+        .block-with-text {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+
+        .truncate {
+            width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+    }
+
     .user-managerment-infos {
         .user-info {
             margin: 2rem;
