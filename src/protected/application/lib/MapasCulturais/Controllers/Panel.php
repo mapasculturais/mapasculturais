@@ -348,7 +348,11 @@ class Panel extends \MapasCulturais\Controller {
         $this->requireAuthentication();
         $app = App::i();
         if(!isset($this->getData['userId'])) {
-            $this->render('user-management');
+            if(isset($this->getData['admin'])) {
+                $this->render('user-management', ['admin' => true]);
+            } else {
+                $this->render('user-management');
+            }
         } else {
             $user = $app->repo('User')->find($this->getData['userId']);
             $roles = $app->repo('User')->getRoles($this->getData['userId']);

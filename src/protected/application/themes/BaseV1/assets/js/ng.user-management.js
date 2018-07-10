@@ -52,6 +52,10 @@
     module.controller('UserManagermentController', ['$scope', '$rootScope', '$window', '$timeout', 'searchService', 'userManagermentService', function ($scope, $rootScope, $window, $timeout, searchService, userManagermentService) {
         var timeoutTime = 300;
 
+        var rls = [];
+        if (MapasCulturais.infoAdmin && MapasCulturais.infoAdmin.roles)
+            rls = MapasCulturais.infoAdmin.roles;
+
         $rootScope.resetPagination = function() {
             $rootScope.pagination = {
                 agent: 1,
@@ -69,6 +73,9 @@
                 locationFilters: {
                     enabled: null
                 }
+            },
+            infoAdmin : {
+                roles: rls
             }
         }
 
@@ -171,6 +178,9 @@
             }
             return false;
         }
+
+        $scope.selectGroupAdmin = 'saasSuperAdmin';
+        $scope.selectSubsite = 'MapasCulturais';
 
         if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();

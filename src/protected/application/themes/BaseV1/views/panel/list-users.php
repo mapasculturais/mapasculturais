@@ -30,7 +30,8 @@ $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() ==
 
 
                     <div class="entity-actions">
-                        <?php if($noSubSite && is_object($u->subsite)): $remove_role_url = $app->createUrl('agent', 'removeRole', ['id' => $u->user->profile->id, 'role' => $roleSlug, 'subsiteId' => $u->subsite->id]); ?>
+                        <?php if($noSubSite && is_object($u->subsite)): 
+                            $remove_role_url = $app->createUrl('agent', 'removeRole', ['id' => $u->user->profile->id, 'role' => $roleSlug, 'subsiteId' => $u->subsite->id]); ?>
                             <p>
                                 <a href="<?php echo 'http://' . $u->subsite->url ?>"><?php echo 'http://' . $u->subsite->url ?></a>
                             </p>
