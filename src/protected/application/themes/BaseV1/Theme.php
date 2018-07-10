@@ -2783,7 +2783,7 @@ class Theme extends MapasCulturais\Theme {
         echo $dropdown;
     }
 
-    private function getEntityType($entity) {
+    private function getEntityType($entity,$modal_id) {
          $app = App::i();
          $_types = $app->getRegisteredEntityTypes($entity);
 
@@ -2795,14 +2795,16 @@ class Theme extends MapasCulturais\Theme {
                  }
              }
              $html .= "</select>";
-
              echo $html;
 
-             if ("agente" == strtolower($entity->getEntityTypeLabel())) {
-                 $app->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['entity'=> $entity]);
-             }
-
+             $this->addTypologiesHook($entity,$modal_id);
          }
+    }
+
+    private function addTypologiesHook($entity, $modal_id) {
+        if ("agente" == strtolower($entity->getEntityTypeLabel())) {
+            App::i()->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['entity'=> $entity, 'modal_id' => $modal_id]);
+        }
     }
 
     private function modalFooter() {
@@ -2814,7 +2816,7 @@ class Theme extends MapasCulturais\Theme {
         echo "<label> $title </label> <span class='required'>*</span>";
     }
 
-    private function renderFieldMarkUp($field, $entity) {
+    private function renderFieldMarkUp($field, $entity, $modal_id) {
         $__known_types = [ 'name', 'shortDescription', 'type'];
         if (in_array($field, $__known_types)) {
             $title = $this->entityRequiredFields()[$field];
@@ -2830,7 +2832,7 @@ class Theme extends MapasCulturais\Theme {
                     echo $this->getShortDescription();
                     break;
                 case "type":
-                    $this->getEntityType($entity);
+                    $this->getEntityType($entity, $modal_id);
                     break;
             }
         }
@@ -2893,7 +2895,7 @@ class Theme extends MapasCulturais\Theme {
                 <?php
                 foreach ($_required_keys as $_field_) {
                     if ($_new_entity->isPropertyRequired($_new_entity, $_field_)) {
-                        $this->renderFieldMarkUp($_field_, $_new_entity);
+                        $this->renderFieldMarkUp($_field_, $_new_entity, $_id);
                     }
                 }
                 $this->getEntityAreas($_new_entity, $entity);
