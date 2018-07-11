@@ -2878,9 +2878,12 @@ class Theme extends MapasCulturais\Theme {
 
         $_modal_title = "Criar $_name - dados básicos";
         $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
+
+        $extra_wrapper_classes = '';
+        $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
         ?>
 
-        <div id="<?php echo $_id; ?>" class="js-dialog entity-modal" title="<?php echo $_modal_title; ?>"> <hr>
+        <div id="<?php echo $_id; ?>" class="js-dialog entity-modal <?php echo $extra_wrapper_classes; ?>" title="<?php echo $_modal_title; ?>"> <hr>
 
             <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
 
