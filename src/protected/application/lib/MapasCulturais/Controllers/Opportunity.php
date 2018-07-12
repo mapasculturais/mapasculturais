@@ -238,7 +238,7 @@ class Opportunity extends EntityController {
     function API_findRegistrations() {
         $app = App::i();
         
-        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true));
+        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         
         $opportunity = $this->_getOpportunity();
         
