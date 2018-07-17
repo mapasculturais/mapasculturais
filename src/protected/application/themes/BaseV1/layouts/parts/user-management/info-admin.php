@@ -12,7 +12,7 @@
 
   $first = true;
   $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() == null);
-
+  
   if (!$app->user->is('admin')) 
     $app->user->checkPermission('addRole'); // dispara exceção se não for admin ou sueradmin
 
@@ -39,12 +39,13 @@
         $remove_role_url = $app->createUrl('agent', 'removeRole', ['id' => $u->user->profile->id, 'role' => $roleSlug]);
         if($noSubSite && is_object($u->subsite)):
           $remove_role_url = $app->createUrl('agent', 'removeRole', ['id' => $u->user->profile->id, 'role' => $roleSlug, 'subsiteId' => $u->subsite->id]);
-          $subsiteUrl = 'http://' . $u->subsite->url;
-          $subsiteName = $u->subsite->name;
         endif;
       endif;
-
-      $roles[$roleSlug]['users'][$subsiteName][] = ['name' => $u->user->profile->name, 
+      if(is_object($u->subsite)):
+        $subsiteUrl = 'http://' . $u->subsite->url;
+        $subsiteName = $u->subsite->name;
+      endif;
+      $roles[$roleSlug]['users'][$subsiteName][] = ['name' => $u->user->profile->name,
                                       'singleUrl' => $u->user->profile->singleUrl,
                                       'removeRoleUrl' => $remove_role_url,
                                       'subsiteURL' => $subsiteUrl];
@@ -52,33 +53,27 @@
 
   }
   $this->jsObject['infoAdmin']['roles'] = $roles;
-  //\dump($roles); die();
 ?>
 
 <div class="user-managerment-admin">
-
-  <div class="option-roles">
-    <label class="small" for="roles">Papeis:</label>
-    <select id="roles" ng-model="selectGroupAdmin" style="display: block;">
-      <?php foreach ($roles as $roleSlug => $role) : ?>
-        <option value="<?php echo $roleSlug; ?>">
-          <?php echo $this->dict($role['pluralLabel']); ?>
-        </option>
-      <?php endforeach; ?>
-    </select>
-    
-    <label class="small" for="subsites">Subsites:</label>
-    <select id="subsites" size="8" style="height: 300px;" ng-model="selectSubsite">
-      <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles[selectGroupAdmin].users" value="{{key}}">
-        {{key}}
-      </option>
-    </select>
-  </div>
-
-  <div class="entity-table-content">
+  <div class="entity-table-content" style="width: 100%;">
     <table class="user-admin-table entity-table">
       <caption>
-        <?=\MapasCulturais\i::_e("Administradores");?> : {{selectSubsite}}
+        Grupo:
+        <select id="roles" ng-model="selectGroupAdmin" style="margin-right: 1rem;margin-bottom: 0px;">
+          <?php foreach ($roles as $roleSlug => $role) : ?>
+            <option value="<?php echo $roleSlug; ?>">
+              <?php echo $this->dict($role['pluralLabel']); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      
+        Subsite:
+        <select id="subsites" ng-model="selectSubsite" style="margin-bottom: 0px; min-width: 140px;">
+          <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles[selectGroupAdmin].users" value="{{key}}">
+            {{key}}
+          </option>
+        </select>
       </caption>
 
       <thead>
@@ -101,7 +96,7 @@
             </div>
           </td>
           <td style="width: 30%;">
-            <a class="btn btn-small btn-danger js-confirm-before-go icon icon-minus"
+            <a class="btn btn-small btn-danger js-confirm-before-go icon icon-minus" ng-if="usr.removeRoleUrl"
               data-confirm-text="Você tem certeza que deseja remover este usuário da lista" 
               href="{{usr.removeRoleUrl}}" title="remover do papel"> Excluir
             </a>
