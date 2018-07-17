@@ -61,11 +61,11 @@
       <caption>
         Grupo:
         <select id="roles" ng-model="selectGroupAdmin" style="margin-right: 1rem;margin-bottom: 0px;">
-          <?php foreach ($roles as $roleSlug => $role) : ?>
+          <?php foreach ($roles as $roleSlug => $role) : if (!empty($role['users'])):?>
             <option value="<?php echo $roleSlug; ?>">
               <?php echo $this->dict($role['pluralLabel']); ?>
             </option>
-          <?php endforeach; ?>
+            <?php endif; endforeach; ?>
         </select>
       
         Subsite:
