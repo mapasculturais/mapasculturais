@@ -26,3 +26,15 @@ _apigen.phar
 SaaS/*
 documentation/site
 private-files
+nohup.out
+salida
+src/protected/composer.lock
+src/protected/application/conf/config.php~
+src/protected/application/conf/config.docker.php
+src/protected/application/lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--content-edit.php~
+src/protected/application/plugins/ProjectCuradores/Plugin.php
+src/protected/application/themes/BaseV1/assets/css/main.css~
+src/protected/application/themes/BaseV1/assets/vendor/select2_locale_es_ES-edit.js~
+src/protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php~
+src/protected/application/themes/BaseV1/layouts/parts/singles/registration-single--agents.php~
+src/protected/application/themes/BaseV1/views/panel/opportunities.php~

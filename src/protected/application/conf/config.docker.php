@@ -1,6 +1,9 @@
 <?php
 $config = include 'conf-base.php';
 
+ $theme_namespace    = 'CulturaEnLinea'; // namespace do tema
+    $theme_path         = THEMES_PATH . 'culturaenlinea';         // caminho para a pasta do tema
+
 return array_merge($config,
     [
         'app.siteName' => \MapasCulturais\i::__('Nome do site'),
@@ -16,14 +19,22 @@ return array_merge($config,
         //    'TemplateV1' => THEMES_PATH . '/TemplateV1/',
         //    'Subsite' => THEMES_PATH . '/Subsite/'
         //),
+        
+'namespaces' => array_merge( $config['namespaces'], [$theme_namespace => $theme_path, 'MecTeatros' => THEMES_PATH . 'teatros']),
 
+//        'themes.active' => 'MapasCulturais\Themes\BaseV1',
+        'themes.active' => $theme_namespace,        
+        
+'app.lcode' => 'es_ES',
         // development, staging, production
-        'app.mode' => 'production',
+        'app.mode' => 'development',
 
         'doctrine.isDev' => false,
         'slim.debug' => true,
         'maps.includeGoogleLayers' => true,
         'auth.provider' => 'Fake',
+
+
 
         // Token da API de Cep
         // Adquirido ao fazer cadastro em http://www.cepaberto.com/
