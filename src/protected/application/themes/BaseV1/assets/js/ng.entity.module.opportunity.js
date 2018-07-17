@@ -1270,7 +1270,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.$watch('evaluationsFilters', function(){
         var qdata = {
             '@opportunity': getOpportunityId(),
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
+            '@order': 'evaluation desc'
         };
         for(var prop in $scope.evaluationsFilters){
             if($scope.evaluationsFilters[prop]){
