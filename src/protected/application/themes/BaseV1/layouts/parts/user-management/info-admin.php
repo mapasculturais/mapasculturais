@@ -11,7 +11,6 @@
   $subsite_id = $app->getCurrentSubsiteId();
 
   $first = true;
-  $noSubSite = ($app->getCurrentSubsiteId() == 0 || $app->getCurrentSubsiteId() == null);
   
   if (!$app->user->is('admin')) 
     $app->user->checkPermission('addRole'); // dispara exceção se não for admin ou sueradmin
@@ -26,9 +25,9 @@
       $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug);
     else
       foreach($subsites as $sub) {
-          $aux = $Repo->getByRole($roleSlug, $sub->id);
-          if(!empty($aux))
-            $vars['list_' . $roleSlug] = array_merge($vars['list_' . $roleSlug], $aux);
+        $aux = $Repo->getByRole($roleSlug, $sub->id);
+        if(!empty($aux))
+          $vars['list_' . $roleSlug] = array_merge($vars['list_' . $roleSlug], $aux);
       }
 
     if ($roleSlug == 'superAdmin') {
@@ -43,9 +42,9 @@
       $remove_role_url = false;
       $subsiteUrl = '';
       $subsiteName = "MapasCulturais";
-      if ($u->user->profile->canUser('RemoveRole' . $roles[$roleSlug]['permissionSuffix'])):
+      if ($u->user->profile->canUser('RemoveRole' . $roles[$roleSlug]['permissionSuffix']) && $u->user->id != $app->user->id ):
         $remove_role_url = $app->createUrl('agent', 'removeRole', ['id' => $u->user->profile->id, 'role' => $roleSlug]);
-        if($noSubSite && is_object($u->subsite)):
+        if(is_object($u->subsite) && $app->getCurrentSubsiteId() != $u->subsite->id):
           $remove_role_url = $app->createUrl('agent', 'removeRole', ['id' => $u->user->profile->id, 'role' => $roleSlug, 'subsiteId' => $u->subsite->id]);
         endif;
       endif;
@@ -59,7 +58,7 @@
                                       'subsiteURL' => $subsiteUrl,
                                       'role' => $roleSlug];
     endforeach;
-  }  
+  }
   $this->jsObject['infoAdmin']['roles'] = $roles;
 ?>
 
