@@ -2,7 +2,7 @@ FROM php:7.2-fpm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip \
-        ruby ruby-dev libpq-dev gnupg nano iputils-ping
+        ruby ruby-dev libpq-dev gnupg nano iputils-ping git
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y nodejs
@@ -30,7 +30,7 @@ COPY src/index.php /var/www/html/index.php
 COPY src/protected /var/www/html/protected
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
-
+RUN mkdir -p /var/www/html/protected/vendor
 RUN chown -R www-data:www-data /var/www/html/protected/vendor
 
 RUN curl -sS https://getcomposer.org/installer | php \
