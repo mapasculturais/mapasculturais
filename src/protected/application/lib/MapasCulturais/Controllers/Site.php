@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use MapasCulturais\App;
+use MapasCulturais\Traits;
+
 /**
  * Site Controller
  *
@@ -11,12 +14,8 @@ namespace MapasCulturais\Controllers;
  */
 class Site extends \MapasCulturais\Controller {
     use \MapasCulturais\Traits\ControllerAPI;
-
-    //version mapas culturais:
-    const MAJOR = 4;
-    const MINOR = 0;
-    const PATCH = 0;
-
+    
+    
     /**
      * Default action.
      *
@@ -105,7 +104,8 @@ class Site extends \MapasCulturais\Controller {
             
             $content = $view->renderMarkdown($file_content);
             $content = $view->renderMarkdown($content);
-            $content .= "<div class='version'>" . sprintf('v%s.%s.%s',self::MAJOR, self::MINOR, self::PATCH) . "</div>";
+            $version = $this->getVersionFile();
+            $content .= "<div class='version'>" . sprintf('v%s',$version) . "</div>";
             $attrs = ['content' => $content, 'left' => $left, 'right' => $right];
             
             $this->render('page', $attrs);
@@ -114,9 +114,10 @@ class Site extends \MapasCulturais\Controller {
         }
     }
 
-    function GET_version() {
+    function API_version() {
+        $version = $this->getVersionFile();
         $data['name'] = 'Mapas Culturais';
-        $data['version'] = sprintf('v%s.%s.%s',self::MAJOR, self::MINOR, self::PATCH);
+        $data['version'] = sprintf('v%s', $version);
 
         $tagVersion = trim(exec('git describe --tags --abbrev=0'));
         if ($tagVersion != "") {
@@ -128,5 +129,15 @@ class Site extends \MapasCulturais\Controller {
         }
 
         $this->json($data);
+    }
+
+    private function getVersionFile() {
+        $version = \MapasCulturais\i::_e("versão indefinida");
+        $path = getcwd() . "/../version.txt";
+        if (file_exists($path) && $versionFile = fopen($path, "r")) {
+            $version = fgets($versionFile);
+            fclose($versionFile);
+        }
+        return $version;
     }
 }
