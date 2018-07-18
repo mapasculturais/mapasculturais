@@ -19,8 +19,19 @@
   $Repo = $app->repo('User');
   $vars = array();
   
+  //$subsites = $Repo->getSubsitesCanAddRoles($app->user->id);
+  $subsites = $Repo->getSubsitesAdminRoles($app->user->id);
   foreach ($roles as $roleSlug => $roleInfo) {
-    $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug, $subsite_id);
+    $vars['list_' . $roleSlug] = [];
+    if($app->user->is('saasSuperAdmin'))
+      $vars['list_' . $roleSlug] = $Repo->getByRole($roleSlug);
+    else
+      foreach($subsites as $sub) {
+          $aux = $Repo->getByRole($roleSlug, $sub->id);
+          if(!empty($aux))
+            $vars['list_' . $roleSlug] = array_merge($vars['list_' . $roleSlug], $aux);
+      }
+
     if ($roleSlug == 'superAdmin') {
       $roles[$roleSlug]['permissionSuffix'] = 'SuperAdmin';
     } elseif ($roleSlug == 'admin') {
