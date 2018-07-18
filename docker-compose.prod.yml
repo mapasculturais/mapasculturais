@@ -22,9 +22,7 @@ services:
 
 
   mapas:
-    build:
-      context: .
-      dockerfile: compose/production/Dockerfile
+    image: hacklab/mapasculturais
     ports:
       - "9000:9000"
     volumes:
