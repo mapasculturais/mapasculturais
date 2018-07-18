@@ -3,6 +3,10 @@
         <?php $app->applyHookBoundTo($this, 'panel.menu:before') ?>
         <li><a <?php if($this->template == 'panel/index') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel') ?>"><span class="icon icon-panel"></span> <?php \MapasCulturais\i::_e("Painel");?></a></li>
         
+        <li>
+            <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"><span class="icon icon-agent"></span> <?php \MapasCulturais\i::_e("Meu Perfil");?></a>
+        </li>
+        
         <?php if($app->isEnabled('events')): ?>
             <?php $this->applyTemplateHook('nav.panel.events','before'); ?>
             <li><a <?php if($this->template == 'panel/events') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icon icon-event"></span> <?php \MapasCulturais\i::_e("Meus Eventos");?></a></li>

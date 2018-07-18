@@ -1213,6 +1213,7 @@ class ApiQuery {
                 f.description,
                 f._path,
                 f.group as file_group,
+                f.private,
                 fp.group as parent_group,
                 IDENTITY(f.owner) AS owner_id
             FROM
@@ -1238,8 +1239,12 @@ class ApiQuery {
             if(!isset($files[$owner_id])){
                 $files[$owner_id] = [];
             }
+            if ($f['private']) {
+                $f['url'] = $app->storage->getPrivateUrlById($f['id']);
+            } else {
+                $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
+            }
             
-            $f['url'] = $app->storage->getUrlFromRelativePath($f['_path']);
             
             if($f['parent_group']) {
                 $f['transformed'] = true;
