@@ -19,7 +19,6 @@
   $Repo = $app->repo('User');
   $vars = array();
   
-  //$subsites = $Repo->getSubsitesCanAddRoles($app->user->id);
   $subsites = $Repo->getSubsitesAdminRoles($app->user->id);
   foreach ($roles as $roleSlug => $roleInfo) {
     $vars['list_' . $roleSlug] = [];
