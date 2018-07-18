@@ -3,7 +3,7 @@ services:
   web:
     image: nginx
     volumes:
-     - ./compose/local/nginx.conf:/etc/nginx/conf.d/default.conf
+     - ./compose/production/nginx.conf:/etc/nginx/conf.d/default.conf
      - ./docker-data/public-files:/var/www/html/files
      - ./docker-data/assets:/var/www/html/assets
 
