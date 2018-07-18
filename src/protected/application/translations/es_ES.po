@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-06-21 23:59-0300\n"
+"POT-Creation-Date: 2018-07-17 00:32-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -753,6 +753,7 @@ msgstr "Oportunidad"
 #: themes/BaseV1/layouts/parts/home-search.php:28
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:70
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:71
+#: themes/culturaenlinea/layouts/parts/home-search.php:47
 msgid "Oportunidades"
 msgstr "Oportunidades"
 
@@ -3078,6 +3079,7 @@ msgstr "Recibir copia de la renuncia"
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:78
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:30
 #: themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:71
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:35
 msgid "Cancelar"
 msgstr "Cancelar"
 
@@ -3758,7 +3760,6 @@ msgstr "Fecha inicial"
 #: themes/BaseV1/layouts/parts/search/filter.php:19
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:10
 #: themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
-#: themes/culturaenlinea/layouts/parts/search/filter.php:19
 msgid "a"
 msgstr "hasta"
 
@@ -6403,59 +6404,74 @@ msgid "Tamanho máximo do arquivo: "
 msgstr "Tamaño máximo de archivo: "
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:42
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:25
 msgid "Ver resultados em lista"
 msgstr "Ver resultados en lista"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:43
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:26
 msgid "Ver resultados no mapa"
 msgstr "Ver resultados en el mapa"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:46
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:29
 msgid "Exportar dados"
 msgstr "Exportar datos"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:49
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:32
 msgid "Compartilhar resultado"
 msgstr "Compartir resultado"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:51
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:34
 msgid "Compartilhar resultado: "
 msgstr "Compartir resultado: "
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:64
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:46
 msgid "obtendo resultados..."
 msgstr "obteniendo resultados..."
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:69
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:51
 msgid "agentes sem localização"
 msgstr "agentes sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:75
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:57
 msgid "sem localização"
 msgstr "sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:82
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:64
 msgid "eventos sem localização"
 msgstr "eventos sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:104
 #: themes/BaseV1/layouts/parts/busca-avancada.php:110
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:82
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:88
 msgid "Nenhum resultado encontrado"
 msgstr "Ningún resultado encontrado"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:105
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:83
 msgid "resultados sem localização"
 msgstr "resultados sin localización"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:140
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:118
 msgid "Área Delimitada"
 msgstr "Área Delimitada"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:141
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:119
 msgid "Próximo a mim"
 msgstr "Próximo a mi"
 
 #: themes/BaseV1/layouts/parts/busca-avancada.php:144
+#: themes/culturaenlinea/layouts/parts/busca-avancada.php:122
 msgid "Remover todos filtros"
 msgstr "Remover todos los filtros"
 
@@ -6502,11 +6518,14 @@ msgstr "Seleccione proyecto padre"
 #: themes/BaseV1/layouts/parts/entity-parent.php:27
 #: themes/BaseV1/layouts/parts/entity-parent.php:34
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:30
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:35
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:37
 msgid "Selecionar"
 msgstr "Seleccionar"
 
 #: themes/BaseV1/layouts/parts/entity-parent.php:41
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:12
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:19
 #: themes/BaseV1/views/event/create.php:44
 #: themes/BaseV1/views/event/create.php:401
 #: themes/BaseV1/views/event/edit.php:44 themes/BaseV1/views/event/edit.php:401
@@ -6748,12 +6767,11 @@ msgstr "Escriba una palabra clave"
 #: themes/BaseV1/layouts/parts/home-search.php:8
 #: themes/BaseV1/layouts/parts/search/filter.php:14
 #: themes/culturaenlinea/layouts/parts/home-search.php:27
-#: themes/culturaenlinea/layouts/parts/search/filter.php:14
 msgid "Buscar"
 msgstr "Buscar"
 
 #: themes/BaseV1/layouts/parts/home-search.php:37
-#: themes/culturaenlinea/layouts/parts/home-search.php:52
+#: themes/culturaenlinea/layouts/parts/home-search.php:56
 msgid "Saiba mais"
 msgstr "Conozca más"
 
@@ -6909,6 +6927,7 @@ msgstr "Seleccione el agente para el cual desea pasar la propiedad de este"
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:93
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:11
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:32
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:37
 msgid "Nenhum agente encontrado"
 msgstr "Ningún agente encontrado"
 
@@ -7109,6 +7128,7 @@ msgstr "Accesibilidad:"
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:32
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:50
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:68
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:24
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:28
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:46
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:64
@@ -7295,7 +7315,6 @@ msgid "Filtros Avançados"
 msgstr "Filtros Avanzados"
 
 #: themes/BaseV1/layouts/parts/search/filter.php:9
-#: themes/culturaenlinea/layouts/parts/search/filter.php:9
 msgid "Palavra-chave"
 msgstr "Palabra clave"
 
@@ -8211,6 +8230,14 @@ msgstr ""
 msgid "Selecione o agente responsável pela inscrição."
 msgstr "Seleccione el agente responsable por la inscripción."
 
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:12
+msgid "Apenas são visíveis os agentes publicados."
+msgstr "Solo son visibles los agentes publicados."
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:12
+msgid "Ver mais."
+msgstr "Ver más."
+
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:16
 msgid "Fazer inscrição"
 msgstr "Realizar inscripción"
@@ -8548,6 +8575,7 @@ msgid "Finalizar Avaliação e Avançar"
 msgstr "Finalizar Evaluación y Siguiente"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:2
+#: themes/BaseV1/layouts/parts/singles/registration-single--agents.php:10
 msgid "Agentes (proponentes)"
 msgstr "Agentes (postulantes)"
 
@@ -8662,6 +8690,7 @@ msgstr "Después de enviada, no será posible editarla."
 msgid "Enviar inscrição"
 msgstr "Enviar inscripción"
 
+# gets full date in the format "26 de {January} de 2015 às 17:00" and uses App translation to replace english month name inside curly brackets to the equivalent in portuguese. It avoids requiring the operating system to have portuguese locale as used in this example: http://pt.stackoverflow.com/a/21642 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:9
 msgid "%d de {%B} de %G às %H:%M"
 msgstr "%d de {%B} de %G a las %H:%M"
