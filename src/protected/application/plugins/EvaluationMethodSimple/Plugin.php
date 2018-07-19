@@ -39,11 +39,47 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $app = App::i();
 
         $app->view->enqueueScript('app', 'simple-evaluation-form', 'js/ng.evaluationMethod.simple.js', ['entity.module.opportunity']);
+        $app->view->enqueueStyle('app', 'simple-evaluation-method', 'css/simple-evaluation-method.css');
+
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.simple';
     }
 
-    public function _init() {
-        ;
+    public function _init()
+    {
+        $app = App::i();
+        $app->hook('evaluationsReport(simple).sections', function (Entities\Opportunity $opportunity, &$sections) use ($app) {
+            $columns = [];
+            $evaluations = $opportunity->getEvaluations();
+
+            foreach ($evaluations as $eva) {
+                $evaluation = $eva['evaluation'];
+                $data = (array)$evaluation->evaluationData;
+                foreach ($data as $id => $d) {
+                    $columns[$id] = $d;
+                }
+            }
+
+            $result = [
+                'registration' => $sections['registration'],
+                'committee' => $sections['committee'],
+            ];
+
+            $sections['evaluation']->columns['obs'] =  (object)[
+                'label' => i::__('Observações'),
+                'getValue' => function (Entities\RegistrationEvaluation $evaluation) {
+                    $evaluation_data = (array)$evaluation->evaluationData;
+                    if (isset($evaluation_data) && isset($evaluation_data['obs'])) {
+                        return $evaluation_data['obs'];
+                    } else {
+                        return '';
+                    }
+                }
+            ];
+
+            $result['evaluation'] = $sections['evaluation'];
+
+            $sections = $result;
+        });
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration) {
