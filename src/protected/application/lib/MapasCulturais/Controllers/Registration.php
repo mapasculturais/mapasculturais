@@ -250,7 +250,7 @@ class Registration extends EntityController {
 
         $entity->checkPermission('view');
 
-        if($entity->status === Entities\Registration::STATUS_DRAFT){
+        if($entity->status === Entities\Registration::STATUS_DRAFT && $this->canUser('modify')){
             parent::GET_edit();
         }else{
             parent::GET_single();
