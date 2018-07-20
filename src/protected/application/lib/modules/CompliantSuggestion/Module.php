@@ -126,7 +126,7 @@ class Module extends \MapasCulturais\Module {
                 /*
                 * Envia e-mail para o administrador para instalação Mapas
                 */
-                $app->applyHook('mapasculturais.compliantMessage.destination', [&$tos]);
+                $app->applyHook('mapasculturais.complaintMessage.destination', [&$tos]);
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $tos,
@@ -145,7 +145,7 @@ class Module extends \MapasCulturais\Module {
                     /*
                     * Envia e-mail de cópia para o remetente da denúncia
                     */
-                    $app->applyHook('mapasculturais.compliantMessage.destination', [&$tos]);
+                    $app->applyHook('mapasculturais.complaintMessage.destination', [&$tos]);
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $email,
