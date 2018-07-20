@@ -1154,7 +1154,7 @@ msgstr "No informado"
 #: protected/application/lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--content-edit.php:12
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:186
 msgid "Sim"
-msgstr "Sim"
+msgstr "Sí"
 
 #: protected/application/conf/event-types.php:49
 #: protected/application/conf/event-types.php:59
