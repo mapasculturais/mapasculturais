@@ -2809,11 +2809,11 @@ class Theme extends MapasCulturais\Theme {
 
     private function modalFooter() {
         $msg = i::__('Todos os campos são obrigatórios.');
-        echo "<p class='entity-modal-footer'> <span class='required'>*</span> $msg </p>";
+        echo "<p class='entity-modal-footer'> <span class='modal-required'>*</span> $msg </p>";
     }
 
     private function renderTitle($title) {
-        echo "<label> $title </label> <span class='required'>*</span>";
+        echo "<label> $title </label> <span class='modal-required'>*</span>";
     }
 
     private function renderFieldMarkUp($field, $entity, $modal_id) {
@@ -2839,7 +2839,10 @@ class Theme extends MapasCulturais\Theme {
     }
 
     public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "") {
-        if ("edit" != $this->controller->action) {
+        $modal_entity = $this->entityClassesShortcuts[$entity];
+        $current_entity = $this->controller->entityClassName;
+
+        if ("edit" != $this->controller->action || ($modal_entity != $current_entity) ) {
             $href_class = ($showIcon) ? "add " : " ";
             $href_class .= $extra_classes;
             $_unidID = uniqid("-");
@@ -2849,10 +2852,10 @@ class Theme extends MapasCulturais\Theme {
                data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity" data-form-action='insert'
                data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
                 <?php echo $label ?>
-                <?php $this->modalCreateEntity($entity, $_modal_id); ?>
             </a>
             <?php
-        }
+            $this->modalCreateEntity($entity, $_modal_id);
+       }
     }
 
     private function getModalEntityName($entity_id, $entity) {
