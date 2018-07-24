@@ -122,10 +122,15 @@ class Module extends \MapasCulturais\Module {
 
             if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
                 $tos = $plugin->setRecipients($app, $entity, true);
-
-                /*
+                
+                /**
+                * @hook {ALL} 'mapasculturais.complaintMessage.destination' Destinátarios e-mail de denúncia 
+                * @hookDescription permitir alterar os destinatários do email enviado pelo formulário de denúncia.
+                * @hookGroup HookEmail
+                * 
                 * Envia e-mail para o administrador para instalação Mapas
                 */
+                $app->applyHook('mapasculturais.complaintMessage.destination', [&$tos]);
                 $app->createAndSendMailMessage([
                     'from' => $app->config['mailer.from'],
                     'to' => $tos,
@@ -144,6 +149,7 @@ class Module extends \MapasCulturais\Module {
                     /*
                     * Envia e-mail de cópia para o remetente da denúncia
                     */
+                    $app->applyHook('mapasculturais.complaintMessage.destination', [&$email]);
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $email,
@@ -187,7 +193,7 @@ class Module extends \MapasCulturais\Module {
                 if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
 
                     $tos = $plugin->setRecipients($app, $entity);
-
+                    $app->applyHook('mapasculturais.suggestionMessage.destination', [&$tos]);
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $tos,
@@ -202,9 +208,14 @@ class Module extends \MapasCulturais\Module {
                     } else {
                         $email = $agent->user->email;
                     }
-                    /*
+                    /**
+                    * @hook {ALL} 'mapasculturais.suggestionMessage.destination' Destinátarios email de contato 
+                    * @hookDescription permitir alterar os destinatários do email enviado pelo formulário de contato.
+                    * @hookGroup HookEmail
+                    *
                     * Envio de E-mail ao responsável da entidade
                     */
+                    $app->applyHook('mapasculturais.suggestionMessage.destination', [&$email]);
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $email,
@@ -225,6 +236,7 @@ class Module extends \MapasCulturais\Module {
                     /*
                     * Envia e-mail de cópia para o remetente da denúncia
                     */
+                    $app->applyHook('mapasculturais.suggestionMessage.destination', [&$email]);
                     $app->createAndSendMailMessage([
                         'from' => $app->config['mailer.from'],
                         'to' => $email,
