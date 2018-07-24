@@ -32,9 +32,10 @@ services:
     links:
       - db
     environment:
-      - POSTGRES_PASSWORD=mapas
-      - POSTGRES_USER=mapas
-      - POSTGRES_DB=mapas
+      - DB_HOST=db
+      - DB_NAME=mapas
+      - DB_USER=mapas
+      - DB_PASS=mapas
 
       - APP_MODE=production
 
