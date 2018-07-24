@@ -32,9 +32,8 @@ $(function(){
                         $(self).find('.flash-message .new-name').text(name);
                         var _href = $(self).find('.flash-message .edit-entity');
 
-                        $(_href).on('click', function() {
-                            location.href = r.editUrl;
-                        });
+                        $(_href).attr('href', r.editUrl);
+
                         // $('.entity-modal').find('.js-close').click();
                     }
 
@@ -553,6 +552,17 @@ MapasCulturais.addEntity = function(e) {
     }
 };
 
+$(document).on('click', '.btn-toggle-attached-modal', function () {
+    var modal = $(this).data('form');
+    if (modal) {
+        toggleMePlease(modal);
+    }
+});
+
+function toggleMePlease(id) {
+    $("div#" + id).toggle();
+    $("#evt-date-local").toggle();
+}
 
 MapasCulturais.EditBox = {
     time: 'fast',

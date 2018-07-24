@@ -2838,7 +2838,7 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "") {
+    public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "", $use_modal = true) {
         $modal_entity = $this->entityClassesShortcuts[$entity];
         $current_entity = $this->controller->entityClassName;
 
@@ -2847,30 +2847,31 @@ class Theme extends MapasCulturais\Theme {
             $href_class .= $extra_classes;
             $_unidID = uniqid("-");
             $_modal_id = "add-" . $entity . $_unidID;
-            ?>
-            <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)"  data-dialog-block="true"
-               data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity" data-form-action='insert'
-               data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
-                <?php echo $label ?>
-            </a>
-            <?php
-            $this->modalCreateEntity($entity, $_modal_id);
-       }
-    }
 
-    private function getModalEntityName($entity_id, $entity) {
-        $app = App::i();
-        $_key = "entities: " . ucwords($entity_id);
-        $_name = $app->view->dict($_key, false);
+            if ($use_modal) {
+                ?>
+                <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)" data-dialog-block="true"
+                   data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity" data-form-action='insert'
+                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
+                    <?php echo $label ?>
+                </a>
+                <?php
+                $this->modalCreateEntity($entity, $_modal_id);
+            } else { ?>
 
-        if (empty($_name)) {
-            $_name = $entity->getEntityTypeLabel();
+                <div>
+                    <a href="javascript:void(0)" class="<?php echo $href_class; ?> btn btn-toggle-attached-modal btn-info" data-form="<?php echo $_modal_id; ?>"
+                       style="border: 1px solid #d3d3d35e; position: absolute; left: 250px; top: 40px;">
+                        <?php echo $label ?>
+                    </a>
+                    <?php $this->modalCreateEntity($entity, $_modal_id,$use_modal); ?>
+                </div>
+                <?php
+            }
         }
-
-        return $_name;
     }
 
-    public function modalCreateEntity($entity, $_id) {
+    public function modalCreateEntity($entity, $_id, $use_modal = true) {
         $app = App::i();
         $_entity_class = $this->entityClassesShortcuts[$entity];
         $_new_entity = new $_entity_class();
@@ -2881,21 +2882,29 @@ class Theme extends MapasCulturais\Theme {
 
         $_modal_title = "Criar $_name - dados básicos";
         $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
+        $base_class = "js-dialog";
 
+        if (!$use_modal) {
+            $base_class = "";
+        }
         $extra_wrapper_classes = '';
         $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
         ?>
 
-        <div id="<?php echo $_id; ?>" class="js-dialog entity-modal <?php echo $extra_wrapper_classes; ?>" title="<?php echo $_modal_title; ?>"> <hr>
+        <div id="<?php echo $_id; ?>" class="entity-modal <?php echo $base_class . " " . $extra_wrapper_classes; ?>"
+             title="<?php echo $_modal_title; ?>" style="display: none">
+
+            <?php echo ($use_modal) ? "<hr>" : ""; ?>
 
             <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
 
-            <form class="create-entity" data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>">
+            <form class="create-entity" method="POST" action="<?php echo $url; ?>"
+                  data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>">
 
                 <p class="flash-message hidden">
                     <span class="entidade">Entidade criada com sucesso!</span><br>
                     Deseja ir para a página de edição de <span class="new-name">nome</span> agora?
-                    <input class="edit-entity" type="button" value="Ir para página de edição" />
+                    <a href="#" class="edit-entity"> Ir para página de edição </a>
                 </p>
 
                 <?php
@@ -2920,5 +2929,15 @@ class Theme extends MapasCulturais\Theme {
     <?php
     }
 
+    private function getModalEntityName($entity_id, $entity) {
+        $app = App::i();
+        $_key = "entities: " . ucwords($entity_id);
+        $_name = $app->view->dict($_key, false);
 
+        if (empty($_name)) {
+            $_name = $entity->getEntityTypeLabel();
+        }
+
+        return $_name;
+    }
 }
