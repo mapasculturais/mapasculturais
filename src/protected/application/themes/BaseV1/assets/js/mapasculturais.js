@@ -8,6 +8,11 @@ function charCounter(obj){
         $('#charCounter').text(($(obj).val().length + '/' + max[1]));
 }
 
+function toggleAttachedModal(el, modal_id) {
+    $("div#" + modal_id).toggle();
+    $("#evt-date-local").toggle();
+}
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
@@ -16,6 +21,7 @@ $(function(){
         e.preventDefault();
         var _url = $(this).data('entity');
         var _entity = $(this).serializeArray();
+        var _form = $(this).data('formid');
         var self = this;
         $.ajax({
             url: _url, type: 'POST',
@@ -32,8 +38,9 @@ $(function(){
                         $(self).find('.flash-message .new-name').text(name);
                         var _href = $(self).find('.flash-message .edit-entity');
 
-                        $(_href).attr('href', r.editUrl);
-
+                        if ($(self).hasClass('is-attached')) {
+                            toggleAttachedModal(this,_form);
+                        }
                         // $('.entity-modal').find('.js-close').click();
                     }
 
@@ -551,18 +558,6 @@ MapasCulturais.addEntity = function(e) {
         MapasCulturais.Modal.open(_modal);
     }
 };
-
-$(document).on('click', '.btn-toggle-attached-modal', function () {
-    var modal = $(this).data('form');
-    if (modal) {
-        toggleMePlease(modal);
-    }
-});
-
-function toggleMePlease(id) {
-    $("div#" + id).toggle();
-    $("#evt-date-local").toggle();
-}
 
 MapasCulturais.EditBox = {
     time: 'fast',

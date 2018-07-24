@@ -2858,14 +2858,7 @@ class Theme extends MapasCulturais\Theme {
                 <?php
                 $this->modalCreateEntity($entity, $_modal_id);
             } else { ?>
-
-                <div>
-                    <a href="javascript:void(0)" class="<?php echo $href_class; ?> btn btn-toggle-attached-modal btn-info" data-form="<?php echo $_modal_id; ?>"
-                       style="border: 1px solid #d3d3d35e; position: absolute; left: 250px; top: 40px;">
-                        <?php echo $label ?>
-                    </a>
-                    <?php $this->modalCreateEntity($entity, $_modal_id,$use_modal); ?>
-                </div>
+                <div data-form="<?php echo $_modal_id; ?>"> <?php $this->modalCreateEntity($entity, $_modal_id,$use_modal); ?> </div>
                 <?php
             }
         }
@@ -2894,12 +2887,17 @@ class Theme extends MapasCulturais\Theme {
         <div id="<?php echo $_id; ?>" class="entity-modal <?php echo $base_class . " " . $extra_wrapper_classes; ?>"
              title="<?php echo $_modal_title; ?>" style="display: none">
 
-            <?php echo ($use_modal) ? "<hr>" : ""; ?>
+            <?php
+            if ($use_modal) {
+                echo "<hr>";
+            } else { ?>
+                <button class="btn btn-default" onclick="toggleAttachedModal(this, '<?php echo $_id; ?>')" style="float: left; margin: 0 0 20px 0;width: 15%;"> Cancelar </button>
+            <?php }  ?>
 
             <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
 
-            <form class="create-entity" method="POST" action="<?php echo $url; ?>"
-                  data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>">
+            <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>" style="clear: both;"
+                  data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
 
                 <p class="flash-message hidden">
                     <span class="entidade">Entidade criada com sucesso!</span><br>

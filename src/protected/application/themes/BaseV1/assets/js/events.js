@@ -2,6 +2,13 @@ $(function(){
     MapasCulturais.EventOccurrenceManager.initMapTogglers('.toggle-mapa');
 });
 
+$(document).on('click', '.btn-toggle-attached-modal', function () {
+    var modal = $("#evt-date-local").siblings().find('div').attr('id');
+    if (modal) {
+        toggleAttachedModal(this,modal);
+    }
+});
+
 MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));
@@ -66,7 +73,6 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
       }});
 };
 
-
 MapasCulturais.EventOccurrenceManager = {
     localeDateOptions : {
         locale : 'pt-BR',
@@ -89,12 +95,17 @@ MapasCulturais.EventOccurrenceManager = {
         $(selector).ajaxForm({
             success: function (response, statusText, xhr, $form) {
                 var modal_form = $form[0]['className'];
-                if (modal_form && (modal_form === "create-entity")) {
+                var modal_id = $form[0]['id'];
+
+                if (modal_id && modal_form && (modal_form === "create-entity is-attached")) {
                     var new_space = response.id;
                     var space = response.name;
                     if (new_space && space) {
                         $('.js-search-occurrence-space').data('value', new_space).text(space);
                         $('#espaco-do-evento').val(new_space);
+
+                        var toggle = modal_id.replace('form-for-', '');
+                        toggleAttachedModal(this,toggle);
                     }
                 } else {
                     $form.find('.danger').not('.alert').remove();
@@ -126,9 +137,11 @@ MapasCulturais.EventOccurrenceManager = {
                     var isEditing = $form.data('action') == 'edit';
                     var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-item');
 
-                    response.rule.screen_startsOn = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.startsOn);
-                    response.rule.screen_until = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.until);
-                    response.rule.screen_frequency = MapasCulturais.frequencies[response.rule.frequency];
+                    if (response.rule) {
+                        response.rule.screen_startsOn = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.startsOn);
+                        response.rule.screen_until = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.until);
+                        response.rule.screen_frequency = MapasCulturais.frequencies[response.rule.frequency];
+                    }
 
                     var $renderedData = $(Mustache.render(template, response));
                     var $editBtn = $renderedData.find('.js-open-dialog');
