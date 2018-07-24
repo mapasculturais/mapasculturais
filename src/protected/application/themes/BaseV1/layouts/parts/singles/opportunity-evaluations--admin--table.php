@@ -19,7 +19,10 @@
                 <?php \MapasCulturais\i::_e("Agente Responsável");?>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Status / Avaliação");?>
+                <?php \MapasCulturais\i::_e("Avaliação");?>
+            </th>
+            <th class="registration-status-col">
+                <?php \MapasCulturais\i::_e("Status");?>
             </th>
         </tr>
     </thead>
@@ -38,9 +41,13 @@
                 <span ng-if="usingFilters() && data.evaluationsAPIMetadata.count > 1">{{data.evaluationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
-        
+
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
-            <td class="registration-id-col"><strong>{{evaluation.registration.number}}</strong></td>
+            <td class="registration-id-col">
+                <a href='{{evaluation.evaluation.singleUrl}}'>
+                    <strong>{{evaluation.registration.number}}</strong>
+                </a>
+            </td>
             <td class="registration-id-col">{{evaluation.valuer.name}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
@@ -50,10 +57,10 @@
                 </p>
             </td>
             <td class="registration-status-col">
-                <a href='{{evaluation.evaluation.singleUrl}}'>
-                    <strong ng-show="getEvaluationResultString(evaluation)">{{getEvaluationStatusLabel(evaluation)}} / {{getEvaluationResultString(evaluation)}}</strong>
-                    <span ng-hide="getEvaluationResultString(evaluation)">{{getEvaluationStatusLabel(evaluation)}}</span>
-                </a>
+                {{getEvaluationResultString(evaluation)}}
+            </td>
+            <td class="registration-status-col">
+                <strong>{{getEvaluationStatusLabel(evaluation)}}</strong>
             </td>
         </tr>
     </tbody>
