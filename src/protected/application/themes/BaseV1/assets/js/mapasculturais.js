@@ -386,6 +386,8 @@ jQuery(document).ready(function(){
     $(window).on('hashchange', function(){
         editableEntityAddHash();
     });
+}).on('click', '.close-modal', function() {
+    MapasCulturais.Modal.close('.entity-modal');
 });
 
 
