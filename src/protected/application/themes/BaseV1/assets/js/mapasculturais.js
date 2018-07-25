@@ -33,10 +33,13 @@ $(function(){
                     MapasCulturais.Messages.success(msg);
 
                     if (r.editUrl) {
-                        $(self).find('.flash-message').show();
-                        $(self).find('.flash-message .entidade').text(msg);
-                        $(self).find('.flash-message .new-name').text(name);
-                        var _href = $(self).find('.flash-message .edit-entity');
+                        $(self).siblings().find('.flash-message').show();
+                        $(self).siblings().find('.flash-message .entidade').text(msg);
+                        $(self).siblings().find('.flash-message .new-name').text(name);
+                        var _href = $(self).siblings().find('.flash-message .edit-entity');
+
+                        $(_href).attr('href', r.editUrl);
+                        $(self).hide();
 
                         if ($(self).hasClass('is-attached')) {
                             toggleAttachedModal(this,_form);

@@ -477,8 +477,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 >{{space.name}}</span>
         </div>
 
-        <a href="javascript:void(0)" class="add btn btn-toggle-attached-modal btn-info" style="border: 1px solid #d3d3d35e; position: absolute; left: 250px; top: 40px;">
-            Ou crie e vincule um novo espaço
+        <a href="javascript:void(0)" class="add btn btn-toggle-attached-modal btn-info">
+            <?php \MapasCulturais\i::esc_attr_e('Ou crie e vincule um novo espaço'); ?>
         </a>
 
         <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> cadastrado
