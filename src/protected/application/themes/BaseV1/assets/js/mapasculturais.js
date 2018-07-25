@@ -33,12 +33,18 @@ $(function(){
                     MapasCulturais.Messages.success(msg);
 
                     if (r.editUrl) {
-                        $(self).siblings().find('.flash-message').show();
-                        $(self).siblings().find('.flash-message .entidade').text(msg);
-                        $(self).siblings().find('.flash-message .new-name').text(name);
-                        var _href = $(self).siblings().find('.flash-message .edit-entity');
+                        $(self).prev().show();
+                        $(self).prev().find('.entidade').text(msg);
+                        $(self).prev().find('.new-name').text(name);
 
-                        $(_href).attr('href', r.editUrl);
+                        var $view_btn = $(self).prev().find('.view-entity');
+                        var $link = $(self).prev().find('.entity-url');
+                        var $edit_btn = $(self).prev().find('.edit-entity');
+
+                        $($edit_btn).attr('href', r.editUrl);
+                        $($view_btn).attr('href', r.singleUrl);
+                        $($link).attr('href', r.singleUrl);
+
                         $(self).hide();
 
                         if ($(self).hasClass('is-attached')) {
