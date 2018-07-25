@@ -16,6 +16,9 @@ $has_private_location = isset($has_private_location) && $has_private_location
         </div>
         <!--.mapa-->
         <div class="infos">
+
+            <?php $this->applyTemplateHook('location-info','before'); ?>
+
             <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Endereço");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
             <p class="endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
             <p><span class="label"><?php \MapasCulturais\i::_e("CEP");?>:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CEP");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CEP");?>" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
@@ -35,6 +38,8 @@ $has_private_location = isset($has_private_location) && $has_private_location
                     </span>
                 </p>
             <?php endif; ?>
+
+            <?php $this->applyTemplateHook('location-info','after'); ?>
 
             <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey; ?>
                 <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
