@@ -18,6 +18,9 @@ $(function(){
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
 
     $("form.create-entity").submit(function (e) {
+        $('.modal-loading').show();
+        $(this).hide();
+
         e.preventDefault();
         var _url = $(this).data('entity');
         var _entity = $(this).serializeArray();
@@ -33,6 +36,7 @@ $(function(){
                     MapasCulturais.Messages.success(msg);
 
                     if (r.editUrl) {
+                        $('.modal-loading').hide();
                         $(self).prev().show();
                         $(self).prev().find('.entidade').text(msg);
                         $(self).prev().find('.new-name').text(name);
@@ -44,8 +48,6 @@ $(function(){
                         $($edit_btn).attr('href', r.editUrl);
                         $($view_btn).attr('href', r.singleUrl);
                         $($link).attr('href', r.singleUrl);
-
-                        $(self).hide();
 
                         if ($(self).hasClass('is-attached')) {
                             toggleAttachedModal(this,_form);

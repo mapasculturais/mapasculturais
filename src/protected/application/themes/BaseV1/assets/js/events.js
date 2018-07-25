@@ -106,11 +106,14 @@ MapasCulturais.EventOccurrenceManager = {
                     var new_space = response.id;
                     var space = response.name;
                     if (new_space && space) {
+                        MapasCulturais.Messages.success("Espaço criado com sucesso!");
+
                         $('.js-search-occurrence-space').data('value', new_space).text(space);
                         $('#espaco-do-evento').val(new_space);
 
                         var toggle = modal_id.replace('form-for-', '');
                         toggleAttachedModal(this,toggle);
+                        $('.modal-loading').hide();
                     }
                 } else {
                     $form.find('.danger').not('.alert').remove();
@@ -185,8 +188,8 @@ MapasCulturais.EventOccurrenceManager = {
             },
             dataType:  'json',
             beforeSubmit: function(arr, $form, options) {
-
                 if (arr && arr.length == 5) {
+                    $('.modal-loading').show();
                     return true;
                 } else {
                     if ($form.find('input[name="description"]').data('synced') != 1)
