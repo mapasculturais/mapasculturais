@@ -2877,8 +2877,11 @@ class Theme extends MapasCulturais\Theme {
         $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
         $base_class = "js-dialog";
 
+        $cancel_class = "close-modal";
+
         if (!$use_modal) {
             $base_class = "";
+            $cancel_class = "close-attached-modal";
         }
         $extra_wrapper_classes = '';
         $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
@@ -2909,7 +2912,11 @@ class Theme extends MapasCulturais\Theme {
 
                 <?php $app->applyHook('mapasculturais.add_entity_modal.footer'); ?>
 
-                <input type="submit" value="Adicionar <?php echo $_name; ?>">
+                <div class="actions">
+                    <button type="button" class="btn btn-default <?php echo $cancel_class; ?>" data-form-id='<?php echo $_id; ?>'> <?php \MapasCulturais\i::_e("Cancelar");?> </button>
+                    <input type="submit" class="btn btn-primary" value="Adicionar <?php echo $_name; ?>">
+                </div>
+
             </form>
 
             <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?>
@@ -2932,10 +2939,8 @@ class Theme extends MapasCulturais\Theme {
 
     private function getPreFormContent($appInstance, $use_modal = true, $modal_id) {
         $html = "<hr />";
-
         if (!$use_modal) {
-            $txt = \MapasCulturais\i::esc_attr__('Cancelar');
-            $html = "<button class='close-attached-modal btn btn-default' data-form-id='$modal_id'> $txt </button>";
+            $html = "<br>";
         }
 
         $appInstance->applyHook('mapasculturais.add_entity_modal.form:before');

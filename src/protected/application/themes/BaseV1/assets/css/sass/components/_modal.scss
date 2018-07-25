@@ -168,6 +168,20 @@
 
     select { display: block !important; }
 
+    .actions {
+        float: left;
+        width: 100%;
+
+        button, input {
+            float: left;
+            display: inline-block;
+        }
+        input {
+            width: auto;
+            float: right;
+        }
+    }
+
     .modal-required { color: darkred; }
 
     button.close-attached-modal {
@@ -184,7 +198,6 @@
 
 #evt-date-local {
     .btn-toggle-attached-modal {
-        border: 1px solid #d3d3d35e;
         margin-bottom: 20px;
     }
 }

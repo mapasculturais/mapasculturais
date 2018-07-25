@@ -477,7 +477,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 >{{space.name}}</span>
         </div>
 
-        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-info">
+        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-default">
             <?php \MapasCulturais\i::esc_attr_e('Ou crie e vincule um novo espaço'); ?>
         </a>
 
