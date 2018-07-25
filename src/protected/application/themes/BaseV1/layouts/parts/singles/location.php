@@ -41,11 +41,19 @@ $has_private_location = isset($has_private_location) && $has_private_location
 
             <?php $this->applyTemplateHook('location-info','after'); ?>
 
-            <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey; ?>
+            <?php $geoFirst = true; foreach($app->getRegisteredGeoDivisions() as $k => $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey;?>
+                <?php if($geoFirst) { $geoFirst = false; ?>
+                    <div class="sobre-info-geo-bt">
+                        <a href="#"><?php \MapasCulturais\i::_e("Informações Geográficas");?></a>
+                    </div>
+                <?php }?>
+
+                <?php if($k == 0) echo '<div class="sobre-info-geo" style="display:none;">'; ?>
                 <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
                     <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
                 </p>
             <?php endforeach; ?>
+            </div><!--.sobre-info-geo-->
         </div>
         <!--.infos-->
     </div>

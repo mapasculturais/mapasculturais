@@ -15,3 +15,4 @@
 * Faz com que os temas presente no diretório `themes` sejam ativados automaticamente. (#170)
 * Adiciona o campo referente ao shortcuts (singleUrl por exemplo) ao chamar a API describe.
 * Adiciona a opção `Meu Perfil` aos menus, direcionando para o agente padrão. (#151)
+* Separa informações geográficas, geradas automaticamente, do endereço informado pelo agente ([#189](https://github.com/culturagovbr/mapasculturais/issues/189))

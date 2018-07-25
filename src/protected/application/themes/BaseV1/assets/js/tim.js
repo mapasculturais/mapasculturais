@@ -147,6 +147,11 @@
             lastScrollTop = scrollTop;
         }
 
+        $(document).on('click', '.sobre-info-geo-bt a', function(event) {
+            event.preventDefault();
+            $('.sobre-info-geo').toggle('fast');
+        });
+
         // animações do scroll
         $(window).scroll(adjustHeader).resize(adjustHeader);
         adjustHeader();
