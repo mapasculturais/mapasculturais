@@ -51,7 +51,6 @@ $this->addRelatedAgentsToJs($entity);
                 </div>
             </div>
             <div ng-if="isEditable && !disabledCD(group.name)" ng-if="isEditable && !disabledCD(group.name)" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Integrante a este Grupo");?>"></div>
-            
             <edit-box ng-if="isEditable" id="{{getCreateAgentRelationEditBoxId(group.name)}}" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agente relacionado");?>" spinner-condition="spinners[group.name]" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true'>
                 <find-entity entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
             </edit-box>

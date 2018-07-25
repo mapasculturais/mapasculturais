@@ -129,15 +129,22 @@
 .entity-modal {
     width: 800px;
 
+    form.create-entity {
+        clear: both;
+    }
+
     .flash-message {
         text-align: center;
-        border: 1.5px solid $green-dark;
-        background: beige;
+        border: 1px solid $gray-light;
+        background: ghostwhite;
         padding: 20px 0 5px 0;
         font-size: 12px;
 
         .entidade {
             font-weight: bolder;
+            display: block;
+            width: 100%;
+            font-size: 22px;
         }
 
         .edit-entity {
@@ -163,8 +170,23 @@
 
     .modal-required { color: darkred; }
 
+    button.close-attached-modal {
+        float: left;
+        margin: 0 0 20px 0;
+        width: 15%;
+    }
+
     .entity-modal-footer {
         color: $gray-dark;
         font-size: $font-size-smaller;
+    }
+}
+
+#evt-date-local {
+    .btn-toggle-attached-modal {
+        border: 1px solid #d3d3d35e;
+        position: absolute;
+        left: 250px;
+        top: 40px;
     }
 }

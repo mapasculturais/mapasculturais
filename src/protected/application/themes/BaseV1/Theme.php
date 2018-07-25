@@ -2858,7 +2858,7 @@ class Theme extends MapasCulturais\Theme {
                 <?php
                 $this->modalCreateEntity($entity, $_modal_id);
             } else { ?>
-                <div data-form="<?php echo $_modal_id; ?>"> <?php $this->modalCreateEntity($entity, $_modal_id,$use_modal); ?> </div>
+                <div data-form="<?php echo $_modal_id; ?>"> <?php $this->modalCreateEntity($entity, $_modal_id, $use_modal); ?> </div>
                 <?php
             }
         }
@@ -2891,19 +2891,15 @@ class Theme extends MapasCulturais\Theme {
             if ($use_modal) {
                 echo "<hr>";
             } else { ?>
-                <button class="btn btn-default" onclick="toggleAttachedModal(this, '<?php echo $_id; ?>')" style="float: left; margin: 0 0 20px 0;width: 15%;"> Cancelar </button>
+                <button class="close-attached-modal btn btn-default" onclick="toggleAttachedModal(this, '<?php echo $_id; ?>')"> Cancelar </button>
             <?php }  ?>
 
             <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
 
-            <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>" style="clear: both;"
-                  data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
+            <?php $this->getModalFeedback(); ?>
 
-                <p class="flash-message hidden">
-                    <span class="entidade">Entidade criada com sucesso!</span><br>
-                    Deseja ir para a página de edição de <span class="new-name">nome</span> agora?
-                    <a href="#" class="edit-entity"> Ir para página de edição </a>
-                </p>
+            <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
+                  data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
 
                 <?php
                 foreach ($_required_keys as $_field_) {
@@ -2937,5 +2933,17 @@ class Theme extends MapasCulturais\Theme {
         }
 
         return $_name;
+    }
+
+    private function getModalFeedback() {
+        $success = \MapasCulturais\i::esc_attr__('Entidade criada com sucesso!');
+        $btn_text = \MapasCulturais\i::esc_attr__('Ir para página de edição');
+
+        echo "<div class='modal-feedback'>
+                <p class='flash-message hidden'>
+                    <span class='entidade'> $success </span>
+                    <a href='javascript:void(0)' class='edit-entity'> $btn_text </a>
+                </p>
+            </div>";
     }
 }
