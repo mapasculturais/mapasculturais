@@ -2873,7 +2873,7 @@ class Theme extends MapasCulturais\Theme {
         $url = $app->createUrl($entity);
         $_name = $this->getModalEntityName($entity, $_new_entity);
 
-        $_modal_title = "Criar $_name - dados básicos";
+        $_modal_title = "Criar $_name com informações básicas";
         $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
         $base_class = "js-dialog";
 
@@ -2892,7 +2892,7 @@ class Theme extends MapasCulturais\Theme {
 
             <?php $this->getPreFormContent($app,$use_modal,$_id); ?>
 
-            <?php $this->renderFeedback(); ?>
+            <?php $this->renderFeedback($entity, $_name); ?>
 
             <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
                   data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
@@ -2948,15 +2948,41 @@ class Theme extends MapasCulturais\Theme {
         echo $html;
     }
 
-    private function renderFeedback() {
+    private function renderFeedback($entity, $label) {
         $success = \MapasCulturais\i::esc_attr__('Entidade criada com sucesso!');
-        $btn_text = \MapasCulturais\i::esc_attr__('Ir para página de edição');
+        $avatar = "/img/avatar--$entity.png";
+        ?>
 
-        echo "<div class='modal-feedback'>
-                <p class='flash-message hidden'>
-                    <span class='entidade'> $success </span>
-                    <a href='javascript:void(0)' class='edit-entity'> $btn_text </a>
-                </p>
-            </div>";
+        <div class="modal-feedback header-content hidden">
+
+            <div class="avatar">
+                <img class="js-avatar-img" src="<?php $this->asset($avatar); ?>">
+            </div>
+
+            <div class="entity-type <?php echo $entity; ?>-type">
+                <div class="icon icon-<?php echo $entity; ?>"></div>
+                <a href="#" class="entity-url">
+                    <?php echo \MapasCulturais\i::esc_attr__('Novo ') . $label; ?>
+                </a>
+            </div>
+
+            <h2><span class="entidade"><?php echo $success; ?></span></h2>
+
+            <div class="options" style="width: 100%; float: left;">
+                <a href='javascript:void(0)' class="btn btn-default close-modal" style="">
+                    <?php \MapasCulturais\i::_e("Continuar navegando"); ?>
+                </a>
+
+                <a href='javascript:void(0)' class='view-entity btn btn-default'>
+                    <?php echo \MapasCulturais\i::__("Ver ") . $label; ?>
+                </a>
+
+                <a href='javascript:void(0)' class='edit-entity btn btn-primary'>
+                    <?php \MapasCulturais\i::_e("Completar edição agora"); ?>
+                </a>
+            </div>
+        </div>
+
+        <?php
     }
 }
