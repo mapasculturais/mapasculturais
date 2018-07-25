@@ -16,7 +16,7 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
         $dataValue = [
             'message'    => $msg
-        ];        
+        ];
         $message = $app->renderMailerTemplate('request_relation', $dataValue);
         $subject = $subject == null ? $message['title'] : $subject;
         $mail = [
@@ -139,7 +139,6 @@ class Module extends \MapasCulturais\Module{
 
             $notified_user_ids = array($requester->id);
 
-
             foreach ($destination->usersWithControl as $user) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
                 if (in_array($user->id, $notified_user_ids))
@@ -161,6 +160,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $module->sendMail($origin->ownerUser->email, $message, $subject);
             }
         });
 
