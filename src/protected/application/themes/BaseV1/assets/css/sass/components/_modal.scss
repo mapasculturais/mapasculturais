@@ -133,6 +133,10 @@
         clear: both;
     }
 
+    .modal-loading {
+        img { width: 5%; }
+    }
+
     .flash-message {
         text-align: center;
         border: 1px solid $gray-light;

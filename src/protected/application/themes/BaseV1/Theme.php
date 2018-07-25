@@ -2939,9 +2939,13 @@ class Theme extends MapasCulturais\Theme {
 
     private function getPreFormContent($appInstance, $use_modal = true, $modal_id) {
         $html = "<hr />";
-        if (!$use_modal) {
+
+        if (!$use_modal)
             $html = "<br>";
-        }
+
+        $gif = $this->asset("img/spinner_192.gif", false);
+        $html .= '<center class="modal-loading hidden"> <p>Enviando...</p>';
+        $html .= "<img src='$gif'> </center>";
 
         $appInstance->applyHook('mapasculturais.add_entity_modal.form:before');
 
