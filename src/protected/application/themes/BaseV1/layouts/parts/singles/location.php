@@ -41,19 +41,24 @@ $has_private_location = isset($has_private_location) && $has_private_location
 
             <?php $this->applyTemplateHook('location-info','after'); ?>
 
-            <?php $geoFirst = true; foreach($app->getRegisteredGeoDivisions() as $k => $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey;?>
-                <?php if($geoFirst) { $geoFirst = false; ?>
+            <?php $html = ''; $geoMeta = false; foreach($app->getRegisteredGeoDivisions() as $k => $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey;?>
+                    <?php
+                        $html .= ($entity->$metakey) ? '<p>' : '<p style="display:none">';
+                        $html .= '<span class="label">' . $geo_division->name . ':</span> <span class="js-geo-division-address" data-metakey="' . $metakey .'">' . $entity->$metakey . '</span></p>';
+
+                        $geoMeta = ($entity->$metakey && !$geoMeta) ? true : $geoMeta;
+                    ?>
+            <?php endforeach;
+
+                if($geoMeta){ ?>
                     <div class="sobre-info-geo-bt">
                         <a href="#"><?php \MapasCulturais\i::_e("Informações Geográficas");?></a>
                     </div>
-                <?php }?>
-
-                <?php if($k == 0) echo '<div class="sobre-info-geo" style="display:none;">'; ?>
-                <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
-                    <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
-                </p>
-            <?php endforeach; ?>
-            </div><!--.sobre-info-geo-->
+                    <div class="sobre-info-geo" style="display:none;">
+                        <?php echo $html; ?>
+                    </div><!--.sobre-info-geo-->
+                <?php }
+            ?>
         </div>
         <!--.infos-->
     </div>
