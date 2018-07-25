@@ -452,7 +452,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">
 
-    <?php $this->renderModalFor('space', true, '', "", false); ?>
+    <?php $this->renderModalFor('space', true, "", "", false); ?>
 
     <form action="{{formAction}}" method="POST" id="evt-date-local">
         <div class="alert danger hidden"></div>
@@ -477,7 +477,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 >{{space.name}}</span>
         </div>
 
-        <a href="javascript:void(0)" class="add btn btn-toggle-attached-modal btn-info">
+        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-info">
             <?php \MapasCulturais\i::esc_attr_e('Ou crie e vincule um novo espaço'); ?>
         </a>
 

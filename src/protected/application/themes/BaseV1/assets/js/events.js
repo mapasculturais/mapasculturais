@@ -2,11 +2,16 @@ $(function(){
     MapasCulturais.EventOccurrenceManager.initMapTogglers('.toggle-mapa');
 });
 
-$(document).on('click', '.btn-toggle-attached-modal', function () {
-    var modal = $("#evt-date-local").siblings().find('div').attr('id');
-    if (modal) {
-        toggleAttachedModal(this,modal);
-    }
+$(document).
+    on('click', '.btn-toggle-attached-modal', function () {
+        var modal = $("#evt-date-local").siblings().find('div').attr('id');
+        if (modal) {
+            toggleAttachedModal(this,modal);
+        }
+    }).
+    on('click', '.close-attached-modal', function() {
+        var modal = $(this).data('form-id');
+        toggleAttachedModal(this, modal);
 });
 
 MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
