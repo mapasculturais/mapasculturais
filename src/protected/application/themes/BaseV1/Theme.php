@@ -2850,9 +2850,9 @@ class Theme extends MapasCulturais\Theme {
 
             if ($use_modal) {
                 ?>
-                <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)" data-dialog-block="true"
-                   data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity" data-form-action='insert'
-                   data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
+                <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)"
+                   data-dialog-block="true" data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity"
+                   data-form-action='insert' data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
                     <?php echo $label ?>
                 </a>
                 <?php
@@ -2882,21 +2882,14 @@ class Theme extends MapasCulturais\Theme {
         }
         $extra_wrapper_classes = '';
         $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
+        $base_class .= " " . $extra_wrapper_classes;
         ?>
 
-        <div id="<?php echo $_id; ?>" class="entity-modal <?php echo $base_class . " " . $extra_wrapper_classes; ?>"
-             title="<?php echo $_modal_title; ?>" style="display: none">
+        <div id="<?php echo $_id; ?>" class="entity-modal <?php echo $base_class ?>" title="<?php echo $_modal_title; ?>" style="display: none">
 
-            <?php
-            if ($use_modal) {
-                echo "<hr>";
-            } else { ?>
-                <button class="close-attached-modal btn btn-default" onclick="toggleAttachedModal(this, '<?php echo $_id; ?>')"> Cancelar </button>
-            <?php }  ?>
+            <?php $this->getPreFormContent($app,$use_modal,$_id); ?>
 
-            <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:before'); ?> </div>
-
-            <?php $this->getModalFeedback(); ?>
+            <?php $this->renderFeedback(); ?>
 
             <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
                   data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
@@ -2909,6 +2902,7 @@ class Theme extends MapasCulturais\Theme {
                 }
                 $this->getEntityAreas($_new_entity, $entity);
                 ?>
+
                 <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
 
                 <?php $this->modalFooter(); ?>
@@ -2918,7 +2912,8 @@ class Theme extends MapasCulturais\Theme {
                 <input type="submit" value="Adicionar <?php echo $_name; ?>">
             </form>
 
-            <div> <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?> </div>
+            <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?>
+
         </div>
     <?php
     }
@@ -2935,7 +2930,20 @@ class Theme extends MapasCulturais\Theme {
         return $_name;
     }
 
-    private function getModalFeedback() {
+    private function getPreFormContent($appInstance, $use_modal = true, $modal_id) {
+        $html = "<hr />";
+
+        if (!$use_modal) {
+            $txt = \MapasCulturais\i::esc_attr__('Cancelar');
+            $html = "<button class='close-attached-modal btn btn-default' data-form-id='$modal_id'> $txt </button>";
+        }
+
+        $appInstance->applyHook('mapasculturais.add_entity_modal.form:before');
+
+        echo $html;
+    }
+
+    private function renderFeedback() {
         $success = \MapasCulturais\i::esc_attr__('Entidade criada com sucesso!');
         $btn_text = \MapasCulturais\i::esc_attr__('Ir para página de edição');
 
