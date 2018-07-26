@@ -22,7 +22,7 @@
                 <?php \MapasCulturais\i::_e("Avaliação");?>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Status");?>
+                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
             </th>
         </tr>
     </thead>

@@ -1273,7 +1273,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
         };
         for(var prop in $scope.evaluationsFilters){
-            if($scope.evaluationsFilters[prop]){
+            if($scope.evaluationsFilters[prop] || $scope.evaluationsFilters[prop] === 0){
                 qdata[prop] = 'EQ(' + $scope.evaluationsFilters[prop] + ')'
             }
         }
@@ -1360,6 +1360,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             category: null,
             owner_default_label: labels['registrationOwnerDefault']
         },
+
+        evaluationStatuses: [
+            {value: null, label: labels['allStatus']},
+            {value: -1, label: labels['pending']},
+            {value: 1, label: labels['evaluated']},
+            {value: 2, label: labels['sent']}
+        ],
 
         registrationStatuses: RegistrationService.registrationStatuses,
 
