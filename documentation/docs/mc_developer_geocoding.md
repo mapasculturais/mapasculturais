@@ -10,10 +10,11 @@ O Mapas Culturais utiliza este processo em dois momentos:
 2. Na busca, ao fazer uma busca por endereço (a caixa de busca dentro do mapa)
 
 Por padrão, é utilizado o serviço [Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim). Mas a opção de utilizar a API do Google Maps para esta tarefa
-pode ser ativada alterando o valor da configuração app.useGoogleGeocode em seu config.php.
+pode ser ativada alterando o valor da configuração app.useGoogleGeocode e app.googleApiKey em seu config.php.
 
 ```PHP
     'app.useGoogleGeocode' => true,
+    'app.googleApiKey'     => '',
 ```
 
 Também é possível, a partir de um tema ou plugin, substituir a ferramenta de geocode por outra de sua preferência.
