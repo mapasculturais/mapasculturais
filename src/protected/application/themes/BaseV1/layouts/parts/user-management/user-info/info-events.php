@@ -6,13 +6,13 @@
 
 <table class="events-table entity-table">
   <caption>
-    <?=\MapasCulturais\i::_e("Eventos");?>
+    <?php \MapasCulturais\i::_e("Eventos");?>
   </caption>
   <thead>
     <tr>
-      <td>id</td>
-      <td>Nome</td>
-      <td>Operações</td>
+      <td><?php \MapasCulturais\i::_e("id");?></td>
+      <td><?php \MapasCulturais\i::_e("Nome");?></td>
+      <td><?php \MapasCulturais\i::_e("Operações");?></td>
       <!-- <td>Subsite</td> -->
     </tr>
   </thead>
@@ -21,10 +21,10 @@
   <?php foreach($events as $event): ?>
     <tr>
       <td>
-        <a href="<?=$event->singleUrl?>" class="icon icon-event"></a>
-        <a href="<?=$event->singleUrl?>"><?=$event->id?></a>
+        <a href="<?php $event->singleUrl?>" class="icon icon-event"></a>
+        <a href="<?php $event->singleUrl?>"><?php $event->id?></a>
       </td>
-      <td><?=$event->name?></td>
+      <td><?php $event->name?></td>
       <td class="fit">
         <div class="entity-actions">
           <?php if($event->status === Event::STATUS_ENABLED): ?>

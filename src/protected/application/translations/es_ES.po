@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-07-24 23:53-0300\n"
+"POT-Creation-Date: 2018-07-27 13:33-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -541,6 +541,10 @@ msgstr "Id"
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:63
 #: themes/BaseV1/Theme.php:1678 themes/BaseV1/layouts/parts/panel-search.php:14
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:110
+#: themes/BaseV1/layouts/parts/user-management/info-admin.php:79
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:12
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:14
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:13
 #: themes/BaseV1/views/agent/create.php:92
 #: themes/BaseV1/views/agent/edit.php:92
 #: themes/BaseV1/views/agent/single.php:92
@@ -833,8 +837,10 @@ msgid "Certificado"
 msgstr "Certificado"
 
 #: conf/conf-base.php:462 themes/BaseV1/Theme.php:648
-#: themes/BaseV1/Theme.php:650 themes/BaseV1/views/panel/index.php:110
-#: themes/culturaenlinea/config.php:114
+#: themes/BaseV1/Theme.php:650
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:13
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
+#: themes/BaseV1/views/panel/index.php:110 themes/culturaenlinea/config.php:114
 msgid "Subsite"
 msgstr "Subsitio"
 
@@ -6381,6 +6387,7 @@ msgstr "Galería"
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:95
 #: themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:25
 #: themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:67
+#: themes/BaseV1/layouts/parts/user-management/info-admin.php:103
 #: themes/BaseV1/layouts/parts/video-gallery.php:57
 #: themes/BaseV1/views/event/create.php:73
 #: themes/BaseV1/views/event/edit.php:73
@@ -9028,6 +9035,59 @@ msgstr "Agregar subproyecto"
 msgid "área de atuação:"
 msgstr "área de actuación:"
 
+#: themes/BaseV1/layouts/parts/user-management/info-admin.php:69
+msgid "Administradores do Subsite:"
+msgstr "Administradores del Subsitio:"
+
+#: themes/BaseV1/layouts/parts/user-management/info-admin.php:80
+msgid "Grupo"
+msgstr "Grupo"
+
+#: themes/BaseV1/layouts/parts/user-management/info-admin.php:81
+msgid "Operação"
+msgstr "Operación"
+
+#: themes/BaseV1/layouts/parts/user-management/info-admin.php:102
+msgid "Você tem certeza que deseja remover este usuário da lista"
+msgstr "Está seguro que desea eliminar este usuario de la lista"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:14
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:163
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:286
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:11
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:13
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:12
+msgid "id"
+msgstr ""
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:18
+msgid "email"
+msgstr ""
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:21
+msgid "autenticação:"
+msgstr "autenticación:"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:22
+msgid "autenticação"
+msgstr "autenticación"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:25
+msgid "id autenticação:"
+msgstr "id autenticación:"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:26
+msgid "id autenticação"
+msgstr "id autenticación"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:32
+msgid "status:"
+msgstr "estatus:"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:33
+msgid "status"
+msgstr "estatus"
+
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:36
 msgid "Ativo"
 msgstr "Activo"
@@ -9035,6 +9095,18 @@ msgstr "Activo"
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:38
 msgid "Inativo"
 msgstr "Inactivo"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:41
+msgid "último login:"
+msgstr "último acceso:"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:42
+msgid "último login"
+msgstr "último acceso:"
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:46
+msgid "data criação"
+msgstr "fecha de creación"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:60
 #: themes/BaseV1/views/panel/index.php:141
@@ -9094,11 +9166,6 @@ msgstr "Borradores"
 #: themes/BaseV1/views/panel/subsite.php:17
 msgid "Lixeira"
 msgstr "Papelera"
-
-#: themes/BaseV1/layouts/parts/user-management/info-user.php:163
-#: themes/BaseV1/layouts/parts/user-management/info-user.php:286
-msgid "id"
-msgstr ""
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:164
 msgid "subsite"
@@ -9176,6 +9243,12 @@ msgstr "Ver espacio"
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-space.php:9
 msgid "obtendo espaços..."
 msgstr "obteniendo espacios"
+
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:14
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:15
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:15
+msgid "Operações"
+msgstr "Operaciones"
 
 #: themes/BaseV1/layouts/parts/video-gallery.php:6
 #: themes/BaseV1/layouts/parts/video-gallery.php:31
