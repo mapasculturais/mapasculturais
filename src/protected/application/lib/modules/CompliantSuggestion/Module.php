@@ -27,14 +27,16 @@ class Module extends \MapasCulturais\Module {
                 $destinatarios[] = $user->email;
             }
 
-            if(!$onlyAdmins) {
+            if (!$onlyAdmins) {
                 $_responsible = $_app->repo('Agent')->find($_entity->owner->id);
+                $_app->disableAccessControl();
                 $_other_recipients = [
                     'entity_public'       => $_entity->emailPublico,
                     'entity_private'      => $_entity->emailPrivado,
                     'responsible_public'  => $_responsible->emailPublico,
                     'responsible_private' => $_responsible->emailPrivado
                 ];
+                $_app->enableAccessControl();
 
                 $mail_validator = new Email();
                 foreach ($_other_recipients as $_recipient) {
@@ -42,7 +44,7 @@ class Module extends \MapasCulturais\Module {
                         $destinatarios[] = $_recipient;
                     }
                 }
-            }
+            }   
 
             return $destinatarios;
         }
@@ -187,11 +189,9 @@ class Module extends \MapasCulturais\Module {
                 'message'       => $this->data['message']
             ];
 
-
             $message = $app->renderMailerTemplate('suggestion',$dataValue);
-            if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-                if(array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
-
+            if (array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
+                if (array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
                     $tos = $plugin->setRecipients($app, $entity);
                     $app->applyHook('mapasculturais.suggestionMessage.destination', [&$tos]);
                     $app->createAndSendMailMessage([
