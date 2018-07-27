@@ -51,7 +51,7 @@ $has_private_location = isset($has_private_location) && $has_private_location
             <?php endforeach;
 
                 if($geoMeta){ ?>
-                    <div class="sobre-info-geo-bt">
+                    <div class="sobre-info-geo-bt hltip icon icon-arrow-up">
                         <a href="#"><?php \MapasCulturais\i::_e("Informações Geográficas");?></a>
                     </div>
                     <div class="sobre-info-geo" style="display:none;">
