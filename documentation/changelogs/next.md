@@ -16,3 +16,4 @@
 * Adiciona o campo referente ao shortcuts (singleUrl por exemplo) ao chamar a API describe.
 * Adiciona a opção `Meu Perfil` aos menus, direcionando para o agente padrão. (#151)
 * Separa informações geográficas, geradas automaticamente, do endereço informado pelo agente ([#189](https://github.com/culturagovbr/mapasculturais/issues/189))
+* Corrige bug ao utilizar Geocoder do Google e a busca por endereço no mapa ([#202](https://github.com/culturagovbr/mapasculturais/issues/202))
