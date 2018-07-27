@@ -24,7 +24,7 @@
         </td>
         <td><?=$space->name?></td>
         <td class="fit"><?=$space->subsite?$space->subsite->name:'';?></td>
-
+        
         <td class="fit">
           <div class="entity-actions">
               <?php if($space->status === Space::STATUS_ENABLED): ?>
@@ -40,9 +40,9 @@
 
               <?php else: ?>
                   <a class="btn btn-small btn-success" href="<?php echo $space->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>
-                  <?php if($space->permissionTo->destroy): ?>
+                  <?php /* if($space->permissionTo->destroy): ?>
                       <a class="btn btn-small btn-danger" href="<?php echo $space->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
-                  <?php endif; ?>
+                  <?php endif; */?> 
               <?php endif; ?>
               
           </div>
