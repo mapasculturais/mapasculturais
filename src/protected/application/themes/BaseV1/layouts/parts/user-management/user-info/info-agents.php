@@ -4,14 +4,14 @@
 ?>
   <table class="agents-table entity-table">
     <caption>
-      <?=\MapasCulturais\i::_e("Agentes");?>
+      <?php \MapasCulturais\i::_e("Agentes");?>
     </caption>
     <thead>
       <tr>
-        <td>id</td>
-        <td>Nome</td>
-        <td>Subsite</td>
-        <td>Operações</td>
+        <td><?php \MapasCulturais\i::_e("id");?></td>
+        <td><?php \MapasCulturais\i::_e("Nome");?></td>
+        <td><?php \MapasCulturais\i::_e("Subsite");?></td>
+        <td><?php \MapasCulturais\i::_e("Operações");?></td>
       </tr>
     </thead>
     <tbody>
@@ -19,10 +19,10 @@
       <tr>
         <td>
           <a class="icon icon-agent"></a>
-          <a href="<?=$agent->singleUrl?>"><?=$agent->id?></a>
+          <a href="<?php $agent->singleUrl?>"><?php $agent->id?></a>
         </td>
-        <td><?=$agent->name?></td>
-        <td class="fit"><?=$agent->subsite?$agent->subsite->name:'';?></td>
+        <td><?php $agent->name?></td>
+        <td class="fit"><?php $agent->subsite?$agent->subsite->name:'';?></td>
         
         <td class="fit">
 
