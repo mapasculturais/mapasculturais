@@ -150,6 +150,7 @@
         $(document).on('click', '.sobre-info-geo-bt a', function(event) {
             event.preventDefault();
             $('.sobre-info-geo').toggle('fast');
+            $(this).parent().toggleClass('open');
         });
 
         // animações do scroll
