@@ -61,7 +61,7 @@ class Module extends \MapasCulturais\Module{
             $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
             $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
 
-            if (!is_null($destino->subsite)) {
+            if (!is_null($destination->subsite)) {
                 $url_destination_panel = $destination->subsite->url . '/painel/';                
             } else {
                 $url_destination_panel = $app->createUrl('panel');
