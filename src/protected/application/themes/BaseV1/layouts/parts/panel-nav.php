@@ -3,6 +3,10 @@
         <?php $app->applyHookBoundTo($this, 'panel.menu:before') ?>
         <li><a <?php if($this->template == 'panel/index') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel') ?>"><span class="icon icon-panel"></span> <?php \MapasCulturais\i::_e("Painel");?></a></li>
         
+        <li>
+            <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"><span class="icon icon-agent"></span> <?php \MapasCulturais\i::_e("Meu Perfil");?></a>
+        </li>
+        
         <?php if($app->isEnabled('events')): ?>
             <?php $this->applyTemplateHook('nav.panel.events','before'); ?>
             <li><a <?php if($this->template == 'panel/events') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icon icon-event"></span> <?php \MapasCulturais\i::_e("Meus Eventos");?></a></li>
@@ -49,17 +53,16 @@
             <?php $this->applyTemplateHook('nav.panel.subsite','after'); ?>
         <?php endif; ?>
 
-
-        <?php if($app->user->is('admin')): ?>
-            <?php $this->applyTemplateHook('nav.panel.listUsers','before'); ?>
-            <li><a <?php if($this->template == 'panel/list-users') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'listUsers') ?>"><span class="icon icon-group"></span> <?php $this->dict('entities: Users and roles') ?></a></li>
-            <?php $this->applyTemplateHook('nav.panel.listUsers','after'); ?>
-        <?php endif; ?>
-
         <?php if($app->isEnabled('apps')): ?>
             <?php $this->applyTemplateHook('nav.panel.apps','before'); ?>
             <li><a <?php if($this->template == 'panel/apps') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'apps') ?>"><span class="icon icon-api"></span> <?php \MapasCulturais\i::_e("Meus Apps");?></a></li>
             <?php $this->applyTemplateHook('nav.panel.apps','after'); ?>
+        <?php endif; ?>
+
+        <?php if($app->user->is('admin')): ?>
+            <?php $this->applyTemplateHook('nav.panel.userManagement','before'); ?>
+            <li><a <?php if($this->template == 'panel/user-management') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement') ?>"><span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Gestão de Usuários");?></a></li>
+            <?php $this->applyTemplateHook('nav.panel.userManagement','after'); ?>
         <?php endif; ?>
 
         <?php $app->applyHookBoundTo($this, 'panel.menu:after') ?>

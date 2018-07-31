@@ -92,8 +92,11 @@
                     &:hover { text-decoration: none; }
                 }
 
+                &.missing { background-color: $alert-info-bg !important; }
+                &.valid { background-color: $alert-success-bg !important;}
+                &.invalid { background-color: $alert-danger-bg !important; }
                 &.current { background: white !important; }
-                &.missing { background-color: $alert-danger-bg; }
+
 
                 .registration-evaluated {
                     font-style: italic;
