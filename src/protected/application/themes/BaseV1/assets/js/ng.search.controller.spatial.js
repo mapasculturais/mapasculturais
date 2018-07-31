@@ -3,6 +3,8 @@
     app.controller('SearchSpatialController', ['$window', '$scope', '$location', "$rootScope", "$timeout", function($window, $scope, $location, $rootScope, $timeout) {
 
         var map = null;
+        if($scope.data.global.locationFilters.address.text != "")
+            filterAddress();
 
         var labels = MapasCulturais.gettext.controllerSpatial;
 
@@ -152,10 +154,10 @@
             });
 
             //to fix address field not getting focus on touch screens
-            $('#endereco').on('click dblclick', function(){
+            $('#endereco').on('click dblclick', function(e){
                 var $self = $(this);
                 $self.focus();
-                $self.stopPropagation();
+                e.stopPropagation();
                 //loose focus on click outslide
                 $('body').one('click', function(event){
                     if($self.parent().find(event.target).length == 0){
