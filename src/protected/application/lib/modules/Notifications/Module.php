@@ -56,12 +56,18 @@ class Module extends \MapasCulturais\Module{
             $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
             $destination_type = strtolower($destination->entityTypeLabel());
-            $url_destination_panel = $destination->subsite->url . '/painel/';
-
+            
             $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
             $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
             $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
-            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";
+
+            if (!is_null($destination->subsite)) {
+                $url_destination_panel = $destination->subsite->url . '/painel/';                
+            } else {
+                $url_destination_panel = $app->createUrl('panel');
+            }
+
+            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";         
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":

@@ -209,7 +209,7 @@
             });
             
             $('#campo-de-busca').on('keydown', function(event){
-                if(event.keyCode === 13 || event.keyCode === 32) {
+                if(event.keyCode === 13) {
                     event.preventDefault();
                     $('#search-filter .submenu-dropdown li#agents-filter').click();
                 } else if(event.keyCode === 27) {
