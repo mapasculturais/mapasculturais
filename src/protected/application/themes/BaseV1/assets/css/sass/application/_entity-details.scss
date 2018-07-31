@@ -26,3 +26,40 @@
     height: 408px;
     margin-bottom: $line-height-base;
 }
+
+.sobre-info-geo-bt{
+    margin-top: 20px;
+
+    &::before{
+        float: right;
+        margin-top: .1rem;
+        margin-left: .1rem;
+
+        transform-origin: 50% 50%;
+
+        transform:         rotate(180deg);
+        -moz-transform:    rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -o-transform:      rotate(180deg);
+        -ms-transform:     rotate(180deg);
+
+        -moz-transition:    all 0.2s ease-in;
+	    -webkit-transition: all 0.2s ease-in;
+	    -o-transition:      all 0.2s ease-in;
+	    transition:         all 0.2s ease-in;
+    }
+
+    &.open{
+        &::before{
+            transform:         rotate(0deg);
+			-moz-transform:    rotate(0deg);
+			-webkit-transform: rotate(0deg);
+			-o-transform:      rotate(0deg);
+			-ms-transform:     rotate(0deg);
+        }
+    }
+}
+
+.sobre-info-geo{
+    margin-left: 1.1rem;
+}
