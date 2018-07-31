@@ -27,9 +27,7 @@ MapasCulturais.geocoder = {
     geocode: function(addressElements, callback) {
         
         this.initialize();
-        
-        this.googleCallback = callback;
-        
+
         var address = false;
         
         if (addressElements.fullAddress)
@@ -44,23 +42,18 @@ MapasCulturais.geocoder = {
             if (addressElements.state)
                 address += ', ' + addressElements.state;
         }
-        
-        this.geocoder.geocode({'address': address + ', Brasil'}, this.googleCallback);
-        
-    },
-    
-    googleCallback: function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var location = results[0].geometry.location;
-            var response = { lat: location.lat(), lon: location.lng() };
-        } else {
-            var response = false;
-        }
-        
-        this.callback(response);
-        
-    }
 
+        this.geocoder.geocode({'address': address + ', ' + MapasCulturais.geocoder.country}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var location = results[0].geometry.location;
+                var response = { lat: location.lat(), lon: location.lng() };
+            } else {
+                var response = false;
+            }
+
+            callback(response);
+        });
+    }
 }
 
 
