@@ -23,10 +23,17 @@ class Module extends \MapasCulturais\Module {
             $_subsite_admins = $_app->repo('User')->getAdmins($_entity->subsiteId);
             $destinatarios = array();
 
-            foreach($_subsite_admins as $user) {
-                $destinatarios[] = $user->email;
+            if ($onlyAdmins) {
+                $dest = 'to';
+            } else {
+                $dest = 'bcc';
             }
 
+            foreach($_subsite_admins as $user) {
+                $destinatarios[$dest][] = $user->email;
+            }
+
+            // Usado para enviar para entidades do contato, e e-mails do responsavel tambem
             if (!$onlyAdmins) {
                 $_responsible = $_app->repo('Agent')->find($_entity->owner->id);
                 $_app->disableAccessControl();
@@ -38,10 +45,13 @@ class Module extends \MapasCulturais\Module {
                 ];
                 $_app->enableAccessControl();
 
+                $first_valid_mail = array_shift($_other_recipients);
+                $destinatarios['to'][] = $first_valid_mail;
+
                 $mail_validator = new Email();
                 foreach ($_other_recipients as $_recipient) {
                     if ($mail_validator->validate($_recipient) && !in_array($_recipient, $destinatarios)) {
-                        $destinatarios[] = $_recipient;
+                        $destinatarios['bcc'][] = $_recipient;
                     }
                 }
             }   
@@ -192,14 +202,22 @@ class Module extends \MapasCulturais\Module {
             $message = $app->renderMailerTemplate('suggestion',$dataValue);
             if (array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
                 if (array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
-                    $tos = $plugin->setRecipients($app, $entity);
+
+                    $destinatarios = $plugin->setRecipients($app, $entity);
+
+                    $tos = $destinatarios['to'];
                     $app->applyHook('mapasculturais.suggestionMessage.destination', [&$tos]);
-                    $app->createAndSendMailMessage([
+                    $bccs = $destinatarios['bcc'];                                
+
+                    $suggestion_mail = [
                         'from' => $app->config['mailer.from'],
-                        'to' => $tos,
+                        'to'  => $tos,
+                        'bcc' => $bccs,
                         'subject' => $message['title'],
                         'body' => $message['body']
-                    ]);
+                    ];
+
+                    $app->createAndSendMailMessage($suggestion_mail);
                 }
 
                 if(isset($agent->user->email) && !empty($agent->user->email)) {
