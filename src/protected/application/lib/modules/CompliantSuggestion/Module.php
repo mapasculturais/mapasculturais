@@ -206,8 +206,10 @@ class Module extends \MapasCulturais\Module {
                     $destinatarios = $plugin->setRecipients($app, $entity);
 
                     $tos = $destinatarios['to'];
-                    $app->applyHook('mapasculturais.suggestionMessage.destination', [&$tos]);
-                    $bccs = $destinatarios['bcc'];                                
+                    $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
+
+                    $bccs = $destinatarios['bcc'];
+                    $app->applyHook('mapasculturais.suggestionMessage.destination_bcc', [&$bccs]);
 
                     $suggestion_mail = [
                         'from' => $app->config['mailer.from'],
