@@ -16,7 +16,7 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
         $dataValue = [
             'message'    => $msg
-        ];        
+        ];
         $message = $app->renderMailerTemplate('request_relation', $dataValue);
         $subject = $subject == null ? $message['title'] : $subject;
         $mail = [
@@ -56,10 +56,18 @@ class Module extends \MapasCulturais\Module{
             $destination_url = $destination->singleUrl;
             $destination_name = $destination->name;
             $destination_type = strtolower($destination->entityTypeLabel());
-
+            
             $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
             $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
             $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+
+            if (!is_null($destination->subsite)) {
+                $url_destination_panel = $destination->subsite->url . '/painel/';                
+            } else {
+                $url_destination_panel = $app->createUrl('panel');
+            }
+
+            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";         
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
@@ -82,44 +90,44 @@ class Module extends \MapasCulturais\Module{
                         $owner_entity_link = "<a href=\"{$owner_entity->singleUrl}\">{$owner_entity->name}</a>";
                         
                         $subject = i::__("Requisição para avaliar oportunidade");
-                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s."), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link);
+                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s. $s"), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link, $urlDestinationPanel_link);
                         $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
                         
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
                         $subject = i::__("Requisição para relacionar agente em uma inscrição");
-                        $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                        $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s. . %s"), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>", $urlDestinationPanel_link);
                         $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
                     }else{
                         $subject = i::__("Requisição para relacionar agente");
                         /* Translators: "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}." */
-                        $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
+                        $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
                         /* Translators: "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada." */
                         $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                     }
                     break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
                     $subject = i::__("Requisição de mudança de propriedade");
-                    $message = sprintf(i::__("%s está requisitando a mudança de propriedade do %s %s para o agente %s."), $profile_link, $origin_type, $origin_link, $destination_link);
+                    $message = sprintf(i::__("%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"), $profile_link, $origin_type, $origin_link, $destination_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para alterar a propriedade do %s %s para o agente %s foi enviada."), $origin_type, $origin_link, $destination_link);
                     break;
                 case "MapasCulturais\Entities\RequestChildEntity":
                     $subject = sprintf(i::__("Requisição para criação de um %s filho"), $origin_type);                    
-                    $message = sprintf(i::__("%s quer que o %s %s seja um %s filho de %s."), $profile_link, $origin_type, $origin_link, $origin_type, $destination_link);                    
+                    $message = sprintf(i::__("%s quer que o %s %s seja um %s filho de %s. %s"), $profile_link, $origin_type, $origin_link, $origin_type, $destination_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para fazer do %s %s um %s filho de %s foi enviada."), $origin_type, $origin_link, $origin_type, $destination_link);
                     break;
                 case "MapasCulturais\Entities\RequestEventOccurrence":
                     $subject = i::__("Requisição para adicionar evento");
-                    $message = sprintf(i::__("%s quer adicionar o evento %s que ocorre %s no espaço %s."), $profile_link, $origin_link, "<em>{$this->rule->description}</em>", $destination_link);
+                    $message = sprintf(i::__("%s quer adicionar o evento %s que ocorre %s no espaço %s. %s"), $profile_link, $origin_link, "<em>{$this->rule->description}</em>", $destination_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."), $origin_link, $destination_link);
                     break;
                 case "MapasCulturais\Entities\RequestEventProject":
                     $subject = i::__("Requisição para relacionar o evento ao projeto");
-                    $message = sprintf(i::__("%s quer relacionar o evento %s ao projeto %s."), $profile_link, $origin_link, $destination_link);
+                    $message = sprintf(i::__("%s quer relacionar o evento %s ao projeto %s. %s"), $profile_link, $origin_link, $destination_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para associar o evento %s ao projeto %s foi enviada."), $origin_link, $destination_link);
                     break;
                 case "MapasCulturais\Entities\RequestSealRelation":
                     $subject = i::__("Requisição para relacionar selo");
-                    $message = sprintf(i::__("%s quer relacionar o selo %s ao %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
+                    $message = sprintf(i::__("%s quer relacionar o selo %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para relacionar o selo %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                     break;
                 default:
@@ -136,7 +144,6 @@ class Module extends \MapasCulturais\Module{
             $notification->save(true);
 
             $notified_user_ids = array($requester->id);
-
 
             foreach ($destination->usersWithControl as $user) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
@@ -159,6 +166,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $module->sendMail($origin->ownerUser->email, $message, $subject);
             }
         });
 

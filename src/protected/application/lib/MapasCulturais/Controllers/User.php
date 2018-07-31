@@ -30,4 +30,54 @@ class User extends Controller {
             }
         }
     }
+
+    public function GET_relatedsAgentsControl() { 
+        //$this->requireAuthentication();
+        $app = App::i();
+        if(!isset($this->getData['userId'])) {
+            $app->pass();
+        }
+        $user = $app->repo('User')->find($this->getData['userId']);
+        $this->json($user->getHasControlAgents());
+    }
+
+    public function GET_relatedsSpacesControl() { 
+        //$this->requireAuthentication();
+        $app = App::i();
+        if(!isset($this->getData['userId'])) {
+            $app->pass();
+        }
+        $user = $app->repo('User')->find($this->getData['userId']);
+        $this->json($user->getHasControlSpaces());
+    }
+
+    public function GET_events() {
+        //$this->requireAuthentication();
+        $app = App::i();
+        if(!isset($this->getData['userId'])) {
+            $app->pass();
+        }
+        $user = $app->repo('User')->find($this->getData['userId']);
+        $this->json($user->getEvents( ));
+    }
+
+    public function GET_relatedsEventsControl() {
+        //$this->requireAuthentication();
+        $app = App::i();
+        if(!isset($this->getData['userId'])) {
+            $app->pass();
+        }
+        $user = $app->repo('User')->find($this->getData['userId']);
+        $this->json($user->getHasControlEvents( ));
+    }
+
+    public function GET_history() {
+        //$this->requireAuthentication();
+        $app = App::i();
+        if(!isset($this->getData['userId'])) {
+            $app->pass();
+        }
+        $roles = $app->repo('User')->getHistory($this->getData['userId']);
+        $this->json($roles);
+    }
 }

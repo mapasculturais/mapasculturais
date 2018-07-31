@@ -163,7 +163,8 @@
                 {value: 2, label: labels['invalid']},
                 {value: 3, label: labels['notSelected']},
                 {value: 8, label: labels['suplente']},
-                {value: 10, label: labels['selected']}
+                {value: 10, label: labels['selected']},
+                {value: 0, label: labels['draft']}
             ],
 
             registrationStatusesNames: [
@@ -1252,13 +1253,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     $scope.$watch('registrationsFilters', function(){
         var qdata = {
-            'status': 'GT(0)',
+            'status': 'GT(-1)',
             '@files': '(zipArchive):url',
             '@opportunity': getOpportunityId(),
             '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
         };
         for(var prop in $scope.registrationsFilters){
-            if($scope.registrationsFilters[prop]){
+            if($scope.registrationsFilters[prop] || $scope.registrationsFilters[prop] === 0){
                 qdata[prop] = 'EQ(' + $scope.registrationsFilters[prop] + ')'
             }
         }
@@ -1845,6 +1846,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         $scope.status_str = function(registration) {
             return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+        };
+
+        $scope.getEvaluationResult = function(registration) {
+
+            if($scope.evaluations[registration.id] == null){
+                return 0;
+            }
+            return $scope.evaluations[registration.id].result;
         };
 
         $scope.show = function(registration){
