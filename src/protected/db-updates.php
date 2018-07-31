@@ -1047,7 +1047,7 @@ return [
                                 CACHE 1;");
     },
 	
-	'create evaluation methods sequence__' => function (){
+	'create evaluation methods sequence' => function (){
         if(__sequence_exists('evaluation_method_configuration_id_seq')){
             echo "evaluation_method_configuration_id_seq sequence already exists";
             return true;
@@ -1055,6 +1055,8 @@ return [
         __exec("CREATE SEQUENCE evaluation_method_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         __exec("ALTER SEQUENCE evaluation_method_configuration_id_seq OWNED BY evaluation_method_configuration.id;");
         __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
+		
+		__exec("SELECT setval('evaluation_method_configuration_id_seq', (select max(id) from evaluation_method_configuration), true);");
 
 
     },
