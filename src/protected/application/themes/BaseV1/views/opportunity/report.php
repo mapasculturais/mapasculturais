@@ -59,7 +59,8 @@ ksort($custom_fields);
 
             <th> <?php i::_e("Avaliação") ?> </th>
             <th><?php i::_e("Status") ?></th>
-
+            <th><?php i::_e("Data da Inscrição") ?></th>
+            <th><?php i::_e("Horário da Inscrição") ?></th>
             <?php showIfField($entity->registrationCategories, $entity->registrationCategTitle); ?>
 
             <?php
@@ -88,6 +89,8 @@ ksort($custom_fields);
                 <?php endif; ?>
                 <td><?php echo $r->getEvaluationResultString(); ?></td>
                 <td><?php echoStatus($r); ?></td>
+                <td><?php echo $r->sentTimestamp->format('d-m-Y');?></td>
+                <td><?php echo $r->sentTimestamp->format('H:i:s');?></td>
 
                 <?php showIfField($entity->registrationCategories, $r->category); ?>
 
