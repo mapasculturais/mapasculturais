@@ -42,7 +42,7 @@
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('último login'); ?>" data-emptytext="">
       <?php $user->lastLoginTimestamp->format('d-m-Y \a\s H:i:s')?>
       </span> <br />
-      <span class="label">data criação:</span>
+      <span class="label"><?php \MapasCulturais\i::_e("data criação:"); ?>data criação:</span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('data criação'); ?>" data-emptytext="">
         <?php $user->createTimestamp->format('d-m-Y \a\s H:i:s')?>
       </span> <br />
