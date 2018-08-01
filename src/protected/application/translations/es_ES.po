@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-07-27 13:33-0300\n"
+"POT-Creation-Date: 2018-07-31 21:12-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -71,21 +71,21 @@ msgstr "Fecha de Nacimiento/Fundación"
 msgid "Data inválida"
 msgstr "Fecha incorrecta"
 
-#: conf/agent-types.php:51 conf/conf-base.php:256
+#: conf/agent-types.php:51 conf/conf-base.php:257
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:183
-#: themes/BaseV1/layouts/parts/singles/location.php:30
+#: themes/BaseV1/layouts/parts/singles/location.php:33
 msgid "Localização"
 msgstr "Localización"
 
 #: conf/agent-types.php:55
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:187
-#: themes/BaseV1/layouts/parts/singles/location.php:34
+#: themes/BaseV1/layouts/parts/singles/location.php:37
 msgid "Pública"
 msgstr "Pública"
 
 #: conf/agent-types.php:56
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:187
-#: themes/BaseV1/layouts/parts/singles/location.php:34
+#: themes/BaseV1/layouts/parts/singles/location.php:37
 msgid "Privada"
 msgstr "Privada"
 
@@ -234,8 +234,8 @@ msgstr "Por favor, introduzca el teléfono 2 en el formato (xx) xxxx-xxxx."
 #: themes/BaseV1/layouts/parts/singles/history_event.php:184
 #: themes/BaseV1/layouts/parts/singles/history_space.php:167
 #: themes/BaseV1/layouts/parts/singles/history_space.php:168
-#: themes/BaseV1/layouts/parts/singles/location.php:19
-#: themes/BaseV1/layouts/parts/singles/location.php:20
+#: themes/BaseV1/layouts/parts/singles/location.php:22
+#: themes/BaseV1/layouts/parts/singles/location.php:23
 #: themes/BaseV1/views/event/create.php:91
 #: themes/BaseV1/views/event/edit.php:91
 #: themes/BaseV1/views/event/single.php:91
@@ -246,7 +246,7 @@ msgstr "Dirección"
 #: lib/MapasCulturais/ApiOutputs/Html.php:31
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:174
 #: themes/BaseV1/layouts/parts/singles/history_space.php:169
-#: themes/BaseV1/layouts/parts/singles/location.php:21
+#: themes/BaseV1/layouts/parts/singles/location.php:24
 msgid "CEP"
 msgstr "CP"
 
@@ -254,7 +254,7 @@ msgstr "CP"
 #: lib/MapasCulturais/ApiOutputs/Html.php:32
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:175
 #: themes/BaseV1/layouts/parts/singles/history_space.php:170
-#: themes/BaseV1/layouts/parts/singles/location.php:22
+#: themes/BaseV1/layouts/parts/singles/location.php:25
 msgid "Logradouro"
 msgstr "Calle"
 
@@ -262,7 +262,7 @@ msgstr "Calle"
 #: lib/MapasCulturais/ApiOutputs/Html.php:33
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:176
 #: themes/BaseV1/layouts/parts/singles/history_space.php:171
-#: themes/BaseV1/layouts/parts/singles/location.php:23
+#: themes/BaseV1/layouts/parts/singles/location.php:26
 #: themes/BaseV1/views/opportunity/report-drafts.php:19
 #: themes/BaseV1/views/opportunity/report.php:56
 msgid "Número"
@@ -272,7 +272,7 @@ msgstr "Número"
 #: lib/MapasCulturais/ApiOutputs/Html.php:34
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:177
 #: themes/BaseV1/layouts/parts/singles/history_space.php:172
-#: themes/BaseV1/layouts/parts/singles/location.php:24
+#: themes/BaseV1/layouts/parts/singles/location.php:27
 msgid "Complemento"
 msgstr "Complemento"
 
@@ -280,34 +280,34 @@ msgstr "Complemento"
 #: lib/MapasCulturais/ApiOutputs/Html.php:35
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:178
 #: themes/BaseV1/layouts/parts/singles/history_space.php:173
-#: themes/BaseV1/layouts/parts/singles/location.php:25
+#: themes/BaseV1/layouts/parts/singles/location.php:28
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:43
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:72
 msgid "Bairro"
 msgstr "Barrio"
 
-#: conf/agent-types.php:173 conf/conf-base.php:173 conf/config.dev.php:37
+#: conf/agent-types.php:173 conf/conf-base.php:174 conf/config.dev.php:37
 #: conf/config.template.php:45 conf/space-types.php:121
 #: lib/MapasCulturais/ApiOutputs/Html.php:36
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:179
 #: themes/BaseV1/layouts/parts/singles/history_space.php:174
-#: themes/BaseV1/layouts/parts/singles/location.php:26
+#: themes/BaseV1/layouts/parts/singles/location.php:29
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:39
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:68
 msgid "Município"
 msgstr "Municipio/Localidad"
 
-#: conf/agent-types.php:179 conf/conf-base.php:170 conf/config.dev.php:34
+#: conf/agent-types.php:179 conf/conf-base.php:171 conf/config.dev.php:34
 #: conf/config.template.php:42 conf/space-types.php:124
 #: lib/MapasCulturais/ApiOutputs/Html.php:37
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: themes/BaseV1/layouts/parts/singles/history_space.php:175
-#: themes/BaseV1/layouts/parts/singles/location.php:27
+#: themes/BaseV1/layouts/parts/singles/location.php:30
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:64
 msgid "Estado"
 msgstr "Departamento"
 
-#: conf/agent-types.php:217 conf/conf-base.php:450 conf/event-types.php:64
+#: conf/agent-types.php:217 conf/conf-base.php:451 conf/event-types.php:64
 #: conf/opportunity-types.php:31 conf/project-types.php:8 conf/seal-types.php:8
 #: conf/space-types.php:168
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:105
@@ -386,7 +386,7 @@ msgstr ""
 msgid "Individual"
 msgstr "Individual"
 
-#: conf/agent-types.php:249 conf/conf-base.php:232
+#: conf/agent-types.php:249 conf/conf-base.php:233
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:72
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:54
@@ -428,9 +428,8 @@ msgid "Solicitação de Recurso de Oportunidade"
 msgstr "Solicitu de Recurso de Oportunidad"
 
 #: conf/conf-base.php:69
-#, fuzzy
 msgid "Solicitação de requisição"
-msgstr "Solicitar renovación"
+msgstr "Solicitar petición"
 
 #: conf/conf-base.php:90 themes/BaseV1/layouts/parts/editable-entity-logo.php:1
 msgid "Mapas Culturais"
@@ -442,61 +441,61 @@ msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
-#: conf/conf-base.php:168 conf/config.dev.php:32 conf/config.template.php:40
+#: conf/conf-base.php:169 conf/config.dev.php:32 conf/config.template.php:40
 msgid "País"
 msgstr "País"
 
-#: conf/conf-base.php:169 conf/config.dev.php:33 conf/config.template.php:41
+#: conf/conf-base.php:170 conf/config.dev.php:33 conf/config.template.php:41
 msgid "Região"
 msgstr "Región"
 
-#: conf/conf-base.php:171 conf/config.dev.php:35 conf/config.template.php:43
+#: conf/conf-base.php:172 conf/config.dev.php:35 conf/config.template.php:43
 msgid "Mesorregião"
 msgstr "Mesorregión"
 
-#: conf/conf-base.php:172 conf/config.dev.php:36 conf/config.template.php:44
+#: conf/conf-base.php:173 conf/config.dev.php:36 conf/config.template.php:44
 msgid "Microrregião"
 msgstr "Microrregión"
 
-#: conf/conf-base.php:174 conf/config.dev.php:38 conf/config.template.php:46
+#: conf/conf-base.php:175 conf/config.dev.php:38 conf/config.template.php:46
 msgid "Zona"
 msgstr "Zona"
 
-#: conf/conf-base.php:175 conf/config.dev.php:39 conf/config.template.php:47
+#: conf/conf-base.php:176 conf/config.dev.php:39 conf/config.template.php:47
 msgid "Subprefeitura"
 msgstr "Subprefectura"
 
-#: conf/conf-base.php:176 conf/config.dev.php:40 conf/config.template.php:48
+#: conf/conf-base.php:177 conf/config.dev.php:40 conf/config.template.php:48
 msgid "Distrito"
 msgstr "Distrito"
 
-#: conf/conf-base.php:177 conf/config.dev.php:41 conf/config.template.php:49
+#: conf/conf-base.php:178 conf/config.dev.php:41 conf/config.template.php:49
 msgid "Setor Censitario"
 msgstr "Sección censal"
 
-#: conf/conf-base.php:181 themes/culturaenlinea/config.php:125
+#: conf/conf-base.php:182 themes/culturaenlinea/config.php:125
 msgid "Não utilizar"
 msgstr "No utilizar"
 
-#: conf/conf-base.php:182 conf/opportunity-types.php:69
+#: conf/conf-base.php:183 conf/opportunity-types.php:69
 #: themes/BaseV1/Theme.php:1795 themes/BaseV1/Theme.php:1837
 #: themes/culturaenlinea/config.php:126
 msgid "Obrigatório"
 msgstr "Obligatorio"
 
-#: conf/conf-base.php:183 conf/opportunity-types.php:68
+#: conf/conf-base.php:184 conf/opportunity-types.php:68
 #: themes/BaseV1/Theme.php:1796 themes/BaseV1/Theme.php:1838
 #: themes/culturaenlinea/config.php:127
 msgid "Opcional"
 msgstr "Opcional"
 
-#: conf/conf-base.php:215 themes/BaseV1/Theme.php:1787
+#: conf/conf-base.php:216 themes/BaseV1/Theme.php:1787
 #: themes/BaseV1/Theme.php:1828 themes/culturaenlinea/config.php:11
 #: themes/culturaenlinea/config.php:159
 msgid "Agente responsável pela inscrição"
 msgstr "Agente responsable por la inscripción"
 
-#: conf/conf-base.php:217
+#: conf/conf-base.php:218
 msgid ""
 "Agente individual (pessoa física) com os campos CPF, Data de Nascimento/"
 "Fundação, Gênero, Orientação Sexual, Raça/Cor, Email Privado e Telefone 1 "
@@ -506,7 +505,7 @@ msgstr ""
 "Fundación, Género, Orientación Sexual, Raza / Color, Email Privado y "
 "Teléfono 1 obligatoriamente completados"
 
-#: conf/conf-base.php:224
+#: conf/conf-base.php:225
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:42
 #: themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:40
 #: themes/BaseV1/layouts/parts/singles/registration-single--seals.php:36
@@ -514,7 +513,7 @@ msgstr ""
 msgid "Instituição responsável"
 msgstr "Institución responsable"
 
-#: conf/conf-base.php:226 themes/culturaenlinea/config.php:170
+#: conf/conf-base.php:227 themes/culturaenlinea/config.php:170
 msgid ""
 "Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/"
 "Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos"
@@ -522,7 +521,7 @@ msgstr ""
 "Agente colectivo (persona jurídica) con los campos RUT, Fecha de "
 "Nacimiento / Fundación, Email Privado y Teléfono 1 completos"
 
-#: conf/conf-base.php:234 themes/culturaenlinea/config.php:178
+#: conf/conf-base.php:235 themes/culturaenlinea/config.php:178
 msgid ""
 "Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email "
 "Privado obrigatoriamente preenchidos"
@@ -530,12 +529,12 @@ msgstr ""
 "Agente colectivo sin RUT , con los campos Fecha de Nacimiento / Fundación e  "
 "Email privado completos"
 
-#: conf/conf-base.php:243 lib/MapasCulturais/ApiOutputs/Html.php:65
+#: conf/conf-base.php:244 lib/MapasCulturais/ApiOutputs/Html.php:65
 #: themes/culturaenlinea/config.php:22 themes/culturaenlinea/config.php:187
 msgid "Id"
 msgstr "Id"
 
-#: conf/conf-base.php:244 lib/MapasCulturais/ApiOutputs/Html.php:68
+#: conf/conf-base.php:245 lib/MapasCulturais/ApiOutputs/Html.php:68
 #: lib/MapasCulturais/EvaluationMethod.php:85
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:23
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:63
@@ -554,17 +553,17 @@ msgstr "Id"
 msgid "Nome"
 msgstr "Nombre"
 
-#: conf/conf-base.php:245 lib/MapasCulturais/ApiOutputs/Html.php:137
+#: conf/conf-base.php:246 lib/MapasCulturais/ApiOutputs/Html.php:137
 #: themes/culturaenlinea/config.php:24 themes/culturaenlinea/config.php:189
 msgid "Data de Criação"
 msgstr "Fecha de creación"
 
-#: conf/conf-base.php:246 themes/culturaenlinea/config.php:25
+#: conf/conf-base.php:247 themes/culturaenlinea/config.php:25
 #: themes/culturaenlinea/config.php:190
 msgid "Data de Atualização"
 msgstr "Fecha de actuaización"
 
-#: conf/conf-base.php:247 lib/MapasCulturais/ApiOutputs/Html.php:77
+#: conf/conf-base.php:248 lib/MapasCulturais/ApiOutputs/Html.php:77
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:98
 #: themes/BaseV1/layouts/parts/singles/history_event.php:99
 #: themes/BaseV1/layouts/parts/singles/history_space.php:102
@@ -587,24 +586,24 @@ msgstr "Fecha de actuaización"
 msgid "Descrição Curta"
 msgstr "Descripción breve"
 
-#: conf/conf-base.php:248 themes/culturaenlinea/config.php:27
+#: conf/conf-base.php:249 themes/culturaenlinea/config.php:27
 #: themes/culturaenlinea/config.php:192
 msgid "Descrição Longa"
 msgstr "Descripción Larga"
 
-#: conf/conf-base.php:249 themes/BaseV1/views/seal/create.php:114
+#: conf/conf-base.php:250 themes/BaseV1/views/seal/create.php:114
 #: themes/BaseV1/views/seal/edit.php:114
 #: themes/BaseV1/views/seal/single.php:114 themes/culturaenlinea/config.php:28
 #: themes/culturaenlinea/config.php:193
 msgid "Conteúdo da Impressão do Certificado"
 msgstr "Contenido de impresión del Certificado"
 
-#: conf/conf-base.php:250 themes/culturaenlinea/config.php:29
+#: conf/conf-base.php:251 themes/culturaenlinea/config.php:29
 #: themes/culturaenlinea/config.php:194
 msgid "Período de Validade"
 msgstr "Plazo de Validez"
 
-#: conf/conf-base.php:251 lib/MapasCulturais/EvaluationMethod.php:101
+#: conf/conf-base.php:252 lib/MapasCulturais/EvaluationMethod.php:101
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:43
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:14
 #: themes/BaseV1/layouts/parts/singles/project-events.php:34
@@ -614,25 +613,25 @@ msgstr "Plazo de Validez"
 msgid "Status"
 msgstr "Estado"
 
-#: conf/conf-base.php:255
+#: conf/conf-base.php:256
 msgid "Localização publicada"
 msgstr "Localización publicada"
 
-#: conf/conf-base.php:257
+#: conf/conf-base.php:258
 msgid "ID usuário"
 msgstr "ID usuario"
 
-#: conf/conf-base.php:448 themes/BaseV1/Theme.php:115
+#: conf/conf-base.php:449 themes/BaseV1/Theme.php:115
 #: themes/BaseV1/layouts/parts/panel-nav.php:4
 #: themes/culturaenlinea/config.php:101
 msgid "Painel"
 msgstr "Panel"
 
-#: conf/conf-base.php:449 themes/culturaenlinea/config.php:102
+#: conf/conf-base.php:450 themes/culturaenlinea/config.php:102
 msgid "Autenticação"
 msgstr "Autenticación"
 
-#: conf/conf-base.php:451 lib/MapasCulturais/ApiOutputs/Html.php:119
+#: conf/conf-base.php:452 lib/MapasCulturais/ApiOutputs/Html.php:119
 #: lib/MapasCulturais/Entities/Event.php:204
 #: themes/BaseV1/layouts/parts/singles/history_event.php:60
 #: themes/BaseV1/views/event/create.php:121
@@ -642,7 +641,7 @@ msgstr "Autenticación"
 msgid "Evento"
 msgstr "Evento"
 
-#: conf/conf-base.php:451 lib/MapasCulturais/Entities/Event.php:202
+#: conf/conf-base.php:452 lib/MapasCulturais/Entities/Event.php:202
 #: themes/BaseV1/Theme.php:580 themes/BaseV1/Theme.php:581
 #: themes/BaseV1/layouts/parts/busca-avancada.php:3
 #: themes/BaseV1/layouts/parts/home-events.php:26
@@ -659,15 +658,14 @@ msgstr "Evento"
 msgid "Eventos"
 msgstr "Eventos"
 
-#: conf/conf-base.php:452 lib/MapasCulturais/ApiOutputs/Html.php:113
+#: conf/conf-base.php:453 lib/MapasCulturais/ApiOutputs/Html.php:113
 #: lib/MapasCulturais/Entities/Agent.php:279
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:5
 #: themes/BaseV1/views/opportunity/report-drafts.php:20
 #: themes/culturaenlinea/config.php:105
 msgid "Agente"
 msgstr "Agente"
 
-#: conf/conf-base.php:452 lib/MapasCulturais/Entities/Agent.php:277
+#: conf/conf-base.php:453 lib/MapasCulturais/Entities/Agent.php:277
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:31
 #: themes/BaseV1/Theme.php:364 themes/BaseV1/Theme.php:365
 #: themes/BaseV1/Theme.php:394 themes/BaseV1/Theme.php:395
@@ -693,14 +691,14 @@ msgstr "Agente"
 msgid "Agentes"
 msgstr "Agentes"
 
-#: conf/conf-base.php:453 lib/MapasCulturais/ApiOutputs/Html.php:30
+#: conf/conf-base.php:454 lib/MapasCulturais/ApiOutputs/Html.php:30
 #: lib/MapasCulturais/ApiOutputs/Html.php:116
 #: lib/MapasCulturais/Entities/Space.php:240 themes/BaseV1/Theme.php:215
 #: themes/BaseV1/Theme.php:216 themes/culturaenlinea/config.php:106
 msgid "Espaço"
 msgstr "Espacio"
 
-#: conf/conf-base.php:453 lib/MapasCulturais/Entities/Space.php:238
+#: conf/conf-base.php:454 lib/MapasCulturais/Entities/Space.php:238
 #: themes/BaseV1/Theme.php:221 themes/BaseV1/Theme.php:222
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:55
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:56
@@ -710,13 +708,13 @@ msgstr "Espacio"
 msgid "Espaços"
 msgstr "Espacios"
 
-#: conf/conf-base.php:454 lib/MapasCulturais/ApiOutputs/Html.php:89
+#: conf/conf-base.php:455 lib/MapasCulturais/ApiOutputs/Html.php:89
 #: lib/MapasCulturais/ApiOutputs/Html.php:122
 #: lib/MapasCulturais/Entities/Project.php:216
 #: themes/BaseV1/layouts/parts/search/infobox-event.php:32
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:27
 #: themes/BaseV1/layouts/parts/singles/history_event.php:261
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:25
+#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:26
 #: themes/BaseV1/views/event/create.php:378
 #: themes/BaseV1/views/event/create.php:405
 #: themes/BaseV1/views/event/edit.php:378
@@ -727,7 +725,7 @@ msgstr "Espacios"
 msgid "Projeto"
 msgstr "Proyecto"
 
-#: conf/conf-base.php:454 lib/MapasCulturais/Entities/Project.php:214
+#: conf/conf-base.php:455 lib/MapasCulturais/Entities/Project.php:214
 #: themes/BaseV1/Theme.php:417 themes/BaseV1/Theme.php:418
 #: themes/BaseV1/layouts/parts/busca-avancada.php:19
 #: themes/BaseV1/layouts/parts/home-projects.php:25
@@ -735,7 +733,6 @@ msgstr "Proyecto"
 #: themes/BaseV1/layouts/parts/search/list-project.php:3
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:60
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:61
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-project-item.php:5
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-project.php:2
 #: themes/BaseV1/views/panel/user-management.php:54
 #: themes/culturaenlinea/config.php:107
@@ -743,11 +740,11 @@ msgstr "Proyecto"
 msgid "Projetos"
 msgstr "Proyectos"
 
-#: conf/conf-base.php:455 lib/MapasCulturais/Entities/Opportunity.php:304
+#: conf/conf-base.php:456 lib/MapasCulturais/Entities/Opportunity.php:304
 msgid "Oportunidade"
 msgstr "Oportunidad"
 
-#: conf/conf-base.php:455 lib/MapasCulturais/Entities/Opportunity.php:302
+#: conf/conf-base.php:456 lib/MapasCulturais/Entities/Opportunity.php:302
 #: lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--tabs-edit.php:1
 #: lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--tabs-single.php:2
 #: themes/BaseV1/Theme.php:467 themes/BaseV1/Theme.php:468
@@ -762,7 +759,7 @@ msgstr "Oportunidad"
 msgid "Oportunidades"
 msgstr "Oportunidades"
 
-#: conf/conf-base.php:456
+#: conf/conf-base.php:457
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:25
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:10
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:25
@@ -774,7 +771,7 @@ msgstr "Oportunidades"
 msgid "Inscrição"
 msgstr "Inscripción"
 
-#: conf/conf-base.php:456 conf/event-types.php:12 conf/project-types.php:82
+#: conf/conf-base.php:457 conf/event-types.php:12 conf/project-types.php:82
 #: lib/modules/OpportunityPhases/layouts/parts/opportunity-phases-tabs.php:6
 #: themes/BaseV1/layouts/parts/search/list-opportunity-item.php:15
 #: themes/BaseV1/layouts/parts/search/list-project-item.php:15
@@ -787,7 +784,7 @@ msgstr "Inscripción"
 msgid "Inscrições"
 msgstr "Inscripciones"
 
-#: conf/conf-base.php:457 conf/taxonomies.php:27
+#: conf/conf-base.php:458 conf/taxonomies.php:27
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:72
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:101
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:131
@@ -802,18 +799,18 @@ msgstr "Inscripciones"
 msgid "Arquivo"
 msgstr "Archivo"
 
-#: conf/conf-base.php:457 conf/space-types.php:255
+#: conf/conf-base.php:458 conf/space-types.php:255
 #: themes/culturaenlinea/config.php:109
 msgid "Arquivos"
 msgstr "Archivos"
 
-#: conf/conf-base.php:458 lib/MapasCulturais/ApiOutputs/Html.php:125
+#: conf/conf-base.php:459 lib/MapasCulturais/ApiOutputs/Html.php:125
 #: lib/MapasCulturais/Entities/Seal.php:190
 #: themes/culturaenlinea/config.php:110
 msgid "Selo"
 msgstr "Sello"
 
-#: conf/conf-base.php:458 conf/opportunity-types.php:57
+#: conf/conf-base.php:459 conf/opportunity-types.php:57
 #: conf/project-types.php:41 lib/MapasCulturais/ApiOutputs/Html.php:128
 #: lib/MapasCulturais/Entities/Seal.php:188 themes/BaseV1/Theme.php:688
 #: themes/BaseV1/Theme.php:689 themes/BaseV1/layouts/parts/home-seals.php:27
@@ -822,21 +819,21 @@ msgstr "Sello"
 msgid "Selos"
 msgstr "Sellos"
 
-#: conf/conf-base.php:459 themes/BaseV1/layouts/parts/history.php:12
+#: conf/conf-base.php:460 themes/BaseV1/layouts/parts/history.php:12
 #: themes/culturaenlinea/config.php:111
 msgid "Histórico"
 msgstr "Histórico"
 
-#: conf/conf-base.php:459 themes/culturaenlinea/config.php:111
+#: conf/conf-base.php:460 themes/culturaenlinea/config.php:111
 msgid "Revisões"
 msgstr "Revisiones"
 
-#: conf/conf-base.php:460 themes/BaseV1/views/seal/printsealrelation.php:25
+#: conf/conf-base.php:461 themes/BaseV1/views/seal/printsealrelation.php:25
 #: themes/culturaenlinea/config.php:112
 msgid "Certificado"
 msgstr "Certificado"
 
-#: conf/conf-base.php:462 themes/BaseV1/Theme.php:648
+#: conf/conf-base.php:463 themes/BaseV1/Theme.php:648
 #: themes/BaseV1/Theme.php:650
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:13
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
@@ -844,27 +841,27 @@ msgstr "Certificado"
 msgid "Subsite"
 msgstr "Subsitio"
 
-#: conf/conf-base.php:463 themes/culturaenlinea/config.php:115
+#: conf/conf-base.php:464 themes/culturaenlinea/config.php:115
 msgid "Listando"
 msgstr "Listando"
 
-#: conf/conf-base.php:464 themes/culturaenlinea/config.php:116
+#: conf/conf-base.php:465 themes/culturaenlinea/config.php:116
 msgid "Índice"
 msgstr "Índice"
 
-#: conf/conf-base.php:465 themes/culturaenlinea/config.php:117
+#: conf/conf-base.php:466 themes/culturaenlinea/config.php:117
 msgid "Apagando"
 msgstr "Eliminando"
 
-#: conf/conf-base.php:466 themes/culturaenlinea/config.php:118
+#: conf/conf-base.php:467 themes/culturaenlinea/config.php:118
 msgid "Editando"
 msgstr "Editando"
 
-#: conf/conf-base.php:467 themes/culturaenlinea/config.php:119
+#: conf/conf-base.php:468 themes/culturaenlinea/config.php:119
 msgid "Criando novo"
 msgstr "Creando nuevo"
 
-#: conf/conf-base.php:468 themes/culturaenlinea/config.php:120
+#: conf/conf-base.php:469 themes/culturaenlinea/config.php:120
 msgid "Busca"
 msgstr "Busca"
 
@@ -2955,7 +2952,6 @@ msgstr "Ningún"
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:31
 #: themes/BaseV1/layouts/parts/singles/project-events.php:36
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:30
 msgid "Linguagem"
 msgstr "Tipo de evento"
 
@@ -2964,7 +2960,6 @@ msgstr "Tipo de evento"
 #: themes/BaseV1/layouts/parts/search/infobox-event.php:42
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:36
 #: themes/BaseV1/layouts/parts/singles/project-events.php:37
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:37
 msgid "Classificação"
 msgstr "Clasificación"
 
@@ -2990,53 +2985,53 @@ msgstr "Descargar planilla"
 msgid "Agenda"
 msgstr "Agenda"
 
-#: lib/modules/CompliantSuggestion/Module.php:80
-#: lib/modules/CompliantSuggestion/Module.php:85
+#: lib/modules/CompliantSuggestion/Module.php:92
+#: lib/modules/CompliantSuggestion/Module.php:97
 msgid "O preenchimento do e-mail é obrigatório."
 msgstr "Es obligatorio competar el correo electrónico."
 
-#: lib/modules/CompliantSuggestion/Module.php:81
+#: lib/modules/CompliantSuggestion/Module.php:93
 msgid "O preenchimento do tipo de denúncia é obrigatório."
 msgstr "Es obligatorio completar el tipo de denuncia."
 
-#: lib/modules/CompliantSuggestion/Module.php:82
+#: lib/modules/CompliantSuggestion/Module.php:94
 msgid "O preenchimento da mensagem da denúncia é obrigatório."
 msgstr "Es obligatorio completar el mensaje de denuncia."
 
-#: lib/modules/CompliantSuggestion/Module.php:83
+#: lib/modules/CompliantSuggestion/Module.php:95
 msgid "A denúncia foi enviada."
 msgstr "La denuncia fue enviada."
 
-#: lib/modules/CompliantSuggestion/Module.php:86
+#: lib/modules/CompliantSuggestion/Module.php:98
 msgid "O preenchimento do tipo de sugestão é obrigatório."
 msgstr "Es obligatorio completar el tipo de sugerencia."
 
-#: lib/modules/CompliantSuggestion/Module.php:87
+#: lib/modules/CompliantSuggestion/Module.php:99
 msgid "O preenchimento da mensagem é obrigatório."
 msgstr "Es obligatorio completar el mensaje."
 
-#: lib/modules/CompliantSuggestion/Module.php:88
+#: lib/modules/CompliantSuggestion/Module.php:100
 msgid "A sugestão foi enviada."
 msgstr "La sugerencia fue enviada."
 
-#: lib/modules/CompliantSuggestion/Module.php:90
+#: lib/modules/CompliantSuggestion/Module.php:102
 msgid "Erro inesperado ao o enviar a mensagem"
 msgstr "Error inesperado al enviar el mensaje"
 
-#: lib/modules/CompliantSuggestion/Module.php:100
-#: lib/modules/CompliantSuggestion/Module.php:102
-#: lib/modules/CompliantSuggestion/Module.php:169
-#: lib/modules/CompliantSuggestion/Module.php:171
+#: lib/modules/CompliantSuggestion/Module.php:112
+#: lib/modules/CompliantSuggestion/Module.php:114
+#: lib/modules/CompliantSuggestion/Module.php:181
+#: lib/modules/CompliantSuggestion/Module.php:183
 msgid "Anônimo"
 msgstr "Anónimo"
 
-#: lib/modules/CompliantSuggestion/Module.php:101
-#: lib/modules/CompliantSuggestion/Module.php:170
+#: lib/modules/CompliantSuggestion/Module.php:113
+#: lib/modules/CompliantSuggestion/Module.php:182
 msgid "Anônima"
 msgstr "Anónima"
 
-#: lib/modules/CompliantSuggestion/Module.php:110
-#: lib/modules/CompliantSuggestion/Module.php:179
+#: lib/modules/CompliantSuggestion/Module.php:122
+#: lib/modules/CompliantSuggestion/Module.php:191
 msgid "Usuário Guest"
 msgstr "Usuario invitado"
 
@@ -3165,27 +3160,27 @@ msgstr "Crear oportunidad"
 msgid "(Rascunho)"
 msgstr "(Borrador)"
 
-#: lib/modules/Notifications/Module.php:86
+#: lib/modules/Notifications/Module.php:92
 msgid "Requisição para avaliar oportunidade"
 msgstr "Solicitud para evaluar oportunidad"
 
-#: lib/modules/Notifications/Module.php:88
+#: lib/modules/Notifications/Module.php:94
 #, php-format
 msgid "Seu convite para fazer do agente %s um avaliador foi enviada."
 msgstr "Su invitación para hacer de agente %s un evaluador fue enviada."
 
-#: lib/modules/Notifications/Module.php:91
+#: lib/modules/Notifications/Module.php:97
 msgid "Requisição para relacionar agente em uma inscrição"
 msgstr "Solicitud para relacionar agente a una inscripción"
 
-#: lib/modules/Notifications/Module.php:92
+#: lib/modules/Notifications/Module.php:98
 #, php-format
 msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s. . %s"
 msgstr ""
 "%s quieres relacionar el agente %s a la inscripción %s en el proyecto %s. . "
 "%s"
 
-#: lib/modules/Notifications/Module.php:93
+#: lib/modules/Notifications/Module.php:99
 #, php-format
 msgid ""
 "Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi "
@@ -3194,32 +3189,32 @@ msgstr ""
 "Su solicitud para relacionar el agente %s a la inscripción %s en el proyecto "
 "%s fue enviada."
 
-#: lib/modules/Notifications/Module.php:95
+#: lib/modules/Notifications/Module.php:101
 msgid "Requisição para relacionar agente"
 msgstr "Solicitud para relacionar agente"
 
-#: lib/modules/Notifications/Module.php:97
+#: lib/modules/Notifications/Module.php:103
 #, php-format
 msgid "%s quer relacionar o agente %s ao %s %s. %s"
 msgstr "%s quieres relacionar el agente %s al %s %s. %s"
 
-#: lib/modules/Notifications/Module.php:99
+#: lib/modules/Notifications/Module.php:105
 #, php-format
 msgid "Sua requisição para relacionar o agente %s ao %s %s foi enviada."
 msgstr "Su solicitud para relacionar el agente %s al %s %s fue enviada."
 
-#: lib/modules/Notifications/Module.php:103
+#: lib/modules/Notifications/Module.php:109
 msgid "Requisição de mudança de propriedade"
 msgstr "Solicitud de cambio de propriedad"
 
-#: lib/modules/Notifications/Module.php:104
+#: lib/modules/Notifications/Module.php:110
 #, php-format
 msgid ""
 "%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"
 msgstr ""
 "%s está solicitando el cambio de propriedad del %s %s para el agente %s. %s"
 
-#: lib/modules/Notifications/Module.php:105
+#: lib/modules/Notifications/Module.php:111
 #, php-format
 msgid ""
 "Sua requisição para alterar a propriedade do %s %s para o agente %s foi "
@@ -3228,31 +3223,31 @@ msgstr ""
 "Su solicitud para cambiar la propiedad del %s %s para el agente %s fue "
 "enviada."
 
-#: lib/modules/Notifications/Module.php:108
+#: lib/modules/Notifications/Module.php:114
 #, php-format
 msgid "Requisição para criação de um %s filho"
 msgstr "Solicitud para crear un %s hijo"
 
-#: lib/modules/Notifications/Module.php:109
+#: lib/modules/Notifications/Module.php:115
 #, php-format
 msgid "%s quer que o %s %s seja um %s filho de %s. %s"
 msgstr "%s quieres que %s %s sea un %s hijo de %s. %s"
 
-#: lib/modules/Notifications/Module.php:110
+#: lib/modules/Notifications/Module.php:116
 #, php-format
 msgid "Sua requisição para fazer do %s %s um %s filho de %s foi enviada."
 msgstr "Su solicitud para hacer de %s %s un %s hijo de %s fue enviada."
 
-#: lib/modules/Notifications/Module.php:113
+#: lib/modules/Notifications/Module.php:119
 msgid "Requisição para adicionar evento"
 msgstr "Solicitud para añadir evento"
 
-#: lib/modules/Notifications/Module.php:114
+#: lib/modules/Notifications/Module.php:120
 #, php-format
 msgid "%s quer adicionar o evento %s que ocorre %s no espaço %s. %s"
 msgstr "%s quieres agregar el evento %s que se produce %s en el espacio %s. %s"
 
-#: lib/modules/Notifications/Module.php:115
+#: lib/modules/Notifications/Module.php:121
 #, php-format
 msgid ""
 "Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."
@@ -3260,114 +3255,114 @@ msgstr ""
 "Su solicitud para crear \"cuándo y dónde\" es el evento %s en el espacio %s "
 "fue enviada."
 
-#: lib/modules/Notifications/Module.php:118
+#: lib/modules/Notifications/Module.php:124
 msgid "Requisição para relacionar o evento ao projeto"
 msgstr "Solicitud para relacionar el evento al proyecto"
 
-#: lib/modules/Notifications/Module.php:119
+#: lib/modules/Notifications/Module.php:125
 #, php-format
 msgid "%s quer relacionar o evento %s ao projeto %s. %s"
 msgstr "%s quieres relacionar el evento %s al proyecto %s. %s"
 
-#: lib/modules/Notifications/Module.php:120
+#: lib/modules/Notifications/Module.php:126
 #, php-format
 msgid "Sua requisição para associar o evento %s ao projeto %s foi enviada."
 msgstr "Su solicitud para asociar el evento %s al proyecto %s fue enviada."
 
-#: lib/modules/Notifications/Module.php:123
+#: lib/modules/Notifications/Module.php:129
 msgid "Requisição para relacionar selo"
 msgstr "Solicitud para relacionar sello"
 
-#: lib/modules/Notifications/Module.php:124
+#: lib/modules/Notifications/Module.php:130
 #, php-format
 msgid "%s quer relacionar o selo %s ao %s %s. %s"
 msgstr "%s quieres relacionar el sello %s al %s %s. %s"
 
-#: lib/modules/Notifications/Module.php:125
+#: lib/modules/Notifications/Module.php:131
 #, php-format
 msgid "Sua requisição para relacionar o selo %s ao %s %s foi enviada."
 msgstr "Su solicitud para relacionar el sello %s al %s %s fue enviada."
 
-#: lib/modules/Notifications/Module.php:188
+#: lib/modules/Notifications/Module.php:194
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
 "%s aceptó la relación del agente %s a la inscripción %s en el proyecto %s."
 
-#: lib/modules/Notifications/Module.php:190
+#: lib/modules/Notifications/Module.php:196
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s com o %s %s."
 msgstr "%s aceptó la relacionar el agente %s con el %s %s."
 
-#: lib/modules/Notifications/Module.php:194
+#: lib/modules/Notifications/Module.php:200
 #, php-format
 msgid "%s aceitou a mudança de propriedade do %s %s para o agente %s."
 msgstr "%s aceptó el cambio de propiedad del %s %s para el agente %s."
 
-#: lib/modules/Notifications/Module.php:197
+#: lib/modules/Notifications/Module.php:203
 #, php-format
 msgid "%s aceitou que o %s %s seja um %s filho de %s."
 msgstr "%s aceptó que el %s %s sea un %s hijo de %s."
 
-#: lib/modules/Notifications/Module.php:200
+#: lib/modules/Notifications/Module.php:206
 #, php-format
 msgid "%s aceitou adicionar o evento %s que ocorre %s no espaço %s."
 msgstr "%s aceptó agregar el evento %s que ocurre %s en el espacio %s."
 
-#: lib/modules/Notifications/Module.php:203
+#: lib/modules/Notifications/Module.php:209
 #, php-format
 msgid "%s aceitou relacionar o evento %s ao projeto %s."
 msgstr "%s aceptó relacionar el evento %s al proyecto %s."
 
-#: lib/modules/Notifications/Module.php:206
+#: lib/modules/Notifications/Module.php:212
 msgid "A requisição foi aprovada."
 msgstr "La solicitud fue aprobada."
 
-#: lib/modules/Notifications/Module.php:272
+#: lib/modules/Notifications/Module.php:278
 #, php-format
 msgid "%s cancelou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
 "%s canceló la relación del agente %s a la inscripción %s en el proyecto %s."
 
-#: lib/modules/Notifications/Module.php:274
+#: lib/modules/Notifications/Module.php:280
 #, php-format
 msgid "%s cancelou o pedido de relacionamento do agente %s com o %s %s."
 msgstr "%s canceló el pedido de relacionar el agente %s con el %s %s."
 
-#: lib/modules/Notifications/Module.php:278
+#: lib/modules/Notifications/Module.php:284
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
 "%s rechazó relacionar el agente %s a la inscripción %s en el proyecto %s."
 
-#: lib/modules/Notifications/Module.php:280
+#: lib/modules/Notifications/Module.php:286
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s com o %s %s."
 msgstr "%s rechazó relacionar el agente %s con el %s %s."
 
-#: lib/modules/Notifications/Module.php:287
-#: lib/modules/Notifications/Module.php:291
+#: lib/modules/Notifications/Module.php:293
+#: lib/modules/Notifications/Module.php:297
 #, php-format
 msgid "%s cancelou o pedido de propriedade do %s %s para o agente %s."
 msgstr "%s canceló el pedido de propiedad del %s %s para el agente %s."
 
-#: lib/modules/Notifications/Module.php:288
-#: lib/modules/Notifications/Module.php:292
+#: lib/modules/Notifications/Module.php:294
+#: lib/modules/Notifications/Module.php:298
 #, php-format
 msgid "%s rejeitou a mudança de propriedade do %s %s para o agente %s."
 msgstr "%s rechazó el cambio de propiedad del %s %s para el agente %s."
 
-#: lib/modules/Notifications/Module.php:297
+#: lib/modules/Notifications/Module.php:303
 #, php-format
 msgid "%s cancelou o pedido para que o %s %s seja um %s filho de %s."
 msgstr "%s canceló el pedido para que el %s %s sea un %s hijo de %s."
 
-#: lib/modules/Notifications/Module.php:298
+#: lib/modules/Notifications/Module.php:304
 #, php-format
 msgid "%s rejeitou que o %s %s seja um %s filho de %s."
 msgstr "%s rechazó que el %s %s sea un %s hijo de %s."
 
-#: lib/modules/Notifications/Module.php:302
+#: lib/modules/Notifications/Module.php:308
 #, php-format
 msgid ""
 "%s cancelou o pedido de autorização do evento %s que ocorre %s no espaço %s."
@@ -3375,26 +3370,26 @@ msgstr ""
 "%s canceló el pedido de autorización del evento %s que ocorre %s en el "
 "espacio %s."
 
-#: lib/modules/Notifications/Module.php:303
+#: lib/modules/Notifications/Module.php:309
 #, php-format
 msgid "%s rejeitou o evento %s que ocorre %s no espaço %s."
 msgstr "%s rechazó el evento %s que ocorre %s en el espacio %s."
 
-#: lib/modules/Notifications/Module.php:307
+#: lib/modules/Notifications/Module.php:313
 #, php-format
 msgid "%s cancelou o pedido de relacionamento do evento %s ao projeto %s."
 msgstr "%s canceló el pedido para relacionar el evento %s al proyecto %s."
 
-#: lib/modules/Notifications/Module.php:308
+#: lib/modules/Notifications/Module.php:314
 #, php-format
 msgid "%s rejeitou o relacionamento do evento %s ao projeto %s."
 msgstr "%s rechazó relacionar el evento %s al proyecto %s."
 
-#: lib/modules/Notifications/Module.php:312
+#: lib/modules/Notifications/Module.php:318
 msgid "A requisição foi cancelada."
 msgstr "La solicitud fue cancelada."
 
-#: lib/modules/Notifications/Module.php:313
+#: lib/modules/Notifications/Module.php:319
 msgid "A requisição foi rejeitada."
 msgstr "La solicitud fue rechazada."
 
@@ -6653,8 +6648,8 @@ msgstr "Eliminar este enlace?"
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:37
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:32
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:37
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:36
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:30
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
 msgid "excluir"
 msgstr "borrar"
 
@@ -6805,7 +6800,7 @@ msgstr "Área(s) de actuación:"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:29
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:33
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:32
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
 msgid "arquivar"
 msgstr "archivar"
 
@@ -6820,7 +6815,7 @@ msgstr "archivar"
 #: themes/BaseV1/layouts/parts/singles/project-events.php:13
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:36
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:36
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:34
 msgid "publicar"
 msgstr "publicar"
 
@@ -6838,7 +6833,7 @@ msgstr "publicar"
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:40
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:42
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:40
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:39
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:38
 msgid "desarquivar"
 msgstr "desarchivar"
 
@@ -6852,7 +6847,7 @@ msgstr "desarchivar"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:39
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:44
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:42
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:42
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:41
 msgid "recuperar"
 msgstr "recuperar"
 
@@ -6865,8 +6860,6 @@ msgstr "recuperar"
 #: themes/BaseV1/layouts/parts/panel-space.php:43
 #: themes/BaseV1/layouts/parts/panel-subsite.php:41
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:46
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:44
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:44
 msgid "excluir definitivamente"
 msgstr "eliminar de forma permanente"
 
@@ -7511,49 +7504,49 @@ msgstr "Ingrese un teléfono que no será exhibido públicamente"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:172
 #: themes/BaseV1/layouts/parts/singles/history_space.php:167
-#: themes/BaseV1/layouts/parts/singles/location.php:19
+#: themes/BaseV1/layouts/parts/singles/location.php:22
 msgid "Insira o endereço"
 msgstr "Ingrese una dirección"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:174
 #: themes/BaseV1/layouts/parts/singles/history_space.php:169
-#: themes/BaseV1/layouts/parts/singles/location.php:21
+#: themes/BaseV1/layouts/parts/singles/location.php:24
 msgid "Insira o CEP"
 msgstr "Ingrese el CP"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:175
 #: themes/BaseV1/layouts/parts/singles/history_space.php:170
-#: themes/BaseV1/layouts/parts/singles/location.php:22
+#: themes/BaseV1/layouts/parts/singles/location.php:25
 msgid "Insira o logradouro"
 msgstr "Ingrese la calle"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:176
 #: themes/BaseV1/layouts/parts/singles/history_space.php:171
-#: themes/BaseV1/layouts/parts/singles/location.php:23
+#: themes/BaseV1/layouts/parts/singles/location.php:26
 msgid "Insira o Número"
 msgstr "Ingrese el Número"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:177
 #: themes/BaseV1/layouts/parts/singles/history_space.php:172
-#: themes/BaseV1/layouts/parts/singles/location.php:24
+#: themes/BaseV1/layouts/parts/singles/location.php:27
 msgid "Insira um complemento"
 msgstr "Ingrese un complemento"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:178
 #: themes/BaseV1/layouts/parts/singles/history_space.php:173
-#: themes/BaseV1/layouts/parts/singles/location.php:25
+#: themes/BaseV1/layouts/parts/singles/location.php:28
 msgid "Insira o Bairro"
 msgstr "Ingrese el Barrio"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:179
 #: themes/BaseV1/layouts/parts/singles/history_space.php:174
-#: themes/BaseV1/layouts/parts/singles/location.php:26
+#: themes/BaseV1/layouts/parts/singles/location.php:29
 msgid "Insira o Município"
 msgstr "Ingrese el Municipio/Localidad"
 
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: themes/BaseV1/layouts/parts/singles/history_space.php:175
-#: themes/BaseV1/layouts/parts/singles/location.php:27
+#: themes/BaseV1/layouts/parts/singles/location.php:30
 msgid "Insira o Estado"
 msgstr "Ingrese el Departamento"
 
@@ -7649,6 +7642,10 @@ msgstr "en"
 #: themes/BaseV1/layouts/parts/singles/location.php:11
 msgid "Encontrar minha localização"
 msgstr "Encontrar mi localización"
+
+#: themes/BaseV1/layouts/parts/singles/location.php:55
+msgid "Informações Geográficas"
+msgstr "Datos geográficos"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:7
 #: themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:7
@@ -9104,6 +9101,10 @@ msgstr "último acceso:"
 msgid "último login"
 msgstr "último acceso:"
 
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:45
+msgid "data criação:"
+msgstr "fecha de creación:"
+
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:46
 msgid "data criação"
 msgstr "fecha de creación"
@@ -9235,10 +9236,6 @@ msgstr "obteniedo oportunidades..."
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-project.php:9
 msgid "obtendo projetos..."
 msgstr "obteniendo proyectos..."
-
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-space-item.php:5
-msgid "Ver Espaço"
-msgstr "Ver espacio"
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-space.php:9
 msgid "obtendo espaços..."
@@ -9755,9 +9752,8 @@ msgid "Em"
 msgstr "En"
 
 #: themes/BaseV1/views/panel/opportunities.php:15
-#, fuzzy
 msgid "Avaliar"
-msgstr "Evaluador"
+msgstr "Evaluar"
 
 #: themes/BaseV1/views/panel/opportunities.php:22
 msgid "Você não possui nehuma oportunidade."
@@ -10069,6 +10065,9 @@ msgid ""
 msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Email Privado y Teléfono 1 completos"
+
+#~ msgid "Ver Espaço"
+#~ msgstr "Ver espacio"
 
 #~ msgid "Inscrições online"
 #~ msgstr "Inscripciones en línea"
