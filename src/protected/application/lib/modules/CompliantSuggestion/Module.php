@@ -46,9 +46,14 @@ class Module extends \MapasCulturais\Module {
                 $_app->enableAccessControl();
 
                 $first_valid_mail = array_shift($_other_recipients);
-                $destinatarios['to'][] = $first_valid_mail;
-
                 $mail_validator = new Email();
+
+                if (!is_null($first_valid_mail) && $mail_validator->validate($first_valid_mail)) {
+                    $destinatarios['to'][] = $first_valid_mail;
+                } else {
+                    $destinatarios['to'][] = array_shift($destinatarios[$dest]);
+                }
+
                 foreach ($_other_recipients as $_recipient) {
                     if ($mail_validator->validate($_recipient) && !in_array($_recipient, $destinatarios)) {
                         $destinatarios['bcc'][] = $_recipient;
@@ -133,7 +138,8 @@ class Module extends \MapasCulturais\Module {
             $message = $app->renderMailerTemplate('compliant',$dataValue);
 
             if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-                $tos = $plugin->setRecipients($app, $entity, true);
+                $destinatarios = $plugin->setRecipients($app, $entity, true);
+                $tos = $destinatarios['to'];
                 
                 /**
                 * @hook {ALL} 'mapasculturais.complaintMessage.destination' Destinátarios e-mail de denúncia 
