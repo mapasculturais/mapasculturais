@@ -18,6 +18,8 @@
         </form>
     <?php else: ?>
         <p><?php \MapasCulturais\i::_e("Para se inscrever é preciso ter uma conta e estar logado nesta plataforma. Clique no botão abaixo para criar uma conta ou fazer login.");?></p>
-        <a class="btn btn-primary" href="<?php echo $app->createUrl('auth', 'login') ?>?redirectTo=<?php echo $entity->singleUrl, urlencode("#tab=inscricoes") ?>"><?php \MapasCulturais\i::_e("Entrar");?></a>
+        <a class="btn btn-primary" ng-click="setRedirectUrl()" <?php echo $this->getLoginLinkAttributes() ?>>
+            <?php \MapasCulturais\i::_e("Entrar");?>
+        </a>
     <?php endif; ?>
 <?php endif; ?>
