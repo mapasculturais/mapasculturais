@@ -35,7 +35,7 @@ class Module extends \MapasCulturais\Module {
 
             // Usado para enviar para entidades do contato, e e-mails do responsavel tambem
             if (!$onlyAdmins) {
-                $_other_recipients = $this->getEntityAndResponsibleEmails($_app,$_entity);
+                $_other_recipients = $this->getEntityAndResponsibleEmails($_app,$_entity,true);
 
                 $first_valid_mail = array_shift($_other_recipients);
                 $mail_validator = new Email();
@@ -75,6 +75,7 @@ class Module extends \MapasCulturais\Module {
                $emails = array_filter($emails, function($mail) {
                   return !is_null($mail);
                });
+               $emails = array_unique($emails);
             }
 
             return $emails;
