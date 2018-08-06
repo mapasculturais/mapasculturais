@@ -29,6 +29,23 @@
             font-weight: normal;
         }
     }
+    
+    &.agent-default{
+        background-color: #c9c9c9;
+        
+        .objeto-meta{
+            color:#333;
+        }
+        
+        & h1{
+            border-bottom: 1px solid #ddd;
+            
+            span{
+                float: right;
+                font-size: 15px;
+            }
+        }
+    }
 }
 .objeto-content {
     position: relative;

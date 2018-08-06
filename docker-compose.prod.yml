@@ -1,0 +1,59 @@
+version: '3'
+services:
+  web:
+    image: nginx
+    volumes:
+     - ./compose/production/nginx.conf:/etc/nginx/conf.d/default.conf
+     - ./docker-data/public-files:/var/www/html/files
+     - ./docker-data/assets:/var/www/html/assets
+
+     # to prevent 404
+     - /dev/null:/var/www/html/index.php
+    ports:
+     - "80:80"
+     - "443:443"
+    environment:
+     - NGINX_HOST=localhost
+     - NGINX_PORT=80
+    depends_on:
+      - mapas
+    links:
+      - mapas
+
+
+  mapas:
+    image: hacklab/mapasculturais
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./docker-data/assets:/var/www/html/assets
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/private-files:/var/www/private-files
+    links:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=mapas
+      - DB_USER=mapas
+      - DB_PASS=mapas
+
+      - APP_MODE=production
+
+      - ACTIVE_THEME=SpCultura
+
+    depends_on:
+      - db
+      
+  db:
+    image: mdillon/postgis:10
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+      - POSTGRES_DB_TEST=mapasculturais_test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker-data/postgres:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
+      - ./db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql

@@ -16,6 +16,9 @@ $has_private_location = isset($has_private_location) && $has_private_location
         </div>
         <!--.mapa-->
         <div class="infos">
+
+            <?php $this->applyTemplateHook('location-info','before'); ?>
+
             <input type="hidden" class="js-editable" id="endereco" data-edit="endereco" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Endereço");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o endereço");?>" data-showButtons="bottom" value="<?php echo $entity->endereco ?>" data-value="<?php echo $entity->endereco ?>">
             <p class="endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
             <p><span class="label"><?php \MapasCulturais\i::_e("CEP");?>:</span> <span class="js-editable js-mask-cep" id="En_CEP" data-edit="En_CEP" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CEP");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o CEP");?>" data-showButtons="bottom"><?php echo $entity->En_CEP ?></span></p>
@@ -36,11 +39,26 @@ $has_private_location = isset($has_private_location) && $has_private_location
                 </p>
             <?php endif; ?>
 
-            <?php foreach($app->getRegisteredGeoDivisions() as $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey; ?>
-                <p <?php if(!$entity->$metakey) { echo 'style="display:none"'; }?>>
-                    <span class="label"><?php echo $geo_division->name ?>:</span> <span class="js-geo-division-address" data-metakey="<?php echo $metakey ?>"><?php echo $entity->$metakey; ?></span>
-                </p>
-            <?php endforeach; ?>
+            <?php $this->applyTemplateHook('location-info','after'); ?>
+
+            <?php $html = ''; $geoMeta = false; foreach($app->getRegisteredGeoDivisions() as $k => $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey;?>
+                    <?php
+                        $html .= ($entity->$metakey) ? '<p>' : '<p style="display:none">';
+                        $html .= '<span class="label">' . $geo_division->name . ':</span> <span class="js-geo-division-address" data-metakey="' . $metakey .'">' . $entity->$metakey . '</span></p>';
+
+                        $geoMeta = ($entity->$metakey && !$geoMeta) ? true : $geoMeta;
+                    ?>
+            <?php endforeach;
+
+                if($geoMeta){ ?>
+                    <div class="sobre-info-geo-bt hltip icon icon-arrow-up">
+                        <a href="#"><?php \MapasCulturais\i::_e("Informações Geográficas");?></a>
+                    </div>
+                    <div class="sobre-info-geo" style="display:none;">
+                        <?php echo $html; ?>
+                    </div><!--.sobre-info-geo-->
+                <?php }
+            ?>
         </div>
         <!--.infos-->
     </div>
