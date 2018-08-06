@@ -92,6 +92,18 @@ class Opportunity extends EntityController {
 
     }
 
+    function GET_reportDrafts(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+        $entity->checkPermission('@control');
+        $app->controller('Registration')->registerRegistrationMetadata($entity);
+        $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
+
+        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+     }
 
     function GET_reportEvaluations(){
         $this->requireAuthentication();
@@ -238,7 +250,7 @@ class Opportunity extends EntityController {
     function API_findRegistrations() {
         $app = App::i();
         
-        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true));
+        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         
         $opportunity = $this->_getOpportunity();
         

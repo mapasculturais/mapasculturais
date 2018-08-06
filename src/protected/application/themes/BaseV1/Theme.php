@@ -23,7 +23,7 @@ class Theme extends MapasCulturais\Theme {
     );
 
     // The default fields that are queried to display the search results both on map and list modes
-    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl');
+    public $searchQueryFields = array('id','singleUrl','name','subTitle','type','shortDescription','terms','project.name','project.singleUrl, user, owner.userId'); //user funciona bem para agente e outras entidade, não creio que seja a melhor opção.
 
     static function getThemeFolder() {
         return __DIR__;
@@ -1505,7 +1505,7 @@ class Theme extends MapasCulturais\Theme {
 
         // Google Maps API only needed in site/search and space, agent and event singles
         if(preg_match('#site|space|agent|event|subsite#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action)){
-            $this->enqueueScript('vendor', 'google-maps-api', '//maps.google.com/maps/api/js?v=3.2&sensor=false');
+            $this->enqueueScript('vendor', 'google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=' . App::i()->config['app.googleApiKey']);
         }
 
         //Leaflet Plugins
@@ -1571,9 +1571,9 @@ class Theme extends MapasCulturais\Theme {
         if (App::i()->config['app.useGoogleGeocode'])
             $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
 
-
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
+        $this->enqueueScript('app', 'usermanager.app', 'js/ng.user-management.js', array('mapasculturais'));
         $this->localizeScript('moduleNotifications', [
             'error'    => i::__('There was an error'),
         ]);
@@ -1930,7 +1930,8 @@ class Theme extends MapasCulturais\Theme {
             ));
         }
 
-        if ($this->controller->id === 'site' && $this->controller->action === 'search'){
+        if (($this->controller->id === 'site' && $this->controller->action === 'search') || 
+            ($this->controller->id === 'panel' && $this->controller->action === 'userManagement')) {
             $skeleton_field = [
                 'fieldType' => 'checklist',
                 'isInline' => true,

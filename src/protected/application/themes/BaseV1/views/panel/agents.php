@@ -17,7 +17,7 @@ $label = \MapasCulturais\i::__("Adicionar novo agente");
         <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedAgents);?>)</a></li>
     </ul>
     <div id="ativos">
-        <?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>
+		<?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>
         <?php foreach($user->enabledAgents as $entity): if($app->user->profile->equals($entity)) continue;?>
             <?php $this->part('panel-agent', array('entity' => $entity)); ?>
         <?php endforeach; ?>
