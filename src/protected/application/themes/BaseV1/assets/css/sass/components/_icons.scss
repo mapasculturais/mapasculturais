@@ -39,6 +39,11 @@ h1 .icon {
         content: $unicode-go-back;
     }
 }
+.icon-return {
+    &:before {
+        content: $unicode-return;
+    }
+}
 .icon-space {
     &:before {
         content: $unicode-space;

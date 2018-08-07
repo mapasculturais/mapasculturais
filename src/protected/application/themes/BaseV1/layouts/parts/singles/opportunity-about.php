@@ -7,15 +7,15 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->part('singles/opportunity-about--highlighted-message', ['entity' => $entity]) ?>
 
-    <?php $this->part('singles/opportunity-registrations--intro', ['entity' => $entity]); ?>
-
-    <?php $this->part('singles/opportunity-registrations--rules', ['entity' => $entity]); ?>
-
     <?php if(!$this->isEditable()): ?>
         <?php $this->part('singles/opportunity-registrations--user-registrations', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/opportunity-registrations--form', ['entity' => $entity]) ?>
     <?php endif; ?>
+
+    <?php $this->part('singles/opportunity-registrations--intro', ['entity' => $entity]); ?>
+
+    <?php $this->part('singles/opportunity-registrations--rules', ['entity' => $entity]); ?>
 
     <div class="registration-fieldset">
     <!-- Video Gallery BEGIN -->
