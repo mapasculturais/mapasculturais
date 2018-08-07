@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-07-31 21:12-0300\n"
+"POT-Creation-Date: 2018-08-06 22:25-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -542,8 +542,8 @@ msgstr "Id"
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:110
 #: themes/BaseV1/layouts/parts/user-management/info-admin.php:79
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:12
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:14
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:13
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:15
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
 #: themes/BaseV1/views/agent/create.php:92
 #: themes/BaseV1/views/agent/edit.php:92
 #: themes/BaseV1/views/agent/single.php:92
@@ -651,7 +651,7 @@ msgstr "Evento"
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:66
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:58
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-event.php:2
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:9
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:10
 #: themes/BaseV1/views/panel/user-management.php:52
 #: themes/culturaenlinea/config.php:104
 #: themes/culturaenlinea/layouts/parts/home-search.php:31
@@ -703,7 +703,7 @@ msgstr "Espacio"
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:55
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:56
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:57
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:8
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:9
 #: themes/culturaenlinea/config.php:106
 msgid "Espaços"
 msgstr "Espacios"
@@ -836,7 +836,7 @@ msgstr "Certificado"
 #: conf/conf-base.php:463 themes/BaseV1/Theme.php:648
 #: themes/BaseV1/Theme.php:650
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:13
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:15
 #: themes/BaseV1/views/panel/index.php:110 themes/culturaenlinea/config.php:114
 msgid "Subsite"
 msgstr "Subsitio"
@@ -2985,53 +2985,53 @@ msgstr "Descargar planilla"
 msgid "Agenda"
 msgstr "Agenda"
 
-#: lib/modules/CompliantSuggestion/Module.php:92
-#: lib/modules/CompliantSuggestion/Module.php:97
+#: lib/modules/CompliantSuggestion/Module.php:114
+#: lib/modules/CompliantSuggestion/Module.php:119
 msgid "O preenchimento do e-mail é obrigatório."
 msgstr "Es obligatorio competar el correo electrónico."
 
-#: lib/modules/CompliantSuggestion/Module.php:93
+#: lib/modules/CompliantSuggestion/Module.php:115
 msgid "O preenchimento do tipo de denúncia é obrigatório."
 msgstr "Es obligatorio completar el tipo de denuncia."
 
-#: lib/modules/CompliantSuggestion/Module.php:94
+#: lib/modules/CompliantSuggestion/Module.php:116
 msgid "O preenchimento da mensagem da denúncia é obrigatório."
 msgstr "Es obligatorio completar el mensaje de denuncia."
 
-#: lib/modules/CompliantSuggestion/Module.php:95
+#: lib/modules/CompliantSuggestion/Module.php:117
 msgid "A denúncia foi enviada."
 msgstr "La denuncia fue enviada."
 
-#: lib/modules/CompliantSuggestion/Module.php:98
+#: lib/modules/CompliantSuggestion/Module.php:120
 msgid "O preenchimento do tipo de sugestão é obrigatório."
 msgstr "Es obligatorio completar el tipo de sugerencia."
 
-#: lib/modules/CompliantSuggestion/Module.php:99
+#: lib/modules/CompliantSuggestion/Module.php:121
 msgid "O preenchimento da mensagem é obrigatório."
 msgstr "Es obligatorio completar el mensaje."
 
-#: lib/modules/CompliantSuggestion/Module.php:100
+#: lib/modules/CompliantSuggestion/Module.php:122
 msgid "A sugestão foi enviada."
 msgstr "La sugerencia fue enviada."
 
-#: lib/modules/CompliantSuggestion/Module.php:102
+#: lib/modules/CompliantSuggestion/Module.php:124
 msgid "Erro inesperado ao o enviar a mensagem"
 msgstr "Error inesperado al enviar el mensaje"
 
-#: lib/modules/CompliantSuggestion/Module.php:112
-#: lib/modules/CompliantSuggestion/Module.php:114
-#: lib/modules/CompliantSuggestion/Module.php:181
-#: lib/modules/CompliantSuggestion/Module.php:183
+#: lib/modules/CompliantSuggestion/Module.php:134
+#: lib/modules/CompliantSuggestion/Module.php:136
+#: lib/modules/CompliantSuggestion/Module.php:204
+#: lib/modules/CompliantSuggestion/Module.php:206
 msgid "Anônimo"
 msgstr "Anónimo"
 
-#: lib/modules/CompliantSuggestion/Module.php:113
-#: lib/modules/CompliantSuggestion/Module.php:182
+#: lib/modules/CompliantSuggestion/Module.php:135
+#: lib/modules/CompliantSuggestion/Module.php:205
 msgid "Anônima"
 msgstr "Anónima"
 
-#: lib/modules/CompliantSuggestion/Module.php:122
-#: lib/modules/CompliantSuggestion/Module.php:191
+#: lib/modules/CompliantSuggestion/Module.php:144
+#: lib/modules/CompliantSuggestion/Module.php:214
 msgid "Usuário Guest"
 msgstr "Usuario invitado"
 
@@ -3977,7 +3977,7 @@ msgstr "Opinión técnica"
 
 #: plugins/EvaluationMethodTechnical/Plugin.php:189
 msgid "Todos os campos devem ser preenchidos"
-msgstr "todos los campos deben ser llenados"
+msgstr "Todos los campos deben ser completados"
 
 #: plugins/EvaluationMethodTechnical/Plugin.php:197
 #, php-format
@@ -4027,7 +4027,7 @@ msgstr "Agregar criterio"
 
 #: plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:27
 msgid "informe o título do critério"
-msgstr "Introduzca el nombre del criterio"
+msgstr "introduzca el nombre del criterio"
 
 #: plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:28
 msgid "informe a nota mínima"
@@ -6453,7 +6453,7 @@ msgid "Ver todas atividades"
 msgstr "Ver todas las actividades"
 
 #: themes/BaseV1/layouts/parts/header-main-nav.php:156
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:21
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:22
 msgid "Entrar"
 msgstr "Entrar"
 
@@ -6544,7 +6544,7 @@ msgstr "oportunidades registradas"
 
 #: themes/BaseV1/layouts/parts/home-opportunities.php:33
 msgid "oportunidades da "
-msgstr "oportunidades de la"
+msgstr "oportunidades de la "
 
 #: themes/BaseV1/layouts/parts/home-opportunities.php:37
 msgid "Encontre oportunidades por"
@@ -6607,7 +6607,7 @@ msgstr "Conozca más"
 
 #: themes/BaseV1/layouts/parts/home-spaces.php:34
 msgid " da "
-msgstr "sde la "
+msgstr " de la "
 
 #: themes/BaseV1/layouts/parts/home-spaces.php:38
 msgid "Encontre "
@@ -6646,10 +6646,10 @@ msgstr "Eliminar este enlace?"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:33
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:32
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:37
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:32
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:37
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:30
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:38
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:36
 msgid "excluir"
 msgstr "borrar"
 
@@ -6799,8 +6799,8 @@ msgstr "Área(s) de actuación:"
 #: themes/BaseV1/layouts/parts/panel-space.php:31
 #: themes/BaseV1/layouts/parts/panel-subsite.php:29
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:33
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:34
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:32
 msgid "arquivar"
 msgstr "archivar"
 
@@ -6814,8 +6814,8 @@ msgstr "archivar"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:32
 #: themes/BaseV1/layouts/parts/singles/project-events.php:13
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:36
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:36
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:34
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:37
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
 msgid "publicar"
 msgstr "publicar"
 
@@ -6832,8 +6832,8 @@ msgstr "publicar"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:36
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:40
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:42
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:40
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:38
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:41
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:39
 msgid "desarquivar"
 msgstr "desarchivar"
 
@@ -6846,8 +6846,8 @@ msgstr "desarchivar"
 #: themes/BaseV1/layouts/parts/panel-space.php:41
 #: themes/BaseV1/layouts/parts/panel-subsite.php:39
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:44
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:42
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:41
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:43
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:42
 msgid "recuperar"
 msgstr "recuperar"
 
@@ -6860,6 +6860,8 @@ msgstr "recuperar"
 #: themes/BaseV1/layouts/parts/panel-space.php:43
 #: themes/BaseV1/layouts/parts/panel-subsite.php:41
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:46
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:45
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:44
 msgid "excluir definitivamente"
 msgstr "eliminar de forma permanente"
 
@@ -6892,7 +6894,7 @@ msgstr "Inscripciones:"
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:34
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:33
 msgid "Abertas "
-msgstr "Abiertas"
+msgstr "Abiertas "
 
 #: themes/BaseV1/layouts/parts/panel-evaluation.php:37
 #: themes/BaseV1/layouts/parts/panel-opportunity.php:36
@@ -6938,7 +6940,7 @@ msgstr "Clasificación:"
 
 #: themes/BaseV1/layouts/parts/panel-event.php:20
 #: themes/BaseV1/layouts/parts/singles/project-events.php:12
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:31
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:32
 msgid "tornar rascunho"
 msgstr "convertir en borrador"
 
@@ -7814,7 +7816,7 @@ msgstr "Categorías separadas por punto y coma"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:89
 msgid "Não há nenhum avaliador definido."
-msgstr "No hay ningún evaluador definido"
+msgstr "No hay ningún evaluador definido."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:90
 msgid "Adicionar avaliador"
@@ -8295,12 +8297,12 @@ msgstr "Ninguna inscripción."
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:88
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:29
 msgid "1 inscrição."
-msgstr "1 Inscripción"
+msgstr "1 Inscripción."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:90
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:31
 msgid "inscrições."
-msgstr "Inscripciones."
+msgstr "inscripciones."
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:5
 msgid "Veja abaixo as inscrições suplentes/selecionadas"
@@ -9052,8 +9054,8 @@ msgstr "Está seguro que desea eliminar este usuario de la lista"
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:163
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:286
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:11
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:13
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:12
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:14
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:13
 msgid "id"
 msgstr ""
 
@@ -9099,7 +9101,7 @@ msgstr "último acceso:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:42
 msgid "último login"
-msgstr "último acceso:"
+msgstr "último acceso"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:45
 msgid "data criação:"
@@ -9239,11 +9241,11 @@ msgstr "obteniendo proyectos..."
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-space.php:9
 msgid "obtendo espaços..."
-msgstr "obteniendo espacios"
+msgstr "obteniendo espacios..."
 
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:14
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:15
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:15
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:16
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:16
 msgid "Operações"
 msgstr "Operaciones"
 
@@ -9777,7 +9779,7 @@ msgstr "Usted no posee ninguna oportunidad liberada."
 
 #: themes/BaseV1/views/panel/opportunities.php:70
 msgid "Você não possui nenhuma"
-msgstr "Ustede no posee ninguna "
+msgstr "Usted no posee ninguna"
 
 #: themes/BaseV1/views/panel/opportunities.php:70
 msgid "liberada para avaliação."
@@ -10065,6 +10067,9 @@ msgid ""
 msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Email Privado y Teléfono 1 completos"
+
+#~ msgid "mapas-culturais-dados-exportados.xls"
+#~ msgstr "culturaenlinea-datos-exportados.xls"
 
 #~ msgid "Ver Espaço"
 #~ msgstr "Ver espacio"
