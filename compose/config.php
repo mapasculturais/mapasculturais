@@ -7,7 +7,15 @@ sort($config_files);
 
 
 function env($name, $default){
-    return isset($_ENV[$name]) ? $_ENV[$name] : $default;
+    $result = isset($_ENV[$name]) ? $_ENV[$name] : $default;
+
+    if(strtolower(trim($result)) == 'true'){
+        $result = true;
+    } else if(strtolower(trim($result)) == 'false'){
+        $result = false;
+    }
+
+    return $result;
 }
 
 foreach($config_files as $config_file) {
