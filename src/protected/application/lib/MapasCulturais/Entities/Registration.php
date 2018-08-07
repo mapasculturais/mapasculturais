@@ -371,7 +371,7 @@ class Registration extends \MapasCulturais\Entity
 
     function getEvaluationResultValue(){
         $method = $this->getEvaluationMethod();
-        return ($this->status !== self::STATUS_DRAFT) ? $method->getConsolidatedResult($this) : null;
+        return $method->getConsolidatedResult($this);
     }
 
     function getEvaluationResultString(){
@@ -817,8 +817,16 @@ class Registration extends \MapasCulturais\Entity
 
     protected function canUserViewPrivateData($user){
         $can = $this->__canUserViewPrivateData($user);
-        
-        return $can || $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+
+        $canUserEvaluateNextPhase = false;
+        if($this->getMetadata('nextPhaseRegistrationId') !== null) {
+            $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
+            $canUserEvaluateNextPhase = $this->getEvaluationMethod()->canUserEvaluateRegistration($next_phase_registration, $user);
+        }
+
+        $canUserEvaluate = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user) || $canUserEvaluateNextPhase;
+
+        return $can || $canUserEvaluate;
     }
 
     function getExtraPermissionCacheUsers(){

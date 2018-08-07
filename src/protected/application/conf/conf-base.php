@@ -132,6 +132,7 @@ return array(
     'themes.brand-developer'    => '#9966cc',
 
     'app.useGoogleGeocode' => false,
+    'app.googleApiKey'     => '',
 
     //    'maps.center' => array(-23.54894, -46.63882), // são paulo
     'maps.center' => array(-14.2400732, -53.1805018), // brasil
