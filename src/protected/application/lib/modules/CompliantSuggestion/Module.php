@@ -35,20 +35,17 @@ class Module extends \MapasCulturais\Module {
 
             // Usado para enviar para entidades do contato, e e-mails do responsavel tambem
             if (!$onlyAdmins) {
-                $_responsible = $_app->repo('Agent')->find($_entity->owner->id);
-                $_app->disableAccessControl();
-                $_other_recipients = [
-                    'entity_public'       => $_entity->emailPublico,
-                    'entity_private'      => $_entity->emailPrivado,
-                    'responsible_public'  => $_responsible->emailPublico,
-                    'responsible_private' => $_responsible->emailPrivado
-                ];
-                $_app->enableAccessControl();
+                $_other_recipients = $this->getEntityAndResponsibleEmails($_app,$_entity,true);
 
                 $first_valid_mail = array_shift($_other_recipients);
-                $destinatarios['to'][] = $first_valid_mail;
-
                 $mail_validator = new Email();
+
+                if (!is_null($first_valid_mail) && $mail_validator->validate($first_valid_mail)) {
+                    $destinatarios['to'][] = $first_valid_mail;
+                } else {
+                    $destinatarios['to'][] = array_shift($destinatarios[$dest]);
+                }
+
                 foreach ($_other_recipients as $_recipient) {
                     if ($mail_validator->validate($_recipient) && !in_array($_recipient, $destinatarios)) {
                         $destinatarios['bcc'][] = $_recipient;
@@ -57,6 +54,31 @@ class Module extends \MapasCulturais\Module {
             }   
 
             return $destinatarios;
+        }
+
+        return array();
+    }
+
+    private function getEntityAndResponsibleEmails($app, $_entity, $filter = false) {
+        if ($app instanceof \MapasCulturais\App && $_entity instanceof \MapasCulturais\Entity) {
+            $_responsible = $app->repo('Agent')->find($_entity->owner->id);
+            $app->disableAccessControl();
+            $emails = [
+                'entity_public'       => $_entity->emailPublico,
+                'entity_private'      => $_entity->emailPrivado,
+                'responsible_public'  => $_responsible->emailPublico,
+                'responsible_private' => $_responsible->emailPrivado
+            ];
+            $app->enableAccessControl();
+
+            if ($filter) {
+               $emails = array_filter($emails, function($mail) {
+                  return !is_null($mail);
+               });
+               $emails = array_unique($emails);
+            }
+
+            return $emails;
         }
 
         return array();
@@ -133,7 +155,8 @@ class Module extends \MapasCulturais\Module {
             $message = $app->renderMailerTemplate('compliant',$dataValue);
 
             if(array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-                $tos = $plugin->setRecipients($app, $entity, true);
+                $destinatarios = $plugin->setRecipients($app, $entity, true);
+                $tos = $destinatarios['to'];
                 
                 /**
                 * @hook {ALL} 'mapasculturais.complaintMessage.destination' Destinátarios e-mail de denúncia 
@@ -201,23 +224,26 @@ class Module extends \MapasCulturais\Module {
 
             $message = $app->renderMailerTemplate('suggestion',$dataValue);
             if (array_key_exists('mailer.from',$app->config) && !empty(trim($app->config['mailer.from']))) {
-                if (array_key_exists('only_owner',$this->data) && !$this->data['only_owner']) {
 
-                    $destinatarios = $plugin->setRecipients($app, $entity);
+                if (array_key_exists('only_owner',$this->data)) {
+                    $suggestion_mail = ['from' => $app->config['mailer.from'], 'subject' => $message['title'], 'body' => $message['body']];
 
-                    $tos = $destinatarios['to'];
-                    $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
+                    if ($this->data['only_owner'] === "true") {
+                        $tos = array_values($plugin->getEntityAndResponsibleEmails($app,$entity,true));
+                        $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
 
-                    $bccs = $destinatarios['bcc'];
-                    $app->applyHook('mapasculturais.suggestionMessage.destination_bcc', [&$bccs]);
+                        $suggestion_mail['to'] = $tos;
+                    } else {
+                        $destinatarios = $plugin->setRecipients($app, $entity);
+                        $tos = $destinatarios['to'];
+                        $app->applyHook('mapasculturais.suggestionMessage.destination_to', [&$tos]);
 
-                    $suggestion_mail = [
-                        'from' => $app->config['mailer.from'],
-                        'to'  => $tos,
-                        'bcc' => $bccs,
-                        'subject' => $message['title'],
-                        'body' => $message['body']
-                    ];
+                        $bccs = $destinatarios['bcc'];
+                        $app->applyHook('mapasculturais.suggestionMessage.destination_bcc', [&$bccs]);
+
+                        $suggestion_mail['to'] = $tos;
+                        $suggestion_mail['bcc'] = $bccs;
+                    }
 
                     $app->createAndSendMailMessage($suggestion_mail);
                 }

@@ -1,6 +1,7 @@
 <?php 
   use MapasCulturais\App;
   use MapasCulturais\Entities\Space;
+  $current_user = $app->user;
 ?>
 
   <table class="spaces-table entity-table">
@@ -39,9 +40,9 @@
 
               <?php else: ?>
                   <a class="btn btn-small btn-success" href="<?php echo $space->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>
-                  <?php /* if($space->permissionTo->destroy): ?>
+                  <?php if($space->isUserAdmin($current_user, 'superAdmin') ): ?>
                       <a class="btn btn-small btn-danger" href="<?php echo $space->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
-                  <?php endif; */?> 
+                  <?php endif; ?> 
               <?php endif; ?>
               
           </div>
