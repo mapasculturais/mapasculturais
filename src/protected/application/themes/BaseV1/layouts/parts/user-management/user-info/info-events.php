@@ -1,6 +1,7 @@
 <?php 
   use MapasCulturais\App;
   use MapasCulturais\Entities\Event;
+  $current_user = $app->user;
 ?>
 
 
@@ -40,9 +41,9 @@
             <a class="btn btn-small btn-success" href="<?php echo $event->unarchiveUrl; ?>"><?php \MapasCulturais\i::_e("desarquivar");?></a>
           <?php else: ?>
             <a class="btn btn-small btn-success" href="<?php echo $event->undeleteUrl; ?>"> <?php \MapasCulturais\i::_e("recuperar");?></a>
-            <?php /* if($event->permissionTo->destroy): ?>
+            <?php if($event->isUserAdmin($current_user, 'superAdmin') ): ?>
               <a class="btn btn-small btn-danger" href="<?php echo $event->destroyUrl; ?>"> <?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
-            <?php endif; */?>
+            <?php endif; ?>
           <?php endif; ?>
         </div>
       </td>

@@ -125,7 +125,7 @@ class Site extends \MapasCulturais\Controller {
             $commitBranch = trim(exec('git rev-parse --abbrev-ref HEAD'));
             $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
             $commitDate->setTimezone(new \DateTimeZone('UTC'));
-            $data['git-info'] = ['tag'=>$tagVersion, 'commint hash'=>$commitHash, 'commint date' => $commitDate->format('Y-m-d H:m:s'), 'branch' => $commitBranch];
+            $data['git-info'] = ['tag'=>$tagVersion, 'commit hash'=>$commitHash, 'commit date' => $commitDate->format('Y-m-d H:m:s'), 'branch' => $commitBranch];
         }
 
         $this->json($data);
