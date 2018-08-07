@@ -59,8 +59,8 @@ ksort($custom_fields);
 
             <th> <?php i::_e("Avaliação") ?> </th>
             <th><?php i::_e("Status") ?></th>
-            <th><?php i::_e("Data da Inscrição") ?></th>
-            <th><?php i::_e("Horário da Inscrição") ?></th>
+            <th><?php i::_e("Inscrição - Data de envio") ?></th>
+            <th><?php i::_e("Inscrição - Hora de envio") ?></th>
             <?php showIfField($entity->registrationCategories, $entity->registrationCategTitle); ?>
 
             <?php
