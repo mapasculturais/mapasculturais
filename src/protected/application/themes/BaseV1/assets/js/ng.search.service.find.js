@@ -230,7 +230,7 @@
                     searchData._geoLocation = 'GEONEAR(' + center.lng + ',' + center.lat + ',' + radius + ')';
                 }
                 if(entityData.sort) {
-                    searchData['@order'] = `${entityData.sort.sortBy} ${entityData.sort.type}`;                    
+                    searchData['@order'] = entityData.sort.sortBy + ' ' + entityData.sort.type;
                 }
                 return searchData;
             }
