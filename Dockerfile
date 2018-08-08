@@ -30,8 +30,8 @@ COPY src/index.php /var/www/html/index.php
 COPY src/protected /var/www/html/protected
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
-RUN mkdir -p /var/www/html/protected/vendor
-RUN chown -R www-data:www-data /var/www/html/protected/vendor
+RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer/
+RUN chown -R www-data:www-data /var/www/html/protected/vendor/ /var/www/.composer/
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer.phar
