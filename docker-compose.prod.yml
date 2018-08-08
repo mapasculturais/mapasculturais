@@ -36,9 +36,12 @@ services:
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
 
+#      - APP_LCODE=pt_BR,es_ES # para selecao do idioma baseado no navegador
+      - APP_LCODE=pt_BR
+      
       - APP_MODE=production
 
-      - ACTIVE_THEME=SpCultura
+#      - ACTIVE_THEME=SpCultura
 
     depends_on:
       - db
