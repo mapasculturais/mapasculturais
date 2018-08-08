@@ -23,6 +23,8 @@ services:
       - APP_MODE=development
       - SLIM_DEBUG=true
 
+      - APP_LCODE=pt_BR,es_ES
+
       - ACTIVE_THEME=SpCultura
 
       - LOG_ENABLED=true
