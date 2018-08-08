@@ -202,7 +202,7 @@ class App extends \Slim\Slim{
 
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
-            $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
+            $this->_mscache = new \Doctrine\Common\Cache\ArrayCache ();
         }
 
         $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
