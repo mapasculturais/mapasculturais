@@ -14,6 +14,12 @@ define('APPMODE_DEVELOPMENT', 'development');
 define('APPMODE_PRODUCTION', 'production');
 define('APPMODE_STAGING', 'staging');
 
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+    $_SERVER['HTTPS'] = 'on';
+    $_SERVER['SERVER_PROTOCOL'] = 'HTTP/2.0';
+    $_SERVER['REQUEST_SCHEME'] = 'https';
+}
+
 function env($name, $default) {
     $result = isset($_ENV[$name]) ? $_ENV[$name] : $default;
 
@@ -27,7 +33,6 @@ function env($name, $default) {
 }
 
 require_once __DIR__ . "/../vendor/autoload.php";
-
 
 require __DIR__ . "/dump-function.php";
 
