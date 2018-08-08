@@ -1848,7 +1848,7 @@ class Theme extends MapasCulturais\Theme {
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
             'evaluated' => i::__('Avaliada'),
             'notEvaluated' => i::__('Não Avaliada'),
-            'all' => i::__('Todos'),
+            'all' => i::__('Todas'),
             'sent' => i::__('Enviada'),
             'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
             'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
