@@ -113,6 +113,15 @@ trait ControllerAPI{
      *
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
+
+    
+
+    /**
+     * @apiDefine APIfindOne
+     * @apiDescription Realiza a busca por uma unica entidade pesquisando os parâmetros solicitados.
+     * @apiParam {String} @select lsita de campos a ser retornado (Ex.:id,name,subsite.name). 
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base. 
+     */
     public function API_findOne(){
         $entity = $this->apiQuery($this->getData, ['findOne' => true]);
         $this->apiItemResponse($entity);
