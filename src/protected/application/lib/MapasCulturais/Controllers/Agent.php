@@ -26,6 +26,13 @@ class Agent extends EntityController {
         Traits\ControllerOpportunities;
 
     /**
+     * @api {all} /api/agent/findOne Buscar um Agente
+     * @apiUse APIfindOne
+     * @apiGroup AGENT
+     * @apiName apiFindOne
+     */
+
+    /**
      * @api {all} /agent/setAsUserProfile Atualizar profile do usuário
      * @apiDescription Atualiza o profile do usuário logado para o profile atual
      * @apiGroup AGENT
