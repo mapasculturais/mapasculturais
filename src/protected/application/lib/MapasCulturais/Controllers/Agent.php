@@ -25,6 +25,14 @@ class Agent extends EntityController {
         Traits\ControllerAPINested,
         Traits\ControllerOpportunities;
 
+    /**
+     * @api {all} /agent/setAsUserProfile Atualizar profile do usuário
+     * @apiDescription Atualiza o profile do usuário logado para o profile atual
+     * @apiGroup AGENT
+     * @apiName setAsUserProfile
+     * @apiPermission user
+     * @apiVersion 4.0.0
+    */
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();
         $app = App::i();
@@ -46,6 +54,15 @@ class Agent extends EntityController {
         }
     }
 
+    /**
+     * @api {all} /agent/addRole Atribuir um papel
+     * @apiDescription Atribuir um Papel (função) ao agente
+     * @apiGroup AGENT
+     * @apiName addRole
+     * @apiParam {String} role nome da "role" a ser atribuida ao usuário. 
+     * @apiParam {Number} [subsiteId] identificador do subsite.
+     * @apiPermission user
+     */
     function ALL_addRole(){
         $this->requireAuthentication();
         $app = App::i();
@@ -71,6 +88,16 @@ class Agent extends EntityController {
         }
     }
 
+    /**
+     * @api {all} /agent/removeRole Remove um papel
+     * @apiDescription Remove um Papel (função) atribuido ao agente
+     * @apiGroup AGENT
+     * @apiName removeRole
+     * @apiParam {String} nome do "role" a ser removida de usuário. 
+     * @apiParam {Number} [subsiteId] identificador do subsite.
+     * @apiPermission user
+     * @apiVersion 4.0.0
+    */
     function ALL_removeRole(){
         $this->requireAuthentication();
         $app = App::i();
