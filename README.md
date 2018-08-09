@@ -1,5 +1,3 @@
-[![Join the chat at https://telegram.me/#MapasCulturais](https://patrolavia.github.io/telegram-badge/chat.png)](https://telegram.me/joinchat/AVzIFAqpz3VFIPehrPpbZQ)
-
 # Repositorio del Fork de Libre Coop de Mapas Culturais
 
 ## Sobre la aplicación
