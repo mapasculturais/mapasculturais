@@ -192,9 +192,6 @@ class App extends \Slim\Slim{
             }
         }
 
-        //Load defaut translation textdomain
-        i::load_default_textdomain($config['app.lcode']);
-
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -202,7 +199,7 @@ class App extends \Slim\Slim{
 
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
-            $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
+            $this->_mscache = new \Doctrine\Common\Cache\ArrayCache ();
         }
 
         $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();

@@ -211,14 +211,14 @@
             
             var tabActive = location.hash.match(new RegExp('tab=([^&]*)'));
             tabActive = (tabActive == null) ? $('.abas li a').attr('id') : tabActive[1];
-            tabActive = ($(`.abas li a[href=#${tabActive}]`).length) ? tabActive : $('.abas li a').attr('id');
+            tabActive = ($('.abas li a[href=#' + tabActive + ']').length) ? tabActive : $('.abas li a').attr('id');
             tabActive = tabActive.replace('tab-', '');
 
             $('.tabs-content .aba-content').hide();
-            $(`.tabs-content #${tabActive}`).show();
+            $('.tabs-content #' + tabActive ).show();
             
             $('.abas li').removeClass('active');
-            $(`.abas li a#tab-${tabActive}`).parent().addClass('active');
+            $('.abas li a#tab-' + tabActive).parent().addClass('active');
         });
 
 
