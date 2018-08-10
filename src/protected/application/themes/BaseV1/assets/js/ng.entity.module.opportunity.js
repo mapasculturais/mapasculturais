@@ -1249,6 +1249,26 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         return;
     };
 
+    $scope.toggleSelectionColumn = function(object, key){
+
+        $scope.toggleSelection(object, key);
+
+        if ($scope.numberOfEnabledColumns() == 0) {
+            object[key] = true;
+            alert('Não é permitido desabilitar todas as colunas da tabela');
+            return;
+        }
+
+        if (key == 'number' ) {
+            var columnObj = $scope.getColumnByKey(key);
+            object[key] = true;
+            alert('Não é permitido desabilitar a coluna ' + columnObj.title);
+            return;
+        }
+
+        return;
+    };
+
     $scope.findRegistrations = function(){
         if(registrationsApi.finish()){
             return null;
@@ -1463,6 +1483,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
     });
 
+    $scope.getColumnByKey = function(key){
+        for(var index in $scope.data.defaultSelectFields){
+            if($scope.data.defaultSelectFields[index].fieldName == key ){
+                return $scope.data.defaultSelectFields[index];
+            }
+        }
+
+        return null;
+    };
 
     $scope.numberOfEnabledColumns = function(){
         var result = 0;
