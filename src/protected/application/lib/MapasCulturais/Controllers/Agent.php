@@ -33,6 +33,13 @@ class Agent extends EntityController {
      */
 
     /**
+     * @api {all} /api/agent/find Busca de Agentes
+     * @apiUse APIfind
+     * @apiGroup AGENT
+     * @apiName APIfind
+     */
+
+    /**
      * @api {all} /agent/setAsUserProfile Atualizar profile do usuário
      * @apiDescription Atualiza o profile do usuário logado para o profile atual
      * @apiGroup AGENT
