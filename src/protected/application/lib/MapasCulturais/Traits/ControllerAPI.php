@@ -168,6 +168,11 @@ trait ControllerAPI{
         $this->apiResponse($data);
     }
 
+
+    /**
+     * @apiDefine APIdescribe
+     * @apiDescription Retorna a descrição de entidade..
+     */
     public function API_describe(){
         $class = $this->entityClassName;
         $data_array = $class::getPropertiesMetadata();

@@ -30,6 +30,9 @@ class Agent extends EntityController {
      * @apiUse APIfindOne
      * @apiGroup AGENT
      * @apiName apiFindOne
+     * 
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost:8090/api/agent/findOne?@select=id,name,subsite.name&user=EQ\(8006\)     * 
      */
 
     /**
@@ -37,6 +40,19 @@ class Agent extends EntityController {
      * @apiUse APIfind
      * @apiGroup AGENT
      * @apiName APIfind
+     * 
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/agent/find?@select=id,name,subsite.name&user=EQ\(8006\)
+     */
+
+     /**
+     * @api {all} /api/agent/describe Descrição de entidade.
+     * @apiUse APIdescribe
+     * @apiGroup AGENT
+     * @apiName APIdescribe
+     * 
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/agent/describe
      */
 
     /**
