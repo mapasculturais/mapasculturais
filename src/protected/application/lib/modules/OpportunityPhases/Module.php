@@ -345,8 +345,8 @@ class Module extends \MapasCulturais\Module{
 
             $last_phase = self::getLastPhase($parent);
 
-            $_from = clone $last_phase->registrationTo;
-            $_to = clone $last_phase->registrationTo;
+            $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+            $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to->add(date_interval_create_from_date_string('1 days'));
 
             $phase->registrationFrom = $_from;
@@ -529,7 +529,7 @@ class Module extends \MapasCulturais\Module{
                 $opportunity = $opportunity->parent;
             }
 
-            if(!$opportunity->useRegistrations || !$opportunity->canUser('@controll')){
+            if(!$opportunity->useRegistrations || !$opportunity->canUser('@control')){
                 return;
             }
 

@@ -315,7 +315,7 @@ trait EntityMetadata{
     public function saveMetadata(){
         foreach(array_keys($this->__changedMetadata) as $meta_key){
             $metadata_object = $this->getMetadata($meta_key, true);
-            $metadata_object->save();
+            $metadata_object->save(true);
         }
     }
 

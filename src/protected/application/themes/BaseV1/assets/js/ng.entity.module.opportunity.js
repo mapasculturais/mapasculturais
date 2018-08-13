@@ -163,7 +163,8 @@
                 {value: 2, label: labels['invalid']},
                 {value: 3, label: labels['notSelected']},
                 {value: 8, label: labels['suplente']},
-                {value: 10, label: labels['selected']}
+                {value: 10, label: labels['selected']},
+                {value: 0, label: labels['draft']}
             ],
 
             registrationStatusesNames: [
@@ -765,6 +766,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if(field && field.fieldOptions){
                 var cfg = {};
                 cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
+
+                if(field.fieldType === "date"){
+                    cfg.datepicker = {weekStart: 1, yearRange: jQuery(this).data('yearrange') ? jQuery(this).data('yearrange') : "1900:+0"};
+                }
                 jQuery(this).editable(cfg);
             } else {
                 jQuery(this).editable();
@@ -1226,6 +1231,49 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.registrationsFilters = {};
     $scope.evaluationsFilters = {};
 
+    $scope.isSelected = function(object, key){
+        var selected  = false;
+        for(var index in object) {
+            if (key == index){
+                selected =  object[key];
+                break;
+            }
+        }
+        return selected;
+    };
+
+    $scope.toggleSelection = function(object, key){
+        var value  = true;
+        for(var index in object) {
+            if (key == index){
+                value = !object[key];
+                break;
+            }
+        }
+        object[key] = value;
+        return;
+    };
+
+    $scope.toggleSelectionColumn = function(object, key){
+
+        $scope.toggleSelection(object, key);
+
+        if ($scope.numberOfEnabledColumns() == 0) {
+            object[key] = true;
+            alert('Não é permitido desabilitar todas as colunas da tabela');
+            return;
+        }
+
+        if (key == 'number' ) {
+            var columnObj = $scope.getColumnByKey(key);
+            object[key] = true;
+            alert('Não é permitido desabilitar a coluna ' + columnObj.title);
+            return;
+        }
+
+        return;
+    };
+
     $scope.findRegistrations = function(){
         if(registrationsApi.finish()){
             return null;
@@ -1248,13 +1296,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     $scope.$watch('registrationsFilters', function(){
         var qdata = {
-            'status': 'GT(0)',
+            'status': 'GT(-1)',
             '@files': '(zipArchive):url',
             '@opportunity': getOpportunityId(),
             '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
         };
         for(var prop in $scope.registrationsFilters){
-            if($scope.registrationsFilters[prop]){
+            if($scope.registrationsFilters[prop] || $scope.registrationsFilters[prop] === 0){
                 qdata[prop] = 'EQ(' + $scope.registrationsFilters[prop] + ')'
             }
         }
@@ -1265,7 +1313,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.$watch('evaluationsFilters', function(){
         var qdata = {
             '@opportunity': getOpportunityId(),
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
+            '@order': 'evaluation desc'
         };
         for(var prop in $scope.evaluationsFilters){
             if($scope.evaluationsFilters[prop]){
@@ -1297,6 +1346,17 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };
     }) : [];
+
+
+
+    var defaultSelectFields = [
+        {fieldName: "number", title:"Inscrição" ,required:true},
+        {fieldName: "category", title:"Categorias" ,required:true},
+        {fieldName: "agents", title:"Agentes" ,required:true},
+        {fieldName: "attachments", title: "Anexos" ,required:true},
+        {fieldName: "evaluation", title: "Avaliação" ,required:true},
+        {fieldName: "status", title:"Status" ,required:true},
+    ];
 
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
@@ -1357,6 +1417,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             owner_default_label: labels['registrationOwnerDefault']
         },
 
+        evaluationStatuses: [
+            {value: null, label: labels['allStatus']},
+            {value: -1, label: labels['pending']},
+            {value: 1, label: labels['evaluated']},
+            {value: 2, label: labels['sent']}
+        ],
+
         registrationStatuses: RegistrationService.registrationStatuses,
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
@@ -1368,6 +1435,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         publishedRegistrationStatus: 10,
 
         propLabels : [],
+
+        defaultSelectFields : defaultSelectFields,
 
         registrationTableColumns: {
             number: true,
@@ -1428,6 +1497,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
     });
 
+    $scope.getColumnByKey = function(key){
+        for(var index in $scope.data.defaultSelectFields){
+            if($scope.data.defaultSelectFields[index].fieldName == key ){
+                return $scope.data.defaultSelectFields[index];
+            }
+        }
+
+        return null;
+    };
 
     $scope.numberOfEnabledColumns = function(){
         var result = 0;
@@ -1842,6 +1920,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         $scope.status_str = function(registration) {
             return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+        };
+
+        $scope.getEvaluationResult = function(registration) {
+
+            if($scope.evaluations[registration.id] == null){
+                return 0;
+            }
+            return $scope.evaluations[registration.id].result;
         };
 
         $scope.show = function(registration){

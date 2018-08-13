@@ -155,10 +155,20 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
 
-        if(method_exists($this, 'canUserAddRole' . $role_name))
-            $this->checkPermission('addRole' . $role_name);
-        else
-            $this->checkPermission('addRole');
+        /**
+         * @todo Verificar permissões de acordo com o subsite, uma possivel refatoração seria utilizar 
+         * apenas um metodo para qualquer subsite, junção entre o 'is' e o checkPermission.
+         */
+        if (!$subsite_id === false) {
+            if(!$app->user->is($role_name, intval($subsite_id))) {
+                throw new Exceptions\PermissionDenied(App::i()->user, $this, $action);
+            }
+        } else {
+            if(method_exists($this, 'canUserAddRole' . $role_name))
+                $this->checkPermission('addRole' . $role_name);
+            else
+                $this->checkPermission('addRole');
+        }
         
         if(!$this->is($role_name, $subsite_id)){
             $role = new Role;
@@ -518,6 +528,36 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         if(!$opportunities)
             $opportunities = [];
+
+        return $opportunities;
+    }
+
+    function getOpportunitiesCanBeEvaluated(){
+        $this->checkPermission('modify');
+        $opportunities = [];
+        $app = App::i();
+
+        $opportunitiesPermission = $app->repo('MapasCulturais\Entities\PermissionCache')->findBy([
+            'action' => 'evaluateRegistrations',
+            'userId' => $app->user->id
+        ]);
+
+        if (count($opportunitiesPermission) > 0 ) {
+            foreach ($opportunitiesPermission as $opportunity) {
+                $opportunitiesCanEvalute[] = $opportunity->objectId;
+            }
+
+            $opportunities = $app->repo('Opportunity')->findBy([
+                'id' => $opportunitiesCanEvalute,
+                'status' => Opportunity::STATUS_ENABLED
+            ]);
+
+            foreach ($opportunities as $key => $opportunity) {
+                if(!$opportunity->evaluationMethodConfiguration->canUser('@control')) {
+                    unset($opportunities[$key]);
+                }
+            }
+        }
 
         return $opportunities;
     }

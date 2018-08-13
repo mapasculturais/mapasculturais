@@ -1,6 +1,5 @@
 <header id="header-inscritos" class="clearfix">
-    <h3><?php \MapasCulturais\i::_e("Inscritos");?></h3>
-    <!--<a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php \MapasCulturais\i::_e("Baixar lista de avaliações");?></a>-->
+    <h3><?php \MapasCulturais\i::_e("Avaliações");?></h3>
 </header>
 <?php if($entity->isUserEvaluationsSent()): ?>
     <div id='status-info' class="alert success">
@@ -10,7 +9,7 @@
     </div>
 <?php else: ?>
     <div id='status-info' class="alert info">
-        <span><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar inscrições</strong>:");?></span>
+        <span><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar Avaliações</strong>:");?></span>
 
         <div class="close"></div>
     </div>
@@ -34,10 +33,10 @@
                 <?php \MapasCulturais\i::_e("Anexos");?>
             </th>
             <th class="registration-status-col">
-                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>" model="evaluationsFilters['evaluated']" data="data.evaluationStatusToFilter"></mc-select>
+                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Status");?>
+                <?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>
             </th>
         </tr>
     </thead>

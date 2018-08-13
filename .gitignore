@@ -14,6 +14,7 @@ src/protected/application/lib/MapasCulturais/DoctrineProxies/*
 src/protected/vendor
 src/pub
 src/assets
+src/protected/application/themes/Ceara
 *.log
 .idea
 main.css
@@ -25,3 +26,4 @@ _apigen.phar
 SaaS/*
 documentation/site
 private-files
+docker-data
