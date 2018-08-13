@@ -158,7 +158,7 @@
             },
 
             registrationStatuses: [
-                {value: null, label: labels['allStatus']},
+                {value: "", label: labels['allStatus']},
                 {value: 1, label: labels['pending']},
                 {value: 2, label: labels['invalid']},
                 {value: 3, label: labels['notSelected']},
@@ -1409,6 +1409,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         registrationCategories: categories,
         registrationCategoriesToFilter: [{value: null, label: labels.allCategories}].concat(categories),
+        evaluationStatusToFilter: [{value: "", label: labels['all']}, {value: 1, label: labels['evaluated']},{value: -1, label: labels['notEvaluated']}],
         registrations: [],
         registration: {
             owner: null,
@@ -1568,7 +1569,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
 
         var slugs = {
-            '-1': 'pending',
+            '-1': 'notEvaluated',
             '0': 'draft',
             '1': 'evaluated',
             '2': 'sent'
@@ -1584,7 +1585,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         if(registration.evaluation){
             return registration.evaluation.resultString;
         } else {
-            return '';
+            return labels['pending'];
         }
     }
 
@@ -1861,9 +1862,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
             $timeout(function() {
                 //Se não existir agentes registrado ao carregar o modúlo, adiciona o agente padrão ao registro.
-                if (!MapasCulturais.entity.registrationAgents) {
-                    $scope.setRegistrationOwner(MapasCulturais.userProfile);
-                }
+                //if (!MapasCulturais.entity.registrationAgents) {
+                //    $scope.setRegistrationOwner(MapasCulturais.userProfile);
+                //}
             });
 
         }]);

@@ -19,19 +19,19 @@
                 <?php \MapasCulturais\i::_e("Agente Responsável");?>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Avaliação");?>
+                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
             </th>
             <th class="registration-status-col">
-                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
+                <?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td colspan='6'>
-                <span ng-if="data.evaluationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação");?></span>
-                <span ng-if="data.evaluationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 avaliação.");?></span>
-                <span ng-if="data.evaluationsAPIMetadata.count > 1">{{data.evaluationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("Avaliações.");?></span>
+                <span ng-if="data.evaluations.length === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação enviada.");?></span>
+                <span ng-if="data.evaluations.length === 1"><?php \MapasCulturais\i::_e("1 avaliação encontrada.");?></span>
+                <span ng-if="data.evaluations.length > 1">{{data.evaluations.length}} <?php \MapasCulturais\i::_e("Avaliações.");?></span>
             </td>
         </tr>
 
@@ -50,10 +50,10 @@
                 </p>
             </td>
             <td class="registration-status-col">
-                {{getEvaluationResultString(evaluation)}}
+                {{getEvaluationStatusLabel(evaluation)}}
             </td>
             <td class="registration-status-col">
-                <strong>{{getEvaluationStatusLabel(evaluation)}}</strong>
+                {{getEvaluationResultString(evaluation)}}
             </td>
         </tr>
     </tbody>
