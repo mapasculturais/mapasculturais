@@ -1231,6 +1231,49 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.registrationsFilters = {};
     $scope.evaluationsFilters = {};
 
+    $scope.isSelected = function(object, key){
+        var selected  = false;
+        for(var index in object) {
+            if (key == index){
+                selected =  object[key];
+                break;
+            }
+        }
+        return selected;
+    };
+
+    $scope.toggleSelection = function(object, key){
+        var value  = true;
+        for(var index in object) {
+            if (key == index){
+                value = !object[key];
+                break;
+            }
+        }
+        object[key] = value;
+        return;
+    };
+
+    $scope.toggleSelectionColumn = function(object, key){
+
+        $scope.toggleSelection(object, key);
+
+        if ($scope.numberOfEnabledColumns() == 0) {
+            object[key] = true;
+            alert('Não é permitido desabilitar todas as colunas da tabela');
+            return;
+        }
+
+        if (key == 'number' ) {
+            var columnObj = $scope.getColumnByKey(key);
+            object[key] = true;
+            alert('Não é permitido desabilitar a coluna ' + columnObj.title);
+            return;
+        }
+
+        return;
+    };
+
     $scope.findRegistrations = function(){
         if(registrationsApi.finish()){
             return null;
@@ -1303,6 +1346,17 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     categories = MapasCulturais.entity.registrationCategories.length ? MapasCulturais.entity.registrationCategories.map(function(e){
         return { value: e, label: e };
     }) : [];
+
+
+
+    var defaultSelectFields = [
+        {fieldName: "number", title:"Inscrição" ,required:true},
+        {fieldName: "category", title:"Categorias" ,required:true},
+        {fieldName: "agents", title:"Agentes" ,required:true},
+        {fieldName: "attachments", title: "Anexos" ,required:true},
+        {fieldName: "evaluation", title: "Avaliação" ,required:true},
+        {fieldName: "status", title:"Status" ,required:true},
+    ];
 
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
@@ -1381,6 +1435,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         propLabels : [],
 
+        defaultSelectFields : defaultSelectFields,
+
         registrationTableColumns: {
             number: true,
             category: true,
@@ -1440,6 +1496,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
     });
 
+    $scope.getColumnByKey = function(key){
+        for(var index in $scope.data.defaultSelectFields){
+            if($scope.data.defaultSelectFields[index].fieldName == key ){
+                return $scope.data.defaultSelectFields[index];
+            }
+        }
+
+        return null;
+    };
 
     $scope.numberOfEnabledColumns = function(){
         var result = 0;

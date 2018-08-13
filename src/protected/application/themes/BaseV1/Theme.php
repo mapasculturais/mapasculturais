@@ -2360,12 +2360,16 @@ class Theme extends MapasCulturais\Theme {
     function addOpportunitySelectFieldsToJs(Entities\Opportunity $entity){
         $this->jsObject['opportunitySelectFields'] = isset($this->jsObject['opportunitySelectFields']) ? $this->jsObject['opportunitySelectFields'] : [];
 
-        foreach($entity->registrationFieldConfigurations as $field){
-            if($field->fieldType == 'select'){
-                if(!in_array($field, $this->jsObject['opportunitySelectFields'])){
-                    $this->jsObject['opportunitySelectFields'][] = $field;
+        $_opportunity = $entity;
+        while($_opportunity !== null){
+            foreach($_opportunity->registrationFieldConfigurations as $field){
+                if($field->fieldType == 'select'){
+                    if(!in_array($field, $this->jsObject['opportunitySelectFields'])){
+                        $this->jsObject['opportunitySelectFields'][] = $field;
+                    }
                 }
             }
+            $_opportunity = $_opportunity->parent;
         }
     }
 
