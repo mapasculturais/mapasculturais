@@ -250,9 +250,9 @@ class Registration extends EntityController {
 
         $entity->checkPermission('view');
 
-        if($entity->status === Entities\Registration::STATUS_DRAFT){
+        if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
             parent::GET_edit();
-        }else{
+        } else {
             parent::GET_single();
         }
     }
@@ -345,7 +345,9 @@ class Registration extends EntityController {
         if($errors = $registration->getSendValidationErrors()){
             $this->errorJson($errors);
         }else{
+            $registration->cleanMaskedRegistrationFields();
             $registration->send();
+
             if($app->request->isAjax()){
                 $this->json($registration);
             }else{

@@ -92,6 +92,18 @@ class Opportunity extends EntityController {
 
     }
 
+    function GET_reportDrafts(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+        $entity->checkPermission('@control');
+        $app->controller('Registration')->registerRegistrationMetadata($entity);
+        $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
+
+        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+     }
 
     function GET_reportEvaluations(){
         $this->requireAuthentication();
@@ -238,7 +250,7 @@ class Opportunity extends EntityController {
     function API_findRegistrations() {
         $app = App::i();
         
-        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true));
+        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         
         $opportunity = $this->_getOpportunity();
         
@@ -462,11 +474,17 @@ class Opportunity extends EntityController {
             
             $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
             $registrations = $registrations_query->find();
-            
+
             $edata = [
                 '@select' => 'id,result,evaluationData,registration,user,status',
                 'registration' => "IN(" . implode(',', $registration_ids).  ")"
             ];
+
+            $status_id = (isset($this->data['status']) && !is_null($this->data['status'])) ? filter_var($this->data['status'],FILTER_SANITIZE_NUMBER_INT) : null;
+
+            if(!is_null($status_id) && $status_id >= 0){
+                $edata['status'] =  $this->data['status'];
+            }
             
             foreach($this->data as $k => $v){
                 if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
@@ -497,12 +515,33 @@ class Opportunity extends EntityController {
         foreach($registrations as &$registration){
             $registration['number'] = 'on-' . $registration['id'];
             foreach($valuer_by_user as $user_id => $valuer){
-                if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])){
-                    $_result[] = [
-                        'registration' => $registration,
-                        'evaluation' => isset($evaluations[$user_id . ':' . $registration['id']]) ? $evaluations[$user_id . ':' . $registration['id']] : null,
-                        'valuer' => $valuer
-                    ];
+                if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])) {
+
+                    $has_evaluation = isset($evaluations[$user_id . ':' . $registration['id']]);
+                    if ($status_id == null) {
+                        $_result[] = [
+                            'registration' => $registration,
+                            'evaluation' => ($has_evaluation) ? $evaluations[$user_id . ':' . $registration['id']] : null,
+                            'valuer' => $valuer
+                        ];
+                    } else {
+                        if ($status_id >= 0 && $has_evaluation){
+                            $_result[] = [
+                                'registration' => $registration,
+                                'evaluation' => $evaluations[$user_id . ':' . $registration['id']],
+                                'valuer' => $valuer
+                            ];
+                        }
+
+                        if ($status_id < 0 && !$has_evaluation){
+                            $_result[] = [
+                                'registration' => $registration,
+                                'evaluation' => null,
+                                'valuer' => $valuer
+                            ];
+                        }
+                    }
+
                 }
             }
         }

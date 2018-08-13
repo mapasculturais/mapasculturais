@@ -192,9 +192,6 @@ class App extends \Slim\Slim{
             }
         }
 
-        //Load defaut translation textdomain
-        i::load_default_textdomain($config['app.lcode']);
-
         // =============== CACHE =============== //
         if(key_exists('app.cache', $config) && is_object($config['app.cache'])  && is_subclass_of($config['app.cache'], '\Doctrine\Common\Cache\CacheProvider')){
             $this->_cache = $config['app.cache'];
@@ -202,7 +199,7 @@ class App extends \Slim\Slim{
 
         }else{
             $this->_cache = new \Doctrine\Common\Cache\ArrayCache ();
-            $this->_msche = new \Doctrine\Common\Cache\ArrayCache ();
+            $this->_mscache = new \Doctrine\Common\Cache\ArrayCache ();
         }
 
         $this->_rcache = new \Doctrine\Common\Cache\ArrayCache ();
@@ -768,6 +765,30 @@ class App extends \Slim\Slim{
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
             'slug' => 'section',
             'name' => \MapasCulturais\i::__('Título de Seção')
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'number',
+            'name' => \MapasCulturais\i::__('Campo numérico'),
+            'validations' => [
+                'v::numeric()' => \MapasCulturais\i::__('O valor inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'cpf',
+            'name' => \MapasCulturais\i::__('Campo de CPF'),
+            'validations' => [
+                'v::cpf()' => \MapasCulturais\i::__('O cpf inserido não é válido')
+            ]
+        ]));
+
+        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
+            'slug' => 'cnpj',
+            'name' => \MapasCulturais\i::__('Campo de CNPJ'),
+            'validations' => [
+                'v::cnpj()' => \MapasCulturais\i::__('O cnpj inserido não é válido')
+            ]
         ]));
 
         $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([

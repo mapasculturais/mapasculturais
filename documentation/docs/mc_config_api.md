@@ -199,6 +199,12 @@ $.getJSON(
   function (response){ console.log(response); });
 ```
 
+* **retornando a versão atual da instalação do mapasculturais.**
+```javascript
+$.getJSON(
+  'http://mapasculturais.local/api/site/version',
+  function (response){ console.log(response); });
+```
 
 ### Filtrando por relacionamentos
 

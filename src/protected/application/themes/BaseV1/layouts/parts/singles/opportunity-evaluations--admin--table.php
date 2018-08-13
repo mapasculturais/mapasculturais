@@ -19,10 +19,10 @@
                 <?php \MapasCulturais\i::_e("Agente Responsável");?>
             </th>
             <th class="registration-status-col">
-                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>" model="evaluationsFilters['evaluated']" data="data.evaluationStatusToFilter"></mc-select>
+                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Status");?>
+                <?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>
             </th>
         </tr>
     </thead>
@@ -34,9 +34,13 @@
                 <span ng-if="data.evaluations.length > 1">{{data.evaluations.length}} <?php \MapasCulturais\i::_e("Avaliações.");?></span>
             </td>
         </tr>
-        
+
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
-            <td class="registration-id-col"><strong>{{evaluation.registration.number}}</strong></td>
+            <td class="registration-id-col">
+                <a href='{{evaluation.evaluation.singleUrl}}'>
+                    <strong>{{evaluation.registration.number}}</strong>
+                </a>
+            </td>
             <td class="registration-id-col">{{evaluation.valuer.name}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
