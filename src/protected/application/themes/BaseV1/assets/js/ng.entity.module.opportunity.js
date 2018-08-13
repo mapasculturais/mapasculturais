@@ -1270,7 +1270,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.$watch('evaluationsFilters', function(){
         var qdata = {
             '@opportunity': getOpportunityId(),
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
+            '@order': 'evaluation desc'
         };
         for(var prop in $scope.evaluationsFilters){
             if($scope.evaluationsFilters[prop]){
@@ -1360,6 +1361,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             category: null,
             owner_default_label: labels['registrationOwnerDefault']
         },
+
+        evaluationStatuses: [
+            {value: null, label: labels['allStatus']},
+            {value: -1, label: labels['pending']},
+            {value: 1, label: labels['evaluated']},
+            {value: 2, label: labels['sent']}
+        ],
 
         registrationStatuses: RegistrationService.registrationStatuses,
 

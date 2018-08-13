@@ -1,6 +1,5 @@
 <header id="header-inscritos" class="clearfix">
-    <h3><?php \MapasCulturais\i::_e("Inscritos");?></h3>
-    <!--<a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php \MapasCulturais\i::_e("Baixar lista de avaliações");?></a>-->
+    <h3><?php \MapasCulturais\i::_e("Avaliações");?></h3>
 </header>
 <?php if($entity->isUserEvaluationsSent()): ?>
     <div id='status-info' class="alert success">
@@ -10,7 +9,7 @@
     </div>
 <?php else: ?>
     <div id='status-info' class="alert info">
-        <span><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar inscrições</strong>:");?></span>
+        <span><?php \MapasCulturais\i::_e("Após avaliar todas as inscrições clique no botão <strong>Enviar Avaliações</strong>:");?></span>
 
         <div class="close"></div>
     </div>
@@ -34,23 +33,19 @@
                 <?php \MapasCulturais\i::_e("Anexos");?>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Status / Avaliação");?>
+                <?php \MapasCulturais\i::_e("Avaliação");?>
+            </th>
+            <th class="registration-status-col">
+                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan='6'>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição enviada.");?></span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length === 1"><?php \MapasCulturais\i::_e("1 inscrição enviada.");?></span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length === 1"><?php \MapasCulturais\i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições enviadas.");?>
-                    <?php if($entity->registrationLimit > 0):?>
-                         | <?php \MapasCulturais\i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
-                    <?php endif;?>
-                </span>
-                <span ng-if="usingFilters() && getFilteredRegistrations().length > 1">{{getFilteredRegistrations().length}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
+            <td colspan='7'>
+                <span ng-if="data.evaluationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação");?></span>
+                <span ng-if="data.evaluationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 avaliação.");?></span>
+                <span ng-if="data.evaluationsAPIMetadata.count > 1">{{data.evaluationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("Avaliações.");?></span>
             </td>
         </tr>
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}">
@@ -70,13 +65,11 @@
             <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
                 <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
             </td>
-            <td class="registration-status-col"> 
-                <div ng-show="::getEvaluationResultString(evaluation)">
-                    <strong>{{::getEvaluationStatusLabel(evaluation)}} / {{::getEvaluationResultString(evaluation)}}</strong>
-                </div>
-                <div ng-hide="::getEvaluationResultString(evaluation)">
-                    {{::getEvaluationStatusLabel(evaluation)}}
-                </div>
+            <td class="registration-status-col">
+                {{getEvaluationResultString(evaluation)}}
+            </td>
+            <td class="registration-status-col">
+                <strong>{{getEvaluationStatusLabel(evaluation)}}</strong>
             </td>
         </tr>
     </tbody>
