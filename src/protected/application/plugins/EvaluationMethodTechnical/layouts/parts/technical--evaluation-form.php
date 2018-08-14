@@ -1,5 +1,7 @@
 <?php
 use MapasCulturais\i;
+$plugin = $app->plugins['EvaluationMethodTechnical'];
+
 ?>
 <div ng-controller="TechnicalEvaluationMethodFormController" class="technical-evaluation-form">
     <section ng-repeat="section in ::data.sections">
@@ -10,8 +12,8 @@ use MapasCulturais\i;
                 </th>
             </tr>
             <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
-                <td><label for="{{cri.id}}">{{cri.title}}:</label></td>
-                <td><input id="{{cri.id}}" name="data[{{cri.id}}]" type="number" step="0.1" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip" title="<?php \MapasCulturais\i::esc_attr_e('Configurações')?>: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}"></td>
+                <td><?php echo $plugin->step ?><label for="{{cri.id}}">{{cri.title}}:</label></td>
+                <td><input id="{{cri.id}}" name="data[{{cri.id}}]" type="number" step="<?php echo $plugin->step ?>" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip" title="Configurações: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}"></td>
             </tr>
             <tr class="subtotal">
                 <td><?php i::_e('Subtotal')?></td>
