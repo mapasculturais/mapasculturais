@@ -113,17 +113,67 @@ trait ControllerAPI{
      *
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
+
+    
+
+    /**
+     * @apiDefine APIfindOne
+     * @apiDescription Realiza a busca por uma unica entidade de acordo com os parâmetros solicitados.
+     * @apiParam {String} [@select] usado para selecionar as propriedades da entidade que serão retornadas pela api. 
+     *                            Você pode retornar propriedades de entidades relacionadas. ex:( @select: id,name,
+     *                            owner.name,owner.singleUrl)
+     * @apiParam {String} [@order] usado para definir em que ordem o resultado será retornado. ex:( @order: name ASC, id DESC)
+     * @apiParam {String} [@limit] usado para definir o número máximo de entidades que serão retornadas. ex:( @limit: 10)
+     * @apiParam {String} [@page] usado em paginações em conjunto com o @limit. ex:( @limit:10, @page: 2)
+     * @apiParam {String} [@or] se usado a api usará o operador lógico OR para criar a query. ex:( @or:1)
+     * @apiParam {String} [@type] usado para definir o tipo de documento a ser gerado com o resultado da busca. ex:( @type: html; ou @type: json; ou @type: xml)
+     * @apiParam {String} [@files] indica que é para retornar os arquivos anexos. ex:( @files=(avatar.avatarSmall,header):name,url - retorna o nome e url do thumbnail de tamanho avatarSmall da imagem avatar e a imagem header original)
+     * @apiParam {String} [@seals] usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. ex:( @seals: 1,10,25)
+     * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
+     * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
+     *
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/apgen/findOne?@select=id,name,subsite.name&user=EQ\(8006\)
+     *
+     */
     public function API_findOne(){
         $entity = $this->apiQuery($this->getData, ['findOne' => true]);
         $this->apiItemResponse($entity);
     }
 
+    /**
+     * @apiDefine APIfind
+     * @apiDescription Realiza a busca por entidades de acordo como parâmetros solicitados.
+     * @apiParam {String} [@select] usado para selecionar as propriedades da entidade que serão retornadas pela api. 
+     *                            Você pode retornar propriedades de entidades relacionadas. ex:( @select: id,name,
+     *                            owner.name,owner.singleUrl)
+     * @apiParam {String} [@order] usado para definir em que ordem o resultado será retornado. ex:( @order: name ASC, id DESC)
+     * @apiParam {String} [@limit] usado para definir o número máximo de entidades que serão retornadas. ex:( @limit: 10)
+     * @apiParam {String} [@page] usado em paginações em conjunto com o @limit. ex:( @limit:10, @page: 2)
+     * @apiParam {String} [@or] se usado a api usará o operador lógico OR para criar a query. ex:( @or:1)
+     * @apiParam {String} [@type] usado para definir o tipo de documento a ser gerado com o resultado da busca. ex:( @type: html; ou @type: json; ou @type: xml)
+     * @apiParam {String} [@files] indica que é para retornar os arquivos anexos. ex:( @files=(avatar.avatarSmall,header):name,url - retorna o nome e url do thumbnail de tamanho avatarSmall da imagem avatar e a imagem header original)
+     * @apiParam {String} [@seals] usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. ex:( @seals: 1,10,25)
+     * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
+     * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
+     * 
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost:8090/api/agent/find?@select=id,name,subsite.name&user=EQ\(8006\)
+     * 
+     */
     public function API_find(){
         $data = $this->apiQuery($this->getData);
         $this->apiResponse($data);
     }
 
-    public function API_describe(){        
+
+    /**
+     * @apiDefine APIdescribe
+     * @apiDescription Retorna a descrição de entidade..
+     */
+    public function API_describe(){
         $class = $this->entityClassName;
         $data_array = $class::getPropertiesMetadata();
         $file_groups = App::i()->getRegisteredFileGroupsByEntity( $class );
