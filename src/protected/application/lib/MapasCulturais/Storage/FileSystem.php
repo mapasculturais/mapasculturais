@@ -143,19 +143,6 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function _getUrlFromRelativePath($relative_path) {
         return App::i()->baseUrl . $this->config['baseUrl'] . $relative_path;
     }
-	
-	/**
-	 * Returns the URL to a private file by its ID
-	 * @param  int $id The File ID
-	 * @return string     The URL
-	 */
-	protected function _getPrivateUrlById($id) {
-		$app = App::i();
-		$controller = $app->getControllerByClass('MapasCulturais\Controllers\File');
-		return $app->createUrl($controller->id, 'privateFile', [$id]);
-	}
-        
-    
 
     /**
      * Returns the path to the file.
