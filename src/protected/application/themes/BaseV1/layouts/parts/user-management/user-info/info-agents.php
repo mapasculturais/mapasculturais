@@ -4,7 +4,7 @@
 ?>
   <table class="agents-table entity-table">
     <caption>
-      <?php \MapasCulturais\i::_e("Agentes");?>
+      <?=\MapasCulturais\i::_e("Agentes");?>
     </caption>
     <thead>
       <tr>
@@ -19,10 +19,10 @@
       <tr>
         <td>
           <a class="icon icon-agent"></a>
-          <a href="<?php $agent->singleUrl?>"><?php $agent->id?></a>
+          <a href="<?=$agent->singleUrl?>"><?=$agent->id?></a>
         </td>
-        <td><?php $agent->name?></td>
-        <td class="fit"><?php $agent->subsite?$agent->subsite->name:'';?></td>
+        <td><?=$agent->name?></td>
+        <td class="fit"><?=$agent->subsite?$agent->subsite->name:'';?></td>
         
         <td class="fit">
 
