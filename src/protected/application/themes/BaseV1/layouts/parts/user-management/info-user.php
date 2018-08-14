@@ -7,30 +7,30 @@
   $subsitesAdmin = $app->repo('User')->getSubsitesAdminRoles($current_user->id);
   $this->jsObject['subsitesAdmin'] = $subsitesAdmin;  
 ?>
-<div class="user-managerment-infos" ng-init="load(<?php $user->id;?>)">  
+<div class="user-managerment-infos" ng-init="load(<?=$user->id?>)">  
   <div class="user-info">
     <div style="float:left">
       <span class="label">id:</span> 
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('id'); ?>" data-emptytext="">
-        <?php $user->id;?>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="id" data-emptytext="">
+        <?=$user->id?>
       </span> <br />
       <span class="label">email:</span>
-      <span class="js-editable editable-click editable-empty" data-edit="email" data-original-title="<?php \MapasCulturais\i::esc_attr_e('email'); ?>" data-emptytext="">
-        <?php $user->email;?> 
+      <span class="js-editable editable-click editable-empty" data-edit="email" data-original-title="email" data-emptytext="">
+        <?=$user->email?> 
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("autenticação:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('autenticação'); ?>" data-emptytext="">
-        <?php $user->authProvider;?> <!-- // como pegar pelo ID no registerAuthProvider? -->
+      <span class="label">autenticação:</span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="autenticação" data-emptytext="">
+        <?=$user->authProvider?> <!-- // como pegar pelo ID no registerAuthProvider? -->
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("id autenticação:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('id autenticação'); ?>" data-emptytext="">
-        <?php $user->authUid;?>
+      <span class="label">id autenticação:</span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="id autenticação" data-emptytext="">
+        <?=$user->authUid?>
       </span> <br />
     </div>
 
     <div style="float:left">
-      <span class="label"><?php \MapasCulturais\i::_e("status:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('status'); ?>" data-emptytext="">
+      <span class="label">status:</span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="status" data-emptytext="">
         <?php 
           if ($user->status == 1)
             echo \MapasCulturais\i::_e("Ativo");
@@ -38,13 +38,13 @@
           echo \MapasCulturais\i::_e("Inativo");
         ?>
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("último login:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('último login'); ?>" data-emptytext="">
-      <?php $user->lastLoginTimestamp->format('d-m-Y \a\s H:i:s');?>
+      <span class="label">último login:</span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="último login" data-emptytext="">
+      <?=$user->lastLoginTimestamp->format('d-m-Y \a\s H:i:s')?>
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("data criação:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('data criação'); ?>" data-emptytext="">
-        <?php $user->createTimestamp->format('d-m-Y \a\s H:i:s');?>
+      <span class="label">data criação:</span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="data criação" data-emptytext="">
+        <?=$user->createTimestamp->format('d-m-Y \a\s H:i:s')?>
       </span> <br />
     </div>
 
@@ -156,7 +156,7 @@
 
         <table class="permissions-table entity-table">
           <caption>
-            <?php \MapasCulturais\i::_e("Permissões");?>
+            <?=\MapasCulturais\i::_e("Permissões");?>
           </caption>
           <thead>
             <tr>
@@ -170,42 +170,42 @@
             foreach ($roles as $role) {
           ?>
             <tr>
-              <td style="white-space: nowrap;  width:1%;"><?php $role['id']?></td>
-              <td><?php $role['subsite']?></td>
+              <td style="white-space: nowrap;  width:1%;"><?=$role['id']?></td>
+              <td><?=$role['subsite']?></td>
               <td style="white-space: nowrap;  width:1%;">
                 <?php if ( $current_user->is('superAdmin', $role['subsite_id']) ) { ?>
 
                   <div id="funcao-do-agente-user-managerment" class="dropdown dropdown-select">
                     <div class="placeholder js-selected">
-                      <span data-role="<?php $role['role']?>" data-subsite="<?php $role['subsite_id']?>"><?php echo $role['role']; ?></span>
+                      <span data-role="<?=$role['role']?>" data-subsite="<?=$role['subsite_id']?>"><?php echo $role['role']; ?></span>
                     </div>
 
                     <div class="submenu-dropdown js-options">
                       <ul>
-                        <li data-subsite="<?php $role['subsite_id']?>">
+                        <li data-subsite="<?=$role['subsite_id']?>">
                           <span><?php \MapasCulturais\i::_e("Normal");?></span>
                         </li>
 
                         <?php if ($user->canUser('addRoleAdmin')): ?>
-                          <li data-role="admin" data-subsite="<?php $role['subsite_id']?>">
+                          <li data-role="admin" data-subsite="<?=$role['subsite_id']?>">
                             <span><?php echo $app->getRoleName('admin') ?></span>
                           </li>
                         <?php endif; ?>
 
                         <?php if ($user->canUser('addRoleSuperAdmin')): ?>
-                          <li data-role="superAdmin" data-subsite="<?php $role['subsite_id']?>">
+                          <li data-role="superAdmin" data-subsite="<?=$role['subsite_id']?>">
                             <span><?php echo $app->getRoleName('superAdmin') ?></span>
                           </li>
                         <?php endif; ?>
 
                         <?php if ($user->canUser('addRoleSaasAdmin')): ?>
-                          <li data-role="saasAdmin" data-subsite="<?php $role['subsite_id']?>">
+                          <li data-role="saasAdmin" data-subsite="<?=$role['subsite_id']?>">
                             <span><?php echo $app->getRoleName('saasAdmin') ?></span>
                           </li>
                         <?php endif; ?>
                         
                         <?php if ($user->canUser('addRoleSaasSuperAdmin')): ?>
-                          <li data-role="saasSuperAdmin" data-subsite="<?php $role['subsite_id']?>">
+                          <li data-role="saasSuperAdmin" data-subsite="<?=$role['subsite_id']?>">
                             <span><?php echo $app->getRoleName('saasSuperAdmin') ?></span>
                           </li>
                         <?php endif; ?>
@@ -239,7 +239,7 @@
               <?php
                 $subsites = $app->repo('User')->getSubsitesCanAddRoles($current_user->id);
                 foreach($subsites as $subsite) { ?>
-                  <option value="<?php $subsite->id; ?>"> <?php $subsite->id.'-'.$subsite->name?> </option>
+                  <option value="<?=$subsite->id?>"> <?=$subsite->id.'-'.$subsite->name?> </option>
               <?php } ?>
             </select>
             <br />
@@ -248,19 +248,19 @@
             </label>
             <select id="permissionList">
               <?php if ($user->canUser('addRoleAdmin')): ?>
-                <option value="admin"><?php $app->getRoleName('admin')?></option>
+                <option value="admin"><?=$app->getRoleName('admin')?></option>
               <?php endif; ?>
 
               <?php if ($user->canUser('addRoleSuperAdmin')): ?>
-                <option value="superAdmin"><?php $app->getRoleName('superAdmin') ?></option>
+                <option value="superAdmin"><?=$app->getRoleName('superAdmin') ?></option>
               <?php endif; ?>
 
               <?php if ($user->canUser('addRoleSaasAdmin')): ?>
-                <option value="saasAdmin"><?php $app->getRoleName('saasAdmin') ?></option>
+                <option value="saasAdmin"><?=$app->getRoleName('saasAdmin') ?></option>
               <?php endif; ?>
 
               <?php if ($user->canUser('addRoleSaasSuperAdmin')): ?>
-                <option value="saasSuperAdmin"><?php $app->getRoleName('saasSuperAdmin') ?></option>
+                <option value="saasSuperAdmin"><?=$app->getRoleName('saasSuperAdmin') ?></option>
               <?php endif; ?>
             </select>
             <br>
@@ -279,7 +279,7 @@
       <div ng-show="!user.history.spinnerShow">
         <table class="history-table entity-table">
           <caption>
-            <?php \MapasCulturais\i::_e("Log de atividades");?>
+            <?=\MapasCulturais\i::_e("Log de atividades");?>
           </caption>
           <thead>
             <tr>
