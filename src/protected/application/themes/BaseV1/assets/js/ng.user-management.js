@@ -16,35 +16,35 @@
         return {
             
             getUrl: function(entity, action){
-                return `${baseUrl}${entity}/${action}`;
+                return baseUrl + entity + '/' + action;
             },
 
             getAgents: function(userId) {
-                return $http.get(this.getUrl('api/agent', 'find') + `?@select=id,name,subsite.name,singleUrl,deleteUrl,archiveUrl,publishUrl,unarchiveUrl,undeleteUrl,destroyUrl,status,__agentRelations.hasControl,__agentRelations.agent.userId&user=EQ(${userId})`);
+                return $http.get(this.getUrl('api/agent', 'find') + '?@select=id,name,subsite.name,singleUrl,deleteUrl,archiveUrl,publishUrl,unarchiveUrl,undeleteUrl,destroyUrl,status,__agentRelations.hasControl,__agentRelations.agent.userId&user=EQ(' + userId + ')');
             },
 
             getRelatedsAgentControl: function(userId) {
-                return $http.get(this.getUrl('user', 'relatedsAgentsControl') + `?userId=${userId}`);
+                return $http.get(this.getUrl('user', 'relatedsAgentsControl') + '?userId=' + userId);
             },
 
             getSpaces: function(userId) {
-                return $http.get(this.getUrl('api/space', 'find') + `?@select=id,name,subsite.name,singleUrl,deleteUrl,archiveUrl,publishUrl,unarchiveUrl,undeleteUrl,destroyUrl,status,__agentRelations.hasControl,__agentRelations.agent.userId&user=EQ(${userId})`);
+                return $http.get(this.getUrl('api/space', 'find') + '?@select=id,name,subsite.name,singleUrl,deleteUrl,archiveUrl,publishUrl,unarchiveUrl,undeleteUrl,destroyUrl,status,__agentRelations.hasControl,__agentRelations.agent.userId&user=EQ(' + userId + ')');
             },
             
             getRelatedsSpacesControl: function(userId) {
-                return $http.get(this.getUrl('user', 'relatedsSpacesControl') + `?userId=${userId}`);
+                return $http.get(this.getUrl('user', 'relatedsSpacesControl') + '?userId=' + userId);
             },
 
             getEvents: function(userId) {
-                return $http.get(this.getUrl('user', 'events') + `?userId=${userId}`);
+                return $http.get(this.getUrl('user', 'events') + '?userId=' + userId);
             },
 
             getRelatedsEventsControl: function(userId) {
-                return $http.get(this.getUrl('user', 'relatedsEventsControl') + `?userId=${userId}`);
+                return $http.get(this.getUrl('user', 'relatedsEventsControl') + '?userId=' + userId);
             },
 
             getHistory: function(userId) {
-                return $http.get(this.getUrl('user', 'history') + `?userId=${userId}`);
+                return $http.get(this.getUrl('user', 'history') + '?userId=' + userId);
             },
         };
     }]);
@@ -261,9 +261,9 @@
         $(".tablinks").click(function() {
             var tab = $(this).data('tab');
             var entity = $(this).data('entity');
-            $(`#${entity} .tab-content-table`).hide();
-            $(`#${entity} .tab-table button`).removeClass("active");
-            $(`#${entity} #${tab}`).show();
+            $('#' + entity + ' .tab-content-table').hide();
+            $('#' + entity + ' .tab-table button').removeClass("active");
+            $('#' + entity + ' #' + tab).show();
             $(this).addClass("active");
         });
     }]);
