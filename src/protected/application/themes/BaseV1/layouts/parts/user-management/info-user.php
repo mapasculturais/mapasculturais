@@ -7,24 +7,24 @@
   $subsitesAdmin = $app->repo('User')->getSubsitesAdminRoles($current_user->id);
   $this->jsObject['subsitesAdmin'] = $subsitesAdmin;  
 ?>
-<div class="user-managerment-infos" ng-init="load(<?php $user->id?>)">  
+<div class="user-managerment-infos" ng-init="load(<?php $user->id;?>)">  
   <div class="user-info">
     <div style="float:left">
       <span class="label">id:</span> 
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('id'); ?>" data-emptytext="">
-        <?php $user->id?>
+        <?php $user->id;?>
       </span> <br />
       <span class="label">email:</span>
       <span class="js-editable editable-click editable-empty" data-edit="email" data-original-title="<?php \MapasCulturais\i::esc_attr_e('email'); ?>" data-emptytext="">
-        <?php $user->email?> 
+        <?php $user->email;?> 
       </span> <br />
       <span class="label"><?php \MapasCulturais\i::_e("autenticação:"); ?></span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('autenticação'); ?>" data-emptytext="">
-        <?php $user->authProvider?> <!-- // como pegar pelo ID no registerAuthProvider? -->
+        <?php $user->authProvider;?> <!-- // como pegar pelo ID no registerAuthProvider? -->
       </span> <br />
       <span class="label"><?php \MapasCulturais\i::_e("id autenticação:"); ?></span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('id autenticação'); ?>" data-emptytext="">
-        <?php $user->authUid?>
+        <?php $user->authUid;?>
       </span> <br />
     </div>
 
@@ -40,11 +40,11 @@
       </span> <br />
       <span class="label"><?php \MapasCulturais\i::_e("último login:"); ?></span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('último login'); ?>" data-emptytext="">
-      <?php $user->lastLoginTimestamp->format('d-m-Y \a\s H:i:s')?>
+      <?php $user->lastLoginTimestamp->format('d-m-Y \a\s H:i:s');?>
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("data criação:"); ?>data criação:</span>
+      <span class="label"><?php \MapasCulturais\i::_e("data criação:"); ?></span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e('data criação'); ?>" data-emptytext="">
-        <?php $user->createTimestamp->format('d-m-Y \a\s H:i:s')?>
+        <?php $user->createTimestamp->format('d-m-Y \a\s H:i:s');?>
       </span> <br />
     </div>
 
