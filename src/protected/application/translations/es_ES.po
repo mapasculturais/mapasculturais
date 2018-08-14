@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-08-06 22:25-0300\n"
+"POT-Creation-Date: 2018-08-14 00:28-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -287,7 +287,7 @@ msgid "Bairro"
 msgstr "Barrio"
 
 #: conf/agent-types.php:173 conf/conf-base.php:174 conf/config.dev.php:37
-#: conf/config.template.php:45 conf/space-types.php:121
+#: conf/config.php:50 conf/config.template.php:45 conf/space-types.php:121
 #: lib/MapasCulturais/ApiOutputs/Html.php:36
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:179
 #: themes/BaseV1/layouts/parts/singles/history_space.php:174
@@ -298,7 +298,7 @@ msgid "Município"
 msgstr "Municipio/Localidad"
 
 #: conf/agent-types.php:179 conf/conf-base.php:171 conf/config.dev.php:34
-#: conf/config.template.php:42 conf/space-types.php:124
+#: conf/config.php:47 conf/config.template.php:42 conf/space-types.php:124
 #: lib/MapasCulturais/ApiOutputs/Html.php:37
 #: themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: themes/BaseV1/layouts/parts/singles/history_space.php:175
@@ -441,31 +441,38 @@ msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
 
-#: conf/conf-base.php:169 conf/config.dev.php:32 conf/config.template.php:40
+#: conf/conf-base.php:169 conf/config.dev.php:32 conf/config.php:45
+#: conf/config.template.php:40
 msgid "País"
 msgstr "País"
 
-#: conf/conf-base.php:170 conf/config.dev.php:33 conf/config.template.php:41
+#: conf/conf-base.php:170 conf/config.dev.php:33 conf/config.php:46
+#: conf/config.template.php:41
 msgid "Região"
 msgstr "Región"
 
-#: conf/conf-base.php:172 conf/config.dev.php:35 conf/config.template.php:43
+#: conf/conf-base.php:172 conf/config.dev.php:35 conf/config.php:48
+#: conf/config.template.php:43
 msgid "Mesorregião"
 msgstr "Mesorregión"
 
-#: conf/conf-base.php:173 conf/config.dev.php:36 conf/config.template.php:44
+#: conf/conf-base.php:173 conf/config.dev.php:36 conf/config.php:49
+#: conf/config.template.php:44
 msgid "Microrregião"
 msgstr "Microrregión"
 
-#: conf/conf-base.php:175 conf/config.dev.php:38 conf/config.template.php:46
+#: conf/conf-base.php:175 conf/config.dev.php:38 conf/config.php:51
+#: conf/config.template.php:46
 msgid "Zona"
 msgstr "Zona"
 
-#: conf/conf-base.php:176 conf/config.dev.php:39 conf/config.template.php:47
+#: conf/conf-base.php:176 conf/config.dev.php:39 conf/config.php:52
+#: conf/config.template.php:47
 msgid "Subprefeitura"
 msgstr "Subprefectura"
 
-#: conf/conf-base.php:177 conf/config.dev.php:40 conf/config.template.php:48
+#: conf/conf-base.php:177 conf/config.dev.php:40 conf/config.php:53
+#: conf/config.template.php:48
 msgid "Distrito"
 msgstr "Distrito"
 
@@ -604,7 +611,8 @@ msgid "Período de Validade"
 msgstr "Plazo de Validez"
 
 #: conf/conf-base.php:252 lib/MapasCulturais/EvaluationMethod.php:101
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:43
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:22
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:36
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:14
 #: themes/BaseV1/layouts/parts/singles/project-events.php:34
 #: themes/BaseV1/layouts/parts/singles/space-public.php:2
@@ -673,10 +681,9 @@ msgstr "Agente"
 #: themes/BaseV1/layouts/parts/home-agents.php:28
 #: themes/BaseV1/layouts/parts/home-search.php:16
 #: themes/BaseV1/layouts/parts/search/list-agent.php:2
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:31
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:30
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:10
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:38
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:69
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:83
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:17
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:11
 #: themes/BaseV1/layouts/parts/singles/subsite-entities.php:50
@@ -762,9 +769,8 @@ msgstr "Oportunidades"
 #: conf/conf-base.php:457
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:25
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:10
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:25
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:36
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:60
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:24
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:74
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:11
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:8
 #: themes/culturaenlinea/config.php:108
@@ -865,12 +871,12 @@ msgstr "Creando nuevo"
 msgid "Busca"
 msgstr "Busca"
 
-#: conf/config.dev.php:6 conf/config.docker.php:9 conf/config.php:9
+#: conf/config.dev.php:6 conf/config.docker.php:9 conf/config.php:7
 #: conf/config.template.php:6
 msgid "Nome do site"
 msgstr "Nombre del sitio"
 
-#: conf/config.dev.php:7 conf/config.docker.php:10 conf/config.php:10
+#: conf/config.dev.php:7 conf/config.docker.php:10 conf/config.php:8
 #: conf/config.template.php:7
 msgid "Descrição do site"
 msgstr "Descripción del sitio"
@@ -1056,7 +1062,7 @@ msgstr ""
 #: lib/MapasCulturais/Entities/Registration.php:670
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:16
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:19
-#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:23
+#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:26
 msgid "Nome do Projeto"
 msgstr "Nombre del Proyecto"
 
@@ -1247,7 +1253,7 @@ msgstr "Meses"
 msgid "Anos"
 msgstr "Años"
 
-#: conf/space-types.php:60 themes/BaseV1/Theme.php:2046
+#: conf/space-types.php:60 themes/BaseV1/Theme.php:2048
 #: themes/BaseV1/layouts/parts/search/infobox-space.php:19
 #: themes/BaseV1/layouts/parts/search/list-space-item.php:29
 #: themes/BaseV1/layouts/parts/singles/history_event.php:134
@@ -2183,7 +2189,7 @@ msgstr "Vínculo"
 #: lib/MapasCulturais/ApiOutputs/Html.php:74
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:32
 #: lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:79
-#: themes/BaseV1/Theme.php:2148 themes/BaseV1/Theme.php:2175
+#: themes/BaseV1/Theme.php:2150 themes/BaseV1/Theme.php:2177
 #: themes/BaseV1/layouts/parts/home-agents.php:43
 #: themes/BaseV1/layouts/parts/home-opportunities.php:39
 #: themes/BaseV1/layouts/parts/home-projects.php:39
@@ -2276,88 +2282,88 @@ msgstr "Sello Verificador"
 msgid "Planilha gerada em: "
 msgstr "Planilla generada: "
 
-#: lib/MapasCulturais/App.php:733
+#: lib/MapasCulturais/App.php:730
 msgid "Campo de texto (textarea)"
 msgstr "Campo de texto (textarea)"
 
-#: lib/MapasCulturais/App.php:738
+#: lib/MapasCulturais/App.php:735
 msgid "Campo de texto simples"
 msgstr "Campo de texto simple"
 
-#: lib/MapasCulturais/App.php:743
+#: lib/MapasCulturais/App.php:740
 msgid "Campo de data"
 msgstr "Campo de fecha"
 
-#: lib/MapasCulturais/App.php:748
+#: lib/MapasCulturais/App.php:745
 msgid "Campo de URL (link)"
 msgstr "Campo de URL (enlace)"
 
-#: lib/MapasCulturais/App.php:750
+#: lib/MapasCulturais/App.php:747
 msgid "O valor não é uma URL válida"
 msgstr "El valor no es una URL válida"
 
-#: lib/MapasCulturais/App.php:756
+#: lib/MapasCulturais/App.php:753
 msgid "Campo de email"
 msgstr "Campo de email"
 
-#: lib/MapasCulturais/App.php:758
+#: lib/MapasCulturais/App.php:755
 msgid "O valor não é um endereço de email válido"
 msgstr "El valor no es una dirección de email válido"
 
-#: lib/MapasCulturais/App.php:764
+#: lib/MapasCulturais/App.php:761
 msgid "Seleção única (select)"
 msgstr "Selección única (select)"
 
-#: lib/MapasCulturais/App.php:770
+#: lib/MapasCulturais/App.php:767
 msgid "Título de Seção"
 msgstr "Título de Sección"
 
-#: lib/MapasCulturais/App.php:775
+#: lib/MapasCulturais/App.php:772
 msgid "Campo numérico"
 msgstr "Campo numerico"
 
-#: lib/MapasCulturais/App.php:777
+#: lib/MapasCulturais/App.php:774
 msgid "O valor inserido não é válido"
 msgstr "El valor informado no es válido"
 
-#: lib/MapasCulturais/App.php:783
+#: lib/MapasCulturais/App.php:780
 msgid "Campo de CPF"
 msgstr "Campo de CPF"
 
-#: lib/MapasCulturais/App.php:785
+#: lib/MapasCulturais/App.php:782
 msgid "O cpf inserido não é válido"
 msgstr "El CPF no es válido"
 
-#: lib/MapasCulturais/App.php:791
+#: lib/MapasCulturais/App.php:788
 msgid "Campo de CNPJ"
 msgstr "Campo de CNPJ"
 
-#: lib/MapasCulturais/App.php:793
+#: lib/MapasCulturais/App.php:790
 msgid "O cnpj inserido não é válido"
 msgstr "El CNPJ no es válido"
 
-#: lib/MapasCulturais/App.php:799
+#: lib/MapasCulturais/App.php:796
 msgid "Seleção múltipla (checkboxes)"
 msgstr "Selección múltiple (checkboxes)"
 
-#: lib/MapasCulturais/App.php:823 lib/MapasCulturais/App.php:824
-#: lib/MapasCulturais/App.php:825 lib/MapasCulturais/App.php:828
-#: lib/MapasCulturais/App.php:829 lib/MapasCulturais/App.php:830
-#: lib/MapasCulturais/App.php:831 lib/MapasCulturais/App.php:907
-#: lib/MapasCulturais/App.php:923
+#: lib/MapasCulturais/App.php:820 lib/MapasCulturais/App.php:821
+#: lib/MapasCulturais/App.php:822 lib/MapasCulturais/App.php:825
+#: lib/MapasCulturais/App.php:826 lib/MapasCulturais/App.php:827
+#: lib/MapasCulturais/App.php:828 lib/MapasCulturais/App.php:904
+#: lib/MapasCulturais/App.php:920
 msgid "O arquivo enviado não é uma imagem válida."
 msgstr "El archivo enviado no es una imagen válida."
 
-#: lib/MapasCulturais/App.php:826 lib/MapasCulturais/App.php:827
+#: lib/MapasCulturais/App.php:823 lib/MapasCulturais/App.php:824
 #: lib/MapasCulturais/Controllers/Registration.php:82
 msgid "O arquivo enviado não é um documento válido."
 msgstr "El archivo enviado no es un documento válido."
 
-#: lib/MapasCulturais/App.php:832
+#: lib/MapasCulturais/App.php:829
 msgid "O arquivo não é um ZIP."
 msgstr "El archivo no es un ZIP."
 
-#: lib/MapasCulturais/App.php:918
+#: lib/MapasCulturais/App.php:915
 msgid "O link do vídeo é obrigatório"
 msgstr "El enlace del video es obligatorio"
 
@@ -2799,8 +2805,9 @@ msgstr "Información sobre el evaluador"
 #: lib/MapasCulturais/EvaluationMethod.php:122
 #: plugins/EvaluationMethodDocumentary/Plugin.php:92
 #: plugins/EvaluationMethodSimple/layouts/parts/simple--evaluation-view.php:4
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:42
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:75
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:25
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:39
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:89
 #: themes/BaseV1/views/opportunity/report.php:60
 msgid "Avaliação"
 msgstr "Evaluación"
@@ -2947,7 +2954,7 @@ msgstr "Ningún"
 
 #: lib/modules/AgendaSingles/layouts/parts/agenda-singles--content.php:41
 #: themes/BaseV1/Theme.php:737 themes/BaseV1/Theme.php:741
-#: themes/BaseV1/Theme.php:2116 themes/BaseV1/layouts/parts/home-events.php:40
+#: themes/BaseV1/Theme.php:2118 themes/BaseV1/layouts/parts/home-events.php:40
 #: themes/BaseV1/layouts/parts/search/infobox-event.php:36
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:31
 #: themes/BaseV1/layouts/parts/singles/project-events.php:36
@@ -2956,7 +2963,7 @@ msgid "Linguagem"
 msgstr "Tipo de evento"
 
 #: lib/modules/AgendaSingles/layouts/parts/agenda-singles--content.php:44
-#: themes/BaseV1/Theme.php:2126
+#: themes/BaseV1/Theme.php:2128
 #: themes/BaseV1/layouts/parts/search/infobox-event.php:42
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:36
 #: themes/BaseV1/layouts/parts/singles/project-events.php:37
@@ -3588,7 +3595,6 @@ msgstr "Acerca de"
 
 #: lib/modules/OpportunityPhases/layouts/parts/opportunity-phases-tabs.php:10
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:2
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:2
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:7
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:15
 msgid "Inscritos"
@@ -3915,36 +3921,36 @@ msgstr "Selecciones el status"
 msgid "Selecione o status desta inscrição."
 msgstr "Selecciones el status de esta inscripción."
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:16
+#: plugins/EvaluationMethodTechnical/Plugin.php:20
 msgid "Avaliação Técnica"
 msgstr "Evaluación técnica"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:20
+#: plugins/EvaluationMethodTechnical/Plugin.php:24
 msgid "Consiste em avaliação por critérios e cotas."
 msgstr "Consiste en una evaluación por criterios y cuotas."
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:32
+#: plugins/EvaluationMethodTechnical/Plugin.php:40
 msgid "Seções"
 msgstr "Secciones"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:43
+#: plugins/EvaluationMethodTechnical/Plugin.php:51
 #: plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:5
 msgid "Critérios"
 msgstr "Criterios"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:54
+#: plugins/EvaluationMethodTechnical/Plugin.php:62
 msgid "Cotas"
 msgstr "Cuotas"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:72
+#: plugins/EvaluationMethodTechnical/Plugin.php:80
 msgid "Já existe uma seção com o mesmo nome"
 msgstr "Ya existe una sección con el mismo nombre"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:73
+#: plugins/EvaluationMethodTechnical/Plugin.php:81
 msgid "Alteraçṍes salvas"
 msgstr "Cambios guardados"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:74
+#: plugins/EvaluationMethodTechnical/Plugin.php:82
 msgid ""
 "Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá "
 "todas os critérios desta seção."
@@ -3952,44 +3958,44 @@ msgstr ""
 "¿Desea eliminar la sección? Esta acción no se podrá deshacer y también "
 "eliminará todos los criterios de esta sección."
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:75
+#: plugins/EvaluationMethodTechnical/Plugin.php:83
 msgid ""
 "Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita."
 msgstr ""
 "¿Desea eliminar este criterio de evaluación? Esta acción no se puede "
 "deshacer."
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:120
+#: plugins/EvaluationMethodTechnical/Plugin.php:128
 #, php-format
 msgid "(peso: %s)"
 msgstr "(peso: %s)"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:137
+#: plugins/EvaluationMethodTechnical/Plugin.php:145
 #, php-format
 msgid "Subtotal (max: %s)"
 msgstr "Subtotal (max: %s)"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:164
-#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:24
+#: plugins/EvaluationMethodTechnical/Plugin.php:172
+#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:26
 #: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-view.php:17
 msgid "Parecer Técnico"
 msgstr "Opinión técnica"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:189
+#: plugins/EvaluationMethodTechnical/Plugin.php:197
 msgid "Todos os campos devem ser preenchidos"
 msgstr "Todos los campos deben ser completados"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:197
+#: plugins/EvaluationMethodTechnical/Plugin.php:205
 #, php-format
 msgid "O valor do campo \"%s\" é maior que o valor máximo permitido"
 msgstr "El valor del campo \"%s\" es mayor que el valor máximo permitido"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:200
+#: plugins/EvaluationMethodTechnical/Plugin.php:208
 #, php-format
 msgid "O valor do campo \"%s\" é menor que o valor mínimo permitido"
 msgstr "El valor del campo \"%s\" es menor que el valor mínimo permitido"
 
-#: plugins/EvaluationMethodTechnical/Plugin.php:248
+#: plugins/EvaluationMethodTechnical/Plugin.php:256
 msgid "Avaliação incompleta"
 msgstr "Evaluación incompleta"
 
@@ -4049,19 +4055,15 @@ msgstr "Eliminar criterio"
 msgid "Adicionar seção de avaliação técnica"
 msgstr "Agregar sección de evaluación técnica"
 
-#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:14
-msgid "Configurações"
-msgstr "Configuraciones"
-
-#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:17
+#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:19
 msgid "Subtotal"
 msgstr "Subtotal"
 
-#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:29
+#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:31
 msgid "Pontuação Total"
 msgstr "Puntuación total"
 
-#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:30
+#: plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:32
 msgid "Pontuação Máxima"
 msgstr "Puntuación máxima"
 
@@ -4144,39 +4146,33 @@ msgstr ""
 "más exhibida en esta tabla."
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:34
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:34
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:40
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:72
-#: themes/BaseV1/views/opportunity/report.php:70
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:33
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:86
+#: themes/BaseV1/views/opportunity/report.php:71
 msgid "Anexos"
 msgstr "Adjuntos"
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:44
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:44
 msgid "Nenhuma inscrição enviada."
 msgstr "Ninguna inscripción enviada."
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:45
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:45
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:87
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:101
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:28
 msgid "Nenhuma inscrição encontrada com os filtros selecionados."
 msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:46
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:46
 msgid "1 inscrição enviada."
 msgstr "1 inscripción enviada."
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:47
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:47
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:89
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:103
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:30
 msgid "1 inscrição encontrada com os filtros selecionados."
 msgstr "1 inscripción encontrada con los filtros seleccionados."
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:48
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:48
 msgid "inscrições enviadas."
 msgstr "inscripciones enviadas."
 
@@ -4185,25 +4181,23 @@ msgid "Número máximo de vagas no projeto:"
 msgstr "Número máximo de vacantes en el proyecto:"
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:53
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:38
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:53
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:95
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:109
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:32
 msgid "inscrições encontradas com os filtros selecionados."
 msgstr "inscripciones encontradas con los filtros seleccionados."
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:61
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:48
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:61
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:108
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:56
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:122
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:41
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:32
 msgid "Responsável"
 msgstr "Responsable"
 
 #: plugins/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:71
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:71
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:118
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:66
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:132
 msgid "Baixar arquivos"
 msgstr "Descargar archivos"
 
@@ -5646,10 +5640,10 @@ msgid "Usuários e papéis"
 msgstr "Usuarios y roles"
 
 #: themes/BaseV1/Theme.php:715 themes/BaseV1/Theme.php:719
-#: themes/BaseV1/Theme.php:2070
+#: themes/BaseV1/Theme.php:2072
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:31
 #: themes/BaseV1/layouts/parts/singles/subsite-filters.php:55
-#: themes/BaseV1/views/opportunity/report.php:74
+#: themes/BaseV1/views/opportunity/report.php:75
 msgid "Área de Atuação"
 msgstr "Área de actuación"
 
@@ -5670,7 +5664,7 @@ msgid "Selecione pelo menos uma área"
 msgstr "Seleccione por lo menos un área"
 
 #: themes/BaseV1/Theme.php:729 themes/BaseV1/Theme.php:733
-#: themes/BaseV1/Theme.php:2071
+#: themes/BaseV1/Theme.php:2073
 msgid "Selecione as áreas"
 msgstr "Seleccione las áreas"
 
@@ -5697,7 +5691,7 @@ msgid "Selecione pelo menos uma linguagem"
 msgstr "Seleccione por lo menos un tipo de evento"
 
 #: themes/BaseV1/Theme.php:751 themes/BaseV1/Theme.php:755
-#: themes/BaseV1/Theme.php:2117
+#: themes/BaseV1/Theme.php:2119
 msgid "Selecione as linguagens"
 msgstr "Selecciones los tipos de eventos"
 
@@ -5970,7 +5964,7 @@ msgstr ""
 "error de {{errorMargin}} metros. Buscando resultados dentro de un radio de "
 "{{radius}}KM de este punto."
 
-#: themes/BaseV1/Theme.php:1672 themes/BaseV1/Theme.php:2080
+#: themes/BaseV1/Theme.php:1672 themes/BaseV1/Theme.php:2082
 msgid "Todos"
 msgstr "Todos"
 
@@ -6064,6 +6058,7 @@ msgid "Eventos transformados em rascunho."
 msgstr "Eventos transformados en borradores."
 
 #: themes/BaseV1/Theme.php:1788 themes/BaseV1/Theme.php:1830
+#: themes/BaseV1/Theme.php:1851
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:41
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:53
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:92
@@ -6151,14 +6146,18 @@ msgid "Avaliada"
 msgstr "Evaluada"
 
 #: themes/BaseV1/Theme.php:1850
+msgid "Não Avaliada"
+msgstr "No evaluada"
+
+#: themes/BaseV1/Theme.php:1852
 msgid "Enviada"
 msgstr "Enviada"
 
-#: themes/BaseV1/Theme.php:1851
+#: themes/BaseV1/Theme.php:1853
 msgid "Aplicar resultado das avaliações"
 msgstr "Aplicar resultado de las evaluaciones"
 
-#: themes/BaseV1/Theme.php:1852
+#: themes/BaseV1/Theme.php:1854
 msgid ""
 "Deseja aplicar o resultado de todas as avaliações como o status das "
 "respectivas inscrições?"
@@ -6166,11 +6165,11 @@ msgstr ""
 "¿Desea aplicar el resultado de todas las evaluaciones como el estado de sus "
 "inscripciones?"
 
-#: themes/BaseV1/Theme.php:1860 themes/BaseV1/Theme.php:1865
+#: themes/BaseV1/Theme.php:1862 themes/BaseV1/Theme.php:1867
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
 msgstr "Su solicitud para relacionar el agente {{agent}} fue enviada."
 
-#: themes/BaseV1/Theme.php:1866
+#: themes/BaseV1/Theme.php:1868
 #, php-format
 msgid ""
 "Tem certeza que deseja remover o grupo %s? A relação com todos os agentes "
@@ -6179,46 +6178,46 @@ msgstr ""
 "¿Está seguro que desea eliminar el grupo %s? La relación con todos los "
 "agentes dentre de este grupo será eliminada."
 
-#: themes/BaseV1/Theme.php:1911 themes/BaseV1/views/event/create.php:497
+#: themes/BaseV1/Theme.php:1913 themes/BaseV1/views/event/create.php:497
 #: themes/BaseV1/views/event/edit.php:497
 #: themes/BaseV1/views/event/single.php:497
 msgid "uma vez"
 msgstr "una vez"
 
-#: themes/BaseV1/Theme.php:1912 themes/BaseV1/views/event/create.php:498
+#: themes/BaseV1/Theme.php:1914 themes/BaseV1/views/event/create.php:498
 #: themes/BaseV1/views/event/edit.php:498
 #: themes/BaseV1/views/event/single.php:498
 msgid "todos os dias"
 msgstr "todos los días"
 
-#: themes/BaseV1/Theme.php:1913 themes/BaseV1/views/event/create.php:499
+#: themes/BaseV1/Theme.php:1915 themes/BaseV1/views/event/create.php:499
 #: themes/BaseV1/views/event/edit.php:499
 #: themes/BaseV1/views/event/single.php:499
 msgid "semanal"
 msgstr "semanal"
 
-#: themes/BaseV1/Theme.php:1914
+#: themes/BaseV1/Theme.php:1916
 msgid "mensal"
 msgstr "mensual"
 
-#: themes/BaseV1/Theme.php:2037 themes/BaseV1/Theme.php:2079
+#: themes/BaseV1/Theme.php:2039 themes/BaseV1/Theme.php:2081
 msgid "Tipos"
 msgstr "Tipos"
 
-#: themes/BaseV1/Theme.php:2038 themes/BaseV1/Theme.php:2149
-#: themes/BaseV1/Theme.php:2176
+#: themes/BaseV1/Theme.php:2040 themes/BaseV1/Theme.php:2151
+#: themes/BaseV1/Theme.php:2178
 msgid "Selecione os tipos"
 msgstr "Seleccione los tipos"
 
-#: themes/BaseV1/Theme.php:2047
+#: themes/BaseV1/Theme.php:2049
 msgid "Exibir somente resultados com Acessibilidade"
 msgstr "Mostrar solamente resultados con Accesibilidad"
 
-#: themes/BaseV1/Theme.php:2127
+#: themes/BaseV1/Theme.php:2129
 msgid "Selecione a classificação"
 msgstr "Seleccione la clasificación"
 
-#: themes/BaseV1/Theme.php:2157 themes/BaseV1/Theme.php:2184
+#: themes/BaseV1/Theme.php:2159 themes/BaseV1/Theme.php:2186
 msgid "Inscrições Abertas"
 msgstr "Inscripciones Abiertas"
 
@@ -7660,11 +7659,11 @@ msgstr "Previsualizar ficha de inscripción"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:2
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:4
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:3
 msgid "Baixar lista de avaliações"
 msgstr "Descargar lista de evaluaciones"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:3
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:2
 #: themes/BaseV1/layouts/parts/singles/opportunity-tabs.php:19
 msgid "Avaliações"
 msgstr "Evaluaciones"
@@ -7679,36 +7678,20 @@ msgstr "Evaluador"
 msgid "Categoria"
 msgstr "Categoría"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:22
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:37
-msgid "Status / Avaliação"
-msgstr "Estado / Evaluación"
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:29
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:32
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:46
 msgid "Nenhuma avaliação enviada."
 msgstr "Ninguna evaluación enviada."
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:30
-msgid "Nenhuma avaliação encontrada com os filtros selecionados."
-msgstr "Ninguna evaluación encontrada con los filtros seleccionados."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:31
-msgid "1 avaliação enviada."
-msgstr "1 evaluación enviada."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:32
-msgid "1 avaliação encontrada com os filtros selecionados."
-msgstr "1 evaluación encontrada con los filtros seleccionados."
-
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:33
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:47
+msgid "1 avaliação encontrada."
+msgstr "1 evaluación encontrada."
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:34
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:48
 msgid "Avaliações."
 msgstr "Evaluaciones."
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:35
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:50
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:92
-msgid "Número máximo de vagas na oportunidade:"
-msgstr "Número máximo de vacantes en la oportunidad:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:3
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:5
@@ -7719,17 +7702,17 @@ msgstr "Enviar evaluaciones"
 msgid "É necessário avaliar todas as inscrições antes de enviar"
 msgstr "Es necesario evaluar todas las inscripciones antes de enviar"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:7
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:6
 msgid "Suas avaliações já foram enviadas:"
 msgstr "Sus evaluacines ya fueron enviadas:"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:13
+#: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:12
 msgid ""
-"Após avaliar todas as inscrições clique no botão <strong>Enviar inscrições</"
+"Após avaliar todas as inscrições clique no botão <strong>Enviar Avaliações</"
 "strong>:"
 msgstr ""
 "Después de evaluar todas las inscripciones haga clic en el botón <strong> "
-"Enviar inscripciones </strong>:"
+"Enviar Evaluaciones </strong>:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:51
 msgid "Comissão de Avaliação"
@@ -8281,28 +8264,28 @@ msgstr "Busque por el nombre del responsable, status o número de inscripción"
 msgid "Colunas Habilitadas:"
 msgstr "Columnas habilitadas:"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:37
-msgid "Categorias"
-msgstr "Categorías"
-
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:84
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:98
 msgid "Expandir tabela"
 msgstr "Expandir tabla"
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:86
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:100
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:27
 msgid "Nenhuma inscrição."
 msgstr "Ninguna inscripción."
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:88
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:102
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:29
 msgid "1 inscrição."
 msgstr "1 Inscripción."
 
-#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:90
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:104
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:31
 msgid "inscrições."
 msgstr "inscripciones."
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:106
+msgid "Número máximo de vagas na oportunidade:"
+msgstr "Número máximo de vacantes en la oportunidad:"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:5
 msgid "Veja abaixo as inscrições suplentes/selecionadas"
@@ -8509,7 +8492,7 @@ msgid "Tamanho máximo do arquivo:"
 msgstr "Tamaño máximo de archivo:"
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:1
-#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:6
+#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:9
 msgid "Formulário de Inscrição"
 msgstr "Formulario de inscripción"
 
@@ -8518,7 +8501,7 @@ msgid "Itens com asterisco são obrigatórios."
 msgstr "Items con asterisco son obligatorios."
 
 #: themes/BaseV1/layouts/parts/singles/registration-edit--header.php:4
-#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:9
+#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:12
 msgid "Número da Inscrição"
 msgstr "Número de Inscripción"
 
@@ -8604,11 +8587,11 @@ msgstr "Campo no informado."
 msgid "Arquivo não enviado."
 msgstr "Archivo no enviado."
 
-#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:2
+#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:4
 msgid "Inscrição enviada no dia"
 msgstr "Inscripción enviada el día"
 
-#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:3
+#: themes/BaseV1/layouts/parts/singles/registration-single--header.php:5
 msgid "d/m/Y à\\s H:i:s"
 msgstr "d/m/Y a H:i:s"
 
@@ -9606,7 +9589,15 @@ msgstr "no válida"
 msgid "pendente"
 msgstr "pendiente"
 
-#: themes/BaseV1/views/opportunity/report.php:107
+#: themes/BaseV1/views/opportunity/report.php:62
+msgid "Inscrição - Data de envio"
+msgstr "inscripción - Fecha de envío"
+
+#: themes/BaseV1/views/opportunity/report.php:63
+msgid "Inscrição - Hora de envio"
+msgstr "inscripción - Hora de envío"
+
+#: themes/BaseV1/views/opportunity/report.php:110
 msgid "zip"
 msgstr ""
 
@@ -10067,6 +10058,21 @@ msgid ""
 msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Email Privado y Teléfono 1 completos"
+
+#~ msgid "Configurações"
+#~ msgstr "Configuraciones"
+
+#~ msgid "Status / Avaliação"
+#~ msgstr "Estado / Evaluación"
+
+#~ msgid "Nenhuma avaliação encontrada com os filtros selecionados."
+#~ msgstr "Ninguna evaluación encontrada con los filtros seleccionados."
+
+#~ msgid "1 avaliação encontrada com os filtros selecionados."
+#~ msgstr "1 evaluación encontrada con los filtros seleccionados."
+
+#~ msgid "Categorias"
+#~ msgstr "Categorías"
 
 #~ msgid "mapas-culturais-dados-exportados.xls"
 #~ msgstr "culturaenlinea-datos-exportados.xls"
