@@ -1214,6 +1214,7 @@ class ApiQuery {
                 f.description,
                 f._path,
                 f.group as file_group,
+                f.private,
                 fp.group as parent_group,
                 IDENTITY(f.owner) AS owner_id,
                 f.private

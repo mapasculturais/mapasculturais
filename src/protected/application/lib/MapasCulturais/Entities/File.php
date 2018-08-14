@@ -262,7 +262,7 @@ abstract class File extends \MapasCulturais\Entity
     
         $app = App::i();
         $cache_id = "{$this}:url";
-
+        
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
             return $app->cache->fetch($cache_id);
         }

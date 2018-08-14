@@ -1254,6 +1254,26 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         return;
     };
 
+    $scope.toggleSelectionColumn = function(object, key){
+
+        $scope.toggleSelection(object, key);
+
+        if ($scope.numberOfEnabledColumns() == 0) {
+            object[key] = true;
+            alert('Não é permitido desabilitar todas as colunas da tabela');
+            return;
+        }
+
+        if (key == 'number' ) {
+            var columnObj = $scope.getColumnByKey(key);
+            object[key] = true;
+            alert('Não é permitido desabilitar a coluna ' + columnObj.title);
+            return;
+        }
+
+        return;
+    };
+
     $scope.findRegistrations = function(){
         if(registrationsApi.finish()){
             return null;
@@ -1293,7 +1313,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.$watch('evaluationsFilters', function(){
         var qdata = {
             '@opportunity': getOpportunityId(),
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
+            '@order': 'evaluation desc'
         };
         for(var prop in $scope.evaluationsFilters){
             if($scope.evaluationsFilters[prop]){
@@ -1396,6 +1417,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             owner_default_label: labels['registrationOwnerDefault']
         },
 
+        evaluationStatuses: [
+            {value: null, label: labels['allStatus']},
+            {value: -1, label: labels['pending']},
+            {value: 1, label: labels['evaluated']},
+            {value: 2, label: labels['sent']}
+        ],
+
         registrationStatuses: RegistrationService.registrationStatuses,
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
@@ -1469,6 +1497,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }
     });
 
+    $scope.getColumnByKey = function(key){
+        for(var index in $scope.data.defaultSelectFields){
+            if($scope.data.defaultSelectFields[index].fieldName == key ){
+                return $scope.data.defaultSelectFields[index];
+            }
+        }
+
+        return null;
+    };
 
     $scope.numberOfEnabledColumns = function(){
         var result = 0;
@@ -1883,6 +1920,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         $scope.status_str = function(registration) {
             return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+        };
+
+        $scope.getEvaluationResult = function(registration) {
+
+            if($scope.evaluations[registration.id] == null){
+                return 0;
+            }
+            return $scope.evaluations[registration.id].result;
         };
 
         $scope.show = function(registration){
