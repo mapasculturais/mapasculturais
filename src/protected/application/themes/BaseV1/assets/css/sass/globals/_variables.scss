@@ -29,6 +29,7 @@ $brand-info: #40b4b4 !default;
 $brand-warning: #cc9933 !default;
 $brand-danger: #cc3333 !default;
 $brand-success: #66cc66 !default;
+$brand-draft: #0d9ecc !default;
 $brand-default: $gray-light !default;
 
 
@@ -220,6 +221,9 @@ $unicode-event:                 "\e023" !default;
 //** Go back icon
 // used on .icon-go-back on _icons.scss file
 $unicode-go-back:               "\23" !default;
+
+// used on .icon-return on _icons.scss file
+$unicode-return:               "\4a" !default;
 
 //** Panel icon
 // used on .icon-panel on _icons.scss file

@@ -13,6 +13,11 @@
         <li>
             <a href="<?php echo $app->createUrl('panel'); ?>"><?php echo $this->dict('site: panel');?></a>
         </li>
+        
+        <li>
+            <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"></span><?php \MapasCulturais\i::_e("Meu Perfil");?></a>
+        </li>
+        
         <?php if($app->isEnabled('events')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
             <li>

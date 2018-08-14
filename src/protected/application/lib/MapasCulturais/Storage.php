@@ -126,6 +126,10 @@ abstract class Storage{
     public function getUrlFromRelativePath($relative_path){
         return $this->_getUrlFromRelativePath($relative_path);
     }
+	
+	public function getPrivateUrlById($id) {
+        return $this->_getPrivateUrlById($id);
+	}
 
     public function getPrivateUrlById($file_id){
         return $this->_getPrivateUrlById($file_id);
