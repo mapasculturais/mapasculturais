@@ -131,12 +131,6 @@ abstract class Storage{
         return $this->_getPrivateUrlById($id);
 	}
 
-    public function getPrivateUrlById($file_id){
-        return $this->_getPrivateUrlById($file_id);
-    }
-
-
-
     /**
      * Returns the full path to the file.
      *
