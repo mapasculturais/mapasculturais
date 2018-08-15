@@ -2,7 +2,8 @@
   <div class="objeto-header">
     <h1><a href="{{event.singleUrl}}">{{event.name}}</a></h1>
     <div class="objeto-header-actions">
-      <a class="btn btn-default icon icon-user" href="<?php echo $app->createUrl('panel', 'userManagement')?>/?userId={{event.user}}">Info</a>
+      <!--<a class="btn btn-default icon icon-user" href="<?php echo $app->createUrl('panel', 'userManagement')?>/?userId={{event.user}}">Info</a>-->
+      <a class="btn btn-default icon icon-user" href="<?php echo $app->createUrl('panel', 'userManagement')?>/?userId={{event.owner.userId}}">Info</a>
     </div>
   </div>
 
