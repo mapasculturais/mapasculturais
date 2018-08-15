@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-08-14 00:28-0300\n"
+"POT-Creation-Date: 2018-08-14 21:48-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -721,7 +721,7 @@ msgstr "Espacios"
 #: themes/BaseV1/layouts/parts/search/infobox-event.php:32
 #: themes/BaseV1/layouts/parts/search/list-event-item.php:27
 #: themes/BaseV1/layouts/parts/singles/history_event.php:261
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:26
+#: themes/BaseV1/layouts/parts/user-management/search-list/list-event-item.php:27
 #: themes/BaseV1/views/event/create.php:378
 #: themes/BaseV1/views/event/create.php:405
 #: themes/BaseV1/views/event/edit.php:378
@@ -6647,8 +6647,8 @@ msgstr "Eliminar este enlace?"
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:37
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:38
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:36
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:32
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:37
 msgid "excluir"
 msgstr "borrar"
 
@@ -6799,7 +6799,7 @@ msgstr "Área(s) de actuación:"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:29
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:33
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:34
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:32
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:33
 msgid "arquivar"
 msgstr "archivar"
 
@@ -6814,7 +6814,7 @@ msgstr "archivar"
 #: themes/BaseV1/layouts/parts/singles/project-events.php:13
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:36
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:37
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:36
 msgid "publicar"
 msgstr "publicar"
 
@@ -6832,7 +6832,7 @@ msgstr "publicar"
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:40
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:42
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:41
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:39
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:40
 msgid "desarquivar"
 msgstr "desarchivar"
 
@@ -6846,7 +6846,7 @@ msgstr "desarchivar"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:39
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:44
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:43
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:42
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:43
 msgid "recuperar"
 msgstr "recuperar"
 
@@ -6860,7 +6860,7 @@ msgstr "recuperar"
 #: themes/BaseV1/layouts/parts/panel-subsite.php:41
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:46
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:45
-#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:44
+#: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:45
 msgid "excluir definitivamente"
 msgstr "eliminar de forma permanente"
 
@@ -8305,6 +8305,8 @@ msgid "Enviada em"
 msgstr "Enviada en"
 
 #: themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:52
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:43
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:47
 msgid "d/m/Y à\\s H:i"
 msgstr "d/m/Y a H:i"
 
@@ -9033,6 +9035,10 @@ msgstr "Operación"
 msgid "Você tem certeza que deseja remover este usuário da lista"
 msgstr "Está seguro que desea eliminar este usuario de la lista"
 
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:13
+msgid "id:"
+msgstr ""
+
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:14
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:163
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:286
@@ -9041,6 +9047,10 @@ msgstr "Está seguro que desea eliminar este usuario de la lista"
 #: themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:13
 msgid "id"
 msgstr ""
+
+#: themes/BaseV1/layouts/parts/user-management/info-user.php:17
+msgid "email:"
+msgstr "email:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:18
 msgid "email"
@@ -9077,10 +9087,6 @@ msgstr "Activo"
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:38
 msgid "Inativo"
 msgstr "Inactivo"
-
-#: themes/BaseV1/layouts/parts/user-management/info-user.php:41
-msgid "último login:"
-msgstr "último acceso:"
 
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:42
 msgid "último login"
@@ -9201,10 +9207,6 @@ msgstr "descripción"
 #: themes/BaseV1/layouts/parts/user-management/info-user.php:291
 msgid "data"
 msgstr "fecha"
-
-#: themes/BaseV1/layouts/parts/user-management/search-list/list-agent-item.php:5
-msgid "Ver Perfil"
-msgstr "Ver Perfil"
 
 #: themes/BaseV1/layouts/parts/user-management/search-list/list-agent.php:9
 msgid "obtendo agentes..."
@@ -10059,6 +10061,12 @@ msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Email Privado y Teléfono 1 completos"
 
+#~ msgid "último login:"
+#~ msgstr "último acceso:"
+
+#~ msgid "Ver Perfil"
+#~ msgstr "Ver Perfil"
+
 #~ msgid "Configurações"
 #~ msgstr "Configuraciones"
 
@@ -10405,9 +10413,6 @@ msgstr ""
 
 #~ msgid "Nome:"
 #~ msgstr "Nombre:"
-
-#~ msgid "E-mail:"
-#~ msgstr "E-mail:"
 
 #~ msgid "Mensagem:"
 #~ msgstr "Mensaje:"
