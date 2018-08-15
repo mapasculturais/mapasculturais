@@ -10,7 +10,7 @@
 <div class="user-managerment-infos" ng-init="load(<?=$user->id?>)">  
   <div class="user-info">
     <div style="float:left">
-      <span class="label"><?php \MapasCulturais\i::_e("id:"); ?>id:</span> 
+      <span class="label"><?php \MapasCulturais\i::_e("id:"); ?></span> 
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("id"); ?>" data-emptytext="">
         <?=$user->id?>
       </span> <br />
@@ -40,11 +40,11 @@
       </span> <br />
       <span class="label">último login:</span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("último login"); ?>" data-emptytext="">
-      <?=$user->lastLoginTimestamp->format('d-m-Y \a\s H:i:s')?>
+      <?=$user->lastLoginTimestamp->format(\MapasCulturais\i::__('d/m/Y à\s H:i'))?>
       </span> <br />
       <span class="label"><?php \MapasCulturais\i::_e("data criação:"); ?></span>
       <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("data criação"); ?>" data-emptytext="">
-        <?=$user->createTimestamp->format('d-m-Y \a\s H:i:s')?>
+        <?=$user->createTimestamp->format(\MapasCulturais\i::__('d/m/Y à\s H:i'))?> 
       </span> <br />
     </div>
 
