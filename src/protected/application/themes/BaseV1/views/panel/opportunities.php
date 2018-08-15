@@ -66,9 +66,10 @@ $app = \MapasCulturais\App::i();
         <?php foreach($app->user->opportunitiesCanBeEvaluated as $entity): ?>
             <?php $this->part('panel-evaluation', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->opportunitiesCanBeEvaluated): ?>            
-            <div class="alert info"><?php // translators: %s é o nome do tipo de entidade Oportunidade. (ex: oportunidade) ?>
-				<?php printf( \MapasCulturais\i::__("Você não possui nenhuma %s liberada para avaliação."), $this->dict('entities: opportunity') ); ?></div>
+        <?php if(!$user->opportunitiesCanBeEvaluated): ?>
+            <div class="alert info">
+                <?php // translators: %s é o nome do tipo de entidade Oportunidade. (ex: oportunidade) ?>
+                <?php printf( \MapasCulturais\i::__("Você não possui nenhuma %s liberada para avaliação."), $this->dict('entities: opportunity') ); ?></div>
         <?php endif; ?>
     </div>
     <!-- #avaliar-->
