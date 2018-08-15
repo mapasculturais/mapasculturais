@@ -4482,7 +4482,7 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:141
 msgid "MC"
-msgstr "CeL"
+msgstr "CulturaEnLínea"
 
 #: themes/BaseV1/Theme.php:145
 msgid "Url da página da instituição responsável pelo site"
