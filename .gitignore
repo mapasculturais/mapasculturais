@@ -26,3 +26,4 @@ _apigen.phar
 SaaS/*
 documentation/site
 private-files
+docker-data

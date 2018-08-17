@@ -23,7 +23,8 @@
         "firebase/php-jwt": "^2.2",
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
-        "psy/psysh": "@stable"
+        "psy/psysh": "@stable",
+        "sinergi/browser-detector": "*"
     },
     "require-dev": {
     },
