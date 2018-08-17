@@ -69,7 +69,7 @@ $app = \MapasCulturais\App::i();
         <?php if(!$user->opportunitiesCanBeEvaluated): ?>
             <div class="alert info">
                 <?php // translators: %s é o nome do tipo de entidade Oportunidade. (ex: oportunidade) ?>
-                <?php printf( \MapasCulturais\i::__("Você não possui nenhuma %s liberada para avaliação."), $this->dict('entities: opportunity') ); ?></div>
+                <?php printf( \MapasCulturais\i::__("Você não possui nenhuma %s liberada para avaliação."), $this->dict('entities: opportunity', false) ); ?></div>
         <?php endif; ?>
     </div>
     <!-- #avaliar-->
