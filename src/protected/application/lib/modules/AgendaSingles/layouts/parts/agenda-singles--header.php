@@ -6,13 +6,13 @@
            readonly="readonly" placeholder="00/00/0000" value="<?php echo $date_from->format('d/m/Y'); ?>">
     <input id="agenda-from" name="startsOn" type="hidden" value="<?php echo $date_from->format('Y-m-d'); ?>">
 
-    e
+    <?php \MapasCulturais\i::_e("e");?>
 
     <input id="agenda-to-visible" type="text" class="js-agenda-singles-dates agenda-singles-datepicker tag"
            readonly="readonly" placeholder="00/00/0000" value="<?php echo $date_to->format('d/m/Y'); ?>">
     <input id="agenda-to" name="until" type="hidden" value="<?php echo $date_to->format('Y-m-d'); ?>">
 
-    <a href="" id="agenda-spreadsheet-button" class="btn btn-primary">Baixar Planilha</a>
+    <a href="" id="agenda-spreadsheet-button" class="btn btn-primary"><?php \MapasCulturais\i::_e("Baixar Planilha");?></a>
 
     <img src="<?php $this->asset('img/spinner-black.gif') ?>" class="spinner" />
     <!-- OCULTADO POR ENQUANTO BOTÃO DE CADSTRAR EVENTO

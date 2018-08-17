@@ -11,9 +11,9 @@
   </caption>
   <thead>
     <tr>
-      <td>id</td>
-      <td>Nome</td>
-      <td>Operações</td>
+      <td><?php \MapasCulturais\i::_e("id");?></td>
+      <td><?php \MapasCulturais\i::_e("Nome");?></td>
+      <td><?php \MapasCulturais\i::_e("Operações");?></td>
       <!-- <td>Subsite</td> -->
     </tr>
   </thead>
