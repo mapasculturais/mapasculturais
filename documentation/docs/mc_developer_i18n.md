@@ -22,6 +22,26 @@ Por padrão, Mapas Culturais roda em português. Para alterar o idioma, basta mo
 'app.lcode' => 'es_ES',
 ```
 
+Outra forma de alterar o idioma é definindo a variável APP_LCODE com o locale desejado. Por exemplo:
+
+```
+export APP_LCODE=es_ES
+```
+
+## Alternando a linguagem do site de acordo com o idioma do navegador
+
+Para alternar a linguagem de acordo com o idioma do navegador basta colocar mais de um locale no config. Por exemplo:
+
+```
+'app.lcode' => 'pt_BR,es_ES'
+```
+
+```
+export APP_LCODE="pt_BR,es_ES"
+```
+
+No caso do idioma do navegador não estar na lista, será usado o primeiro locale da lista.
+
 ## Funções de tradução
 
 A internacionalização é feita pela classe *MapasCulturais\i*. Existem métodos para imprimir e retornar strings traduzidas. 
