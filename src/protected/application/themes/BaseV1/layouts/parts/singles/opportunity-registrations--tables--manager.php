@@ -27,7 +27,7 @@ use MapasCulturais\i;
 </div>
 
 <div id="filtro-inscritos">
-    <span class="label"> Filtrar inscrição: </span>
+    <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
     <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
 </div>
 
