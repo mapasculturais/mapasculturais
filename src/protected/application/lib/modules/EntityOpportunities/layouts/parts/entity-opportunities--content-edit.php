@@ -9,7 +9,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
     <section class="highlighted-message clearfix">
         <p><?php i::_e("Configurações da aba Oportunidade") ?></p>
         <span class="label"><?php \MapasCulturais\i::_e("Utilizar a aba de oportunidades?");?>:</span>
-        <span class="js-editable" data-edit="useOpportunityTab" data-type="select" data-value="<?php echo $entity->useOpportunityTab ?>" data-original-title="<?php i::esc_attr_e("Utilizar a aba de oportunidades?"); ?>" data-emptytext="<?php i::esc_attr_e("Sim");?>"><?php echo $entity->useOpportunityTab ? $entity->useOpportunityTab : '1'; ?></span>
+        <span class="js-editable" data-edit="useOpportunityTab" data-type="select" data-value="<?php echo $entity->useOpportunityTab ?>" data-original-title="<?php i::esc_attr_e("Utilizar a aba de oportunidades?"); ?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Sim");?>"><?php echo $entity->useOpportunityTab ? $entity->useOpportunityTab : '1'; ?></span>
         <br>
         <span class="label"><?php \MapasCulturais\i::_e("Nome da aba");?>:</span>
         <span class="js-editable" data-edit="opportunityTabName" data-original-title="<?php i::esc_attr_e("Título da aba"); ?>" data-emptytext="<?php i::esc_attr_e("Deixe em branco para utilizar a padrão");?>"><?php echo $entity->opportunityTabName; ?></span>

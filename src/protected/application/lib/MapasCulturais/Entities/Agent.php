@@ -80,7 +80,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="public_location", type="boolean", nullable=true)
      */
-    protected $publicLocation = true;
+    protected $publicLocation = false;
 
     /**
      * @var \MapasCulturais\Types\GeoPoint

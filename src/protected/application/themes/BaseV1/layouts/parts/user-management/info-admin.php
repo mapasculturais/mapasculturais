@@ -66,7 +66,7 @@
   <div class="entity-table-content" style="width: 100%;">
     <table class="user-admin-table entity-table">
       <caption>
-        Administradores do Subsite:
+        <?php \MapasCulturais\i::_e('Administradores do Subsite:'); ?>
         <select id="subsites" ng-model="selectSubsite" style="margin-bottom: 0px; min-width: 140px;">
           <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles.users" value="{{key}}">
             {{key}}
@@ -76,9 +76,9 @@
 
       <thead>
         <tr>
-          <td><b>Nome</b></td>
-          <td><b>Grupo</b></td>
-          <td><b>Operação</b></td>
+          <td><b><?php \MapasCulturais\i::_e('Nome'); ?></b></td>
+          <td><b><?php \MapasCulturais\i::_e('Grupo'); ?></b></td>
+          <td><b><?php \MapasCulturais\i::_e('Operação'); ?></b></td>
         </tr>
       </thead>
 
@@ -99,8 +99,8 @@
           </td>
           <td style="width: 30%;">
             <a class="btn btn-small btn-danger js-confirm-before-go icon icon-minus" ng-if="usr.removeRoleUrl"
-              data-confirm-text="Você tem certeza que deseja remover este usuário da lista" 
-              href="{{usr.removeRoleUrl}}" title="remover do papel"> Excluir
+              data-confirm-text="<?php \MapasCulturais\i::esc_attr_e('Você tem certeza que deseja remover este usuário da lista'); ?>" 
+              href="{{usr.removeRoleUrl}}" title="remover do papel"> <?php \MapasCulturais\i::_e('Excluir'); ?>
             </a>
           </td>
         </tr>

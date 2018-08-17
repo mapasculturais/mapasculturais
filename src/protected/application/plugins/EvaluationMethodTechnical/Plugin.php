@@ -7,6 +7,10 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 
 class Plugin extends \MapasCulturais\EvaluationMethod {
+    function __construct(array $config = []) {
+        $config += ['step' => '0.1'];
+        parent::__construct($config);
+    }
 
     public function getSlug() {
         return 'technical';
@@ -25,6 +29,10 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $value2 = (float) $value2;
         
         return parent::cmpValues($value1, $value2);
+    }
+
+    public function getStep(){
+        return $this->_config['step'];
     }
     
     protected function _register() {
