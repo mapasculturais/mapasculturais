@@ -1,25 +1,25 @@
 <?php
-use \MapasCulturais\i;
-$this->layout = 'panel'
+$this->layout = 'panel';
+$app = \MapasCulturais\App::i();
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
-		<h2><?php i::_e("Minhas oportunidades");?></h2>
+		<h2><?php \MapasCulturais\i::_e("Minhas oportunidades");?></h2>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos"><?php i::_e("Ativos");?> (<?php echo count($user->enabledOpportunities); ?>)</a></li>
-        <li><a href="#permitido"><?php i::_e("Concedidos");?> (<?php echo count($user->hasControlOpportunities); ?>)</a></li>
-        <li><a href="#rascunhos"><?php i::_e("Rascunhos");?> (<?php echo count($user->draftOpportunities); ?>)</a></li>
-        <li><a href="#lixeira"><?php i::_e("Lixeira");?> (<?php echo count($user->trashedOpportunities); ?>)</a></li>
-        <li><a href="#arquivo"><?php i::_e("Arquivo");?> (<?php echo count($user->archivedOpportunities); ?>)</a></li>
-        <li><a href="#avaliar"><?php i::_e("Avaliar");?> (<?php echo count($user->opportunitiesCanBeEvaluated); ?>)</a></li>
+        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledOpportunities); ?>)</a></li>
+        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlOpportunities); ?>)</a></li>
+        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftOpportunities); ?>)</a></li>
+        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedOpportunities); ?>)</a></li>
+        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedOpportunities); ?>)</a></li>
+        <li><a href="#avaliar"><?php \MapasCulturais\i::_e("Avaliar");?> (<?php echo count($user->opportunitiesCanBeEvaluated); ?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledOpportunities as $entity): ?>
             <?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->enabledOpportunities): ?>
-            <div class="alert info"><?php i::_e("Você não possui nehuma oportunidade.");?></div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nehuma oportunidade.");?></div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -28,7 +28,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->draftOpportunities): ?>
-            <div class="alert info"><?php i::_e("Você não possui nenhum rascunho de oportunidade.");?></div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum rascunho de oportunidade.");?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -37,7 +37,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$app->user->trashedOpportunities): ?>
-            <div class="alert info"><?php i::_e("Você não possui nenhuma oportunidade na lixeira.");?></div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhuma oportunidade na lixeira.");?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
@@ -47,7 +47,7 @@ $this->layout = 'panel'
             <?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->archivedOpportunities): ?>
-            <div class="alert info"><?php i::_e("Você não possui nenhuma oportunidade arquivada."); ?></div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhuma oportunidade arquivada."); ?></div>
         <?php endif; ?>
     </div>
     <!-- #arquivo-->
@@ -57,7 +57,7 @@ $this->layout = 'panel'
 			<?php $this->part('panel-opportunity', array('entity' => $entity)); ?>
 		<?php endforeach; ?>
 		<?php if(!$user->hasControlOpportunities): ?>
-			<div class="alert info"><?php i::_e("Você não possui nehuma oportunidade liberada."); ?></div>
+			<div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nehuma oportunidade liberada."); ?></div>
 		<?php endif; ?>
 	</div>
 	<!-- #permitido-->
@@ -67,7 +67,9 @@ $this->layout = 'panel'
             <?php $this->part('panel-evaluation', array('entity' => $entity)); ?>
         <?php endforeach; ?>
         <?php if(!$user->opportunitiesCanBeEvaluated): ?>
-            <div class="alert info">Você não possui nenhuma <?php $this->dict('entities: opportunity')?> liberada para avaliação.</div>
+            <div class="alert info">
+                <?php // translators: %s é o nome do tipo de entidade Oportunidade. (ex: oportunidade) ?>
+                <?php printf( \MapasCulturais\i::__("Você não possui nenhuma %s liberada para avaliação."), $this->dict('entities: opportunity', false) ); ?></div>
         <?php endif; ?>
     </div>
     <!-- #avaliar-->
