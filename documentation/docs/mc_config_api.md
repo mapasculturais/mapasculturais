@@ -1,13 +1,16 @@
 Documentacao da API
 ===================
 
-_Para tornar mais fácil a leitura dos exemplos será utilizada a função getJSON do jQuery._
+Esta página reúne alguns exmeplos de uso da API, em especial dos métodos de busca por entidades.
 
-Action find
----------------
+A documentação completa de todos os endpoints está sendo construída aqui: http://docs.mapasculturais.org/apidoc/
+
+
+
+Parâmetros dos métodos find e findOne
+-------------------------------------
 
 Parâmetros
-O Método find aceita os seguintes parâmetros:
 
 * **@select** - usado para selecionar as propriedades da entidade que serão retornadas pela api. Você pode retornar propriedades de entidades relacionadas. _ex:( @select: id,name,owner.name,owner.singleUrl)_
 * **@order** - usado para definir em que ordem o resultado será retornado. _ex:( @order: name ASC, id DESC)_
@@ -42,6 +45,8 @@ Para filtrar os resultados o método find aceita os seguintes operadores em qual
 
 Exemplos de uso.
 ----------------
+
+_Para tornar mais fácil a leitura dos exemplos será utilizada a função getJSON do jQuery._
 
 * **retornando o nome do espaço de id 10**
 

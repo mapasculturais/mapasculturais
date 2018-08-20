@@ -26,7 +26,24 @@ class Seal extends EntityController {
         Traits\ControllerArchive,
         Traits\ControllerAPI;
 
-	/**
+    
+    /**
+     * @api {POST} /api/seal Criar Selo.
+     * @apiUse APICreate
+     * @apiGroup SEAL
+     * @apiName POSTcreate
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/seal Atualizar Selo.
+     * @apiUse APIUpdate
+     * @apiGroup SEAL
+     * @apiName POSTcreate
+     */
+    
+    
+    
+    /**
      * Creates a new Seal
      *
      * This action requires authentication and outputs the json with the new event or with an array of errors.

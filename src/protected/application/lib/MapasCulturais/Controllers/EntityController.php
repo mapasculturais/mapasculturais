@@ -191,6 +191,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     /**
+     * 
+     * @apiDefine APICreate
+     * @apiDescription Cria uma nova entidade
+     * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos.
+     * 
+     * 
      * Creates a new entity of the class with same name in the parent\Entities namespace
      *
      * This action requires authentication and outputs the json with the new entity or with an array of errors.
@@ -325,6 +331,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     /**
+     * 
+     * @apiDefine APIUpdate
+     * @apiDescription Atualiza uma entidade
+     * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos.
+     * 
+     * 
      * Updates the entity with the id specified in the URL with the values sent by PUT.
      *
      * If the entity with the given id not exists, call $app->pass()

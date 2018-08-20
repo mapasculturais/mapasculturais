@@ -26,6 +26,21 @@ class Space extends EntityController {
         Traits\ControllerOpportunities;
 
 
+
+    /**
+     * @api {POST} /api/space Criar Espaço.
+     * @apiUse APICreate
+     * @apiGroup SPACE
+     * @apiName POSTcreate
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/space Atualizar Espaço.
+     * @apiUse APIUpdate
+     * @apiGroup SPACE
+     * @apiName POSTcreate
+     */
+
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
             $parent = $this->repository->find($this->urlData['parentId']);

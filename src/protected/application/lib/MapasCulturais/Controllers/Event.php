@@ -24,6 +24,23 @@ class Event extends EntityController {
         Traits\ControllerAPI,
         Traits\ControllerOpportunities;
 
+
+
+    /**
+     * @api {POST} /api/event Criar Evento.
+     * @apiUse APICreate
+     * @apiGroup EVENT
+     * @apiName POSTcreate
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/event Atualizar Evento.
+     * @apiUse APIUpdate
+     * @apiGroup EVENT
+     * @apiName POSTcreate
+     */
+
+
     /**
      * Creates a new Event
      *
