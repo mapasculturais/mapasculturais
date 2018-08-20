@@ -5,26 +5,26 @@
 ?>
 
   <table class="spaces-table entity-table">
-    <caption> 
-        <?=\MapasCulturais\i::_e("Espaços");?>
+    <caption>
+        <?php echo \MapasCulturais\i::_e("Espaços");?>
     </caption>
     <thead>
       <tr>
-        <td>id</td>
-        <td>Nome</td>
-        <td>Subsite</td>
-        <td>Operações</td>
+        <td><?php \MapasCulturais\i::_e("id");?></td>
+        <td><?php \MapasCulturais\i::_e("Nome");?></td>
+        <td><?php \MapasCulturais\i::_e("Subsite");?></td>
+        <td><?php \MapasCulturais\i::_e("Operações");?></td>
       </tr>
     </thead>
     <tbody>
       <?php foreach($spaces as $space): ?>
       <tr>
         <td>
-          <a href="<?=$space->singleUrl?>" class="icon icon-space"></a>
-          <a href="<?=$space->singleUrl?>"><?=$space->id?></a>
+          <a href="<?php echo $space->singleUrl;?>" class="icon icon-space"></a>
+          <a href="<?php echo $space->singleUrl;?>"><?php echo $space->id;?></a>
         </td>
-        <td><?=$space->name?></td>
-        <td class="fit"><?=$space->subsite?$space->subsite->name:'';?></td>
+        <td><?php echo $space->name;?></td>
+        <td class="fit"><?php echo $space->subsite?$space->subsite->name:'';?></td>
         
         <td class="fit">
           <div class="entity-actions">

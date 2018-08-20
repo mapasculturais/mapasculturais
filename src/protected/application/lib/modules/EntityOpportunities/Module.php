@@ -62,8 +62,8 @@ class Module extends \MapasCulturais\Module {
                 'label' => i::__('Usar a aba oportunidades?'),
                 'type' => 'select',
                 'options' => (object) [
-                    'true' => 'Sim',
-                    'false' => 'Não'
+                    'true' => \MapasCulturais\i::__('Sim'),
+                    'false' => \MapasCulturais\i::__('Não')
                 ]
             ]);
         }

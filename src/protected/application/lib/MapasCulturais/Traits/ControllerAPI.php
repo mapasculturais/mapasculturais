@@ -133,9 +133,6 @@ trait ControllerAPI{
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
      * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
      *
-     * @apiExample {curl} Exemplo de utilização:
-     *   curl -i http://localhost/api/apgen/findOne?@select=id,name,subsite.name&user=EQ\(8006\)
-     *
      */
     public function API_findOne(){
         $entity = $this->apiQuery($this->getData, ['findOne' => true]);
@@ -158,10 +155,7 @@ trait ControllerAPI{
      * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
      * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
-     * 
-     * @apiExample {curl} Exemplo de utilização:
-     *   curl -i http://localhost:8090/api/agent/find?@select=id,name,subsite.name&user=EQ\(8006\)
-     * 
+     *
      */
     public function API_find(){
         $data = $this->apiQuery($this->getData);
@@ -171,7 +165,8 @@ trait ControllerAPI{
 
     /**
      * @apiDefine APIdescribe
-     * @apiDescription Retorna a descrição de entidade..
+     * @apiDescription Retorna a descrição de entidade.
+     *
      */
     public function API_describe(){
         $class = $this->entityClassName;

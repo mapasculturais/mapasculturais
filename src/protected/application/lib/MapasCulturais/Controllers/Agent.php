@@ -56,6 +56,13 @@ class Agent extends EntityController {
      */
 
     /**
+     * @api {GET} /api/agent/createOpportunity Criar Oportunidade.
+     * @apiUse apiDefine
+     * @apiGroup AGENT
+     * @apiName GETcreateOpportunity
+     */ 
+
+    /**
      * @api {all} /agent/setAsUserProfile Atualizar profile do usuário
      * @apiDescription Atualiza o profile do usuário logado para o profile atual
      * @apiGroup AGENT
