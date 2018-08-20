@@ -5,8 +5,8 @@
 ?>
 
   <table class="spaces-table entity-table">
-    <caption> 
-        <?=\MapasCulturais\i::_e("Espaços");?>
+    <caption>
+        <?php echo \MapasCulturais\i::_e("Espaços");?>
     </caption>
     <thead>
       <tr>
@@ -20,11 +20,11 @@
       <?php foreach($spaces as $space): ?>
       <tr>
         <td>
-          <a href="<?=$space->singleUrl?>" class="icon icon-space"></a>
-          <a href="<?=$space->singleUrl?>"><?=$space->id?></a>
+          <a href="<?php echo $space->singleUrl;?>" class="icon icon-space"></a>
+          <a href="<?php echo $space->singleUrl;?>"><?php echo $space->id;?></a>
         </td>
-        <td><?=$space->name?></td>
-        <td class="fit"><?=$space->subsite?$space->subsite->name:'';?></td>
+        <td><?php echo $space->name;?></td>
+        <td class="fit"><?php echo $space->subsite?$space->subsite->name:'';?></td>
         
         <td class="fit">
           <div class="entity-actions">

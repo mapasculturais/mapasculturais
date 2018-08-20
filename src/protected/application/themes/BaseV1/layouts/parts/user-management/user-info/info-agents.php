@@ -4,7 +4,7 @@
 ?>
   <table class="agents-table entity-table">
     <caption>
-      <?=\MapasCulturais\i::_e("Agentes");?>
+      <?php \MapasCulturais\i::_e("Agentes");?>
     </caption>
     <thead>
       <tr>
@@ -19,13 +19,12 @@
       <tr>
         <td>
           <a class="icon icon-agent"></a>
-          <a href="<?=$agent->singleUrl?>"><?=$agent->id?></a>
+          <a href="<?php echo $agent->singleUrl;?>"><?php echo $agent->id;?></a>
         </td>
-        <td><?=$agent->name?></td>
-        <td class="fit"><?=$agent->subsite?$agent->subsite->name:'';?></td>
+        <td><?php echo $agent->name;?></td>
+        <td class="fit"><?php echo $agent->subsite?$agent->subsite->name:'';?></td>
         
         <td class="fit">
-
           <div class="entity-actions">
             <?php if(!$agent->isUserProfile): ?>
               <?php if($agent->status === Agent::STATUS_ENABLED): ?>

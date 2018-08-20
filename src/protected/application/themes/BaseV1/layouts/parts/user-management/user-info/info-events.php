@@ -7,7 +7,7 @@
 
 <table class="events-table entity-table">
   <caption>
-    <?=\MapasCulturais\i::_e("Eventos");?>
+    <?php echo \MapasCulturais\i::_e("Eventos");?>
   </caption>
   <thead>
     <tr>
@@ -22,10 +22,10 @@
   <?php foreach($events as $event): ?>
     <tr>
       <td>
-        <a href="<?=$event->singleUrl?>" class="icon icon-event"></a>
-        <a href="<?=$event->singleUrl?>"><?=$event->id?></a>
+        <a href="<?php echo $event->singleUrl;?>" class="icon icon-event"></a>
+        <a href="<?php echo $event->singleUrl;?>"><?php echo $event->id;?></a>
       </td>
-      <td><?=$event->name?></td>
+      <td><?php echo $event->name;?></td>
       <td class="fit">
         <div class="entity-actions">
           <?php if($event->status === Event::STATUS_ENABLED): ?>
