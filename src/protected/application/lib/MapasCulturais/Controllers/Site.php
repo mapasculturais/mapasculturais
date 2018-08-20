@@ -114,6 +114,26 @@ class Site extends \MapasCulturais\Controller {
         }
     }
 
+    /**
+     * @api {GET} /api/site/version Versão Mapas Culturais 
+     * @apiDescription Obtem a versão do Mapas Culturais
+     * @apiGroup SITE
+     * @apiName getVersion
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *          "name":"Mapas Culturais",
+     *          "version":"v4.0.2",
+     *          "git-info":{
+     *              "tag":"4.0.2",
+     *              "commit hash":"2b4d4e3",
+     *              "commit date":"2018-04-25 16:04:04",
+     *              "branch":"master"
+     *          }
+     *      }
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/site/version
+     */
     function API_version() {
         $version = $this->getVersionFile();
         $data['name'] = 'Mapas Culturais';

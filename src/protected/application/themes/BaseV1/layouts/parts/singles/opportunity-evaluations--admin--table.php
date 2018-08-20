@@ -19,28 +19,28 @@
                 <?php \MapasCulturais\i::_e("Agente Responsável");?>
             </th>
             <th class="registration-status-col">
-                <?php \MapasCulturais\i::_e("Status / Avaliação");?>
+                <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Status"); ?>" model="evaluationsFilters['status']" data="data.evaluationStatuses"></mc-select>
+            </th>
+            <th class="registration-status-col">
+                <?php \MapasCulturais\i::esc_attr_e("Avaliação"); ?>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan='5'>
-                <span ng-if="!usingFilters() && data.evaluationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação enviada.");?></span>
-                <span ng-if="usingFilters() && data.evaluationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && data.evaluationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 avaliação enviada.");?></span>
-                <span ng-if="usingFilters() && data.evaluationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 avaliação encontrada com os filtros selecionados.");?></span>
-                <span ng-if="!usingFilters() && data.evaluationsAPIMetadata.count > 1">{{data.opportunityEvaluations.length}} <?php \MapasCulturais\i::_e("Avaliações.");?>
-                    <?php if($entity->registrationLimit > 0):?>
-                         | <?php \MapasCulturais\i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
-                    <?php endif;?>
-                </span>
-                <span ng-if="usingFilters() && data.evaluationsAPIMetadata.count > 1">{{data.evaluationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
+            <td colspan='6'>
+                <span ng-if="data.evaluations.length === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação enviada.");?></span>
+                <span ng-if="data.evaluations.length === 1"><?php \MapasCulturais\i::_e("1 avaliação encontrada.");?></span>
+                <span ng-if="data.evaluations.length > 1">{{data.evaluations.length}} <?php \MapasCulturais\i::_e("Avaliações.");?></span>
             </td>
         </tr>
-        
+
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
-            <td class="registration-id-col"><strong>{{evaluation.registration.number}}</strong></td>
+            <td class="registration-id-col">
+                <a href='{{evaluation.evaluation.singleUrl}}'>
+                    <strong>{{evaluation.registration.number}}</strong>
+                </a>
+            </td>
             <td class="registration-id-col">{{evaluation.valuer.name}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
@@ -50,10 +50,10 @@
                 </p>
             </td>
             <td class="registration-status-col">
-                <a href='{{evaluation.evaluation.singleUrl}}'>
-                    <strong ng-show="getEvaluationResultString(evaluation)">{{getEvaluationStatusLabel(evaluation)}} / {{getEvaluationResultString(evaluation)}}</strong>
-                    <span ng-hide="getEvaluationResultString(evaluation)">{{getEvaluationStatusLabel(evaluation)}}</span>
-                </a>
+                {{getEvaluationStatusLabel(evaluation)}}
+            </td>
+            <td class="registration-status-col">
+                {{getEvaluationResultString(evaluation)}}
             </td>
         </tr>
     </tbody>
