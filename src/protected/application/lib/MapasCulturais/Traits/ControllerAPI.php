@@ -131,8 +131,14 @@ trait ControllerAPI{
      * @apiParam {String} [@seals] usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. ex:( @seals: 1,10,25)
      * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
-     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api">http://docs.mapasculturais.org/mc_config_api</a>) 
+     * * @apiParamExample {json} Exemplo:
+                { 
+                    "id": "EQ(37)",
+                    "@select": "id,name" 
+                }
      *
+     * 
      */
     public function API_findOne(){
         $entity = $this->apiQuery($this->getData, ['findOne' => true]);
@@ -154,7 +160,12 @@ trait ControllerAPI{
      * @apiParam {String} [@seals] usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. ex:( @seals: 1,10,25)
      * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
-     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api">http://docs.mapasculturais.org/mc_config_api</a>) 
+     * @apiParamExample {json} Exemplo:
+                { 
+                    "id": "BET(100,200)",
+                    "@select": "id,name" 
+                }
      *
      */
     public function API_find(){
