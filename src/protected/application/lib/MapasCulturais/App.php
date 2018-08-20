@@ -873,6 +873,11 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('subsite',$file_groups['downloads']);
 
         $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
+        $theme_class = "\\" . App::i()->config['themes.active'] . '\Theme';
+        $theme_path = $theme_class::getThemeFolder() . '/';
+        if (file_exists($theme_path . 'image-transformations.php')) {
+            $image_transformations = include $theme_path . 'image-transformations.php';
+        }
         foreach($image_transformations as $name => $transformation)
             $this->registerImageTransformation($name, $transformation);
 
