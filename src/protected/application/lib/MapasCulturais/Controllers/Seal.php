@@ -36,7 +36,7 @@ class Seal extends EntityController {
 
      /**
      * @api {PUT|PATCH} /api/seal Atualizar Selo.
-     * @apiUse APIUpdate
+     * @apiUse APIPut
      * @apiGroup SEAL
      * @apiName POSTcreate
      */
