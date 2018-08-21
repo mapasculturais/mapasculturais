@@ -35,10 +35,10 @@ class Space extends EntityController {
      */
 
      /**
-     * @api {PUT|PATCH} /api/space Atualizar Espaço.
+     * @api {PUT} /api/space Atualizar Espaço.
      * @apiUse APIUpdate
      * @apiGroup SPACE
-     * @apiName POSTcreate
+     * @apiName PUTspace
      */
 
     function GET_create() {
@@ -52,6 +52,22 @@ class Space extends EntityController {
         parent::GET_create();
     }
 
+    /**
+     * @api {all} /api/space/findByEvents Pesquisar espaços por evento
+     * @apiDescription Realiza a pesquisa de espaços por evento
+     * @apiGroup SPACE
+     * @apiName findByEvents
+     * @apiParam {date} [@from=HOJE] Data inicial do período
+     * @apiParam {date} [@to=HOJE] Data final do período
+     * @apiParam {String} [@select] usado para selecionar as propriedades da entidade que serão retornadas pela api.
+     *                            Você pode retornar propriedades de entidades relacionadas. ex:( @select=id,name,
+     *                            owner.name,owner.singleUrl)
+     * @apiParam {--} _geoLocation Argumento com geolocalização
+     * @apiParam {--} [@count] Faz com que seja retornado a quantidade de registros
+     *
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/space/findByEvents?@from=2016-05-01&@to=2016-05-31&@select=*
+     */
     function API_findByEvents(){
         $eventController = App::i()->controller('event');
         $query_data = $this->getData;
