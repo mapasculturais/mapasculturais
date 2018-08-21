@@ -113,8 +113,7 @@ trait ControllerAPI{
      *
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
-
-    
+   
 
     /**
      * @apiDefine APIfindOne
@@ -131,7 +130,27 @@ trait ControllerAPI{
      * @apiParam {String} [@seals] usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. ex:( @seals: 1,10,25)
      * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
-     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api">http://docs.mapasculturais.org/mc_config_api</a>) 
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
+     *                                Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api">http://docs.mapasculturais.org/mc_config_api</a>)      
+     *                                Para filtrar os resultados o método find aceita os seguintes operadores em qualquer das propriedades e metadados das entidades:<br/>
+     *                                <table>
+     *                                <tr><td>Operador</td><td>Exemplo</td></tr>
+     *                                <tr><td>**EQ** (igual) </td><td> _ex:( id: EQ (10) - seleciona a entidade de id igual a 10)__ </td></tr>
+     *                                <tr><td>**GT** (maior que) </td><td> _ex:( id: GT (10) - seleciona todas as entidades com id maior a 10)__ </td></tr>
+     *                                <tr><td>**GTE** (maior ou igual) </td><td> _ex:( id: GTE (10) - seleciona todas as entidades com id maior ou igual a 10)__ </td></tr>
+     *                                <tr><td>**LT** (menor que) </td><td> _ex:( id: LT (10) - seleciona todas as entidades com id menor a 10)__ </td></tr>
+     *                                <tr><td>**LTE** (menor ou igual) </td><td> _ex:( id: LTE (10) - seleciona todas as entidades com id menor ou igual a 10)__ </td></tr>
+     *                                <tr><td>**NULL** (nao definido) </td><td> _ex:( age: null() - seleciona todas as entidades com idade não definida)__ </td></tr>
+     *                                <tr><td>**IN** (en) </td><td> _ex:( id: IN (10,18,33) - seleciona as entidades de id 10, 18 e 33)__ </td></tr>
+     *                                <tr><td>**BET** (entre) </td><td> _ex:( id: BET (100,200) - seleciona as entidades de id entre 100 e 200)__ </td></tr>
+     *                                <tr><td>**LIKE** </td><td> _ex:( name: LIKE (fael) - seleciona as entidades com nome LIKE '*fael*' (ver operador LIKE do sql))__ </td></tr>
+     *                                <tr><td>**ILIKE** (LIKE ignorando maiúsculas e minúsculas) </td><td> _ex:( name: ILIKE (rafael*) seleciona as entidades com o nome começando com Rafael, rafael, RAFAEL, etc.)__ </td></tr>
+     *                                <tr><td>**OR** (operador lógico OU) </td><td> _ex:( id: OR (BET (100,200), BET (300,400), IN (10,19,33)) - seleciona as entidades com id entre 100 e 200, entre 300 e 400 ou de id 10,19 ou 33)__ </td></tr>
+     *                                <tr><td>**AND** (operador lógico AND) </td><td> _ex:( name: AND (ILIKE ('Rafael%'), ILIKE ('*Freitas')) - seleciona as entidades com nome começando com Rafael e terminando com Freitas (por exemplo: Rafael Freitas, Rafael Chaves Freitas, RafaelFreitas))_ </td></tr>
+     *                                <tr><td>**GEONEAR** </td><td> _ex:( _geoLocation: GEONEAR (-46.6475415229797, -23.5413271705055, 700) - seleciona as entidades que estão no máximo há 700 metros do ponto de latitude -23.5413271705055 e longitude -46.6475415229797)__ </td></tr>
+     *                                </table>
+     *                                Veja mais exemplos de uso em <a href="http://docs.mapasculturais.org/mc_config_api/">http://docs.mapasculturais.org/mc_config_api/</a>
+     * 
      * @apiParamExample {json} Exemplo:
      *           { 
      *               "id": "EQ(37)",

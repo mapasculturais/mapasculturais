@@ -25,6 +25,17 @@ class Event extends EntityController {
         Traits\ControllerOpportunities;
 
 
+    /**
+     * @api {all} /api/agent/findOne Buscar Evento
+     * @apiUse APIfindOne
+     * @apiGroup EVENT
+     * @apiName apiFindOne
+     * 
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost:8090/api/event/findOne?@select=id,name,subsite.name&user=EQ\(8006\)
+     */
+
+        
 
     /**
      * @api {POST} /api/event/index Criar Evento.
