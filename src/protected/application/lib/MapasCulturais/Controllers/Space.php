@@ -28,17 +28,31 @@ class Space extends EntityController {
 
 
     /**
-     * @api {POST} /api/space Criar Espaço.
+     * @api {POST} /api/space/index Criar espaço.
      * @apiUse APICreate
      * @apiGroup SPACE
-     * @apiName POSTcreate
+     * @apiName POSTspace
      */
 
      /**
-     * @api {PUT|PATCH} /api/space Atualizar Espaço.
-     * @apiUse APIUpdate
+     * @api {PATCH} /api/space/single/:id Atualizar parcialmente um espaço.
+     * @apiUse APIPatch
      * @apiGroup SPACE
-     * @apiName POSTcreate
+     * @apiName PATCHspace
+     */
+
+    /**
+     * @api {PUT} /api/space/single/:id Atualizar espaço.
+     * @apiUse APIPut
+     * @apiGroup SPACE
+     * @apiName PUTspace
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/space/single/:id Deletar espaço.
+     * @apiUse APIDelete
+     * @apiGroup SPACE
+     * @apiName DELETEspace
      */
 
     function GET_create() {
