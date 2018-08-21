@@ -45,16 +45,7 @@ class Agent extends EntityController {
      *   curl -i http://localhost/api/agent/find?@select=id,name,subsite.name&user=EQ\(8006\)
      */
 
-     /**
-     * @api {all} /api/agent/describe Descrição de entidade.
-     * @apiUse APIdescribe
-     * @apiGroup AGENT
-     * @apiName APIdescribe
-     * 
-     * @apiExample {curl} Exemplo de utilização:
-     *   curl -i http://localhost/api/agent/describe
-     */
-
+    
     /**
      * @api {GET} /api/agent/describe Recuperar descrição da entidade Agente
      * @apiUse APIdescribe
