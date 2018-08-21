@@ -26,7 +26,13 @@ class Project extends EntityController {
         Traits\ControllerAPINested,
         Traits\ControllerOpportunities;
 
-    
+    /**
+     * @api {GET} /api/project/describe Recuperar descrição da entidade Projeto
+     * @apiUse APIdescribe
+     * @apiGroup PROJECT
+     * @apiName GETdescribe
+     */
+
     /**
      * @api {POST} /api/project/index Criar projeto.
      * @apiUse APICreate

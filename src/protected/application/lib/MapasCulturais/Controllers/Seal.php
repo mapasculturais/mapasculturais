@@ -26,7 +26,20 @@ class Seal extends EntityController {
         Traits\ControllerArchive,
         Traits\ControllerAPI;
 
+    /**
+     * @api {GET} /api/seal/describe Recuperar descrição da entidade Selo
+     * @apiUse APIdescribe
+     * @apiGroup SEAL
+     * @apiName GETdescribe
+     */
     
+    /**
+     * @api {POST} /api/seal/index Criar selo.
+     * @apiUse APICreate
+     * @apiGroup SEAL
+     * @apiName POSTseal
+     */
+
     /**
      * @api {POST} /api/seal/index Criar selo.
      * @apiUse APICreate

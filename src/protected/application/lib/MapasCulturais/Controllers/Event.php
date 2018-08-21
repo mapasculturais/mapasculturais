@@ -25,6 +25,12 @@ class Event extends EntityController {
         Traits\ControllerOpportunities;
 
 
+    /**
+     * @api {GET} /api/event/describe Recuperar descrição da entidade Evento
+     * @apiUse APIdescribe
+     * @apiGroup EVENT
+     * @apiName GETdescribe
+     */
 
     /**
      * @api {POST} /api/event/index Criar Evento.
