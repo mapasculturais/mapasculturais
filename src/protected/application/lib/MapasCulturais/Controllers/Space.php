@@ -25,7 +25,12 @@ class Space extends EntityController {
         Traits\ControllerAPINested,
         Traits\ControllerOpportunities;
 
-
+    /**
+     * @api {GET} /api/space/describe Recuperar descrição da entidade Espaço
+     * @apiUse APIdescribe
+     * @apiGroup SPACE
+     * @apiName GETdescribe
+     */
 
     /**
      * @api {POST} /api/space/index Criar espaço.

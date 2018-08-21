@@ -35,7 +35,14 @@ class Event extends EntityController {
      *   curl -i http://localhost:8090/api/event/findOne?@select=id,name,subsite.name&user=EQ\(8006\)
      */
 
-        
+
+    /**
+     * @api {GET} /api/event/describe Recuperar descrição da entidade Evento
+     * @apiUse APIdescribe
+     * @apiGroup EVENT
+     * @apiName GETdescribe
+     */
+
 
     /**
      * @api {POST} /api/event/index Criar Evento.

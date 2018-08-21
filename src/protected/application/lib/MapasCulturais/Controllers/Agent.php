@@ -56,6 +56,13 @@ class Agent extends EntityController {
      */
 
     /**
+     * @api {GET} /api/agent/describe Recuperar descrição da entidade Agente
+     * @apiUse APIdescribe
+     * @apiGroup AGENT
+     * @apiName GETdescribe
+     */
+    
+     /**
      * @api {GET} /api/agent/createOpportunity Criar Oportunidade.
      * @apiUse apiDefine
      * @apiGroup AGENT
