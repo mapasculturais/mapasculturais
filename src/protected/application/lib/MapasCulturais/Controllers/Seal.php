@@ -26,19 +26,46 @@ class Seal extends EntityController {
         Traits\ControllerArchive,
         Traits\ControllerAPI;
 
+    /**
+     * @api {GET} /api/seal/describe Recuperar descrição da entidade Selo
+     * @apiUse APIdescribe
+     * @apiGroup SEAL
+     * @apiName GETdescribe
+     */
     
     /**
-     * @api {POST} /api/seal Criar Selo.
+     * @api {POST} /api/seal/index Criar selo.
      * @apiUse APICreate
      * @apiGroup SEAL
-     * @apiName POSTcreate
+     * @apiName POSTseal
+     */
+
+    /**
+     * @api {POST} /api/seal/index Criar selo.
+     * @apiUse APICreate
+     * @apiGroup SEAL
+     * @apiName POSTseal
      */
 
      /**
-     * @api {PUT|PATCH} /api/seal Atualizar Selo.
+     * @api {PATCH} /api/seal/single/:id Atualizar parcialmente um selo.
+     * @apiUse APIPatch
+     * @apiGroup SEAL
+     * @apiName PATCHseal
+     */
+
+    /**
+     * @api {PUT} /api/seal/single/:id Atualizar selo.
      * @apiUse APIPut
      * @apiGroup SEAL
-     * @apiName POSTcreate
+     * @apiName PUTseal
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/seal/single/:id Deletar selo.
+     * @apiUse APIDelete
+     * @apiGroup SEAL
+     * @apiName DELETEseal
      */
     
     
