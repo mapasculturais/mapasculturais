@@ -195,8 +195,9 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @apiDefine APICreate
      * @apiDescription Cria uma nova entidade
      * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos.
-     * 
-     * 
+     */ 
+     
+     /**
      * Creates a new entity of the class with same name in the parent\Entities namespace
      *
      * This action requires authentication and outputs the json with the new entity or with an array of errors.
@@ -332,11 +333,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
     /**
      * 
-     * @apiDefine APIUpdate
-     * @apiDescription Atualiza uma entidade
-     * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos.
-     * 
-     * 
+     * @apiDefine APIPut
+     * @apiDescription Atualiza completamente uma entidade.
+     * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos. Atenção: Todos os dados da entidade devem estar na requisição, inclusive aqueles que não serão alterados.
+     */
+
+     /** 
      * Updates the entity with the id specified in the URL with the values sent by PUT.
      *
      * If the entity with the given id not exists, call $app->pass()
@@ -382,6 +384,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
 
+    /**
+     * 
+     * @apiDefine APIPatch
+     * @apiDescription Atualiza parcialmente uma entidade.
+     * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos. 
+     */
     function PATCH_single($data = null) {
         $this->requireAuthentication();
 
@@ -434,6 +442,12 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $this->DELETE_single();
     }
 
+    /**
+     * 
+     * @apiDefine APIDelete
+     * @apiDescription Deleta uma entidade.
+     */
+    
     /**
      * Delete the entity with the id specified in the URL.
      *
