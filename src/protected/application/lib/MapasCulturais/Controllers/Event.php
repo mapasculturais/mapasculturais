@@ -34,10 +34,10 @@ class Event extends EntityController {
      */
 
      /**
-     * @api {PUT|PATCH} /api/event Atualizar Evento.
+     * @api {PUT} /api/event Atualizar Evento.
      * @apiUse APIUpdate
      * @apiGroup EVENT
-     * @apiName POSTcreate
+     * @apiName PUTcreate
      */
 
 
@@ -60,6 +60,21 @@ class Event extends EntityController {
         parent::POST_index($data);
     }
 
+    /**
+     * @api {all} /api/event/findOccurrences Pesquisa de ocorrências
+     * @apiDescription Realizar a pesquisa por ocorrências de eventos em determinado período
+     * @apiGroup EVENT
+     * @apiName findOccurrences
+     * @apiParam {date} [@from=HOJE] Data inicial do período 
+     * @apiParam {date} [@to=HOJE] Data final do período 
+     * @apiParam {String} [@limit] Limite para a quantidade de registro
+     * @apiParam {String} [@offset] Offset para desolamento da quantidade de registros
+     * @apiParam {String} [@page] Número da página a ser retornada
+     * @apiParam {String} [space:atributo] Realizar a pesquisa das ocorrências de eventos por espaço.
+     * 
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/event/findOccurrences?@from=2016-05-01&@to=2016-05-31&space:id=EQ(8915)
+     */
     function API_findOccurrences(){
         $app = App::i();
         $rsm = new ResultSetMapping();
@@ -265,6 +280,20 @@ class Event extends EntityController {
         parent::GET_create();
     }
 
+    /**
+     * @api {all} /api/event/findBySpace Pesquisar eventos por espaço
+     * @apiDescription Realizar a pesquisa de eventos por espaço
+     * @apiGroup EVENT
+     * @apiName findBySpace
+     * @apiParam {String} spaceId ID do espaço.
+     * @apiParam {date} [@from=HOJE] Data inicial do período 
+     * @apiParam {date} [@to=HOJE] Data final do período 
+     * @apiParam {--} [@count] Faz com que seja retornado a quantidade de registros
+     *
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/event/findBySpace?@from=2016-05-01&@to=2016-05-31&spaceId=8915
+     *   curl -i http://localhost/api/event/findBySpace?@from=2016-05-01&@to=2016-05-31&spaceId=8915&@count
+     */
     function API_findBySpace(){
         if(!key_exists('spaceId', $this->data)){
             $this->errorJson('spaceId is required');
@@ -427,6 +456,22 @@ class Event extends EntityController {
         return $result;
     }
 
+    /**
+     * @api {all} /api/event/findByLocation Pesquisar por localização
+     * @apiDescription Realizar a pesquisa de eventos por localização
+     * @apiGroup EVENT
+     * @apiName findByLocation
+     * @apiParam {String} [space] ID do espaço a ser utilizado como filtro na busca.
+     * @apiParam {String} [space:atributo] Realizar a pesquisa das ocorrências de eventos por espaço.
+     * @apiParam {date} [@from=HOJE] Data inicial do período 
+     * @apiParam {date} [@to=HOJE] Data final do período 
+     * @apiParam {--} _geoLocation Argumento com geolocalização 
+     * @apiParam {--} [@count] Faz com que seja retornado a quantidade de registros
+     *
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/event/findBySpace?@from=2016-05-01&@to=2016-05-31&spaceId=8915
+     *   curl -i http://localhost/api/event/findBySpace?@from=2016-05-01&@to=2016-05-31&spaceId=8915&@count
+     */
     function API_findByLocation(){
 
         $this->apiResponse($this->apiQueryByLocation($this->getData));
