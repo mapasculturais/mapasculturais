@@ -27,19 +27,32 @@ class Event extends EntityController {
 
 
     /**
-     * @api {POST} /api/event Criar Evento.
+     * @api {POST} /api/event/index Criar Evento.
      * @apiUse APICreate
      * @apiGroup EVENT
-     * @apiName POSTcreate
+     * @apiName POSTevent
      */
 
      /**
-     * @api {PUT} /api/event Atualizar Evento.
-     * @apiUse APIUpdate
+     * @api {PATCH} /api/event/single/:id Atualizar parcialmente um evento.
+     * @apiUse APIPatch
      * @apiGroup EVENT
-     * @apiName PUTcreate
+     * @apiName PATCHevent
      */
 
+    /**
+     * @api {PUT} /api/event/single/:id Atualizar evento.
+     * @apiUse APIPut
+     * @apiGroup EVENT
+     * @apiName PUTevent
+     */
+
+     /**
+     * @api {DELETE} /api/event/single/:id Deletar evento.
+     * @apiUse APIDelete
+     * @apiGroup EVENT
+     * @apiName DELETEevent
+     */
 
     /**
      * Creates a new Event
