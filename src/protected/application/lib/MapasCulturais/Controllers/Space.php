@@ -60,6 +60,54 @@ class Space extends EntityController {
      * @apiGroup SPACE
      * @apiName DELETEspace
      */
+    
+    /**
+     * @api {all} /api/space/getTypes Retornar tipos
+     * @apiUse getTypes
+     * @apiGroup SPACE
+     * @apiName getTypes
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "id": 10,
+     *   "name": "Cine itinerante"
+     * }, {
+     *   "id": 11,
+     *   "name": "Cineclube"
+     * }, {
+     *   "id": 12,
+     *   "name": "Drive-in"
+     * }]
+     * 
+     */
+
+    /**
+     * @api {all} /api/space/getTypeGroups Retornar grupos
+     * @apiUse getTypeGroups
+     * @apiGroup SPACE
+     * @apiName getTypeGroups
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "name": "Espaços de Exibição de Filmes",
+     *   "minId": 10,
+     *   "maxId": 19,
+     *   "types": [{
+     *           "id": 10,
+     *           "name": "Cine itinerante"
+     *       },{
+     *           "id": 11,
+     *           "name": "Cineclube"
+     *       },{
+     *           "id": 12,
+     *           "name": "Drive-in"
+     *       },{
+     *           "id": 13,
+     *           "name": "Espaço Público Para Projeção de Filmes"
+     *       },{
+     *           "id": 14,
+     *           "name": "Sala de cinema"
+     *       }]
+     * }]
+     */
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){

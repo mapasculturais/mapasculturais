@@ -73,6 +73,26 @@ class Event extends EntityController {
      */
 
     /**
+     * @api {all} /api/event/getTypes Retornar tipos
+     * @apiUse getTypes
+     * @apiGroup EVENT
+     * @apiName getTypes
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "id": 1,
+     *   "name": "Padrão"
+     *  }]
+     * 
+     */
+
+    /**
+     * @api {all} /api/event/getTypeGroups Retornar grupos
+     * @apiUse getTypeGroups
+     * @apiGroup EVENT
+     * @apiName getTypeGroups
+     */
+
+    /**
      * Creates a new Event
      *
      * This action requires authentication and outputs the json with the new event or with an array of errors.
