@@ -88,6 +88,29 @@ class Agent extends EntityController {
      * @apiName DELETEagent
      */
 
+     /**
+     * @api {all} /api/agent/getTypes Retornar tipos
+     * @apiUse getTypes
+     * @apiGroup AGENT
+     * @apiName getTypes
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "id": 1,
+     *   "name": "Individual"
+     *  },{
+     *   "id": 2,
+     *   "name": "Coletivo"
+     * }]
+     * 
+     */
+
+    /**
+     * @api {all} /api/agent/getTypeGroups Retornar grupos
+     * @apiUse getTypeGroups
+     * @apiGroup AGENT
+     * @apiName getTypeGroups
+     */
+
     /**
      * @api {all} /agent/setAsUserProfile Atualizar profile do usuário
      * @apiDescription Atualiza o profile do usuário logado para o profile atual

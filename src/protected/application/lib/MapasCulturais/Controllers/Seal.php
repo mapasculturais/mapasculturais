@@ -68,6 +68,31 @@ class Seal extends EntityController {
      * @apiName DELETEseal
      */
     
+     /**
+     * @api {all} /api/seal/getTypes Retornar tipos
+     * @apiUse getTypes
+     * @apiGroup SEAL
+     * @apiName getTypes
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "id": 0,
+     *   "name": "Infinita"
+     * }, {
+     *   "id": 1,
+     *   "name": "Dias"
+     * }, {
+     *   "id": 2,
+     *   "name": "Semanas"
+     * }]
+     * 
+     */
+
+    /**
+     * @api {all} /api/seal/getTypeGroups Retornar grupos
+     * @apiUse getTypeGroups
+     * @apiGroup SEAL
+     * @apiName getTypeGroups
+     */
     
     
     /**
