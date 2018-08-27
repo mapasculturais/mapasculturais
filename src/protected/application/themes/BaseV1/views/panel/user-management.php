@@ -20,13 +20,6 @@
           <?php \MapasCulturais\i::_e("Gerenciador de usuários"); ?>
         </a>
       </h2>
-
-      <?php if(!isset($admin)): ?>
-        <a href="<?php echo $app->createUrl('panel', 'userManagement') ?>?admin" class="icon icon-group" style="float: right; font-weight: normal;">
-        <?php \MapasCulturais\i::_e("Administradores");?>
-      </a>
-      <?php endif;?>
-
     </header>
 
     <?php
