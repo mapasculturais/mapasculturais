@@ -56,6 +56,7 @@
       <li class="active"><a href="#agentes"><?php \MapasCulturais\i::_e("Agentes");?></a></li>
       <li><a href="#espacos"><?php \MapasCulturais\i::_e("Espaços");?></a></li>
       <li><a href="#eventos"><?php \MapasCulturais\i::_e("Eventos");?></a></li>
+      <li><a href="#projetos"><?php \MapasCulturais\i::_e("Projetos");?></a></li>
       <li><a href="#permissoes"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
       <li><a href="#atividade"><?php \MapasCulturais\i::_e("Atividades");?></a></li>
     </ul>
@@ -150,6 +151,33 @@
       </div>
 
     </div>
+
+    <div id="projetos" class="aba-content">
+      <div class="tab-table">
+        <button class="tablinks active" data-entity="projetos" data-tab="projetos-ativos">    <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledProjects); ?>)  </button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-concedidos"><?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlProjects);?>)</button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-rascunhos"> <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftProjects); ?>)    </button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-lixeira">   <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedProjects); ?>)  </button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-arquivo">   <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($user->archivedProjects); ?>) </button>
+      </div>
+
+      <div id="projetos-ativos" class="tab-content-table" style="display: block;">
+        <?php $this->part('user-management/user-info/info-projects', array('projects' => $user->enabledProjects)); ?>
+      </div>
+      <div id="projetos-concedidos" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-projects', array('projects' => $user->hasControlProjects)); ?>
+      </div>
+      <div id="projetos-rascunhos" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-projects', array('projects' => $user->draftProjects)); ?>
+      </div>
+      <div id="projetos-lixeira" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-projects', array('projects' => $user->trashedProjects)); ?>
+      </div>
+      <div id="projetos-arquivo" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-projects', array('projects' => $user->archivedProjects)); ?>
+      </div>
+    </div>
+    
   
     <div id="permissoes" class="aba-content">
       <div>
