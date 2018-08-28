@@ -21,11 +21,12 @@
   <tbody>
   <?php foreach($events as $event): ?>
     <tr>
-      <td>
-        <a href="<?php echo $event->singleUrl;?>" class="icon icon-event"></a>
-        <a href="<?php echo $event->singleUrl;?>"><?php echo $event->id;?></a>
+      <td class="fit">
+        <?php echo $event->id;?>
       </td>
-      <td><?php echo $event->name;?></td>
+      <td>
+        <a href="<?php echo $event->singleUrl;?>"><?php echo $event->name;?></a>
+      </td>
       <td class="fit">
         <div class="entity-actions">
           <?php if($event->status === Event::STATUS_ENABLED): ?>
