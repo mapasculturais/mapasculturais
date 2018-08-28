@@ -17,11 +17,10 @@
     <tbody>
       <?php foreach($agents as $agent): ?>
       <tr>
-        <td>
-          <a class="icon icon-agent"></a>
-          <a href="<?php echo $agent->singleUrl;?>"><?php echo $agent->id;?></a>
+        <td class="fit">
+          <?php echo $agent->id;?>
         </td>
-        <td><?php echo $agent->name;?></td>
+        <td class="fit"><a href="<?php echo $agent->singleUrl;?>"><?php echo $agent->name;?></a></td>
         <td class="fit"><?php echo $agent->subsite?$agent->subsite->name:'';?></td>
         
         <td class="fit">
