@@ -20,8 +20,8 @@
         <td class="fit">
           <?php echo $agent->id;?>
         </td>
-        <td class="fit"><a href="<?php echo $agent->singleUrl;?>"><?php echo $agent->name;?></a></td>
-        <td class="fit"><?php echo $agent->subsite?$agent->subsite->name:'';?></td>
+        <td><a href="<?php echo $agent->singleUrl;?>"><?php echo $agent->name;?></a></td>
+        <td><?php echo $agent->subsite?$agent->subsite->name:'';?></td>
         
         <td class="fit">
           <div class="entity-actions">
