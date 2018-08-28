@@ -283,22 +283,18 @@
           </caption>
           <thead>
             <tr>
-              <td><?php \MapasCulturais\i::_e("id");?></td>
               <td><?php \MapasCulturais\i::_e("id da entidade");?></td>
               <td><?php \MapasCulturais\i::_e("tipo entidade");?></td>
-              <td><?php \MapasCulturais\i::_e("ação");?></td>
               <td><?php \MapasCulturais\i::_e("descrição");?></td>
               <td><?php \MapasCulturais\i::_e("data");?></td>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="history in user.history.list">
-              <td>{{history.id}}</td>
               <td>{{history.objectId}}</td>
               <td>{{history.objectType}}</td>
-              <td>{{history.action}}</td>
               <td>{{history.message}}</td>
-              <td>{{history.createTimestamp.date}}</td>
+              <td>{{history.createTimestamp.date | date: 'dd-mm-yyyy HH:mm:ss'}}</td>
             </tr>
           </tbody>
         </table>
