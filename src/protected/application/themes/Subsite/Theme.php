@@ -70,7 +70,7 @@ class Theme extends BaseV1\Theme{
 
         $cache_id = $this->subsiteInstance->getSassCacheId();
 
-        if($app->isEnabled('subsite') && !$app->msCache->contains($cache_id)){
+        if($app->isEnabled('subsite') && $app->msCache->contains($cache_id)){
 
             $app->cache->deleteAll();
             if(!is_dir($this->subsitePath . '/assets/css/sass/')) {
@@ -78,7 +78,11 @@ class Theme extends BaseV1\Theme{
             }
             putenv('LC_ALL=en_US.UTF-8');
 
-            if ($this->subsiteInstance->namespace == 'Subsite'){
+            $theme_class = "\\" . $this->subsiteInstance->namespace . "\Theme";
+            $theme_instance = new $theme_class($app->config['themes.assetManager'],$this->subsiteInstance);
+
+            if(is_subclass_of($theme_instance,'Subsite\Theme')){
+                // die(50);
                 $variables_scss = "";
                 $main_scss = '// Child theme main
                 @import "variables";
