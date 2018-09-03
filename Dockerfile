@@ -35,7 +35,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
 COPY src/index.php /var/www/html/index.php
 COPY src/protected /var/www/html/protected
 
-RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer/ &&
+RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer/ && \
     chown -R www-data:www-data /var/www/html/protected/vendor/ /var/www/.composer/
 
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
