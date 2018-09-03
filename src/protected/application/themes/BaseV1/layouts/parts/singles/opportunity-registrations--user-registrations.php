@@ -49,7 +49,7 @@
                     <td class="registration-status-col">
                         <?php $this->applyTemplateHook('user-registration-table--registration--status', 'begin', $reg_args); ?>
                         <?php if ($registration->status > 0): ?>
-                            <?php \MapasCulturais\i::_e("Enviada em");?> <?php echo $registration->sentTimestamp ? $registration->sentTimestamp->format('d/m/Y à\s H:i'): ''; ?>.
+                            <?php \MapasCulturais\i::_e("Enviada em");?> <?php echo $registration->sentTimestamp ? $registration->sentTimestamp->format(\MapasCulturais\i::__('d/m/Y à\s H:i')): ''; ?>.
                         <?php else: ?>
                             <?php \MapasCulturais\i::_e("Não enviada.");?><br>
                             <a class="btn btn-small btn-primary" href="<?php echo $registration->singleUrl ?>"><?php \MapasCulturais\i::_e("Editar e enviar");?></a>
