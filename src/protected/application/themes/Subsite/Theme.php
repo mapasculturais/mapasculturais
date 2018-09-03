@@ -70,7 +70,7 @@ class Theme extends BaseV1\Theme{
 
         $cache_id = $this->subsiteInstance->getSassCacheId();
 
-        if($app->isEnabled('subsite') && $app->msCache->contains($cache_id)){
+        if($app->isEnabled('subsite') && !$app->msCache->contains($cache_id)){
 
             $app->cache->deleteAll();
             if(!is_dir($this->subsitePath . '/assets/css/sass/')) {
@@ -82,11 +82,10 @@ class Theme extends BaseV1\Theme{
             $theme_instance = new $theme_class($app->config['themes.assetManager'],$this->subsiteInstance);
 
             if(is_subclass_of($theme_instance,'Subsite\Theme')){
-                // die(50);
                 $variables_scss = "";
                 $main_scss = '// Child theme main
-                @import "variables";
-                @import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
+                //@import "variables";
+                //@import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
                 ';
 
                 if($institute = $this->subsiteInstance->institute){
@@ -131,6 +130,12 @@ class Theme extends BaseV1\Theme{
                 $variables_scss .= "\$brand-primary:    " . ($this->subsiteInstance->cor_intro?           $this->subsiteInstance->cor_intro:           $app->config['themes.brand-intro'])       . " !default;\n";
                 $variables_scss .= "\$brand-developer:  " . ($this->subsiteInstance->cor_dev?             $this->subsiteInstance->cor_dev:             $app->config['themes.brand-developer'])   . " !default;\n";
 
+                $assets_path  = $app->config['namespaces'][$this->subsiteInstance->namespace] . "/assets/";
+                $assets_path_ = explode('src',$assets_path);
+                if(file_exists($assets_path.'css/sass/main.scss'))
+                    $main_scss .= "@import '../../../../../src" . $assets_path_[1] . "css/sass/main.scss';";
+                else
+                    $main_scss .= "@import '../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main';";
 
                 file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
                 file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);
