@@ -97,9 +97,11 @@ function printSubsiteFilter($property){
                 <edit-box id='set-seal-subsite' cancel-label="Cancelar" close-on-cancel='true'>
                     <div ng-if="seals.length > 0" class="widget">
                         <div class="selos clearfix">
-                            <div class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal(seal)">
+                            <div class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal(seal)">
                                 <img ng-src="{{avatarUrl(seal['@files:avatar.avatarSmall'].url)}}" width="48">
-                                <h3>{{seal.name}}</h3>
+                                <div class="descricao-do-selo">
+                                    <h1>{{seal.name}}</h1>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,7 +109,7 @@ function printSubsiteFilter($property){
                 <div class="widget">
                     <div class="selos clearfix">
                         <div ng-if="entity.verifiedSeals.length > 0" class="avatar-seal" ng-repeat="item in entity.verifiedSeals">
-                            <img ng-if="item" class="img-seal" ng-src="{{avatarUrl(allowedSeals[getArrIndexBySealId(item)]['@files:avatar.avatarSmall'].url)}}">
+                            <img ng-if="item" class="" ng-src="{{avatarUrl(allowedSeals[getArrIndexBySealId(item)]['@files:avatar.avatarSmall'].url)}}">
                             <div class="botoes"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="removeSeal(item)"></a></div>
                             <div ng-if="item" class="descricao-do-selo">
                                 <h1><a href="{{allowedSeals[getArrIndexBySealId(item)].singleUrl}}" class="ng-binding">{{allowedSeals[getArrIndexBySealId(item)].name}}</a></h1>

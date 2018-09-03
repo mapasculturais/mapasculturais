@@ -26,7 +26,76 @@ class Seal extends EntityController {
         Traits\ControllerArchive,
         Traits\ControllerAPI;
 
-	/**
+    /**
+     * @api {GET} /api/seal/describe Recuperar descrição da entidade Selo
+     * @apiUse APIdescribe
+     * @apiGroup SEAL
+     * @apiName GETdescribe
+     */
+    
+    /**
+     * @api {POST} /api/seal/index Criar selo.
+     * @apiUse APICreate
+     * @apiGroup SEAL
+     * @apiName POSTseal
+     */
+
+    /**
+     * @api {POST} /api/seal/index Criar selo.
+     * @apiUse APICreate
+     * @apiGroup SEAL
+     * @apiName POSTseal
+     */
+
+     /**
+     * @api {PATCH} /api/seal/single/:id Atualizar parcialmente um selo.
+     * @apiUse APIPatch
+     * @apiGroup SEAL
+     * @apiName PATCHseal
+     */
+
+    /**
+     * @api {PUT} /api/seal/single/:id Atualizar selo.
+     * @apiUse APIPut
+     * @apiGroup SEAL
+     * @apiName PUTseal
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/seal/single/:id Deletar selo.
+     * @apiUse APIDelete
+     * @apiGroup SEAL
+     * @apiName DELETEseal
+     */
+    
+     /**
+     * @api {all} /api/seal/getTypes Retornar tipos
+     * @apiUse getTypes
+     * @apiGroup SEAL
+     * @apiName getTypes
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "id": 0,
+     *   "name": "Infinita"
+     * }, {
+     *   "id": 1,
+     *   "name": "Dias"
+     * }, {
+     *   "id": 2,
+     *   "name": "Semanas"
+     * }]
+     * 
+     */
+
+    /**
+     * @api {all} /api/seal/getTypeGroups Retornar grupos
+     * @apiUse getTypeGroups
+     * @apiGroup SEAL
+     * @apiName getTypeGroups
+     */
+    
+    
+    /**
      * Creates a new Seal
      *
      * This action requires authentication and outputs the json with the new event or with an array of errors.
