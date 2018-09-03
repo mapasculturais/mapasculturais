@@ -81,7 +81,7 @@ a.editable-click:hover {
   cursor: pointer; }
 
 .selos-add .editable:after {
-  content: "";
+  content: " ";
   color: #666;
   margin-left: 0; }
 
@@ -107,7 +107,7 @@ a.editable-click:hover {
     color: $gray-darker;
 }
 
-/* balãozinho*/
+/* balaozinho*/
 .tip-yellowsimple {
     z-index: $z-index-tip;
     padding: $padding-base;
@@ -131,7 +131,7 @@ a.editable-click:hover {
 .tip-yellowsimple .tip-arrow-top {
     margin-top: -10px;
 }
-/*campos de formulário*/
+/*campos de formulario*/
 
 .editable-buttons {
     display:block;
@@ -170,7 +170,7 @@ div.ficha-spcultura .editable-buttons-bottom {
 .label.space-search {
     color: $brand-accent;
     background-color: transparent;
-}/*verficar se está sendo usado*/
+}/*verficar se esta sendo usado*/
 .select2-input {
     min-width: 150px;
 }
