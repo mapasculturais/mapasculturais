@@ -534,7 +534,16 @@ class ApiQuery {
         
         $this->logDql($dql, __FUNCTION__, $params);
         
-        $result = $q->getResult(Query::HYDRATE_ARRAY);
+        $result = [];
+        $ids = [];
+        
+        // removes duplicated values
+        foreach($q->getResult(Query::HYDRATE_ARRAY) as $r){
+            if(!isset($ids[$r['id']])){
+                $ids[$r['id']] = true;
+                $result[] = $r;
+            }
+        }
         
         $this->processEntities($result);
 
