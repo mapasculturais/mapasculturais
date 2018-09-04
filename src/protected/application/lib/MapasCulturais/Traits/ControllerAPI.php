@@ -570,6 +570,8 @@ trait ControllerAPI{
             }
             $this->apiAddHeaderMetadata($api_params, $result, $count);
         }
+
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result" , [&$api_params,  &$result]);
         
         return $result;
     }
