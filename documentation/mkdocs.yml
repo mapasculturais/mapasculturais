@@ -10,13 +10,13 @@ pages:
     - 'Atualizando': 'mc_deploy_update.md'
     - 'Migração de servidor': 'mc_deploy_migration.md'
 - Configurações:
-    - 'API': 'mc_config_api.md'
     - 'Autenticação': 'mc_config_authentication.md'
     - 'Plugins': 'mc_config_plugins.md'
     - 'Saas': 'mc_config_saas.md'
     - 'Selos': 'mc_config_seal.md'
 - Desenvolvimento:
     - 'Guia do Desenvolvedor': 'mc_developer_guide.md'
+    - 'API': 'mc_config_api.md'
     - 'Como contribuir': 'mc_developer_contribute.md'
     - 'Procedimento de Releases': 'mc_developer_releases.md'
     - 'Docker': 'mc_developer_docker_enviroment.md'
