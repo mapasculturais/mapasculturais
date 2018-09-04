@@ -136,6 +136,9 @@ class Theme extends BaseV1\Theme{
                 else
                     $main_scss .= "@import '../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main';";
 
+                if(file_exists($assets_path.'css/sass/_variables.scss'))
+                    $variables_scss .= "@import '../../../../../src" . $assets_path_[1] . "css/sass/_variables.scss';\n";
+
                 file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
                 file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);
 
