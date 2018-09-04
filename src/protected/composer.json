@@ -24,7 +24,7 @@
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
         "psy/psysh": "@stable",
-        "sinergi/browser-detector": "*"
+        "sinergi/browser-detector": "6.1.2"
     },
     "require-dev": {
     },
