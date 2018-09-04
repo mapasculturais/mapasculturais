@@ -54,7 +54,7 @@
                 }
             },
             enabled: {
-                agent: true,
+                agent: false,
                 space: false,
                 event: false
             }
