@@ -84,8 +84,7 @@ class Theme extends BaseV1\Theme{
             if(is_subclass_of($theme_instance,'Subsite\Theme')){
                 $variables_scss = "";
                 $main_scss = '// Child theme main
-                //@import "variables";
-                //@import "../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main";
+                @import "variables";
                 ';
 
                 if($institute = $this->subsiteInstance->institute){
