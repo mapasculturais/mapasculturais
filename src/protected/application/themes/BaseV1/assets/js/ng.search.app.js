@@ -325,7 +325,7 @@
         $scope.defaultTab = function(){
             for(var i = 0; entities.length - 1; i++){
                 if ($scope.data.global.enabled[entities[i]]){
-                    tabClick(entities[i]);
+                    $scope.tabClick(entities[i]);
                     return;
                 }
             }
