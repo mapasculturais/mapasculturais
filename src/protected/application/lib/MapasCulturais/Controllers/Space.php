@@ -25,6 +25,89 @@ class Space extends EntityController {
         Traits\ControllerAPINested,
         Traits\ControllerOpportunities;
 
+    /**
+     * @api {GET} /api/space/describe Recuperar descrição da entidade Espaço
+     * @apiUse APIdescribe
+     * @apiGroup SPACE
+     * @apiName GETdescribe
+     */
+
+    /**
+     * @api {POST} /api/space/index Criar espaço.
+     * @apiUse APICreate
+     * @apiGroup SPACE
+     * @apiName POSTspace
+     */
+
+     /**
+
+     * @api {PATCH} /api/space/single/:id Atualizar parcialmente um espaço.
+     * @apiUse APIPatch
+     * @apiGroup SPACE
+     * @apiName PATCHspace
+     */
+
+    /**
+     * @api {PUT} /api/space/single/:id Atualizar espaço.
+     * @apiUse APIPut
+     * @apiGroup SPACE
+     * @apiName PUTspace
+     */
+
+     /**
+     * @api {PUT|PATCH} /api/space/single/:id Deletar espaço.
+     * @apiUse APIDelete
+     * @apiGroup SPACE
+     * @apiName DELETEspace
+     */
+    
+    /**
+     * @api {all} /api/space/getTypes Retornar tipos
+     * @apiUse getTypes
+     * @apiGroup SPACE
+     * @apiName getTypes
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "id": 10,
+     *   "name": "Cine itinerante"
+     * }, {
+     *   "id": 11,
+     *   "name": "Cineclube"
+     * }, {
+     *   "id": 12,
+     *   "name": "Drive-in"
+     * }]
+     * 
+     */
+
+    /**
+     * @api {all} /api/space/getTypeGroups Retornar grupos
+     * @apiUse getTypeGroups
+     * @apiGroup SPACE
+     * @apiName getTypeGroups
+     * @apiSuccessExample {json} Success-Response:
+     * [{
+     *   "name": "Espaços de Exibição de Filmes",
+     *   "minId": 10,
+     *   "maxId": 19,
+     *   "types": [{
+     *           "id": 10,
+     *           "name": "Cine itinerante"
+     *       },{
+     *           "id": 11,
+     *           "name": "Cineclube"
+     *       },{
+     *           "id": 12,
+     *           "name": "Drive-in"
+     *       },{
+     *           "id": 13,
+     *           "name": "Espaço Público Para Projeção de Filmes"
+     *       },{
+     *           "id": 14,
+     *           "name": "Sala de cinema"
+     *       }]
+     * }]
+     */
 
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
@@ -37,6 +120,22 @@ class Space extends EntityController {
         parent::GET_create();
     }
 
+    /**
+     * @api {all} /api/space/findByEvents Pesquisar espaços por evento
+     * @apiDescription Realiza a pesquisa de espaços por evento
+     * @apiGroup SPACE
+     * @apiName findByEvents
+     * @apiParam {date} [@from=HOJE] Data inicial do período
+     * @apiParam {date} [@to=HOJE] Data final do período
+     * @apiParam {String} [@select] usado para selecionar as propriedades da entidade que serão retornadas pela api.
+     *                            Você pode retornar propriedades de entidades relacionadas. ex:( @select=id,name,
+     *                            owner.name,owner.singleUrl)
+     * @apiParam {--} _geoLocation Argumento com geolocalização
+     * @apiParam {--} [@count] Faz com que seja retornado a quantidade de registros
+     *
+     * @apiExample {curl} Exemplo de utilização:
+     *   curl -i http://localhost/api/space/findByEvents?@from=2016-05-01&@to=2016-05-31&@select=*
+     */
     function API_findByEvents(){
         $eventController = App::i()->controller('event');
         $query_data = $this->getData;
