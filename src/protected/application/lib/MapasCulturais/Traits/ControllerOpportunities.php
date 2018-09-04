@@ -7,6 +7,12 @@ use MapasCulturais\i;
 
 trait ControllerOpportunities {
 
+    /**
+     * @apiDefine apiDefine
+     * @apiDescription criar um nova oportunidade para uma entidade.
+     * @apiParam {type} [evaluationMethod] Método utilizado na avalização da oportunidade
+     * @apiParam {int} [id] identificador da entidade.
+     */
     function GET_createOpportunity() {
         $app = App::i();
         

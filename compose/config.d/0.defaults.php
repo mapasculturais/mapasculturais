@@ -42,7 +42,7 @@ return [
 
     // APP MODE
     'app.mode' => env('APP_MODE', 'production'),
-    'doctrine.isDev' => env('DOCRINE_ISDEV', false),
+    'doctrine.isDev' => env('DOCTRINE_ISDEV', false),
     'slim.debug' => env('SLIM_DEBUG', false),
 
     // DATABASE
