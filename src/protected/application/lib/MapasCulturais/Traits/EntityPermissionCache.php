@@ -102,7 +102,7 @@ trait EntityPermissionCache {
                 
         $this->__enabled = false;
         
-        $alredy_created_users = [];
+        $already_created_users = [];
         foreach ($users as $user) {
             if($app->permissionCacheUsersIds){
                 if(!in_array($user->id, $app->permissionCacheUsersIds)){
@@ -117,17 +117,17 @@ trait EntityPermissionCache {
                 continue;
             }
             
-            if(isset($alredy_created_users["$user"])){
+            if(isset($already_created_users["$user"])){
                 continue;
             } else {
-                $alredy_created_users["$user"] = true;
+                $already_created_users["$user"] = true;
             }
             
             foreach ($permissions as $permission) {
                 if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity() && !method_exists($this, 'canUserView')) {
                     continue;
                 }
-                if($this->canUser($permission, $user)){
+                if (!is_null($user) && $this->canUser($permission, $user)) {
 //                    $app->log->debug("INSERT $this $user $permission");
                     $conn->insert('pcache', [
                         'user_id' => $user->id,
@@ -141,7 +141,6 @@ trait EntityPermissionCache {
         }
         
         $this->__enabled = true;
-        
     }
     
     function deletePermissionsCache($user_id = null){

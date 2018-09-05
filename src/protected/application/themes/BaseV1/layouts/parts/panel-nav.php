@@ -65,6 +65,12 @@
             <?php $this->applyTemplateHook('nav.panel.userManagement','after'); ?>
         <?php endif; ?>
 
+        <?php if($app->user->is('admin')): ?>
+            <?php $this->applyTemplateHook('nav.panel.adminManagement','before'); ?>
+            <li><a <?php if($this->template == 'panel/user-management') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement')?>?admin"><span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Administradores");?></a></li>
+            <?php $this->applyTemplateHook('nav.panel.adminManagement','after'); ?>
+        <?php endif; ?>
+
         <?php $app->applyHookBoundTo($this, 'panel.menu:after') ?>
     </ul>
 </nav>
