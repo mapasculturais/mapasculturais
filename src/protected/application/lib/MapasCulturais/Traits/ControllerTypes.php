@@ -37,12 +37,22 @@ trait ControllerTypes{
     /**
      * Prints a JSON with the registered entity types for the entity related with this controller.
      */
+
+    /**
+     * @apiDefine getTypes
+     * @apiDescription Retorna os tipos da entidade.
+     */
     public function API_getTypes(){
         $this->apiArrayResponse($this->getTypes());
     }
 
     /**
      * Prints a JSON with the registered entity type groups for the entity related with this controller.
+     */
+
+     /**
+     * @apiDefine getTypeGroups
+     * @apiDescription Retorna os tipos de grupos da entidade.
      */
     public function API_getTypeGroups(){
         $this->apiArrayResponse($this->getTypeGroups());
