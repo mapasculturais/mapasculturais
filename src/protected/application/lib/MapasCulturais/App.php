@@ -872,7 +872,12 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('subsite',$file_groups['favicon']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
 
-        $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
+        if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
+            $image_transformations = include $theme_image_transformations;
+        } else {
+            $image_transformations = include APPLICATION_PATH.'/conf/image-transformations.php';
+        }
+
         foreach($image_transformations as $name => $transformation)
             $this->registerImageTransformation($name, $transformation);
 
