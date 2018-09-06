@@ -81,7 +81,7 @@ class Theme extends BaseV1\Theme{
             $theme_class = "\\" . $this->subsiteInstance->namespace . "\Theme";
             $theme_instance = new $theme_class($app->config['themes.assetManager'],$this->subsiteInstance);
 
-            if(is_subclass_of($theme_instance,'Subsite\Theme')){
+            if(is_subclass_of($theme_instance,'Subsite\Theme') || $this->subsiteInstance->namespace == 'Subsite'){
                 $variables_scss = "";
                 $main_scss = '// Child theme main
                 @import "variables";
