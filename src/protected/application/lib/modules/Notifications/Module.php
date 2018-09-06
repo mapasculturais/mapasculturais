@@ -90,7 +90,7 @@ class Module extends \MapasCulturais\Module{
                         $owner_entity_link = "<a href=\"{$owner_entity->singleUrl}\">{$owner_entity->name}</a>";
                         
                         $subject = i::__("Requisição para avaliar oportunidade");
-                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s. $s"), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link, $urlDestinationPanel_link);
+                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s. %s"), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link, $urlDestinationPanel_link);
                         $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
                         
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
