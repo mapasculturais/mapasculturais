@@ -150,7 +150,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                                 continue;
                             }
 
-                            $val = isset($evaluation->evaluationData->{$crit->id}) ? $evaluation->evaluationData->{$crit->id} : 0;
+                            $val = isset($evaluation->evaluationData->{$crit->id}) ? intval($evaluation->evaluationData->{$crit->id}) : 0;
 
                             $rersult += $val * $crit->weight;
 
@@ -218,8 +218,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
         $app = App::i();
+        $status = \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED;
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
+        $committee = $registration->opportunity->getEvaluationCommittee();
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = 0;
         foreach ($evaluations as $eval){
