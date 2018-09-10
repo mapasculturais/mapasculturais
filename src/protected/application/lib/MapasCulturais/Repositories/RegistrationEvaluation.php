@@ -57,4 +57,29 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
 
         return $q->getResult();
     }
+
+    /**
+     *
+     * @param \MapasCulturais\Entities\Registration $registration
+     * @param array $users
+     * @param int $status
+     * @return \MapasCulturais\Entities\Registration[]
+     */
+    function findByRegistrationAndUsersAndStatus(\MapasCulturais\Entities\Registration $registration, $users, $status){
+
+        $dql = "  SELECT e 
+                  FROM MapasCulturais\Entities\RegistrationEvaluation e 
+                  WHERE e.registration = :registration AND e.status = :status AND e.user IN (:uids)";
+
+        $params = [
+            'registration' => $registration,
+            'status' => $status,
+            'uids' => $users
+        ];
+        $query = $this->_em->createQuery($dql);
+
+        $query->setParameters($params);
+
+        return $query->getResult();
+    }
 }
