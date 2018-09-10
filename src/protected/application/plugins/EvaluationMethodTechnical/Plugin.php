@@ -218,7 +218,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
         $app = App::i();
-        $status = \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED;
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
 
         $committee = $registration->opportunity->getEvaluationCommittee();
         $users = [];
