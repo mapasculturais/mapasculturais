@@ -26,15 +26,15 @@
         <td><?php echo $project->subsite?$project->subsite->name:'';?></td>
         <td class="fit">
           <div class="entity-actions">
-              <?php if($space->status === Space::STATUS_ENABLED): ?>
+              <?php if($project->status === Project::STATUS_ENABLED): ?>
                   <a class="btn btn-small btn-danger" href="<?php echo $project->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
                   <a class="btn btn-small btn-success" href="<?php echo $project->archiveUrl; ?>"><?php \MapasCulturais\i::_e("arquivar");?></a>
 
-              <?php elseif ($space->status === Space::STATUS_DRAFT): ?>
+              <?php elseif ($project->status === Project::STATUS_DRAFT): ?>
                   <a class="btn btn-small btn-warning" href="<?php echo $project->publishUrl; ?>"><?php \MapasCulturais\i::_e("publicar");?></a>
                   <a class="btn btn-small btn-danger" href="<?php echo $project->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
 
-              <?php elseif ($space->status === Space::STATUS_ARCHIVED): ?>
+              <?php elseif ($project->status === Project::STATUS_ARCHIVED): ?>
                   <a class="btn btn-small btn-success" href="<?php echo $project->unarchiveUrl; ?>"><?php \MapasCulturais\i::_e("desarquivar");?></a>
 
               <?php else: ?>

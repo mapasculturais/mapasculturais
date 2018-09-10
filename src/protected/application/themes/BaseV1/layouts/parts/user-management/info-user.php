@@ -57,6 +57,7 @@
       <li><a href="#espacos"><?php \MapasCulturais\i::_e("Espaços");?></a></li>
       <li><a href="#eventos"><?php \MapasCulturais\i::_e("Eventos");?></a></li>
       <li><a href="#projetos"><?php \MapasCulturais\i::_e("Projetos");?></a></li>
+      <li><a href="#oportunidades"><?php \MapasCulturais\i::_e("Oportunidades");?></a></li>
       <li><a href="#permissoes"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
       <li><a href="#atividade"><?php \MapasCulturais\i::_e("Atividades");?></a></li>
     </ul>
@@ -177,7 +178,32 @@
         <?php $this->part('user-management/user-info/info-projects', array('projects' => $user->archivedProjects)); ?>
       </div>
     </div>
-    
+
+    <div id="oportunidades" class="aba-content">
+      <div class="tab-table">
+        <button class="tablinks active" data-entity="oportunidades" data-tab="oportunidades-ativos">    <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledOpportunities); ?>)  </button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-concedidos"><?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlOpportunities);?>)</button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-rascunhos"> <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftOpportunities); ?>)    </button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-lixeira">   <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedOpportunities); ?>)  </button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-arquivo">   <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($user->archivedOpportunities); ?>) </button>
+      </div>
+
+      <div id="oportunidades-ativos" class="tab-content-table" style="display: block;">
+        <?php $this->part('user-management/user-info/info-opportunities', array('opportunities' => $user->enabledOpportunities)); ?>
+      </div>
+      <div id="oportunidades-concedidos" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-opportunities', array('opportunities' => $user->hasControlOpportunities)); ?>
+      </div>
+      <div id="oportunidades-rascunhos" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-opportunities', array('opportunities' => $user->draftOpportunities)); ?>
+      </div>
+      <div id="oportunidades-lixeira" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-opportunities', array('opportunities' => $user->trashedOpportunities)); ?>
+      </div>
+      <div id="oportunidades-arquivo" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-opportunities', array('opportunities' => $user->archivedOpportunities)); ?>
+      </div>
+    </div>
   
     <div id="permissoes" class="aba-content">
       <div>
