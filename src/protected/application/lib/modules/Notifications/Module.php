@@ -96,20 +96,22 @@ class Module extends \MapasCulturais\Module{
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
                         $project = $origin->project;
                         $opportunity = $origin->opportunity;
+
                         if ($project) {
                             $subject = i::__("Requisição para relacionar agente em uma inscrição");
-                            $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                            $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->getNumber(), "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
                             $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
-                        }else if ($opportunity){
+                        } else if ($opportunity){
                             $subject = i::__("Requisição para relacionar agente em uma inscrição");
-                            $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>");
-                            $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s na oportunidade %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>");
+                            $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, $origin->getNumber(), "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>");
+                            $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no oportunidade %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>");
                         } else {
                             $subject = i::__("Requisição para relacionar agente");
                             $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
                             $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                         }
-                    }else{
+
+                    } else {
                         $subject = i::__("Requisição para relacionar agente");
                         /* Translators: "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}." */
                         $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
