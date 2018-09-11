@@ -150,9 +150,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                                 continue;
                             }
 
-                            $val = isset($evaluation->evaluationData->{$crit->id}) ? intval($evaluation->evaluationData->{$crit->id}) : 0;
-
-                            $rersult += $val * $crit->weight;
+                            $val =  isset($evaluation->evaluationData->{$crit->id}) ? (float) $evaluation->evaluationData->{$crit->id} : 0;
+                            $weight = (float) $crit->weight;
+                            $rersult += $val * $weight;
 
                         }
 
