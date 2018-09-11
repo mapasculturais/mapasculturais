@@ -218,8 +218,17 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
         $app = App::i();
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
+        $committee = $registration->opportunity->getEvaluationCommittee();
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = 0;
         foreach ($evaluations as $eval){
