@@ -108,6 +108,22 @@
 					}
 				}
 			}
+			&.draft {
+				border-left: 3px solid $brand-draft;
+				background-color: #b5dae6;
+				&:hover {
+					background-color: lighten(#b5dae6, 5%);
+				}
+				td {
+					border-bottom: 1px solid #fff;
+				}
+				.dropdown {
+					background-color: $brand-draft;
+					.placeholder {
+						color: #fff;
+					}
+				}
+			}
 			&.notapproved {
 				border-left: 3px solid $brand-danger;
 				background-color: #fcc;
@@ -251,7 +267,7 @@
 		float: right;
 	}
 }
-//** Table that shows on opportunities tab "Inscrições when user is logged in and has already started at least one registration.
+//** Table that shows on opportunities tab "Inscricoes when user is logged in and has already started at least one registration.
 .my-registrations {
 	@extend .registrations-table;
 	.registration-agents-col {
@@ -292,5 +308,5 @@
 	background-color: #000;
 }
 .status-draft {
-	background-color: $gray-light;
+	background-color: $brand-draft;
 }

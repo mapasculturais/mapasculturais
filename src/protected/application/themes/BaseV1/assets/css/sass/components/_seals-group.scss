@@ -23,9 +23,11 @@
         &.modal {
             display: inline-block;
             margin-right: 10px;
-            width: 22%;
             text-align: center;
             vertical-align: top;
+            margin:10px;
+            left:0;
+            top:0;
             &:nth-child(4n) {
                 margin-right: 0;
             }
@@ -92,4 +94,7 @@
         margin-bottom: 0;
         padding-bottom: 0;
     }
+}
+.selos-relacionados{
+    margin-top: 10px;
 }
