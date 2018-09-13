@@ -1,0 +1,10 @@
+{
+  "name": "Mapas Culturais",
+  "version": "4.0.0",
+  "description": "Documentação da API e dos HOOK's",
+  "title": "Mapas Culturais API|HOOK",  
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

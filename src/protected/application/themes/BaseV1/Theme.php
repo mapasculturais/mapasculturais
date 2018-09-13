@@ -1286,6 +1286,10 @@ class Theme extends MapasCulturais\Theme {
 
         });
 
+        $app->hook('template(event.<<create|edit|single>>.tab-about-service):before', function(){
+            $this->part('event-attendance', ['entity' => $this->data->entity]);
+        });
+
     }
 
 
@@ -1387,6 +1391,14 @@ class Theme extends MapasCulturais\Theme {
                 'unserialize' => function($val){ return json_decode($val); },
             ]);
         });
+
+        $this->registerEventMetadata('event_attendance', array(
+            'label' => 'Público presente',
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
+            ]
+        ));
     }
 
     function head() {
@@ -1843,6 +1855,8 @@ class Theme extends MapasCulturais\Theme {
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
             'evaluated' => i::__('Avaliada'),
+            'notEvaluated' => i::__('Não Avaliada'),
+            'all' => i::__('Todas'),
             'sent' => i::__('Enviada'),
             'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
             'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
@@ -2356,12 +2370,16 @@ class Theme extends MapasCulturais\Theme {
     function addOpportunitySelectFieldsToJs(Entities\Opportunity $entity){
         $this->jsObject['opportunitySelectFields'] = isset($this->jsObject['opportunitySelectFields']) ? $this->jsObject['opportunitySelectFields'] : [];
 
-        foreach($entity->registrationFieldConfigurations as $field){
-            if($field->fieldType == 'select'){
-                if(!in_array($field, $this->jsObject['opportunitySelectFields'])){
-                    $this->jsObject['opportunitySelectFields'][] = $field;
+        $_opportunity = $entity;
+        while($_opportunity !== null){
+            foreach($_opportunity->registrationFieldConfigurations as $field){
+                if($field->fieldType == 'select'){
+                    if(!in_array($field, $this->jsObject['opportunitySelectFields'])){
+                        $this->jsObject['opportunitySelectFields'][] = $field;
+                    }
                 }
             }
+            $_opportunity = $_opportunity->parent;
         }
     }
 

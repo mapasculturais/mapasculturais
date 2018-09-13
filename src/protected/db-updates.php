@@ -1057,8 +1057,10 @@ return [
         __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
 		
 		__exec("SELECT setval('evaluation_method_configuration_id_seq', (select max(id) from evaluation_method_configuration), true);");
+    },
 
-
+    'change opportunity field agent_id not null' => function() use ($conn) {
+        $conn->executeQuery(" ALTER TABLE opportunity ALTER COLUMN agent_id SET NOT NULL ");
     },
 
 ] + $updates ;
