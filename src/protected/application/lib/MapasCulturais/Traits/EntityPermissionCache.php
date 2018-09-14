@@ -127,15 +127,16 @@ trait EntityPermissionCache {
                 if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity() && !method_exists($this, 'canUserView')) {
                     continue;
                 }
-                if (!is_null($user) && $this->canUser($permission, $user)) {
-//                    $app->log->debug("INSERT $this $user $permission");
-                    $conn->insert('pcache', [
-                        'user_id' => $user->id,
-                        'action' => $permission,
-                        'object_type' => $class_name,
-                        'object_id' => $this->id,
-                        'create_timestamp' => 'now()'
-                    ]);
+                if (!empty($user)) {
+                    if ($this->canUser($permission, $user)) {
+                        $conn->insert('pcache', [
+                            'user_id' => $user->id,
+                            'action' => $permission,
+                            'object_type' => $class_name,
+                            'object_id' => $this->id,
+                            'create_timestamp' => 'now()'
+                        ]);
+                    }
                 }
             }
         }

@@ -30,7 +30,7 @@
                         <?php $this->applyTemplateHook('user-registration-table--registration--agents', 'begin', $reg_args); ?>
                         <p>
                             <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br>
-                            <?php echo $registration->owner->name ?>
+                            <?php echo  htmlentities($registration->owner->name); ?>
                         </p>
                         <?php
                         foreach ($app->getRegisteredRegistrationAgentRelations() as $def):
@@ -40,7 +40,7 @@
                             <?php if ($agents = $registration->getRelatedAgents($def->agentRelationGroupName)): ?>
                                 <p>
                                     <span class="label"><?php echo $def->label ?></span><br>
-                                    <?php echo $agents[0]->name ?>
+                                    <?php echo htmlentities($agents[0]->name); ?>
                                 </p>
                             <?php endif; ?>
                         <?php endforeach; ?>
