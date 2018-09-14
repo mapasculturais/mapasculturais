@@ -2701,16 +2701,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     /*
-     @TODO: no lugar deste array utilizar $app->controller('agent')->entityClassName;
-    */
-    public $entityClassesShortcuts = [
-        'agent' => 'MapasCulturais\Entities\Agent',
-        'space' => 'MapasCulturais\Entities\Space',
-        'project' => 'MapasCulturais\Entities\Project',
-        'event' => 'MapasCulturais\Entities\Event'
-    ];
-    
-    /*
      @TODO: no lugar deste array utilizar o método Entity::getEntityTypeLabel (tem outro TODO para fazer este método estático)
      */
     public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto', 'event' => 'Evento'];
@@ -2793,13 +2783,13 @@ class Theme extends MapasCulturais\Theme {
                         if ($tipo === "select" && is_array($meta->config)) {
                             $this->renderEntityDropdown($_title, $_key, $meta->config['options']);
                         } else if ($tipo === "string" || $tipo === "int") {
-                            $this->renderTitle($_title);
+                            $this->part("modal/title", ['title' => $_title]);
                             echo "<input type='text' name='$_key' placeholder='Campo obrigatório' required>";
                         } else if ($tipo === "text") {
-                            $this->renderTitle($_title);
+                            $this->part("modal/title", ['title' => $_title]);
                             echo "<textarea name='$_key' maxlength='400'></textarea><br>";
                         } else if ($tipo === "multiselect" && is_array($meta->config)) {
-                            $this->renderTitle($_title);
+                            $this->part("modal/title", ['title' => $_title]);;
                             echo "<br>";
                             foreach ($meta->config['options'] as $option) {
                                 echo "<label for='$_key'> $option </label>";
@@ -2820,7 +2810,8 @@ class Theme extends MapasCulturais\Theme {
         if (empty($title) || empty($attr) || (count($options) <= 0))
             return false;
 
-        $this->renderTitle($title);
+        $this->part("modal/title", ['title' => $title]);
+
         $dropdown = "<select name='$attr'>";
         foreach ($options as $option)
             $dropdown .= "<option value='$option'> $option </option>";
@@ -2860,28 +2851,13 @@ class Theme extends MapasCulturais\Theme {
     }
 
     /*
-     @TODO: colocar no template part
-    */
-    private function modalFooter() {
-        $msg = i::__('Todos os campos são obrigatórios.');
-        echo "<p class='entity-modal-footer'> <span class='modal-required'>*</span> $msg </p>";
-    }
-
-    /*
-     @TODO: colocar no template part
-    */
-    private function renderTitle($title) {
-        echo "<label> $title </label> <span class='modal-required'>*</span>";
-    }
-
-    /*
      @TODO: juntar com a função renderEntityRequiredMetadata (no mesmo template part)
      */
     private function renderFieldMarkUp($field, $entity, $modal_id) {
         $__known_types = [ 'name', 'shortDescription', 'type'];
         if (in_array($field, $__known_types)) {
             $title = $this->entityRequiredFields()[$field];
-            $this->renderTitle($title);
+            $this->part("modal/title", ['title' => $title]);
 
             switch ($field) {
                 case "name":
@@ -2903,7 +2879,8 @@ class Theme extends MapasCulturais\Theme {
      @TODO: usar template part
     */
     public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "", $use_modal = true) {
-        $modal_entity = $this->entityClassesShortcuts[$entity];
+        $app = App::i();
+        $modal_entity = $app->controller($entity)->entityClassName;
         $current_entity = $this->controller->entityClassName;
 
         if ("edit" != $this->controller->action || ($modal_entity != $current_entity) ) {
@@ -2933,7 +2910,7 @@ class Theme extends MapasCulturais\Theme {
      */
     public function modalCreateEntity($entity, $_id, $use_modal = true) {
         $app = App::i();
-        $_entity_class = $this->entityClassesShortcuts[$entity];
+        $_entity_class = $app->controller($entity)->entityClassName;
         $_new_entity = new $_entity_class();
 
         $_required_keys = array_keys($_new_entity->getValidations());
@@ -2975,7 +2952,7 @@ class Theme extends MapasCulturais\Theme {
 
                 <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
 
-                <?php $this->modalFooter(); ?>
+                <?php $this->part('modal/footer', ['entity' => $this->data->entity]); ?>
 
                 <?php $app->applyHook('mapasculturais.add_entity_modal.footer'); ?>
 
