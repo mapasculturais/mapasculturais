@@ -106,6 +106,9 @@ MapasCulturais.EventOccurrenceManager = {
                     var new_space = response.id;
                     var space = response.name;
                     if (new_space && space) {
+                        /*
+                         @TODO: usar string localizada
+                        */
                         MapasCulturais.Messages.success("Espaço criado com sucesso!");
 
                         $('.js-search-occurrence-space').data('value', new_space).text(space);

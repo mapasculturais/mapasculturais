@@ -2668,6 +2668,10 @@ class Theme extends MapasCulturais\Theme {
         return $link_attributes;
     }
 
+    /*
+     @TODO: substituir esta função por uma genérica que utilize o método Entity::getPropertiesMetadata() 
+            para deduzir o título e o tipo de campo
+     */
     // TODO: ver se eh viavel utilizar esta funcao em todo local que hoje usa esse markup
     public function renderShortDescriptionMarkUp() {
         $html = '<span class="js-editable" data-edit="shortDescription"';
@@ -2678,6 +2682,9 @@ class Theme extends MapasCulturais\Theme {
         return $html;
     }
 
+    /*
+     @TODO: se eu entendi bem, esta função só é usada para gerar a url do subsite. Melhor colocar na classe da entidade Subsite
+    */
     public function getEntityURL($url) {
         if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
             return $url;
@@ -2693,13 +2700,19 @@ class Theme extends MapasCulturais\Theme {
         return $req->getScheme() . "://";
     }
 
+    /*
+     @TODO: no lugar deste array utilizar $app->controller('agent')->entityClassName;
+    */
     public $entityClassesShortcuts = [
         'agent' => 'MapasCulturais\Entities\Agent',
         'space' => 'MapasCulturais\Entities\Space',
         'project' => 'MapasCulturais\Entities\Project',
         'event' => 'MapasCulturais\Entities\Event'
     ];
-
+    
+    /*
+     @TODO: no lugar deste array utilizar o método Entity::getEntityTypeLabel (tem outro TODO para fazer este método estático)
+     */
     public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto', 'event' => 'Evento'];
 
     public function getShortDescription() {
@@ -2709,6 +2722,9 @@ class Theme extends MapasCulturais\Theme {
         return $markup;
     }
 
+    /*
+     @TODO: utilizar o método Entity::getPropertiesMetadata() para achar os campos obrigatórios
+     */
     private function entityRequiredFields()  {
         return [
             'name' => i::__('Nome'),
@@ -2718,6 +2734,9 @@ class Theme extends MapasCulturais\Theme {
         ];
     }
 
+    /*
+     @TODO: utilizar o $app->getRegisteredTaxonomies($entity) e iterar em cima do array retornado
+    */
     private function getEntityAreas($entity, $type = "") {
         if ($entity instanceof \MapasCulturais\Entity) {
             $_entities_areas = ["agent", "space"];
@@ -2748,6 +2767,11 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    /*
+     @TODO: utilizar o método entityRequiredFields definido acima e utilizar um template-part.
+            template part para cada tipo de campo??
+            acho que renomear a função pois serve para campos da entidade e metadado
+     */ 
     private function renderEntityRequiredMetadata($entity) {
         if ($entity instanceof \MapasCulturais\Entity) {
             $app = App::i();
@@ -2789,6 +2813,9 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    /*
+     @TODO: colocar no template part
+     */ 
     private function renderEntityDropdown($title, $attr, $options) {
         if (empty($title) || empty($attr) || (count($options) <= 0))
             return false;
@@ -2802,6 +2829,9 @@ class Theme extends MapasCulturais\Theme {
         echo $dropdown;
     }
 
+    /*
+     @TODO: colocat no template part
+     */
     private function getEntityType($entity,$modal_id) {
          $app = App::i();
          $_types = $app->getRegisteredEntityTypes($entity);
@@ -2820,21 +2850,33 @@ class Theme extends MapasCulturais\Theme {
          }
     }
 
+    /*
+     @TODO: usar o método Theme::applyTemplateHook no template part
+    */
     private function addTypologiesHook($entity, $modal_id) {
         if ("agente" == strtolower($entity->getEntityTypeLabel())) {
             App::i()->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['entity'=> $entity, 'modal_id' => $modal_id]);
         }
     }
 
+    /*
+     @TODO: colocar no template part
+    */
     private function modalFooter() {
         $msg = i::__('Todos os campos são obrigatórios.');
         echo "<p class='entity-modal-footer'> <span class='modal-required'>*</span> $msg </p>";
     }
 
+    /*
+     @TODO: colocar no template part
+    */
     private function renderTitle($title) {
         echo "<label> $title </label> <span class='modal-required'>*</span>";
     }
 
+    /*
+     @TODO: juntar com a função renderEntityRequiredMetadata (no mesmo template part)
+     */
     private function renderFieldMarkUp($field, $entity, $modal_id) {
         $__known_types = [ 'name', 'shortDescription', 'type'];
         if (in_array($field, $__known_types)) {
@@ -2857,6 +2899,9 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    /*
+     @TODO: usar template part
+    */
     public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "", $use_modal = true) {
         $modal_entity = $this->entityClassesShortcuts[$entity];
         $current_entity = $this->controller->entityClassName;
@@ -2883,6 +2928,9 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+    /* 
+     @TODO: usar template part e hooks com applyTemplateHook
+     */
     public function modalCreateEntity($entity, $_id, $use_modal = true) {
         $app = App::i();
         $_entity_class = $this->entityClassesShortcuts[$entity];
@@ -2956,6 +3004,9 @@ class Theme extends MapasCulturais\Theme {
         return $_name;
     }
 
+    /*
+     @TODO: usar template part e hooks applyTemplateHook
+    */
     private function getPreFormContent($appInstance, $use_modal = true, $modal_id) {
         $html = "<hr />";
 
@@ -2971,6 +3022,9 @@ class Theme extends MapasCulturais\Theme {
         echo $html;
     }
 
+    /*
+     @TODO: usar template part e hooks applyTemplateHook
+    */
     private function renderFeedback($entity, $label) {
         $success = \MapasCulturais\i::esc_attr__('Entidade criada com sucesso!');
         $avatar = "/img/avatar--$entity.png";

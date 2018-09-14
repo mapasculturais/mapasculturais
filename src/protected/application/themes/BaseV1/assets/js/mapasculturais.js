@@ -32,6 +32,9 @@ $(function(){
             success: function(r) {
                 if (r.id) {
                     var name = r.name;
+                    /*
+                     @TODO: usar string localizada
+                    */
                     var msg = name + " criado com sucesso!";
                     MapasCulturais.Messages.success(msg);
 
