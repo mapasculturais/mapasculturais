@@ -2805,36 +2805,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     /*
-     @TODO: colocat no template part
-     */
-//    private function getEntityType($entity,$modal_id) {
-//         $app = App::i();
-//         $_types = $app->getRegisteredEntityTypes($entity);
-//
-//         if (!is_null($_types) && is_array($_types)) {
-//             $html = "<br><select name='type'>";
-//             foreach ($_types as $tipo) {
-//                 if (is_object($tipo)) {
-//                     $html .= "<option value='$tipo->id'> $tipo->name </option>";
-//                 }
-//             }
-//             $html .= "</select>";
-//             echo $html;
-//
-//             $this->addTypologiesHook($entity,$modal_id);
-//         }
-//    }
-
-    /*
-     @TODO: usar o método Theme::applyTemplateHook no template part
-    */
-//    private function addTypologiesHook($entity, $modal_id) {
-//        if ("agente" == strtolower($entity->getEntityTypeLabel())) {
-//            App::i()->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['entity'=> $entity, 'modal_id' => $modal_id]);
-//        }
-//    }
-
-    /*
      @TODO: juntar com a função renderEntityRequiredMetadata (no mesmo template part)
      */
     private function renderFieldMarkUp($field, $entity, $modal_id) {
@@ -2853,7 +2823,6 @@ class Theme extends MapasCulturais\Theme {
                     echo $this->getShortDescription();
                     break;
                 case "type":
-                    // $this->getEntityType($entity, $modal_id);
                     $app = App::i();
                     $_types = $app->getRegisteredEntityTypes($entity);
                     if (!is_null($_types) && is_array($_types)) {
