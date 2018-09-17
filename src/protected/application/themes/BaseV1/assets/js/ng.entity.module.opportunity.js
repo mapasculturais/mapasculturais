@@ -1348,14 +1348,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }) : [];
 
 
-
     var defaultSelectFields = [
-        {fieldName: "number", title:"Inscrição" ,required:true},
-        {fieldName: "category", title:"Categorias" ,required:true},
-        {fieldName: "agents", title:"Agentes" ,required:true},
-        {fieldName: "attachments", title: "Anexos" ,required:true},
-        {fieldName: "evaluation", title: "Avaliação" ,required:true},
-        {fieldName: "status", title:"Status" ,required:true},
+        {fieldName: "number", title:labels["Inscrição"] ,required:true},
+        {fieldName: "category", title:labels['Categorias'] ,required:true},
+        {fieldName: "agents", title:labels['Agentes'] ,required:true},
+        {fieldName: "attachments", title:labels['Anexos']  ,required:true},
+        {fieldName: "evaluation", title: labels['Avaliação'] ,required:true},
+        {fieldName: "status", title:labels['Status'] ,required:true},
     ];
 
     MapasCulturais.opportunitySelectFields.forEach(function(e){
