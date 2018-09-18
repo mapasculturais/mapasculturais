@@ -2701,21 +2701,9 @@ class Theme extends MapasCulturais\Theme {
     }
 
     /*
-     @TODO: no lugar deste array utilizar o método Entity::getEntityTypeLabel (tem outro TODO para fazer este método estático)
-     */
-    public $mapaClasses = ['agent' => 'Agente', 'space' => 'Espaço', 'project' => 'Projeto', 'event' => 'Evento'];
-
-    public function getShortDescription() {
-        $_placeholder =  \MapasCulturais\i::esc_attr__("Insira uma descrição curta");
-        $markup = "<textarea style='width: 100%' name='shortDescription' placeholder='$_placeholder' maxlength='400' required></textarea>";
-
-        return $markup;
-    }
-
-    /*
      @TODO: utilizar o método Entity::getPropertiesMetadata() para achar os campos obrigatórios
      */
-    private function entityRequiredFields()  {
+    public function entityRequiredFields()  {
         return [
             'name' => i::__('Nome'),
             'shortDescription' => i::__('Descrição curta'),
@@ -2754,15 +2742,13 @@ class Theme extends MapasCulturais\Theme {
             }
 
             $this->renderEntityRequiredMetadata($entity);
+
             $this->part("modal/entity-dropdown", ['title' => $title, 'attr' => $_attr, 'options' => $options]);
         }
     }
 
-    /*
-     @TODO: utilizar o método entityRequiredFields definido acima e utilizar um template-part.
-            template part para cada tipo de campo??
-            acho que renomear a função pois serve para campos da entidade e metadado
-     */ 
+    /* @TODO: utilizar o método entityRequiredFields definido acima e utilizar um template-part. */
+
     private function renderEntityRequiredMetadata($entity) {
         if ($entity instanceof \MapasCulturais\Entity) {
             $app = App::i();
@@ -2804,38 +2790,10 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    /*
-     @TODO: juntar com a função renderEntityRequiredMetadata (no mesmo template part)
-     */
-    private function renderFieldMarkUp($field, $entity, $modal_id) {
-        $__known_types = [ 'name', 'shortDescription', 'type'];
-        if (in_array($field, $__known_types)) {
-            $title = $this->entityRequiredFields()[$field];
-            $this->part("modal/title", ['title' => $title]);
-
-            switch ($field) {
-                case "name":
-                    $className = mb_strtolower($entity->getEntityTypeLabel());
-                    $placeholder = sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
-                    echo "<input type='text' name='$field' placeholder='$placeholder' required>";
-                    break;
-                case "shortDescription":
-                    echo $this->getShortDescription();
-                    break;
-                case "type":
-                    $app = App::i();
-                    $_types = $app->getRegisteredEntityTypes($entity);
-                    if (!is_null($_types) && is_array($_types)) {
-                        $this->part("modal/entity-type", ['entity' => $entity, 'modal_id' => $modal_id, 'types' => $_types]);
-                    }
-                    break;
-            }
-        }
+    public function modalFieldPlaceholder($title, $className) {
+        return sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
     }
 
-    /*
-     @TODO: usar template part
-    */
     public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "", $use_modal = true) {
         $app = App::i();
         $modal_entity = $app->controller($entity)->entityClassName;
@@ -2848,17 +2806,9 @@ class Theme extends MapasCulturais\Theme {
             $_modal_id = "add-" . $entity . $_unidID;
 
             if ($use_modal) {
-                ?>
-                <a class="<?php echo $href_class; ?> js-open-dialog" href="javascript:void(0)"
-                   data-dialog-block="true" data-dialog="#<?php echo $_modal_id; ?>" data-dialog-callback="MapasCulturais.addEntity"
-                   data-form-action='insert' data-dialog-title="<?php \MapasCulturais\i::esc_attr_e('Modal de Entidade'); ?>">
-                    <?php echo $label ?>
-                </a>
-                <?php
-                $this->modalCreateEntity($entity, $_modal_id);
-            } else { ?>
-                <div data-form="<?php echo $_modal_id; ?>"> <?php $this->modalCreateEntity($entity, $_modal_id, $use_modal); ?> </div>
-                <?php
+                $this->part('modal/modal', ['entity' => $entity, 'classes' => $href_class, 'modal_id' => $_modal_id, 'text' => $label]);
+            } else {
+                $this->part('modal/attached-modal', ['entity' => $entity, 'modal_id' => $_modal_id]);
             }
         }
     }
@@ -2868,11 +2818,9 @@ class Theme extends MapasCulturais\Theme {
      */
     public function modalCreateEntity($entity, $_id, $use_modal = true) {
         $app = App::i();
+        $url = $app->createUrl($entity);
         $_entity_class = $app->controller($entity)->entityClassName;
         $_new_entity = new $_entity_class();
-
-        $_required_keys = array_keys($_new_entity->getValidations());
-        $url = $app->createUrl($entity);
         $_name = $this->getModalEntityName($entity, $_new_entity);
 
         $_modal_title = "Criar $_name com informações básicas";
@@ -2892,27 +2840,18 @@ class Theme extends MapasCulturais\Theme {
 
         <div id="<?php echo $_id; ?>" class="entity-modal <?php echo $base_class ?>" title="<?php echo $_modal_title; ?>" style="display: none">
 
-            <?php $this->getPreFormContent($app,$use_modal,$_id); ?>
+            <?php $this->part('modal/before-form'); ?>
 
-            <?php $this->renderFeedback($entity, $_name); ?>
+            <?php $this->part('modal/feedback', ['entity' => $entity, 'label' => $_name]); ?>
 
             <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
                   data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
 
-                <?php
-                foreach ($_required_keys as $_field_) {
-                    if ($_new_entity->isPropertyRequired($_new_entity, $_field_)) {
-                        $this->renderFieldMarkUp($_field_, $_new_entity, $_id);
-                    }
-                }
-                $this->getEntityAreas($_new_entity, $entity);
-                ?>
+                <?php $this->renderFields($entity,$_new_entity,$_id); ?>
 
                 <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
 
                 <?php $this->part('modal/footer', ['entity' => $this->data->entity]); ?>
-
-                <?php $app->applyHook('mapasculturais.add_entity_modal.footer'); ?>
 
                 <div class="actions">
                     <button type="button" class="btn btn-default <?php echo $cancel_class; ?>" data-form-id='<?php echo $_id; ?>'> <?php \MapasCulturais\i::_e("Cancelar");?> </button>
@@ -2927,6 +2866,17 @@ class Theme extends MapasCulturais\Theme {
     <?php
     }
 
+    private function renderFields($entity, $new_entity, $modal_id) {
+        $required_fields = array_keys($new_entity->getValidations());
+        foreach ($required_fields as $_field_) {
+            if ($new_entity->isPropertyRequired($new_entity, $_field_)) {
+                $this->part('modal/fields', ['field' => $_field_, 'entity' => $new_entity, 'modal_id' => $modal_id]);
+            }
+        }
+
+        $this->getEntityAreas($new_entity, $entity);
+    }
+
     private function getModalEntityName($entity_id, $entity) {
         $app = App::i();
         $_key = "entities: " . ucwords($entity_id);
@@ -2937,64 +2887,5 @@ class Theme extends MapasCulturais\Theme {
         }
 
         return $_name;
-    }
-
-    /*
-     @TODO: usar template part e hooks applyTemplateHook
-    */
-    private function getPreFormContent($appInstance, $use_modal = true, $modal_id) {
-        $html = "<hr />";
-
-        if (!$use_modal)
-            $html = "<br>";
-
-        $gif = $this->asset("img/spinner_192.gif", false);
-        $html .= '<center class="modal-loading hidden"> <p>Enviando...</p>';
-        $html .= "<img src='$gif'> </center>";
-
-        $appInstance->applyHook('mapasculturais.add_entity_modal.form:before');
-
-        echo $html;
-    }
-
-    /*
-     @TODO: usar template part e hooks applyTemplateHook
-    */
-    private function renderFeedback($entity, $label) {
-        $success = \MapasCulturais\i::esc_attr__('Entidade criada com sucesso!');
-        $avatar = "/img/avatar--$entity.png";
-        ?>
-
-        <div class="modal-feedback header-content hidden">
-
-            <div class="avatar">
-                <img class="js-avatar-img" src="<?php $this->asset($avatar); ?>">
-            </div>
-
-            <div class="entity-type <?php echo $entity; ?>-type">
-                <div class="icon icon-<?php echo $entity; ?>"></div>
-                <a href="#" class="entity-url">
-                    <?php echo \MapasCulturais\i::esc_attr__('Novo ') . $label; ?>
-                </a>
-            </div>
-
-            <h2><span class="entidade"><?php echo $success; ?></span></h2>
-
-            <div class="options" style="width: 100%; float: left;">
-                <a href='javascript:void(0)' class="btn btn-default close-modal" style="">
-                    <?php \MapasCulturais\i::_e("Continuar navegando"); ?>
-                </a>
-
-                <a href='javascript:void(0)' class='view-entity btn btn-default'>
-                    <?php echo \MapasCulturais\i::__("Ver ") . $label; ?>
-                </a>
-
-                <a href='javascript:void(0)' class='edit-entity btn btn-primary'>
-                    <?php \MapasCulturais\i::_e("Completar edição agora"); ?>
-                </a>
-            </div>
-        </div>
-
-        <?php
     }
 }
