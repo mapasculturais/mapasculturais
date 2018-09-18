@@ -4,4 +4,4 @@
     <?php echo $text ?>
 </a>
 
-<?php $this->modalCreateEntity($entity, $modal_id); ?>
+<?php $this->part('modal/form', ['entity' => $entity, 'id' => $modal_id]); ?>
