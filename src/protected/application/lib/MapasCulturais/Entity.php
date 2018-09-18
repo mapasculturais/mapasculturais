@@ -925,7 +925,7 @@ abstract class Entity implements \JsonSerializable{
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
@@ -980,7 +980,7 @@ abstract class Entity implements \JsonSerializable{
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
@@ -1062,7 +1062,7 @@ abstract class Entity implements \JsonSerializable{
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 

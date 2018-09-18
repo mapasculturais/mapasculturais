@@ -1515,12 +1515,12 @@ class App extends \Slim\Slim{
     /**********************************************
      * Permissions Cache
      **********************************************/
-    protected $_entitiesToRecreatePermissionsCache = [];
+    protected $_permissionCachePendingQueue = [];
     protected $permissionCacheUsersIds = [];
     protected $skipPermissionCacheRecreation = false;
 
-    public function addEntityToRecreatePermissionCacheList(Entity $entity){
-        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+    public function enqueueEntityToPCacheRecreation(Entity $entity){
+        $this->_permissionCachePendingQueue["$entity"] = $entity;
     }
 
     public function recreatePermissionsCacheOfListedEntities($step = 20){
@@ -1528,8 +1528,8 @@ class App extends \Slim\Slim{
             return;
         }
 
-        if (is_array($this->_entitiesToRecreatePermissionsCache)) {
-            foreach($this->_entitiesToRecreatePermissionsCache as $entity) {
+        if (is_array($this->_permissionCachePendingQueue)) {
+            foreach($this->_permissionCachePendingQueue as $entity) {
                 if (is_int($entity->id)) {
                     $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
                     $pendingCache->objectId = $entity->id;
@@ -1555,7 +1555,7 @@ class App extends \Slim\Slim{
 
             $conn->commit();
             $this->em->flush();
-            $this->_entitiesToRecreatePermissionsCache = [];
+            $this->_permissionCachePendingQueue = [];
         }
     }
 
