@@ -157,18 +157,18 @@ trait EntityPermissionCache {
         }
     }
     
-    private $_insideAddToRecreatePermissionsCacheList = false;
+    private $_enqueueingPCacheRecreation = false;
     
-    function addToRecreatePermissionsCacheList($skip_extra = false){
-        if($this->_insideAddToRecreatePermissionsCacheList){
+    function enqueueToPCacheRecreation($skip_extra = false){
+        if($this->_enqueueingPCacheRecreation){
             return false;
         }
         
-        $this->_insideAddToRecreatePermissionsCacheList = true;
+        $this->_enqueueingPCacheRecreation = true;
         
         $app = App::i();
         
-        $app->addEntityToRecreatePermissionCacheList($this);
+        $app->enqueueEntityToPCacheRecreation($this);
         
         $class_relations = $app->em->getClassMetadata($this->getClassName())->getAssociationMappings();
         
@@ -176,7 +176,7 @@ trait EntityPermissionCache {
             $rel_class = $def['targetEntity'];
             if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
                 foreach($this->$prop as $entity){
-                    $entity->addToRecreatePermissionsCacheList(true);
+                    $entity->enqueueToPCacheRecreation(true);
                 }
             }
             
@@ -186,10 +186,10 @@ trait EntityPermissionCache {
             $entities = $this->getExtraEntitiesToRecreatePermissionCache();
 
             foreach($entities as $entity){
-                $entity->addToRecreatePermissionsCacheList();
+                $entity->enqueueToPCacheRecreation();
             }
         }
         
-        $this->_insideAddToRecreatePermissionsCacheList = false;
+        $this->_enqueueingPCacheRecreation = false;
     }
 }
