@@ -78,13 +78,7 @@ trait EntityPermissionCache {
         if(is_null($users)){
             if($delete_old){
                 $deleted = true;
-                if($app->permissionCacheUsersIds){
-                    foreach($app->permissionCacheUsersIds as $user_id){
-                        $this->deletePermissionsCache($user_id);
-                    }
-                } else {
-                    $this->deletePermissionsCache();
-                }
+                $this->deletePermissionsCache();
             }
             
             if($this->usesAgentRelation()){
@@ -104,11 +98,6 @@ trait EntityPermissionCache {
         
         $already_created_users = [];
         foreach ($users as $user) {
-            if($app->permissionCacheUsersIds){
-                if(!in_array($user->id, $app->permissionCacheUsersIds)){
-                    continue;
-                }
-            }
             if($delete_old && !$deleted){
                 $this->deletePermissionsCache($user->id);
             }
@@ -143,18 +132,14 @@ trait EntityPermissionCache {
         $this->__enabled = true;
     }
     
-    function deletePermissionsCache($user_id = null){
+    function deletePermissionsCache(){
         $app = App::i();
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         if(!$this->id){
             return;
         }
-        if($user_id){
-            $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id} AND user_id = {$user_id}");
-        } else {
-            $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id}");
-        }
+        $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id}");
     }
     
     private $_enqueueingPCacheRecreation = false;
