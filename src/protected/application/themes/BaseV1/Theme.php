@@ -2813,59 +2813,6 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    /* 
-     @TODO: usar template part e hooks com applyTemplateHook
-     */
-    public function modalCreateEntity($entity, $_id, $use_modal = true) {
-        $app = App::i();
-        $url = $app->createUrl($entity);
-        $_entity_class = $app->controller($entity)->entityClassName;
-        $_new_entity = new $_entity_class();
-        $_name = $this->getModalEntityName($entity, $_new_entity);
-
-        $_modal_title = "Criar $_name com informações básicas";
-        $app->applyHook('mapasculturais.add_entity_modal.title', [&$_modal_title]);
-        $base_class = "js-dialog";
-
-        $cancel_class = "close-modal";
-
-        if (!$use_modal) {
-            $base_class = "";
-            $cancel_class = "close-attached-modal";
-        }
-        $extra_wrapper_classes = '';
-        $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
-        $base_class .= " " . $extra_wrapper_classes;
-        ?>
-
-        <div id="<?php echo $_id; ?>" class="entity-modal <?php echo $base_class ?>" title="<?php echo $_modal_title; ?>" style="display: none">
-
-            <?php $this->part('modal/before-form'); ?>
-
-            <?php $this->part('modal/feedback', ['entity' => $entity, 'label' => $_name]); ?>
-
-            <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
-                  data-entity="<?php echo $url; ?>" data-formid="<?php echo $_id; ?>" id="form-for-<?php echo $_id; ?>">
-
-                <?php $this->renderFields($entity,$_new_entity,$_id); ?>
-
-                <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
-
-                <?php $this->part('modal/footer', ['entity' => $this->data->entity]); ?>
-
-                <div class="actions">
-                    <button type="button" class="btn btn-default <?php echo $cancel_class; ?>" data-form-id='<?php echo $_id; ?>'> <?php \MapasCulturais\i::_e("Cancelar");?> </button>
-                    <input type="submit" class="btn btn-primary" value="Adicionar <?php echo $_name; ?>">
-                </div>
-
-            </form>
-
-            <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?>
-
-        </div>
-    <?php
-    }
-
     private function renderFields($entity, $new_entity, $modal_id) {
         $required_fields = array_keys($new_entity->getValidations());
         foreach ($required_fields as $_field_) {
@@ -2875,6 +2822,23 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $this->getEntityAreas($new_entity, $entity);
+    }
+
+    public function getModalClasses($use_modal) {
+        $base_class = "js-dialog";
+        $cancel_class = "close-modal";
+
+        if (!$use_modal) {
+            $base_class = "";
+            $cancel_class = "close-attached-modal";
+        }
+
+        $extra_wrapper_classes = '';
+        $app = App::i();
+        $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
+        $base_class .= " " . $extra_wrapper_classes;
+
+        return ['classes' => $base_class, 'cancel_class' => $cancel_class];
     }
 
     private function getModalEntityName($entity_id, $entity) {
