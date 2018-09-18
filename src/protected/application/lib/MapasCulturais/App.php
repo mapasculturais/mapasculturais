@@ -1516,18 +1516,12 @@ class App extends \Slim\Slim{
      * Permissions Cache
      **********************************************/
     protected $_permissionCachePendingQueue = [];
-    protected $permissionCacheUsersIds = [];
-    protected $skipPermissionCacheRecreation = false;
 
     public function enqueueEntityToPCacheRecreation(Entity $entity){
         $this->_permissionCachePendingQueue["$entity"] = $entity;
     }
 
     public function recreatePermissionsCacheOfListedEntities($step = 20){
-        if($this->skipPermissionCacheRecreation){
-            return;
-        }
-
         if (is_array($this->_permissionCachePendingQueue)) {
             foreach($this->_permissionCachePendingQueue as $entity) {
                 if (is_int($entity->id)) {
