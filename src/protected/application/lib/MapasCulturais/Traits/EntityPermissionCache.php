@@ -66,6 +66,8 @@ trait EntityPermissionCache {
             return;
         }
         
+        echo "\nRECRIANDO CACHE $this";
+
         if($this->usesAgentRelation()){
             $this->deleteUsersWithControlCache();
         }
@@ -73,6 +75,7 @@ trait EntityPermissionCache {
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();
+
         
         $deleted = false;
         if(is_null($users)){
@@ -93,7 +96,7 @@ trait EntityPermissionCache {
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
         }
-                
+
         $this->__enabled = false;
         
         $already_created_users = [];
@@ -116,8 +119,8 @@ trait EntityPermissionCache {
                 if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity() && !method_exists($this, 'canUserView')) {
                     continue;
                 }
+
                 if (!is_null($user) && $this->canUser($permission, $user)) {
-//                    $app->log->debug("INSERT $this $user $permission");
                     $conn->insert('pcache', [
                         'user_id' => $user->id,
                         'action' => $permission,
@@ -141,40 +144,47 @@ trait EntityPermissionCache {
         }
         $conn->executeQuery("DELETE FROM pcache WHERE object_type = '{$class_name}' AND object_id = {$this->id}");
     }
-    
-    private $_enqueueingPCacheRecreation = false;
-    
+       
     function enqueueToPCacheRecreation($skip_extra = false){
-        if($this->_enqueueingPCacheRecreation){
+        $app = App::i();
+        if($app->isEntityEnqueuedToPCacheRecreation($this)){
             return false;
         }
         
-        $this->_enqueueingPCacheRecreation = true;
-        
-        $app = App::i();
-        
         $app->enqueueEntityToPCacheRecreation($this);
-        
+
+        return true;
+    }
+
+
+    function recreatePermissionCache(){
+        $app = App::i();
+        if($app->isEntityPermissionCacheRecreated($this)){
+            return false;
+        }
+
+        $this->createPermissionsCacheForUsers();
+
         $class_relations = $app->em->getClassMetadata($this->getClassName())->getAssociationMappings();
         
         foreach($class_relations as $prop => $def){
             $rel_class = $def['targetEntity'];
             if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
                 foreach($this->$prop as $entity){
-                    $entity->enqueueToPCacheRecreation(true);
+                    $entity->recreatePermissionCache(true);
                 }
             }
             
         }
         
-        if(!$skip_extra && method_exists($this, 'getExtraEntitiesToRecreatePermissionCache')){
+        if(method_exists($this, 'getExtraEntitiesToRecreatePermissionCache')){
             $entities = $this->getExtraEntitiesToRecreatePermissionCache();
 
             foreach($entities as $entity){
-                $entity->enqueueToPCacheRecreation();
+                $entity->recreatePermissionCache();
             }
         }
         
-        $this->_enqueueingPCacheRecreation = false;
+        $app->setEntityPermissionCacheAsRecreated($this);
     }
 }

@@ -528,7 +528,7 @@ class App extends \Slim\Slim{
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
-        $this->recreatePermissionsCacheOfListedEntities();
+        $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
@@ -1515,26 +1515,44 @@ class App extends \Slim\Slim{
     /**********************************************
      * Permissions Cache
      **********************************************/
-    protected $_permissionCachePendingQueue = [];
+    private $permissionCachePendingQueue = [];
 
     public function enqueueEntityToPCacheRecreation(Entity $entity){
-        $this->_permissionCachePendingQueue["$entity"] = $entity;
+        $this->permissionCachePendingQueue["$entity"] = $entity;
     }
 
-    public function recreatePermissionsCacheOfListedEntities($step = 20){
-        if (is_array($this->_permissionCachePendingQueue)) {
-            foreach($this->_permissionCachePendingQueue as $entity) {
-                if (is_int($entity->id)) {
-                    $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-                    $pendingCache->objectId = $entity->id;
-                    $pendingCache->objectType = $entity->getClassName();
-                    //$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
-                    $pendingCache->save(true);
-                }
+    public function isEntityEnqueuedToPCacheRecreation(Entity $entity){
+        return isset($this->permissionCachePendingQueue["$entity"]);
+    }
+
+    public function persistPCachePendingQueue(){
+        foreach($this->permissionCachePendingQueue as $entity) {
+            if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
+                    'objectId' => $entity->id, 'objectType' => $entity->getClassName()
+                ])) {
+                $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+                $pendingCache->objectId = $entity->id;
+                $pendingCache->objectType = $entity->getClassName();
+                $pendingCache->save(true);
+                $this->log->debug("pcache pending: $entity");
             }
         }
+        $this->em->flush();
+        $this->permissionCachePendingQueue = [];
+    }
 
-		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
+    private $recreatedPermissionCacheList = [];
+
+    public function setEntityPermissionCacheAsRecreated(Entity $entity){
+        $this->recreatedPermissionCacheList["$entity"] = $entity;
+    }
+
+    public function isEntityPermissionCacheRecreated(Entity $entity){
+        return isset($this->recreatedPermissionCacheList["$entity"]);
+    }
+
+    public function recreatePermissionsCache(){
+		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC']);
 		if (is_array($queue) && count($queue) > 0) {
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
@@ -1542,14 +1560,14 @@ class App extends \Slim\Slim{
             foreach($queue as $pendingCache) {
                 $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
                 if ($entity) {
-                    $entity->createPermissionsCacheForUsers();
+                    $entity->recreatePermissionCache();
                 }
                 $this->em->remove($pendingCache);
             }
 
             $conn->commit();
             $this->em->flush();
-            $this->_permissionCachePendingQueue = [];
+            $this->permissionCachePendingQueue = [];
         }
     }
 
