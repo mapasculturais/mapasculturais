@@ -3,7 +3,10 @@ if (isset($meta) && is_object($meta)) {
     $_title = $meta->label;
     $_key = $meta->key;
     $tipo = $meta->type;
-    $options = $meta->config['options'];
+    $options = [];
+    if (array_key_exists('options',$meta->config)) {
+        $options = $meta->config['options'];
+    }
     ?>
 
     <div class="<?php echo $class; ?>">
