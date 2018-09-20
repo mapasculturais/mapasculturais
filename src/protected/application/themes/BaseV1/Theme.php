@@ -2669,20 +2669,6 @@ class Theme extends MapasCulturais\Theme {
     }
 
     /*
-     @TODO: substituir esta função por uma genérica que utilize o método Entity::getPropertiesMetadata() 
-            para deduzir o título e o tipo de campo
-     */
-    // TODO: ver se eh viavel utilizar esta funcao em todo local que hoje usa esse markup
-    public function renderShortDescriptionMarkUp() {
-        $html = '<span class="js-editable" data-edit="shortDescription"';
-        $html .= 'data-original-title="' . \MapasCulturais\i::esc_attr__("Descrição Curta") . '"';
-        $html .= 'data-original-title="' . \MapasCulturais\i::esc_attr__("Insira uma descrição curta") . ' "';
-        $html .= "data-showButtons='bottom' data-tpl='<textarea maxlength=\"400\"></textarea>'></span>";
-
-        return $html;
-    }
-
-    /*
      @TODO: se eu entendi bem, esta função só é usada para gerar a url do subsite. Melhor colocar na classe da entidade Subsite
     */
     public function getEntityURL($url) {

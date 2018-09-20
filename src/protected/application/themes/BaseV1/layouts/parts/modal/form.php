@@ -1,14 +1,11 @@
 <?php
     $url = $app->createUrl($entity);
-    $use_modal = true;
     $classes = $this->getModalClasses($use_modal);
-
     $_entity_class = $app->controller($entity)->entityClassName;
     $new_entity = new $_entity_class();
-
     $name = mb_strtolower($new_entity->getEntityTypeLabel());
 
-    $title = "Criar $name com informações básicas";
+    $title = sprintf(\MapasCulturais\i::__("Criar %s com informações básicas."), $name);
     $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 ?>
 
