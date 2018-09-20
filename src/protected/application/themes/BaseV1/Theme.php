@@ -2686,24 +2686,8 @@ class Theme extends MapasCulturais\Theme {
         return $req->getScheme() . "://";
     }
 
-    /*
-     @TODO: utilizar o método Entity::getPropertiesMetadata() para achar os campos obrigatórios
-     */
-    public function entityRequiredFields()  {
-        return [
-            'name' => i::__('Nome'),
-            'shortDescription' => i::__('Descrição curta'),
-            'type' => i::__('Tipo'),
-            'terms' => i::__('Área de Atuação')
-        ];
-    }
-
-    /*
-     @TODO: utilizar o $app->getRegisteredTaxonomies($entity) e iterar em cima do array retornado
-    */
-    private function getEntityAreas($entity, $type = "") {
-
-        if ($entity instanceof \MapasCulturais\Entity) {
+    private function getEntityAreas($entity_class, $entity_name = "") {
+        if ($entity_class instanceof \MapasCulturais\Entity) {
             $_entities_areas = ["agent", "space"];
             $app = App::i();
 
@@ -2711,29 +2695,29 @@ class Theme extends MapasCulturais\Theme {
             $_attr = "";
             $options = [];
 
-            if (in_array($type, $_entities_areas)) {
-                $taxonomies = $app->getRegisteredTaxonomy($entity, 'area');
+            if (in_array($entity_name, $_entities_areas)) {
+                $taxonomies = $app->getRegisteredTaxonomy($entity_class, 'area');
                 if(is_object($taxonomies)) {
                     $_attr = 'terms[area][]';
                     $options = array_values($taxonomies->restrictedTerms);
                     $title = $app->getView()->dict('taxonomies:area: name', false);
                 }
-            } else if ("event" === $type) {
+            } else if ("event" === $entity_name) {
                 $_attr = 'terms[linguagem][]';
-                $taxonomies = $app->getRegisteredTaxonomy($entity, 'linguagem');
+                $taxonomies = $app->getRegisteredTaxonomy($entity_class, 'linguagem');
                 $options = array_values($taxonomies->restrictedTerms);
                 $title = $app->getView()->dict('taxonomies:linguagem: name', false);
             } else {
                 return false;
             }
 
-            $this->renderEntityRequiredMetadata($entity);
+            $this->renderEntityRequiredMetadata($entity_class);
 
-            $this->part("modal/entity-dropdown", ['title' => $title, 'attr' => $_attr, 'options' => $options]);
+            $this->part("modal/title", ['title' => $title]);
+
+            $this->part("modal/entity-dropdown", ['attr' => $_attr, 'options' => $options]);
         }
     }
-
-    /* @TODO: utilizar o método entityRequiredFields definido acima e utilizar um template-part. */
 
     private function renderEntityRequiredMetadata($entity) {
         if ($entity instanceof \MapasCulturais\Entity) {
@@ -2747,37 +2731,11 @@ class Theme extends MapasCulturais\Theme {
                     $app->applyHook('mapasculturais.add_entity_modal', [$meta, &$show_meta, &$class]);
 
                     if ($show_meta) {
-                        $_title = $meta->label;
-                        $_key = $meta->key;
-                        $tipo = $meta->type;
-
-                        echo "<div class='$class'>";
-
-                        if ($tipo === "select" && is_array($meta->config)) {
-                            $this->part("modal/entity-dropdown", ['title' => $_title, 'attr' => $_key, 'options' => $meta->config['options']]);
-                        } else if ($tipo === "string" || $tipo === "int") {
-                            $this->part("modal/title", ['title' => $_title]);
-                            echo "<input type='text' name='$_key' placeholder='Campo obrigatório' required>";
-                        } else if ($tipo === "text") {
-                            $this->part("modal/title", ['title' => $_title]);
-                            echo "<textarea name='$_key' maxlength='400'></textarea><br>";
-                        } else if ($tipo === "multiselect" && is_array($meta->config)) {
-                            $this->part("modal/title", ['title' => $_title]);;
-                            echo "<br>";
-                            foreach ($meta->config['options'] as $option) {
-                                echo "<label for='$_key'> $option </label>";
-                                echo "<input type='checkbox' name='$_key' value='$option'> <br>";
-                            }
-                        }
-                        echo "</div>";
+                        $this->part("modal/required-metadata", ['meta' => $meta, 'class' => $class]);
                     }
                 }
             }
         }
-    }
-
-    public function modalFieldPlaceholder($title, $className) {
-        return sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
     }
 
     public function renderModalFor($entity, $showIcon = true, $label = "", $extra_classes = "", $use_modal = true) {
@@ -2801,9 +2759,34 @@ class Theme extends MapasCulturais\Theme {
 
     public function renderFields($entity, $new_entity, $modal_id) {
         $required_fields = array_keys($new_entity->getValidations());
+        $class = $new_entity::getClassName();
         foreach ($required_fields as $_field_) {
             if ($new_entity->isPropertyRequired($new_entity, $_field_)) {
-                $this->part('modal/fields', ['field' => $_field_, 'entity' => $new_entity, 'modal_id' => $modal_id]);
+                $title = $class::_getConfiguredPropertyLabel($_field_);
+                if (empty($title)) {
+                    $title = $this->getFieldLabels($new_entity)[$_field_];
+                }
+
+                $this->part("modal/title", ['title' => $title]);
+
+                switch ($_field_) {
+                    case "name":
+                        $className = mb_strtolower($new_entity->getEntityTypeLabel());
+                        $placeholder = $this->modalFieldPlaceholder($title,$className);
+                        echo "<input type='text' name='$_field_' placeholder='$placeholder' required>";
+                        break;
+                    case "shortDescription":
+                        $this->part("modal/short-description");
+                        break;
+                    case "type":
+                        $app = App::i();
+                        $_types = $app->getRegisteredEntityTypes($new_entity);
+                        if (!is_null($_types) && is_array($_types)) {
+                            $this->part("modal/entity-type", ['entity' => $new_entity, 'modal_id' => $modal_id, 'types' => $_types]);
+                        }
+                        break;
+                }
+
             }
         }
 
@@ -2825,6 +2808,14 @@ class Theme extends MapasCulturais\Theme {
         $base_class .= " " . $extra_wrapper_classes;
 
         return ['classes' => $base_class, 'cancel_class' => $cancel_class];
+    }
+
+    private function getFieldLabels() {
+        return ['type' => \MapasCulturais\i::__("Tipo") ];
+    }
+
+    private function modalFieldPlaceholder($title, $className) {
+        return sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
     }
 
     private function getModalEntityName($entity_id, $entity) {
