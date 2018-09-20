@@ -14,9 +14,15 @@ $user = $app->user;
         <textarea ng-model="data.message" type="text" rows="5" cols="30" name="message"></textarea>
     </p>
     <p>
-        <button class="js-submit-button opportunity-claim-form" ng-click="send(<?php echo $registration->id?>)"><?php i::_e("Enviar");?></button>
+
+        <button class="js-submit-button opportunity-claim-form"
+                ng-click="
+                send(<?php echo $registration->id?>);
+                form[<?php echo $registration->id?>] = false;
+            "
+        >
+            <?php i::_e("Enviar");?>
+        </button>
     </p>
-    <div class="widget opportunity-claim-box" hidden="hidden">
-        <p class="alert sucess"><?php i::_e("Enviado com Sucesso");?>.<span class="close opportunity-claim-form"></span></p>
-    </div>
+
 </form>
