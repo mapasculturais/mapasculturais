@@ -435,7 +435,7 @@ MapasCulturais.Editables = {
                     config.type = 'date';
                     config.format = 'yyyy-mm-dd';
                     config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+0"};
+                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+10"};
                     delete config.placeholder;
                     config.clear = labels['Limpar'];
                     break;

@@ -1290,6 +1290,10 @@ class Theme extends MapasCulturais\Theme {
 
         });
 
+        $app->hook('template(event.<<create|edit|single>>.tab-about-service):before', function(){
+            $this->part('event-attendance', ['entity' => $this->data->entity]);
+        });
+
     }
 
 
@@ -1391,6 +1395,14 @@ class Theme extends MapasCulturais\Theme {
                 'unserialize' => function($val){ return json_decode($val); },
             ]);
         });
+
+        $this->registerEventMetadata('event_attendance', array(
+            'label' => 'Público presente',
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
+            ]
+        ));
     }
 
     function head() {
