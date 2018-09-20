@@ -2,10 +2,11 @@
     $url = $app->createUrl($entity);
     $use_modal = true;
     $classes = $this->getModalClasses($use_modal);
-    $name = 'espaço';
 
     $_entity_class = $app->controller($entity)->entityClassName;
     $new_entity = new $_entity_class();
+
+    $name = mb_strtolower($new_entity->getEntityTypeLabel());
 
     $title = "Criar $name com informações básicas";
     $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
@@ -20,7 +21,7 @@
     <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
           data-entity="<?php echo $url; ?>" data-formid="<?php echo $id; ?>" id="form-for-<?php echo $id; ?>">
 
-        <?php // $this->renderFields($entity,$new_entity,$id); ?>
+        <?php $this->renderFields($entity,$new_entity,$id); ?>
 
         <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
 

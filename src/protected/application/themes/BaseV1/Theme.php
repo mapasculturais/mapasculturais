@@ -2813,7 +2813,7 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
-    private function renderFields($entity, $new_entity, $modal_id) {
+    public function renderFields($entity, $new_entity, $modal_id) {
         $required_fields = array_keys($new_entity->getValidations());
         foreach ($required_fields as $_field_) {
             if ($new_entity->isPropertyRequired($new_entity, $_field_)) {
