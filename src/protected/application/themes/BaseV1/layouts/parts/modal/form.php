@@ -5,7 +5,7 @@
     $new_entity = new $_entity_class();
     $name = mb_strtolower($new_entity->getEntityTypeLabel());
 
-    $title = sprintf(\MapasCulturais\i::__("Criar %s com informações básicas."), $name);
+    $title = sprintf(\MapasCulturais\i::__("Crie um %s com informações básicas"), $name);
     $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 ?>
 
