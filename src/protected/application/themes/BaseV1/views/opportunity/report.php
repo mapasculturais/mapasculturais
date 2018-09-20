@@ -89,8 +89,9 @@ ksort($custom_fields);
                 <?php endif; ?>
                 <td><?php echo $r->getEvaluationResultString(); ?></td>
                 <td><?php echoStatus($r); ?></td>
-                <td><?php echo $r->sentTimestamp->format('d-m-Y');?></td>
-                <td><?php echo $r->sentTimestamp->format('H:i:s');?></td>
+                <?php $dataHoraEnvio = $r->sentTimestamp; ?>
+                <td><?php echo (!is_null($dataHoraEnvio))? $dataHoraEnvio->format('d-m-Y') : '';?></td>
+                <td><?php echo (!is_null($dataHoraEnvio))? $dataHoraEnvio->format('H:i:s'): '';?></td>
 
                 <?php showIfField($entity->registrationCategories, $r->category); ?>
 
