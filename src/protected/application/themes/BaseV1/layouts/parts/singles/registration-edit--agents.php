@@ -22,7 +22,7 @@
             <div ng-if="data.isEditable" class="btn-group">
                 <span ng-if="def.agent">
                     <a class="btn btn-default edit hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Trocar agente");?></a>
-                    <a class="btn btn-default delete hltip" ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" title="<?php \MapasCulturais\i::esc_attr_e("Excluir");?> {{def.label}}"<?php \MapasCulturais\i::esc_attr_e("Excluir");?></a>
+                    <a class="btn btn-default delete hltip" ng-if="def.agentRelationGroupName != 'owner' && def.use != 'required'" ng-click="unsetRegistrationAgent(def.agent.id, def.agentRelationGroupName)" title="<?php \MapasCulturais\i::esc_attr_e("Excluir");?> {{def.label}}"><?php \MapasCulturais\i::esc_attr_e("Excluir");?></a>
                 </span>
                 <a class="btn btn-default add hltip" ng-if="!def.agent" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Adicionar");?></a>
             </div>

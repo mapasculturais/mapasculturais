@@ -13,8 +13,10 @@ services:
       - ./docker-data/assets:/var/www/html/assets
       - ./docker-data/public-files:/var/www/html/files
       - ./docker-data/private-files:/var/www/private-files
+      - ./tests:/var/www/tests
     links:
       - db
+      - db_tests
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
@@ -43,10 +45,18 @@ services:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
-      - POSTGRES_DB_TEST=mapasculturais_test
-    ports:
-      - "5432:5432"
     volumes:
       - ./docker-data/postgres:/var/lib/postgresql/data
       - ./db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
-      - ./db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql
+      - ./db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql      
+
+  # db_tests:
+  #   image: mdillon/postgis:10
+  #   environment:
+  #     - POSTGRES_PASSWORD=mapas
+  #     - POSTGRES_USER=mapas
+  #     - POSTGRES_DB=mapas
+  #   volumes:
+  #     - ./docker-data/postgres:/var/lib/postgresql/data
+  #     - ./db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
+  #     - ./db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql

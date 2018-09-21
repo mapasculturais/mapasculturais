@@ -4,6 +4,7 @@ use \Slim\Log;
 $config = include 'conf-base.php';
 return array_merge($config,
     array(
+        'themes.active' => 'SpCultura',
         'base.url' => 'http://localhost:8888/',
         'site.url' => 'http://localhost:8888/',
         'app.log.translations' => false,
@@ -18,12 +19,15 @@ return array_merge($config,
         ),
 
 //        'app.log.query' => true,
+//        'app.log.apiDql' => true,
+
+        
         'doctrine.isDev' => true,
 
         'doctrine.database' => array(
-            'dbname'    => 'mapasculturais_test',
+            'dbname'    => 'mapas',
             'user'      => 'mapas',
-            'password'  => 'senhaMapas',
+            'password'  => 'mapas',
             'host'      => 'db',
 
         ),
