@@ -4,3 +4,4 @@
 docker-data
 temp?
 Dockerfile
+src/protected/vendor
