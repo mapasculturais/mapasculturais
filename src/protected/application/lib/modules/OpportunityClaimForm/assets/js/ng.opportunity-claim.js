@@ -16,12 +16,15 @@
 
             if(MapasCulturais.opportunity_claim_ok) {
                 OpportunityClaimService.send(message,registration_id).
-                    success(function (data) {});
+                    success(function (data) {
+                        $scope.data.message = '';
+                    });
             }
-        }
+        };
     }]);
 
     module.factory('OpportunityClaimService', ['$http', '$rootScope', function($http, $rootScope){
+        var labels = MapasCulturais.gettext.opportunityClaim;
         var controllerId = null,
             baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/';
 
@@ -32,16 +35,16 @@
             controllerId: controllerId,
 
             getUrl: function(action){
-                return baseUrl + controllerId + "/" + action;
+                return baseUrl + controllerId + '/' + action;
             },
 
             send: function(message, registration_id) {
                 return $http.post(this.getUrl('sendOpportunityClaimMessage'), {message: message, registration_id: registration_id}).
                     success(function(data, status){
-                        $rootScope.$emit('sendOpportunityClaimMessage.created', data);
+                        MapasCulturais.Messages.success(labels.claimSended);
                     }).
                     error(function(data, status){
-                        $rootScope.$emit('error', { message: "Cannot send opportunity claim message", data: data, status: status });
+                        MapasCulturais.Messages.error(labels.claimSendError);
                     });
             }
         };
