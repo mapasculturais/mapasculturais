@@ -19,6 +19,16 @@ case $i in
 	    rm src/protected/composer.lock
 	    shift
     ;;
+    -h|--help)
+        echo "
+        start-dev.sh
+
+        -b, --build     Realiza build
+        -u, --update    Atualiza composer e builda
+        -h, --help      Ajuda
+        "
+        exit
+    ;;
 esac
 done
 
