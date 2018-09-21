@@ -16,7 +16,6 @@ services:
       - ./tests:/var/www/tests
     links:
       - db
-      - db_tests
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
