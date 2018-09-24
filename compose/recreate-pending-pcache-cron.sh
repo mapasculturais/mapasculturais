@@ -3,8 +3,8 @@
 while [ true ]; do
     /var/www/scripts/recreate-pending-pcache.sh
     if [ -z "$PENDING_PCACHE_RECREATION_INTERVAL" ]; then 
-        sleep $PENDING_PCACHE_RECREATION_INTERVAL; 
+        sleep 60        
     else 
-        sleep 60; 
+        sleep $PENDING_PCACHE_RECREATION_INTERVAL
     fi
 done
