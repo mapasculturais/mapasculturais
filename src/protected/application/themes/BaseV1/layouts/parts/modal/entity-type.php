@@ -7,4 +7,7 @@
     } ?>
 </select>
 
-<?php $app->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['modal_id' => $modal_id]); ?>
+<?php
+if (("agente" == strtolower($entity->getEntityTypeLabel()))) {
+    $app->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['modal_id' => $modal_id]);
+}
