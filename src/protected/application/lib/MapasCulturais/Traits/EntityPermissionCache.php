@@ -65,9 +65,11 @@ trait EntityPermissionCache {
         if(!$this->id){
             return;
         }
-        
-        echo "\nRECRIANDO CACHE $this";
 
+        if(php_sapi_name()==="cli"){
+            echo "\n\t - RECREATING PERMISSIONS CACHE FOR $this ";
+        }
+        
         if($this->usesAgentRelation()){
             $this->deleteUsersWithControlCache();
         }
@@ -131,7 +133,9 @@ trait EntityPermissionCache {
                 }
             }
         }
-        
+        if(php_sapi_name()==="cli"){
+            echo "OK \n";
+        }
         $this->__enabled = true;
     }
     
