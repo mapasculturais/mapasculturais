@@ -23,8 +23,8 @@ case $i in
     	    echo "
 	run-tests.sh [-b] [-s=25]
 
-	-b=  | --build 		builda a imagem Docker
-	-s=  | --sleep=	    tempo de espera para o banco de dados ser inicializado (padrão: 10 segundos)
+	-b=  | --build    builda a imagem Docker
+	-s=  | --sleep=   tempo de espera para o banco de dados ser inicializado (padrão: 10 segundos)
 		    "
     	    exit
     ;;

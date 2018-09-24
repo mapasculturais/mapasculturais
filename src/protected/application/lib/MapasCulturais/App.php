@@ -1552,8 +1552,8 @@ class App extends \Slim\Slim{
     }
 
     public function recreatePermissionsCache(){
-		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC']);
-		if (is_array($queue) && count($queue) > 0) {
+        $queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC']);
+        if (is_array($queue) && count($queue) > 0) {
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
 
