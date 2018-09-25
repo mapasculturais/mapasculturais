@@ -119,7 +119,13 @@ class Opportunity extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunity($entity);
+        $committee = $entity->getEvaluationCommittee();
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUsersAndStatus($entity, $users);
 
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--avaliacoes"), $entity->id);
 
