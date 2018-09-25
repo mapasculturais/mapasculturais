@@ -522,13 +522,31 @@ class App extends \Slim\Slim{
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
 
+        // ===================================== //
+
+        //pending cache hook
+
+        $this->hook('mapasculturais.run:after', function () {
+            $recreate_permissions_by_cron = (isset($this->_config['pendingcache.recreatePermissions.cron.enable'])) ? $this->_config['pendingcache.recreatePermissions.cron.enable'] : FALSE;
+            if ( $recreate_permissions_by_cron ) {
+                //Apenas salva a lista de entidades pendentes para atualizacao do cache de permissoes
+                $this->savePendingCacheList();
+            } else {
+                //Salva e Consome a lista de entidades pendentes para atualizacao do cache de permissoes
+                $this->recreatePermissionsCacheOfListedEntities();
+            }
+
+        });
+
+        // ===================================== //
+
+
         return $this;
     }
 
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
-        $this->recreatePermissionsCacheOfListedEntities();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
@@ -1523,7 +1541,7 @@ class App extends \Slim\Slim{
         $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
     }
 
-    public function recreatePermissionsCacheOfListedEntities($step = 20){
+    public function savePendingCacheList() {
         if($this->skipPermissionCacheRecreation){
             return;
         }
@@ -1540,6 +1558,16 @@ class App extends \Slim\Slim{
             }
         }
 
+        $this->_entitiesToRecreatePermissionsCache = [];
+    }
+
+    public function recreatePermissionsCacheOfListedEntities($step = 20){
+        if($this->skipPermissionCacheRecreation){
+            return;
+        }
+
+        $this->savePendingCacheList();
+
 		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
 		if (is_array($queue) && count($queue) > 0) {
             $conn = $this->em->getConnection();
@@ -1555,7 +1583,6 @@ class App extends \Slim\Slim{
 
             $conn->commit();
             $this->em->flush();
-            $this->_entitiesToRecreatePermissionsCache = [];
         }
     }
 
