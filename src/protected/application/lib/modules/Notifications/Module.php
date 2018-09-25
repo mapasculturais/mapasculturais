@@ -90,14 +90,28 @@ class Module extends \MapasCulturais\Module{
                         $owner_entity_link = "<a href=\"{$owner_entity->singleUrl}\">{$owner_entity->name}</a>";
                         
                         $subject = i::__("Requisição para avaliar oportunidade");
-                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s. $s"), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link, $urlDestinationPanel_link);
+                        $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s. %s"), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link, $urlDestinationPanel_link);
                         $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
                         
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $subject = i::__("Requisição para relacionar agente em uma inscrição");
-                        $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s. . %s"), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>", $urlDestinationPanel_link);
-                        $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
-                    }else{
+                        $project = $origin->project;
+                        $opportunity = $origin->opportunity;
+
+                        if ($project) {
+                            $subject = i::__("Requisição para relacionar agente em uma inscrição");
+                            $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->getNumber(), "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                            $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                        } else if ($opportunity){
+                            $subject = i::__("Requisição para relacionar agente em uma inscrição");
+                            $message = sprintf(i::__("%s quer relacionar o agente %s à inscrição %s na oportunidade %s."), $profile_link, $destination_link, $origin->getNumber(), "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>");
+                            $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s à inscrição %s no oportunidade %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>");
+                        } else {
+                            $subject = i::__("Requisição para relacionar agente");
+                            $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
+                            $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
+                        }
+
+                    } else {
                         $subject = i::__("Requisição para relacionar agente");
                         /* Translators: "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}." */
                         $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
