@@ -1,7 +1,7 @@
-# Caches de Permissão (pcache)
-O pcache é utilizado pela API de leitura do Mapas Culturais para agilizar a busca de entidades quando são utilizados filtros por permissões de usuários, exemplo quando queremosobter todos os espaçõs que um determinado usuário tem permissão de editar. 
+# Cache de Permissões (pcache)
+O pcache é utilizado pela API de leitura do Mapas Culturais para agilizar a busca de entidades quando são utilizados filtros por permissões de usuários, exemplo quando queremos obter todos os espaços que um determinado usuário tem permissão de editar. 
 
-Esta consulta seria muito penosa sem o pcache porque seria necessário recuperar todos os espaços do banco de dados e perguntar um a um se o determinado usuário tem essa permissão, o que por si só já é uma operação um pouco complexa pois depende de diversos fatores, como por exemplos se o usuário tem permissão de editar o espaço pai ou se tem permissão de editar o agente que publicou o espaço.
+Esta consulta seria muito penosa sem o pcache porque seria necessário recuperar todos os espaços do banco de dados e perguntar um a um se o determinado usuário tem essa permissão, o que por si só já é uma operação um pouco complexa que depende de diversos fatores, como por exemplos se o usuário tem permissão de editar o espaço pai ou se tem permissão de editar o agente que publicou o espaço.
 
 Para resolver este problema foi criado o pcache, que se trata de uma tabela que relaciona usuários, entidades e as permissões deste usuário com a entidade:
 
@@ -36,6 +36,6 @@ Para rodar o script a cada 5 minutos, adicione a linha abaixo ao crontab utiliza
 */5 * * * * /path/to/mapasculturais/scripts/recreate-pending-pcache.sh
 ```
 
-## Configurando o intervalo de execução dentro das imagens dockers:
+## Configurando o intervalo de execução dentro das imagens docker
 
-Nas imagens docker não é utilizado o cron para este agendamento. Há um processo que roda em background que aguarda um intervalo de tempo configurável entre o final da execução do script e o inicio da nova execução. Por padrão este intervalo é de 60 seguntos mas pode ser configurado pela variável de ambiente `PENDING_PCACHE_RECREATION_INTERVAL` 
+Nas imagens docker não é utilizado o cron para este agendamento. Há um processo que roda em background que aguarda um intervalo entre o final da execução do script e o inicio da nova execução. Por padrão este intervalo é de 60 seguntos mas pode ser configurado pela variável de ambiente `PENDING_PCACHE_RECREATION_INTERVAL` 
