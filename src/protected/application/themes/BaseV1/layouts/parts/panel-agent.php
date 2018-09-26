@@ -9,7 +9,7 @@ use MapasCulturais\Entities\Agent;
         <?php elseif($entity->status === Agent::STATUS_ENABLED): ?>
             <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Definir este agente como seu perfil.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
         <?php endif; ?>
-        <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
+        <a href="<?php echo $entity->singleUrl; ?>"><?php echo htmlentities($entity->name); ?></a>
     </h1>
     <div class="objeto-meta">
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
