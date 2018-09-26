@@ -12,7 +12,7 @@ Os testes também podem serem executados localmente, para isso realize os seguin
 
 1. Criar ou atualizar o arquivo [conf-test-local.php](../../src/protected/application/conf/conf-test-local.php) (cópia de conf-test.php) com as configurações para utilização da infraestrutura local;
 
-2. Exucutar o script [run-test-local.sh](../../scripts/run-test-local.sh) 
+2. Executar o script [run-test-local.sh](../../scripts/run-test-local.sh) 
     * O script possui algumas opções:
         ```
         * Somente executará os testes:
@@ -21,7 +21,7 @@ Os testes também podem serem executados localmente, para isso realize os seguin
         * Recriar a base de dados:
             ./run-test-local.sh --createdb        
 
-        * Ajudar sobre outras configurações:
+        * Ajuda sobre outras configurações:
             ./run-test-local.sh --help
 
         ```
@@ -36,7 +36,7 @@ Os testes utilizando os containers docker apresentam passos similares a execuç�
 
 A base de testes, mapasculturais_test é criada ao instanciar um novo container da imagem da base dados do mapas culturais ( arquivo [Dockerfile-db](../../docker/dev/Dockerfile-db)), para mais informações sobre como executar os containers dockers veja o documento [guia do docker](../../docs/mc_developer_tests.md). Dessa forma a criação da base utilizando o comando ```./run-test-local.sh --createdb``` é desnecessário.
 
-Para executar os teste, devemos executar os testes dentro do container, para isso basta executar o seguinte comando:
+Para executar os testes, devemos executá-los dentro do container. Para isso, basta executar o seguinte comando:
 
 ```
 

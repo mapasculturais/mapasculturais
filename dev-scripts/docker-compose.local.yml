@@ -1,0 +1,50 @@
+version: '3'
+services:
+  mapas:
+    build:
+      context: ../
+      dockerfile: compose/local/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ../src/protected:/var/www/html/protected
+      - ../compose/config.php:/var/www/html/protected/application/conf/config.php
+      - ../compose/config.d:/var/www/html/protected/application/conf/config.d
+      - ../docker-data/assets:/var/www/html/assets
+      - ../docker-data/public-files:/var/www/html/files
+      - ../docker-data/private-files:/var/www/private-files
+      - ../tests:/var/www/tests
+    links:
+      - db
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+
+      - APP_MODE=development
+      - SLIM_DEBUG=true
+
+      - APP_LCODE=pt_BR,es_ES
+
+      - ACTIVE_THEME=SpCultura
+
+      - LOG_ENABLED=true
+      - LOG_LEVEL=DEBUG
+      - LOG_HOOK=true  
+
+    depends_on:
+      - db
+      
+    stdin_open: true
+    tty: true
+      
+  db:
+    image: mdillon/postgis:10
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+    volumes:
+      - ../docker-data/postgres:/var/lib/postgresql/data
+      - ../db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
+      - ../db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql      
