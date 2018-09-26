@@ -7,6 +7,11 @@ cd $DIR
 
 BUILD="0"
 DOWN="0"
+SLEEP_TIME="0"
+
+if [ ! -d "../docker-data/postgres" ]; then
+  SLEEP_TIME=15
+fi
 
 for i in "$@"
 do
@@ -19,12 +24,23 @@ case $i in
             DOWN="1"
 	    shift
     ;;
+    -s|--sleep)
+            SLEEP_TIME="${i#*=}"
+	    shift
+    ;;
+    -u|--update)
+            BUILD="1"
+	    rm ../src/protected/composer.lock
+	    shift
+    ;;
     -h|--help)
     	    echo "
-	run-tests.sh [-b] [-d]
+	run-tests.sh [-b] [-u] [-d] [-s=25]
 
-	-b=  | --build   builda a imagem Docker
+    -b=  | --build      builda a imagem Docker
+    -u=  | --update     atualiza os pacotes do composer
 	-d=  | --down    executa o docker-compose down antes do docker-compose run
+    -s=  | --sleep=     tempo de espera em segundos para o banco de dados ser inicializado (padrão: 0 se existir a pasta docker-data/postgres ou 15 se não existir)
 		    "
     	    exit
     ;;

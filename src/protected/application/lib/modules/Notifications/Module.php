@@ -205,7 +205,7 @@ class Module extends \MapasCulturais\Module{
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
                     if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
-                        $message = sprintf(i::__("%s aceitou o relacionamento do agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                        $message = sprintf(i::__("%s aceitou o relacionamento do agente %s à inscrição %s no projeto %s."), $profile_link, $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->opportunity->singleUrl}\">{$origin->opportunity->name}</a>");
                     }else{
                         $message = sprintf(i::__("%s aceitou o relacionamento do agente %s com o %s %s."), $profile_link, $destination_link, $origin_type, $origin_link);
                     }
