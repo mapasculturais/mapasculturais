@@ -412,8 +412,8 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
-        $app->addEntityToRecreatePermissionCacheList($this);
-        $app->addEntityToRecreatePermissionCacheList($this->opportunity);
+        $app->enqueueEntityToPCacheRecreation($this);
+        $app->enqueueEntityToPCacheRecreation($this->opportunity);
     }
 
     function setAgentsSealRelation() {
@@ -519,8 +519,8 @@ class Registration extends \MapasCulturais\Entity
             $app->enableAccessControl();
         }
 
-        $app->addEntityToRecreatePermissionCacheList($this->opportunity);
-        $app->addEntityToRecreatePermissionCacheList($this);
+        $app->enqueueEntityToPCacheRecreation($this->opportunity);
+        $app->enqueueEntityToPCacheRecreation($this);
     }
 
     function cleanMaskedRegistrationFields(){
