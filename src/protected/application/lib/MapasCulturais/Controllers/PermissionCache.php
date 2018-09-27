@@ -10,15 +10,8 @@ use MapasCulturais\App;
 class PermissionCache extends \MapasCulturais\Controller {
     public function GET_recreate() {
         try {
-
-            $size = 250;
-            if( isset($this->data['size']) ) {
-                $size = (int) $this->data['size'];
-            }
-            $app = App::i();
-            $app->recreatePermissionsCacheOfListedEntities($size);
-
-            $this->json(['recreate' => true, 'size' => $size]);
+            App::i()->recreatePermissionsCache();
+            $this->json(['recreate' => true]);
         } catch (Exception $e) {
             $this->json(['recreate' => false, 'Trace' => $e->getTraceAsString()]);
         }
