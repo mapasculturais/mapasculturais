@@ -891,10 +891,6 @@ class Registration extends \MapasCulturais\Entity
             'user' => $user
         ]);
 
-        if($evaluation){
-            $evaluation->checkPermission('view');
-        }
-
         return $evaluation;
     }
 
