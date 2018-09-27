@@ -319,7 +319,7 @@ abstract class Controller{
      */
     public function json($data, $status = 200){
         $app = App::i();
-        $app->recreatePermissionsCacheOfListedEntities();
+        $app->persistPCachePendingQueue();
         $app->contentType('application/json');
         $app->halt($status, json_encode($data));
     }
