@@ -60,6 +60,7 @@ COPY compose/config.d /var/www/html/protected/application/conf/config.d
 
 RUN ln -s /var/www/html /var/www/src
 
+COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
