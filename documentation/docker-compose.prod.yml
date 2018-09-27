@@ -43,6 +43,8 @@ services:
 
 #      - ACTIVE_THEME=SpCultura
 
+      - PENDING_PCACHE_RECREATION_INTERVAL=60
+
     depends_on:
       - db
       
