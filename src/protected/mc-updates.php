@@ -7,7 +7,7 @@ return [
     $conn->executeQuery("DELETE FROM pcache");
     foreach (['Agent', 'Space', 'Project', 'Event', 'Seal', 'Registration', 'Notification', 'Request', 'Opportunity'] as $class){
             DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) {
-                $entity->createPermissionsCacheForUsers();
+                $entity->recreatePermissionCache();
             });
         }
     },
