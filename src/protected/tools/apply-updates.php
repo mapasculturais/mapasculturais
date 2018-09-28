@@ -1,4 +1,7 @@
 <?php
+set_time_limit(0);
+ini_set('memory_limit', '2048M');
+
 define('DB_UPDATES_FILE', realpath(__DIR__ . '/../' ) . '/db-updates.php');
 $time_start = microtime(true);
 $save_log = isset($argv[1]) && $argv[1];
