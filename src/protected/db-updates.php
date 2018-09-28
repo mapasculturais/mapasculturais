@@ -1063,4 +1063,43 @@ return [
         $conn->executeQuery(" ALTER TABLE opportunity ALTER COLUMN agent_id SET NOT NULL ");
     },
 
+    'alter table registration add column number' => function() use($conn) {
+        if(!__column_exists('registration', 'number')){
+            $conn->executeQuery("ALTER TABLE registration ADD COLUMN number VARCHAR(24)");
+        }
+    },
+
+    'update registrations set number'=> function () use($conn){
+        echo "\nsalvando número da inscrição para oportunidades de uma só fase ou para a primeira fase das inscrições\n";
+        $conn->executeQuery("UPDATE registration SET number = CONCAT('on-', id) WHERE opportunity_id IN (SELECT id FROM opportunity WHERE parent_id IS NULL)");
+        $regs = $conn->fetchAll("
+            SELECT r.id, m.value AS previous 
+            FROM registration r 
+            LEFT JOIN registration_meta m ON m.object_id = r.id AND m.key = 'previousPhaseRegistrationId'");
+        
+        echo "\nsalvando número da inscrição para demais fases das oportunidades\n";
+
+        $registrations = [];
+
+        foreach($regs as $reg){
+            $reg = (object) $reg;
+            $registrations[$reg->id] = $reg;
+        }
+
+        foreach($registrations as $reg){
+            if(!$reg->previous){
+                continue;
+            }
+
+            $current = $reg;
+            
+            while($current->previous){
+                $current = $registrations[$reg->previous];
+            }
+
+            echo "\n - inscrição de id {$reg->id} número {$current->id}\n";
+            $conn->executeQuery("UPDATE registration SET number = 'on-{$current->id}' WHERE id = $reg->id");
+        }
+    }
+
 ] + $updates ;
