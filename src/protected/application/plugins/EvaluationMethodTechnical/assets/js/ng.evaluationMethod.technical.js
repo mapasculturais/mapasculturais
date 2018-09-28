@@ -133,7 +133,7 @@
             
             if(MapasCulturais.evaluation){
                 for(var id in MapasCulturais.evaluation.evaluationData){
-                    if(id != 'obs'){
+                    if(id != 'obs' && id != 'viability'){
                         MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
                     }
                 }
@@ -162,7 +162,7 @@
                     }
                 }
 
-                return this.checkTotal(total);
+                return total.toFixed(1);
             };
 
             $scope.total = function(){
@@ -173,7 +173,7 @@
                     total += $scope.evaluation[cri.id] * cri.weight;
                 }
 
-                return this.checkTotal(total);
+                return total.toFixed(1);
             };
 
             $scope.max = function(){
@@ -184,7 +184,7 @@
                     total += cri.max * cri.weight;
                 }
 
-                return this.checkTotal(total);
+                return total;
             };
 
             $scope.checkTotal = function(num) {

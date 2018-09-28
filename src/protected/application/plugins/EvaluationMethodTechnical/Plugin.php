@@ -175,6 +175,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 }
             ];
 
+            $viability = [
+                'label' => i::__('Esta proposta apresenta exequibilidade?'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation)  {
+                    return isset($evaluation->evaluationData->viability) ? $evaluation->evaluationData->viability :  '';
+                }
+            ];
+
+            $result['evaluation']->columns[] = (object) $viability;
+
             $sections = $result;
         });
     }
@@ -183,12 +192,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $errors = [];
 
         $empty = false;
-
-
         foreach($data as $key => $val){
-            if($key === 'obs' && !trim($val)){
+            if ($key === 'viability' && empty($val)) {
                 $empty = true;
-            } else if($key !== 'obs' && !is_numeric($val)){
+            } else if($key === 'obs' && !trim($val)) {
+                $empty = true;
+            } else if($key !== 'obs' && $key !== 'viability' && !is_numeric($val)){
                 $empty = true;
             }
         }
