@@ -27,6 +27,18 @@ $plugin = $app->plugins['EvaluationMethodTechnical'];
         <textarea name="data[obs]" ng-model="evaluation['obs']"></textarea>
     </label>
     <hr>
+    <label>
+        <?php i::_e('Esta proposta apresenta exequibilidade?') ?>
+        <br>
+        <label class="input-label">
+            <input type="radio" name="data[viability]" value="valid" ng-model="evaluation['viability']"/>
+            <em><?php i::_e('Sim. É válida.')?></em> <br>
+
+            <input type="radio" name="data[viability]" value="invalid" ng-model="evaluation['viability']"/>
+            <em><?php i::_e('Não. É inválida.')?></em>
+        </label>
+    </label>
+    <hr>
     <div class='total'>
         <?php i::_e('Pontuação Total'); ?>: <strong>{{total(total)}}</strong><br>
         <?php i::_e('Pontuação Máxima'); ?>: <strong>{{max(total)}}</strong>
