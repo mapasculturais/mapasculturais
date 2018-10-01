@@ -50,6 +50,13 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var string
      *
+     * @ORM\Column(name="number", type="string", length=24, nullable=true)
+     */
+    protected $number;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="category", type="string", length=255, nullable=true)
      */
     protected $category;
@@ -163,9 +170,18 @@ class Registration extends \MapasCulturais\Entity
 
     public $preview = false;
 
+    protected static $hooked = false;
 
     function __construct() {
         $this->owner = App::i()->user->profile;
+        if(!self::$hooked){
+            self::$hooked = true;
+            App::i()->hook('entity(' . $this->getHookClassPath() . ').randomId', function($id){
+                if(!$this->number){
+                    $this->number = 'on-' . $id;
+                }
+            });
+        }
         parent::__construct();
     }
 
@@ -392,10 +408,6 @@ class Registration extends \MapasCulturais\Entity
         return 1000;
     }
 
-    function getNumber(){
-        return 'on-' . $this->id;
-    }
-
     function setStatus($status){
         // do nothing
     }
@@ -412,8 +424,8 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
-        $app->addEntityToRecreatePermissionCacheList($this);
-        $app->addEntityToRecreatePermissionCacheList($this->opportunity);
+        $app->enqueueEntityToPCacheRecreation($this);
+        $app->enqueueEntityToPCacheRecreation($this->opportunity);
     }
 
     function setAgentsSealRelation() {
@@ -519,8 +531,8 @@ class Registration extends \MapasCulturais\Entity
             $app->enableAccessControl();
         }
 
-        $app->addEntityToRecreatePermissionCacheList($this->opportunity);
-        $app->addEntityToRecreatePermissionCacheList($this);
+        $app->enqueueEntityToPCacheRecreation($this->opportunity);
+        $app->enqueueEntityToPCacheRecreation($this);
     }
 
     function cleanMaskedRegistrationFields(){
@@ -891,10 +903,6 @@ class Registration extends \MapasCulturais\Entity
             'user' => $user
         ]);
 
-        if($evaluation){
-            $evaluation->checkPermission('view');
-        }
-
         return $evaluation;
     }
 
@@ -952,7 +960,9 @@ class Registration extends \MapasCulturais\Entity
     // ============================================================ //
 
     /** @ORM\PrePersist */
-    public function prePersist($args = null){ parent::prePersist($args); }
+    public function prePersist($args = null){ 
+        parent::prePersist($args); 
+    }
     /** @ORM\PostPersist */
     public function postPersist($args = null){ parent::postPersist($args); }
 
