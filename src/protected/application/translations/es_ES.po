@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-08-24 06:25+0200\n"
+"POT-Creation-Date: 2018-09-20 02:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.1.1\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -285,6 +285,7 @@ msgstr "Calle"
 #: protected/application/themes/BaseV1/layouts/parts/singles/location.php:26
 #: protected/application/themes/BaseV1/views/opportunity/report-drafts.php:19
 #: protected/application/themes/BaseV1/views/opportunity/report.php:56
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:56
 msgid "Número"
 msgstr "Número"
 
@@ -574,23 +575,23 @@ msgstr "No utilizar"
 
 #: protected/application/conf/conf-base.php:183
 #: protected/application/conf/opportunity-types.php:69
-#: protected/application/themes/BaseV1/Theme.php:1738
-#: protected/application/themes/BaseV1/Theme.php:1780
+#: protected/application/themes/BaseV1/Theme.php:1750
+#: protected/application/themes/BaseV1/Theme.php:1792
 #: protected/application/themes/culturaenlinea/config.php:126
 msgid "Obrigatório"
 msgstr "Obligatorio"
 
 #: protected/application/conf/conf-base.php:184
 #: protected/application/conf/opportunity-types.php:68
-#: protected/application/themes/BaseV1/Theme.php:1739
-#: protected/application/themes/BaseV1/Theme.php:1781
+#: protected/application/themes/BaseV1/Theme.php:1751
+#: protected/application/themes/BaseV1/Theme.php:1793
 #: protected/application/themes/culturaenlinea/config.php:127
 msgid "Opcional"
 msgstr "Opcional"
 
 #: protected/application/conf/conf-base.php:216
-#: protected/application/themes/BaseV1/Theme.php:1730
-#: protected/application/themes/BaseV1/Theme.php:1771
+#: protected/application/themes/BaseV1/Theme.php:1742
+#: protected/application/themes/BaseV1/Theme.php:1783
 #: protected/application/themes/culturaenlinea/config.php:11
 #: protected/application/themes/culturaenlinea/config.php:159
 msgid "Agente responsável pela inscrição"
@@ -644,12 +645,14 @@ msgstr "Id"
 #: protected/application/lib/MapasCulturais/EvaluationMethod.php:85
 #: protected/application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:23
 #: protected/application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:63
-#: protected/application/themes/BaseV1/Theme.php:1621
+#: protected/application/themes/BaseV1/Theme.php:1633
 #: protected/application/themes/BaseV1/layouts/parts/panel-search.php:14
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_agent.php:110
 #: protected/application/themes/BaseV1/layouts/parts/user-management/info-admin.php:79
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:12
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:15
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:14
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:14
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
 #: protected/application/themes/BaseV1/views/agent/create.php:92
 #: protected/application/themes/BaseV1/views/agent/edit.php:92
@@ -723,13 +726,14 @@ msgstr "Plazo de Validez"
 
 #: protected/application/conf/conf-base.php:252
 #: protected/application/lib/MapasCulturais/EvaluationMethod.php:101
-#: protected/application/themes/BaseV1/Theme.php:1804
+#: protected/application/themes/BaseV1/Theme.php:1816
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:22
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:36
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:14
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:34
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:2
 #: protected/application/themes/BaseV1/views/opportunity/report.php:61
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:61
 #: protected/application/themes/culturaenlinea/config.php:30
 #: protected/application/themes/culturaenlinea/config.php:195
 msgid "Status"
@@ -779,7 +783,7 @@ msgstr "Evento"
 #: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:58
 #: protected/application/themes/BaseV1/layouts/parts/user-management/search-list/list-event.php:2
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:10
-#: protected/application/themes/BaseV1/views/panel/user-management.php:52
+#: protected/application/themes/BaseV1/views/panel/user-management.php:45
 #: protected/application/themes/culturaenlinea/config.php:104
 #: protected/application/themes/culturaenlinea/layouts/parts/home-search.php:31
 msgid "Eventos"
@@ -799,7 +803,7 @@ msgstr "Agente"
 #: protected/application/themes/BaseV1/Theme.php:365
 #: protected/application/themes/BaseV1/Theme.php:394
 #: protected/application/themes/BaseV1/Theme.php:395
-#: protected/application/themes/BaseV1/Theme.php:1801
+#: protected/application/themes/BaseV1/Theme.php:1813
 #: protected/application/themes/BaseV1/layouts/parts/busca-avancada.php:15
 #: protected/application/themes/BaseV1/layouts/parts/home-agents.php:28
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:16
@@ -815,7 +819,7 @@ msgstr "Agente"
 #: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:56
 #: protected/application/themes/BaseV1/layouts/parts/user-management/search-list/list-agent.php:2
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:7
-#: protected/application/themes/BaseV1/views/panel/user-management.php:51
+#: protected/application/themes/BaseV1/views/panel/user-management.php:44
 #: protected/application/themes/culturaenlinea/config.php:105
 #: protected/application/themes/culturaenlinea/layouts/parts/home-search.php:35
 msgid "Agentes"
@@ -871,8 +875,10 @@ msgstr "Proyecto"
 #: protected/application/themes/BaseV1/layouts/parts/search/list-project.php:3
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:60
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:61
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:59
 #: protected/application/themes/BaseV1/layouts/parts/user-management/search-list/list-project.php:2
-#: protected/application/themes/BaseV1/views/panel/user-management.php:54
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:9
+#: protected/application/themes/BaseV1/views/panel/user-management.php:47
 #: protected/application/themes/culturaenlinea/config.php:107
 #: protected/application/themes/culturaenlinea/layouts/parts/home-search.php:43
 msgid "Projetos"
@@ -894,13 +900,14 @@ msgstr "Oportunidad"
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:28
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:70
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-entities.php:71
-#: protected/application/themes/BaseV1/views/panel/user-management.php:55
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:60
+#: protected/application/themes/BaseV1/views/panel/user-management.php:48
 #: protected/application/themes/culturaenlinea/layouts/parts/home-search.php:47
 msgid "Oportunidades"
 msgstr "Oportunidades"
 
 #: protected/application/conf/conf-base.php:457
-#: protected/application/themes/BaseV1/Theme.php:1799
+#: protected/application/themes/BaseV1/Theme.php:1811
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:10
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:24
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:74
@@ -927,9 +934,11 @@ msgstr "Inscripciones"
 
 #: protected/application/conf/conf-base.php:458
 #: protected/application/conf/taxonomies.php:27
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:72
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:101
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:131
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:74
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:103
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:133
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:162
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:188
 #: protected/application/themes/BaseV1/views/panel/agents.php:16
 #: protected/application/themes/BaseV1/views/panel/events.php:14
 #: protected/application/themes/BaseV1/views/panel/opportunities.php:14
@@ -989,6 +998,8 @@ msgstr "Certificado"
 #: protected/application/themes/BaseV1/Theme.php:594
 #: protected/application/themes/BaseV1/Theme.php:596
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:13
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:15
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:15
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:15
 #: protected/application/themes/BaseV1/views/panel/index.php:110
 #: protected/application/themes/culturaenlinea/config.php:114
@@ -1129,7 +1140,7 @@ msgstr "No informado"
 #: protected/application/lib/MapasCulturais/ApiOutputs/Html.php:217
 #: protected/application/lib/modules/EntityOpportunities/Module.php:65
 #: protected/application/lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--content-edit.php:12
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:186
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:188
 msgid "Sim"
 msgstr "Sí"
 
@@ -1137,7 +1148,7 @@ msgstr "Sí"
 #: protected/application/conf/event-types.php:59
 #: protected/application/conf/space-types.php:65
 #: protected/application/lib/modules/EntityOpportunities/Module.php:66
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:187
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:189
 msgid "Não"
 msgstr "No"
 
@@ -1456,7 +1467,7 @@ msgid "Anos"
 msgstr "Años"
 
 #: protected/application/conf/space-types.php:60
-#: protected/application/themes/BaseV1/Theme.php:1998
+#: protected/application/themes/BaseV1/Theme.php:2010
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-space.php:19
 #: protected/application/themes/BaseV1/layouts/parts/search/list-space-item.php:29
 #: protected/application/themes/BaseV1/layouts/parts/singles/history_event.php:134
@@ -2408,8 +2419,8 @@ msgstr "Vínculo"
 #: protected/application/lib/MapasCulturais/ApiOutputs/Html.php:74
 #: protected/application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:32
 #: protected/application/lib/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:79
-#: protected/application/themes/BaseV1/Theme.php:2100
-#: protected/application/themes/BaseV1/Theme.php:2127
+#: protected/application/themes/BaseV1/Theme.php:2112
+#: protected/application/themes/BaseV1/Theme.php:2139
 #: protected/application/themes/BaseV1/layouts/parts/home-agents.php:43
 #: protected/application/themes/BaseV1/layouts/parts/home-opportunities.php:39
 #: protected/application/themes/BaseV1/layouts/parts/home-projects.php:39
@@ -2427,7 +2438,7 @@ msgstr "Vínculo"
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:69
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:111
 #: protected/application/themes/BaseV1/layouts/parts/singles/permissions.php:15
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:184
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:186
 #: protected/application/themes/BaseV1/layouts/parts/singles/type.php:8
 msgid "Tipo"
 msgstr "Tipo"
@@ -2573,8 +2584,8 @@ msgstr "Selección múltiple (checkboxes)"
 #: protected/application/lib/MapasCulturais/App.php:826
 #: protected/application/lib/MapasCulturais/App.php:827
 #: protected/application/lib/MapasCulturais/App.php:828
-#: protected/application/lib/MapasCulturais/App.php:904
-#: protected/application/lib/MapasCulturais/App.php:920
+#: protected/application/lib/MapasCulturais/App.php:909
+#: protected/application/lib/MapasCulturais/App.php:925
 msgid "O arquivo enviado não é uma imagem válida."
 msgstr "El archivo enviado no es una imagen válida."
 
@@ -2588,7 +2599,7 @@ msgstr "El archivo enviado no es un documento válido."
 msgid "O arquivo não é um ZIP."
 msgstr "El archivo no es un ZIP."
 
-#: protected/application/lib/MapasCulturais/App.php:915
+#: protected/application/lib/MapasCulturais/App.php:920
 msgid "O link do vídeo é obrigatório"
 msgstr "El enlace del video es obligatorio"
 
@@ -2616,7 +2627,7 @@ msgstr "oportunidad-%s--inscripciones"
 msgid "oportunidade-%s--rascunhos"
 msgstr "oportunidad-%s--borradores"
 
-#: protected/application/lib/MapasCulturais/Controllers/Opportunity.php:124
+#: protected/application/lib/MapasCulturais/Controllers/Opportunity.php:130
 #, php-format
 msgid "oportunidade-%s--avaliacoes"
 msgstr "oportunidad-%s--evaluaciones"
@@ -2625,7 +2636,7 @@ msgstr "oportunidad-%s--evaluaciones"
 msgid "Este formulário é um pré-visualização da da ficha de inscrição."
 msgstr "Este formulario es una pre visualización de la ficha de inscripción."
 
-#: protected/application/lib/MapasCulturais/Controllers/Site.php:135
+#: protected/application/lib/MapasCulturais/Controllers/Site.php:155
 msgid "versão indefinida"
 msgstr "versión indefinida"
 
@@ -2816,8 +2827,8 @@ msgid "O arquivo \"%s\" é obrigatório."
 msgstr "El archivo \"%s\" es obligatorio."
 
 #: protected/application/lib/MapasCulturais/Entities/RegistrationEvaluation.php:126
-#: protected/application/themes/BaseV1/Theme.php:1737
-#: protected/application/themes/BaseV1/Theme.php:1779
+#: protected/application/themes/BaseV1/Theme.php:1749
+#: protected/application/themes/BaseV1/Theme.php:1791
 msgid "Rascunho"
 msgstr "Borrador"
 
@@ -2998,6 +3009,7 @@ msgstr "Tipo no válido"
 
 #: protected/application/lib/MapasCulturais/EvaluationMethod.php:47
 #: protected/application/themes/BaseV1/views/opportunity/report.php:58
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:58
 msgid "Nome do projeto"
 msgstr "Nombre del proyecto"
 
@@ -3031,11 +3043,12 @@ msgstr "Información sobre el evaluador"
 #: protected/application/lib/MapasCulturais/EvaluationMethod.php:122
 #: protected/application/plugins/EvaluationMethodDocumentary/Plugin.php:92
 #: protected/application/plugins/EvaluationMethodSimple/layouts/parts/simple--evaluation-view.php:4
-#: protected/application/themes/BaseV1/Theme.php:1803
+#: protected/application/themes/BaseV1/Theme.php:1815
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:25
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:39
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:89
 #: protected/application/themes/BaseV1/views/opportunity/report.php:60
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:60
 msgid "Avaliação"
 msgstr "Evaluación"
 
@@ -3081,7 +3094,7 @@ msgstr "Se requiere el ownerId."
 msgid "The agent with id %s not found."
 msgstr "El agente con id %s no fue encontrado."
 
-#: protected/application/lib/MapasCulturais/Traits/ControllerOpportunities.php:21
+#: protected/application/lib/MapasCulturais/Traits/ControllerOpportunities.php:27
 msgid "Nova Oportunidade"
 msgstr "Nueva Oportunidad"
 
@@ -3182,7 +3195,7 @@ msgstr "Ningún"
 #: protected/application/lib/modules/AgendaSingles/layouts/parts/agenda-singles--content.php:41
 #: protected/application/themes/BaseV1/Theme.php:680
 #: protected/application/themes/BaseV1/Theme.php:684
-#: protected/application/themes/BaseV1/Theme.php:2068
+#: protected/application/themes/BaseV1/Theme.php:2080
 #: protected/application/themes/BaseV1/layouts/parts/home-events.php:40
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:36
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:31
@@ -3192,7 +3205,7 @@ msgid "Linguagem"
 msgstr "Tipo de evento"
 
 #: protected/application/lib/modules/AgendaSingles/layouts/parts/agenda-singles--content.php:44
-#: protected/application/themes/BaseV1/Theme.php:2078
+#: protected/application/themes/BaseV1/Theme.php:2090
 #: protected/application/themes/BaseV1/layouts/parts/search/infobox-event.php:42
 #: protected/application/themes/BaseV1/layouts/parts/search/list-event-item.php:36
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:37
@@ -3202,7 +3215,7 @@ msgstr "Clasificación"
 #: protected/application/lib/modules/AgendaSingles/layouts/parts/agenda-singles--header.php:3
 #: protected/application/themes/BaseV1/Theme.php:559
 #: protected/application/themes/BaseV1/Theme.php:560
-#: protected/application/themes/BaseV1/Theme.php:1505
+#: protected/application/themes/BaseV1/Theme.php:1517
 msgid "evento"
 msgstr "evento"
 
@@ -3304,8 +3317,8 @@ msgstr "Recibir copia de la renuncia"
 #: protected/application/lib/modules/EntityOpportunities/layouts/parts/entity-opportunities--content-edit.php:18
 #: protected/application/lib/modules/OpportunityPhases/layouts/parts/widget-opportunity-phases.php:48
 #: protected/application/plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:11
-#: protected/application/themes/BaseV1/Theme.php:1510
-#: protected/application/themes/BaseV1/Theme.php:1606
+#: protected/application/themes/BaseV1/Theme.php:1522
+#: protected/application/themes/BaseV1/Theme.php:1618
 #: protected/application/themes/BaseV1/layouts/parts/owner.php:43
 #: protected/application/themes/BaseV1/layouts/parts/related-admin-agents.php:34
 #: protected/application/themes/BaseV1/layouts/parts/related-agents.php:9
@@ -3402,23 +3415,28 @@ msgstr "(Borrador)"
 msgid "Requisição para avaliar oportunidade"
 msgstr "Solicitud para evaluar oportunidad"
 
+#: protected/application/lib/modules/Notifications/Module.php:93
+#, php-format
+msgid "%s te convida para avaliar a oportunidade %s vinculada ao %s %s. %s"
+msgstr "%s te invita a evaluar la oportunidad %s vinculada al %s %s. %s"
+
 #: protected/application/lib/modules/Notifications/Module.php:94
 #, php-format
 msgid "Seu convite para fazer do agente %s um avaliador foi enviada."
 msgstr "Su invitación para hacer de agente %s un evaluador fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:97
+#: protected/application/lib/modules/Notifications/Module.php:101
+#: protected/application/lib/modules/Notifications/Module.php:105
 msgid "Requisição para relacionar agente em uma inscrição"
 msgstr "Solicitud para relacionar agente a una inscripción"
 
-#: protected/application/lib/modules/Notifications/Module.php:98
+#: protected/application/lib/modules/Notifications/Module.php:102
 #, php-format
-msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s. . %s"
+msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s."
 msgstr ""
-"%s quieres relacionar el agente %s a la inscripción %s en el proyecto %s. . "
-"%s"
+"%s quiere relacionar el agente %s a la inscripción %s en el proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:99
+#: protected/application/lib/modules/Notifications/Module.php:103
 #, php-format
 msgid ""
 "Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi "
@@ -3427,32 +3445,54 @@ msgstr ""
 "Su solicitud para relacionar el agente %s a la inscripción %s en el proyecto "
 "%s fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:101
+#: protected/application/lib/modules/Notifications/Module.php:106
+#, php-format
+msgid "%s quer relacionar o agente %s à inscrição %s na oportunidade %s."
+msgstr ""
+"%s quiere relacionar el agente %s a la inscripción %s en la oportunidad %s."
+
+#: protected/application/lib/modules/Notifications/Module.php:107
+#, php-format
+msgid ""
+"Sua requisição para relacionar o agente %s à inscrição %s no oportunidade %s "
+"foi enviada."
+msgstr ""
+"Su solicitud para relacionar el agente %s a la inscripción %s en la "
+"oportunidad %s fue enviada."
+
+#: protected/application/lib/modules/Notifications/Module.php:109
+#: protected/application/lib/modules/Notifications/Module.php:115
 msgid "Requisição para relacionar agente"
 msgstr "Solicitud para relacionar agente"
 
-#: protected/application/lib/modules/Notifications/Module.php:103
+#: protected/application/lib/modules/Notifications/Module.php:110
 #, php-format
-msgid "%s quer relacionar o agente %s ao %s %s. %s"
-msgstr "%s quieres relacionar el agente %s al %s %s. %s"
+msgid "%s quer relacionar o agente %s ao %s %s."
+msgstr "%s quiere relacionar el agente %s al %s %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:105
+#: protected/application/lib/modules/Notifications/Module.php:111
+#: protected/application/lib/modules/Notifications/Module.php:119
 #, php-format
 msgid "Sua requisição para relacionar o agente %s ao %s %s foi enviada."
 msgstr "Su solicitud para relacionar el agente %s al %s %s fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:109
+#: protected/application/lib/modules/Notifications/Module.php:117
+#, php-format
+msgid "%s quer relacionar o agente %s ao %s %s. %s"
+msgstr "%s quieres relacionar el agente %s al %s %s. %s"
+
+#: protected/application/lib/modules/Notifications/Module.php:123
 msgid "Requisição de mudança de propriedade"
 msgstr "Solicitud de cambio de propriedad"
 
-#: protected/application/lib/modules/Notifications/Module.php:110
+#: protected/application/lib/modules/Notifications/Module.php:124
 #, php-format
 msgid ""
 "%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"
 msgstr ""
 "%s está solicitando el cambio de propriedad del %s %s para el agente %s. %s"
 
-#: protected/application/lib/modules/Notifications/Module.php:111
+#: protected/application/lib/modules/Notifications/Module.php:125
 #, php-format
 msgid ""
 "Sua requisição para alterar a propriedade do %s %s para o agente %s foi "
@@ -3461,31 +3501,31 @@ msgstr ""
 "Su solicitud para cambiar la propiedad del %s %s para el agente %s fue "
 "enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:114
+#: protected/application/lib/modules/Notifications/Module.php:128
 #, php-format
 msgid "Requisição para criação de um %s filho"
 msgstr "Solicitud para crear un %s hijo"
 
-#: protected/application/lib/modules/Notifications/Module.php:115
+#: protected/application/lib/modules/Notifications/Module.php:129
 #, php-format
 msgid "%s quer que o %s %s seja um %s filho de %s. %s"
 msgstr "%s quieres que %s %s sea un %s hijo de %s. %s"
 
-#: protected/application/lib/modules/Notifications/Module.php:116
+#: protected/application/lib/modules/Notifications/Module.php:130
 #, php-format
 msgid "Sua requisição para fazer do %s %s um %s filho de %s foi enviada."
 msgstr "Su solicitud para hacer de %s %s un %s hijo de %s fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:119
+#: protected/application/lib/modules/Notifications/Module.php:133
 msgid "Requisição para adicionar evento"
 msgstr "Solicitud para añadir evento"
 
-#: protected/application/lib/modules/Notifications/Module.php:120
+#: protected/application/lib/modules/Notifications/Module.php:134
 #, php-format
 msgid "%s quer adicionar o evento %s que ocorre %s no espaço %s. %s"
 msgstr "%s quieres agregar el evento %s que se produce %s en el espacio %s. %s"
 
-#: protected/application/lib/modules/Notifications/Module.php:121
+#: protected/application/lib/modules/Notifications/Module.php:135
 #, php-format
 msgid ""
 "Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."
@@ -3493,114 +3533,114 @@ msgstr ""
 "Su solicitud para crear \"cuándo y dónde\" es el evento %s en el espacio %s "
 "fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:124
+#: protected/application/lib/modules/Notifications/Module.php:138
 msgid "Requisição para relacionar o evento ao projeto"
 msgstr "Solicitud para relacionar el evento al proyecto"
 
-#: protected/application/lib/modules/Notifications/Module.php:125
+#: protected/application/lib/modules/Notifications/Module.php:139
 #, php-format
 msgid "%s quer relacionar o evento %s ao projeto %s. %s"
 msgstr "%s quieres relacionar el evento %s al proyecto %s. %s"
 
-#: protected/application/lib/modules/Notifications/Module.php:126
+#: protected/application/lib/modules/Notifications/Module.php:140
 #, php-format
 msgid "Sua requisição para associar o evento %s ao projeto %s foi enviada."
 msgstr "Su solicitud para asociar el evento %s al proyecto %s fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:129
+#: protected/application/lib/modules/Notifications/Module.php:143
 msgid "Requisição para relacionar selo"
 msgstr "Solicitud para relacionar sello"
 
-#: protected/application/lib/modules/Notifications/Module.php:130
+#: protected/application/lib/modules/Notifications/Module.php:144
 #, php-format
 msgid "%s quer relacionar o selo %s ao %s %s. %s"
 msgstr "%s quieres relacionar el sello %s al %s %s. %s"
 
-#: protected/application/lib/modules/Notifications/Module.php:131
+#: protected/application/lib/modules/Notifications/Module.php:145
 #, php-format
 msgid "Sua requisição para relacionar o selo %s ao %s %s foi enviada."
 msgstr "Su solicitud para relacionar el sello %s al %s %s fue enviada."
 
-#: protected/application/lib/modules/Notifications/Module.php:194
+#: protected/application/lib/modules/Notifications/Module.php:208
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
 "%s aceptó la relación del agente %s a la inscripción %s en el proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:196
+#: protected/application/lib/modules/Notifications/Module.php:210
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s com o %s %s."
 msgstr "%s aceptó la relacionar el agente %s con el %s %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:200
+#: protected/application/lib/modules/Notifications/Module.php:214
 #, php-format
 msgid "%s aceitou a mudança de propriedade do %s %s para o agente %s."
 msgstr "%s aceptó el cambio de propiedad del %s %s para el agente %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:203
+#: protected/application/lib/modules/Notifications/Module.php:217
 #, php-format
 msgid "%s aceitou que o %s %s seja um %s filho de %s."
 msgstr "%s aceptó que el %s %s sea un %s hijo de %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:206
+#: protected/application/lib/modules/Notifications/Module.php:220
 #, php-format
 msgid "%s aceitou adicionar o evento %s que ocorre %s no espaço %s."
 msgstr "%s aceptó agregar el evento %s que ocurre %s en el espacio %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:209
+#: protected/application/lib/modules/Notifications/Module.php:223
 #, php-format
 msgid "%s aceitou relacionar o evento %s ao projeto %s."
 msgstr "%s aceptó relacionar el evento %s al proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:212
+#: protected/application/lib/modules/Notifications/Module.php:226
 msgid "A requisição foi aprovada."
 msgstr "La solicitud fue aprobada."
 
-#: protected/application/lib/modules/Notifications/Module.php:278
+#: protected/application/lib/modules/Notifications/Module.php:292
 #, php-format
 msgid "%s cancelou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
 "%s canceló la relación del agente %s a la inscripción %s en el proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:280
+#: protected/application/lib/modules/Notifications/Module.php:294
 #, php-format
 msgid "%s cancelou o pedido de relacionamento do agente %s com o %s %s."
 msgstr "%s canceló el pedido de relacionar el agente %s con el %s %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:284
+#: protected/application/lib/modules/Notifications/Module.php:298
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s à inscrição %s no projeto %s."
 msgstr ""
 "%s rechazó relacionar el agente %s a la inscripción %s en el proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:286
+#: protected/application/lib/modules/Notifications/Module.php:300
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s com o %s %s."
 msgstr "%s rechazó relacionar el agente %s con el %s %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:293
-#: protected/application/lib/modules/Notifications/Module.php:297
+#: protected/application/lib/modules/Notifications/Module.php:307
+#: protected/application/lib/modules/Notifications/Module.php:311
 #, php-format
 msgid "%s cancelou o pedido de propriedade do %s %s para o agente %s."
 msgstr "%s canceló el pedido de propiedad del %s %s para el agente %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:294
-#: protected/application/lib/modules/Notifications/Module.php:298
+#: protected/application/lib/modules/Notifications/Module.php:308
+#: protected/application/lib/modules/Notifications/Module.php:312
 #, php-format
 msgid "%s rejeitou a mudança de propriedade do %s %s para o agente %s."
 msgstr "%s rechazó el cambio de propiedad del %s %s para el agente %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:303
+#: protected/application/lib/modules/Notifications/Module.php:317
 #, php-format
 msgid "%s cancelou o pedido para que o %s %s seja um %s filho de %s."
 msgstr "%s canceló el pedido para que el %s %s sea un %s hijo de %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:304
+#: protected/application/lib/modules/Notifications/Module.php:318
 #, php-format
 msgid "%s rejeitou que o %s %s seja um %s filho de %s."
 msgstr "%s rechazó que el %s %s sea un %s hijo de %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:308
+#: protected/application/lib/modules/Notifications/Module.php:322
 #, php-format
 msgid ""
 "%s cancelou o pedido de autorização do evento %s que ocorre %s no espaço %s."
@@ -3608,26 +3648,26 @@ msgstr ""
 "%s canceló el pedido de autorización del evento %s que ocorre %s en el "
 "espacio %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:309
+#: protected/application/lib/modules/Notifications/Module.php:323
 #, php-format
 msgid "%s rejeitou o evento %s que ocorre %s no espaço %s."
 msgstr "%s rechazó el evento %s que ocorre %s en el espacio %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:313
+#: protected/application/lib/modules/Notifications/Module.php:327
 #, php-format
 msgid "%s cancelou o pedido de relacionamento do evento %s ao projeto %s."
 msgstr "%s canceló el pedido para relacionar el evento %s al proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:314
+#: protected/application/lib/modules/Notifications/Module.php:328
 #, php-format
 msgid "%s rejeitou o relacionamento do evento %s ao projeto %s."
 msgstr "%s rechazó relacionar el evento %s al proyecto %s."
 
-#: protected/application/lib/modules/Notifications/Module.php:318
+#: protected/application/lib/modules/Notifications/Module.php:332
 msgid "A requisição foi cancelada."
 msgstr "La solicitud fue cancelada."
 
-#: protected/application/lib/modules/Notifications/Module.php:319
+#: protected/application/lib/modules/Notifications/Module.php:333
 msgid "A requisição foi rejeitada."
 msgstr "La solicitud fue rechazada."
 
@@ -3681,7 +3721,7 @@ msgid "Solicitar Recurso"
 msgstr "Solicitar Recurso"
 
 #: protected/application/lib/modules/OpportunityClaimForm/layouts/parts/claim-form.php:17
-#: protected/application/themes/BaseV1/Theme.php:1509
+#: protected/application/themes/BaseV1/Theme.php:1521
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:10
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:15
 #: protected/application/themes/BaseV1/views/event/create.php:557
@@ -3832,8 +3872,8 @@ msgid "Inscritos"
 msgstr "Inscriptos"
 
 #: protected/application/lib/modules/OpportunityPhases/layouts/parts/opportunity-phases-tabs.php:14
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:59
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:159
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:61
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:213
 msgid "Permissões"
 msgstr "Permisos"
 
@@ -3984,7 +4024,7 @@ msgstr "Agregar fase"
 
 #: protected/application/lib/modules/OpportunityPhases/layouts/parts/widget-opportunity-phases.php:74
 #: protected/application/lib/modules/OpportunityPhases/layouts/parts/widget-opportunity-phases.php:93
-#: protected/application/themes/BaseV1/Theme.php:1617
+#: protected/application/themes/BaseV1/Theme.php:1629
 #: protected/application/themes/BaseV1/layouts/parts/panel-em-cartaz.php:17
 msgid "de"
 msgstr "de"
@@ -4003,7 +4043,7 @@ msgstr "Fecha inicial"
 
 #: protected/application/lib/modules/OpportunityPhases/layouts/parts/widget-opportunity-phases.php:78
 #: protected/application/lib/modules/OpportunityPhases/layouts/parts/widget-opportunity-phases.php:97
-#: protected/application/themes/BaseV1/Theme.php:1619
+#: protected/application/themes/BaseV1/Theme.php:1631
 #: protected/application/themes/BaseV1/layouts/parts/search/filter.php:19
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:10
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
@@ -4077,8 +4117,8 @@ msgstr "Válida"
 #: protected/application/plugins/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:24
 #: protected/application/plugins/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-view.php:29
 #: protected/application/plugins/EvaluationMethodSimple/Plugin.php:112
-#: protected/application/themes/BaseV1/Theme.php:1733
-#: protected/application/themes/BaseV1/Theme.php:1775
+#: protected/application/themes/BaseV1/Theme.php:1745
+#: protected/application/themes/BaseV1/Theme.php:1787
 msgid "Inválida"
 msgstr "No válida"
 
@@ -4133,20 +4173,20 @@ msgid "Consiste num select box com os status possíveis para uma inscrição."
 msgstr "Consiste en un select box con el status posible para una inscripción."
 
 #: protected/application/plugins/EvaluationMethodSimple/Plugin.php:115
-#: protected/application/themes/BaseV1/Theme.php:1734
-#: protected/application/themes/BaseV1/Theme.php:1776
+#: protected/application/themes/BaseV1/Theme.php:1746
+#: protected/application/themes/BaseV1/Theme.php:1788
 msgid "Não selecionada"
 msgstr "No seleccionada"
 
 #: protected/application/plugins/EvaluationMethodSimple/Plugin.php:118
-#: protected/application/themes/BaseV1/Theme.php:1735
-#: protected/application/themes/BaseV1/Theme.php:1777
+#: protected/application/themes/BaseV1/Theme.php:1747
+#: protected/application/themes/BaseV1/Theme.php:1789
 msgid "Suplente"
 msgstr "Suplente"
 
 #: protected/application/plugins/EvaluationMethodSimple/Plugin.php:121
-#: protected/application/themes/BaseV1/Theme.php:1736
-#: protected/application/themes/BaseV1/Theme.php:1778
+#: protected/application/themes/BaseV1/Theme.php:1748
+#: protected/application/themes/BaseV1/Theme.php:1790
 msgid "Selecionada"
 msgstr "Seleccionada"
 
@@ -4232,7 +4272,7 @@ msgstr "El valor del campo \"%s\" es mayor que el valor máximo permitido"
 msgid "O valor do campo \"%s\" é menor que o valor mínimo permitido"
 msgstr "El valor del campo \"%s\" es menor que el valor mínimo permitido"
 
-#: protected/application/plugins/EvaluationMethodTechnical/Plugin.php:256
+#: protected/application/plugins/EvaluationMethodTechnical/Plugin.php:265
 msgid "Avaliação incompleta"
 msgstr "Evaluación incompleta"
 
@@ -4860,7 +4900,7 @@ msgstr "nombre de la entidad espacio en singular"
 
 #: protected/application/themes/BaseV1/Theme.php:227
 #: protected/application/themes/BaseV1/Theme.php:228
-#: protected/application/themes/BaseV1/Theme.php:1504
+#: protected/application/themes/BaseV1/Theme.php:1516
 msgid "espaço"
 msgstr "espacio"
 
@@ -5325,7 +5365,7 @@ msgstr "nombre de la entidad Agente en singular en minúscula"
 
 #: protected/application/themes/BaseV1/Theme.php:400
 #: protected/application/themes/BaseV1/Theme.php:401
-#: protected/application/themes/BaseV1/Theme.php:1503
+#: protected/application/themes/BaseV1/Theme.php:1515
 msgid "agente"
 msgstr "agente"
 
@@ -5423,7 +5463,7 @@ msgstr "nombre de la entidad Proyecto en singular en minúscula"
 
 #: protected/application/themes/BaseV1/Theme.php:453
 #: protected/application/themes/BaseV1/Theme.php:454
-#: protected/application/themes/BaseV1/Theme.php:1506
+#: protected/application/themes/BaseV1/Theme.php:1518
 msgid "projeto"
 msgstr "proyecto"
 
@@ -5465,6 +5505,7 @@ msgstr "texto \"Mis Oportunidades\""
 
 #: protected/application/themes/BaseV1/Theme.php:479
 #: protected/application/themes/BaseV1/Theme.php:480
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:9
 #: protected/application/themes/BaseV1/views/panel/opportunities.php:7
 msgid "Minhas oportunidades"
 msgstr "Mis oportunidades"
@@ -5552,7 +5593,7 @@ msgstr "nombre de la entidad Oportunidad en sigular en minúscula"
 
 #: protected/application/themes/BaseV1/Theme.php:515
 #: protected/application/themes/BaseV1/Theme.php:516
-#: protected/application/themes/BaseV1/Theme.php:1507
+#: protected/application/themes/BaseV1/Theme.php:1519
 msgid "oportunidade"
 msgstr "oportunidad"
 
@@ -5821,9 +5862,10 @@ msgstr "Usuarios y roles"
 
 #: protected/application/themes/BaseV1/Theme.php:658
 #: protected/application/themes/BaseV1/Theme.php:662
-#: protected/application/themes/BaseV1/Theme.php:2022
+#: protected/application/themes/BaseV1/Theme.php:2034
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:31
 #: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:55
+#: protected/application/themes/BaseV1/views/opportunity/report.php:75
 msgid "Área de Atuação"
 msgstr "Área de actuación"
 
@@ -5845,7 +5887,7 @@ msgstr "Seleccione por lo menos un área"
 
 #: protected/application/themes/BaseV1/Theme.php:672
 #: protected/application/themes/BaseV1/Theme.php:676
-#: protected/application/themes/BaseV1/Theme.php:2023
+#: protected/application/themes/BaseV1/Theme.php:2035
 msgid "Selecione as áreas"
 msgstr "Seleccione las áreas"
 
@@ -5874,7 +5916,7 @@ msgstr "Seleccione por lo menos un tipo de evento"
 
 #: protected/application/themes/BaseV1/Theme.php:694
 #: protected/application/themes/BaseV1/Theme.php:698
-#: protected/application/themes/BaseV1/Theme.php:2069
+#: protected/application/themes/BaseV1/Theme.php:2081
 msgid "Selecione as linguagens"
 msgstr "Selecciones los tipos de eventos"
 
@@ -5939,9 +5981,9 @@ msgstr "Administrador"
 
 #: protected/application/themes/BaseV1/Theme.php:769
 #: protected/application/themes/BaseV1/Theme.php:773
+#: protected/application/themes/BaseV1/layouts/parts/panel-nav.php:70
 #: protected/application/themes/BaseV1/layouts/parts/related-admin-agents.php:9
 #: protected/application/themes/BaseV1/layouts/parts/related-profiles-agents.php:36
-#: protected/application/themes/BaseV1/views/panel/user-management.php:26
 msgid "Administradores"
 msgstr "Administradores"
 
@@ -5965,140 +6007,140 @@ msgstr "Subsitio Administrador"
 msgid "Subsite Administradores"
 msgstr "Subsitio Administradores"
 
-#: protected/application/themes/BaseV1/Theme.php:1332
+#: protected/application/themes/BaseV1/Theme.php:1336
 msgid "Textos informativos para as fichas de avaliação"
 msgstr "Textos informativos para las fichas de evaluación"
 
-#: protected/application/themes/BaseV1/Theme.php:1496
+#: protected/application/themes/BaseV1/Theme.php:1508
 msgid "Anterior"
 msgstr "Anterior"
 
-#: protected/application/themes/BaseV1/Theme.php:1497
+#: protected/application/themes/BaseV1/Theme.php:1509
 msgid "Próxima"
 msgstr "Próxima"
 
-#: protected/application/themes/BaseV1/Theme.php:1499
+#: protected/application/themes/BaseV1/Theme.php:1511
 msgid "%curr% de %total%"
 msgstr "%curr% de %total%"
 
-#: protected/application/themes/BaseV1/Theme.php:1508
+#: protected/application/themes/BaseV1/Theme.php:1520
 msgid "selo"
 msgstr "sello"
 
-#: protected/application/themes/BaseV1/Theme.php:1525
+#: protected/application/themes/BaseV1/Theme.php:1537
 msgid "There was an error"
 msgstr "Ocurrió un error"
 
-#: protected/application/themes/BaseV1/Theme.php:1555
+#: protected/application/themes/BaseV1/Theme.php:1567
 msgid "Cancelar Alteração (Esc)"
 msgstr "Cancelar Edición (Esc)"
 
-#: protected/application/themes/BaseV1/Theme.php:1556
+#: protected/application/themes/BaseV1/Theme.php:1568
 msgid "Confirmar Alteração (Enter)"
 msgstr "Confirmar Edición (Enter)"
 
-#: protected/application/themes/BaseV1/Theme.php:1557
+#: protected/application/themes/BaseV1/Theme.php:1569
 msgid "Confirmar Alteração (Ctrl+Enter)"
 msgstr "Confirmar Edición (Ctrl+Enter)"
 
-#: protected/application/themes/BaseV1/Theme.php:1558
+#: protected/application/themes/BaseV1/Theme.php:1570
 msgid "Há alterações não salvas nesta página."
 msgstr "Hay cambios no guardados en esta página."
 
-#: protected/application/themes/BaseV1/Theme.php:1559
+#: protected/application/themes/BaseV1/Theme.php:1571
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:6
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:15
 msgid "Publicação livre"
 msgstr "Publicación libre"
 
-#: protected/application/themes/BaseV1/Theme.php:1560
+#: protected/application/themes/BaseV1/Theme.php:1572
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:9
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:18
 msgid "Publicação restrita"
 msgstr "Publicación restringida"
 
-#: protected/application/themes/BaseV1/Theme.php:1561
+#: protected/application/themes/BaseV1/Theme.php:1573
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:7
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:16
 msgid "Qualquer pessoa pode criar eventos."
 msgstr "Cualquier persona puede crear eventos."
 
-#: protected/application/themes/BaseV1/Theme.php:1562
+#: protected/application/themes/BaseV1/Theme.php:1574
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:10
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-public.php:19
 msgid "Requer autorização para criar eventos."
 msgstr "Requiere autorización para crear eventos."
 
-#: protected/application/themes/BaseV1/Theme.php:1563
+#: protected/application/themes/BaseV1/Theme.php:1575
 msgid "este agente"
 msgstr "este agente"
 
-#: protected/application/themes/BaseV1/Theme.php:1564
+#: protected/application/themes/BaseV1/Theme.php:1576
 msgid "este espaço"
 msgstr "este espacio"
 
-#: protected/application/themes/BaseV1/Theme.php:1565
+#: protected/application/themes/BaseV1/Theme.php:1577
 msgid "este evento"
 msgstr "este eventos"
 
-#: protected/application/themes/BaseV1/Theme.php:1566
+#: protected/application/themes/BaseV1/Theme.php:1578
 msgid "este projeto"
 msgstr "este proyecto"
 
-#: protected/application/themes/BaseV1/Theme.php:1567
+#: protected/application/themes/BaseV1/Theme.php:1579
 msgid "esta oportunidade"
 msgstr "esta oportunidad"
 
-#: protected/application/themes/BaseV1/Theme.php:1568
+#: protected/application/themes/BaseV1/Theme.php:1580
 #, php-format
 msgid "Você tem certeza que deseja publicar %s?"
 msgstr "¿Está seguro (a) que desea publicar %s?"
 
-#: protected/application/themes/BaseV1/Theme.php:1569
+#: protected/application/themes/BaseV1/Theme.php:1581
 #, php-format
 msgid "Você tem certeza que deseja publicar %s? Isto não poderá ser desfeito."
 msgstr "¿Está seguro (a) que desea publicar %s? Esto no se podrá deshacer."
 
-#: protected/application/themes/BaseV1/Theme.php:1570
+#: protected/application/themes/BaseV1/Theme.php:1582
 #, php-format
 msgid "Sua requisição para fazer deste %s filho de %s foi enviada."
 msgstr "Su solicitud para hacer %s hijo de %s fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1571
+#: protected/application/themes/BaseV1/Theme.php:1583
 #, php-format
 msgid "Sua requisição para associar este evento ao projeto %s foi enviada."
 msgstr "Su solicitud para asociar este evento al proyecto %s fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1572
-#: protected/application/themes/BaseV1/Theme.php:1747
-#: protected/application/themes/BaseV1/Theme.php:1789
+#: protected/application/themes/BaseV1/Theme.php:1584
+#: protected/application/themes/BaseV1/Theme.php:1759
+#: protected/application/themes/BaseV1/Theme.php:1801
 #: protected/application/themes/BaseV1/views/event/create.php:23
 #: protected/application/themes/BaseV1/views/event/edit.php:23
 #: protected/application/themes/BaseV1/views/event/single.php:23
 msgid "Corrija os erros indicados abaixo."
 msgstr "Corrija los errores indicados abajo."
 
-#: protected/application/themes/BaseV1/Theme.php:1573
+#: protected/application/themes/BaseV1/Theme.php:1585
 msgid "Edições salvas."
 msgstr "Cambios guardados."
 
-#: protected/application/themes/BaseV1/Theme.php:1574
+#: protected/application/themes/BaseV1/Theme.php:1586
 msgid "Um erro inesperado aconteceu."
 msgstr "Ocurrió un error inesperado."
 
-#: protected/application/themes/BaseV1/Theme.php:1575
+#: protected/application/themes/BaseV1/Theme.php:1587
 msgid "Insira um título para seu vídeo."
 msgstr "Ingrese un título para su video."
 
-#: protected/application/themes/BaseV1/Theme.php:1576
+#: protected/application/themes/BaseV1/Theme.php:1588
 msgid "Insira uma url de um vídeo do YouTube ou do Vimeo."
 msgstr "Agregue una url de un video de YouTube o Vimeo."
 
-#: protected/application/themes/BaseV1/Theme.php:1577
+#: protected/application/themes/BaseV1/Theme.php:1589
 msgid "Insira um título para seu link."
 msgstr "Agregue un título para el enlace."
 
-#: protected/application/themes/BaseV1/Theme.php:1578
+#: protected/application/themes/BaseV1/Theme.php:1590
 msgid ""
 "A url do link é inválida, insira uma url completa como http://www.google."
 "com/."
@@ -6106,51 +6148,51 @@ msgstr ""
 "La url del enlace no es válida, agregue una url completa como http://www."
 "google.com/."
 
-#: protected/application/themes/BaseV1/Theme.php:1579
+#: protected/application/themes/BaseV1/Theme.php:1591
 msgid "Limpar"
 msgstr "Limpiar"
 
-#: protected/application/themes/BaseV1/Theme.php:1580
+#: protected/application/themes/BaseV1/Theme.php:1592
 msgid "Recortar"
 msgstr "Recortar"
 
-#: protected/application/themes/BaseV1/Theme.php:1581
+#: protected/application/themes/BaseV1/Theme.php:1593
 msgid "Arraste para recortar"
 msgstr "Arraste para recortar"
 
-#: protected/application/themes/BaseV1/Theme.php:1582
+#: protected/application/themes/BaseV1/Theme.php:1594
 msgid "Tem certeza que deseja remover a imagem de capa?"
 msgstr "¿Usted está seguro que desea eliminar la imagen de portada?"
 
-#: protected/application/themes/BaseV1/Theme.php:1587
+#: protected/application/themes/BaseV1/Theme.php:1599
 msgid "A avaliação foi salva"
 msgstr "La evaluación fue guardada"
 
-#: protected/application/themes/BaseV1/Theme.php:1598
+#: protected/application/themes/BaseV1/Theme.php:1610
 msgid "Eventos encontrados no espaço"
 msgstr "Eventos encontrados en el espacio"
 
-#: protected/application/themes/BaseV1/Theme.php:1603
+#: protected/application/themes/BaseV1/Theme.php:1615
 msgid "Clique e arraste para desenhar o círculo"
 msgstr "Haga clic y arrastre para diseñar el círculo"
 
-#: protected/application/themes/BaseV1/Theme.php:1604
+#: protected/application/themes/BaseV1/Theme.php:1616
 msgid "Solte o mouse para finalizar o desenho"
 msgstr "Suelte el mouse para finalizar el diseño"
 
-#: protected/application/themes/BaseV1/Theme.php:1605
+#: protected/application/themes/BaseV1/Theme.php:1617
 msgid "Cancelar desenho"
 msgstr "Cancelar diseño"
 
-#: protected/application/themes/BaseV1/Theme.php:1607
+#: protected/application/themes/BaseV1/Theme.php:1619
 msgid "Desenhar um círculo"
 msgstr "Diseñar un círculo"
 
-#: protected/application/themes/BaseV1/Theme.php:1608
+#: protected/application/themes/BaseV1/Theme.php:1620
 msgid "Raio"
 msgstr "Radio"
 
-#: protected/application/themes/BaseV1/Theme.php:1609
+#: protected/application/themes/BaseV1/Theme.php:1621
 msgid ""
 "Segundo seu navegador, você está aproximadamente neste ponto com margem de "
 "erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de "
@@ -6160,16 +6202,16 @@ msgstr ""
 "error de {{errorMargin}} metros. Buscando resultados dentro de un radio de "
 "{{radius}}KM de este punto."
 
-#: protected/application/themes/BaseV1/Theme.php:1615
-#: protected/application/themes/BaseV1/Theme.php:2032
+#: protected/application/themes/BaseV1/Theme.php:1627
+#: protected/application/themes/BaseV1/Theme.php:2044
 msgid "Todos"
 msgstr "Todos"
 
-#: protected/application/themes/BaseV1/Theme.php:1620
+#: protected/application/themes/BaseV1/Theme.php:1632
 msgid "Data de criação"
 msgstr "Fecha de creación"
 
-#: protected/application/themes/BaseV1/Theme.php:1697
+#: protected/application/themes/BaseV1/Theme.php:1709
 msgid ""
 "Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
 "sucesso."
@@ -6177,15 +6219,15 @@ msgstr ""
 "Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
 "éxito."
 
-#: protected/application/themes/BaseV1/Theme.php:1707
+#: protected/application/themes/BaseV1/Theme.php:1719
 msgid "O proprietário da entidade foi modificado"
 msgstr "El propietario de la entidad fue modificado"
 
-#: protected/application/themes/BaseV1/Theme.php:1708
+#: protected/application/themes/BaseV1/Theme.php:1720
 msgid "O proprietário da entidade não pode ser modificado"
 msgstr "El propietario de la entidad no puede ser modificado"
 
-#: protected/application/themes/BaseV1/Theme.php:1709
+#: protected/application/themes/BaseV1/Theme.php:1721
 msgid ""
 "Sua requisição para mudança de propriedade deste {{type}} para o agente "
 "{{recipient}} foi enviada."
@@ -6193,86 +6235,86 @@ msgstr ""
 "Su solicitud para el cambio de propiedad de este  {{type}} para el agente "
 "{{recipient}} fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1714
-#: protected/application/themes/BaseV1/Theme.php:1755
+#: protected/application/themes/BaseV1/Theme.php:1726
+#: protected/application/themes/BaseV1/Theme.php:1767
 msgid "Selecione o tipo de campo"
 msgstr "Seleccione el tipo de campo"
 
-#: protected/application/themes/BaseV1/Theme.php:1715
-#: protected/application/themes/BaseV1/Theme.php:1756
+#: protected/application/themes/BaseV1/Theme.php:1727
+#: protected/application/themes/BaseV1/Theme.php:1768
 msgid "Campo criado."
 msgstr "Campo creado."
 
-#: protected/application/themes/BaseV1/Theme.php:1716
-#: protected/application/themes/BaseV1/Theme.php:1757
+#: protected/application/themes/BaseV1/Theme.php:1728
+#: protected/application/themes/BaseV1/Theme.php:1769
 msgid "Campo removido."
 msgstr "Campo eliminado."
 
-#: protected/application/themes/BaseV1/Theme.php:1717
-#: protected/application/themes/BaseV1/Theme.php:1758
+#: protected/application/themes/BaseV1/Theme.php:1729
+#: protected/application/themes/BaseV1/Theme.php:1770
 msgid "Alterações Salvas."
 msgstr "Cambios guardados."
 
-#: protected/application/themes/BaseV1/Theme.php:1718
-#: protected/application/themes/BaseV1/Theme.php:1759
+#: protected/application/themes/BaseV1/Theme.php:1730
+#: protected/application/themes/BaseV1/Theme.php:1771
 msgid "Anexo criado."
 msgstr "Adjunto creado."
 
-#: protected/application/themes/BaseV1/Theme.php:1719
-#: protected/application/themes/BaseV1/Theme.php:1760
+#: protected/application/themes/BaseV1/Theme.php:1731
+#: protected/application/themes/BaseV1/Theme.php:1772
 msgid "Anexo removido."
 msgstr "Adjunto eliminado."
 
-#: protected/application/themes/BaseV1/Theme.php:1720
-#: protected/application/themes/BaseV1/Theme.php:1729
-#: protected/application/themes/BaseV1/Theme.php:1761
-#: protected/application/themes/BaseV1/Theme.php:1770
+#: protected/application/themes/BaseV1/Theme.php:1732
+#: protected/application/themes/BaseV1/Theme.php:1741
+#: protected/application/themes/BaseV1/Theme.php:1773
+#: protected/application/themes/BaseV1/Theme.php:1782
 msgid "Deseja remover este anexo?"
 msgstr "Desea eliminar este adjunto?"
 
-#: protected/application/themes/BaseV1/Theme.php:1721
-#: protected/application/themes/BaseV1/Theme.php:1762
+#: protected/application/themes/BaseV1/Theme.php:1733
+#: protected/application/themes/BaseV1/Theme.php:1774
 msgid "Deseja remover este modelo?"
 msgstr "Desea eliminar este modelo?"
 
-#: protected/application/themes/BaseV1/Theme.php:1722
-#: protected/application/themes/BaseV1/Theme.php:1763
+#: protected/application/themes/BaseV1/Theme.php:1734
+#: protected/application/themes/BaseV1/Theme.php:1775
 msgid "Modelo removido."
 msgstr "Modelo eliminado."
 
-#: protected/application/themes/BaseV1/Theme.php:1723
-#: protected/application/themes/BaseV1/Theme.php:1764
+#: protected/application/themes/BaseV1/Theme.php:1735
+#: protected/application/themes/BaseV1/Theme.php:1776
 msgid "publicado"
 msgstr "publicado"
 
-#: protected/application/themes/BaseV1/Theme.php:1724
-#: protected/application/themes/BaseV1/Theme.php:1765
+#: protected/application/themes/BaseV1/Theme.php:1736
+#: protected/application/themes/BaseV1/Theme.php:1777
 msgid "rascunho"
 msgstr "borrador"
 
-#: protected/application/themes/BaseV1/Theme.php:1725
-#: protected/application/themes/BaseV1/Theme.php:1766
+#: protected/application/themes/BaseV1/Theme.php:1737
+#: protected/application/themes/BaseV1/Theme.php:1778
 msgid "Publicando..."
 msgstr "Publicando..."
 
-#: protected/application/themes/BaseV1/Theme.php:1726
-#: protected/application/themes/BaseV1/Theme.php:1767
+#: protected/application/themes/BaseV1/Theme.php:1738
+#: protected/application/themes/BaseV1/Theme.php:1779
 msgid "Eventos publicados."
 msgstr "Eventos publicados."
 
-#: protected/application/themes/BaseV1/Theme.php:1727
-#: protected/application/themes/BaseV1/Theme.php:1768
+#: protected/application/themes/BaseV1/Theme.php:1739
+#: protected/application/themes/BaseV1/Theme.php:1780
 msgid "Tornando rascunho..."
 msgstr "Convirtiendo en borrador..."
 
-#: protected/application/themes/BaseV1/Theme.php:1728
-#: protected/application/themes/BaseV1/Theme.php:1769
+#: protected/application/themes/BaseV1/Theme.php:1740
+#: protected/application/themes/BaseV1/Theme.php:1781
 msgid "Eventos transformados em rascunho."
 msgstr "Eventos transformados en borradores."
 
-#: protected/application/themes/BaseV1/Theme.php:1731
-#: protected/application/themes/BaseV1/Theme.php:1773
-#: protected/application/themes/BaseV1/Theme.php:1794
+#: protected/application/themes/BaseV1/Theme.php:1743
+#: protected/application/themes/BaseV1/Theme.php:1785
+#: protected/application/themes/BaseV1/Theme.php:1806
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:41
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:53
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:92
@@ -6280,13 +6322,13 @@ msgstr "Eventos transformados en borradores."
 msgid "Todas"
 msgstr "Todas"
 
-#: protected/application/themes/BaseV1/Theme.php:1732
-#: protected/application/themes/BaseV1/Theme.php:1774
+#: protected/application/themes/BaseV1/Theme.php:1744
+#: protected/application/themes/BaseV1/Theme.php:1786
 msgid "Pendente"
 msgstr "Pendiente"
 
-#: protected/application/themes/BaseV1/Theme.php:1740
-#: protected/application/themes/BaseV1/Theme.php:1782
+#: protected/application/themes/BaseV1/Theme.php:1752
+#: protected/application/themes/BaseV1/Theme.php:1794
 msgid ""
 "Você tem certeza que deseja reabrir este formulário para edição? Ao fazer "
 "isso, ele sairá dessa lista."
@@ -6294,8 +6336,8 @@ msgstr ""
 "Usted está seguro que desea reabrir este formulario para edición? Al hacer "
 "esto, él saldrá de esta lista."
 
-#: protected/application/themes/BaseV1/Theme.php:1741
-#: protected/application/themes/BaseV1/Theme.php:1783
+#: protected/application/themes/BaseV1/Theme.php:1753
+#: protected/application/themes/BaseV1/Theme.php:1795
 msgid ""
 "Você não definiu um número de vagas. Para selecionar essa inscrição, "
 "configure um número de vagas na aba Inscrições, em Agentes."
@@ -6303,54 +6345,54 @@ msgstr ""
 "No ha establecido un número de vacantes. Para seleccionar esta inscripción, "
 "establecer un número de vacantes en la pestaña de registro de agentes."
 
-#: protected/application/themes/BaseV1/Theme.php:1742
-#: protected/application/themes/BaseV1/Theme.php:1784
+#: protected/application/themes/BaseV1/Theme.php:1754
+#: protected/application/themes/BaseV1/Theme.php:1796
 msgid "Você atingiu o limite máximo de 1 inscrição aprovada"
 msgstr "Usted ha alcanzado el límite máximo de 1 inscripción aprobada"
 
-#: protected/application/themes/BaseV1/Theme.php:1743
-#: protected/application/themes/BaseV1/Theme.php:1785
+#: protected/application/themes/BaseV1/Theme.php:1755
+#: protected/application/themes/BaseV1/Theme.php:1797
 msgid "Você atingiu o limite máximo de {{num}} inscrições aprovadas"
 msgstr "Usted alcanzó el límite máximo de  {{num}} inscripciones aprobadas"
 
-#: protected/application/themes/BaseV1/Theme.php:1744
-#: protected/application/themes/BaseV1/Theme.php:1786
+#: protected/application/themes/BaseV1/Theme.php:1756
+#: protected/application/themes/BaseV1/Theme.php:1798
 msgid "O limite de inscrições para o agente informado se esgotou."
 msgstr "El límite de inscripciones para el agente informado se ha agotado."
 
-#: protected/application/themes/BaseV1/Theme.php:1745
+#: protected/application/themes/BaseV1/Theme.php:1757
 msgid "O número de vagas da inscrição no projeto se esgotou."
 msgstr "El número de vacantes de la inscripción al proyecto se ha agotado."
 
-#: protected/application/themes/BaseV1/Theme.php:1746
+#: protected/application/themes/BaseV1/Theme.php:1758
 msgid ""
 "Para se inscrever neste projeto você deve selecionar um agente responsável."
 msgstr ""
 "Para inscribirse en este proyecto debe seleccionar un agente responsable."
 
-#: protected/application/themes/BaseV1/Theme.php:1748
-#: protected/application/themes/BaseV1/Theme.php:1790
+#: protected/application/themes/BaseV1/Theme.php:1760
+#: protected/application/themes/BaseV1/Theme.php:1802
 msgid "Inscrição enviada. Aguarde tela de sumário."
 msgstr "Inscripción enviada. Aguarde la pantalla de resumen."
 
-#: protected/application/themes/BaseV1/Theme.php:1749
+#: protected/application/themes/BaseV1/Theme.php:1761
 msgid "Todas opções"
 msgstr "Todas las opciones"
 
-#: protected/application/themes/BaseV1/Theme.php:1754
+#: protected/application/themes/BaseV1/Theme.php:1766
 msgid "Todas as categorias"
 msgstr "Todas las categorías"
 
-#: protected/application/themes/BaseV1/Theme.php:1772
+#: protected/application/themes/BaseV1/Theme.php:1784
 msgid "O Agente selecionado já foi adicionado na comissão de avaliadores"
 msgstr "El Agente seleccionado ya fue agregado en el tribunal de evaluadores"
 
-#: protected/application/themes/BaseV1/Theme.php:1787
+#: protected/application/themes/BaseV1/Theme.php:1799
 msgid "O número de vagas da inscrição no oportunidade se esgotou."
 msgstr ""
 "El número de vacantes de la inscripción en la oportunidad se ha agotado."
 
-#: protected/application/themes/BaseV1/Theme.php:1788
+#: protected/application/themes/BaseV1/Theme.php:1800
 msgid ""
 "Para se inscrever nesta oportunidade você deve selecionar um agente "
 "responsável."
@@ -6358,27 +6400,27 @@ msgstr ""
 "Para inscribirse en esta oportunidad usted debe seleccionar un agente "
 "responsable."
 
-#: protected/application/themes/BaseV1/Theme.php:1791
+#: protected/application/themes/BaseV1/Theme.php:1803
 msgid "Você tem certeza que deseja excluir o avaliador?"
 msgstr "¿Está seguro (a) que desea borrar el evaluador?"
 
-#: protected/application/themes/BaseV1/Theme.php:1792
+#: protected/application/themes/BaseV1/Theme.php:1804
 msgid "Avaliada"
 msgstr "Evaluada"
 
-#: protected/application/themes/BaseV1/Theme.php:1793
+#: protected/application/themes/BaseV1/Theme.php:1805
 msgid "Não Avaliada"
 msgstr "No evaluada"
 
-#: protected/application/themes/BaseV1/Theme.php:1795
+#: protected/application/themes/BaseV1/Theme.php:1807
 msgid "Enviada"
 msgstr "Enviada"
 
-#: protected/application/themes/BaseV1/Theme.php:1796
+#: protected/application/themes/BaseV1/Theme.php:1808
 msgid "Aplicar resultado das avaliações"
 msgstr "Aplicar resultado de las evaluaciones"
 
-#: protected/application/themes/BaseV1/Theme.php:1797
+#: protected/application/themes/BaseV1/Theme.php:1809
 msgid ""
 "Deseja aplicar o resultado de todas as avaliações como o status das "
 "respectivas inscrições?"
@@ -6386,23 +6428,24 @@ msgstr ""
 "¿Desea aplicar el resultado de todas las evaluaciones como el estado de sus "
 "inscripciones?"
 
-#: protected/application/themes/BaseV1/Theme.php:1800
+#: protected/application/themes/BaseV1/Theme.php:1812
 msgid "Categorias"
 msgstr "Categorías"
 
-#: protected/application/themes/BaseV1/Theme.php:1802
+#: protected/application/themes/BaseV1/Theme.php:1814
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:33
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:86
 #: protected/application/themes/BaseV1/views/opportunity/report.php:71
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:71
 msgid "Anexos"
 msgstr "Adjuntos"
 
-#: protected/application/themes/BaseV1/Theme.php:1812
-#: protected/application/themes/BaseV1/Theme.php:1817
+#: protected/application/themes/BaseV1/Theme.php:1824
+#: protected/application/themes/BaseV1/Theme.php:1829
 msgid "Sua requisição para relacionar o agente {{agent}} foi enviada."
 msgstr "Su solicitud para relacionar el agente {{agent}} fue enviada."
 
-#: protected/application/themes/BaseV1/Theme.php:1818
+#: protected/application/themes/BaseV1/Theme.php:1830
 #, php-format
 msgid ""
 "Tem certeza que deseja remover o grupo %s? A relação com todos os agentes "
@@ -6411,52 +6454,52 @@ msgstr ""
 "¿Está seguro que desea eliminar el grupo %s? La relación con todos los "
 "agentes dentre de este grupo será eliminada."
 
-#: protected/application/themes/BaseV1/Theme.php:1863
+#: protected/application/themes/BaseV1/Theme.php:1875
 #: protected/application/themes/BaseV1/views/event/create.php:497
 #: protected/application/themes/BaseV1/views/event/edit.php:497
 #: protected/application/themes/BaseV1/views/event/single.php:497
 msgid "uma vez"
 msgstr "una vez"
 
-#: protected/application/themes/BaseV1/Theme.php:1864
+#: protected/application/themes/BaseV1/Theme.php:1876
 #: protected/application/themes/BaseV1/views/event/create.php:498
 #: protected/application/themes/BaseV1/views/event/edit.php:498
 #: protected/application/themes/BaseV1/views/event/single.php:498
 msgid "todos os dias"
 msgstr "todos los días"
 
-#: protected/application/themes/BaseV1/Theme.php:1865
+#: protected/application/themes/BaseV1/Theme.php:1877
 #: protected/application/themes/BaseV1/views/event/create.php:499
 #: protected/application/themes/BaseV1/views/event/edit.php:499
 #: protected/application/themes/BaseV1/views/event/single.php:499
 msgid "semanal"
 msgstr "semanal"
 
-#: protected/application/themes/BaseV1/Theme.php:1866
+#: protected/application/themes/BaseV1/Theme.php:1878
 msgid "mensal"
 msgstr "mensual"
 
-#: protected/application/themes/BaseV1/Theme.php:1989
-#: protected/application/themes/BaseV1/Theme.php:2031
+#: protected/application/themes/BaseV1/Theme.php:2001
+#: protected/application/themes/BaseV1/Theme.php:2043
 msgid "Tipos"
 msgstr "Tipos"
 
-#: protected/application/themes/BaseV1/Theme.php:1990
-#: protected/application/themes/BaseV1/Theme.php:2101
-#: protected/application/themes/BaseV1/Theme.php:2128
+#: protected/application/themes/BaseV1/Theme.php:2002
+#: protected/application/themes/BaseV1/Theme.php:2113
+#: protected/application/themes/BaseV1/Theme.php:2140
 msgid "Selecione os tipos"
 msgstr "Seleccione los tipos"
 
-#: protected/application/themes/BaseV1/Theme.php:1999
+#: protected/application/themes/BaseV1/Theme.php:2011
 msgid "Exibir somente resultados com Acessibilidade"
 msgstr "Mostrar solamente resultados con Accesibilidad"
 
-#: protected/application/themes/BaseV1/Theme.php:2079
+#: protected/application/themes/BaseV1/Theme.php:2091
 msgid "Selecione a classificação"
 msgstr "Seleccione la clasificación"
 
-#: protected/application/themes/BaseV1/Theme.php:2109
-#: protected/application/themes/BaseV1/Theme.php:2136
+#: protected/application/themes/BaseV1/Theme.php:2121
+#: protected/application/themes/BaseV1/Theme.php:2148
 msgid "Inscrições Abertas"
 msgstr "Inscripciones Abiertas"
 
@@ -6827,14 +6870,14 @@ msgid "Adicionar selo"
 msgstr "Agregar sello"
 
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:6
-#: protected/application/themes/BaseV1/views/panel/user-management.php:43
+#: protected/application/themes/BaseV1/views/panel/user-management.php:36
 #: protected/application/themes/culturaenlinea/layouts/parts/home-search.php:25
 msgid "Digite uma palavra-chave"
 msgstr "Escriba una palabra clave"
 
 #: protected/application/themes/BaseV1/layouts/parts/home-search.php:8
 #: protected/application/themes/BaseV1/layouts/parts/search/filter.php:14
-#: protected/application/themes/BaseV1/views/panel/user-management.php:47
+#: protected/application/themes/BaseV1/views/panel/user-management.php:40
 #: protected/application/themes/culturaenlinea/layouts/parts/home-search.php:27
 msgid "Buscar"
 msgstr "Buscar"
@@ -6883,12 +6926,16 @@ msgstr "Eliminar este enlace?"
 #: protected/application/themes/BaseV1/layouts/parts/panel-space.php:35
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:28
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:33
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:32
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:37
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:38
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:32
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:37
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:30
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:35
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:34
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:39
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:30
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:35
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:30
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:35
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:30
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:35
 msgid "excluir"
 msgstr "borrar"
 
@@ -6938,8 +6985,8 @@ msgstr "Dirección (con http://)"
 #: protected/application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:115
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-about.php:34
 #: protected/application/themes/BaseV1/layouts/parts/singles/space-extra-info.php:2
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:139
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:182
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:141
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:184
 #: protected/application/themes/BaseV1/layouts/parts/video-gallery.php:69
 #: protected/application/themes/BaseV1/views/agent/create.php:128
 #: protected/application/themes/BaseV1/views/agent/edit.php:128
@@ -7038,9 +7085,11 @@ msgstr "Área(s) de actuación:"
 #: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:19
 #: protected/application/themes/BaseV1/layouts/parts/panel-space.php:31
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:29
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:33
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:34
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:33
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:31
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:35
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:31
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:31
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:31
 msgid "arquivar"
 msgstr "archivar"
 
@@ -7053,9 +7102,11 @@ msgstr "archivar"
 #: protected/application/themes/BaseV1/layouts/parts/panel-space.php:34
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:32
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:13
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:36
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:37
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:36
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:34
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:38
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:34
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:34
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:34
 msgid "publicar"
 msgstr "publicar"
 
@@ -7070,10 +7121,12 @@ msgstr "publicar"
 #: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:29
 #: protected/application/themes/BaseV1/layouts/parts/panel-space.php:38
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:36
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:38
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:40
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:42
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:41
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:40
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:42
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:38
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:38
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:38
 msgid "desarquivar"
 msgstr "desarchivar"
 
@@ -7085,9 +7138,11 @@ msgstr "desarchivar"
 #: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:32
 #: protected/application/themes/BaseV1/layouts/parts/panel-space.php:41
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:39
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:44
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:43
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:43
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:42
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:44
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:41
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:41
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:41
 msgid "recuperar"
 msgstr "recuperar"
 
@@ -7099,9 +7154,11 @@ msgstr "recuperar"
 #: protected/application/themes/BaseV1/layouts/parts/panel-seal.php:34
 #: protected/application/themes/BaseV1/layouts/parts/panel-space.php:43
 #: protected/application/themes/BaseV1/layouts/parts/panel-subsite.php:41
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:46
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:45
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:45
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:44
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:46
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:43
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:43
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:43
 msgid "excluir definitivamente"
 msgstr "eliminar de forma permanente"
 
@@ -7180,7 +7237,7 @@ msgstr "Clasificación:"
 
 #: protected/application/themes/BaseV1/layouts/parts/panel-event.php:20
 #: protected/application/themes/BaseV1/layouts/parts/singles/project-events.php:12
-#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:32
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:33
 msgid "tornar rascunho"
 msgstr "convertir en borrador"
 
@@ -7431,7 +7488,7 @@ msgstr "Eventos encontrados en:"
 
 #: protected/application/themes/BaseV1/layouts/parts/search/list-space.php:3
 #: protected/application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:27
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:230
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:284
 #: protected/application/themes/BaseV1/views/panel/index.php:67
 msgid "Adicionar"
 msgstr "Agregar"
@@ -7502,7 +7559,7 @@ msgstr "Los íconos de lápiz indican contenidos editables."
 
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--roles.php:15
 #: protected/application/themes/BaseV1/layouts/parts/singles/control--roles.php:21
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:186
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:240
 msgid "Normal"
 msgstr "Normal"
 
@@ -9103,41 +9160,41 @@ msgstr "Seleccione el(los) tipo(s) de eventos(s)"
 msgid "Selos:"
 msgstr "Sellos:"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:126
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:128
 msgid "Filtragem dos dados"
 msgstr "Filtros de datos"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:144
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:183
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:146
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:185
 msgid "Campo"
 msgstr "Campo"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:151
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:153
 msgid "Tipo do campo"
 msgstr "Tipo del campo"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:159
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:185
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:161
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:187
 msgid "Filtro Avançado"
 msgstr "Filtro Avanzado"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:164
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:166
 msgid "Preencha todos os campos para adicionar um filtro"
 msgstr "Complete todos los campos para agregar un filtro"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:192
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:194
 msgid "Mover para cima"
 msgstr "Mover hacia arriba"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:197
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:199
 msgid "Mover para baixo"
 msgstr "Mover hacia abajo"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:202
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:204
 msgid "Remover filtro"
 msgstr "Remover filtro"
 
-#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:208
+#: protected/application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:210
 msgid "Sem filtros configurados"
 msgstr "Sin filtros configurados"
 
@@ -9359,10 +9416,11 @@ msgid "id:"
 msgstr ""
 
 #: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:14
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:163
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:286
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:217
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:11
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:14
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:13
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:13
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:13
 msgid "id"
 msgstr ""
@@ -9419,14 +9477,16 @@ msgstr "fecha de creación:"
 msgid "data criação"
 msgstr "fecha de creación"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:60
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:62
 #: protected/application/themes/BaseV1/views/panel/index.php:141
 msgid "Atividades"
 msgstr "Actividades"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:68
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:97
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:127
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:70
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:99
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:129
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:158
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:184
 #: protected/application/themes/BaseV1/views/panel/agents.php:12
 #: protected/application/themes/BaseV1/views/panel/apps.php:10
 #: protected/application/themes/BaseV1/views/panel/events.php:10
@@ -9438,9 +9498,11 @@ msgstr "Actividades"
 msgid "Ativos"
 msgstr "Activos"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:69
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:98
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:128
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:71
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:100
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:130
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:159
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:185
 #: protected/application/themes/BaseV1/views/panel/agents.php:13
 #: protected/application/themes/BaseV1/views/panel/events.php:11
 #: protected/application/themes/BaseV1/views/panel/opportunities.php:11
@@ -9450,9 +9512,11 @@ msgstr "Activos"
 msgid "Concedidos"
 msgstr "Concedidos"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:70
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:99
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:129
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:72
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:101
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:131
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:160
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:186
 #: protected/application/themes/BaseV1/views/panel/agents.php:14
 #: protected/application/themes/BaseV1/views/panel/events.php:12
 #: protected/application/themes/BaseV1/views/panel/opportunities.php:12
@@ -9464,9 +9528,11 @@ msgstr "Concedidos"
 msgid "Rascunhos"
 msgstr "Borradores"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:71
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:100
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:130
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:73
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:102
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:132
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:161
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:187
 #: protected/application/themes/BaseV1/views/panel/agents.php:15
 #: protected/application/themes/BaseV1/views/panel/apps.php:11
 #: protected/application/themes/BaseV1/views/panel/events.php:13
@@ -9478,52 +9544,48 @@ msgstr "Borradores"
 msgid "Lixeira"
 msgstr "Papelera"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:164
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:218
 msgid "subsite"
 msgstr "subsitio"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:165
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:219
 msgid "permissão"
 msgstr "permiso"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:233
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:267
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:287
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:321
 msgid "Adicionar permissão"
 msgstr "Agregar permiso"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:236
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:290
 msgid "Subsite:"
 msgstr "Subsitio:"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:247
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:301
 msgid "Permissão:"
 msgstr "Permiso:"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:277
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:331
 msgid "Obtendo histório..."
 msgstr "Obteniendo historial..."
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:282
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:336
 msgid "Log de atividades"
 msgstr "Registro de actividades"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:287
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:340
 msgid "id da entidade"
 msgstr "id de la entidad"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:288
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:341
 msgid "tipo entidade"
 msgstr "tipo entidad"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:289
-msgid "ação"
-msgstr "acción"
-
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:290
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:342
 msgid "descrição"
 msgstr "descripción"
 
-#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:291
+#: protected/application/themes/BaseV1/layouts/parts/user-management/info-user.php:343
 msgid "data"
 msgstr "fecha"
 
@@ -9549,6 +9611,8 @@ msgstr "obteniendo espacios..."
 
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-agents.php:14
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-events.php:16
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:16
+#: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:16
 #: protected/application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:16
 msgid "Operações"
 msgstr "Operaciones"
@@ -9898,34 +9962,42 @@ msgid "Telefone Publico"
 msgstr "Teléfono Público"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:9
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:9
 msgid "selecionada"
 msgstr "seleccionada"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:13
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:13
 msgid "não selecionada"
 msgstr "no seleccionada"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:17
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:17
 msgid "suplente"
 msgstr "suplente"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:21
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:21
 msgid "inválida"
 msgstr "no válida"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:25
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:25
 msgid "pendente"
 msgstr "pendiente"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:62
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:62
 msgid "Inscrição - Data de envio"
 msgstr "inscripción - Fecha de envío"
 
 #: protected/application/themes/BaseV1/views/opportunity/report.php:63
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:63
 msgid "Inscrição - Hora de envio"
 msgstr "inscripción - Hora de envío"
 
-#: protected/application/themes/BaseV1/views/opportunity/report.php:103
+#: protected/application/themes/BaseV1/views/opportunity/report.php:111
+#: protected/application/themes/BaseV1/views/opportunity/report_bueno.php:103
 msgid "zip"
 msgstr ""
 
@@ -10392,6 +10464,14 @@ msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Email Privado y Teléfono 1 completos"
 
+#~ msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s. . %s"
+#~ msgstr ""
+#~ "%s quieres relacionar el agente %s a la inscripción %s en el proyecto "
+#~ "%s. . %s"
+
+#~ msgid "ação"
+#~ msgstr "acción"
+
 #~ msgid "Baixar lista de inscritos"
 #~ msgstr "Descargar lista de inscriptos"
 
@@ -10578,16 +10658,6 @@ msgstr ""
 
 #~ msgid "Confirmar nova senha"
 #~ msgstr "Confirmar nueva contraseña"
-
-#~ msgid "%s te convida para avaliar a oportunidade %s vinculada ao %s %s."
-#~ msgstr "%s te invita a evaluar la oportunidad %s vinculada al %s %s."
-
-#~ msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s."
-#~ msgstr ""
-#~ "%s quiere relacionar el agente %s a la inscripción %s en el proyecto %s."
-
-#~ msgid "%s quer relacionar o agente %s ao %s %s."
-#~ msgstr "%s quiere relacionar el agente %s al %s %s."
 
 #~ msgid ""
 #~ "%s está requisitando a mudança de propriedade do %s %s para o agente %s."
