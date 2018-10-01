@@ -377,10 +377,12 @@ class Opportunity extends EntityController {
             $reg_evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration["id"]]);
             $valids = $invalids = 0;
             foreach ($reg_evaluations as $ev) {
-                if ("invalid" === $ev->evaluationData->viability) {
-                    $invalids++;
-                } else if ("valid" === $ev->evaluationData->viability) {
-                    $valids++;
+                if (property_exists($ev->evaluationData, "viability")) {
+                    if ("invalid" === $ev->evaluationData->viability) {
+                        $invalids++;
+                    } else if ("valid" === $ev->evaluationData->viability) {
+                        $valids++;
+                    }
                 }
             }
 
