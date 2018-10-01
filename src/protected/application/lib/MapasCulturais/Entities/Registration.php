@@ -170,9 +170,18 @@ class Registration extends \MapasCulturais\Entity
 
     public $preview = false;
 
+    protected static $hooked = false;
 
     function __construct() {
         $this->owner = App::i()->user->profile;
+        if(!self::$hooked){
+            self::$hooked = true;
+            App::i()->hook('entity(' . $this->getHookClassPath() . ').randomId', function($id){
+                if(!$this->number){
+                    $this->number = 'on-' . $id;
+                }
+            });
+        }
         parent::__construct();
     }
 
@@ -952,9 +961,6 @@ class Registration extends \MapasCulturais\Entity
 
     /** @ORM\PrePersist */
     public function prePersist($args = null){ 
-        if(!$this->number){
-            $this->number = 'on-' . $this->id;
-        }
         parent::prePersist($args); 
     }
     /** @ORM\PostPersist */
