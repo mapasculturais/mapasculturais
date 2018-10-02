@@ -175,11 +175,13 @@ trait EntityPermissionCache {
             $rel_class = $def['targetEntity'];
             if($def['type'] == 4 && !$def['isOwningSide'] && $rel_class::usesPermissionCache()){
                 foreach($this->$prop as $entity){
-                    $entity->recreatePermissionCache(true);
+                    $entity->recreatePermissionCache();
                 }
             }
             
         }
+
+        $app->setEntityPermissionCacheAsRecreated($this);
         
         if(method_exists($this, 'getExtraEntitiesToRecreatePermissionCache')){
             $entities = $this->getExtraEntitiesToRecreatePermissionCache();
@@ -189,6 +191,6 @@ trait EntityPermissionCache {
             }
         }
         
-        $app->setEntityPermissionCacheAsRecreated($this);
+
     }
 }
