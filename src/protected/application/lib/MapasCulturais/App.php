@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use SwiftMailer\SwiftMailer;
 use Mustache\Mustache;
+use WideImage\Exception\Exception;
 
 /**
  * MapasCulturais Application class.
@@ -1557,16 +1558,27 @@ class App extends \Slim\Slim{
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
 
-            foreach($queue as $pendingCache) {
-                $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
-                if ($entity) {
-                    $entity->recreatePermissionCache();
+            try {
+                foreach($queue as $pendingCache) {
+                    $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
+                    if ($entity) {
+                        $entity->recreatePermissionCache();
+                    }
+                    $this->em->remove($pendingCache);
                 }
-                $this->em->remove($pendingCache);
+                $this->em->flush();
+                $conn->commit();
+            } catch (Exception $e ){
+                $this->em->close();
+                $conn->rollBack();
+                if(php_sapi_name()==="cli"){
+                    echo "\n\t - ERROR - {$e->getMessage()}";
+                }
+                throw $e;
+            } finally {
+                $this->em->close();
             }
 
-            $conn->commit();
-            $this->em->flush();
             $this->permissionCachePendingQueue = [];
         }
     }
