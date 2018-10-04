@@ -182,7 +182,7 @@ $finish_microtime = microtime(true);
 
 $execution_time = number_format($finish_microtime - $start_microtime, 4);
 
-$t = gmdate("H:i:s", $execution_time);
+$t = gmdate("H:i:s", (int) $execution_time);
 
 echo "
 ==========================================================================================
