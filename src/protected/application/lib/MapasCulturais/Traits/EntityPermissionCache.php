@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\Entity;
 
 trait EntityPermissionCache {
 
@@ -73,12 +74,7 @@ trait EntityPermissionCache {
         if($this->usesAgentRelation()){
             $this->deleteUsersWithControlCache();
         }
-        
-        $conn = $app->em->getConnection();
-        $class_name = $this->getPCacheObjectType();
-        $permissions = $this->getPermissionsList();
 
-        
         $deleted = false;
         if(is_null($users)){
             if($delete_old){
@@ -99,30 +95,40 @@ trait EntityPermissionCache {
             }
         }
 
+        $conn = $app->em->getConnection();
+        $class_name = $this->getPCacheObjectType();
+        $permissions = $this->getPermissionsList();
         $this->__enabled = false;
-        
+        $isPrivateEntity = $class_name::isPrivateEntity();
+        $hasCanUserViewMethod = method_exists($this, 'canUserView');
+        $isStatusNotDraft = ($this->status > Entity::STATUS_DRAFT);
+
         $already_created_users = [];
         foreach ($users as $user) {
-            if($delete_old && !$deleted){
-                $this->deletePermissionsCache($user->id);
+            if (is_null($user)) {
+                continue;
             }
-            
+
+            if(isset($already_created_users["$user"])){
+                continue;
+            }
+
+            $already_created_users["$user"] = true;
+
             if($user->is('admin', $this->_subsiteId)){
                 continue;
             }
-            
-            if(isset($already_created_users["$user"])){
-                continue;
-            } else {
-                $already_created_users["$user"] = true;
+
+            if($delete_old && !$deleted){
+                $this->deletePermissionsCache();
             }
-            
+
             foreach ($permissions as $permission) {
-                if($permission === 'view' && $this->status > 0 && !$class_name::isPrivateEntity() && !method_exists($this, 'canUserView')) {
+                if($permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
                     continue;
                 }
 
-                if (!is_null($user) && $this->canUser($permission, $user)) {
+                if ($this->canUser($permission, $user)) {
                     $conn->insert('pcache', [
                         'user_id' => $user->id,
                         'action' => $permission,
