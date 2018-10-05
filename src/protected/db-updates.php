@@ -1069,7 +1069,7 @@ return [
         }
     },
 
-    'update registrations set number'=> function () use($conn){
+    'update registrations set number fixed'=> function () use($conn){
         echo "\nsalvando número da inscrição para oportunidades de uma só fase ou para a primeira fase das inscrições\n";
         $conn->executeQuery("UPDATE registration SET number = CONCAT('on-', id) WHERE opportunity_id IN (SELECT id FROM opportunity WHERE parent_id IS NULL)");
         $regs = $conn->fetchAll("
@@ -1094,7 +1094,8 @@ return [
             $current = $reg;
             
             while($current->previous){
-                $current = $registrations[$reg->previous];
+                print_r($current);
+                $current = $registrations[$current->previous];
             }
 
             echo "\n - inscrição de id {$reg->id} número {$current->id}\n";
