@@ -5,9 +5,9 @@ return [
     $app = \MapasCulturais\App::i();
     $conn = $app->em->getConnection();
     $conn->executeQuery("DELETE FROM pcache");
-    foreach (['Agent', 'Space', 'Project', 'Event', 'Seal', 'Registration', 'Notification', 'Request', 'Opportunity'] as $class){
+    foreach (['Agent', 'Space', 'Project', 'Event', 'Seal', 'Registration', 'Notification', 'Request', 'Opportunity', 'EvaluationMethodConfiguration'] as $class){
             DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) {
-                $entity->recreatePermissionCache();
+                $entity->createPermissionsCacheForUsers(null, true, false);
             });
         }
     },
