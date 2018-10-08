@@ -27,15 +27,16 @@ $plugin = $app->plugins['EvaluationMethodTechnical'];
         <textarea name="data[obs]" ng-model="evaluation['obs']"></textarea>
     </label>
     <hr>
-    <label ng-show="data.enableViability=='true'">
-        <?php i::_e('Esta proposta apresenta exequibilidade?') ?>
+    <label ng-show="data.enableViability=='true'" class="action-edit">
+        <strong> <?php i::_e('Exequibilidade Orçamentária'); ?> </strong> <span class="required">*</span> <br>
+        <?php i::_e('Esta proposta está adequada ao orçamento apresentado? Os custos orçamentários estão compatíveis com os praticados no mercado?'); ?>
         <br>
         <label class="input-label">
-            <input type="radio" name="data[viability]" value="valid" ng-model="evaluation['viability']"/>
-            <em><?php i::_e('Sim. É válida.')?></em> <br>
+            <input type="radio" name="data[viability]" value="valid" ng-model="evaluation['viability']" required="required"/>
+            <em><?php i::_e('Sim')?></em> <br>
 
             <input type="radio" name="data[viability]" value="invalid" ng-model="evaluation['viability']"/>
-            <em><?php i::_e('Não. É inválida.')?></em>
+            <em><?php i::_e('Não')?></em>
         </label>
     </label>
     <hr>
