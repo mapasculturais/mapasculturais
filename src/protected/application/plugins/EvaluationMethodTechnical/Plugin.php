@@ -204,6 +204,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         foreach($data as $key => $val){
             if ($key === 'viability' && empty($val)) {
                 $empty = true;
+                $errors[] = i::__('Informe sobre a exequibilidade orçamentária desta inscrição!');
             } else if($key === 'obs' && !trim($val)) {
                 $empty = true;
             } else if($key !== 'obs' && $key !== 'viability' && !is_numeric($val)){
