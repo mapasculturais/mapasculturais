@@ -27,7 +27,7 @@ $plugin = $app->plugins['EvaluationMethodTechnical'];
         <textarea name="data[obs]" ng-model="evaluation['obs']"></textarea>
     </label>
     <hr>
-    <label>
+    <label ng-show="data.enableViability=='true'">
         <?php i::_e('Esta proposta apresenta exequibilidade?') ?>
         <br>
         <label class="input-label">

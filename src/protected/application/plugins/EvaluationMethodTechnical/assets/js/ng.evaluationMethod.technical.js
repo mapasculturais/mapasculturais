@@ -125,7 +125,6 @@
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
-
             MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
                 e.min = parseInt(e.min);
                 e.max = parseInt(e.max);
@@ -144,6 +143,7 @@
             $scope.data = {
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
+                enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 empty: true
             };
 
