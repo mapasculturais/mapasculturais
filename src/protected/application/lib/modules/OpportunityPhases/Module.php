@@ -402,6 +402,7 @@ class Module extends \MapasCulturais\Module{
 
         // action para importar as inscrições da última fase concluida
         $app->hook('GET(opportunity.importLastPhaseRegistrations)', function() use($app) {
+            ini_set('max_execution_time', 0);
             $target_opportunity = self::getRequestedOpportunity();
 
             $target_opportunity ->checkPermission('@control');
