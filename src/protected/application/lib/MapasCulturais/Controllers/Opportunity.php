@@ -349,7 +349,6 @@ class Opportunity extends EntityController {
         $em = $opportunity->getEvaluationMethod();
         
         foreach($registrations as &$reg){
-            $reg['number'] = 'on-' . $reg['id'];
             
             if(in_array('consolidatedResult', $query->selecting)){
                 $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
@@ -519,7 +518,6 @@ class Opportunity extends EntityController {
         $_result = [];
         
         foreach($registrations as &$registration){
-            $registration['number'] = 'on-' . $registration['id'];
             foreach($valuer_by_user as $user_id => $valuer){
                 if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])) {
 
