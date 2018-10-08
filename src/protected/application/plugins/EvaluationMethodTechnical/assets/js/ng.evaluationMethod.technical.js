@@ -44,6 +44,7 @@
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
+                enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
 
                 debounce: 2000
             };
@@ -64,6 +65,7 @@
                     sections: $scope.data.sections,
                     criteria: $scope.data.criteria,
                     quotas: $scope.data.quotas,
+                    enableViability: $scope.data.enableViability,
                 };
 
                 TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
