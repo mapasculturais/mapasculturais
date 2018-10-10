@@ -130,14 +130,16 @@ class Theme extends BaseV1\Theme{
                 $variables_scss .= "\$brand-developer:  " . ($this->subsiteInstance->cor_dev?             $this->subsiteInstance->cor_dev:             $app->config['themes.brand-developer'])   . " !default;\n";
 
                 $assets_path  = $app->config['namespaces'][$this->subsiteInstance->namespace] . "/assets/";
-                $assets_path_ = explode('src',$assets_path);
+                $assets_path_ = explode('protected',$assets_path);
+
                 if(file_exists($assets_path.'css/sass/main.scss'))
-                    $main_scss .= "@import '../../../../../src" . $assets_path_[1] . "css/sass/main.scss';";
+                    $main_scss .= "@import '../../../../../" . basename(BASE_PATH) . "/protected" . $assets_path_[1] . "css/sass/main.scss';";
+
                 else
-                    $main_scss .= "@import '../../../../../src/protected/application/themes/BaseV1/assets/css/sass/main';";
+                    $main_scss .= "@import '../../../../../" . basename(BASE_PATH) . "/protected/application/themes/BaseV1/assets/css/sass/main';";
 
                 if(file_exists($assets_path.'css/sass/_variables.scss'))
-                    $variables_scss .= "@import '../../../../../src" . $assets_path_[1] . "css/sass/_variables.scss';\n";
+                    $variables_scss .= "@import '../../../../../" . basename(BASE_PATH) . "/protected" . $assets_path_[1] . "css/sass/_variables.scss';\n";
 
                 file_put_contents($this->subsitePath . '/assets/css/sass/_variables.scss', $variables_scss);
                 file_put_contents($this->subsitePath . '/assets/css/sass/main.scss', $main_scss);

@@ -119,7 +119,13 @@ class Opportunity extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunity($entity);
+        $committee = $entity->getEvaluationCommittee();
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUsersAndStatus($entity, $users);
 
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--avaliacoes"), $entity->id);
 
@@ -340,9 +346,7 @@ class Opportunity extends EntityController {
         
         $registrations = $query->find();
         $em = $opportunity->getEvaluationMethod();
-        foreach($registrations as &$reg){
-            $reg['number'] = 'on-' . $reg['id'];
-
+        foreach($registrations as &$reg) {
             if(in_array('consolidatedResult', $query->selecting)){
                 $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
                 $this->preSetStatus($opportunity,$reg);
@@ -533,7 +537,6 @@ class Opportunity extends EntityController {
         $_result = [];
         
         foreach($registrations as &$registration){
-            $registration['number'] = 'on-' . $registration['id'];
             foreach($valuer_by_user as $user_id => $valuer){
                 if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])) {
 

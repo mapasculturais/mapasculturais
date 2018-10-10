@@ -475,7 +475,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $registration->setAgentsSealRelation();
         }
 
-        $app->addEntityToRecreatePermissionCacheList($this);
+        $app->enqueueEntityToPCacheRecreation($this);
 
         $this->save(true);
     }
