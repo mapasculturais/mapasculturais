@@ -44,6 +44,7 @@
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
+                enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
 
                 debounce: 2000
             };
@@ -64,6 +65,7 @@
                     sections: $scope.data.sections,
                     criteria: $scope.data.criteria,
                     quotas: $scope.data.quotas,
+                    enableViability: $scope.data.enableViability,
                 };
 
                 TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
@@ -123,7 +125,6 @@
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
-
             MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
                 e.min = parseInt(e.min);
                 e.max = parseInt(e.max);
@@ -142,6 +143,7 @@
             $scope.data = {
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
+                enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 empty: true
             };
 

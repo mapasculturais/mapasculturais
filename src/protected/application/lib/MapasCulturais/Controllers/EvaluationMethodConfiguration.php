@@ -65,35 +65,6 @@ class EvaluationMethodConfiguration extends EntityController {
                 }
             }
         }
-
-
-        if($data_fetch_categories){
-            foreach($data_fetch_categories as $id => $val){
-                if(!isset($entity_fetch_categories->$id) || $entity_fetch_categories->$id != $val){
-                    $user_ids[] = $id;
-                }
-            }
-
-            foreach($entity_fetch_categories as $id => $val){
-                if(!isset($data_fetch_categories->$id)){
-                    $user_id[] = $id;
-                }
-            }
-        }
-
-        $user_ids = array_filter($user_ids, function($e){
-            if(is_numeric($e)){
-                return $e;
-            }
-        });
-        
-        $user_ids = array_unique($user_ids);
-        
-        if($user_ids){
-            $app->permissionCacheUsersIds = $user_ids;
-        } else {
-            $app->skipPermissionCacheRecreation = true;
-        }
     }
     
     function PATCH_single($data = null) {

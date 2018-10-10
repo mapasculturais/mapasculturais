@@ -274,7 +274,7 @@ class Module extends \MapasCulturais\Module{
                     $section_divisor = new Entities\RegistrationFieldConfiguration;
                     $section_divisor->owner = $opportunity;
                     $section_divisor->fieldType = 'section';
-                    $section_divisor->title = sprintf(i::__('%s - Inscrição %s'),$opportunity->name, $reg->getNumber());
+                    $section_divisor->title = sprintf(i::__('%s - Inscrição %s'),$opportunity->name, $reg->id);
                     $section_divisor->displayOrder = $i * 1000 -1;
 
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $section_divisor;
@@ -402,6 +402,7 @@ class Module extends \MapasCulturais\Module{
 
         // action para importar as inscrições da última fase concluida
         $app->hook('GET(opportunity.importLastPhaseRegistrations)', function() use($app) {
+            ini_set('max_execution_time', 0);
             $target_opportunity = self::getRequestedOpportunity();
 
             $target_opportunity ->checkPermission('@control');
@@ -431,6 +432,7 @@ class Module extends \MapasCulturais\Module{
                 $reg->owner = $r->owner;
                 $reg->opportunity = $target_opportunity;
                 $reg->status = Entities\Registration::STATUS_DRAFT;
+                $reg->number = $r->number;
 
                 $reg->previousPhaseRegistrationId = $r->id;
                 $reg->category = $r->category;

@@ -69,6 +69,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('enableViability',[
+            'label' => i::__('Habilitar Análise de Exiquibilidade das inscrições?'),
+            'type' => 'radio',
+            'options' => array(
+                'true' => 'Habilitar Análise de Exiquibilidade',
+                'false' => 'Não habilitar',
+            ),
+        ]);
+
     }
 
     function enqueueScriptsAndStyles() {
@@ -150,9 +159,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                                 continue;
                             }
 
-                            $val = isset($evaluation->evaluationData->{$crit->id}) ? $evaluation->evaluationData->{$crit->id} : 0;
-
-                            $rersult += $val * $crit->weight;
+                            $val =  isset($evaluation->evaluationData->{$crit->id}) ? (float) $evaluation->evaluationData->{$crit->id} : 0;
+                            $weight = (float) $crit->weight;
+                            $rersult += $val * $weight;
 
                         }
 
@@ -195,6 +204,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         foreach($data as $key => $val){
             if ($key === 'viability' && empty($val)) {
                 $empty = true;
+                $errors[] = i::__('Informe sobre a exequibilidade orçamentária desta inscrição!');
             } else if($key === 'obs' && !trim($val)) {
                 $empty = true;
             } else if($key !== 'obs' && $key !== 'viability' && !is_numeric($val)){
@@ -227,8 +237,17 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
         $app = App::i();
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
+        $committee = $registration->opportunity->getEvaluationCommittee();
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = 0;
         foreach ($evaluations as $eval){

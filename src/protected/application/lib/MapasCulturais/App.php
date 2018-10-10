@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use SwiftMailer\SwiftMailer;
 use Mustache\Mustache;
+use WideImage\Exception\Exception;
 
 /**
  * MapasCulturais Application class.
@@ -528,7 +529,7 @@ class App extends \Slim\Slim{
     public function run() {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
         parent::run();
-        $this->recreatePermissionsCacheOfListedEntities();
+        $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
@@ -1515,47 +1516,70 @@ class App extends \Slim\Slim{
     /**********************************************
      * Permissions Cache
      **********************************************/
-    protected $_entitiesToRecreatePermissionsCache = [];
-    protected $permissionCacheUsersIds = [];
-    protected $skipPermissionCacheRecreation = false;
+    private $permissionCachePendingQueue = [];
 
-    public function addEntityToRecreatePermissionCacheList(Entity $entity){
-        $this->_entitiesToRecreatePermissionsCache["$entity"] = $entity;
+    public function enqueueEntityToPCacheRecreation(Entity $entity){
+        $this->permissionCachePendingQueue["$entity"] = $entity;
     }
 
-    public function recreatePermissionsCacheOfListedEntities($step = 20){
-        if($this->skipPermissionCacheRecreation){
-            return;
-        }
+    public function isEntityEnqueuedToPCacheRecreation(Entity $entity){
+        return isset($this->permissionCachePendingQueue["$entity"]);
+    }
 
-        if (is_array($this->_entitiesToRecreatePermissionsCache)) {
-            foreach($this->_entitiesToRecreatePermissionsCache as $entity) {
-                if (is_int($entity->id)) {
-                    $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-                    $pendingCache->objectId = $entity->id;
-                    $pendingCache->objectType = $entity->getClassName();
-                    //$pendingCache->user = 0; // TODO: avaliar se vamos utilizar essa coluna
-                    $pendingCache->save(true);
-                }
+    public function persistPCachePendingQueue(){
+        foreach($this->permissionCachePendingQueue as $entity) {
+            if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
+                    'objectId' => $entity->id, 'objectType' => $entity->getClassName()
+                ])) {
+                $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
+                $pendingCache->objectId = $entity->id;
+                $pendingCache->objectType = $entity->getClassName();
+                $pendingCache->save(true);
+                $this->log->debug("pcache pending: $entity");
             }
         }
+        $this->em->flush();
+        $this->permissionCachePendingQueue = [];
+    }
 
-		$queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC'], $step);
-		if (is_array($queue) && count($queue) > 0) {
+    private $recreatedPermissionCacheList = [];
+
+    public function setEntityPermissionCacheAsRecreated(Entity $entity){
+        $this->recreatedPermissionCacheList["$entity"] = $entity;
+    }
+
+    public function isEntityPermissionCacheRecreated(Entity $entity){
+        return isset($this->recreatedPermissionCacheList["$entity"]);
+    }
+
+    public function recreatePermissionsCache(){
+        $queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC']);
+        if (is_array($queue) && count($queue) > 0) {
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
 
-            foreach($queue as $pendingCache) {
-                $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
-                if ($entity) {
-                    $entity->createPermissionsCacheForUsers();
+            try {
+                foreach($queue as $pendingCache) {
+                    $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
+                    if ($entity) {
+                        $entity->recreatePermissionCache();
+                    }
+                    $this->em->remove($pendingCache);
                 }
-                $this->em->remove($pendingCache);
+                $this->em->flush();
+                $conn->commit();
+            } catch (Exception $e ){
+                $this->em->close();
+                $conn->rollBack();
+                if(php_sapi_name()==="cli"){
+                    echo "\n\t - ERROR - {$e->getMessage()}";
+                }
+                throw $e;
+            } finally {
+                $this->em->close();
             }
 
-            $conn->commit();
-            $this->em->flush();
-            $this->_entitiesToRecreatePermissionsCache = [];
+            $this->permissionCachePendingQueue = [];
         }
     }
 
