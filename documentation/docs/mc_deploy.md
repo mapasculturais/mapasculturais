@@ -248,7 +248,11 @@ Reinicie os serviços do **nginx** e **php-fpm**
 root@server# service nginx restart
 root@server# service php5-fpm restart
 ```
-### 6. Pós-instalação > API de CEP
+### 6. Configurando serviço de cron para recriar cache de permissões
+
+Veja [Caches de Permissão (pcache)](mc_permission_cache.md)
+
+### 7. Pós-instalação > API de CEP
 
 No arquivo de configuração da aplicação (mapasculturais/src/protected/application/conf/config.php), há possibilidade de setar um token para consulta de uma API que ajuda na geolocalização de endereço. O administrador da plataforma deve entrar no portal cep aberto (http://www.cepaberto.com), efetuar o cadastro e inserir o token no arquivo de configuração, descomentando a linha.
 
@@ -256,7 +260,7 @@ No arquivo de configuração da aplicação (mapasculturais/src/protected/applic
         // 'cep.token' => '[token]',
 ```
 
-### 7. Pós-instalação > Criando super admin
+### 8. Pós-instalação > Criando super admin
 
 Para criar super usuários, é necessário mudar o status de um usuário já criado, deixando-o como superadmin. Você pode proceder da seguinte forma:
 
@@ -295,7 +299,7 @@ UPDATE role SET name = 'saasAdmin' WHERE id = 'ESCREVA SEU ID AQUI';
 $ mapas => select * from role;
 ```
 
-### 8. Pós-instalação > Processo de autenticação
+### 9. Pós-instalação > Processo de autenticação
 
 
 O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu funcionamento atrelado a um plugin ou a um sistema de autenticação terceiro. Atualmente, h um plugin e dois sistemas de autenticação estão aptos e testados para essa tarefa: 
@@ -306,7 +310,7 @@ O Mapas Culturais não tem um sistema próprio de autenticação, sendo seu func
 
 * Veja detalhes técnicos [aqui](https://github.com/hacklabr/mapasculturais/blob/master/doc/developer-guide/config-auth.md)
 
-#### 7.1 Requisitos para implementação dos sistemas de autenticação de terceiros
+#### 9.1 Requisitos para implementação dos sistemas de autenticação de terceiros
 
 #### Mapas Open ID Conect
 
