@@ -346,7 +346,7 @@ class Opportunity extends EntityController {
         
         $registrations = $query->find();
         $em = $opportunity->getEvaluationMethod();
-        foreach($registrations as &$reg){
+        foreach($registrations as &$reg) {
             if(in_array('consolidatedResult', $query->selecting)){
                 $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
                 $this->preSetStatus($opportunity,$reg);
