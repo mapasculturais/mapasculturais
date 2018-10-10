@@ -14,6 +14,7 @@ pages:
     - 'Plugins': 'mc_config_plugins.md'
     - 'Saas': 'mc_config_saas.md'
     - 'Selos': 'mc_config_seal.md'
+    - 'Caches de Permissão (pcache)': 'mc_permission_cache.md'
 - Desenvolvimento:
     - 'Guia do Desenvolvedor': 'mc_developer_guide.md'
     - 'API': 'mc_config_api.md'

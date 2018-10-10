@@ -782,6 +782,10 @@ class ApiQuery {
         if(!in_array('id', $this->_selectingProperties)){
             $this->_selectingProperties = array_merge(['id'], $this->_selectingProperties);
         }
+
+        if($this->entityClassName == 'MapasCulturais\Entities\Registration'){
+            $this->_selectingProperties = array_merge(['number'], $this->_selectingProperties);
+        }
         
         if (count($this->_selectingProperties) >= 1 && in_array('publicLocation', $this->entityProperties) && !in_array('publicLocation', $this->_selectingProperties)) {
             $this->_selectingProperties[] = 'publicLocation';

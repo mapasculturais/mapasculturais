@@ -599,7 +599,7 @@ abstract class Entity implements \JsonSerializable{
         $requests = [];
 
         try {
-            $app->applyHookBoundTo($this, "entity($this).save:requests", [&$requests]);
+            $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').save:requests', [&$requests]);
         } catch (Exceptions\WorkflowRequestTransport $e) {
             $requests[] = $e->request;
         }
@@ -929,7 +929,7 @@ abstract class Entity implements \JsonSerializable{
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
@@ -984,7 +984,7 @@ abstract class Entity implements \JsonSerializable{
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
@@ -1066,7 +1066,7 @@ abstract class Entity implements \JsonSerializable{
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
