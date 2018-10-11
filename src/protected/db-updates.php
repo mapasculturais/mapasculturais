@@ -1101,6 +1101,12 @@ return [
             echo "\n - inscrição de id {$reg->id} número {$current->id}\n";
             $conn->executeQuery("UPDATE registration SET number = 'on-{$current->id}' WHERE id = $reg->id");
         }
+    },
+    'alter table opportunity add column publishedPreliminaryRegistrations'=> function () use($conn){
+
+        if(!__column_exists('opportunity', 'published_preliminary_registrations')){
+            $conn->executeQuery("ALTER TABLE opportunity ADD COLUMN published_preliminary_registrations BOOLEAN NOT NULL DEFAULT FALSE;");
+        }
     }
 
 ] + $updates ;

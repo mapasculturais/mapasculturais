@@ -71,6 +71,24 @@ class Opportunity extends EntityController {
         }
     }
 
+    function ALL_publishPreliminaryRegistrations(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $opportunity = $this->requestedEntity;
+
+        if(!$opportunity)
+            $app->pass();
+
+        $opportunity->publishPreliminaryRegistrations();
+
+        if($app->request->isAjax()){
+            $this->json($opportunity);
+        }else{
+            $app->redirect($app->request->getReferer());
+        }
+    }
 
     function GET_report(){
         $this->requireAuthentication();

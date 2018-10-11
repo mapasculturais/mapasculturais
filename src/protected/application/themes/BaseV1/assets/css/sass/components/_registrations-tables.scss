@@ -264,6 +264,14 @@
 	display: none;
 	@media screen and (min-width: 536px) {
 		display: inline-block;
+		float: left;
+	}
+}
+
+#btn-publish-preliminary-results {
+	display: none;
+	@media screen and (min-width: 536px) {
+		display: inline-block;
 		float: right;
 	}
 }

@@ -102,6 +102,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $publishedRegistrations = false;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="published_preliminary_registrations", type="boolean", nullable=false)
+     */
+    protected $publishedPreliminaryRegistrations = false;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="registration_categories", type="json_array", nullable=true)
@@ -476,6 +483,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         $app->enqueueEntityToPCacheRecreation($this);
+
+        $this->save(true);
+    }
+
+    function publishPreliminaryRegistrations(){
+        $this->checkPermission('publishRegistrations');
+
+        $this->publishPreliminaryRegistrations = true;
 
         $this->save(true);
     }
