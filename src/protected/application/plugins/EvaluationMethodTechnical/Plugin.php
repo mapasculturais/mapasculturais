@@ -69,6 +69,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('enableViability',[
+            'label' => i::__('Habilitar Análise de Exiquibilidade das inscrições?'),
+            'type' => 'radio',
+            'options' => array(
+                'true' => 'Habilitar Análise de Exiquibilidade',
+                'false' => 'Não habilitar',
+            ),
+        ]);
+
     }
 
     function enqueueScriptsAndStyles() {
@@ -175,20 +184,34 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 }
             ];
 
+            $viability = [
+                'label' => i::__('Esta proposta apresenta exequibilidade?'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation)  {
+                    return isset($evaluation->evaluationData->viability) ? $evaluation->evaluationData->viability :  '';
+                }
+            ];
+
+            $result['evaluation']->columns[] = (object) $viability;
+
             $sections = $result;
         });
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
-
         $empty = false;
 
+        if ($evaluation_method_configuration->enableViability === "true" && !array_key_exists('viability',$data)) {
+            $empty = true;
+            $errors[] = i::__('Informe sobre a exequibilidade orçamentária desta inscrição!');
+        }
 
         foreach($data as $key => $val){
-            if($key === 'obs' && !trim($val)){
+            if ($key === 'viability' && empty($val)) {
                 $empty = true;
-            } else if($key !== 'obs' && !is_numeric($val)){
+            } else if($key === 'obs' && !trim($val)) {
+                $empty = true;
+            } else if($key !== 'obs' && $key !== 'viability' && !is_numeric($val)){
                 $empty = true;
             }
         }
