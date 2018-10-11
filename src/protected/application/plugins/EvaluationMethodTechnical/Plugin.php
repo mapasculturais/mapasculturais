@@ -199,12 +199,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
-
         $empty = false;
+
+        if ($evaluation_method_configuration->enableViability === "true" && !array_key_exists('viability',$data)) {
+            $empty = true;
+            $errors[] = i::__('Informe sobre a exequibilidade orçamentária desta inscrição!');
+        }
+
         foreach($data as $key => $val){
             if ($key === 'viability' && empty($val)) {
                 $empty = true;
-                $errors[] = i::__('Informe sobre a exequibilidade orçamentária desta inscrição!');
             } else if($key === 'obs' && !trim($val)) {
                 $empty = true;
             } else if($key !== 'obs' && $key !== 'viability' && !is_numeric($val)){
