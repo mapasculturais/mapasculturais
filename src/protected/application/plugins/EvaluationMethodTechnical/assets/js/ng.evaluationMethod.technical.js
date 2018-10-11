@@ -44,6 +44,7 @@
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
+                enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
 
                 debounce: 2000
             };
@@ -64,6 +65,7 @@
                     sections: $scope.data.sections,
                     criteria: $scope.data.criteria,
                     quotas: $scope.data.quotas,
+                    enableViability: $scope.data.enableViability,
                 };
 
                 TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
@@ -123,7 +125,6 @@
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
-
             MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
                 e.min = parseInt(e.min);
                 e.max = parseInt(e.max);
@@ -133,7 +134,7 @@
             
             if(MapasCulturais.evaluation){
                 for(var id in MapasCulturais.evaluation.evaluationData){
-                    if(id != 'obs'){
+                    if(id != 'obs' && id != 'viability'){
                         MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
                     }
                 }
@@ -142,6 +143,7 @@
             $scope.data = {
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
+                enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 empty: true
             };
 
@@ -185,6 +187,13 @@
                 }
 
                 return total;
+            };
+
+            $scope.checkTotal = function(num) {
+                if (isNaN(num))
+                    return 0;
+
+                return num.toFixed(1);
             };
 
             

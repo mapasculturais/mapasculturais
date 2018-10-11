@@ -234,7 +234,7 @@ trait EntityAgentRelation {
         $this->deleteUsersWithControlCache();
         
         if($this->usesPermissionCache()){
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
         
         
@@ -254,7 +254,7 @@ trait EntityAgentRelation {
         $this->deleteUsersWithControlCache();
         
         if($this->usesPermissionCache()){
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
@@ -289,7 +289,7 @@ trait EntityAgentRelation {
         $this->deleteUsersWithControlCache();
         
         if($this->usesPermissionCache()){
-            $this->addToRecreatePermissionsCacheList();
+            $this->enqueueToPCacheRecreation();
         }
     }
 
