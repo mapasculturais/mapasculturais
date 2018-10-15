@@ -181,6 +181,9 @@
             .agents-table {
                 margin: 0;
                 border: solid 1px #ccc;
+                tbody tr:first-child{
+                    background-color: #bbb;
+                }
             }
     
             .tab-table {

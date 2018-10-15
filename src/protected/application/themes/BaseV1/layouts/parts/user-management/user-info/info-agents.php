@@ -1,6 +1,16 @@
 <?php 
   use MapasCulturais\App;
   use MapasCulturais\Entities\Agent;
+
+  $agent_ = [];
+  foreach($agents as $a => $agent):
+      if($agent->isUserProfile){
+          $agent_[] = $agent;
+          unset($agents[$a]);
+          break;
+      }
+  endforeach;
+  $agents = array_merge($agent_,$agents);
 ?>
   <table class="agents-table entity-table">
     <caption>
