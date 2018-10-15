@@ -768,6 +768,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
       }
     }
 
+    public function transferData($user){
+        // Transfer agents
+        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.user = {$user} WHERE a.user = {$this->id}";
+        $q = App::i()->em->createQuery($query);
+        $q->execute();
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
