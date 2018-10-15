@@ -338,6 +338,8 @@ jQuery(document).ready(function(){
     $(window).on('hashchange', function(){
         editableEntityAddHash();
     });
+}).on('click', '.close-modal', function() {
+    MapasCulturais.Modal.close('.entity-modal');
 });
 
 
@@ -473,6 +475,10 @@ MapasCulturais.Modal = {
         //alert('closing');
         $dialog.find('.editable').editable('hide');
         $dialog.hide();
+        if($('#blockdiv').is(':visible')){
+            $('#blockdiv').hide();
+            $('body').css('overflow','visible');
+        }
         return;
     },
 
@@ -498,6 +504,14 @@ MapasCulturais.Modal = {
     }
 };
 
+MapasCulturais.addEntity = function(e) {
+    var _modal = e.context.dataset.dialog;
+    if (_modal) {
+        $('#blockdiv').show();
+        $('body').css('overflow','hidden');
+        MapasCulturais.Modal.open(_modal);
+    }
+};
 
 MapasCulturais.EditBox = {
     time: 'fast',
