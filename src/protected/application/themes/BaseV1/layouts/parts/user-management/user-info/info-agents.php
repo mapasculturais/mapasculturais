@@ -26,7 +26,7 @@
     </thead>
     <tbody>
       <?php foreach($agents as $agent): ?>
-      <tr>
+      <tr <?php echo ($agent->isUserProfile) ? 'class="agent-default"' : '' ?>>
         <td class="fit">
           <?php echo $agent->id;?>
         </td>
