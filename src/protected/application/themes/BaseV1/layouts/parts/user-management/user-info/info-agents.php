@@ -53,7 +53,12 @@
                 <?php if($agent->canUser('destroy')): ?>
                   <a class="btn btn-small btn-danger" href="<?php echo $agent->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
                 <?php endif; ?>
-            <?php endif; ?>
+              <?php endif; ?>
+
+            <?php else: ?>
+                <?php if($agent->status === Agent::STATUS_ENABLED): ?>
+                    <a class="btn btn-small btn-danger" href="<?php echo $agent->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
+                <?php endif; ?>
             <?php endif; ?>
           </div>
 
