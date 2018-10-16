@@ -12,6 +12,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         parent::__construct($config);
     }
 
+    private $viability_status;
+
     public function getSlug() {
         return 'technical';
     }
@@ -186,14 +188,19 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
             $viability = [
                 'label' => i::__('Esta proposta apresenta exequibilidade?'),
-                'getValue' => function(Entities\RegistrationEvaluation $evaluation)  {
-                    return isset($evaluation->evaluationData->viability) ? $evaluation->evaluationData->viability :  '';
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation) {
+                    return $this->viabilityLabel($evaluation);
                 }
             ];
 
             $result['evaluation']->columns[] = (object) $viability;
 
             $sections = $result;
+
+            $this->viability_status = [
+                'valid' => i::__('Válido'),
+                'invalid' => i::__('Inválido')
+            ];
         });
     }
 
@@ -293,6 +300,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function fetchRegistrations() {
         return true;
+    }
+
+    private function viabilityLabel($evaluation) {
+        $viability = $evaluation->evaluationData->viability;
+
+        return isset($viability) ? $this->viability_status[$viability] : '';
     }
 
 }
