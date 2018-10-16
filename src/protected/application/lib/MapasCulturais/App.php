@@ -1575,8 +1575,6 @@ class App extends \Slim\Slim{
                     echo "\n\t - ERROR - {$e->getMessage()}";
                 }
                 throw $e;
-            } finally {
-                $this->em->close();
             }
 
             $this->permissionCachePendingQueue = [];

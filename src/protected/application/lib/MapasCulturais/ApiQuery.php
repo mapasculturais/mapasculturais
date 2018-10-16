@@ -1131,7 +1131,7 @@ class ApiQuery {
                     
                     $query->name = "{$this->name}->$prop";
 
-                    $query->where = "e.{$_target_property} IN ({$_subquery_where_id_in})";
+                    $query->where = (empty($query->where)) ? "e.{$_target_property} IN ({$_subquery_where_id_in})" : $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
                     
                     if($this->_usingSubquery){
                         foreach($this->_dqlParams as $k => $v){
