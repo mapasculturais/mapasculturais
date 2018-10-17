@@ -17,5 +17,12 @@ use MapasCulturais\i;
             <strong><?php i::_e('Parecer Técnico') ?>:</strong>
             <p>{{evaluation['obs']}}</p>
         </label>
+        <div ng-show="data.enableViability=='true'">
+            <hr>
+            <label>
+                <strong><?php i::_e('Exequibilidade Orçamentária') ?>:</strong>
+                <p>{{viabilityLabel(evaluation['viability'])}}</p>
+            </label>
+        </div>
     </div>
 </div>

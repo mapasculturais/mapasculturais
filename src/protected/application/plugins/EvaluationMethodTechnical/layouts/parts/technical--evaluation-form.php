@@ -28,7 +28,7 @@ $plugin = $app->plugins['EvaluationMethodTechnical'];
     </label>
     <hr>
     
-    <label ng-show="data.enableViability=='true'" class="action-edit">
+    <label ng-show="data.enableViability=='true'">
         <strong> <?php i::_e('Exequibilidade Orçamentária'); ?> </strong> <span class="required">*</span> <br>
         <?php i::_e('Esta proposta está adequada ao orçamento apresentado? Os custos orçamentários estão compatíveis com os praticados no mercado?'); ?>
         <br>

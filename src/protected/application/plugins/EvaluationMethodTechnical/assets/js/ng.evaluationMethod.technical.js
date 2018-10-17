@@ -196,6 +196,16 @@
                 return num.toFixed(1);
             };
 
+            $scope.viabilityLabel = function(val) {
+                if ($scope.data.enableViability) {
+                    var label = "Inválida";
+                    if ("valid" === val)
+                        label = "Válida";
+
+                    return label;
+                }
+            }
+
             
         }]);
 })(angular);
