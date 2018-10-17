@@ -9,8 +9,7 @@ use MapasCulturais\i;
         <?php i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
         <div class="close"></div>
     </div>
-    <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php i::_e("Baixar inscritos");?></a>
-    <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('reportDrafts', [$entity->id]); ?>"><?php i::_e("Baixar rascunhos");?></a>
+
     <?php $this->applyTemplateHook('header-inscritos','end'); ?>
 </header>
 <div id='status-info' class="alert info">
@@ -25,6 +24,9 @@ use MapasCulturais\i;
     </ul>
     <div class="close"></div>
 </div>
+
+<?php $this->part('singles/opportunity-registrations--publish-button', ['entity' => $entity]) ?>
+
 
 <div id="filtro-inscritos">
     <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
@@ -154,13 +156,4 @@ use MapasCulturais\i;
         </tr>
     </tfoot>
 </table>
-
-    <?php
-    $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
-    if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
-        <div ng-if="hasEvaluations()">
-            <button class="btn btn-primary" ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
-        </div>
-    <?php endif; ?>
-
 </div>
