@@ -15,14 +15,14 @@ $template = "<li id='video-{{id}}'>
                     <img src='{$spinner_url}' class='thumbnail_med_wide'/>
                     <h1 class='title'>{{title}}</h1>
                 </a>
-                <div class='botoes-de-edicao'>
+                <div class='btn btn-default'>
                     <a class='js-open-editbox edit hltip'
                         data-target='#editbox-videogallery'
                         data-dialog-callback='MapasCulturais.MetalistManager.updateDialog'
                         data-response-target='#video-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='Editar'></a>
-                    <a class='icon icon-close_alt js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#video-{{id}}' data-confirm-message='Excluir este vídeo?' title='Excluir'></a>
+                    <a class='delete js-metalist-item-delete hltip js-remove-item'  data-href='{{deleteUrl}}'  data-target='#video-{{id}}'  data-confirm-messagem='Excluir este vídeo?' title='Excluir'></a>
                 </div>
             </li>";
 ?>
@@ -40,7 +40,7 @@ $template = "<li id='video-{{id}}'>
     <ul class="clearfix js-videogallery" ng-non-bindable>
         <?php if($videos): foreach($videos as $video): ?>
             <li id="video-<?php echo $video->id ?>">
-                <a class="js-metalist-item-display" data-videolink="<?php echo $video->value;?>" title="<?php echo $video->title;?>">
+                <a class="js-metalist-item-display" data-videolink="<?php echo $video->value;?>" title="Cadastrado em <?php echo $video->createTimestamp->format('d/m/Y á\s H:i:s')?>">
                     <img src="<?php $this->asset('img/spinner_192.gif'); ?>" alt="" class="thumbnail_med_wide"/>
                     <h1 class="title"><?php echo $video->title;?></h1>
                 </a>
@@ -54,7 +54,7 @@ $template = "<li id='video-{{id}}'>
                            data-metalist-action="edit"
                            data-item="<?php echo htmlentities(json_encode($video));?>"
                            href="#" title='<?php \MapasCulturais\i::_e("Editar");?>'></a>
-                           <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="<?php \MapasCulturais\i::esc_attr_e("Excluir este vídeo?");?>" title='<?php \MapasCulturais\i::_e("Excluir");?>'></a>
+                        <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="<?php \MapasCulturais\i::esc_attr_e("Excluir este vídeo?");?>" title='<?php \MapasCulturais\i::_e("Excluir");?>'></a>
                     </div>
                 <?php endif; ?>
             </li>
@@ -81,7 +81,6 @@ $template = "<li id='video-{{id}}'>
            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
            data-response-target="ul.js-videogallery"
            data-metalist-action="insert"
-           data-response-template="<?php echo $template; ?>"
-                        ><?php \MapasCulturais\i::_e("Adicionar vídeo");?></a>
+           data-response-template="<?php echo $template; ?>"><?php \MapasCulturais\i::_e("Adicionar vídeo");?></a>
     </p>
 <?php endif; ?>
