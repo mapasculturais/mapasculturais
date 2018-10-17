@@ -490,7 +490,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function publishPreliminaryRegistrations(){
         $this->checkPermission('publishRegistrations');
 
-        $this->publishPreliminaryRegistrations = true;
+        $this->publishedPreliminaryRegistrations = true;
 
         $this->save(true);
     }
