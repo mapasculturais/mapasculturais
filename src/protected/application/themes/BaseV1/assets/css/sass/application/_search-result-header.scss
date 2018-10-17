@@ -40,6 +40,18 @@
         display: inline-block;
     }
 }
+
+.registration-columns-view-filters {
+  width:100%;
+  margin:5px 0px 5px 0px !important;
+  padding: 0px !important;;
+}
+
+.registration-columns-view-dropdown {
+  width:100%;
+  margin:0px 0px 10px 0px;
+}
+
 #search-tools {
     float: right;
     margin: $padding-base 0;

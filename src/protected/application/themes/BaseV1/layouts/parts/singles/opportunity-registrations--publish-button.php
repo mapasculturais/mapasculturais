@@ -2,16 +2,20 @@
 
     <?php if ($entity->publishedRegistrations): ?>
         <div class="clearfix">
-            <p class='alert success'><?php \MapasCulturais\i::_e("O resultado oficial já foi publicado");?></p>
+            <div class='alert success'><?php \MapasCulturais\i::_e("O resultado oficial já foi publicado");?>
+                <div class="close" style="cursor: pointer;"></div>
+            </div>
         </div>
     <?php elseif ($entity->publishedPreliminaryRegistrations): ?>
         <div class="clearfix">
-            <p class='alert success'><?php \MapasCulturais\i::_e("O resultado preliminar já foi publicado");?></p>
+            <div class='alert success'><?php \MapasCulturais\i::_e("O resultado preliminar já foi publicado");?>
+                <div class="close" style="cursor: pointer;"></div>
+            </div>
         </div>
     <?php endif; ?>
 
     <?php if (!$entity->publishedRegistrations): ?>
-        <div class="clearfix">
+        <div class="clearfix sombra" style="background-color: #e2e2e2; height: 30px; padding: 10px;">
             <?php
             $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
             if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>

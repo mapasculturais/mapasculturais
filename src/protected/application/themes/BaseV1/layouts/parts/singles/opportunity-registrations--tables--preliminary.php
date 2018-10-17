@@ -4,7 +4,7 @@
 <div id="preliminaryresults" class="aba-content">
 
     <div class="highlighted-message clearfix" ng-if="data.registrationsAPIMetadata.count > 0">
-        <?php i::_e('Veja abaixo o resultado preliminar. O resultado poderá sofrer alterações até a publicação do resultado oficial.'); ?>
+        <?php i::_e('O resultado poderá sofrer alterações até a publicação do resultado oficial.'); ?>
     </div>
     <table class="js-registration-list registrations-table published-registration-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
         <thead>
