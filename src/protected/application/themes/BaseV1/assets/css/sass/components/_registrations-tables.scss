@@ -43,7 +43,8 @@
 .registration-table-columns {
 	margin: 0px 0px 10px 0px;
 	padding: 5px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    background: #e2e2e2;
 }
 
 
@@ -54,7 +55,9 @@
 		.placeholder {
 			span {
 				padding: 5px;
-			}
+                font-weight: bold;
+                color: rgb(51, 51, 51);
+            }
 		}
 		.submenu-dropdown{
 			li {
@@ -80,9 +83,19 @@
 	padding: 0px !important;;
 }
 
+#selected-filters a.tag-selected {
+  color: #333;
+}
+
+#selected-filters a.tag-selected:hover {
+  color: #fff;
+}
+
 .registration-columns-view-dropdown {
-	width:100%;
-	margin:0px 0px 10px 0px;
+  width: 100%;
+  border: 1px solid rgb(204, 204, 204);
+  background: #fff;
+  color: #333;
 }
 
 //**  Table that shows on opportunities tab "Inscritos".

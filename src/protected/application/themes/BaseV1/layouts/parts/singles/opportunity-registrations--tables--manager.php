@@ -39,44 +39,32 @@
         </div>
     <?php endif; ?>
 
-
-
-
     <?php if (!$entity->publishedRegistrations): ?>
         <div class="clearfix sombra registration-toolbar">
-            <!--
-            <?php
-            $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
-            if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
-                <button  ng-if="hasEvaluations()" class="btn btn-primary hltip" ng-click="applyEvaluations()" title="<?php \MapasCulturais\i::esc_attr_e("Aplicar os resultados das avaliações nas inscrições.");?>"> {{ data.confirmEvaluationLabel }} </button>
-            <?php endif; ?>
-            <?php if ($entity->canUser('publishRegistrations')): ?>
-
-                <?php if ( !$entity->publishedPreliminaryRegistrations): ?>
-                    <a id="btn-publish-preliminary-results" class="btn btn-primary " href="<?php echo $app->createUrl('opportunity', 'publishPreliminaryRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
-                <?php else: ?>
-                    <a id="btn-publish-results" class="btn btn-primary" href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Publicar resultado");?></a>
-                <?php endif; ?>
-
-            <?php else: ?>
-                <a id="btn-publish-results" class="btn btn-primary disabled hltip" title="<?php \MapasCulturais\i::esc_attr_e("Você só pode publicar a lista de aprovados após o término do período de inscrições.");?>"><?php \MapasCulturais\i::_e("Publicar resultados final");?></a>
-                <a id="btn-publish-preliminary-results" class="btn btn-primary disabled hltip" title="<?php \MapasCulturais\i::esc_attr_e("Você só pode publicar a lista de aprovados após o término do período de inscrições.");?>"><?php \MapasCulturais\i::_e("Publicar resultados preliminares");?></a>
-            <?php endif; ?>
-            -->
             <div class="registration-actions">
                 <div class="dropdown js-dropdown">
                     <div class="placeholder icon icon-opportunity"><span>Ações</span></div>
                     <div class="submenu-dropdown js-submenu-dropdown" style="display: none; background-color: #FFF;">
                         <ul>
-                            <li>
-                                <a class="hltip" ng-click="applyEvaluations()" title="<?php \MapasCulturais\i::esc_attr_e("Aplicar os resultados das avaliações nas inscrições.");?>"> {{ data.confirmEvaluationLabel }} </a>
-                            </li>
-                            <li>
-                                <a  href="<?php echo $app->createUrl('opportunity', 'publishPreliminaryRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
-                            </li>
-                            <li>
-                                <a  href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado final");?></a>
-                            </li>
+                            <?php
+                            $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
+                            if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
+                                <li ng-if="hasEvaluations()">
+                                    <a ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($entity->canUser('publishRegistrations')): ?>
+                                <?php if ( !$entity->publishedPreliminaryRegistrations): ?>
+                                    <li>
+                                        <a  href="<?php echo $app->createUrl('opportunity', 'publishPreliminaryRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if ( !$entity->publishedRegistrations): ?>
+                                    <li>
+                                        <a  href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado final");?></a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -99,8 +87,8 @@
             </div>
 
             <div class="registration-actions">
-                <div class="dropdown js-dropdown">
-                    <div class="placeholder icon icon-search"><span ng-click="isShowConfig = !isShowConfig">Filtrar</span></div>
+                <div class="dropdown js-dropdown" ng-click="isShowConfig = !isShowConfig">
+                    <div class="placeholder icon icon-search"><span>Filtrar</span></div>
                 </div>
             </div>
 
@@ -135,8 +123,8 @@
         <div class="clearfix">
             <div id="selected-filters" class="registration-columns-view-filters">
                  <span>
-                    <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected " ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
-                    <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected " ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+                    <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected sombra" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+                    <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected sombra" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
                  </span>
             </div>
         </div>
