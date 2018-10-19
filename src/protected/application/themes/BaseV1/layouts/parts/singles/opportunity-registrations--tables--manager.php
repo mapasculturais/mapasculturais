@@ -1,6 +1,5 @@
 <?php
-use MapasCulturais\i;
-
+    use MapasCulturais\i;
 ?>
 <header id="header-inscritos" class="clearfix">
     <?php $this->applyTemplateHook('header-inscritos','begin'); ?>
@@ -24,45 +23,131 @@ use MapasCulturais\i;
     <div class="close"></div>
 </div>
 
-<?php $this->part('singles/opportunity-registrations--publish-button', ['entity' => $entity]) ?>
+<?php if ($entity->canUser('@control')): ?>
 
-
-<div id="filtro-inscritos" style="width:100%;">
-    <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
-    <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
-</div>
-
-<div class="clearfix">
-    <div id="registration-columns-view" class="dropdown registration-columns-view-dropdown">
-        <div class="placeholder" ng-click="filter_dropdown = ''"><?php i::_e("Colunas Habilitadas:") ?></div>
-        <div class="submenu-dropdown" style="background: #fff;">
-            <div class="filter-search" style="padding: 5px;">
-                <input type="text" ng-model="filter_dropdown" style="width:100%;" placeholder="Busque pelo nome dos campos do formulário de inscrição e selecione as colunas visíveis" />
+    <?php if ($entity->publishedRegistrations): ?>
+        <div class="clearfix">
+            <div class='alert success'><?php \MapasCulturais\i::_e("O resultado oficial já foi publicado");?>
+                <div class="close" style="cursor: pointer;"></div>
             </div>
-            <ul class="filter-list">
-                <li ng-repeat="field in data.defaultSelectFields | filter:filter_dropdown" ng-if="field.required"
-                    ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
-                    ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)" >
-                    <span>{{field.title}}</span>
-                </li>
-                <li ng-repeat="field in data.opportunitySelectFields | filter:filter_dropdown" ng-if="field.required"
-                    ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
-                    ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)" >
-                    <span>{{field.title}}</span>
-                </li>
-            </ul>
         </div>
-    </div>
-</div>
+    <?php elseif ($entity->publishedPreliminaryRegistrations): ?>
+        <div class="clearfix">
+            <div class='alert success'><?php \MapasCulturais\i::_e("O resultado preliminar já foi publicado");?>
+                <div class="close" style="cursor: pointer;"></div>
+            </div>
+        </div>
+    <?php endif; ?>
 
-<div class="clearfix">
-    <div id="selected-filters" class="registration-columns-view-filters">
-         <span>
-            <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
-            <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
-         </span>
+
+
+
+    <?php if (!$entity->publishedRegistrations): ?>
+        <div class="clearfix sombra registration-toolbar">
+            <!--
+            <?php
+            $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
+            if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
+                <button  ng-if="hasEvaluations()" class="btn btn-primary hltip" ng-click="applyEvaluations()" title="<?php \MapasCulturais\i::esc_attr_e("Aplicar os resultados das avaliações nas inscrições.");?>"> {{ data.confirmEvaluationLabel }} </button>
+            <?php endif; ?>
+            <?php if ($entity->canUser('publishRegistrations')): ?>
+
+                <?php if ( !$entity->publishedPreliminaryRegistrations): ?>
+                    <a id="btn-publish-preliminary-results" class="btn btn-primary " href="<?php echo $app->createUrl('opportunity', 'publishPreliminaryRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
+                <?php else: ?>
+                    <a id="btn-publish-results" class="btn btn-primary" href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Publicar resultado");?></a>
+                <?php endif; ?>
+
+            <?php else: ?>
+                <a id="btn-publish-results" class="btn btn-primary disabled hltip" title="<?php \MapasCulturais\i::esc_attr_e("Você só pode publicar a lista de aprovados após o término do período de inscrições.");?>"><?php \MapasCulturais\i::_e("Publicar resultados final");?></a>
+                <a id="btn-publish-preliminary-results" class="btn btn-primary disabled hltip" title="<?php \MapasCulturais\i::esc_attr_e("Você só pode publicar a lista de aprovados após o término do período de inscrições.");?>"><?php \MapasCulturais\i::_e("Publicar resultados preliminares");?></a>
+            <?php endif; ?>
+            -->
+            <div class="registration-actions">
+                <div class="dropdown js-dropdown">
+                    <div class="placeholder icon icon-opportunity"><span>Ações</span></div>
+                    <div class="submenu-dropdown js-submenu-dropdown" style="display: none; background-color: #FFF;">
+                        <ul>
+                            <li>
+                                <a class="hltip" ng-click="applyEvaluations()" title="<?php \MapasCulturais\i::esc_attr_e("Aplicar os resultados das avaliações nas inscrições.");?>"> {{ data.confirmEvaluationLabel }} </a>
+                            </li>
+                            <li>
+                                <a  href="<?php echo $app->createUrl('opportunity', 'publishPreliminaryRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
+                            </li>
+                            <li>
+                                <a  href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado final");?></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="registration-actions">
+                <div class="dropdown js-dropdown">
+                    <div class="placeholder icon icon-project"><span>Relatórios</span></div>
+                    <div class="submenu-dropdown js-submenu-dropdown" style="display: none; background-color: #FFF;">
+                        <ul>
+                            <li>
+                                <a href="<?php echo $app->createUrl('opportunity','report', [$entity->id]); ?>"><?php \MapasCulturais\i::esc_attr_e("Inscritos");?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $app->createUrl('opportunity','reportDrafts', [$entity->id]); ?>"><?php \MapasCulturais\i::esc_attr_e("Rascunhos");?></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="registration-actions">
+                <div class="dropdown js-dropdown">
+                    <div class="placeholder icon icon-search"><span ng-click="isShowConfig = !isShowConfig">Filtrar</span></div>
+                </div>
+            </div>
+
+        </div>
+    <?php endif; ?>
+
+
+    <div class="registration-table-columns" ng-show="isShowConfig" >
+        <div class="clearfix">
+            <div id="registration-columns-view" class="dropdown registration-columns-view-dropdown">
+                <div class="placeholder" ng-click="filter_dropdown = ''"><?php i::_e("Habilitar Colunas:") ?></div>
+                <div class="submenu-dropdown" style="background: #fff;">
+                    <div class="filter-search" style="padding: 5px;">
+                        <input type="text" ng-model="filter_dropdown" style="width:100%;" placeholder="Busque pelo nome dos campos do formulário de inscrição e selecione as colunas visíveis" />
+                    </div>
+                    <ul class="filter-list">
+                        <li ng-repeat="field in data.defaultSelectFields | filter:filter_dropdown" ng-if="field.required"
+                            ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
+                            ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)" >
+                            <span>{{field.title}}</span>
+                        </li>
+                        <li ng-repeat="field in data.opportunitySelectFields | filter:filter_dropdown" ng-if="field.required"
+                            ng-class="{'selected':isSelected(data.registrationTableColumns, field.fieldName)}"
+                            ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)" >
+                            <span>{{field.title}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix">
+            <div id="selected-filters" class="registration-columns-view-filters">
+                 <span>
+                    <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected " ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+                    <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected " ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+                 </span>
+            </div>
+        </div>
+
+        <div id="filtro-inscritos">
+            <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Pesquisar pelo nome do responsável ou número de inscrição') ?>" />
+        </div>
+
     </div>
-</div>
+<?php endif; ?>
+
 
 
 <style>

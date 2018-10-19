@@ -24,16 +24,65 @@
 	}
 }
 
+.registration-toolbar{
+	background-color: #e2e2e2;
+	height: 30px;
+	padding: 10px;
+	margin: 3px 0px;
+	text-align: right;
+}
+
 /* Filtro da lista de inscritos */
 #filtro-inscritos {
-	border-top: 1px solid $gray;
-	border-bottom:1px solid $gray;
-	padding: 10px 0 10px 0;
-	margin: 10px 0 10px 0;
-
 	input {
 		width: 100%;
+		margin: 0px;
 	}
+}
+
+.registration-table-columns {
+	margin: 0px 0px 10px 0px;
+	padding: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Filtro da lista de inscritos */
+.registration-actions {
+	display: inline-block;
+	.dropdown {
+		.placeholder {
+			span {
+				padding: 5px;
+			}
+		}
+		.submenu-dropdown{
+			li {
+				a {
+					display: inline-block;
+					white-space: nowrap;
+					height: 2rem;
+					padding: 0 0.5rem;
+
+					&:hover {
+						text-decoration: none;
+					}
+				}
+			}
+		}
+
+	}
+}
+
+.registration-columns-view-filters {
+	width:100%;
+	margin:7px 0px 5px 0px !important;
+	padding: 0px !important;;
+}
+
+.registration-columns-view-dropdown {
+	width:100%;
+	margin:0px 0px 10px 0px;
 }
 
 //**  Table that shows on opportunities tab "Inscritos".
