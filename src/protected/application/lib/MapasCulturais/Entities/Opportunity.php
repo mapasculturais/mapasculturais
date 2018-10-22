@@ -505,7 +505,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         foreach ($registrations as $registration) {
             $revisionData = $registration->_getRevisionData();
-            $action = EntityRevision::ACTION_MODIFIED;
+            $action = EntityRevision::ACTION_PUBLISHED;
             $message = i::__("Resultado preliminar");
 
             $revision = new EntityRevision($revisionData,$registration,$action,$message,$publishedTimestamp);
