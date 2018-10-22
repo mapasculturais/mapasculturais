@@ -95,7 +95,7 @@ class EntityRevision extends \MapasCulturais\Entity{
 
     protected $modified = false;
 
-    public function __construct(array $dataRevision, $entity, $action, $message = "") {
+    public function __construct(array $dataRevision, $entity, $action, $message = "", $timestamp = null) {
         parent::__construct();
         $app = App::i();
 
@@ -108,7 +108,7 @@ class EntityRevision extends \MapasCulturais\Entity{
         $user = $app->repo('User')->find($user->id);
         
         $this->user = $user;
-
+        $this->createTimestamp = $timestamp;
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
         $this->action = $action;
@@ -128,12 +128,16 @@ class EntityRevision extends \MapasCulturais\Entity{
             $this->message = \MapasCulturais\i::__("Registro criado.");
         } elseif($action == self::ACTION_MODIFIED) {
             $lastRevision = $entity->getLastRevision();
-            $lastRevisionData = $lastRevision->getRevisionData();
-            if(isset($lastRevision->updateTimestamp) && $lastRevision->updateTimestamp) {
-                $createTimestamp = $lastRevision->updateTimestamp;
-            } elseif(isset($this->user->lastLoginTimestamp) && $this->user->lastLoginTimestamp) {
-                $createTimestamp = $this->user->lastLoginTimestamp;
-            }   
+            $lastRevisionData = (isset($lastRevision)) ? $lastRevision->getRevisionData() : null;
+            $lastLoginTimestamp =  $this->user->lastLoginTimestamp;
+            if (empty($this->createTimestamp)) {
+                if(isset($entity->updateTimeStamp)) {
+                    $this->createTimestamp = $entity->updateTimeStamp;
+                } elseif(isset($lastLoginTimestamp)) {
+                    $this->createTimestamp = $user->lastLoginTimestamp;
+                }
+            }
+
             foreach($dataRevision as $key => $data) {
                 $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
                 if(!is_null($item)) {
@@ -153,6 +157,7 @@ class EntityRevision extends \MapasCulturais\Entity{
                     $revisionData = new EntityRevisionData;
                     $revisionData->key = $key;
                     $revisionData->setValue($data);
+                    $revisionData->timestamp = $this->createTimestamp ;
                     $revisionData->save();
                     $this->data[] = $revisionData;
                     $this->modified = true;

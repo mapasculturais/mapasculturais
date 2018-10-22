@@ -20,6 +20,7 @@ class Registration extends \MapasCulturais\Entity
 {
     use Traits\EntityMetadata,
         Traits\EntityFiles,
+        Traits\EntityRevision,
         Traits\EntityOwnerAgent,
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,

@@ -72,7 +72,7 @@ trait EntityRevision{
             }
         }
 
-        if($this->usesSealRelation()) {
+        if($this->usesSealRelation() && !empty($this->__sealRelations)) {
             foreach($this->__sealRelations as $sealRelation) {
                 $entity_data = $sealRelation->seal->simplify();
                 $entity_data->{'revision'} = $app->repo('EntityRevision')->findEntityLastRevisionId($sealRelation->seal->getClassName(),$entity_data->id);
@@ -132,10 +132,10 @@ trait EntityRevision{
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
         $message = i::__("Registro atualizado.");
-        
+
         $last_revision = $this->getLastRevision();
         $last_revision_data = $last_revision->getRevisionData();
-        
+
         $old_status = $last_revision_data['status']->value;
         $new_status = $this->status;
         
