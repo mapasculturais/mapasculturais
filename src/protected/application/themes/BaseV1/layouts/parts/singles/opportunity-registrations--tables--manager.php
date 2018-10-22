@@ -102,7 +102,7 @@ use MapasCulturais\i;
             <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição.");?></span>
             <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
             <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">
-                {{data.registrationsAPIMetadata.count}} <i> de {{ data.registrationsAPIMetadata.count }}</i> <?php i::_e("inscrições.");?>
+                {{data.registrations.length}} <i> de {{ data.registrationsAPIMetadata.count }}</i> <?php i::_e("inscrições.");?>
                 <?php if($entity->registrationLimit > 0):?>
                     | <?php i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
                 <?php endif;?>
