@@ -97,27 +97,78 @@ class EntityRevision extends \MapasCulturais\Entity{
 
     public function __construct(array $dataRevision, $entity, $action, $message = "", $timestamp = null) {
         parent::__construct();
+
         $app = App::i();
-
         $user = $app->user;
-
         if($user->is('guest')){
             $user = $entity->getOwnerUser();
         }
-        
         $user = $app->repo('User')->find($user->id);
-        
+
         $this->user = $user;
-        $this->createTimestamp = $timestamp;
+        $this->createTimestamp = new \DateTime;
         $this->objectId = $entity->id;
         $this->objectType = $entity->getClassName();
         $this->action = $action;
-
         $this->data = new \Doctrine\Common\Collections\ArrayCollection();
 
-        if($action == self::ACTION_CREATED) {
-            $this->createTimestamp = $entity->createTimestamp;
+        $skip_compare_last_revision_data = true;
 
+        if($action == self::ACTION_CREATED) {
+            $skip_compare_last_revision_data = false;
+            $this->createTimestamp = (empty($timestamp)) ? $entity->createTimestamp : $timestamp;
+            $this->message = \MapasCulturais\i::__("Registro criado.");
+        } elseif($action == self::ACTION_MODIFIED) {
+            $skip_compare_last_revision_data = false;
+            if(isset($entity->updateTimeStamp)) {
+                $this->createTimestamp = (empty($timestamp)) ? $entity->updateTimeStamp : $timestamp;
+            }
+            $this->message = \MapasCulturais\i::__("Registro atualizado.");
+        }
+
+        $this->message = (empty(trim($message))) ? $this->message : trim($message);
+
+        $lastRevision = $entity->getLastRevision();
+        $lastRevisionData = (empty($lastRevision)) ? [] : $lastRevision->getRevisionData();
+        $has_revision = (!empty($lastRevision) && !empty($lastRevisionData));
+
+        if ($has_revision) {
+            if ($skip_compare_last_revision_data){
+                foreach($lastRevisionData as $key => $data) {
+                    $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
+                    $this->data[] = $item;
+                }
+            } else {
+                foreach($dataRevision as $key => $data) {
+                    $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
+                    if(!is_null($item)) {
+                        if(is_object($item->getValue())) {
+                            $itemValue = (array) $item->getValue();
+                            if(is_array($itemValue) && array_key_exists("_empty_",$itemValue)) {
+                                $itemValue = array("" => $itemValue['_empty_']);
+                            }
+                        } else {
+                            $itemValue = $item->getValue();
+                        }
+                    } else {
+                        $itemValue = null;
+                    }
+
+                    if(json_encode($data) != json_encode($itemValue)) {
+                        $revisionData = new EntityRevisionData;
+                        $revisionData->key = $key;
+                        $revisionData->setValue($data);
+                        $revisionData->timestamp = $this->createTimestamp ;
+                        $revisionData->save();
+                        $this->data[] = $revisionData;
+                        $this->modified = true;
+                    } else {
+                        $this->data[] = $item;
+                    }
+                }
+            }
+
+        } else {
             foreach($dataRevision as $key => $data) {
                 $revisionData = new EntityRevisionData;
                 $revisionData->key = $key;
@@ -125,71 +176,13 @@ class EntityRevision extends \MapasCulturais\Entity{
                 $revisionData->save();
                 $this->data[] = $revisionData;
             }
-            $this->message = \MapasCulturais\i::__("Registro criado.");
-        } elseif($action == self::ACTION_MODIFIED) {
-            $lastRevision = $entity->getLastRevision();
-            $lastRevisionData = (isset($lastRevision)) ? $lastRevision->getRevisionData() : null;
-            $lastLoginTimestamp =  $this->user->lastLoginTimestamp;
-            if (empty($this->createTimestamp)) {
-                if(isset($entity->updateTimeStamp)) {
-                    $this->createTimestamp = $entity->updateTimeStamp;
-                } elseif(isset($lastLoginTimestamp)) {
-                    $this->createTimestamp = $user->lastLoginTimestamp;
-                }
-            }
-
-            foreach($dataRevision as $key => $data) {
-                $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
-                if(!is_null($item)) {
-                    if(is_object($item->getValue())) {
-                        $itemValue = (array) $item->getValue();
-                        if(is_array($itemValue) && array_key_exists("_empty_",$itemValue)) {
-                            $itemValue = array("" => $itemValue['_empty_']);
-                        }
-                    } else {
-                        $itemValue = $item->getValue();
-                    }
-                } else {
-                    $itemValue = null;
-                }
-
-                if(json_encode($data) != json_encode($itemValue)) {
-                    $revisionData = new EntityRevisionData;
-                    $revisionData->key = $key;
-                    $revisionData->setValue($data);
-                    $revisionData->timestamp = $this->createTimestamp ;
-                    $revisionData->save();
-                    $this->data[] = $revisionData;
-                    $this->modified = true;
-                } elseif(!is_null($item)) {
-                    $this->data[] = $item;
-                }
-            }
-
-            $this->message = \MapasCulturais\i::__("Registro atualizado.");
-        } else {
-            $lastRevision = $entity->getLastRevision();
-            $lastRevisionData = $lastRevision->getRevisionData();
-            foreach($lastRevisionData as $key => $data) {
-                $item = isset($lastRevisionData[$key])? $lastRevisionData[$key]: null;
-                $this->data[] = $item;
-            }
-        }
-        if(!empty(trim($message))) {
-            $this->message = $message;
         }
     }
 
     public function canUser($action, $userOrAgent = null){
         return true;
-        $app = App::i();
-        $entity = $app->repo($this->objectType)->find($this->objectId);
-        return $entity->canUser($action, $userOrAgent);
     }
 
-    /*
-     *
-     */
     public function getRevisionData() {
         $result = [];
         foreach($this->data as $revisionData) {
