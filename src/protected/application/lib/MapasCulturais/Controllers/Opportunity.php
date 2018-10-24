@@ -268,8 +268,7 @@ class Opportunity extends EntityController {
         
         $this->apiResponse($fields);
     }
-    
-    
+
     
     function API_findRegistrations() {
         $app = App::i();
@@ -379,6 +378,19 @@ class Opportunity extends EntityController {
                         $reg[$key] = $values[$key];
                     }
                 }
+            }
+        }
+
+        if ($opportunity->publishedPreliminaryRegistrations) {
+            $registrationIds = array_map(function($item) {
+                return $item['id'];
+            }, $registrations);
+
+            $revisions = $app->repo('EntityRevision')->findAllByIdsAndClassAndActionAndTimestamp($registrationIds, 'MapasCulturais\Entities\Registration', 'publish', $opportunity->publishedPreliminaryRegistrationsTimestamp);
+
+            foreach($registrations as &$reg){
+                $objectId = $reg['id'];
+                $reg['publishedPreliminaryRevision'] = $revisions[$objectId];
             }
         }
 

@@ -85,4 +85,67 @@ class EntityRevision extends \MapasCulturais\Repository{
         }
         return $return;
     }
+
+
+    /**
+     * @param array $objectIds
+     * @param string $classEntity
+     * @param string $action
+     * @param \DateTime $createTimestamp
+     * @return object[]
+     */
+    public function findAllByIdsAndClassAndActionAndTimestamp($objectIds, $classEntity, $action, $createTimestamp) {
+        $app = App::i();
+        $objectIds = implode(',',$objectIds)
+        $query = $this->_em->createQuery("SELECT e
+                                                FROM MapasCulturais\Entities\EntityRevision e
+                                                WHERE e.objectId IN ({$objectIds}) AND e.objectType = '{$classEntity}'
+                                                AND e.action = {$action} AND e.createTimestamp = {$createTimestamp}");
+        $revisionList = $query->getResult();
+
+
+
+        $metadata = $app->getRegisteredMetadata($classEntity);
+        $metadataKeys = array_keys($metadata);
+        $entityList = [];
+
+        foreach ($revisionList as $item) {
+            $entity = new \stdClass();
+            $entity->revisionId = $item->id;
+            $entity->objectId = $item->objectId;
+
+            foreach( $metadataKeys as $key) {
+                $entity->$key = null;
+            }
+
+            foreach($item->data as $revisionData) {
+                if(!is_array($revisionData) && !is_object($revisionData)) {
+                    $data = $revisionData;
+                } else {
+                    $data = $revisionData->value;
+                }
+
+                $attribute = $revisionData->key;
+
+                switch ($attribute) {
+                    case  'location':
+                        $entity->location = ($revisionData->longitude != 0 && $revisionData->latitude !=0) ? new \MapasCulturais\Types\GeoPoint($data->longitude,$data->latitude) : null;
+                        break;
+                    case  'createTimestamp':
+                        $entity->createTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
+                        break;
+                    case  'updateTimestamp':
+                        $entity->updateTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
+                        break;
+                    default:
+                        $entity->$attribute = $data;
+                        break;
+                }
+            }
+
+            $entityList[$entity->objectId] = $entity;
+        }
+
+        return $entityList;
+    }
 }
