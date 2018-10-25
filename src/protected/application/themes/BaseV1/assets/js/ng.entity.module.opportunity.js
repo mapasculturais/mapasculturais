@@ -1254,6 +1254,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         return;
     };
 
+    $scope.clearRegistrationFilters = function(){
+        $scope.registrationsFilters = {};
+    };
+
     $scope.toggleSelectionColumn = function(object, key){
 
         $scope.toggleSelection(object, key);
@@ -1477,8 +1481,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     $scope.usingEvaluationsFilters = function(){
         var using = false;
-        for(var i in $scope.registrationsFilters){
-            if($scope.registrationsFilters[i]){
+        for(var i in $scope.evaluationsFilters){
+            if($scope.evaluationsFilters[i]){
                 using = true;
             }
         }
@@ -1886,6 +1890,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             '@limit': 10000,
             '@select': 'id,singleUrl,owner.{id,name}'
         });
+
 
         var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', {
             '@opportunity': getOpportunityId(),

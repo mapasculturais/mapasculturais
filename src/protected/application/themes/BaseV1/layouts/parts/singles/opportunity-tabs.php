@@ -12,11 +12,11 @@
         <?php if($entity->publishedRegistrations): ?>
             <li><a href="#inscritos"><?php \MapasCulturais\i::_e("Resultado");?></a></li>
         <?php elseif($entity->canUser('@control')): ?>
-            <li><a href="#inscritos"><?php \MapasCulturais\i::_e("Inscritos");?></a></li>
+            <li><a href="#inscritos" ng-click="clearRegistrationFilters()"><?php \MapasCulturais\i::_e("Inscritos");?></a></li>
         <?php endif; ?>
 
         <?php if ($entity->publishedPreliminaryRegistrations && !$entity->publishedRegistrations): ?>
-            <li><a href="#preliminaryresults"><?php \MapasCulturais\i::_e("Resultado Preliminar");?></a></li>
+            <li><a href="#preliminaryresults" ng-click="clearRegistrationFilters()"><?php \MapasCulturais\i::_e("Resultado Preliminar");?></a></li>
         <?php endif; ?>
 
         <?php if($entity->canUser('viewEvaluations') || $entity->canUser('@control')): ?>
