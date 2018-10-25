@@ -381,7 +381,7 @@ class Opportunity extends EntityController {
             }
         }
 
-        if ($opportunity->publishedPreliminaryRegistrations) {
+        if ($opportunity->publishedPreliminaryRegistrations && count($registrations) > 0) {
             $registrationIds = array_map(function($item) {
                 return $item['id'];
             }, $registrations);

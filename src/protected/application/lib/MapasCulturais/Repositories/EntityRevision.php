@@ -96,11 +96,11 @@ class EntityRevision extends \MapasCulturais\Repository{
      */
     public function findAllByIdsAndClassAndActionAndTimestamp($objectIds, $classEntity, $action, $createTimestamp) {
         $app = App::i();
-        $objectIds = implode(',',$objectIds)
+        $objectIds = implode(',',$objectIds);
         $query = $this->_em->createQuery("SELECT e
                                                 FROM MapasCulturais\Entities\EntityRevision e
                                                 WHERE e.objectId IN ({$objectIds}) AND e.objectType = '{$classEntity}'
-                                                AND e.action = {$action} AND e.createTimestamp = {$createTimestamp}");
+                                                AND e.action = '{$action}' AND e.createTimestamp = '{$createTimestamp->format('Y-m-d H:i:s')}'");
         $revisionList = $query->getResult();
 
 

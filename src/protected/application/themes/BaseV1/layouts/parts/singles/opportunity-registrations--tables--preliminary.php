@@ -13,35 +13,32 @@
                 <?php \MapasCulturais\i::_e("Inscrição");?>
             </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
-                <mc-select placeholder="<?php i::_e('categoria') ?>" model="publishedRegistrationsFilters['category']" data="data.registrationCategoriesToFilter"></mc-select>
+                <?php i::_e('categoria') ?>
             </th>
             <th class="registration-agents-col">
                 <?php \MapasCulturais\i::_e("Agentes");?>
             </th>
             <th class="registration-status-col">
-                <mc-select placeholder="status" model="publishedRegistrationsFilters['status']" data="data.publishedRegistrationStatuses"></mc-select>
+                <?php \MapasCulturais\i::_e("Status");?>
             </th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td colspan='5'>
+            <td colspan='4'>
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
-                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
-                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições.");?></span>
-                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições encontradas com os filtros selecionados.");?></span>
             </td>
         </tr>
 
-        <tr ng-repeat="reg in data.registrations" id="preliminary-registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" >
-            <td class="registration-id-col"><strong>{{reg.number}}</strong></td>
-            <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
+        <tr ng-repeat="reg in data.registrations" id="preliminary-registration-{{reg.id}}" class="{{getStatusSlug(reg.publishedPreliminaryRevision.status)}}" >
+            <td class="registration-id-col"><strong>{{reg.publishedPreliminaryRevision.number}}</strong></td>
+            <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.publishedPreliminaryRevision.category}}</td>
             <td class="registration-agents-col">
                 <p>
                     <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
-                    <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
+                    <a href="{{reg.publishedPreliminaryRevision.owner.singleUrl}}">{{reg.publishedPreliminaryRevision.owner.name}}</a>
                 </p>
 
                 <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
@@ -51,7 +48,7 @@
             </td>
 
             <td class="registration-status-col">
-                <span class="status status-{{getStatusSlug(reg.status)}}"> {{getStatusNameById(reg.status)}} </span>
+                <span class="status status-{{getStatusSlug(reg.publishedPreliminaryRevision.status)}}"> {{getStatusNameById(reg.publishedPreliminaryRevision.status)}} </span>
             </td>
         </tr>
 
