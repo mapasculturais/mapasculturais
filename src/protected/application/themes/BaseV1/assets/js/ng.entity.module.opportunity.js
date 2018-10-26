@@ -1479,15 +1479,17 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         return using;
     };
 
-    $scope.getCountPreliminaryRegistrations = function(){
+    $scope.hasPreliminaryResultRegistrations = function(registration){
+        return  (registration.publishedPreliminaryRevision != null) && (registration.publishedPreliminaryRevision.status == 10 || registration.publishedPreliminaryRevision.status == 8);
+    };
+
+    $scope.getCountPreliminaryResultRegistrations = function(){
         var total = 0;
         var reg;
         for(var i in $scope.data.registrations){
             reg = $scope.data.registrations[i];
-            if (reg.publishedPreliminaryRevision != null) {
-                if (reg.publishedPreliminaryRevision.status == 10 || reg.publishedPreliminaryRevision.status == 8) {
-                    total++;
-                }
+            if ($scope.hasPreliminaryResultRegistrations(reg)) {
+                total++;
             }
         }
         return total;
