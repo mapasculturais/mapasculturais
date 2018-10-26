@@ -26,13 +26,13 @@
         <tbody>
         <tr>
             <td colspan='4'>
-                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
-                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
-                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">{{data.registrationsAPIMetadata.count}} <?php \MapasCulturais\i::_e("inscrições.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryRegistrations() === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryRegistrations() === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryRegistrations() > 1">{{getCountPreliminaryRegistrations()}} <?php \MapasCulturais\i::_e("inscrições.");?></span>
             </td>
         </tr>
 
-        <tr ng-repeat="reg in data.registrations" id="preliminary-registration-{{reg.id}}" class="{{getStatusSlug(reg.publishedPreliminaryRevision.status)}}" >
+        <tr ng-repeat="reg in data.registrations" id="preliminary-registration-{{reg.id}}" class="{{getStatusSlug(reg.publishedPreliminaryRevision.status)}}" ng-if="(reg.publishedPreliminaryRevision != 'null') && (reg.publishedPreliminaryRevision.status == 10 || reg.publishedPreliminaryRevision.status == 8)" >
             <td class="registration-id-col"><strong>{{reg.publishedPreliminaryRevision.number}}</strong></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.publishedPreliminaryRevision.category}}</td>
             <td class="registration-agents-col">

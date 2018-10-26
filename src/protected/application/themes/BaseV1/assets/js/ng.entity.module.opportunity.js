@@ -1479,6 +1479,20 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         return using;
     };
 
+    $scope.getCountPreliminaryRegistrations = function(){
+        var total = 0;
+        var reg;
+        for(var i in $scope.data.registrations){
+            reg = $scope.data.registrations[i];
+            if (reg.publishedPreliminaryRevision != null) {
+                if (reg.publishedPreliminaryRevision.status == 10 || reg.publishedPreliminaryRevision.status == 8) {
+                    total++;
+                }
+            }
+        }
+        return total;
+    };
+
     $scope.usingEvaluationsFilters = function(){
         var using = false;
         for(var i in $scope.evaluationsFilters){

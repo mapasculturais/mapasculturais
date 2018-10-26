@@ -390,7 +390,7 @@ class Opportunity extends EntityController {
 
             foreach($registrations as &$reg){
                 $objectId = $reg['id'];
-                $reg['publishedPreliminaryRevision'] = $revisions[$objectId];
+                $reg['publishedPreliminaryRevision'] = (isset($revisions[$objectId])) ? $revisions[$objectId] : null ;
             }
         }
 
