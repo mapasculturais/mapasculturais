@@ -155,7 +155,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 $section->columns[] = (object) [
                     'label' => sprintf(i::__('Subtotal (max: %s)'),$max),
                     'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($sec, $cfg) {
-                        $rersult = 0;
+                        $result = 0;
                         foreach($cfg->criteria as $crit){
                             if($crit->sid != $sec->id) {
                                 continue;
@@ -163,11 +163,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
                             $val =  isset($evaluation->evaluationData->{$crit->id}) ? (float) $evaluation->evaluationData->{$crit->id} : 0;
                             $weight = (float) $crit->weight;
-                            $rersult += $val * $weight;
+                            $result += $val * $weight;
 
                         }
 
-                        return $rersult;
+                        return $result;
                     }
                 ];
 
@@ -303,9 +303,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     private function viabilityLabel($evaluation) {
-        $viability = $evaluation->evaluationData->viability;
+        if (isset($evaluation->evaluationData->viability)) {
+            $viability = $evaluation->evaluationData->viability;
 
-        return isset($viability) ? $this->viability_status[$viability] : '';
+            return $this->viability_status[$viability];
+        }
+
+        return '';
     }
 
 }
