@@ -3635,8 +3635,16 @@ msgstr "La solicitud fue rechazada."
 msgid "Por favor escreva a mensagem"
 msgstr "Por favor escriba el mensaje"
 
-#: protected/application/lib/modules/OpportunityClaimForm/Module.php:48
-#: protected/application/lib/modules/OpportunityClaimForm/Module.php:54
+#: lib/modules/OpportunityClaimForm/Module.php:17
+msgid "Solicitação de Recurso Enviada"
+msgid "Solicitud de Recurso Enviada"
+
+#: lib/modules/OpportunityClaimForm/Module.php:18
+msgid "Ocorreu um erro ao tentar enviar o recurso"
+msgid "Se produjo un error al intentar enviar el recurso"
+
+#: lib/modules/OpportunityClaimForm/Module.php:48
+#: lib/modules/OpportunityClaimForm/Module.php:54
 msgid "Inscrição não encontrada"
 msgstr "Inscripción no encontrada"
 
