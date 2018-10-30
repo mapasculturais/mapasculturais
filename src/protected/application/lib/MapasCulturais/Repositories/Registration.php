@@ -86,7 +86,7 @@ class Registration extends \MapasCulturais\Repository{
         return $q->getResult();
     }
 
-    function countByOpportunity(\MapasCulturais\Entities\Opportunity $opportunity, $include_draft = false){
+    function countByOpportunity(\MapasCulturais\Entities\Opportunity $opportunity, $include_draft = false, $status = 0){
         if(!$opportunity->id){
             return 0;
         }
@@ -94,7 +94,7 @@ class Registration extends \MapasCulturais\Repository{
         $dql_status = '';
 
         if(!$include_draft){
-            $dql_status = "AND r.status > 0";
+            $dql_status = "AND r.status > $status";
         }
 
         $dql = "SELECT COUNT(r.id) FROM {$this->getClassName()} r WHERE r.opportunity = :oppor $dql_status";
