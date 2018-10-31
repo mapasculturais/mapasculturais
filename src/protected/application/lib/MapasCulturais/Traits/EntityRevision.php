@@ -134,9 +134,9 @@ trait EntityRevision{
         $message = i::__("Registro atualizado.");
 
         $last_revision = $this->getLastRevision();
-        $last_revision_data = $last_revision->getRevisionData();
+        $last_revision_data = (empty($last_revision)) ? null : $last_revision->getRevisionData();
 
-        $old_status = $last_revision_data['status']->value;
+        $old_status = (empty($last_revision_data)) ? $this->status : $last_revision_data['status']->value;
         $new_status = $this->status;
         
         if($old_status != $new_status){
