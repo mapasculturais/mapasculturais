@@ -135,7 +135,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     function save($flush = false){
         parent::save($flush);
         
-        $this->addToRecreatePermissionsCacheList();
+        $this->enqueueToPCacheRecreation();
     }
 
     //============================================================= //

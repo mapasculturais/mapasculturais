@@ -22,7 +22,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     
     function save($flush = false) {
         parent::save($flush);
-        $this->owner->opportunity->addToRecreatePermissionsCacheList();
+        $this->owner->opportunity->enqueueToPCacheRecreation();
     }
     
     function delete($flush = false) {
@@ -30,7 +30,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         foreach($evaluations as $eval){
             $eval->delete($flush);
         }
-        $this->owner->opportunity->addToRecreatePermissionsCacheList();
+        $this->owner->opportunity->enqueueToPCacheRecreation();
         parent::delete($flush);
     }
     
