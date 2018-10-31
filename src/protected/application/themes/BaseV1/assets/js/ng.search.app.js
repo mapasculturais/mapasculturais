@@ -56,7 +56,7 @@
             enabled: {
                 agent: false,
                 space: false,
-                event: false
+                event: true
             }
         },
         agent: {

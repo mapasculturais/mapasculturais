@@ -141,7 +141,7 @@ trait EntityNested{
                 $this->parent = $this->_newParent;
                 
                 if($this->usesPermissionCache()){
-                    $this->addToRecreatePermissionsCacheList();
+                    $this->enqueueToPCacheRecreation();
                 }
 
             }catch(\MapasCulturais\Exceptions\PermissionDenied $e){

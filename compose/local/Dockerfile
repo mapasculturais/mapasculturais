@@ -63,12 +63,14 @@ COPY scripts /var/www/scripts
 COPY compose/local/php.ini /usr/local/etc/php/php.ini
 COPY compose/config.php /var/www/html/protected/application/conf/config.php
 COPY compose/config.d /var/www/html/protected/application/conf/config.d
+RUN mkdir /var/www/SaaS
 
 RUN ln -s /var/www/html /var/www/src
 
 COPY src/router.php /var/www/html/router.php
 RUN echo "php -S 0.0.0.0:8001 -t /var/www/html /var/www/html/router.php" > /mapas.sh && chmod +x /mapas.sh
 
+COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
