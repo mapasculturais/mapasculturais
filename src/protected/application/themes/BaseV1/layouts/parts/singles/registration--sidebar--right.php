@@ -12,11 +12,17 @@ $params = ['opportunity' => $opportunity, 'entity' => $entity, 'evaluationMethod
 $evaluation = $this->getCurrentRegistrationEvaluation($entity);
 
 $infos = (array) $configuration->infos;
+
+$evaluationAgent = false;
+foreach ($opportunity->getEvaluationCommittee() as $evaluation_user) {
+    if($evaluation_user->agent === \MapasCulturais\App::i()->user->profile)
+        $evaluationAgent = true;
+}
 ?>
 <div class="sidebar registration sidebar-right">
     <?php if($action === 'single' && $entity->canUser('viewUserEvaluation')): ?>
         <div id="registration-evaluation-form" class="evaluation-form evaluation-form--<?php echo $evaluationMethod->getSlug(); ?>">
-            <?php if($entity->canUser('evaluate')): ?> 
+            <?php if($evaluationAgent): ?>
                 <?php if($infos): ?>
                     <div id="documentary-evaluation-info" class="alert info">
                         <div class="close" style="cursor: pointer;"></div>
