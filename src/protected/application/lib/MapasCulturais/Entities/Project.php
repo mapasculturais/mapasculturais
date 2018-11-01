@@ -294,7 +294,7 @@ class Project extends \MapasCulturais\Entity
             return true;
         }
 
-        if ($this->canUser('@control')) {
+        if ($this->canUser('@control', $user)) {
             return true;
         }
 
@@ -310,7 +310,7 @@ class Project extends \MapasCulturais\Entity
             return true;
         }
 
-        if ($this->canUser('createEvents')) {
+        if ($this->canUser('createEvents', $user)) {
             return true;
         }
 

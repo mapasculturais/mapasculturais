@@ -42,7 +42,7 @@
 
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
             <td class="registration-id-col">
-                <a href='{{evaluation.evaluation.singleUrl}}'>
+                <a href='{{evaluation.registration.singleUrl}}'>
                     <strong>{{evaluation.registration.number}}</strong>
                 </a>
             </td>
