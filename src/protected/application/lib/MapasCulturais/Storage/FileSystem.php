@@ -105,8 +105,34 @@ class FileSystem extends \MapasCulturais\Storage{
         }
         return $this->getUrlFromRelativePath($relative_path);
     }
-    
-    
+
+    /**
+     * Returns the Private URL to the file.
+     *
+     * @param \MapasCulturais\Entities\File $file
+     *
+     * @return string The URL to the file.
+     */
+    protected function _getPrivateUrl(\MapasCulturais\Entities\File $file) {
+        $app = App::i();
+        $controllerId = $app->getControllerIdByEntity("MapasCulturais\Entities\File");
+        return $app->createUrl($controllerId, 'privateFile', [$file->id]);
+    }
+
+    /**
+     * Returns the Private URL to the file.
+     *
+     * @param int $file_id
+     *
+     * @return string The URL to the file.
+     */
+    protected function _getPrivateUrlById($file_id) {
+        $app = App::i();
+        $controllerId = $app->getControllerIdByEntity("MapasCulturais\Entities\File");
+        return $app->createUrl($controllerId, 'privateFile', [$file_id]);
+    }
+
+
     /**
      * Returns the URL based on a relative path.
      *
@@ -117,19 +143,6 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function _getUrlFromRelativePath($relative_path) {
         return App::i()->baseUrl . $this->config['baseUrl'] . $relative_path;
     }
-	
-	/**
-	 * Returns the URL to a private file by its ID
-	 * @param  int $id The File ID
-	 * @return string     The URL
-	 */
-	protected function _getPrivateUrlById($id) {
-		$app = App::i();
-		$controller = $app->getControllerByClass('MapasCulturais\Controllers\File');
-		return $app->createUrl($controller->id, 'privateFile', [$id]);
-	}
-        
-    
 
     /**
      * Returns the path to the file.
