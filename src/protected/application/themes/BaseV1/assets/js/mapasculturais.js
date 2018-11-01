@@ -707,22 +707,17 @@ MapasCulturais.Video = {
             $('iframe#video_display').data('open-video', $(this).attr('id'));
             $(this).parent().find('.active').removeClass('active');
             $(this).addClass('active');
+            $('#video-player').show();
         });
 
         var $container = $element.parent();
         if($element.find('.js-remove-item').length){
             $element.find('.js-remove-item').data('remove-callback', function(){
-                if($('iframe#video_display').data('open-video') == video_id)
-                    $('iframe#video_display').attr('src', '');
 
-                if($container.find('>li').length == 0)
-                    $('#video-player').hide();
+                $('iframe#video_display').attr('src', '');
+                $('iframe#video_display').data('open-video', '');
+                $('#video-player').hide();
             });
-        }
-
-        if($container.find('>li').length == 1){
-            $element.addClass('active');
-            $('iframe#video_display').attr('src', videoData.playerURL);
         }
 
     },
