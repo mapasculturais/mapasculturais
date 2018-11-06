@@ -20,17 +20,6 @@
         }
     }
 
-    function _getStatusSlug(status) {
-        switch (status) {
-            case 0: return 'draft'; break;
-            case 1: return 'sent'; break;
-            case 2: return 'invalid'; break;
-            case 3: return 'notapproved'; break;
-            case 8: return 'waitlist'; break;
-            case 10: return 'approved'; break;
-        }
-    }
-
     module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
         var url = new UrlService('registration');
         var labels = MapasCulturais.gettext.moduleOpportunity;
@@ -61,13 +50,7 @@
 
                 return $http.post(endPoint, { evaluations: registrations }).
                 success(function (data) {
-                    for(var aval in data) {
-                        var slug = _getStatusSlug(data[aval]);
-                        $("#registration-" +  aval).attr('class', slug);
-
-                        var txt = $("#registration-" +  aval + " .registration-status-col").first().text();
-                        $("#registration-" + aval + " .registration-status-col .dropdown.js-dropdown div").text(txt);
-                    }
+                    $rootScope.$emit( {message: 'Opportunity registration status was setted ', data: data});
                 });
             },
 
@@ -1379,16 +1362,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         });
     };
 
-    $scope.applyEvaluations = function() {
-        var _arr = [];
-        $scope.totalEvaluations().map(function(e) {
-            var result = parseInt(e.evaluation.result);
-            _arr.push({ reg_id: e.registration.id, result: result });
-        });
-
-        RegistrationService.setMultipleStatus(_arr);
-    };
-
     $scope.hasEvaluations = function() {
         return ($scope.totalEvaluations().length > 0);
     };
@@ -1467,7 +1440,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 label: e.agent.name
             };
         });
-    })
+    });
 
     $scope.usingRegistrationsFilters = function(){
         var using = false;
@@ -1612,14 +1585,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
 
     $scope.getStatusSlug = function(status) {
-        /*
-            const STATUS_SENT = self::STATUS_ENABLED;
-            const STATUS_APPROVED = 10;
-            const STATUS_WAITLIST = 8;
-            const STATUS_NOTAPPROVED = 3;
-            const STATUS_INVALID = 2;
-       */
-        return _getStatusSlug(status);
+        switch (status) {
+            case 0: return 'draft'; break;
+            case 1: return 'sent'; break;
+            case 2: return 'invalid'; break;
+            case 3: return 'notapproved'; break;
+            case 8: return 'waitlist'; break;
+            case 10: return 'approved'; break;
+        }
+        return status;
     };
 
     $scope.getStatusNameById = function(id) {
@@ -1628,6 +1602,42 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             if(statuses[s].value == id)
                 return statuses[s].label;
         }
+    };
+
+    $scope.applyEvaluations = function() {
+        var _arr = [];
+        MapasCulturais.confirm(labels['applyEvaluations'], function() {
+            $scope.totalEvaluations().map(function(e) {
+                var result = parseInt(e.evaluation.result);
+                var evaluationType = MapasCulturais.evaluationConfigurationType.id;
+
+                switch (evaluationType) {
+                    case 'documentary':
+                        if (result > 0) {
+                            result = 10; //Selected status
+                        } else {
+                            result = 3; //Not Selected status
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                _arr.push({ reg_id: e.registration.id, result: result });
+            });
+
+            RegistrationService.setMultipleStatus(_arr).success(function(result) {
+                for(var item in result) {
+                    var status = parseInt(result[item]);
+                    var regId =parseInt(item);
+                    var registration = $scope.data.registrations.find(x => x.id === regId);
+                    registration.status = status;
+                }
+
+                MapasCulturais.Messages.success(labels['applyEvaluationsSuccess']);
+            });
+        });
+
     };
 
     $scope.approvedRegistrations = function(){

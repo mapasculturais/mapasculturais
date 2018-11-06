@@ -48,7 +48,7 @@
                         <ul>
                             <?php
                             $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
-                            if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
+                            if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && ($_evaluation_type->id === "simple" || $_evaluation_type->id == "documentary" ) ): ?>
                                 <li ng-if="hasEvaluations()">
                                     <a ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </a>
                                 </li>

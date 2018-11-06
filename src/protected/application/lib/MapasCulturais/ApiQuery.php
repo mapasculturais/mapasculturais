@@ -545,8 +545,10 @@ class ApiQuery {
                 $result[] = $r;
             }
         }
-        
-        $this->processEntities($result);
+
+        if (!empty($result)) {
+            $this->processEntities($result);
+        }
 
         return $result;
     }
