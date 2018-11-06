@@ -13,6 +13,22 @@ jQuery(function(){
     MapasCulturais.Remove.init();
     MapasCulturais.RemoveBanner.init();
 
+    // Registration Valuer Include e Exclude list
+    var rix_list_timeout;
+    $('form.js--registration-valuers-include-exclude-form').on('change', function(){
+        var $form = $(this);
+        clearTimeout(rix_list_timeout);
+        rix_list_timeout = setTimeout(function(){
+            console.log('sending');
+            var url = MapasCulturais.createUrl('registration', 'single', [MapasCulturais.entity.id]);
+            $.ajax(url,{
+                method: 'PATCH',
+                data: $form.serializeArray()
+            }).success(function(){
+                MapasCulturais.Messages.success('Salvo');
+            });
+        },10)
+    });
 
 
     $('.js-registration-action').click(function(){
