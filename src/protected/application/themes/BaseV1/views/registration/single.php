@@ -41,6 +41,7 @@ $_params = [
 
         <?php $this->applyTemplateHook('form','end'); ?>
     </article>
+    <?php $this->part('singles/registration--valuers-list', $_params) ?>
 </article>
 <?php $this->part('singles/registration--sidebar--left', $_params) ?>
 <?php $this->part('singles/registration--sidebar--right', $_params) ?>
