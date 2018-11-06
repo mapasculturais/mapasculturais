@@ -1805,7 +1805,7 @@ class Theme extends MapasCulturais\Theme {
             'notEvaluated' => i::__('Não Avaliada'),
             'all' => i::__('Todas'),
             'sent' => i::__('Enviada'),
-            'confirmEvaluationLabel' => i::__('Aplicar avaliações'),
+            'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
             'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
             'applyEvaluationsSuccess' => i::__('Inscrições foram alteradas com sucesso'),
 
