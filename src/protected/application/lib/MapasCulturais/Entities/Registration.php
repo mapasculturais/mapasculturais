@@ -792,6 +792,24 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserEvaluate($user){
+        if($this->opportunity->canUser('@control')){
+            $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
+            $valuers = $evaluation_method_configuration->getRelatedAgents();
+            $is_valuer = false;
+            
+            if(isset($valuers['group-admin']) && is_array($valuers['group-admin'])){
+                foreach($valuers['group-admin'] as $agent){
+                    if($agent->user->id == $user->id){
+                        $is_valuer = true;
+                    }
+                }
+            }
+
+            if(!$is_valuer){
+                return false;
+            }
+        }
+
         $can = $this->canUserViewUserEvaluation($user);
 
         $evaluation_sent = false;
