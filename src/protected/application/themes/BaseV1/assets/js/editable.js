@@ -20,7 +20,7 @@ jQuery(function(){
         clearTimeout(rix_list_timeout);
         rix_list_timeout = setTimeout(function(){
             console.log('sending');
-            var url = MapasCulturais.createUrl('registration', 'single', [MapasCulturais.entity.id]);
+            var url = MapasCulturais.createUrl('registration', 'valuersExceptionsList', [MapasCulturais.entity.id]);
             $.ajax(url,{
                 method: 'PATCH',
                 data: $form.serializeArray()
