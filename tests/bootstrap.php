@@ -29,7 +29,6 @@ define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
 define('MODULES_PATH', APPLICATION_PATH.'lib/modules/');
 define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
-define('MODULES_PATH', APPLICATION_PATH . 'lib/modules/');
 
  // Prepare a mock environment
 \Slim\Environment::mock(array_merge(array(
