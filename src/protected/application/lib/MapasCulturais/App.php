@@ -1119,40 +1119,6 @@ class App extends \Slim\Slim{
             }
         }
 
-        // register registration valuer exceptions 
-        $array_serializer = function($val){
-            if(!$val) {
-                $val = [];
-            } else if($val && !is_array($val)){
-                $val = [$val];
-            }
-            return json_encode($val);
-        };
-
-        $array_unserializer = function($val){
-            $val = json_decode($val);
-            if(!$val) {
-                $val = [];
-            } else if($val && !is_array($val)){
-                $val = [$val];
-            }
-
-            return $val;
-        };
-
-        $metadata_config = [
-            'type' => 'array',
-            'serialize' => $array_serializer,
-            'unserialize' => $array_unserializer
-        ];
-
-        $registration_valuers_include_list = new Definitions\Metadata('valuers_include_list', $meta_config);
-        $this->registerMetadata($registration_valuers_include_list, 'MapasCulturais\Entities\Registration');
-
-        $registration_valuers_exclude_list = new Definitions\Metadata('valuers_exclude_list', $meta_config);
-        $this->registerMetadata($registration_valuers_exclude_list, 'MapasCulturais\Entities\Registration');
-
-
         $this->view->register();
 
         foreach($this->_modules as $module){
