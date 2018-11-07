@@ -9,6 +9,10 @@ use MapasCulturais\App;
  * Registration
  * @property-read \MapasCulturais\Entities\Agent $owner The owner of this registration
  * @property-read \MapasCulturais\Entities\Opportunity $opportunity
+ * 
+ * @property array valuersExcludeList
+ * @property array valuersIncludeList
+ * 
  * @property string $category
  *
  * @ORM\Table(name="registration")
@@ -121,6 +125,15 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_DRAFT;
+
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="valuers_exceptions_list", type="text", nullable=false)
+     */
+    protected $__valuersExceptionsList = '{"include": [], "exclude": []}';
+
 
 
     /**
@@ -407,6 +420,43 @@ class Registration extends \MapasCulturais\Entity
     function randomIdGeneratorInitialRange(){
         return 1000;
     }
+
+    function getValuersExceptionsList(){
+        return json_decode($this->__valuersExceptionsList);
+    }
+
+    protected function _setValuersExceptionsList($object){
+        $this->checkPermission('modifyValuers');
+
+        if(is_object($object) && isset($object->exclude) && is_array($object->exclude) && isset($object->include) && is_array($object->include)){
+            $this->__valuersExceptionsList = json_encode($object);
+        } else {
+            throw new \Exception('Invalid __valuersExceptionsList format');
+        }
+    }
+
+    function setValuersExcludeList(array $user_ids){
+        $exceptions = $this->getValuersExceptionsList();
+        $exceptions->exclude = $user_ids;
+        $this->_setValuersExceptionsList($exceptions);
+    }
+
+    function setValuersIncludeList(array $user_ids){
+        $exceptions = $this->getValuersExceptionsList();
+        $exceptions->include = $user_ids;
+        $this->_setValuersExceptionsList($exceptions);
+    }
+
+    function getValuersIncludeList(){
+        $exceptions = $this->getValuersExceptionsList();
+        return $exceptions->include;
+    }
+    
+    function getValuersExcludeList(){
+        $exceptions = $this->getValuersExceptionsList();
+        return $exceptions->exclude;
+    }
+    
 
     function setStatus($status){
         // do nothing
@@ -732,7 +782,16 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user)){
+        $can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+
+        $exclude_list = $this->getValuersExcludeList();
+        $include_list = $this->getValuersIncludeList();
+
+        if($can && in_array($user->id, $exclude_list)){
+            return false;
+        }
+
+        if(!$can && in_array($user->id, $include_list)){
             return true;
         }
 
@@ -834,7 +893,20 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        return $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+        $can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+
+        $exclude_list = $this->getValuersExcludeList();
+        $include_list = $this->getValuersIncludeList();
+
+        if($can && in_array($user->id, $exclude_list)){
+            $can = false;
+        }
+
+        if(!$can && in_array($user->id, $include_list)){
+            $can = true;
+        }
+
+        return $can;
     }
 
     protected function canUserViewConsolidatedResult($user){
@@ -970,6 +1042,10 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return false;
+    }
+
+    protected function canUserModifyValuers($user){
+        return $this->opportunity->canUser('@control', $user);
     }
 
     //============================================================= //
