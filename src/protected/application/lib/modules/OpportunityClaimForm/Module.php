@@ -13,7 +13,9 @@ class Module extends \MapasCulturais\Module{
             $app->view->jsObject['angularAppDependencies'][] = 'ng.opportunity-claim';
             $app->view->enqueueScript('app', 'ng.opportunity-claim', 'js/ng.opportunity-claim.js');
             $app->view->localizeScript('opportunityClaim', [
-                'emptyMessage' => i::__('Por favor escreva a mensagem')
+                'emptyMessage' => i::__('Por favor escreva a mensagem'),
+                'claimSended' => i::__('Solicitação de recurso enviada'),
+                'claimSendError' => i::__('Ocorreu um erro ao tentar enviar o recurso')
             ]);
 
         });
