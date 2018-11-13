@@ -12,6 +12,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         parent::__construct($config);
     }
 
+    private $viability_status;
+
     public function getSlug() {
         return 'technical';
     }
@@ -67,6 +69,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             'unserialize' => function($val){
                 return json_decode($val);
             }
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('enableViability',[
+            'label' => i::__('Habilitar Análise de Exiquibilidade das inscrições?'),
+            'type' => 'radio',
+            'options' => array(
+                'true' => 'Habilitar Análise de Exiquibilidade',
+                'false' => 'Não habilitar',
+            ),
         ]);
 
     }
@@ -144,7 +155,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 $section->columns[] = (object) [
                     'label' => sprintf(i::__('Subtotal (max: %s)'),$max),
                     'getValue' => function(Entities\RegistrationEvaluation $evaluation) use($sec, $cfg) {
-                        $rersult = 0;
+                        $result = 0;
                         foreach($cfg->criteria as $crit){
                             if($crit->sid != $sec->id) {
                                 continue;
@@ -152,11 +163,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
                             $val =  isset($evaluation->evaluationData->{$crit->id}) ? (float) $evaluation->evaluationData->{$crit->id} : 0;
                             $weight = (float) $crit->weight;
-                            $rersult += $val * $weight;
+                            $result += $val * $weight;
 
                         }
 
-                        return $rersult;
+                        return $result;
                     }
                 ];
 
@@ -175,20 +186,39 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 }
             ];
 
+            $viability = [
+                'label' => i::__('Esta proposta apresenta exequibilidade?'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation) {
+                    return $this->viabilityLabel($evaluation);
+                }
+            ];
+
+            $result['evaluation']->columns[] = (object) $viability;
+
             $sections = $result;
+
+            $this->viability_status = [
+                'valid' => i::__('Válido'),
+                'invalid' => i::__('Inválido')
+            ];
         });
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
-
         $empty = false;
 
+        if ($evaluation_method_configuration->enableViability === "true" && !array_key_exists('viability',$data)) {
+            $empty = true;
+            $errors[] = i::__('Informe sobre a exequibilidade orçamentária desta inscrição!');
+        }
 
         foreach($data as $key => $val){
-            if($key === 'obs' && !trim($val)){
+            if ($key === 'viability' && empty($val)) {
                 $empty = true;
-            } else if($key !== 'obs' && !is_numeric($val)){
+            } else if($key === 'obs' && !trim($val)) {
+                $empty = true;
+            } else if($key !== 'obs' && $key !== 'viability' && !is_numeric($val)){
                 $empty = true;
             }
         }
@@ -270,6 +300,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function fetchRegistrations() {
         return true;
+    }
+
+    private function viabilityLabel($evaluation) {
+        if (isset($evaluation->evaluationData->viability)) {
+            $viability = $evaluation->evaluationData->viability;
+
+            return $this->viability_status[$viability];
+        }
+
+        return '';
     }
 
 }

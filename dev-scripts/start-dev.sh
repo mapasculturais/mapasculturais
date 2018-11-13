@@ -41,6 +41,7 @@ case $i in
     -u=  | --update     atualiza os pacotes do composer
 	-d=  | --down    executa o docker-compose down antes do docker-compose run
     -s=  | --sleep=     tempo de espera em segundos para o banco de dados ser inicializado (padrão: 0 se existir a pasta docker-data/postgres ou 15 se não existir)
+    -h=  | --help      Imprime este texto de ajuda
 		    "
     	    exit
     ;;
@@ -60,4 +61,5 @@ sudo touch ../docker-data/pcache-cron.log
 
 sudo docker-compose -f docker-compose.local.yml run --service-ports  mapas
 
+sudo docker-compose -f docker-compose.local.yml down
 cd $CDIR

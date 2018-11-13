@@ -35,4 +35,21 @@ use MapasCulturais\i;
         </table>
     </section>
     <button ng-click="addSection()" class="btn btn-default add"><?php i::_e('Adicionar seção de avaliação técnica') ?></button>
+
+
+    <hr>
+    <h4><?php i::_e('Habilitar avaliação da exequibilidade da inscrição?'); ?></h4>
+    <p>
+        <?php i::_e('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição.'); ?>
+        <?php i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
+    </p>
+
+    <label for="enableViability">
+        <input type="radio" ng-model="data.enableViability" value="true" ng-change="save({enableViability: true})" name="enableViability" /> Habilitar
+    </label>
+
+    <label for="enableViability">
+        <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> Não habilitar
+    </label>
 </div>
+
