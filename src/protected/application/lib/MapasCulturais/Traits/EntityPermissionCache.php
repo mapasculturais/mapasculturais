@@ -173,9 +173,12 @@ trait EntityPermissionCache {
             return false;
         }
 
+        $app->setEntityPermissionCacheAsRecreated($this);
+        
         $this->createPermissionsCacheForUsers();
 
         $class_relations = $app->em->getClassMetadata($this->getClassName())->getAssociationMappings();
+        
         
         foreach($class_relations as $prop => $def){
             $rel_class = $def['targetEntity'];
@@ -187,7 +190,6 @@ trait EntityPermissionCache {
             
         }
 
-        $app->setEntityPermissionCacheAsRecreated($this);
         
         if(method_exists($this, 'getExtraEntitiesToRecreatePermissionCache')){
             $entities = $this->getExtraEntitiesToRecreatePermissionCache();
