@@ -1,5 +1,5 @@
 <?php use MapasCulturais\i; ?>
-<?php if ($entity->publishedPreliminaryRegistrations && !$entity->publishedRegistrations): ?>
+<?php if ($entity->publishedPreliminaryRegistrations): ?>
 <!--#preliminary-results-->
 <div id="preliminaryresults" class="aba-content">
 

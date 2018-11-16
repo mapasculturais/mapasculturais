@@ -15,7 +15,7 @@
             <li><a href="#inscritos" ng-click="clearRegistrationFilters()"><?php \MapasCulturais\i::_e("Inscritos");?></a></li>
         <?php endif; ?>
 
-        <?php if ($entity->publishedPreliminaryRegistrations && !$entity->publishedRegistrations): ?>
+        <?php if ($entity->publishedPreliminaryRegistrations): ?>
             <li><a href="#preliminaryresults" ng-click="clearRegistrationFilters()"><?php \MapasCulturais\i::_e("Resultado Preliminar");?></a></li>
         <?php endif; ?>
 
