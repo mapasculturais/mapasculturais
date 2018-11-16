@@ -394,8 +394,10 @@ class Module extends \MapasCulturais\Module{
 
             if($next_id = $registration->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($next_id);
-                if($next_phase_registration->canUser('view')){
-                    $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                if ($next_phase_registration) {
+                    if($next_phase_registration->canUser('view')){
+                        $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                    }
                 }
             }
         });

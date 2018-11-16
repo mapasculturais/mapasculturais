@@ -833,7 +833,7 @@ class Registration extends \MapasCulturais\Entity
         $canUserEvaluateNextPhase = false;
         if($this->getMetadata('nextPhaseRegistrationId') !== null) {
             $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
-            if($next_phase_registration)
+            if(!empty($next_phase_registration))
                 $canUserEvaluateNextPhase = $this->getEvaluationMethod()->canUserEvaluateRegistration($next_phase_registration, $user);
         }
 
