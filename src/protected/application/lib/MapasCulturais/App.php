@@ -1577,6 +1577,7 @@ class App extends \Slim\Slim{
                 throw $e;
             } finally {
                 $this->em->close();
+                $conn->close();
             }
 
             $this->permissionCachePendingQueue = [];
