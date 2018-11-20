@@ -43,12 +43,15 @@ foreach($committee as $valuer){
                     </label>
                 </li>
             <?php endforeach ?>
-            <?php foreach($include_list as $valuer):
+            <?php
+            foreach($include_list as $valuer):
                 $checked = in_array($valuer->user->id, $entity->valuersIncludeList) ? 'checked="checked"' : '';
             ?>
                 <li>
                     <label>
-                        <input type="checkbox" name="valuersIncludeList[]" value="<?php echo $valuer->user->id ?>" <?php echo $checked ?>/>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $checked; ?> class="user-toggable" onclick="toggleRegistrationEvaluator(this)"/>
+                        <input type="checkbox" name="valuersIncludeList[]" value="<?php echo $valuer->user->id ?>"
+                               style="display: none" class="sendable" <?php echo $checked ?>/>
                         <?php echo $valuer->name ?>
                     </label>
                 </li>
@@ -57,19 +60,6 @@ foreach($committee as $valuer){
         <p>
             <small><span style="color: darkred; font-weight: bolder">*</span><em> Avaliador desta inscrição pela regra de distribuição.</em></small>
         </p>
-
-<!--    <strong>--><?php //i::_e('Lista de inclusão') ?><!--</strong><br>-->
-<!--    <small><em>--><?php //i::_e('Pelas regras de distribuição configuradas, os agentes abaixo NÃO SÃO avaliadores desta inscrição. Marque aqueles que você deseja CONCEDER a permissão de avaliar esta inscrição.') ?><!--</em></small>-->
-<!--    <ul>-->
-<!--        --><?php //foreach($include_list as $valuer): $checked = in_array($valuer->user->id, $entity->valuersIncludeList) ? 'checked="checked"' : '' ?>
-<!--            <li>-->
-<!--                <label>-->
-<!--                    <input type="checkbox" name="valuersIncludeList[]" value="--><?php //echo $valuer->user->id ?><!--" --><?php //echo $checked ?><!--/> -->
-<!--                    --><?php //echo $valuer->name ?>
-<!--                </label>-->
-<!--            </li>-->
-<!--        --><?php //endforeach ?><!-- -->
-<!--    </ul>-->
     </form>
 
     <?php $this->applyTemplateHook('valuers-list','end'); ?>
