@@ -116,19 +116,31 @@ ksort($custom_fields);
                 foreach($r->_getDefinitionsWithAgents() as $def):
                     if($def->use == 'dontUse') continue;
                     $agent = $def->agent;
+                    $agentsData = $r->agentsData;
+                    $agentsDataGroup = [];
+                    if(!empty($agent) && !empty($agentsData)){
+                        $agentsDataGroup = (isset($r->agentsData[$def->agentRelationGroupName])) ? $r->agentsData[$def->agentRelationGroupName] : [];
+                    }
                 ?>
 
                     <?php if($agent): ?>
-                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
+                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo (isset($agentsDataGroup['name']))? $agentsDataGroup['name'] : 'Agente';?></a></td>
                         
                         <td><?php echo implode(', ', $agent->terms['area']); ?></td>
 
                         <?php
                         foreach($_properties as $prop):
                             if($prop === 'name') continue;
-                        $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
+                        $val = isset($agentsDataGroup[$prop]) ? $agentsDataGroup[$prop] : '';
                         ?>
-                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
+                        <td>
+                            <?php
+                                if ($prop === 'location')
+                                    echo (isset($val['latitude']) && isset($val['longitude'])) ? "{$val['latitude']},{$val['longitude']}" : '';
+                                else
+                                    echo $val;
+                            ?>
+                        </td>
 
                         <?php endforeach; ?>
 
