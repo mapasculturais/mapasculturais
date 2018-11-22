@@ -57,12 +57,13 @@
 
             <?php else: ?>
                 <?php if($agent->status === Agent::STATUS_ENABLED): ?>
-                    <a class="btn btn-small btn-danger js-open-dialog" href="javascript:void(0)"
+                    <!-- <a class="btn btn-small btn-danger js-open-dialog" href="javascript:void(0)"
                         data-dialog-block="true"
                         data-dialog="#deleteAgentDefault"
                         data-dialog-callback="MapasCulturais.addEntity">
                         <?php \MapasCulturais\i::_e("excluir definitivamente");?>
-                    </a>
+                    </a> -->
+                    <a class="btn btn-small btn-danger" href="<?php echo $agent->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
                 <?php endif; ?>
             <?php endif; ?>
           </div>
@@ -75,8 +76,8 @@
   </table>
 <div id="deleteAgentDefault" class="entity-modal js-dialog" title="<?php \MapasCulturais\i::_e("Excluir agente padrão");?>" style="display: none">
     <a href="#" class="js-close icon icon-close"></a>
-    Esta ação é irreversível. Deseja apagar todo conteúdo relacionado a esta conta ou transferi-lo?
-    
+    <p>Esta ação é irreversível. Deseja apagar todo conteúdo relacionado a esta conta ou transferi-lo?</p>
+
     <div class="actions">
         <button type="button" class="btn btn-danger" data-form-id=''>
             <?php \MapasCulturais\i::_e("Apagar");?>
