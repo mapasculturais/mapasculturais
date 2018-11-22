@@ -775,6 +775,32 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $q->execute();
     }
 
+    public function removeDefault(){
+        $query = "UPDATE \MapasCulturais\Entities\User u SET u.profile = NULL, u.email = '" . $this->email . '-' . md5($this->email . time()) ."', u.status = " . self::STATUS_TRASH ." WHERE u.id = {$this->id}";
+        $q = App::i()->em->createQuery($query);
+        $q->execute();
+    }
+
+    public function removeAllData(){
+        $query = "SELECT a.id FROM \MapasCulturais\Entities\Agent a WHERE a.user = {$this->id}";
+        $q = App::i()->em->createQuery($query);
+        
+        foreach($q->getResult() as $_agent){
+            $agent =  App::i()->repo('Agent')->find($_agent);
+            if($agent->id !== $agent->user->profile->id)
+                $agent->remove(true);
+
+        }
+
+        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.status = " . self::STATUS_TRASH ." WHERE a.user = {$this->id}";
+        $q = App::i()->em->createQuery($query);
+        $q->execute();
+
+        $this->removeDefault();
+
+        App::i()->redirect(App::i()->createUrl('panel', 'userManagement'));
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
