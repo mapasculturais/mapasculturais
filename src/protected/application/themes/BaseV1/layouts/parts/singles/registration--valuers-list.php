@@ -12,42 +12,56 @@ $include_list = [];
 $exclude_list = [];
 
 foreach($committee as $valuer){
-    if($em->canUserEvaluateRegistration($entity, $valuer->user)){
+    if ($em->canUserEvaluateRegistration($entity, $valuer->user)) {
         $exclude_list[] = $valuer;
     } else {
         $include_list[] = $valuer;
     }
-} 
+}
 ?>
-<div class="registration-fieldset">
+<div class="registration-fieldset" id="registration-valuers--admin">
     <?php $this->applyTemplateHook('valuers-list','begin'); ?>
     <h4><?php i::_e('Avaliadores desta inscrição') ?></h4>
     <form class="js--registration-valuers-include-exclude-form">
-    <strong><?php i::_e('Lista de exclusão') ?></strong><br>
-    <small><em><?php i::_e('Pelas regras de distribuição configuradas, os agentes abaixo SÃO avaliadores desta inscrição. Marque aqueles que você deseja EXCLUIR a permissão de avaliar esta inscrição.') ?></em></small>
-    <ul>
-        <?php foreach($exclude_list as $valuer): $checked = in_array($valuer->user->id, $entity->valuersExcludeList) ? 'checked="checked"' : '' ?>
-            <li>
-                <label>
-                    <input type="checkbox" name="valuersExcludeList[]" value="<?php echo $valuer->user->id ?>" <?php echo $checked ?>/> 
-                    <?php echo $valuer->name ?>
-                </label>
-            </li>
-        <?php endforeach ?> 
-    </ul>
-
-    <strong><?php i::_e('Lista de inclusão') ?></strong><br>
-    <small><em><?php i::_e('Pelas regras de distribuição configuradas, os agentes abaixo NÃO SÃO avaliadores desta inscrição. Marque aqueles que você deseja CONCEDER a permissão de avaliar esta inscrição.') ?></em></small>
-    <ul>
-        <?php foreach($include_list as $valuer): $checked = in_array($valuer->user->id, $entity->valuersIncludeList) ? 'checked="checked"' : '' ?>
-            <li>
-                <label>
-                    <input type="checkbox" name="valuersIncludeList[]" value="<?php echo $valuer->user->id ?>" <?php echo $checked ?>/> 
-                    <?php echo $valuer->name ?>
-                </label>
-            </li>
-        <?php endforeach ?> 
-    </ul>
+        <small>
+            <em>
+                <?php i::_e('Marque/desmarque os avaliadores desta inscrição. Por padrão, são selecionados aqueles que avaliam de acordo com as regras de distribuição definidas.'); ?>
+            </em>
+        </small>
+        <ul id="registration-commitee">
+            <?php foreach($exclude_list as $valuer):
+                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
+                $inverse = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList, true);
+            ?>
+                <li>
+                    <label>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $inverse; ?>
+                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" />
+                        <input type="checkbox" name="valuersExcludeList[]" value="<?php echo $valuer->user->id ?>"
+                               class="sendable" <?php echo $checked ?>/>
+                        <?php echo $valuer->name ?> <small><em><span>*</span></em></small>
+                    </label>
+                </li>
+            <?php
+            endforeach;
+            foreach($include_list as $valuer):
+                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
+            ?>
+                <li>
+                    <label>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $checked; ?>
+                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" />
+                        <input type="checkbox" name="valuersIncludeList[]" value="<?php echo $valuer->user->id ?>"
+                               class="sendable" <?php echo $checked ?> />
+                        <?php echo $valuer->name ?>
+                    </label>
+                </li>
+            <?php endforeach ?>
+        </ul>
+        <p>
+            <small><span>*</span><em> Avaliador desta inscrição pela regra de distribuição.</em></small>
+        </p>
+    </form>
 
     <?php $this->applyTemplateHook('valuers-list','end'); ?>
 </div>
