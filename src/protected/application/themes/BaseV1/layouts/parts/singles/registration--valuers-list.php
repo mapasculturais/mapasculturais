@@ -17,9 +17,9 @@ foreach($committee as $valuer){
     } else {
         $include_list[] = $valuer;
     }
-} 
+}
 ?>
-<div class="registration-fieldset">
+<div class="registration-fieldset" id="registration-valuers--admin">
     <?php $this->applyTemplateHook('valuers-list','begin'); ?>
     <h4><?php i::_e('Avaliadores desta inscrição') ?></h4>
     <form class="js--registration-valuers-include-exclude-form">
@@ -28,37 +28,38 @@ foreach($committee as $valuer){
                 <?php i::_e('Marque/desmarque os avaliadores desta inscrição. Por padrão, são selecionados aqueles que avaliam de acordo com as regras de distribuição definidas.'); ?>
             </em>
         </small>
-        <ul id="registration-commitee" style="list-style: none; margin-top: 10px; margin-bottom: 5px; padding: 0;">
-            <?php
-            foreach($exclude_list as $valuer):
-                $checked = in_array($valuer->user->id, $entity->valuersExcludeList) ? 'checked="checked"' : '';
-                $inverse = !in_array($valuer->user->id, $entity->valuersExcludeList) ? 'checked="checked"' : '';
+        <ul id="registration-commitee">
+            <?php foreach($exclude_list as $valuer):
+                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
+                $inverse = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList, true);
             ?>
                 <li>
                     <label>
-                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $inverse; ?> class="user-toggable" onclick="toggleRegistrationEvaluator(this)"/>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $inverse; ?>
+                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" />
                         <input type="checkbox" name="valuersExcludeList[]" value="<?php echo $valuer->user->id ?>"
-                               style="display: none" class="sendable" <?php echo $checked ?>/>
-                        <?php echo $valuer->name ?> <small><em><span style="color: darkred; font-weight: bolder">*</span></em></small>
+                               class="sendable" <?php echo $checked ?>/>
+                        <?php echo $valuer->name ?> <small><em><span>*</span></em></small>
                     </label>
                 </li>
-            <?php endforeach ?>
             <?php
+            endforeach;
             foreach($include_list as $valuer):
-                $checked = in_array($valuer->user->id, $entity->valuersIncludeList) ? 'checked="checked"' : '';
+                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
             ?>
                 <li>
                     <label>
-                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $checked; ?> class="user-toggable" onclick="toggleRegistrationEvaluator(this)"/>
+                        <input type="checkbox" value="ref-<?php echo $valuer->user->id ?>" <?php echo $checked; ?>
+                               class="user-toggable" onclick="toggleRegistrationEvaluator(this)" />
                         <input type="checkbox" name="valuersIncludeList[]" value="<?php echo $valuer->user->id ?>"
-                               style="display: none" class="sendable" <?php echo $checked ?>/>
+                               class="sendable" <?php echo $checked ?> />
                         <?php echo $valuer->name ?>
                     </label>
                 </li>
             <?php endforeach ?>
         </ul>
         <p>
-            <small><span style="color: darkred; font-weight: bolder">*</span><em> Avaliador desta inscrição pela regra de distribuição.</em></small>
+            <small><span>*</span><em> Avaliador desta inscrição pela regra de distribuição.</em></small>
         </p>
     </form>
 
