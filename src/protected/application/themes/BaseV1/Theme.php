@@ -2639,5 +2639,17 @@ class Theme extends MapasCulturais\Theme {
         return $req->getScheme() . "://";
     }
 
+    public function getValuersCheckedAttribute($valuer_id, $valuers, $inverse = false) {
+        $_first = 'checked="checked"';
+        $_second = '';
+
+        if ($inverse) {
+            $aux = $_second;
+            $_second = $_first;
+            $_first = $aux;
+        }
+
+        return in_array($valuer_id, $valuers) ? $_first : $_second;
+    }
 
 }
