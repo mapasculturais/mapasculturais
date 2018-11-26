@@ -10,7 +10,7 @@
     <?php else: ?>
 
         <?php if($entity->publishedRegistrations): ?>
-            <li><a href="#inscritos"><?php \MapasCulturais\i::_e("Resultado");?></a></li>
+            <li><a href="#inscritos" ng-click="clearRegistrationFilters()"> <?php \MapasCulturais\i::_e("Resultado");?></a></li>
         <?php elseif($entity->canUser('@control')): ?>
             <li><a href="#inscritos" ng-click="clearRegistrationFilters()"><?php \MapasCulturais\i::_e("Inscritos");?></a></li>
         <?php endif; ?>

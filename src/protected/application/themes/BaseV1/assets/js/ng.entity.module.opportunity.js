@@ -1238,6 +1238,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     };
 
     $scope.clearRegistrationFilters = function(){
+        $scope.data.registrations.filtro = "";
         $scope.registrationsFilters = {};
     };
 
@@ -1343,6 +1344,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         {fieldName: "evaluation", title: labels['Avaliação'] ,required:true},
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
+    var defaultPremilinarySelectFields = [
+        {fieldName: "number", title:labels["Inscrição"] ,required:true},
+        {fieldName: "category", title:labels['Categorias'] ,required:true},
+        {fieldName: "agents", title:labels['Agentes'] ,required:true},
+        {fieldName: "attachments", title:labels['Anexos']  ,required:true},
+        {fieldName: "status", title:labels['Status'] ,required:true},
+    ];
 
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
@@ -1413,6 +1421,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         propLabels : [],
 
         defaultSelectFields : defaultSelectFields,
+        defaultPremilinarySelectFields : defaultPremilinarySelectFields,
 
         registrationTableColumns: {
             number: true,

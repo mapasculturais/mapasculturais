@@ -31,15 +31,8 @@
                 <div class="close" style="cursor: pointer;"></div>
             </div>
         </div>
-    <?php elseif ($entity->publishedPreliminaryRegistrations): ?>
-        <div class="clearfix">
-            <div class='alert success'><?php \MapasCulturais\i::_e("O resultado preliminar já foi publicado");?>
-                <div class="close" style="cursor: pointer;"></div>
-            </div>
-        </div>
     <?php endif; ?>
 
-    <?php if (!$entity->publishedRegistrations): ?>
         <div class="clearfix sombra registration-toolbar">
             <div class="registration-actions">
                 <div class="dropdown js-dropdown">
@@ -93,7 +86,6 @@
             </div>
 
         </div>
-    <?php endif; ?>
 
 
     <div class="registration-table-columns" ng-show="isShowConfig" >
