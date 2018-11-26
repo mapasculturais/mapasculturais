@@ -1,0 +1,21 @@
+#registration-valuers--admin {
+  #registration-commitee {
+    list-style: none;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding: 0;
+    li {
+      span {
+        color: darkred;
+        font-weight: bolder;
+      }
+      .sendable { display: none; }
+    } // li
+  } // ul
+  p {
+    span{
+      color: darkred;
+      font-weight: bolder;
+    }
+  }
+} // #registration-valuers--admin

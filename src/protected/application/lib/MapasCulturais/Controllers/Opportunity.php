@@ -377,8 +377,10 @@ class Opportunity extends EntityController {
                 return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
             });
         }
+
+        $total = $app->repo('Registration')->countByOpportunity($opportunity, false, -1);
         
-        $this->apiAddHeaderMetadata($this->data, $registrations, $query->getCountResult());
+        $this->apiAddHeaderMetadata($this->data, $registrations, $total);
         $this->apiResponse($registrations);
     }
 
