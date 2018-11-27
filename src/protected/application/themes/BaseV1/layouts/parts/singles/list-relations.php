@@ -10,9 +10,9 @@
                 <?php foreach ($groups as $group): ?>
                     
                     <li class="widget-list-item">
-                        <?php echo $group['group']; ?> <?php \MapasCulturais\i::_e("em"); ?> 
+                        <?php echo $group['group']; ?> <?php \MapasCulturais\i::_e("em"); ?>
                         <a href="<?php echo $group['url']; ?>" style="display: initial;">
-                            <?php echo $group['entitie']; ?>
+                            <?php echo $group['entity']; ?>
                         </a>
                     </li>
                     
