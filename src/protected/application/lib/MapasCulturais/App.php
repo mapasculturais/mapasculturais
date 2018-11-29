@@ -287,9 +287,9 @@ class App extends \Slim\Slim{
 
         $this->_config = $config;
 
-        $this->_config['path.layouts'] = APPLICATION_PATH.'themes/active/layouts/';
-        $this->_config['path.templates'] = APPLICATION_PATH.'themes/active/views/';
-        $this->_config['path.metadata_inputs'] = APPLICATION_PATH.'themes/active/metadata-inputs/';
+        $this->_config['path.layouts'] = realpath(APPLICATION_PATH.'themes/active/layouts/');
+        $this->_config['path.templates'] = realpath(APPLICATION_PATH.'themes/active/views/');
+        $this->_config['path.metadata_inputs'] =realpath( APPLICATION_PATH.'themes/active/metadata-inputs/');
 
         if(!key_exists('app.sanitize_filename_function', $this->_config))
                 $this->_config['app.sanitize_filename_function'] = null;
@@ -300,7 +300,7 @@ class App extends \Slim\Slim{
 
         $driver = new AnnotationDriver(new AnnotationReader());
 
-        $driver->addPaths([__DIR__ . '/Entities/']);
+        $driver->addPaths([realpath(__DIR__ . '/Entities/')]);
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
@@ -312,7 +312,7 @@ class App extends \Slim\Slim{
         AnnotationRegistry::registerLoader('class_exists');
         $doctrine_config->setMetadataDriverImpl($driver);
 
-        $proxy_dir = APPLICATION_PATH . 'lib/MapasCulturais/DoctrineProxies';
+        $proxy_dir = realpath(APPLICATION_PATH . 'lib/MapasCulturais/DoctrineProxies');
         $proxy_namespace = 'MapasCulturais\DoctrineProxies';
 
         $doctrine_config->setProxyDir($proxy_dir);
