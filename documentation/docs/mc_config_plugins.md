@@ -73,7 +73,7 @@ E as notificações de entidades sem atualização, definido em dias:
 ```
 'notifications.entities.update' => 90,  // days
 ```
-**Observação**: Para deixar as desabilitadas as notificações de usuário e entidades sem atualização, é só deixar suas diretivas de definição de dias para notificar com o valor 0 (zero).
+**Observação**: Para deixar desabilitadas as notificações de usuário e entidades sem atualização, é só deixar suas diretivas de definição de dias para notificar com o valor 0 (zero).
 
 Habilita a notificação ao usuário por notificação e email o número de dias configurado antes da data de expiração do selo atribuído a algum registro de entidade (Agente/Espaço/Evento):
 ```
