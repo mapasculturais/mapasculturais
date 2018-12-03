@@ -406,4 +406,21 @@ class Registration extends EntityController {
             $this->json($evaluation);
         }
     }
+
+    function PATCH_valuersExceptionsList(){
+        $registration = $this->getRequestedEntity();
+
+        $exclude = (array) @$this->data['valuersExcludeList'];
+        $include = (array) @$this->data['valuersIncludeList'];
+
+        $registration->checkPermission('modifyValuers');
+        
+        $registration->setValuersExcludeList($exclude);
+        $registration->setValuersIncludeList($include);
+        $app = App::i();
+        $app->disableAccessControl();
+        $this->_finishRequest($registration);
+        $app->enableAccessControl();
+    
+    }
 }
