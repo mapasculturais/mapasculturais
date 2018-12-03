@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2018-12-03 11:49-0300\n"
+"POT-Creation-Date: 2018-12-03 12:08-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -4550,6 +4550,15 @@ msgstr "Cuotas"
 msgid "Habilitar Análise de Exiquibilidade das inscrições?"
 msgstr "¿Habilitar Análisis de Viabilidad de las inscripciones?"
 
+#: application/plugins/EvaluationMethodTechnical/Plugin.php:78
+msgid "Habilitar Análise de Exiquibilidade"
+msgstr "¿Habilitar Análisis de Viabilidad?"
+
+#: application/plugins/EvaluationMethodTechnical/Plugin.php:79
+#: application/plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:52
+msgid "Não habilitar"
+msgstr "No habilitar"
+
 #: application/plugins/EvaluationMethodTechnical/Plugin.php:91
 msgid "Já existe uma seção com o mesmo nome"
 msgstr "Ya existe una sección con el mismo nombre"
@@ -4700,6 +4709,11 @@ msgstr ""
 "Si la mayoría de los evaluadores consideran la inhabilitación por "
 "viabilidad, la misma será marcada con el status de inválida para el dueño "
 "del llamado, que aún así podrá cambiar su status a válida."
+
+#: application/plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:48
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:76
+msgid "Habilitar"
+msgstr "Habilitar"
 
 #: application/plugins/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:19
 msgid "Subtotal"
@@ -8430,10 +8444,6 @@ msgstr "Esperando confirmación del evaluador"
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:75
 msgid "Desabilitar"
 msgstr "Deshabilitar"
-
-#: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:76
-msgid "Habilitar"
-msgstr "Habilitar"
 
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:83
 msgid ""

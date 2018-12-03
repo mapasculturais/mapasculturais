@@ -75,8 +75,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             'label' => i::__('Habilitar Análise de Exiquibilidade das inscrições?'),
             'type' => 'radio',
             'options' => array(
-                'true' => 'Habilitar Análise de Exiquibilidade',
-                'false' => 'Não habilitar',
+                'true' => i::__('Habilitar Análise de Exiquibilidade'),
+                'false' => i::__('Não habilitar'),
             ),
         ]);
 
