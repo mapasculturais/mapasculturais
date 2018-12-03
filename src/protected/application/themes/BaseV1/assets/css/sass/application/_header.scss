@@ -22,6 +22,32 @@
         position: relative;
         border-top: none;
     }
+
+    @media screen and(min-width: $screen-md) and (max-width: 1104px) {
+        #about-nav {
+            padding: 20px 10px;
+        }
+        #brand-logo { padding-right: 0; }
+        #main-nav {
+            .entities-menu {
+                li {
+                    width: 6.25rem;
+                    a {
+                        font-size: 0.7rem;
+                    }
+                }
+            }
+            .session-menu {
+                li {
+                    &.notifications { width: 5.8rem; }
+                    a {
+                        font-size: 0.7rem;
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 

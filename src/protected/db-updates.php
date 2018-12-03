@@ -1101,6 +1101,12 @@ return [
             echo "\n - inscrição de id {$reg->id} número {$current->id}\n";
             $conn->executeQuery("UPDATE registration SET number = 'on-{$current->id}' WHERE id = $reg->id");
         }
+    },
+
+    'alter table registration add column valuers_exceptions_list' => function() use($conn){
+        if(!__column_exists('registration', 'valuers_exceptions_list')){
+            $conn->executeQuery("ALTER TABLE registration ADD valuers_exceptions_list TEXT NOT NULL DEFAULT '{\"include\": [], \"exclude\": []}';");
+        }
     }
 
 ] + $updates ;
