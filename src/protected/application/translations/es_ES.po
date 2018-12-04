@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2018-12-04 13:25-0300\n"
+"POT-Creation-Date: 2018-12-04 14:31-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -4525,7 +4525,7 @@ msgstr "¿Habilitar Análisis de Viabilidad de las inscripciones?"
 
 #: application/plugins/EvaluationMethodTechnical/Plugin.php:78
 msgid "Habilitar Análise de Exiquibilidade"
-msgstr "¿Habilitar Análisis de Viabilidad?"
+msgstr "Habilitar Análisis de Viabilidad"
 
 #: application/plugins/EvaluationMethodTechnical/Plugin.php:79
 #: application/plugins/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:52
@@ -8949,7 +8949,7 @@ msgstr "inscripciones encontradas"
 
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:118
 msgid " com os filtros selecionados."
-msgstr "con los filtros seleccionados."
+msgstr " con los filtros seleccionados."
 
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:5
 msgid "Veja abaixo as inscrições suplentes/selecionadas"
@@ -9064,7 +9064,7 @@ msgstr "Finalizar Evaluación y Siguiente"
 
 #: application/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:24
 msgid "Avaliadores desta inscrição"
-msgstr "evaluadores de esta inscripción"
+msgstr "Evaluadores de esta inscripción"
 
 #: application/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:28
 msgid ""
@@ -9075,6 +9075,10 @@ msgstr ""
 "Marque/desmarque los evaluadores de esta inscripción. De forma "
 "predeterminada, se seleccionan aquellos que evalúan de acuerdo con las "
 "reglas de distribución definidas."
+
+#: application/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:62
+msgid "Avaliador desta inscrição pela regra de distribuição."
+msgstr "Evaluador de esta inscripción por la regla de distribución."
 
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:2
 #: application/themes/BaseV1/layouts/parts/singles/registration-single--agents.php:10
