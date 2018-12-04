@@ -425,7 +425,9 @@ return array(
             'instalacoes'    => 'subsite',
             'anexos'         => 'registrationfileconfiguration',
             'revisoes'       => 'entityRevision',
-            'historico'      => 'entityRevision'
+            'historico'      => 'entityRevision',
+            'cidades'          => 'city',
+            'estados'          => 'state',
         ),
         'actions' => array(
             'lista'         => 'list',

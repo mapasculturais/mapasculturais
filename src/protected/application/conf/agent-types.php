@@ -213,6 +213,16 @@ return array(
             )
         ],
 
+        'En_CE_Municipio' => [
+            'label' => \MapasCulturais\i::__('Município'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+            'type' => 'select',
+
+            'options' => array()
+        ],
+
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
