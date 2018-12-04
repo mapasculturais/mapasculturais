@@ -132,6 +132,25 @@ a.editable-click:hover {
 .tip-yellowsimple .tip-arrow-top {
     margin-top: -10px;
 }
+
+/* multiselect tags e areas de atuacao*/
+.select2-container-multi .select2-choices .select2-search-field:after {
+    content: '3';
+    font-family: "ElegantIcons";
+    display: inline-block;
+    left: -20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+    width: 100% !important;
+}
+
+.select2-container-multi .select2-choices .select2-search-field {
+    width: 100%;
+}
+
 /*campos de formulario*/
 
 .editable-buttons {
