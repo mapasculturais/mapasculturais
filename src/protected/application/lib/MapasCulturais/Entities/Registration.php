@@ -550,6 +550,22 @@ class Registration extends \MapasCulturais\Entity
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(invalid)');
     }
 
+    function forceSetStatus(Registration $registration, $status = "pendent") {
+        if ("pendent" === $status) {
+            $_status = self::STATUS_SENT;
+        } else if ("invalid" === $status) {
+            $_status = self::STATUS_INVALID;
+        } else {
+            return;
+        }
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration->status = $_status;
+        $registration->save(true);
+        $app->enableAccessControl();
+    }
+
     function setStatusToSent(){
         $this->_setStatusTo(self::STATUS_SENT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
@@ -1048,7 +1064,7 @@ class Registration extends \MapasCulturais\Entity
         return $this->opportunity->canUser('@control', $user);
     }
 
-    //============================================================= //
+     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //

@@ -423,7 +423,7 @@ class Html extends \MapasCulturais\ApiOutput{
             ?>
             <thead>
                 <tr>
-                    <?php foreach($first_item_keys as $k): ?><?php
+                    <?php foreach($first_item_keys as $k):
                         if($k==='terms'){
                             $v = $item->$k;
                                             
@@ -439,13 +439,13 @@ class Html extends \MapasCulturais\ApiOutput{
                             if(property_exists($v, 'tag')){ ?><th><?php echo $this->convertToUTF16($this->translate('tag')); ?></th><?php }
                             if(property_exists($v, 'linguagem')){ ?><th><?php echo $this->convertToUTF16($this->translate('linguagem')); ?></th><?php }
 
-                        }elseif(strpos($k,'@files')===0){
+                        } elseif(strpos($k,'@files')===0) {
                             continue;
-                        }elseif($k==='occurrences'){ ?>
+                        } elseif($k==='occurrences') { ?>
                             <th><?php echo $this->convertToUTF16($this->translate('occurrences')); ?></th> 
                             <?php
-                        }else{
-                            if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
+                        } else {
+                            if (in_array($k,['singleUrl','occurrencesReadable','spaces'])) {
                                 continue;
                             }
                             ?>
@@ -462,10 +462,12 @@ class Html extends \MapasCulturais\ApiOutput{
                             </th>
                         <?php
                         }
-                    ?><?php endforeach; ?>
-                    <th></th>
-                </tr>
+                        endforeach;
 
+                        // Permite acrescentar novos headers (th) no output html/excel
+                        $app->applyHookBoundTo($this, 'API.(space).result.extra-header-fields');
+                        ?>
+                </tr>
             </thead>
             <tbody>
             <?php endif; ?>
@@ -508,7 +510,7 @@ class Html extends \MapasCulturais\ApiOutput{
         <?php
     }
 
-    protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
+    protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entidades') {
         $uriExplode = explode('/',$_SERVER['REQUEST_URI']);
         if($data && key_exists(2,$uriExplode) ){
             $singular_object_name = $this->convertToUTF16($this->translate($uriExplode[2]));
@@ -528,7 +530,7 @@ class Html extends \MapasCulturais\ApiOutput{
             <body>
                 <h1><?php
 
-                echo sprintf(App::txts("%s $singular_object_name encontrado.", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></h1>
+                echo sprintf(App::txts("%s $singular_object_name encontrado", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></h1>
                 
                 <h4><?php echo \MapasCulturais\i::__('Planilha gerada em: ') . \date("d/m/Y H:i") ?></h4>
                 <?php $this->printTable($data) ?>
