@@ -536,10 +536,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $this->checkPermission('modify');
         $opportunities = [];
         $app = App::i();
+        $user_id = $app->user->id;
 
         $opportunitiesPermission = $app->repo('MapasCulturais\Entities\PermissionCache')->findBy([
             'action' => 'viewUserEvaluation',
-            'userId' => $app->user->id
+            'userId' => $user_id
         ]);
 
         if (count($opportunitiesPermission) > 0 ) {
@@ -555,7 +556,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             ]);
 
             foreach ($opportunities as $key => $opportunity) {
-                if(!$opportunity->evaluationMethodConfiguration->canUser('@control')) {
+                $_is_opportunity_owner = $user_id === $opportunity->owner->userId;
+                if (!$opportunity->evaluationMethodConfiguration->canUser('@control') || $_is_opportunity_owner) {
                     unset($opportunities[$key]);
                 }
             }
