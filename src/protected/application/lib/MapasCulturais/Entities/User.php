@@ -532,23 +532,25 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $opportunities;
     }
 
-    function getOpportunitiesCanBeEvaluated(){
+    function getOpportunitiesCanBeEvaluated() {
         $this->checkPermission('modify');
         $opportunities = [];
         $app = App::i();
 
         $opportunitiesPermission = $app->repo('MapasCulturais\Entities\PermissionCache')->findBy([
-            'action' => 'evaluateRegistrations',
+            'action' => 'viewUserEvaluation',
             'userId' => $app->user->id
         ]);
 
         if (count($opportunitiesPermission) > 0 ) {
+            $opportunityIDs = [];
             foreach ($opportunitiesPermission as $opportunity) {
-                $opportunitiesCanEvalute[] = $opportunity->objectId;
+                $op = $app->repo('Registration')->find($opportunity->objectId);
+                $opportunityIDs[] = $op->opportunity->id;
             }
 
             $opportunities = $app->repo('Opportunity')->findBy([
-                'id' => $opportunitiesCanEvalute,
+                'id' => $opportunityIDs,
                 'status' => Opportunity::STATUS_ENABLED
             ]);
 
@@ -559,7 +561,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             }
         }
 
-        return $opportunities;
+        return array_reverse($opportunities);
     }
 
     public function getSubsite($status = null) {
