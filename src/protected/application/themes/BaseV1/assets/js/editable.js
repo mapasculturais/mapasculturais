@@ -1114,6 +1114,38 @@ MapasCulturais.MetalistManager = {
 
 
 $(function(){
+
+    var cities = [];
+
+    function loadCities(ufCode){
+            $.getJSON( "/api/city/list?stateCode="+ufCode, function( data ) {
+                if (data !== null) {
+                    var config = {
+                        name: "En_Estado",
+                        type: "select",
+                        emptytext: "Município",
+                        placeholder: "Município",
+                        source: [],
+                        maxlength : 20
+                    };
+                    data.forEach(function(city){
+                        var obj = {value: city.name, text: city.name};
+                        config.source.push(obj);
+                    });
+                    $('#En_Municipio').editable('destroy');
+                    $('#En_Municipio').data('type', 'select');
+                    $('#En_Municipio').editable(config);
+                    var v = $('#En_Municipio').html();
+                    config.source.forEach(function(e){
+                        if(e.value === v){
+                            $('#En_Municipio').editable('setValue', v);
+                        }
+                    });
+                    cities = data;
+                }
+            });
+    }
+
     function concatena_enderco(){
         var nome_logradouro = $('#En_Nome_Logradouro').editable('getValue', true);
         var cep = $('#En_CEP').editable('getValue', true);
@@ -1149,6 +1181,23 @@ $(function(){
         });
 
     });
+
+    $('#En_Estado').on('DOMSubtreeModified',function(){
+        if ( this.childNodes.length > 0 ) {
+            var uf = $('#En_Estado').editable('getValue', true);
+            if (uf !== null || uf !== undefined){
+                loadCities(uf);
+            }
+        }
+    });
+
+    //First Load
+    if ( cities.length == 0 ) {
+        var uf = $('#En_Estado').editable('getValue', true);
+        if (uf !== null || uf !== undefined){
+            loadCities(uf);
+        }
+    }
 });
 
 (function ($) {

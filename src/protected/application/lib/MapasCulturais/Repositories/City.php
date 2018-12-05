@@ -1,5 +1,9 @@
 <?php
 namespace MapasCulturais\Repositories;
+use MapasCulturais\App;
+use MapasCulturais\Entities;
+use MapasCulturais\Traits;
+
 
 class City extends \MapasCulturais\Repository{
 
@@ -16,9 +20,8 @@ class City extends \MapasCulturais\Repository{
         }
 
         if(!is_null($state)){
-            $cities = $app->repo('State')->findBy(['state_id' => $state->id]);
+            $cities = $app->repo('City')->findBy(['state' => $state]);
         }
-
         return $cities;
     }
 }

@@ -13,7 +13,7 @@ class City extends EntityController {
     function API_list(){
         $app = App::i();
 
-        $stateCode = (empty($this->data[0])) ? null : $this->data[0];
+        $stateCode = (empty($this->data['stateCode'])) ? null : $this->data['stateCode'];
         $cities = [];
 
         if(!empty($stateCode)){
@@ -22,9 +22,10 @@ class City extends EntityController {
             }catch(\Exception $e){
                 $this->errorJson($e->getMessage());
             }
+        } else {
+            $cities = $app->repo('City')->findAll();
         }
 
-        $cities = $app->repo('City')->findAll();
 
         $this->apiResponse($cities);
     }

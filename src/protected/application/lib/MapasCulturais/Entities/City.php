@@ -36,12 +36,27 @@ class City extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\State
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\State", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\State", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="state_id", referencedColumnName="id")
      * })
      */
     protected $state;
+
+
+    function jsonSerialize()
+    {
+        $json = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'state' => [
+                'name' => $this->state->name,
+                'code' => $this->state->code
+            ]
+        ];
+
+        return $json;
+    }
 
 
     //============================================================= //

@@ -38,11 +38,6 @@ class State extends \MapasCulturais\Entity
      */
     protected $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\City", mappedBy="city", cascade="remove", orphanRemoval=true)
-     */
-    protected $cities;
-
     public function __construct() {
         $this->cities = new \Doctrine\Common\Collections\ArrayCollection();
         parent::__construct();
@@ -50,6 +45,17 @@ class State extends \MapasCulturais\Entity
 
     function __toString(){
         return $this->name;
+    }
+
+    function jsonSerialize()
+    {
+        $json = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'code' => $this->code
+        ];
+
+        return $json;
     }
 
     //============================================================= //
