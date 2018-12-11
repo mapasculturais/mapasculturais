@@ -552,7 +552,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
             $opportunities = $app->repo('Opportunity')->findBy([
                 'id' => $opportunityIDs,
-                'status' => Opportunity::STATUS_ENABLED
+                'status' => [Opportunity::STATUS_ENABLED, Agent::STATUS_RELATED]
             ]);
 
             foreach ($opportunities as $key => $opportunity) {
