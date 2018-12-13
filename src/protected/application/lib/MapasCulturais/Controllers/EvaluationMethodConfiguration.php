@@ -5,10 +5,14 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 
+// use MapasCulturais\Entities\EvaluationMethodConfiguration;
+
 /**
  * Space Controller
  *
  * By default this controller is registered with the id 'space'.
+ * 
+ * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $requestedEntity
  *
  */
 class EvaluationMethodConfiguration extends EntityController {
@@ -78,5 +82,22 @@ class EvaluationMethodConfiguration extends EntityController {
         $this->_setPermissionCacheUsers();
         
         parent::POST_single();
+    }
+
+    function POST_reopenValuerEvaluations(){
+        $app = App::i();
+
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+        $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relationId']);
+
+        if(!$entity || !$relation){
+            $app->pass();
+        }
+
+        $relation->reopen(true);
+
+        $this->_finishRequest($relation);
     }
 }
