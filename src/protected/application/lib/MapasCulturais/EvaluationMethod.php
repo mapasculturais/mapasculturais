@@ -60,6 +60,25 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
             ];
         }
 
+        if ($opportunity->useAgentRelationInstituicao == 'required' || $opportunity->useAgentRelationInstituicao == 'optional'){
+            $registration_columns['instituicao'] = (object) [
+                'label' => i::__('Instituição'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation){
+                    $reg = $evaluation->registration;
+                    $agent = $reg->getAgentRelationByGroup('instituicao');
+                    return ($agent === null) ? '' : $agent->name;
+                }
+            ];
+
+            $registration_columns['instituicao_municipio'] = (object) [
+                'label' => i::__('Instituição - Município'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation){
+                    $agent = $evaluation->registration->getAgentRelationByGroup('instituicao');
+                    return ($agent === null) ? '' : $agent->En_Municipio;
+                }
+            ];            
+        }
+
         $registration_columns = $registration_columns + [
             'owner' => (object) [
                 'label' => i::__('Agente Responsável'),
@@ -72,7 +91,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                 'getValue' => function(Entities\RegistrationEvaluation $evaluation){
                     return $evaluation->registration->number;
                 }
-            ],
+            ]
         ];
 
 

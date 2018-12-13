@@ -404,6 +404,24 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    /**
+     * Return agent in agent relation list filter by group
+     * @return \MapasCulturais\Entities\Agent
+     */
+    function getAgentRelationByGroup($group){
+        $relations = $this->getAgentRelations();
+        $agent = null;
+        if (!empty($relations)) {            
+            foreach($relations as $agent_relation){
+                if ($agent_relation->group == $group) {
+                    $agent = $agent_relation->agent;
+                    break;
+                }
+            }
+        }
+        return $agent;
+    }
+
     function randomIdGeneratorInitialRange(){
         return 1000;
     }
