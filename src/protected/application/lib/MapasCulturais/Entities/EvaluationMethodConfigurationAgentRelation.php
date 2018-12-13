@@ -34,4 +34,11 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         parent::delete($flush);
     }
     
+    function reopen($flush = true){
+        $this->owner->opportunity->checkPermission('reopenValuerEvaluations');
+
+        $this->status = self::STATUS_ENABLED;
+
+        $this->save($flush);
+    }
 }
