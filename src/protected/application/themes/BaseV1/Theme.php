@@ -1801,6 +1801,7 @@ class Theme extends MapasCulturais\Theme {
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
+            'confirmReopenValuerEvaluations' => i::__('Você tem certeza que deseja reabrir as avaliações para este avaliador?'),
             'evaluated' => i::__('Avaliada'),
             'notEvaluated' => i::__('Não Avaliada'),
             'all' => i::__('Todas'),
