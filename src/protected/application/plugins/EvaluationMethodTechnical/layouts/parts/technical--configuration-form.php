@@ -45,11 +45,11 @@ use MapasCulturais\i;
     </p>
 
     <label for="enableViability">
-        <input type="radio" ng-model="data.enableViability" value="true" ng-change="save({enableViability: true})" name="enableViability" /> Habilitar
+        <input type="radio" ng-model="data.enableViability" value="true" ng-change="save({enableViability: true})" name="enableViability" /> <?php i::_e('Habilitar'); ?>
     </label>
 
     <label for="enableViability">
-        <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> Não habilitar
+        <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
     </label>
 </div>
 
