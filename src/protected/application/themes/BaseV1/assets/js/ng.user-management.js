@@ -144,7 +144,7 @@
             $scope.user.history.spinnerShow = true;
             userManagermentService.getHistory($userId)
                 .success(function (data) {
-                    data.forEach(el=>{
+                    data.forEach(function(el){
                         el.objectType = el.objectType.substring(24);
                         el.createTimestamp.date = new Date(el.createTimestamp.date);
                     });

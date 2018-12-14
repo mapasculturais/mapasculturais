@@ -13,7 +13,22 @@ jQuery(function(){
     MapasCulturais.Remove.init();
     MapasCulturais.RemoveBanner.init();
 
-
+    // Registration Valuer Include e Exclude list
+    var registration_valuer_form = 'form.js--registration-valuers-include-exclude-form';
+    var rix_list_timeout;
+    $(registration_valuer_form + ' .sendable').on('change', function() {
+        var $form = $(registration_valuer_form);
+        clearTimeout(rix_list_timeout);
+        rix_list_timeout = setTimeout(function(){
+            var url = MapasCulturais.createUrl('registration', 'valuersExceptionsList', [MapasCulturais.entity.id]);
+            $.ajax(url,{
+                method: 'PATCH',
+                data: $form.serializeArray()
+            }).success(function(){
+                MapasCulturais.Messages.success('Avaliador alterado com sucesso!');
+            });
+        },10);
+    });
 
     $('.js-registration-action').click(function(){
         if($(this).hasClass('selected'))
@@ -229,6 +244,15 @@ jQuery(function(){
     });
 
 });
+
+function toggleRegistrationEvaluator(field) {
+    var _ref = $(field).val();
+    if (_ref) {
+        var _evaluator = _ref.replace('ref-','');
+        var _ev_field = 'input[value=' + _evaluator + ']';
+        $(_ev_field).click();
+    }
+}
 
 $(window).on('beforeunload', function(){
     var labels = MapasCulturais.gettext.editable;

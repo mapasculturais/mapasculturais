@@ -2707,6 +2707,20 @@ class Theme extends MapasCulturais\Theme {
         }
     }
 
+
+    public function getValuersCheckedAttribute($valuer_id, $valuers, $inverse = false) {
+        $_first = 'checked="checked"';
+        $_second = '';
+
+        if ($inverse) {
+            $aux = $_second;
+            $_second = $_first;
+            $_first = $aux;
+        }
+
+        return in_array($valuer_id, $valuers) ? $_first : $_second;
+    }
+
     public function renderFields($entity, $new_entity, $modal_id) {
         $required_fields = array_keys($new_entity->getValidations());
         $class = $new_entity::getClassName();

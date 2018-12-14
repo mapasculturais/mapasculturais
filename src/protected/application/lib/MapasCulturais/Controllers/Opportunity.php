@@ -357,7 +357,6 @@ class Opportunity extends EntityController {
         foreach($registrations as &$reg) {
             if(in_array('consolidatedResult', $query->selecting)){
                 $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
-                $this->preSetStatus($opportunity,$reg);
             }
             
             if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
@@ -377,30 +376,11 @@ class Opportunity extends EntityController {
                 return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
             });
         }
+
+        $total = $app->repo('Registration')->countByOpportunity($opportunity, false, -1);
         
-        $this->apiAddHeaderMetadata($this->data, $registrations, $query->getCountResult());
+        $this->apiAddHeaderMetadata($this->data, $registrations, $total);
         $this->apiResponse($registrations);
-    }
-
-    protected function preSetStatus($opportunity, &$registration)
-    {
-        if ($opportunity->evaluationMethodConfiguration->getType()->id === "technical") {
-            $app = App::i();
-            $reg_evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration["id"]]);
-            $valids = $invalids = 0;
-            foreach ($reg_evaluations as $ev) {
-                if (property_exists($ev->evaluationData, "viability")) {
-                    if ("invalid" === $ev->evaluationData->viability) {
-                        $invalids++;
-                    } else if ("valid" === $ev->evaluationData->viability) {
-                        $valids++;
-                    }
-                }
-            }
-
-            if ($invalids > $valids)
-                $registration['status'] = 2;
-        }
     }
     
     function API_findEvaluations($opportunity_id = null) {

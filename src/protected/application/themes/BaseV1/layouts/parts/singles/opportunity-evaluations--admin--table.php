@@ -33,7 +33,7 @@
                 <span ng-if="data.evaluations.length === 1"><?php \MapasCulturais\i::_e("1 avaliação encontrada.");?></span>
                 <span ng-if="data.evaluations.length > 1">{{data.evaluations.length}}
                     <span ng-if="data.evaluationsAPIMetadata.count > 0">
-                        <i> / {{ data.evaluationsAPIMetadata.count }}</i>
+                        <i> de {{ data.evaluationsAPIMetadata.count }}</i>
                     </span>
                  <?php \MapasCulturais\i::_e("Avaliações");?>
              </span>                
@@ -42,7 +42,7 @@
 
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
             <td class="registration-id-col">
-                <a href='{{evaluation.registration.singleUrl}}'>
+                <a href='{{evaluation.evaluation.singleUrl}}'>
                     <strong>{{evaluation.registration.number}}</strong>
                 </a>
             </td>

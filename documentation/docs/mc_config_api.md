@@ -1,7 +1,7 @@
 Documentacao da API
 ===================
 
-Esta página reúne alguns exmeplos de uso da API, em especial dos métodos de busca por entidades.
+Esta página reúne alguns exemplos de uso da API, em especial dos métodos de busca por entidades.
 
 A documentação completa de todos os endpoints está sendo construída aqui: [http://docs.mapasculturais.org/apidoc/index.html?doctype=api](http://docs.mapasculturais.org/apidoc/index.html?doctype=api)
 

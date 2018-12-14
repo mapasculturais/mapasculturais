@@ -201,8 +201,6 @@ Por enquanto ainda não temos resolvida a estrutura para múltiplos temas. O que
 Por enquanto ainda não utilizamos um gerenciador de pacotes para as bibliotecas Javascript. Estas ficam na [pasta assets/vendor/](#estrutura-de-pastas-do-tema).
  - [AngularJS](https://angularjs.org/)
  - [jQuery](http://jquery.com/)
- - 
-
 
 #### theme.php
 Este arquivo fica na pasta raiz do tema (**src/protected/application/themes/active**) e é usado para colocar funções helpers usadas dentro do tema e para estender o sistema utilizando a [API de plugins](mc_config_api.md).
