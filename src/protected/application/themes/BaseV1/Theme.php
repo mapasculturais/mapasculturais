@@ -1237,6 +1237,16 @@ class Theme extends MapasCulturais\Theme {
             $this->part('event-attendance', ['entity' => $this->data->entity]);
         });
 
+        $app->hook('entity(opportunity).render:before', function($entity) {
+            if (is_object($entity)) {
+                $title = $entity->name;
+                if ("opportunity" === $entity->controller->id && $entity->id == 1 && "Rede Cultura Viva" === $title) {
+                    header('Location: http://culturaviva.gov.br/');
+                    exit;
+                }
+            }
+        });
+
     }
 
 
