@@ -328,16 +328,6 @@
 
             $scope.defaultTab = function(){
                 $scope.tabClick('event');
-                /*console.log($scope.data.global.enabled);
-                for(var i = 0; i < entities.length; i++){
-                    console.log(entities[i]);
-                    if ($scope.data.global.enabled[entities[i]]){
-                        console.log(entities[i]);
-                        //$scope.tabClick(entities[i]);
-                        //return;
-                    }
-                }*/
-
             };
 
             $scope.parseHash = function(){
