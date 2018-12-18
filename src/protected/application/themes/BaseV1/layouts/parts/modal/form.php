@@ -1,32 +1,30 @@
 <?php
-    $url = $app->createUrl($entity);
-    $classes = $this->getModalClasses($use_modal);
-    $_entity_class = $app->controller($entity)->entityClassName;
-    $new_entity = new $_entity_class();
-    $name = mb_strtolower($new_entity->getEntityTypeLabel());
+$url = $app->createUrl($entity_name);
+$classes = $this->getModalClasses($use_modal);
+$name = mb_strtolower($new_entity->getEntityTypeLabel());
 
-    $title = sprintf(\MapasCulturais\i::__("Crie um %s com informações básicas"), $name);
-    $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
+$title = sprintf(\MapasCulturais\i::__("Crie um %s com informações básicas"), $name);
+$app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 ?>
 
-<div id="<?php echo $id; ?>" class="entity-modal <?php echo $classes['classes']; ?>" title="<?php echo $title; ?>" style="display: none">
+<div id="<?php echo $modal_id; ?>" class="entity-modal <?php echo $classes['classes']; ?>" title="<?php echo $title; ?>" style="display: none">
 
     <?php $this->part('modal/before-form'); ?>
-
-    <?php $this->part('modal/feedback', ['entity' => $entity, 'label' => $name]); ?>
+    <?php $this->part('modal/feedback', ['entity_name' => $entity_name, 'label' => $name]); ?>
 
     <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
-          data-entity="<?php echo $url; ?>" data-formid="<?php echo $id; ?>" id="form-for-<?php echo $id; ?>">
+          data-entity="<?php echo $url; ?>" data-formid="<?php echo $modal_id; ?>" id="form-for-<?php echo $modal_id; ?>">
 
-        <?php $this->renderFields($entity,$new_entity,$id); ?>
+        <?php $this->renderModalFields($new_entity, $entity_name, $modal_id); ?>
+        <?php $this->renderModalRequiredMetadata($new_entity, $entity_name); ?>
+        <?php $this->renderModalTaxonomies($new_entity, $entity_name); ?>
 
         <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
-
-        <?php $this->part('modal/footer', ['entity' => $entity]); ?>
+        <?php $this->part('modal/footer', ['entity' => $entity_name]); ?>
 
         <div class="actions">
-            <button type="button" class="btn btn-default <?php echo $classes['cancel_class']; ?>" data-form-id='<?php echo $id; ?>'>
-                <?php \MapasCulturais\i::_e("Cancelar");?>
+            <button type="button" class="btn btn-default <?php echo $classes['cancel_class']; ?>" data-form-id='<?php echo $modal_id; ?>'>
+                <?php \MapasCulturais\i::_e("Cancelar"); ?>
             </button>
             <input type="submit" class="btn btn-primary" value="Adicionar <?php echo $name; ?>">
         </div>
