@@ -158,8 +158,6 @@ class Theme extends BaseV1\Theme{
                     $eventos_projeto[$name] = $group_events($evts);
                 }
 
-//                var_dump($eventos_smc);
-
                 $print = function($eventos, $h = 'h1'){
                     ksort($eventos);
                     foreach($eventos as $palco => $evts){

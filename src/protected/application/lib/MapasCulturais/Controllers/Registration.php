@@ -358,7 +358,6 @@ class Registration extends EntityController {
     
     function POST_saveEvaluation(){
         $registration = $this->getRequestedEntity();
-
         if(isset($this->postData['uid'])){
             $user = App::i()->repo('User')->find($this->postData['uid']);
         } else {
@@ -377,7 +376,35 @@ class Registration extends EntityController {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
 
+        $this->setRegistrationStatus($registration);
+
         $this->json($evaluation);
+    }
+
+    function setRegistrationStatus(Entities\Registration $registration) {
+        $evaluation_type = $registration->getEvaluationMethodDefinition()->slug;
+        if ("technical" === $evaluation_type) {
+            $app = App::i();
+            $reg_evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration->id]);
+            if (is_array($reg_evaluations) && count($reg_evaluations) > 0) {
+                $valids = $invalids = 0;
+                $_status = "pendent";
+                foreach ($reg_evaluations as $_evaluation) {
+                    if (property_exists($_evaluation->evaluationData, "viability")) {
+                        if ("invalid" === $_evaluation->evaluationData->viability) {
+                            $invalids++;
+                        } else if ("valid" === $_evaluation->evaluationData->viability) {
+                            $valids++;
+                        }
+                    }
+                }
+
+                if ($invalids > $valids)
+                    $_status = "invalid";
+
+                $registration->forceSetStatus($registration, $_status);
+            }
+        }
     }
 
     function POST_saveEvaluationAndChangeStatus(){

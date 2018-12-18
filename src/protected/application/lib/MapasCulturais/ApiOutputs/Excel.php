@@ -12,6 +12,5 @@ class Excel extends \MapasCulturais\ApiOutputs\Html{
         $response['Pragma'] ='no-cache';
 
         return 'application/vnd.ms-excel; charset=UTF-8';
-        //return 'text/html';
     }
 }
