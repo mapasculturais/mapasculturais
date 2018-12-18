@@ -1237,6 +1237,18 @@ class Theme extends MapasCulturais\Theme {
             $this->part('event-attendance', ['entity' => $this->data->entity]);
         });
 
+        $app->hook('entity(opportunity).404:before', function() use ($app) {
+            list(,$entity,$_id) = explode('/',$app->request()->getResourceUri());
+            $_id = (int) $_id;
+            if ("oportunidade" === $entity && $_id === 1) {
+                $rcv = $app->repo('Opportunity')->find($_id);
+                // Test's against RCV's specific features
+                if (is_object($rcv) && is_null($rcv->subsiteId) && $rcv->name === "Rede Cultura Viva") {
+                    $app->response()->headers->set('Location',"http://culturaviva.gov.br/");
+                    $app->halt(200);
+                }
+            }
+        });
     }
 
 
