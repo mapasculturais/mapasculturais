@@ -1,6 +1,6 @@
 <?php
 $success = \MapasCulturais\i::esc_attr__('Entidade criada com sucesso!');
-$avatar = "/img/avatar--$entity.png";
+$avatar = "/img/avatar--$entity_name.png";
 ?>
 <div class="modal-feedback header-content hidden">
 
@@ -8,8 +8,8 @@ $avatar = "/img/avatar--$entity.png";
         <img class="js-avatar-img" src="<?php $this->asset($avatar); ?>">
     </div>
 
-    <div class="entity-type <?php echo $entity; ?>-type">
-        <div class="icon icon-<?php echo $entity; ?>"></div>
+    <div class="entity-type <?php echo $entity_name; ?>-type">
+        <div class="icon icon-<?php echo $entity_name; ?>"></div>
         <a href="#" class="entity-url">
             <?php echo \MapasCulturais\i::esc_attr__('Novo ') . $label; ?>
         </a>

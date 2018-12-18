@@ -4,4 +4,4 @@
     <?php echo $text ?>
 </a>
 
-<?php $this->part('modal/form', ['entity' => $entity, 'id' => $modal_id, 'use_modal' => true]); ?>
+<?php $this->part('modal/form', ['entity_name' => $entity_name, 'new_entity' => $new_entity, 'modal_id' => $modal_id, 'use_modal' => true]); ?>

@@ -172,6 +172,13 @@ class Subsite extends \MapasCulturais\Entity
         return $this->getSingleUrl();
     }
 
+    public function getSubsiteUrl() {
+        $app = \MapasCulturais\App::i();
+        $req = $app->request;
+
+        return $req->getScheme() . "://" . $this->url;
+    }
+
     protected $_logo;
 
     function getLogo(){
