@@ -1,9 +1,6 @@
 <?php
 $site_name = $this->dict('site: name', false);
 $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
-if (isset($entity)) {
-    $app->applyHook('entity(opportunity).render:before', ['entity' => $entity]);
-}
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $app->getCurrentLCode(); ?>" dir="ltr">

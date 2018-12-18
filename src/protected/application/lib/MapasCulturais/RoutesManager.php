@@ -117,7 +117,7 @@ class RoutesManager{
                     }
                 } catch(\Exception $e) {
                     $e_class = get_class($e);
-                    
+
                     if(strpos($e_class, 'Slim\Exception') === 0){
                         throw $e;
                     }
@@ -131,6 +131,7 @@ class RoutesManager{
         })->via('GET', 'POST', 'PUT', 'DELETE', 'PATCH');
         
         $app->notFound(function() use ($app) {
+            $app->applyHook('entity(opportunity).404:before');
             $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\TemplateNotFound], false);
         });
     }
