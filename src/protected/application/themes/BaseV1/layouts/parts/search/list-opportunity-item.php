@@ -22,4 +22,3 @@
     </div>
 </article>
 <!--.objeto-->
-<?php //$app->applyHookBoundTo($this,'cultura-viva'); ?>
