@@ -1237,6 +1237,20 @@ class Theme extends MapasCulturais\Theme {
             $this->part('event-attendance', ['entity' => $this->data->entity]);
         });
 
+        $app->hook('entity(opportunity).load:before', function($controller, $action) use ($app) {
+            if ($controller instanceof \MapasCulturais\Controllers\Opportunity && 'single' === $action) {
+                list(,$entity,$_id) = explode('/',$app->request()->getResourceUri());
+                $_id = (int) $_id;
+                if ('oportunidade' === $entity && $_id === 1) {
+                    $rcv = $app->repo('Opportunity')->find($_id);
+                    // Test's against RCV's specific features
+                    if (is_object($rcv) && is_null($rcv->subsiteId) && $rcv->name === "Rede Cultura Viva") {
+                        $app->response()->headers->set('Location',"http://culturaviva.gov.br/");
+                        $app->halt(200);
+                    }
+                }
+            }
+        });
     }
 
 
@@ -1801,6 +1815,7 @@ class Theme extends MapasCulturais\Theme {
             'correctErrors' =>  i::__('Corrija os erros indicados abaixo.'),
             'registrationSent' =>  i::__('Inscrição enviada. Aguarde tela de sumário.'),
             'confirmRemoveValuer' => i::__('Você tem certeza que deseja excluir o avaliador?'),
+            'confirmReopenValuerEvaluations' => i::__('Você tem certeza que deseja reabrir as avaliações para este avaliador?'),
             'evaluated' => i::__('Avaliada'),
             'notEvaluated' => i::__('Não Avaliada'),
             'all' => i::__('Todas'),

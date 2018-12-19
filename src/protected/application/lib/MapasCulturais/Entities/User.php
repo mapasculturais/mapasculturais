@@ -532,34 +532,38 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $opportunities;
     }
 
-    function getOpportunitiesCanBeEvaluated(){
+    function getOpportunitiesCanBeEvaluated() {
         $this->checkPermission('modify');
         $opportunities = [];
         $app = App::i();
+        $user_id = $app->user->id;
 
         $opportunitiesPermission = $app->repo('MapasCulturais\Entities\PermissionCache')->findBy([
-            'action' => 'evaluateRegistrations',
-            'userId' => $app->user->id
+            'action' => 'viewUserEvaluation',
+            'userId' => $user_id
         ]);
 
         if (count($opportunitiesPermission) > 0 ) {
+            $opportunityIDs = [];
             foreach ($opportunitiesPermission as $opportunity) {
-                $opportunitiesCanEvalute[] = $opportunity->objectId;
+                $op = $app->repo('Registration')->find($opportunity->objectId);
+                $opportunityIDs[] = $op->opportunity->id;
             }
 
             $opportunities = $app->repo('Opportunity')->findBy([
-                'id' => $opportunitiesCanEvalute,
-                'status' => Opportunity::STATUS_ENABLED
+                'id' => $opportunityIDs,
+                'status' => [Opportunity::STATUS_ENABLED, Agent::STATUS_RELATED]
             ]);
 
             foreach ($opportunities as $key => $opportunity) {
-                if(!$opportunity->evaluationMethodConfiguration->canUser('@control')) {
+                $_is_opportunity_owner = $user_id === $opportunity->owner->userId;
+                if (!$opportunity->evaluationMethodConfiguration->canUser('@control') || $_is_opportunity_owner) {
                     unset($opportunities[$key]);
                 }
             }
         }
 
-        return $opportunities;
+        return array_reverse($opportunities);
     }
 
     public function getSubsite($status = null) {
