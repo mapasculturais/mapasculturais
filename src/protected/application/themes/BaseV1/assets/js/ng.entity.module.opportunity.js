@@ -247,6 +247,17 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
                 }
             );
             return deferred.promise;
+        },
+        reopenValuerEvaluations: function(relation){
+            var deferred = $q.defer();
+
+            $http.post(this.getUrl('reopenValuerEvaluations'), {relationId: relation.id})
+            .success(
+                function(response){
+                    deferred.resolve(response);
+                }
+            );
+            return deferred.promise;
         }
     };
 }]);
@@ -1107,6 +1118,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 _scope.spinnerCondition = false;
                 _scope.noEntityFound  = false;
                 MapasCulturais.Messages.error(labels['agentRelationIsAlreadyExists']);
+            }
+        };
+
+        $scope.reopenEvaluations = function(relation){
+            if(confirm(labels.confirmReopenValuerEvaluations)){
+                relation.status = 1;
+    
+                EvaluationMethodConfigurationService.reopenValuerEvaluations(relation).
+                    error(function(){
+                        relation.status = 10;
+                    });
             }
         };
 
