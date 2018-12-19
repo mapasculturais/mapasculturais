@@ -1249,7 +1249,6 @@ class Theme extends MapasCulturais\Theme {
                         $app->halt(200);
                     }
                 }
-                die;
             }
         });
     }
