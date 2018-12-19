@@ -2,6 +2,7 @@
 
 namespace MapasCulturais\Themes\BaseV1;
 
+use function foo\func;
 use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
@@ -847,6 +848,24 @@ class Theme extends MapasCulturais\Theme {
             });
         }
 
+        $app->hook('can-edit', function(&$can_edit, $entity) use ($app){
+            //$entity->dump();
+
+            $user_id = $entity->user->id;
+
+            $em = $app->em;
+            $conn = $em->getConnection();
+
+            $result = $conn->fetchAssoc("SELECT * FROM agent_meta WHERE key = 'rcv_tipo' and value = 'entidade' AND object_id ='$user_id'");
+
+            if(empty($result))
+            {
+                $can_edit = true;
+            }
+            else {
+                $can_edit = false;
+            }
+        });
 
         $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
