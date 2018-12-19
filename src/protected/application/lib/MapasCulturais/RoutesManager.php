@@ -102,6 +102,7 @@ class RoutesManager{
 
 
             if($controller = $app->controller($controller_id)){
+                $app->applyHook('entity(opportunity).load:before');
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
@@ -131,7 +132,6 @@ class RoutesManager{
         })->via('GET', 'POST', 'PUT', 'DELETE', 'PATCH');
         
         $app->notFound(function() use ($app) {
-            $app->applyHook('entity(opportunity).404:before');
             $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\TemplateNotFound], false);
         });
     }

@@ -1237,7 +1237,7 @@ class Theme extends MapasCulturais\Theme {
             $this->part('event-attendance', ['entity' => $this->data->entity]);
         });
 
-        $app->hook('entity(opportunity).404:before', function() use ($app) {
+        $app->hook('entity(opportunity).load:before', function() use ($app) {
             list(,$entity,$_id) = explode('/',$app->request()->getResourceUri());
             $_id = (int) $_id;
             if ("oportunidade" === $entity && $_id === 1) {
