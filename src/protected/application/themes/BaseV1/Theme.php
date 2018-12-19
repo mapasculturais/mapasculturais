@@ -2641,7 +2641,7 @@ class Theme extends MapasCulturais\Theme {
             if ($use_modal) {
                 $this->part('modal/modal', ['entity_name' => $entity_name, 'new_entity' => $new_entity, 'classes' => $classes, 'modal_id' => $modal_id, 'text' => $label]);
             } else {
-                $this->part('modal/attached-modal', ['entity_name' => $entity_name, 'modal_id' => $modal_id]);
+                $this->part('modal/attached-modal', ['entity_name' => $entity_name, 'new_entity' => $new_entity, 'modal_id' => $modal_id]);
             }
         }
 
