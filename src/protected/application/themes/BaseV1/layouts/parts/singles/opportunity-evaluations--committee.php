@@ -74,8 +74,13 @@ $method = $entity->getEvaluationMethod();
                     <span class="btn btn-danger delete alignright" ng-click="deleteAdminRelation(admin)"><?php i::_e("Excluir");?></span>
                     <span ng-if="admin.hasControl" class="btn btn-warning delete alignright mr10" ng-click="disableAdminRelation(admin)"><?php i::_e("Desabilitar");?></span>
                     <span ng-if="!admin.hasControl" class="btn btn-default add alignright mr10" ng-click="enableAdminRelation(admin)"><?php i::_e("Habilitar");?></span>
+                    <?php if($entity->canUser('reopenValuerEvaluations')): ?>
+                        <span ng-if="admin.status === 10" class="btn btn-success alignright mr10" ng-click="reopenEvaluations(admin)"><?php i::_e("Reabrir avaliações");?></span>
+                    <?php endif; ?>
                     <img class="committee--avatar" ng-src="{{avatarUrl(admin.agent)}}" />
-                    <span class="committee--name" >{{admin.agent.name}}</span>
+                    <span class="committee--name" >{{admin.agent.name}}</span> 
+                    <div ng-if="admin.status === 10" class="success"> <?php i::_e('Avaliações enviadas')?></div>
+                    <div ng-if="admin.status === 1" class="warning"> <?php i::_e('Avaliações pendentes')?></div>
                     <div ng-if="admin.agent.terms.area">{{admin.agent.terms.area.join(', ')}}</div>
                 </div>
                 <?php if($method->fetchRegistrations()): ?>
