@@ -1121,7 +1121,7 @@ $(function(){
             $.getJSON( "/api/city/list?stateCode="+ufCode, function( data ) {
                 if (data !== null) {
                     var config = {
-                        name: "En_Estado",
+                        name: "En_Municipio",
                         type: "select",
                         emptytext: "Município",
                         placeholder: "Município",
