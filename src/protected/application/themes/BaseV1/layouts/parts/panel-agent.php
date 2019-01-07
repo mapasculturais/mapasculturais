@@ -14,7 +14,7 @@ use MapasCulturais\Entities\Agent;
             <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Definir este agente como seu perfil.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
         <?php endif; ?>
 
-        <a href="<?php if($can_edit) echo $entity->singleUrl; else echo '#'; ?>"><?php echo htmlentities($entity->name); ?></a>
+        <a href="<?php if($can_edit) echo $entity->singleUrl; else echo "http://culturaviva.gov.br/cadastrar"; ?>"><?php echo htmlentities($entity->name); ?></a>
     </h1>
     <div class="objeto-meta">
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
@@ -30,7 +30,7 @@ use MapasCulturais\Entities\Agent;
         <?php
         if(!$can_edit){
             ?>
-            <a href="#">Usuário criado na rede cultura viva</a>
+            <a href="http://culturaviva.gov.br/cadastrar" target="_blank">Usuário criado na rede cultura viva</a>
             <?php
         }else{
         ?>
