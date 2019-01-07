@@ -3,12 +3,14 @@ $types = $app->getRegisteredEntityTypes($new_entity);
 if (!$types) {
     return;
 }
+
+$_title = empty($definition['label']) ? \MapasCulturais\i::esc_attr__("Tipo") : $definition['label'];
 ?>
-<?php $this->part("modal/title", ['title' => $definition['label']]); ?>
+<?php $this->part("modal/title", ['title' => $_title]); ?>
 <select name='type'>
-    <?php foreach ($types as $typo) {
-        if (is_object($typo)) { ?>
-            <option value="<?php echo $typo->id; ?>"> <?php echo $typo->name; ?> </option>
+    <?php foreach ($types as $_type) {
+        if (is_object($_type)) { ?>
+            <option value="<?php echo $_type->id; ?>"> <?php echo $_type->name; ?> </option>
             <?php
         }
     } ?>

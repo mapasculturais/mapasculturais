@@ -2698,7 +2698,6 @@ class Theme extends MapasCulturais\Theme {
                 $title = $app->getView()->dict("taxonomies:{$taxonomy->slug}: name", false);
 
                 $this->part("modal/title", ['title' => $title]);
-
                 $this->part("modal/entity-dropdown", ['attr' => $_attr, 'options' => $options]);
             }
         }
@@ -2706,7 +2705,7 @@ class Theme extends MapasCulturais\Theme {
         $app->applyHook("modal({$entity_name}).taxonomies:before", [&$entity, &$taxonomies]);
     }
 
-    public function renderModalFields(\MapasCulturais\Entity $new_entity, $entity_name, $modal_id) {        
+    public function renderModalFields(\MapasCulturais\Entity $new_entity, $entity_name, $modal_id) {
         $app = App::i();
         
         $properties = $new_entity->getPropertiesMetadata();
@@ -2769,7 +2768,6 @@ class Theme extends MapasCulturais\Theme {
 
         return $_name;
     }
-
 
     public function getValuersCheckedAttribute($valuer_id, $valuers, $inverse = false) {
         $_first = 'checked="checked"';
