@@ -619,7 +619,30 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserViewEvaluations($user){
-        return $this->evaluationMethodConfiguration->canUser('@control');
+        return $this->canUser('@control') || $this->canUserEvaluateRegistrations($user);
+    }
+
+    protected function canUserViewRegistrations($user){
+        if($user->is('guest')){
+            return false;
+        }
+  
+        //Administrador SubSite
+        if($this->isUserAdmin($user)){
+            return true;
+        }
+        
+        //Owner
+        if($this->canUser('@control', $user)){
+            return true;
+        }
+
+        //Avaliadores
+        if($this->canUserEvaluateRegistrations($user)){
+            return true;
+        }
+
+        return false;
     }
 
     /** @ORM\PreRemove */
