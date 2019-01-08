@@ -849,14 +849,12 @@ class Theme extends MapasCulturais\Theme {
         }
 
         $app->hook('can-edit', function(&$can_edit, $entity) use ($app){
-            //$entity->dump();
-
             $user_id = $entity->user->id;
 
             $em = $app->em;
             $conn = $em->getConnection();
 
-            $result = $conn->fetchAssoc("SELECT * FROM agent_meta WHERE key = 'rcv_tipo' and value = 'entidade' AND object_id ='$user_id'");
+            $result = $conn->fetchAssoc("SELECT * FROM agent_meta WHERE key = 'rcv_tipo' and (value = 'entidade' OR value = 'ponto')  AND object_id ='$user_id'");
 
             if(empty($result))
             {
