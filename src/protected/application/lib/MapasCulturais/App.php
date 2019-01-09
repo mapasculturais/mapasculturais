@@ -311,8 +311,7 @@ class App extends \Slim\Slim{
         // registering noop annotation autoloader - allow all annotations by default
         AnnotationRegistry::registerLoader('class_exists');
         $doctrine_config->setMetadataDriverImpl($driver);
-
-        $proxy_dir = realpath(APPLICATION_PATH . 'lib/MapasCulturais/DoctrineProxies');
+        $proxy_dir = realpath(APPLICATION_PATH) . '/lib/MapasCulturais/DoctrineProxies';
         $proxy_namespace = 'MapasCulturais\DoctrineProxies';
 
         $doctrine_config->setProxyDir($proxy_dir);
