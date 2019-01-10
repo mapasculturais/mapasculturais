@@ -248,10 +248,6 @@ class Module extends \MapasCulturais\Module{
             }
 
             $registrations = array_reverse($registrations);
-//
-            $this->addEntityToJs($first);
-            $this->addRegistrationToJs($first);
-            $this->addOpportunityToJs($first->opportunity);
 
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($current_registration);
             $this->jsObject['evaluationConfiguration'] = $current_registration->opportunity->evaluationMethodConfiguration;
@@ -285,10 +281,8 @@ class Module extends \MapasCulturais\Module{
                     $field->displayOrder += $i * 1000;
 
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
-
                     $field_name = $field->fieldName;
-                    
-                    $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+                    $this->jsObject['entity']['registrationFieldValues'][$field_name] = $reg->$field_name;
                 }
 
                 foreach($opportunity->registrationFileConfigurations as $file){
@@ -300,10 +294,6 @@ class Module extends \MapasCulturais\Module{
 
 
             }
-
-            $this->jsObject['entity']['id'] = $current_registration->id;
-            $this->jsObject['entity']['object']->id = $current_registration->id;
-            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
 
         });
 

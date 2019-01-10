@@ -1193,7 +1193,7 @@ $(function(){
 
     //First Load
     if ( cities.length == 0 ) {
-        var uf = $('#En_Estado').editable('getValue', true);
+        var uf = ($('#En_Estado').length > 0) ? $('#En_Estado').editable('getValue', true) : null;
         if (uf !== null || uf !== undefined){
             loadCities(uf);
         }

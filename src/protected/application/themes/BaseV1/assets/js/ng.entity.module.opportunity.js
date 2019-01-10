@@ -139,6 +139,10 @@
                 return fields;
             },
 
+            getFieldsValues: function () {
+                return MapasCulturais.entity.registrationFieldValues;
+            },
+
             getSelectedCategory: function(){
                 return $q(function(resolve){
                     var interval = setInterval(function(){
@@ -752,6 +756,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 
     $scope.data.fields = RegistrationService.getFields();
+    $scope.data.fieldsValues = RegistrationService.getFieldsValues();
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
