@@ -1584,6 +1584,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     }
 
+    $scope.getEvaluationSingleUrl = function(registration) {
+        //Usuario é o Avaliador
+        if(registration.valuer.user == MapasCulturais.userId){
+            return registration.registration.singleUrl;
+        }
+        //Avaliação ja realizada 
+        if(registration.evaluation){
+            return registration.evaluation.singleUrl;
+        }
+        return "";
+    }
+
     $scope.getEvaluationResultString = function(registration){
 
         if(registration.evaluation){
