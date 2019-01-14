@@ -296,10 +296,7 @@ class Module extends \MapasCulturais\Module{
                         $this->jsObject['entity']['registrationFiles'][$filename] = $reg->files[$filename];
                     }                    
                 }
-
-
             }
-            return;
         });
 
         // action para criar uma nova fase no oportunidade
