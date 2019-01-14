@@ -284,17 +284,22 @@ class Module extends \MapasCulturais\Module{
                     $field_name = $field->fieldName;
                     $this->jsObject['entity']['registrationFieldValues'][$field_name] = $reg->$field_name;
                 }
-
+               
+               
                 foreach($opportunity->registrationFileConfigurations as $file){
                     // faz um shift de 1000 * $i na ordem do campo
                     $file->displayOrder += $i * 1000;
 
                     $this->jsObject['entity']['registrationFileConfigurations'][] = $file;
+                    $filename = 'rfc_' . $file->id;
+                    if (isset($reg->files[$filename])) {
+                        $this->jsObject['entity']['registrationFiles'][$filename] = $reg->files[$filename];
+                    }                    
                 }
 
 
             }
-
+            return;
         });
 
         // action para criar uma nova fase no oportunidade
