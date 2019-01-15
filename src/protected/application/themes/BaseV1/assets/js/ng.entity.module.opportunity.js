@@ -1467,7 +1467,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     };
 
     $scope.hasPreliminaryResultRegistrations = function(registration){
-        return  (registration.publishedPreliminaryRevision != null) && (registration.publishedPreliminaryRevision.status == 10 || registration.publishedPreliminaryRevision.status == 8);
+        return  (registration.publishedPreliminaryRevision != null) ;
     };
 
     $scope.getCountPreliminaryResultRegistrations = function(){

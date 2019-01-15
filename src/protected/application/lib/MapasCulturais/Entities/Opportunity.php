@@ -501,7 +501,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $this->checkPermission('publishRegistrations');
 
         $publishedTimestamp = new \DateTime;
-        $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
+        $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this));
 
         foreach ($registrations as $registration) {
             $revisionData = $registration->_getRevisionData();

@@ -99,9 +99,6 @@
             <th ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <?php i::_e("Agentes");?>
             </th>
-            <th ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <?php i::_e("Anexos");?>
-            </th>
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
                 <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
             </th>
