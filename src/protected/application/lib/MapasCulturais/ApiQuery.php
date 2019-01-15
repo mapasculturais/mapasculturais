@@ -1125,15 +1125,15 @@ class ApiQuery {
                         continue;
                     }
                     
-                    if($select != '*'){
+                    if($select != '*' && $_target_property != $select ){
                         $select = "$_target_property,$select";
                     }
                     
                     $query = new ApiQuery($target_class, ['@select' => $select], false, $cfg['selectAll'], !$this->_accessControlEnabled, $this);
                     
                     $query->name = "{$this->name}->$prop";
-
-                    $query->where = (empty($query->where)) ? "e.{$_target_property} IN ({$_subquery_where_id_in})" : $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
+                    $where_target_property = "e.{$_target_property} IN ({$_subquery_where_id_in})";
+                    $query->where = (empty($query->where)) ? $where_target_property : "$where_target_property AND {$query->where}";
                     
                     if($this->_usingSubquery){
                         foreach($this->_dqlParams as $k => $v){

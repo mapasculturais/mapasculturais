@@ -248,10 +248,6 @@ class Module extends \MapasCulturais\Module{
             }
 
             $registrations = array_reverse($registrations);
-//
-            $this->addEntityToJs($first);
-            $this->addRegistrationToJs($first);
-            $this->addOpportunityToJs($first->opportunity);
 
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($current_registration);
             $this->jsObject['evaluationConfiguration'] = $current_registration->opportunity->evaluationMethodConfiguration;
@@ -285,26 +281,22 @@ class Module extends \MapasCulturais\Module{
                     $field->displayOrder += $i * 1000;
 
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
-
                     $field_name = $field->fieldName;
-                    
-                    $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+                    $this->jsObject['entity']['registrationFieldValues'][$field_name] = $reg->$field_name;
                 }
-
+               
+               
                 foreach($opportunity->registrationFileConfigurations as $file){
                     // faz um shift de 1000 * $i na ordem do campo
                     $file->displayOrder += $i * 1000;
 
                     $this->jsObject['entity']['registrationFileConfigurations'][] = $file;
+                    $filename = 'rfc_' . $file->id;
+                    if (isset($reg->files[$filename])) {
+                        $this->jsObject['entity']['registrationFiles'][$filename] = $reg->files[$filename];
+                    }                    
                 }
-
-
             }
-
-            $this->jsObject['entity']['id'] = $current_registration->id;
-            $this->jsObject['entity']['object']->id = $current_registration->id;
-            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
-
         });
 
         // action para criar uma nova fase no oportunidade
@@ -394,8 +386,10 @@ class Module extends \MapasCulturais\Module{
 
             if($next_id = $registration->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($next_id);
-                if($next_phase_registration->canUser('view')){
-                    $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                if ($next_phase_registration) {
+                    if($next_phase_registration->canUser('view')){
+                        $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                    }
                 }
             }
         });

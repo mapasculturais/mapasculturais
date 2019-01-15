@@ -233,7 +233,7 @@ class Event extends \MapasCulturais\Entity
     }
 
     public function save($flush = false) {
-        App::i()->hook("entity($this).save:requests", function(){
+        App::i()->hook("entity(Event).save:requests", function(){
             if($this->_newProject !== false){
                 try{
                     if($this->_newProject){

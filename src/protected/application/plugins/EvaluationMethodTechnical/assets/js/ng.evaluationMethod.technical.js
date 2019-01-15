@@ -157,7 +157,7 @@
 
                 for(var i in $scope.data.criteria){
                     var cri = $scope.data.criteria[i];
-                    if(cri.sid == section.id){
+                    if(cri.sid == section.id && $scope.evaluation[cri.id] && cri.weight){
                         total += $scope.evaluation[cri.id] * cri.weight;
                     }
                 }
@@ -170,7 +170,9 @@
 
                 for(var i in $scope.data.criteria){
                     var cri = $scope.data.criteria[i];
-                    total += $scope.evaluation[cri.id] * cri.weight;
+                    if($scope.evaluation[cri.id] && cri.weight){
+                        total += $scope.evaluation[cri.id] * cri.weight;
+                    }                    
                 }
 
                 return total.toFixed(1);

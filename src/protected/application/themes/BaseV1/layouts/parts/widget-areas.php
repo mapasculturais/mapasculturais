@@ -11,7 +11,7 @@ sort($areas);
     <?php else: ?>
         <?php
         foreach($areas as $i => $t): if(in_array($t, $entity->terms['area'])): ?>
-            <a class="tag tag-<?php echo $this->controller->id ?>" href="<?php echo $app->createUrl('site', 'search') ?>##(<?php echo $entityName ?>:(areas:!(<?php echo $i ?>)),global:(enabled:(<?php echo $entityName ?>:!t),filterEntity:<?php echo $entityName ?>))">
+            <a class="tag tag-<?php echo $this->controller->id ?>" href="<?php echo $app->createUrl('site', 'search') ?>##(<?php echo $entityName ?>:(filters:(area:!(<?php echo "'" . rawurlencode($t) . "'"; ?>))),global:(enabled:(<?php echo $entityName ?>:!t),filterEntity:<?php echo $entityName ?>))">
                 <?php echo $t ?>
             </a>
         <?php endif; endforeach; ?>

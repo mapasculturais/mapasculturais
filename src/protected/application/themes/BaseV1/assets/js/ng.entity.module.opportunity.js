@@ -122,6 +122,10 @@
                 return fields;
             },
 
+            getFieldsValues: function () {
+                return MapasCulturais.entity.registrationFieldValues;
+            },
+
             getSelectedCategory: function(){
                 return $q(function(resolve){
                     var interval = setInterval(function(){
@@ -735,6 +739,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 
     $scope.data.fields = RegistrationService.getFields();
+    $scope.data.fieldsValues = RegistrationService.getFieldsValues();
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
@@ -1579,6 +1584,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         return labels[statusSlug];
 
+    }
+
+    $scope.getEvaluationSingleUrl = function(registration) {
+        //Usuario é o Avaliador
+        if(registration.valuer.user == MapasCulturais.userId){
+            return registration.registration.singleUrl;
+        }
+        //Avaliação ja realizada 
+        if(registration.evaluation){
+            return registration.evaluation.singleUrl;
+        }
+        return "";
     }
 
     $scope.getEvaluationResultString = function(registration){
