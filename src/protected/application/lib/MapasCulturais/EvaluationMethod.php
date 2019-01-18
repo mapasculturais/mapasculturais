@@ -15,6 +15,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
     abstract protected function _getConsolidatedResult(Entities\Registration $registration);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
+    abstract function getResultStatusList();
 
     abstract function valueToString($value);
 

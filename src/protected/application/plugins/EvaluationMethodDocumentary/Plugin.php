@@ -196,4 +196,12 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return true;
     }
 
+    public function getResultStatusList(){
+        return [
+             (object) ['label' => i::__('Válida') , 'value' => 1 ], 
+             (object) ['label' => i::__('Inválida') , 'value' => -1],
+             (object) ['label' => i::__('Pendente') , 'value' => 0],
+        ];
+    }
+
 }

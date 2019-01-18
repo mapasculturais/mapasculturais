@@ -272,4 +272,10 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         return true;
     }
 
+    public function getResultStatusList(){
+        return [             
+            (object) ['label' => i::__('Pendente') , 'value' => 0],
+        ];
+    }
+
 }

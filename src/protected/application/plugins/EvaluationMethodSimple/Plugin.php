@@ -79,7 +79,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $result['evaluation'] = $sections['evaluation'];
 
             $sections = $result;
-        });
+        });    
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration) {
@@ -128,6 +128,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     
     public function fetchRegistrations() {
         return true;
+    }
+
+    public function getResultStatusList(){
+        return [
+             (object) ['label' => i::__('Selecionada') , 'value' => 10 ], 
+             (object) ['label' => i::__('Suplente') , 'value' => 8 ],
+             (object) ['label' => i::__('Não Selecionada') , 'value' => 3 ],
+             (object) ['label' => i::__('Inválida') , 'value' => 2],
+             (object) ['label' => i::__('Pendente') , 'value' => 0],
+        ];
     }
 
 }

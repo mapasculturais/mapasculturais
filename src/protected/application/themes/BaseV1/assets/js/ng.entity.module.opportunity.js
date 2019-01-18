@@ -1886,7 +1886,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
-        
+        var labels = MapasCulturais.gettext.moduleOpportunity;
+
+        var evaluationStatusList = MapasCulturais.evaluationMethodResultStatusList;
+        evaluationStatusList.unshift( {value: 'all', label: labels['allStatus']} );
+
         $scope.registrations = [];
         $scope.evaluations = {};
         $scope.data = {
@@ -1895,9 +1899,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             keywords: [],
             pending: false,
             registrations: [],
-            evaluations: []
+            evaluations: [],
+            evaluationStatus: evaluationStatusList,
+            evaluationStatusFilter: null,
         }
-
+    
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
             '@opportunity': getOpportunityId(),
             '@limit': 10000,
@@ -1946,6 +1952,19 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             return $scope.evaluations[registration.id].result;
         };
 
+        $scope.getEvaluationStatusLabel = function(value) {
+            var statusList = $scope.data.evaluationStatus
+            var result = 'none';
+            for(var i in statusList){
+                var item = statusList[i];
+                if (value == item.value){
+                    result = item.label;
+                    break;
+                }
+            }
+            return result;
+        };
+
         $scope.show = function(registration){
             if(registration.status === 0){
                 return false;
@@ -1969,6 +1988,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
             if($scope.data.pending){
                 if($scope.evaluated(registration)){
+                    result = false;
+                }
+            }
+
+            if($scope.data.evaluationStatusFilter !== null && $scope.data.evaluationStatusFilter !== 'all'){
+                if( $scope.status_str(registration) !== $scope.getEvaluationStatusLabel($scope.data.evaluationStatusFilter) ){
                     result = false;
                 }
             }
