@@ -113,7 +113,7 @@
             </td>
         </tr>
 
-        <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)" ng-if="hasPreliminaryResultRegistrations(reg)">
+        <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.publishedPreliminaryRevision.status)" ng-if="hasPreliminaryResultRegistrations(reg)">
             <td class="registration-id-col"><strong>{{reg.publishedPreliminaryRevision.number}}</strong></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.publishedPreliminaryRevision.category}}</td>
             <td ng-show="data.registrationTableColumns.agents"  class="registration-agents-col">
