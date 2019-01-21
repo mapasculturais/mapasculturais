@@ -73,7 +73,8 @@
 
         h4 { margin-bottom: 10px; }
 
-        input#registrations-list--filter { width: 95%; }
+        input.registrations-list-filter-name { width: 100%; }
+        div.registrations-list-filter{ width: 96%; }
 
         .registrations-list {
             max-height:615px;
