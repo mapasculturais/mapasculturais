@@ -155,12 +155,12 @@ trait EntityMetadata{
      * 
      * @return boolean
      */
-    protected function canUserViewPrivateData($user){
+    protected function canUserViewPrivateData(\MapasCulturais\Entities\User $user){
         if($user->is('guest')){
             return false;
         }
 
-        if($this->isUserAdmin($user) || $this->canUser('@control', $user)){
+        if($this->isUserAdmin($user) || $this->canUser('@control', $user) || $user->equals($this)){
             return true;
         }
 
