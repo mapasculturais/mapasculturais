@@ -7,3 +7,4 @@ require __DIR__ . '/../application/bootstrap.php';
 echo "\nCRIANDO OS CACHES DE PERMISSÃO PENDENTES\n";
 
 MapasCulturais\App::i()->recreatePermissionsCache();
+MapasCulturais\App::i()->em->getConnection()->close();

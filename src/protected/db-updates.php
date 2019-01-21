@@ -1102,6 +1102,18 @@ return [
             $conn->executeQuery("UPDATE registration SET number = 'on-{$current->id}' WHERE id = $reg->id");
         }
     },
+    'alter table opportunity add column publishedPreliminaryRegistrations'=> function () use($conn){
+
+        if(!__column_exists('opportunity', 'published_preliminary_registrations')){
+            $conn->executeQuery("ALTER TABLE opportunity ADD COLUMN published_preliminary_registrations BOOLEAN NOT NULL DEFAULT FALSE;");
+        }
+    },
+    'alter table opportunity add column publishedPreliminaryRegistrationsTimestamp'=> function () use($conn){
+
+        if(!__column_exists('opportunity', 'published_preliminary_registrations_timestamp')){
+            $conn->executeQuery("ALTER TABLE opportunity ADD COLUMN published_preliminary_registrations_timestamp timestamp(0) without time zone;");
+        }
+    },
 
     'insert city and states'=> function () use($conn) {
 

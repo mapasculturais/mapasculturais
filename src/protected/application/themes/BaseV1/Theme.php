@@ -1807,7 +1807,8 @@ class Theme extends MapasCulturais\Theme {
             'sent' => i::__('Enviada'),
             'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
             'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
-            
+            'applyEvaluationsSuccess' => i::__('Inscrições foram alteradas com sucesso'),
+
             'Inscrição' => i::__('Inscrição'),
             'Categorias' => i::__('Categorias'),
             'Agentes' => i::__('Agentes'),
@@ -2371,6 +2372,7 @@ class Theme extends MapasCulturais\Theme {
 
         if($entity->canUser('viewEvaluations')){
             $this->jsObject['evaluationConfiguration'] = $entity->evaluationMethodConfiguration;
+            $this->jsObject['evaluationConfigurationType'] = $entity->evaluationMethodConfiguration->getType();
         }
     }
 

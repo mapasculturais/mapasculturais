@@ -5,6 +5,8 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\Entities\EntityRevision;
+use MapasCulturais\i;
 
 /**
  * Opportunity
@@ -100,6 +102,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="published_registrations", type="boolean", nullable=false)
      */
     protected $publishedRegistrations = false;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="published_preliminary_registrations", type="boolean", nullable=false)
+     */
+    protected $publishedPreliminaryRegistrations = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="published_preliminary_registrations_timestamp", type="datetime", nullable=true)
+     */
+    protected $publishedPreliminaryRegistrationsTimestamp;
 
     /**
      * @var array
@@ -478,6 +494,29 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->enqueueEntityToPCacheRecreation($this);
 
         $this->save(true);
+    }
+
+    function publishPreliminaryRegistrations(){
+        $app = App::i();
+        $this->checkPermission('publishRegistrations');
+
+        $publishedTimestamp = new \DateTime;
+        $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this));
+
+        foreach ($registrations as $registration) {
+            $revisionData = $registration->_getRevisionData();
+            $action = EntityRevision::ACTION_PUBLISHED;
+            $message = i::__("Resultado preliminar");
+
+            $revision = new EntityRevision($revisionData,$registration,$action,$message,$publishedTimestamp);
+            $revision->save(true);
+        }
+
+        $this->publishedPreliminaryRegistrations = true;
+        $this->publishedPreliminaryRegistrationsTimestamp = $publishedTimestamp;
+        $this->save(true);
+
+        $app->enqueueEntityToPCacheRecreation($this);
     }
 
     function sendUserEvaluations($user = null){

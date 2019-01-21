@@ -71,6 +71,24 @@ class Opportunity extends EntityController {
         }
     }
 
+    function ALL_publishPreliminaryRegistrations(){
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $opportunity = $this->requestedEntity;
+
+        if(!$opportunity)
+            $app->pass();
+
+        $opportunity->publishPreliminaryRegistrations();
+
+        if($app->request->isAjax()){
+            $this->json($opportunity);
+        }else{
+            $app->redirect($app->request->getReferer());
+        }
+    }
 
     function GET_report(){
         $this->requireAuthentication();
@@ -250,6 +268,7 @@ class Opportunity extends EntityController {
         
         $this->apiResponse($fields);
     }
+
     
     function getOpportunityTree($opportunity){
         $app = App::i();
@@ -371,8 +390,21 @@ class Opportunity extends EntityController {
                 }
             }
 
-            if(in_array('consolidatedResult', $query->selecting)){
-                /* @TODO: considerar parâmetro @order da api */
+        if ($opportunity->publishedPreliminaryRegistrations && count($registrations) > 0) {
+            $registrationIds = array_map(function($item) {
+                return $item['id'];
+            }, $registrations);
+
+            $revisions = $app->repo('EntityRevision')->findAllByIdsAndClassAndActionAndTimestamp($registrationIds, 'MapasCulturais\Entities\Registration', 'publish', $opportunity->publishedPreliminaryRegistrationsTimestamp);
+
+            foreach($registrations as &$reg){
+                $objectId = $reg['id'];
+                $reg['publishedPreliminaryRevision'] = (isset($revisions[$objectId])) ? $revisions[$objectId] : null ;
+            }
+        }
+
+        if(in_array('consolidatedResult', $query->selecting)){
+            /* @TODO: considerar parâmetro @order da api */
 
                 usort($registrations, function($e1, $e2) use($evaluationMethod){
                     return $evaluationMethod->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
