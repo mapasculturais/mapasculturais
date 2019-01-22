@@ -261,6 +261,24 @@ class Panel extends \MapasCulturais\Controller {
     }
 
     /**
+     * Render the opportunities list of the user panel.
+     *
+     * This method requires authentication and renders the template 'panel/opportunity'
+     *
+     * <code>
+     * // creates the url to this action
+     * $url = $app->createUrl('panel', 'opportunities');
+     * </code>
+     *
+     */
+    function GET_evaluations(){
+        $this->requireAuthentication();
+        $user = $this->_getUser();
+
+        $this->render('evaluations', ['user' => $user]);
+    }
+
+    /**
      * Render the seal list of the user panel.
      *
      * This method requires authentication and renders the template 'panel/seals'

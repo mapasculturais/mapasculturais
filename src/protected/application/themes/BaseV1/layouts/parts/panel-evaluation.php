@@ -1,6 +1,8 @@
 <?php
 $registration = ['from' => $entity->registrationFrom, 'to'=> $entity->registrationTo];
 $registration_dates = [];
+$evaluations = $entity->getEvaluations(true);
+$evaluation = (count($evaluations) > 0) ? reset($evaluations) : false;
 
 if($registration['from'] instanceof DateTime) {
     $registration_dates['from'] = $registration['from']->format('d/m/Y');
@@ -49,11 +51,13 @@ if($registration['to'] instanceof DateTime) {
             <div><span class="label">Url: </span> <?php echo $entity->originSiteUrl;?></div>
         <?php endif; ?>
     </div>
+    <?php if ($showRegistrationsButton): ?>
     <div class="entity-actions">
-        <a class="btn btn-small btn-primary" href="<?php echo $entity->singleUrl; ?>#/tab=evaluations">
+        <a class="btn btn-small btn-primary" href="<?php echo ($evaluation)? $evaluation['registration']->singleUrl : $entity->singleUrl . '#/tab=evaluations';  ?>">
             <?php
                 \MapasCulturais\i::_e("Visualizar Inscritos");
             ?>
         </a>
     </div>
+    <?php endif; ?>
 </article>

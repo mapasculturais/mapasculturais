@@ -45,6 +45,10 @@
             <?php $this->applyTemplateHook('nav.panel.registrations','before'); ?>
             <li><a <?php if($this->template == 'panel/registrations') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'registrations') ?>"><span class="icon icon-opportunity"></span> <?php \MapasCulturais\i::_e("Minhas Inscrições");?></a></li>
             <?php $this->applyTemplateHook('nav.panel.registrations','after'); ?>
+
+            <?php $this->applyTemplateHook('nav.panel.evaluations','before'); ?>
+            <li><a <?php if($this->template == 'panel/evaluations') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'evaluations') ?>"><span class="icon icon-notifications"></span> <?php \MapasCulturais\i::_e("Minhas Avaliações");?></a></li>
+            <?php $this->applyTemplateHook('nav.panel.evaluations','after'); ?>
         <?php endif; ?>
 
         <?php if($app->isEnabled('subsite') && $app->user->is('saasAdmin')): ?>

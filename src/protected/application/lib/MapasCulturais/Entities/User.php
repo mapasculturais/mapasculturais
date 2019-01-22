@@ -562,6 +562,15 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $opportunities;
     }
 
+    function getOpportunitiesAlreadyEvaluated(){
+        $opportunities = [];
+        $app = App::i();
+
+        $opportunities = $app->repo('Opportunity')->findAlreadyEvaluatedBy($app->user, Opportunity::STATUS_ENABLED);
+
+        return $opportunities;
+    }
+
     public function getSubsite($status = null) {
         $result = [];
         
