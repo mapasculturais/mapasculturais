@@ -19,23 +19,25 @@ $infos = (array) $configuration->infos;
             <?php if($entity->canUser('evaluate')): ?> 
                 <?php if($infos): ?>
                     <div id="documentary-evaluation-info" class="alert info">
-                        <div class="close" style="cursor: pointer;"></div>
-                        <?php if($part_name = $evaluationMethod->getEvaluationFormInfoPartName()): ?>
-                            <?php $this->part($part_name, $params); ?>
-                        <?php endif; ?>
+                        <div class="title" style="cursor: pointer;">Informações</div>
+                        <div class="content">
+                            <?php if($part_name = $evaluationMethod->getEvaluationFormInfoPartName()): ?>
+                                <?php $this->part($part_name, $params); ?>
+                            <?php endif; ?>
 
 
-                        <?php if($infos && $entity->category && isset($infos[$entity->category])): ?>
-                            <hr>
-                            <strong><?php echo $entity->category ?></strong>
-                            <p><?php echo $infos[$entity->category] ?></p>
-                        <?php endif; ?>
+                            <?php if($infos && $entity->category && isset($infos[$entity->category])): ?>
+                                <hr>
+                                <strong><?php echo $entity->category ?></strong>
+                                <p><?php echo $infos[$entity->category] ?></p>
+                            <?php endif; ?>
 
-                        <?php if($infos && isset($infos['general'])): ?>
-                            <hr>
-                            <strong><?php i::_e('Informações gerais') ?></strong>
-                            <p><?php echo $infos['general'] ?></p>
-                        <?php endif; ?>
+                            <?php if($infos && isset($infos['general'])): ?>
+                                <hr>
+                                <strong><?php i::_e('Informações gerais') ?></strong>
+                                <p><?php echo $infos['general'] ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 <?php endif; ?>
             <form>
@@ -46,10 +48,6 @@ $infos = (array) $configuration->infos;
                 </div>
                 <?php endif; ?>
                 <?php $this->part($evaluation_form_part_name, $params); ?>
-                <hr>
-                <div style="text-align: right;">
-                    <button class="btn btn-primary js-evaluation-submit js-next"><?php i::_e('Finalizar Avaliação e Avançar'); ?> &gt;&gt;</button>
-                </div>
             </form>
             <?php elseif($entity->canUser('viewUserEvaluation')): ?>
                 <?php $this->part($evaluation_view_part_name, $params); ?>

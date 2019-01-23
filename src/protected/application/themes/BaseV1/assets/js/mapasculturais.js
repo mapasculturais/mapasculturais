@@ -31,6 +31,11 @@ $(function(){
         $(this).parent().slideUp('fast');
     }).css('cursor', 'pointer');
 
+     // bind alert minimize buttons
+    $('.alert .title').click(function(){
+        $(this).parent().find('.content').slideToggle('fast');
+    }).css('cursor', 'pointer');
+
     if(MapasCulturais.request.controller === 'app'){
         MapasCulturais.App.init();
     }
