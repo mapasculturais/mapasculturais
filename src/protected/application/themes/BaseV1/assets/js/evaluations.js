@@ -10,8 +10,8 @@ $(function(){
         $formContainer.css('margin-top', top);
         $list.css('margin-top', top);
     });
-
-    $formContainer.find('.js-evaluation-submit').on('click', function(){
+    
+    $('.js-evaluation-submit').on('click', function(){
         var $button = $(this);
         var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.registration.id, 'status': 'evaluated'});
         var data = $form.serialize();

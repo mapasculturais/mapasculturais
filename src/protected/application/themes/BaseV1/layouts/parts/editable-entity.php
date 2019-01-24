@@ -1,5 +1,15 @@
 <?php
-if (!$this->isEditable() && !$entity->canUser('modify')){
+use MapasCulturais\App ;
+use MapasCulturais\i;
+$app = App::i();
+
+//TODO: Adicionar na entitdade esse regra
+$canEvaluation =false;
+if($this->controller->id === 'registration' && $entity instanceof  MapasCulturais\Entities\Registration) {
+    $canEvaluation = $entity->canUser('evaluate');
+}
+
+if (!$this->isEditable() && !$entity->canUser('modify') && !$canEvaluation){
     ?><div id="editable-entity" class="clearfix sombra js-not-editable" style='display:none; min-height:0; height:42px;'></div><?php
     return;
 }
@@ -32,6 +42,8 @@ $params = [
         <?php endif; ?>
 
         <?php $this->part('singles/control--edit-buttons', $params) ?>
+    <?php elseif ($canEvaluation): ?>
+        <?php $this->part('singles/control--evaluate-buttons', $params) ?>
     <?php else: ?>
         <?php $this->part('singles/control--view-buttons', $params) ?>
     <?php endif; ?>
