@@ -11,6 +11,25 @@ class Module extends \MapasCulturais\Module{
 
     public function _init() {
         $app = App::i();
+        $theme = $app->view;
+        if(false) $theme = new \MapasCulturais\Themes\BaseV1\Theme;
+
+        $app->hook('mapasculturais.isEditable', function(&$result){
+            if($this->controller->id == 'panel' && $this->controller->action == 'deleteAccount'){
+                $result = true;
+            }
+        });
+        $app->hook('mapasculturais.head', function() use($app, $theme){
+            
+            $theme->jsObject['angularAppDependencies'][] = 'DeleteAccount';
+            $theme->enqueueScript('app', 'delete-account', 'js/ng.delete-account.js');
+            if($theme->controller->id == 'panel' && $theme->controller->action == 'deleteAccount'){
+                $theme->includeAngularEntityAssets($app->user->profile);
+                $theme->includeEditableEntityAssets();
+                $theme->addEntityToJs($app->user->profile);
+            }
+        });
+
         
         // a cada login salva um novo token
         $app->hook('auth.successful', function() use($app){
@@ -22,16 +41,17 @@ class Module extends \MapasCulturais\Module{
         });
 
         // ação de apagar a conta
-        $app->hook('GET(user.deleteAccount)', function() use($app){
+        $app->hook('POST(user.deleteAccount)', function() use($app){
+            // if(false) $this = new \MapasCulturais\Controllers\User;
             $this->requireAuthentication();
 
             if(isset($this->data['token'])){
                 if($this->data['token'] === $app->user->deleteAccountToken){
-                    die('OK');
+                    $this->json($this->data);
                 }
             }
 
-            die('NOT OK');
+            $this->errorJson(false,400);
         });
 
         $app->hook('GET(panel.deleteAccount)', function(){
