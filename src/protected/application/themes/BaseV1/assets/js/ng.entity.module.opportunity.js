@@ -1092,7 +1092,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             _scope.spinnerCondition = true;
             _scope.noEntityFound  = true;
 
-            isAgentRelation = $scope.data.committee.some( item => item.agent.id === entity.id);
+            isAgentRelation = $scope.data.committee.some( function(item) { return item.agent.id === entity.id; });
 
             if (!isAgentRelation) {
                 RelatedAgentsService.create('group-admin', entity.id, true).success(function(data) {
