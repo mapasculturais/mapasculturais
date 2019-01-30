@@ -879,6 +879,22 @@ class Registration extends \MapasCulturais\Entity
         return $users;
     }
 
+    public function getPreviousPhaseRegistration() {
+        $previousPhaseRegistration = false;
+        if($this->previousPhaseRegistrationId){
+            $previousPhaseRegistration = App::i()->repo('Registration')->findOneBy(['id' => $this->previousPhaseRegistrationId]);
+        }
+        return $previousPhaseRegistration;
+    }
+
+    public function getBaseRegistration() {
+        $baseRegistration = $this;
+        while ($previousPhaseRegistration = $baseRegistration->getPreviousPhaseRegistration()){
+            $baseRegistration = $previousPhaseRegistration;
+        }
+        return $baseRegistration;
+    }
+
     /**
      * Returns the Evaluation Method Definition Object
      * @return \MapasCulturais\Definitions\EvaluationMethod

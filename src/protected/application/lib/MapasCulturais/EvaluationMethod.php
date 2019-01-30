@@ -40,19 +40,21 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
     function getReportConfiguration($opportunity, $call_hooks = true){
         $app = App::i();
+        $base_opportunity = $app->modules['OpportunityPhases']->getBaseOpportunity($opportunity);
 
         // Registration Section Columns
         $registration_columns = [];
-        if($opportunity->projectName){
+        if($base_opportunity->projectName){
             $registration_columns['projectName'] = (object) [
                 'label' => i::__('Nome do projeto'),
                 'getValue' => function(Entities\RegistrationEvaluation $evaluation){
-                    return $evaluation->registration->projectName;
+                    $base_registration = $evaluation->registration->getBaseRegistration();
+                    return (isset($base_registration->metadata['projectName'])) ? $base_registration->metadata['projectName'] : '';
                 }
             ];
         }
 
-        if($opportunity->registrationCategories){
+        if($base_opportunity->registrationCategories){
             $registration_columns['category'] = (object) [
                 'label' => i::__('Categoria de inscrição'),
                 'getValue' => function(Entities\RegistrationEvaluation $evaluation){
@@ -61,12 +63,12 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
             ];
         }
 
-        if ($opportunity->useAgentRelationInstituicao == 'required' || $opportunity->useAgentRelationInstituicao == 'optional'){
+        if ($base_opportunity->useAgentRelationInstituicao == 'required' || $base_opportunity->useAgentRelationInstituicao == 'optional'){
             $registration_columns['instituicao'] = (object) [
                 'label' => i::__('Instituição'),
                 'getValue' => function(Entities\RegistrationEvaluation $evaluation){
-                    $reg = $evaluation->registration;
-                    $agent = $reg->getAgentRelationByGroup('instituicao');
+                    $base_registration = $evaluation->registration->getBaseRegistration();
+                    $agent = $base_registration->getAgentRelationByGroup('instituicao');
                     return ($agent === null) ? '' : $agent->name;
                 }
             ];
@@ -74,7 +76,8 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
             $registration_columns['instituicao_municipio'] = (object) [
                 'label' => i::__('Instituição - Município'),
                 'getValue' => function(Entities\RegistrationEvaluation $evaluation){
-                    $agent = $evaluation->registration->getAgentRelationByGroup('instituicao');
+                    $base_registration = $evaluation->registration->getBaseRegistration();
+                    $agent = $base_registration->getAgentRelationByGroup('instituicao');
                     return ($agent === null) ? '' : $agent->En_Municipio;
                 }
             ];            
