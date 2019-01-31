@@ -93,9 +93,6 @@
             <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
                 <mc-select class="left transparent-placeholder" placeholder="status" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
-            <th ng-repeat="field in data.opportunitySelectFields" ng-show="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
-                <mc-select class="left transparent-placeholder" placeholder="{{field.title}}" model="registrationsFilters[field.fieldName]" data="field.options" title="{{field.title}}"></mc-select>
-            </th>
             <th ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <?php i::_e("Agentes");?>
             </th>
@@ -106,7 +103,7 @@
         </thead>
         <tbody>
         <tr>
-            <td colspan='{{numberOfEnabledColumns()}}'>
+            <td colspan="{{data.entity.registrationCategories ? '4' : '3'}}">
                 <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryResultRegistrations() === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryResultRegistrations() === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryResultRegistrations() > 1">{{getCountPreliminaryResultRegistrations()}} <?php \MapasCulturais\i::_e("inscrições.");?></span>

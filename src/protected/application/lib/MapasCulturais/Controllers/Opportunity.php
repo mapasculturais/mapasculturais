@@ -301,7 +301,7 @@ class Opportunity extends EntityController {
         $registrations = [];
         $total_registrations_records = 0;
         
-        if ($opportunity->canUser('viewRegistrations')) {        
+        if ($opportunity->canUser('viewRegistrations') || $opportunity->publishedRegistrations || $opportunity->publishedPreliminaryRegistrations) {        
 
             $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
                        
