@@ -1904,16 +1904,37 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 });
             };
 
-            var url = new UrlService('opportunity');
+            //TODO: Create Opportunity Service
+            var urlServiceOpportunity = new UrlService('opportunity');
 
             $scope.publish = function(){
-                $http.post(url.create('publish', $scope.data.entity.id)).
-                success(function(r){
+                $http.post(urlServiceOpportunity.create('publish', $scope.data.entity.id)).
+                success(function(response){
                     alert('publicado');
-                }).error(function(r){
+                }).error(function(response){
                     alert('erro');
                 });
             };
+
+            $scope.menuOpportunityAction = function(action, entity_id,  params){
+                var entity_id = entity_id || $scope.data.entity.id;
+                var httpParams = {id: entity_id};
+                for(var key in params){
+                    httpParams[key] = params[key];
+                }
+                $http.post(urlServiceOpportunity.create(action, httpParams)).
+                success(function(response){
+                    if (response.error){
+                        MapasCulturais.Messages.error(response.data);
+                    } else {
+                        MapasCulturais.Messages.success(labels['publishRegistrationsSuccess']);
+                        location.reload();
+                    }
+                })
+                .error(function(response){
+                    MapasCulturais.Messages.error(labels['publishRegistrationsError']);
+                });
+            }
 
             $timeout(function() {
                 //Se não existir agentes registrado ao carregar o modúlo, adiciona o agente padrão ao registro.

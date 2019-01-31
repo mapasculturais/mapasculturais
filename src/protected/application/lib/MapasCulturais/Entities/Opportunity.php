@@ -478,13 +478,24 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $this->registrationCategories = $new_value;
     }
 
+    function getPublishRegistrationsValidationErrors() {
+        $app = App::i();
+        $errors = [];
+        $registrations_waitlist = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_SENT));
+        $total  = count($registrations_waitlist);
+        if (  $total > 0 ){
+            $errors[] = sprintf(\MapasCulturais\i::__('Existem %s inscrito(s) com resultado pendente. Por favor para publicar as incrições é necessário definir o resultado (status) de todas as inscrições.'), $total);
+        }
+        return $errors;
+    }
+
     function publishRegistrations(){
         $this->checkPermission('publishRegistrations');
 
         $this->publishedRegistrations = true;
 
         // atribui os selos as inscrições selecionadas
-        $app = App::i();
+        $app = App::i();     
         $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
 
         foreach ($registrations as $registration) {
@@ -493,7 +504,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $app->enqueueEntityToPCacheRecreation($this);
 
-        $this->save(true);
+        $this->save(true);      
     }
 
     function publishPreliminaryRegistrations(){

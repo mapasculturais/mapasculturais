@@ -1808,6 +1808,8 @@ class Theme extends MapasCulturais\Theme {
             'confirmEvaluationLabel' => i::__('Aplicar resultado das avaliações'),
             'applyEvaluations' => i::__('Deseja aplicar o resultado de todas as avaliações como o status das respectivas inscrições?'),
             'applyEvaluationsSuccess' => i::__('Inscrições foram alteradas com sucesso'),
+            'publishRegistrationsError'  => i::__('Não foi possível publicar as inscrições'),
+            'publishRegistrationsSuccess'  => i::__('Inscrições publicadas com sucesso'),
 
             'Inscrição' => i::__('Inscrição'),
             'Categorias' => i::__('Categorias'),

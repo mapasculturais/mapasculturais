@@ -54,40 +54,52 @@ class Opportunity extends EntityController {
 
     function ALL_publishRegistrations(){
         $this->requireAuthentication();
-
         $app = App::i();
 
         $opportunity = $this->requestedEntity;
-
         if(!$opportunity)
             $app->pass();
 
-        $opportunity->publishRegistrations();
+        $errors = $opportunity->getPublishRegistrationsValidationErrors();
+        if (count($errors) == 0 ) {
+            $opportunity->publishRegistrations();
+        } 
 
-        if($app->request->isAjax()){
-            $this->json($opportunity);
-        }else{
+        if(!$app->request->isAjax()){
             $app->redirect($app->request->getReferer());
-        }
+        } else {
+            if (count($errors) > 0 ) {
+                $this->errorJson($errors);
+                
+            } else {
+                $this->json($opportunity);
+            }
+        }        
     }
 
     function ALL_publishPreliminaryRegistrations(){
         $this->requireAuthentication();
-
         $app = App::i();
-
+        
         $opportunity = $this->requestedEntity;
-
         if(!$opportunity)
             $app->pass();
 
-        $opportunity->publishPreliminaryRegistrations();
+        $errors = $opportunity->getPublishRegistrationsValidationErrors();
+        if (count($errors) == 0 ) {
+            $opportunity->publishPreliminaryRegistrations();
+        } 
 
-        if($app->request->isAjax()){
-            $this->json($opportunity);
-        }else{
+        if(!$app->request->isAjax()){
             $app->redirect($app->request->getReferer());
-        }
+        } else {
+            if (count($errors) > 0 ) {
+                $this->errorJson($errors);
+                
+            } else {
+                $this->json($opportunity);
+            }
+        }        
     }
 
     function GET_report(){

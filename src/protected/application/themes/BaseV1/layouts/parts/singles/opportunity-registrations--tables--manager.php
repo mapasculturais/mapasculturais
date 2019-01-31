@@ -49,12 +49,12 @@
                             <?php if ($entity->canUser('publishRegistrations')): ?>
                                 <?php if ( !$entity->publishedPreliminaryRegistrations): ?>
                                     <li>
-                                        <a  href="<?php echo $app->createUrl('opportunity', 'publishPreliminaryRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
+                                        <a ng-click="menuOpportunityAction('publishPreliminaryRegistrations')"><?php \MapasCulturais\i::_e("Resultado preliminar");?></a>
                                     </li>
                                 <?php endif; ?>
                                 <?php if ( !$entity->publishedRegistrations): ?>
                                     <li>
-                                        <a  href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Resultado final");?></a>
+                                        <a  ng-click="menuOpportunityAction('publishRegistrations')"><?php \MapasCulturais\i::_e("Resultado final");?></a>
                                     </li>
                                 <?php endif; ?>
                             <?php endif; ?>
