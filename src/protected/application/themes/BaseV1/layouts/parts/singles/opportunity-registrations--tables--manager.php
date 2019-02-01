@@ -78,17 +78,10 @@
                     </div>
                 </div>
             </div>
-
-            <div class="registration-actions">
-                <div class="dropdown js-dropdown" ng-click="isShowConfig = !isShowConfig">
-                    <div class="placeholder icon icon-search"><span>Filtrar</span></div>
-                </div>
-            </div>
-
         </div>
 
 
-    <div class="registration-table-columns" ng-show="isShowConfig" >
+    <div class="registration-table-columns">
         <div class="clearfix">
             <div id="registration-columns-view" class="dropdown registration-columns-view-dropdown">
                 <div class="placeholder" ng-click="filter_dropdown = ''"><?php i::_e("Habilitar Colunas:") ?></div>
