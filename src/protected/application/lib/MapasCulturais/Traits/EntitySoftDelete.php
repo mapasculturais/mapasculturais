@@ -39,23 +39,20 @@ trait EntitySoftDelete{
      * @hook **entity({ENTITY}).delete:after**
      */
     function delete($flush = false){
-        if($this instanceof \MapasCulturais\Entities\Agent && $this->user->profile === $this){
-            $this->user->removeAllData();
-        }
-        else{
-            $this->checkPermission('remove');
-            
-            $hook_class_path = $this->getHookClassPath();
-            
-            $app = App::i();
-            $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:before');
-            
-            $this->status = self::STATUS_TRASH;
-            
-            $this->save($flush);
-            
-            $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:after');
-        }
+    
+        $this->checkPermission('remove');
+        
+        $hook_class_path = $this->getHookClassPath();
+        
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:before');
+        
+        $this->status = self::STATUS_TRASH;
+        
+        $this->save($flush);
+        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:after');
+    
     }
 
     /**
