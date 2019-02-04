@@ -144,7 +144,7 @@
             <th ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <?php i::_e("Agentes");?>
             </th>
-            <th ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
+            <th ng-show="data.registrationTableColumns.attachments" class="registration-attachments-col">
                 <?php i::_e("Anexos");?>
             </th>
             <th ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
@@ -190,8 +190,8 @@
                     <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
                 </p>
             </td>
-            <td ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
+            <td ng-show="data.registrationTableColumns.attachments" class="registration-attachments-col">
+                <a ng-if="reg.files.zipArchive.url"  ng-if="data.entity.registrationFileConfigurations.length > 0"   class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
             </td>
             <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
                 {{reg.evaluationResultString}}
