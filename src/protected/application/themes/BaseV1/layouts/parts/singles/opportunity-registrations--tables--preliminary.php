@@ -98,7 +98,7 @@
         </thead>
         <tbody>
         <tr>
-            <td colspan="{{data.entity.registrationCategories ? '4' : '3'}}">
+            <td colspan='{{numberOfEnabledColumns()}}'>
                 <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryResultRegistrations() === 0"><?php \MapasCulturais\i::_e("Nenhuma inscrição.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryResultRegistrations() === 1"><?php \MapasCulturais\i::_e("1 inscrição.");?></span>
                 <span ng-if="!usingRegistrationsFilters() && getCountPreliminaryResultRegistrations() > 1">{{getCountPreliminaryResultRegistrations()}} <?php \MapasCulturais\i::_e("inscrições.");?></span>
