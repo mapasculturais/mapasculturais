@@ -109,12 +109,18 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     */
     protected $__metadata;
 
+    protected $_isDeleting = false;
+
 
     public function __construct() {
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
+    }
+
+    function getIsDeleting(){
+        return $this->_isDeleting;
     }
     
     public function getEntityTypeLabel($plural = false) {
@@ -285,6 +291,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
+        if(is_null($status)){
+            $where_status = "";
+        } else {
+            $where_status = "e.status $status_operator :status AND";
+        }
+
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -295,7 +307,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 	    			LEFT JOIN e.__metadata m
 	    			LEFT JOIN e.__termRelations tr
 	    		WHERE
-	    			e.status $status_operator :status AND
+	    			$where_status
 	    			a.user = :user
 	    		ORDER BY
 	    			e.name,
@@ -309,7 +321,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 		    		JOIN e.owner a
 		    		LEFT JOIN e.__metadata m
 	    		WHERE
-		    		e.status $status_operator :status AND
+		    		$where_status
 		    		a.user = :user
 	    		ORDER BY
 		    		e.name,
@@ -768,37 +780,74 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
       }
     }
 
-    public function transferData($user){
-        // Transfer agents
-        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.user = {$user} WHERE a.user = {$this->id}";
-        $q = App::i()->em->createQuery($query);
-        $q->execute();
-    }
+    
+    public function delete($flush = false) {
+        $app = App::i(); 
+        $this->checkPermission('deleteAccount');
+        $request = null;
 
-    public function removeDefault(){
-        $query = "UPDATE \MapasCulturais\Entities\User u SET u.profile = NULL, u.email = '" . $this->email . '-' . md5($this->email . time()) ."', u.status = " . self::STATUS_TRASH ." WHERE u.id = {$this->id}";
-        $q = App::i()->em->createQuery($query);
-        $q->execute();
-    }
-
-    public function removeAllData(){
-        $query = "SELECT a.id FROM \MapasCulturais\Entities\Agent a WHERE a.user = {$this->id}";
-        $q = App::i()->em->createQuery($query);
+        $app->disableAccessControl();
         
-        foreach($q->getResult() as $_agent){
-            $agent =  App::i()->repo('Agent')->find($_agent);
-            if($agent->id !== $agent->user->profile->id)
-                $agent->remove(true);
+        $this->_isDeleting = true;
 
+        foreach(['agents', 'spaces', 'projects', 'opportunities', 'events'] as $entity_type){
+            $entities = $this->$entity_type;
+            foreach($entities as $entity){
+                $app->log->debug("deletando $entity");
+                $entity->delete($flush);
+            }
         }
 
-        $query = "UPDATE \MapasCulturais\Entities\Agent a SET a.status = " . self::STATUS_TRASH ." WHERE a.user = {$this->id}";
-        $q = App::i()->em->createQuery($query);
-        $q->execute();
+        $this->authUid = 'deleted:' . $this->authUid;
+        $this->email = 'deleted:' . $this->email;
+        $this->status = self::STATUS_TRASH;
+        $this->save($flush);
+        
+        $app->enableAccessControl();
 
-        $this->removeDefault();
+        if($flush){
+            $app->em->flush();
+        }
+    }
 
-        App::i()->redirect(App::i()->createUrl('panel', 'userManagement'));
+    public function transferEntitiesTo(Agent $target_agent, $flush = false){
+        $app = App::i();
+        if(!$target_agent->canUser('@control')){
+            $request = new RequestEntitiesTransference();
+            $request->setOrigin($this);
+            $request->setDestination($target_agent);
+            $request->save($flush);
+            $app->log->debug("requisição para transferencia foi criada.");
+            return $request;
+        } else {
+            $target_agent_user_profile = $target_agent->user->profile;
+            
+            foreach(['Agents', 'Spaces', 'Projects', 'Opportunities', 'Events'] as $entity_type){
+                $entities = $this->$entity_type;
+                
+                foreach($entities as $entity){
+                    if($entity_type == 'Agents'){
+                        if($this->profile->equals($entity)){
+                            continue;
+                        }
+                        $app->log->debug("transferindo $entity para target_agent");
+                        
+                        $entity->parent = $target_agent_user_profile;
+                        $entity->user = $target_agent->user;
+                        $entity->save($flush);
+                    } else if($entity->owner->equals($target_agent_user_profile)){
+                        $app->log->debug("transferindo $entity para target_agent");
+
+                        $entity->owner = $target_agent;
+                        $entity->save($flush);
+                    }
+                }
+            }
+        }
+    }
+
+    protected function canUserDeleteAccount(User $user){
+        return $user->is('admin') || $user->equals($this);
     }
 
     //============================================================= //
