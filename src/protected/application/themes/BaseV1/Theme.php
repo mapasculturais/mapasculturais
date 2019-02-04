@@ -1810,6 +1810,7 @@ class Theme extends MapasCulturais\Theme {
             'applyEvaluationsSuccess' => i::__('Inscrições foram alteradas com sucesso'),
             'publishRegistrationsError'  => i::__('Não foi possível publicar as inscrições'),
             'publishRegistrationsSuccess'  => i::__('Inscrições publicadas com sucesso'),
+            'projectName' => i::__('Nome do Projeto'),
 
             'Inscrição' => i::__('Inscrição'),
             'Categorias' => i::__('Categorias'),
@@ -1817,6 +1818,7 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
+            
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -2365,6 +2367,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['registrationFieldTypes'] = $field_types;
 
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['projectName'] = $entity->projectName;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
 
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');

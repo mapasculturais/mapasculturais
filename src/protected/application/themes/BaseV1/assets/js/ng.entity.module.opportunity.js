@@ -1292,7 +1292,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             'status': 'GT(-1)',
             '@files': '(zipArchive):url',
             '@opportunity': getOpportunityId(),
-            '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
+            '@select': 'id,singleUrl,projectName,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
         };
         for(var prop in $scope.registrationsFilters){
             if($scope.registrationsFilters[prop] || $scope.registrationsFilters[prop] === 0){
@@ -1306,7 +1306,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     $scope.$watch('evaluationsFilters', function(){
         var qdata = {
             '@opportunity': getOpportunityId(),
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
+            '@select': 'id,singleUrl,projectName,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
             '@order': 'evaluation desc'
         };
         for(var prop in $scope.evaluationsFilters){
@@ -1349,6 +1349,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         {fieldName: "evaluation", title: labels['Avaliação'] ,required:true},
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
+
+
     var defaultPremilinarySelectFields = [
         {fieldName: "number", title:labels["Inscrição"] ,required:true},
         {fieldName: "category", title:labels['Categorias'] ,required:true},
@@ -1356,7 +1358,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         {fieldName: "attachments", title:labels['Anexos']  ,required:true},
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
-
+    
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
             return {value: e, label: e};
@@ -1446,6 +1448,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         fullscreenTable: false,
 
     }, MapasCulturais);
+
+    if ( MapasCulturais.entity.projectName > 0 ) {
+        $scope.data.defaultSelectFields.push({fieldName: "projectName", title:labels['projectName'] ,required:true}); 
+        $scope.data.defaultPremilinarySelectFields.push({fieldName: "projectName", title:labels['projectName'] ,required:true});
+        $scope.data.registrationTableColumns.projectName = true;
+
+    }
+
+
 
     committeeApi.find().success(function(result){
         $scope.data.evaluationCommittee = result.map(function(e){
@@ -1967,14 +1978,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
             '@opportunity': getOpportunityId(),
             '@limit': 10000,
-            '@select': 'id,singleUrl,owner.{id,name}'
+            '@select': 'id,singleUrl,projectName,owner.{id,name}'
         });
 
 
         var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', {
             '@opportunity': getOpportunityId(),
             '@limit': 10000,
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+            '@select': 'id,singleUrl,projectName,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
         });
 
         registrationsApi.find().success(function(){
