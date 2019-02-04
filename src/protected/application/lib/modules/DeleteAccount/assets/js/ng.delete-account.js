@@ -70,12 +70,14 @@
             };
 
             $scope.deleteAccount = function(token){
-                if(confirm('Sua conta será removida e não poderá ser recuperada, deseja continuar?')){
-                    DeleteAccountService.deleteAccount(token, $scope.data.selectedAgent ? $scope.data.selectedAgent.id : null).success(function(r){
-                        alert('Sua conta foi removida e você será deslogado. =(');
+                var labels = MapasCulturais.gettext['delete-account'];
+                if(confirm(labels.confirm)){
+                    DeleteAccountService.deleteAccount(token, $scope.data.selectedAgent ? $scope.data.selectedAgent.id : null);
+                    setTimeout(function(){
+                        alert(labels.goodbye);
 
-                        // window.location = MapasCulturais.createUrl('auth', 'logout');
-                    });
+                        window.location = MapasCulturais.createUrl('auth', 'logout');
+                    },1000);
                 }
             };
 
