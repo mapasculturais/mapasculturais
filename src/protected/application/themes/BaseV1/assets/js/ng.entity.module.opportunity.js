@@ -1447,16 +1447,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         fullscreenTable: false,
 
+        baseOpportunityProjectName:  MapasCulturais.entity.baseOpportunityProjectName,
+
     }, MapasCulturais);
 
-    if ( MapasCulturais.entity.projectName > 0 ) {
-        $scope.data.defaultSelectFields.push({fieldName: "projectName", title:labels['projectName'] ,required:true}); 
-        $scope.data.defaultPremilinarySelectFields.push({fieldName: "projectName", title:labels['projectName'] ,required:true});
+    if ( $scope.data.baseOpportunityProjectName > 0 ) {
+        $scope.data.defaultSelectFields.splice(1, 0, {fieldName: "projectName", title:labels['projectName'] ,required:true});
+        $scope.data.defaultPremilinarySelectFields.splice(1, 0, {fieldName: "projectName", title:labels['projectName'] ,required:true});
         $scope.data.registrationTableColumns.projectName = true;
-
     }
-
-
 
     committeeApi.find().success(function(result){
         $scope.data.evaluationCommittee = result.map(function(e){

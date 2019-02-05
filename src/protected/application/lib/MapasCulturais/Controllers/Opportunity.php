@@ -315,7 +315,7 @@ class Opportunity extends EntityController {
             
             foreach($opportunity_tree as $current){
                 $app->controller('registration')->registerRegistrationMetadata($current);
-                $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,previousPhaseRegistrationId'];
+                $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,projectName,previousPhaseRegistrationId'];
                 
                 if($current->publishedRegistrations){
                     $cdata['status'] = 'IN(10,8)';
@@ -432,7 +432,7 @@ class Opportunity extends EntityController {
         $this->requireAuthentication();
         
         $app = App::i();
-        
+
         $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';
         
         if(preg_match('#(valuer|registration|evaluation|category)( +(asc|desc))?#i', $_order, $matches)){
@@ -519,7 +519,7 @@ class Opportunity extends EntityController {
         $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
         if($registration_ids){
             $rdata = [
-                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
+                '@select' => 'id,projectName,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
                 'id' => "IN(" . implode(',', $registration_ids).  ")"
             ];
             
@@ -529,7 +529,8 @@ class Opportunity extends EntityController {
                 }
             }
             
-            $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
+            $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata, false, false, true);
+            
             $registrations = $registrations_query->find();
 
             $edata = [
