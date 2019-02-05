@@ -14,10 +14,15 @@ use Respect\Validation\Rules\Instance;
  */
 class RequestEntitiesTransference extends Request{
 
-    public function setOrigin(\MapasCulturais\Entity $entity) {
-        parent::setOrigin($entity);
+    /**
+     * Set origin user
+     *
+     * @param \MapasCulturais\Entity $user
+     * @return void
+     */
+    public function setOrigin(\MapasCulturais\Entities\User $user) {
+        parent::setOrigin($user);
 
-        $user = $this->getOrigin();
         $profile = $user->profile;
 
         $this->metadata['entities'] = [];
