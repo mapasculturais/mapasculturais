@@ -305,69 +305,58 @@ class Opportunity extends EntityController {
 
             $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
                        
-            $opportunity_tree = $this->getOpportunityTree($opportunity);
-            
-            $last_query_ids = null;            
-            $select_values = [];
-
+            $opportunity_tree = $this->getOpportunityTree($opportunity);            
+            $previousRegistrationsIds = null;            
+            $previousRegistrationsList = [];
             $data = $this->data;
             $data['opportunity'] = "EQ({$opportunity->id})";
             
             foreach($opportunity_tree as $current){
                 $app->controller('registration')->registerRegistrationMetadata($current);
-                $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,projectName,previousPhaseRegistrationId'];
+                $currentData = ['opportunity' => "EQ({$current->id})", '@select' => 'id,projectName,previousPhaseRegistrationId'];
                 
                 if($current->publishedRegistrations){
-                    $cdata['status'] = 'IN(10,8)';
+                    $currentData['status'] = 'IN(10,8)';
                 }
                 
                 foreach($current->registrationFieldConfigurations as $field){
                     if($field->fieldType == 'select'){
-                        $cdata['@select'] .= ",{$field->fieldName}";
+                        $currentData['@select'] .= ",{$field->fieldName}";
                         
                         if(isset($data[$field->fieldName])){
-                            $cdata[$field->fieldName] = $data[$field->fieldName];
+                            $currentData[$field->fieldName] = $data[$field->fieldName];
                             unset($data[$field->fieldName]);
                         }
                     }
                 }
-                if(!is_null($last_query_ids)){
-                    if($last_query_ids){
-                        $cdata['previousPhaseRegistrationId'] = "IN($last_query_ids)";
-                    } else {
-                        $cdata['id'] = "IN(-1)";
-                    }
+                
+                if(!empty($previousRegistrationsIds)){
+                    $currentData['previousPhaseRegistrationId'] = "IN($previousRegistrationsIds)";
                 }
-                $q = new ApiQuery('MapasCulturais\Entities\Registration', $cdata, false, false, true);
-                
-                $regs = $q->find();
-                
-                foreach($regs as $reg){
-                    
-                    if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
-                        $select_values[$reg['id']] = $reg + $select_values[$reg['previousPhaseRegistrationId']];
-                    } else {
-                        $select_values[$reg['id']] = $reg;
+
+                $apiQuery = new ApiQuery('MapasCulturais\Entities\Registration', $currentData, false, false, true);            
+                $registrations = $apiQuery->find();
+                $regIds = [];
+                foreach($registrations as $r){
+                    $previousId =  (isset($r['previousPhaseRegistrationId'])) ? $r['previousPhaseRegistrationId'] : null;                
+                    if(empty($previousId) && !isset($previousRegistrationsList[$previousId])) {
+                        $previousRegistrationsList[$r['id']] = $r;
                     }
+                    $regIds[] = $r['id'];
                 }
                 
-                $ids = array_map(function ($r) { return $r['id']; }, $regs);
-                $last_query_ids = implode(',', $ids);
+                $previousRegistrationsIds = (count($regIds) > 0 ) ? implode(',', $regIds) : null;
             }
             
             $app->controller('registration')->registerRegistrationMetadata($opportunity);
             
             unset($data['@opportunity']);
-            
-            if(!is_null($last_query_ids)){
-                if($last_query_ids){
-                    $data['previousPhaseRegistrationId'] = "IN($last_query_ids)";
-                } else {
-                    $data['id'] = "IN(-1)";
-                }
+
+            if(!empty($previousRegistrationsIds)){
+                $data['previousPhaseRegistrationId'] = "IN($previousRegistrationsIds)";
             }
-            
-            if($select_values){
+                        
+            if($previousRegistrationsList){
                 $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
             }
             
@@ -386,17 +375,18 @@ class Opportunity extends EntityController {
 
             $evaluationMethod = $opportunity->getEvaluationMethod();
             
-            foreach($registrations as &$reg){
+            foreach($registrations as &$registration){
                 
                 if(in_array('consolidatedResult', $query->selecting)){
-                    $reg['evaluationResultString'] = $evaluationMethod->valueToString($reg['consolidatedResult']);
+                    $registration['evaluationResultString'] = $evaluationMethod->valueToString($registration['consolidatedResult']);
                 }
                 
-                if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
-                    $values = $select_values[$reg['previousPhaseRegistrationId']];
-                    foreach($reg as $key => $val){
+                $previousId =  (isset($registration['previousPhaseRegistrationId'])) ? $registration['previousPhaseRegistrationId'] : null; 
+                if( !empty($previousId) && isset($previousRegistrationsList[$previousId])){
+                    $values = $previousRegistrationsList[$previousId];
+                    foreach($registration as $key => $val){
                         if(is_null($val) && isset($values[$key])){
-                            $reg[$key] = $values[$key];
+                            $registration[$key] = $values[$key];
                         }
                     }
                 }
@@ -443,6 +433,48 @@ class Opportunity extends EntityController {
         }
         
         $opportunity = $this->_getOpportunity();
+        $opportunity_tree = $this->getOpportunityTree($opportunity);            
+        $previousRegistrationsIds = null;            
+        $previousRegistrationsList = [];
+        $data = $this->data;
+        $data['opportunity'] = "EQ({$opportunity->id})";
+        
+        foreach($opportunity_tree as $current){
+            $app->controller('registration')->registerRegistrationMetadata($current);
+            $currentData = ['opportunity' => "EQ({$current->id})", '@select' => 'id,projectName,previousPhaseRegistrationId'];
+            
+            if($current->publishedRegistrations){
+                $currentData['status'] = 'IN(10,8)';
+            }
+            
+            foreach($current->registrationFieldConfigurations as $field){
+                if($field->fieldType == 'select'){
+                    $currentData['@select'] .= ",{$field->fieldName}";
+                    
+                    if(isset($data[$field->fieldName])){
+                        $currentData[$field->fieldName] = $data[$field->fieldName];
+                        unset($data[$field->fieldName]);
+                    }
+                }
+            }
+            
+            if(!empty($previousRegistrationsIds)){
+                $currentData['previousPhaseRegistrationId'] = "IN($previousRegistrationsIds)";
+            }
+
+            $apiQuery = new ApiQuery('MapasCulturais\Entities\Registration', $currentData, false, false, true);            
+            $registrations = $apiQuery->find();
+            $regIds = [];
+            foreach($registrations as $r){
+                $previousId =  (isset($r['previousPhaseRegistrationId'])) ? $r['previousPhaseRegistrationId'] : null;                
+                if(empty($previousId) && !isset($previousRegistrationsList[$previousId])) {
+                    $previousRegistrationsList[$r['id']] = $r;
+                }
+                $regIds[] = $r['id'];
+            }
+            
+            $previousRegistrationsIds = (count($regIds) > 0 ) ? implode(',', $regIds) : null;
+        }
 
         $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
             '@select' => 'id,agent',
@@ -528,9 +560,10 @@ class Opportunity extends EntityController {
                     $rdata[substr($k, 13)] = $v;
                 }
             }
+
+            $app->controller('registration')->registerRegistrationMetadata($opportunity);
             
             $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata, false, false, true);
-            
             $registrations = $registrations_query->find();
 
             $edata = [
@@ -571,6 +604,16 @@ class Opportunity extends EntityController {
         $_result = [];
         
         foreach($registrations as &$registration){
+            $previousId =  (isset($registration['previousPhaseRegistrationId'])) ? $registration['previousPhaseRegistrationId'] : null; 
+            if( !empty($previousId) && isset($previousRegistrationsList[$previousId])){
+                $values = $previousRegistrationsList[$previousId];
+                foreach($registration as $key => $val){
+                    if(is_null($val) && isset($values[$key])){
+                        $registration[$key] = $values[$key];
+                    }
+                }
+            }
+
             foreach($valuer_by_user as $user_id => $valuer){
                 if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])) {
 

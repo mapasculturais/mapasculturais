@@ -45,7 +45,7 @@
                 </a>
             </td>
             <td class="registration-id-col">{{evaluation.valuer.name}}</td>
-            <td ng-if="data.baseOpportunityProjectName > 0" class="registration-option-col">{{reg.projectName}}</td>
+            <td ng-if="data.baseOpportunityProjectName > 0" class="registration-option-col">{{evaluation.registration.projectName}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>
