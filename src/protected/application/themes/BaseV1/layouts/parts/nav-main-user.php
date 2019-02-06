@@ -17,15 +17,6 @@
         <li>
             <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"></span><?php \MapasCulturais\i::_e("Meu Perfil");?></a>
         </li>
-        
-        <?php if($app->isEnabled('events')): ?>
-            <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
-            <li>
-                <a href="<?php echo $app->createUrl('panel', 'events') ?>"><?php \MapasCulturais\i::_e("Meus Eventos");?></a>
-                <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
-            </li>
-            <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
-        <?php endif; ?>
 
         <?php if($app->isEnabled('agents')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
@@ -34,6 +25,15 @@
                 <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
+        <?php endif; ?>
+        
+        <?php if($app->isEnabled('events')): ?>
+            <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
+            <li>
+                <a href="<?php echo $app->createUrl('panel', 'events') ?>"><?php \MapasCulturais\i::_e("Meus Eventos");?></a>
+                <a class="add" href="<?php echo $app->createUrl('event', 'create') ?>" ></a>
+            </li>
+            <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
         <?php endif; ?>
 
         <?php if($app->isEnabled('spaces')): ?>
