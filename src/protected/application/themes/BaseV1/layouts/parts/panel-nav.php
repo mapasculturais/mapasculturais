@@ -4,19 +4,21 @@
         <li><a <?php if($this->template == 'panel/index') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel') ?>"><span class="icon icon-panel"></span> <?php \MapasCulturais\i::_e("Painel");?></a></li>
         
         <li>
-            <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"><span class="icon icon-agent"></span> <?php \MapasCulturais\i::_e("Meu Perfil");?></a>
+            <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>">
+                <span class="icon icon-agent"></span> <?php \MapasCulturais\i::_e("Meu Perfil"); ?>
+            </a>
         </li>
+
+        <?php if($app->isEnabled('agents')): ?>
+            <?php $this->applyTemplateHook('nav.panel.agents','before'); ?>
+            <li><a <?php if($this->template == 'panel/agents') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Meus Agentes");?></a></li>
+            <?php $this->applyTemplateHook('nav.panel.agents','after'); ?>
+        <?php endif; ?>
         
         <?php if($app->isEnabled('events')): ?>
             <?php $this->applyTemplateHook('nav.panel.events','before'); ?>
             <li><a <?php if($this->template == 'panel/events') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'events') ?>"><span class="icon icon-event"></span> <?php \MapasCulturais\i::_e("Meus Eventos");?></a></li>
             <?php $this->applyTemplateHook('nav.panel.events','after'); ?>
-        <?php endif; ?>
-
-        <?php if($app->isEnabled('agents')): ?>
-            <?php $this->applyTemplateHook('nav.panel.agents','before'); ?>
-            <li><a <?php if($this->template == 'panel/agents') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'agents') ?>"><span class="icon icon-agent"></span> <?php \MapasCulturais\i::_e("Meus Agentes");?></a></li>
-            <?php $this->applyTemplateHook('nav.panel.agents','after'); ?>
         <?php endif; ?>
 
         <?php if($app->isEnabled('spaces')): ?>
@@ -61,13 +63,21 @@
 
         <?php if($app->user->is('admin')): ?>
             <?php $this->applyTemplateHook('nav.panel.userManagement','before'); ?>
-            <li><a <?php if($this->template == 'panel/user-management') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement') ?>"><span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Gestão de Usuários");?></a></li>
+            <li>
+                <a <?php if($this->template == 'panel/user-management' && !isset($_GET['admin'])) echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement') ?>">
+                    <span class="icon icon-login"></span> <?php \MapasCulturais\i::_e("Gestão de Usuários");?>
+                </a>
+            </li>
             <?php $this->applyTemplateHook('nav.panel.userManagement','after'); ?>
         <?php endif; ?>
 
         <?php if($app->user->is('admin')): ?>
             <?php $this->applyTemplateHook('nav.panel.adminManagement','before'); ?>
-            <li><a <?php if($this->template == 'panel/user-management') echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement')?>?admin"><span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Administradores");?></a></li>
+            <li>
+                <a <?php if ($this->template == 'panel/user-management' && isset($_GET['admin'])) echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement')?>?admin">
+                    <span class="icon icon-group"></span> <?php \MapasCulturais\i::_e("Administradores");?>
+                </a>
+            </li>
             <?php $this->applyTemplateHook('nav.panel.adminManagement','after'); ?>
         <?php endif; ?>
 
