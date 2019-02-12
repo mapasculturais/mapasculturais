@@ -1,38 +1,39 @@
 <?php
 return array(
-    1 => array(
-       // 'slug' => \MapasCulturais\i::__('tag'),
-    'slug' => 'tag',
-        'entities' => array(
+    1 => [
+        'slug' => \MapasCulturais\i::__('tag'),
+        'entities' => [
             'MapasCulturais\Entities\Space',
             'MapasCulturais\Entities\Agent',
             'MapasCulturais\Entities\Event',
             'MapasCulturais\Entities\Project',
             'MapasCulturais\Entities\Opportunity',
-        )
-    ),
+        ]
+    ],
 
-    2 => array(
-        //'slug' => \MapasCulturais\i::__('area'),
-'slug' => 'area',
-        'required' => \MapasCulturais\i::__("Você deve informar ao menos uma área de atuação"),
-        'entities' => array(
+    2 => [
+        'slug' => \MapasCulturais\i::__('area'),
+        'required' => \MapasCulturais\i::__("Informe, pelo menos, uma área de atuação."),
+        'entities' => [
             'MapasCulturais\Entities\Space',
-            'MapasCulturais\Entities\Agent'
-        ),
-        'restricted_terms' => array(
+            'MapasCulturais\Entities\Agent',
+            'MapasCulturais\Entities\Project'
+        ],
+        'restricted_terms' => [
             \MapasCulturais\i::__('Antropologia'),
             \MapasCulturais\i::__('Arqueologia'),
             \MapasCulturais\i::__('Arquitetura-Urbanismo'),
             \MapasCulturais\i::__('Arquivo'),
             \MapasCulturais\i::__('Arte de Rua'),
             \MapasCulturais\i::__('Arte Digital'),
+            \MapasCulturais\i::__('Artes integradas'),
             \MapasCulturais\i::__('Artes Visuais'),
             \MapasCulturais\i::__('Artesanato'),
             \MapasCulturais\i::__('Audiovisual'),
             \MapasCulturais\i::__('Cinema'),
             \MapasCulturais\i::__('Circo'),
             \MapasCulturais\i::__('Comunicação'),
+            \MapasCulturais\i::__('Cultura Afro-brasileira'),
             \MapasCulturais\i::__('Cultura Cigana'),
             \MapasCulturais\i::__('Cultura Digital'),
             \MapasCulturais\i::__('Cultura Estrangeira (imigrantes)'),
@@ -51,6 +52,7 @@ return array(
             \MapasCulturais\i::__('Gastronomia'),
             \MapasCulturais\i::__('Gestão Cultural'),
             \MapasCulturais\i::__('História'),
+            \MapasCulturais\i::__('Humor'),
             \MapasCulturais\i::__('Jogos Eletrônicos'),
             \MapasCulturais\i::__('Jornalismo'),
             \MapasCulturais\i::__('Leitura'),
@@ -66,24 +68,25 @@ return array(
             \MapasCulturais\i::__('Patrimônio Material'),
             \MapasCulturais\i::__('Pesquisa'),
             \MapasCulturais\i::__('Produção Cultural'),
+            \MapasCulturais\i::__('Povos Tradicionais de Matriz Africana'),
+            \MapasCulturais\i::__('Quilombola'),
             \MapasCulturais\i::__('Rádio'),
             \MapasCulturais\i::__('Saúde'),
             \MapasCulturais\i::__('Sociologia'),
             \MapasCulturais\i::__('Teatro'),
             \MapasCulturais\i::__('Televisão'),
             \MapasCulturais\i::__('Turismo'),
-           \MapasCulturais\i::__('Outros')
-        )
-    ),
+            \MapasCulturais\i::__('Outros')
+        ]
+    ],
 
-    3 => array(
-        'slug' => 'linguagem',
-        'required' => \MapasCulturais\i::__("Você deve informar ao menos uma linguagem"),
-        'entities' => array(
+    3 => [
+        'slug' => \MapasCulturais\i::__('linguagem'),
+        'required' => \MapasCulturais\i::__("Informe, pelo menos, uma linguagem."),
+        'entities' => [
             'MapasCulturais\Entities\Event'
-        ),
-
-        'restricted_terms' => array(
+        ],
+        'restricted_terms' => [
             \MapasCulturais\i::__('Artes Circenses'),
             \MapasCulturais\i::__('Artes Integradas'),
             \MapasCulturais\i::__('Artes Visuais'),
@@ -103,6 +106,6 @@ return array(
             \MapasCulturais\i::__('Rádio'),
             \MapasCulturais\i::__('Teatro'),
             \MapasCulturais\i::__('Outros')
-        )
-    )
+        ]
+    ],
 );
