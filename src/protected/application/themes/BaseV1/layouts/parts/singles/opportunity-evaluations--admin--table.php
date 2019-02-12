@@ -12,6 +12,9 @@
             <th class="registration-id-col">
                 <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Avaliador"); ?>" model="evaluationsFilters['valuer:id']" data="data.evaluationCommittee"></mc-select>
             </th>
+            <th ng-if="data.baseOpportunityProjectName > 0" class="registration-option-col">
+            <?php \MapasCulturais\i::_e("Nome do Projeto");?>
+            </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
                 <mc-select placeholder="<?php \MapasCulturais\i::esc_attr_e("Categoria"); ?>" model="evaluationsFilters['registration:category']" data="data.registrationCategoriesToFilter"></mc-select>
             </th>
@@ -28,7 +31,7 @@
     </thead>
     <tbody>
         <tr>
-            <td colspan='6'>
+            <td colspan='7'>
                 <span ng-if="data.evaluations.length === 0"><?php \MapasCulturais\i::_e("Nenhuma avaliação enviada.");?></span>
                 <span ng-if="data.evaluations.length === 1"><?php \MapasCulturais\i::_e("1 avaliação encontrada.");?></span>
                 <span ng-if="data.evaluations.length > 1">{{data.evaluations.length}} <?php \MapasCulturais\i::_e("Avaliações.");?></span>
@@ -42,6 +45,7 @@
                 </a>
             </td>
             <td class="registration-id-col">{{evaluation.valuer.name}}</td>
+            <td ng-if="data.baseOpportunityProjectName > 0" class="registration-option-col">{{evaluation.registration.projectName}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>

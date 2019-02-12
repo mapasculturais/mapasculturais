@@ -135,6 +135,9 @@
             <th ng-show="data.registrationTableColumns.number" class="registration-id-col">
                 <?php i::_e("Inscrição");?>
             </th>
+            <th ng-show="data.registrationTableColumns.projectName" class="registration-option-col">
+                <?php i::_e("Nome do Projeto");?>
+            </th>
             <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
                 <mc-select class="left transparent-placeholder" placeholder="status" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
@@ -174,37 +177,38 @@
     <tbody>
     <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
         <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
-            <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
-            <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
-                {{reg[field.fieldName]}}
-            </td>
+        <td ng-show="data.registrationTableColumns.projectName" class="registration-option-col">{{reg.projectName}}</td>
+        <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
+        <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
+            {{reg[field.fieldName]}}
+        </td>
 
-            <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
-                <p>
-                    <span class="label"><?php i::_e("Responsável");?></span><br />
-                    <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
-                </p>
+        <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
+            <p>
+                <span class="label"><?php i::_e("Responsável");?></span><br />
+                <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
+            </p>
 
-                <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
-                    <span class="label">{{relation.label}}</span><br />
-                    <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
-                </p>
-            </td>
-            <td ng-show="data.registrationTableColumns.attachments" class="registration-attachments-col">
-                <a ng-if="reg.files.zipArchive.url"  ng-if="data.entity.registrationFileConfigurations.length > 0"   class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
-            </td>
-            <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
-                {{reg.evaluationResultString}}
-            </td>
+            <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
+                <span class="label">{{relation.label}}</span><br />
+                <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
+            </p>
+        </td>
+        <td ng-show="data.registrationTableColumns.attachments" class="registration-attachments-col">
+            <a ng-if="reg.files.zipArchive.url"  ng-if="data.entity.registrationFileConfigurations.length > 0"   class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
+        </td>
+        <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
+            {{reg.evaluationResultString}}
+        </td>
 
-            <td ng-show="data.registrationTableColumns.status" class="registration-status-col">
-                <?php if ($entity->publishedRegistrations): ?>
-                    <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusNameById(reg.status)}}</span>
-                <?php else: ?>
-                    <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
-                <?php endif; ?>
-            </td>
-        </tr>
+        <td ng-show="data.registrationTableColumns.status" class="registration-status-col">
+            <?php if ($entity->publishedRegistrations): ?>
+                <span class="status status-{{getStatusSlug(reg.status)}}">{{getStatusNameById(reg.status)}}</span>
+            <?php else: ?>
+                <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+            <?php endif; ?>
+        </td>
+    </tr>
     </tbody>
     <tfoot>
         <tr>

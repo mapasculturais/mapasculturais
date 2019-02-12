@@ -10,6 +10,9 @@ use MapasCulturais\i;
             <th class="registration-id-col">
                 <?php \MapasCulturais\i::_e("Inscrição");?>
             </th>
+            <th ng-show="data.registrationTableColumns.projectName" class="registration-option-col">
+                <?php i::_e("Nome do Projeto");?>
+            </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
                 <mc-select placeholder="<?php i::_e('categoria') ?>" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter"></mc-select>
             </th>
@@ -35,6 +38,7 @@ use MapasCulturais\i;
 
         <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" class="{{getStatusSlug(reg.status)}}" ng-if="reg.status == 10 || reg.status == 8">
             <td class="registration-id-col"><strong>{{reg.number}}</strong></td>
+            <td ng-show="data.registrationTableColumns.projectName" class="registration-option-col">{{reg.projectName}}</td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td class="registration-agents-col">
                 <p>
