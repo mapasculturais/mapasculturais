@@ -16,6 +16,7 @@ use MapasCulturais\Entities;
 class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation,
+        Traits\ControllerSoftDelete,
     	Traits\ControllerSealRelation;
 
     function __construct() {

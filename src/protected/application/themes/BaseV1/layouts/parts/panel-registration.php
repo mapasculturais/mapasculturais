@@ -30,4 +30,16 @@ $proj = $registration->opportunity;
         <div><span class="label"><?php echo $proj->registrationCategTitle ?>:</span> <?php echo $registration->category ?></div>
         <?php endif; ?>
     </div>
+    <div class="entity-actions">
+        <?php if($registration->status === \MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
+            <a class="btn btn-small btn-primary" href="<?php echo $registration->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
+            <a class="btn btn-small btn-danger" href="<?php echo $registration->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir");?></a>
+        <?php endif; ?>
+        <?php if($registration->status === \MapasCulturais\Entities\Registration::STATUS_TRASH): ?>
+            <a class="btn btn-small btn-success" href="<?php echo $registration->undeleteUrl; ?>"><?php \MapasCulturais\i::_e("recuperar");?></a>   
+            <?php if($registration->canUser('destroy')): ?>
+                    <a class="btn btn-small btn-danger" href="<?php echo $registration->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
 </article>

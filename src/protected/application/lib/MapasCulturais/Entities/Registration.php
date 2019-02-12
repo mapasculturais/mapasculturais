@@ -25,9 +25,11 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
+        Traits\EntitySoftDelete,
         Traits\EntitySealRelation {
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
+        
 
 
     const STATUS_SENT = self::STATUS_ENABLED;
@@ -803,7 +805,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserModify($user){
-        if($this->status !== self::STATUS_DRAFT){
+        if($this->status !== self::STATUS_DRAFT && $this->status !== self::STATUS_TRASH){
             return false;
         }else{
             return $this->genericPermissionVerification($user);
@@ -985,6 +987,45 @@ class Registration extends \MapasCulturais\Entity
 
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    protected function canUserRemove($user){
+        if($user->is('guest'))
+            return false;
+
+        if($this->isUserAdmin($user) || $this->getOwnerUser()->id == $user->id) {
+            return true;
+
+        }
+
+        return false;
+    }
+
+    function undelete($flush = false){
+        $this->checkPermission('undelete');
+
+        $hook_class_path = $this->getHookClassPath();
+        
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:before');
+        
+        $this->status = self::STATUS_DRAFT ;
+
+        $this->save($flush);
+        
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:after');
+    }
+
+    protected function canUserDestroy($user){
+        if($user->is('guest'))
+            return false;
+
+        if($this->isUserAdmin($user) || $this->getOwnerUser()->id == $user->id || $this->isUserAdmin($user, 'superAdmin')) {
+            return true;
+
         }
 
         return false;
