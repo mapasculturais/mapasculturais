@@ -8,21 +8,81 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
             'validations' => array(
-                //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
+                'required' => \MapasCulturais\i::__('O campo Nome Completo(Se Agente Individual) ou Razão Social(Se Agente Coletivo) deve ser preenchido.')
             )
         ),
 
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
-//            'validations' => array(
-//                'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
-//                'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
+            'validations' => array(
+            'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
+            // 'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
 //                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
 //                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
-//            )
+           )
         ),
+        'identidade' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Informe sua Identidade (RG)'),
+            'type' => 'text',
+            'validations' => array(
+                'required' => \MapasCulturais\i::__('O campo Identidade (RG) deve ser preenchido.')
+            )
+        ],
+        'expedicaoIdentidade' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Informe a Data de Expedição (RG)'),
+            'type' => 'date',
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo Data de Expedição (RG) deve ser preenchido.'),
+                'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
+            ]
+        ],
+        'expedidorIdentidade' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Informe o Órgão Expedidor (RG)'),
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo Órgão Expedidor (RG) deve ser preenchido.')
+            //     'v::allOf(v::regex("#[a-zA-Z]/[a-zA-Z]{2}#"))' => \MapasCulturais\i::__('Por favor, informe o expedidor/unidade federativa, exemplo: SSP/CE , SSP/DF')
+            ]
+        ],
 
+        'escolaridade' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Informe sua Escolaridade'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Ensino Fundamental' => \MapasCulturais\i::__('Ensino Fundamental'),
+                'Ensino Fundamental Incompleto' => \MapasCulturais\i::__('Ensino Fundamental Incompleto'),
+                'Ensino Médio' => \MapasCulturais\i::__('Ensino Médio'),
+                'Ensino Médio Incompleto' => \MapasCulturais\i::__('Ensino Médio Incompleto'),
+                'Ensino Superior' => \MapasCulturais\i::__('Ensino Superior'),
+                'Ensino Superior Incompleto' => \MapasCulturais\i::__('Ensino Superior Incompleto'),
+                'Especialização' => \MapasCulturais\i::__('Especialização'),
+                'Especialização Incompleta' => \MapasCulturais\i::__('Especialização Incompleta'),
+                'Mestrado' => \MapasCulturais\i::__('Mestrado'),
+                'Mestrado Incompleto' => \MapasCulturais\i::__('Mestrado Incompleto'),
+                'Doutorado' => \MapasCulturais\i::__('Doutorado'),
+                'Doutorado Incompleto' => \MapasCulturais\i::__('Doutorado Incompleto')
+            )
+        ],
+
+        'estadoCivil' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Informe seu Estado Civil'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Solteiro(a)' => \MapasCulturais\i::__('Solteiro(a)'),
+                'Casado(a)' => \MapasCulturais\i::__('Casado(a)'),
+                'Divorciado(a)' => \MapasCulturais\i::__('Divorciado(a)'),
+                'Viúvo(a)' => \MapasCulturais\i::__('Viúvo(a)'),
+                'Separado(a)' => \MapasCulturais\i::__('Separado(a)'),
+                'União Estável' => \MapasCulturais\i::__('União Estável')
+            )
+        ],
 
         'raca' => array(
             'private' => true,
@@ -43,17 +103,8 @@ return array(
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
             'validations' => array(
+                'required' => \MapasCulturais\i::__('O campo Data de Nascimento/Fundação deve ser preenchido.'),
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
-            )
-        ),
-
-        'localizacao' => array(
-            'label' => \MapasCulturais\i::__('Localização'),
-            'type' => 'select',
-            'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
-                'Pública' => \MapasCulturais\i::__('Pública'),
-                'Privada' => \MapasCulturais\i::__('Privada')
             )
         ),
 
@@ -70,23 +121,29 @@ return array(
                 'Não Binário' => \MapasCulturais\i::__('Não Binário'),
                 'Travesti' => \MapasCulturais\i::__('Travesti'),
                 'Outras' => \MapasCulturais\i::__('Outras')
+            ),
+            'validations' => array(
+                'required' => \MapasCulturais\i::__('O campo Gênero deve ser preenchido.'),
             )
         ),
 
-        'orientacaoSexual' => array(
+        'orientacaoSexual' => [
             'private' => true,
-            'label' => \MapasCulturais\i::__('Orientação Sexual'),
+            'label' => \MapasCulturais\i::__('Informe sua Orientação Sexual'),
             'type' => 'select',
-            'options' => array(
+            'options' => [
                 '' => \MapasCulturais\i::__('Não Informar'),
-                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
-                'Lésbica' => \MapasCulturais\i::__('Lésbica'),
-                'Gay' => \MapasCulturais\i::__('Gay'),
-                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
                 'Assexual' => \MapasCulturais\i::__('Assexual'),
-                'Outras' => \MapasCulturais\i::__('Outras')
-            )
-        ),
+                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
+                'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
+                'Homossexual' => \MapasCulturais\i::__('Homossexual'),
+                'Transsexual' => \MapasCulturais\i::__('Transexual'),
+                'Transfeminino' => \MapasCulturais\i::__('Transfeminino'),
+                'Transmasculino' => \MapasCulturais\i::__('Transmasculino'),
+                'Pansexual' => \MapasCulturais\i::__('Pansexual'),
+                'Outra' => \MapasCulturais\i::__('Outra')
+            ]
+        ],
 
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
@@ -114,13 +171,13 @@ return array(
 
         'telefone1' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Telefone 1'),
+            'label' => \MapasCulturais\i::__('Telefone Principal'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
+                'required' => \MapasCulturais\i::__('O campo Telefone Principal deve ser preenchido.'),
+                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o Telefone Principal no formato (xx) xxxx-xxxx.')
             )
         ),
-
 
         'telefone2' => array(
             'private' => true,
@@ -132,7 +189,7 @@ return array(
         ),
 
         'endereco' => array(
-            'private' => function(){
+            'private' => function() {
                 return !$this->publicLocation;
             },
             'label' => \MapasCulturais\i::__('Endereço'),
@@ -221,6 +278,16 @@ return array(
             'type' => 'select',
 
             'options' => array()
+        ],
+
+        'localizacao' => [
+            'label' => \MapasCulturais\i::__('Localização'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Pública' => \MapasCulturais\i::__('Pública'),
+                'Privada' => \MapasCulturais\i::__('Privada')
+            )
         ],
 
         'site' => array(

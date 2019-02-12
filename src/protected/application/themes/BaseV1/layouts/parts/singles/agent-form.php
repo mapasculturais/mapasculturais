@@ -39,6 +39,34 @@
                     <?php echo $entity->documento; ?>
                 </span>
             </p>
+            <!-- Identidade (RG) -->
+            <p class="privado">
+                <span class="icon icon-private-info"></span><span class="label"><?php \MapasCulturais\i::_e("Identidade (RG)");?>:</span>
+                <span
+                    class="js-editable <?php echo ($entity->isPropertyRequired($entity,"identidade") && $editEntity? 'required': '');?>"
+                    data-edit="identidade"
+                    data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número da Identidade (RG)");?>"
+                    data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o número de sua identidade (RG) se for pessoa física");?>"><?php echo $entity->identidade; ?></span>
+            </p>
+            <!-- Data de Expedição (RG) -->
+            <p class="privado"><span class="icon icon-private-info"></span>
+                <span class="label"><?php \MapasCulturais\i::_e("Data de Expedição (RG)");?>:</span>
+                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"expedicaoIdentidade") && $this->isEditable()? 'required': '');?>"
+                    data-type="date" data-edit="expedicaoIdentidade" data-viewformat="dd/mm/yyyy" data-showbuttons="false"
+                    data-original-title="<?php \MapasCulturais\i::esc_attr_e("Data de Expedição (RG)");?>"
+                    data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a data de expedição da identidade (RG)");?>">
+                    <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->expedicaoIdentidade); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
+                </span>
+            </p>
+            <!-- Órgão Expedidor (RG) -->
+            <p class="privado"><span class="icon icon-private-info"></span>
+                <span class="label"><?php \MapasCulturais\i::_e("Órgão Expedidor (RG)");?>:</span>
+                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"expedidorIdentidade") && $editEntity? 'required': '');?>"
+                    data-edit="expedidorIdentidade" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Órgão Expedidor (Identidade)");?>"
+                    data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o expedidor/unidade federativa, exemplo: SSP/CE , SSP/DF");?>">
+                    <?php echo $entity->expedidorIdentidade; ?>
+                </span>
+            </p>
             <!-- Campo Data de Nascimento / Fundação -->
             <p class="privado">
                 <span class="icon icon-private-info"></span>
