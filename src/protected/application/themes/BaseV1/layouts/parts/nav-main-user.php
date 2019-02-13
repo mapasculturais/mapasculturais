@@ -1,6 +1,6 @@
 <?php $this->applyTemplateHook('nav.main.user','before'); ?>
 <li class="user">
-    <a href="#" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
+    <a href="javascript:void(0);" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
         <div class="avatar">
             <?php if ($app->user->profile->avatar): ?>
                 <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
