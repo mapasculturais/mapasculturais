@@ -20,7 +20,7 @@ class RequestEntitiesTransference extends Request{
      * @param \MapasCulturais\Entity $user
      * @return void
      */
-    public function setOrigin(\MapasCulturais\Entities\User $user) {
+    public function setOrigin(\MapasCulturais\Entity $user) {
         parent::setOrigin($user);
 
         $profile = $user->profile;
