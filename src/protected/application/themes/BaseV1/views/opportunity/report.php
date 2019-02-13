@@ -85,7 +85,7 @@ ksort($custom_fields);
             <tr>
                 <td><a href="<?php echo $r->singleUrl; ?>" target="_blank"><?php echo $r->number; ?></a></td>
                 <?php if($entity->projectName): ?>
-                    <td><?php echo $r->projectName ?></td>
+                <td><?php echo $r->projectName ?></td>
                 <?php endif; ?>
                 <td><?php echo $r->getEvaluationResultString(); ?></td>
                 <td><?php echoStatus($r); ?></td>
@@ -93,17 +93,17 @@ ksort($custom_fields);
                 <td><?php echo (!is_null($dataHoraEnvio))? $dataHoraEnvio->format('d-m-Y') : '';?></td>
                 <td><?php echo (!is_null($dataHoraEnvio))? $dataHoraEnvio->format('H:i:s'): '';?></td>
 
-                <?php showIfField($entity->registrationCategories, $r->category); ?>
+                <?php if($entity->registrationCategories): ?>
+                <td><?php echo $r->category ?></td>
+                <?php endif; ?>
 
                 <?php
-                foreach($custom_fields as $field):
+                foreach($custom_fields as $field) {
                     $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "";
-
-                    echo "<th>";
-                        echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
-                    echo "</th>";
-
-                    endforeach;
+                    echo "<td>";
+                    echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
+                    echo "</td>";                
+                }
                 ?>
 
                 <td>
@@ -131,7 +131,7 @@ ksort($custom_fields);
                         <?php
                         foreach($_properties as $prop):
                             if($prop === 'name') continue;
-                        $val = isset($agentsDataGroup[$prop]) ? $agentsDataGroup[$prop] : '';
+                            $val = isset($agentsDataGroup[$prop]) ? $agentsDataGroup[$prop] : '';
                         ?>
                         <td>
                             <?php
@@ -145,7 +145,10 @@ ksort($custom_fields);
                         <?php endforeach; ?>
 
                     <?php else: ?>
-                        <?php echo str_repeat('<td></td>', count($_properties)) ?>
+                        <?php 
+                            // total de propriedades + 1 coluna que corresponde a $agent->terms['area']
+                            echo str_repeat('<td></td>', count($_properties)+1) 
+                        ?>
                     <?php endif; ?>
 
                 <?php endforeach ?>
