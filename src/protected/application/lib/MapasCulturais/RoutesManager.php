@@ -102,6 +102,7 @@ class RoutesManager{
 
 
             if($controller = $app->controller($controller_id)){
+                $app->applyHook('entity(opportunity).load:before', ['controller' => $controller, 'action' => $action_name]);
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
@@ -117,7 +118,7 @@ class RoutesManager{
                     }
                 } catch(\Exception $e) {
                     $e_class = get_class($e);
-                    
+
                     if(strpos($e_class, 'Slim\Exception') === 0){
                         throw $e;
                     }
