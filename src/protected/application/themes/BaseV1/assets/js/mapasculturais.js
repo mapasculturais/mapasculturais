@@ -689,9 +689,9 @@ MapasCulturais.Video = {
             return false;
 
         $( gallerySelector + ' .js-metalist-item-display').each(function(){
-            MapasCulturais.Video.getAndSetVideoData($(this).data('videolink'), $(this).parent(), MapasCulturais.Video.setupVideoGalleryItem);
+            MapasCulturais.Video.getAndSetVideoData($(this).data('videolink'), $(this), MapasCulturais.Video.setupVideoGalleryItem);
         });
-        var $firstItem = $( gallerySelector + ' .js-metalist-item-display:first').parent();
+        var $firstItem = $( gallerySelector + ' .js-metalist-item-display:first');
         if(!$firstItem.length) {
             $('#video-player').hide();
             return false;
@@ -703,7 +703,7 @@ MapasCulturais.Video = {
         //$Element should be a.js-metalist-item-display
         $element.attr('href', '#video');
         $element.data('player-url', videoData.playerURL);
-        $element.find('img').attr('src', videoData.thumbnailURL);
+        $element.parent().find('img').attr('src', videoData.thumbnailURL);
 
         var video_id = $element.attr('id');
 

@@ -10,19 +10,19 @@ if($this->controller->action === 'create' || !is_object($entity))
 <?php
 $videos = $entity->getMetaLists('videos');
 $spinner_url = $this->asset("img/spinner_192.gif", false);
-$template = "<li id='video-{{id}}'>
-                <a class='js-metalist-item-display' href='#video' data-videolink='{{value}}'>
+$template = "<li id='video-item-{{id}}'>
+                <div>
                     <img src='{$spinner_url}' class='thumbnail_med_wide'/>
-                    <h1 class='title'>{{title}}</h1>
-                </a>
+                    <a id='video-{{id}}' class='js-metalist-item-display' href='#video' data-videolink='{{value}}'><h1 class='title'>{{title}}</h1></a>
+                </div>
                 <div class='btn btn-default'>
                     <a class='js-open-editbox edit hltip'
                         data-target='#editbox-videogallery'
                         data-dialog-callback='MapasCulturais.MetalistManager.updateDialog'
-                        data-response-target='#video-{{id}}'
+                        data-response-target='#video-item-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='Editar'></a>
-                    <a class='delete js-metalist-item-delete hltip js-remove-item'  data-href='{{deleteUrl}}'  data-target='#video-{{id}}'  data-confirm-messagem='Excluir este vídeo?' title='Excluir'></a>
+                    <a class='delete js-metalist-item-delete hltip js-remove-item'  data-href='{{deleteUrl}}'  data-target='#video-item-{{id}}'  data-confirm-messagem='Excluir este vídeo?' title='Excluir'></a>
                 </div>
             </li>";
 ?>
@@ -38,27 +38,31 @@ $template = "<li id='video-{{id}}'>
         <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     </div>
     <ul class="clearfix js-videogallery" ng-non-bindable>
-        <?php if($videos): foreach($videos as $video): ?>
-            <li id="video-<?php echo $video->id ?>">
-                <a class="js-metalist-item-display" data-videolink="<?php echo $video->value;?>" title="Cadastrado em <?php echo $video->createTimestamp->format('d/m/Y á\s H:i:s')?>">
+        <?php if($videos): ?>
+        <?php foreach($videos as $video): ?>
+            <li id="video-item-<?php echo $video->id ?>">
+                <div>
                     <img src="<?php $this->asset('img/spinner_192.gif'); ?>" alt="" class="thumbnail_med_wide"/>
-                    <h1 class="title"><?php echo $video->title;?></h1>
-                </a>
+                    <a id="video-<?php echo $video->id ?>" class="js-metalist-item-display" data-videolink="<?php echo $video->value;?>" title="Cadastrado em <?php echo $video->createTimestamp->format('d/m/Y á\s H:i:s')?>">
+                        <h1 class='title'><?php echo $video->title;?></h1>
+                    </a>
+                </div>
                 <?php if($this->isEditable()): ?>
                     <div class="btn btn-default">
                         <a class="js-open-editbox edit hltip"
                            data-dialog-title="<?php \MapasCulturais\i::esc_attr_e("Editar Vídeo");?>"
                            data-target="#editbox-videogallery"
                            data-dialog-callback="MapasCulturais.MetalistManager.updateDialog"
-                           data-response-target="#video-<?php echo $video->id ?>"
+                           data-response-target="#video-item-<?php echo $video->id ?>"
                            data-metalist-action="edit"
                            data-item="<?php echo htmlentities(json_encode($video));?>"
                            href="#" title='<?php \MapasCulturais\i::_e("Editar");?>'></a>
-                        <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-<?php echo $video->id ?>" data-confirm-messagem="<?php \MapasCulturais\i::esc_attr_e("Excluir este vídeo?");?>" title='<?php \MapasCulturais\i::_e("Excluir");?>'></a>
+                        <a class='delete js-metalist-item-delete hltip js-remove-item' data-href='<?php echo $video->deleteUrl ?>' data-target="#video-item-<?php echo $video->id ?>" data-confirm-messagem="<?php \MapasCulturais\i::esc_attr_e("Excluir este vídeo?");?>" title='<?php \MapasCulturais\i::_e("Excluir");?>'></a>
                     </div>
                 <?php endif; ?>
             </li>
-        <?php endforeach; endif;?>
+        <?php endforeach; ?>
+        <?php endif;?>
     </ul>
 <?php endif; ?>
 
