@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2018-12-03 12:08-0300\n"
+"POT-Creation-Date: 2018-12-04 14:26-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -196,9 +196,7 @@ msgstr "Entrar"
 #: application/plugins/MultipleLocalAuth/views/auth/multiple-local.php:45
 #: application/plugins/MultipleLocalAuth/views/auth/multiple-local.php:67
 #: application/plugins/MultipleLocalAuth/views/auth/pass-recover.php:16
-#: application/themes/BaseV1/views/agent/create.php:107
-#: application/themes/BaseV1/views/agent/edit.php:107
-#: application/themes/BaseV1/views/agent/single.php:107
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:83
 #: application/themes/BaseV1/views/auth/fake-authentication.php:105
 msgid "E-mail"
 msgstr "E-mail"
@@ -302,9 +300,6 @@ msgstr "Registrarse"
 #: application/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:14
 #: application/themes/BaseV1/layouts/parts/user-management/user-info/info-projects.php:14
 #: application/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
-#: application/themes/BaseV1/views/agent/create.php:92
-#: application/themes/BaseV1/views/agent/edit.php:92
-#: application/themes/BaseV1/views/agent/single.php:92
 #: application/themes/BaseV1/views/generic/list.php:17
 #: application/themes/BaseV1/views/generic/list.php:32
 #: application/themes/culturaenlinea/config.php:23
@@ -503,6 +498,7 @@ msgstr "Ninguna inscripción enviada."
 
 #: application/conf/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:45
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:101
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:112
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:28
 msgid "Nenhuma inscrição encontrada com os filtros selecionados."
 msgstr "Ninguna inscripción encontrada con los filtros seleccionados."
@@ -526,7 +522,6 @@ msgid "Número máximo de vagas no projeto:"
 msgstr "Número máximo de vacantes en el proyecto:"
 
 #: application/conf/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:53
-#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:110
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:34
 msgid "inscrições encontradas com os filtros selecionados."
 msgstr "inscripciones encontradas con los filtros seleccionados."
@@ -534,7 +529,7 @@ msgstr "inscripciones encontradas con los filtros seleccionados."
 #: application/conf/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:61
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:53
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:61
-#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:123
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:134
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:43
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:32
 msgid "Responsável"
@@ -542,7 +537,7 @@ msgstr "Responsable"
 
 #: application/conf/ProjectCuradores/layouts/parts/singles/project-registrations--tables--curator.php:71
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:71
-#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:133
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:144
 msgid "Baixar arquivos"
 msgstr "Descargar archivos"
 
@@ -555,10 +550,8 @@ msgid "CPF ou CNPJ"
 msgstr "CI o RUT"
 
 #: application/conf/agent-types.php:29
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:68
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:134
-#: application/themes/BaseV1/views/agent/create.php:101
-#: application/themes/BaseV1/views/agent/edit.php:101
-#: application/themes/BaseV1/views/agent/single.php:101
 msgid "Raça/cor"
 msgstr "Raza/Color"
 
@@ -588,14 +581,10 @@ msgid "Indígena"
 msgstr "Indígena"
 
 #: application/conf/agent-types.php:43
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:45
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:46
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:118
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:119
-#: application/themes/BaseV1/views/agent/create.php:94
-#: application/themes/BaseV1/views/agent/create.php:95
-#: application/themes/BaseV1/views/agent/edit.php:94
-#: application/themes/BaseV1/views/agent/edit.php:95
-#: application/themes/BaseV1/views/agent/single.php:94
-#: application/themes/BaseV1/views/agent/single.php:95
 msgid "Data de Nascimento/Fundação"
 msgstr "Fecha de Nacimiento/Fundación"
 
@@ -622,10 +611,9 @@ msgid "Privada"
 msgstr "Privada"
 
 #: application/conf/agent-types.php:62
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:53
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:54
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:126
-#: application/themes/BaseV1/views/agent/create.php:99
-#: application/themes/BaseV1/views/agent/edit.php:99
-#: application/themes/BaseV1/views/agent/single.php:99
 msgid "Gênero"
 msgstr "Género"
 
@@ -658,10 +646,9 @@ msgid "Outras"
 msgstr "Otras"
 
 #: application/conf/agent-types.php:78
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:60
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:61
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:130
-#: application/themes/BaseV1/views/agent/create.php:100
-#: application/themes/BaseV1/views/agent/edit.php:100
-#: application/themes/BaseV1/views/agent/single.php:100
 msgid "Orientação Sexual"
 msgstr "Orientación sexual"
 
@@ -686,12 +673,10 @@ msgid "Assexual"
 msgstr "Asexual"
 
 #: application/conf/agent-types.php:92 application/conf/space-types.php:8
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:84
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:142
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:142
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:38
-#: application/themes/BaseV1/views/agent/create.php:107
-#: application/themes/BaseV1/views/agent/edit.php:107
-#: application/themes/BaseV1/views/agent/single.php:107
 msgid "Email Público"
 msgstr "E-mail Público"
 
@@ -700,12 +685,11 @@ msgid "O email público não é um email válido."
 msgstr "El email público no es un email válido."
 
 #: application/conf/agent-types.php:100 application/conf/space-types.php:15
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:74
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:75
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:138
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:138
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:42
-#: application/themes/BaseV1/views/agent/create.php:103
-#: application/themes/BaseV1/views/agent/edit.php:103
-#: application/themes/BaseV1/views/agent/single.php:103
 msgid "Email Privado"
 msgstr "E-mail Privado"
 
@@ -714,13 +698,12 @@ msgid "O email privado não é um email válido."
 msgstr "El email privado ne es un email válido."
 
 #: application/conf/agent-types.php:108 application/conf/space-types.php:23
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:92
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:93
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:146
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:128
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:146
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:46
-#: application/themes/BaseV1/views/agent/create.php:111
-#: application/themes/BaseV1/views/agent/edit.php:111
-#: application/themes/BaseV1/views/agent/single.php:111
 msgid "Telefone Público"
 msgstr "Teléfono Público"
 
@@ -731,11 +714,9 @@ msgstr ""
 "Por favor, introduzca el teléfono público en el formato (xx) xxxx-xxxx."
 
 #: application/conf/agent-types.php:117 application/conf/space-types.php:31
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:102
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:150
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:150
-#: application/themes/BaseV1/views/agent/create.php:115
-#: application/themes/BaseV1/views/agent/edit.php:115
-#: application/themes/BaseV1/views/agent/single.php:115
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:25
 #: application/themes/culturaenlinea/views/opportunity/report.php:70
 msgid "Telefone 1"
@@ -746,11 +727,9 @@ msgid "Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx."
 msgstr "Por favor, introduzca el teléfono 1 en el formato (xx) xxxx-xxxx."
 
 #: application/conf/agent-types.php:127 application/conf/space-types.php:41
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:109
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:154
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:154
-#: application/themes/BaseV1/views/agent/create.php:116
-#: application/themes/BaseV1/views/agent/edit.php:116
-#: application/themes/BaseV1/views/agent/single.php:116
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:26
 #: application/themes/culturaenlinea/views/opportunity/report.php:71
 msgid "Telefone 2"
@@ -850,6 +829,8 @@ msgstr "Departamento"
 #: application/conf/opportunity-types.php:31
 #: application/conf/project-types.php:8 application/conf/seal-types.php:8
 #: application/conf/space-types.php:168
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:17
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:19
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:105
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:123
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:133
@@ -857,12 +838,6 @@ msgstr "Departamento"
 #: application/themes/BaseV1/layouts/parts/singles/project-about.php:24
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:29
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:31
-#: application/themes/BaseV1/views/agent/create.php:83
-#: application/themes/BaseV1/views/agent/create.php:85
-#: application/themes/BaseV1/views/agent/edit.php:83
-#: application/themes/BaseV1/views/agent/edit.php:85
-#: application/themes/BaseV1/views/agent/single.php:83
-#: application/themes/BaseV1/views/agent/single.php:85
 #: application/themes/BaseV1/views/event/create.php:181
 #: application/themes/BaseV1/views/event/create.php:183
 #: application/themes/BaseV1/views/event/edit.php:181
@@ -1121,13 +1096,11 @@ msgstr "Fecha de actuaización"
 
 #: application/conf/conf-base.php:248
 #: application/lib/MapasCulturais/ApiOutputs/Html.php:77
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:9
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:98
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:99
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:102
 #: application/themes/BaseV1/layouts/parts/singles/project-about.php:16
-#: application/themes/BaseV1/views/agent/create.php:76
-#: application/themes/BaseV1/views/agent/edit.php:76
-#: application/themes/BaseV1/views/agent/single.php:76
 #: application/themes/BaseV1/views/event/create.php:165
 #: application/themes/BaseV1/views/event/create.php:166
 #: application/themes/BaseV1/views/event/edit.php:165
@@ -1631,7 +1604,7 @@ msgstr ""
 
 #: application/conf/opportunity-types.php:64
 #: application/lib/MapasCulturais/Controllers/Registration.php:134
-#: application/lib/MapasCulturais/Entities/Registration.php:682
+#: application/lib/MapasCulturais/Entities/Registration.php:748
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:16
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:19
 #: application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:26
@@ -2880,7 +2853,7 @@ msgstr "Sellos Verificadores"
 msgid "Selo Verificador"
 msgstr "Sello Verificador"
 
-#: application/lib/MapasCulturais/ApiOutputs/Html.php:533
+#: application/lib/MapasCulturais/ApiOutputs/Html.php:535
 msgid "Planilha gerada em: "
 msgstr "Planilla generada: "
 
@@ -3155,44 +3128,44 @@ msgstr "El nombre del proyecto es obligatorio"
 msgid "O tipo do projeto é obrigatório"
 msgstr "El tipo de proyecto es obligatorio"
 
-#: application/lib/MapasCulturais/Entities/Registration.php:223
+#: application/lib/MapasCulturais/Entities/Registration.php:236
 msgid "O agente responsável é obrigatório."
 msgstr "El agente responsable es obligatorio."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:224
+#: application/lib/MapasCulturais/Entities/Registration.php:237
 msgid "Foi excedido o limite de inscrições para este agente responsável."
 msgstr ""
 "Fue superado el número máximo de inscripciones para este agente responsable."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:573
-#: application/lib/MapasCulturais/Entities/Registration.php:609
-#: application/lib/MapasCulturais/Entities/Registration.php:656
-#: application/lib/MapasCulturais/Entities/Registration.php:682
+#: application/lib/MapasCulturais/Entities/Registration.php:639
+#: application/lib/MapasCulturais/Entities/Registration.php:675
+#: application/lib/MapasCulturais/Entities/Registration.php:722
+#: application/lib/MapasCulturais/Entities/Registration.php:748
 #, php-format
 msgid "O campo \"%s\" é obrigatório."
 msgstr "El campo \"%s\" es obligatorio."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:586
+#: application/lib/MapasCulturais/Entities/Registration.php:652
 #, php-format
 msgid "O agente \"%s\" é obrigatório."
 msgstr "El agente \"%s\" es obligatorio."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:592
+#: application/lib/MapasCulturais/Entities/Registration.php:658
 #, php-format
 msgid "O agente %s ainda não confirmou sua participação neste projeto."
 msgstr "El agente %s no ha confirmado aún su participación en este proyecto."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:596
+#: application/lib/MapasCulturais/Entities/Registration.php:662
 #, php-format
 msgid "Este agente deve ser do tipo \"%s\"."
 msgstr "Este agente debe ser del tipo \"%s\"."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:611
+#: application/lib/MapasCulturais/Entities/Registration.php:677
 #, php-format
 msgid "Os campos \"%s\" são obrigatórios."
 msgstr "Los campos \"%s\" son obligatorios."
 
-#: application/lib/MapasCulturais/Entities/Registration.php:632
+#: application/lib/MapasCulturais/Entities/Registration.php:698
 #, php-format
 msgid "O arquivo \"%s\" é obrigatório."
 msgstr "El archivo \"%s\" es obligatorio."
@@ -3366,15 +3339,15 @@ msgstr ""
 "dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
 "class='btn btn-small btn-primary' href='%s'>editar</a>"
 
-#: application/lib/MapasCulturais/Entity.php:826
+#: application/lib/MapasCulturais/Entity.php:830
 msgid "Não é permitido a inclusão de scripts"
 msgstr "No está permitida la inclusión de scripts"
 
-#: application/lib/MapasCulturais/Entity.php:881
+#: application/lib/MapasCulturais/Entity.php:885
 msgid "O Tipo é obrigatório"
 msgstr "El Tipo es obligatorio"
 
-#: application/lib/MapasCulturais/Entity.php:883
+#: application/lib/MapasCulturais/Entity.php:887
 msgid "Tipo inválido"
 msgstr "Tipo no válido"
 
@@ -4183,9 +4156,9 @@ msgstr "Esta fase de la oportunidad está en la papelera."
 #: application/themes/BaseV1/layouts/parts/singles/history_event.php:88
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:91
 #: application/themes/BaseV1/layouts/parts/singles/project-tabs.php:4
-#: application/themes/BaseV1/views/agent/create.php:58
-#: application/themes/BaseV1/views/agent/edit.php:58
-#: application/themes/BaseV1/views/agent/single.php:58
+#: application/themes/BaseV1/views/agent/create.php:56
+#: application/themes/BaseV1/views/agent/edit.php:56
+#: application/themes/BaseV1/views/agent/single.php:56
 #: application/themes/BaseV1/views/event/create.php:146
 #: application/themes/BaseV1/views/event/edit.php:146
 #: application/themes/BaseV1/views/event/single.php:146
@@ -7371,9 +7344,9 @@ msgstr "Dirección (con http://)"
 #: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:141
 #: application/themes/BaseV1/layouts/parts/singles/subsite-filters.php:184
 #: application/themes/BaseV1/layouts/parts/video-gallery.php:69
-#: application/themes/BaseV1/views/agent/create.php:128
-#: application/themes/BaseV1/views/agent/edit.php:128
-#: application/themes/BaseV1/views/agent/single.php:128
+#: application/themes/BaseV1/views/agent/create.php:74
+#: application/themes/BaseV1/views/agent/edit.php:74
+#: application/themes/BaseV1/views/agent/single.php:74
 #: application/themes/BaseV1/views/event/create.php:341
 #: application/themes/BaseV1/views/event/edit.php:341
 #: application/themes/BaseV1/views/event/single.php:341
@@ -7876,6 +7849,143 @@ msgstr "Eventos encontrados en:"
 msgid "Adicionar"
 msgstr "Agregar"
 
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:4
+#: application/themes/BaseV1/layouts/parts/singles/project-about.php:12
+#: application/themes/BaseV1/views/event/create.php:161
+#: application/themes/BaseV1/views/event/edit.php:161
+#: application/themes/BaseV1/views/event/single.php:161
+#: application/themes/BaseV1/views/space/create.php:76
+#: application/themes/BaseV1/views/space/edit.php:76
+#: application/themes/BaseV1/views/space/single.php:76
+msgid ""
+"O limite de caracteres da descrição curta foi diminuido para 400, mas seu "
+"texto atual possui"
+msgstr ""
+"El límite de caracteres de la descripción breve fue acortado a 400, pero su "
+"texto actual posee"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:6
+#: application/themes/BaseV1/layouts/parts/singles/project-about.php:12
+#: application/themes/BaseV1/views/event/create.php:161
+#: application/themes/BaseV1/views/event/edit.php:161
+#: application/themes/BaseV1/views/event/single.php:161
+#: application/themes/BaseV1/views/space/create.php:76
+#: application/themes/BaseV1/views/space/edit.php:76
+#: application/themes/BaseV1/views/space/single.php:76
+msgid "caracteres. Você deve alterar seu texto ou este será cortado ao salvar."
+msgstr "caracteres. Usted debe cambiar su texto o será cortado al guardar."
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:9
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:98
+#: application/themes/BaseV1/layouts/parts/singles/history_event.php:99
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:102
+#: application/themes/BaseV1/layouts/parts/singles/project-about.php:16
+#: application/themes/BaseV1/views/seal/create.php:64
+#: application/themes/BaseV1/views/seal/edit.php:64
+#: application/themes/BaseV1/views/seal/single.php:64
+#: application/themes/BaseV1/views/space/create.php:80
+#: application/themes/BaseV1/views/space/edit.php:80
+#: application/themes/BaseV1/views/space/single.php:80
+msgid "Insira uma descrição curta"
+msgstr "Agregue una descripción breve"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:19
+#: application/themes/BaseV1/layouts/parts/singles/project-about.php:24
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:31
+msgid "Insira a url de seu site"
+msgstr "Agregue la url de su página web"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:29
+msgid "Nome Completo"
+msgstr "Nombre Completo"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:30
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:110
+msgid "Nome Completo ou Razão Social"
+msgstr "Nombre Completo o Razón Social"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:30
+msgid "Informe seu nome completo ou razão social"
+msgstr "Informe su nombre completo o razón social"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:37
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:38
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:114
+msgid "CPF/CNPJ"
+msgstr "CI/RUT"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:38
+msgid "Informe seu CPF ou CNPJ com pontos, hífens e barras"
+msgstr "Informe CI o RUT con puntos, guiones y barras"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:46
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:119
+msgid "Insira a data de nascimento ou fundação do agente"
+msgstr "Ingrese la fecha de nacimiento o fundación del agente"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:54
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:126
+msgid "Selecione o gênero se for pessoa física"
+msgstr "Seleccione el género, en el caso de persona física"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:61
+msgid "Selecione uma orientação sexual se for pessoa física"
+msgstr "Seleccione una orientación sexual en caso de ser persona física"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:67
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:134
+msgid "Raça/Cor"
+msgstr "Raza/Color"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:68
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:134
+msgid "Selecione a raça/cor se for pessoa física"
+msgstr "Seleccione raza/color en caso de persona física"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:75
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:138
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:138
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:42
+msgid "Insira um email que não será exibido publicamente"
+msgstr "Ingrese un e-mail que será exhibido públicamente"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:84
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:142
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:142
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:38
+msgid "Insira um email que será exibido publicamente"
+msgstr "Ingrese un e-mail que será exhibido públicamente"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:93
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:146
+#: application/themes/BaseV1/layouts/parts/singles/history_event.php:128
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:146
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:46
+msgid "Insira um telefone que será exibido publicamente"
+msgstr "Ingrese un teléfono que será exhibido públicamente"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:103
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:110
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:150
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:154
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:150
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:154
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:50
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:51
+msgid "Telefone Privado"
+msgstr "Teléfono Privado"
+
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:103
+#: application/themes/BaseV1/layouts/parts/singles/agent-form.php:110
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:150
+#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:154
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:150
+#: application/themes/BaseV1/layouts/parts/singles/history_space.php:154
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:50
+#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:51
+msgid "Insira um telefone que não será exibido publicamente"
+msgstr "Ingrese un teléfono que no será exhibido públicamente"
+
 #: application/themes/BaseV1/layouts/parts/singles/avatar.php:9
 #: application/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:3
 #: application/themes/BaseV1/layouts/parts/singles/header-image.php:18
@@ -8039,142 +8149,17 @@ msgstr "Seleccione un tipo"
 msgid "Nome de exibição"
 msgstr "Nombre para mostrar"
 
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:98
-#: application/themes/BaseV1/layouts/parts/singles/history_event.php:99
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:102
-#: application/themes/BaseV1/layouts/parts/singles/project-about.php:16
-#: application/themes/BaseV1/views/agent/create.php:76
-#: application/themes/BaseV1/views/agent/edit.php:76
-#: application/themes/BaseV1/views/agent/single.php:76
-#: application/themes/BaseV1/views/seal/create.php:64
-#: application/themes/BaseV1/views/seal/edit.php:64
-#: application/themes/BaseV1/views/seal/single.php:64
-#: application/themes/BaseV1/views/space/create.php:80
-#: application/themes/BaseV1/views/space/edit.php:80
-#: application/themes/BaseV1/views/space/single.php:80
-msgid "Insira uma descrição curta"
-msgstr "Agregue una descripción breve"
-
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:110
-#: application/themes/BaseV1/views/agent/create.php:92
-#: application/themes/BaseV1/views/agent/edit.php:92
-#: application/themes/BaseV1/views/agent/single.php:92
-msgid "Nome Completo ou Razão Social"
-msgstr "Nombre Completo o Razón Social"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:110
-#: application/themes/BaseV1/views/agent/create.php:92
-#: application/themes/BaseV1/views/agent/edit.php:92
-#: application/themes/BaseV1/views/agent/single.php:92
 msgid "Insira seu nome completo ou razão social"
 msgstr "Agregue el Nombre Completo o la Razón Social"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:114
-#: application/themes/BaseV1/views/agent/create.php:93
-#: application/themes/BaseV1/views/agent/edit.php:93
-#: application/themes/BaseV1/views/agent/single.php:93
-msgid "CPF/CNPJ"
-msgstr "CI/RUT"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:114
-#: application/themes/BaseV1/views/agent/create.php:93
-#: application/themes/BaseV1/views/agent/edit.php:93
-#: application/themes/BaseV1/views/agent/single.php:93
 msgid "Insira o CPF ou CNPJ com pontos, hífens e barras"
 msgstr "Ingrese CI o RUT con puntos, guiones y barras"
 
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:119
-#: application/themes/BaseV1/views/agent/create.php:95
-#: application/themes/BaseV1/views/agent/edit.php:95
-#: application/themes/BaseV1/views/agent/single.php:95
-msgid "Insira a data de nascimento ou fundação do agente"
-msgstr "Ingrese la fecha de nacimiento o fundación del agente"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:126
-#: application/themes/BaseV1/views/agent/create.php:99
-#: application/themes/BaseV1/views/agent/edit.php:99
-#: application/themes/BaseV1/views/agent/single.php:99
-msgid "Selecione o gênero se for pessoa física"
-msgstr "Seleccione el género, en el caso de persona física"
-
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:130
-#: application/themes/BaseV1/views/agent/create.php:100
-#: application/themes/BaseV1/views/agent/edit.php:100
-#: application/themes/BaseV1/views/agent/single.php:100
 msgid "Selecione a orientação sexual se for pessoa física"
 msgstr "Seleccione la orientación sexual en caso de persona física"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:134
-#: application/themes/BaseV1/views/agent/create.php:101
-#: application/themes/BaseV1/views/agent/edit.php:101
-#: application/themes/BaseV1/views/agent/single.php:101
-msgid "Raça/Cor"
-msgstr "Raza/Color"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:134
-#: application/themes/BaseV1/views/agent/create.php:101
-#: application/themes/BaseV1/views/agent/edit.php:101
-#: application/themes/BaseV1/views/agent/single.php:101
-msgid "Selecione a raça/cor se for pessoa física"
-msgstr "Seleccione raza/color en caso de persona física"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:138
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:138
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:42
-#: application/themes/BaseV1/views/agent/create.php:103
-#: application/themes/BaseV1/views/agent/edit.php:103
-#: application/themes/BaseV1/views/agent/single.php:103
-msgid "Insira um email que não será exibido publicamente"
-msgstr "Ingrese un e-mail que será exhibido públicamente"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:142
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:142
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:38
-#: application/themes/BaseV1/views/agent/create.php:107
-#: application/themes/BaseV1/views/agent/edit.php:107
-#: application/themes/BaseV1/views/agent/single.php:107
-msgid "Insira um email que será exibido publicamente"
-msgstr "Ingrese un e-mail que será exhibido públicamente"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:146
-#: application/themes/BaseV1/layouts/parts/singles/history_event.php:128
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:146
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:46
-#: application/themes/BaseV1/views/agent/create.php:111
-#: application/themes/BaseV1/views/agent/edit.php:111
-#: application/themes/BaseV1/views/agent/single.php:111
-msgid "Insira um telefone que será exibido publicamente"
-msgstr "Ingrese un teléfono que será exhibido públicamente"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:150
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:154
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:150
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:154
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:50
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:51
-#: application/themes/BaseV1/views/agent/create.php:115
-#: application/themes/BaseV1/views/agent/create.php:116
-#: application/themes/BaseV1/views/agent/edit.php:115
-#: application/themes/BaseV1/views/agent/edit.php:116
-#: application/themes/BaseV1/views/agent/single.php:115
-#: application/themes/BaseV1/views/agent/single.php:116
-msgid "Telefone Privado"
-msgstr "Teléfono Privado"
-
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:150
-#: application/themes/BaseV1/layouts/parts/singles/history_agent.php:154
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:150
-#: application/themes/BaseV1/layouts/parts/singles/history_space.php:154
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:50
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:51
-#: application/themes/BaseV1/views/agent/create.php:115
-#: application/themes/BaseV1/views/agent/create.php:116
-#: application/themes/BaseV1/views/agent/edit.php:115
-#: application/themes/BaseV1/views/agent/edit.php:116
-#: application/themes/BaseV1/views/agent/single.php:115
-#: application/themes/BaseV1/views/agent/single.php:116
-msgid "Insira um telefone que não será exibido publicamente"
-msgstr "Ingrese un teléfono que no será exhibido públicamente"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:172
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:167
@@ -8225,16 +8210,16 @@ msgid "Insira o Estado"
 msgstr "Ingrese el Departamento"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:202
-#: application/themes/BaseV1/views/agent/create.php:129
-#: application/themes/BaseV1/views/agent/edit.php:129
-#: application/themes/BaseV1/views/agent/single.php:129
+#: application/themes/BaseV1/views/agent/create.php:75
+#: application/themes/BaseV1/views/agent/edit.php:75
+#: application/themes/BaseV1/views/agent/single.php:75
 msgid "Descrição do Agente"
 msgstr "Descripción del Agente"
 
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:202
-#: application/themes/BaseV1/views/agent/create.php:129
-#: application/themes/BaseV1/views/agent/edit.php:129
-#: application/themes/BaseV1/views/agent/single.php:129
+#: application/themes/BaseV1/views/agent/create.php:75
+#: application/themes/BaseV1/views/agent/edit.php:75
+#: application/themes/BaseV1/views/agent/single.php:75
 msgid "Insira uma descrição do agente"
 msgstr "Ingrese una descripción del agente"
 
@@ -8955,6 +8940,18 @@ msgstr "inscripciones."
 msgid "Número máximo de vagas na oportunidade:"
 msgstr "Número máximo de vacantes en la oportunidad:"
 
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:116
+msgid "inscrição encontrada"
+msgstr "Inscripción encontrada"
+
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:117
+msgid "inscrições encontradas"
+msgstr "Inscripctiones encontradas"
+
+#: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:118
+msgid " com os filtros selecionados."
+msgstr "con los filtros seleccionados."
+
 #: application/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--published.php:5
 msgid "Veja abaixo as inscrições suplentes/selecionadas"
 msgstr "Vea abajo las inscripciones suplentes / seleccionadas"
@@ -9002,44 +8999,6 @@ msgstr "Área(s) de actuación"
 msgid "Você não possui nenhum agente com permissão."
 msgstr "Usted no posee ningún agente con permiso."
 
-#: application/themes/BaseV1/layouts/parts/singles/project-about.php:12
-#: application/themes/BaseV1/views/agent/create.php:72
-#: application/themes/BaseV1/views/agent/edit.php:72
-#: application/themes/BaseV1/views/agent/single.php:72
-#: application/themes/BaseV1/views/event/create.php:161
-#: application/themes/BaseV1/views/event/edit.php:161
-#: application/themes/BaseV1/views/event/single.php:161
-#: application/themes/BaseV1/views/space/create.php:76
-#: application/themes/BaseV1/views/space/edit.php:76
-#: application/themes/BaseV1/views/space/single.php:76
-msgid ""
-"O limite de caracteres da descrição curta foi diminuido para 400, mas seu "
-"texto atual possui"
-msgstr ""
-"El límite de caracteres de la descripción breve fue acortado a 400, pero su "
-"texto actual posee"
-
-#: application/themes/BaseV1/layouts/parts/singles/project-about.php:12
-#: application/themes/BaseV1/views/agent/create.php:72
-#: application/themes/BaseV1/views/agent/edit.php:72
-#: application/themes/BaseV1/views/agent/single.php:72
-#: application/themes/BaseV1/views/event/create.php:161
-#: application/themes/BaseV1/views/event/edit.php:161
-#: application/themes/BaseV1/views/event/single.php:161
-#: application/themes/BaseV1/views/space/create.php:76
-#: application/themes/BaseV1/views/space/edit.php:76
-#: application/themes/BaseV1/views/space/single.php:76
-msgid "caracteres. Você deve alterar seu texto ou este será cortado ao salvar."
-msgstr "caracteres. Usted debe cambiar su texto o será cortado al guardar."
-
-#: application/themes/BaseV1/layouts/parts/singles/project-about.php:24
-#: application/themes/BaseV1/layouts/parts/singles/space-servico.php:31
-#: application/themes/BaseV1/views/agent/create.php:85
-#: application/themes/BaseV1/views/agent/edit.php:85
-#: application/themes/BaseV1/views/agent/single.php:85
-msgid "Insira a url de seu site"
-msgstr "Agregue la url de su página web"
-
 #: application/themes/BaseV1/layouts/parts/singles/project-about.php:35
 msgid "Descrição do Projeto"
 msgstr "Descripción del Proyecto"
@@ -9069,9 +9028,9 @@ msgid "Status dos eventos"
 msgstr "Estado de los eventos"
 
 #: application/themes/BaseV1/layouts/parts/singles/project-tabs.php:11
-#: application/themes/BaseV1/views/agent/create.php:60
-#: application/themes/BaseV1/views/agent/edit.php:60
-#: application/themes/BaseV1/views/agent/single.php:60
+#: application/themes/BaseV1/views/agent/create.php:58
+#: application/themes/BaseV1/views/agent/edit.php:58
+#: application/themes/BaseV1/views/agent/single.php:58
 #: application/themes/BaseV1/views/event/create.php:148
 #: application/themes/BaseV1/views/event/edit.php:148
 #: application/themes/BaseV1/views/event/single.php:148
@@ -9103,6 +9062,24 @@ msgstr "Información general"
 #: application/themes/BaseV1/layouts/parts/singles/registration--sidebar--right.php:57
 msgid "Finalizar Avaliação e Avançar"
 msgstr "Finalizar Evaluación y Siguiente"
+
+#: application/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:24
+msgid "Avaliadores desta inscrição"
+msgstr "Evaluadores de esta inscripción"
+
+#: application/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:28
+msgid ""
+"Marque/desmarque os avaliadores desta inscrição. Por padrão, são "
+"selecionados aqueles que avaliam de acordo com as regras de distribuição "
+"definidas."
+msgstr ""
+"Marque/desmarque los evaluadores de esta inscripción. De forma "
+"predeterminada, se seleccionan aquellos que evalúan de acuerdo con las "
+"reglas de distribución definidas."
+
+#: application/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:62
+msgid "Avaliador desta inscrição pela regra de distribuição."
+msgstr "Evaluador de esta inscripción por la regla de distribución."
 
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:2
 #: application/themes/BaseV1/layouts/parts/singles/registration-single--agents.php:10
@@ -9936,7 +9913,7 @@ msgstr "Para agregar videos, primero debe salvar."
 msgid "Adicionar Vídeo"
 msgstr "Agregar Video"
 
-#: application/themes/BaseV1/layouts/parts/video-gallery.php:85
+#: application/themes/BaseV1/layouts/parts/video-gallery.php:84
 msgid "Adicionar vídeo"
 msgstr "Agregar video"
 
@@ -9944,9 +9921,9 @@ msgstr "Agregar video"
 msgid "Insira tags"
 msgstr "Introduzca etiquetas"
 
-#: application/themes/BaseV1/views/agent/create.php:167
-#: application/themes/BaseV1/views/agent/edit.php:167
-#: application/themes/BaseV1/views/agent/single.php:167
+#: application/themes/BaseV1/views/agent/create.php:108
+#: application/themes/BaseV1/views/agent/edit.php:108
+#: application/themes/BaseV1/views/agent/single.php:108
 msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "agente."
