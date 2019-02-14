@@ -15,11 +15,13 @@ services:
       - ../docker-data/tests-private-files:/var/www/private-files
       - ../tests:/var/www/tests
     links:
-      - db
+      - db_tests:db
+    
     environment:
-      - POSTGRES_PASSWORD=mapas
-      - POSTGRES_USER=mapas
-      - POSTGRES_DB=mapas
+      - DB_HOST=db_tests
+      - DB_NAME=mapas
+      - DB_USER=mapas
+      - DB_PASS=mapas
 
       - APP_MODE=development
       - SLIM_DEBUG=true
@@ -35,14 +37,14 @@ services:
       - PENDING_PCACHE_RECREATION_INTERVAL=15
 
     depends_on:
-      - db
+      - db_tests
 
     command: /var/www/scripts/run-tests-docker.sh
       
     stdin_open: true
     tty: true
       
-  db:
+  db_tests:
     image: mdillon/postgis:10
     environment:
       - POSTGRES_PASSWORD=mapas
