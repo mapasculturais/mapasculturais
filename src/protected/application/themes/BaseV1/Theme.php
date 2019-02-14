@@ -1127,10 +1127,6 @@ class Theme extends MapasCulturais\Theme {
 
             $app->view->jsObject['readable_names'] = $entities;
 
-            $app->log->debug("AQUI\n");
-            $app->log->debug(json_encode($entities));
-
-
             $conf_data = function($metadatas, $terms){
                 $new_data = [];
 
@@ -2639,21 +2635,140 @@ class Theme extends MapasCulturais\Theme {
         return $link_attributes;
     }
 
-    public function getEntityURL($url)
-    {
-        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
-            return $url;
-        } else {
-            return $this->getSiteScheme() . $url;
+    /* MODAL */
+
+    public function renderModalFor($entity_name, $show_icon = true, $label = "", $classes = "", $use_modal = true) {
+        $app = App::i();
+        
+        $entity_classname = $app->controller($entity_name)->entityClassName;
+
+        $current_entity_classname = $this->controller->entityClassName;
+
+        $new_entity = new $entity_classname;
+
+        $app->applyHook("modal({$entity_name}):before", [&$new_entity]);
+
+        if ("edit" != $this->controller->action || ($entity_classname != $current_entity_classname) ) {
+            if($show_icon){
+                $classes .= ' add';
+            }
+
+            $modal_id = uniqid("add-{$entity_name}-");
+
+            if ($use_modal) {
+                $this->part('modal/modal', ['entity_name' => $entity_name, 'new_entity' => $new_entity, 'classes' => $classes, 'modal_id' => $modal_id, 'text' => $label]);
+            } else {
+                $this->part('modal/attached-modal', ['entity_name' => $entity_name, 'new_entity' => $new_entity, 'modal_id' => $modal_id]);
+            }
         }
+
+        $app->applyHook("modal({$entity_name}):before", [&$new_entity]);
     }
 
-    private function getSiteScheme()
-    {
-        $app = \MapasCulturais\App::i();
-        $req = $app->request;
+    public function renderModalRequiredMetadata(\MapasCulturais\Entity $entity, $entity_name){
+        $app = App::i();
+        $metadata = $app->getRegisteredMetadata($entity);
 
-        return $req->getScheme() . "://";
+        $app->applyHook("modal({$entity_name}).metadata:before", [&$entity, &$metadata]);        
+        
+        foreach($metadata as $meta){
+            $show_meta = $meta->is_required;
+            $app->applyHook("modal({$entity_name}).metadata({$meta->key})", [&$entity, &$meta, &$show_meta]);
+
+            if($show_meta){
+                $this->part("modal/required-metadata", ['meta' => $meta, 'class' => "entity-required-field"]);
+            }
+        }
+
+        $app->applyHook("modal({$entity_name}).metadata:after", [&$entity, &$metadata]);
+    }
+
+    public function renderModalTaxonomies(\MapasCulturais\Entity $entity, $entity_name) {
+        $app = App::i();
+        $taxonomies = $app->getRegisteredTaxonomies($entity);
+
+        $app->applyHook("modal({$entity_name}).taxonomies:before", [&$entity, &$taxonomies]);
+
+        foreach($taxonomies as $taxonomy){
+            $show_taxonomy = $taxonomy->required;
+
+            $app->applyHook("modal({$entity_name}).taxonomy({$taxonomy->slug})", [&$entity, &$taxonomy, &$show_meta]);
+
+            if($show_taxonomy){
+                $_attr = "terms[{$taxonomy->slug}][]";
+                $options = array_values($taxonomy->restrictedTerms);
+                $title = $app->getView()->dict("taxonomies:{$taxonomy->slug}: name", false);
+
+                $this->part("modal/title", ['title' => $title]);
+                $this->part("modal/entity-dropdown", ['attr' => $_attr, 'options' => $options]);
+            }
+        }
+        
+        $app->applyHook("modal({$entity_name}).taxonomies:before", [&$entity, &$taxonomies]);
+    }
+
+    public function renderModalFields(\MapasCulturais\Entity $new_entity, $entity_name, $modal_id) {
+        $app = App::i();
+        
+        $properties = $new_entity->getPropertiesMetadata();
+        $properties_validations = $new_entity->getValidations();
+
+        $app->applyHook("modal({$entity_name}).fields:before", [&$new_entity, &$properties]);
+        
+        foreach ($properties as $field => $definition) {
+            $show_field = 
+                !$definition['isMetadata'] && 
+                !$definition['isEntityRelation'] && 
+                ($definition['required'] || isset($properties_validations[$field]['required']) );
+            
+            $app->applyHook("modal({$entity_name}).field({$field})", [&$entity, &$definition, &$show_field]);
+            
+            if ($show_field) {
+                if($field === '_type' && $new_entity->usesTypes()){
+                    $this->part("modal/field--entity-type", ['new_entity' => $new_entity, 'definition' => $definition, 'modal_id' => $modal_id]);
+
+                } else if ($definition['type'] === 'string') {
+                    $this->part('modal/field--input-text', ['new_entity' => $new_entity, 'field' => $field, 'definition' => $definition, 'modal_id' => $modal_id]);
+                    
+                } else if ($definition['type'] === 'text'){
+                    $this->part("modal/field--textarea", ['new_entity' => $new_entity, 'field' => $field, 'definition' => $definition, 'modal_id' => $modal_id]);
+                }
+            }
+        }
+        $app->applyHook("modal({$entity_name}).fields:after", [&$entity, &$fields]);
+    }
+
+    public function getModalClasses($use_modal) {
+        $base_class = "js-dialog";
+        $cancel_class = "close-modal";
+
+        if (!$use_modal) {
+            $base_class = "";
+            $cancel_class = "close-attached-modal";
+        }
+
+        $extra_wrapper_classes = '';
+        $app = App::i();
+        $app->applyHook('mapasculturais.add_entity_modal.wrapper_class', [&$extra_wrapper_classes]);
+        $base_class .= " " . $extra_wrapper_classes;
+
+        return ['classes' => $base_class, 'cancel_class' => $cancel_class];
+    }
+
+    private function modalFieldPlaceholder($title, $className) {
+        return sprintf(i::__('Informe o %s do seu novo %s'), strtolower($title), $className);
+    }
+
+    private function getModalEntityName($entity_id, $entity) {
+        $app = App::i();
+        $_key = "entities: " . ucwords($entity_id);
+        $_name = $app->view->dict($_key, false);
+
+        if (empty($_name)) {
+            $_name = $entity->getEntityTypeLabel();
+        }
+
+        return $_name;
     }
 
     public function getValuersCheckedAttribute($valuer_id, $valuers, $inverse = false) {

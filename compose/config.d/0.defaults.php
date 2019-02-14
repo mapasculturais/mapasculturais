@@ -53,7 +53,7 @@ return [
         'password' => env('DB_PASS', 'mapas'),
         'server_version'  => 10.0,
     ],
-
+    'app.useAssetsUrlCache' => false,
     // MAILER
     'mailer.user' => env('MAILER_USER', "admin@mapasculturais.org"),
     'mailer.psw'  => env('MAILER_PASS', "password"),

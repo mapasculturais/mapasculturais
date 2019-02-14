@@ -1,10 +1,11 @@
 <?php
-$this->layout = 'panel'
+$this->layout = 'panel';
+$label = \MapasCulturais\i::__("Adicionar novo projeto");
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
 		<h2><?php \MapasCulturais\i::_e("Meus projetos");?></h2>
-		<a class="btn btn-default add" href="<?php echo $app->createUrl('project', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar novo projeto");?></a>
+        <div class="btn btn-default add"> <?php $this->renderModalFor('project', false, $label); ?> </div>
 	</header>
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledProjects); ?>)</a></li>
