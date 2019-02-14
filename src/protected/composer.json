@@ -13,7 +13,7 @@
         "opauth/openid": "*",
         "respect/validation": "*",
         "smottt/wideimage": "1.1.1",
-        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit": "8.*",
         "creof/doctrine2-spatial": "dev-master",
         "mustache/mustache": "^2.11",
         "phpoffice/phpword": "0.13.*",
