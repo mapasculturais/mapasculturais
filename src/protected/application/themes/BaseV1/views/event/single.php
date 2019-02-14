@@ -449,8 +449,12 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- History END -->
 </div>
 <?php if ($this->isEditable()): ?>
+
 <script id="event-occurrence-form" type="text/html" class="js-mustache-template">
-    <form action="{{formAction}}" method="POST">
+
+    <?php $this->renderModalFor('space', true, "", "", false); ?>
+
+    <form action="{{formAction}}" method="POST" id="evt-date-local">
         <div class="alert danger hidden"></div>
         <input type="hidden" name="eventId" value="<?php echo $entity->id; ?>"/>
         <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
@@ -472,6 +476,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 title="<?php \MapasCulturais\i::esc_attr_e('Selecione'); ?> <?php $this->dict('entities: a space') ?>"
                 >{{space.name}}</span>
         </div>
+
+        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-default">
+            <?php \MapasCulturais\i::esc_attr_e('Ou crie e vincule um novo espaço'); ?>
+        </a>
 
         <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> cadastrado
         <div class="alert warning">
