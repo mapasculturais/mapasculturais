@@ -1,21 +1,20 @@
 language: php
 
 php:
-  - 5.6
-  - 7.0
-  - 7.1
   - 7.2
 
 matrix:
   fast_finish: true
   allow_failures:
-    - php: 7.2
+    - php: 7.3
 
 addons:
-  postgresql: 9.6
+  postgresql: '10'
   apt:
     packages:
-    - postgresql-9.6-postgis-2.3
+      - postgresql-10-postgis-2.4
+      - postgresql-10-postgis-2.4-scripts
+      - postgresql-client-10
     
 install:
   - composer self-update && composer --version
