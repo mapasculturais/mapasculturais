@@ -67,9 +67,11 @@ trait EntitySealRelation {
        
         foreach ($this->getSealRelations($include_pending_relations) as $sealRelation) {
             $result[$sealRelation->id] = $return_relations ? $sealRelation : $sealRelation->seal;
+            $app->em->detach($result[$sealRelation->id]);
             $result[$sealRelation->id]->{'requestSealRelationUrl'} = $this->getRequestSealrelationUrl($sealRelation->id);
             $result[$sealRelation->id]->{'renewSealRelationUrl'} = $this->getRenewSealRelationUrl($sealRelation->id);
             $result[$sealRelation->id]->ownerSealUserId = $sealRelation->seal->owner->userId; 
+
 
             if($sealRelation->seal->validPeriod > 0){
                 $expirationDate = $result[$sealRelation->id]->validateDate;
