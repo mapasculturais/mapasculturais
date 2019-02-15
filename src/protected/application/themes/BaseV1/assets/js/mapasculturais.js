@@ -571,6 +571,7 @@ MapasCulturais.addEntity = function(e) {
     var _modal = e.context.dataset.dialog;
     if (_modal) {
         $('#blockdiv').show();
+        $('body').css('overflow','hidden');
         MapasCulturais.Modal.open(_modal);
     }
 };

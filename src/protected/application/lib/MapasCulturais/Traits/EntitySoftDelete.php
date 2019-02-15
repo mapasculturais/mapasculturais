@@ -39,6 +39,7 @@ trait EntitySoftDelete{
      * @hook **entity({ENTITY}).delete:after**
      */
     function delete($flush = false){
+    
         $this->checkPermission('remove');
         
         $hook_class_path = $this->getHookClassPath();
@@ -51,6 +52,7 @@ trait EntitySoftDelete{
         $this->save($flush);
         
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:after');
+    
     }
 
     /**
