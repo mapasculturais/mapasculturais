@@ -35,31 +35,44 @@ class File extends EntityController {
     }
     
     function GET_privateFile() {
-    
         $this->requireAuthentication();
         
+        $app = App::i();
+        
         $file = $this->requestedEntity;
+
+        if(!$file){
+            $app->pass();
+        }
 
         $file->checkPermission('viewPrivateFiles');
         
         $file_path = $this->requestedEntity->getPath();
         
         if (file_exists($file_path)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: ' . mime_content_type($file_path));
-            header('Content-Disposition: attachment; filename="' . $file->name . '"');
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file_path));
+            $headers = [
+                'Content-Description' => 'File Transfer',
+                'Content-Type' => mime_content_type($file_path),
+                'Content-Disposition' => 'attachment; filename="' . $file->name . '"',
+                'Content-Transfer-Encoding' => 'binary',
+                'Expires' => '0',
+                'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+                'Pragma' => 'public',
+                'Content-Length' => filesize($file_path)
+            ];
+
+            $app->applyHookBoundTo($file, 'GET(file.privateFile).headers',[&$headers]);
+
+            foreach($headers as $name => $value){
+                header("{$name}: {$value}");    
+            }
             
             readfile($file_path);
             
             exit;
         }
         
-        App::i()->pass();
+        $app->pass();
         
     }
 }
