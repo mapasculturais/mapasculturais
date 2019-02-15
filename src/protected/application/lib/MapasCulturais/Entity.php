@@ -333,12 +333,10 @@ abstract class Entity implements \JsonSerializable{
                 } else if($this->isUserAdmin($user)){
                     $result = true;
                 }
-            }
-
-            if(method_exists($this, 'canUser' . $action)){
+            } elseif(method_exists($this, 'canUser' . $action)) {
                 $method = 'canUser' . $action;
                 $result = $this->$method($user);
-            }elseif($action != '@control'){
+            } else {
                 $result = $this->genericPermissionVerification($user);
             }
 

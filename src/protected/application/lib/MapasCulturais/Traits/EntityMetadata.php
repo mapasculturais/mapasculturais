@@ -160,7 +160,7 @@ trait EntityMetadata{
             return false;
         }
 
-        if($this->isUserAdmin($user) || $this->canUser('@control', $user)){
+        if($this->isUserAdmin($user) || $this->canUser('@control', $user) || $this->equals($user)){
             return true;
         }
 

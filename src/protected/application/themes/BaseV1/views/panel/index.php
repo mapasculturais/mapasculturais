@@ -8,7 +8,9 @@ $posfin = 0;
 $msg = "";
 $button = "";
 ?>
+<?php $this->applyTemplateHook('content','before'); ?>
 <div class="panel-main-content">
+<?php $this->applyTemplateHook('content','begin'); ?>
 
     <?php $this->part('panel/highlighted-message') ?>
 
@@ -18,7 +20,9 @@ $button = "";
     </p>
     <?php endif; ?>
 
+    <?php $this->applyTemplateHook('content.entities','before'); ?>
     <section id="user-stats" class="clearfix">
+        <?php $this->applyTemplateHook('content.entities','begin'); ?>
         <?php if($app->isEnabled('events')): ?>
             <div>
                 <div>
@@ -133,10 +137,13 @@ $button = "";
                 </div>
             </div>
         <?php endif; ?>
-
+        <?php $this->applyTemplateHook('content.entities','end'); ?>
     </section>
+    <?php $this->applyTemplateHook('content.entities','after'); ?>
     <?php if($app->user->notifications): ?>
+    <?php $this->applyTemplateHook('content.notification','before'); ?>
     <section id="activities">
+        <?php $this->applyTemplateHook('content.notification','begin'); ?>
         <header>
             <h2><?php \MapasCulturais\i::_e("Atividades");?></h2>
         </header>
@@ -172,6 +179,21 @@ $button = "";
                 <?php endif ?>
             </div>
         <?php endforeach; ?>
+        
+        <?php $this->applyTemplateHook('content.notification','end'); ?>
     </section>
+    <?php $this->applyTemplateHook('content.notification','after'); ?>
     <?php endif; ?>
+
+    <?php $this->applyTemplateHook('settings','before'); ?>
+    <ul class="panel-settings">
+        <?php $this->applyTemplateHook('settings','begin'); ?>
+
+        <?php $this->applyTemplateHook('settings','end'); ?>
+        <div class="clear"></div>
+    </ul>
+    <?php $this->applyTemplateHook('settings','after'); ?>
+    
+    <?php $this->applyTemplateHook('content','end'); ?>
 </div>
+<?php $this->applyTemplateHook('content','after'); ?>
