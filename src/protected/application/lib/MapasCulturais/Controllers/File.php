@@ -64,7 +64,7 @@ class File extends EntityController {
             $app->applyHookBoundTo($file, 'GET(file.privateFile).headers',[&$headers]);
 
             foreach($headers as $name => $value){
-                header("{$name}': {$value}");    
+                header("{$name}: {$value}");    
             }
             
             readfile($file_path);
