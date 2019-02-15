@@ -9,10 +9,10 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 ?>
 <div class="panel-main-content" ng-app="DeleteAccount" ng-controller="DeleteAccountController">
     <h1><?php i::_e('Apagar Conta') ?></h1>
-    <p><?php i::_e('Texto explicando o que acontece com as infos: Aliquam dictum ut risus ut mollis. Morbi quis sem vitae ex volutpat feugiat ut semper metus. Aliquam iaculis congue mi, ac tempus leo semper quis. Duis at tristique tellus, sed posuere ante. Sed tincidunt egestas rhoncus. Nunc faucibus, ligula at gravida sagittis, mauris est gravida est, non elementum felis nibh eget mauris. Maecenas rhoncus ornare elit eget maximus. Donec bibendum convallis turpis, a cursus nisl fringilla vel.')?></p>
+    <p><?php i::_e('A remoção da conta fará com que a maioria de suas informações não sejam mais acessíveis publicamente. Algumas informações, como por exemplo as inscrições em editais continuarão acessíveis.<br>Você pode escolher por transferir suas entidades para outro usuário, que será questionado se deseja recebê-las. No caso do usuário se negar a receber as entidades, estas serão excluidas.')?></p>
     <div>
         <p>
-            <?php i::_e('Você pode escolher um usuário para receber as suas entidades') ?>:
+            <?php i::_e('Se desejar escolha o usuário para receber suas entidades') ?>:
         
             <a id="delete-account--button" ng-click="editbox.open('delete-account--edit-box', $event)">{{data.selectedAgent ? data.selectedAgent.name : "<?php i::_e('Selecione o Usuário') ?>"}}</a>
 
@@ -30,6 +30,6 @@ $this->bodyProperties['ng-controller'] = "EntityController";
                 on-repeat-done="adjustBoxPosition"></find-entity>
         </edit-box>
         <a href="<?php echo $this->controller->createUrl('index') ?>" class="btn btn-success"><?php i::_e('Cancelar') ?></a>
-        <a ng-click='deleteAccount("<?php echo $app->user->deleteAccountToken ?>")' class="btn btn-danger"><?php i::_e('Remover Conta') ?></a>
+        <a ng-click='deleteAccount("<?php echo $app->user->deleteAccountToken ?>")' class="btn btn-danger"><?php i::_e('Apagar Conta') ?></a>
     </div>
 </div>
