@@ -179,10 +179,21 @@ $button = "";
                 <?php endif ?>
             </div>
         <?php endforeach; ?>
+        
         <?php $this->applyTemplateHook('content.notification','end'); ?>
     </section>
     <?php $this->applyTemplateHook('content.notification','after'); ?>
     <?php endif; ?>
+
+    <?php $this->applyTemplateHook('settings','before'); ?>
+    <ul class="panel-settings">
+        <?php $this->applyTemplateHook('settings','begin'); ?>
+
+        <?php $this->applyTemplateHook('settings','end'); ?>
+        <div class="clear"></div>
+    </ul>
+    <?php $this->applyTemplateHook('settings','after'); ?>
+    
     <?php $this->applyTemplateHook('content','end'); ?>
 </div>
 <?php $this->applyTemplateHook('content','after'); ?>

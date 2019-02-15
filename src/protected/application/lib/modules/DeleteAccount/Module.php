@@ -43,7 +43,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // coloca o link para a página de apagar a conta
-        $app->hook('template(panel.<<*>>.settings-nav):end', function(){
+        $app->hook('template(panel.index.settings):end', function(){
             $this->part('delete-account--button');
         });
 
