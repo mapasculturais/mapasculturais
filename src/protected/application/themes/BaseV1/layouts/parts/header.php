@@ -1,6 +1,6 @@
 <?php
 $site_name = $this->dict('site: name', false);
-$title = isset($entity) ? $this->getTitle($entity) : $this->getTitle()
+$title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $app->getCurrentLCode(); ?>" dir="ltr">

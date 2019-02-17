@@ -1,6 +1,7 @@
 <?php
 $this->layout = 'panel';
 $app = \MapasCulturais\App::i();
+$opportunitiesToEvaluate = $user->opportunitiesCanBeEvaluated;
 ?>
 <div class="panel-list panel-main-content">
 	<header class="panel-header clearfix">
@@ -12,7 +13,7 @@ $app = \MapasCulturais\App::i();
         <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftOpportunities); ?>)</a></li>
         <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedOpportunities); ?>)</a></li>
         <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedOpportunities); ?>)</a></li>
-        <li><a href="#avaliar"><?php \MapasCulturais\i::_e("Avaliar");?> (<?php echo count($user->opportunitiesCanBeEvaluated); ?>)</a></li>
+        <li><a href="#avaliacoes"><?php \MapasCulturais\i::_e("Avaliações");?> (<?php echo count($opportunitiesToEvaluate); ?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledOpportunities as $entity): ?>
@@ -62,11 +63,11 @@ $app = \MapasCulturais\App::i();
 	</div>
 	<!-- #permitido-->
     <!-- #avaliar-->
-    <div id="avaliar">
-        <?php foreach($app->user->opportunitiesCanBeEvaluated as $entity): ?>
+    <div id="avaliacoes">
+        <?php foreach($opportunitiesToEvaluate as $entity): ?>
             <?php $this->part('panel-evaluation', array('entity' => $entity)); ?>
         <?php endforeach; ?>
-        <?php if(!$user->opportunitiesCanBeEvaluated): ?>
+        <?php if(!$opportunitiesToEvaluate): ?>
             <div class="alert info">
                 <?php // translators: %s é o nome do tipo de entidade Oportunidade. (ex: oportunidade) ?>
                 <?php printf( \MapasCulturais\i::__("Você não possui nenhuma %s liberada para avaliação."), $this->dict('entities: opportunity', false) ); ?></div>

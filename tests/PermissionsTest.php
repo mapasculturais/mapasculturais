@@ -169,15 +169,15 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $this->app->enableWorkflow();
     }
 
-    function testCanUserRemove(){
-        $this->app->disableWorkflow();
-        $this->app->enableWorkflow();
-    }
+    // function testCanUserRemove(){
+    //     $this->app->disableWorkflow();
+    //     $this->app->enableWorkflow();
+    // }
 
-    function testCanUserViewPrivateData(){
-        $this->app->disableWorkflow();
-        $this->app->enableWorkflow();
-    }
+    // function testCanUserViewPrivateData(){
+    //     $this->app->disableWorkflow();
+    //     $this->app->enableWorkflow();
+    // }
 
     function testAgentRelationsPermissions(){
         $this->app->disableWorkflow();
@@ -803,15 +803,15 @@ class PermissionsTest extends MapasCulturais_TestCase{
         $this->app->enableWorkflow();
     }
 
-    function testFilesPermissions(){
-        $this->app->disableWorkflow();
-        $this->app->enableWorkflow();
-    }
+    // function testFilesPermissions(){
+    //     $this->app->disableWorkflow();
+    //     $this->app->enableWorkflow();
+    // }
 
-    function testMetalistPermissions(){
-        $this->app->disableWorkflow();
-        $this->app->enableWorkflow();
-    }
+    // function testMetalistPermissions(){
+    //     $this->app->disableWorkflow();
+    //     $this->app->enableWorkflow();
+    // }
 
     function testCanUserAddRemoveRole(){
         $this->app->disableWorkflow();
