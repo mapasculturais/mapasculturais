@@ -24,10 +24,10 @@ return array_merge($config,
         'doctrine.isDev' => true,
 
         'doctrine.database' => array(
-            'dbname'    => 'mapasculturais_test',
-            'user'      => 'mapasculturais_test',
-            'password'  => 'mapasculturais_test',
-            'host'      => 'localhost',
+            'dbname'    => env('DB_NAME', 'mapasculturais_test'),
+            'user'      => env('DB_USER', 'mapasculturais_test'),
+            'password'  => env('DB_PASS', 'mapasculturais_test'),
+            'host'      => env('DB_HOST', 'localhost'),
 
         ),
 

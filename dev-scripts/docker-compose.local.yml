@@ -19,9 +19,10 @@ services:
     links:
       - db
     environment:
-      - POSTGRES_PASSWORD=mapas
-      - POSTGRES_USER=mapas
-      - POSTGRES_DB=mapas
+      # - DB_HOST=db
+      # - DB_NAME=mapas
+      # - DB_USER=mapas
+      # - DB_PASS=mapas
 
       - APP_MODE=development
       - SLIM_DEBUG=true
@@ -52,4 +53,4 @@ services:
     volumes:
       - ../docker-data/postgres:/var/lib/postgresql/data
       - ../db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
-      - ../db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql      
+      - ../db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql

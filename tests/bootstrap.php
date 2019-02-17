@@ -17,7 +17,17 @@ use Curl\Curl;
 
 date_default_timezone_set('America/Sao_Paulo');
 
+function env($name, $default) {
+    $result = isset($_ENV[$name]) ? $_ENV[$name] : $default;
 
+    if (strtolower(trim($result)) == 'true') {
+        $result = true;
+    } else if (strtolower(trim($result)) == 'false') {
+        $result = false;
+    }
+
+    return $result;
+}
 
 require_once __DIR__."/../src/protected/vendor/autoload.php";
 
@@ -50,7 +60,7 @@ if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){
 $app = MapasCulturais\App::i()->init($config);
 $app->register();
 
-abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
+abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      *
@@ -212,13 +222,15 @@ abstract class MapasCulturais_TestCase extends PHPUnit_Framework_TestCase
     }
 
     // Initialize our own copy of the slim application
-    public function setup()
+    protected function setUp(): void
     {
+        parent::setUp();
         $app = MapasCulturais\App::i();
         $app->em->beginTransaction();
     }
 
-    protected function tearDown(){
+    protected function tearDown(): void
+    {
         $app = MapasCulturais\App::i();
         $app->em->rollback();
 
