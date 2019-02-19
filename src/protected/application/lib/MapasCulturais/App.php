@@ -179,6 +179,15 @@ class App extends \Slim\Slim{
 
         $this->_initiated = true;
 
+        if(empty($config['base.url'])){
+            $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
+                                  (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
+        }
+
+        if(empty($config['base.assetUrl'])){
+            $config['base.assetUrl'] = $config['base.url'] . 'assets/';
+        }
+
         if($config['slim.debug'])
             error_reporting(E_ALL ^ E_STRICT);
 
@@ -505,9 +514,11 @@ class App extends \Slim\Slim{
         // ===================================== //
 
         // run plugins
-        foreach($config['plugins.enabled'] as $plugin){
-            if(file_exists(PLUGINS_PATH.$plugin.'.php')){
-                include PLUGINS_PATH.$plugin.'.php';
+        if(isset($config['plugins.enabled']) && is_array($config['plugins.enabled'])){
+            foreach($config['plugins.enabled'] as $plugin){
+                if(file_exists(PLUGINS_PATH.$plugin.'.php')){
+                    include PLUGINS_PATH.$plugin.'.php';
+                }
             }
         }
         // ===================================== //
@@ -522,6 +533,7 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
+
 
         return $this;
     }
