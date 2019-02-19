@@ -75,6 +75,19 @@ function __log_env($name,$default){
         $description = $matches[1];
     }
 
+    if(empty(strpos($config, '.'))){
+        $_line_number = $fileline;
+
+        while($_line_number > 0){
+            $_current_line = $lines[--$_line_number];
+            // buscando linha comom essa: 'app.apiCache.lifetimeByController' => [
+            if(preg_match("#'([\w\d\.]+)' *=> *(\[|array\() *$#", $_current_line, $matches)){
+                $config = $matches[1] . ' => ' . $config;
+                break;
+            }
+        }    
+    }
+
     $filename = str_replace(BASE_PATH, '', $filename);
 
     $description = implode("\n", array_map(function($l) { return trim($l); }, explode("\n", $description)));
