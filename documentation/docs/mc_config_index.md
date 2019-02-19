@@ -147,13 +147,13 @@ Valor do header Access-Control-Allow-Origin da api de leitura.
  - definido em `protected/application/conf/conf-base.d/cache.php:26`
 
 
-## notification
+## app.apiCache.lifetimeByController => notification
 
  - definível pela variável de ambiente **CACHE_API_NOTIFICATION**
  - definido em `protected/application/conf/conf-base.d/cache.php:29`
 
 
-## event
+## app.apiCache.lifetimeByController => event
 
  - definível pela variável de ambiente **CACHE_API_EVENT**
  - o valor padrão é `25`
@@ -181,35 +181,35 @@ Valor do header Access-Control-Allow-Origin da api de leitura.
  - definido em `protected/application/conf/conf-base.d/cep.php:7`
 
 
-## host
+## doctrine.database => host
 
  - definível pela variável de ambiente **DB_HOST**
  - o valor padrão é `'db'`
  - definido em `protected/application/conf/conf-base.d/db.php:5`
 
 
-## dbname
+## doctrine.database => dbname
 
  - definível pela variável de ambiente **DB_NAME**
  - o valor padrão é `'mapas'`
  - definido em `protected/application/conf/conf-base.d/db.php:6`
 
 
-## user
+## doctrine.database => user
 
  - definível pela variável de ambiente **DB_USER**
  - o valor padrão é `'mapas'`
  - definido em `protected/application/conf/conf-base.d/db.php:7`
 
 
-## password
+## doctrine.database => password
 
  - definível pela variável de ambiente **DB_PASS**
  - o valor padrão é `'mapas'`
  - definido em `protected/application/conf/conf-base.d/db.php:8`
 
 
-## server_version
+## doctrine.database => server_version
 
  - definível pela variável de ambiente **DB_VERSION**
  - o valor padrão é `10`
