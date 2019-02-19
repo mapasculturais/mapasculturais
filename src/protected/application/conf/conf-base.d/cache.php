@@ -25,8 +25,8 @@ return [
     'app.registerCache.lifeTime'            => env('CACHE_REGISTER', 600),
     'app.apiCache.lifetime'                 => env('CACHE_API', 120),
 
-    'app.apiCache.lifetimeByController' => array(
+    'app.apiCache.lifetimeByController' => [
         'notification'  => env('CACHE_API_NOTIFICATION', 0),
         'event'         => env('CACHE_API_EVENT', 25),
-    ),
+    ],
 ];
