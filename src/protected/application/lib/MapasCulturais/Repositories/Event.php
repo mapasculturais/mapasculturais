@@ -18,6 +18,30 @@ class Event extends \MapasCulturais\Repository{
         return $space_ids;
     }
 
+    public function findByEntity($entity, $date_from = null, $date_to = null, $limit = null, $offset = null){
+        $events = array();
+        $class = $entity->className;
+
+        switch ($class) {
+            case 'MapasCulturais\Entities\Space':
+                $events = !$entity->id ? array() : $this->findBySpace($entity, $date_from, $date_to, $limit, $offset);
+                break;
+            case 'MapasCulturais\Entities\Registration':
+                $events = !$entity->owner->id ? array() : $app->repo('Event')->findByAgent($entity->owner, $date_from, $date_to, $limit, $offset);
+                break;
+            case 'MapasCulturais\Entities\Agent':
+                $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to, $limit, $offset);
+                break;
+            case 'MapasCulturais\Entities\Project':
+                $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to, $limit, $offset);
+                break;
+            default:
+                break;
+        }
+
+        return $events;
+    }
+
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
         $app = App::i();
@@ -54,15 +78,14 @@ class Event extends \MapasCulturais\Repository{
             $date_to = $date_from;
         else if($date_to instanceof \DateTime)
             $date_to = $date_to->format('Y-m-d');
-
+            
         $dql_limit = $dql_offset = '';
 
-        if($limit)
-            $dql_limit = 'LIMIT ' . $limit;
-
-        if($offset)
-            $dql_offset = 'OFFSET ' . $offset;
-
+        if(!is_null($limit) && !is_null($offset)){
+            $dql_limit = 'LIMIT :limit';
+            $dql_offset = 'OFFSET :offset';
+        }
+      
         if(is_array($ids)){
             $ids = implode(',', $ids);
         }
@@ -88,11 +111,11 @@ class Event extends \MapasCulturais\Repository{
                     WHERE
                         space_id IN ($ids)
                 )
-
-            $dql_limit $dql_offset
-
+            
             ORDER BY
-                eo.starts_on, eo.starts_at";
+                eo.starts_on, eo.starts_at
+                
+            $dql_limit $dql_offset";
 
         $params = [
             'date_from' => $date_from,
@@ -100,7 +123,7 @@ class Event extends \MapasCulturais\Repository{
         ];
 
 
-        $result = $this->_getEventsBySQL($sql, $params);
+        $result = $this->_getEventsBySQL($sql, $params, $limit, $offset);
 
         return $result;
     }
@@ -138,12 +161,9 @@ class Event extends \MapasCulturais\Repository{
 
         $dql_limit = $dql_offset = '';
 
-        if($limit){
-            $dql_limit = 'LIMIT ' . $limit;
-        }
-
-        if($offset){
-            $dql_offset = 'OFFSET ' . $offset;
+        if(!is_null($limit) && !is_null($offset)){
+            $dql_limit = 'LIMIT :limit';
+            $dql_offset = 'OFFSET :offset';
         }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
@@ -173,18 +193,18 @@ class Event extends \MapasCulturais\Repository{
                     WHERE
                         space_id IN ($space_ids)
                 )
-
-            $dql_limit $dql_offset
-
+            
             ORDER BY
-                eo.starts_on, eo.starts_at";
+                eo.starts_on, eo.starts_at
+
+            $dql_limit $dql_offset";
 
         $params = [
             'date_from' => $date_from,
             'date_to' => $date_to
         ];
 
-        $result = $this->_getEventsBySQL($sql, $params);
+        $result = $this->_getEventsBySQL($sql, $params, $limit, $offset);
         
         return $result;
     }
@@ -206,12 +226,9 @@ class Event extends \MapasCulturais\Repository{
 
         $dql_limit = $dql_offset = '';
 
-        if($limit){
-            $dql_limit = 'LIMIT ' . $limit;
-        }
-
-        if($offset){
-            $dql_offset = 'OFFSET ' . $offset;
+        if(!is_null($limit) && !is_null($offset)){
+            $dql_limit = 'LIMIT :limit';
+            $dql_offset = 'OFFSET :offset';
         }
 
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
@@ -249,11 +266,11 @@ class Event extends \MapasCulturais\Repository{
                     WHERE
                         space_id IN ($space_ids)
                 )
-
-            $dql_limit $dql_offset
-
+            
             ORDER BY
-                eo.starts_on, eo.starts_at";
+                eo.starts_on, eo.starts_at
+                
+            $dql_limit $dql_offset";
 
         $params = [
             'date_from' => $date_from,
@@ -261,7 +278,7 @@ class Event extends \MapasCulturais\Repository{
             'agent_id' => $agent->id
         ];
 
-        $result = $this->_getEventsBySQL($sql, $params);
+        $result = $this->_getEventsBySQL($sql, $params, $limit, $offset);
 
         return $result;
     }
@@ -280,16 +297,14 @@ class Event extends \MapasCulturais\Repository{
         }else if($date_to instanceof \DateTime){
             $date_to = $date_to->format('Y-m-d');
         }
+
         $dql_limit = $dql_offset = '';
 
-        if($limit){
-            $dql_limit = 'LIMIT ' . $limit;
+        if(!is_null($limit) && !is_null($offset)){
+            $dql_limit = 'LIMIT :limit';
+            $dql_offset = 'OFFSET :offset';
         }
-
-        if($offset){
-            $dql_offset = 'OFFSET ' . $offset;
-        }
-
+        
         $space_ids = $this->_getCurrentSubsiteSpaceIds();
 
         $sql = "
@@ -314,38 +329,48 @@ class Event extends \MapasCulturais\Repository{
                         space_id IN ($space_ids)
                 )
 
-            $dql_limit $dql_offset
-
             ORDER BY
-                eo.starts_on, eo.starts_at";
+                eo.starts_on, eo.starts_at
+            
+            $dql_limit $dql_offset";
 
         $params = ['date_from' => $date_from, 'date_to' => $date_to];
         
         if($only_ids){
-            $result = $this->_getIdsBySQL($sql, $params);
+            $result = $this->_getIdsBySQL($sql, $params, $limit, $offset);
         }else{
-            $result = $this->_getEventsBySQL($sql, $params);
+            $result = $this->_getEventsBySQL($sql, $params, $limit, $offset);
         }
 
         return $result;
     }
     
-    function _getEventsBySQL($sql, $params = []){
-        $ids = $this->_getIdsBySQL($sql, $params);
+    function _getEventsBySQL($sql, $params = [], $limit = null, $offset = null){
+        $ids = $this->_getIdsBySQL($sql, $params, $limit, $offset);
         $events = $this->_getEventsByIds($ids);
         
         return $events;
     }
     
-    function _getIdsBySQL($sql, $params = []){
-        $conn = $this->_em->getConnection();
-
-        if($params){
-            $rs = $conn->fetchAll($sql, $params);
-        } else {
-            $rs = $conn->fetchAll($sql);
+    function _getIdsBySQL($sql, $params = [], $limit = null, $offset = null){
+        $connection = $this->_em->getConnection();
+        $statement = $connection->prepare($sql);   
+        
+        if(!empty($params)){
+            foreach($params as $key => $value){
+                $statement->bindValue($key, $value, \PDO::PARAM_STR);
+            }
         }
-        $ids = array_map(function($e){ return $e['id']; }, $rs);
+
+        if(!is_null($limit) && !is_null($offset)){
+            $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+            $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
+        }
+
+        $statement->execute();        
+        $result = $statement->fetchAll();
+        
+        $ids = array_map(function($e){ return $e['id']; }, $result);
         
         return $ids;
     }
@@ -355,8 +380,13 @@ class Event extends \MapasCulturais\Repository{
             return [];
         }
         
-        $class = $this->getClassName();
-        $q = $this->_em->createQuery("SELECT e FROM $class e WHERE e.id IN(:ids)");
+        $dql = "SELECT e, o._startsOn, o._startsAt
+                FROM MapasCulturais\Entities\Event e 
+                JOIN e.occurrences o 
+                WHERE e.id IN(:ids) 
+                ORDER BY o._startsOn ASC";
+
+        $q = $this->_em->createQuery($dql);
         $q->setParameter('ids', $ids);
         
         $result = $q->getResult();

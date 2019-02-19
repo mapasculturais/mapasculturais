@@ -1,4 +1,11 @@
 $(function() {
+
+    function showAgenda(result) {
+        $('#agenda-content').html(result);
+        setAgendaCount();
+        $('img.spinner').hide();
+    }
+
     function setAgendaCount(){
         var count = $('#agenda-count-hidden').val() || MapasCulturais.gettext.agendaSingles['none'];
         $('#agenda-count').text(count);
@@ -99,9 +106,23 @@ $(function() {
         }
 
         $.get(url, {from:$('#agenda-from').val(),to:$('#agenda-to').val()}, function(result){
-            $('#agenda-content').html(result);
-            setAgendaCount();
-            $('img.spinner').hide();
+            if (result.trim() == "") {
+                //10 Ultimos eventos cadastrados
+                $.get(url, {from:"1900-01-01",to:"2100-01-01", limit: 10, offset: 0}, function(result){
+                    html = '<div class="alert info"> Nenhum evento encontrado nas datas selecionas.</div>';
+                    
+                    if (result.trim() == "") {
+                        result = html;
+                    } else {
+                        html += '<h4> Últimos eventos cadastrados</h4>';
+                        result = html + result;
+                    }
+                   
+                    showAgenda(result);
+                });
+            } else {
+                showAgenda(result);
+            }           
         });
     };
         

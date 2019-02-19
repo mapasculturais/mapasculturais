@@ -24,24 +24,14 @@ class Module extends \MapasCulturais\Module{
             
             $date_from = \DateTime::createFromFormat('Y-m-d', $this->getData['from']);
             $date_to = \DateTime::createFromFormat('Y-m-d', $this->getData['to']);
+            $limit = (isset($this->getData['limit']))? $this->getData['limit'] : null;
+            $offset = (isset($this->getData['offset']))? $this->getData['offset'] : null;
 
             if (!$date_from || !$date_to) {
                 $app->stop();
             }
 
-            if ($entity->className === 'MapasCulturais\Entities\Space') {
-                $events = !$entity->id ? array() : $app->repo('Event')->findBySpace($entity, $date_from, $date_to);
-            } elseif ($entity->className === 'MapasCulturais\Entities\Agent' || $entity->className === 'MapasCulturais\Entities\Registration' ) {
-                if($entity->className === 'MapasCulturais\Entities\Registration') {
-                    $events = !$entity->owner->id ? array() : $app->repo('Event')->findByAgent($entity->owner, $date_from, $date_to);
-                } else {
-                    $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to);
-                }
-            } elseif ($entity->className === 'MapasCulturais\Entities\Project') {
-                $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to);
-            } else {
-                $events = array();
-            }
+            $events = $app->repo('Event')->findByEntity($entity, $date_from, $date_to, $limit, $offset);
 
             if (empty($events)) {
                 $app->stop();
