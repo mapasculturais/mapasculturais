@@ -47,7 +47,7 @@ abstract class Storage{
     public function add(File $file){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $app->applyHookBoundTo($this, 'storage.add:before', ['file' => $file]);
         if($owner){
@@ -80,7 +80,7 @@ abstract class Storage{
     public function remove(File $file){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $app->applyHookBoundTo($this, 'storage.remove:before', ['file' => $file]);
         if($owner){
@@ -109,7 +109,7 @@ abstract class Storage{
     public function getUrl(File $file){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $result = $this->_getUrl($file);
 
@@ -142,7 +142,7 @@ abstract class Storage{
     public function getPath(File $file, $relative = false){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $result = $this->_getPath($file, $relative);
 
@@ -154,6 +154,24 @@ abstract class Storage{
         return $result;
     }
 
+    public function togglePrivacy(File $file){
+        $file->checkPermission('changePrivacy');
+
+        $app = App::i();
+        $owner = $file->owner;
+
+        $app->applyHookBoundTo($this, 'storage.toggleFilePrivacy(' . $owner->getHookClassPath() . ':' . $file->group . ')', [$file]);
+
+
+        if($file->private){
+            $app->applyHookBoundTo($this, 'storage.makeFilePublic(' . $owner->getHookClassPath() . ':' . $file->group . ')', [$file]);
+            $this->_moveToPublicFolder($file);
+        } else {
+            $app->applyHookBoundTo($this, 'storage.makeFilePrivate(' . $owner->getHookClassPath() . ':' . $file->group . ')', [$file]);
+            $this->_moveToPrivateFolder($file);
+        }
+    }
+
     abstract public function createZipOfEntityFiles($entity);
 
     abstract protected function _add(File $file);
@@ -161,4 +179,7 @@ abstract class Storage{
     abstract protected function _getUrl(File $file);
     abstract protected function _getUrlFromRelativePath($relative_path);
     abstract protected function _getPath(File $file, $relative = false);
+
+    abstract protected function _moveToPublicFolder(File $file);
+    abstract protected function _moveToPrivateFolder(File $file);
 }
