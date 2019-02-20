@@ -213,4 +213,28 @@ class FileSystem extends \MapasCulturais\Storage{
             return null;
         }
     }
+
+    protected function _moveToPublicFolder(\MapasCulturais\Entities\File $file) {
+        $relative_path = $this->_getPath($file, true);
+        $public_path = $this->config['dir'] . $relative_path;
+
+        $this->_moveTo($file, $public_path);
+    }
+
+    protected function _moveToPrivateFolder(\MapasCulturais\Entities\File $file) {
+        $relative_path = $this->_getPath($file, true);
+        $private_path = $this->config['private_dir'] . $relative_path;
+
+        $this->_moveTo($file, $private_path);
+    }
+
+    protected function _moveTo($file, $new_path){
+        $current_path = $this->_getPath($file);
+
+        if(!is_dir(dirname($new_path))){
+            mkdir (dirname($new_path), 0755, true);
+        }
+
+        rename($current_path, $new_path);
+    }
 }
