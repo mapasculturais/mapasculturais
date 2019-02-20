@@ -26,12 +26,13 @@ class Module extends \MapasCulturais\Module{
             $date_to = \DateTime::createFromFormat('Y-m-d', $this->getData['to']);
             $limit = (isset($this->getData['limit']))? $this->getData['limit'] : null;
             $offset = (isset($this->getData['offset']))? $this->getData['offset'] : null;
+            $order = (isset($this->getData['orderDateDirection']))? $this->getData['orderDateDirection'] : 'ASC';
 
             if (!$date_from || !$date_to) {
                 $app->stop();
             }
 
-            $events = $app->repo('Event')->findByEntity($entity, $date_from, $date_to, $limit, $offset);
+            $events = $app->repo('Event')->findByEntity($entity, $date_from, $date_to, $limit, $offset, $order);
 
             if (empty($events)) {
                 $app->stop();

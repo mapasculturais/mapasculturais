@@ -18,22 +18,22 @@ class Event extends \MapasCulturais\Repository{
         return $space_ids;
     }
 
-    public function findByEntity($entity, $date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByEntity($entity, $date_from = null, $date_to = null, $limit = null, $offset = null, $order = 'ASC'){
         $events = array();
         $class = $entity->className;
 
         switch ($class) {
             case 'MapasCulturais\Entities\Space':
-                $events = !$entity->id ? array() : $this->findBySpace($entity, $date_from, $date_to, $limit, $offset);
+                $events = !$entity->id ? array() : $this->findBySpace($entity, $date_from, $date_to, $limit, $offset, $order);
                 break;
             case 'MapasCulturais\Entities\Registration':
-                $events = !$entity->owner->id ? array() : $app->repo('Event')->findByAgent($entity->owner, $date_from, $date_to, $limit, $offset);
+                $events = !$entity->owner->id ? array() : $app->repo('Event')->findByAgent($entity->owner, $date_from, $date_to, $limit, $offset, $order);
                 break;
             case 'MapasCulturais\Entities\Agent':
-                $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to, $limit, $offset);
+                $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to, $limit, $offset, $order);
                 break;
             case 'MapasCulturais\Entities\Project':
-                $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to, $limit, $offset);
+                $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to, $limit, $offset, $order);
                 break;
             default:
                 break;
@@ -42,7 +42,7 @@ class Event extends \MapasCulturais\Repository{
         return $events;
     }
 
-    public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null, $order = 'ASC'){
 
         $app = App::i();
 
@@ -113,7 +113,7 @@ class Event extends \MapasCulturais\Repository{
                 )
             
             ORDER BY
-                eo.starts_on, eo.starts_at
+                eo.starts_on $order, eo.starts_at
                 
             $dql_limit $dql_offset";
 
@@ -128,7 +128,7 @@ class Event extends \MapasCulturais\Repository{
         return $result;
     }
 
-    public function findByProject($project, $date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByProject($project, $date_from = null, $date_to = null, $limit = null, $offset = null, $order = 'ASC'){
 
         if($project instanceof \MapasCulturais\Entities\Project){
             $ids = $project->getChildrenIds();
@@ -195,7 +195,7 @@ class Event extends \MapasCulturais\Repository{
                 )
             
             ORDER BY
-                eo.starts_on, eo.starts_at
+                eo.starts_on $order, eo.starts_at
 
             $dql_limit $dql_offset";
 
@@ -210,7 +210,7 @@ class Event extends \MapasCulturais\Repository{
     }
 
 
-    public function findByAgent(\MapasCulturais\Entities\Agent $agent, $date_from = null, $date_to = null, $limit = null, $offset = null){
+    public function findByAgent(\MapasCulturais\Entities\Agent $agent, $date_from = null, $date_to = null, $limit = null, $offset = null, $order = 'ASC'){
         
         if(is_null($date_from)){
             $date_from = date('Y-m-d');
@@ -268,7 +268,7 @@ class Event extends \MapasCulturais\Repository{
                 )
             
             ORDER BY
-                eo.starts_on, eo.starts_at
+                eo.starts_on $order, eo.starts_at
                 
             $dql_limit $dql_offset";
 
@@ -284,7 +284,7 @@ class Event extends \MapasCulturais\Repository{
     }
 
 
-    public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false){
+    public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false, $order = 'ASC'){
                 
         if(is_null($date_from)){
             $date_from = date('Y-m-d');
@@ -330,7 +330,7 @@ class Event extends \MapasCulturais\Repository{
                 )
 
             ORDER BY
-                eo.starts_on, eo.starts_at
+                eo.starts_on $order, eo.starts_at
             
             $dql_limit $dql_offset";
 
@@ -380,11 +380,9 @@ class Event extends \MapasCulturais\Repository{
             return [];
         }
         
-        $dql = "SELECT e, o._startsOn, o._startsAt
+        $dql = "SELECT e
                 FROM MapasCulturais\Entities\Event e 
-                JOIN e.occurrences o 
-                WHERE e.id IN(:ids) 
-                ORDER BY o._startsOn ASC";
+                WHERE e.id IN(:ids) ";
 
         $q = $this->_em->createQuery($dql);
         $q->setParameter('ids', $ids);
