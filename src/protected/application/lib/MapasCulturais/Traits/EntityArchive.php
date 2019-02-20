@@ -31,6 +31,10 @@ trait EntityArchive{
 
         $this->status = self::STATUS_ARCHIVED;
 
+        if($this->usesFiles()){
+            $this->makeFilesPrivate();
+        }
+
         $this->save($flush);
 
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:before');
@@ -45,6 +49,12 @@ trait EntityArchive{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unarchive:before');
 
         $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
+
+        if($this->usesFiles()){
+            if($this->status === self::STATUS_ENABLED){
+                $this->makeFilesPublic();
+            }
+        }
 
         $this->save($flush);
 

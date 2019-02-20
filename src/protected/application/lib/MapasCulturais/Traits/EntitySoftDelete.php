@@ -48,6 +48,10 @@ trait EntitySoftDelete{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:before');
         
         $this->status = self::STATUS_TRASH;
+
+        if($this->usesFiles()){
+            $this->makeFilesPrivate();
+        }
         
         $this->save($flush);
         
@@ -74,6 +78,12 @@ trait EntitySoftDelete{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:before');
         
         $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
+
+        if($this->usesFiles()){
+            if($this->status === self::STATUS_ENABLED){
+                $this->makeFilesPublic();
+            }
+        }
 
         $this->save($flush);
         
