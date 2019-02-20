@@ -30,6 +30,10 @@ trait EntityDraft{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').publish:before');
 
         $this->status = self::STATUS_ENABLED;
+
+        if($this->usesFiles()){
+            $this->makeFilesPublic();
+        }
         
         $this->save($flush);
         
@@ -46,6 +50,10 @@ trait EntityDraft{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:before');
 
         $this->status = self::STATUS_DRAFT;
+
+        if($this->usesFiles()){
+            $this->makeFilesPrivate();
+        }
         
         $this->save($flush);
         

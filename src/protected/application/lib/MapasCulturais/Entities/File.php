@@ -314,7 +314,6 @@ abstract class File extends \MapasCulturais\Entity
         $cache_id = "{$this}:url";
         
         if($app->config['app.useFileUrlCache'] && $app->cache->contains($cache_id)){
-            $app->log->debug('-------------------- CACHE USED ' . $this . ' ---------------------');
             return $app->cache->fetch($cache_id);
         }
 
