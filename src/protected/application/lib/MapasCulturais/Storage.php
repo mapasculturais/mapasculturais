@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais;
 
+use \MapasCulturais\Entities\File;
+
 /**
  * Abstract File Storage.
  *
@@ -42,10 +44,10 @@ abstract class Storage{
      * @hook **storage.add({$owner_entity}):after** *($file, &$result)*
      * @hook **storage.add({$owner_entity}:{$file_group}):after** *($file, &$result)*
      */
-    public function add(\MapasCulturais\Entities\File $file){
+    public function add(File $file){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $app->applyHookBoundTo($this, 'storage.add:before', ['file' => $file]);
         if($owner){
@@ -75,10 +77,10 @@ abstract class Storage{
      * @hook **storage.remove({$owner_entity}):after** *($file, &$result)*
      * @hook **storage.remove({$owner_entity}:{$file_group}):after** *($file, &$result)*
      */
-    public function remove(\MapasCulturais\Entities\File $file){
+    public function remove(File $file){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $app->applyHookBoundTo($this, 'storage.remove:before', ['file' => $file]);
         if($owner){
@@ -104,10 +106,10 @@ abstract class Storage{
      * @hook **storage.url({$owner_entity}) ($file, &$path)**
      * @hook **storage.url({$owner_entity}:{$file_group}) ($file, &$path)**
      */
-    public function getUrl(\MapasCulturais\Entities\File $file){
+    public function getUrl(File $file){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         if ($file->private === true) {
             $result = $this->_getPrivateUrl($file);
@@ -141,10 +143,10 @@ abstract class Storage{
      * @hook **storage.path({$owner_entity}) ($file, &$path)**
      * @hook **storage.path({$owner_entity}:{$file_group}) ($file, &$path)**
      */
-    public function getPath(\MapasCulturais\Entities\File $file, $relative = false){
+    public function getPath(File $file, $relative = false){
         $app = App::i();
 
-        $owner = $file->getOwner();
+        $owner = $file->owner;
 
         $result = $this->_getPath($file, $relative);
 
@@ -156,13 +158,34 @@ abstract class Storage{
         return $result;
     }
 
+    public function togglePrivacy(File $file){
+        $file->checkPermission('changePrivacy');
+
+        $app = App::i();
+        $owner = $file->owner;
+
+        $app->applyHookBoundTo($this, 'storage.toggleFilePrivacy(' . $owner->getHookClassPath() . ':' . $file->group . ')', [$file]);
+
+
+        if($file->private){
+            $app->applyHookBoundTo($this, 'storage.makeFilePublic(' . $owner->getHookClassPath() . ':' . $file->group . ')', [$file]);
+            $this->_moveToPublicFolder($file);
+        } else {
+            $app->applyHookBoundTo($this, 'storage.makeFilePrivate(' . $owner->getHookClassPath() . ':' . $file->group . ')', [$file]);
+            $this->_moveToPrivateFolder($file);
+        }
+    }
+
     abstract public function createZipOfEntityFiles($entity);
 
-    abstract protected function _add(\MapasCulturais\Entities\File $file);
-    abstract protected function _remove(\MapasCulturais\Entities\File $file);
-    abstract protected function _getUrl(\MapasCulturais\Entities\File $file);
-    abstract protected function _getPrivateUrl(\MapasCulturais\Entities\File $file);
-    abstract protected function _getPrivateUrlById($file_id);
+    abstract protected function _add(File $file);
+    abstract protected function _remove(File $file);
+    abstract protected function _getUrl(File $file);
     abstract protected function _getUrlFromRelativePath($relative_path);
-    abstract protected function _getPath(\MapasCulturais\Entities\File $file, $relative = false);
+    abstract protected function _getPath(File $file, $relative = false);
+    abstract protected function _getPrivateUrl(File $file);
+    abstract protected function _getPrivateUrlById($file_id);
+
+    abstract protected function _moveToPublicFolder(File $file);
+    abstract protected function _moveToPrivateFolder(File $file);
 }
