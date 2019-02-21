@@ -206,11 +206,16 @@ abstract class File extends \MapasCulturais\Entity
         $app = App::i();
         
         $file_group = $app->getRegisteredFileGroup($this->owner->controllerId, $this->getGroup());
+
         if(is_null($this->private)){
             if ( is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true){
                 $this->private = true;
             } else {
-                $this->private = false;
+                if($this->owner->status > 0){
+                    $this->private = false;
+                } else {
+                    $this->private = true;
+                }
             }
         }
         
