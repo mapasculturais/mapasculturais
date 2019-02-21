@@ -9,9 +9,9 @@ return array_merge($config,
         'site.url' => 'http://localhost:8888/',
         'app.log.translations' => false,
         'slim.log.level' => Log::DEBUG,
-        'slim.log.enabled' => true,
+        'slim.log.enabled' => false,
 //        'app.log.query' => true,
-        'slim.debug' => true,
+        'slim.debug' => false,
         'auth.provider' => 'Test',
 
         'auth.config' => array(
@@ -22,7 +22,7 @@ return array_merge($config,
 //        'app.log.apiDql' => true,
 
         
-        'doctrine.isDev' => true,
+        'doctrine.isDev' => false,
 
         'doctrine.database' => array(
             'dbname'    => 'mapas',

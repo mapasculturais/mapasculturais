@@ -248,6 +248,8 @@ class FileSystem extends \MapasCulturais\Storage{
             mkdir (dirname($new_path), 0755, true);
         }
 
-        rename($current_path, $new_path);
+        if(file_exists($current_path)){
+            rename($current_path, $new_path);
+        }
     }
 }

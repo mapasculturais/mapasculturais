@@ -247,7 +247,7 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     protected function togglePrivacy(){
-        $this->checkPermission('changePrivate');
+        $this->checkPermission('changePrivacy');
 
         $app = App::i();
 
