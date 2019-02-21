@@ -83,6 +83,17 @@ trait EntityFiles{
         }
     }
 
+    function makeFilesPrivate(){
+        foreach($this->__files as $file){
+            $file->makePrivate();
+        }
+    }
+
+    function makeFilesPublic(){
+        foreach($this->__files as $file){
+            $file->makePublic();
+        }
+    }
 
     /**
      * This entity uses files
