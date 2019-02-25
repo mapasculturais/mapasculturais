@@ -27,13 +27,13 @@ class Event extends \MapasCulturais\Repository{
                 $events = !$entity->id ? array() : $this->findBySpace($entity, $date_from, $date_to, $limit, $offset, $order);
                 break;
             case 'MapasCulturais\Entities\Registration':
-                $events = !$entity->owner->id ? array() : $app->repo('Event')->findByAgent($entity->owner, $date_from, $date_to, $limit, $offset, $order);
+                $events = !$entity->owner->id ? array() : $this->findByAgent($entity->owner, $date_from, $date_to, $limit, $offset, $order);
                 break;
             case 'MapasCulturais\Entities\Agent':
-                $events = !$entity->id ? array() : $app->repo('Event')->findByAgent($entity, $date_from, $date_to, $limit, $offset, $order);
+                $events = !$entity->id ? array() : $this->findByAgent($entity, $date_from, $date_to, $limit, $offset, $order);
                 break;
             case 'MapasCulturais\Entities\Project':
-                $events = !$entity->id ? array() : $app->repo('Event')->findByProject($entity, $date_from, $date_to, $limit, $offset, $order);
+                $events = !$entity->id ? array() : $this->findByProject($entity, $date_from, $date_to, $limit, $offset, $order);
                 break;
             default:
                 break;

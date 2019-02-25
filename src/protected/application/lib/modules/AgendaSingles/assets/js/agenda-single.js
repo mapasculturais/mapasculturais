@@ -109,7 +109,7 @@ $(function() {
             if (result.trim() == "") {
                 //10 Ultimos eventos cadastrados
                 $.get(url, {from:"1900-01-01",to:"2100-01-01", limit: 10, offset: 0, orderDateDirection: 'DESC'}, function(result){
-                    html = '<div class="alert info"> Nenhum evento encontrado nas datas selecionas.</div>';
+                    html = '<div class="alert info"> Nenhum evento encontrado nas datas selecionadas.</div>';
                     
                     if (result.trim() == "") {
                         result = html;
