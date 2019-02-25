@@ -7946,7 +7946,7 @@ msgstr "Seleccione raza/color en caso de persona física"
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:138
 #: application/themes/BaseV1/layouts/parts/singles/space-servico.php:42
 msgid "Insira um email que não será exibido publicamente"
-msgstr "Ingrese un e-mail que será exhibido públicamente"
+msgstr "Ingrese un e-mail no que será exhibido públicamente"
 
 #: application/themes/BaseV1/layouts/parts/singles/agent-form.php:84
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:142
