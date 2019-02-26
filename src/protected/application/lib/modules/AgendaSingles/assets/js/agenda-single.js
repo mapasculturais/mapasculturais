@@ -108,7 +108,8 @@ $(function() {
         $.get(url, {from:$('#agenda-from').val(),to:$('#agenda-to').val()}, function(result){
             if (result.trim() == "") {
                 //10 Ultimos eventos cadastrados
-                $.get(url, {from:"1900-01-01",to:"2100-01-01", limit: 10, offset: 0, orderDateDirection: 'DESC'}, function(result){
+                $.get(url, {from:"1900-01-01",to:"2100-01-01", limit: 10, offset: 0, orderDateDirection: 'DESC'}, function(result) {
+
                     html = '<div class="alert info"> Nenhum evento encontrado nas datas selecionadas.</div>';
                     
                     if (result.trim() == "") {
