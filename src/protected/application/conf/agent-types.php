@@ -2,50 +2,50 @@
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
-return array(
-    'metadata' => array(
-        'nomeCompleto' => array(
+return [
+    'metadata' => [
+        'nomeCompleto' => [
             'private' => true,
             'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
-            'validations' => array(
-                'required' => \MapasCulturais\i::__('O campo Nome Completo(Se Agente Individual) ou Razão Social(Se Agente Coletivo) deve ser preenchido.')
-            )
-        ),
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo Nome Completo ou Razão Social deve ser preenchido.')
+            ]
+        ],
 
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
-            'validations' => array(
-            'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
-            // 'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
-//                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
-//                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
-           )
+            'validations' => [
+                // 'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
+                // 'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
+                // 'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
+                // 'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
+            ]
         ),
         'identidade' => [
             'private' => true,
             'label' => \MapasCulturais\i::__('Informe sua Identidade (RG)'),
             'type' => 'text',
-            'validations' => array(
-                'required' => \MapasCulturais\i::__('O campo Identidade (RG) deve ser preenchido.')
-            )
+            // 'validations' => [
+                // 'required' => \MapasCulturais\i::__('O campo Identidade (RG) deve ser preenchido.')
+            // ]
         ],
         'expedicaoIdentidade' => [
             'private' => true,
             'label' => \MapasCulturais\i::__('Informe a Data de Expedição (RG)'),
             'type' => 'date',
             'validations' => [
-                'required' => \MapasCulturais\i::__('O campo Data de Expedição (RG) deve ser preenchido.'),
+                // 'required' => \MapasCulturais\i::__('O campo Data de Expedição (RG) deve ser preenchido.'),
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
             ]
         ],
         'expedidorIdentidade' => [
             'private' => true,
             'label' => \MapasCulturais\i::__('Informe o Órgão Expedidor (RG)'),
-            'validations' => [
-                'required' => \MapasCulturais\i::__('O campo Órgão Expedidor (RG) deve ser preenchido.')
-            //     'v::allOf(v::regex("#[a-zA-Z]/[a-zA-Z]{2}#"))' => \MapasCulturais\i::__('Por favor, informe o expedidor/unidade federativa, exemplo: SSP/CE , SSP/DF')
-            ]
+            // 'validations' => [
+                // 'required' => \MapasCulturais\i::__('O campo Órgão Expedidor (RG) deve ser preenchido.')
+                // 'v::allOf(v::regex("#[a-zA-Z]/[a-zA-Z]{2}#"))' => \MapasCulturais\i::__('Por favor, informe o expedidor/unidade federativa, exemplo: SSP/CE , SSP/DF')
+            // ]
         ],
 
         'escolaridade' => [
@@ -103,7 +103,7 @@ return array(
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
             'validations' => array(
-                'required' => \MapasCulturais\i::__('O campo Data de Nascimento/Fundação deve ser preenchido.'),
+                // 'required' => \MapasCulturais\i::__('O campo Data de Nascimento/Fundação deve ser preenchido.'),
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
             )
         ),
@@ -122,9 +122,9 @@ return array(
                 'Travesti' => \MapasCulturais\i::__('Travesti'),
                 'Outras' => \MapasCulturais\i::__('Outras')
             ),
-            'validations' => array(
-                'required' => \MapasCulturais\i::__('O campo Gênero deve ser preenchido.'),
-            )
+            // 'validations' => [
+            //     'required' => \MapasCulturais\i::__('O campo Gênero deve ser preenchido.'),
+            // ]
         ),
 
         'orientacaoSexual' => [
@@ -154,10 +154,10 @@ return array(
 
         'emailPrivado' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Email Privado'),
+            'label' => \MapasCulturais\i::__('Email Principal'),
             'validations' => array(
-                //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
-                'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
+                'required' => \MapasCulturais\i::__('O email Principal é obrigatório.'),
+                'v::email()' => \MapasCulturais\i::__('O email Principal não é um email válido.')
             )
         ),
 
@@ -193,26 +193,38 @@ return array(
                 return !$this->publicLocation;
             },
             'label' => \MapasCulturais\i::__('Endereço'),
-            'type' => 'text'
+            'type' => 'text',
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo Endereço deve ser preenchido.'),
+            ]
         ),
                     
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
-            'private' => function(){
+            'private' => function() {
                 return !$this->publicLocation;
             },
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo CEP deve ser preenchido.'),
+            ]
         ],
         'En_Nome_Logradouro' => [
             'label' => \MapasCulturais\i::__('Logradouro'),
             'private' => function(){
                 return !$this->publicLocation;
             },
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo Logradouro deve ser preenchido.'),
+            ]
         ],
         'En_Num' => [
             'label' => \MapasCulturais\i::__('Número'),
             'private' => function(){
                 return !$this->publicLocation;
             },
+            'validations' => [
+                'required' => \MapasCulturais\i::__('O campo Número do Endereço deve ser preenchido.'),
+            ]
         ],
         'En_Complemento' => [
             'label' => \MapasCulturais\i::__('Complemento'),
@@ -276,7 +288,6 @@ return array(
                 return !$this->publicLocation;
             },
             'type' => 'select',
-
             'options' => array()
         ],
 
@@ -320,9 +331,10 @@ return array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             )
         )
-    ),
-    'items' => array(
+    ],
+
+    'items' => [
         1 => array( 'name' => \MapasCulturais\i::__('Individual' )),
         2 => array( 'name' => \MapasCulturais\i::__('Coletivo') ),
-    )
-);
+    ]
+];
