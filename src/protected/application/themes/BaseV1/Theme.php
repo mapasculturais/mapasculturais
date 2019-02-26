@@ -2,6 +2,7 @@
 
 namespace MapasCulturais\Themes\BaseV1;
 
+use function foo\func;
 use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
@@ -847,6 +848,22 @@ class Theme extends MapasCulturais\Theme {
             });
         }
 
+        $app->hook('can-edit', function(&$can_edit, $entity) use ($app){
+            $user_id = $entity->user->id;
+
+            $em = $app->em;
+            $conn = $em->getConnection();
+
+            $result = $conn->fetchAssoc("SELECT * FROM agent_meta WHERE key = 'rcv_tipo' and (value = 'entidade' OR value = 'ponto')  AND object_id ='$user_id'");
+
+            if(empty($result))
+            {
+                $can_edit = true;
+            }
+            else {
+                $can_edit = false;
+            }
+        });
 
         $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
@@ -1236,23 +1253,7 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('template(event.<<create|edit|single>>.tab-about-service):before', function(){
             $this->part('event-attendance', ['entity' => $this->data->entity]);
         });
-
-        $app->hook('entity(opportunity).load:before', function($controller, $action) use ($app) {
-            if ($controller instanceof \MapasCulturais\Controllers\Opportunity && 'single' === $action) {
-                list(,$entity,$_id) = explode('/',$app->request()->getResourceUri());
-                $_id = (int) $_id;
-                if ('oportunidade' === $entity && $_id === 1) {
-                    $rcv = $app->repo('Opportunity')->find($_id);
-                    // Test's against RCV's specific features
-                    if (is_object($rcv) && is_null($rcv->subsiteId) && $rcv->name === "Rede Cultura Viva") {
-                        $app->response()->headers->set('Location',"http://culturaviva.gov.br/");
-                        $app->halt(200);
-                    }
-                }
-            }
-        });
     }
-
 
     /*
      * This methods tries to fill the address fields using the postal code
@@ -1260,10 +1261,10 @@ class Theme extends MapasCulturais\Theme {
      * By default it relies on brazilian CEP, but you can override this methods
      * to use another API.
      *
-     * It should return an Arrau with an item success set to true or false.
+     * It should return an Array with an item success set to true or false.
      *
      * If true, it has to return the following fields.
-     * Note: lat & lon are optional, they are not beeing used yet but will probably be soon
+     * Note: lat & lon are optional, they are not being used yet but will probably be soon
      *
      * response example:
      *
