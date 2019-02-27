@@ -1648,8 +1648,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
 
     $scope.setRegistrationStatus = function(registration, status, is_bulk) {
-
-        if(MapasCulturais.entity.userHasControl && (status.value !== 0 || confirm(labels['confirmReopen']))) {
+        var can = false;
+        if(MapasCulturais.request.controller === 'opportunity'){
+            can = MapasCulturais.entity.userHasControl;
+        } else if(MapasCulturais.request.controller === 'registration') {
+            can = registration.id === MapasCulturais.entity.id;
+        }
+        if(can && (status.value !== 0 || confirm(labels['confirmReopen']))) {
             var slug = $scope.getStatusSlug(status.value);
 
             RegistrationService.setStatusTo(registration, slug).success(function(entity) {
