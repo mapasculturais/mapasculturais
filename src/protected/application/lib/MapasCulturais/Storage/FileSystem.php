@@ -208,7 +208,8 @@ class FileSystem extends \MapasCulturais\Storage{
             $fileName = $entity->id . '.zip';
         }
 
-        if(exec('zip -j ' . $tmpName . ' ' . $strFiles)){
+        if(exec('zip -j ' . $tmpName . ' ' . $strFiles) && file_exists($tmpName)){
+            
             $file_class = $entity->getFileClassName();
             $newFile = new $file_class ([
                 'name' => $fileName,
