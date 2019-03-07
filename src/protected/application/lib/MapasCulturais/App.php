@@ -436,13 +436,12 @@ class App extends \Slim\Slim{
 
         $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
         foreach ($available_modules as $module){
-            $this->applyHookBoundTo($this, "app.module({$module}).init:before");
             $module_class_name = "$module\Module";
-            if(isset($config["module.$module"])){
-                $this->_modules[$module] = new $module_class_name($config["module.$module"]);
-            } else {
-                $this->_modules[$module] = new $module_class_name;
-            }
+            $module_config = isset($config["module.$module"]) ? 
+            $config["module.$module"] : [];
+            
+            $this->applyHookBoundTo($this, "app.module({$module}).init:before", [&$module_config]);
+            $this->_modules[$module] = new $module_class_name($module_config);
             $this->applyHookBoundTo($this, "app.module({$module}).init:after");
         }
         $this->applyHookBoundTo($this, 'app.modules.init:after');
