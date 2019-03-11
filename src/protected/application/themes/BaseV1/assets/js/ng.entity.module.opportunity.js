@@ -2043,24 +2043,25 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             var ks = $scope.data.keywords;
             var result = false;
 
-            if($scope.evaluations[registration.id]){
-                result = true;
-            } else {
-                return false;
+            if(typeof $scope.evaluations[registration.id] == 'undefined') {
+               return false;
             }
 
             if(ks.length > 0){
+                result = false;
                 for(var i in ks){
                     var k = ks[i];
                     if(k == registration.number || k == registration.id || registration.owner.name.toLowerCase().indexOf(k) >= 0){
                         result = true;
                     }
 
-                    if($scope.evaluations[registration.id] && $scope.evaluations[registration.id].resultString.toLowerCase() == k){
+                    if( $scope.evaluations[registration.id] != null && $scope.evaluations[registration.id].resultString.toLowerCase() == k){
                         result = true;
                     }
                 }
-            } 
+            } else {
+                result = true
+            }
 
             if($scope.data.pending){
                 if($scope.evaluated(registration)){
