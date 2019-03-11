@@ -2037,11 +2037,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         };
 
         $scope.show = function(registration){
-            if(registration.status === 0){
+            if(registration.status != undefined && registration.status == 0){
                 return false;
             }
             var ks = $scope.data.keywords;
             var result = false;
+
+            if($scope.evaluations[registration.id]){
+                result = true;
+            } else {
+                return false;
+            }
+
             if(ks.length > 0){
                 for(var i in ks){
                     var k = ks[i];
@@ -2053,9 +2060,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         result = true;
                     }
                 }
-            } else {
-                result = true;
-            }
+            } 
 
             if($scope.data.pending){
                 if($scope.evaluated(registration)){
