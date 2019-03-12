@@ -180,6 +180,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         if($user->is('guest')){
             return false;
         }
+
         $cache_id = "$registration -> $user";
 
         if(isset($this->_canUserEvaluateRegistrationCache[$cache_id])){
@@ -188,7 +189,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
         $config = $registration->getEvaluationMethodConfiguration();
         
-        $can = $config->canUser('@control', $user);
+        $can = $registration->opportunity->canUser('evaluateRegistrations', $user);
         
         if($can && $this->fetchRegistrations()){
             
