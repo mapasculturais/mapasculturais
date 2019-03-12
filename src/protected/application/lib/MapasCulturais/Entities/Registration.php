@@ -833,7 +833,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewUserEvaluation($user){
-        if($this->status <= 0) {
+        if($this->status <= Registration::STATUS_DRAFT || $this->status == Registration::STATUS_INVALID) {
             return false;
         }
 
@@ -841,7 +841,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewConsolidatedResult($user){
-        if($this->status <= 0) {
+        if($this->status <= Registration::STATUS_DRAFT || $this->status == Registration::STATUS_INVALID) {
             return false;
         }
 
