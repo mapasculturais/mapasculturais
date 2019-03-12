@@ -813,7 +813,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserEvaluate($user){
-        $can = $this->canUserViewUserEvaluation($user);
+        $can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
 
         $evaluation_sent = false;
 
@@ -837,7 +837,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        return $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+        return $this->opportunity->canUser('viewEvaluations', $user);
     }
 
     protected function canUserViewConsolidatedResult($user){
