@@ -813,8 +813,12 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserEvaluate($user){
-        //$can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
-        $can = $this->canUserViewUserEvaluation($user);
+
+        if($this->status <= Registration::STATUS_DRAFT || $this->status == Registration::STATUS_INVALID) {
+            return false;
+        }
+
+        $can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
 
         $evaluation_sent = false;
 
@@ -834,15 +838,23 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewUserEvaluation($user){
-        if($this->status <= 0) {
+        if($this->status <= Registration::STATUS_DRAFT || $this->status == Registration::STATUS_INVALID) {
             return false;
         }
+
+        if($this->canUser('@control')) {	
+            return true;	
+        }
+
+        if($this->opportunity->canUser('@control')) {	
+            return true;	
+        }
+
         return $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
-        //return $this->opportunity->canUser('viewEvaluations', $user);
     }
 
     protected function canUserViewConsolidatedResult($user){
-        if($this->status <= 0) {
+        if($this->status <= Registration::STATUS_DRAFT || $this->status == Registration::STATUS_INVALID) {
             return false;
         }
 
