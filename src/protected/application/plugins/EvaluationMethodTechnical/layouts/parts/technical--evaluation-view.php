@@ -6,22 +6,29 @@ use MapasCulturais\i;
         <h3><?php i::_e('Avaliação Técnica'); ?>:</h3>
         <h4><?php i::_e('Pontuações'); ?>:</h4> 
         <section ng-repeat="section in ::data.sections">
-             {{section.name}}: <strong>{{subtotalSection(section)}}</strong>
-             <div ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
-                <span>
-                    - {{cri.title}} <strong>{{evaluation[cri.id]}}</strong> (min: {{cri.min}} max: {{cri.max}} peso: {{cri.weight}})
-                </span>
-            </div>
+            <p>
+                <strong>{{section.name}}</strong> <br>
+                <?php i::_e('Avaliação'); ?> <strong> {{subtotalSection(section)}} </strong>
+            </p>
+            <table>
+                <tr ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id" >
+                 <td> {{cri.title}} <br> (min: {{cri.min}} max: {{cri.max}} peso: {{cri.weight}}) </td>
+                 <td style="padding:15px"> {{evaluation[cri.id]}} </td>
+                </tr>
+            </table> 
+           
         </section>
         <hr>
         <section class='total'>
-            <?php i::_e('Total'); ?>: <strong>{{total(total)}}</strong><br>
+            <strong><?php i::_e('Total'); ?>: {{total(total)}}</strong><br>
             <?php i::_e('Avaliação máxima'); ?>: <strong>{{max(total)}}</strong>
         </section>
         <hr>
         <label>
             <strong><?php i::_e('Parecer Técnico') ?>:</strong>
-            <p>{{evaluation['obs']}}</p>
+            <table>
+                <tr><td style="text-align:left; padding: 15px;">{{evaluation['obs']}}</td></tr>
+            </table
         </label>
     </div>
 </div>
