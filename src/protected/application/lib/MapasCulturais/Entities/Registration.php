@@ -860,14 +860,14 @@ class Registration extends \MapasCulturais\Entity
     protected function canUserViewPrivateData($user){
         $can = $this->__canUserViewPrivateData($user);
 
-        $canUserEvaluateNextPhase = false;
+        $canUserNextPhase = false;
         if($this->getMetadata('nextPhaseRegistrationId') !== null) {
             $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
             if(!empty($next_phase_registration))
-                $canUserEvaluateNextPhase = $this->getEvaluationMethod()->canUserEvaluateRegistration($next_phase_registration, $user);
+                $canUserNextPhase = $next_phase_registration->canUser('viewPrivateData', $user);
         }
 
-        $canUserEvaluate = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user) || $canUserEvaluateNextPhase;
+        $canUserEvaluate = $this->canUser('viewUserEvaluation', $user) || $canUserNextPhase;
 
         return $can || $canUserEvaluate;
     }
