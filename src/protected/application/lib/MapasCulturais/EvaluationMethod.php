@@ -254,10 +254,10 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         return $can;
     }
 
-    function canUserViewConsolidatedResult(Entities\Registration $registration){
+    function canUserViewConsolidatedResult(Entities\Registration $registration, $user){
         $opp = $registration->opportunity;
 
-        if($opp->publishedRegistrations || $opp->canUser('@control')){
+        if($opp->publishedRegistrations || $opp->canUser('@control', $user)){
             return true;
         } else {
             return false;

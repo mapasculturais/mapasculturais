@@ -854,10 +854,6 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewConsolidatedResult($user){
-        if($this->status <= Registration::STATUS_DRAFT || $this->status == Registration::STATUS_INVALID) {
-            return false;
-        }
-
         return $this->getEvaluationMethod()->canUserViewConsolidatedResult($this, $user);
     }
 
