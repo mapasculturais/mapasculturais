@@ -1980,12 +1980,21 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             '@select': 'id,singleUrl,projectName,owner.{id,name}'
         });
 
+        var evaluationQueryData = {};
+        var valuerId = MapasCulturais.valuerId;
 
-        var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', {
+        evaluationQueryData = {
             '@opportunity': getOpportunityId(),
             '@limit': 10000,
-            '@select': 'id,singleUrl,projectName,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
-        });
+            '@select': 'id,singleUrl,projectName,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,',
+            '@order': 'evaluation desc'
+        };        
+
+        if (valuerId) {
+            evaluationQueryData['valuer:id'] = 'EQ(' + valuerId + ')';
+        } 
+
+        var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', evaluationQueryData);
 
         registrationsApi.find().success(function(){
             $scope.registrations = $scope.data.registrations;

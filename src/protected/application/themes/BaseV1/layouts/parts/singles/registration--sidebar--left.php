@@ -1,18 +1,23 @@
 <?php
     use MapasCulturais\i;
-    $uidParam = (isset($entity->controller->urlData['uid'])) ? 'uid:' . $entity->controller->urlData['uid'] : null ;
+    $userIdParam = (isset($entity->controller->urlData['uid'])) ? intval($entity->controller->urlData['uid']) : null ;
+    $agentIdParam = (isset($entity->controller->urlData['aid'])) ? intval($entity->controller->urlData['aid']) : null ;
     $configuration = $opportunity->evaluationMethodConfiguration;
     $definition = $configuration->definition;
     $evaluationMethod = $definition->evaluationMethod;
     $evaluationMethodResultStatusList = $evaluationMethod->getResultStatusList();
     $this->jsObject['evaluationMethodResultStatusList'] = $evaluationMethodResultStatusList;
+    $this->jsObject['valuerId'] = $agentIdParam;
 ?>
 <div class="sidebar-left sidebar registration">
 
     <?php if($action === 'single' && !$opportunity->publishedRegistrations && $entity->canUser('viewUserEvaluation')): ?>
 
     <div ng-controller="RegistrationListController" id="registrations-list-container">
-        <h4><?php i::_e('Inscrições'); ?></h4>
+        <h4><?php i::_e('Avaliador'); ?></h4>
+        <p><label>Nome:</label> {{data.evaluations[0].evaluation.agent.name}}</p>
+        <hr/>  
+        <h4><?php i::_e('Inscrições'); ?></h4>  
         <div class="registrations-list-filter">
             <fieldset>
                 <legend><?php i::_e('Filtrar inscrições'); ?></legend>
@@ -22,7 +27,6 @@
                 </div>
             </fieldset>
         </div>
-        <hr/>     
         <ul id="registrations-list" class="registrations-list">
             <li ng-repeat="registration in data.registrations" ng-show="show(registration)" class="registration-item"
 
@@ -33,7 +37,7 @@
                     valid: getEvaluationResult(registration) === '1',
                     invalid: getEvaluationResult(registration) === '-1'
                     }">
-                <a href="{{::registration.singleUrl}}<?php echo $uidParam; ?>">
+                <a href="{{::registration.singleUrl}}<?php echo ($agentIdParam && $userIdParam) ?  'aid:' . $agentIdParam . '/uid:' . $userIdParam .'/' : ''; ?>">
                     <div class="registration-evaluated"> (<?php i::_e('Avaliação:'); ?> <strong> {{status_str(registration)}}</strong>) </div>
                     <div class="registration-number">{{::registration.number}}</div>
                     <div class="registration-owner">{{::registration.owner.name}}</div>

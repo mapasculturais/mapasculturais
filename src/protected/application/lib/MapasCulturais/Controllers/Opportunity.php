@@ -587,7 +587,7 @@ class Opportunity extends EntityController {
             foreach($eq as $e){
                 if(isset($valuer_by_user[$e['user']])){
                     $e['agent'] = $valuer_by_user[$e['user']];
-                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
+                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'],'aid'=>$e['agent']['id'] , 'uid' => $e['user']]);
                     $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
                     $evaluations[$e['user'] . ':' . $e['registration']] = $e;
                 }

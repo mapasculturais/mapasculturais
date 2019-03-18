@@ -13,9 +13,8 @@ $data = $evaluation->evaluationData;
 
 $class = $evaluation->result == 1 ? 'evaluation-valid' : 'evaluation-invalid';
 ?>
+<h3><?php i::_e('Avaliação Documental'); ?>:</h3> 
 <div id="documentary-evaluation-view" class="widget documentary-evaluation-view <?php echo $class ?>">
-    
-    <h3><?php i::_e('Avaliação Documental') ?></h3>
     <h4><?php echo $evaluation->resultString; ?></h4>
     
     <ul>
