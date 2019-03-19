@@ -1939,8 +1939,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
             return  $scope.evaluations[registration.id] && $scope.evaluations[registration.id].result !== null;
         };
 
-        $scope.status_str = function(registration) {
-            return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : 'Pendente';
+			var labels = MapasCulturais.gettext.moduleOpportunity;
+			$scope.status_str = function(registration) {
+            return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : labels['pending'];
         };
 
         $scope.getEvaluationResult = function(registration) {
