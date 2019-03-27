@@ -2196,8 +2196,8 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addEntityTypesToJs($entity) {
-
-        $controller = App::i()->getControllerByEntity($entity);
+        $app = App::i();
+        $controller = $app->getControllerByEntity($entity);
         $types = $controller->types;
 
         usort($types, function($a, $b) {
@@ -2213,6 +2213,10 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['entityTypes'] = array();
 
         $this->jsObject['entityTypes'][$controller->id] = $types;
+        
+        foreach($types as $t){
+            $meta = $app->getRegisteredMetadata($entity, $t->id);
+        }
     }
 
     function addTaxonoyTermsToJs($taxonomy_slug) {
