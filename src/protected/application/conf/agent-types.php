@@ -334,14 +334,14 @@ return [
         2 => [ 
                 'name' => \MapasCulturais\i::__('Coletivo'),
                 'metadata' => [
-                    'nomeCompleto' => [
+                    'razaoSocial' => [
                         'private' => true,
                         'label' => \MapasCulturais\i::__('Razão Social'),
                         'validations' => [
                             'required' => \MapasCulturais\i::__('O campo Razão Social deve ser preenchido.')
                         ]
                     ],
-                    'dataDeNascimento' => array(
+                    'dataDeFundacao' => array(
                         'private' => true,
                         'label' => \MapasCulturais\i::__('Data de Fundação'),
                         'type' => 'date',
@@ -349,7 +349,7 @@ return [
                             'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
                         )
                     ),
-                    'documento' => array(
+                    'cnpj' => array(
                         'private' => true,
                         'label' => \MapasCulturais\i::__('CNPJ'),
                         'validations' => [
