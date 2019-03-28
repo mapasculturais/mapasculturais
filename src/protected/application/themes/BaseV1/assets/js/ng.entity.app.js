@@ -24,6 +24,12 @@
         $scope.setRedirectUrl = function() {
             loginService.setLastUrl();
         }
+        $scope.showField = function(fieldName) {
+            var entity =  $('#entityType').data('entity');
+            var entityType =  $('#entityType .js-editable-type').editable('getValue');
+            return MapasCulturais.entityTypesMetadata[entity][entityType][fieldName] == undefined;
+        }
+
     }]);
 
     app.directive('onRepeatDone', ['$rootScope', '$timeout', function($rootScope, $timeout) {

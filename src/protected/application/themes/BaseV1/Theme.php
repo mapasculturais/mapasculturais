@@ -2214,8 +2214,9 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['entityTypes'][$controller->id] = $types;
         
-        foreach($types as $t){
+        foreach($types as $t){            
             $meta = $app->getRegisteredMetadata($entity, $t->id);
+            $this->jsObject['entityTypesMetadata'][$controller->id][$t->id] = $meta;
         }
     }
 
