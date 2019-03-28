@@ -38,15 +38,15 @@
             </p>
             <?php endif; ?>
             <!-- Campo Razão Completo -->
-            <?php if ( key_exists ('razaoSocial', $metas) ): ?>
-            <p class="privado">
+            
+            <p class="privado" ng-if="showField('razaoSocial')">
                 <span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Razão Social");?>:</span> 
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"razaoSocial") && $editEntity? 'required': '');?>" data-edit="razaoSocial" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a razão social");?>">
                     <?php echo $entity->razaoSocial; ?>
                 </span>
             </p>
-            <?php endif; ?>
+           
             <!-- Campo Nome Social -->
             <?php if ( key_exists ('nomeSocial', $metas) ): ?>
             <p class="privado">
