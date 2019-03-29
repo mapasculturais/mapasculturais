@@ -1637,7 +1637,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.options.display === false) {
                 return;
             }
-
+            this.$element[0].dataset.value = $.trim(this.value);
+            
             //if input has `value2htmlFinal` method, we pass callback in third param to be called when source is loaded
             if(this.input.value2htmlFinal) {
                 return this.input.value2html(this.value, this.$element[0], this.options.display, response);
