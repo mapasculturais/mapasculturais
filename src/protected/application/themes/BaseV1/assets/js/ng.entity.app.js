@@ -24,11 +24,23 @@
         $scope.setRedirectUrl = function() {
             loginService.setLastUrl();
         }
-        $scope.showField = function(fieldName) {
-            var entity =  $('#entityType').data('entity');
-            var entityType =  $('#entityType .js-editable-type').editable('getValue');
-            return MapasCulturais.entityTypesMetadata[entity][entityType][fieldName] == undefined;
+
+        $scope.entityName = $('#entityType').attr('data-entity');
+        $scope.entityType = $scope.getEntityType();
+        $scope.entityTypeFields = [];
+        //CREATE LIST FIELDS
+
+        $scope.getEntityType = function() {         
+            return parseInt($('#entityType').attr('data-value'));
         }
+
+        $scope.showField = function(fieldName) {            
+            return MapasCulturais.entityTypesMetadata[$scope.entityName][$scope.entityType][fieldName] !== undefined;
+        }
+
+        $scope.$watch($scope.getEntityType, function(typeId){
+            $scope.entityType = typeId;
+        });
 
     }]);
 
