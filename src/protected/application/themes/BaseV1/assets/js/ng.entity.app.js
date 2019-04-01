@@ -20,27 +20,31 @@
 
     app.controller('EntityController',['$scope', 'EditBox', 'loginService', function($scope, EditBox, loginService){
         $scope.editbox = EditBox;
-        $scope.data = {};
         $scope.setRedirectUrl = function() {
             loginService.setLastUrl();
         }
 
-        $scope.entityName = $('#entityType').attr('data-entity');
-        $scope.entityType = $scope.getEntityType();
-        $scope.entityTypeFields = [];
-        //CREATE LIST FIELDS
-
         $scope.getEntityType = function() {         
             return parseInt($('#entityType').attr('data-value'));
         }
-
-        $scope.showField = function(fieldName) {            
-            return MapasCulturais.entityTypesMetadata[$scope.entityName][$scope.entityType][fieldName] !== undefined;
+ 
+        $scope.data= {
+            entityName: MapasCulturais.request.controller,
+            entityType: $scope.getEntityType()
         }
 
-        $scope.$watch($scope.getEntityType, function(typeId){
-            $scope.entityType = typeId;
+        $('#entityType').on('hidden', function() {
+            $scope.data.entityType =  $scope.getEntityType();
+            $scope.$apply();
+            MapasCulturais.Editables.createAll();
         });
+
+        $scope.showField = function(fieldName) {  
+            if (MapasCulturais.entityTypesMetadata) {
+               return MapasCulturais.entityTypesMetadata[$scope.data.entityName][$scope.data.entityType][fieldName] !== undefined;
+            }   
+            return false; 
+        }
 
     }]);
 
