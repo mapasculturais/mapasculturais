@@ -1,18 +1,17 @@
-<?php $metas = $entity->getRegisteredMetadata(); ?>
 <div class="ficha-spcultura">
     <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
         <div class="alert warning">
-            <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> 
-            <?php echo strlen($entity->shortDescription) ?> 
+            <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
+            <?php echo strlen($entity->shortDescription) ?>
             <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?>
         </div>
     <?php endif; ?>
     <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
 
-    <?php $this->applyTemplateHook('tab-about-service','before'); ?>
+    <?php $this->applyTemplateHook('tab-about-service','before'); ?><!--. hook tab-about-service:before -->
 
     <div class="servico">
-        <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
+        <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
         <!-- Campo Site -->
         <?php if($this->isEditable() || $entity->site): ?>
             <p ng-if="showField('site')">
@@ -221,8 +220,8 @@
             </p>
         <?php endif; ?>
 
-        <?php $this->applyTemplateHook('tab-about-service','end'); ?>
+        <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
     </div>
 
-    <?php $this->applyTemplateHook('tab-about-service','after'); ?>
+    <?php $this->applyTemplateHook('tab-about-service','after'); ?><!--. hook tab-about-service:after -->
 </div>
