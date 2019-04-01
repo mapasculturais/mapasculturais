@@ -142,18 +142,7 @@ return [
                 'Pública' => \MapasCulturais\i::__('Pública'),
                 'Privada' => \MapasCulturais\i::__('Privada')
             ]
-        ],
-        'nacionalidade' => [
-            'private' => true,
-            'label' => \MapasCulturais\i::__('Informe sua Nacionalidade'),
-            'type' => 'string'
-        ],
-
-        'naturalidade' => [
-            'private' => true,
-            'label' => \MapasCulturais\i::__('Informe sua Naturalidade'),
-            'type' => 'string'
-        ],
+        ],        
 
         'site' => [
             'label' => \MapasCulturais\i::__('Site'),
@@ -327,6 +316,17 @@ return [
                             'required' => \MapasCulturais\i::__('O campo Órgão Expedidor (RG) deve ser preenchido.'),
                             'v::allOf(v::regex("#[a-zA-Z]/[a-zA-Z]{2}#"))' => \MapasCulturais\i::__('Por favor, informe o expedidor/unidade federativa, exemplo: SSP/CE , SSP/DF')
                         ]
+                    ],
+                    'nacionalidade' => [
+                        'private' => true,
+                        'label' => \MapasCulturais\i::__('Informe sua Nacionalidade'),
+                        'type' => 'string'
+                    ],
+            
+                    'naturalidade' => [
+                        'private' => true,
+                        'label' => \MapasCulturais\i::__('Informe sua Naturalidade'),
+                        'type' => 'string'
                     ],
             
                 ]    

@@ -62,7 +62,7 @@
             <!-- Campo Data de Nascimento -->
             <p class="privado" ng-if="showField('dataDeNascimento')">
                 <span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento/Fundação");?>:</span>
+                <span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento");?>:</span>
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"dataDeNascimento") && $this->isEditable()? 'required': '');?>" data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Data de Nascimento");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a data de nascimento");?>">
                     <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                 </span>
