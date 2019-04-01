@@ -6794,6 +6794,45 @@ return [
         $conn->executeQuery("INSERT INTO city (id, state_id, name) VALUES (5505, 27, 'Tupiratins')");
         $conn->executeQuery("INSERT INTO city (id, state_id, name) VALUES (5506, 27, 'Wanderlândia')");
         $conn->executeQuery("INSERT INTO city (id, state_id, name) VALUES (5507, 27, 'Xambioá')");
+    },
+
+    'update agent_meta_id sequence' => function() use ($conn){
+        $last_id = $conn->fetchColumn ('SELECT max(id) FROM agent_meta;');
+        $last_id++;
+
+        __exec("DROP SEQUENCE IF EXISTS agent_meta_id_seq CASCADE;");
+
+        __exec("CREATE SEQUENCE agent_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+
+        $conn->executeQuery("ALTER SEQUENCE agent_meta_id_seq START {$last_id} RESTART");
+        
+        $conn->executeQuery("ALTER TABLE ONLY agent_meta ALTER COLUMN id SET DEFAULT nextval('agent_meta_id_seq'::regclass);");
+    },
+
+    'copy agent_meta between types individual to coletivo' => function() use ($conn){
+       
+        //NomeCompleto TO Razao Social
+        $conn->executeQuery("INSERT INTO agent_meta (id, object_id, key, value)  
+		SELECT  nextval('agent_meta_id_seq'), am.object_id, 'razaoSocial'::varchar(255) as key, am.value 
+        FROM agent_meta am 
+		INNER JOIN agent ag ON ag.id = am.object_id AND ag.type=2
+		WHERE am.key='nomeCompleto';");
+        
+        //Data Nascimento TO Data Fundacao
+        $conn->executeQuery("INSERT INTO agent_meta (id, object_id, key, value)  
+		SELECT  nextval('agent_meta_id_seq'), am.object_id, 'dataDeFundacao'::varchar(255) as key, am.value
+		FROM agent_meta am 
+		INNER JOIN agent ag ON ag.id = am.object_id AND ag.type=2
+		WHERE am.key='dataDeNascimento';");
+        
+        //Documento TO CNPJ
+        $conn->executeQuery("INSERT INTO agent_meta (id, object_id, key, value)  
+		SELECT  nextval('agent_meta_id_seq'), am.object_id, 'cnpj'::varchar(255) as key, am.value
+		FROM agent_meta am 
+		INNER JOIN agent ag ON ag.id = am.object_id AND ag.type=2
+		WHERE am.key='documento';");
+
     }
+
 
 ] + $updates ;
