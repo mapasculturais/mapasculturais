@@ -358,22 +358,21 @@ class Registration extends EntityController {
     }
     
     function POST_saveEvaluation(){
+        $app = App::i();
         $registration = $this->getRequestedEntity();
-
-        if(isset($this->postData['uid'])){
-            $user = App::i()->repo('User')->find($this->postData['uid']);
-        } else {
-            $user = null;
-        }
+        $user = (isset($this->postData['uid'])) ? $app->repo('User')->find($this->postData['uid']) : null;
+        $status = (isset($this->urlData['status'])) ? $this->urlData['status'] : null;
         
-        if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
-            if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
-                $this->errorJson($errors, 400);
-                return;
-            } else {
-                $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
-                $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
-            }
+        $errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data']);
+        
+        if(count($errors) > 0){
+            $this->errorJson($errors, 400);
+            return;
+        } 
+        
+        if( $status === 'evaluated'){ 
+            $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;          
+            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
@@ -382,22 +381,21 @@ class Registration extends EntityController {
     }
 
     function POST_saveEvaluationAndChangeStatus(){
+        $app = App::i();
         $registration = $this->getRequestedEntity();
+        $user = (isset($this->postData['uid'])) ? $app->repo('User')->find($this->postData['uid']) : null;
+        $status = (isset($this->urlData['status'])) ? $this->urlData['status'] : null;
+        
+        $errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data']);
+        
+        if(count($errors) > 0){
+            $this->errorJson($errors, 400);
+            return;
+        } 
 
-        if(isset($this->postData['uid'])){
-            $user = App::i()->repo('User')->find($this->postData['uid']);
-        } else {
-            $user = null;
-        }
-
-        if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
-            if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
-                $this->errorJson($errors, 400);
-                return;
-            } else {
-                $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
-                $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
-            }
+        if( $status === 'evaluated'){ 
+            $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
+            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }

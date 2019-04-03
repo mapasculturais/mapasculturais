@@ -57,13 +57,10 @@
 }
 
 .technical-evaluation-form table td{
-    padding:0 10px;
     text-align: left;
 }
 
 .technical-evaluation-form table tr td:last-of-type{
-    vertical-align: bottom;
-    text-align: right;
     padding:0;
 }
 
