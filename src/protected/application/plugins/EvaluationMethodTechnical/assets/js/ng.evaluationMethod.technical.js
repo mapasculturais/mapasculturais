@@ -122,73 +122,113 @@
         }]);
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
-            var labels = MapasCulturais.gettext.technicalEvaluationMethod;
+        var labels = MapasCulturais.gettext.technicalEvaluationMethod;
 
-            MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
-                e.min = parseInt(e.min);
-                e.max = parseInt(e.max);
-                e.weight = parseInt(e.weight);
-                return e;
-            });
-            
-            if(MapasCulturais.evaluation){
-                for(var id in MapasCulturais.evaluation.evaluationData){
-                    if(id != 'obs'){
-                        MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
-                    }
+        MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
+            e.min = parseInt(e.min);
+            e.max = parseInt(e.max);
+            e.weight = parseInt(e.weight);
+            return e;
+        });
+        
+        if(MapasCulturais.evaluation){
+            for(var id in MapasCulturais.evaluation.evaluationData){
+                if(id != 'obs'){
+                    MapasCulturais.evaluation.evaluationData[id] = parseFloat(MapasCulturais.evaluation.evaluationData[id]);
                 }
             }
-            
-            $scope.data = {
-                sections: MapasCulturais.evaluationConfiguration.sections || [],
-                criteria: MapasCulturais.evaluationConfiguration.criteria || [],
-                empty: true
-            };
+        }
+        
+        $scope.data = {
+            sections: MapasCulturais.evaluationConfiguration.sections || [],
+            criteria: MapasCulturais.evaluationConfiguration.criteria || [],
+            empty: true
+        };
 
-            if(MapasCulturais.evaluation){
-                $scope.evaluation =  MapasCulturais.evaluation.evaluationData;
-                $scope.data.empty = false;
+        if(MapasCulturais.evaluation){
+            $scope.evaluation =  MapasCulturais.evaluation.evaluationData;
+            $scope.data.empty = false;
+        } else {
+            $scope.evaluation =  {};
+        }
+
+        $scope.subtotalSection = function(section){
+            var total = 0;
+
+            for(var i in $scope.data.criteria){
+                var cri = $scope.data.criteria[i];
+                if(cri.sid == section.id && $scope.evaluation[cri.id] && cri.weight){
+                    total += $scope.evaluation[cri.id] * cri.weight;
+                }
+            }
+
+            return total.toFixed(1);
+        };
+
+        $scope.total = function(){
+            var total = 0;
+
+            for(var i in $scope.data.criteria){
+                var cri = $scope.data.criteria[i];
+                if($scope.evaluation[cri.id] && cri.weight){
+                    total += $scope.evaluation[cri.id] * cri.weight;
+                }                    
+            }
+
+            return total.toFixed(1);
+        };
+
+        $scope.max = function(){
+            var total = 0;
+
+            for(var i in $scope.data.criteria){
+                var cri = $scope.data.criteria[i];
+                total += cri.max * cri.weight;
+            }
+
+            return total;
+        };
+
+        $scope.validateEvaluationCriteria = function(criteria, event) {
+            var value = $('#'+criteria.id).val().trim();
+            if(value === "") return;
+
+            value = parseFloat(value); 
+            if (value) {
+                if (value < criteria.min) {
+                    $scope.evaluation[criteria.id] = criteria.min;
+                }
+    
+                if (value > criteria.max) {
+                    $scope.evaluation[criteria.id] = criteria.max;
+                }
             } else {
-                $scope.evaluation =  {};
+                $scope.evaluation[criteria.id] = criteria.min;
             }
+           
 
-            $scope.subtotalSection = function(section){
-                var total = 0;
+            console.log(value);        
+        };
+        
+    }]);
 
-                for(var i in $scope.data.criteria){
-                    var cri = $scope.data.criteria[i];
-                    if(cri.sid == section.id && $scope.evaluation[cri.id] && cri.weight){
-                        total += $scope.evaluation[cri.id] * cri.weight;
+    module.directive('entertab', function (){ 
+        return {
+           require: 'ngModel',
+           link: function(scope, elem, attr, ngModel) {
+                elem.bind("keydown", function (event) {
+                    if(event.which === 13) {
+                        event.preventDefault();
+                        var index = $('input, textarea').index(elem);
+                        var next = $('input, textarea').eq(index+1);
+                        if (next.length) {
+                            next.focus();
+                        } 
+                        return false;
                     }
-                }
+                });
+           }
+        };
+     });
 
-                return total.toFixed(1);
-            };
-
-            $scope.total = function(){
-                var total = 0;
-
-                for(var i in $scope.data.criteria){
-                    var cri = $scope.data.criteria[i];
-                    if($scope.evaluation[cri.id] && cri.weight){
-                        total += $scope.evaluation[cri.id] * cri.weight;
-                    }                    
-                }
-
-                return total.toFixed(1);
-            };
-
-            $scope.max = function(){
-                var total = 0;
-
-                for(var i in $scope.data.criteria){
-                    var cri = $scope.data.criteria[i];
-                    total += cri.max * cri.weight;
-                }
-
-                return total;
-            };
-
-            
-        }]);
 })(angular);

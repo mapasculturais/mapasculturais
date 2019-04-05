@@ -181,37 +181,38 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
+        $obs = (isset($data['obs'])) ? trim($data['obs']) : null;
 
-        $empty = false;
-
-
-        foreach($data as $key => $val){
-            if($key === 'obs' && !trim($val)){
-                $empty = true;
-            } else if($key !== 'obs' && !is_numeric($val)){
-                $empty = true;
+        if(empty($obs)) {
+            $errors[] = i::__('O campo observação deve ser preenchido');
+        } 
+        
+        if(empty($errors)){
+            foreach($data as $key => $val){
+                if($key !== 'obs' && !is_numeric($val)){
+                    $errors[] = i::__('Todos os campos devem ser preenchidos');
+                    break;
+                }
             }
-        }
+        }        
 
-        if($empty){
-            $errors[] = i::__('Todos os campos devem ser preenchidos');
-        }
-
-        if(!$errors){
+        if(empty($errors)){
             foreach($evaluation_method_configuration->criteria as $c){
                 if(isset($data[$c->id])){
                     $val = (float) $data[$c->id];
-                    if($val > (float) $c->max){
+                    $max = (float) $c->max;
+                    $min = (float) $c->min;
+
+                    if($val > $max){
                         $errors[] = sprintf(i::__('O valor do campo "%s" é maior que o valor máximo permitido'), $c->title);
                         break;
-                    } else if($val < (float) $c->min) {
+                    } else if($val < $min) {
                         $errors[] = sprintf(i::__('O valor do campo "%s" é menor que o valor mínimo permitido'), $c->title);
                         break;
                     }
                 }
             }
         }
-
 
         return $errors;
     }
