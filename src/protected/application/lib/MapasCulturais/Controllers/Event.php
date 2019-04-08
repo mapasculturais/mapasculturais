@@ -278,7 +278,7 @@ class Event extends EntityController {
 
 
                 unset($occ['space_id']);
-
+                
                 if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
                     unset($occ['event']);
 
@@ -289,7 +289,6 @@ class Event extends EntityController {
                     $occ['space'] = $space;
 
                     $item = array_merge($event, $occ);
-
 
                     $result[] = $item;
                 }
@@ -315,6 +314,9 @@ class Event extends EntityController {
             $result = [];
         }
 
+        foreach($result as &$r){
+            $r['_reccurrence_string'] = "{$r['id']}.{$r['starts_on']}.{$r['starts_at']}.{$r['ends_on']}.{$r['ends_at']}";
+        }
         // @TODO: set headers to
         $this->apiResponse($result);
 
