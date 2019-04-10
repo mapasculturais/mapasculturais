@@ -711,6 +711,8 @@ class App extends \Slim\Slim{
         $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
         $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
 
+        $this->registerController('eventAttendance','MapasCulturais\Controllers\EventAttendance');
+
         //workflow controllers
         $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
 
