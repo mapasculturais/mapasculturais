@@ -2,7 +2,6 @@
 
 namespace MapasCulturais\Themes\BaseV1;
 
-use function foo\func;
 use MapasCulturais;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
@@ -848,23 +847,6 @@ class Theme extends MapasCulturais\Theme {
             });
         }
 
-        $app->hook('can-edit', function(&$can_edit, $entity) use ($app){
-            $user_id = $entity->user->id;
-
-            $em = $app->em;
-            $conn = $em->getConnection();
-
-            $result = $conn->fetchAssoc("SELECT * FROM agent_meta WHERE key = 'rcv_tipo' and (value = 'entidade' OR value = 'ponto')  AND object_id ='$user_id'");
-
-            if(empty($result))
-            {
-                $can_edit = true;
-            }
-            else {
-                $can_edit = false;
-            }
-        });
-
         $app->hook('mapasculturais.body:before', function() use($app) {
             if($this->controller && ($this->controller->action == 'single' || $this->controller->action == 'edit' )): ?>
                 <!--facebook compartilhar-->
@@ -1255,17 +1237,16 @@ class Theme extends MapasCulturais\Theme {
         });
     }
 
-
     /*
      * This methods tries to fill the address fields using the postal code
      *
      * By default it relies on brazilian CEP, but you can override this methods
      * to use another API.
      *
-     * It should return an Arrau with an item success set to true or false.
+     * It should return an Array with an item success set to true or false.
      *
      * If true, it has to return the following fields.
-     * Note: lat & lon are optional, they are not beeing used yet but will probably be soon
+     * Note: lat & lon are optional, they are not being used yet but will probably be soon
      *
      * response example:
      *
