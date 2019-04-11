@@ -9,10 +9,7 @@ use MapasCulturais\App;
  * EventMeta
  *
  * @ORM\Table(name="event_attendance", indexes={
- *      @ORM\Index(name="event_attendance_type_idx", columns={"type"}),
- *      @ORM\Index(name="event_attendance_owner_key_idx", columns={"object_id", "key"}),
- *      @ORM\Index(name="event_attendance_key_idx", columns={"key"}),
- *      @ORM\Index(name="event_attendance_value_idx", columns={"value"}, flags={"fulltext"})
+ *      @ORM\Index(name="event_attendance_type_idx", columns={"type"})
  * })
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -35,7 +32,7 @@ class EventAttendance extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="key", type="string", nullable=false)
+     * @ORM\Column(name="type", type="string", nullable=false)
      */
     protected $type;
 
