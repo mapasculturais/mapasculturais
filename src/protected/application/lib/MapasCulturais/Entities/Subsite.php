@@ -276,7 +276,6 @@ class Subsite extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, 'subsite.applyFilters:before');
 
-//            \dump($this->filters);
         foreach($this->filters as $controller_id => $entity_filters){
             $entity_class_name = $app->controller($controller_id)->entityClassName;
             $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters, $this->id);
