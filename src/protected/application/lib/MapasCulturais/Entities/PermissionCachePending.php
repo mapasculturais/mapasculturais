@@ -46,4 +46,8 @@ class PermissionCachePending extends \MapasCulturais\Entity{
      * })
      */
     //protected $user;
+
+    protected function canUserCreate($user) {
+        return true;
+    }
 }
