@@ -91,7 +91,7 @@ class RoutesManager{
                     if(key_exists($action_name, $this->config['actions']))
                         $action_name = $this->config['actions'][$action_name];
 
-                // else if there is no action in url, get the default actiona name
+                // else if there is no action in url, get the default action name
                 }else{
                     $action_name = $this->config['default_action_name'];
                 }
@@ -102,7 +102,6 @@ class RoutesManager{
 
 
             if($controller = $app->controller($controller_id)){
-                $app->applyHook('entity(opportunity).load:before', ['controller' => $controller, 'action' => $action_name]);
                 try{
                     $this->callAction($controller, $action_name, $args, $api_call);
                 }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
