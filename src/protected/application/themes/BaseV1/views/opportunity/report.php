@@ -69,15 +69,7 @@ ksort($custom_fields);
             ?>
 
             <th><?php i::_e('Anexos') ?></th>
-            <?php foreach($entity->getUsedAgentRelations() as $def): ?>
-                <th><?php echo $def->label; ?></th>
-                
-                <th><?php echo $def->label; ?> - <?php i::_e("Área de Atuação") ?></th>
-                
-                <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
-                    <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
+
         </tr>
     </thead>
     <tbody>
@@ -112,31 +104,7 @@ ksort($custom_fields);
                      <?php endif; ?>
                 </td>
 
-                <?php
-                foreach($r->_getDefinitionsWithAgents() as $def):
-                    if($def->use == 'dontUse') continue;
-                    $agent = $def->agent;
-                ?>
-
-                    <?php if($agent): ?>
-                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
-                        
-                        <td><?php echo implode(', ', $agent->terms['area']); ?></td>
-
-                        <?php
-                        foreach($_properties as $prop):
-                            if($prop === 'name') continue;
-                        $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
-                        ?>
-                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
-
-                        <?php endforeach; ?>
-
-                    <?php else: ?>
-                        <?php echo str_repeat('<td></td>', count($_properties)) ?>
-                    <?php endif; ?>
-
-                <?php endforeach ?>
+               
             </tr>
         <?php endforeach; ?>
     </tbody>

@@ -294,7 +294,7 @@
                     if(def.isMetadata || (!def.isMetadata && !def.isEntityRelation)){
                         
                         // Não adiciona os metadados geograficos que devem ser ocultos (que começam com "_")
-                        if (prop.substr(0,4) == 'geo_')
+                        if (isRemovableMeta(prop))
                             return;
                         
                         exportSelect.push(selectProperty); 
@@ -336,6 +336,13 @@
                     querystring += "&"+att+"="+searchData[att];
                 }
                 return $http({method: 'GET', cache:true, url: MapasCulturais.baseURL + 'api/'+entity+'/' + action + '/?@count=1&'+querystring, data:searchData});
+            }
+
+            function isRemovableMeta(prop) {
+                var isGeo = prop.substr(0,4) == 'geo_';
+                var isFva = prop.substr(0,3) == 'fva';
+
+                return isGeo || isFva;
             }
         }
 
