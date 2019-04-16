@@ -14,9 +14,12 @@
         <?php echo $entity->number ?>
     </div>
     <div class="alignright">
-        <?php if($opportunity->publishedRegistrations): ?>
+        <?php if($entity->canUser('changeStatus')): ?>
+            <mc-select class="{{getStatusSlug(data.registration.status)}}" model="data.registration" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
+        <?php elseif($opportunity->publishedRegistrations): ?>
             <span class="status status-{{getStatusSlug(<?php echo $entity->status ?>)}}">{{getStatusNameById(<?php echo $entity->status ?>)}}</span>
         <?php endif; ?>
+        
     </div>
 </div>
 
