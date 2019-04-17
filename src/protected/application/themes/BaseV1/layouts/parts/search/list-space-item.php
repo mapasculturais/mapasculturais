@@ -19,7 +19,7 @@
                                 <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div>
+                        <div ng-if="space.terms.tag.length > 0">
                             <span class="label">Tags:</span>
                             <span ng-repeat="tags in space.terms.tag">
                                 <a class="tag tag-space" href="<?php echo $app->createUrl('site', 'search') ?>##(space:(keyword:'{{tags}}'),global:(enabled:(space:!t),filterEntity:space,viewMode:list))">{{tags}}</a>

@@ -13,7 +13,7 @@
                         <?php $this->applyTemplateHook('list.project.meta','begin'); ?>
                         <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#">{{project.type.name}}</a></div>
                         <div ng-if="readableProjectRegistrationDates(project)"><span class="label"><?php \MapasCulturais\i::_e("Inscrições");?>:</span> {{readableProjectRegistrationDates(project)}}</div>
-                        <div>
+                        <div ng-if="project.terms.tag.length > 0">
                             <span class="label">Tags:</span>
                             <span ng-repeat="tags in project.terms.tag">
                                 <a class="tag tag-project" href="<?php echo $app->createUrl('site', 'search') ?>##(project:(keyword:'{{tags}}'),global:(enabled:(project:!t),filterEntity:project,viewMode:list))">{{tags}}</a>
