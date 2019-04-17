@@ -34,7 +34,7 @@
                             </span>
                         </div>
                         <div><span class="label"><?php \MapasCulturais\i::_e("Classificação");?>:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
-                        <div>
+                        <div ng-if="event.terms.tag.length > 0">
                             <span class="label">Tags:</span>
                             <span ng-repeat="tags in event.terms.tag">
                                 <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(keyword:'{{tags}}'),global:(enabled:(event:!t),filterEntity:event,viewMode:list))">{{tags}}</a>

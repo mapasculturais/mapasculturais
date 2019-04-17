@@ -19,7 +19,7 @@
                     </div>
                     <div ng-show="openEntity.space.endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span>{{openEntity.space.endereco}}</div>
                     <div><span class="label"><?php \MapasCulturais\i::_e("Acessibilidade");?>:</span> {{openEntity.space.acessibilidade || '<?php \MapasCulturais\i::_e("Não informado");?>'}}</div>
-                    <div>
+                    <div ng-if="openEntity.space.terms.tag.length > 0">
                         <span class="label">Tags:</span>
                         <span ng-repeat="tags in openEntity.space.terms.tag">
                             <a class="tag tag-space" href="<?php echo $app->createUrl('site', 'search') ?>##(space:(keyword:'{{tags}}'),global:(enabled:(space:!t),filterEntity:space,viewMode:list))">{{tags}}</a>
