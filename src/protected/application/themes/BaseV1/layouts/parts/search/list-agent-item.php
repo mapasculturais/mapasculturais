@@ -16,7 +16,7 @@
                                 <a ng-click="toggleSelection(data.agent.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
-                        <div>
+                        <div ng-if="agent.terms.tag.length > 0">
                             <span class="label">Tags:</span>
                             <span ng-repeat="tags in agent.terms.tag">
                                 <a class="tag tag-agent" href="<?php echo $app->createUrl('site', 'search') ?>##(agent:(keyword:'{{tags}}'),global:(enabled:(agent:!t),filterEntity:agent,viewMode:list))">{{tags}}</a>
