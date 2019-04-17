@@ -103,7 +103,6 @@ Vale lembrar que os requisitos de hardware podem variar de acordo com a latênci
 ### Canais de comunicação
 
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
-* [Chat de discussão](http://chat.mapasculturais.org)
 * Telegram: [![Join the chat at https://telegram.me/#MapasCulturais](https://patrolavia.github.io/telegram-badge/chat.png)](https://telegram.me/joinchat/AVzIFAqpz3VFIPehrPpbZQ)
  
 
@@ -134,12 +133,12 @@ Exemplos:
 ### Stories & Tests
 
 - Stories for development: 
-[![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/hacklabr/mapasculturais) 
+[![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/mapasculturais/mapasculturais) 
 - Stories for test: 
-[![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/hacklabr/mapasculturais)
-- Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/hacklabr/mapasculturais)
+[![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/mapasculturais/mapasculturais)
+- Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/mapasculturais/mapasculturais)
 - Travis:
-[![Build Status](https://secure.travis-ci.org/hacklabr/mapasculturais.png)](http://travis-ci.org/hacklabr/mapasculturais)
+[![Build Status](https://secure.travis-ci.org/mapasculturais/mapasculturais.png)](http://travis-ci.org/mapasculturais/mapasculturais)
 
 ### Licença de uso e desenvolvimento
 
