@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 /**
  * EventMeta
@@ -116,6 +117,49 @@ class EventAttendance extends \MapasCulturais\Entity {
         $this->user = App::i()->user;
     }
 
+    static function getValidations() {
+        return [
+            'type' => [
+                'required' => i::__('O tipo do comparecimento é obrigatório'),
+                "v::in(['confirmation','interested'])" => i::__('O tipo deve ser "confirmation" ou "interested"')
+            ],
+            '_reccurrenceString' => [
+                'required' => i::__('A string da recorrência é obrigatória'),
+                '$this->validateReccurrenceString()' => i::__('A string da recorrência é inválida')
+            ]
+        ];
+    }
+
+    function validateReccurrenceString(){
+        $app = App::i();
+
+        $matches = null;
+        
+        if(!preg_match("#^\d+\.\d{4}-\d{2}-\d{2}\.\d{2}:\d{2}:\d{2}\.(\d{4}-\d{2}-\d{2})?\.\d{2}:\d{2}:\d{2}$#", $this->_reccurrenceString, $matches)){
+            return false;
+        }
+
+        list(
+            $occurrence_id, 
+            $starts_on,
+            $starts_at,
+            $ends_on,
+            $ends_at
+        ) = explode('.', $this->_reccurrenceString);
+
+        $ends_on = $ends_on ?: $starts_on;        
+        
+        // @TODO: usar um sql simples pra só pegar o id
+        if(!$app->repo('EventOccurrence')->find($occurrence_id)){
+            return false;
+        }
+
+        if("{$starts_on}{$starts_at}" > "{$ends_on}{$ends_at}"){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * String que representa a recorrência
      * 
@@ -125,6 +169,12 @@ class EventAttendance extends \MapasCulturais\Entity {
      * @return void
      */
     function setReccurrenceString($recurrence_string){
+        $this->_reccurrenceString = $recurrence_string;
+
+        if(!$this->validateReccurrenceString()){
+            return false;
+        }
+
         list(
             $occurrence_id, 
             $starts_on,
@@ -139,14 +189,14 @@ class EventAttendance extends \MapasCulturais\Entity {
 
         $this->_setEventOccurrence($event_occurrence);
 
-        $this->startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', "{$starts_on} {$starts_at}");
-        $this->endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', "{$ends_on} {$ends_at}");
+        $this->startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s', "{$starts_on} {$starts_at}");
+        $this->endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s', "{$ends_on} {$ends_at}");
     }
 
     protected function _setEventOccurrence(EventOccurrence $event_occurrence){
         $this->_eventOccurrence = $event_occurrence;
-        $this->_space = $event_occurrence->getSpace();
-        $this->_event = $event_occurrence->getEvent();
+        $this->_space = $event_occurrence->space;
+        $this->_event = $event_occurrence->event;
     }
 
     /**
@@ -176,8 +226,16 @@ class EventAttendance extends \MapasCulturais\Entity {
         return $this->_space;
     }
 
-    public function canUser($action, $userOrAgent = null){
-        return $this->user->canUser($action, $userOrAgent);
+    protected function canUserCreate($user){
+        if($user->is('admin')){
+            return true;
+        }
+
+        if($this->user->equals($user)){
+            return true;
+        }
+
+        return false;
     }
 
     //============================================================= //
