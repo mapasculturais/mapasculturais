@@ -522,7 +522,7 @@
                         tip = $('<div class="hltip-box"><div class="hltip-arrow-top"></div><div class="hltip-text">' + content + '</div><div class="hltip-arrow-bottom"></div></div><').hide();
                         tip.css({
                             position: 'absolute',
-                            zIndex: 9999
+                            zIndex: 99999
                         });
                         $(document.body).append(tip);
                         tip.css('width', tip.width());
