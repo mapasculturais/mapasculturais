@@ -238,6 +238,19 @@ class EventAttendance extends \MapasCulturais\Entity {
         return false;
     }
 
+    function save($flush = false) {
+        parent::save($flush);
+
+        $conn = App::i()->em->getConnection();
+
+        $conn->executeQuery('
+            DELETE FROM 
+                \MapasCulturais\Entities\EventAttendance e 
+            WHERE 
+                e.user = :u AND 
+                e._reccurrenceString = :reccurrenceString');
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
