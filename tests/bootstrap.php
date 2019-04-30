@@ -1,5 +1,7 @@
 <?php
 use Curl\Curl;
+use MapasCulturais\App;
+use MapasCulturais\Entities;
 
 //
 // Unit Test Bootstrap and Slim PHP Testing Framework
@@ -57,7 +59,7 @@ if(isset($_ENV['MAPASCULTURAIS_CONFIG_FILE'])){
 }
 
 // create the App instance
-$app = MapasCulturais\App::i()->init($config);
+$app = App::i()->init($config);
 $app->register();
 
 abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
@@ -76,7 +78,7 @@ abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
     ];
 
     public function __construct($name = NULL, array $data = array(), $dataName = '') {
-        $this->app = MapasCulturais\App::i();
+        $this->app = App::i();
         $this->backupGlobals = false;
         $this->backupStaticAttributes = false;
 
@@ -85,7 +87,7 @@ abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
 
     public function __set($name, $value) {
         if($name === 'user'){
-            if(is_object($value) && $value instanceof \MapasCulturais\Entities\User)
+            if(is_object($value) && $value instanceof Entities\User)
                 $this->app->auth->authenticatedUser = $value;
             else
                 $this->setUserId ($value);
@@ -104,7 +106,7 @@ abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
             $this->user = $user;
         }
 
-        $app = MapasCulturais\App::i();
+        $app = App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
 
         $_types = $app->getRegisteredEntityTypes($classname);
@@ -212,7 +214,7 @@ abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
      * @return MapasCulturais\Entities\User
      */
     public function getUser($user_id = null, $index = 0){
-        if($user_id instanceof \MapasCulturais\Entities\User){
+        if($user_id instanceof Entities\User){
             return $user_id;
         }else if(key_exists($user_id, $this->app->config['userIds'])){
             return $this->app->repo('User')->find($this->app->config['userIds'][$user_id][$index]);
@@ -225,13 +227,13 @@ abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $app = MapasCulturais\App::i();
+        $app = App::i();
         $app->em->beginTransaction();
     }
 
     protected function tearDown(): void
     {
-        $app = MapasCulturais\App::i();
+        $app = App::i();
         $app->em->rollback();
 
         parent::tearDown();
