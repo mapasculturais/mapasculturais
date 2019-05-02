@@ -208,6 +208,11 @@ class EventOccurrence extends \MapasCulturais\Entity
         }
     }
 
+    function setStarts($date){
+        $this->setStartsOn($date);
+        $this->setStartsAt($date);
+    }
+
     function setStartsOn($value) {
         $this->_startsOn = self::convert($value, 'Y-m-d');
     }
