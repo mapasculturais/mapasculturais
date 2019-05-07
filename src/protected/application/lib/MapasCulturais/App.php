@@ -2681,7 +2681,7 @@ class App extends \Slim\Slim{
             $mailer->send($message,$failures);
             return true;
         } catch(\Swift_TransportException $exception) {
-            App::i()->log->debug($exception);
+            App::i()->log->info('Swift Mailer error: ' . $exception->getMessage());
             return false;
         }
     }
