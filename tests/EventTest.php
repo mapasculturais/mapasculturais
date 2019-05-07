@@ -39,38 +39,22 @@ use MapasCulturais\Entities\Space;
 
 class EventTest extends MapasCulturais_TestCase{
 
-    protected $eventName;
+    function __construct($name = null, $data = [], $dataName = '') {
+        parent::__construct($name, $data, $dataName);
 
-    function createEvent() {
-        $this->eventName = 'Test Event ' . uniqid();
-        $event = new Event;
-        $event->name = $this->eventName;
-        $event->shortDescription = 'Test Event Description';
-        $event->ownerId = $this->app->user->profile->id;
-        $event->save(true);
-        return $event;
-    }
-
-    function createSpace() {
-        $space = new Space;
-        $space->name = 'Test Space';
-        $space->shortDescription = 'Test 1Space Description';
-        $space->type = 10;
-        $space->ownerId = $this->app->user->profile->id;
-        $space->save(true);
-        return $space;
+        $this->factory->autoPersist = true;
     }
 
     function testEvent(){
         $this->user = 1;
 
-        $event = $this->createEvent();
+        $event = $this->factory->createEvent();
 
-        $event2 = $this->app->repo('Event')->findOneBy(array('name' => $this->eventName));
+        $event2 = $this->app->repo('Event')->findOneBy(array('name' => $event->name));
 
         $this->assertEquals($event, $event2);
 
-        $events = $this->app->repo('Event')->findBy(array('name' => $this->eventName));
+        $events = $this->app->repo('Event')->findBy(array('name' => $event->name));
 
         $this->assertEquals(1,count($events));
     }
@@ -87,31 +71,19 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventOccurrence_single(){
+        $this->resetTransactions();
         $this->user = 1;
 
-        $event = $this->createEvent();
-        $space = $this->createSpace();
+        $event = $this->factory->createEvent();
+        $space = $this->factory->createSpace();
 
-        $occurrence = new EventOccurrence;
-        $occurrence->rule = $this->getEventRule();
-        $occurrence->event = $event;
-        $occurrence->space = $space;
-
-        $date1 = '1950-09-30';
-        $date2 = '1950-10-01';
-
-        $occurrence->frequency = 'once';
-        $occurrence->startsOn = new DateTime($date1);
-        $occurrence->startsAt = new DateTime($date1 . ' 12:00:00');
-        $occurrence->endsAt = new DateTime($date1 . ' 15:00:00');
-
-        $this->assertEmpty($occurrence->validationErrors, print_r($occurrence->validationErrors, true));
+        $occurrence = $this->factory->createSingleEventOccurrence('1950-09-30 12:00', 120, $space, $event);
         $occurrence->save(true);
 
-        $query = $this->createQuery($date1, $date2);
+        $query = $this->createQuery('1950-09-30', '1950-10-01');
         $occurrence2 = $query->getOneOrNullResult();
 
-        $this->assertEquals($date1, $occurrence2->startsOn->format('Y-m-d'));
+        $this->assertEquals('1950-09-30', $occurrence2->startsOn->format('Y-m-d'));
 
         $query = $this->createQuery('1950-10-02', '1950-10-05');
         $occurrence3 = $query->getOneOrNullResult();
@@ -120,25 +92,13 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventOccurrence_daily(){
+        $this->resetTransactions();
         $this->user = 1;
 
-        $event = $this->createEvent();
-        $space = $this->createSpace();
+        $event = $this->factory->createEvent();
+        $space = $this->factory->createSpace();
 
-        $occurrence = new EventOccurrence;
-        $occurrence->rule = $this->getEventRule();
-        $occurrence->event = $event;
-        $occurrence->space = $space;
-
-        $date1 = '1950-01-02';
-        $date2 = '1950-01-09';
-
-        $occurrence->frequency = 'daily';
-        $occurrence->startsOn = new DateTime($date1);
-        $occurrence->until = new DateTime($date2);
-
-        $occurrence->startsAt = new DateTime($date1 . ' 12:00:00');
-        $occurrence->endsAt = new DateTime($date1 . ' 15:00:00');
+        $occurrence = $this->factory->createDailyEventOccurrence('1950-01-02 12:00', 120, '1950-01-09', $space, $event);
 
         $this->assertEmpty($occurrence->validationErrors, print_r($occurrence->validationErrors, true));
         $occurrence->save(true);
@@ -162,66 +122,50 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function testEventOccurrence_weekly(){
+        $this->resetTransactions();
         $this->user = 1;
 
-        $event = $this->createEvent();
-        $space = $this->createSpace();
+        $event = $this->factory->createEvent();
+        $space = $this->factory->createSpace();
 
-        $occurrence = new EventOccurrence;
-        $occurrence->rule = $this->getEventRule();
-        $occurrence->event = $event;
-        $occurrence->space = $space;
-
-        $date1 = '1950-01-02';
-        $date2 = '1950-11-01';
-
-        $occurrence->frequency = 'weekly';
-        $occurrence->startsOn = new DateTime($date1);
-        $occurrence->until = new DateTime($date2);
-
-        $occurrence->startsAt = new DateTime($date1 . ' 12:00:00');
-        $occurrence->endsAt = new DateTime($date1 . ' 15:00:00');
-
-        $recurrence = new EventOccurrenceRecurrence;
-        $recurrence->eventOccurrence = $occurrence;
-        $recurrence->day = 1;
+        $occurrence = $this->factory->createWeeklyEventOccurrence('1950-01-02 12:00', 180, '1950-11-01', [1,3], $space, $event);
 
         $this->assertEmpty($occurrence->validationErrors, print_r($occurrence->validationErrors, true));
-        $occurrence->save(true);
-        $recurrence->save(true);
-
-        $date = '1950-01-2';
+        
+        $date = '1950-01-02';
         $query = $this->createQuery($date, $date);
         $occurrences = $query->getArrayResult();
         $this->assertEquals(1, count($occurrences));
 
-        $date = '1950-01-9';
+        $date = '1950-01-09';
         $query = $this->createQuery($date, $date);
         $occurrences = $query->getArrayResult();
         $this->assertEquals(1, count($occurrences));
-
+        
         $date = '1950-01-16';
         $query = $this->createQuery($date, $date);
         $occurrences = $query->getArrayResult();
         $this->assertEquals(1, count($occurrences));
 
-        $date = '1950-01-3';
+        $date = '1950-01-03';
         $query = $this->createQuery($date, $date);
         $occurrences = $query->getArrayResult();
         $this->assertEquals(0, count($occurrences));
 
         $occurrences = $this->app->repo('EventOccurrence')->findOneBy(array('frequency' => 'weekly'));
         $this->assertNotNull($occurrences);
+
     }
 
     function testEventRules(){
+        $this->resetTransactions();
         $this->user = 1;
 
-        $event = $this->createEvent();
-        $space = $this->createSpace();
+        $event = $this->factory->createEvent();
+        $space = $this->factory->createSpace();
 
         $occurrence = new EventOccurrence;
-        $rule = '';
+        
         $occurrence->event = $event;
         $occurrence->space = $space;
 
@@ -236,7 +180,16 @@ class EventTest extends MapasCulturais_TestCase{
     }
 
     function getEventRule(){
-        $rule = '{"spaceId":"31","startsAt":"12:31","duration":"00h01","frequency":"weekly","startsOn":"2014-02-10","until":"2014-02-19","day":{"1":"on","3":"on"},"monthly":"week","description":"test description"}';
-        return json_decode($rule);
+        return (object) [
+            "spaceId"   => "31",
+            "startsAt"  => "12:31",
+            "duration"  => "00h01",
+            "frequency" => "weekly",
+            "startsOn"  => "2014-02-10",
+            "until"     => "2014-02-19",
+            "day"       => (object) [ "1" => "on", "3" => "on" ],
+            "monthly"   => "week",
+            "description" => "test description"
+        ];
     }
 }
