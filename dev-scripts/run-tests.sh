@@ -15,16 +15,16 @@ case $i in
             BUILD="1"
 	    shift
     ;;
-    -s|--sleep)
-            SLEEP_TIME="${i#*=}"
+    -s|--shell)
+            SHELL="1"
 	    shift
     ;;
     -h|--help)
     	    echo "
 	run-tests.sh [-b] [-s=25]
 
-	-b=  | --build    builda a imagem Docker
-	-s=  | --sleep=   tempo de espera para o banco de dados ser inicializado (padrão: 10 segundos)
+	-b   | --build    builda a imagem Docker
+	-s   | --shell    entra no container de teste
 		    "
     	    exit
     ;;
@@ -36,9 +36,11 @@ if [ $BUILD = "1" ]; then
 fi
 
 sudo docker-compose -f docker-compose.tests.yml down
-sudo docker-compose -f docker-compose.tests.yml run mapas echo "ready" > /dev/null
-echo "aguardando $SLEEP_TIME segundos para que a base de dados seja inicializada"
-sleep $SLEEP_TIME
-sudo docker-compose -f docker-compose.tests.yml run --service-ports  mapas
+
+if [ $SHELL = "1" ]; then
+    sudo docker-compose -f docker-compose.tests.yml run --service-ports mapas_tests bash
+else
+    sudo docker-compose -f docker-compose.tests.yml run --service-ports mapas_tests /var/www/scripts/run-tests-docker.sh $@
+fi
 
 cd $CDIR
