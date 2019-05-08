@@ -127,6 +127,13 @@ class Event extends EntityController {
      *   curl -i http://localhost/api/event/findOccurrences?@from=2016-05-01&@to=2016-05-31&space:id=EQ(8915)
      */
     function API_findOccurrences(){
+        $result = $this->apiFindOccurrences($this->getData);
+
+        // @TODO: set headers to
+        $this->apiResponse($result);
+    }
+
+    function apiFindOccurrences($query_data){
         $app = App::i();
         $rsm = new ResultSetMapping();
 
@@ -140,7 +147,6 @@ class Event extends EntityController {
         $rsm->addScalarResult('ends_at', 'ends_at');
         $rsm->addScalarResult('rule', 'rule');
 
-        $query_data = $this->getData;
 
         // find occurrences
 
@@ -173,10 +179,8 @@ class Event extends EntityController {
 
         $_result = $query->getScalarResult();
 
-
-
         $space_query_data = [];
-        $event_query_data = $this->getData;
+        $event_query_data = $query_data;
 
         // filter spaces
 
@@ -315,11 +319,10 @@ class Event extends EntityController {
         }
 
         foreach($result as &$r){
-            $r['_reccurrence_string'] = "{$r['id']}.{$r['starts_on']}.{$r['starts_at']}.{$r['ends_on']}.{$r['ends_at']}";
+            $r['_reccurrence_string'] = "{$r['occurrence_id']}.{$r['starts_on']}.{$r['starts_at']}.{$r['ends_on']}.{$r['ends_at']}";
         }
-        // @TODO: set headers to
-        $this->apiResponse($result);
-
+        
+        return $result;
     }
 
     function GET_create() {
