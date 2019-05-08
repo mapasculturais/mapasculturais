@@ -2,6 +2,7 @@
 require_once __DIR__.'/bootstrap.php';
 
 use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\EventAttendance;
 use MapasCulturais\Entities\EventOccurrence;
 use MapasCulturais\Entities\EventOccurrenceRecurrence;
 use MapasCulturais\Entities\Space;
@@ -191,5 +192,58 @@ class EventTest extends MapasCulturais_TestCase{
             "monthly"   => "week",
             "description" => "test description"
         ];
+    }
+
+    function testEventAttendance(){
+        $this->resetTransactions();
+
+        $this->user = $this->getUser('normal', 0);
+
+        $space = $this->factory->createSpace();
+        $event = $this->factory->createEvent();
+
+        $event_occurrence_1 = $this->factory->createDailyEventOccurrence('1950-01-01 12:00', 120, '1950-02-22', $space, $event);
+
+        $event_occurrence_2 = $this->factory->createWeeklyEventOccurrence('1950-01-10 18:00', 30, '1950-01-31', [1,3,5], $space, $event);
+        
+        $this->user = $this->getUser('normal', 1);
+
+        $event_controller = $this->app->controller('event');
+
+        $occurrences = $event_controller->apiFindOccurrences (['@from' => '1950-01-05', '@to' => '1950-01-31', '@limit'=>3]);
+
+        $oc1 = (object) $occurrences[1];
+
+        $attendance = new EventAttendance;
+
+        $this->assertCount(2, $attendance->validationErrors, 'assert that empty event attendance returns validation errors');
+
+        $attendance->setReccurrenceString('invalid');
+        $this->assertArrayHasKey('reccurrenceString', $attendance->validationErrors, 'assert that invalid recurrenceString returns validation error');
+
+        $attendance->setReccurrenceString($oc1->_reccurrence_string);
+        $this->assertArrayNotHasKey('reccurrenceString', $attendance->validationErrors, 'assert that a valid recurrenceString don\'t return validation error');
+
+        $attendance->type = 'invalid';
+        $this->assertArrayHasKey('type', $attendance->validationErrors, 'assert that invalid type return validation error');
+
+        $attendance->type = EventAttendance::TYPE_CONFIRMATION;
+        $this->assertArrayNotHasKey('type', $attendance->validationErrors, 'assert that a valid type don\'t return validation error');
+
+        $this->assertCount(0, $attendance->validationErrors, 'assert that a valid event attendance dont return validation errors');
+
+        $attendance->save(true);
+
+        $controller = $this->app->controller('eventAttendance');
+
+        $attendances = $controller->apiQuery([
+            '@select' => '*',
+            'reccurrenceString' => "EQ({$oc1->_reccurrence_string})"
+        ]);
+
+        $this->assertCount(1, $attendances);
+
+        $this->assertEquals($oc1->_reccurrence_string, $attendances[0]['reccurrenceString']);
+
     }
 }
