@@ -42,7 +42,7 @@ class EventAttendance extends \MapasCulturais\Entity {
      *
      * @ORM\Column(name="reccurrence_string", type="text", nullable=true)
      */
-    protected $_reccurrenceString;
+    protected $reccurrenceString;
 
     /**
      * @var \DateTime
@@ -123,7 +123,7 @@ class EventAttendance extends \MapasCulturais\Entity {
                 'required' => i::__('O tipo do comparecimento é obrigatório'),
                 "v::in(['confirmation','interested'])" => i::__('O tipo deve ser "confirmation" ou "interested"')
             ],
-            '_reccurrenceString' => [
+            'reccurrenceString' => [
                 'required' => i::__('A string da recorrência é obrigatória'),
                 '$this->validateReccurrenceString()' => i::__('A string da recorrência é inválida')
             ]
@@ -135,7 +135,7 @@ class EventAttendance extends \MapasCulturais\Entity {
 
         $matches = null;
         
-        if(!preg_match("#^\d+\.\d{4}-\d{2}-\d{2}\.\d{2}:\d{2}:\d{2}\.(\d{4}-\d{2}-\d{2})?\.\d{2}:\d{2}:\d{2}$#", $this->_reccurrenceString, $matches)){
+        if(!preg_match("#^\d+\.\d{4}-\d{2}-\d{2}\.\d{2}:\d{2}:\d{2}\.(\d{4}-\d{2}-\d{2})?\.\d{2}:\d{2}:\d{2}$#", $this->reccurrenceString, $matches)){
             return false;
         }
 
@@ -145,7 +145,7 @@ class EventAttendance extends \MapasCulturais\Entity {
             $starts_at,
             $ends_on,
             $ends_at
-        ) = explode('.', $this->_reccurrenceString);
+        ) = explode('.', $this->reccurrenceString);
 
         $ends_on = $ends_on ?: $starts_on;        
         
@@ -169,7 +169,7 @@ class EventAttendance extends \MapasCulturais\Entity {
      * @return void
      */
     function setReccurrenceString($recurrence_string){
-        $this->_reccurrenceString = $recurrence_string;
+        $this->reccurrenceString = $recurrence_string;
 
         if(!$this->validateReccurrenceString()){
             return false;
@@ -191,6 +191,8 @@ class EventAttendance extends \MapasCulturais\Entity {
 
         $this->startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s', "{$starts_on} {$starts_at}");
         $this->endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s', "{$ends_on} {$ends_at}");
+
+        return true;
     }
 
     protected function _setEventOccurrence(EventOccurrence $event_occurrence){
@@ -241,14 +243,21 @@ class EventAttendance extends \MapasCulturais\Entity {
     function save($flush = false) {
         parent::save($flush);
 
-        $conn = App::i()->em->getConnection();
+        $query = App::i()->em->createQuery('
+        DELETE FROM 
+            MapasCulturais\Entities\EventAttendance e 
+        WHERE 
+            e.id <> :id AND
+            e.user = :u AND 
+            e.reccurrenceString = :reccurrenceString');
 
-        $conn->executeQuery('
-            DELETE FROM 
-                \MapasCulturais\Entities\EventAttendance e 
-            WHERE 
-                e.user = :u AND 
-                e._reccurrenceString = :reccurrenceString');
+        $query->setParameters([
+            'id' => $this->id,
+            'u' => $this->user,
+            'reccurrenceString' => $this->reccurrenceString
+        ]);
+
+        $query->execute();
     }
 
     //============================================================= //
