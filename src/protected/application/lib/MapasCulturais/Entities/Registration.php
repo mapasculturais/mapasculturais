@@ -9,10 +9,10 @@ use MapasCulturais\App;
  * Registration
  * @property-read \MapasCulturais\Entities\Agent $owner The owner of this registration
  * @property-read \MapasCulturais\Entities\Opportunity $opportunity
- * 
+ *
  * @property array valuersExcludeList
  * @property array valuersIncludeList
- * 
+ *
  * @property string $category
  *
  * @ORM\Table(name="registration")
@@ -109,7 +109,7 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\Column(name="agents_data", type="json_array", nullable=true)
      */
     protected $_agentsData = [];
-    
+
 
     /**
      * @var integer
@@ -117,7 +117,7 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\Column(name="consolidated_result", type="string", length=255, nullable=true)
      */
     protected $consolidatedResult = self::STATUS_DRAFT;
-    
+
 
     /**
      * @var integer
@@ -126,7 +126,7 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_DRAFT;
 
-    
+
     /**
      * @var integer
      *
@@ -206,21 +206,21 @@ class Registration extends \MapasCulturais\Entity
         return App::i()->createUrl('registration', 'view', [$this->id]);
     }
 
-    
+
     function consolidateResult($flush = false){
         $app = App::i();
-        
+
         $is_access_control_enabled = $app->isAccessControlEnabled();
         if($is_access_control_enabled){
             $app->disableAccessControl();
         }
-        
+
         $em = $this->getEvaluationMethod();
-        
+
         $this->consolidatedResult = $em->getConsolidatedResult($this);
-        
+
         $this->save($flush);
-        
+
         if($is_access_control_enabled){
             $app->enableAccessControl();
         }
@@ -322,7 +322,7 @@ class Registration extends \MapasCulturais\Entity
         $agent = App::i()->repo('Opportunity')->find($id);
         $this->opportunity = $agent;
     }
-    
+
     /**
      *
      * @return
@@ -451,12 +451,12 @@ class Registration extends \MapasCulturais\Entity
         $exceptions = $this->getValuersExceptionsList();
         return $exceptions->include;
     }
-    
+
     function getValuersExcludeList(){
         $exceptions = $this->getValuersExceptionsList();
         return $exceptions->exclude;
     }
-    
+
 
     function setStatus($status){
         // do nothing
@@ -571,7 +571,7 @@ class Registration extends \MapasCulturais\Entity
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
     }
 
-    function send(){
+    function send($flush = true){
         $this->checkPermission('send');
         $app = App::i();
 
@@ -585,13 +585,13 @@ class Registration extends \MapasCulturais\Entity
 
         // creates zip archive of all files
         if($this->files){
-            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . ' - ' . uniqid() . '.zip');
+            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . ' - ' . uniqid() . '.zip', $flush);
         }
 
         $this->status = self::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
-        $this->save(true);
+        $this->save($flush);
 
         if($_access_control_enabled){
             $app->enableAccessControl();
@@ -871,7 +871,7 @@ class Registration extends \MapasCulturais\Entity
             $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
             $valuers = $evaluation_method_configuration->getRelatedAgents();
             $is_valuer = false;
-            
+
             if(isset($valuers['group-admin']) && is_array($valuers['group-admin'])){
                 foreach($valuers['group-admin'] as $agent){
                     if($agent->user->id == $user->id){
@@ -951,7 +951,7 @@ class Registration extends \MapasCulturais\Entity
         $users = $this->getEvaluationMethodConfiguration()->getUsersWithControl();
 
         $users = array_merge($users, $this->opportunity->getUsersWithControl());
-        
+
         if($this->nextPhaseRegistrationId){
             $next_phase_registration = App::i()->repo('Registration')->find($this->nextPhaseRegistrationId);
             if($next_phase_registration){
@@ -1070,8 +1070,8 @@ class Registration extends \MapasCulturais\Entity
     // ============================================================ //
 
     /** @ORM\PrePersist */
-    public function prePersist($args = null){ 
-        parent::prePersist($args); 
+    public function prePersist($args = null){
+        parent::prePersist($args);
     }
     /** @ORM\PostPersist */
     public function postPersist($args = null){ parent::postPersist($args); }

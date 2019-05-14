@@ -7,7 +7,7 @@ use MapasCulturais\App;
  * Defines that the entity has metadata.
  *
  * Use this trait only in subclasses of **\MapasCulturais\Entity**. A class with the same name suffixed with **Meta** is required.
- * 
+ *
  * For example: For a class named **Name\Space\EntityClass** a class named **Name\Space\EntityClassMeta** is required.
  *
  * This trait will make all metadata behave like real properties of the entity. So to set a metadata value you just need to
@@ -18,17 +18,17 @@ use MapasCulturais\App;
  * @example To set the metadata with the key 'site' you can do $entity->site = 'http://foo.bar/'; or $entity->setMetadata('site', 'http://foo.bar/');
  * @example To print the metadata with the key 'site' you do: echo $entity->site;
  * @example you can access all metadatas in the metadata property of the entity: foreach($entity->metadata as $metakey => $meta_value)
- * 
+ *
  * @property-read \MapasCulturais\MetadataDefinition[] $registeredMetadata array of registered metadata.
  * @property-read string $metadataClassName the metadata class name.
  * @property-read string $metadataMetadata metadata of the registered metadata for this entity.
  * @property-read array $metadata all metadata of this entity.
- * @property-read array $changedMetadata changed metadata. 
- * 
+ * @property-read array $changedMetadata changed metadata.
+ *
  * <code>
  * [$meta_key => ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value]]
  * </code>
- * 
+ *
  * @property-read array $metadataValidationErrors Description
  *
  */
@@ -37,19 +37,19 @@ trait EntityMetadata{
 
     /**
      * Changed metadata.
-     * 
+     *
      * The items of this array have the below format:
      * <code>
      *  ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value]
      * </code>
-     * 
+     *
      * @var array
      */
     private $__changedMetadata = [];
 
     /**
      * Created metadata.
-     * 
+     *
      * @var \MapasCulturais\Entity[]
      */
     private $__createdMetadata = [];
@@ -57,7 +57,7 @@ trait EntityMetadata{
 
     /**
      * This entity has metadata.
-     * 
+     *
      * @return true
      */
     public static function usesMetadata(){
@@ -83,7 +83,7 @@ trait EntityMetadata{
     function __metadata__get($name){
         if($def = $this->getRegisteredMetadata($name)){
             $value = $this->getMetadata($name);
-            
+
             if(is_callable($def->unserialize)){
                 $cb = $def->unserialize;
                 $value = $cb($value);
@@ -150,9 +150,9 @@ trait EntityMetadata{
 
     /**
      * Virifies if the user can view private metadata of this entity.
-     * 
+     *
      * @param \MapasCulturais\Entities\User $user
-     * 
+     *
      * @return boolean
      */
     protected function canUserViewPrivateData($user){
@@ -257,7 +257,7 @@ trait EntityMetadata{
      * @param mixed the value of the metadata.
      */
     function setMetadata($meta_key, $value){
-    		
+
         $metadata_entity_class = $this->getMetadataClassName();
         $metadata_object = $this->getMetadata($meta_key, true);
 
@@ -315,7 +315,7 @@ trait EntityMetadata{
     public function saveMetadata(){
         foreach(array_keys($this->__changedMetadata) as $meta_key){
             $metadata_object = $this->getMetadata($meta_key, true);
-            $metadata_object->save(true);
+            $metadata_object->save();
         }
     }
 
