@@ -2273,10 +2273,13 @@ class App extends \Slim\Slim{
         }
     }
 
-    function unregisterEntityMetadata($entity_class){
-        foreach(array_keys($this->_register['entity_metadata_definitions']) as $k)
-            if($k == $entity_class || strpos($k, $entity_class.':') === 0)
-                $this->_register['entity_metadata_definitions'][$k] = [];
+    function unregisterEntityMetadata($entity_class, $key){
+        foreach($this->_register['entity_metadata_definitions'] as $k => $metadata){
+            if($k === $entity_class || strpos($k . ':', $entity_class) === 0){
+                $this->log->debug(__METHOD__ . '>' . $key);
+                unset($this->_register['entity_metadata_definitions'][$k][$key]);
+            }
+        }
 
     }
 
