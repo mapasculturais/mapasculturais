@@ -2,9 +2,10 @@
 use MapasCulturais\Entities\Agent;
 ?>
 <article class="objeto clearfix <?php if($entity->isUserProfile) echo 'agent-default'; ?>">
-    <?php
+    <?php /*
         $can_edit = true;
         $app->applyHook('can-edit', ['can_edit' => &$can_edit, 'entity' => $entity]);
+        */
     ?>
     <h1>
         <?php if($entity->isUserProfile): ?>
@@ -14,7 +15,8 @@ use MapasCulturais\Entities\Agent;
             <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Definir este agente como seu perfil.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
         <?php endif; ?>
 
-        <a href="<?php if($can_edit) echo $entity->singleUrl; else echo "http://culturaviva.gov.br/cadastrar"; ?>"><?php echo htmlentities($entity->name); ?></a>
+        <?php /* <a href="<?php if($can_edit) echo $entity->singleUrl; else echo "http://culturaviva.gov.br/cadastrar"; ?>"><?php echo htmlentities($entity->name); ?></a> */ ?>
+        <a href="<?php echo $entity->singleUrl; ?>"><?php echo htmlentities($entity->name); ?></a>
     </h1>
     <div class="objeto-meta">
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
