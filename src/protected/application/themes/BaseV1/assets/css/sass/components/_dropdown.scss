@@ -52,6 +52,8 @@
         background: $gray-light;
         border-radius: $border-radius-base;
         box-shadow: $box-shadow-dropdown;
+        max-height: 400px;
+        overflow-y: auto;
         &:before {
             @include arrow(up, $caret-width-base, $gray-light);
             right: .25rem;
