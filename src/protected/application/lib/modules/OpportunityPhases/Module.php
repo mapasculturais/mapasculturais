@@ -203,7 +203,7 @@ class Module extends \MapasCulturais\Module{
                 $this->registerRegistrationMetadata($opportunity);
             }
         });
-        
+
         $app->hook('controller(opportunity).getSelectFields', function(Entities\Opportunity $opportunity, array &$fields) use($app) {
             while($opportunity = $opportunity->parent){
                 foreach($opportunity->registrationFieldConfigurations as $field){
@@ -226,7 +226,7 @@ class Module extends \MapasCulturais\Module{
                 $params['opportunity'] = $first->opportunity;
                 $params['entity'] = $first;
             }
-        });
+        }, 0);
 
         // unifica as fichas de inscricão
         $app->hook('template(registration.view.form):begin', function() use($app){
@@ -287,7 +287,7 @@ class Module extends \MapasCulturais\Module{
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
 
                     $field_name = $field->fieldName;
-                    
+
                     $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
                 }
 
