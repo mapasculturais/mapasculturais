@@ -11,7 +11,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     abstract function getSlug();
     abstract function getName();
     abstract function getDescription();
-    
+
 
     abstract protected function _getConsolidatedResult(Entities\Registration $registration);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
@@ -140,7 +140,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
     function evaluationToString(Entities\RegistrationEvaluation $evaluation){
         return $this->valueToString($evaluation->result);
     }
-    
+
     function fetchRegistrations(){
         return false;
     }
@@ -164,11 +164,11 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         }
 
         $config = $registration->getEvaluationMethodConfiguration();
-        
+
         $can = $config->canUser('@control', $user);
-        
+
         if($can && $this->fetchRegistrations()){
-            
+
             $fetch = [];
             $config_fetch = is_array($config->fetch) ? $config->fetch : (array) $config->fetch;
             $config_fetchCategories = is_array($config->fetchCategories) ? $config->fetchCategories : (array) $config->fetchCategories;
@@ -190,11 +190,11 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                 if(preg_match("#([0-9]+) *[-] *([0-9]+)*#", $ufetch, $matches)){
                     $s1 = $matches[1];
                     $s2 = $matches[2];
-                    
+
                     $len = max([strlen($s1), strlen($s2)]);
-                    
+
                     $fin = substr($registration->id, -$len);
-                    
+
                     if(intval($s2) == 0){ // "00" => "100"
                         $s2 = "1$s2";
                     }
@@ -206,9 +206,9 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
             if(isset($fetch_categories[$user->id])){
                 $ucategories = $fetch_categories[$user->id];
-                if($ucategories){
+                if(strlen($ucategories) > 0){
                     $categories = explode(';', $ucategories);
-                    if($categories){
+                    if(count($categories) > 0){
                         $found = false;
 
                         foreach($categories as $cat){
@@ -225,7 +225,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
                 }
             }
         }
-        
+
         $this->_canUserEvaluateRegistrationCache[$cache_id] = $can;
         return $can;
     }
@@ -257,7 +257,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
         return "$slug--evaluation-info";
     }
-    
+
     function getConfigurationFormPartName(){
         $slug = $this->getSlug();
 
@@ -282,7 +282,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         $app->hook('view.includeAngularEntityAssets:after', function() use($self){
             $self->enqueueScriptsAndStyles();
         });
-        
+
         if($this->fetchRegistrations()){
             $this->registerEvaluationMethodConfigurationMetadata('fetch', [
                 'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
@@ -305,7 +305,7 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
         }
 
     }
-    
+
     function registerEvaluationMethodConfigurationMetadata($key, array $config){
         $app = App::i();
 
