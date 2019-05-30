@@ -944,6 +944,17 @@ class Registration extends \MapasCulturais\Entity
 
         $canUserEvaluate = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user) || $canUserEvaluateNextPhase;
 
+        $exclude_list = $this->getValuersExcludeList();
+        $include_list = $this->getValuersIncludeList();
+
+        if($can && in_array($user->id, $exclude_list)){
+            return false;
+        }
+
+        if(!$can && in_array($user->id, $include_list)){
+            return true;
+        }
+
         return $can || $canUserEvaluate;
     }
 
