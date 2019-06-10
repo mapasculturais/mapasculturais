@@ -206,9 +206,9 @@ abstract class EvaluationMethod extends Plugin implements \JsonSerializable{
 
             if(isset($fetch_categories[$user->id])){
                 $ucategories = $fetch_categories[$user->id];
-                if(strlen($ucategories) > 0){
+                if(strlen($ucategories) >= 0){
                     $categories = explode(';', $ucategories);
-                    if(count($categories) > 0){
+                    if(count($categories) >= 0){
                         $found = false;
 
                         foreach($categories as $cat){
