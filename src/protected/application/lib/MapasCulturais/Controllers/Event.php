@@ -194,7 +194,7 @@ class Event extends EntityController {
                 $space_query_data['@page']
         );
 
-        $space_ids = [];
+        $space_ids = [-1];
 
         foreach($_result as $occ){
             $space_ids[] = $occ['space_id'];
