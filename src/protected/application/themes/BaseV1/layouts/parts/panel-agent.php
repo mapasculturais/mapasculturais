@@ -2,11 +2,6 @@
 use MapasCulturais\Entities\Agent;
 ?>
 <article class="objeto clearfix <?php if($entity->isUserProfile) echo 'agent-default'; ?>">
-    <?php /*
-        $can_edit = true;
-        $app->applyHook('can-edit', ['can_edit' => &$can_edit, 'entity' => $entity]);
-        */
-    ?>
     <h1>
         <?php if($entity->isUserProfile): ?>
             <a class="icon icon-agent hltip active js-disable" title="<?php \MapasCulturais\i::esc_attr_e("Este é seu perfil.");?>"></a>
@@ -29,13 +24,6 @@ use MapasCulturais\Entities\Agent;
     </div>
 
     <div class="entity-actions">
-        <?php
-        if(!$can_edit){
-            ?>
-            <a href="http://culturaviva.gov.br/cadastrar" target="_blank">Usuário criado na rede cultura viva</a>
-            <?php
-        }else{
-        ?>
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
         <?php if(!$entity->isUserProfile && !isset($only_edit_button)): ?>
 
@@ -61,6 +49,5 @@ use MapasCulturais\Entities\Agent;
                 <?php endif; ?>
             <?php endif; ?>
         <?php endif; ?>
-        <?php } ?>
     </div>
 </article>

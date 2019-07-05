@@ -14,19 +14,15 @@ if($this->isEditable()){
 $this->includeMapAssets();
 $this->includeAngularEntityAssets($entity);
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
+?>
 
-?>
-<?php
-    $can_edit = true;
-    $app->applyHook('can-edit', ['can_edit' => &$can_edit, 'entity' => $entity]);
-?>
 <?php $this->applyTemplateHook('breadcrumb','begin'); ?>
 
 <?php $this->part('singles/breadcrumb', ['entity' => $entity,'entity_panel' => 'agents','home_title' => 'entities: My Agents']); ?><!--.part/singles/breadcrumb.php -->
 
 <?php $this->applyTemplateHook('breadcrumb','end'); ?>
 
-<?php /*if($can_edit) */$this->part('editable-entity', array('entity'=>$entity, 'action'=>$action)); ?><!--.part/editable-entity.php -->
+<?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action)); ?><!--.part/editable-entity.php -->
 
 <article class="main-content agent">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
