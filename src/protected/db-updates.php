@@ -1118,6 +1118,26 @@ return [
             $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
             $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         }
+    },
+
+    'create procuration table' => function() use($conn) {
+        if(!__table_exists('procuration')){
+            $conn->executeQuery("
+                CREATE TABLE procuration (
+                    token VARCHAR(32) NOT NULL, 
+                    usr_id INT NOT NULL, 
+                    attorney_user_id INT NOT NULL, 
+                    action VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    valid_until_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    PRIMARY KEY(token));");
+                
+            $conn->executeQuery("CREATE INDEX procuration_usr_idx ON procuration (usr_id);");
+            $conn->executeQuery("CREATE INDEX procuration_attorney_idx ON procuration (attorney_user_id);");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            
+        }
     }
 
 ] + $updates ;
