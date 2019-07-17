@@ -30,7 +30,7 @@ class Event extends EntityController {
      * @apiUse APIfindOne
      * @apiGroup EVENT
      * @apiName apiFindOne
-     * 
+     *
      * @apiExample {curl} Exemplo de utilização:
      *   curl -i http://localhost:8090/api/event/findOne?@select=id,name,subsite.name&user=EQ\(8006\)
      */
@@ -45,28 +45,28 @@ class Event extends EntityController {
 
 
     /**
-     * @api {POST} /api/event/index Criar Evento.
+     * @api {POST} /event/index Criar Evento.
      * @apiUse APICreate
      * @apiGroup EVENT
      * @apiName POSTevent
      */
 
      /**
-     * @api {PATCH} /api/event/single/:id Atualizar parcialmente um evento.
+     * @api {PATCH} /event/single/:id Atualizar parcialmente um evento.
      * @apiUse APIPatch
      * @apiGroup EVENT
      * @apiName PATCHevent
      */
 
     /**
-     * @api {PUT} /api/event/single/:id Atualizar evento.
+     * @api {PUT} /event/single/:id Atualizar evento.
      * @apiUse APIPut
      * @apiGroup EVENT
      * @apiName PUTevent
      */
 
      /**
-     * @api {DELETE} /api/event/single/:id Deletar evento.
+     * @api {DELETE} /event/single/:id Deletar evento.
      * @apiUse APIDelete
      * @apiGroup EVENT
      * @apiName DELETEevent
@@ -82,7 +82,7 @@ class Event extends EntityController {
      *   "id": 1,
      *   "name": "Padrão"
      *  }]
-     * 
+     *
      */
 
     /**
@@ -116,13 +116,13 @@ class Event extends EntityController {
      * @apiDescription Realizar a pesquisa por ocorrências de eventos em determinado período
      * @apiGroup EVENT
      * @apiName findOccurrences
-     * @apiParam {date} [@from=HOJE] Data inicial do período 
-     * @apiParam {date} [@to=HOJE] Data final do período 
+     * @apiParam {date} [@from=HOJE] Data inicial do período
+     * @apiParam {date} [@to=HOJE] Data final do período
      * @apiParam {String} [@limit] Limite para a quantidade de registro
      * @apiParam {String} [@offset] Offset para desolamento da quantidade de registros
      * @apiParam {String} [@page] Número da página a ser retornada
      * @apiParam {String} [space:atributo] Realizar a pesquisa das ocorrências de eventos por espaço.
-     * 
+     *
      * @apiExample {curl} Exemplo de utilização:
      *   curl -i http://localhost/api/event/findOccurrences?@from=2016-05-01&@to=2016-05-31&space:id=EQ(8915)
      */
@@ -146,15 +146,15 @@ class Event extends EntityController {
 
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
-        
+
         $subsite_sql = '';
-                
+
         if($subsite = $app->getCurrentSubsite()){
             $space_ids = $app->repo('Space')->getCurrentSubsiteSpaceIds(true);
-            
+
             $subsite_sql = "AND space_id IN ({$space_ids})";
         }
-        
+
         $query = $app->em->createNativeQuery("
             SELECT id, event_id, space_id, starts_on, starts_at::TIME AS starts_at, ends_on, ends_at::TIME AS ends_at, rule
             FROM recurring_event_occurrence_for(:date_from, :date_to, 'Etc/UTC', NULL)
@@ -337,8 +337,8 @@ class Event extends EntityController {
      * @apiGroup EVENT
      * @apiName findBySpace
      * @apiParam {String} spaceId ID do espaço.
-     * @apiParam {date} [@from=HOJE] Data inicial do período 
-     * @apiParam {date} [@to=HOJE] Data final do período 
+     * @apiParam {date} [@from=HOJE] Data inicial do período
+     * @apiParam {date} [@to=HOJE] Data final do período
      * @apiParam {--} [@count] Faz com que seja retornado a quantidade de registros
      *
      * @apiExample {curl} Exemplo de utilização:
@@ -514,9 +514,9 @@ class Event extends EntityController {
      * @apiName findByLocation
      * @apiParam {String} [space] ID do espaço a ser utilizado como filtro na busca.
      * @apiParam {String} [space:atributo] Realizar a pesquisa das ocorrências de eventos por espaço.
-     * @apiParam {date} [@from=HOJE] Data inicial do período 
-     * @apiParam {date} [@to=HOJE] Data final do período 
-     * @apiParam {--} _geoLocation Argumento com geolocalização 
+     * @apiParam {date} [@from=HOJE] Data inicial do período
+     * @apiParam {date} [@to=HOJE] Data final do período
+     * @apiParam {--} _geoLocation Argumento com geolocalização
      * @apiParam {--} [@count] Faz com que seja retornado a quantidade de registros
      *
      * @apiExample {curl} Exemplo de utilização:

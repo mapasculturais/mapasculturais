@@ -32,42 +32,42 @@ class Seal extends EntityController {
      * @apiGroup SEAL
      * @apiName GETdescribe
      */
-    
+
     /**
-     * @api {POST} /api/seal/index Criar selo.
+     * @api {POST} /seal/index Criar selo.
      * @apiUse APICreate
      * @apiGroup SEAL
      * @apiName POSTseal
      */
 
     /**
-     * @api {POST} /api/seal/index Criar selo.
+     * @api {POST} /seal/index Criar selo.
      * @apiUse APICreate
      * @apiGroup SEAL
      * @apiName POSTseal
      */
 
      /**
-     * @api {PATCH} /api/seal/single/:id Atualizar parcialmente um selo.
+     * @api {PATCH} /seal/single/:id Atualizar parcialmente um selo.
      * @apiUse APIPatch
      * @apiGroup SEAL
      * @apiName PATCHseal
      */
 
     /**
-     * @api {PUT} /api/seal/single/:id Atualizar selo.
+     * @api {PUT} /seal/single/:id Atualizar selo.
      * @apiUse APIPut
      * @apiGroup SEAL
      * @apiName PUTseal
      */
 
      /**
-     * @api {PUT|PATCH} /api/seal/single/:id Deletar selo.
+     * @api {PUT|PATCH} /seal/single/:id Deletar selo.
      * @apiUse APIDelete
      * @apiGroup SEAL
      * @apiName DELETEseal
      */
-    
+
      /**
      * @api {all} /api/seal/getTypes Retornar tipos
      * @apiUse getTypes
@@ -84,7 +84,7 @@ class Seal extends EntityController {
      *   "id": 2,
      *   "name": "Semanas"
      * }]
-     * 
+     *
      */
 
     /**
@@ -93,8 +93,8 @@ class Seal extends EntityController {
      * @apiGroup SEAL
      * @apiName getTypeGroups
      */
-    
-    
+
+
     /**
      * Creates a new Seal
      *
@@ -119,7 +119,7 @@ class Seal extends EntityController {
     	$id = $this->data['id'];
     	$relation = $app->repo('SealRelation')->find($id);
         $mensagemPrintSealRelation = $relation->getCertificateText(true);
-        
+
     	$this->render('sealrelation', ['relation'=>$relation, 'printSeal'=>$mensagemPrintSealRelation, 'seal'=>$relation->seal]);
     }
 
@@ -128,13 +128,13 @@ class Seal extends EntityController {
 
     	$id = $this->data['id'];
     	$rel = $app->repo('SealRelation')->find($id);
-        
+
         if(!$rel){
             $app->pass();
         }
 
         $rel->checkPermission('print');
-        
+
     	$this->render('printsealrelation', ['relation' => $rel]);
 
     }
