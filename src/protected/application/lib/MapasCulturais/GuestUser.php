@@ -19,6 +19,10 @@ class GuestUser implements UserInterface{
     function is($role){
         return $role == 'guest';
     }
+
+    function isAttorney($action, $user= null){
+        return false;
+    }
     
     function equals($obj){
         return $this == $obj;

@@ -85,8 +85,8 @@ class UserApp extends \MapasCulturais\Entity {
     protected $subsite;
 
     public function __construct() {
-        $this->_publicKey = self::getToken(32);
-        $this->_privateKey = self::getToken(64);
+        $this->_publicKey = App::getToken(32);
+        $this->_privateKey = App::getToken(64);
         $this->user = App::i()->user;
         parent::__construct();
     }
@@ -101,36 +101,6 @@ class UserApp extends \MapasCulturais\Entity {
 
     function getId() {
         return $this->_publicKey;
-    }
-    
-    /**
-     * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string/13733588#13733588
-     */
-    protected static function crypto_rand_secure($min, $max) {
-        $range = $max - $min;
-        if ($range < 1)
-            return $min; // not so random...
-        $log = ceil(log($range, 2));
-        $bytes = (int) ($log / 8) + 1; // length in bytes
-        $bits = (int) $log + 1; // length in bits
-        $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
-        do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-            $rnd = $rnd & $filter; // discard irrelevant bits
-        } while ($rnd >= $range);
-        return $min + $rnd;
-    }
-
-    protected static function getToken($length) {
-        $token = "";
-        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
-        $codeAlphabet.= "0123456789";
-        $max = strlen($codeAlphabet) - 1;
-        for ($i = 0; $i < $length; $i++) {
-            $token .= $codeAlphabet[self::crypto_rand_secure(0, $max)];
-        }
-        return $token;
     }
     
     protected function canUserView($user){
