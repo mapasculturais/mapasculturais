@@ -127,6 +127,13 @@ class Event extends EntityController {
      *   curl -i http://localhost/api/event/findOccurrences?@from=2016-05-01&@to=2016-05-31&space:id=EQ(8915)
      */
     function API_findOccurrences(){
+        $result = $this->apiFindOccurrences($this->getData);
+
+        // @TODO: set headers to
+        $this->apiResponse($result);
+    }
+
+    function apiFindOccurrences($query_data){
         $app = App::i();
         $rsm = new ResultSetMapping();
 
@@ -140,13 +147,15 @@ class Event extends EntityController {
         $rsm->addScalarResult('ends_at', 'ends_at');
         $rsm->addScalarResult('rule', 'rule');
 
-        $query_data = $this->getData;
 
         // find occurrences
 
         $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
         
+        $event_attendance_user = key_exists('@attendanceUser', $query_data) ? $query_data['@attendanceUser'] : $app->user->id;
+        unset($query_data['@attendanceUser']);
+
         $subsite_sql = '';
                 
         if($subsite = $app->getCurrentSubsite()){
@@ -173,10 +182,8 @@ class Event extends EntityController {
 
         $_result = $query->getScalarResult();
 
-
-
         $space_query_data = [];
-        $event_query_data = $this->getData;
+        $event_query_data = $query_data;
 
         // filter spaces
 
@@ -278,7 +285,7 @@ class Event extends EntityController {
 
 
                 unset($occ['space_id']);
-
+                
                 if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
                     unset($occ['event']);
 
@@ -289,7 +296,6 @@ class Event extends EntityController {
                     $occ['space'] = $space;
 
                     $item = array_merge($event, $occ);
-
 
                     $result[] = $item;
                 }
@@ -315,9 +321,39 @@ class Event extends EntityController {
             $result = [];
         }
 
-        // @TODO: set headers to
-        $this->apiResponse($result);
 
+        $reccurrence_strings = [];
+        foreach($result as &$r){
+            $r['attendance'] = null;
+            $r['_reccurrence_string'] = "{$r['occurrence_id']}.{$r['starts_on']}.{$r['starts_at']}.{$r['ends_on']}.{$r['ends_at']}";
+            $reccurrence_strings[$r['_reccurrence_string']] = &$r;
+        }
+
+        if($reccurrence_strings){
+            if(!is_numeric($event_attendance_user)){
+                $user = $app->repo('User')->getByProcurationToken($event_attendance_user);
+                if($user){
+                    $event_attendance_user = $user->id;
+                } else {
+                    $event_attendance_user = null;
+                }
+            }
+            if($event_attendance_user){
+                $_reccurrence_strings = implode(',', array_keys($reccurrence_strings));
+    
+                $attendances = $app->controller('eventAttendance')->apiQuery([
+                    '@select' => 'id,type,reccurrenceString,user,eventOccurrence,event,space',
+                    'reccurrenceString' => "IN($_reccurrence_strings)",
+                    'user' => "EQ($event_attendance_user)"
+                ]);
+
+                foreach($attendances as $attendance){
+                    $reccurrence_strings[$attendance['reccurrenceString']]['attendance'] = $attendance;
+                }
+            }
+        }
+        
+        return $result;
     }
 
     function GET_create() {
