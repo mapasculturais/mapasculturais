@@ -39,6 +39,17 @@ class User extends \MapasCulturais\Repository{
 
     }
 
+    public function getByProcurationToken($procuration_token){
+        $procuration = App::i()->repo('Procuration')->find($procuration_token);
+        if($procuration){
+            $user = $procuration->user;
+        } else {
+            $user = null;
+        }
+
+        return $user;
+    }
+
 
     public function getAdmins($subsite_id){
         $class = $this->getClassName();
