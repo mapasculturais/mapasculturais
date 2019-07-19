@@ -38,9 +38,7 @@ class Auth extends \MapasCulturais\Controller{
 
         if(!isset($this->data['permission'])){
             $this->errorJson(i::__('Parâmetro permission não informado'));
-        } else if(!in_array($this->data['permission'], $allowed_permissions)){
-            $this->errorJson(i::__('Parâmetro permission inválido'));
-        }
+        } 
 
         $user = null;
 
