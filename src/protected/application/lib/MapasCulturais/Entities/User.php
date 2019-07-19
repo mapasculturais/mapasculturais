@@ -109,14 +109,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      * @var \MapasCulturais\Entities\Procuration[] 
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
      */
-    protected $userProcurations;
+    protected $_userProcurations;
 
     /**
      *
      * @var \MapasCulturais\Entities\Procuration[] 
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade="remove", orphanRemoval=true, fetch="LAZY")
      */
-    protected $attorneyProcurations;
+    protected $_attorneyProcurations;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
@@ -328,8 +328,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     public function isAttorney($action, $user = null){
         $app = App::i();
+
         if(is_null($user)){
             $user = $app->user;
+        }
+
+        if($user->is('guest')){
+            return false;
         }
 
         if($procuration = $app->repo('Procuration')->findOneBy(['user' => $user, 'attorney' => $this, 'action' => $action])){
