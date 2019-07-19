@@ -117,6 +117,19 @@ class EventAttendance extends \MapasCulturais\Entity {
         $this->user = App::i()->user;
     }
 
+    public function jsonSerialize() {
+        return [
+            'id' => $this->id,
+            'type' => $this->type,
+            'reccurrenceString' => $this->reccurrenceString,
+            'user' => $this->user->id,
+            'createTimestamp' => $this->createTimestamp,
+            '_eventOccurrence' => $this->_eventOccurrence->id,
+            '_event' => $this->event->id,
+            '_space' => $this->space->id
+        ];
+    }
+
     function setUser($user){
         $app = App::i();
         if(is_numeric($user)){
