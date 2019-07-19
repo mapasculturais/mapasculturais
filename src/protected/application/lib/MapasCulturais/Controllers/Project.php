@@ -34,36 +34,36 @@ class Project extends EntityController {
      */
 
     /**
-     * @api {POST} /api/project/index Criar projeto.
+     * @api {POST} /project/index Criar projeto.
      * @apiUse APICreate
      * @apiGroup PROJECT
      * @apiName POSTproject
      */
 
      /**
-     * @api {PATCH} /api/project/single/:id Atualizar parcialmente um projeto.
+     * @api {PATCH} /project/single/:id Atualizar parcialmente um projeto.
      * @apiUse APIPatch
      * @apiGroup PROJECT
      * @apiName PATCHproject
      */
 
     /**
-     * @api {PUT} /api/project/single/:id Atualizar projeto.
+     * @api {PUT} /project/single/:id Atualizar projeto.
      * @apiUse APIPut
      * @apiGroup PROJECT
      * @apiName PUTproject
      */
 
      /**
-     * @api {PUT|PATCH} /api/project/single/:id Deletar projeto.
+     * @api {PUT|PATCH} /project/single/:id Deletar projeto.
      * @apiUse APIDelete
      * @apiGroup PROJECT
      * @apiName DELETEproject
      */
-    
-    
-    
-    
+
+
+
+
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
             $parent = $this->repository->find($this->urlData['parentId']);
@@ -172,5 +172,5 @@ class Project extends EntityController {
     function POST_unpublishEvents(){
         $this->_setEventStatus(Entities\Event::STATUS_DRAFT);
     }
-    
+
 }

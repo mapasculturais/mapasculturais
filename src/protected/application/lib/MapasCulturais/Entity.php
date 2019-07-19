@@ -203,7 +203,11 @@ abstract class Entity implements \JsonSerializable{
     function getOwnerUser(){
         $app = App::i();
 
-        if(!$this->owner)
+        if(isset($this->user)){
+            return $this->user;
+        }
+
+        if(!isset($this->owner))
             return $app->user;
 
         $owner = $this->owner;
@@ -253,13 +257,21 @@ abstract class Entity implements \JsonSerializable{
         if($this->isUserAdmin($user)){
             return true;
         }
-        
 
         if($this->getOwnerUser()->id == $user->id)
             return true;
 
         if($this->usesAgentRelation() && $this->userHasControl($user))
             return true;
+
+
+        $class_parts = explode('\\', $this->getClassName());
+        $permission = end($class_parts);
+
+        $entity_user = $this->getOwnerUser();
+        if($user->isAttorney("manage{$permission}", $entity_user)){
+            return true;
+        }
 
         return false;
     }
@@ -326,18 +338,27 @@ abstract class Entity implements \JsonSerializable{
         $result = false;
 
         if (!empty($user)) {
+            $class_parts = explode('\\', $this->getClassName());
+            $permission = end($class_parts);
 
-            if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
-                if($this->userHasControl($user)){
-                    $result = true;
-                } else if($this->isUserAdmin($user)){
-                    $result = true;
-                }
-            } elseif(method_exists($this, 'canUser' . $action)) {
-                $method = 'canUser' . $action;
-                $result = $this->$method($user);
+            $entity_user = $this->getOwnerUser();
+            if($user->isAttorney("{$action}{$permission}", $entity_user) || $user->isAttorney("manage{$permission}", $entity_user)){
+                $result = true;
             } else {
-                $result = $this->genericPermissionVerification($user);
+                if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
+                    if($this->userHasControl($user)){
+                        $result = true;
+                    } else if($this->isUserAdmin($user)){
+                        $result = true;
+                    }
+                }
+    
+                if(method_exists($this, 'canUser' . $action)){
+                    $method = 'canUser' . $action;
+                    $result = $this->$method($user);
+                }elseif($action != '@control'){
+                    $result = $this->genericPermissionVerification($user);
+                }
             }
 
             $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
