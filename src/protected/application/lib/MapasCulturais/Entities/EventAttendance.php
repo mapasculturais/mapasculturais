@@ -117,6 +117,17 @@ class EventAttendance extends \MapasCulturais\Entity {
         $this->user = App::i()->user;
     }
 
+    function setUser($user){
+        $app = App::i();
+        if(is_numeric($user)){
+            $user = $app->repo('User')->find($user);
+        } else if(is_string($user)){
+            $user = $app->repo('User')->getByProcurationToken($user);
+        }
+
+        $this->user = $user;
+    }
+
     static function getValidations() {
         return [
             'type' => [
@@ -229,11 +240,14 @@ class EventAttendance extends \MapasCulturais\Entity {
     }
 
     protected function canUserCreate($user){
+        if(is_null($user) || $user->is('guest')){
+            return false;
+        }
         if($user->is('admin')){
             return true;
         }
 
-        if($this->user->equals($user)){
+        if($user->equals($this->user)){
             return true;
         }
 
