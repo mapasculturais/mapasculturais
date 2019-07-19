@@ -61,28 +61,28 @@ class Agent extends EntityController {
      */
     
      /**
-     * @api {POST} /api/agent/index Criar Agente.
+     * @api {POST} /agent/index Criar Agente.
      * @apiUse APICreate
      * @apiGroup AGENT
      * @apiName POSTagent
      */
 
      /**
-     * @api {PATCH} /api/agent/single/:id Atualizar parcialmente um Agente.
+     * @api {PATCH} /agent/single/:id Atualizar parcialmente um Agente.
      * @apiUse APIPatch
      * @apiGroup AGENT
      * @apiName PATCHagent
      */
 
     /**
-     * @api {PUT} /api/agent/single/:id Atualizar Agente.
+     * @api {PUT} /agent/single/:id Atualizar Agente.
      * @apiUse APIPut
      * @apiGroup AGENT
      * @apiName PUTagent
      */
 
      /**
-     * @api {DELETE} /api/agent/single/:id Deletar Agente.
+     * @api {DELETE} /agent/single/:id Deletar Agente.
      * @apiUse APIDelete
      * @apiGroup AGENT
      * @apiName DELETEagent
