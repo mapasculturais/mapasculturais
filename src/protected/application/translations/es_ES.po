@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2019-03-23 11:19-0300\n"
+"POT-Creation-Date: 2019-07-18 13:52-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -600,21 +600,21 @@ msgstr "Fecha incorrecta"
 #: application/conf/agent-types.php:51 application/conf/conf-base.php:257
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:183
 #: application/themes/BaseV1/layouts/parts/singles/location.php:33
-#: application/themes/culturaenlinea/layouts/parts/singles/location.php:37
+#: application/themes/culturaenlinea/layouts/parts/singles/location.php:38
 msgid "Localização"
 msgstr "Localización"
 
 #: application/conf/agent-types.php:55
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:187
 #: application/themes/BaseV1/layouts/parts/singles/location.php:37
-#: application/themes/culturaenlinea/layouts/parts/singles/location.php:41
+#: application/themes/culturaenlinea/layouts/parts/singles/location.php:42
 msgid "Pública"
 msgstr "Pública"
 
 #: application/conf/agent-types.php:56
 #: application/themes/BaseV1/layouts/parts/singles/history_agent.php:187
 #: application/themes/BaseV1/layouts/parts/singles/location.php:37
-#: application/themes/culturaenlinea/layouts/parts/singles/location.php:41
+#: application/themes/culturaenlinea/layouts/parts/singles/location.php:42
 msgid "Privada"
 msgstr "Privada"
 
@@ -736,6 +736,7 @@ msgstr ""
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:150
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:25
 #: application/themes/culturaenlinea/layouts/parts/singles/agent-form.php:110
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:25
 #: application/themes/culturaenlinea/views/opportunity/report.php:70
 msgid "Telefone 1"
 msgstr "Teléfono 1"
@@ -750,6 +751,7 @@ msgstr "Por favor, introduzca el teléfono 1 en el formato (xx) xxxx-xxxx."
 #: application/themes/BaseV1/layouts/parts/singles/history_space.php:154
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:26
 #: application/themes/culturaenlinea/layouts/parts/singles/agent-form.php:117
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:26
 #: application/themes/culturaenlinea/views/opportunity/report.php:71
 msgid "Telefone 2"
 msgstr "Teléfono 2"
@@ -803,6 +805,7 @@ msgstr "Calle"
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:19
 #: application/themes/BaseV1/views/opportunity/report.php:56
 #: application/themes/culturaenlinea/layouts/parts/singles/location.php:30
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:19
 #: application/themes/culturaenlinea/views/opportunity/report.php:56
 msgid "Número"
 msgstr "Número"
@@ -872,6 +875,7 @@ msgstr "Departamento"
 #: application/themes/BaseV1/views/event/edit.php:183
 #: application/themes/BaseV1/views/event/single.php:181
 #: application/themes/BaseV1/views/event/single.php:183
+#: application/themes/culturaenlinea/agent-types.php:191
 #: application/themes/culturaenlinea/config.php:103
 #: application/themes/culturaenlinea/event-types.php:63
 #: application/themes/culturaenlinea/layouts/parts/singles/agent-form.php:17
@@ -892,9 +896,10 @@ msgstr "Página web"
 #: application/conf/seal-types.php:10 application/conf/space-types.php:170
 #: application/conf/space-types.php:176 application/conf/space-types.php:182
 #: application/conf/space-types.php:188
+#: application/themes/culturaenlinea/agent-types.php:193
 #: application/themes/culturaenlinea/event-types.php:65
 msgid "A url informada é inválida."
-msgstr "La url ingresada no es válida."
+msgstr "La url ingresada no es válida (Ejem.: http://sitioweb.com)"
 
 #: application/conf/agent-types.php:223 application/conf/event-types.php:70
 #: application/conf/opportunity-types.php:38
@@ -916,19 +921,19 @@ msgstr "Google+"
 
 #: application/conf/agent-types.php:241 application/conf/event-types.php:88
 #: application/conf/project-types.php:34 application/conf/space-types.php:192
-#: application/themes/culturaenlinea/agent-types.php:208
+#: application/themes/culturaenlinea/agent-types.php:216
 #: application/themes/culturaenlinea/event-types.php:87
 #: application/themes/culturaenlinea/project-types.php:60
-#: application/themes/culturaenlinea/space-types.php:206
+#: application/themes/culturaenlinea/space-types.php:207
 msgid "Instagram"
 msgstr "Instagram"
 
 #: application/conf/agent-types.php:243 application/conf/event-types.php:90
 #: application/conf/project-types.php:36 application/conf/space-types.php:194
-#: application/themes/culturaenlinea/agent-types.php:210
+#: application/themes/culturaenlinea/agent-types.php:218
 #: application/themes/culturaenlinea/event-types.php:89
 #: application/themes/culturaenlinea/project-types.php:62
-#: application/themes/culturaenlinea/space-types.php:208
+#: application/themes/culturaenlinea/space-types.php:209
 msgid ""
 "O usuário informado é inválido. Informe no formato @usuario e tente novamente"
 msgstr ""
@@ -1240,6 +1245,7 @@ msgstr "Eventos"
 #: application/lib/MapasCulturais/Entities/Agent.php:279
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:20
 #: application/themes/culturaenlinea/config.php:105
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:20
 #: application/themes/culturaenlinea/views/opportunity/report.php:66
 msgid "Agente"
 msgstr "Agente"
@@ -1641,7 +1647,7 @@ msgstr ""
 #: application/lib/MapasCulturais/Entities/Registration.php:748
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:16
 #: application/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:19
-#: application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:26
+#: application/themes/BaseV1/layouts/parts/singles/registration-single--header.php:29
 msgid "Nome do Projeto"
 msgstr "Nombre del Proyecto"
 
@@ -2891,93 +2897,93 @@ msgstr "Sello Verificador"
 msgid "Planilha gerada em: "
 msgstr "Planilla generada: "
 
-#: application/lib/MapasCulturais/App.php:731
+#: application/lib/MapasCulturais/App.php:730
 msgid "Campo de texto (textarea)"
 msgstr "Campo de texto (textarea)"
 
-#: application/lib/MapasCulturais/App.php:736
+#: application/lib/MapasCulturais/App.php:735
 msgid "Campo de texto simples"
 msgstr "Campo de texto simple"
 
-#: application/lib/MapasCulturais/App.php:741
+#: application/lib/MapasCulturais/App.php:740
 msgid "Campo de data"
 msgstr "Campo de fecha"
 
-#: application/lib/MapasCulturais/App.php:746
+#: application/lib/MapasCulturais/App.php:745
 msgid "Campo de URL (link)"
 msgstr "Campo de URL (enlace)"
 
-#: application/lib/MapasCulturais/App.php:748
+#: application/lib/MapasCulturais/App.php:747
 msgid "O valor não é uma URL válida"
 msgstr "El valor no es una URL válida"
 
-#: application/lib/MapasCulturais/App.php:754
+#: application/lib/MapasCulturais/App.php:753
 msgid "Campo de email"
 msgstr "Campo de email"
 
-#: application/lib/MapasCulturais/App.php:756
+#: application/lib/MapasCulturais/App.php:755
 msgid "O valor não é um endereço de email válido"
 msgstr "El valor no es una dirección de email válido"
 
-#: application/lib/MapasCulturais/App.php:762
+#: application/lib/MapasCulturais/App.php:761
 msgid "Seleção única (select)"
 msgstr "Selección única (select)"
 
-#: application/lib/MapasCulturais/App.php:768
+#: application/lib/MapasCulturais/App.php:767
 msgid "Título de Seção"
 msgstr "Título de Sección"
 
-#: application/lib/MapasCulturais/App.php:773
+#: application/lib/MapasCulturais/App.php:772
 msgid "Campo numérico"
 msgstr "Campo numerico"
 
-#: application/lib/MapasCulturais/App.php:775
+#: application/lib/MapasCulturais/App.php:774
 msgid "O valor inserido não é válido"
 msgstr "El valor informado no es válido"
 
-#: application/lib/MapasCulturais/App.php:781
+#: application/lib/MapasCulturais/App.php:780
 msgid "Campo de CPF"
 msgstr "Campo de CPF"
 
-#: application/lib/MapasCulturais/App.php:783
+#: application/lib/MapasCulturais/App.php:782
 msgid "O cpf inserido não é válido"
 msgstr "El CPF no es válido"
 
-#: application/lib/MapasCulturais/App.php:789
+#: application/lib/MapasCulturais/App.php:788
 msgid "Campo de CNPJ"
 msgstr "Campo de CNPJ"
 
-#: application/lib/MapasCulturais/App.php:791
+#: application/lib/MapasCulturais/App.php:790
 msgid "O cnpj inserido não é válido"
 msgstr "El CNPJ no es válido"
 
-#: application/lib/MapasCulturais/App.php:797
+#: application/lib/MapasCulturais/App.php:796
 msgid "Seleção múltipla (checkboxes)"
 msgstr "Selección múltiple (checkboxes)"
 
+#: application/lib/MapasCulturais/App.php:820
 #: application/lib/MapasCulturais/App.php:821
 #: application/lib/MapasCulturais/App.php:822
-#: application/lib/MapasCulturais/App.php:823
+#: application/lib/MapasCulturais/App.php:825
 #: application/lib/MapasCulturais/App.php:826
 #: application/lib/MapasCulturais/App.php:827
 #: application/lib/MapasCulturais/App.php:828
-#: application/lib/MapasCulturais/App.php:829
-#: application/lib/MapasCulturais/App.php:910
-#: application/lib/MapasCulturais/App.php:926
+#: application/lib/MapasCulturais/App.php:909
+#: application/lib/MapasCulturais/App.php:925
 msgid "O arquivo enviado não é uma imagem válida."
 msgstr "El archivo enviado no es una imagen válida."
 
+#: application/lib/MapasCulturais/App.php:823
 #: application/lib/MapasCulturais/App.php:824
-#: application/lib/MapasCulturais/App.php:825
 #: application/lib/MapasCulturais/Controllers/Registration.php:82
 msgid "O arquivo enviado não é um documento válido."
 msgstr "El archivo enviado no es un documento válido."
 
-#: application/lib/MapasCulturais/App.php:830
+#: application/lib/MapasCulturais/App.php:829
 msgid "O arquivo não é um ZIP."
 msgstr "El archivo no es un ZIP."
 
-#: application/lib/MapasCulturais/App.php:921
+#: application/lib/MapasCulturais/App.php:920
 msgid "O link do vídeo é obrigatório"
 msgstr "El enlace del video es obligatorio"
 
@@ -8389,7 +8395,7 @@ msgid "Encontrar minha localização"
 msgstr "Encontrar mi localización"
 
 #: application/themes/BaseV1/layouts/parts/singles/location.php:55
-#: application/themes/culturaenlinea/layouts/parts/singles/location.php:59
+#: application/themes/culturaenlinea/layouts/parts/singles/location.php:60
 msgid "Informações Geográficas"
 msgstr "Datos geográficos"
 
@@ -9304,7 +9310,11 @@ msgstr "%d de {%B} de %G a las %H:%M"
 msgid "As inscrições encerraram-se em"
 msgstr "Las inscripciones se cerrarán en"
 
-#: application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:20
+#: application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:21
+msgid "reenviar"
+msgstr "reenviar"
+
+#: application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:23
 msgid ""
 "Somente super admins podem usar este botão e somente deve ser usado para "
 "enviar inscrições que não foram enviadas por problema do sistema."
@@ -9313,7 +9323,7 @@ msgstr ""
 "usado para enviar inscripciones que no fueron enviadas por problemas del "
 "sistema."
 
-#: application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:20
+#: application/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:23
 msgid "enviar esta inscrição"
 msgstr "enviar esta inscripción"
 
@@ -10314,20 +10324,24 @@ msgstr ""
 "proyecto"
 
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:21
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:21
 #: application/themes/culturaenlinea/views/opportunity/report.php:67
 msgid "Email publico"
 msgstr "Email público"
 
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:22
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:22
 #: application/themes/culturaenlinea/views/opportunity/report.php:68
 msgid "Email privado"
 msgstr "Email privado"
 
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:23
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:23
 msgid "Email de usuário"
 msgstr "Email de usuario"
 
 #: application/themes/BaseV1/views/opportunity/report-drafts.php:24
+#: application/themes/culturaenlinea/views/opportunity/report-drafts.php:24
 #: application/themes/culturaenlinea/views/opportunity/report.php:69
 msgid "Telefone Publico"
 msgstr "Teléfono Público"
@@ -10830,6 +10844,14 @@ msgid ""
 msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Email Privado y Teléfono 1 completos"
+
+#: application/themes/culturaenlinea/layouts/parts/singles/location.php:35
+msgid "País de residencia"
+msgstr ""
+
+#: application/themes/culturaenlinea/layouts/parts/singles/location.php:35
+msgid "Agrega un país de residencia"
+msgstr ""
 
 #~ msgid "Avaliar"
 #~ msgstr "Evaluar"
