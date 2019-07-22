@@ -135,9 +135,10 @@ class Site extends \MapasCulturais\Controller {
      *   curl -i http://localhost/api/site/version
      */
     function API_version() {
-        $version = $this->getVersionFile();
-        $data['name'] = 'Mapas Culturais';
-        $data['version'] = sprintf('v%s', $version);
+        $app = App::i();
+        $data = [];
+        $data['name'] = $app->view->dict('site: name', false);
+        $data['version'] = $app->getVersion();
 
         $tagVersion = trim(exec('git describe --tags --abbrev=0'));
         if ($tagVersion != "") {
@@ -151,13 +152,28 @@ class Site extends \MapasCulturais\Controller {
         $this->json($data);
     }
 
-    private function getVersionFile() {
-        $version = \MapasCulturais\i::_e("versão indefinida");
-        $path = getcwd() . "/../version.txt";
-        if (file_exists($path) && $versionFile = fopen($path, "r")) {
-            $version = fgets($versionFile);
-            fclose($versionFile);
-        }
-        return $version;
+    function API_info(){
+        $app = App::i();
+        
+        if(!($info = $app->cache->fetch(__METHOD__))){
+            $info = [];
+            $info['name'] = $app->view->dict('site: name', false);
+            $info['description'] = $app->view->dict('site: description', false);
+            $info['version'] = $app->getVersion();
+    
+            $info['timezone'] = date_default_timezone_get();
+    
+            // $info['plugins'] = array_keys($app->getPlugins());
+            // $info['modules'] = array_keys($app->getModules());
+    
+            $info['agents_count'] = $app->controller('agent')->apiQuery(['@count' => 1]);
+            $info['spaces_count'] = $app->controller('space')->apiQuery(['@count' => 1]);
+            $info['events_count'] = $app->controller('event')->apiQuery(['@count' => 1]);
+            $info['projects_count'] = $app->controller('project')->apiQuery(['@count' => 1]);
+            $info['opportunities_count'] = $app->controller('opportunity')->apiQuery(['@count' => 1]);
+
+            $app->cache->save(__METHOD__, $info, 60);
+        }    
+        $this->json($info);
     }
 }
