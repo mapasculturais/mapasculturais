@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs npm
 
 # Install uglify
 RUN npm install -g \
@@ -69,6 +69,8 @@ RUN ln -s /var/www/html /var/www/src
 
 COPY src/router.php /var/www/html/router.php
 RUN echo "php -S 0.0.0.0:8001 -t /var/www/html /var/www/html/router.php" > /mapas.sh && chmod +x /mapas.sh
+
+COPY version.txt /var/www/version.txt
 
 COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
