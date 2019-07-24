@@ -533,7 +533,7 @@ class App extends \Slim\Slim{
     }
 
     public function getVersion(){
-        $version = $this->getVersionFile();
+        $version = trim($this->getVersionFile());
         return sprintf('v%s', $version);
     }
 
