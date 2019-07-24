@@ -211,6 +211,10 @@ abstract class Entity implements \JsonSerializable{
             return $app->user;
 
         $owner = $this->owner;
+        
+        if(!($owner instanceof Entity)){
+            return $app->user;
+        }
 
         $user = $owner->getOwnerUser();
 
