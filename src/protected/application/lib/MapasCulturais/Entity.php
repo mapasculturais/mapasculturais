@@ -505,6 +505,10 @@ abstract class Entity implements \JsonSerializable{
             $data_array = $data_array + $class::getMetadataMetadata();
         }
 
+        if(isset($data_array['location']) && isset($data_array['publicLocation'])){
+            $data_array['location']['private'] = function(){ return (bool) ! $this->publicLocation; };
+        }
+
 
         return $data_array;
     }
