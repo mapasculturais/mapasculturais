@@ -5,7 +5,7 @@ services:
       context: ../
       dockerfile: compose/local/Dockerfile
     ports:
-      - "80:80"
+      - "81:80"
     volumes:
       - ../src/protected:/var/www/html/protected
       - ../scripts:/var/www/scripts
@@ -33,15 +33,15 @@ services:
 
       - LOG_ENABLED=true
       - LOG_LEVEL=DEBUG
-      - LOG_HOOK=true 
+      - LOG_HOOK=true
       - PENDING_PCACHE_RECREATION_INTERVAL=10
 
     depends_on:
       - db
-      
+
     stdin_open: true
     tty: true
-      
+
   db:
     image: mdillon/postgis:10
     environment:

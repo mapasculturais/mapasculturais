@@ -1256,46 +1256,52 @@ class Theme extends MapasCulturais\Theme {
      *      'lon' => $json->longitude,
      *      'streetName' => $json->logradouro,
      *      'neighborhood' => $json->bairro,
-     *      'city' => $json->cidade,
-     *      'state' => $json->estado
+     *      'city' => $json->cidade->nome,
+     *      'state' => $json->estado->sigla
      * ]
+     * 
+     * => Alteração/Atualização para a versão 3 (ESP/CE - Rafael Moreira)
      *
      */
-    function getAddressByPostalCode($postalCode) {
-        $app = App::i();
-        if ($app->config['cep.token']) {
-            $cep = str_replace('-', '', $postalCode);
-            // $url = 'http://www.cepaberto.com/api/v2/ceps.json?cep=' . $cep;
-            $url = sprintf($app->config['cep.endpoint'], $cep);
+    function getAddressByPostalCode($postalCode) 
+    {
+        if ($postalCode != "")
+        {
+            $token = 'edbf69edefafe140f8854ee46f49818c';
+            $url = 'http://www.cepaberto.com/api/v3/cep?cep=' . str_replace("-", "", $postalCode);
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
-            if ($app->config['cep.token_header']) {
-                // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $app->config['cep.token'] . '"'));
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(sprintf($app->config['cep.token_header'], $app->config['cep.token'])));
-            }
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Token token="' . $token . '"'));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             $json = json_decode($output);
-            if (isset($json->logradouro)) {
+
+            if (isset($json->logradouro))
+            {
                 $response = [
                     'success' => true,
                     'lat' => $json->latitude,
                     'lon' => $json->longitude,
                     'streetName' => $json->logradouro,
                     'neighborhood' => $json->bairro,
-                    'city' => $json->cidade,
-                    'state' => $json->estado
-                ];
-            } else {
-                $response = [
-                    'success' => false,
-                    'error_msg' => 'Falha a buscar endereço'
+                    'city' => $json->cidade->nome,
+                    'state' => $json->estado->sigla
                 ];
             }
-        } else {
+            else
+            {
+                $response = [
+                    'success' => false,
+                    'error_msg' => 'Falha ao buscar endereço'
+                ];
+            }
+        }
+        else
+        {
             $response = [
                 'success' => false,
-                'error_msg' => 'No token for CEP'
+                'error_msg' => 'CEP não informado'
             ];
         }
 
