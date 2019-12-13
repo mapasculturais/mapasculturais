@@ -14,7 +14,7 @@ return array(
 
     2 => array(
         //'slug' => \MapasCulturais\i::__('area'),
-'slug' => 'area',
+        'slug' => 'area',
         'required' => \MapasCulturais\i::__("Você deve informar ao menos uma área de atuação"),
         'entities' => array(
             'MapasCulturais\Entities\Space',
@@ -29,6 +29,7 @@ return array(
             \MapasCulturais\i::__('Arte Digital'),
             \MapasCulturais\i::__('Artes Visuais'),
             \MapasCulturais\i::__('Artesanato'),
+            \MapasCulturais\i::__('Atenção Básica à Saúde'),
             \MapasCulturais\i::__('Audiovisual'),
             \MapasCulturais\i::__('Cinema'),
             \MapasCulturais\i::__('Circo'),
@@ -40,16 +41,19 @@ return array(
             \MapasCulturais\i::__('Cultura LGBT'),
             \MapasCulturais\i::__('Cultura Negra'),
             \MapasCulturais\i::__('Cultura Popular'),
+            \MapasCulturais\i::__('Cursos'),
             \MapasCulturais\i::__('Dança'),
             \MapasCulturais\i::__('Design'),
             \MapasCulturais\i::__('Direito Autoral'),
             \MapasCulturais\i::__('Economia Criativa'),
             \MapasCulturais\i::__('Educação'),
+            \MapasCulturais\i::__('Educação à Distância (EAD)'),
             \MapasCulturais\i::__('Esporte'),
             \MapasCulturais\i::__('Filosofia'),
             \MapasCulturais\i::__('Fotografia'),
             \MapasCulturais\i::__('Gastronomia'),
             \MapasCulturais\i::__('Gestão Cultural'),
+            \MapasCulturais\i::__('Gestão da Saúde'),
             \MapasCulturais\i::__('História'),
             \MapasCulturais\i::__('Jogos Eletrônicos'),
             \MapasCulturais\i::__('Jornalismo'),
@@ -70,8 +74,10 @@ return array(
             \MapasCulturais\i::__('Saúde'),
             \MapasCulturais\i::__('Sociologia'),
             \MapasCulturais\i::__('Teatro'),
+            \MapasCulturais\i::__('Tecnologia'),
             \MapasCulturais\i::__('Televisão'),
             \MapasCulturais\i::__('Turismo'),
+            \MapasCulturais\i::__('Vigilância da Saúde'),
            \MapasCulturais\i::__('Outros')
         )
     ),
@@ -94,6 +100,7 @@ return array(
             \MapasCulturais\i::__('Cultura Tradicional'),
             \MapasCulturais\i::__('Curso ou Oficina'),
             \MapasCulturais\i::__('Dança'),
+            \MapasCulturais\i::__('Educação'),
             \MapasCulturais\i::__('Exposição'),
             \MapasCulturais\i::__('Hip Hop'),
             \MapasCulturais\i::__('Livro e Literatura'),
@@ -101,6 +108,7 @@ return array(
             \MapasCulturais\i::__('Música Erudita'),
             \MapasCulturais\i::__('Palestra, Debate ou Encontro'),
             \MapasCulturais\i::__('Rádio'),
+            \MapasCulturais\i::__('Saúde'),
             \MapasCulturais\i::__('Teatro'),
             \MapasCulturais\i::__('Outros')
         )
