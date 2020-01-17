@@ -203,10 +203,19 @@ abstract class Entity implements \JsonSerializable{
     function getOwnerUser(){
         $app = App::i();
 
-        if(!$this->owner)
-            return $app->user;
+        if(isset($this->user)){
+            return $this->user;
+        }
 
         $owner = $this->owner;
+
+        if(!$owner){
+            return $app->user;
+        }
+
+        if(!($owner instanceof Entity)){
+            return $app->user;
+        }
 
         $user = $owner->getOwnerUser();
 
@@ -253,13 +262,21 @@ abstract class Entity implements \JsonSerializable{
         if($this->isUserAdmin($user)){
             return true;
         }
-        
 
         if($this->getOwnerUser()->id == $user->id)
             return true;
 
         if($this->usesAgentRelation() && $this->userHasControl($user))
             return true;
+
+
+        $class_parts = explode('\\', $this->getClassName());
+        $permission = end($class_parts);
+
+        $entity_user = $this->getOwnerUser();
+        if($user->isAttorney("manage{$permission}", $entity_user)){
+            return true;
+        }
 
         return false;
     }
@@ -326,20 +343,27 @@ abstract class Entity implements \JsonSerializable{
         $result = false;
 
         if (!empty($user)) {
+            $class_parts = explode('\\', $this->getClassName());
+            $permission = end($class_parts);
 
-            if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
-                if($this->userHasControl($user)){
-                    $result = true;
-                } else if($this->isUserAdmin($user)){
-                    $result = true;
+            $entity_user = $this->getOwnerUser();
+            if($user->isAttorney("{$action}{$permission}", $entity_user) || $user->isAttorney("manage{$permission}", $entity_user)){
+                $result = true;
+            } else {
+                if(strtolower($action) === '@control' && $this->usesAgentRelation()) {
+                    if($this->userHasControl($user)){
+                        $result = true;
+                    } else if($this->isUserAdmin($user)){
+                        $result = true;
+                    }
                 }
-            }
-
-            if(method_exists($this, 'canUser' . $action)){
-                $method = 'canUser' . $action;
-                $result = $this->$method($user);
-            }elseif($action != '@control'){
-                $result = $this->genericPermissionVerification($user);
+    
+                if(method_exists($this, 'canUser' . $action)){
+                    $method = 'canUser' . $action;
+                    $result = $this->$method($user);
+                }elseif($action != '@control'){
+                    $result = $this->genericPermissionVerification($user);
+                }
             }
 
             $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
@@ -484,6 +508,10 @@ abstract class Entity implements \JsonSerializable{
 
         if($class::usesMetadata()){
             $data_array = $data_array + $class::getMetadataMetadata();
+        }
+
+        if(isset($data_array['location']) && isset($data_array['publicLocation'])){
+            $data_array['location']['private'] = function(){ return (bool) ! $this->publicLocation; };
         }
 
 

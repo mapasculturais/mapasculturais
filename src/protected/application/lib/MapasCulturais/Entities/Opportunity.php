@@ -546,6 +546,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $relation->status === EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
     }
 
+    protected function genericPermissionVerification($user){
+        if($this->ownerEntity->canUser('@control', $user)){
+            return true;
+        }
+
+        return parent::genericPermissionVerification($user);
+    }
+
     protected function canUserModifyRegistrationFields($user){
         if($user->is('guest')){
             return false;

@@ -105,6 +105,20 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected $profile;
 
     /**
+     *
+     * @var \MapasCulturais\Entities\Procuration[] 
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade="remove", orphanRemoval=true, fetch="LAZY")
+     */
+    protected $_userProcurations;
+
+    /**
+     *
+     * @var \MapasCulturais\Entities\Procuration[] 
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade="remove", orphanRemoval=true, fetch="LAZY")
+     */
+    protected $_attorneyProcurations;
+
+    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
@@ -282,6 +296,56 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected function canUserCreate($user = null){
         // only guest user can create
         return is_null($user) || $user->is('guest');
+    }
+
+    public function makeAttorney($action, \DateTime $valid_until = null, User $user = null){
+        $app = App::i();
+        if(is_null($user)){
+            $user = $app->user;
+        }
+
+        $user->checkPermission('createProcuration');
+
+        if($procuration = $app->repo('Procuration')->findOneBy(['user' => $user, 'attorney' => $this, 'action' => $action])){
+            if($procuration->isValid()){
+                return $procuration;
+            } else {
+                $procuration->delete(true);
+            }
+        } 
+        $procuration = new Procuration;
+
+        $procuration->user = $user;
+        $procuration->attorney = $this;
+        $procuration->action = $action;
+        $procuration->validUntilTimestamp = $valid_until;
+
+        $procuration->save(true);
+
+        return $procuration;
+        
+    }
+
+    public function isAttorney($action, $user = null){
+        $app = App::i();
+
+        if(is_null($user)){
+            $user = $app->user;
+        }
+
+        if($user->is('guest')){
+            return false;
+        }
+
+        if($procuration = $app->repo('Procuration')->findOneBy(['user' => $user, 'attorney' => $this, 'action' => $action])){
+            if($procuration->isValid()){
+                return true;
+            } else {
+                $procuration->delete(true);
+            }
+        }
+
+        return false;
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){

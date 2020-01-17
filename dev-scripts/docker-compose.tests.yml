@@ -1,11 +1,9 @@
 version: '2'
 services:
-  mapas:
+  mapas_tests:
     build:
       context: ../
       dockerfile: compose/local/Dockerfile
-    ports:
-      - "80:80"
     volumes:
       - ../src:/var/www/src
       - ../scripts:/var/www/scripts
@@ -38,8 +36,6 @@ services:
 
     depends_on:
       - db_tests
-
-    command: /var/www/scripts/run-tests-docker.sh
       
     stdin_open: true
     tty: true

@@ -16,6 +16,10 @@ class EventOccurrence extends EntityController {
         $this->POST_create($data);
     }
 
+    public function PUT_single($data = null){
+        $this->POST_edit();
+    }
+
     function GET_create() {
         App::i()->pass();
     }

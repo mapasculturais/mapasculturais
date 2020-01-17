@@ -1,9 +1,8 @@
 version: '3'
 services:
   web:
-    image: nginx
+    image: hacklab/mapasculturais-nginx:latest
     volumes:
-     - ./compose/production/nginx.conf:/etc/nginx/conf.d/default.conf
      - ./docker-data/public-files:/var/www/html/files
      - ./docker-data/assets:/var/www/html/assets
 
@@ -12,9 +11,6 @@ services:
     ports:
      - "80:80"
      - "443:443"
-    environment:
-     - NGINX_HOST=localhost
-     - NGINX_PORT=80
     depends_on:
       - mapas
     links:
@@ -22,7 +18,7 @@ services:
 
 
   mapas:
-    image: hacklab/mapasculturais
+    image: mapasculturais/mapasculturais:latest
     ports:
       - "9000:9000"
     volumes:

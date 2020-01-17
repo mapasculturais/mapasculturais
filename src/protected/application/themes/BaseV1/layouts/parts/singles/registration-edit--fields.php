@@ -5,7 +5,7 @@
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
-            <div ng-show="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
+            <div ng-if="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
 
                 <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
@@ -50,7 +50,7 @@
                 </p>
             </div>
 
-            <div ng-show="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
+            <div ng-if="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                 <div class="attachment-description">
                     <span ng-if="field.description">{{field.description}}</span>

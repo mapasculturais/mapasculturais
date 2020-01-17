@@ -550,24 +550,6 @@ return [
         $this->disableAccessControl();
     },
 
-    'create avatar thumbs' => function() use($conn){
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
-
-        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-        echo count($files) . " ARQUIVOS\n";
-        foreach($files as $f){
-            $f->transform('avatarSmall');
-            $f->transform('avatarMedium');
-            $f->transform('avatarBig');
-        }
-
-        $this->disableAccessControl();
-    },
-
     '*_meta drop all indexes again' => function () use($conn) {
 
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
@@ -1106,6 +1088,55 @@ return [
     'alter table registration add column valuers_exceptions_list' => function() use($conn){
         if(!__column_exists('registration', 'valuers_exceptions_list')){
             $conn->executeQuery("ALTER TABLE registration ADD valuers_exceptions_list TEXT NOT NULL DEFAULT '{\"include\": [], \"exclude\": []}';");
+        }
+    },
+
+    'create event attendance table' => function() use($conn) {
+        if(!__table_exists('event_attendance')){
+            $conn->executeQuery("
+                CREATE TABLE event_attendance (
+                    id INT NOT NULL, 
+                    user_id INT NOT NULL, 
+                    event_occurrence_id INT NOT NULL, 
+                    event_id INT NOT NULL, 
+                    space_id INT NOT NULL, 
+                    type VARCHAR(255) NOT NULL, 
+                    reccurrence_string TEXT DEFAULT NULL, 
+                    start_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    end_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    PRIMARY KEY(id));");
+
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BEA76ED395 ON event_attendance (user_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE140E9F00 ON event_attendance (event_occurrence_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE71F7E88B ON event_attendance (event_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE23575340 ON event_attendance (space_id);");
+            $conn->executeQuery("CREATE INDEX event_attendance_type_idx ON event_attendance (type);");
+            $conn->executeQuery("CREATE SEQUENCE event_attendance_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BEA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        }
+    },
+
+    'create procuration table' => function() use($conn) {
+        if(!__table_exists('procuration')){
+            $conn->executeQuery("
+                CREATE TABLE procuration (
+                    token VARCHAR(32) NOT NULL, 
+                    usr_id INT NOT NULL, 
+                    attorney_user_id INT NOT NULL, 
+                    action VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    valid_until_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    PRIMARY KEY(token));");
+                
+            $conn->executeQuery("CREATE INDEX procuration_usr_idx ON procuration (usr_id);");
+            $conn->executeQuery("CREATE INDEX procuration_attorney_idx ON procuration (attorney_user_id);");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            
         }
     }
 

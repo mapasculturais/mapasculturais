@@ -532,6 +532,51 @@ class App extends \Slim\Slim{
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
     }
 
+    public function getVersion(){
+        $version = trim($this->getVersionFile());
+        return sprintf('v%s', $version);
+    }
+
+    private function getVersionFile() {
+        $version = \MapasCulturais\i::_e("versão indefinida");
+        $path = getcwd() . "/../version.txt";
+        if (file_exists($path) && $versionFile = fopen($path, "r")) {
+            $version = fgets($versionFile);
+            fclose($versionFile);
+        }
+        return $version;
+    }
+
+    /**
+     * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string/13733588#13733588
+     */
+    protected static function crypto_rand_secure($min, $max) {
+        $range = $max - $min;
+        if ($range < 1)
+            return $min; // not so random...
+        $log = ceil(log($range, 2));
+        $bytes = (int) ($log / 8) + 1; // length in bytes
+        $bits = (int) $log + 1; // length in bits
+        $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+        do {
+            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+            $rnd = $rnd & $filter; // discard irrelevant bits
+        } while ($rnd >= $range);
+        return $min + $rnd;
+    }
+
+    static function getToken($length) {
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+        $codeAlphabet.= "0123456789";
+        $max = strlen($codeAlphabet) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $token .= $codeAlphabet[self::crypto_rand_secure(0, $max)];
+        }
+        return $token;
+    }
+
     function isEnabled($entity){
         return $this->_config['app.enabled.' . $entity];
     }
@@ -710,6 +755,8 @@ class App extends \Slim\Slim{
         $this->registerController('file',           'MapasCulturais\Controllers\File');
         $this->registerController('metalist',       'MapasCulturais\Controllers\MetaList');
         $this->registerController('eventOccurrence','MapasCulturais\Controllers\EventOccurrence');
+
+        $this->registerController('eventAttendance','MapasCulturais\Controllers\EventAttendance');
 
         //workflow controllers
         $this->registerController('notification', 'MapasCulturais\Controllers\Notification');
@@ -2273,10 +2320,12 @@ class App extends \Slim\Slim{
         }
     }
 
-    function unregisterEntityMetadata($entity_class){
-        foreach(array_keys($this->_register['entity_metadata_definitions']) as $k)
-            if($k == $entity_class || strpos($k, $entity_class.':') === 0)
-                $this->_register['entity_metadata_definitions'][$k] = [];
+    function unregisterEntityMetadata($entity_class, $key){
+        foreach($this->_register['entity_metadata_definitions'] as $k => $metadata){
+            if($k === $entity_class || strpos($k . ':', $entity_class) === 0){
+                unset($this->_register['entity_metadata_definitions'][$k][$key]);
+            }
+        }
 
     }
 
@@ -2681,7 +2730,7 @@ class App extends \Slim\Slim{
             $mailer->send($message,$failures);
             return true;
         } catch(\Swift_TransportException $exception) {
-            App::i()->log->debug($exception);
+            App::i()->log->info('Swift Mailer error: ' . $exception->getMessage());
             return false;
         }
     }

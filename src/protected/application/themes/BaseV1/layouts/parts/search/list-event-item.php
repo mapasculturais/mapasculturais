@@ -14,11 +14,15 @@
                     <div class="objeto-resumo">
                         <p>{{event.shortDescription}}</p>
                         <ul class="event-ocurrences">
+                            <?php $this->applyTemplateHook('list.event.occurrences','begin'); ?>
                             <li ng-repeat="occ in event.occurrences">
+                                <?php $this->applyTemplateHook('list.event.occurrence','begin'); ?>
                                 <a href="{{occ.space.singleUrl}}">{{occ.space.name}}</a>
                                 {{occ.space.endereco.trim()}}
                                 {{occ.rule.description.trim()}}<span ng-show="occ.rule.price.length" >. {{occ.rule.price.trim()}}</span>.
+                                <?php $this->applyTemplateHook('list.event.occurrence','end'); ?>
                             </li>
+                            <?php $this->applyTemplateHook('list.event.occurrences','end'); ?>
                         </ul>
                     </div>
                     <div class="objeto-meta">
@@ -34,7 +38,7 @@
                             </span>
                         </div>
                         <div><span class="label"><?php \MapasCulturais\i::_e("Classificação");?>:</span> <a ng-click="toggleSelection(data.event.classificacaoEtaria, getId(classificacoes, event.classificacaoEtaria))">{{event.classificacaoEtaria}}</a></div>
-                        <div>
+                        <div ng-if="event.terms.tag.length > 0">
                             <span class="label">Tags:</span>
                             <span ng-repeat="tags in event.terms.tag">
                                 <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(keyword:'{{tags}}'),global:(enabled:(event:!t),filterEntity:event,viewMode:list))">{{tags}}</a>
