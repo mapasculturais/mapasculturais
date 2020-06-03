@@ -34,8 +34,7 @@ switch(strtoupper(env('LOG_LEVEL', 'NOTICE'))){
 
 return [
     //'slim.log.writer' => new \Custom\Log\Writer(),
-    
-    'slim.log.level' => $loglevel,
+    'slim.log.level'    => $loglevel,
     'slim.log.enabled'      => env('LOG_ENABLED', false),
     'app.log.path'          => env('LOG_PATH', realpath(BASE_PATH . '..') . '/logs/'),
     'app.log.query'         => env('LOG_QUERY', false),
@@ -44,6 +43,8 @@ return [
     'app.log.translations'  => env('LOG_TRANSLATIONS', false),
     'app.log.apiCache'      => env('LOG_APICACHE', false),
     'app.log.apiDql'        => env('LOG_APIDQL', false),
-    'app.log.assets'        => env('LOG_ASSETS', false)
+    'app.log.assets'        => env('LOG_ASSETS', false),
+
+    'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 
 ];

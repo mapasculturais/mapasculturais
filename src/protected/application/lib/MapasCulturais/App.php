@@ -374,8 +374,17 @@ class App extends \Slim\Slim{
 
 
 
-        if(@$config['app.log.query'])
-            $doctrine_config->setSQLLogger($config['app.queryLogger']);
+        if(@$config['app.log.query']){
+            if (isset($config['app.queryLogger']) && is_object($config['app.queryLogger'])) {
+                $query_logger = $config['app.queryLogger'];
+            } elseif (isset($config['app.queryLogger']) && is_string($config['app.queryLogger']) && class_exists($config['app.queryLogger'])) {
+                $query_logger_class = $config['app.queryLogger'];
+                $query_logger = new $query_logger_class;
+            } else {
+                $query_logger = new Loggers\DoctrineSQL\SlimLog();
+            }
+            $doctrine_config->setSQLLogger($query_logger);
+        }
 
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
