@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Exception;
 use \MapasCulturais\App;
+use \MapasCulturais\Exceptions;
 
 /**
  * Defines that the controller has uploads.
@@ -99,7 +102,14 @@ trait ControllerUploads{
                         if(key_exists('description', $this->data) && is_array($this->data['description']) && key_exists($group_name, $this->data['description']))
                             $file->description = $this->data['description'][$group_name];
 
-                        if($error = $upload_group->getError($file)){
+                        if($errors = $file->getValidationErrors()){                            
+                            $error_messages = [];
+                            foreach($errors as $_errors){
+                                $error_messages = array_merge(array_values($_errors), $error_messages);
+                            }
+                            $files[$group_name] = ['error' => implode(', ', $error_messages), 'group' => $upload_group];
+
+                        } else if ($error = $upload_group->getError($file)){
                             $files[] = ['error' => $error, 'group' => $upload_group];
                         }else{
                             $file->group = $group_name;
@@ -134,8 +144,12 @@ trait ControllerUploads{
                 foreach($files as $error)
                     if(key_exists('group',$error) && $error['group']->unique)
                         $result[$error['group']->name] = $error['error'];
-                    else
-                        $result[] = $error;
+                    else{
+                        if(!isset($result[$error['group']->name])){
+                            $result[$error['group']->name] = [];
+                        }
+                        $result[$error['group']->name][] = $error['error'];
+                    }
                 $this->errorJson($result);
                 return;
             }
