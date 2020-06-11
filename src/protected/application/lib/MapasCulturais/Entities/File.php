@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use \MapasCulturais\App;
+use \MapasCulturais\i;
 
 /**
  * File
@@ -149,6 +150,14 @@ abstract class File extends \MapasCulturais\Entity
         }
 
         parent::__construct();
+    }
+
+    static function getValidations() {
+        return [
+            'mimeType' => [
+                'v::not(v::regex("#.php$#"))' => i::__('Tipo de arquivo não permitido')
+            ]
+        ];
     }
 
     /**
