@@ -36,6 +36,11 @@
         position: absolute;
         bottom: $line-height-base;
         right: $line-height-base;
+
+        @media screen and (max-width: $screen-tablet) {
+            bottom:inherit;
+            top:$line-height-base;
+        }
     }
     @media print, screen and (min-width: $screen-tablet) {
         margin: -2rem -2rem 2rem;
