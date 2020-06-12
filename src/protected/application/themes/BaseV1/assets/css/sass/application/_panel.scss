@@ -86,12 +86,6 @@
         }
     }
 }
-.entity-actions {
-    display: none;
-    @media screen and (min-width: $screen-tablet) {
-        display: block;
-    }
-}
 
 .sidebar-panel {
     display: none;
