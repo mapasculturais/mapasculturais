@@ -2341,10 +2341,14 @@ class App extends \Slim\Slim{
         }
     }
 
-    function unregisterEntityMetadata($entity_class, $key){
+    function unregisterEntityMetadata($entity_class, $key = null){
         foreach($this->_register['entity_metadata_definitions'] as $k => $metadata){
             if($k === $entity_class || strpos($k . ':', $entity_class) === 0){
-                unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                if($key){
+                    unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                } else {
+                    $this->_register['entity_metadata_definitions'][$k] = [];
+                }
             }
         }
 
