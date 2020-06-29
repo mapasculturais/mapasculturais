@@ -73,6 +73,15 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * @ORM\Column(name="status", type="smallint", nullable=true)
      */
     protected $status = self::STATUS_DRAFT;
+
+    function save($flush = false){
+        parent::save($flush);
+        $app = App::i();
+        $opportunity = $this->registration->opportunity;
+        
+        // cache utilizado pelo endpoint findEvaluations
+        $app->mscache->delete("api:opportunity:{$opportunity->id}:evaluations");
+    }
     
     function getEvaluationData(){
         return (object) $this->evaluationData;
