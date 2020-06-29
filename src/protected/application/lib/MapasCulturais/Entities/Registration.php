@@ -198,6 +198,15 @@ class Registration extends \MapasCulturais\Entity
         parent::__construct();
     }
 
+    function save($flush = false){
+        parent::save($flush);
+        $app = App::i();
+        $opportunity = $this->opportunity;
+
+        // cache utilizado pelo endpoint findEvaluations
+        $app->mscache->delete("api:opportunity:{$opportunity->id}:registrations");
+    }
+
     function getSingleUrl(){
         return App::i()->createUrl('registration', 'view', [$this->id]);
     }
