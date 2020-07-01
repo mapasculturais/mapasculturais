@@ -35,7 +35,7 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function __construct(array $config = []) {
         $this->config = $config + [
             'dir' => BASE_PATH . 'files/',
-            'private_dir' => dirname(BASE_PATH) . '/private-files/',
+            'private_dir' => PRIVATE_FILES_PATH,
             'baseUrl' => 'files/'
         ];
     }
