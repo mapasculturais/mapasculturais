@@ -191,6 +191,9 @@ class App extends \Slim\Slim{
         if($config['slim.debug'])
             error_reporting(E_ALL ^ E_STRICT);
 
+
+        session_save_path(SESSIONS_SAVE_PATH);
+        
         session_start();
 
         if($config['app.offline']){
