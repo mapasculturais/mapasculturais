@@ -382,20 +382,8 @@ class Opportunity extends EntityController {
         $this->apiAddHeaderMetadata($this->data, $registrations, $total);
         $this->apiResponse($registrations);
     }
-    
-    function API_findEvaluations($opportunity_id = null) {
-        $this->requireAuthentication();
-        
-        $app = App::i();
-        
-        $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';
-        
-        if(preg_match('#(valuer|registration|evaluation|category)( +(asc|desc))?#i', $_order, $matches)){
-            $order = $matches[1];
-            $by = isset($matches[3]) ? strtolower($matches[3]) : 'asc';
-        } else {
-            $this->apiErrorResponse('invalid @order value');
-        }
+
+    protected function _getOpportunityCommittee($opportunity_id) {
         
         $opportunity = $this->_getOpportunity($opportunity_id);
 
@@ -435,6 +423,123 @@ class Opportunity extends EntityController {
         } else {
             $committee = [];
         }
+
+        return $committee;
+    }
+
+    function _getOpportunityValuerByUser($opportunity_id){
+        $committee = $this->_getOpportunityCommittee($opportunity_id);
+        
+        $valuer_by_user = [];
+        
+        foreach($committee as $valuer){
+            $valuer_by_user[$valuer['user']] = $valuer;
+        }
+
+        return $valuer_by_user;
+    }
+
+    function _getOpportunityRegistrations($opportunity, array $registration_ids){
+        $app = App::i();
+
+        /* 
+        este cache é apagado quando há modificações nas inscrições, no método:
+        MapasCulturais\Entities\Registration::save
+        */
+        $cache_id = "api:opportunity:{$opportunity->id}:registrations:";
+        
+        sort($registration_ids);
+
+        if ($app->config['app.useApiCache'] && ($registrations = $app->mscache->fetch($cache_id))) {
+            return $registrations;
+        } else {
+            $registration_ids = implode(',', $registration_ids);
+
+            $rdata = [
+                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
+                'id' => "IN({$registration_ids})"
+            ];
+            
+            foreach($this->data as $k => $v){
+                if(strtolower(substr($k, 0, 13)) === 'registration:'){
+                    $rdata[substr($k, 13)] = $v;
+                }
+            }
+
+            $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
+            $registrations = $registrations_query->find();
+
+            $app->mscache->save($cache_id, $registrations, DAY_IN_SECONDS);
+    
+            return $registrations;
+        }
+
+    }
+
+    function _getOpportunityEvaluations($opportunity, array $registration_ids) {
+        $app = App::i();
+
+        /* 
+        este cache é apagado quando há modificações nas avaliações, no método:
+        MapasCulturais\Entities\RegistrationEvaluation::save
+        */
+        $cache_id = "api:opportunity:{$opportunity->id}:evaluations";
+
+        sort($registration_ids);
+        $registration_ids = implode(',', $registration_ids); 
+
+        if ($app->config['app.useApiCache'] && ($evaluations = $app->mscache->fetch($cache_id))) {
+            return $evaluations;
+        } else {
+        
+            $edata = [
+                '@select' => 'id,result,evaluationData,registration,user,status',
+                'registration' => "IN({$registration_ids})"
+            ];
+            
+            foreach($this->data as $k => $v){
+                if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
+                    $edata[substr($k, 11)] = $v;
+                }
+            }
+            
+            $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
+            $evaluations = [];
+            
+            $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
+
+            foreach($evaluations_query->find() as $e){
+                if(isset($valuer_by_user[$e['user']])){
+                    $e['agent'] = $valuer_by_user[$e['user']];
+                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
+                    $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+                }
+            }
+
+            $app->mscache->save($cache_id, $evaluations, DAY_IN_SECONDS);
+
+            return $evaluations;
+        }
+    }
+    
+    function API_findEvaluations($opportunity_id = null) {
+        $this->requireAuthentication();
+        
+        $app = App::i();
+        
+        $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';
+        
+        if(preg_match('#(valuer|registration|evaluation|category)( +(asc|desc))?#i', $_order, $matches)){
+            $order = $matches[1];
+            $by = isset($matches[3]) ? strtolower($matches[3]) : 'asc';
+        } else {
+            $this->apiErrorResponse('invalid @order value');
+        }
+        
+        $opportunity = $this->_getOpportunity($opportunity_id);
+
+        $committee = $this->_getOpportunityCommittee($opportunity_id);
         
         $valuer_by_user = [];
         
@@ -461,9 +566,18 @@ class Opportunity extends EntityController {
         $q->setParameters($params);
         
         $permissions = $q->getArrayResult();
+        $registration_ids = array_unique(array_map(function($r) { return $r['registration']; }, $permissions));
         
+        if($registration_ids){
+            $registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
+            $evaluations = $this->_getOpportunityEvaluations($opportunity, $registration_ids);
+            
+        } else {
+            $registrations = [];
+            $evaluations = [];
+        }
+
         $registrations_by_valuer = [];
-        
         foreach($permissions as $p){
             if(!isset($registrations_by_valuer[$p['valuer']])){
                 $registrations_by_valuer[$p['valuer']] = [];
@@ -471,58 +585,13 @@ class Opportunity extends EntityController {
             $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
         }
         
-        $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
-        if($registration_ids){
-            $rdata = [
-                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
-                'id' => "IN(" . implode(',', $registration_ids).  ")"
-            ];
-            
-            foreach($this->data as $k => $v){
-                if(strtolower(substr($k, 0, 13)) === 'registration:'){
-                    $rdata[substr($k, 13)] = $v;
-                }
-            }
-            
-            $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-            $registrations = $registrations_query->find();
-
-            $edata = [
-                '@select' => 'id,result,evaluationData,registration,user,status',
-                'registration' => "IN(" . implode(',', $registration_ids).  ")"
-            ];
-
-            $status_id = (isset($this->data['status']) && !is_null($this->data['status'])) ? filter_var($this->data['status'],FILTER_SANITIZE_NUMBER_INT) : null;
-
-            if(!is_null($status_id) && $status_id >= 0){
-                $edata['status'] =  $this->data['status'];
-            }
-            
-            foreach($this->data as $k => $v){
-                if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
-                    $edata[substr($k, 11)] = $v;
-                }
-            }
-            
-            $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
-            $evaluations = [];
-            $eq = $evaluations_query->find();
-            
-            foreach($eq as $e){
-                if(isset($valuer_by_user[$e['user']])){
-                    $e['agent'] = $valuer_by_user[$e['user']];
-                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                    $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
-                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
-                }
-            }
-            
-        } else {
-            $registrations = [];
-            $evaluations = [];
-        }
-        
         $_result = [];
+
+        $status_id = (isset($this->data['status']) && !is_null($this->data['status'])) ? filter_var($this->data['status'],FILTER_SANITIZE_NUMBER_INT) : null;
+
+        if(!is_null($status_id) && $status_id >= 0){
+            $edata['status'] =  $this->data['status'];
+        }
         
         foreach($registrations as &$registration){
             foreach($valuer_by_user as $user_id => $valuer){
@@ -629,7 +698,6 @@ class Opportunity extends EntityController {
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
             return $result;
         }
-
         $this->apiAddHeaderMetadata($this->data, $result, count($_result));
         $this->apiResponse($result);
     }
