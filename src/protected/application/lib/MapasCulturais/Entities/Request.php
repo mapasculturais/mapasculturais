@@ -26,7 +26,8 @@ use MapasCulturais\Traits;
         "EventProject"      = "\MapasCulturais\Entities\RequestEventProject",
         "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
         "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation",
-        "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation"
+        "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation",
+        "SpaceRelation"      = "\MapasCulturais\Entities\RequestSpaceRelation"
    })
  * @ORM\HasLifecycleCallbacks
  */

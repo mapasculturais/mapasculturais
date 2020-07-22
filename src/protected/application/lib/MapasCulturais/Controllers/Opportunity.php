@@ -727,6 +727,7 @@ class Opportunity extends EntityController {
             'registrationCategTitle',
             'useAgentRelationInstituicao',
             'introInscricoes',
+            'useSpaceRelation',
             'registrationSeals',
             'registrationLimit'
         );

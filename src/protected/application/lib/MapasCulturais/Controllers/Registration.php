@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
 
 /**
  * Registration Controller
@@ -19,6 +20,7 @@ class Registration extends EntityController {
     	Traits\ControllerSealRelation;
 
     function __construct() {
+        
         $app = App::i();
         $app->hook('POST(registration.upload):before', function() use($app) {
             $mime_types = [
@@ -118,6 +120,53 @@ class Registration extends EntityController {
 
         parent::__construct();
     }
+    
+    function POST_createSpaceRelation(){
+        $this->requireAuthentication();
+       
+        $app = App::i();
+
+        $space = $app->repo('Space')->find($this->postData['id']);
+        $registration = $app->repo('Registration')->find($this->data['id']);
+
+        $relation = new RegistrationSpaceRelationEntity();
+        $relation->space = $space;
+        $relation->owner = $registration;
+        
+        $this->_finishRequest($relation, true);
+    }
+
+    /**
+     * Removes the space relation with the given id.
+     * 
+     * This action requires authentication.
+     * 
+     * @WriteAPI POST removeSpaceRelation
+     */
+    public function POST_removeSpaceRelation(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!$this->urlData['id'])
+            $app->pass();
+
+        $registrationEntity = $this->repository->find($this->data['id']);
+        $space = $app->repo('Space')->find($this->postData['id']);
+        
+        if(is_object($registrationEntity) && !is_null($space)){
+            $spaceRelation = $app->repo('SpaceRelation')->findOneBy(array('objectId'=>$registrationEntity->id, 'space'=>(array('id'=>$space->id))));
+            $spaceRelation->delete(true);
+            
+            $this->refresh();
+            $this->deleteUsersWithControlCache();
+
+            if($this->usesPermissionCache()){
+                $this->addToRecreatePermissionsCacheList();
+            }
+            
+            $this->json(true);
+        }        
+    }   
 
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
