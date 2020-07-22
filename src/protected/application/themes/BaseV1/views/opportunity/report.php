@@ -1,6 +1,7 @@
 <?php
 use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space as SpaceRelation;
 use MapasCulturais\i;
 
 function echoStatus($registration) {
@@ -33,6 +34,8 @@ function showIfField($hasField, $showField) {
 }
 
 $_properties = $app->config['registration.propertiesToExport'];
+$space_properties = $app->config['registration.spaceProperties'];
+
 $custom_fields = [];
 foreach($entity->registrationFieldConfigurations as $field) :
     $custom_fields[$field->displayOrder] = [
@@ -70,6 +73,10 @@ ksort($custom_fields);
 
             <th><?php i::_e('Anexos') ?></th>
 
+            <!-- Cabeçalho com labels das informações dos espaços cadastrados-->
+            <?php foreach($space_properties as $prop): ?>
+                <th><?php echo 'Espaço ' ?> - <?php echo SpaceRelation::getPropertyLabel($prop); ?></th>
+            <?php endforeach; ?>
         </tr>
     </thead>
     <tbody>
@@ -104,7 +111,14 @@ ksort($custom_fields);
                      <?php endif; ?>
                 </td>
 
-               
+                 <!--Informações dos espaços cadastrados-->
+                 <?php foreach($r->getSpaceData() as $field): ?>
+                    <?php if(is_array($field)): ?>
+                        <td><?php echo implode(', ', $field); ?></td>
+                    <?php else: ?>
+                        <td><?php echo $field; ?></td>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>
     </tbody>
