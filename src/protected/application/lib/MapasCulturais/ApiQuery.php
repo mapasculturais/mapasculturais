@@ -879,8 +879,20 @@ class ApiQuery {
         if($this->_selectingType){
             $types = $app->getRegisteredEntityTypes($this->entityClassName);
         }
+
+        if($this->permissionCacheClassName){
+            $permissions = $this->getViewPrivateDataPermissions($entities);
+        }
         
         foreach ($entities as &$entity){
+            // remove location if the location is not public
+            if($this->permissionCacheClassName && isset($entity['location']) && isset($entity['publicLocation']) && !$entity['publicLocation']){
+                if(!$permissions[$entity['id']]){
+                    $entity['location']->latitude = 0;
+                    $entity['location']->longitude = 0;
+                }
+            }
+
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
             }
@@ -1500,6 +1512,7 @@ class ApiQuery {
                 }
             } else {
                 $dql_in = $this->getSubqueryInIdentities($entities);
+                
                 $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
 
                 $query = $this->em->createQuery($dql);

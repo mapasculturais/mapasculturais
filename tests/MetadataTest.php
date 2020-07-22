@@ -71,7 +71,7 @@ class MetadataTests extends MapasCulturais_TestCase{
 
         foreach($metas as $meta_key => $config){
             $definition = new MapasCulturais\Definitions\Metadata($meta_key, $config);
-            $app->unregisterEntityMetadata('MapasCulturais\Entities\Agent');
+            $app->unregisterEntityMetadata('MapasCulturais\Entities\Agent', $meta_key);
             $app->registerMetadata($definition, 'MapasCulturais\Entities\Agent', $type->id);
 
             $agent = new Agent;
