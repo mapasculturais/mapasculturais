@@ -207,10 +207,15 @@ abstract class Entity implements \JsonSerializable{
             return $this->user;
         }
 
-        if(!$this->owner)
-            return $app->user;
-
         $owner = $this->owner;
+
+        if(!$owner){
+            return $app->user;
+        }
+
+        if(!($owner instanceof Entity)){
+            return $app->user;
+        }
 
         $user = $owner->getOwnerUser();
 
@@ -503,6 +508,10 @@ abstract class Entity implements \JsonSerializable{
 
         if($class::usesMetadata()){
             $data_array = $data_array + $class::getMetadataMetadata();
+        }
+
+        if(isset($data_array['location']) && isset($data_array['publicLocation'])){
+            $data_array['location']['private'] = function(){ return (bool) ! $this->publicLocation; };
         }
 
 
