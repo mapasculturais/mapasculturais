@@ -52,12 +52,13 @@ abstract class MapasCulturais_TestCase extends \PHPUnit\Framework\TestCase
      * @return \MapasCulturais\Entity
      */
     function getNewEntity($class, $user = null, $owner = null){
+        $app = $this->app;
+
         if(!is_null($user)){
-            $_user = $this->app->user->is('guest') ? null : $this->app->user;
+            $_user = $app->user->is('guest') ? null : $app->user;
             $this->user = $user;
         }
 
-        $app = App::i();
         $classname = 'MapasCulturais\Entities\\' . $class;
 
         $_types = $app->getRegisteredEntityTypes($classname);
