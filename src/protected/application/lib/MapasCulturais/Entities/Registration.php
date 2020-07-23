@@ -201,6 +201,7 @@ class Registration extends \MapasCulturais\Entity
 
     function __construct() {
         $this->owner = App::i()->user->profile;
+       
         if(!self::$hooked){
             self::$hooked = true;
             App::i()->hook('entity(' . $this->getHookClassPath() . ').randomId', function($id){

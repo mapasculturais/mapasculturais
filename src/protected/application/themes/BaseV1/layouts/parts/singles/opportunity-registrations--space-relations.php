@@ -12,7 +12,8 @@ dump($entity->$metadata_name);
 $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
-dump($projectMeta['useSpaceRelation']);
+dump($projectMeta);
+dump($app);
 $message = $projectMeta['useSpaceRelation']['options'];
 // dump($message);
 // dump($app);
@@ -26,16 +27,33 @@ $message = $projectMeta['useSpaceRelation']['options'];
                 <?php \MapasCulturais\i::_e("Uma inscrição pode pedir para que o agente relacione um Espaço Cultural a ela. Indique aqui se quer habilitar esta opção.");?>
             </p>
             <!-- <span class="js-editable editable editable-click" data-edit="useAgentRelationInstituicao" data-original-title="Instituição responsável" data-emptytext="Selecione uma opção">Não utilizar</span> -->
-           <span class="<?php echo $ditable_class; ?>" 
-                 data-edit="<?php echo $metadata_name; ?>" 
-                 data-original-title="Selecione" 
-                 data-type = "select"
-                 data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione uma opção");?>">
-                <?php \MapasCulturais\i::_e($message[$option_label]); ?>
-           </span>
+           <select name="idSpaceRelationForm" id="idSpaceRelationForm" class="form-control">
+          
+           <?php
+                foreach ($message as $key => $value) {
+                    echo '<option value="'.$key.'">'.$value.'</option>';
+                }
+           ?>
+           </select>
            <script>
             $(document).ready(function() {
-                $('.js-editable').editable();
+                $("#idSpaceRelationForm").change(function (e) { 
+                    e.preventDefault();
+                    var valRelation = $(this).find(":selected").val();
+                    var idEntity = MapasCulturais.entity.id;
+                    console.log(valRelation);
+                    // 
+                    console.log(MapasCulturais.baseURL+'spaceRelation/create');
+                    $.ajax({
+                        type: "POST",
+                        url: MapasCulturais.baseURL+'registration/spaceRel',
+                        data: {object_id: idEntity, key: 'useSpaceRelationIntituicao', value : valRelation},
+                        dataType: "json",
+                        success: function (response) {
+                            console.log('response');
+                        }
+                    });
+                });
             });
             </script>
         </div>
