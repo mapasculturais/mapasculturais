@@ -60,5 +60,14 @@ return [
             'type' => 2,
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
-    )
+    ),
+    'registration.spaceRelations' => array(
+        array(
+            'required' => false,
+            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'description' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'type' => 2,
+            'requiredProperties' => array('endereco', 'telefone1')
+        )
+    ),
 ];
