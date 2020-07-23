@@ -1457,6 +1457,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         propLabels : [],
 
+        spaceLabels : [],
+
         defaultSelectFields : defaultSelectFields,
 
         registrationTableColumns: {
@@ -1542,6 +1544,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     for(var name in MapasCulturais.labels.agent){
         var label = MapasCulturais.labels.agent[name];
         $scope.data.propLabels.push({
+            name: name,
+            label: label
+        });
+    }
+
+    //labels espaços vinculados
+    for(var name in MapasCulturais.labels.space){
+        var label = MapasCulturais.labels.space[name];
+        $scope.data.spaceLabels.push({
             name: name,
             label: label
         });
@@ -1756,6 +1767,72 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     EditBox.close(editBoxId);
                 });
             };
+
+            $scope.setSpaceRelation = function(entity, attrs){
+                var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
+                    editBoxId = 'editbox-select-registration-space-relation',
+                    controllerId = null,
+                    controllerName = 'createSpaceRelation',
+                    entityId = null,
+                    group = attrs.name,
+                    spaceId = entity.id;
+
+                //retira msg de erro do espaço vinculado, caso haja
+                if($('#registration-space-title :first-child').hasClass('danger')){
+                    $('#registration-space-title :first-child').remove();
+                }
+                
+                try{ controllerId = MapasCulturais.request.controller; }catch (e){};
+                try{ entityId = MapasCulturais.entity.id; }catch (e){};
+
+                var createSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
+                
+                $http.post(createSpaceRelationUrl, {id: spaceId}).
+                        success(function(response, status){
+                            if(status === 202){
+                                MapasCulturais.Messages.alert(labels['spaceRelationRequestSent'].replace('{{space}}', '<strong>'+response.space.name+'</strong>'));
+                            }
+                            
+                            if(response.space.avatar && response.space.avatar.avatarSmall){
+                                response.space.avatarUrl = response.space.avatar.avatarSmall.url;
+                            }
+
+                            $scope.data.entity.registrationSpace = response;
+                            EditBox.close(editBoxId);
+                            $rootScope.$emit('relatedSpace.created', response);
+                        }).
+                        error(function(response, status){
+                            $rootScope.$emit('error', { message: "Cannot create related space", response: response, status: status });
+                        });
+            };
+
+            $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
+                var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
+                    controllerId = null,
+                    controllerName = 'removeSpaceRelation',
+                    entityId = null,
+                    group = attrs.name,
+                    spaceId = registrationEntity.space.id;
+
+                //retira msg de erro do espaço vinculado, caso haja
+                if($('#registration-space-title :first-child').hasClass('danger')){
+                    $('#registration-space-title :first-child').remove();
+                }
+
+                try{ controllerId = MapasCulturais.request.controller; }catch (e){};
+                try{ entityId = MapasCulturais.entity.id; }catch (e){};
+
+                const removeSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
+                
+                $http.post(removeSpaceRelationUrl, {id: spaceId}).
+                    success(function(data, status){
+                        $scope.data.entity.registrationSpace = undefined;
+                        $rootScope.$emit('relatedSpace.removed', data);
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', { message: "Cannot remove related space", data: data, status: status });
+                    });
+            }
 
             $('#editbox-select-registration-owner').on('open', function () {
                 if (!adjustingBoxPosition)

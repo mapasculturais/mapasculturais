@@ -151,6 +151,12 @@ class Module extends \MapasCulturais\Module{
                     $message = sprintf(i::__("%s quer relacionar o selo %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para relacionar o selo %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                     break;
+                case "MapasCulturais\Entities\RequestSpaceRelation":
+                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
+                        $message = sprintf(i::__("%s quer relacionar o espaço %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin->number, "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                        $message_to_requester = sprintf(i::__("Sua requisição para relacionar o espaço %s à inscrição %s no projeto %s foi enviada."), $destination_link, "<a href=\"{$origin->singleUrl}\" >{$origin->number}</a>", "<a href=\"{$origin->project->singleUrl}\">{$origin->project->name}</a>");
+                    }
+                    break;
                 default:
                     $subject = null;
                     $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";

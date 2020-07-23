@@ -962,6 +962,7 @@ class App extends \Slim\Slim{
             $this->registerRegistrationAgentRelation($def);
         }
 
+
         // all metalist groups
         $metalist_groups = [
             'links' => new Definitions\MetaListGroup('links',

@@ -42,6 +42,15 @@ return array(
                 'serialize' => function($value) { return json_encode($value); },
                 'unserialize' => function($value) { return json_decode($value); }
         ),
+        'useSpaceRelation' => array(
+            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'type' => 'select',
+            'options' => array(
+                'dontUse' => \MapasCulturais\i::__('Não utilizar'),
+                'required' => \MapasCulturais\i::__('Obrigatório'),
+                'optional' => \MapasCulturais\i::__('Opcional')
+            )
+        ),
 
     ),
     'items' => array(

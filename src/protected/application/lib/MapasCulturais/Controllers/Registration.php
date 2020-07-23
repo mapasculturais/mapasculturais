@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
 
 /**
  * Registration Controller
@@ -19,6 +20,7 @@ class Registration extends EntityController {
     	Traits\ControllerSealRelation;
 
     function __construct() {
+        
         $app = App::i();
         $app->hook('POST(registration.upload):before', function() use($app) {
             $mime_types = [
@@ -105,38 +107,87 @@ class Registration extends EntityController {
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
             
-            
+           
             if(!$registration || !$registration->id){
                 return;
             }
 
             $opportunity = $registration->opportunity;
-            
+           
             $this->registerRegistrationMetadata($opportunity);
             
         });
 
         parent::__construct();
     }
+    
+    function POST_createSpaceRelation(){
+        $this->requireAuthentication();
+       
+        $app = App::i();
+
+        $space = $app->repo('Space')->find($this->postData['id']);
+        $registration = $app->repo('Registration')->find($this->data['id']);
+
+        $relation = new RegistrationSpaceRelationEntity();
+        $relation->space = $space;
+        $relation->owner = $registration;
+        
+        $this->_finishRequest($relation, true);
+    }
+
+    /**
+     * Removes the space relation with the given id.
+     * 
+     * This action requires authentication.
+     * 
+     * @WriteAPI POST removeSpaceRelation
+     */
+    public function POST_removeSpaceRelation(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!$this->urlData['id'])
+            $app->pass();
+
+        $registrationEntity = $this->repository->find($this->data['id']);
+        $space = $app->repo('Space')->find($this->postData['id']);
+        
+        if(is_object($registrationEntity) && !is_null($space)){
+            $spaceRelation = $app->repo('SpaceRelation')->findOneBy(array('objectId'=>$registrationEntity->id, 'space'=>(array('id'=>$space->id))));
+            $spaceRelation->delete(true);
+            
+            $this->refresh();
+            $this->deleteUsersWithControlCache();
+
+            if($this->usesPermissionCache()){
+                $this->addToRecreatePermissionsCacheList();
+            }
+            
+            $this->json(true);
+        }        
+    }   
 
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
             $actionName = 'view';
         }
+        
         return parent::createUrl($actionName, $data);
     }
 
     function registerRegistrationMetadata(\MapasCulturais\Entities\Opportunity $opportunity){
-        
+       
         $app = App::i();
         
         if($opportunity->projectName){
+           
             $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
             
             $metadata = new Definitions\Metadata('projectName', $cfg);
             $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
         }
-
+        
         foreach($opportunity->registrationFieldConfigurations as $field){
 
             $cfg = [
@@ -163,9 +214,11 @@ class Registration extends EntityController {
 
             $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
         }
+        
     }
     
     function getPreviewEntity(){
+       
         $registration = new $this->entityClassName;
         
         $registration->id = -1;
@@ -180,7 +233,7 @@ class Registration extends EntityController {
      */
     function getRequestedEntity() {
         $preview_entity = $this->getPreviewEntity();
-
+       
         if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
             if(!App::i()->request->isGet()){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
@@ -196,13 +249,15 @@ class Registration extends EntityController {
      * @return \MapasCulturais\Entities\Opportunity
      */
     function getRequestedOpportunity(){
+        
         $app = App::i();
+       
         if(!isset($this->urlData['opportunityId']) || !intval($this->urlData['opportunityId'])){
             $app->pass();
         }
 
         $opportunity = $app->repo('Opportunity')->find(intval($this->urlData['opportunityId']));
-
+       
         if(!$opportunity){
             $this->pass();
         }
@@ -211,6 +266,7 @@ class Registration extends EntityController {
     }
 
     function GET_preview(){
+        
         $this->requireAuthentication();
 
         $opportunity = $this->getRequestedOpportunity();
@@ -222,7 +278,7 @@ class Registration extends EntityController {
         $registration->opportunity = $opportunity;
         
         $this->_requestedEntity = $registration;
-
+        
         $this->render('edit', ['entity' => $registration, 'preview' => true]);
     }
 
@@ -247,9 +303,9 @@ class Registration extends EntityController {
         if(!$entity){
             App::i()->pass();
         }
-
+       
         $entity->checkPermission('view');
-
+        
         if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
             parent::GET_edit();
         } else {
