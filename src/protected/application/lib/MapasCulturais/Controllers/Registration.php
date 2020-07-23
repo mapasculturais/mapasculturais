@@ -6,6 +6,7 @@ use MapasCulturais\Traits;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
+use MapasCulturais\Entities\OpportunityMeta;
 
 /**
  * Registration Controller
@@ -20,7 +21,6 @@ class Registration extends EntityController {
     	Traits\ControllerSealRelation;
 
     function __construct() {
-        
         $app = App::i();
         $app->hook('POST(registration.upload):before', function() use($app) {
             $mime_types = [
@@ -103,10 +103,8 @@ class Registration extends EntityController {
             $this->tmpFile = $tmpFile;
         });
 
-        
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
-            
            
             if(!$registration || !$registration->id){
                 return;
@@ -118,12 +116,31 @@ class Registration extends EntityController {
             
         });
 
+        $app->hook('POST(registration.spaceRel)' , function() {
+           $this->createInfoSpace();
+        });
         parent::__construct();
     }
-    
+    function createInfoSpace() {
+        
+        $app = App::i();
+        $user = $app->user;
+        try {
+            $opMeta = new \MapasCulturais\Entities\OpportunityMeta;
+            $opMeta->id = $this->postData['object_id'];
+            $opMeta->key = $this->postData['key'];
+            $opMeta->value = $this->postData['value'];
+            $opMeta->owner = $user->id;
+            $this->save();
+            $this->json($opMeta);
+        } catch (\Throwable $th) {
+            echo $th->getMessage();
+        }
+        
+    }
     function POST_createSpaceRelation(){
         $this->requireAuthentication();
-       
+        
         $app = App::i();
 
         $space = $app->repo('Space')->find($this->postData['id']);
@@ -249,7 +266,6 @@ class Registration extends EntityController {
      * @return \MapasCulturais\Entities\Opportunity
      */
     function getRequestedOpportunity(){
-        
         $app = App::i();
        
         if(!isset($this->urlData['opportunityId']) || !intval($this->urlData['opportunityId'])){
@@ -266,7 +282,6 @@ class Registration extends EntityController {
     }
 
     function GET_preview(){
-        
         $this->requireAuthentication();
 
         $opportunity = $this->getRequestedOpportunity();
@@ -305,7 +320,7 @@ class Registration extends EntityController {
         }
        
         $entity->checkPermission('view');
-        
+
         if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
             parent::GET_edit();
         } else {
