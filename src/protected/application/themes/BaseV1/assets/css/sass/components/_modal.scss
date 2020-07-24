@@ -125,3 +125,83 @@
 #dialog-event-occurrence label {
     white-space: nowrap;
 }
+
+.entity-modal {
+    width: 800px;
+
+    form.create-entity {
+        clear: both;
+    }
+
+    .modal-loading {
+        img { width: 5%; }
+    }
+
+    .flash-message {
+        text-align: center;
+        border: 1px solid $gray-light;
+        background: ghostwhite;
+        padding: 20px 0 5px 0;
+        font-size: 12px;
+
+        .entidade {
+            font-weight: bolder;
+            display: block;
+            width: 100%;
+            font-size: 22px;
+        }
+
+        .edit-entity {
+            width: 20%;
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
+            background: $brand-primary;
+            color: white;
+        }
+    }
+
+    input[type='checkbox'] {
+        float: left;
+        width: 3%;
+    }
+
+    label { display: inline-block; }
+
+    input, textarea { width: 100%; }
+
+    select { display: block !important; }
+
+    .actions {
+        float: left;
+        width: 100%;
+
+        button, input {
+            float: left;
+            display: inline-block;
+        }
+        input {
+            width: auto;
+            float: right;
+        }
+    }
+
+    .modal-required { color: darkred; }
+
+    button.close-attached-modal {
+        float: left;
+        margin: 0 0 20px 0;
+        width: 15%;
+    }
+
+    .entity-modal-footer {
+        color: $gray-dark;
+        font-size: $font-size-smaller;
+    }
+}
+
+#evt-date-local {
+    .btn-toggle-attached-modal {
+        margin-bottom: 20px;
+    }
+}

@@ -516,7 +516,7 @@
                     if (!tip || $(this).hasClass('hltip-auto-update')) {
                         var content = $(this).attr('title') ? $(this).attr('title') : $(this).attr('hltitle');
 
-                        if (content.indexOf(':') > 0) {
+                        if (content && content.indexOf(':') > 0) {
                             content = '<div class="hltip-title">' + (content.substr(0, content.indexOf(':'))) + '</div>' + (content.substr(content.indexOf(':') + 1));
                         }
                         tip = $('<div class="hltip-box"><div class="hltip-arrow-top"></div><div class="hltip-text">' + content + '</div><div class="hltip-arrow-bottom"></div></div><').hide();

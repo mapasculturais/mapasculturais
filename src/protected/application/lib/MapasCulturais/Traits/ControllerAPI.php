@@ -30,7 +30,7 @@ trait ControllerAPI{
      */
     protected function getApiOutput(){
         $app = App::i();
-        $type = key_exists('@type',$this->data) ? $this->data['@type'] : $app->config['app.defaultApiOutput'];
+        $type = key_exists('@type',$this->data) ? $this->data['@type'] : 'json';
         $responder = $app->getRegisteredApiOutputById($type);
 
         if(!$responder){

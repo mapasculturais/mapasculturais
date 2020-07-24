@@ -30,8 +30,7 @@ article.opportunity .highlighted-message .btn {
 //## Registration form that shows on opportunities tab "Inscritos" when logged in and on view mode.
 
 .registration-form {
-    display: none; //it shows only on tablet screen size and wider screens
-	box-sizing: border-box;
+    box-sizing: border-box;
 	border: $thin-row;
 	border-radius: $border-radius-base;
 	padding: $padding-large;
@@ -58,9 +57,6 @@ article.opportunity .highlighted-message .btn {
         color: $gray-dark;
         font-family: $font-stack-base;
         font-size: $font-size-smaller;
-    }
-    @media screen and (min-width: $screen-tablet) {
-        display: block;
     }
 }
 

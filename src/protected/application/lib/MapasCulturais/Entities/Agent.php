@@ -436,10 +436,15 @@ class Agent extends \MapasCulturais\Entity
 
     protected function canUserRemove($user){
 
-        if($this->isUserProfile)
-            return false;
-        else
+        if($this->isUserProfile){
+            if($this->user->isDeleting){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
             return parent::canUserRemove($user);
+        }
     }
 
     protected function canUserDestroy($user){

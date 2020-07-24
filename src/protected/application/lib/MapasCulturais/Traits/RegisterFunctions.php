@@ -11,6 +11,10 @@ trait RegisterFunctions {
 
     }
 
+    function registerUserMetadata($key, $cfg) {
+        return $this->registerMetadata('MapasCulturais\Entities\User', $key, $cfg);
+    }
+
     function registerEventMetadata($key, $cfg) {
         return $this->registerMetadata('MapasCulturais\Entities\Event', $key, $cfg);
     }

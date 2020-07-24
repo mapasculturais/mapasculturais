@@ -1,5 +1,4 @@
 #editable-entity {
-    display: none;
     position: fixed;
     z-index: $z-index-editable-entity;
          box-sizing: border-box;
@@ -12,14 +11,20 @@
     text-align: center;
     &.editable-entity-edit {
         padding: .25rem 240px;
+        @media screen and (max-width: $screen-tablet) {
+            padding: .25rem 0;
+        }
     }
     &.can-edit-roles {
         padding: .25rem 380px;
     }
-    .alert {
+    .info {
         display: none;
         margin-bottom: 0;
         padding: .25rem $padding-base .25rem 2.5rem;
+        @media screen and (max-width: $screen-tablet) {
+            width: 100%;
+        }
     }
     .controles {
         position: absolute;
@@ -28,7 +33,7 @@
         width: 370px;
         text-align: right;
     }
-    @media screen and (min-width: $screen-tablet) {
+    @media screen and (max-width: $screen-tablet) {
         display: block;
     }
 }

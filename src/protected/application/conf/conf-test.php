@@ -8,20 +8,16 @@ return array_merge($config,
         'site.url' => 'http://localhost:8888/',
         'app.log.translations' => false,
         'slim.log.level' => Log::DEBUG,
-        'slim.log.enabled' => true,
-//        'app.log.query' => true,
-        'slim.debug' => true,
+        'slim.log.enabled' => false,
+        'app.mode' => 'production',
+        'slim.debug' => false,
         'auth.provider' => 'Test',
 
         'auth.config' => array(
             'filename' => '/tmp/mapasculturais-tests-authenticated-user.id'
         ),
-
-//        'app.log.query' => true,
-//        'app.log.apiDql' => true,
-
         
-        'doctrine.isDev' => true,
+        'doctrine.isDev' => false,
 
         'doctrine.database' => array(
             'dbname'    => env('DB_NAME', 'mapasculturais_test'),
@@ -45,7 +41,19 @@ return array_merge($config,
         // disable cache
 
         'app.usePermissionsCache' => false,
-        'app.cache' => new \Doctrine\Common\Cache\ArrayCache()
-//        'app.cache' => function_exists('apc_store') ? new \Doctrine\Common\Cache\ApcCache() : new \Doctrine\Common\Cache\ArrayCache(),
+        'app.cache' => new \Doctrine\Common\Cache\ArrayCache(),
+
+        
+        'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
+            'publishPath' => BASE_PATH . 'assets/',
+    
+            'mergeScripts' => false,
+            'mergeStyles' => false,
+    
+            'process.js' => 'cp {IN} {OUT}',
+            'process.css' => 'cp {IN} {OUT}',
+    
+            'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
+        ])
     )
 );

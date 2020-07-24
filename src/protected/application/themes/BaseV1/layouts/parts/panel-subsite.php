@@ -1,5 +1,3 @@
-<?php $entity_url = $this->getEntityURL($entity->url); ?>
-
 <article class="objeto clearfix">
     <?php if(isset($entity->{'@files:avatar.avatarSmall'}) && $avatar = $entity->{'@files:avatar.avatarSmall'}): ?>
         <div class="thumb" style="background-image: url(<?php echo $avatar->url; ?>)"></div>
@@ -17,7 +15,7 @@
         <?php endif; ?>
         <div>
             <span class="label"><?php \MapasCulturais\i::_e("URL"); ?>:</span>
-            <a href="<?php echo $entity_url; ?>"><?php echo $entity_url; ?> </a>
+            <a href="<?php echo $entity->subsiteUrl; ?>"><?php echo $entity->subsiteUrl; ?> </a>
         </div> </br>
 		<div><span class="label"><?php \MapasCulturais\i::_e("Data de Criação:");?></span> <?php echo $entity->createTimestamp->format('d/m/Y H:i:s');?></div>
 	</div>

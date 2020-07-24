@@ -16,7 +16,8 @@ $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
     </head>
 
     <body <?php $this->bodyProperties() ?> >
-       <?php $this->bodyBegin(); ?>
+        <div id="blockdiv" style="background-color: rgba(0,0,0,0.6);width: 100%;height: 100%;position: absolute;z-index: 1800;top: 0;display: none;"></div>
+        <?php $this->bodyBegin(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
             <?php $this->part('header-logo') ?>
             <?php $this->part('header-about-nav') ?>

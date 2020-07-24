@@ -229,6 +229,11 @@ body.action-search {
     position: absolute;
     bottom: 1.5rem;
     right: 6.5rem;
+
+    @media screen and (max-width: $screen-tablet) {
+        bottom:inherit;
+        top:$line-height-base;
+    }
 }
 
 .hide-background-button{
