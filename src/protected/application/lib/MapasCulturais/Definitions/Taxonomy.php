@@ -11,6 +11,7 @@ namespace MapasCulturais\Definitions;
  * @property-read int $id Taxonomy Id
  * @property-read string $slug Taxonomy Slug
  * @property-read bool $allowInsert Can user insert terms in this taxonomy?
+ * @property-read bool $required Is this taxonomy required?
  * @property-read array $restrictedTerms List of terms allowed to this taxonomy. If this list is empty any term is allowed.
  * @property-read string $description Taxonomy Description
  */

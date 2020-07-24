@@ -18,9 +18,7 @@ trait ControllerArchive{
 
         $entity_class = $entity->getClassName();
 
-        $entity->status = $entity_class::STATUS_ARCHIVED;
-
-        $entity->save(true);
+        $entity->archive(true);
 
         if($this->isAjax()){
             $this->json($entity);
@@ -45,9 +43,7 @@ trait ControllerArchive{
 
         $entity_class = $entity->getClassName();
 
-        $entity->status = $entity_class::STATUS_DRAFT;
-
-        $entity->save(true);
+        $entity->unarchive(true);
 
         if($this->isAjax()){
             $this->json($entity);

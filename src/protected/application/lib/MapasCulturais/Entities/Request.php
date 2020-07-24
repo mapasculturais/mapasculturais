@@ -22,6 +22,7 @@ use MapasCulturais\Traits;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
         "ChangeOwnerchip"   = "\MapasCulturais\Entities\RequestChangeOwnership",
+        "EntitiesTransference"   = "\MapasCulturais\Entities\RequestEntitiesTransference",
         "EventOccurrence"   = "\MapasCulturais\Entities\RequestEventOccurrence",
         "EventProject"      = "\MapasCulturais\Entities\RequestEventProject",
         "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
@@ -190,10 +191,6 @@ abstract class Request extends \MapasCulturais\Entity{
             return $this->_destination;
         else
             return App::i()->repo($this->destinationType)->find($this->destinationId);
-    }
-
-    protected function getMetadata(){
-        return unserialize($this->_metadata);
     }
 
     function approve(){

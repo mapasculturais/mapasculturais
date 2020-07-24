@@ -21,19 +21,6 @@ services:
       - DB_USER=mapas
       - DB_PASS=mapas
 
-      - APP_MODE=development
-      - SLIM_DEBUG=true
-
-      - APP_LCODE=pt_BR,es_ES
-
-      - ACTIVE_THEME=SpCultura
-
-      - LOG_ENABLED=true
-      - LOG_LEVEL=DEBUG
-      - LOG_HOOK=true  
-
-      - PENDING_PCACHE_RECREATION_INTERVAL=15
-
     depends_on:
       - db_tests
       

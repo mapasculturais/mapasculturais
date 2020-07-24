@@ -2,6 +2,18 @@ $(function(){
     MapasCulturais.EventOccurrenceManager.initMapTogglers('.toggle-mapa');
 });
 
+$(document).
+    on('click', '.btn-toggle-attached-modal', function () {
+        var modal = $("#evt-date-local").siblings().find('div').attr('id');
+        if (modal) {
+            toggleAttachedModal(this,modal);
+        }
+    }).
+    on('click', '.close-attached-modal', function() {
+        var modal = $(this).data('form-id');
+        toggleAttachedModal(this, modal);
+});
+
 MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));
@@ -66,7 +78,6 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
       }});
 };
 
-
 MapasCulturais.EventOccurrenceManager = {
     localeDateOptions : {
         locale : 'pt-BR',
@@ -87,60 +98,81 @@ MapasCulturais.EventOccurrenceManager = {
     init : function(selector) {
         var labels = MapasCulturais.gettext.singleEvents;
         $(selector).ajaxForm({
-            success: function (response, statusText, xhr, $form)  {
+            success: function (response, statusText, xhr, $form) {
+                var modal_form = $form[0]['className'];
+                var modal_id = $form[0]['id'];
 
-                $form.find('.danger').not('.alert').remove();
-                if(response.error){
-                    var $element = null,
-                        message;
-                        
-                    for(i in response.data) {
-                        message = response.data[i].join(', ').toLowerCase();
+                if (modal_id && modal_form && (modal_form === "create-entity is-attached")) {
+                    var new_space = response.id;
+                    var space = response.name;
+                    if (new_space && space) {
+                        /*
+                         @TODO: usar string localizada
+                        */
+                        MapasCulturais.Messages.success("Espaço criado com sucesso!");
 
-                        if(i == 'space') $element = $form.find('.js-space');
-                        else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
-                     // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
-                        $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
-                        //$form.find('[name="'+i+'"]')
+                        $('.js-search-occurrence-space').data('value', new_space).text(space);
+                        $('#espaco-do-evento').val(new_space);
+
+                        var toggle = modal_id.replace('form-for-', '');
+                        toggleAttachedModal(this,toggle);
+                        $('.modal-loading').hide();
                     }
-                    $form.parent().scrollTop(0);
-                    $form.find('div.alert.danger').html(labels['correctErrors'])
-                        .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
-                        .delay(MapasCulturais.Messages.delayToFadeOut)
-                        .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+                } else {
+                    $form.find('.danger').not('.alert').remove();
+                    if(response.error){
+                        var $element = null,
+                            message;
 
-                    return;
+                        for(i in response.data) {
+                            message = response.data[i].join(', ').toLowerCase();
 
+                            if(i == 'space') $element = $form.find('.js-space');
+                            else $element = $form.find('[name="'+i+'"]').parents('.grupo-de-campos').find('label');
+                            // $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="'+labels['Erro:']+message+'"/>');
+                            $element.append('<span class="danger hltip" data-hltip-classes="hltip-danger" title="' + labels['Erro'] + ':' + message + '"/>');
+                            //$form.find('[name="'+i+'"]')
+                        }
+                        $form.parent().scrollTop(0);
+                        $form.find('div.alert.danger').html(labels['correctErrors'])
+                            .fadeIn(MapasCulturais.Messages.fadeOutSpeed)
+                            .delay(MapasCulturais.Messages.delayToFadeOut)
+                            .fadeOut(MapasCulturais.Messages.fadeOutSpeed);
+
+                        return;
+
+                    }
+
+                    response.pending = xhr.status === 202;
+
+                    var isEditing = $form.data('action') == 'edit';
+                    var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-item');
+
+                    if (response.rule) {
+                        response.rule.screen_startsOn = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.startsOn);
+                        response.rule.screen_until = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.until);
+                        response.rule.screen_frequency = MapasCulturais.frequencies[response.rule.frequency];
+                    }
+
+                    var $renderedData = $(Mustache.render(template, response));
+                    var $editBtn = $renderedData.find('.js-open-dialog');
+                    $editBtn.data('item', response);
+                    if(isEditing){
+                        $('#event-occurrence-'+response.id).replaceWith($renderedData);
+                    }else{
+                        $('.js-event-occurrence').append($renderedData);
+                    }
+                    MapasCulturais.Modal.initButtons($editBtn);
+                    $form.parents('.js-dialog').find('.js-close').click();
+
+                    //Por enquanto sempre inicializa o mapa
+                    MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
+                    MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
+
+                    if(response.pending){
+                        MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
+                    }
                 }
-
-                response.pending = xhr.status === 202;
-
-                var isEditing = $form.data('action') == 'edit';
-                var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-item');
-
-                response.rule.screen_startsOn = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.startsOn);
-                response.rule.screen_until = MapasCulturais.EventOccurrenceManager.formatDate(response.rule.until);
-                response.rule.screen_frequency = MapasCulturais.frequencies[response.rule.frequency];
-
-                var $renderedData = $(Mustache.render(template, response));
-                var $editBtn = $renderedData.find('.js-open-dialog');
-                $editBtn.data('item', response);
-                if(isEditing){
-                    $('#event-occurrence-'+response.id).replaceWith($renderedData);
-                }else{
-                    $('.js-event-occurrence').append($renderedData);
-                }
-                MapasCulturais.Modal.initButtons($editBtn);
-                $form.parents('.js-dialog').find('.js-close').click();
-
-                //Por enquanto sempre inicializa o mapa
-                MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
-                MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
-
-                if(response.pending){
-                    MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
-                }
-
             },
             error: function(xhr, textStatus, errorThrown, $form) {
                 $form.parent().scrollTop(0);
@@ -159,12 +191,15 @@ MapasCulturais.EventOccurrenceManager = {
             },
             dataType:  'json',
             beforeSubmit: function(arr, $form, options) {
+                if (arr && arr.length == 5) {
+                    $('.modal-loading').show();
+                    return true;
+                } else {
+                    if ($form.find('input[name="description"]').data('synced') != 1)
+                        return confirm(labels['confirmDescription']);
 
-                if ($form.find('input[name="description"]').data('synced') != 1)
-                    return confirm(labels['confirmDescription']);
-
-                return true;
-
+                    return true;
+                }
             }
         });
 

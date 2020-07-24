@@ -17,6 +17,8 @@ use \MapasCulturais\i;
  * @property-read \MapasCulturais\Entity $owner File Owner
  * @property-read \DateTime $createTimestamp File Create Timestamp
  * @property-read \MapasCulturais\Entity $owner The Owner of this File
+ * 
+ * @property bool $private Is this file private?
  *
  * @property-read array $tmpFile $_FILE
  * 
@@ -106,7 +108,7 @@ abstract class File extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="private", type="boolean", nullable=false)
      */
-    protected $private = false;
+    protected $private = null;
 
     /**
      * @var \DateTime
@@ -202,6 +204,10 @@ abstract class File extends \MapasCulturais\Entity
         }
     }
 
+    protected function canUserChangePrivacy($user){
+        return $this->canUser('modify');
+    }
+
     public function save($flush = false) {
         if(preg_match('#.php$#', $this->mimeType))
             throw new \MapasCulturais\Exceptions\PermissionDenied($this->ownerUser, $this, 'save');
@@ -209,11 +215,60 @@ abstract class File extends \MapasCulturais\Entity
         $app = App::i();
         
         $file_group = $app->getRegisteredFileGroup($this->owner->controllerId, $this->getGroup());
-        
-        if (is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true)
-            $this->private = true;
+
+        if(is_null($this->private)){
+            if ( is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true){
+                $this->private = true;
+            } else {
+                if($this->owner->status > 0){
+                    $this->private = false;
+                } else {
+                    $this->private = true;
+                }
+            }
+        }
         
         parent::save($flush);
+    }
+
+    public function makePrivate(){
+        if($this->private){
+            return;
+        }
+
+        $this->togglePrivacy();
+
+        foreach($this->getChildren() as $file){
+            $file->makePrivate();
+        }
+    }
+
+    public function makePublic(){
+        if(!$this->private){
+            return;
+        }
+
+        $this->togglePrivacy();
+
+        foreach($this->getChildren() as $file){
+            $file->makePublic();
+        }
+    }
+
+    protected function togglePrivacy(){
+        $this->checkPermission('changePrivacy');
+
+        $app = App::i();
+
+        $app->storage->togglePrivacy($this);
+
+        $this->private = ! $this->private;
+
+        $this->save(true);
+
+        $cache_id = "{$this}:url";
+
+        $app->cache->delete($cache_id);
     }
 
     static function sortFilesByGroup($files){

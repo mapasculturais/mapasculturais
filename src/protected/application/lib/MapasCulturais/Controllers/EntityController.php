@@ -2,6 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Entity;
 use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
@@ -27,6 +28,33 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
 
     protected $_requestedEntity = false;
+
+    static $changeStatusMap = [
+        Entity::STATUS_ENABLED => [
+            Entity::STATUS_ENABLED => null,
+            Entity::STATUS_DRAFT => 'unpublish',
+            Entity::STATUS_TRASH => 'delete',
+            Entity::STATUS_ARCHIVED => 'archive'
+        ],
+        Entity::STATUS_DRAFT => [
+            Entity::STATUS_ENABLED => 'publish',
+            Entity::STATUS_DRAFT => null,
+            Entity::STATUS_TRASH => 'delete',
+            Entity::STATUS_ARCHIVED => 'archive'
+        ],
+        Entity::STATUS_TRASH => [
+            Entity::STATUS_ENABLED => 'undelete',
+            Entity::STATUS_DRAFT => 'undelete',
+            Entity::STATUS_TRASH => null,
+            Entity::STATUS_ARCHIVED => 'archive'
+        ],
+        Entity::STATUS_ARCHIVED => [
+            Entity::STATUS_ENABLED => 'publish',
+            Entity::STATUS_DRAFT => 'unpublish',
+            Entity::STATUS_TRASH => 'delete',
+            Entity::STATUS_ARCHIVED => null
+        ]
+    ];
 
 
     /**
@@ -134,12 +162,16 @@ abstract class EntityController extends \MapasCulturais\Controller{
         return $this->getFields();
     }
 
-    protected function _finishRequest($entity, $isAjax = false){
+    protected function _finishRequest($entity, $isAjax = false, $function = null){
         $app = App::i();
 
         $status = 200;
         try{
-            $entity->save(true);
+            if($function){
+                $entity->$function(true);
+            } else {
+                $entity->save(true);
+            }
         }  catch (WorkflowRequest $e){
             $status = 202;
             $reqs = [];
@@ -371,15 +403,23 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$entity)
             $app->pass();
 
+        $class = $this->entityClassName;
+
+        $function = null;
+
         //Atribui a propriedade editada
         foreach($data as $field => $value){
+            if($field == 'status'){
+                $function = isset(self::$changeStatusMap[$entity->status][(int)$value]) ? self::$changeStatusMap[$entity->status][(int)$value] : null;
+                continue;
+            }
             $entity->$field = $value;
         }
 
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $this->_finishRequest($entity);
+            $this->_finishRequest($entity, false, $function);
         }
     }
 
@@ -405,9 +445,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         if(!$entity)
             $app->pass();
+        
+        $function = null;
 
         //Atribui a propriedade editada
         foreach($data as $field => $value){
+            if($field == 'status'){
+                $function = isset(self::$changeStatusMap[$entity->status][(int)$value]) ? self::$changeStatusMap[$entity->status][(int)$value] : null;
+                continue;
+            }
             $entity->$field = $value;
         }
 
@@ -424,7 +470,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             }
         }
 
-        $this->_finishRequest($entity);
+        $this->_finishRequest($entity, false, $function);
     }
 
     /**

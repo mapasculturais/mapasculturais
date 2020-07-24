@@ -8,9 +8,68 @@ function charCounter(obj){
         $('#charCounter').text(($(obj).val().length + '/' + max[1]));
 }
 
+function toggleAttachedModal(el, modal_id) {
+    $("div#" + modal_id).toggle();
+    $("#evt-date-local").toggle();
+}
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
+
+    $("form.create-entity").submit(function (e) {
+        $('.modal-loading').show();
+        $(this).hide();
+
+        e.preventDefault();
+        var _url = $(this).data('entity');
+        var _entity = $(this).serializeArray();
+        var _form = $(this).data('formid');
+        var self = this;
+        $.ajax({
+            url: _url, type: 'POST',
+            data: _entity,
+            success: function(r) {
+                if (r.id) {
+                    var name = r.name;
+                    /*
+                     @TODO: usar string localizada
+                    */
+                    var msg = name + " criado com sucesso!";
+                    MapasCulturais.Messages.success(msg);
+
+                    if (r.editUrl) {
+                        $('.modal-loading').hide();
+                        $(self).prev().show();
+                        $(self).prev().find('.entidade').text(msg);
+                        $(self).prev().find('.new-name').text(name);
+
+                        var $view_btn = $(self).prev().find('.view-entity');
+                        var $link = $(self).prev().find('.entity-url');
+                        var $edit_btn = $(self).prev().find('.edit-entity');
+
+                        $($edit_btn).attr('href', r.editUrl);
+                        $($view_btn).attr('href', r.singleUrl);
+                        $($link).attr('href', r.singleUrl);
+
+                        if ($(self).hasClass('is-attached')) {
+                            toggleAttachedModal(this,_form);
+                        }
+                        // $('.entity-modal').find('.js-close').click();
+                    }
+
+                } else if (r.error && r.data) {
+                    for (var erro in r.data) {
+                        var _msg = r.data[erro];
+                        MapasCulturais.Messages.error(_msg);
+                        alert(_msg);
+                    }
+
+                    return false;
+                }
+            }
+        });
+    });
 
     var labels = MapasCulturais.gettext.mapas;
 
@@ -338,6 +397,8 @@ jQuery(document).ready(function(){
     $(window).on('hashchange', function(){
         editableEntityAddHash();
     });
+}).on('click', '.close-modal', function() {
+    MapasCulturais.Modal.close('.entity-modal');
 });
 
 
@@ -432,8 +493,12 @@ MapasCulturais.Modal = {
             var $dialog = $(this);
             /*$dialog.hide();  Moved to style.css */
 
+
+            var _title = $(this).attr('title');
             $dialog.data('dialog-init', 1);
-            $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
+            if (_title)
+                $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
+
             $dialog.prepend('<a href="#" class="js-close icon icon-close"></a>');
 
             // close button
@@ -473,6 +538,10 @@ MapasCulturais.Modal = {
         //alert('closing');
         $dialog.find('.editable').editable('hide');
         $dialog.hide();
+        if($('#blockdiv').is(':visible')){
+            $('#blockdiv').hide();
+            $('body').css('overflow','visible');
+        }
         return;
     },
 
@@ -498,6 +567,14 @@ MapasCulturais.Modal = {
     }
 };
 
+MapasCulturais.addEntity = function(e) {
+    var _modal = e.context.dataset.dialog;
+    if (_modal) {
+        $('#blockdiv').show();
+        $('body').css('overflow','hidden');
+        MapasCulturais.Modal.open(_modal);
+    }
+};
 
 MapasCulturais.EditBox = {
     time: 'fast',

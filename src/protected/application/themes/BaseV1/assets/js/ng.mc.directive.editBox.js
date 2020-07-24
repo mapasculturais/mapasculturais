@@ -60,10 +60,17 @@
                     }
                 });
             },
+            fixPosition: function(editboxId){
+                var $event = this.openEvents[editboxId];
+                var $box = jQuery('#' + editboxId).find('>div.edit-box');
+                setPosition($box, $event.target);
+            },
+            openEvents: {},
             open: function (editboxId, $event) {
                 if (typeof this.openEditboxes[editboxId] === 'undefined')
                     throw new Error('EditBox with id ' + editboxId + ' does not exists');
 
+                    this.openEvents[editboxId] = $event;
                     // close all
                     for (var id in this.openEditboxes) {
                         this.close(id);
@@ -78,7 +85,7 @@
 
                     var $firstInput = $($box.find('input,select,textarea').get(0));
                     $firstInput.focus();
-
+                    
                     setTimeout(function () {
                         setPosition($box, $event.target);
                     });

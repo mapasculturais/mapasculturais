@@ -554,7 +554,11 @@ abstract class Theme extends \Slim\View {
     }
 
     function isEditable(){
-        return (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+        $result = (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+
+        App::i()->applyHookBoundTo($this, 'mapasculturais.isEditable', [&$result]);
+
+        return $result;
     }
 
     function isSearch(){

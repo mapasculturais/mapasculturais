@@ -123,12 +123,18 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     */
     protected $__metadata;
 
+    protected $_isDeleting = false;
+
 
     public function __construct() {
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
+    }
+
+    function getIsDeleting(){
+        return $this->_isDeleting;
     }
     
     public function getEntityTypeLabel($plural = false) {
@@ -349,6 +355,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
+        if(is_null($status)){
+            $where_status = "";
+        } else {
+            $where_status = "e.status $status_operator :status AND";
+        }
+
     	if ($entityClassName::usesTaxonomies()) {
     		$dql = "
 	    		SELECT
@@ -359,7 +371,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 	    			LEFT JOIN e.__metadata m
 	    			LEFT JOIN e.__termRelations tr
 	    		WHERE
-	    			e.status $status_operator :status AND
+	    			$where_status
 	    			a.user = :user
 	    		ORDER BY
 	    			e.name,
@@ -373,7 +385,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 		    		JOIN e.owner a
 		    		LEFT JOIN e.__metadata m
 	    		WHERE
-		    		e.status $status_operator :status AND
+		    		$where_status
 		    		a.user = :user
 	    		ORDER BY
 		    		e.name,
@@ -741,7 +753,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     }
 
     function getEntitiesNotifications($app) {
-      if(in_array('notifications',$app->config['plugins.enabled']) && $app->config['notifications.user.access'] > 0) {
+    
+      if(isset($app->modules['Notifications']) && $app->config['notifications.user.access'] > 0) {
         $now = new \DateTime;
         $interval = date_diff($app->user->lastLoginTimestamp, $now);
         if($interval->format('%a') >= $app->config['notifications.user.access']) {
@@ -753,7 +766,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         }
       }
 
-      if(in_array('notifications',$app->config['plugins.enabled']) && $app->config['notifications.entities.update'] > 0) {
+      if(isset($app->modules['Notifications']) && $app->config['notifications.entities.update'] > 0) {
           $now = new \DateTime;
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
@@ -834,6 +847,76 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               }
           }
       }
+    }
+
+    
+    public function delete($flush = false) {
+        $app = App::i(); 
+        $this->checkPermission('deleteAccount');
+        $request = null;
+
+        $app->disableAccessControl();
+        
+        $this->_isDeleting = true;
+
+        foreach(['agents', 'spaces', 'projects', 'opportunities', 'events'] as $entity_type){
+            $entities = $this->$entity_type;
+            foreach($entities as $entity){
+                $app->log->debug("deletando $entity");
+                $entity->delete($flush);
+            }
+        }
+
+        $this->authUid = 'deleted:' . $this->authUid;
+        $this->email = 'deleted:' . $this->email;
+        $this->status = self::STATUS_TRASH;
+        $this->save($flush);
+        
+        $app->enableAccessControl();
+
+        if($flush){
+            $app->em->flush();
+        }
+    }
+
+    public function transferEntitiesTo(Agent $target_agent, $flush = false){
+        $app = App::i();
+        if(!$target_agent->canUser('@control')){
+            $request = new RequestEntitiesTransference();
+            $request->setOrigin($this);
+            $request->setDestination($target_agent);
+            $request->save($flush);
+            $app->log->debug("requisição para transferencia foi criada.");
+            return $request;
+        } else {
+            $target_agent_user_profile = $target_agent->user->profile;
+            
+            foreach(['Agents', 'Spaces', 'Projects', 'Opportunities', 'Events'] as $entity_type){
+                $entities = $this->$entity_type;
+                
+                foreach($entities as $entity){
+                    if($entity_type == 'Agents'){
+                        if($this->profile->equals($entity)){
+                            continue;
+                        }
+                        $app->log->debug("transferindo $entity para target_agent");
+                        
+                        $entity->parent = $target_agent_user_profile;
+                        $entity->user = $target_agent->user;
+                        $entity->save($flush);
+                    } else if($entity->owner->equals($target_agent_user_profile)){
+                        $app->log->debug("transferindo $entity para target_agent");
+
+                        $entity->owner = $target_agent;
+                        $entity->save($flush);
+                    }
+                }
+            }
+        }
+    }
+
+    protected function canUserDeleteAccount(User $user){
+        return $user->is('admin') || $user->equals($this);
     }
 
     //============================================================= //

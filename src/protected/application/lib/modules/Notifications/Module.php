@@ -67,7 +67,9 @@ class Module extends \MapasCulturais\Module{
                 $url_destination_panel = $app->createUrl('panel');
             }
 
-            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";         
+            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";
+
+            $message_to_requester = '';
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
@@ -119,6 +121,11 @@ class Module extends \MapasCulturais\Module{
                         $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                     }
                     break;
+                    
+                case "MapasCulturais\Entities\RequestEntitiesTransference":
+                    $subject = i::__("Requisição de transferência de entidades");
+                    $message = sprintf(i::__("%s apagou sua conta e transferiu todas as suas entidades para seu agente %s"), $profile_link, $destination_link);
+                    break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
                     $subject = i::__("Requisição de mudança de propriedade");
                     $message = sprintf(i::__("%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"), $profile_link, $origin_type, $origin_link, $destination_link, $urlDestinationPanel_link);
@@ -150,12 +157,14 @@ class Module extends \MapasCulturais\Module{
                     break;
             }
 
-            // message to requester user
-            $notification = new Notification;
-            $notification->user = $requester;
-            $notification->message = $message_to_requester;
-            $notification->request = $this;
-            $notification->save(true);
+            if($message_to_requester){
+                // message to requester user
+                $notification = new Notification;
+                $notification->user = $requester;
+                $notification->message = $message_to_requester;
+                $notification->request = $this;
+                $notification->save(true);
+            }
 
             $notified_user_ids = array($requester->id);
 

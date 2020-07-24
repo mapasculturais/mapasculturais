@@ -1,6 +1,16 @@
 <?php 
   use MapasCulturais\App;
   use MapasCulturais\Entities\Agent;
+
+  $agent_ = [];
+  foreach($agents as $a => $agent):
+      if($agent->isUserProfile){
+          $agent_[] = $agent;
+          unset($agents[$a]);
+          break;
+      }
+  endforeach;
+  $agents = array_merge($agent_,$agents);
 ?>
   <table class="agents-table entity-table">
     <caption>
@@ -16,7 +26,7 @@
     </thead>
     <tbody>
       <?php foreach($agents as $agent): ?>
-      <tr>
+      <tr <?php echo ($agent->isUserProfile) ? 'class="agent-default"' : '' ?>>
         <td class="fit">
           <?php echo $agent->id;?>
         </td>
@@ -43,7 +53,18 @@
                 <?php if($agent->canUser('destroy')): ?>
                   <a class="btn btn-small btn-danger" href="<?php echo $agent->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
                 <?php endif; ?>
-            <?php endif; ?>
+              <?php endif; ?>
+
+            <?php else: ?>
+                <?php if($agent->status === Agent::STATUS_ENABLED): ?>
+                    <!-- <a class="btn btn-small btn-danger js-open-dialog" href="javascript:void(0)"
+                        data-dialog-block="true"
+                        data-dialog="#deleteAgentDefault"
+                        data-dialog-callback="MapasCulturais.addEntity">
+                        <?php \MapasCulturais\i::_e("excluir definitivamente");?>
+                    </a> -->
+                    <a class="btn btn-small btn-danger" href="<?php echo $agent->deleteUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
+                <?php endif; ?>
             <?php endif; ?>
           </div>
 
@@ -53,4 +74,20 @@
       <?php endforeach; ?>
     </tbody>
   </table>
+<div id="deleteAgentDefault" class="entity-modal js-dialog" title="<?php \MapasCulturais\i::_e("Excluir agente padrão");?>" style="display: none">
+    <a href="#" class="js-close icon icon-close"></a>
+    <p>Esta ação é irreversível. Deseja apagar todo conteúdo relacionado a esta conta ou transferi-lo?</p>
 
+    <div class="actions">
+        <button type="button" class="btn btn-danger" data-form-id=''>
+            <?php \MapasCulturais\i::_e("Apagar");?>
+        </button>
+        <button type="button" class="btn btn-primary" data-form-id=''>
+            <?php \MapasCulturais\i::_e("Transferir");?>
+        </button>
+        <button type="button" class="btn btn-default js-close" data-form-id=''>
+            <?php \MapasCulturais\i::_e("Cancelar");?>
+        </button>
+    </div>
+    <div class="modal-feedback header-content hidden"></div>
+</div>

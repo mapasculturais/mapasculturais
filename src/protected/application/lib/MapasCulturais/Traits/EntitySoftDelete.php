@@ -39,6 +39,7 @@ trait EntitySoftDelete{
      * @hook **entity({ENTITY}).delete:after**
      */
     function delete($flush = false){
+    
         $this->checkPermission('remove');
         
         $hook_class_path = $this->getHookClassPath();
@@ -47,10 +48,15 @@ trait EntitySoftDelete{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:before');
         
         $this->status = self::STATUS_TRASH;
-        
+
         $this->save($flush);
         
+        if($this->usesFiles()){
+            $this->makeFilesPrivate();
+        }
+        
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:after');
+    
     }
 
     /**
@@ -72,9 +78,15 @@ trait EntitySoftDelete{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:before');
         
         $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
-
+        
         $this->save($flush);
         
+        if($this->usesFiles()){
+            if($this->status === self::STATUS_ENABLED){
+                $this->makeFilesPublic();
+            }
+        }
+
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:after');
     }
 
