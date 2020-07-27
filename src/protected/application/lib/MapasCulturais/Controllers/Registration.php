@@ -115,26 +115,28 @@ class Registration extends EntityController {
             $this->registerRegistrationMetadata($opportunity);
             
         });
-
+        //Dados recebido vindo da criação do formulário quando seleciona opção do espaço
         $app->hook('POST(registration.spaceRel)' , function() {
-           $this->createInfoSpace();
+           $this->createSpaceRelation();
+        });
+
+        $app->hook('POST(registration.createSpaceRelation)', function() {
+            dump($this->postData);
         });
         parent::__construct();
     }
-    function createInfoSpace() {
-        
+    function createSpaceRelation() {
         $app = App::i();
         $user = $app->user;
-        try {
-            $opMeta = new \MapasCulturais\Entities\OpportunityMeta;
-            $opMeta->id = $this->postData['object_id'];
-            $opMeta->key = $this->postData['key'];
-            $opMeta->value = $this->postData['value'];
-            $opMeta->owner = $user->id;
-            $this->save();
-            $this->json($opMeta);
-        } catch (\Throwable $th) {
-            echo $th->getMessage();
+        $object_id  = $this->postData['object_id'];
+        $key        = $this->postData['key'];
+        $value      = $this->postData['value'];
+        $conn = $app->em->getConnection();
+        $con = $conn->executeQuery("INSERT INTO opportunity_meta(object_id,key,value) VALUES ($object_id,'$key','$value')");
+        if($con){
+            $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
+        }else{
+            $this->json(['message' => 'Ocorreu um erro', 'status' => 500, 'type' => $th->getMessage()]);
         }
         
     }

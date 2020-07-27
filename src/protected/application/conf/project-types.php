@@ -46,7 +46,7 @@ return array(
             'label' => \MapasCulturais\i::__('Espaço Relacionado'),
             'type' => 'select',
             'options' => array(
-                'dontUse' => \MapasCulturais\i::__('Não utilizar3'),
+                'dontUse' => \MapasCulturais\i::__('Não utilizar'),
                 'required' => \MapasCulturais\i::__('Obrigatório'),
                 'optional' => \MapasCulturais\i::__('Opcional')
             )

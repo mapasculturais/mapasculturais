@@ -1,10 +1,16 @@
 <?php 
-    $spaceRelation = array_key_exists('useSpaceRelation', $project->metadata) ? $project->metadata['useSpaceRelation'] : '';
 
-    if($spaceRelation == 'optional' || $spaceRelation == 'required'):
+    if(!empty($query) ){
+        if( $query[0]['value'] == 'required' || $query[0]['value'] == 'optional') {
+    // $spaceRelation = array_key_exists('useSpaceRelation', $project->metadata) ? $project->metadata['useSpaceRelation'] : '';
+
+    // if($spaceRelation == 'optional' || $spaceRelation == 'required'):
 ?>
+<p>
+
+</p>
     <div class="registration-fieldset">
-        <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4>        
+        <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4> 
                 <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
 
                 <div id="registration-space" class="registration-list-item registration-edit-mode ng-scope">
@@ -56,4 +62,6 @@
             </find-entity>
         </edit-box>
     </div>
-    <?php endif; ?>
+    <?php 
+        };
+}; ?>

@@ -8,12 +8,12 @@ $ditable_class = $can_edit ? 'js-editable editable editable-click' : '';
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 //var_dump($app->_config);
 $metadata_name = 'useSpaceRelation';
-dump($entity->$metadata_name);
-$option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
+//dump($entity->$metadata_name);
+$option_label = $entity->$metada\ta_name ? $entity->$metadata_name : 'dontUse';
 
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
-dump($projectMeta);
-dump($app);
+//dump($projectMeta);
+//dump($app);
 $message = $projectMeta['useSpaceRelation']['options'];
 // dump($message);
 // dump($app);
@@ -41,16 +41,14 @@ $message = $projectMeta['useSpaceRelation']['options'];
                     e.preventDefault();
                     var valRelation = $(this).find(":selected").val();
                     var idEntity = MapasCulturais.entity.id;
-                    console.log(valRelation);
-                    // 
-                    console.log(MapasCulturais.baseURL+'spaceRelation/create');
                     $.ajax({
                         type: "POST",
                         url: MapasCulturais.baseURL+'registration/spaceRel',
                         data: {object_id: idEntity, key: 'useSpaceRelationIntituicao', value : valRelation},
                         dataType: "json",
                         success: function (response) {
-                            console.log('response');
+                            console.log('Edições salvas.');
+                            //MapasCulturais.Messages.success('Edições salvas.');
                         }
                     });
                 });
