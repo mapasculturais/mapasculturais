@@ -1213,6 +1213,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 page++;
                 
                 return $http.get(url, {params: params, cache:true}).success(function(response, status, headers){
+                    
                     for (var i in response){
                         response[i]['files'] = {};
                         for(var prop in response[i]){
@@ -1460,7 +1461,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         spaceLabels : [],
 
         defaultSelectFields : defaultSelectFields,
-
+        registrationSpace: {
+            status: 0,
+            space : {
+                avatarUrl: '',
+                singleUrl: ''
+            }
+        },
         registrationTableColumns: {
             number: true,
             category: true,
@@ -1560,8 +1567,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){
+            console.log(e.agentRelationGroupName);
             $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
             if(e.agentRelationGroupName === 'owner'){
+                console.log(e);
                 $scope.data.relationApiQuery[e.agentRelationGroupName]['@permissions'] = '@control';
             }
         });
@@ -1570,6 +1579,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }
     $scope.fns = {};
 
+    MapasCulturais.entity.registrationSpace = { 
+        'status' : 0,
+        'idOpportuniti' : 8};
 
     $scope.hideStatusInfo = function(){
         jQuery('#status-info').slideUp('fast');
@@ -1802,9 +1814,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                             $rootScope.$emit('relatedSpace.created', response);
                         }).
                         error(function(response, status){
+                            console.log({response});
                             $rootScope.$emit('error', { message: "Cannot create related space", response: response, status: status });
                         });
-            };
+                };
 
             $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
                 var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
