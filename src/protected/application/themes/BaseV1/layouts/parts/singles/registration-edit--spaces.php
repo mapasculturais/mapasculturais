@@ -1,35 +1,26 @@
 <?php 
-
+    // VERIFICAÇÃO SE TEM REGISTRO DE SOLICITAÇÃO DE ESPAÇO
+    //dump($query);
     if(!empty($query) ){
         if( $query[0]['value'] == 'required' || $query[0]['value'] == 'optional') {
-    // $spaceRelation = array_key_exists('useSpaceRelation', $project->metadata) ? $project->metadata['useSpaceRelation'] : '';
-
-    // if($spaceRelation == 'optional' || $spaceRelation == 'required'):
 ?>
-<p>
-
-</p>
     <div class="registration-fieldset">
         <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4> 
-        <p>
-        {{data.entity}}
-        </p>
-                <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
-
+            <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
                 <div id="registration-space" class="registration-list-item registration-edit-mode ng-scope">
-                        <p ng-if="data.entity.registrationSpace.status < 0" class="alert warning" 
-                            style="display:block !important /* está oculto no scss */" ><?php \MapasCulturais\i::_e("Aguardando confirmação");?>
-                        </p>
-                        <div class="js-registration-agent registration-agent">
-                            <!-- div para mostrar o espaço escolhido -->
-                            <div class="clearfix">
-                                <img ng-src="{{data.entity.registrationSpace.space.avatarUrl || data.assets.avatarSpace}}" class="registration-space-avatar" />
-                                <div class="space-relation-message">
-                                    <a ng-if="data.entity.registrationSpace" href="{{data.entity.registrationSpace.space.singleUrl}}">{{data.entity.registrationSpace.space.name}}</a>
-                                    <span ng-if="!data.entity.registrationSpace"><?php \MapasCulturais\i::_e("Não informado");?></span>
-                                </div>
+                    <p ng-if="data.entity.registrationSpace.status < 0" class="alert warning" 
+                        style="display:block !important /* está oculto no scss */" ><?php \MapasCulturais\i::_e("Aguardando confirmação");?>
+                    </p>
+                    <div class="js-registration-agent registration-agent">
+                        <!-- div para mostrar o espaço escolhido -->
+                        <div class="clearfix">
+                            <img ng-src="{{data.entity.registrationSpace.space.avatarUrl || data.assets.avatarSpace}}" class="registration-space-avatar" />
+                            <div class="space-relation-message">
+                                <a ng-if="data.entity.registrationSpace" href="{{data.entity.registrationSpace.space.singleUrl}}">{{data.entity.registrationSpace.space.name}}</a>
+                                <span ng-if="!data.entity.registrationSpace"><?php \MapasCulturais\i::_e("Não informado");?></span>
                             </div>
                         </div>
+                    </div>
                     <div ng-if="data.isEditable" class="btn-group">
                         <span ng-if="data.entity.registrationSpace" class="space-edit-buttons">
                             <a class="btn btn-default edit hltip" 
@@ -50,7 +41,7 @@
                             </a>
                         </div>
                     </div>
-                </div>     
+                </div>
 
         <edit-box id="editbox-select-registration-space-relation" 
                     position="left" 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Arquivo usado somente para quem está criando a oportunidade em mode de edição
+ */
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
 $this->bodyProperties['ng-app'] = "entity.app";
@@ -19,6 +22,9 @@ $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
 
+//dump($entity);
+// dump($action);
+// dump($entity->opportunity);
 
 $_params = [
     'entity' => $entity,

@@ -823,26 +823,26 @@ class Registration extends \MapasCulturais\Entity
         return $errorsResult;
     }    
 
-    // protected function _getSpaceData(){
-    //     $app = App::i();
+    protected function _getSpaceData(){
+        $app = App::i();
 
-    //     $spacePropertiesToExport = $app->config['registration.spaceProperties'];
-    //     $spaceRelation = $app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this, 'status'=>\MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED]);
+        $spacePropertiesToExport = $app->config['registration.spaceProperties'];
+        $spaceRelation = $app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this, 'status'=>\MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED]);
 
-    //     if(!empty($spaceRelation)){
-    //         $space = $spaceRelation[0]->space;
+        if(!empty($spaceRelation)){
+            $space = $spaceRelation[0]->space;
 
-    //         $exportData = [];
+            $exportData = [];
 
-    //         foreach($spacePropertiesToExport as $p){
-    //             $exportData[$p] = $space->$p;
-    //         }
+            foreach($spacePropertiesToExport as $p){
+                $exportData[$p] = $space->$p;
+            }
             
-    //         return $exportData;
-    //         }
+            return $exportData;
+            }
         
-    //     return null;
-    // }
+        return null;
+    }
 
     protected function _getAgentsData(){
         $app = App::i();

@@ -6,18 +6,15 @@ $can_edit = $entity->canUser('modifyRegistrationFields');
 $ditable_class = $can_edit ? 'js-editable editable editable-click' : '';
 
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
-//var_dump($app->_config);
+
 $metadata_name = 'useSpaceRelation';
-//dump($entity->$metadata_name);
+
 $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
-//dump($projectMeta);
-//dump($app);
+
 $message = $projectMeta['useSpaceRelation']['options'];
-// dump($message);
-// dump($app);
-// die();
+
 ?>
 
 <?php if ($entity->isRegistrationOpen() || $this->isEditable()): ?>
@@ -28,12 +25,12 @@ $message = $projectMeta['useSpaceRelation']['options'];
             </p>
             <!-- <span class="js-editable editable editable-click" data-edit="useAgentRelationInstituicao" data-original-title="Instituição responsável" data-emptytext="Selecione uma opção">Não utilizar</span> -->
            <select name="idSpaceRelationForm" id="idSpaceRelationForm" class="form-control">
-          
-           <?php
+            <?php
+            //array vindo da configuração do arquivo registrations.php em conf/conf-base.d
                 foreach ($message as $key => $value) {
                     echo '<option value="'.$key.'">'.$value.'</option>';
                 }
-           ?>
+            ?>
            </select>
            <script>
             $(document).ready(function() {
