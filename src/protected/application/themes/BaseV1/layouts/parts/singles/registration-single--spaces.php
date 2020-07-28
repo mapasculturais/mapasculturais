@@ -1,8 +1,8 @@
 <?php 
-dump($project->metadata);
-    $spaceRelation = array_key_exists('useSpaceRelation', $project->metadata) ? $project->metadata['useSpaceRelation'] : '';
+
+    //$spaceRelation = array_key_exists('useSpaceRelation', $project->metadata) ? $project->metadata['useSpaceRelation'] : '';
     
-    if($spaceRelation == 'optional' || $spaceRelation == 'required'):
+    //if($spaceRelation == 'optional' || $spaceRelation == 'required'):
 ?>
 
 <div class="registration-fieldset">
@@ -30,4 +30,4 @@ dump($project->metadata);
     </div>
 </div>
 
-<?php endif; ?>
+<?php //endif; ?>

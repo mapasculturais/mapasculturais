@@ -11,6 +11,9 @@
 </p>
     <div class="registration-fieldset">
         <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4> 
+        <p>
+        {{data.entity}}
+        </p>
                 <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
 
                 <div id="registration-space" class="registration-list-item registration-edit-mode ng-scope">
@@ -18,6 +21,7 @@
                             style="display:block !important /* está oculto no scss */" ><?php \MapasCulturais\i::_e("Aguardando confirmação");?>
                         </p>
                         <div class="js-registration-agent registration-agent">
+                            <!-- div para mostrar o espaço escolhido -->
                             <div class="clearfix">
                                 <img ng-src="{{data.entity.registrationSpace.space.avatarUrl || data.assets.avatarSpace}}" class="registration-space-avatar" />
                                 <div class="space-relation-message">
@@ -32,6 +36,7 @@
                                ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
                                title="<?php \MapasCulturais\i::esc_attr_e("Editar");?>"><?php \MapasCulturais\i::_e("Trocar Espaço");?>
                             </a>
+                            
                             <a class="btn btn-default delete hltip" 
                                ng-click="unsetRegistrationSpace(data.entity.registrationSpace, $event)" 
                                title="<?php \MapasCulturais\i::esc_attr_e("Excluir");?> "><?php \MapasCulturais\i::esc_attr_e("Excluir");?>
@@ -55,10 +60,10 @@
                     spinner-condition="data.registrationSpinner">
             
             <find-entity id='find-entity-registration-space-relation' 
-                            entity="space" 
-                            no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum espaço encontrado");?>" 
-                            select="setSpaceRelation" 
-                            spinner-condition="data.registrationSpinner">
+            entity="space" 
+            no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum espaço encontrado");?>" 
+            select="setSpaceRelation" 
+            spinner-condition="data.registrationSpinner">
             </find-entity>
         </edit-box>
     </div>

@@ -938,7 +938,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             entity: MapasCulturais.entity,
             categories: MapasCulturais.entity.registrationCategories,
             committee: [],
-
         };
         
         committeeApi.find().success(function(result){
@@ -1461,9 +1460,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         spaceLabels : [],
 
         defaultSelectFields : defaultSelectFields,
+        //CRIADO PROPRIEDADE NO MODEL
         registrationSpace: {
             status: 0,
             space : {
+                id: '',
                 avatarUrl: '',
                 singleUrl: ''
             }
@@ -1579,9 +1580,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }
     $scope.fns = {};
 
-    MapasCulturais.entity.registrationSpace = { 
-        'status' : 0,
-        'idOpportuniti' : 8};
+    // MapasCulturais.entity.registrationSpace = { 
+    //     'status' : 0,
+    //     'idOpportuniti' : 8};
 
     $scope.hideStatusInfo = function(){
         jQuery('#status-info').slideUp('fast');
@@ -1820,6 +1821,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 };
 
             $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
+                console.log({registrationEntity});
+                console.log({attrs});
                 var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
                     controllerId = null,
                     controllerName = 'removeSpaceRelation',
