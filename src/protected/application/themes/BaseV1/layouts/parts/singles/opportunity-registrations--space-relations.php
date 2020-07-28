@@ -9,7 +9,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 //var_dump($app->_config);
 $metadata_name = 'useSpaceRelation';
 //dump($entity->$metadata_name);
-$option_label = $entity->$metada\ta_name ? $entity->$metadata_name : 'dontUse';
+$option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
 //dump($projectMeta);
