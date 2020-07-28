@@ -1940,12 +1940,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
                             var $el;
+                            console.log(field);
                             if(field === 'projectName'){
                                 $el = $('#projectName').parent().find('.label');
                             }else if(field === 'category'){
                                 $el = $('.js-editable-registrationCategory').parent();
                             }else if(field.indexOf('agent') !== -1){
                                 $el = $('#' + field).parent().find('.registration-label');
+                            }else if(field.indexOf('space') !== -1){
+                                $el = $('#registration-space-title').parent().find('.registration-label');
                             }else {
                                 $el = $('#' + field).find('div:first');
                             }
