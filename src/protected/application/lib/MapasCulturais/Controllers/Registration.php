@@ -132,12 +132,30 @@ class Registration extends EntityController {
         $key        = $this->postData['key'];
         $value      = $this->postData['value'];
         $conn = $app->em->getConnection();
-        $con = $conn->executeQuery("INSERT INTO opportunity_meta(object_id,key,value) VALUES ($object_id,'$key','$value')");
-        if($con){
-            $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
+        /**
+         * metodo vindo da edição da oportunidade, no campo de ESPAÇO CULTURAL tem que fazer a 
+         * verificação se já tem registro na tabela, se tiver deve fazer um update para o novo
+         * registro, caso contrário, deve fazer o registro
+         */
+        $sel = "SELECT * FROM opportunity_meta WHERE object_id = $object_id AND key = '$key';";
+        $querySel = $conn->fetchAll($sel);
+         if(empty($querySel)) {
+            $insertOM = $conn->executeQuery("INSERT INTO opportunity_meta(object_id,key,value) VALUES ($object_id,'$key','$value')");
+            if($insertOM){
+                $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
+            }else{
+                $this->json(['message' => 'Ocorreu um erro', 'status' => 500, 'type' => 'error']);
+            }
         }else{
-            $this->json(['message' => 'Ocorreu um erro', 'status' => 500, 'type' => $th->getMessage()]);
+            //UPDATE
+            $up = $conn->executeQuery("UPDATE opportunity_meta SET value = '$value' WHERE object_id = $object_id AND key = '$key'");
+            if($up){
+                $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
+            }else{
+                $this->json(['message' => 'Ocorreu um erro', 'status' => 500, 'type' => 'error']);
+            }
         }
+        
         
     }
     function POST_createSpaceRelation(){
