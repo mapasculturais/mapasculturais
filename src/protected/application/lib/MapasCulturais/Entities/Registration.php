@@ -731,13 +731,15 @@ class Registration extends \MapasCulturais\Entity
         }
 
         // validate space
-        // $isSpaceRelationRequired = $opportunity->metadata['useSpaceRelation'];
-        // $spaceDefined = $this->getSpaceRelation();
-       
-        // if(is_null($spaceDefined) && $isSpaceRelationRequired === 'required'){
-        //     $errorsResult['spaceRequired'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
-        // }
-
+        
+        //$isSpaceRelationRequired = $opportunity->metadata['useSpaceRelation'];
+        $spaceDefined = $this->getSpaceRelation();
+        dump($spaceDefined);
+        if(is_null($spaceDefined)){
+            $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+        }
+        dump($opportunity);
+        //die();
         // if(!is_null($spaceDefined) && $spaceDefined->status < 0){
         //     $errorsResult['spaceUnauthorized'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
         // }

@@ -1,6 +1,7 @@
 <?php 
     // VERIFICAÇÃO SE TEM REGISTRO DE SOLICITAÇÃO DE ESPAÇO
     //dump($query);
+
     if(!empty($query) ){
         if( $query[0]['value'] == 'required' || $query[0]['value'] == 'optional') {
 ?>
@@ -22,6 +23,7 @@
                         </div>
                     </div>
                     <div ng-if="data.isEditable" class="btn-group">
+                    
                         <span ng-if="data.entity.registrationSpace" class="space-edit-buttons">
                             <a class="btn btn-default edit hltip" 
                                ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
@@ -34,6 +36,7 @@
                             </a>
                         </span>
                         <div class="space-add-button">
+                        <span class="registration-label"></span>
                             <a class="btn btn-default add hltip" 
                                 ng-if="!data.entity.registrationSpace" 
                                 ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
