@@ -13,8 +13,10 @@ $option_label = $entity->$metadata_name ? $entity->$metadata_name : 'dontUse';
 
 $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
 
+$optionSelect = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionSelected($entity->id);
 $message = $projectMeta['useSpaceRelation']['options'];
-
+//PARA PŔEENCHIMENTO DO SELECT
+$selectOption = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionLabel($optionSelect[0]['value']);
 ?>
 
 <?php if ($entity->isRegistrationOpen() || $this->isEditable()): ?>
@@ -23,15 +25,17 @@ $message = $projectMeta['useSpaceRelation']['options'];
             <p class="registration-help">
                 <?php \MapasCulturais\i::_e("Uma inscrição pode pedir para que o agente relacione um Espaço Cultural a ela. Indique aqui se quer habilitar esta opção.");?>
             </p>
-            <!-- <span class="js-editable editable editable-click" data-edit="useAgentRelationInstituicao" data-original-title="Instituição responsável" data-emptytext="Selecione uma opção">Não utilizar</span> -->
-           <select name="idSpaceRelationForm" id="idSpaceRelationForm" class="form-control">
+            <select name="idSpaceRelationForm" id="idSpaceRelationForm" class="form-control">
+                <option value="<?php echo $selectOption['optionValue']; ?>"><?php echo $selectOption['optionLabel']; ?></option>
             <?php
-            //array vindo da configuração do arquivo registrations.php em conf/conf-base.d
+                //array vindo da configuração do arquivo registrations.php em conf/conf-base.d
                 foreach ($message as $key => $value) {
-                    echo '<option value="'.$key.'">'.$value.'</option>';
+                    if($selectOption['optionLabel'] !== $value){
+                        echo '<option value="'.$key.'">'.$value.'</option>';
+                    };
                 }
             ?>
-           </select>
+            </select>
            <script>
             $(document).ready(function() {
                 $("#idSpaceRelationForm").change(function (e) { 

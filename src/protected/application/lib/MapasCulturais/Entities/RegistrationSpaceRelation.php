@@ -28,4 +28,38 @@ class RegistrationSpaceRelation extends SpaceRelation{
         }
         parent::save($flush);
     }
+
+    static public function getOptionSelected($idOpportunity) {
+        $conn = \MapasCulturais\App::i()->em->getConnection();
+        $terms = $conn->fetchAll("SELECT * FROM opportunity_meta WHERE object_id = $idOpportunity AND key = 'useSpaceRelationIntituicao' ");
+        return $terms;
+    }
+    /**
+     * Passando o valor vindo do metodo getOptionSelected, pois é o valor que está armazenado
+     * no DB
+     * Retornando o valor e o label para fazer o select sem o essa opção
+     * @param [type] $optionSelect
+     * @return void
+     */
+    static public function getOptionLabel($optionSelect) {
+        switch ($optionSelect) {
+            case 'dontUse':
+                $optionValue = $optionSelect;
+                $optionLabel = 'Não utilizar';
+                break;
+            case 'required':
+                $optionValue = $optionSelect;
+                $optionLabel = 'Obrigatório';
+                break;
+            case 'optional':
+                $optionValue = $optionSelect;
+                $optionLabel = 'Opcional';
+                break;    
+            default:
+                $optionValue = $optionSelect;
+                $optionLabel = 'Não utilizar';
+                break;
+        }
+        return ['optionValue' => $optionValue, 'optionLabel' => $optionLabel];
+    }
 }
