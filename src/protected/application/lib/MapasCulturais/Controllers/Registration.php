@@ -333,7 +333,7 @@ class Registration extends EntityController {
 
     function GET_view(){
         $this->requireAuthentication();
-        
+       
         $entity = $this->requestedEntity;
         if(!$entity){
             App::i()->pass();
