@@ -2,7 +2,7 @@
 Os perfis disponíveis da plataforma são de acesso como administrador de uma determinado nível no sistema.
 
 ## Administrador
-O perfil de administrador tem acesso ao painel das entidades principal da plataforma (Agente/Espaço/Eventos/Projeto/Selos) para gestão do conteúdo do Mapa.
+O perfil de administrador tem acesso ao painel das entidades principais da plataforma (Agente/Espaço/Eventos/Projeto/Selos) para gestão do conteúdo do Mapa.
 
 ## Super Administrador
 Possui acesso a todo conteúdo da instalação Mapas Culturais e pode tornar administrador outros usuários através do agente.
