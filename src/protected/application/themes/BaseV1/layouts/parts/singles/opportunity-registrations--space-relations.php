@@ -16,7 +16,12 @@ $projectMeta = \MapasCulturais\Entities\Project::getPropertiesMetadata();
 $optionSelect = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionSelected($entity->id);
 $message = $projectMeta['useSpaceRelation']['options'];
 //PARA PŔEENCHIMENTO DO SELECT
-$selectOption = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionLabel($optionSelect[0]['value']);
+if(isset($optionSelect[0]['value'])){
+    $selectOption = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionLabel($optionSelect[0]['value']);
+}else{
+    $selectOption = \MapasCulturais\Entities\RegistrationSpaceRelation::getOptionLabel('dontUse');
+}
+
 ?>
 
 <?php if ($entity->isRegistrationOpen() || $this->isEditable()): ?>

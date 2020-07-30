@@ -6,7 +6,8 @@
         if( $query[0]['value'] == 'required' || $query[0]['value'] == 'optional') {
 ?>
     <div class="registration-fieldset">
-        <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?></h4> 
+        <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?>
+        <span class="registration-label"></span></h4> 
             <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
                 <div id="registration-space" class="registration-list-item registration-edit-mode ng-scope">
                     <p ng-if="data.entity.registrationSpace.status < 0" class="alert warning" 
@@ -36,7 +37,6 @@
                             </a>
                         </span>
                         <div class="space-add-button">
-                        <span class="registration-label"></span>
                             <a class="btn btn-default add hltip" 
                                 ng-if="!data.entity.registrationSpace" 
                                 ng-click="openEditBox('editbox-select-registration-space-relation', $event)" 
