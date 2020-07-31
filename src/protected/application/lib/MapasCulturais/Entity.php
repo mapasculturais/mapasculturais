@@ -640,21 +640,6 @@ abstract class Entity implements \JsonSerializable{
                 $requests[] = $e->request;
             }
         }
-        
-        if (method_exists($this, '_spaceData')) {
-            var_dump('_spaceData');
-            
-        }
-
-        if (method_exists($this, '_getOwnerSpace')) {
-            $ownerSpaceJson = $this->_getOwnerSpace();
-            $app = App::i();
-            $conn = $app->em->getConnection();
-            $idReg = $this->id;
-            $idOpp = $this->opportunity->id;
-            $idAge = $this->owner->id;
-            $up = $conn->executeQuery("UPDATE registration SET space_data = '$ownerSpaceJson' WHERE id = '$idReg' AND opportunity_id = '$idOpp' AND agent_id = '$idAge'");
-        }
 
         if (method_exists($this, '_saveOwnerAgent')) {
             try {
@@ -714,6 +699,19 @@ abstract class Entity implements \JsonSerializable{
                 throw $e;
         }
         
+        if (method_exists($this, '_getOwnerSpace')) {
+            if(isset($this->opportunity->id)){
+                //ADICIONANDO O ESPAÇO NA TABELA DE REGISTRATION
+                $ownerSpaceJson = $this->_getOwnerSpace();
+                $app = App::i();
+                $conn = $app->em->getConnection();
+                $idReg = $this->id;
+                $idOpp = $this->opportunity->id;
+                $idAge = $this->owner->id;
+                $up = $conn->executeQuery("UPDATE registration SET space_data = '$ownerSpaceJson' WHERE id = '$idReg' AND opportunity_id = '$idOpp' AND agent_id = '$idAge'");
+            }
+        }
+
         if($requests){
             foreach($requests as $request)
                 $request->save($flush);
