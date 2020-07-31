@@ -102,7 +102,7 @@ trait EntityOwnerAgent{
             $arrayOwner = ["owner" => $this->_spaceData];
             return json_encode($arrayOwner);
         }else{
-           return null;
+           return '{}';
         }
     }
     /**
