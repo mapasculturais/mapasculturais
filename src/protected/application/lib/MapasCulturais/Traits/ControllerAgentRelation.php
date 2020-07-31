@@ -49,7 +49,11 @@ trait ControllerAgentRelation{
             $app->pass();
         }
 
-        $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        try {
+            $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        } catch (\Exception $e) {
+            $this->errorJson($e->getMessage(), 403);
+        }      
         
         $this->_finishRequest($relation, true);
 
