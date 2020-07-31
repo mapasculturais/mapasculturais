@@ -636,7 +636,8 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->_spaceData = $this->_getSpaceData();
-        // var_dump($this->_spaceData);
+        // var_dump($this->_agentsData);
+        // dump($this->_spaceData);
         // die();
         $this->save(true);
 

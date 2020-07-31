@@ -625,31 +625,44 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $requests = [];
-
+        
         try {
             $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').save:requests', [&$requests]);
             $app->applyHookBoundTo($this, "entity({$this}).save:requests", [&$requests]);
         } catch (Exceptions\WorkflowRequestTransport $e) {
             $requests[] = $e->request;
         }
-
+        
         if (method_exists($this, '_saveNested')) {
-            try {
+           try {
                 $this->_saveNested();
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
+        
+        if (method_exists($this, '_spaceData')) {
+            var_dump('_spaceData');
+            
+        }
+
+        if (method_exists($this, '_getOwnerSpace')) {
+            $ownerSpaceJson = $this->_getOwnerSpace();
+            $app = App::i();
+            $conn = $app->em->getConnection();
+            $idReg = $this->id;
+            $idOpp = $this->opportunity->id;
+            $idAge = $this->owner->id;
+            $up = $conn->executeQuery("UPDATE registration SET space_data = '$ownerSpaceJson' WHERE id = '$idReg' AND opportunity_id = '$idOpp' AND agent_id = '$idAge'");
+        }
 
         if (method_exists($this, '_saveOwnerAgent')) {
             try {
-                $this->_saveOwnerAgent();
-
+               $this->_saveOwnerAgent();                
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
-
         try{
             if($this->isNew()){
                 $this->checkPermission('create');
@@ -700,7 +713,7 @@ abstract class Entity implements \JsonSerializable{
             if(!$requests)
                 throw $e;
         }
-
+        
         if($requests){
             foreach($requests as $request)
                 $request->save($flush);
