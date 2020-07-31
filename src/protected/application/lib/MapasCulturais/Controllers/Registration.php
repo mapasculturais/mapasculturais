@@ -120,8 +120,9 @@ class Registration extends EntityController {
            $this->createSpaceRelation();
         });
 
-        $app->hook('POST(registration.createSpaceRelation)', function() {
-            dump($this->postData);
+        $app->hook('GET(registration.createSpaceRelation)', function() {
+            //dump($this->postData);
+            
         });
         parent::__construct();
     }
