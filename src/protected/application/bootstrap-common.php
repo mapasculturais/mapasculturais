@@ -8,6 +8,13 @@ define('ACTIVE_THEME_PATH', THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH . 'plugins/');
 define('MODULES_PATH', APPLICATION_PATH . 'lib/modules/');
 
+define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', dirname(BASE_PATH) . '/private-files/'));
+define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', PRIVATE_FILES_PATH . 'sessions/'));
+
+if(!is_dir(SESSIONS_SAVE_PATH)){
+    mkdir(SESSIONS_SAVE_PATH);
+}
+
 define('AUTOLOAD_TTL', 60 * 5);
 
 define('APPMODE_DEVELOPMENT', 'development');

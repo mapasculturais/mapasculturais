@@ -110,7 +110,6 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $_agentsData = [];
     
-
     /**
      * @var integer
      *
@@ -118,6 +117,12 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $consolidatedResult = self::STATUS_DRAFT;
     
+    /*
+     * @var array
+     *
+     * @ORM\Column(name="space_data", type="json_array", nullable=true)
+     */
+    protected $_spaceData = [];
 
     /**
      * @var integer
@@ -164,6 +169,14 @@ class Registration extends \MapasCulturais\Entity
     protected $__agentRelations;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationSpaceRelation[] Space Relations
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationSpaceRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+    */
+    protected $__spaceRelation;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
@@ -187,6 +200,7 @@ class Registration extends \MapasCulturais\Entity
 
     function __construct() {
         $this->owner = App::i()->user->profile;
+       
         if(!self::$hooked){
             self::$hooked = true;
             App::i()->hook('entity(' . $this->getHookClassPath() . ').randomId', function($id){
@@ -196,6 +210,15 @@ class Registration extends \MapasCulturais\Entity
             });
         }
         parent::__construct();
+    }
+
+    function save($flush = false){
+        parent::save($flush);
+        $app = App::i();
+        $opportunity = $this->opportunity;
+
+        // cache utilizado pelo endpoint findEvaluations
+        $app->mscache->delete("api:opportunity:{$opportunity->id}:registrations");
     }
 
     function getSingleUrl(){
@@ -238,7 +261,7 @@ class Registration extends \MapasCulturais\Entity
             ]
         ];
     }
-
+    
     function jsonSerialize() {
         $json = [
             'id' => $this->id,
@@ -290,6 +313,17 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $json;
+    }
+
+    function getSpaceRelation(){ 
+        $relation = App::i()->repo('RegistrationSpaceRelation')->findBy(['owner' => $this]);
+        
+        if (is_array($relation) && isset($relation[0]) && $relation[0]->space)  {
+            //var_dump($relation);
+            return $relation[0];
+        } else {
+            return null;
+        }
     }
 
     function setOwnerId($id){
@@ -352,7 +386,9 @@ class Registration extends \MapasCulturais\Entity
         $owner = $this->owner;
         $owner->definition = $definitions['owner'];
         $agents = [$owner];
-        foreach($this->relatedAgents as $groupName => $relatedAgents){
+        $relAgents = $this->relatedAgents;
+
+        foreach($relAgents as $groupName => $relatedAgents){
             $agent = clone $relatedAgents[0];
             $agent->groupName = $groupName;
             $agent->definition = $definitions[$groupName];
@@ -407,6 +443,14 @@ class Registration extends \MapasCulturais\Entity
         $method = $this->getEvaluationMethod();
         $value = $this->getEvaluationResultValue();
         return $method->valueToString($value);
+    }
+
+    function getSpaceData(){
+        if(array_key_exists('acessibilidade_fisica', $this->_spaceData)){
+            $this->_spaceData['acessibilidade_fisica'] = str_replace(';', ', ', $this->_spaceData['acessibilidade_fisica']);
+        } 
+        
+        return $this->_spaceData;
     }
 
     function getAgentsData(){
@@ -591,6 +635,10 @@ class Registration extends \MapasCulturais\Entity
         $this->status = self::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
+        $this->_spaceData = $this->_getSpaceData();
+        // var_dump($this->_agentsData);
+        // dump($this->_spaceData);
+        // die();
         $this->save(true);
 
         if($_access_control_enabled){
@@ -685,6 +733,46 @@ class Registration extends \MapasCulturais\Entity
 
         }
 
+        // validate space
+        $conn = $app->em->getConnection();
+        $selValue = $conn->fetchAll("SELECT * FROM opportunity_meta WHERE object_id = $opportunity->id and key = 'useSpaceRelationIntituicao'");
+        if(!empty($selValue) ){
+            $isSpaceRelationRequired = $selValue[0]['value'];
+        }        
+        $spaceDefined = $this->getSpaceRelation();
+       
+        if($isSpaceRelationRequired === 'required'){
+            if($spaceDefined === null) {
+                $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+            }
+        }
+        //dump($spaceDefined->status);
+        //dump($isSpaceRelationRequired);
+        //die();
+        //adicionar 
+        if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
+            //Espaço não autorizado
+            if( $spaceDefined && $spaceDefined->status < 0){
+                $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
+            }
+        }
+        
+        //|| $isSpaceRelationRequired === 'optional'
+        if(!is_null($spaceDefined)){
+            $app = App::i();
+            $requiredSpaceProperties = $app->config['registration.spaceRelations'][0]['requiredProperties'];
+
+            foreach($requiredSpaceProperties as $r){
+                $app->disableAccessControl();
+                $isEmpty = $spaceDefined;
+                $app->enableAccessControl();
+
+                if(empty($isEmpty)){
+                    $errorsResult['invalidSpaceFields'] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $requiredSpaceProperties));
+                }
+            }
+        }            
+
         // validate attachments
         foreach($opportunity->registrationFileConfigurations as $rfc){
 
@@ -749,6 +837,43 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $errorsResult;
+    }    
+
+    protected function _getSpaceData(){
+        $app = App::i();
+
+        $propertiesToExport = $app->config['registration.spaceProperties'];
+        $spaceRelation =  $this->getSpaceRelation(); 
+
+        $exportData = [];       
+        if($spaceRelation && $spaceRelation->status == \MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED){
+            $space = $spaceRelation->space;
+            foreach($propertiesToExport as $p){
+                $exportData[$p] = $space->$p;
+            }
+        }       
+
+        return $exportData;
+
+       /* $app = App::i();
+
+        $spacePropertiesToExport = $app->config['registration.spaceProperties'];
+        $spaceRelation =  $this->getSpaceRelation(); 
+        //$app->repo('RegistrationSpaceRelation')->findBy(['owner'=>$this, 'status'=>]);
+        //dump($spacePropertiesToExport);
+        //var_dump($spaceRelation->status);
+       
+        if($spaceRelation && $spaceRelation->status == \MapasCulturais\Entities\SpaceRelation::STATUS_ENABLED){
+            $space = $spaceRelation->space;
+            $exportData = [];
+
+            foreach($spacePropertiesToExport as $p){
+                $exportData[$p] = $space->$p;
+            }
+
+            return $exportData;
+        }
+        return null; */
     }
 
     protected function _getAgentsData(){
@@ -868,6 +993,15 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    protected function canUserCreateSpaceRelation($user){
+        $result = $user->is('admin') || $this->userHasControl($user);
+        return $result;
+    }
+
+    function canUserRemoveSpaceRelation($user){
+        $result = $user->is('admin') || $this->userHasControl($user);
+        return $result;
+    }
     protected function canUserEvaluate($user){
         if($this->opportunity->canUser('@control')){
             $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();

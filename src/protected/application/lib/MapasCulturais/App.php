@@ -191,6 +191,9 @@ class App extends \Slim\Slim{
         if($config['slim.debug'])
             error_reporting(E_ALL ^ E_STRICT);
 
+
+        session_save_path(SESSIONS_SAVE_PATH);
+        
         session_start();
 
         if($config['app.offline']){
@@ -554,7 +557,7 @@ class App extends \Slim\Slim{
     }
 
     public function getVersion(){
-        $version = $this->getVersionFile();
+        $version = trim($this->getVersionFile());
         return sprintf('v%s', $version);
     }
 
@@ -958,6 +961,7 @@ class App extends \Slim\Slim{
 
             $this->registerRegistrationAgentRelation($def);
         }
+
 
         // all metalist groups
         $metalist_groups = [
@@ -2341,10 +2345,14 @@ class App extends \Slim\Slim{
         }
     }
 
-    function unregisterEntityMetadata($entity_class, $key){
+    function unregisterEntityMetadata($entity_class, $key = null){
         foreach($this->_register['entity_metadata_definitions'] as $k => $metadata){
             if($k === $entity_class || strpos($k . ':', $entity_class) === 0){
-                unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                if($key){
+                    unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                } else {
+                    $this->_register['entity_metadata_definitions'][$k] = [];
+                }
             }
         }
 

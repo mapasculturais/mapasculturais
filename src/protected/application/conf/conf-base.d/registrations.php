@@ -60,5 +60,36 @@ return [
             'type' => 2,
             'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
         )
+    ),
+    'registration.spaceRelations' => array(
+        array(
+            'required' => false,
+            'label' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'description' => \MapasCulturais\i::__('Espaço Relacionado'),
+            'type' => 2,
+            'requiredProperties' => array('endereco', 'telefone1')
+        )
+    ),
+    'registration.spaceProperties' => array(
+        'id',
+        'name',
+        'location',
+        'endereco',
+        'En_CEP',
+        'En_Nome_Logradouro',
+        'En_Num',
+        'En_Complemento',
+        'En_Bairro',
+        'En_Municipio',
+        'En_Estado',
+        'telefone1',
+        'telefone2',
+        'telefonePublico',
+        'emailPrivado',
+        'emailPublico',
+        'site',
+        'googleplus',
+        'facebook',
+        'twitter'
     )
 ];

@@ -192,6 +192,12 @@ trait EntityAgentRelation {
 
         foreach($relations as $relation){
             $u = $relation->agent->user;
+
+            // excui o usuário guest se por algum motivo ele estiver na lista
+            if ($u->is('guest')) {
+                continue;
+            }
+
             if(!in_array($u->id, $ids)){
                 $ids[] = $u->id;
                 $result[] = $u;
@@ -201,7 +207,6 @@ trait EntityAgentRelation {
         if($app->config['app.usePermissionsCache']){
             $app->msCache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
-
 
         return $result;
 

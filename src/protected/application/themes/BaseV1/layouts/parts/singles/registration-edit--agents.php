@@ -1,4 +1,5 @@
 <div class="registration-fieldset">
+
     <h4><?php \MapasCulturais\i::_e("Agentes (proponentes)");?></h4>
     <p class="registration-help"><?php \MapasCulturais\i::_e("Relacione os agentes responsáveis pela inscrição.");?></p>
     <!-- agentes relacionados a inscricao -->

@@ -15,7 +15,7 @@ services:
       - ../docker-data/assets:/var/www/html/assets
       - ../docker-data/public-files:/var/www/html/files
       - ../docker-data/private-files:/var/www/private-files
-      - ../docker-data/pcache-cron.log:/var/www/scripts/nohup.out
+      #- ../docker-data/pcache-cron.log:/var/www/scripts/nohup.out
       - ../tests:/var/www/tests
     links:
       - db
