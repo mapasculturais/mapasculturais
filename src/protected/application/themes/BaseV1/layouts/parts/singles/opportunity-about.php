@@ -32,6 +32,13 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/opportunity-registrations--agent-relations', ['entity' => $entity]) ?>
 
         <?php $this->part('singles/opportunity-registrations--categories', ['entity' => $entity]) ?>
+        
+        <?php 
+        /**
+         * @todo renomear para opportunity
+         */
+        $this->part('singles/opportunity-registrations--space-relations', ['entity' => $entity]) 
+        ?>
 
         <?php $this->part('singles/opportunity-registrations--seals', ['entity' => $entity]) ?>
 

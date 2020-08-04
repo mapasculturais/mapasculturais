@@ -188,7 +188,42 @@ article.opportunity .highlighted-message .btn {
     }
 }
 
-.registration-list {
+.registration-space-details {
+    font-size: $font-size-smaller;
+    padding-top: $padding-base;
+    margin-left: 1rem;
+}
+
+.registration-space-avatar {
+    margin-left: 0.75rem;
+    margin-right: $line-height-half;
+    margin-top: 1rem;
+    float: left;
+    width: 2rem;
+    height: 2rem;
+}
+
+.btn-add-space-relation {
+    float: right;
+}
+
+.space-edit-buttons, .space-add-button {
+    float: right;
+    margin-top: -2rem;
+    margin-right: 1rem;
+}
+
+.space-relation-message {
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.space-single-view-message {
+    margin-top: 1rem;
+    float: left;
+}
+
+.registration-list, .registration-space-relation {
 	margin: 0;
 	list-style: none;
     .registration-list-item {

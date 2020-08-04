@@ -938,7 +938,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             entity: MapasCulturais.entity,
             categories: MapasCulturais.entity.registrationCategories,
             committee: [],
-
         };
         
         committeeApi.find().success(function(result){
@@ -1213,6 +1212,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 page++;
                 
                 return $http.get(url, {params: params, cache:true}).success(function(response, status, headers){
+                    
                     for (var i in response){
                         response[i]['files'] = {};
                         for(var prop in response[i]){
@@ -1457,8 +1457,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         propLabels : [],
 
-        defaultSelectFields : defaultSelectFields,
+        spaceLabels : [],
 
+        defaultSelectFields : defaultSelectFields,
+        //CRIADO PROPRIEDADE NO MODEL
+        registrationSpace: {
+            status: 0,
+            space : {
+                id: '',
+                avatarUrl: '',
+                singleUrl: ''
+            }
+        },
         registrationTableColumns: {
             number: true,
             category: true,
@@ -1547,10 +1557,21 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         });
     }
 
+    //labels espaços vinculados
+    for(var name in MapasCulturais.labels.space){
+        var label = MapasCulturais.labels.space[name];
+        $scope.data.spaceLabels.push({
+            name: name,
+            label: label
+        });
+    }
+
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){
+            console.log(e.agentRelationGroupName);
             $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
             if(e.agentRelationGroupName === 'owner'){
+                console.log(e);
                 $scope.data.relationApiQuery[e.agentRelationGroupName]['@permissions'] = '@control';
             }
         });
@@ -1559,6 +1580,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
     }
     $scope.fns = {};
 
+    // MapasCulturais.entity.registrationSpace = { 
+    //     'status' : 0,
+    //     'idOpportuniti' : 8};
 
     $scope.hideStatusInfo = function(){
         jQuery('#status-info').slideUp('fast');
@@ -1757,6 +1781,75 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 });
             };
 
+            $scope.setSpaceRelation = function(entity, attrs){
+                var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
+                    editBoxId = 'editbox-select-registration-space-relation',
+                    controllerId = null,
+                    controllerName = 'createSpaceRelation',
+                    entityId = null,
+                    group = attrs.name,
+                    spaceId = entity.id;
+
+                //retira msg de erro do espaço vinculado, caso haja
+                if($('#registration-space-title :first-child').hasClass('danger')){
+                    $('#registration-space-title :first-child').remove();
+                }
+                
+                try{ controllerId = MapasCulturais.request.controller; }catch (e){};
+                try{ entityId = MapasCulturais.entity.id; }catch (e){};
+
+                var createSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
+                
+                $http.post(createSpaceRelationUrl, {id: spaceId}).
+                        success(function(response, status){
+                            if(status === 202){
+                                MapasCulturais.Messages.alert(labels['spaceRelationRequestSent'].replace('{{space}}', '<strong>'+response.space.name+'</strong>'));
+                            }
+                            
+                            if(response.space.avatar && response.space.avatar.avatarSmall){
+                                response.space.avatarUrl = response.space.avatar.avatarSmall.url;
+                            }
+
+                            $scope.data.entity.registrationSpace = response;
+                            EditBox.close(editBoxId);
+                            $rootScope.$emit('relatedSpace.created', response);
+                        }).
+                        error(function(response, status){
+                            console.log({response});
+                            $rootScope.$emit('error', { message: "Cannot create related space", response: response, status: status });
+                        });
+                };
+
+            $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
+                console.log({registrationEntity});
+                console.log({attrs});
+                var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
+                    controllerId = null,
+                    controllerName = 'removeSpaceRelation',
+                    entityId = null,
+                    group = attrs.name,
+                    spaceId = registrationEntity.space.id;
+
+                //retira msg de erro do espaço vinculado, caso haja
+                if($('#registration-space-title :first-child').hasClass('danger')){
+                    $('#registration-space-title :first-child').remove();
+                }
+
+                try{ controllerId = MapasCulturais.request.controller; }catch (e){};
+                try{ entityId = MapasCulturais.entity.id; }catch (e){};
+
+                const removeSpaceRelationUrl = baseUrl + controllerId + '/' + controllerName + '/' + entityId;
+                
+                $http.post(removeSpaceRelationUrl, {id: spaceId}).
+                    success(function(data, status){
+                        $scope.data.entity.registrationSpace = undefined;
+                        $rootScope.$emit('relatedSpace.removed', data);
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', { message: "Cannot remove related space", data: data, status: status });
+                    });
+            }
+
             $('#editbox-select-registration-owner').on('open', function () {
                 if (!adjustingBoxPosition)
                     $('#find-entity-registration-owner').trigger('find',0);
@@ -1847,12 +1940,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
                             var $el;
+                            console.log(field);
                             if(field === 'projectName'){
                                 $el = $('#projectName').parent().find('.label');
                             }else if(field === 'category'){
                                 $el = $('.js-editable-registrationCategory').parent();
                             }else if(field.indexOf('agent') !== -1){
                                 $el = $('#' + field).parent().find('.registration-label');
+                            }else if(field.indexOf('space') !== -1){
+                                $el = $('#registration-space-title').parent().find('.registration-label');
                             }else {
                                 $el = $('#' + field).find('div:first');
                             }
