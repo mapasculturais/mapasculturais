@@ -16,7 +16,7 @@
             </div>
             <div ng-if="field.fieldType === 'file'">
                 <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>
-                <a ng-if="field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank">{{::field.file.name}}</a>
+                <a ng-if="field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank" rel='noopener noreferrer'>{{::field.file.name}}</a>
                 <span ng-if="!field.file"><em><?php \MapasCulturais\i::_e("Arquivo não enviado.");?></em></span>
             </div>
         </li>

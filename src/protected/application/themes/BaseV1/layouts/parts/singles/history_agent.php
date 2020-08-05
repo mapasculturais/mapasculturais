@@ -45,7 +45,7 @@ $this->includeMapAssets();
             <?php printf(i::__("Este %s está na <b>lixeira</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
             <?php printf(i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
-        <?php endif; ?>, <?php printf(i::__("e pode ser acessado clicando <a href=\"%s\">aqui</a>"), $entity->entity->singleUrl); ?>
+        <?php endif; ?>, <?php printf(i::__("e pode ser acessado clicando <a href=\"%s\" rel='noopener noreferrer'>aqui</a>"), $entity->entity->singleUrl); ?>
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
@@ -84,7 +84,7 @@ $this->includeMapAssets();
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php i::_e("Sobre");?></a></li>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -207,7 +207,7 @@ $this->includeMapAssets();
 
             <?php if (isset($entity->videos)): ?>
                 <h3><?php i::_e("Vídeos");?></h3>
-                <a name="video"></a>
+                <a name="video" rel='noopener noreferrer'></a>
                 <div id="video-player" class="video" ng-non-bindable>
                     <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                 </div>
@@ -244,7 +244,7 @@ $this->includeMapAssets();
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
                     <div class="avatar-seal">
-                        <a href="">
+                        <a href="" rel='noopener noreferrer'>
                             <img src="<?php $this->asset('img/avatar--agent.png'); ?>">
                         </a>
                         <div class="descricao-do-selo">
@@ -290,7 +290,7 @@ $this->includeMapAssets();
                 <div class="agentes clearfix">
                     <?php foreach($agents as $agent): ?>
                         <div class="avatar">
-                            <a href="">
+                            <a href="" rel='noopener noreferrer'>
                                 <img ng-src="" />
                             </a>
                             <div class="descricao-do-agente">
@@ -311,7 +311,7 @@ $this->includeMapAssets();
             <h3><?php $this->dict('entities: Spaces of the agent'); ?></h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entities->_spaces as $space): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $space->name; ?></span></a></li>
+                    <li class="widget-list-item"><a href="" rel='noopener noreferrer'><span><?php echo $space->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -324,7 +324,7 @@ $this->includeMapAssets();
             <h3><?php $this->dict('entities: Projects of the agent'); ?></h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entities->_projects as $project): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $project->name; ?></span></a></li>
+                    <li class="widget-list-item"><a href="" rel='noopener noreferrer'><span><?php echo $project->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -337,7 +337,7 @@ $this->includeMapAssets();
             <h3><?php $this->dict('entities: Opportunities of the agent'); ?></h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entities->_opportunities as $opportunity): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $opportunity->name; ?></span></a></li>
+                    <li class="widget-list-item"><a href="" rel='noopener noreferrer'><span><?php echo $opportunity->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -350,7 +350,7 @@ $this->includeMapAssets();
             <h3><?php $this->dict('entities: Agent children'); ?></h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entities->_children as $agent): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $agent->name; ?></span></a></li>
+                    <li class="widget-list-item"><a href="" rel='noopener noreferrer'><span><?php echo $agent->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>

@@ -66,7 +66,7 @@
                     if (status === 202) {
                         MapasCulturais.Messages.alert('Sua requisição foi para mudança de propriedade deste ' + MapasCulturais.entity.getTypeName() + ' para o agente <strong>' + e.name + '</strong> foi enviada.');
                     } else {
-                        $('.js-owner-name').html('<a href="' + e.singleUrl + '">' + e.name + '</a>');
+                        $('.js-owner-name').html('<a href="' + e.singleUrl + '" rel="noopener noreferrer">' + e.name + '</a>');
                         $('.js-owner-description').html(e.shortDescription);
                         try {
                             $('.js-owner-avatar').attr('src', e['@files:avatar.avatarSmall'].url);

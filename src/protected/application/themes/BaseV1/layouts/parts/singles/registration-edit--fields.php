@@ -55,10 +55,10 @@
                 <div class="attachment-description">
                     <span ng-if="field.description">{{field.description}}</span>
                     <span ng-if="field.template">
-                        (<a class="attachment-template" target="_blank" href="{{field.template.url}}"><?php \MapasCulturais\i::_e("baixar modelo");?></a>)
+                        (<a class="attachment-template" target="_blank" href="{{field.template.url}}" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("baixar modelo");?></a>)
                     </span>
                 </div>
-                <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank">{{field.file.name}}</a>
+                <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank" rel='noopener noreferrer'>{{field.file.name}}</a>
 
                 <div class="btn-group">
                     <!-- se já subiu o arquivo-->

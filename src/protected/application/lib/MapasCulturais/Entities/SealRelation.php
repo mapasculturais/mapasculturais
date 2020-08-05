@@ -215,7 +215,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     public function getCertificateText($addLinks = false){
         
         function generateLink($url, $texto){
-            return '<a href=' . $url . '><i>' . $texto .'</i></a>';
+            return '<a href=' . $url . ' rel="noopener noreferrer"><i>' . $texto .'</i></a>';
         }
         
         $app = App::i();

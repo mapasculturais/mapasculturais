@@ -17,7 +17,7 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-logo" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-logo" href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-logo" class="js-editbox mc-right" title="Editar logo">
                     <?php $this->ajaxUploader($entity, 'logo', 'image-src', 'div.logo img.js-logo-img', '', 'logo'); ?>
                 </div>
@@ -44,7 +44,7 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-background" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-background" href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-background" class="js-editbox mc-right" title="Editar Imagem de Fundo">
                     <?php $this->ajaxUploader($entity, 'background', 'image-src', 'div.background img.js-background-img', '', 'background'); ?>
                 </div>
@@ -73,7 +73,7 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-institute" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-institute" href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-institute" class="js-editbox mc-right" title="Editar Logo Instituição">
                     <?php $this->ajaxUploader($entity, 'institute', 'image-src', 'div.institute img.js-institute-img', '', 'institute'); ?>
                 </div>
@@ -102,7 +102,7 @@
             <?php endif; ?>
 
             <?php if($this->isEditable()): ?>
-                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-favicon" href="#"><?php \MapasCulturais\i::_e('Editar'); ?></a>
+                <a class="btn btn-default edit js-open-editbox" data-target="#editbox-change-favicon" href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Editar'); ?></a>
                 <div id="editbox-change-favicon" class="js-editbox mc-right" title="Editar Favicon da Instalação">
                     <?php $this->ajaxUploader($entity, 'favicon', 'image-src', 'div.favicon img.js-favicon-img', '', 'favicon',false,false,".ico/.icon/.jpg/.png"); ?>
                 </div>

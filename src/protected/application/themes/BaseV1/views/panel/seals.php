@@ -7,11 +7,11 @@ $this->layout = 'panel'
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('seal', 'create'); ?>"><?php \MapasCulturais\i::_e("Adicionar novo selo");?></a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($app->user->enabledSeals);?>)</a></li>
-        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSeals);?>)</a></li>
-        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($app->user->draftSeals);?>)</a></li>
-        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($app->user->trashedSeals);?>)</a></li>
-        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSeals);?>)</a></li>
+        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($app->user->enabledSeals);?>)</a></li>
+        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSeals);?>)</a></li>
+        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($app->user->draftSeals);?>)</a></li>
+        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($app->user->trashedSeals);?>)</a></li>
+        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSeals);?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledSeals as $entity): if($app->user->profile->equals($entity)) continue;?>

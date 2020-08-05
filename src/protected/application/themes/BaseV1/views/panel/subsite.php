@@ -12,10 +12,10 @@ if (!$app->user->is('admin')) {
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('subsite', 'create') ?>"><?php echo $this->dict('entities: add new subsite');?></a>
 	</header>
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e('Ativos') ?></a></li>
-        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e('Rascunhos') ?></a></li>
-        <li><a href="#lixeira"><?php \MapasCulturais\i::_e('Lixeira') ?></a></li>
-		<li><a href="#arquivo"><?php \MapasCulturais\i::_e('Arquivo') ?></a></li>
+        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Ativos') ?></a></li>
+        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Rascunhos') ?></a></li>
+        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Lixeira') ?></a></li>
+		<li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Arquivo') ?></a></li>
     </ul>
     <div id="ativos">
         <?php foreach($app->user->enabledSubsite as $entity): ?>

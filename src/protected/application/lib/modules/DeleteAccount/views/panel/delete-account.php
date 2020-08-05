@@ -14,7 +14,7 @@ $this->bodyProperties['ng-controller'] = "EntityController";
         <p>
             <?php i::_e('Se desejar escolha o usuário para receber suas entidades') ?>:
         
-            <a id="delete-account--button" ng-click="editbox.open('delete-account--edit-box', $event)">{{data.selectedAgent ? data.selectedAgent.name : "<?php i::_e('Selecione o Usuário') ?>"}}</a>
+            <a id="delete-account--button" ng-click="editbox.open('delete-account--edit-box', $event)" rel='noopener noreferrer'>{{data.selectedAgent ? data.selectedAgent.name : "<?php i::_e('Selecione o Usuário') ?>"}}</a>
 
             <a ng-if="data.selectedAgent" ng-click="data.selectedAgent = null" class="delete" title="<?php i::_e("exluir usuário selecionado") ?>"></a>
         </p>

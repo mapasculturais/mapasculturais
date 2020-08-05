@@ -35,11 +35,11 @@ if ($meta->count < 7 && empty($meta->keyword)){
         echo "
         <div style='float:right'>
             Página:
-            <a $prevStyle href='?keyword=$key&order=$order&page=1'>&laquo;</a>
-            <a $prevLink $prevStyle>&lsaquo;</a>
+            <a $prevStyle href='?keyword=$key&order=$order&page=1' rel='noopener noreferrer'>&laquo;</a>
+            <a $prevLink $prevStyle rel='noopener noreferrer'>&lsaquo;</a>
             <input value='$pg' size='3' style='text-align: center; font-size: 0.8rem;'>
-            <a $nextLink $nextStyle>&rsaquo;</a>
-            <a $nextStyle href='?keyword=$key&order=$order&page=$tot'>&raquo;</a>
+            <a $nextLink $nextStyle rel='noopener noreferrer'>&rsaquo;</a>
+            <a $nextStyle href='?keyword=$key&order=$order&page=$tot' rel='noopener noreferrer'>&raquo;</a>
         </div>";
     }
     ?>

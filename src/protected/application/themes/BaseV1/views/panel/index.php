@@ -16,7 +16,7 @@ $button = "";
 
     <?php if($subsite && $subsite->canUser('modify')):?>
     <p class="highlighted-message" style="margin-top:-2em;">
-        <?php printf(\MapasCulturais\i::__('Você é administrador deste subsite. Clique %saqui%s para configurar.'), '<a href="' . $subsite->singleUrl . '">', '</a>'); ?>
+        <?php printf(\MapasCulturais\i::__('Você é administrador deste subsite. Clique %saqui%s para configurar.'), '<a rel="noopener noreferrer" href="' . $subsite->singleUrl . '">', '</a>'); ?>
     </p>
     <?php endif; ?>
 
@@ -148,7 +148,7 @@ $button = "";
             <h2><?php \MapasCulturais\i::_e("Atividades");?></h2>
         </header>
         <?php foreach ($app->user->notifications as $notification): ?>
-            <?php $posini = strpos($notification->message,"<a"); ?>
+            <?php $posini = strpos($notification->message,"<a  rel='noopener noreferrer' "); ?>
             
             <?php $msg = $notification->message;?>
         

@@ -21,7 +21,7 @@
     <?php endif; ?>
 
 <?php elseif($this->controller->id === 'registration'): ?>
-    <a class="btn btn-primary js-submit-button"><?php \MapasCulturais\i::_e("Salvar");?></a>
+    <a class="btn btn-primary js-submit-button" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Salvar");?></a>
 
 <?php else: ?>
     <a class="btn btn-primary js-submit-button" data-status="<?php echo $status_enabled ?>"><?php \MapasCulturais\i::_e("Salvar");?></a>

@@ -1,9 +1,9 @@
         
         
             <article class="objeto clearfix" ng-repeat="space in spaces" id="space-result-{{space.id}}">
-                <h1><a href="{{space.singleUrl}}">{{space.name}}</a></h1>
+                <h1><a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a></h1>
                 <div class="objeto-content clearfix">
-                    <a href="{{space.singleUrl}}" class="js-single-url">
+                    <a href="{{space.singleUrl}}" class="js-single-url" rel='noopener noreferrer'>
                         <img class="objeto-thumb" ng-src="{{space['@files:avatar.avatarMedium'].url||defaultImageURL.replace('avatar','avatar--space')}}">
                     </a>
                     <p class="objeto-resumo">{{space.shortDescription}}</p>
@@ -11,12 +11,12 @@
                         <?php $this->applyTemplateHook('list.space.meta','begin'); ?>
                         <div>
                             <span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span>
-                            <a ng-click="toggleSelection(data.space.types, getId(types.space, space.type.name))">{{space.type.name}}</a>
+                            <a ng-click="toggleSelection(data.space.types, getId(types.space, space.type.name))" rel='noopener noreferrer'>{{space.type.name}}</a>
                         </div>
                         <div>
                             <span class="label"><?php \MapasCulturais\i::_e("Área de atuação");?>:</span>
                             <span ng-repeat="area in space.terms.area">
-                                <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
+                                <a ng-click="toggleSelection(data.space.areas, getId(areas, area))" rel='noopener noreferrer'>{{area}}</a>{{$last ? '' : ', '}}
                             </span>
                         </div>
                         <div ng-if="space.terms.tag.length > 0">
