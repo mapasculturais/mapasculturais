@@ -37,7 +37,7 @@ $url_search_events = $this->searchEventsUrl;
         <p><?php echo $app->view->renderMarkdown($this->dict('home: events',false)) ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre eventos por");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#event-terms"><?php \MapasCulturais\i::_e("Linguagem");?></a></li>
+            <li class="active"><a href="#event-terms" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Linguagem");?></a></li>
         </ul>
         <div id="event-terms" class="tag-box">
             <div>

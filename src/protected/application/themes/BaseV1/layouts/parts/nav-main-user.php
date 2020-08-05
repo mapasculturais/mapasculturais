@@ -1,6 +1,6 @@
 <?php $this->applyTemplateHook('nav.main.user','before'); ?>
 <li class="user">
-    <a href="javascript:void(0);" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
+    <a href="javascript:void(0);" class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')" rel='noopener noreferrer'>
         <div class="avatar">
             <?php if ($app->user->profile->avatar): ?>
                 <img src="<?php echo $app->user->profile->avatar->transform('avatarSmall')->url; ?>" />
@@ -105,7 +105,7 @@
         <?php endif; ?>
 
         <li class="row"></li>
-        <!--<li><a href="#">Ajuda</a></li>-->
+        <!--<li><a href="#" rel='noopener noreferrer'>Ajuda</a></li>-->
         <li>
             <?php if($app->getConfig('auth.provider') === 'Fake'): ?>
                 <a href="<?php echo $app->createUrl('auth'); ?>"><?php \MapasCulturais\i::_e("Trocar Usuário");?></a>

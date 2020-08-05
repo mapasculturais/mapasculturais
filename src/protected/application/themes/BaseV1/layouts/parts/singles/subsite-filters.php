@@ -110,9 +110,9 @@ function printSubsiteFilter($property){
                     <div class="selos clearfix">
                         <div ng-if="entity.verifiedSeals.length > 0" class="avatar-seal" ng-repeat="item in entity.verifiedSeals">
                             <img ng-if="item" class="" ng-src="{{avatarUrl(allowedSeals[getArrIndexBySealId(item)]['@files:avatar.avatarSmall'].url)}}">
-                            <div class="botoes"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="removeSeal(item)"></a></div>
+                            <div class="botoes"><a class="delete hltip js-remove-item"  data-href="" data-target="" data-confirm-message="" title="Excluir selo" ng-click="removeSeal(item)" rel='noopener noreferrer'></a></div>
                             <div ng-if="item" class="descricao-do-selo">
-                                <h1><a href="{{allowedSeals[getArrIndexBySealId(item)].singleUrl}}" class="ng-binding">{{allowedSeals[getArrIndexBySealId(item)].name}}</a></h1>
+                                <h1><a href="{{allowedSeals[getArrIndexBySealId(item)].singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{allowedSeals[getArrIndexBySealId(item)].name}}</a></h1>
                             </div>
                         </div>
                         <div ng-if="seals.length > 0" ng-click="editbox.open('set-seal-subsite', $event)" class="hltip editable editable-empty" title="Adicionar selo"></div>
@@ -157,7 +157,7 @@ function printSubsiteFilter($property){
             </p>
 
             <p>
-                <a class="hltip btn" ng-class="{'selected': new_filter.isInline}" title="{{filter.placeholder}}" ng-click="new_filter.isInline = !new_filter.isInline">
+                <a class="hltip btn" ng-class="{'selected': new_filter.isInline}" title="{{filter.placeholder}}" ng-click="new_filter.isInline = !new_filter.isInline" rel='noopener noreferrer'>
                     <span class="icon icon-check" ng-class="{'selected': new_filter.isInline}"></span><?php i::_e("Filtro Avançado") ?>
                 </a>
             </p>

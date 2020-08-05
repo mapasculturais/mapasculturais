@@ -52,7 +52,7 @@ $has_private_location = isset($has_private_location) && $has_private_location
 
                 if($geoMeta){ ?>
                     <div class="sobre-info-geo-bt hltip icon icon-arrow-up">
-                        <a href="#"><?php \MapasCulturais\i::_e("Informações Geográficas");?></a>
+                        <a href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Informações Geográficas");?></a>
                     </div>
                     <div class="sobre-info-geo" style="display:none;">
                         <?php echo $html; ?>

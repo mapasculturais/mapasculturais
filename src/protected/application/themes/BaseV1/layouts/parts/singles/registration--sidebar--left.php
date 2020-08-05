@@ -20,7 +20,7 @@ use MapasCulturais\i;
                         valid: getEvaluationResult(registration) === '1',
                         invalid: getEvaluationResult(registration) === '-1'
                     }">
-                        <a href="{{::registration.singleUrl}}">
+                        <a href="{{::registration.singleUrl}}" rel='noopener noreferrer'>
                             <div class="registration-evaluated"> (<?php i::_e('Avaliação:'); ?> <strong> {{status_str(registration)}}</strong>) </div>
                             <div class="registration-number">{{::registration.number}}</div>
                             <div class="registration-owner">{{::registration.owner.name}}</div>

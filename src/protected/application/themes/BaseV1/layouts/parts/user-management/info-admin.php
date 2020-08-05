@@ -87,10 +87,10 @@
           <td style="width: 30%;">
             <div>
               <span class="truncate">
-                <a title={{usr.name}} href="{{usr.singleUrl}}">{{usr.name}}</a>
+                <a title={{usr.name}} href="{{usr.singleUrl}}" rel='noopener noreferrer'>{{usr.name}}</a>
               </span>
               <span class="truncate">
-                <a class="small" href="{{usr.subsiteURL}}" style="color:#C3C3C3" target="_blank">{{usr.subsiteURL}}</a>
+                <a class="small" href="{{usr.subsiteURL}}" style="color:#C3C3C3" target="_blank" rel='noopener noreferrer'>{{usr.subsiteURL}}</a>
               </span>
             </div>
           </td>

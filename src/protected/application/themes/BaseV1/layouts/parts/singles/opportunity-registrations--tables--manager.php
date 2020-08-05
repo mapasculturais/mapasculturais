@@ -55,8 +55,8 @@ use MapasCulturais\i;
 
 <div id="selected-filters" style="width:100%; margin:10px 0px;">
      <span>
-        <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
-        <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+        <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)"  rel='noopener noreferrer'>{{field.title}}</a>
+        <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)"  rel='noopener noreferrer'>{{field.title}}</a>
      </span>
 </div>
 
@@ -123,7 +123,7 @@ use MapasCulturais\i;
     </tr>
     <tbody>
     <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
-        <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+        <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}" rel='noopener noreferrer'>{{reg.number}}</a></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
                 {{reg[field.fieldName]}}
@@ -132,16 +132,16 @@ use MapasCulturais\i;
             <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <p>
                     <span class="label"><?php i::_e("Responsável");?></span><br />
-                    <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
+                    <a href="{{reg.owner.singleUrl}}" rel='noopener noreferrer'>{{reg.owner.name}}</a>
                 </p>
 
                 <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
                     <span class="label">{{relation.label}}</span><br />
-                    <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
+                    <a href="{{relation.agent.singleUrl}}" rel='noopener noreferrer'>{{relation.agent.name}}</a>
                 </p>
             </td>
             <td ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
+                <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}" rel='noopener noreferrer'><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
             </td>
             <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
                 {{reg.evaluationResultString}}
