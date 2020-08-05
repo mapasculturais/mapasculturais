@@ -19,6 +19,7 @@
         "phpoffice/phpword": "0.13.*",
         "michelf/php-markdown": "1.*",
         "opauth/logincidadao" : "*",
+        "opauth/keycloak" : "*",
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "^2.2",
         "pomo/pomo": "^1.2",

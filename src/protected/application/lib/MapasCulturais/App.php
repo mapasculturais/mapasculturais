@@ -743,9 +743,10 @@ class App extends \Slim\Slim{
         $notification_meta = key_exists('metadata', $notification_types) && is_array($notification_types['metadata']) ? $notification_types['metadata'] : [];
 
         // register auth providers
-        // @TODO veridicar se isto está sendo usado, se não remover
+        // @TODO verificar se isto está sendo usado, se não remover
         $this->registerAuthProvider('OpenID');
         $this->registerAuthProvider('logincidadao');
+        $this->registerAuthProvider('keycloak');
 
 
         // register controllers
