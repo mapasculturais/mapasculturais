@@ -31,5 +31,8 @@
     "repositories": [{
         "type": "git",
         "url": "https://github.com/hacklabr/opauth-logincidadao.git"
+        },{
+            "type": "git",
+            "url": "https://github.com/EscolaDeSaudePublica/opauth-keyclock"
         }]
     }

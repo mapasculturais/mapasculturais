@@ -48,9 +48,9 @@ return array_merge($config,
 
         'plugins.enabled' => array('agenda-singles', 'endereco'),
 
-// 'auth.provider' => 'Fake',
+        'auth.provider' => 'Fake',
         /* configuração de provedores Auth para Login */
-        'auth.provider' => '\MultipleLocalAuth\Provider',
+        //'auth.provider' => '\MultipleLocalAuth\Provider',
         'auth.config' => [
             'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
             'timeout' => '24 hours',
