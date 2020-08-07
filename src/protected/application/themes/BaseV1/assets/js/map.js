@@ -67,7 +67,7 @@
             options.zoomControl = false;
             options.minZoom = config.zoomMin;
             var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+                attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
                 maxZoom: config.zoomMax
             });
 

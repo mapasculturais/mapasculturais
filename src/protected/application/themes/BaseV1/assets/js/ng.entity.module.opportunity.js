@@ -900,9 +900,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         } else if (field.fieldType === 'url'){
-            return '<a href="' + value + '" target="_blank">' + value + '</a>';
+            return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
-            return '<a href="mailto:' + value + '"  target="_blank">' + value + '</a>';
+            return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (value instanceof Array) {
             return value.join(', ');
         } else {

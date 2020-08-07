@@ -1,4 +1,4 @@
-<p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" target="_blank"><?php \MapasCulturais\i::_e("Baixar o regulamento");?></a></p>
+<p ng-if="!data.isEditable && data.entity.registrationRulesFile"><a class="btn btn-default download" href="{{data.entity.registrationRulesFile.url}}" target="_blank" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Baixar o regulamento");?></a></p>
 <div ng-if="data.isEditable" class="registration-fieldset">
     <h4><?php \MapasCulturais\i::_e("Regulamento");?></h4>
 

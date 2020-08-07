@@ -75,7 +75,7 @@
     </tbody>
   </table>
 <div id="deleteAgentDefault" class="entity-modal js-dialog" title="<?php \MapasCulturais\i::_e("Excluir agente padrão");?>" style="display: none">
-    <a href="#" class="js-close icon icon-close"></a>
+    <a href="#" class="js-close icon icon-close" rel='noopener noreferrer'></a>
     <p>Esta ação é irreversível. Deseja apagar todo conteúdo relacionado a esta conta ou transferi-lo?</p>
 
     <div class="actions">

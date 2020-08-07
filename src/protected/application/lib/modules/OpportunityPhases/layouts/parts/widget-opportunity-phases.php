@@ -61,7 +61,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
     <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
             
-            <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)" ><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
+            <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)"  rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
         <?php endif; ?>
         <ul>
 

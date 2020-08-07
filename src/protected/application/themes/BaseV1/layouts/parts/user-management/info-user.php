@@ -53,13 +53,13 @@
     
   <div>
     <ul class="abas clearfix clear">
-      <li class="active"><a href="#agentes"><?php \MapasCulturais\i::_e("Agentes");?></a></li>
-      <li><a href="#espacos"><?php \MapasCulturais\i::_e("Espaços");?></a></li>
-      <li><a href="#eventos"><?php \MapasCulturais\i::_e("Eventos");?></a></li>
-      <li><a href="#projetos"><?php \MapasCulturais\i::_e("Projetos");?></a></li>
-      <li><a href="#oportunidades"><?php \MapasCulturais\i::_e("Oportunidades");?></a></li>
-      <li><a href="#permissoes"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
-      <li><a href="#atividade"><?php \MapasCulturais\i::_e("Atividades");?></a></li>
+      <li class="active"><a href="#agentes" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Agentes");?></a></li>
+      <li><a href="#espacos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Espaços");?></a></li>
+      <li><a href="#eventos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Eventos");?></a></li>
+      <li><a href="#projetos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Projetos");?></a></li>
+      <li><a href="#oportunidades" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Oportunidades");?></a></li>
+      <li><a href="#permissoes" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Permissões");?></a></li>
+      <li><a href="#atividade" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Atividades");?></a></li>
     </ul>
   </div>
     
@@ -280,7 +280,7 @@
           </tbody>
         </table>
 
-        <a class="add js-open-dialog" data-dialog="#add-roles" data-dialog-block="true">
+        <a class="add js-open-dialog" data-dialog="#add-roles" data-dialog-block="true" rel='noopener noreferrer'>
           <?php \MapasCulturais\i::_e("Adicionar");?>
         </a>
 

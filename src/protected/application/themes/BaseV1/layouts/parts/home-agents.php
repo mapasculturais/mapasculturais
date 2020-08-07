@@ -39,8 +39,8 @@ $url_search_agents = $this->searchAgentsUrl;
         <p><?php echo $app->view->renderMarkdown($this->dict('home: agents',false)); ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre agentes por");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#agent-terms"><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
-            <li><a href="#agent-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
+            <li class="active"><a href="#agent-terms" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
+            <li><a href="#agent-types" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Tipo");?></a></li>
         </ul>
         <div id="agent-terms" class="tag-box">
             <div>
