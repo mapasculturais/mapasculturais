@@ -55,7 +55,7 @@ class RequestEntitiesTransference extends Request{
             $entity = $app->repo($object->className)->find($object->id);
             $entity->status = $object->status;
 
-            $transfered[] = "<a href=\"$entity->singleUrl\">{$entity->entityTypeLabel} {$entity->name}</a>";
+            $transfered[] = "<a rel='noopener noreferrer' href=\"$entity->singleUrl\">{$entity->entityTypeLabel} {$entity->name}</a>";
 
             if($entity instanceof Agent){
                 $entity->user = $target_user;

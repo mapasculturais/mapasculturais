@@ -7,7 +7,7 @@ if(!is_object($entity)){
 $links = $entity->getMetaLists('links');
 
 $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'>
-                <a class='js-metalist-item-display' href='{{value}}'>{{title}}</a>
+                <a class='js-metalist-item-display' href='{{value}}' rel='noopener noreferrer'>{{title}}</a>
                 <div class='botoes'>
                     <a class='edit js-open-editbox hltip'
                         data-target='#editbox-links'
@@ -15,7 +15,7 @@ $template = "<li id='link-{{id}}' data-item-id='{{id}}' class='widget-list-item'
                         data-response-target='#link-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='editar'></a>
-                    <a class='icon icon-close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='" . \MapasCulturais\i::esc_attr__('Excluir este link?') . "' title='" . \MapasCulturais\i::esc_attr__('excluir') . "'></a>
+                    <a class='icon icon-close js-metalist-item-delete hltip js-remove-item' data-href='{{deleteUrl}}' data-target='#link-{{id}}' data-confirm-message='" . \MapasCulturais\i::esc_attr__('Excluir este link?') . "' title='" . \MapasCulturais\i::esc_attr__('excluir') . "' rel='noopener noreferrer'></a>
                 </div>
             </li>";
 ?>

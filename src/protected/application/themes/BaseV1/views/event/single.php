@@ -38,8 +38,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
-            <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
+            <h3 class="alignleft"><a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a></h3>
+            <a class="toggle-mapa" href="#" rel='noopener noreferrer'><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
         </header>
         {{#pending}}<div class="alert warning pending"><?php \MapasCulturais\i::_e("Aguardando confirmação");?></div>{{/pending}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -78,8 +78,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php ob_start(); /* Event Occurrence Item Template VIEW - Mustache */ ?>
     <div class="regra clearfix">
         <header class="clearfix">
-            <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
+            <h3 class="alignleft"><a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a></h3>
+            <a class="toggle-mapa" href="#" rel='noopener noreferrer'><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
         </header>
         <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
         <!-- .mapa -->
@@ -118,7 +118,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <!--.avatar-->
             <div class="entity-type event-type">
                 <div class="icon icon-event"></div>
-                <a href="#"><?php \MapasCulturais\i::_e("Evento");?></a>
+                <a href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Evento");?></a>
             </div>
             <!--.entity-type-->
 
@@ -143,9 +143,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -477,7 +477,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 >{{space.name}}</span>
         </div>
 
-        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-default">
+        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-default" rel='noopener noreferrer'>
             <?php \MapasCulturais\i::esc_attr_e('Ou crie e vincule um novo espaço'); ?>
         </a>
 
@@ -485,7 +485,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <div class="alert warning">
             Aparentemente o <?php $this->dict('entities: space') ?> procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um <?php $this->dict('entities: new space') ?> clicando no botão abaixo.
         </div>
-        <a class="btn btn-default add" href="#">Adicionar <?php $this->dict('entities: space') ?></a>-->
+        <a class="btn btn-default add" href="#" rel='noopener noreferrer'>Adicionar <?php $this->dict('entities: space') ?></a>-->
         <div class="clearfix">
             <div class="grupo-de-campos">
                 <label for="horario-de-inicio"><?php \MapasCulturais\i::_e("Horário inicial");?>:</label><br>
@@ -550,7 +550,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <p class="form-help"><?php \MapasCulturais\i::_e("Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado");?>.</p>
                 <div class="grupo-descricao-automatica clearfix">
                     <p id="descricao-automatica" class="alert automatic"><?php \MapasCulturais\i::_e("Descrição gerada pelo sistema automaticamente");?>.</p>
-                    <a class="btn btn-default insert"></a>
+                    <a class="btn btn-default insert" rel='noopener noreferrer'></a>
                 </div>
                 <input type="text" name="description" value="{{rule.description}}" placeholder="<?php \MapasCulturais\i::esc_attr_e("Coloque neste campo somente informações sobre a data e hora desta ocorrência do evento.");?>">
             </div>

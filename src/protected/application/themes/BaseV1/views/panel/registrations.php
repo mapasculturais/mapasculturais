@@ -10,8 +10,8 @@ $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
             <h2><?php \MapasCulturais\i::_e("Minhas inscrições");?></h2>
     </header>
     <ul class="abas clearfix clear">
-            <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Rascunhos");?></a></li>
-            <li><a href="#enviadas"><?php \MapasCulturais\i::_e("Enviadas");?></a></li>
+            <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?></a></li>
+            <li><a href="#enviadas" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Enviadas");?></a></li>
     </ul>
     <div id="ativos">
         <?php foreach($drafts as $registration): ?>

@@ -1,9 +1,9 @@
         
         
             <article class="objeto clearfix"  ng-repeat="project in projects" id="agent-result-{{project.id}}">
-                <h1><a href="{{project.singleUrl}}">{{project.name}}</a></h1>
+                <h1><a href="{{project.singleUrl}}" rel='noopener noreferrer'>{{project.name}}</a></h1>
                 <div class="objeto-content clearfix">
-                    <a href="{{project.singleUrl}}" class="js-single-url">
+                    <a href="{{project.singleUrl}}" class="js-single-url" rel='noopener noreferrer'>
                         <img class="objeto-thumb" ng-src="{{project['@files:avatar.avatarMedium'].url||assetsUrl.avatarProject}}">
                     </a>
                     <p class="objeto-resumo">
@@ -11,7 +11,7 @@
                     </p>
                     <div class="objeto-meta">
                         <?php $this->applyTemplateHook('list.project.meta','begin'); ?>
-                        <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#">{{project.type.name}}</a></div>
+                        <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#" rel='noopener noreferrer'>{{project.type.name}}</a></div>
                         <div ng-if="readableProjectRegistrationDates(project)"><span class="label"><?php \MapasCulturais\i::_e("Inscrições");?>:</span> {{readableProjectRegistrationDates(project)}}</div>
                         <div ng-if="project.terms.tag.length > 0">
                             <span class="label">Tags:</span>

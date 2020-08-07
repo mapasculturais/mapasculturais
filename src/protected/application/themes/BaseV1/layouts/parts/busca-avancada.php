@@ -50,9 +50,9 @@
                 <form id="share-url" class="share-search-results">
                     <label for="search-url"><?php \MapasCulturais\i::_e("Compartilhar resultado: "); ?></label>
                     <input id="search-url" name="search-url" type="text" ng-value="shareurl" />
-                    <a target="_blank" ng-href="https://twitter.com/share?url={{shareurl}}" class="icon icon-twitter"></a>
-                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{shareurl}}" class="icon icon-facebook"></a>
-                    <a target="_blank" ng-href="https://plus.google.com/share?url={{shareurl}}" class="icon icon-googleplus"></a>
+                    <a target="_blank" ng-href="https://twitter.com/share?url={{shareurl}}" class="icon icon-twitter" rel='noopener noreferrer'></a>
+                    <a target="_blank" ng-href="https://www.facebook.com/sharer/sharer.php?u={{shareurl}}" class="icon icon-facebook" rel='noopener noreferrer'></a>
+                    <a target="_blank" ng-href="https://plus.google.com/share?url={{shareurl}}" class="icon icon-googleplus" rel='noopener noreferrer'></a>
                 </form>
             </div>
 			
@@ -67,20 +67,20 @@
                 <span ng-if="showFilters('agent') && numResults(numAgents, 'agent')">{{numResults(numAgents, 'agent')}} agente<span ng-show="numResults(numAgents, 'agent')!==1">s</span>
 
                     <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.agent" ng-click="data.global.viewMode='list'" style="cursor:pointer" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent}} <?php \MapasCulturais\i::esc_attr_e("agentes sem localização");?>">
-                        (<a ng-click="data.global.viewMode='list'">+{{resultsNotInMap.agent}}</a>)
+                        (<a ng-click="data.global.viewMode='list'" rel='noopener noreferrer'>+{{resultsNotInMap.agent}}</a>)
                     </span>
                 </span>
                 <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numAgents, 'agent') && (numResults(numSpaces, 'space') || numResults(numEvents.events, 'event'))">,</span>
                 <span ng-if="showFilters('space') && numResults(numSpaces, 'space')">{{numResults(numSpaces, 'space')}} <?php $this->dict('entities: space') ?><span ng-show="numResults(numSpaces, 'space')!==1">s</span>
                     <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.space" ng-click="data.global.viewMode='list'" style="cursor:pointer" class="hltip hltip-auto-update" title="{{resultsNotInMap.space}} <?php $this->dict('entities: spaces') ?> <?php \MapasCulturais\i::esc_attr_e("sem localização");?>">
-                        (<a ng-click="data.global.viewMode='list'">+{{resultsNotInMap.space}}</a>)
+                        (<a ng-click="data.global.viewMode='list'" rel='noopener noreferrer'>+{{resultsNotInMap.space}}</a>)
                     </span>
                 </span>
                 <!--,--><span ng-if="data.global.viewMode === 'map' && numResults(numSpaces, 'space') && numResults(numEvents.events, 'event')">,</span>
                 <span ng-if="showFilters('event') && numResults(numEvents.events, 'event')">{{numEvents.events}} evento<span ng-show="numEvents.events!==1">s</span>
                     em {{numResults(numEvents.spaces, 'event')}} <?php $this->dict('entities: space') ?><span ng-show="numResults(numEvents.spaces, 'event')!==1">s</span>
                     <span ng-if="data.global.viewMode === 'map' && resultsNotInMap.event" ng-click="data.global.viewMode='list'" style="cursor:pointer" class="hltip hltip-auto-update" title="{{resultsNotInMap.event}} <?php \MapasCulturais\i::esc_attr_e("eventos sem localização");?>">
-                        (<a ng-click="data.global.viewMode='list'">+{{resultsNotInMap.event}}</a>)
+                        (<a ng-click="data.global.viewMode='list'" rel='noopener noreferrer'>+{{resultsNotInMap.event}}</a>)
                     </span>
                 </span>
                 <span ng-if="data.global.viewMode === 'list' && numEventsInList">{{numEventsInList}} evento<span ng-show="numEventsInList!==1">s</span> </span>
@@ -103,7 +103,7 @@
 
                     <?php \MapasCulturais\i::_e("Nenhum resultado encontrado");?>
                     <span ng-if="resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event > 0" style="cursor:default" class="hltip hltip-auto-update" title="{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}} <?php \MapasCulturais\i::_e("resultados sem localização");?>">
-                        (<a ng-click="data.global.viewMode='list'">+{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}}</a>)
+                        (<a ng-click="data.global.viewMode='list'" rel='noopener noreferrer'>+{{resultsNotInMap.agent + resultsNotInMaps.space + resultsNotInMaps.event}}</a>)
                     </span>
             </span>
 
@@ -115,7 +115,7 @@
                 ng-if="data[data.global.filterEntity].keyword !== ''"
                 ng-click="data[data.global.filterEntity].keyword = ''">{{ data[data.global.filterEntity].keyword}}
             </a>
-            <a class="tag-selected tag-event" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()">{{eventDateFilter()}}</a>
+            <a class="tag-selected tag-event" ng-if="showFilters('event') && showEventDateFilter()" ng-click="cleanEventDateFilters()" rel='noopener noreferrer'>{{eventDateFilter()}}</a>
             <span   ng-repeat="(filter_k, filter_v) in data[data.global.filterEntity].filters">
                 <a  class="tag-selected tag-{{data.global.filterEntity}}"
                     ng-if="getFilter(filter_k).fieldType === 'text' && filter_v"
@@ -137,11 +137,11 @@
             </span>
 
             <!-- Pesquisa através do Mapa do Google -->
-            <a class="tag-selected" ng-if="data.global.locationFilters.enabled === 'circle'" ng-click="cleanLocationFilters()"><?php \MapasCulturais\i::_e("Área Delimitada");?></a>
-            <a class="tag-selected" ng-if="data.global.locationFilters.enabled === 'neighborhood'" ng-click="cleanLocationFilters()"><?php \MapasCulturais\i::_e("Próximo a mim");?></a>
-            <a class="tag-selected" ng-if="data.global.locationFilters.enabled === 'address'" ng-click="cleanLocationFilters()">{{data.global.locationFilters.address.text}}</a>
+            <a class="tag-selected" ng-if="data.global.locationFilters.enabled === 'circle'" ng-click="cleanLocationFilters()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Área Delimitada");?></a>
+            <a class="tag-selected" ng-if="data.global.locationFilters.enabled === 'neighborhood'" ng-click="cleanLocationFilters()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Próximo a mim");?></a>
+            <a class="tag-selected" ng-if="data.global.locationFilters.enabled === 'address'" ng-click="cleanLocationFilters()" rel='noopener noreferrer'>{{data.global.locationFilters.address.text}}</a>
 
-            <a class="tag-selected tag-clear" ng-if="hasFilter()" ng-click="cleanAllFilters()"><?php \MapasCulturais\i::_e("Remover todos filtros");?></a>
+            <a class="tag-selected tag-clear" ng-if="hasFilter()" ng-click="cleanAllFilters()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Remover todos filtros");?></a>
         </div>
         <!--#selected-filters-->
         

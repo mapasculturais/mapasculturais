@@ -116,7 +116,7 @@ trait ControllerSealRelation{
         
         $notification = new Entities\Notification;
         $notification->user = $relation->seal->owner->user;
-        $notification->message = sprintf(\MapasCulturais\i::__('Solicitação de renovação do selo %s para a entidade %s.<br>Acesse a página da entidade e renove o certificado. <a class="btn btn-small btn-primary" href="%s">editar</a>'),
+        $notification->message = sprintf(\MapasCulturais\i::__('Solicitação de renovação do selo %s para a entidade %s.<br>Acesse a página da entidade e renove o certificado. <a class="btn btn-small btn-primary" href="%s" rel="noopener noreferrer">editar</a>'),
         $entity->name,$entity->entityTypeName,$entity->editUrl);
         $notification->save();
 
@@ -157,7 +157,7 @@ trait ControllerSealRelation{
         
         $notification = new Entities\Notification;
         $notification->user = $relation->seal->owner->user;
-        $notification->message = sprintf(\MapasCulturais\i::__('Validade do selo %s para a entidade %s renovada.<br>Acesse a página da entidade e do certificado. <a class="btn btn-small btn-sucess" href="%s">editar</a>'),$entity->name,$entity->entityTypeName,$entity->editUrl);
+        $notification->message = sprintf(\MapasCulturais\i::__('Validade do selo %s para a entidade %s renovada.<br>Acesse a página da entidade e do certificado. <a class="btn btn-small btn-sucess" href="%s" rel="noopener noreferrer">editar</a>'),$entity->name,$entity->entityTypeName,$entity->editUrl);
         $notification->save();
 
         $relation->validateDate = $dateFin;

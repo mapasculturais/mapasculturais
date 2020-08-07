@@ -131,7 +131,7 @@ trait ControllerAPI{
      * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
      * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. 
-     *                                Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api">http://docs.mapasculturais.org/mc_config_api</a>)      
+     *                                Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api" rel='noopener noreferrer'>http://docs.mapasculturais.org/mc_config_api</a>)      
      *                                Para filtrar os resultados o método find aceita os seguintes operadores em qualquer das propriedades e metadados das entidades:<br/>
      *                                <table>
      *                                <tr><td>Operador</td><td>Exemplo</td></tr>
@@ -149,7 +149,7 @@ trait ControllerAPI{
      *                                <tr><td>**AND** (operador lógico AND) </td><td> _ex:( name: AND (ILIKE ('Rafael%'), ILIKE ('*Freitas')) - seleciona as entidades com nome começando com Rafael e terminando com Freitas (por exemplo: Rafael Freitas, Rafael Chaves Freitas, RafaelFreitas))_ </td></tr>
      *                                <tr><td>**GEONEAR** </td><td> _ex:( _geoLocation: GEONEAR (-46.6475415229797, -23.5413271705055, 700) - seleciona as entidades que estão no máximo há 700 metros do ponto de latitude -23.5413271705055 e longitude -46.6475415229797)__ </td></tr>
      *                                </table>
-     *                                Veja mais exemplos de uso em <a href="http://docs.mapasculturais.org/mc_config_api/">http://docs.mapasculturais.org/mc_config_api/</a>
+     *                                Veja mais exemplos de uso em <a href="http://docs.mapasculturais.org/mc_config_api/" rel='noopener noreferrer'>http://docs.mapasculturais.org/mc_config_api/</a>
      * 
      * @apiParamExample {json} Exemplo:
      *           { 
@@ -179,7 +179,7 @@ trait ControllerAPI{
      * @apiParam {String} [@seals] usado para filtrar registros que tenha selo aplicado, recebe como parâmetro o id do registro do selo. ex:( @seals: 1,10,25)
      * @apiParam {String} [@profiles] usado para filtrar os registros de agentes que estão vinculados a um perfil de usuário do sistema. ex:( @profiles:1)
      * @apiParam {String} [@permissions] usado para trazer os registros onde o agente tem permissão de acesso(visualização) e/ou edição. Para visualização, informar 'view', para controle que seria visualização e edição '@control'. _ex:(@permissions:'view')
-     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api">http://docs.mapasculturais.org/mc_config_api</a>) 
+     * @apiParam {String} [nomeCampo] campos para realizar a pesquisa na base, para filtrar os resultados o método aceita operadores. Para ver a lista de operadores possíveis e exemplos avançados de uso visite <a href="http://docs.mapasculturais.org/mc_config_api" rel='noopener noreferrer'>http://docs.mapasculturais.org/mc_config_api</a>) 
      * @apiParamExample {json} Exemplo:
      *           { 
      *               "id": "BET(100,200)",

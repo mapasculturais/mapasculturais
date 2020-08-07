@@ -1,20 +1,20 @@
         <article class="objeto clearfix" ng-if="openEntity.space">
             <?php $this->applyTemplateHook('infobox-space','begin'); ?>
-            <h1><a href="{{openEntity.space.singleUrl}}">{{openEntity.space.name}}</a></h1>
+            <h1><a href="{{openEntity.space.singleUrl}}" rel='noopener noreferrer'>{{openEntity.space.name}}</a></h1>
             <?php $this->applyTemplateHook('infobox-space.content','before'); ?>
             <div class="objeto-content clearfix">
                 <?php $this->applyTemplateHook('infobox-space.content','begin'); ?>
-                <a href="{{openEntity.space.singleUrl}}" class="js-single-url">
+                <a href="{{openEntity.space.singleUrl}}" class="js-single-url" rel='noopener noreferrer'>
                     <img class="objeto-thumb" ng-src="{{openEntity.space['@files:avatar.avatarSmall'].url||assetsUrl.avatarSpace}}">
                 </a>
                 <p class="objeto-resumo">{{openEntity.space.shortDescription}}</p>
                 <div class="objeto-meta">
                     <?php $this->applyTemplateHook('infobox-space.metadata','begin'); ?>
-                    <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="toggleSelection(data.space.filters.type, openEntity.space.type.id.toString())">{{openEntity.space.type.name}}</a></div>
+                    <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a ng-click="toggleSelection(data.space.filters.type, openEntity.space.type.id.toString())" rel='noopener noreferrer'>{{openEntity.space.type.name}}</a></div>
                     <div>
                         <span class="label"><?php \MapasCulturais\i::_e("Área de atuação");?>:</span>
                         <span ng-repeat="area in openEntity.space.terms.area">
-                            <a ng-click="toggleSelection(data.space.areas, getId(areas, area))">{{area}}</a>{{$last ? '' : ', '}}
+                            <a ng-click="toggleSelection(data.space.areas, getId(areas, area))" rel='noopener noreferrer'>{{area}}</a>{{$last ? '' : ', '}}
                         </span>
                     </div>
                     <div ng-show="openEntity.space.endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span>{{openEntity.space.endereco}}</div>

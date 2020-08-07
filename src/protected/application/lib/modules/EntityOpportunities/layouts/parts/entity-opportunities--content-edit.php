@@ -28,7 +28,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </ul>
     </edit-box>
     <p>
-        <a class="btn btn-default add" ng-click="editbox.open('new-opportunity', $event)" ><?php i::_e("Criar oportunidade");?></a>
+        <a class="btn btn-default add" ng-click="editbox.open('new-opportunity', $event)"  rel='noopener noreferrer'><?php i::_e("Criar oportunidade");?></a>
     </p>
     <?php foreach($entity->getOpportunities(Opportunity::STATUS_DRAFT) as $opportunity): ?>
         <?php $this->part('entity-opportunities--item', ['opportunity' => $opportunity, 'entity' => $entity]) ?>
