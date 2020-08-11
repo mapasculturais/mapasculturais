@@ -230,3 +230,13 @@ h1 .icon {
         content: $unicode-instagram;
     }
 }
+
+.icon-login::after {
+    @media screen and (max-width: $screen-tablet) {
+        content: "Entrar";
+        font-size: 10px;
+        position: absolute;
+        top: 18px;
+        right: -1px;
+    }
+}

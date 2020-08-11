@@ -58,6 +58,9 @@ WORKDIR /var/www/html/protected/application/themes/
 
 RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -exec sass {}/assets/css/sass/main.scss {}/assets/css/main.css -E "UTF-8" \;
 
+RUN chown -R www-data:www-data /var/www /var/www/html/assets /var/www/html/files /var/www/private-files
+RUN chmod -R 775 /var/www /var/www/html/assets /var/www/html/files /var/www/private-files
+
 COPY scripts /var/www/scripts
 COPY compose/production/php.ini /usr/local/etc/php/php.ini
 COPY compose/config.php /var/www/html/protected/application/conf/config.php
