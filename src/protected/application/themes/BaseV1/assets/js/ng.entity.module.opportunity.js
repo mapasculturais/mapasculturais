@@ -772,6 +772,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     function initEditables(){
+        var isDateSupported = function () {
+            var input = document.createElement('input');
+            var value = 'a';
+            input.setAttribute('type', 'date');
+            input.setAttribute('value', value);
+            return (input.value !== value);
+        };
         jQuery('.js-editable-field').each(function(){
             var field = fieldsByName[this.id];
             if(field && field.fieldOptions){
@@ -779,11 +786,31 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
 
                 if(field.fieldType === "date"){
-                    cfg.datepicker = {weekStart: 1, yearRange: jQuery(this).data('yearrange') ? jQuery(this).data('yearrange') : "1900:+0"};
+                    if (isDateSupported()) {
+                        jQuery(this).removeAttr('data-showbuttons');
+                        jQuery(this).removeAttr('data-viewformat');
+                        cfg.display = function (value) {
+                            if(value){
+                                $(this).html(moment(value).format('DD/MM/YYYY'));
+                            }
+                        };
+                        cfg.tpl = '<input type="date" ></input>';
+                    }else {
+                        cfg.datepicker = {weekStart: 1, yearRange: jQuery(this).data('yearrange') ? jQuery(this).data('yearrange') : "1900:+0"};
+                    }
                 }
                 jQuery(this).editable(cfg);
             } else {
                 jQuery(this).editable();
+            }
+
+            if(field.fieldType === "date"){
+                if (isDateSupported()) {
+                    //Remove calendar icon
+                    jQuery(this).on('shown', function(){
+                        jQuery('.ui-datepicker-trigger').css('display', 'none');
+                    });
+                }
             }
 
             if(!jQuery(this).data('editable-init')){
@@ -793,7 +820,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         RegistrationService.save();
                     });
                 });
-
             }
         });
     }
