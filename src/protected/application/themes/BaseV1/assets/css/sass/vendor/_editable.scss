@@ -178,6 +178,10 @@ a.editable-click:hover {
     font-size: 11px;
 }
 
+.editable-input input{
+    width: 100%;
+}
+
 .editable-input input,
 .editable-input select,
 .editable-buttons button {
@@ -364,11 +368,20 @@ div.ficha-spcultura .editable-buttons-bottom {
         width: 100%;
         display: block;
     }
+
+    .editableform .control-group {
+        white-space: normal;
+    }
+
+    #registration-attachments .editableform .control-group {
+        white-space: nowrap !important;
+    }
+
     .widget {
 
-        // .editable-input {
-        //     width: 100%;
-        // }
+         //.editable-input {
+         //    width: 100%;
+         //}
 
         .select2-container {
             max-width: none;
