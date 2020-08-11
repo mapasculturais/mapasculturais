@@ -16,4 +16,7 @@
 		clear: both;
 	    font-style: italic;
 	}
+	@media screen and (max-width: $screen-tablet) {
+		padding-top:  4.5rem;
+	}
 }
