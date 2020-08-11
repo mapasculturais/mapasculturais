@@ -72,11 +72,11 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                     <?php
                     /* Translators: "de" como início de um intervalo de data *DE* 25/1 a 25/2 às 13:00 */
                     \MapasCulturais\i::_e('de'); ?>
-                    <strong class="js-editable" data-type="date" data-yearrange="2000:+25" data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Data inicial'); ?>"><?php echo $phase->registrationFrom ? $phase->registrationFrom->format( 'd/m/Y' ) : \MapasCulturais\i::__('Data inicial'); ?></strong>
+                    <strong class="js-editable" data-type="date" data-yearrange="2000:+25" <?php echo $phase->registrationFrom ? "data-value='".$phase->registrationFrom->format('Y-m-d') . "'" : ''?> data-viewformat="dd/mm/yyyy" data-edit="registrationFrom" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Data inicial'); ?>"><?php echo $phase->registrationFrom ? $phase->registrationFrom->format( 'd/m/Y' ) : \MapasCulturais\i::__('Data inicial'); ?></strong>
                     <?php
                     /* Translators: "a" indicando intervalo de data de 25/1 *A* 25/2 às 13:00 */
                     \MapasCulturais\i::_e('a'); ?>
-                    <strong class="js-editable" data-type="date" data-yearrange="2000:+25" data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Data final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('d/m/Y') : \MapasCulturais\i::__('Data final'); ?></strong>
+                    <strong class="js-editable" data-type="date" data-yearrange="2000:+25" <?php echo $phase->registrationTo ? "data-value='".$phase->registrationTo->format('Y-m-d') . "'" : ''?> data-viewformat="dd/mm/yyyy" data-edit="registrationTo" data-timepicker="#registrationTo_time" data-showbuttons="false" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Data final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('d/m/Y') : \MapasCulturais\i::__('Data final'); ?></strong>
                     <?php
                     /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
                     \MapasCulturais\i::_e('às'); ?>
