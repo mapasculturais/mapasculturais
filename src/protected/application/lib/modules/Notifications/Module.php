@@ -46,9 +46,12 @@ class Module extends \MapasCulturais\Module{
             $requester = $app->user;
             $profile = $requester->profile;
 
-            $origin = $this->origin;
+            $origin = $this->origin;//registration
             $destination = $this->destination;
-
+            // dump($origin);
+            // dump($origin->opportunity);
+            // dump($destination);
+            
             $origin_type = strtolower($origin->entityTypeLabel());
             $origin_url = $origin->singleUrl;
             $origin_name = $origin->name;
@@ -61,13 +64,23 @@ class Module extends \MapasCulturais\Module{
             $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
             $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
 
+            /**
+             * Para uso do relacionamento dos espaços
+             * $nameSpace = $destination->name
+             */
+            
+            $nameSpace = "<a href=\"{espaco/$destination->id}\" target='_blank'>{$destination->name}</a>";
+            $nameProjectSpace = "<a href=\"{oportunidade/}\" target='_blank'>{$origin->opportunity->name}</a>";
+
             if (!is_null($destination->subsite)) {
-                $url_destination_panel = $destination->subsite->url . '/painel/';                
+                $url_destination_panel = $destination->subsite->url . '/painel/';
             } else {
                 $url_destination_panel = $app->createUrl('panel');
             }
 
-            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";         
+            $urlDestinationPanel_link = "<br> <a href=\"{$url_destination_panel}\"> Acesse aqui o seu painel </a>";
+
+            $message_to_requester = '';
 
             switch ($this->getClassName()) {
                 case "MapasCulturais\Entities\RequestAgentRelation":
@@ -119,6 +132,11 @@ class Module extends \MapasCulturais\Module{
                         $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                     }
                     break;
+                    
+                case "MapasCulturais\Entities\RequestEntitiesTransference":
+                    $subject = i::__("Requisição de transferência de entidades");
+                    $message = sprintf(i::__("%s apagou sua conta e transferiu todas as suas entidades para seu agente %s"), $profile_link, $destination_link);
+                    break;
                 case "MapasCulturais\Entities\RequestChangeOwnership":
                     $subject = i::__("Requisição de mudança de propriedade");
                     $message = sprintf(i::__("%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"), $profile_link, $origin_type, $origin_link, $destination_link, $urlDestinationPanel_link);
@@ -144,18 +162,37 @@ class Module extends \MapasCulturais\Module{
                     $message = sprintf(i::__("%s quer relacionar o selo %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
                     $message_to_requester = sprintf(i::__("Sua requisição para relacionar o selo %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
                     break;
+                //ESTÁ DANDO ERRO PARA NOTIFICAÇÃO
+                case "MapasCulturais\Entities\RequestSpaceRelation":
+                    
+                    if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
+                        $opportunity = $origin->opportunity;
+                        $prev = $opportunity;
+                        
+                        while($_prev = $prev->parent){
+                            $prev = $_prev;
+                        }
+                        
+                        $opportunity_link = "<a href=\"{$opportunity->singleUrl}\">{$opportunity->name}</a>";
+                        $subject = i::__("Requisição para relacionar o espaço ao projeto");
+                        $message = sprintf(i::__("%s quer relacionar o espaço %s à inscrição %s no projeto %s."), $profile_link, $destination_link, $origin_link, $opportunity_link);
+                        $message_to_requester = sprintf(i::__("Sua requisição para relacionar o espaço %s à inscrição %s no projeto %s foi enviada."), $destination_link, $origin_link, $opportunity_link); 
+                    }
+                    break;
                 default:
                     $subject = null;
                     $message = $message_to_requester = "REQUISIÇÃO - NÃO DEVE ENTRAR AQUI";
                     break;
             }
 
-            // message to requester user
-            $notification = new Notification;
-            $notification->user = $requester;
-            $notification->message = $message_to_requester;
-            $notification->request = $this;
-            $notification->save(true);
+            if($message_to_requester){
+                // message to requester user
+                $notification = new Notification;
+                $notification->user = $requester;
+                $notification->message = $message_to_requester;
+                $notification->request = $this;
+                $notification->save(true);
+            }
 
             $notified_user_ids = array($requester->id);
 

@@ -179,9 +179,21 @@ class App extends \Slim\Slim{
 
         $this->_initiated = true;
 
+        if(empty($config['base.url'])){
+            $config['base.url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://') . 
+                                  (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
+        }
+
+        if(empty($config['base.assetUrl'])){
+            $config['base.assetUrl'] = $config['base.url'] . 'assets/';
+        }
+
         if($config['slim.debug'])
             error_reporting(E_ALL ^ E_STRICT);
 
+
+        session_save_path(SESSIONS_SAVE_PATH);
+        
         session_start();
 
         if($config['app.offline']){
@@ -365,8 +377,17 @@ class App extends \Slim\Slim{
 
 
 
-        if(@$config['app.log.query'])
-            $doctrine_config->setSQLLogger($config['app.queryLogger']);
+        if(@$config['app.log.query']){
+            if (isset($config['app.queryLogger']) && is_object($config['app.queryLogger'])) {
+                $query_logger = $config['app.queryLogger'];
+            } elseif (isset($config['app.queryLogger']) && is_string($config['app.queryLogger']) && class_exists($config['app.queryLogger'])) {
+                $query_logger_class = $config['app.queryLogger'];
+                $query_logger = new $query_logger_class;
+            } else {
+                $query_logger = new Loggers\DoctrineSQL\SlimLog();
+            }
+            $doctrine_config->setSQLLogger($query_logger);
+        }
 
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
@@ -504,9 +525,11 @@ class App extends \Slim\Slim{
         // ===================================== //
 
         // run plugins
-        foreach($config['plugins.enabled'] as $plugin){
-            if(file_exists(PLUGINS_PATH.$plugin.'.php')){
-                include PLUGINS_PATH.$plugin.'.php';
+        if(isset($config['plugins.enabled']) && is_array($config['plugins.enabled'])){
+            foreach($config['plugins.enabled'] as $plugin){
+                if(file_exists(PLUGINS_PATH.$plugin.'.php')){
+                    include PLUGINS_PATH.$plugin.'.php';
+                }
             }
         }
         // ===================================== //
@@ -521,6 +544,7 @@ class App extends \Slim\Slim{
 
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
+
 
         return $this;
     }
@@ -937,6 +961,7 @@ class App extends \Slim\Slim{
 
             $this->registerRegistrationAgentRelation($def);
         }
+
 
         // all metalist groups
         $metalist_groups = [
@@ -2320,10 +2345,14 @@ class App extends \Slim\Slim{
         }
     }
 
-    function unregisterEntityMetadata($entity_class, $key){
+    function unregisterEntityMetadata($entity_class, $key = null){
         foreach($this->_register['entity_metadata_definitions'] as $k => $metadata){
             if($k === $entity_class || strpos($k . ':', $entity_class) === 0){
-                unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                if($key){
+                    unset($this->_register['entity_metadata_definitions'][$k][$key]);
+                } else {
+                    $this->_register['entity_metadata_definitions'][$k] = [];
+                }
             }
         }
 

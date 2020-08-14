@@ -186,7 +186,6 @@ class Opportunity extends EntityController {
     */
     protected function _getOpportunity($opportunity_id = null) {
         $app = App::i();
-
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
         } else {
@@ -727,6 +726,7 @@ class Opportunity extends EntityController {
             'registrationCategTitle',
             'useAgentRelationInstituicao',
             'introInscricoes',
+            'useSpaceRelation',
             'registrationSeals',
             'registrationLimit'
         );

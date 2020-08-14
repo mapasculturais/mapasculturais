@@ -17,13 +17,24 @@
         <li>
             <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"></span><?php \MapasCulturais\i::_e("Meu Perfil");?></a>
         </li>
+        
+        <?php if($app->isEnabled('events')): ?>
+            <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
+            <li>
+                <a href="<?php echo $app->createUrl('panel', 'events') ?>"><?php \MapasCulturais\i::_e("Meus Eventos");?></a>
+                <?php $this->renderModalFor('event'); ?>
+            </li>
+            <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
+        <?php endif; ?>
 
         <?php if($app->isEnabled('agents')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
+
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'agents') ?>"><?php \MapasCulturais\i::_e("Meus Agentes");?></a>
-                <a class="add" href="<?php echo $app->createUrl('agent', 'create') ?>"></a>
+                <?php $this->renderModalFor('agent'); ?>
             </li>
+
             <?php $this->applyTemplateHook('nav.dropdown.agents','after'); ?>
         <?php endif; ?>
         
@@ -40,7 +51,7 @@
             <?php $this->applyTemplateHook('nav.dropdown.spaces','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'spaces') ?>"><?php $this->dict('entities: My Spaces') ?></a>
-                <a class="add"href="<?php echo $app->createUrl('space', 'create') ?>"></a>
+                <?php $this->renderModalFor('space'); ?>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.spaces','after'); ?>
         <?php endif; ?>
@@ -58,7 +69,8 @@
             <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><?php \MapasCulturais\i::_e("Meus Projetos");?></a>
-                <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a>
+                <?php $this->renderModalFor('project'); ?>
+                <?php /* <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a> */ ?>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
 

@@ -1,6 +1,16 @@
 MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
+
+var isDateSupported = function () {
+    var input = document.createElement('input');
+    var value = 'a';
+    input.setAttribute('type', 'date');
+    input.setAttribute('value', value);
+    return (input.value !== value);
+};
+
 jQuery(function(){
+    $.fn.editable.defaults.mode = 'inline';
     $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">cancelar</button> <button type="submit" class="editable-submit">ok</button>';
     $.fn.select2.defaults.separator = '; ';
     $.fn.editabletypes.select2.defaults.viewseparator = '; ';
@@ -115,6 +125,7 @@ jQuery(function(){
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
+
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
@@ -141,6 +152,20 @@ jQuery(function(){
                         });
                 }, 100);
                 break;
+        }
+
+        //Place the buttons below the textarea
+        if(window.innerWidth < 980){
+            if(editable.input.type.trim() === 'textarea'){
+                $('.editable-buttons').css('display', 'block');
+            }
+        }
+        if(editable.input.type.trim() === 'dateuifield'){
+            if (isDateSupported()) {
+                //Remove calendar icon
+                $('.ui-datepicker-trigger').css('display', 'none');
+            }
+
         }
 
         //Experimental Tab Index
@@ -180,7 +205,15 @@ jQuery(function(){
             return false;
         });
     }
-
+    $('.editable').on('shown', function(e, editable) {
+        console.log($(editable));
+            // .focus()
+            // .on('keydown', function(e){
+            //     if(e.which == 13 && e.ctrlKey) {
+            //         editable.container.$form.find('.editable-submit').click();
+            //     }
+            // });
+    });
 
     // Human Crop for images
     $('input.human_crop').change(function() {
@@ -457,11 +490,22 @@ MapasCulturais.Editables = {
                 case 'date':
                 case 'datetime':
                     config.type = 'date';
-                    config.format = 'yyyy-mm-dd';
-                    config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+10"};
-                    delete config.placeholder;
-                    config.clear = labels['Limpar'];
+                    if (isDateSupported()) {
+                        $(this).removeAttr('data-showbuttons');
+                        $(this).removeAttr('data-viewformat');
+                        config.display = function (value) {
+                            if(value){
+                                $(this).html(moment(value).format('DD/MM/YYYY'));
+                            }
+                        };
+                        config.tpl = '<input type="date" ></input>';
+                    }else{
+                        config.format     = 'yyyy-mm-dd';
+                        config.viewformat = 'dd/mm/yyyy';
+                        config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+10"};
+                        delete config.placeholder;
+                        config.clear = labels['Limpar'];
+                    }
                     break;
 
                 case 'multiselect':
@@ -560,16 +604,13 @@ MapasCulturais.Editables = {
                 var $datepicker = $(this);
 
                 if(!$(this).data('timepicker')){ //normal datepicker
-
                     $datepicker.editable(config);
                     $datepicker.on('hidden', function(e, editable) {
                         if($(this).editable('getValue', true) == null){
                             $(this).editable('setValue', '');
                         }
                     });
-
                 }else{ //datepicker with related timepicker field
-
                     var $timepicker = $($datepicker.data('timepicker'));
                     var $hidden = $('<input class="js-include-editable" type="hidden">').insertAfter($timepicker);
 
@@ -596,7 +637,6 @@ MapasCulturais.Editables = {
                     });
 
                     $datepicker.on('save', function(e, params) {
-
                         if(params.newValue){
                             if(!$timepicker.editable('getValue', true)){
                                 $timepicker.editable('setValue', '23:59');
@@ -622,7 +662,6 @@ MapasCulturais.Editables = {
                 }
 
             }
-
 
         });
 

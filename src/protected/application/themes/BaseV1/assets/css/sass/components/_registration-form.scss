@@ -27,11 +27,25 @@ article.opportunity .highlighted-message .btn {
     }
 }
 
+article.project .highlighted-message button {
+    @media screen and (min-width: $screen-tablet) {
+        float: none !important;
+        margin-left: 0 !important;
+    }
+}
+
+article.opportunity .editable-buttons button {
+    @media screen and (min-width: $screen-tablet) {
+        float: none !important;
+        margin-left: 0 !important;
+    }
+}
+
+
 //## Registration form that shows on opportunities tab "Inscritos" when logged in and on view mode.
 
 .registration-form {
-    display: none; //it shows only on tablet screen size and wider screens
-	box-sizing: border-box;
+    box-sizing: border-box;
 	border: $thin-row;
 	border-radius: $border-radius-base;
 	padding: $padding-large;
@@ -58,9 +72,6 @@ article.opportunity .highlighted-message .btn {
         color: $gray-dark;
         font-family: $font-stack-base;
         font-size: $font-size-smaller;
-    }
-    @media screen and (min-width: $screen-tablet) {
-        display: block;
     }
 }
 
@@ -192,7 +203,42 @@ article.opportunity .highlighted-message .btn {
     }
 }
 
-.registration-list {
+.registration-space-details {
+    font-size: $font-size-smaller;
+    padding-top: $padding-base;
+    margin-left: 1rem;
+}
+
+.registration-space-avatar {
+    margin-left: 0.75rem;
+    margin-right: $line-height-half;
+    margin-top: 1rem;
+    float: left;
+    width: 2rem;
+    height: 2rem;
+}
+
+.btn-add-space-relation {
+    float: right;
+}
+
+.space-edit-buttons, .space-add-button {
+    float: right;
+    margin-top: -2rem;
+    margin-right: 1rem;
+}
+
+.space-relation-message {
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.space-single-view-message {
+    margin-top: 1rem;
+    float: left;
+}
+
+.registration-list, .registration-space-relation {
 	margin: 0;
 	list-style: none;
     .registration-list-item {
@@ -228,6 +274,9 @@ article.opportunity .highlighted-message .btn {
         }
         &.registration-edit-mode {
             padding-right: 11rem;
+            @media screen and (max-width: $screen-tablet) {
+                padding-right: 0.5rem;
+            }
         }
         @media print {
             padding: 0 0 $padding-base;
@@ -269,6 +318,9 @@ article.opportunity .highlighted-message .btn {
         padding: $padding-base 14.5rem $padding-base $padding-base;
         border-bottom: $thin-row;
         font-size: .8em;
+        @media screen and (max-width: $screen-tablet) {
+            padding: $padding-base $padding-base $padding-base $padding-base;
+        }
         .attachment-title {
             font-size: $font-size-smaller;
             font-weight: normal;

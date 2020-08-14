@@ -1,5 +1,7 @@
 <?php
 use MapasCulturais\Entities\Agent;
+
+$_type = is_object($entity->type) ? $entity->type->name : "";
 ?>
 <article class="objeto clearfix <?php if($entity->isUserProfile) echo 'agent-default'; ?>">
     <?php
@@ -19,7 +21,7 @@ use MapasCulturais\Entities\Agent;
     <div class="objeto-meta">
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
-        <div><span class="label"><?php \MapasCulturais\i::_e("Tipo:");?></span> <?php echo $entity->type->name?></div>
+        <div><span class="label"><?php \MapasCulturais\i::_e("Tipo:");?></span> <?php echo $_type; ?></div>
         <div><span class="label"><?php \MapasCulturais\i::_e("Área(s) de atuação:");?></span> <?php echo implode(', ', $entity->terms['area'])?></div>
         <?php if(isset($entity->originSiteUrl)): ?>
             <div><span class="label">Url: </span><?php echo $entity->originSiteUrl;?></div>

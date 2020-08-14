@@ -86,12 +86,6 @@
         }
     }
 }
-.entity-actions {
-    display: none;
-    @media screen and (min-width: $screen-tablet) {
-        display: block;
-    }
-}
 
 .sidebar-panel {
     display: none;
@@ -119,3 +113,15 @@
         }
     }
 }
+
+ul.panel-settings { 
+    //margin: 90px -65px -110px -65px;
+
+    li {
+        float:right; 
+        margin:1em; 
+        font-size: 12px; 
+        list-style: none
+    }
+}
+    

@@ -38,6 +38,17 @@
     border-width: 1px;
     font-size: $font-size-smaller;
     text-align: left; //to make sure it's always aligned to the left.
+
+    @media screen and (max-width: $screen-tablet) {
+        display: block !important;
+        position: absolute !important;
+        left: 0;
+        right: 0;
+        margin: 0;
+        margin-right: 1em;
+        padding: 0.20rem 2.5rem;
+    }
+    
     &.info {
         background: #cff;
         border-color: #9be7ee;
