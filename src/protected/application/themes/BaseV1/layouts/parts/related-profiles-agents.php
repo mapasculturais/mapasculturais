@@ -12,7 +12,7 @@ $this->addSubsiteAdminsToJs($entity);
                 <img ng-src="{{avatarUrl(admin.profile)}}"  style="width:48px; height:48px"/>
 
                 <div class="descricao-do-agente">
-                    <h1><a href="{{admin.profile.singleUrl}}">{{admin.profile.name}}</a></h1>
+                    <h1><a href="{{admin.profile.singleUrl}}" rel='noopener noreferrer'>{{admin.profile.name}}</a></h1>
                     <div class="objeto-meta">
                         <div ng-if="admin.profile.terms.area">
                             <span class="label"><?php echo strtolower($this->dict('taxonomies:area: name', true)) ?>:</span>
@@ -21,7 +21,7 @@ $this->addSubsiteAdminsToJs($entity);
                         <div><span class="label"><?php \MapasCulturais\i::_e('tipo:'); ?></span> {{admin.profile.type.name}}</div>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-danger delete" ng-click="deleteSuperAdmin(admin)"><?php \MapasCulturais\i::_e('Excluir'); ?></a>
+                        <a href="#" class="btn btn-danger delete" ng-click="deleteSuperAdmin(admin)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Excluir'); ?></a>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@ $this->addSubsiteAdminsToJs($entity);
                 <img ng-src="{{avatarUrl(admin.profile)}}" style="width:48px; height:48px"/>
 
                 <div class="descricao-do-agente">
-                    <h1><a href="{{admin.profile.singleUrl}}">{{admin.profile.name}}</a></h1>
+                    <h1><a href="{{admin.profile.singleUrl}}" rel='noopener noreferrer'>{{admin.profile.name}}</a></h1>
                     <div class="objeto-meta">
                         <div ng-if="admin.profile.terms.area">
                             <span class="label"><?php echo strtolower($this->dict('taxonomies:area: name', true)) ?>:</span>
@@ -48,7 +48,7 @@ $this->addSubsiteAdminsToJs($entity);
                         <div><span class="label"><?php \MapasCulturais\i::_e('tipo:'); ?></span> {{admin.profile.type.name}}</div>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-danger delete" ng-click="deleteAdmin(admin)"><?php \MapasCulturais\i::_e('Excluir'); ?></a>
+                        <a href="#" class="btn btn-danger delete" ng-click="deleteAdmin(admin)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Excluir'); ?></a>
                     </div>
                 </div>
             </div>

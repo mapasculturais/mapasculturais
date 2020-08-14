@@ -14,7 +14,7 @@
                 <div class="clearfix">
                     <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
                     <div>
-                        <a ng-if="def.agent" href="{{def.agent.singleUrl}}">{{def.agent.name}}</a>
+                        <a ng-if="def.agent" href="{{def.agent.singleUrl}}" rel='noopener noreferrer'>{{def.agent.name}}</a>
                         <span ng-if="!def.agent"><?php \MapasCulturais\i::_e("Não informado");?></span>
                     </div>
                 </div>

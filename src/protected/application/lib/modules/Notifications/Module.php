@@ -60,9 +60,9 @@ class Module extends \MapasCulturais\Module{
             $destination_name = $destination->name;
             $destination_type = strtolower($destination->entityTypeLabel());
             
-            $profile_link = "<a href=\"{$profile->singleUrl}\">{$profile->name}</a>";
-            $destination_link = "<a href=\"{$destination_url}\">{$destination_name}</a>";
-            $origin_link = "<a href=\"{$origin_url}\">{$origin_name}</a>";
+            $profile_link = "<a rel='noopener noreferrer' href=\"{$profile->singleUrl}\">{$profile->name}</a>";
+            $destination_link = "<a rel='noopener noreferrer' href=\"{$destination_url}\">{$destination_name}</a>";
+            $origin_link = "<a rel='noopener noreferrer' href=\"{$origin_url}\">{$origin_name}</a>";
 
             /**
              * Para uso do relacionamento dos espaços

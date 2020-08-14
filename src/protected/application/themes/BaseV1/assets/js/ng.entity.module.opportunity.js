@@ -1,6 +1,6 @@
 (function (angular) {
     "use strict";
-    var module = angular.module('entity.module.opportunity', ['ngSanitize', 'checklist-model']);
+    var module = angular.module('entity.module.opportunity', ['ngSanitize', 'checklist-model','infinite-scroll']);
 
     module.config(['$httpProvider', function ($httpProvider) {
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -926,9 +926,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         } else if (field.fieldType === 'url'){
-            return '<a href="' + value + '" target="_blank">' + value + '</a>';
+            return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
-            return '<a href="mailto:' + value + '"  target="_blank">' + value + '</a>';
+            return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (value instanceof Array) {
             return value.join(', ');
         } else {
@@ -2032,16 +2032,32 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
             '@opportunity': getOpportunityId(),
-            '@limit': 10000,
+            '@limit': 50,
             '@select': 'id,singleUrl,owner.{id,name}'
         });
 
         var evaluationsApi = new OpportunityApiService($scope, 'evaluations', 'findEvaluations', {
             '@opportunity': getOpportunityId(),
-            '@limit': 10000,
+            '@limit': 50,
             '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
         });
 
+
+        $scope.canCall = true; // variavel usada para nao dar "loop" na chamda da API, somente faz uma chamada apos a anterior ter terminada
+        $scope.loadMore = () => {
+            if(evaluationsApi.finish()){
+                return null;
+            }
+            if($scope.canCall) {
+                $scope.canCall = false;
+                registrationsApi.find().success(function(){
+                    $scope.canCall = true;  
+                    $scope.registrations = $scope.data.registrations;
+                });
+
+            }
+        };
+     
         registrationsApi.find().success(function(){
             $scope.registrations = $scope.data.registrations;
         });

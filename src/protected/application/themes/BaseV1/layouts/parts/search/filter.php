@@ -2,7 +2,7 @@
     <header class="clearfix">
         <a href="<?php echo $app->getBaseUrl() ?>" class="icon icon-go-back"></a>
         <?php echo $display_name; ?>
-        <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()"></a>
+        <a class="icon icon-show-advanced-search" ng-click="toggleAdvancedFilters()" rel='noopener noreferrer'></a>
     </header>
     <div ng-show="showSearch()">
         <form class="form-palavra-chave filter search-filter--keyword">

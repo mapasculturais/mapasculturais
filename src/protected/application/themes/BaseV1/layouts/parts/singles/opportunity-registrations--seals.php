@@ -22,7 +22,7 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 					        <div class="selos clearfix">
 					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('owner', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
-									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
+									<h3><a href="{{seal.singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seal.name}}</a></h3>
 					            </div>
 					        </div>
 					    </div>
@@ -30,7 +30,7 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 					<div ng-if="entity.registrationSeals.owner" class="avatar-seal">
 						<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.owner)]['@files:avatar.avatarMedium'].url)}}">
 		                <div class="descricao-do-selo">
-		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].name}}</a></h1>
+		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seals[getArrIndexBySealId(entity.registrationSeals.owner)].name}}</a></h1>
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-owner', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{seals[getArrIndexBySealId(entity.registrationSeals.owner)].name}}"><?php \MapasCulturais\i::_e("Trocar selo");?></a>
@@ -52,7 +52,7 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 					        <div class="selos clearfix">
 					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('institution', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}">
-									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
+									<h3><a href="{{seal.singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seal.name}}</a></h3>
 					            </div>
 					        </div>
 					    </div>
@@ -60,7 +60,7 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 					<div ng-if="entity.registrationSeals.institution" class="avatar-seal">
 						<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.institution)]['@files:avatar.avatarMedium'].url)}}">
 		                <div class="descricao-do-selo">
-		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].name}}</a></h1>
+		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seals[getArrIndexBySealId(entity.registrationSeals.institution)].name}}</a></h1>
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-institution', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{seals[getArrIndexBySealId(entity.registrationSeals.institution)].name}}"><?php \MapasCulturais\i::_e("Trocar selo");?></a>
@@ -82,7 +82,7 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 					        <div class="selos clearfix">
 					            <div ng-if="!sealRelated(seal)" class="avatar-seal modal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}"  ng-click="setSeal('collective', seal)">
 									<img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}" width="48">
-									<h3><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h3>
+									<h3><a href="{{seal.singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seal.name}}</a></h3>
 					            </div>
 					        </div>
 					    </div>
@@ -90,7 +90,7 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 	            	<div ng-if="entity.registrationSeals.collective" class="avatar-seal">
 						<img ng-src="{{avatarUrl(seals[getArrIndexBySealId(entity.registrationSeals.collective)]['@files:avatar.avatarMedium'].url)}}">
 		                <div class="descricao-do-selo">
-		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].singleUrl}}" class="ng-binding">{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].name}}</a></h1>
+		                    <h1><a href="{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seals[getArrIndexBySealId(entity.registrationSeals.collective)].name}}</a></h1>
 		                </div>
 		                <div align="right">
 		                	<a class="btn btn-default edit hltip" ng-click="openEditBox('set-seal-collective', $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{seals[getArrIndexBySealId(entity.registrationSeals.collective)].name}}"><?php \MapasCulturais\i::_e("Trocar selo");?></a>
