@@ -775,7 +775,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
+              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
               $notification->save();
 
               // use the notification id to use it later on entity update
@@ -792,7 +792,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$lastUpdateDate->format("d/m/Y"),$space->editUrl);
+              $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$lastUpdateDate->format("d/m/Y"),$space->editUrl);
               $notification->save();
               // use the notification id to use it later on entity update
               $space->sentNotification = $notification->id;
@@ -812,14 +812,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                     if($diff <= 0.00) {
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
                         $notification->save();
                     } elseif($diff <= $app->config['notifications.seal.toExpire']) {
                         $diff = is_int($diff)? $diff: round($diff);
                         $diff = $diff == 0? $diff = 1: $diff;
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href=''>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='' rel='noopener noreferrer'>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
                         $notification->save();
                     }
                 }
@@ -833,14 +833,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                     if($diff <= 0.00) {
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
                         $notification->save();
                     } elseif($diff <= $app->config['notifications.seal.toExpire']) {
                         $diff = is_int($diff)? $diff: round($diff);
                         $diff = $diff == 0? $diff = 1: $diff;
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
                         $notification->save();
                     }
                   }

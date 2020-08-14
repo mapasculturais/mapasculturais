@@ -44,6 +44,13 @@ if($this->controller->action === 'create')
             <input type='checkbox' ng-model="data.copy" name="copy">
             <label for="copy"><?php i::_e("Receber cópia da denúncia");?></label>
         </p>
+        
+        <?php if (isset($googleRecaptchaSiteKey)): ?>
+            <p>
+                <div class="g-recaptcha" data-sitekey="<?php echo $googleRecaptchaSiteKey; ?>" data-callback="captcha"></div>
+            </p>
+        <?php endif; ?>
+
         <p ng-show="!data.compliantStatus">
             <button ng-click="data.showForm = false" class="button-form-compliant-suggestion suggestion btn-default" ><?php i::_e('Cancelar'); ?></button>
             <button class="js-submit-button compliant-form btn-warning" ng-click="send()"><?php i::_e("Enviar Denúncia");?></button>
@@ -104,6 +111,13 @@ if($this->controller->action === 'create')
                 <?php i::_e("Receber cópia da mensagem");?>
             </label>
         </p>
+
+        <?php if (isset($googleRecaptchaSiteKey)): ?>
+        <p>
+            <div class="g-recaptcha" data-sitekey="<?php echo $googleRecaptchaSiteKey; ?>" data-callback="captchasuggestion"></div>
+        </p>
+        <?php endif; ?>
+
         <p ng-show="!data.suggestionStatus">
             <button ng-click="data.showForm = false" class="button-form-compliant-suggestion suggestion btn-default" ><?php i::_e('Cancelar'); ?></button>
             <button class="js-submit-button suggestion-form btn-success" ng-click="send()"><?php i::_e("Enviar mensagem");?></button>

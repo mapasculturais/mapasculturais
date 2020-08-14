@@ -28,9 +28,9 @@ if($this->controller->action === 'create')
     </div>
     <?php if($this->isEditable()): ?>
         <p class="gallery-footer">
-            <a class="btn btn-default add js-open-editbox" data-target="#editbox-gallery-image" href="#"><?php \MapasCulturais\i::_e("Adicionar imagem");?></a>
+            <a class="btn btn-default add js-open-editbox" data-target="#editbox-gallery-image" href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar imagem");?></a>
             <div id="editbox-gallery-image" class="js-editbox mc-top" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Imagem na Galeria");?>">
-                <?php $this->ajaxUploader($entity, 'gallery', 'append', 'div.js-gallery', '<div id="file-{{id}}" class="image-gallery-item" ><a href="{{url}}"><img src="{{files.galleryThumb.url}}" /></a> <a data-href="{{deleteUrl}}" data-target="#file-{{id}}" class="btn btn-default delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title='. \MapasCulturais\i::__("Excluir").'></a></div>', 'galleryThumb', true)?>
+                <?php $this->ajaxUploader($entity, 'gallery', 'append', 'div.js-gallery', '<div id="file-{{id}}" class="image-gallery-item" ><a href="{{url}}" rel="noopener noreferrer"><img src="{{files.galleryThumb.url}}" /></a> <a data-href="{{deleteUrl}}" data-target="#file-{{id}}" class="btn btn-default delete hltip js-remove-item" data-hltip-classes="hltip-ajuda" title='. \MapasCulturais\i::__("Excluir").' rel="noopener noreferrer"></a></div>', 'galleryThumb', true)?>
             </div>
         </p>
     <?php endif; ?>

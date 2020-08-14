@@ -37,8 +37,8 @@ $url_search_spaces = $this->searchSpacesUrl;
         <p><?php echo $app->view->renderMarkdown($this->dict('home: spaces',false)); ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre ");?><?php $this->dict('entities: spaces') ?> <?php \MapasCulturais\i::_e(" por ");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#space-terms"><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
-            <li><a href="#space-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
+            <li class="active"><a href="#space-terms" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
+            <li><a href="#space-types" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Tipo");?></a></li>
         </ul>
         <div id="space-terms" class="tag-box">
             <div>

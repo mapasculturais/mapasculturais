@@ -21,7 +21,7 @@ $this->addRelatedSealsToJs($entity);
                         <div ng-if="!sealRelated(seal.id)" class="avatar-seal" ng-repeat="seal in seals" ng-class="{pending: seal.status < 0}" ng-click="createRelation(seal)">
                             <img ng-src="{{avatarUrl(seal['@files:avatar.avatarMedium'].url)}}">
                             <div class="descricao-do-selo">
-                                <h1><a href="{{seal.singleUrl}}" class="ng-binding">{{seal.name}}</a></h1>
+                                <h1><a href="{{seal.singleUrl}}" class="ng-binding" rel='noopener noreferrer'>{{seal.name}}</a></h1>
                             </div>
                         </div>
                     </div>

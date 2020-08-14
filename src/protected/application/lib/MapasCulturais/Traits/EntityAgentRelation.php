@@ -228,6 +228,10 @@ trait EntityAgentRelation {
         $relation->owner = $this;
         $relation->group = $group;
 
+        if($errors = $relation->getValidationErrors()){
+            throw new \Exception(\MapasCulturais\i::__('Error to create agent relation'));
+        }
+
         if($has_control)
             $relation->hasControl = true;
 

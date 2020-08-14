@@ -9,13 +9,13 @@ $this->addRelatedAdminAgentsToJs($entity);
         <h3><?php \MapasCulturais\i::_e("Administradores");?></h3>
         <div class="agentes clearfix">
             <div class="avatar" ng-repeat="admin in admins">
-                <a href="{{admin.agent.singleUrl}}" ng-if="!isEditable">
+                <a href="{{admin.agent.singleUrl}}" ng-if="!isEditable" rel='noopener noreferrer'>
                     <img ng-src="{{avatarUrl(admin.agent)}}" />
                 </a>
                 <img ng-if="isEditable" ng-src="{{avatarUrl(admin.agent)}}" />
 
                 <div class="descricao-do-agente">
-                    <h1><a href="{{admin.agent.singleUrl}}">{{admin.agent.name}}</a></h1>
+                    <h1><a href="{{admin.agent.singleUrl}}" rel='noopener noreferrer'>{{admin.agent.name}}</a></h1>
                     <div class="alert warning" ng-if="admin.status < 0"><?php \MapasCulturais\i::_e("Aguardando confirmação.");?></div>
                     <div class="objeto-meta">
                         <div ng-if="admin.agent.terms.area">
@@ -25,7 +25,7 @@ $this->addRelatedAdminAgentsToJs($entity);
                         <div><span class="label"><?php \MapasCulturais\i::_e("tipo:");?> </span> {{admin.agent.type.name}}</div>
                     </div>
                     <div ng-if="isEditable">
-                        <a href="#" class="btn btn-danger delete" ng-click="deleteAdminRelation(admin.agent)"><?php \MapasCulturais\i::_e("Excluir");?></a>
+                        <a href="#" class="btn btn-danger delete" ng-click="deleteAdminRelation(admin.agent)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Excluir");?></a>
                     </div>
                 </div>
             </div>

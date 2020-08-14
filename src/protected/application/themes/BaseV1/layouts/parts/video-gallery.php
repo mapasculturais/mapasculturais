@@ -11,7 +11,7 @@ if($this->controller->action === 'create' || !is_object($entity))
 $videos = $entity->getMetaLists('videos');
 $spinner_url = $this->asset("img/spinner_192.gif", false);
 $template = "<li id='video-{{id}}'>
-                <a class='js-metalist-item-display' href='#video' data-videolink='{{value}}'>
+                <a class='js-metalist-item-display' href='#video' data-videolink='{{value}}' rel='noopener noreferrer'>
                     <img src='{$spinner_url}' class='thumbnail_med_wide'/>
                     <h1 class='title'>{{title}}</h1>
                 </a>
@@ -22,7 +22,7 @@ $template = "<li id='video-{{id}}'>
                         data-response-target='#video-{{id}}'
                         data-metalist-action='edit'
                         href='#' title='Editar'></a>
-                    <a class='delete js-metalist-item-delete hltip js-remove-item'  data-href='{{deleteUrl}}'  data-target='#video-{{id}}'  data-confirm-messagem='Excluir este vídeo?' title='Excluir'></a>
+                    <a class='delete js-metalist-item-delete hltip js-remove-item'  data-href='{{deleteUrl}}'  data-target='#video-{{id}}'  data-confirm-messagem='Excluir este vídeo?' title='Excluir' rel='noopener noreferrer'></a>
                 </div>
             </li>";
 ?>
@@ -33,7 +33,7 @@ $template = "<li id='video-{{id}}'>
 
 <?php if ($this->isEditable() || $videos): ?>
     <h3><?php \MapasCulturais\i::_e("Vídeos");?></h3>
-    <a name="video"></a>
+    <a name="video" rel='noopener noreferrer'></a>
     <div id="video-player" class="video" ng-non-bindable>
         <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     </div>

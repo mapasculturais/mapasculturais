@@ -10,7 +10,7 @@
                 </edit-box>
             </div>
             <div>
-                <a class="btn btn-primary" ng-click="register()"><?php \MapasCulturais\i::_e("Fazer inscrição");?></a>
+                <a class="btn btn-primary" ng-click="register()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Fazer inscrição");?></a>
             </div>
         </form>
     <?php else: ?>

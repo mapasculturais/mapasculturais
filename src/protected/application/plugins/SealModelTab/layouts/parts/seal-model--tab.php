@@ -1,1 +1,1 @@
-<li><a href="#seal-model">Modelos</a></li>
+<li><a href="#seal-model" rel='noopener noreferrer'>Modelos</a></li>

@@ -36,7 +36,7 @@ $opportunity_img_attributes = 'class="random-feature no-image"';
         <p><?php $this->dict('home: opportunities') ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre oportunidades por");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#opportunity-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
+            <li class="active"><a href="#opportunity-types" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Tipo");?></a></li>
         </ul>
         <div id="opportunity-types"  class="tag-box">
             <div>

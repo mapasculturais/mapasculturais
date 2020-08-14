@@ -10,11 +10,11 @@ $label = \MapasCulturais\i::__("Adicionar novo agente");
 	</header>
     <ul class="abas clearfix clear">
 
-        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledAgents); ?>)</a></li>
-        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlAgents); ?>)</a></li>
-        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftAgents); ?>)</a></li>
-        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedAgents); ?>)</a></li>
-        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedAgents);?>)</a></li>
+        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledAgents); ?>)</a></li>
+        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlAgents); ?>)</a></li>
+        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftAgents); ?>)</a></li>
+        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedAgents); ?>)</a></li>
+        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedAgents);?>)</a></li>
     </ul>
     <div id="ativos">
 		<?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>

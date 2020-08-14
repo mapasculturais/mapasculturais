@@ -1,7 +1,7 @@
 <div class="registration-fieldset">
     <?php if($entity->opportunity->isRegistrationOpen()): ?>
         <p class="registration-help"><?php \MapasCulturais\i::_e("Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição.");?> <strong><?php \MapasCulturais\i::_e("Depois de enviada, não será mais possível editá-la.");?></strong></p>
-        <a class="btn btn-primary" ng-click="sendRegistration()"><?php \MapasCulturais\i::_e("Enviar inscrição");?></a>
+        <a class="btn btn-primary" ng-click="sendRegistration()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Enviar inscrição");?></a>
     <?php else: ?>
         <p class="registration-help">
             <strong>

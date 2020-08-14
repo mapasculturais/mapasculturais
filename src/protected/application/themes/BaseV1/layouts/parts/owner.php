@@ -34,11 +34,11 @@ if ($this->isEditable() || "$entity" != "$owner"):
         <p class="owner-description js-owner-description"><?php echo nl2br($owner->shortDescription); ?></p>
         <div class="clearfix">
             <?php if (!$this->isEditable() && !$app->user->is('guest')): ?>
-                <a class="btn btn-small btn-default staging-hidden" href="#"><?php i::_e("Reportar erro"); ?></a>
+                <a class="btn btn-small btn-default staging-hidden" href="#" rel='noopener noreferrer'><?php i::_e("Reportar erro"); ?></a>
                 <?php if($entity->canUser('changeOwner')): ?>
-                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)"><?php i::_e("Ceder propriedade");?></a>
+                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)" rel='noopener noreferrer'><?php i::_e("Ceder propriedade");?></a>
                 <?php else: ?>
-                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)"><?php i::_e("Reivindicar propriedade");?></a>
+                    <a id="change-owner-button" class="btn btn-small btn-primary" ng-click="editbox.open('editbox-change-owner', $event)" rel='noopener noreferrer'><?php i::_e("Reivindicar propriedade");?></a>
                 <?php endif; ?>
                 <edit-box id="editbox-change-owner" position="right" title="<?php i::esc_attr_e("Selecione o agente para o qual você deseja passar a propriedade deste");?> <?php echo strtolower($entity->getEntityTypeLabel()) ?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" close-on-cancel='true' spinner-condition="data.spinner">
                     <find-entity id='find-entity-change-owner' entity="agent" no-results-text="<?php i::esc_attr_e("Nenhum agente encontrado");?>" select="requestEntity" api-query='data.apiQuery' spinner-condition="data.spinner"></find-entity>
