@@ -1808,6 +1808,7 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
+            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -2397,6 +2398,8 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
+        $this->jsObject['entity']['registrationSpace'] = $entity->spaceRelation;
+        $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
         if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['registration'] = $entity;
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);

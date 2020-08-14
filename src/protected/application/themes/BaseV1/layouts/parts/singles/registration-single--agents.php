@@ -5,7 +5,6 @@ foreach($agentsRelated as $k => $agents){
 }
 $agentsRelated['owner'] = $entity->owner;
 ?>
-
 <div class="registration-fieldset">
     <h4><?php \MapasCulturais\i::_e("Agentes (proponentes)");?></h4>
     <!-- agentes relacionados a inscricao -->

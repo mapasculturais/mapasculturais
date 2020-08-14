@@ -4,7 +4,9 @@ if(!$app->isEnabled('seals') || !$app->user->hasControlSeals)
 ?>
 <!-- BEGIN Seals -->
 <div id="registration-seals" class="registration-fieldset">
+
 	<h4><?php \MapasCulturais\i::_e("Selos Certificadores");?></h4>
+
 	<p class="registration-help"><?php \MapasCulturais\i::_e("Relacione os selos que serão atribuídos as entidades relacionadas a inscrição quando o inscrito for aprovado.");?></p>
 	<div class="registration-related-agent-configuration" ng-controller="SealsController">
 		<p>
