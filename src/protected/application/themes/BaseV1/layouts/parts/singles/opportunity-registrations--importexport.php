@@ -20,7 +20,7 @@
 
         <p><?php \MapasCulturais\i::_e("Selecione abaixo um arquivo exportado de outro formulário. As configurações e campos deste formulário serão substituídas pelas do arquivo importado.");?> </p>
 
-        <!--    <a class="btn btn-default add" title="" ng-click="showImportFields = !showImportFields">--><?php //\MapasCulturais\i::_e("Importar Campos");?><!--</a>-->
+        <!--    <a class="btn btn-default add" title="" ng-click="showImportFields = !showImportFields" rel='noopener noreferrer'>--><?php //\MapasCulturais\i::_e("Importar Campos");?><!--</a>-->
 
         <?php if ($entity->canUser('modifyRegistrationFields')): ?>
             <div > <!-- ng-show="showImportFields" -->

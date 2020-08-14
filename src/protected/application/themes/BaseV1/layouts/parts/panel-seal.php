@@ -3,7 +3,7 @@ use MapasCulturais\Entities\Seal;
 ?>
 <article class="objeto clearfix">
     <h1>
-        <a class="icon icon-seal hltip"></a>
+        <a class="icon icon-seal hltip" rel='noopener noreferrer'></a>
         <a href="<?php echo $entity->singleUrl; ?>"><?php echo $entity->name; ?></a>
     </h1>
     <div class="objeto-meta">

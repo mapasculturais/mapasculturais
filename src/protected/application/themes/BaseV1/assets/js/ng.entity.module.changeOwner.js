@@ -79,7 +79,7 @@
                     requestMessage = requestMessage.replace('{{recipient}}', '<strong>'+e.name+'</strong>');
                     MapasCulturais.Messages.alert(requestMessage);
                 }else{
-                    $('.js-owner-name').html('<a href="' + e.singleUrl + '">' + e.name + '</a>');
+                    $('.js-owner-name').html('<a href="' + e.singleUrl + '" rel="noopener noreferrer">' + e.name + '</a>');
                     $('.js-owner-description').html(e.shortDescription);
                     try{
                         $('.js-owner-avatar').attr('src', e['@files:avatar.avatarSmall'].url);

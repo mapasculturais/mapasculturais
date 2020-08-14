@@ -41,12 +41,12 @@ use MapasCulturais\i;
             <td class="registration-agents-col">
                 <p>
                     <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
-                    <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
+                    <a href="{{reg.owner.singleUrl}}" rel='noopener noreferrer'>{{reg.owner.name}}</a>
                 </p>
 
                 <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
                     <span class="label">{{relation.label}}</span><br />
-                    <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
+                    <a href="{{relation.agent.singleUrl}}" rel='noopener noreferrer'>{{relation.agent.name}}</a>
                 </p>
             </td>
 

@@ -17,8 +17,8 @@ $editable_class = $can_edit ? 'js-editable' : '';
             <?php $this->part('singles/opportunity-registrations--fields--project-name', ['editable_class' => $editable_class, 'entity' => $entity]) ?>
 
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
-                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
-                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)"><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
+                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
+                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
             </p>
         <?php endif; ?>
         <!-- edit-box to add attachment -->
@@ -133,12 +133,12 @@ $editable_class = $can_edit ? 'js-editable' : '';
                                         <a ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("Excluir modelo");?>"></a>
                                     </div>
                                     <p ng-if="!data.entity.canUserModifyRegistrationFields">
-                                        <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank">{{field.template.name}}</a>
+                                        <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank" rel='noopener noreferrer'>{{field.template.name}}</a>
                                     </p>
                                     <!-- edit-box to upload attachments -->
                                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-template-{{field.id}}" position="top" title="<?php \MapasCulturais\i::esc_attr_e("Enviar modelo");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar modelo");?>" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                         <p ng-if="field.template">
-                                            <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank">{{field.template.name}}</a>
+                                            <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank" rel='noopener noreferrer'>{{field.template.name}}</a>
                                         </p>
                                         <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(field.id)}}" enctype="multipart/form-data">
                                             <div class="alert danger hidden"></div>
