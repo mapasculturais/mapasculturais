@@ -790,14 +790,26 @@ MapasCulturais.Editables = {
                                 removeClass('danger');
 
                         
-                        if(response.redirect == undefined || response.redirect == true ) {
-                            if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
-                                if(response.status == 1) {
-                                    document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
-                                } else {
-                                    document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                        //parametro passado pelo backend para controllar o redirecionamento apos salvar a entidade
+                        // exemplo no backend: 
+                        // $json->redirect = "true";
+                        // $json->url = ['controller'=>'aldirblanc', 'action'=>'selecionaragente'];
+                        if(response.redirect == undefined || response.redirect === 'true' ) {
+                            if(response.url) {
+                                
+                                document.location = MapasCulturais.createUrl(response.url.controller, response.url.action, [response.id]);
+                                
+                            } else {
+
+                                if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
+                                    if(response.status == 1) {
+                                        document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
+                                    } else {
+                                        document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                                    }
                                 }
                             }
+                            
                         }
 
                         
