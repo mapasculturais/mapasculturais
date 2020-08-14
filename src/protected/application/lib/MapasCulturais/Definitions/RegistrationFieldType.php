@@ -15,6 +15,8 @@ class RegistrationFieldType extends \MapasCulturais\Definition {
     protected $serialize;
     protected $unserialize;
     protected $requireValuesConfiguration = false;
+    protected $viewTemplate = '';
+    protected $configTemplate = '';
 
     public function __construct(array $config) {
         $default = [

@@ -453,8 +453,9 @@ class Opportunity extends EntityController {
             return $registrations;
         } else {
             $registration_ids = implode(',', $registration_ids);
+        }
 
-        $committee = $this->_getOpportunityCommittee($opportunity_id);
+        $committee = $this->_getOpportunityCommittee($opportunity->id);
         $params = [
             'opp' => $opportunity,
             'aids' => array_map(function ($el){ return $el['id']; }, $committee)

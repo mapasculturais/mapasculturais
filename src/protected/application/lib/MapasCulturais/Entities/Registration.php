@@ -741,22 +741,19 @@ class Registration extends \MapasCulturais\Entity
         }        
         $spaceDefined = $this->getSpaceRelation();
        
-        if($isSpaceRelationRequired === 'required'){
-            if($spaceDefined === null) {
-                $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+        if(isset($isSpaceRelationRequired)){
+            if($isSpaceRelationRequired === 'required'){
+                if($spaceDefined === null) {
+                    $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
+                }
+            }
+            if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
+                //Espaço não autorizado
+                if( $spaceDefined && $spaceDefined->status < 0){
+                    $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
+                }
             }
         }
-        //dump($spaceDefined->status);
-        //dump($isSpaceRelationRequired);
-        //die();
-        //adicionar 
-        if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
-            //Espaço não autorizado
-            if( $spaceDefined && $spaceDefined->status < 0){
-                $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
-            }
-        }
-        
         //|| $isSpaceRelationRequired === 'optional'
         if(!is_null($spaceDefined)){
             $app = App::i();
