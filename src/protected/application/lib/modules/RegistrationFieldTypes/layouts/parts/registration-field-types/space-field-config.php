@@ -1,11 +1,11 @@
 <?php
 $app = MapasCulturais\App::i();
-$definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
-$agent_fields = $app->modules['RegistrationFieldTypes']->config['availableAgentFields'];
+$definitions = MapasCulturais\Entities\Space::getPropertiesMetadata();
+$space_fields = $app->modules['RegistrationFieldTypes']->config['availableSpaceFields'];
 
 $fields_options = [];
 
-foreach ($agent_fields as $field) {
+foreach ($space_fields as $field) {
     if (isset($definitions[$field])) {
         $def = $definitions[$field];
         $fields_options[$field] = $def['label'] ?: $field;
@@ -14,8 +14,8 @@ foreach ($agent_fields as $field) {
     }
 }
 ?>
-<div ng-if="field.fieldType === 'agent-owner-field'">
-    <select ng-model="field.agentField">
+<div ng-if="field.fieldType === 'space-field'">
+    <select ng-model="field.spaceField">
         <?php foreach ($fields_options as $key => $label) : ?>
             <option value="<?= $key ?>"><?= $label ?></option>
             <?php endforeach; ?>
