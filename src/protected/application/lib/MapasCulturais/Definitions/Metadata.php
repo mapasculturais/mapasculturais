@@ -82,6 +82,8 @@ class Metadata extends \MapasCulturais\Definition{
 
     protected $unserialize = null;
 
+    protected $available_for_opportunities = false;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -122,6 +124,8 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->serialize = key_exists('serialize', $config) ? $config['serialize'] : null;
         $this->unserialize = key_exists('unserialize', $config) ? $config['unserialize'] : null;
+        
+        $this->available_for_opportunities = key_exists('available_for_opportunities', $config) ? $config['available_for_opportunities'] : false;
 
         if($this->is_unique) {
             $this->is_unique_error_message = $config['validations']['unique'];
@@ -246,7 +250,8 @@ class Metadata extends \MapasCulturais\Definition{
             'required'  => $this->is_required,
             'type' => $this->type,
             'length' => key_exists('length', $this->config) ? $this->config['length'] : null,
-            'private' => $this->private
+            'private' => $this->private,
+            'available_for_opportunities' => $this->available_for_opportunities
         ];
 
         if(key_exists('options', $this->config)){
