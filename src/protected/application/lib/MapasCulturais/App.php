@@ -43,6 +43,8 @@ use WideImage\Exception\Exception;
  *
  * @property-read array $config
  *
+ * @property-read \MapasCulturais\Module[] $modules active modules
+ * @property-read \MapasCulturais\Plugin[] $plugins active plugins
  *
  * @method \MapasCulturais\App i() Returns the application object
  */
