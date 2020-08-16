@@ -5,6 +5,7 @@ namespace RegistrationFieldTypes;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space;
 use MapasCulturais\Definitions\RegistrationFieldType;
 
 class Module extends \MapasCulturais\Module
@@ -32,7 +33,20 @@ class Module extends \MapasCulturais\Module
         }
         
         $this->_config['availableAgentFields'] = $agent_fields;
-
+        //Campos do espaço disponiveis na oportunidade
+        $space_fields = ['name', '_type', 'shortDescription', '@location'];
+        
+        $definitions = Space::getMetadataMetadata();
+        
+        foreach ($definitions as $key => $def) {
+            $def = (object) $def;
+            if ($def->isMetadata && $def->available_for_opportunities) {
+                $agent_fields[] = $key;
+            }
+        }
+        
+        $this->_config['availableSpaceFields'] = $agent_fields;
+        
     }
 
     function getRegistrationFieldTypesDefinitions()
