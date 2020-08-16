@@ -141,11 +141,25 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/agent-owner-field',
                 'configTemplate' => 'registration-field-types/agent-owner-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function ($value) {
+                'serialize' => function ($value, $registration = null, $metadata_definition = null) {
+                    if(isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])){
+                        $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
+                        $agent = $registration->owner;
+
+                        $agent->$agent_field = $value;
+                        $agent->save();
+                    }
+
                     return json_encode($value);
                 },
-                'unserialize' => function ($value) {
-                    return json_decode($value);
+                'unserialize' => function ($value, $registration = null, $metadata_definition = null) {
+                    if(isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])){
+                        $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
+                        $agent = $registration->owner;
+                        return $agent->$agent_field;
+                    } else {
+                        return json_decode($value);
+                    }
                 }
             ]
         ];
