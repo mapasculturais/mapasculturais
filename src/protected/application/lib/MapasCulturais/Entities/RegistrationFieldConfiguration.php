@@ -92,6 +92,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      */
     protected $fieldOptions = [];
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="config", type="array", length=255)
+     */
+    protected $config = [];
+
     static function getValidations() {
         return [
             'owner' => [ 
