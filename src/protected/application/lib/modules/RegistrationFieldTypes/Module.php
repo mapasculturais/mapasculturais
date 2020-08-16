@@ -152,7 +152,21 @@ class Module extends \MapasCulturais\Module
                 'unserialize' => function ($value) {
                     return json_decode($value);
                 }
+            ],
+            [
+                'slug' => 'space-field',
+                'name' => \MapasCulturais\i::__(' Campo do Espaço'),
+                'viewTemplate' => 'registration-field-types/space-field',
+                'configTemplate' => 'registration-field-types/space-field-config',
+                'requireValuesConfiguration' => true,
+                'serialize' => function ($value) {
+                    return json_encode($value);
+                },
+                'unserialize' => function ($value) {
+                    return json_decode($value);
+                }
             ]
+
         ];
 
         return $registration_field_types;
