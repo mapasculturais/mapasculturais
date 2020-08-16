@@ -1162,6 +1162,15 @@ return [
             $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
             
         }
-    }
+    },
+
+    'alter table registration_field_configuration add column config' => function() use($conn){
+        if(!__column_exists('registration_field_configuration', 'config')){
+            __exec("
+                ALTER TABLE registration_field_configuration 
+                ADD config TEXT;
+            ");
+        }
+    },
 
 ] + $updates ;
