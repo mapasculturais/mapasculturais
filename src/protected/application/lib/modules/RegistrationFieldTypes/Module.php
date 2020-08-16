@@ -3,10 +3,31 @@
 namespace RegistrationFieldTypes;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\Definitions\RegistrationFieldType;
 
 class Module extends \MapasCulturais\Module
 {
+    function __construct(array $config = [])
+    {
+        $definitions = Agent::getPropertiesMetadata();
+        
+        $agent_fields = ['name', '_type', 'shortDescription', '@location'];
+        
+        foreach ($definitions as $key => $def) {
+            $def = (object) $def;
+            if ($def->isMetadata && $def->available_for_opportunities) {
+                $agent_fields[] = $key;
+            }
+        }
+        
+        $config += [
+            'availableAgentFields' => $agent_fields
+        ];
+
+        parent::__construct($config);
+    }
 
     public function _init()
     {
@@ -15,7 +36,7 @@ class Module extends \MapasCulturais\Module
     public function register()
     {
         $app = App::i();
-        foreach($this->getRegistrationFieldTypesDefinitions() as $definition){
+        foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
     }
@@ -118,9 +139,22 @@ class Module extends \MapasCulturais\Module
                 'unserialize' => function ($value) {
                     return json_decode($value);
                 }
+            ],
+            [
+                'slug' => 'agent-owner-field',
+                'name' => \MapasCulturais\i::__(' Campo do Agente Responsável'),
+                'viewTemplate' => 'registration-field-types/agent-owner-field',
+                'configTemplate' => 'registration-field-types/agent-owner-field-config',
+                'requireValuesConfiguration' => true,
+                'serialize' => function ($value) {
+                    return json_encode($value);
+                },
+                'unserialize' => function ($value) {
+                    return json_decode($value);
+                }
             ]
         ];
 
-        return $registration_field_types; 
+        return $registration_field_types;
     }
 }
