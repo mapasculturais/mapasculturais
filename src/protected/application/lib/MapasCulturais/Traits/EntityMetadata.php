@@ -86,7 +86,7 @@ trait EntityMetadata{
             
             if(is_callable($def->unserialize)){
                 $cb = $def->unserialize;
-                $value = $cb($value);
+                $value = $cb($value, $this, $def);
             }
             return $value;
         }
@@ -103,7 +103,7 @@ trait EntityMetadata{
         if($def = $this->getRegisteredMetadata($name)){
             if(is_callable($def->serialize)){
                 $cb = $def->serialize;
-                $value = $cb($value);
+                $value = $cb($value, $this, $def);
             }
             $this->setMetadata($name, $value);
             return true;

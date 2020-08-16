@@ -15,7 +15,7 @@ foreach ($agent_fields as $field) {
 }
 ?>
 <div ng-if="field.fieldType === 'agent-owner-field'">
-    <select ng-model="field.agentField">
+    <select ng-model="field.config.agentField">
         <?php foreach ($fields_options as $key => $label) : ?>
             <option value="<?= $key ?>"><?= $label ?></option>
         <?php endforeach; ?>
