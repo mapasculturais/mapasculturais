@@ -158,6 +158,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'required' => $this->required,
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
+        'config' => $this->config,
         'categories' => $this->categories,
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder
