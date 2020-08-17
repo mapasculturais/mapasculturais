@@ -41,11 +41,10 @@ class Module extends \MapasCulturais\Module
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
             if ($def->isMetadata && $def->available_for_opportunities) {
-                $agent_fields[] = $key;
+                $space_fields[] = $key;
             }
         }
-        
-        $this->_config['availableSpaceFields'] = $agent_fields;
+        $this->_config['availableSpaceFields'] = $space_fields;
         
     }
 
@@ -182,11 +181,30 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/space-field',
                 'configTemplate' => 'registration-field-types/space-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function ($value) {
+                'serialize' => function ($value, \MapasCulturais\Entities\Registration $registration = null, $metadata_definition = null) {
+                    if(isset($metadata_definition->config['registrationFieldConfiguration']->config['spaceField'])){
+                        $space_field = $metadata_definition->config['registrationFieldConfiguration']->config['spaceField'];
+                        $relation = $registration->getSpaceRelation();
+                        if (!empty($relation)){
+                            $space = $relation->space;
+                            $space->$space_field = $value;
+                            $space->save();
+                        }                        
+                    }
                     return json_encode($value);
                 },
-                'unserialize' => function ($value) {
-                    return json_decode($value);
+                'unserialize' => function ($value, \MapasCulturais\Entities\Registration $registration = null, $metadata_definition = null) {
+                    if(isset($metadata_definition->config['registrationFieldConfiguration']->config['spaceField'])){
+                        $space_field = $metadata_definition->config['registrationFieldConfiguration']->config['spaceField'];
+                        $relation = $registration->getSpaceRelation();
+                        if (!empty($relation)){
+                            $space = $relation->space;
+                            return $space->$space_field;
+                        }
+                        return null;
+                    } else {
+                        return json_decode($value);
+                    }
                 }
             ]
 

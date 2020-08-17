@@ -9,7 +9,7 @@ return array(
             'validations' => array(
                 'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
 
         'emailPrivado' => array(
@@ -18,7 +18,7 @@ return array(
                 'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
             ),
             'private' => true,
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
             
         ),
 
@@ -28,7 +28,7 @@ return array(
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
 
         ),
 
@@ -39,7 +39,7 @@ return array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
             ),
         	'private' => true,
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
 
 
@@ -50,7 +50,7 @@ return array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
             ),
         	'private' => true,
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
 
         /*
@@ -176,35 +176,35 @@ return array(
             'validations' => array(
                 "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
         'facebook' => array(
             'label' => \MapasCulturais\i::__('Facebook'),
             'validations' => array(
                 "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
         'twitter' => array(
             'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
                 "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
         'googleplus' => array(
             'label' => \MapasCulturais\i::__('Google+'),
             'validations' => array(
                 "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         ),
         'instagram' => array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'validations' => array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             ),
-            'avaliable_for_opportunities' => true
+            'available_for_opportunities' => true
         )
     ),
 

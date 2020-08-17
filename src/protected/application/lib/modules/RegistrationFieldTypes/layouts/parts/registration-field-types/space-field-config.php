@@ -15,7 +15,7 @@ foreach ($space_fields as $field) {
 }
 ?>
 <div ng-if="field.fieldType === 'space-field'">
-    <select ng-model="field.spaceField">
+    <select ng-model="field.config.spaceField">
         <?php foreach ($fields_options as $key => $label) : ?>
             <option value="<?= $key ?>"><?= $label ?></option>
             <?php endforeach; ?>
