@@ -20,6 +20,11 @@ class Module extends \MapasCulturais\Module
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
 
+        $this->_config['availableAgentFields'] = $this->getAgentFields();
+    }
+
+    function getAgentFields()
+    {
         $agent_fields = ['name', '_type', 'shortDescription', '@location'];
         
         $definitions = Agent::getMetadataMetadata();
@@ -31,8 +36,7 @@ class Module extends \MapasCulturais\Module
             }
         }
         
-        $this->_config['availableAgentFields'] = $agent_fields;
-
+        return $agent_fields;
     }
 
     function getRegistrationFieldTypesDefinitions()
@@ -142,7 +146,7 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/agent-owner-field-config',
                 'requireValuesConfiguration' => true,
                 'serialize' => function ($value, $registration = null, $metadata_definition = null) {
-                    if(isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])){
+                    if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
                         $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
                         $agent = $registration->owner;
 
@@ -153,7 +157,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function ($value, $registration = null, $metadata_definition = null) {
-                    if(isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])){
+                    if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
                         $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
                         $agent = $registration->owner;
                         return $agent->$agent_field;
