@@ -84,6 +84,8 @@ class Metadata extends \MapasCulturais\Definition{
 
     protected $available_for_opportunities = false;
 
+    protected $field_type;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -126,6 +128,12 @@ class Metadata extends \MapasCulturais\Definition{
         $this->unserialize = key_exists('unserialize', $config) ? $config['unserialize'] : null;
         
         $this->available_for_opportunities = key_exists('available_for_opportunities', $config) ? $config['available_for_opportunities'] : false;
+
+        $this->field_type = key_exists('field_type', $config) ? $config['field_type'] : $this->type;
+
+        if ($this->field_type === 'string') {
+            $this->field_type = 'text'; 
+        }
 
         if($this->is_unique) {
             $this->is_unique_error_message = $config['validations']['unique'];
@@ -251,7 +259,8 @@ class Metadata extends \MapasCulturais\Definition{
             'type' => $this->type,
             'length' => key_exists('length', $this->config) ? $this->config['length'] : null,
             'private' => $this->private,
-            'available_for_opportunities' => $this->available_for_opportunities
+            'available_for_opportunities' => $this->available_for_opportunities,
+            'field_type' => $this->field_type
         ];
 
         if(key_exists('options', $this->config)){
@@ -263,17 +272,13 @@ class Metadata extends \MapasCulturais\Definition{
             $result['label'] = $this->config['label'];
         }
 
-
         if(key_exists('allowOther', $this->config)){
             $result['allowOther'] = $this->config['allowOther'];
         }
 
-
         if(key_exists('allowOtherText', $this->config)){
             $result['allowOtherText'] = $this->config['allowOtherText'];
         }
-
-
 
         return $result;
     }
