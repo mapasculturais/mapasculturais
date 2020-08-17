@@ -1,4 +1,5 @@
 <nav id="home-nav">
+    <?php $this->applyTemplateHook('home-nav','begin'); ?>
     <ul>
         <li><a class="up icon icon-arrow-up" href="#" rel='noopener noreferrer'></a></li>
         <li id="nav-intro">
@@ -47,4 +48,5 @@
         </li>
         <li><a class="down icon icon-select-arrow" href="#" rel='noopener noreferrer'></a></li>
     </ul>
+    <?php $this->applyTemplateHook('home-nav','end'); ?>
 </nav>
