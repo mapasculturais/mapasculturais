@@ -75,7 +75,8 @@ return array(
                 'Travesti' => \MapasCulturais\i::__('Travesti'),
                 'Outras' => \MapasCulturais\i::__('Outras')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'select'
         ),
 
         'orientacaoSexual' => array(
@@ -99,7 +100,8 @@ return array(
             'validations' => array(
                 'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
 
         'emailPrivado' => array(
@@ -109,7 +111,8 @@ return array(
                 //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
                 'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
 
         'telefonePublico' => array(
