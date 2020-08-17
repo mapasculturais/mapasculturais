@@ -21,6 +21,7 @@ $url_search_opportunities = $this->searchOpportunitiesUrl;
 $opportunity_img_attributes = 'class="random-feature no-image"';
 ?>
 <article id="home-opportunities" class="js-page-menu-item home-entity clearfix">
+    <?php $this->applyTemplateHook('home-opportunities','begin'); ?>
     <div class="box">
         <h1><span class="icon icon-opportunity"></span> <?php \MapasCulturais\i::_e("Oportunidades");?></h1>
         <div class="clearfix">
@@ -61,4 +62,5 @@ $opportunity_img_attributes = 'class="random-feature no-image"';
         <?php endif; ?>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_opportunities ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
+    <?php $this->applyTemplateHook('home-opportunities','end'); ?>
 </article>
