@@ -1,8 +1,26 @@
+<?php
+
+namespace MapasCulturais;
+
+$app = App::i();
+$agent_fields = $app->modules['RegistrationFieldTypes']->getAgentFields();
+$definitions = [];
+foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
+    if (in_array($key, $agent_fields)) {
+        $def = (object) $def;
+        if (empty($def->field_type)) {
+            $def->field_type = 'text';
+        }
+        $definitions[$key] = $def;
+    }
+}
+?>
 <div ng-if="field.fieldType === 'agent-owner-field'" id="registration-field-{{field.id}}">
     <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
-
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
-    <p style="position: relative;">
-        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-tpl="<textarea onkeyup='charCounter(this);' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></textarea><span id='charCounter'></span>" data-original-title="{{field.title}}" data-maxlength="{{ field.maxSize }}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-    </p>
+    <?php foreach ($definitions as $key => $def): ?> 
+        <p ng-if="field.config.agentField == '<?= $key ?>'" style="position: relative;">
+            <?php $this->part('registration-field-types/fields/' . $def->field_type); ?>
+        </p>
+    <?php endforeach; ?>
 </div>
