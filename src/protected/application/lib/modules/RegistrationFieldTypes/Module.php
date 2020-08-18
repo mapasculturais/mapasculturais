@@ -3,11 +3,12 @@
 namespace RegistrationFieldTypes;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\Definitions\RegistrationFieldType;
 
 class Module extends \MapasCulturais\Module
 {
-
     public function _init()
     {
     }
@@ -15,9 +16,41 @@ class Module extends \MapasCulturais\Module
     public function register()
     {
         $app = App::i();
-        foreach($this->getRegistrationFieldTypesDefinitions() as $definition){
+        foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
+
+        $agent_fields = Agent::getPropertiesMetadata();
+        $app->hook('controller(registration).registerFieldType(agent-owner-field)', function (\MapasCulturais\Entities\RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
+            $agent_field_name = $field->config['agentField'];
+            $agent_field = $agent_fields[$agent_field_name];
+
+            $registration_field_config['type'] = $agent_field['type'];
+            if(isset($agent_field['options'])){
+                $registration_field_config['options'] = $agent_field['options'];
+            }
+            if(isset($agent_field['optionsOrder'])){
+                $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
+            }
+        });
+
+        $this->_config['availableAgentFields'] = $this->getAgentFields();
+    }
+
+    function getAgentFields()
+    {
+        $agent_fields = ['name', '_type', 'shortDescription', '@location'];
+        
+        $definitions = Agent::getMetadataMetadata();
+        
+        foreach ($definitions as $key => $def) {
+            $def = (object) $def;
+            if ($def->isMetadata && $def->available_for_opportunities) {
+                $agent_fields[] = $key;
+            }
+        }
+        
+        return $agent_fields;
     }
 
     function getRegistrationFieldTypesDefinitions()
@@ -118,9 +151,37 @@ class Module extends \MapasCulturais\Module
                 'unserialize' => function ($value) {
                     return json_decode($value);
                 }
+            ],
+            [
+                'slug' => 'agent-owner-field',
+                // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
+                'name' => \MapasCulturais\i::__(' Campo do Agente Responsável'),
+                'viewTemplate' => 'registration-field-types/agent-owner-field',
+                'configTemplate' => 'registration-field-types/agent-owner-field-config',
+                'requireValuesConfiguration' => true,
+                'serialize' => function ($value, $registration = null, $metadata_definition = null) {
+                    if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
+                        $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
+                        $agent = $registration->owner;
+
+                        $agent->$agent_field = $value;
+                        $agent->save();
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function ($value, $registration = null, $metadata_definition = null) {
+                    if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
+                        $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
+                        $agent = $registration->owner;
+                        return $agent->$agent_field;
+                    } else {
+                        return json_decode($value);
+                    }
+                }
             ]
         ];
 
-        return $registration_field_types; 
+        return $registration_field_types;
     }
 }

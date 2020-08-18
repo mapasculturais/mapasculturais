@@ -4,6 +4,6 @@
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
 
     <p>
-        <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="checklist" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}" style="white-space: pre;">{{entity[field.fieldName].join("\n")}}</span>
+        <?php $this->part('registration-field-types/fields/checkboxes') ?>
     </p>
 </div>
