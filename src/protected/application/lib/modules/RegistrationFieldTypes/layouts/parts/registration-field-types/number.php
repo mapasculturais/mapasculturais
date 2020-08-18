@@ -1,8 +1,7 @@
 <div ng-if="field.fieldType === 'number'" id="registration-field-{{field.id}}">
-    <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
-
-    <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
-    <p>
+    <div class="label icon"> {{field.title}} {{field.required ? '*' : ''}}</div>
+    <span>
         <?php $this->part('registration-field-types/fields/number') ?>
-    </p>
+    </span>
+    <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
 </div>

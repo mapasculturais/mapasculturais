@@ -16,11 +16,18 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
 }
 ?>
 <div ng-if="field.fieldType === 'agent-owner-field'" id="registration-field-{{field.id}}">
-    <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
-    <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
-    <?php foreach ($definitions as $key => $def): ?> 
-        <p ng-if="field.config.agentField == '<?= $key ?>'" style="position: relative;">
-            <?php $this->part('registration-field-types/fields/' . $def->field_type); ?>
-        </p>
+    <span class="label hltip" title="<?= i::_e("Este campo será salvo no seu agente cultural") ?>">
+        <i class="icon icon-agent"></i> 
+        {{field.title}} {{field.required ? '*' : ''}}
+    </span>
+    <?php
+    foreach ($definitions as $key => $def) :
+        $type = $key == 'documento' ? 'cpf' : $def->field_type;
+    ?>
+        <span ng-if="field.config.agentField == '<?= $key ?>'">
+            <?php $this->part('registration-field-types/fields/' . $type) ?>
+        </span>
     <?php endforeach; ?>
+
+    <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
 </div>
