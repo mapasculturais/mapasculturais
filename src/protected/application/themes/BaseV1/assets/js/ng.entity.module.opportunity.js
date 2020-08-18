@@ -438,6 +438,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 title: model.title,
                 fieldType: model.fieldType,
                 fieldOptions: model.fieldOptions,
+                config: model.config,
                 description: model.description,
                 maxSize: model.maxSize,
                 required: model.required,

@@ -232,6 +232,7 @@ class Registration extends EntityController {
                 'label' => $field->title,
                 'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
                 'private' => true,
+                'registrationFieldConfiguration' => $field
             ];
 
             $def = $field->getFieldTypeDefinition();
@@ -247,6 +248,9 @@ class Registration extends EntityController {
             if(is_callable($def->unserialize)){
                 $cfg['unserialize'] = $def->unserialize;
             }
+
+            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+
 
             $metadata = new Definitions\Metadata($field->fieldName, $cfg);
 

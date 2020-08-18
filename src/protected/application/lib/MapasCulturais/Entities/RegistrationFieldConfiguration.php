@@ -92,6 +92,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      */
     protected $fieldOptions = [];
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="config", type="array", length=255)
+     */
+    protected $config = [];
+
     static function getValidations() {
         return [
             'owner' => [ 
@@ -151,6 +158,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'required' => $this->required,
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
+        'config' => $this->config,
         'categories' => $this->categories,
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder

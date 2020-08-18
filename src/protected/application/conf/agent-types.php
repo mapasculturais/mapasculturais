@@ -9,7 +9,8 @@ return array(
             'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'documento' => array(
@@ -20,7 +21,8 @@ return array(
 //                'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
 //                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
 //                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
-//            )
+//            ),
+            'available_for_opportunities' => true
         ),
 
 
@@ -35,7 +37,8 @@ return array(
                 'Amarela' => \MapasCulturais\i::__('Amarela'),
                 'Parda' => \MapasCulturais\i::__('Parda'),
                 'Indígena' => \MapasCulturais\i::__('Indígena')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'dataDeNascimento' => array(
@@ -44,7 +47,8 @@ return array(
             'type' => 'date',
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'localizacao' => array(
@@ -70,7 +74,9 @@ return array(
                 'Não Binário' => \MapasCulturais\i::__('Não Binário'),
                 'Travesti' => \MapasCulturais\i::__('Travesti'),
                 'Outras' => \MapasCulturais\i::__('Outras')
-            )
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'select'
         ),
 
         'orientacaoSexual' => array(
@@ -85,14 +91,17 @@ return array(
                 'Bissexual' => \MapasCulturais\i::__('Bissexual'),
                 'Assexual' => \MapasCulturais\i::__('Assexual'),
                 'Outras' => \MapasCulturais\i::__('Outras')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(
                 'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
-            )
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
 
         'emailPrivado' => array(
@@ -101,7 +110,9 @@ return array(
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
                 'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
-            )
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
 
         'telefonePublico' => array(
@@ -109,7 +120,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'telefone1' => array(
@@ -118,7 +130,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
 
@@ -128,7 +141,8 @@ return array(
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'endereco' => array(
@@ -217,31 +231,36 @@ return array(
             'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
                 "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'facebook' => array(
             'label' => \MapasCulturais\i::__('Facebook'),
             'validations' => array(
                 "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'twitter' => array(
             'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
                 "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'googleplus' => array(
             'label' => \MapasCulturais\i::__('Google+'),
             'validations' => array(
                 "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'instagram' => array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'validations' => array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
-            )
+            ),
+            'available_for_opportunities' => true
         )
     ),
     'items' => array(

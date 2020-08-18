@@ -3,6 +3,6 @@
 
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
     <p>
-        <span class='js-editablemask js-editable js-editable-field js-include-editable' data-mask="999.999.999-99" id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+        <?php $this->part('registration-field-types/fields/cpf') ?>
     </p>
 </div>
