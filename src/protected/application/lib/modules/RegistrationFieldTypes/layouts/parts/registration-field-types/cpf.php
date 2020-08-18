@@ -3,6 +3,6 @@
 
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
     <p>
-        <?php $this->part('registration-field-types/fields/cnpj') ?>
+        <?php $this->part('registration-field-types/fields/cpf') ?>
     </p>
 </div>
