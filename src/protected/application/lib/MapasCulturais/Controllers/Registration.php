@@ -249,6 +249,9 @@ class Registration extends EntityController {
                 $cfg['unserialize'] = $def->unserialize;
             }
 
+            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+
+
             $metadata = new Definitions\Metadata($field->fieldName, $cfg);
 
             $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
