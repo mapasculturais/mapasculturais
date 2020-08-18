@@ -20,6 +20,20 @@ class Module extends \MapasCulturais\Module
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
 
+        $agent_fields = Agent::getPropertiesMetadata();
+        $app->hook('controller(registration).registerFieldType(agent-owner-field)', function (\MapasCulturais\Entities\RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
+            $agent_field_name = $field->config['agentField'];
+            $agent_field = $agent_fields[$agent_field_name];
+
+            $registration_field_config['type'] = $agent_field['type'];
+            if(isset($agent_field['options'])){
+                $registration_field_config['options'] = $agent_field['options'];
+            }
+            if(isset($agent_field['optionsOrder'])){
+                $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
+            }
+        });
+
         $this->_config['availableAgentFields'] = $this->getAgentFields();
     }
 
