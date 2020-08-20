@@ -465,7 +465,9 @@ MapasCulturais.Editables = {
                 type: 'text',
                 maxlength : 20,
                 emptytext: entity[field_name].label,
-                placeholder: entity[field_name].label
+                placeholder: entity[field_name].label,
+                showbuttons: false,
+                onblur: 'submit'
             };
 
             var select_value = null;
