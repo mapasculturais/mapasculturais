@@ -869,6 +869,8 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
+                showbuttons: false,
+                onblur: 'submit',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
 //                    multiple: $selector.data('multiple'),

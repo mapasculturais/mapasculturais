@@ -783,7 +783,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         jQuery('.js-editable-field').each(function(){
             var field = fieldsByName[this.id];
             if(field && field.fieldOptions){
-                var cfg = {};
+                var cfg = {
+                    showbuttons: false,
+                    onblur: 'submit'
+                };
                 cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
 
                 if(field.fieldType === "date"){
@@ -1595,7 +1598,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){
-            console.log(e.agentRelationGroupName);
             $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
             if(e.agentRelationGroupName === 'owner'){
                 console.log(e);
