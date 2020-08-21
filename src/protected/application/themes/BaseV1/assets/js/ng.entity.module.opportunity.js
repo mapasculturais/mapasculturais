@@ -2021,7 +2021,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
-        
+        if (! (MapasCulturais.entity.canUserEvaluate || MapasCulturais.entity.canUserViewUserEvaluations) ) {
+            return;
+        }
         $scope.registrations = [];
         $scope.evaluations = {};
         $scope.data = {
