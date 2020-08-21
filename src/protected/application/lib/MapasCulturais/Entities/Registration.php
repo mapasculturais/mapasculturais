@@ -709,21 +709,6 @@ class Registration extends \MapasCulturais\Entity
                         $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
                         $errors[] = sprintf(\MapasCulturais\i::__('Este agente deve ser do tipo "%s".'), $typeDescription);
                     }
-
-                    $erroredProperties  = [];
-                    foreach($def->requiredProperties as $requiredProperty){
-                        $app->disableAccessControl();
-                        $value = $def->agent->$requiredProperty;
-                        $app->enableAccessControl();
-                        if(!$value){
-                            $erroredProperties[] = '{{' . $requiredProperty . '}}';
-                        }
-                    }
-                    if(is_array($erroredProperties) && count($erroredProperties) === 1){
-                        $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $erroredProperties[0]);
-                    }elseif(is_array($erroredProperties) && count($erroredProperties) > 1){
-                        $errors[] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $erroredProperties));
-                    }
                 }
             }
 
