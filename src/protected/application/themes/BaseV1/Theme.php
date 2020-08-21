@@ -2400,6 +2400,10 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationAgents'] = array();
         $this->jsObject['entity']['registrationSpace'] = $entity->spaceRelation;
         $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
+
+        $this->jsObject['entity']['canUserEvaluate'] = $entity->canUser('evaluate');
+        $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');
+
         if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['registration'] = $entity;
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);
