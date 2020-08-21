@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 
 class Module extends \MapasCulturais\Module
 {
@@ -135,6 +136,12 @@ class Module extends \MapasCulturais\Module
                 'validations' => [
                     'v::cnpj()' => \MapasCulturais\i::__('O cnpj inserido não é válido')
                 ]
+            ],
+            [
+                'slug' => 'checkbox',
+                'name' => \MapasCulturais\i::__('Caixa de verificação (checkbox)'),
+                'viewTemplate' => 'registration-field-types/checkbox',
+                'configTemplate' => 'registration-field-types/checkbox-config'
             ],
             [
                 'slug' => 'checkboxes',
