@@ -1,1 +1,3 @@
-<span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="select" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+<select ng-model="entity[fieldName]" >
+    <option ng-repeat="option in field.fieldOptions">{{option}}</option>
+</select>

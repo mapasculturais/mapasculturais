@@ -1,1 +1,3 @@
-<span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="checklist" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}" style="white-space: pre;">{{entity[field.fieldName].join("\n")}}</span>
+<label ng-repeat="option in field.fieldOptions">
+    <input type="checkbox" checklist-model="entity[fieldName]" checklist-value="option"> {{option}}
+</label>
