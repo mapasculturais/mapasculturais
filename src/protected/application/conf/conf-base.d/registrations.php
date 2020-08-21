@@ -40,8 +40,7 @@ return [
         'label' => \MapasCulturais\i::__('Agente responsável pela inscrição'),
         'agentRelationGroupName' => 'owner',
         'description' => \MapasCulturais\i::__('Agente individual (pessoa física) com os campos CPF, Data de Nascimento/Fundação, Gênero, Orientação Sexual, Raça/Cor, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
-        'type' => 1,
-        'requiredProperties' => array('documento', 'raca', 'dataDeNascimento', 'genero', 'emailPrivado', 'telefone1')
+        'type' => 1
     ),
     'registration.agentRelations' => array(
         array(
@@ -49,16 +48,14 @@ return [
             'label' => \MapasCulturais\i::__('Instituição responsável'),
             'agentRelationGroupName' => 'instituicao',
             'description' => \MapasCulturais\i::__('Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
-            'type' => 2,
-            'requiredProperties' => array('documento', 'dataDeNascimento', 'emailPrivado', 'telefone1')
+            'type' => 2
         ),
         array(
             'required' => false,
             'label' => \MapasCulturais\i::__('Coletivo'),
             'agentRelationGroupName' => 'coletivo',
             'description' => \MapasCulturais\i::__('Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email Privado obrigatoriamente preenchidos'),
-            'type' => 2,
-            'requiredProperties' => array('dataDeNascimento', 'emailPrivado')
+            'type' => 2
         )
     ),
     'registration.spaceRelations' => array(
