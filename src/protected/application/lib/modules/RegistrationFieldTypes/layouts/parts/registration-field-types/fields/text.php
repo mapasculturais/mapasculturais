@@ -1,1 +1,1 @@
-<span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-tpl="<input type='text' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></input>" data-maxlength="{{ field.maxSize }}" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+<input ng-model="entity[fieldName]" maxlength='{{ !field.maxSize ?'': field.maxSize }}'>

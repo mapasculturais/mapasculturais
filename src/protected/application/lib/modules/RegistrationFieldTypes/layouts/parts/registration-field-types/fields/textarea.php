@@ -1,1 +1,6 @@
-<span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-tpl="<textarea onkeyup='charCounter(this);' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></textarea><span id='charCounter'></span>" data-original-title="{{field.title}}" data-maxlength="{{ field.maxSize }}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe"); ?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
+<?php use MapasCulturais\i; ?>
+<textarea ng-model="entity[fieldName]" maxlength='{{ !field.maxSize ?'': field.maxSize }}'></textarea>
+<div ng-if="field.maxSize">
+    <?php i::_e('Número de caracteres') ?>:
+    {{entity[fieldName].length}} / {{field.maxSize}}
+</div>

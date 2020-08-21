@@ -5,6 +5,8 @@
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
+            {{ (fieldName = field.fieldName) && false ? '' : ''}}
+            
             <?php 
             $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
 

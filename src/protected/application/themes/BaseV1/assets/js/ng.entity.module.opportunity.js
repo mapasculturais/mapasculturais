@@ -97,6 +97,27 @@
                 jQuery('a.js-submit-button').click();
             },
 
+            updateFields: function(entity) {
+                var data = {};
+                Object.keys(entity).forEach(function(key) {
+                    if(key.indexOf('field_') === 0){
+                        data[key] = entity[key];
+
+                        if (data[key] instanceof Date) {
+                            data[key] = moment(data[key]).format('YYYY-MM-D')
+                        }
+                    }
+                })
+                return $http.patch(this.getUrl('single', entity.id), data).
+                    success(function(data, status){
+                        MapasCulturais.Messages.success(labels['changesSaved']);
+                        $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', {message: "Cannot update opportunity registration", data: data, status: status});
+                    });
+            },
+
             getFields: function () {
                 var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
 
@@ -762,10 +783,33 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         item.file = MapasCulturais.entity.registrationFiles[item.groupName];
     });
 
-
     $scope.data.fields = RegistrationService.getFields();
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
+
+    $scope.data.fields.forEach(function(field) {
+        var val = $scope.entity[field.fieldName];
+
+        if (field.fieldType == 'date' && typeof val == 'string' ) {
+            val = moment(val).toDate();
+        } else if(field.fieldType == 'number' && typeof val == 'string' ) {
+            val = parseFloat(val);
+        }
+
+        $scope.entity[field.fieldName] = val;
+    });
+
+
+    $scope.$watch('entity', function(c, o){
+        if(c==o){
+            return;
+        }
+        $timeout.cancel($scope.updateTimeout);
+        $scope.updateTimeout = $timeout(function(){
+            RegistrationService.updateFields($scope.entity)
+        },3000);
+
+    }, true);
 
     var fieldsByName = {};
     $scope.data.fields.forEach(function(e){
