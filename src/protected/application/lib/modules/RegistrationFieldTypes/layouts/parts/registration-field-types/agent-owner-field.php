@@ -20,6 +20,10 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
         <i class="icon icon-agent"></i> 
         {{field.title}} {{field.required ? '*' : ''}}
     </span>
+
+    <span ng-if="field.config.agentField == '@location'">
+        <?php $this->part('registration-field-types/fields/_location') ?>
+    </span>
     <?php
     foreach ($definitions as $key => $def) :
         $type = $key == 'documento' ? 'cpf' : $def->field_type;

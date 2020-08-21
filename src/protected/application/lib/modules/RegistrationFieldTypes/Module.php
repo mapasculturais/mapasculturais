@@ -21,10 +21,14 @@ class Module extends \MapasCulturais\Module
         }
 
         $agent_fields = Agent::getPropertiesMetadata();
-        $app->hook('controller(registration).registerFieldType(agent-owner-field)', function (\MapasCulturais\Entities\RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
+        $app->hook('controller(registration).registerFieldType(agent-owner-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
+            if($field->config['agentField'] == '@location'){
+                return;
+            }
+
             $agent_field_name = $field->config['agentField'];
             $agent_field = $agent_fields[$agent_field_name];
-
+            
             $registration_field_config['type'] = $agent_field['type'];
             if(isset($agent_field['options'])){
                 $registration_field_config['options'] = $agent_field['options'];
@@ -164,7 +168,17 @@ class Module extends \MapasCulturais\Module
                         $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
                         $agent = $registration->owner;
 
-                        $agent->$agent_field = $value;
+                        if($agent_field == '@location'){
+                            $agent->En_CEP = isset($value['En_CEP']) ? $value['En_CEP'] : '';
+                            $agent->En_Nome_Logradouro = isset($value['En_Nome_Logradouro']) ? $value['En_Nome_Logradouro'] : '';
+                            $agent->En_Num = isset($value['En_Num']) ? $value['En_Num'] : '';
+                            $agent->En_Complemento = isset($value['En_Complemento']) ? $value['En_Complemento'] : '';
+                            $agent->En_Bairro = isset($value['En_Bairro']) ? $value['En_Bairro'] : '';
+                            $agent->En_Municipio = isset($value['En_Municipio']) ? $value['En_Municipio'] : '';
+
+                        } else {
+                            $agent->$agent_field = $value;
+                        }
                         $agent->save();
                     }
 
@@ -174,7 +188,18 @@ class Module extends \MapasCulturais\Module
                     if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
                         $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
                         $agent = $registration->owner;
-                        return $agent->$agent_field;
+                        if($agent_field == '@location'){
+                            return [
+                                'En_CEP' => $agent->En_CEP,
+                                'En_Nome_Logradouro' => $agent->En_Nome_Logradouro,
+                                'En_Num' => $agent->En_Num,
+                                'En_Complemento' => $agent->En_Complemento,
+                                'En_Bairro' => $agent->En_Bairro,
+                                'En_Municipio' => $agent->En_Municipio
+                            ];
+                        } else {
+                            return $agent->$agent_field;
+                        }
                     } else {
                         return json_decode($value);
                     }

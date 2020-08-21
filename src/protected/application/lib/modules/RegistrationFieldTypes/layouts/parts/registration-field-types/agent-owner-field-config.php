@@ -11,6 +11,8 @@ foreach ($agent_fields as $field) {
     if (isset($definitions[$field])) {
         $def = $definitions[$field];
         $fields_options[$field] = $def['label'] ?: $field;
+    } else if($field == '@location'){
+        $fields_options[$field] = i::__(' Campos de endereço');
     } else {
         $fields_options[$field] = $field;
     }
