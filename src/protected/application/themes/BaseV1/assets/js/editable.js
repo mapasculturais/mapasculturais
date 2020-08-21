@@ -59,6 +59,13 @@ jQuery(function(){
         return false;
     });
 
+    //Máscaras dos formulários de oportunidades
+    $('.registration-edit-mode input').each(function() {
+        if($(this).data('mask')){
+            $(this).mask($(this).data('mask'));
+        }
+    });
+
     //Máscaras de telefone, CEP e hora
 
     $('.js-editable').on('shown', function(e, editable) {
