@@ -212,15 +212,6 @@ jQuery(function(){
             return false;
         });
     }
-    $('.editable').on('shown', function(e, editable) {
-        console.log($(editable));
-            // .focus()
-            // .on('keydown', function(e){
-            //     if(e.which == 13 && e.ctrlKey) {
-            //         editable.container.$form.find('.editable-submit').click();
-            //     }
-            // });
-    });
 
     // Human Crop for images
     $('input.human_crop').change(function() {
@@ -1229,12 +1220,11 @@ $(function(){
             if (r.success) {
                 $('#En_Nome_Logradouro').editable('setValue', r.streetName != null ? r.streetName : '');
                 $('#En_Bairro').editable('setValue', r.neighborhood != null ? r.neighborhood : '');
-                $('#En_Municipio').editable('setValue', r.city != null ? r.city : '');
-                $('#En_Estado').editable('setValue', r.state != null ? r.state : '');
+                $('#En_Municipio').editable('setValue', r.city != null ? r.city.nome : '');
+                $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
                 concatena_enderco();
             }
         });
-
     });
 });
 
