@@ -62,7 +62,7 @@ use \MapasCulturais\i;
     </section>
     <p ng-if="field.config.setPrivacy" class="rfc-input rfc-En_">
         <label>
-            <input ng-model="entity[fieldName].publicLocation" type="checkbox" class="js-rfc-input js-rfc-input-publicLocation" />
+            <input ng-model="entity[fieldName].publicLocation" ng-true-value="'true'" ng-false-value="" type="checkbox" class="js-rfc-input js-rfc-input-publicLocation" />
             <?= i::__('Marque para deixar tornar sual localização pública.') ?><br>
         </label>
     </p>
