@@ -100,14 +100,17 @@
             updateFields: function(entity) {
                 var data = {};
                 Object.keys(entity).forEach(function(key) {
+                    
                     if(key.indexOf('field_') === 0){
+                        
                         data[key] = entity[key];
 
                         if (data[key] instanceof Date) {
                             data[key] = moment(data[key]).format('YYYY-MM-D')
                         }
                     }
-                })
+                });
+
                 return $http.patch(this.getUrl('single', entity.id), data).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
@@ -800,14 +803,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
 
-    $scope.$watch('entity', function(c, o){
-        if(c==o){
+    $scope.$watch('entity', function(current, old){
+        if(current == old){
             return;
         }
         $timeout.cancel($scope.updateTimeout);
         $scope.updateTimeout = $timeout(function(){
+            // console.log($scope.entity);
             RegistrationService.updateFields($scope.entity)
-        },3000);
+        },1000);
 
     }, true);
 
@@ -1644,7 +1648,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         MapasCulturais.entity.registrationAgents.forEach(function(e){
             $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
             if(e.agentRelationGroupName === 'owner'){
-                console.log(e);
                 $scope.data.relationApiQuery[e.agentRelationGroupName]['@permissions'] = '@control';
             }
         });
@@ -1888,14 +1891,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                             $rootScope.$emit('relatedSpace.created', response);
                         }).
                         error(function(response, status){
-                            console.log({response});
                             $rootScope.$emit('error', { message: "Cannot create related space", response: response, status: status });
                         });
                 };
 
             $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
-                console.log({registrationEntity});
-                console.log({attrs});
                 var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
                     controllerId = null,
                     controllerName = 'removeSpaceRelation',
@@ -2013,7 +2013,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
                             var $el;
-                            console.log(field);
                             if(field === 'projectName'){
                                 $el = $('#projectName').parent().find('.label');
                             }else if(field === 'category'){
