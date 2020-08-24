@@ -16,7 +16,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $app->view->enqueueStyle('app', 'rfc', 'js/rfc/registration-field-types.css');
+        $app->view->enqueueStyle('app', 'rfc', 'css/rfc/registration-field-types.css');
 
         $app->view->enqueueScript('app', 'rfc-cep', 'js/rfc/cep.js');
         $app->view->includeIbgeJS();
