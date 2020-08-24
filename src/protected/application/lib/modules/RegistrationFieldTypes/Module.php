@@ -12,27 +12,34 @@ class Module extends \MapasCulturais\Module
 {
     public function _init()
     {
+        $app = App::i();
+
+        $app->view->enqueueStyle('app', 'rfc', 'js/rfc/registration-field-types.css');
+
+        $app->view->enqueueScript('app', 'rfc-cep', 'js/rfc/cep.js');
+        $app->view->includeIbgeJS();
+        $app->view->enqueueScript('app', 'customizeble', 'js/customizable.js');
     }
 
     public function register()
     {
         $app = App::i();
-        foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
-            $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
-        }
 
         $agent_fields = Agent::getPropertiesMetadata();
         $app->hook('controller(registration).registerFieldType(agent-owner-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
-            if($field->config['agentField'] == '@location'){
+            $agent_field_name = $field->config['agentField'];
+
+            if(!isset($agent_fields[$agent_field_name])){
                 return;
             }
-
-            $agent_field_name = $field->config['agentField'];
+            
             $agent_field = $agent_fields[$agent_field_name];
             
             $registration_field_config['type'] = $agent_field['type'];
+
             if(isset($agent_field['options'])){
                 $registration_field_config['options'] = $agent_field['options'];
+                $field->fieldOptions = $agent_field['options'];
             }
             if(isset($agent_field['optionsOrder'])){
                 $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
@@ -40,13 +47,17 @@ class Module extends \MapasCulturais\Module
         });
 
         $this->_config['availableAgentFields'] = $this->getAgentFields();
+
+        foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
+            $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
+        }
     }
 
     function getAgentFields()
     {
         $agent_fields = ['name', '_type', 'shortDescription', '@location'];
         
-        $definitions = Agent::getMetadataMetadata();
+        $definitions = Agent::getPropertiesMetadata();
         
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
@@ -176,17 +187,21 @@ class Module extends \MapasCulturais\Module
                         $agent = $registration->owner;
 
                         if($agent_field == '@location'){
+                            if(isset($value['location'])){
+                                $agent->location = $value['location'];
+                            }
                             $agent->En_CEP = isset($value['En_CEP']) ? $value['En_CEP'] : '';
                             $agent->En_Nome_Logradouro = isset($value['En_Nome_Logradouro']) ? $value['En_Nome_Logradouro'] : '';
                             $agent->En_Num = isset($value['En_Num']) ? $value['En_Num'] : '';
                             $agent->En_Complemento = isset($value['En_Complemento']) ? $value['En_Complemento'] : '';
                             $agent->En_Bairro = isset($value['En_Bairro']) ? $value['En_Bairro'] : '';
                             $agent->En_Municipio = isset($value['En_Municipio']) ? $value['En_Municipio'] : '';
+                            $agent->En_Estado = isset($value['En_Estado']) ? $value['En_Estado'] : '';
 
                         } else {
                             $agent->$agent_field = $value;
                         }
-                        $agent->save();
+                        $agent->save(true);
                     }
 
                     return json_encode($value);
@@ -196,14 +211,18 @@ class Module extends \MapasCulturais\Module
                         $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
                         $agent = $registration->owner;
                         if($agent_field == '@location'){
-                            return [
+                            $result = [
                                 'En_CEP' => $agent->En_CEP,
                                 'En_Nome_Logradouro' => $agent->En_Nome_Logradouro,
                                 'En_Num' => $agent->En_Num,
                                 'En_Complemento' => $agent->En_Complemento,
                                 'En_Bairro' => $agent->En_Bairro,
-                                'En_Municipio' => $agent->En_Municipio
+                                'En_Municipio' => $agent->En_Municipio,
+                                'En_Estado' => $agent->En_Estado,
+                                'location' => $agent->location
                             ];
+
+                            return $result;
                         } else {
                             return $agent->$agent_field;
                         }

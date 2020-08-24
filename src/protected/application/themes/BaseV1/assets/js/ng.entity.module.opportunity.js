@@ -782,10 +782,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
     };
 
+    $timeout(function(){
+        $scope.ibge = MapasCulturais.ibge;
+    }, 200)
+
     $scope.data.fileConfigurations.forEach(function(item){
         item.file = MapasCulturais.entity.registrationFiles[item.groupName];
     });
-
+    
     $scope.data.fields = RegistrationService.getFields();
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
