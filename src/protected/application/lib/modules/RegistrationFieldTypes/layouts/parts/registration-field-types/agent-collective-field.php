@@ -15,14 +15,14 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     }
 }
 ?>
-<div ng-if="field.fieldType === 'agent-owner-field'" id="registration-field-{{field.id}}">
+<div ng-if="field.fieldType === 'agent-collective-field'" id="registration-field-{{field.id}}">
     <span class="label">
         <i class="icon icon-agent"></i> 
         {{field.title}} {{field.required ? '*' : ''}}
     </span>
     
-    <em class="relation-field-info">(<?php i::_e('Este campo será salvo no agente responsável pela inscrição') ?>)</em>
-
+    <em class="relation-field-info">(<?php i::_e('Este campo será salvo no agente coletivo') ?>)</em>
+    
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
 
     <div ng-if="field.config.entityField == '@location'">
@@ -30,7 +30,7 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     </div>
     <?php
     foreach ($definitions as $key => $def) :
-        $type = $key == 'documento' ? 'cpf' : $def->field_type;
+        $type = $key == 'documento' ? 'cnpj' : $def->field_type;
     ?>
         <div ng-if="field.config.entityField == '<?= $key ?>'">
             <?php $this->part('registration-field-types/fields/' . $type) ?>

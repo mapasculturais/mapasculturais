@@ -5,6 +5,8 @@ namespace RegistrationFieldTypes;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
 
@@ -25,9 +27,24 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
+        $this->register_agent_field();
+        $this->register_space_field();
+
+        foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
+            $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
+        }
+    }
+
+    function register_agent_field() {
+        $app = App::i();
+
         $agent_fields = Agent::getPropertiesMetadata();
-        $app->hook('controller(registration).registerFieldType(agent-owner-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
-            $agent_field_name = $field->config['agentField'];
+        $app->hook('controller(registration).registerFieldType(agent-<<owner|collective>>-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
+            if(!isset($field->config['entityField'])){
+                return;
+            }
+
+            $agent_field_name = $field->config['entityField'];
 
             if(!isset($agent_fields[$agent_field_name])){
                 return;
@@ -45,17 +62,42 @@ class Module extends \MapasCulturais\Module
                 $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
             }
         });
-
         $this->_config['availableAgentFields'] = $this->getAgentFields();
+    }
 
-        foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
-            $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
-        }
+    function register_space_field() {
+        $app = App::i();
+
+        $space_fields = Agent::getPropertiesMetadata();
+        $app->hook('controller(registration).registerFieldType(space-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($space_fields) {
+            if(!isset($field->config['entityField'])){
+                return;
+            }
+
+            $space_field_name = $field->config['entityField'];
+
+            if(!isset($space_fields[$space_field_name])){
+                return;
+            }
+            
+            $agent_field = $space_fields[$space_field_name];
+            
+            $registration_field_config['type'] = $space_field['type'];
+
+            if(isset($space_field['options'])){
+                $registration_field_config['options'] = $space_field['options'];
+                $field->fieldOptions = $space_field['options'];
+            }
+            if(isset($space_field['optionsOrder'])){
+                $registration_field_config['optionsOrder'] = $space_field['optionsOrder'];
+            }
+        });
+        $this->_config['availableSpaceFields'] = $this->getSpaceFields();
     }
 
     function getAgentFields()
     {
-        $agent_fields = ['name', '_type', 'shortDescription', '@location'];
+        $agent_fields = ['name', 'shortDescription', '@location'];
         
         $definitions = Agent::getPropertiesMetadata();
         
@@ -69,8 +111,26 @@ class Module extends \MapasCulturais\Module
         return $agent_fields;
     }
 
-    function getRegistrationFieldTypesDefinitions()
+    function getSpaceFields()
     {
+        $space_fields = ['name', 'shortDescription', '@location'];
+        
+        $definitions = Space::getPropertiesMetadata();
+        
+        foreach ($definitions as $key => $def) {
+            $def = (object) $def;
+            if ($def->isMetadata && $def->available_for_opportunities) {
+                $space_fields[] = $key;
+            }
+        }
+        
+        return $space_fields;
+    }
+
+    function getRegistrationFieldTypesDefinitions()
+    {   
+        $module = $this;
+
         $registration_field_types = [
             [
                 'slug' => 'textarea',
@@ -117,7 +177,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'section',
-                'name' => \MapasCulturais\i::__('Título de Seção'),
+                'name' => \MapasCulturais\i::__('# Título de Seção'),
                 'viewTemplate' => 'registration-field-types/section',
                 'configTemplate' => 'registration-field-types/section-config',
             ],
@@ -177,62 +237,117 @@ class Module extends \MapasCulturais\Module
             [
                 'slug' => 'agent-owner-field',
                 // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
-                'name' => \MapasCulturais\i::__(' Campo do Agente Responsável'),
+                'name' => \MapasCulturais\i::__('@ Campo do Agente Responsável'),
                 'viewTemplate' => 'registration-field-types/agent-owner-field',
                 'configTemplate' => 'registration-field-types/agent-owner-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function ($value, $registration = null, $metadata_definition = null) {
-                    if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
-                        $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
-                        $agent = $registration->owner;
-
-                        if($agent_field == '@location'){
-                            if(isset($value['location'])){
-                                $agent->location = $value['location'];
-                            }
-                            $agent->En_CEP = isset($value['En_CEP']) ? $value['En_CEP'] : '';
-                            $agent->En_Nome_Logradouro = isset($value['En_Nome_Logradouro']) ? $value['En_Nome_Logradouro'] : '';
-                            $agent->En_Num = isset($value['En_Num']) ? $value['En_Num'] : '';
-                            $agent->En_Complemento = isset($value['En_Complemento']) ? $value['En_Complemento'] : '';
-                            $agent->En_Bairro = isset($value['En_Bairro']) ? $value['En_Bairro'] : '';
-                            $agent->En_Municipio = isset($value['En_Municipio']) ? $value['En_Municipio'] : '';
-                            $agent->En_Estado = isset($value['En_Estado']) ? $value['En_Estado'] : '';
-
-                        } else {
-                            $agent->$agent_field = $value;
-                        }
-                        $agent->save(true);
-                    }
-
-                    return json_encode($value);
+                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
                 },
-                'unserialize' => function ($value, $registration = null, $metadata_definition = null) {
-                    if (isset($metadata_definition->config['registrationFieldConfiguration']->config['agentField'])) {
-                        $agent_field = $metadata_definition->config['registrationFieldConfiguration']->config['agentField'];
-                        $agent = $registration->owner;
-                        if($agent_field == '@location'){
-                            $result = [
-                                'En_CEP' => $agent->En_CEP,
-                                'En_Nome_Logradouro' => $agent->En_Nome_Logradouro,
-                                'En_Num' => $agent->En_Num,
-                                'En_Complemento' => $agent->En_Complemento,
-                                'En_Bairro' => $agent->En_Bairro,
-                                'En_Municipio' => $agent->En_Municipio,
-                                'En_Estado' => $agent->En_Estado,
-                                'location' => $agent->location
-                            ];
-
-                            return $result;
-                        } else {
-                            return $agent->$agent_field;
-                        }
+                'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    return $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
+                }   
+            ],
+            [
+                'slug' => 'agent-collective-field',
+                // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
+                'name' => \MapasCulturais\i::__('@ Campo do Agente Coletivo'),
+                'viewTemplate' => 'registration-field-types/agent-collective-field',
+                'configTemplate' => 'registration-field-types/agent-collective-field-config',
+                'requireValuesConfiguration' => true,
+                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $agent = $registration->getRelatedAgents('coletivo');
+                    if($agent){
+                        $module->saveToEntity($agent[0], $value, $registration, $metadata_definition);
+                    }
+                },
+                'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $agent = $registration->getRelatedAgents('coletivo');
+                    if($agent){
+                        return $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
                     } else {
                         return json_decode($value);
                     }
-                }
-            ]
+                }   
+            ],
+            [
+                'slug' => 'space-field',
+                // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
+                'name' => \MapasCulturais\i::__('@ Campo do Espaço'),
+                'viewTemplate' => 'registration-field-types/space-field',
+                'configTemplate' => 'registration-field-types/space-field-config',
+                'requireValuesConfiguration' => true,
+                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $space_relation = $registration->getSpaceRelation();
+
+                    if($space_relation){
+                        $module->saveToEntity($space_relation->space, $value, $registration, $metadata_definition);
+                    }
+                },
+                'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $space_relation = $registration->getSpaceRelation();
+                    if($space_relation){
+                        return $module->fetchFromEntity($space_relation->space, $value, $registration, $metadata_definition);
+                    } else {
+                        return json_decode($value);
+                    }
+                }   
+            ],
         ];
 
         return $registration_field_types;
+    }
+
+    function saveToEntity ($entity, $value, $registration = null, $metadata_definition = null) {
+        if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
+            $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
+            
+            if($entity_field == '@location'){
+                if(isset($value['location'])){
+                    $entity->location = $value['location'];
+                }
+
+                $entity->endereco = isset($value['endereco']) ? $value['endereco'] : '';
+                $entity->En_CEP = isset($value['En_CEP']) ? $value['En_CEP'] : '';
+                $entity->En_Nome_Logradouro = isset($value['En_Nome_Logradouro']) ? $value['En_Nome_Logradouro'] : '';
+                $entity->En_Num = isset($value['En_Num']) ? $value['En_Num'] : '';
+                $entity->En_Complemento = isset($value['En_Complemento']) ? $value['En_Complemento'] : '';
+                $entity->En_Bairro = isset($value['En_Bairro']) ? $value['En_Bairro'] : '';
+                $entity->En_Municipio = isset($value['En_Municipio']) ? $value['En_Municipio'] : '';
+                $entity->En_Estado = isset($value['En_Estado']) ? $value['En_Estado'] : '';
+
+            } else {
+                $entity->$entity_field = $value;
+            }
+            $entity->save(true);
+        }
+
+        return json_encode($value);
+    }
+
+    function fetchFromEntity ($entity, $value, $registration = null, $metadata_definition = null) {
+        if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
+            $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
+            
+            if($entity_field == '@location'){
+                $result = [
+                    'endereco' => $entity->endereco,
+                    'En_CEP' => $entity->En_CEP,
+                    'En_Nome_Logradouro' => $entity->En_Nome_Logradouro,
+                    'En_Num' => $entity->En_Num,
+                    'En_Complemento' => $entity->En_Complemento,
+                    'En_Bairro' => $entity->En_Bairro,
+                    'En_Municipio' => $entity->En_Municipio,
+                    'En_Estado' => $entity->En_Estado,
+                    'location' => $entity->location
+                ];
+
+                return $result;
+            } else {
+                return $entity->$entity_field;
+            }
+        } else {
+            return json_decode($value);
+        }
     }
 }
