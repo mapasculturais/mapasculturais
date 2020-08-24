@@ -63,8 +63,7 @@ return [
             'required' => false,
             'label' => \MapasCulturais\i::__('Espaço Relacionado'),
             'description' => \MapasCulturais\i::__('Espaço Relacionado'),
-            'type' => 2,
-            'requiredProperties' => array('endereco', 'telefone1')
+            'type' => 2
         )
     ),
     'registration.spaceProperties' => array(

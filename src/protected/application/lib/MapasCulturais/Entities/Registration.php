@@ -738,22 +738,7 @@ class Registration extends \MapasCulturais\Entity
                     $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
                 }
             }
-        }
-        //|| $isSpaceRelationRequired === 'optional'
-        if(!is_null($spaceDefined)){
-            $app = App::i();
-            $requiredSpaceProperties = $app->config['registration.spaceRelations'][0]['requiredProperties'];
-
-            foreach($requiredSpaceProperties as $r){
-                $app->disableAccessControl();
-                $isEmpty = $spaceDefined;
-                $app->enableAccessControl();
-
-                if(empty($isEmpty)){
-                    $errorsResult['invalidSpaceFields'] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $requiredSpaceProperties));
-                }
-            }
-        }            
+        }       
 
         // validate attachments
         foreach($opportunity->registrationFileConfigurations as $rfc){
