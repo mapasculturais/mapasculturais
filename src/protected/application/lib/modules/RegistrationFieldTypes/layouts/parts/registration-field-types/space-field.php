@@ -3,9 +3,9 @@
 namespace MapasCulturais;
 
 $app = App::i();
-$agent_fields = $app->modules['RegistrationFieldTypes']->getAgentFields();
+$agent_fields = $app->modules['RegistrationFieldTypes']->getSpaceFields();
 $definitions = [];
-foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
+foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
     if (in_array($key, $agent_fields)) {
         $def = (object) $def;
         if (empty($def->field_type)) {
@@ -15,14 +15,14 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     }
 }
 ?>
-<div ng-if="field.fieldType === 'agent-owner-field'" id="registration-field-{{field.id}}">
+<div ng-if="field.fieldType === 'space-field'" id="registration-field-{{field.id}}">
     <span class="label">
-        <i class="icon icon-agent"></i> 
+        <i class="icon icon-space"></i> 
         {{field.title}} {{field.required ? '*' : ''}}
     </span>
     
-    <em class="relation-field-info">(<?php i::_e('Este campo será salvo no agente responsável pela inscrição') ?>)</em>
-
+    <em class="relation-field-info">(<?php i::_e('Este campo será salvo no espaço relacionado') ?>)</em>
+    
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
 
     <div ng-if="field.config.entityField == '@location'">
@@ -30,10 +30,9 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     </div>
     <?php
     foreach ($definitions as $key => $def) :
-        $type = $key == 'documento' ? 'cpf' : $def->field_type;
     ?>
         <div ng-if="field.config.entityField == '<?= $key ?>'">
-            <?php $this->part('registration-field-types/fields/' . $type) ?>
+            <?php $this->part('registration-field-types/fields/' . $def->field_type) ?>
         </div>
     <?php endforeach; ?>
 
