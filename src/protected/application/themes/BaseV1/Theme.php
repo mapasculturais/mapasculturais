@@ -1035,7 +1035,7 @@ class Theme extends MapasCulturais\Theme {
             $this->transform('favicon');
         });
 
-        $app->hook('entity(<<agent|space|event|project|project|seal>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|opportunity|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -1091,7 +1091,7 @@ class Theme extends MapasCulturais\Theme {
             if ($response['success'] === true) {
                 echo json_encode($response);
             } else {
-                $app->halt(403, $response['error_msg']);
+                $app->halt(400, $response['error_msg']);
             }
 
         });
