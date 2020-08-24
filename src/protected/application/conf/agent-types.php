@@ -226,6 +226,34 @@ return array(
                 'TO'=>'Tocantins',
             )
         ],
+        'En_Pais' => [
+            'label' => \MapasCulturais\i::__('País'),
+            'type' => 'select',
+            'options' => [
+                'AD' => 'Andorra',
+                'AR' => 'Argentina',
+                'BO' => 'Bolivia',
+                'BR' => 'Brasil',
+                'CL' => 'Chile',
+                'CO' => 'Colombia',
+                'CR' => 'Costa Rica',
+                'CU' => 'Cuba',
+                'EC' => 'Ecuador',
+                'SV' => 'El Salvador',
+                'ES' => 'España',
+                'GT' => 'Guatemala',
+                'HN' => 'Honduras',
+                'MX' => 'México',
+                'NI' => 'Nicarágua',
+                'PA' => 'Panamá',
+                'PY' => 'Paraguay',
+                'PE' => 'Perú',
+                'PT' => 'Portugal',
+                'DO' => 'República Dominicana',
+                'UY' => 'Uruguay',
+                'VE' => 'Venezuela',
+            ]
+        ],
 
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
