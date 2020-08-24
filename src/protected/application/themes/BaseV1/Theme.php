@@ -1538,6 +1538,10 @@ class Theme extends MapasCulturais\Theme {
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
     }
 
+    function includeIbgeJS() {
+        $this->enqueueScript('app', 'ibge', 'js/ibge.js');
+    }
+
     function includeEditableEntityAssets() {
 
         $versions = $this->_libVersions;
