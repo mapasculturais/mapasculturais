@@ -243,6 +243,7 @@ class Module extends \MapasCulturais\Module
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
+                    return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     return $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
@@ -260,6 +261,7 @@ class Module extends \MapasCulturais\Module
                     if($agent){
                         $module->saveToEntity($agent[0], $value, $registration, $metadata_definition);
                     }
+                    return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $agent = $registration->getRelatedAgents('coletivo');
@@ -283,6 +285,7 @@ class Module extends \MapasCulturais\Module
                     if($space_relation){
                         $module->saveToEntity($space_relation->space, $value, $registration, $metadata_definition);
                     }
+                    return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $space_relation = $registration->getSpaceRelation();
@@ -315,6 +318,7 @@ class Module extends \MapasCulturais\Module
                 $entity->En_Bairro = isset($value['En_Bairro']) ? $value['En_Bairro'] : '';
                 $entity->En_Municipio = isset($value['En_Municipio']) ? $value['En_Municipio'] : '';
                 $entity->En_Estado = isset($value['En_Estado']) ? $value['En_Estado'] : '';
+                $entity->publicLocation = !empty($value['publicLocation']);
 
             } else {
                 $entity->$entity_field = $value;
@@ -339,7 +343,8 @@ class Module extends \MapasCulturais\Module
                     'En_Bairro' => $entity->En_Bairro,
                     'En_Municipio' => $entity->En_Municipio,
                     'En_Estado' => $entity->En_Estado,
-                    'location' => $entity->location
+                    'location' => $entity->location,
+                    'publicLocation' => $entity->publicLocation
                 ];
 
                 return $result;
