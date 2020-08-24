@@ -1084,6 +1084,12 @@ class ApiQuery {
             }
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
                 $prop = $cfg['property'];
+                
+                // do usuário só permite id e profile
+                if($prop == 'user') {
+                    $cfg['select'] = array_intersect($cfg['select'], ['id', 'profile']);
+                }
+                
                 if($prop == 'permissionTo'){
                     $this->appendPermissions($entities, $cfg['select']);
                     continue;
