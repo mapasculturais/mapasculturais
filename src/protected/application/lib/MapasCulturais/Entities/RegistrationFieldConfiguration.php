@@ -119,18 +119,22 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
     
     public function setFieldOptions($value){
-        if(!is_array($value)){
+        if (is_string($value)){ 
             $value = explode("\n", $value);
+        } else {
+            $value = (array) $value;
         }
         
         $this->fieldOptions = $value;
     }
     
     public function setCategories($value) {
-        if(!$value){
+        if (!$value) {
             $value = [];
-        } else if (!is_array($value)){
+        } else if (is_string($value)) {
             $value = explode("\n", $value);
+        } else {
+            $value = (array) $value;
         }
         $this->categories = $value;
     }

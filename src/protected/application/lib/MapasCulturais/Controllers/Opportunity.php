@@ -746,8 +746,8 @@ class Opportunity extends EntityController {
             $app->pass();
         }
 
-        $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
-        $files = $user = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $fields = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $files = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
 
         $opportunity =  $app->repo("Opportunity")->find($this->urlData['id']);
 
@@ -820,6 +820,7 @@ class Opportunity extends EntityController {
                     $newField->fieldType = $field->fieldType;
                     $newField->required = $field->required;
                     $newField->categories = $field->categories;
+                    $newField->config = (array) $field->config;
                     $newField->fieldOptions = $field->fieldOptions;
                     $newField->displayOrder = $field->displayOrder;
 
