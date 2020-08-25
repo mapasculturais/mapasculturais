@@ -236,7 +236,7 @@ class Registration extends EntityController {
             ];
 
             $def = $field->getFieldTypeDefinition();
-
+            
             if($def->requireValuesConfiguration){
                 $cfg['options'] = $field->fieldOptions;
             }
@@ -247,6 +247,10 @@ class Registration extends EntityController {
 
             if(is_callable($def->unserialize)){
                 $cfg['unserialize'] = $def->unserialize;
+            }
+
+            if($def->defaultValue){
+                $cfg['default_value'] = $def->defaultValue;
             }
 
             $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
