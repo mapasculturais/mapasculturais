@@ -280,10 +280,9 @@ class Registration extends \MapasCulturais\Entity
             $json['evaluationResultString'] = $this->getEvaluationResultString();
         }
 
-        foreach($this->__metadata as $meta){
-            if(substr($meta->key, 0, 6) === 'field_'){
-                $key = $meta->key;
-                $json[$meta->key] = $this->$key;
+        foreach($this->getRegisteredMetadata() as $meta_key => $def){
+            if(substr($meta_key, 0, 6) === 'field_'){
+                $json[$meta_key] = $this->$meta_key;
             }
         }
 
