@@ -5,7 +5,14 @@ namespace MapasCulturais\Definitions;
 /**
  * This class defines an Registration Field.
  *
-
+ * @property-read array $config
+ * @property-read string $slug
+ * @property-read string $name
+ * @property-read callable $serialize
+ * @property-read callable $unserialize
+ * @property-read boolean $requireValuesConfiguration
+ * @property-read string $viewTemplate
+ * @property-read string $configTemplate
  */
 class RegistrationFieldType extends \MapasCulturais\Definition {
 
