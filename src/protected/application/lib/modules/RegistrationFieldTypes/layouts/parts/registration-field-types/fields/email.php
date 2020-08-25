@@ -1,1 +1,1 @@
-<input ng-model="entity[fieldName]" type="email" >
+<input ng-required="field.required" ng-model="entity[fieldName]" type="email" >

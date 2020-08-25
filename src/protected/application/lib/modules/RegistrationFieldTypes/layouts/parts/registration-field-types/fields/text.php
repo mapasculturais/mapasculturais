@@ -1,1 +1,1 @@
-<input ng-model="entity[fieldName]" maxlength='{{ !field.maxSize ?'': field.maxSize }}'>
+<input ng-required="field.required" ng-model="entity[fieldName]" maxlength='{{ !field.maxSize ?'': field.maxSize }}'>
