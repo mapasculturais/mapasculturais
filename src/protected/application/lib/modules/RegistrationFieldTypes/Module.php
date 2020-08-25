@@ -80,7 +80,7 @@ class Module extends \MapasCulturais\Module
                 return;
             }
             
-            $agent_field = $space_fields[$space_field_name];
+            $space_field = $space_fields[$space_field_name];
             
             $registration_field_config['type'] = $space_field['type'];
 
