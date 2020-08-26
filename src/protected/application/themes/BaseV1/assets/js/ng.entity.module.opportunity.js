@@ -107,7 +107,10 @@
 
                         if (data[key] instanceof Date) {
                             data[key] = moment(data[key]).format('YYYY-MM-D')
+                        } else if (data[key] instanceof Array && data[key].length === 0) {
+                            data[key] = null;
                         }
+
                     }
                 });
 
@@ -808,20 +811,52 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $scope.entity[field.fieldName] = val;
     });
 
+    var timeouts = {};
 
-    $scope.$watch('entity', function(current, old){
-        if(current == old){
-            return;
-        }
-        $timeout.cancel($scope.updateTimeout);
-        $scope.updateTimeout = $timeout(function(){
-            // console.log($scope.entity);
-            RegistrationService.updateFields($scope.entity)
-        },1000);
+    $scope.saveField = function (field, value, delay) {
+        delete field.error;
+        $timeout.cancel(timeouts['entity_' + field.fieldName]);
+        timeouts['entity_' + field.fieldName] = $timeout(function(){
+            var data = {
+                id: MapasCulturais.entity.object.id
+            };
 
-    }, true);
+            data[field.fieldName] = value;
+            
+            RegistrationService.updateFields(data)
+                .success(function(){
+                    delete field.error;
+                })
+                .error(function(r) {
+                    field.error = r.data[field.fieldName];
+                });
+        },delay);
+    }
+
+
+    $scope.data.fields.forEach(function(field) {
+        $scope.$watch('entity.' + field.fieldName, function(current, old){
+            if(current == old){
+                return;
+            }
+            
+            $scope.saveField(field, current, 2000)
+        }, true);
+    });
+    
+    // $scope.$watch('entity', function(current, old){
+    //     if(current == old){
+    //         return;
+    //     }
+    //     $timeout.cancel($scope.updateTimeout);
+    //     $scope.updateTimeout = $timeout(function(){
+    //         RegistrationService.updateFields($scope.entity)
+    //     },1000);
+
+    // }, true);
 
     var fieldsByName = {};
+
     $scope.data.fields.forEach(function(e){
         fieldsByName[e.fieldName] = e;
     });
