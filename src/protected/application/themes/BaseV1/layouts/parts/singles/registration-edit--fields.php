@@ -4,7 +4,7 @@
     <p class="registration-help"><?php \MapasCulturais\i::_e("Para efetuar sua inscrição, informe os campos abaixo.");?></p>
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
-        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
+        <li id="wrapper-{{field.fieldName}}" ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
             {{ (fieldName = field.fieldName) && false ? '' : ''}}
             
             <?php 
