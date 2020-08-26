@@ -687,7 +687,7 @@ class Registration extends \MapasCulturais\Entity
         $use_category = (bool) $opportunity->registrationCategories;
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $opportunity->registrationCategTitle)];
+            $errorsResult['category'] = [\MapasCulturais\i::__('O campo é obrigatório.')];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -752,7 +752,7 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
             if($rfc->required){
                 if(!isset($this->files[$rfc->fileGroupName])){
-                    $errors[] = sprintf(\MapasCulturais\i::__('O arquivo "%s" é obrigatório.'), $rfc->title);
+                    $errors[] = \MapasCulturais\i::__('O arquivo é obrigatório.');
                 }
             }
             if($errors){
@@ -776,7 +776,7 @@ class Registration extends \MapasCulturais\Entity
 
             if ($field->required) {
                 if ($empty) {
-                    $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $field->title);
+                    $errors[] = \MapasCulturais\i::__('O campo é obrigatório.');
                 }
             }
             if (!$empty){
@@ -802,7 +802,7 @@ class Registration extends \MapasCulturais\Entity
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
-            $errorsResult['projectName'] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), \MapasCulturais\i::__('Nome do Projeto'));
+            $errorsResult['projectName'] = \MapasCulturais\i::__('O campo é obrigatório.');
         }
 
         return $errorsResult;
