@@ -302,6 +302,9 @@ class Module extends \MapasCulturais\Module
     }
 
     function saveToEntity ($entity, $value, $registration = null, $metadata_definition = null) {
+        if(!$value) {
+            return;
+        }
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
