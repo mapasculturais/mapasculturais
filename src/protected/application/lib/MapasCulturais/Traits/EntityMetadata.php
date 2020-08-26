@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Exception;
 use MapasCulturais\App;
 
 /**
@@ -277,6 +278,12 @@ trait EntityMetadata{
     		
         $metadata_entity_class = $this->getMetadataClassName();
         $metadata_object = $this->getMetadata($meta_key, true);
+
+        $metadata_definition = $this->getRegisteredMetadata($meta_key);
+        if (is_null($metadata_definition)) {
+            $class = $this->getClassName();
+            throw new Exception("The '{$class}::{$meta_key}' metadata is not registered");
+        }
 
         $created = false;
 
