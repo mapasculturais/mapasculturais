@@ -327,7 +327,7 @@ class Module extends \MapasCulturais\Module
                 $entity->$entity_field = $value;
             }
             // só salva na entidade se salvou na inscrição
-            App::i()->hook("entity(registration).meta(field_{$field_id}).update:after", function() use($entity) {
+            App::i()->hook("entity(RegistrationMeta).save:after", function() use($entity) {
                 $entity->save();
             });
             
