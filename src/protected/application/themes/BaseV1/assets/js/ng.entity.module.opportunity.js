@@ -1291,7 +1291,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     }]);
 
-module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
+module.controller('OpportunityController', ['$scope', '$rootScope', '$location', '$anchorScroll', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $location, $anchorScroll, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
     var opportunity_main_tab = $("#opportunity-main-info");
@@ -1949,6 +1949,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     });
                 }
             };
+
+            $scope.scrollTo = function(id, offset) {
+                $anchorScroll.yOffset = offset;
+                $anchorScroll(id);
+            }
 
             var initAjaxUploader = function(id){
                 var $form = $('#' + id + ' form');
