@@ -1,4 +1,4 @@
-<div ng-if="field.fieldType === 'select'" id="registration-field-{{field.id}}">
+<div ng-if="field.fieldType === 'select'" id="field_{{field.id}}">
     <span class="label"> {{field.title}} {{field.required ? '*' : ''}}</span>
     
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>

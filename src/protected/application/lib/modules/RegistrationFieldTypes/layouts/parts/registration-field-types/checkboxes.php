@@ -1,4 +1,4 @@
-<div ng-if="field.fieldType === 'checkboxes'" id="registration-field-{{field.id}}">
+<div ng-if="field.fieldType === 'checkboxes'" id="field_{{field.id}}">
     <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
 
     <div ng-if="field.description" class="attachment-description">{{field.description}}</div>

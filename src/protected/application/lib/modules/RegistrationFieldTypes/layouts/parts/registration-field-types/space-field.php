@@ -15,7 +15,7 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
     }
 }
 ?>
-<div ng-if="field.fieldType === 'space-field'" id="registration-field-{{field.id}}">
+<div ng-if="field.fieldType === 'space-field'" id="field_{{field.id}}">
     <span class="label">
         <i class="icon icon-space"></i> 
         {{field.title}} {{field.required ? '*' : ''}}

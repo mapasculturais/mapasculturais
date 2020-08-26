@@ -15,7 +15,7 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     }
 }
 ?>
-<div ng-if="field.fieldType === 'agent-collective-field'" id="registration-field-{{field.id}}">
+<div ng-if="field.fieldType === 'agent-collective-field'" id="field_{{field.id}}">
     <span class="label">
         <i class="icon icon-agent"></i> 
         {{field.title}} {{field.required ? '*' : ''}}

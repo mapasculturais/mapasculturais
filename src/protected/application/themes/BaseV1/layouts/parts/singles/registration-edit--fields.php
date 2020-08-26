@@ -15,7 +15,7 @@
             }
             ?>
 
-            <div ng-if="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
+            <div ng-if="field.fieldType === 'file'" id="file_{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                 <div class="attachment-description">
                     <span ng-if="field.description">{{field.description}}</span>
