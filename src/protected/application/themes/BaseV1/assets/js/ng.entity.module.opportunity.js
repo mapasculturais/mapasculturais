@@ -843,17 +843,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $scope.saveField(field, current, 2000)
         }, true);
     });
-    
-    // $scope.$watch('entity', function(current, old){
-    //     if(current == old){
-    //         return;
-    //     }
-    //     $timeout.cancel($scope.updateTimeout);
-    //     $scope.updateTimeout = $timeout(function(){
-    //         RegistrationService.updateFields($scope.entity)
-    //     },1000);
-
-    // }, true);
 
     var fieldsByName = {};
 
