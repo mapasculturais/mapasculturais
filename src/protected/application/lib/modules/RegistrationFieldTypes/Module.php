@@ -9,6 +9,7 @@ use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
+use SebastianBergmann\Environment\Console;
 
 class Module extends \MapasCulturais\Module
 {
@@ -264,6 +265,7 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    
                     $agent = $registration->getRelatedAgents('coletivo');
                     if($agent){
                         return $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
@@ -302,12 +304,10 @@ class Module extends \MapasCulturais\Module
     }
 
     function saveToEntity ($entity, $value, $registration = null, $metadata_definition = null) {
-        if(!$value) {
-            return;
-        }
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
-            
+            $field_id = $metadata_definition->config['registrationFieldConfiguration']->id;
+
             if($entity_field == '@location'){
                 if(isset($value['location'])){
                     $entity->location = $value['location'];
@@ -326,7 +326,11 @@ class Module extends \MapasCulturais\Module
             } else {
                 $entity->$entity_field = $value;
             }
-            $entity->save(true);
+            // só salva na entidade se salvou na inscrição
+            App::i()->hook("entity(registration).meta(field_{$field_id}).update:after", function() use($entity) {
+                $entity->save();
+            });
+            
         }
 
         return json_encode($value);

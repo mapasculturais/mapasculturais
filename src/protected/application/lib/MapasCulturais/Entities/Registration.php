@@ -673,6 +673,10 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    function getValidationErrors() {
+        return $this->getSendValidationErrors();
+    }
+
     function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){
         $app = App::i();
 
