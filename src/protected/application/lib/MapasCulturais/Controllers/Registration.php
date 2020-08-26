@@ -253,6 +253,16 @@ class Registration extends EntityController {
                 $cfg['default_value'] = $def->defaultValue;
             }
 
+            if($def->validations){
+                $cfg['validations'] = $def->validations;
+            } else {
+                $cfg['validations'] = [];
+            }
+            
+            if($field->required){
+                $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
+            }
+
             $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
 
 
@@ -581,6 +591,7 @@ class Registration extends EntityController {
         $entity->checkPermission('validate');
         
         foreach ($this->postData as $field => $value) {
+            App::i()->log->debug("$field $value");
             $entity->$field = $value;
         }
 
