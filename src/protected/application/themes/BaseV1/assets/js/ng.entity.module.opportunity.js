@@ -97,6 +97,16 @@
                 jQuery('a.js-submit-button').click();
             },
 
+            validateEntity: function(registrationId) {
+                return $http.post(this.getUrl('validateEntity', registrationId)).
+                success(function(data, status){
+                    $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
+                }).
+                error(function(data, status){
+                    $rootScope.$emit('error', {message: "Cannot validate opportunity registration", data: data, status: status});
+                });
+            }, 
+
             updateFields: function(entity) {
                 var data = {};
                 Object.keys(entity).forEach(function(key) {
@@ -1972,6 +1982,20 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                     });
                 });
             }
+
+            $scope.validateRegistration = function() {
+                RegistrationService.validateEntity($scope.data.entity.id)
+                    .success(function(response) {
+                        if(response.error) {
+                            $scope.entityErrors = response.data;
+                        } else {
+                            $scope.entityErrors = null;
+                        }
+                    })
+                    .error(function(response) {
+                        console.log('error', response);
+                    });
+            }; 
 
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).success(function(response){
