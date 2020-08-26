@@ -9,7 +9,7 @@
             <div class="registration-label">{{def.label}} <span ng-if="def.use === 'required'" class="required">*</span></div>
             <div class="registration-description">{{def.description}}</div>
 
-            <div id="registration-agent-{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
+            <div id="agent_{{def.agentRelationGroupName}}" class="js-registration-agent registration-agent" ng-class="{pending: def.relationStatus < 0}">
                 <p ng-if="def.relationStatus < 0" class="alert warning" style="display:block !important /* está oculto no scss */" ><?php \MapasCulturais\i::_e("Aguardando confirmação");?></p>
                 <div class="clearfix">
                     <img ng-src="{{def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />

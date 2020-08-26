@@ -673,7 +673,7 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
-    function getSendValidationErrors(){
+    function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){
         $app = App::i();
 
         $errorsResult = [];
@@ -712,9 +712,8 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($errors){
-                $errorsResult['registration-agent-' . $def->agentRelationGroupName] = implode(' ', $errors);
+                $errorsResult[$agent_prefix . $def->agentRelationGroupName] = implode(' ', $errors);
             }
-
         }
 
         // validate space
@@ -753,7 +752,7 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
             if($errors){
-                $errorsResult['registration-file-' . $rfc->id] = $errors;
+                $errorsResult[$file_prefix . $rfc->id] = $errors;
             }
         }
 
@@ -793,7 +792,7 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if ($errors) {
-                $errorsResult['registration-field-' . $field->id] = $errors;
+                $errorsResult[$field_prefix . $field->id] = $errors;
             }
         }
         // @TODO: validar o campo projectName

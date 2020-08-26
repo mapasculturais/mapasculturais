@@ -769,7 +769,7 @@ MapasCulturais.Editables = {
                                 $field = $('.js-editable-type');
                             }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
                                 firstShown = true; // don't show editable
-                                $field = $('#registration-agent-owner').parent().find('.registration-label span');
+                                $field = $('#agent_owner').parent().find('.registration-label span');
                             }
 
                             for(var k in response.data[p]){
