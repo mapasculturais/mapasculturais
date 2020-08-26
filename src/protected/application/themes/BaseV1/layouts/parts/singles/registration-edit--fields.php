@@ -14,6 +14,7 @@
                 $this->part($def->viewTemplate);
             }
             ?>
+            <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>
 
             <div ng-if="field.fieldType === 'file'" id="file_{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
