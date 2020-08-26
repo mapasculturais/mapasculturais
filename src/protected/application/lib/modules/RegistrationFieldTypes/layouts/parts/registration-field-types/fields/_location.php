@@ -6,7 +6,6 @@ use \MapasCulturais\i;
     <input ng-if="field.config.setLatLon" type="hidden" ng-model="entity[fieldName].location.longitude" class="js-rfc-input js-rfc-input-_lon" />
     
     <input type="hidden" ng-model="entity[fieldName].endereco" class="js-rfc-input js-rfc-input-endereco" />
-    {{entity[fieldName].endereco}}
     <p class="opportunity-field field-En_CEP">
         <label>
             <?= i::__('CEP') ?><br>
