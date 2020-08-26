@@ -1513,6 +1513,7 @@ class App extends \Slim\Slim{
     }
 
     public function persistPCachePendingQueue(){
+        $created = false;
         foreach($this->permissionCachePendingQueue as $entity) {
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
                     'objectId' => $entity->id, 'objectType' => $entity->getClassName()
@@ -1522,9 +1523,14 @@ class App extends \Slim\Slim{
                 $pendingCache->objectType = $entity->getClassName();
                 $pendingCache->save(true);
                 $this->log->debug("pcache pending: $entity");
+                $created = true;
             }
         }
-        $this->em->flush();
+
+        if ($created) {
+            $this->em->flush();
+        }
+
         $this->permissionCachePendingQueue = [];
     }
 
