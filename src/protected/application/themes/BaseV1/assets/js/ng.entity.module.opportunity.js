@@ -850,7 +850,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 return;
             }
             
-            $scope.saveField(field, current, 2000)
+            $scope.saveField(field, current, 10000)
         }, true);
     });
 
