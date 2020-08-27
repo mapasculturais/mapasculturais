@@ -784,8 +784,8 @@ class Registration extends \MapasCulturais\Entity
                     if(strpos($validation,'v::') === 0){
 
                         $validator = str_replace('v::', '\MapasCulturais\Validator::', $validation);
-                        $validator = str_replace('()', "()->validate(\"$val\")", $validator);
-
+                        $validator .= "->validate(\$val)";
+                        
                         eval("\$ok = $validator;");
 
                         if (!$ok) {
