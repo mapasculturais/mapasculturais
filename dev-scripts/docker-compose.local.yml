@@ -26,8 +26,9 @@ services:
       # - DB_PASS=mapas
 
       - APP_LCODE=pt_BR,es_ES
-      - ACTIVE_THEME=SpCultura
+      #- ACTIVE_THEME=SpCultura
       - APP_MODE=development
+      - CACHE_ASSETS_URL=1
 
     depends_on:
       - db
