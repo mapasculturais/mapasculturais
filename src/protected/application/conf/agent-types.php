@@ -16,12 +16,11 @@ return array(
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
-//            'validations' => array(
-//                'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
-//                'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
-//                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
-//                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
-//            ),
+            'validations' => array(
+               'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
+               'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
+               'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
+            ),
             'available_for_opportunities' => true
         ),
 
