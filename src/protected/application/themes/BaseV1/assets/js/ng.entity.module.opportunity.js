@@ -1993,6 +1993,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     .success(function(response) {
                         if(response.error) {
                             $scope.entityErrors = response.data;
+                            let errors = response.data;
+                            for (let field in $scope.data.fields){
+                               if(errors[$scope.data.fields[field].fieldName]){
+                                    $scope.data.fields[field].error = errors[$scope.data.fields[field].fieldName]
+                               }
+                            } 
                         } else {
                             $scope.entityErrors = null;
                         }
