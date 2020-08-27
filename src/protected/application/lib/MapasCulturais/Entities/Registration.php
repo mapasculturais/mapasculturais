@@ -684,6 +684,8 @@ class Registration extends \MapasCulturais\Entity
 
         $opportunity = $this->opportunity;
 
+        $metadata_definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Registration');
+
         $use_category = (bool) $opportunity->registrationCategories;
 
         if($use_category && !$this->category){
@@ -767,6 +769,8 @@ class Registration extends \MapasCulturais\Entity
                 continue;
             }
 
+            $metadata_definition = $metadata_definitions[$field->fieldName];
+
             $errors = [];
 
             $prop_name = $field->getFieldName();
@@ -780,7 +784,11 @@ class Registration extends \MapasCulturais\Entity
                 }
             }
             if (!$empty){
-                foreach($field->getFieldTypeDefinition()->validations as $validation => $error_message){
+                
+                $validations = isset($metadata_definition->config['validations']) ? 
+                    $metadata_definition->config['validations']: [];
+
+                foreach($validations as $validation => $error_message){
                     if(strpos($validation,'v::') === 0){
 
                         $validator = str_replace('v::', '\MapasCulturais\Validator::', $validation);

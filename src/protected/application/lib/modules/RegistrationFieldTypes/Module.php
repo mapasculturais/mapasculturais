@@ -40,7 +40,7 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $agent_fields = Agent::getPropertiesMetadata();
-        $app->hook('controller(registration).registerFieldType(agent-<<owner|collective>>-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields) {
+        $app->hook('controller(registration).registerFieldType(agent-<<owner|collective>>-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields, $app) {
             if(!isset($field->config['entityField'])){
                 return;
             }
@@ -62,6 +62,15 @@ class Module extends \MapasCulturais\Module
             if(isset($agent_field['optionsOrder'])){
                 $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
             }
+
+            $definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Agent');
+
+            if (isset($definitions[$agent_field_name])) {
+                $metadata_definition = $definitions[$agent_field_name];
+                if(isset($metadata_definition->config['validations'])){
+                    $registration_field_config['validations'] = $metadata_definition->config['validations'];
+                };
+            }
         });
         $this->_config['availableAgentFields'] = $this->getAgentFields();
     }
@@ -70,7 +79,7 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $space_fields = Agent::getPropertiesMetadata();
-        $app->hook('controller(registration).registerFieldType(space-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($space_fields) {
+        $app->hook('controller(registration).registerFieldType(space-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($space_fields, $app) {
             if(!isset($field->config['entityField'])){
                 return;
             }
@@ -91,6 +100,15 @@ class Module extends \MapasCulturais\Module
             }
             if(isset($space_field['optionsOrder'])){
                 $registration_field_config['optionsOrder'] = $space_field['optionsOrder'];
+            }
+
+            $definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Space');
+
+            if (isset($definitions[$space_field_name])) {
+                $metadata_definition = $definitions[$space_field_name];
+                if(isset($metadata_definition->config['validations'])){
+                    $registration_field_config['validations'] = $metadata_definition->config['validations'];
+                };
             }
         });
         $this->_config['availableSpaceFields'] = $this->getSpaceFields();
