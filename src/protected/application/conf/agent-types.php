@@ -2,6 +2,7 @@
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
+
 return array(
     'metadata' => array(
         'nomeCompleto' => array(
@@ -97,7 +98,7 @@ return array(
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(
-                'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é email válido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'email'
@@ -108,7 +109,7 @@ return array(
             'label' => \MapasCulturais\i::__('Email Privado'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
-                'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'email'
@@ -118,7 +119,7 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone Público'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'brPhone'
@@ -129,7 +130,7 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone 1'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'brPhone'
@@ -141,7 +142,7 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone 2'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'brPhone'
