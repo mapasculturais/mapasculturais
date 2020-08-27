@@ -1988,7 +1988,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                 });
             }
 
-            $scope.validateRegistration = function() {
+            $scope.validateRegistration = function(callback='') {
                 RegistrationService.validateEntity($scope.data.entity.id)
                     .success(function(response) {
                         if(response.error) {
@@ -2001,14 +2001,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                             } 
                         } else {
                             $scope.entityErrors = null;
+                            $scope.entityValidated = true;
                         }
                     })
                     .error(function(response) {
                         console.log('error', response);
                     });
             }; 
-
-            $scope.sendRegistration = function(){
+            $scope.data.sent = false;
+            $scope.sendRegistration = function(redirectUrl){
                 RegistrationService.send($scope.data.entity.id).success(function(response){
                     $('.js-response-error').remove();
                     if(response.error){
@@ -2039,8 +2040,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                         });
                         MapasCulturais.Messages.error(labels['correctErrors']);
                     }else{
+                        $scope.data.sent = true;
                         MapasCulturais.Messages.success(labels['registrationSent']);
-                        document.location = response.singleUrl;
+                        if (redirect === undefined){
+                            document.location = response.singleUrl;
+                        }
+                        else if(redirect){
+                            document.location = response.redirect;
+                        }
                     }
                 });
             };
