@@ -188,6 +188,15 @@ class Module extends \MapasCulturais\Module
                 ]
             ],
             [
+                'slug' => 'brPhone',
+                'name' => \MapasCulturais\i::__('Campo de telefone do Brasil'),
+                'viewTemplate' => 'registration-field-types/brPhone',
+                'configTemplate' => 'registration-field-types/brPhone-config',
+                'validations' => [
+                    'v::brPhone()' => \MapasCulturais\i::__('O valor não é um telefone válido')
+                ]
+            ],
+            [
                 'slug' => 'select',
                 'name' => \MapasCulturais\i::__('Seleção única (select)'),
                 'viewTemplate' => 'registration-field-types/select',

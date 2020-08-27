@@ -121,7 +121,8 @@ return array(
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
         'telefone1' => array(
@@ -131,7 +132,8 @@ return array(
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
 
@@ -142,7 +144,8 @@ return array(
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
         'endereco' => array(
