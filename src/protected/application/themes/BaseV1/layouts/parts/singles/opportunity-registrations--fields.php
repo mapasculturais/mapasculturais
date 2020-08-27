@@ -3,6 +3,9 @@
 $can_edit = $entity->canUser('modifyRegistrationFields');
 
 $editable_class = $can_edit ? 'js-editable' : '';
+
+$definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
+
 ?>
 
 <div id="registration-attachments" class="registration-fieldset project-edit-mode">
@@ -18,23 +21,22 @@ $editable_class = $can_edit ? 'js-editable' : '';
             <?php $this->part('singles/opportunity-registrations--fields--project-name', ['editable_class' => $editable_class, 'entity' => $entity]) ?>
 
             <p ng-if="data.entity.canUserModifyRegistrationFields" >
-                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)"><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
-                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)"><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
+                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar campo");?></a>
+                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar anexo");?></a>
             </p>
-        <?php endif; ?>
-        <!-- edit-box to add attachment -->
-
-        <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-fields" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar campo");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Criar");?>" close-on-cancel='true' on-cancel="closeNewFieldConfigurationEditBox" on-submit="createFieldConfiguration" spinner-condition="data.fieldSpinner">
+            <?php endif; ?>
+            <!-- edit-box to add attachment -->
+            
+            <edit-box  ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-fields" position="right" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar campo");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Criar");?>" close-on-cancel='true' on-cancel="closeNewFieldConfigurationEditBox" on-submit="createFieldConfiguration" spinner-condition="data.fieldSpinner">
             <select ng-model="data.newFieldConfiguration.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
             <input type="text" ng-model="data.newFieldConfiguration.title" placeholder="<?php \MapasCulturais\i::esc_attr_e("Nome do campo");?>"/>
             <textarea ng-model="data.newFieldConfiguration.description" placeholder="<?php \MapasCulturais\i::esc_attr_e("Descrição do campo");?>"/></textarea>
-            <div ng-show="data.fieldsWithOptions.indexOf(data.newFieldConfiguration.fieldType) >= 0">
-                <textarea ng-model="data.newFieldConfiguration.fieldOptions" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>" style="min-height: 75px"/></textarea>
-                <p class="registration-help"><?php \MapasCulturais\i::_e("Informe uma opção por linha.");?></p>
-            </div>
-            <div ng-if="data.newFieldConfiguration.fieldType == 'textarea' || data.newFieldConfiguration.fieldType == 'text' ">
-                <input type="text" ng-model="data.newFieldConfiguration.maxSize" placeholder="<?php \MapasCulturais\i::esc_attr_e("Quantidade máxima de caracteres");?>"/>
-            </div>
+            {{ (field = data.newFieldConfiguration) && false ? '' : ''}}
+            <?php 
+            foreach($definitions as $def) {
+                $this->part($def->configTemplate);
+            }
+            ?>
             <p ng-if="data.newFieldConfiguration.fieldType !== 'section'"><label><input type="checkbox" ng-model="data.newFieldConfiguration.required"> <small><?php \MapasCulturais\i::_e("O preenchimento deste campo é obrigatório");?></small></label></p>
             <p ng-if="data.categories.length > 1">
                 <small><?php \MapasCulturais\i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>
@@ -79,27 +81,27 @@ $editable_class = $can_edit ? 'js-editable' : '';
                                 <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
                                 <input type="text" ng-model="field.title" placeholder="<?php \MapasCulturais\i::esc_attr_e("Nome do campo");?>"/>
                                 <textarea ng-model="field.description" placeholder="<?php \MapasCulturais\i::esc_attr_e("Descrição do campo");?>"/></textarea>
-                                <div ng-show="data.fieldsWithOptions.indexOf(field.fieldType) >= 0">
-                                    <textarea ng-model="field.fieldOptions" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>" style="min-height: 75px"/></textarea>
-                                    <p class="registration-help"><?php \MapasCulturais\i::_e("Informe uma opção por linha.");?></p>
-                                </div>
-                                <div ng-if="field.fieldType == 'textarea' || fild.fieldType == 'text' ">
-                                    <input type="text" ng-model="field.maxSize" placeholder="<?php \MapasCulturais\i::esc_attr_e("Quantidade máxima de caracteres");?>"/>
-                                </div>
+                                
+                                <?php 
+                                foreach($definitions as $def) {
+                                    $this->part($def->configTemplate);
+                                }
+                                ?>
+                                
                                 <p ng-if="field.fieldType !== 'section'"><label><input type="checkbox" ng-model="field.required"> <?php \MapasCulturais\i::_e("O preenchimento deste campo é obrigatório");?></label></p>
+                                
                                 <p ng-if="data.categories.length > 1">
                                     <small><?php \MapasCulturais\i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>
-                                    <label><input type="checkbox" onclick="if (!this.checked)
-                                        return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php \MapasCulturais\i::_e("Todas");?> </label>
-                                        <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
-                                    </p>
-                                </edit-box>
+                                    <label><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php \MapasCulturais\i::_e("Todas");?> </label>
+                                    <label ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
+                                </p>
+                            </edit-box>
 
-                                <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
-                                    <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php \MapasCulturais\i::esc_attr_e("editar campo");?>"></a>
-                                    <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir campo");?>"></a>
-                                </div>
+                            <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
+                                <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php \MapasCulturais\i::esc_attr_e("editar campo");?>"></a>
+                                <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("excluir campo");?>"></a>
                             </div>
+                        </div>
 
                             <div ng-if="field.fieldType === 'file'">
                                 <div class="js-open-editbox">
@@ -134,12 +136,12 @@ $editable_class = $can_edit ? 'js-editable' : '';
                                         <a ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("Excluir modelo");?>"></a>
                                     </div>
                                     <p ng-if="!data.entity.canUserModifyRegistrationFields">
-                                        <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank">{{field.template.name}}</a>
+                                        <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank" rel='noopener noreferrer'>{{field.template.name}}</a>
                                     </p>
                                     <!-- edit-box to upload attachments -->
                                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-template-{{field.id}}" position="top" title="<?php \MapasCulturais\i::esc_attr_e("Enviar modelo");?>" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar modelo");?>" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                                         <p ng-if="field.template">
-                                            <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank">{{field.template.name}}</a>
+                                            <a class="file-{{field.template.id}} attachment-template"  href="{{field.template.url}}" target="_blank" rel='noopener noreferrer'>{{field.template.name}}</a>
                                         </p>
                                         <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(field.id)}}" enctype="multipart/form-data">
                                             <div class="alert danger hidden"></div>

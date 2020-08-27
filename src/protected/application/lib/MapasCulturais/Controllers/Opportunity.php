@@ -453,7 +453,42 @@ class Opportunity extends EntityController {
             return $registrations;
         } else {
             $registration_ids = implode(',', $registration_ids);
+        }
 
+        $committee = $this->_getOpportunityCommittee($opportunity->id);
+        $params = [
+            'opp' => $opportunity,
+            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
+        ];
+        
+        $q = $app->em->createQuery("
+            SELECT
+                r.id AS registration, a.userId AS user, a.id AS valuer
+            FROM
+                MapasCulturais\Entities\RegistrationPermissionCache p
+                JOIN p.owner r WITH r.opportunity = :opp
+                JOIN p.user u
+                INNER JOIN u.profile a WITH a.id IN (:aids)
+            WHERE p.action = 'viewUserEvaluation'
+        ")
+        ->setMaxResults( intval($this->data['@limit']) )
+        ->setFirstResult( (intval($this->data['@page']) - 1) * intval($this->data['@limit']) );
+        
+        $q->setParameters($params);
+        
+        $permissions = $q->getArrayResult();
+        
+        $registrations_by_valuer = [];
+        
+        foreach($permissions as $p){
+            if(!isset($registrations_by_valuer[$p['valuer']])){
+                $registrations_by_valuer[$p['valuer']] = [];
+            }
+            $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
+        }
+        
+        $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
+        if($registration_ids){
             $rdata = [
                 '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
                 'id' => "IN({$registration_ids})"
@@ -539,6 +574,25 @@ class Opportunity extends EntityController {
         $opportunity = $this->_getOpportunity($opportunity_id);
 
         $committee = $this->_getOpportunityCommittee($opportunity_id);
+
+        $params = [
+            'opp' => $opportunity,
+            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
+        ];
+
+        //variavel utilizada para dizer para a paginação qual o limite maximo para ser paginado
+        $queryNumberOfResults = $app->em->createQuery("  
+            SELECT
+                count(r.id)
+            FROM
+                MapasCulturais\Entities\RegistrationPermissionCache p
+                JOIN p.owner r WITH r.opportunity = :opp
+                JOIN p.user u
+                INNER JOIN u.profile a WITH a.id IN (:aids)
+            WHERE p.action = 'viewUserEvaluation'
+        ")
+        ->setParameters($params)
+        ->getSingleScalarResult();
         
         $valuer_by_user = [];
         
@@ -674,32 +728,13 @@ class Opportunity extends EntityController {
                 });
                 break;
         }
-        
-        // codigo antigo comentado para referencias futuras
-        // paginação
-        if(isset($this->data['@limit'])){
-            $limit = $this->data['@limit'];
-            $page = isset($this->data['@page']) ? $this->data['@page'] : null;
-            
-            if (isset($this->data['@offset'])) {
-                $offset = $this->data['@offset'];
-            } else if ($page && $page > 1 && $limit) {
-                $offset = $limit * ($page - 1);
-            } else {
-                $offset = 0;
-            }
-            
-            $result = array_slice($_result, $offset, $limit);
-            
-        } else {
-            $result = $_result;
-        }
 
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
-            return $result;
+            return $_result;
         }
-        $this->apiAddHeaderMetadata($this->data, $result, count($_result));
-        $this->apiResponse($result);
+
+        $this->apiAddHeaderMetadata($this->data, $_result, $queryNumberOfResults);
+        $this->apiResponse($_result);
     }
 
     function GET_exportFields() {
@@ -711,8 +746,8 @@ class Opportunity extends EntityController {
             $app->pass();
         }
 
-        $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
-        $files = $user = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $fields = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $files = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
 
         $opportunity =  $app->repo("Opportunity")->find($this->urlData['id']);
 
@@ -785,6 +820,7 @@ class Opportunity extends EntityController {
                     $newField->fieldType = $field->fieldType;
                     $newField->required = $field->required;
                     $newField->categories = $field->categories;
+                    $newField->config = (array) $field->config;
                     $newField->fieldOptions = $field->fieldOptions;
                     $newField->displayOrder = $field->displayOrder;
 

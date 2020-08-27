@@ -1,0 +1,1 @@
+<label><input ng-required="field.required" ng-model="entity[fieldName]" type="checkbox" /> {{field.title}}</label>

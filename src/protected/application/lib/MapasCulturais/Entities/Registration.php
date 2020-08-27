@@ -280,10 +280,9 @@ class Registration extends \MapasCulturais\Entity
             $json['evaluationResultString'] = $this->getEvaluationResultString();
         }
 
-        foreach($this->__metadata as $meta){
-            if(substr($meta->key, 0, 6) === 'field_'){
-                $key = $meta->key;
-                $json[$meta->key] = $this->$key;
+        foreach($this->getRegisteredMetadata() as $meta_key => $def){
+            if(substr($meta_key, 0, 6) === 'field_'){
+                $json[$meta_key] = $this->$meta_key;
             }
         }
 
@@ -674,7 +673,11 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
-    function getSendValidationErrors(){
+    function getValidationErrors() {
+        return $this->getSendValidationErrors();
+    }
+
+    function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){
         $app = App::i();
 
         $errorsResult = [];
@@ -684,7 +687,7 @@ class Registration extends \MapasCulturais\Entity
         $use_category = (bool) $opportunity->registrationCategories;
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $opportunity->registrationCategTitle)];
+            $errorsResult['category'] = [\MapasCulturais\i::__('O campo é obrigatório.')];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -709,28 +712,12 @@ class Registration extends \MapasCulturais\Entity
                         $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
                         $errors[] = sprintf(\MapasCulturais\i::__('Este agente deve ser do tipo "%s".'), $typeDescription);
                     }
-
-                    $erroredProperties  = [];
-                    foreach($def->requiredProperties as $requiredProperty){
-                        $app->disableAccessControl();
-                        $value = $def->agent->$requiredProperty;
-                        $app->enableAccessControl();
-                        if(!$value){
-                            $erroredProperties[] = '{{' . $requiredProperty . '}}';
-                        }
-                    }
-                    if(is_array($erroredProperties) && count($erroredProperties) === 1){
-                        $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $erroredProperties[0]);
-                    }elseif(is_array($erroredProperties) && count($erroredProperties) > 1){
-                        $errors[] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $erroredProperties));
-                    }
                 }
             }
 
             if($errors){
-                $errorsResult['registration-agent-' . $def->agentRelationGroupName] = implode(' ', $errors);
+                $errorsResult[$agent_prefix . $def->agentRelationGroupName] = implode(' ', $errors);
             }
-
         }
 
         // validate space
@@ -741,37 +728,19 @@ class Registration extends \MapasCulturais\Entity
         }        
         $spaceDefined = $this->getSpaceRelation();
        
-        if($isSpaceRelationRequired === 'required'){
-            if($spaceDefined === null) {
-                $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
-            }
-        }
-        //dump($spaceDefined->status);
-        //dump($isSpaceRelationRequired);
-        //die();
-        //adicionar 
-        if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
-            //Espaço não autorizado
-            if( $spaceDefined && $spaceDefined->status < 0){
-                $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
-            }
-        }
-        
-        //|| $isSpaceRelationRequired === 'optional'
-        if(!is_null($spaceDefined)){
-            $app = App::i();
-            $requiredSpaceProperties = $app->config['registration.spaceRelations'][0]['requiredProperties'];
-
-            foreach($requiredSpaceProperties as $r){
-                $app->disableAccessControl();
-                $isEmpty = $spaceDefined;
-                $app->enableAccessControl();
-
-                if(empty($isEmpty)){
-                    $errorsResult['invalidSpaceFields'] = sprintf(\MapasCulturais\i::__('Os campos "%s" são obrigatórios.'), implode(', ', $requiredSpaceProperties));
+        if(isset($isSpaceRelationRequired)){
+            if($isSpaceRelationRequired === 'required'){
+                if($spaceDefined === null) {
+                    $errorsResult['space'] = \MapasCulturais\i::__('É obrigatório vincular um espaço com a inscrição');
                 }
             }
-        }            
+            if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
+                //Espaço não autorizado
+                if( $spaceDefined && $spaceDefined->status < 0){
+                    $errorsResult['space'] = \MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável');
+                }
+            }
+        }       
 
         // validate attachments
         foreach($opportunity->registrationFileConfigurations as $rfc){
@@ -783,11 +752,11 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
             if($rfc->required){
                 if(!isset($this->files[$rfc->fileGroupName])){
-                    $errors[] = sprintf(\MapasCulturais\i::__('O arquivo "%s" é obrigatório.'), $rfc->title);
+                    $errors[] = \MapasCulturais\i::__('O arquivo é obrigatório.');
                 }
             }
             if($errors){
-                $errorsResult['registration-file-' . $rfc->id] = $errors;
+                $errorsResult[$file_prefix . $rfc->id] = $errors;
             }
         }
 
@@ -807,7 +776,7 @@ class Registration extends \MapasCulturais\Entity
 
             if ($field->required) {
                 if ($empty) {
-                    $errors[] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), $field->title);
+                    $errors[] = \MapasCulturais\i::__('O campo é obrigatório.');
                 }
             }
             if (!$empty){
@@ -827,13 +796,13 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if ($errors) {
-                $errorsResult['registration-field-' . $field->id] = $errors;
+                $errorsResult[$field_prefix . $field->id] = $errors;
             }
         }
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
-            $errorsResult['projectName'] = sprintf(\MapasCulturais\i::__('O campo "%s" é obrigatório.'), \MapasCulturais\i::__('Nome do Projeto'));
+            $errorsResult['projectName'] = \MapasCulturais\i::__('O campo é obrigatório.');
         }
 
         return $errorsResult;

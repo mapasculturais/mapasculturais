@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Exception;
 use MapasCulturais\App;
 
 /**
@@ -86,7 +87,7 @@ trait EntityMetadata{
             
             if(is_callable($def->unserialize)){
                 $cb = $def->unserialize;
-                $value = $cb($value);
+                $value = $cb($value, $this, $def);
             }
             return $value;
         }
@@ -103,7 +104,7 @@ trait EntityMetadata{
         if($def = $this->getRegisteredMetadata($name)){
             if(is_callable($def->serialize)){
                 $cb = $def->serialize;
-                $value = $cb($value);
+                $value = $cb($value, $this, $def);
             }
             $this->setMetadata($name, $value);
             return true;
@@ -117,7 +118,7 @@ trait EntityMetadata{
      *
      * @return \MapasCulturais\MetadataDefinition|\MapasCulturais\MetadataDefinition[]
      */
-    function getRegisteredMetadata($meta_key = null){
+    function getRegisteredMetadata($meta_key = null, $include_private = false){
 
         $app = App::i();
 
@@ -127,17 +128,19 @@ trait EntityMetadata{
             $metas = $app->getRegisteredMetadata($this);
         }
 
-        $can_view = $this->canUser('viewPrivateData');
-
-        foreach($metas as $k => $v){
-            $private = $v->private;
-            if(is_callable($private)){
-                $private = \Closure::bind($private, $this);
-                if($private() && !$can_view){
+        if (!$include_private) {
+            $can_view = $this->canUser('viewPrivateData');
+    
+            foreach($metas as $k => $v){
+                $private = $v->private;
+                if(is_callable($private)){
+                    $private = \Closure::bind($private, $this);
+                    if($private() && !$can_view){
+                        unset($metas[$k]);
+                    }
+                }else if($private && !$can_view){
                     unset($metas[$k]);
                 }
-            }else if($private && !$can_view){
-                unset($metas[$k]);
             }
         }
 
@@ -205,8 +208,12 @@ trait EntityMetadata{
      */
     function getMetadata($meta_key = null, $return_metadata_object = false){
         // @TODO estudar como verificar se o objecto $this e $this->__metadata estão completos para caso contrário dar refresh
-
         if($meta_key){
+            $def = $this->getRegisteredMetadata($meta_key, true);
+            if(!$def){
+                return null;
+            }
+
             if(isset($this->__createdMetadata[$meta_key])){
                 $metadata_object = $this->__createdMetadata[$meta_key];
             }else{
@@ -221,7 +228,18 @@ trait EntityMetadata{
             if($return_metadata_object){
                 $result = is_object($metadata_object) ? $metadata_object : null;
             }else{
-                $result = is_object($metadata_object) ? $metadata_object->value : null;
+                if (is_object($metadata_object)) {
+                    $result = $metadata_object->value; 
+                } else if ($def->default_value) {
+                    if(is_callable($def->default_value)) {
+                        $callable = \Closure::bind($def->default_value, $this);
+                        $result = $callable($def); 
+                    } else {
+                        $result = $def->default_value;
+                    }
+                } else {
+                    $result = null;
+                }
             }
 
             return $result;
@@ -260,6 +278,12 @@ trait EntityMetadata{
     		
         $metadata_entity_class = $this->getMetadataClassName();
         $metadata_object = $this->getMetadata($meta_key, true);
+
+        $metadata_definition = $this->getRegisteredMetadata($meta_key);
+        if (is_null($metadata_definition)) {
+            $class = $this->getClassName();
+            throw new Exception("The '{$class}::{$meta_key}' metadata is not registered");
+        }
 
         $created = false;
 

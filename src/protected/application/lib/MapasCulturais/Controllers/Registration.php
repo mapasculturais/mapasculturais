@@ -232,10 +232,11 @@ class Registration extends EntityController {
                 'label' => $field->title,
                 'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
                 'private' => true,
+                'registrationFieldConfiguration' => $field
             ];
 
             $def = $field->getFieldTypeDefinition();
-
+            
             if($def->requireValuesConfiguration){
                 $cfg['options'] = $field->fieldOptions;
             }
@@ -247,6 +248,23 @@ class Registration extends EntityController {
             if(is_callable($def->unserialize)){
                 $cfg['unserialize'] = $def->unserialize;
             }
+
+            if($def->defaultValue){
+                $cfg['default_value'] = $def->defaultValue;
+            }
+
+            if($def->validations){
+                $cfg['validations'] = $def->validations;
+            } else {
+                $cfg['validations'] = [];
+            }
+            
+            if($field->required){
+                $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
+            }
+
+            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+
 
             $metadata = new Definitions\Metadata($field->fieldName, $cfg);
 
@@ -541,5 +559,55 @@ class Registration extends EntityController {
         $this->_finishRequest($registration);
         $app->enableAccessControl();
     
+    }
+
+    function POST_validateEntity() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+        
+        foreach ($this->postData as $field => $value) {
+            $entity->$field = $value;
+        }
+        
+        if ($errors = $entity->getSendValidationErrors()) {
+            $this->errorJson($errors);
+        } else {
+            $this->json(true);
+        }
+    }
+
+    function POST_validateProperties() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+        
+        foreach ($this->postData as $field => $value) {
+            App::i()->log->debug("$field $value");
+            $entity->$field = $value;
+        }
+
+        if ($_errors = $entity->getSendValidationErrors()) {
+            $errors = [];
+            foreach($this->postData as $field => $value){
+                if(key_exists($field, $_errors)){
+                    $errors[$field] = $_errors[$field];
+                }
+            }
+
+            if($errors){
+                $this->errorJson($errors);
+            }
+        } 
+        
+        $this->json(true);
     }
 }

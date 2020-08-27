@@ -43,6 +43,8 @@ use WideImage\Exception\Exception;
  *
  * @property-read array $config
  *
+ * @property-read \MapasCulturais\Module[] $modules active modules
+ * @property-read \MapasCulturais\Plugin[] $plugins active plugins
  *
  * @method \MapasCulturais\App i() Returns the application object
  */
@@ -794,93 +796,6 @@ class App extends \Slim\Slim{
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Dump');
 
-        // register registration field types
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'textarea',
-            'name' => \MapasCulturais\i::__('Campo de texto (textarea)')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'text',
-            'name' => \MapasCulturais\i::__('Campo de texto simples')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'date',
-            'name' => \MapasCulturais\i::__('Campo de data')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'url',
-            'name' => \MapasCulturais\i::__('Campo de URL (link)'),
-            'validations' => [
-                'v::url()' => \MapasCulturais\i::__('O valor não é uma URL válida')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'email',
-            'name' => \MapasCulturais\i::__('Campo de email'),
-            'validations' => [
-                'v::email()' => \MapasCulturais\i::__('O valor não é um endereço de email válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'select',
-            'name' => \MapasCulturais\i::__('Seleção única (select)'),
-            'requireValuesConfiguration' => true
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'section',
-            'name' => \MapasCulturais\i::__('Título de Seção')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'number',
-            'name' => \MapasCulturais\i::__('Campo numérico'),
-            'validations' => [
-                'v::numeric()' => \MapasCulturais\i::__('O valor inserido não é válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'cpf',
-            'name' => \MapasCulturais\i::__('Campo de CPF'),
-            'validations' => [
-                'v::cpf()' => \MapasCulturais\i::__('O cpf inserido não é válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'cnpj',
-            'name' => \MapasCulturais\i::__('Campo de CNPJ'),
-            'validations' => [
-                'v::cnpj()' => \MapasCulturais\i::__('O cnpj inserido não é válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'checkboxes',
-            'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
-            'requireValuesConfiguration' => true,
-            'serialize' => function ($value) {
-                if(!is_array($value)){
-                    if($value){
-                        $value = [$value];
-                    } else {
-                        $value = [];
-                    }
-                }
-                return json_encode($value);
-            },
-            'unserialize' => function ($value) {
-                return json_decode($value);
-            }
-        ]));
-
         /**
          * @todo melhores mensagens de erro
          */
@@ -1598,6 +1513,7 @@ class App extends \Slim\Slim{
     }
 
     public function persistPCachePendingQueue(){
+        $created = false;
         foreach($this->permissionCachePendingQueue as $entity) {
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
                     'objectId' => $entity->id, 'objectType' => $entity->getClassName()
@@ -1607,9 +1523,14 @@ class App extends \Slim\Slim{
                 $pendingCache->objectType = $entity->getClassName();
                 $pendingCache->save(true);
                 $this->log->debug("pcache pending: $entity");
+                $created = true;
             }
         }
-        $this->em->flush();
+
+        if ($created) {
+            $this->em->flush();
+        }
+
         $this->permissionCachePendingQueue = [];
     }
 

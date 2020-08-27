@@ -19,9 +19,11 @@ $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
         <div id="blockdiv" style="background-color: rgba(0,0,0,0.6);width: 100%;height: 100%;position: absolute;z-index: 1800;top: 0;display: none;"></div>
         <?php $this->bodyBegin(); ?>
         <header id="main-header" class="clearfix"  ng-class="{'sombra':data.global.viewMode !== 'list'}">
+        <?php $this->applyTemplateHook('main-header','begin'); ?>
             <?php $this->part('header-logo') ?>
             <?php $this->part('header-about-nav') ?>
             <?php $this->part('header-main-nav') ?>
+        <?php $this->applyTemplateHook('main-header','end'); ?>    
         </header>
         <section id="main-section" class="clearfix">
             <?php if ($this->isEditable()): ?>

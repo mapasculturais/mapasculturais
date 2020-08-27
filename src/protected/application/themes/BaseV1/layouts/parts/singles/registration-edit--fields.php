@@ -4,61 +4,27 @@
     <p class="registration-help"><?php \MapasCulturais\i::_e("Para efetuar sua inscrição, informe os campos abaixo.");?></p>
     -->
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
-        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
-            <div ng-if="field.fieldType !== 'file'" id="registration-field-{{field.id}}" >
-                <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
+        <li id="wrapper-{{field.fieldName}}" ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" on-repeat-done="registration-fields" class="attachment-list-item registration-edit-mode attachment-list-item-type-{{field.fieldType}}">
+            {{ (fieldName = field.fieldName) && false ? '' : ''}}
+            
+            <?php 
+            $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
 
-                <div ng-if="field.description" class="attachment-description">{{field.description}}</div>
+            foreach($definitions as $def) {
+                $this->part($def->viewTemplate);
+            }
+            ?>
+            <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>
 
-                <p ng-if="field.fieldType === 'textarea'" style="position: relative;">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="textarea" data-tpl="<textarea onkeyup='charCounter(this);' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></textarea><span id='charCounter'></span>" data-original-title="{{field.title}}" data-maxlength="{{ field.maxSize }}"  data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-                <p ng-if="field.fieldType === 'text'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-tpl="<input type='text' maxlength='{{ !field.maxSize ?'': field.maxSize }}'></input>" data-maxlength="{{ field.maxSize }}" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'date'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-yearrange="1900:+10" data-viewformat="dd-mm-yyyy" data-name="{{field.fieldName}}" data-type="date" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}"></span>
-                </p>
-
-                <p ng-if="field.fieldType === 'url'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="url" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'email'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="email" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'select'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="select" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'checkboxes'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="checklist" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}" style="white-space: pre;">{{entity[field.fieldName].join("\n")}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'number'">
-                    <span class='js-editable-field js-include-editable' id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="number" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'cpf'">
-                    <span class='js-editablemask js-editable js-editable-field js-include-editable' data-mask="999.999.999-99" id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-
-                <p ng-if="field.fieldType === 'cnpj'">
-                    <span class='js-editablemask js-editable js-editable-field js-include-editable' data-placeholder="__.___.___/____-__" data-mask="99.999.999/9999-99" id="{{field.fieldName}}" data-name="{{field.fieldName}}" data-type="text" data-original-title="{{field.title}}" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe");?>" data-value="{{entity[field.fieldName]}}">{{entity[field.fieldName]}}</span>
-                </p>
-            </div>
-
-            <div ng-if="field.fieldType === 'file'" id="registration-file-{{field.id}}" >
+            <div ng-if="field.fieldType === 'file'" id="file_{{field.id}}" >
                 <div class="label"> {{field.title}} {{field.required ? '*' : ''}}</div>
                 <div class="attachment-description">
                     <span ng-if="field.description">{{field.description}}</span>
                     <span ng-if="field.template">
-                        (<a class="attachment-template" target="_blank" href="{{field.template.url}}"><?php \MapasCulturais\i::_e("baixar modelo");?></a>)
+                        (<a class="attachment-template" target="_blank" href="{{field.template.url}}" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("baixar modelo");?></a>)
                     </span>
                 </div>
-                <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank">{{field.file.name}}</a>
+                <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank" rel='noopener noreferrer'>{{field.file.name}}</a>
 
                 <div class="btn-group">
                     <!-- se já subiu o arquivo-->

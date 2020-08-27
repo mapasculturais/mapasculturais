@@ -21,6 +21,7 @@ $url_search_projects = $this->searchProjectsUrl;
 $project_img_attributes = 'class="random-feature no-image"';
 ?>
 <article id="home-projects" class="js-page-menu-item home-entity clearfix">
+    <?php $this->applyTemplateHook('home-projects','begin'); ?>
     <div class="box">
         <h1><span class="icon icon-project"></span> <?php \MapasCulturais\i::_e("Projetos");?></h1>
         <div class="clearfix">
@@ -36,7 +37,7 @@ $project_img_attributes = 'class="random-feature no-image"';
         <p><?php echo $app->view->renderMarkdown($this->dict('home: projects',false)); ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre projetos por");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#project-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
+            <li class="active"><a href="#project-types" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Tipo");?></a></li>
         </ul>
         <div id="project-types"  class="tag-box">
             <div>
@@ -62,4 +63,5 @@ $project_img_attributes = 'class="random-feature no-image"';
         <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('project', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar projeto");?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_projects ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
+    <?php $this->applyTemplateHook('home-projects','end'); ?>
 </article>

@@ -97,6 +97,43 @@
                 jQuery('a.js-submit-button').click();
             },
 
+            validateEntity: function(registrationId) {
+                return $http.post(this.getUrl('validateEntity', registrationId)).
+                success(function(data, status){
+                    $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
+                }).
+                error(function(data, status){
+                    $rootScope.$emit('error', {message: "Cannot validate opportunity registration", data: data, status: status});
+                });
+            }, 
+
+            updateFields: function(entity) {
+                var data = {};
+                Object.keys(entity).forEach(function(key) {
+                    
+                    if(key.indexOf('field_') === 0){
+                        
+                        data[key] = entity[key];
+
+                        if (data[key] instanceof Date) {
+                            data[key] = moment(data[key]).format('YYYY-MM-D')
+                        } else if (data[key] instanceof Array && data[key].length === 0) {
+                            data[key] = null;
+                        }
+
+                    }
+                });
+
+                return $http.patch(this.getUrl('single', entity.id), data).
+                    success(function(data, status){
+                        MapasCulturais.Messages.success(labels['changesSaved']);
+                        $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
+                    }).
+                    error(function(data, status){
+                        $rootScope.$emit('error', {message: "Cannot update opportunity registration", data: data, status: status});
+                    });
+            },
+
             getFields: function () {
                 var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
 
@@ -438,6 +475,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 title: model.title,
                 fieldType: model.fieldType,
                 fieldOptions: model.fieldOptions,
+                config: model.config,
                 description: model.description,
                 maxSize: model.maxSize,
                 required: model.required,
@@ -757,53 +795,70 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
     };
 
+    $timeout(function(){
+        $scope.ibge = MapasCulturais.ibge;
+    }, 200)
+
     $scope.data.fileConfigurations.forEach(function(item){
         item.file = MapasCulturais.entity.registrationFiles[item.groupName];
     });
-
-
+    
     $scope.data.fields = RegistrationService.getFields();
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
+    $scope.data.fields.forEach(function(field) {
+        var val = $scope.entity[field.fieldName];
+
+        if (field.fieldType == 'date' && typeof val == 'string' ) {
+            val = moment(val).toDate();
+        } else if(field.fieldType == 'number' && typeof val == 'string' ) {
+            val = parseFloat(val);
+        } else if (/\d{4}-\d{2}-\d{2}/.test(val)) {
+            val = moment(val).toDate();
+        }
+
+        $scope.entity[field.fieldName] = val;
+    });
+
+    var timeouts = {};
+
+    $scope.saveField = function (field, value, delay) {
+        delete field.error;
+        $timeout.cancel(timeouts['entity_' + field.fieldName]);
+        timeouts['entity_' + field.fieldName] = $timeout(function(){
+            var data = {
+                id: MapasCulturais.entity.object.id
+            };
+
+            data[field.fieldName] = value;
+            
+            RegistrationService.updateFields(data)
+                .success(function(){
+                    delete field.error;
+                })
+                .error(function(r) {
+                    field.error = r.data[field.fieldName];
+                });
+        },delay);
+    }
+
+
+    $scope.data.fields.forEach(function(field) {
+        $scope.$watch('entity.' + field.fieldName, function(current, old){
+            if(current == old){
+                return;
+            }
+            
+            $scope.saveField(field, current, 2000)
+        }, true);
+    });
+
     var fieldsByName = {};
+
     $scope.data.fields.forEach(function(e){
         fieldsByName[e.fieldName] = e;
     });
-
-    function initEditables(){
-        jQuery('.js-editable-field').each(function(){
-            var field = fieldsByName[this.id];
-            if(field && field.fieldOptions){
-                var cfg = {};
-                cfg.source = field.fieldOptions.map(function(e){ return {value: e, text: e}; });
-
-                if(field.fieldType === "date"){
-                    cfg.datepicker = {weekStart: 1, yearRange: jQuery(this).data('yearrange') ? jQuery(this).data('yearrange') : "1900:+0"};
-                }
-                jQuery(this).editable(cfg);
-            } else {
-                jQuery(this).editable();
-            }
-
-            if(!jQuery(this).data('editable-init')){
-                jQuery(this).data('editable-init', true);
-                jQuery(this).on('save', function(){
-                    setTimeout(function(){
-                        RegistrationService.save();
-                    });
-                });
-
-            }
-        });
-    }
-
-    $rootScope.$on('repeatDone:registration-fields', function(){
-            // só para esperar a renderização
-            $timeout(function(){
-                initEditables();
-            });
-        });
 
     $scope.showField = function (field) {
 
@@ -900,9 +955,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         } else if (field.fieldType === 'url'){
-            return '<a href="' + value + '" target="_blank">' + value + '</a>';
+            return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
-            return '<a href="mailto:' + value + '"  target="_blank">' + value + '</a>';
+            return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (value instanceof Array) {
             return value.join(', ');
         } else {
@@ -1236,7 +1291,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     }]);
 
-module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
+module.controller('OpportunityController', ['$scope', '$rootScope', '$location', '$anchorScroll', '$timeout', 'RegistrationService', 'EditBox', 'RelatedAgentsService', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $location, $anchorScroll, $timeout, RegistrationService, EditBox, RelatedAgentsService, $http, UrlService, OpportunityApiService, $window) {
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
     var opportunity_main_tab = $("#opportunity-main-info");
@@ -1568,10 +1623,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
 
     if(MapasCulturais.entity.registrationAgents){
         MapasCulturais.entity.registrationAgents.forEach(function(e){
-            console.log(e.agentRelationGroupName);
             $scope.data.relationApiQuery[e.agentRelationGroupName] = {type: 'EQ(' + e.type + ')'};
             if(e.agentRelationGroupName === 'owner'){
-                console.log(e);
                 $scope.data.relationApiQuery[e.agentRelationGroupName]['@permissions'] = '@control';
             }
         });
@@ -1815,14 +1868,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                             $rootScope.$emit('relatedSpace.created', response);
                         }).
                         error(function(response, status){
-                            console.log({response});
                             $rootScope.$emit('error', { message: "Cannot create related space", response: response, status: status });
                         });
                 };
 
             $scope.unsetRegistrationSpace = function(registrationEntity, attrs){
-                console.log({registrationEntity});
-                console.log({attrs});
                 var baseUrl = MapasCulturais.baseURL.substr(-1) === '/' ?  MapasCulturais.baseURL : MapasCulturais.baseURL + '/',
                     controllerId = null,
                     controllerName = 'removeSpaceRelation',
@@ -1900,6 +1950,11 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 }
             };
 
+            $scope.scrollTo = function(id, offset) {
+                $anchorScroll.yOffset = offset;
+                $anchorScroll(id);
+            }
+
             var initAjaxUploader = function(id){
                 var $form = $('#' + id + ' form');
 
@@ -1933,6 +1988,20 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                 });
             }
 
+            $scope.validateRegistration = function() {
+                RegistrationService.validateEntity($scope.data.entity.id)
+                    .success(function(response) {
+                        if(response.error) {
+                            $scope.entityErrors = response.data;
+                        } else {
+                            $scope.entityErrors = null;
+                        }
+                    })
+                    .error(function(response) {
+                        console.log('error', response);
+                    });
+            }; 
+
             $scope.sendRegistration = function(){
                 RegistrationService.send($scope.data.entity.id).success(function(response){
                     $('.js-response-error').remove();
@@ -1940,7 +2009,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
                         var focused = false;
                         Object.keys(response.data).forEach(function(field, index){
                             var $el;
-                            console.log(field);
                             if(field === 'projectName'){
                                 $el = $('#projectName').parent().find('.label');
                             }else if(field === 'category'){
@@ -1992,7 +2060,9 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$timeout', 
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
-        
+        if (! (MapasCulturais.entity.canUserEvaluate || MapasCulturais.entity.canUserViewUserEvaluations) ) {
+            return;
+        }
         $scope.registrations = [];
         $scope.evaluations = {};
         $scope.data = {

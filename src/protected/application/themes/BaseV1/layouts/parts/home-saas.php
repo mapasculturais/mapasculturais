@@ -37,8 +37,8 @@ $url_search_subsite = $this->searchsubsiteUrl;
         <p><?php $this->dict('home: subsite'); ?></p>
         <h4><?php printf(\MapasCulturais\i::__('Encontre %s por'), $this->dict('entities: subsite', false)); ?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#subsite-terms"><?php \MapasCulturais\i::_e('Área de atuação'); ?></a></li>
-            <li><a href="#subsite-types"><?php \MapasCulturais\i::_e('Tipo'); ?></a></li>
+            <li class="active"><a href="#subsite-terms" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Área de atuação'); ?></a></li>
+            <li><a href="#subsite-types" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Tipo'); ?></a></li>
         </ul>
         <div id="subsite-terms" class="tag-box">
             <div>

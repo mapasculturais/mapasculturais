@@ -474,6 +474,70 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     /**
+     * Validates $data for $entity
+     *
+     * @param Entity $entity
+     * @param array $data
+     * @return array validation errors
+     */
+    function validate(Entity $entity, array $data) {
+        foreach ($data as $field => $value) {
+            $entity->$field = $value;
+        }
+        $errors = $entity->validationErrors;
+        return $errors;
+    }
+
+    /**
+     * Validates properties for entity
+     *
+     * @return void
+     */
+    function POST_validateProperties() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+        
+        if ($_errors = $this->validate($entity, $this->postData)) {
+            $errors = [];
+            foreach($this->postData as $field => $value){
+                if(key_exists($field, $_errors)){
+                    $errors[$field] = $_errors[$field];
+                }
+            }
+
+            if($errors){
+                $this->errorJson($errors);
+            }
+        } 
+        
+        $this->json(true);
+    }
+
+    /**
+     * Validates data for entity
+     */
+    function POST_validateEntity() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+
+        if ($errors = $this->validate($entity, $this->postData)) {
+            $this->errorJson($errors);
+        } else {
+            $this->json(true);
+        }
+    }
+
+    /**
      * Alias to DELETE_single
      *
      * <code>

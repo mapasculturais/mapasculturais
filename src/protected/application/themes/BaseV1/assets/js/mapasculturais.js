@@ -499,7 +499,7 @@ MapasCulturais.Modal = {
             if (_title)
                 $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
 
-            $dialog.prepend('<a href="#" class="js-close icon icon-close"></a>');
+            $dialog.prepend('<a href="#" class="js-close icon icon-close" rel="noopener noreferrer"></a>');
 
             // close button
             $dialog.find('.js-close').click(function (){
@@ -869,6 +869,8 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
+                showbuttons: false,
+                onblur: 'submit',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
 //                    multiple: $selector.data('multiple'),
@@ -1403,7 +1405,7 @@ $(function() {
         };
 
         var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
             maxZoom: config.zoomMax,
             minZoom: config.zoomMin
         });
@@ -1477,7 +1479,7 @@ $(function() {
         };
 
         var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
             maxZoom: config.zoomMax,
             minZoom: config.zoomMin
         });
