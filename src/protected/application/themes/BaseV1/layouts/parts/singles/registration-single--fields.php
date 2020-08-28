@@ -17,7 +17,7 @@
             <?php //@TODO pegar endereço do campo endereço (verificar porque não esta salvando corretamente, arquicos location.js e _location.php)?>
             <div ng-if="field.config.entityField === '@location'">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label> 
-                <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location'" >
+                <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' " >
                 {{key.split('_').pop()}}: {{item}} 
                 </div>
             </div>
