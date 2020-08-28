@@ -263,6 +263,42 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'persons',
+                'name' => \MapasCulturais\i::__('Campo de listagem de pessoas'),
+                'viewTemplate' => 'registration-field-types/persons',
+                'configTemplate' => 'registration-field-types/persons-config',
+                'serialize' => function($value) {
+                    if(is_array($value)){
+                        foreach($value as &$person){
+                            foreach($person as $key => $v){
+                                if(substr($key, 0, 2) == '$$'){
+                                    unset($person->$key);
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $persons = json_decode($value);
+
+                    if(!is_array($persons)){
+                        $persons = [];
+                    }
+
+                    foreach($persons as &$person){
+                        foreach($person as $key => $value){
+                            if(substr($key, 0, 2) == '$$'){
+                                unset($person->$key);
+                            }
+                        }
+                    }
+
+                    return $persons;
+                }
+            ],
+            [
                 'slug' => 'agent-owner-field',
                 // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
                 'name' => \MapasCulturais\i::__('@ Campo do Agente Responsável'),
