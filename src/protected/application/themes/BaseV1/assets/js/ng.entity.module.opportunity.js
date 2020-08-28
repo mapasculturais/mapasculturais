@@ -823,7 +823,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     var timeouts = {};
 
-    $scope.saveField = function (field, value, delay) {
+    $scope.saveField = function (field, value, delay) {        
         delete field.error;
         $timeout.cancel(timeouts['entity_' + field.fieldName]);
         timeouts['entity_' + field.fieldName] = $timeout(function(){
@@ -832,15 +832,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             };
 
             data[field.fieldName] = value;
-            
             RegistrationService.updateFields(data)
                 .success(function(){
                     delete field.error;
                 })
                 .error(function(r) {
-                    field.error = r.data[field.fieldName];
+                    field.error = r.data
                 });
         },delay);
+    }
+
+    $scope.remove = function(array, index){
+        array.splice(index, 1);
     }
 
 
