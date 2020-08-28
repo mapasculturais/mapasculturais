@@ -1995,6 +1995,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                 RegistrationService.validateEntity($scope.data.entity.id)
                     .success(function(response) {
                         if(response.error) {
+                            $scope.entityValidated = false;
                             $scope.entityErrors = response.data;
                             let errors = response.data;
                             for (let field in $scope.data.fields){
