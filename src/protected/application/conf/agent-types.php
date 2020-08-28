@@ -2,6 +2,7 @@
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
+
 return array(
     'metadata' => array(
         'nomeCompleto' => array(
@@ -16,12 +17,11 @@ return array(
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
-//            'validations' => array(
-//                'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
-//                'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
-//                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
-//                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
-//            ),
+            'validations' => array(
+               'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
+               'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
+               'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
+            ),
             'available_for_opportunities' => true
         ),
 
@@ -98,7 +98,7 @@ return array(
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(
-                'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é email válido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'email'
@@ -109,7 +109,7 @@ return array(
             'label' => \MapasCulturais\i::__('Email Privado'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
-                'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
             ),
             'available_for_opportunities' => true,
             'field_type' => 'email'
@@ -119,9 +119,10 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone Público'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
         'telefone1' => array(
@@ -129,9 +130,10 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone 1'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
 
@@ -140,9 +142,10 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone 2'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
         'endereco' => array(

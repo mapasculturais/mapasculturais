@@ -823,7 +823,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     var timeouts = {};
 
-    $scope.saveField = function (field, value, delay) {
+    $scope.saveField = function (field, value, delay) {        
         delete field.error;
         $timeout.cancel(timeouts['entity_' + field.fieldName]);
         timeouts['entity_' + field.fieldName] = $timeout(function(){
@@ -832,15 +832,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             };
 
             data[field.fieldName] = value;
-            
             RegistrationService.updateFields(data)
                 .success(function(){
                     delete field.error;
                 })
                 .error(function(r) {
-                    field.error = r.data[field.fieldName];
+                    field.error = r.data
                 });
         },delay);
+    }
+
+    $scope.remove = function(array, index){
+        array.splice(index, 1);
     }
 
 
@@ -850,7 +853,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 return;
             }
             
-            $scope.saveField(field, current, 2000)
+            $scope.saveField(field, current, 10000)
         }, true);
     });
 
@@ -1988,21 +1991,29 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                 });
             }
 
-            $scope.validateRegistration = function() {
+            $scope.validateRegistration = function(callback='') {
                 RegistrationService.validateEntity($scope.data.entity.id)
                     .success(function(response) {
                         if(response.error) {
+                            $scope.entityValidated = false;
                             $scope.entityErrors = response.data;
+                            let errors = response.data;
+                            for (let field in $scope.data.fields){
+                               if(errors[$scope.data.fields[field].fieldName]){
+                                    $scope.data.fields[field].error = errors[$scope.data.fields[field].fieldName]
+                               }
+                            } 
                         } else {
                             $scope.entityErrors = null;
+                            $scope.entityValidated = true;
                         }
                     })
                     .error(function(response) {
                         console.log('error', response);
                     });
             }; 
-
-            $scope.sendRegistration = function(){
+            $scope.data.sent = false;
+            $scope.sendRegistration = function(redirectUrl){
                 RegistrationService.send($scope.data.entity.id).success(function(response){
                     $('.js-response-error').remove();
                     if(response.error){
@@ -2033,8 +2044,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                         });
                         MapasCulturais.Messages.error(labels['correctErrors']);
                     }else{
+                        $scope.data.sent = true;
                         MapasCulturais.Messages.success(labels['registrationSent']);
-                        document.location = response.singleUrl;
+                        if (redirect === undefined){
+                            document.location = response.singleUrl;
+                        }
+                        else if(redirect){
+                            document.location = response.redirect;
+                        }
                     }
                 });
             };
