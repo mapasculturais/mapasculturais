@@ -14,7 +14,7 @@
             <div ng-if="field.fieldType === 'section'">
                 <h4>{{field.title}}</h4>
             </div>
-            //@TODO pegar endereço do campo endereço (verificar porque não esta salvando corretamente, arquicos location.js e _location.php)
+            <?php //@TODO pegar endereço do campo endereço (verificar porque não esta salvando corretamente, arquicos location.js e _location.php)?>
             <div ng-if="field.config.entityField === '@location'">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label> 
                 <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location'" >
