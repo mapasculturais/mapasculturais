@@ -769,7 +769,8 @@ class Registration extends \MapasCulturais\Entity
                 continue;
             }
 
-            $metadata_definition = $metadata_definitions[$field->fieldName];
+            $metadata_definition = isset($metadata_definitions[$field->fieldName]) ? 
+                $metadata_definitions[$field->fieldName] : null;
 
             $errors = [];
 
