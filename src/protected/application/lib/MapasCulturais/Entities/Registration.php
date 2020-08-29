@@ -1100,12 +1100,11 @@ class Registration extends \MapasCulturais\Entity
      * @return \MapasCulturais\EvaluationMethod
      */
     public function getEvaluationMethod() {
-        if($this->opportunity == null){
-            $app = App::i();
-            $app->redirect('/painel');
+        if ($this->opportunity) {
+            return $this->opportunity->getEvaluationMethod();
+        } else {
+            return null;
         }
-
-        return $this->opportunity->getEvaluationMethod();
     }
 
     /**
