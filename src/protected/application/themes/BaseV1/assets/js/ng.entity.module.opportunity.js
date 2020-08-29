@@ -845,7 +845,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     delete field.error;
                 })
                 .error(function(r) {
-                    field.error = r.data
+                    if (Array.isArray(Object.values(r.data)) && Object.values(r.data).lenght != 0 ){
+                        field.error = [Object.values(r.data).join(', ')]
+                    }
                 });
         },delay);
     }
