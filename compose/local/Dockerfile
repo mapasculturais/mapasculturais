@@ -8,9 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y nodejs npm
 
-# Install uglify
+# Install uglify and terser
 RUN npm install -g \
-        uglify-js@2.2.0 \
+        terser \
         uglifycss \
         autoprefixer
 
