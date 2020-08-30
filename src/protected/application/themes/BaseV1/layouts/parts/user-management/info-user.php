@@ -7,6 +7,13 @@
   $subsitesAdmin = $app->repo('User')->getSubsitesAdminRoles($current_user->id);
   $this->jsObject['subsitesAdmin'] = $subsitesAdmin;  
 ?>
+
+
+<?php $app->applyHookBoundTo($this, 'adminchangeuserpassword', array("userEmail"=>$user->email)); ?>
+<br><br>
+<?php $app->applyHookBoundTo($this, 'adminchangeuseremail', array("userEmail"=>$user->email)); ?>
+
+
 <div class="user-managerment-infos" ng-init="load(<?php echo $user->id;?>)">  
   <div class="user-info">
     <div style="float:left">
