@@ -115,15 +115,7 @@ class RoutesManager{
                     }else{
                         $app->halt(202, \MapasCulturais\i::__('Created requests: ') . implode(', ',$requests) );
                     }
-                } catch(\Exception $e) {
-                    $e_class = get_class($e);
-
-                    if(strpos($e_class, 'Slim\Exception') === 0){
-                        throw $e;
-                    }
-                    $this->callAction($app->controller('site'), 'error', ['code' => 500, 'e' => $e], false);
-
-                }
+                } 
             }else{
                 $app->pass();
             }
