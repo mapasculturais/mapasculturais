@@ -231,6 +231,30 @@
             $(this).closest('table').find('thead').fadeToggle("fast", "linear");
         });
 
+        $('#user-managerment-adminChangePassword').click(function() {
+            let password = $('#admin-set-user-password').val();
+            let email = $('#email-to-admin-set-password').val();
+            $.post(MapasCulturais.baseURL + 'auth/adminchangeuserpassword', {password: password, email: email}, function(r){
+                MapasCulturais.Modal.close('#admin-change-user-password');
+                MapasCulturais.Messages.success('Email alterado por sucesso');
+                $('#admin-set-user-password').val("");
+            });
+        })
+
+        $('#user-managerment-adminChangeEmail').click(function() {
+            let new_email = $('#new-email').val();
+            let email = $('#email-to-admin-set-email').val();
+            $.post(MapasCulturais.baseURL + 'auth/adminchangeuseremail', {new_email: new_email, email: email}, function(r){
+                if(r.error) {
+                    alert(r.error);
+                    return;
+                }
+                MapasCulturais.Modal.close('#admin-change-user-email');
+                MapasCulturais.Messages.success('Email alterado por sucesso');
+                location.reload();
+            });
+        })
+
         $('#user-managerment-addRole').click(function() {
             var subsite_id = $('#subsiteList').val();
             var roleToAdd = $('#permissionList').val();
