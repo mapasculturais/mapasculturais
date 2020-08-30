@@ -235,9 +235,8 @@
             let password = $('#admin-set-user-password').val();
             let email = $('#email-to-admin-set-password').val();
             $.post(MapasCulturais.baseURL + 'auth/adminchangeuserpassword', {password: password, email: email}, function(r){
-                console.log(r);
                 MapasCulturais.Modal.close('#admin-change-user-password');
-                alert("Senha alterada com sucesso");
+                MapasCulturais.Messages.success('Email alterado por sucesso');
                 $('#admin-set-user-password').val("");
             });
         })
@@ -246,13 +245,12 @@
             let new_email = $('#new-email').val();
             let email = $('#email-to-admin-set-email').val();
             $.post(MapasCulturais.baseURL + 'auth/adminchangeuseremail', {new_email: new_email, email: email}, function(r){
-                console.log(r);
                 if(r.error) {
                     alert(r.error);
                     return;
                 }
                 MapasCulturais.Modal.close('#admin-change-user-email');
-                alert("Email alterado com sucesso");
+                MapasCulturais.Messages.success('Email alterado por sucesso');
                 location.reload();
             });
         })
