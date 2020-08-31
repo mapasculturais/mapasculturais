@@ -148,6 +148,10 @@
                         field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
                     }
 
+                    if(typeof field.config !== 'object' || field.config instanceof Array) {
+                        field.config = {};
+                    }
+
                     return field;
                 }
 
