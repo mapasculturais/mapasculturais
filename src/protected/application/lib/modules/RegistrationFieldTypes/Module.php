@@ -116,7 +116,7 @@ class Module extends \MapasCulturais\Module
 
     function getAgentFields()
     {
-        $agent_fields = ['name', 'shortDescription', '@location'];
+        $agent_fields = ['name', 'shortDescription', '@location', '@terms:area'];
         
         $definitions = Agent::getPropertiesMetadata();
         
@@ -132,7 +132,7 @@ class Module extends \MapasCulturais\Module
 
     function getSpaceFields()
     {
-        $space_fields = ['name', 'shortDescription', '@location'];
+        $space_fields = ['name', 'shortDescription', '@location', '@terms:area'];
         
         $definitions = Space::getPropertiesMetadata();
         
@@ -422,6 +422,10 @@ class Module extends \MapasCulturais\Module
                 $entity->En_Estado = isset($value['En_Estado']) ? $value['En_Estado'] : '';
                 $entity->publicLocation = !empty($value['publicLocation']);
 
+            } else if($entity_field == '@terms:area') {
+                // para forçar o save da entidade. o espaço é removido porsteriormente num trim()
+                $entity->name = $entity->name . ' ';
+                $entity->terms['area'] = $value;
             } else {
                 $entity->$entity_field = $value;
             }
@@ -454,6 +458,9 @@ class Module extends \MapasCulturais\Module
                 ];
 
                 return $result;
+
+            } else if($entity_field == '@terms:area') {
+                return $entity->terms['area'];
             } else {
                 return $entity->$entity_field;
             }
