@@ -15,7 +15,18 @@
         </label>
         <label ng-if="::field.config.relationship" style="display:inline-block">
             <?php i::_e('Parentesco') ?>: <br>
-            <input ng-model="person.relationship" ng-blur="saveField(field, entity[fieldName])" required >
+            <select ng-model="person.relationship" ng-blur="saveField(field, entity[fieldName])" ng-change="saveField(field, entity[fieldName])">
+                <option value="1"><?php i::_e("Cônjuge ou Companheiro(a)") ?></option>
+                <option value="2"><?php i::_e("Filho(a)") ?></option>
+                <option value="3"><?php i::_e("Enteado(a)") ?></option>
+                <option value="4"><?php i::_e("Neto (a) ou Bisneto (a)") ?></option>
+                <option value="5"><?php i::_e("Pai ou Mãe") ?></option>
+                <option value="6"><?php i::_e("Sogro(a)") ?></option>
+                <option value="7"><?php i::_e("Irmão ou Irmã") ?></option>
+                <option value="8"><?php i::_e("Genro ou Nora") ?></option>
+                <option value="9"><?php i::_e("Outro Parente") ?></option>
+                <option value="10"><?php i::_e("Não Parente") ?></option>
+            </select>
         </label>
         
         <button ng-click="remove(entity[fieldName], $index); saveField(field, entity[fieldName], 0);" class="btn btn-danger"><?php i::_e('remover') ?></button>
