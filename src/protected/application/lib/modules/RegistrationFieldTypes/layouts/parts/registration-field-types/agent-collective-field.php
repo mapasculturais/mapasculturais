@@ -28,6 +28,9 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <div ng-if="::field.config.entityField == '@location'">
         <?php $this->part('registration-field-types/fields/_location') ?>
     </div>
+    <div ng-if="::field.config.entityField == '@term:area'">
+        <?php $this->part('registration-field-types/fields/checkboxes') ?>
+    </div>
     <?php
     foreach ($definitions as $key => $def) :
         $type = $key == 'documento' ? 'cnpj' : $def->field_type;
