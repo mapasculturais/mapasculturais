@@ -23,6 +23,7 @@ return array(
             'MapasCulturais\Entities\Agent'
         ),
         'restricted_terms' => array(
+            i::__('Artes Circenses'),
             i::__('Antropologia'),
             i::__('Arqueologia'),
             i::__('Arquitetura-Urbanismo'),
@@ -64,6 +65,8 @@ return array(
             i::__('Museu'),
             i::__('Música'),
             i::__('Novas Mídias'),
+            i::__('Ópera'),
+            i::__('Patrimônio Cultural'),
             i::__('Patrimônio Imaterial'),
             i::__('Patrimônio Material'),
             i::__('Pesquisa'),
