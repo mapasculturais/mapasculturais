@@ -20,15 +20,17 @@ while(true){
     sleep(1);
 }
 '
-
-if [ ! -f /.deployed ]; then
+if ! cmp /var/www/version.txt /var/www/private-files/deployment-version >/dev/null 2>&1
+then
     cd /var/www/scripts
     ./deploy.sh
-    touch /.deployed
+    cp /var/www/version.txt /var/www/private-files/deployment-version
 fi
 
 chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files
 
 nohup /recreate-pending-pcache-cron.sh &
+
+touch /mapas-ready
 
 exec "$@"
