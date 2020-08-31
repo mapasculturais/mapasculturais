@@ -299,6 +299,42 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'links',
+                'name' => \MapasCulturais\i::__('Campo de listagem de links'),
+                'viewTemplate' => 'registration-field-types/links',
+                'configTemplate' => 'registration-field-types/links-config',
+                'serialize' => function($value) {
+                    if(is_array($value)){
+                        foreach($value as &$link){
+                            foreach($link as $key => $v){
+                                if(substr($key, 0, 2) == '$$'){
+                                    unset($link->$key);
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $links = json_decode($value);
+
+                    if(!is_array($links)){
+                        $links = [];
+                    }
+
+                    foreach($links as &$link){
+                        foreach($link as $key => $value){
+                            if(substr($key, 0, 2) == '$$'){
+                                unset($link->$key);
+                            }
+                        }
+                    }
+
+                    return $links;
+                }
+            ],
+            [
                 'slug' => 'agent-owner-field',
                 // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
                 'name' => \MapasCulturais\i::__('@ Campo do Agente Responsável'),
