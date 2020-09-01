@@ -31,7 +31,8 @@ $(function(){
                 $container.find('.js-rfc-input-En_Estado').val('').attr('placeholder', 'carregando...');
                 $container.find('.js-rfc-input-En_Municipio').val('').attr('placeholder', 'carregando...');
 
-                $.getJSON('/site/address_by_postalcode?postalcode='+$cep.val(), function(r){
+                $.getJSON('/site/address_by_postalcode?postalcode='+$cep.val())
+                .success(function(r){
                     $container.find('.js-rfc-input-En_Nome_Logradouro').attr('placeholder', '');
                     $container.find('.js-rfc-input-En_Bairro').attr('placeholder', '');
                     $container.find('.js-rfc-input-En_Estado').attr('placeholder', '');
@@ -48,6 +49,12 @@ $(function(){
 
                         setAddress($container);
                     }
+                })
+                .error(function(){
+                    $container.find('.js-rfc-input-En_Nome_Logradouro').attr('placeholder', '');
+                    $container.find('.js-rfc-input-En_Bairro').attr('placeholder', '');
+                    $container.find('.js-rfc-input-En_Estado').attr('placeholder', '');
+                    $container.find('.js-rfc-input-En_Municipio').attr('placeholder', '');
                 });
             }
         },timeout);
