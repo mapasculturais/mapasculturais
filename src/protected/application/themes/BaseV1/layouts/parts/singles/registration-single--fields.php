@@ -5,7 +5,7 @@
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
 
         <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
-            <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' ">
+            <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links'">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
                 <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
                 <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
@@ -25,6 +25,12 @@
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label> 
                 <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' " >
                 {{key.split('_').pop()}}: {{item}} 
+                </div>
+            </div>
+            <div ng-if="field.config.entityField === '@links'">
+                <label>{{field.required ? '*' : ''}} {{field.title}}: </label> 
+                <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' " >
+                <b>{{item.title}}:</b> <a href="item.value">{{item.value}}</a>
                 </div>
             </div>
 
