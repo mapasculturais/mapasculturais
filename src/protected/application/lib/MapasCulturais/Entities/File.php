@@ -220,7 +220,7 @@ abstract class File extends \MapasCulturais\Entity
             if ( is_object($file_group) && $file_group instanceof \MapasCulturais\Definitions\FileGroup && $file_group->private === true){
                 $this->private = true;
             } else {
-                if($this->owner->status > 0){
+                if(!isset($this->owner->status) || $this->owner->status > 0){
                     $this->private = false;
                 } else {
                     $this->private = true;
