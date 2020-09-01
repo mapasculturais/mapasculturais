@@ -188,6 +188,15 @@ class Subsite extends \MapasCulturais\Entity
         return $this->_logo;
     }
 
+    protected $_share;
+
+    function getShareImage(){
+        if(!$this->_share)
+            $this->_share = $this->getFile('share');
+
+        return $this->_share;
+    }
+
     protected $_background;
 
     function getBackground(){
