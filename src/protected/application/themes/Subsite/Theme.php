@@ -52,6 +52,13 @@ class Theme extends BaseV1\Theme{
 
         $that = $this;
 
+        if($share = $this->subsiteInstance->getShareImage()){
+            
+            $app->hook('asset(img/share.png):url', function(&$url) use($share) {
+                $url = $share->url;
+            });
+        }
+
         $app->hook('subsite.applyConfigurations:after', function(&$config) use($that){
             $theme_path = $that::getThemeFolder() . '/';
             if (file_exists($theme_path . 'conf-base.php')) {
