@@ -28,6 +28,13 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <div ng-if="::field.config.entityField == '@location'">
         <?php $this->part('registration-field-types/fields/_location') ?>
     </div>
+    <!-- fazer isso funcionar aqu e no agent coletive field e pro space field -->
+    <div ng-if="::field.config.entityField == '@links'">
+        <?php $this->part('registration-field-types/fields/links') ?>
+    </div>
+    <div ng-if="::field.config.entityField == '@terms:area'">
+        <?php $this->part('registration-field-types/fields/checkboxes') ?>
+    </div>
     <?php
     foreach ($definitions as $key => $def) :
         $type = $key == 'documento' ? 'cpf' : $def->field_type;

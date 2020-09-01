@@ -148,6 +148,10 @@
                         field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
                     }
 
+                    if(typeof field.config !== 'object' || field.config instanceof Array) {
+                        field.config = {};
+                    }
+
                     return field;
                 }
 
@@ -810,7 +814,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fields.forEach(function(field) {
         var val = $scope.entity[field.fieldName];
 
-        field.unchangedField = val;        
+        field.unchangedFieldJSON = JSON.stringify(val);        
 
         if (field.fieldType == 'date' && typeof val == 'string' ) {
             val = moment(val).toDate();
@@ -825,21 +829,23 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     var timeouts = {};
 
-    $scope.saveField = function (field, value, delay) {     
-        console.log(field, value, delay);
-        if (field.unchangedField == value) {
+    $scope.saveField = function (field, value, delay) {
+        if (field.unchangedFieldJSON == JSON.stringify(value)) {
             return;
         }
+        
         delete field.error;
         $timeout.cancel(timeouts['entity_' + field.fieldName]);
+        
         timeouts['entity_' + field.fieldName] = $timeout(function(){
-            field.unchangedField = value;
+            field.unchangedFieldJSON = JSON.stringify(value);
 
             var data = {
                 id: MapasCulturais.entity.object.id
             };
 
             data[field.fieldName] = value;
+            
             RegistrationService.updateFields(data)
                 .success(function(){
                     delete field.error;
@@ -862,7 +868,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if(current == old){
                 return;
             }
-            
+
+            jQuery("#wrapper-field_" + field.id + ' input').each(function(){
+                var $this = jQuery(this);
+                if (!$this.data('js-mask-init') && $this.attr('js-mask')) {
+                    $this.mask($this.attr('js-mask'));
+                    $this.data('js-mask-init', true);
+                }
+            });
+
             $scope.saveField(field, current, 10000)
         }, true);
     });

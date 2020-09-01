@@ -30,6 +30,7 @@ trait EntityMetaLists{
      *      'videos' => [$video1, $video2, $video3]
      *  )
      * </code>
+     * @return \MapasCulturais\Entities\MetaList[]
      *
      */
     function getMetaLists($group = null){
