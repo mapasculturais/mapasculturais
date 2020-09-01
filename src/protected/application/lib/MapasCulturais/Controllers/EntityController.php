@@ -163,8 +163,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
     }
 
     protected function _finishRequest($entity, $isAjax = false, $function = null){
-        $app = App::i();
-
         $status = 200;
         try{
             if($function){
@@ -181,7 +179,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             header('CreatedRequests: ' . json_encode($reqs));
         }
-
+        
         $this->finish($entity, $status, $isAjax);
     }
 
@@ -190,6 +188,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($data, $status);
+
         }elseif(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
         }else{
@@ -403,8 +402,6 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$entity)
             $app->pass();
 
-        $class = $this->entityClassName;
-
         $function = null;
 
         //Atribui a propriedade editada
@@ -419,7 +416,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $this->_finishRequest($entity, false, $function);
+            $this->_finishRequest($entity, true, $function);
         }
     }
 
@@ -470,7 +467,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
             }
         }
 
-        $this->_finishRequest($entity, false, $function);
+        $this->_finishRequest($entity, true, $function);
     }
 
     /**
