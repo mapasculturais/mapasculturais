@@ -55,7 +55,7 @@ abstract class Theme extends \Slim\View {
 
     protected $_assetManager = null;
 
-    protected $documentMeta = null;
+    public $documentMeta = [];
 
     /**
      * CSS Classes to print in body tag
@@ -479,6 +479,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function printDocumentMeta(){
+        
         foreach($this->documentMeta as $metacfg){
             $meta = "\n <meta";
             foreach($metacfg as $prop => $val){
@@ -511,7 +512,13 @@ abstract class Theme extends \Slim\View {
     }
 
     function asset($file, $print = true){
+        $app = App::i();
+        $app->applyHook('asset(' . $file . ')', [&$file]);
+        
         $url = $this->getAssetManager()->assetUrl($file);
+
+        $app->applyHook('asset(' . $file . '):url', [&$url]);
+
         if($print){
             echo $url;
         }

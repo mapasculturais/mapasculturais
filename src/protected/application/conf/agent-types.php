@@ -65,13 +65,12 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
-                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
-                'Mulher' => \MapasCulturais\i::__('Mulher'),
-                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
-                'Homem' => \MapasCulturais\i::__('Homem'),
-                'Não Binário' => \MapasCulturais\i::__('Não Binário'),
-                'Travesti' => \MapasCulturais\i::__('Travesti'),
-                'Outras' => \MapasCulturais\i::__('Outras')
+                'Mulher Cis' => \MapasCulturais\i::__('Mulher Cis'),
+                'Homem Cis' => \MapasCulturais\i::__('Homem Cis'),
+                'Mulher Trans/travesti' => \MapasCulturais\i::__('Mulher Trans/travesti'),
+                'Homem Trans/travesti' => \MapasCulturais\i::__('Homem Trans/travesti'),
+                'Não Binárie/outra variabilidade' => \MapasCulturais\i::__('Não Binárie/outra variabilidade'),
+                'Não declarada' => \MapasCulturais\i::__('Não declarada'),
             ),
             'available_for_opportunities' => true,
             'field_type' => 'select'
@@ -92,7 +91,12 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
-
+        
+        
+        
+        
+        
+        
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(

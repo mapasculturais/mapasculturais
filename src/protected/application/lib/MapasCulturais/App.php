@@ -810,6 +810,7 @@ class App extends \Slim\Slim{
             'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
             'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
+            'share' => new Definitions\FileGroup('share',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], \MapasCulturais\i::__('O arquivo não é um ZIP.'), true, null, true),
@@ -854,6 +855,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('subsite',$file_groups['avatar']);
         $this->registerFileGroup('subsite',$file_groups['logo']);
         $this->registerFileGroup('subsite',$file_groups['background']);
+        $this->registerFileGroup('subsite',$file_groups['share']);
         $this->registerFileGroup('subsite',$file_groups['institute']);
         $this->registerFileGroup('subsite',$file_groups['favicon']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
