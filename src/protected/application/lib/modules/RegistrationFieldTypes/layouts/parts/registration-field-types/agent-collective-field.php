@@ -15,10 +15,11 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     }
 }
 ?>
-<div ng-if="::field.fieldType === 'agent-collective-field'" id="field_{{field.id}}">
+<div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'agent-collective-field'" id="field_{{field.id}}">
     <span class="label">
         <i class="icon icon-agent"></i> 
-        {{::field.title}} {{::field.required ? '*' : ''}}
+        {{::field.title}}
+        <span ng-if="::field.required ">obrigatório</span>   
     </span>
     
     <em class="relation-field-info">(<?php i::_e('Este campo será salvo no agente coletivo') ?>)</em>
