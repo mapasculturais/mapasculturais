@@ -1272,15 +1272,16 @@ class Theme extends MapasCulturais\Theme {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             $json = json_decode($output);
-            if (isset($json->logradouro)) {
+            
+            if (isset($json->cep)) {
                 $response = [
                     'success' => true,
-                    'lat' => $json->latitude,
-                    'lon' => $json->longitude,
-                    'streetName' => $json->logradouro,
-                    'neighborhood' => $json->bairro,
-                    'city' => $json->cidade,
-                    'state' => $json->estado
+                    'lat' => @$json->latitude,
+                    'lon' => @$json->longitude,
+                    'streetName' => @$json->logradouro,
+                    'neighborhood' => @$json->bairro,
+                    'city' => @$json->cidade,
+                    'state' => @$json->estado
                 ];
             } else {
                 $response = [
