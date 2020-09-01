@@ -30,7 +30,7 @@
             <div ng-if="field.config.entityField === '@links'">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label> 
                 <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' " >
-                <b>{{item.title}}:</b> <a href="item.value">{{item.value}}</a>
+                <b>{{item.title}}:</b> <a target="_blank" href="{{item.value}}">{{item.value}}</a>
                 </div>
             </div>
 
