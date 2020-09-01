@@ -868,7 +868,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if(current == old){
                 return;
             }
-            
+
+            jQuery("#wrapper-field_" + field.id + ' input').each(function(){
+                var $this = jQuery(this);
+                if (!$this.data('js-mask-init') && $this.attr('js-mask')) {
+                    $this.mask($this.attr('js-mask'));
+                    $this.data('js-mask-init', true);
+                }
+            });
+
             $scope.saveField(field, current, 10000)
         }, true);
     });
