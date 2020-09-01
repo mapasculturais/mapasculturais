@@ -4,6 +4,7 @@ namespace RegistrationFieldTypes;
 
 use MapasCulturais\App;
 use MapasCulturais\i;
+use \MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Registration;
@@ -116,7 +117,7 @@ class Module extends \MapasCulturais\Module
 
     function getAgentFields()
     {
-        $agent_fields = ['name', 'shortDescription', '@location', '@terms:area'];
+        $agent_fields = ['name', 'shortDescription', '@location', '@terms:area', '@links'];
         
         $definitions = Agent::getPropertiesMetadata();
         
@@ -132,7 +133,7 @@ class Module extends \MapasCulturais\Module
 
     function getSpaceFields()
     {
-        $space_fields = ['name', 'shortDescription', '@location', '@terms:area'];
+        $space_fields = ['name', 'shortDescription', '@location', '@terms:area', '@links'];
         
         $definitions = Space::getPropertiesMetadata();
         
@@ -403,10 +404,10 @@ class Module extends \MapasCulturais\Module
     }
 
     function saveToEntity ($entity, $value, $registration = null, $metadata_definition = null) {
+       
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $field_id = $metadata_definition->config['registrationFieldConfiguration']->id;
-
             if($entity_field == '@location'){
                 if(isset($value['location'])){
                     $entity->location = $value['location'];
@@ -426,6 +427,45 @@ class Module extends \MapasCulturais\Module
                 // para forçar o save da entidade. o espaço é removido porsteriormente num trim()
                 $entity->name = $entity->name . ' ';
                 $entity->terms['area'] = $value;
+            } else if($entity_field == '@links') {
+                $app = App::i();
+
+                $entity->name = $entity->name . ' ';
+                $savedMetaList = $entity->getMetaLists();
+
+                foreach ($savedMetaList as $savedMetaListGroup) {
+                    foreach ($savedMetaListGroup as $savedMetaListObject) {
+                        $matchedItem=false;
+                        if(is_array($value)){
+                            foreach ($value as $key => $itemValue) {
+                                if(empty($itemValue['value'])){                            
+                                    continue;
+                                }
+                                if( $savedMetaListObject->value == $itemValue['value']){
+                                    $matchedItem = true;
+                                    unset($value[$key]);
+                                    $savedMetaListObject->title=$itemValue['title'];
+                                    $savedMetaListObject->save(true);
+                                }   
+                            }
+                        }
+                        if ($matchedItem == false){
+                            $savedMetaListObject->delete(true);
+                        }                    
+                    }
+                }
+                foreach ($value as $itemArray) {
+                    if (isset($itemArray['value']) && $url=$itemArray['value']){
+                        $metaList = new metaList;
+                        $metaList->owner = $entity;
+                        $url = $itemArray['value'];
+                        $group = (strpos($url, 'youtube') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+                        $metaList->group = $group;
+                        $metaList->title = $itemArray['title'];
+                        $metaList->value = $itemArray['value'];
+                        $metaList->save(true);
+                    }
+                }
             } else {
                 $entity->$entity_field = $value;
             }
@@ -461,7 +501,13 @@ class Module extends \MapasCulturais\Module
 
             } else if($entity_field == '@terms:area') {
                 return $entity->terms['area'];
-            } else {
+            } else if($entity_field == '@links') {
+                $metaLists = $entity->getMetaLists();
+                $links = isset($metaLists['links'])? $metaLists['links']:[];
+                $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
+                return array_merge($links,$videos);
+            }
+             else {
                 return $entity->$entity_field;
             }
         } else {

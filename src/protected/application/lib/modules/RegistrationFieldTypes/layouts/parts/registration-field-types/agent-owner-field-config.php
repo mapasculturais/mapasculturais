@@ -7,8 +7,9 @@ $agent_fields = $app->modules['RegistrationFieldTypes']->config['availableAgentF
 
 $fields_options = [];
 $fields_labels = [
-    '@location' => i::__(' Campos de endereço'),
+    '@location' => i::__(' Campos de endereçoa'),
     '@terms:area' => i::__(' Área de atuação'),
+    '@links' => i::__(' Links'),
 ];
 foreach ($agent_fields as $field) {
     if (isset($definitions[$field])) {
@@ -39,4 +40,8 @@ foreach ($agent_fields as $field) {
         
         <textarea ng-model="field.fieldOptions" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>" style="min-height: 75px"/></textarea>
     </div>
+    <div ng-if="field.config.entityField == '@links'">
+        <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
+    </div>
+    
 </div>
