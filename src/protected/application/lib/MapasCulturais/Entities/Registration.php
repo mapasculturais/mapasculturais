@@ -199,16 +199,19 @@ class Registration extends \MapasCulturais\Entity
     protected static $hooked = false;
 
     function __construct() {
-        $this->owner = App::i()->user->profile;
-       
+        $app = App::i();
+
+        $this->owner = $app->user->profile;
+
         if(!self::$hooked){
             self::$hooked = true;
-            App::i()->hook('entity(' . $this->getHookClassPath() . ').randomId', function($id){
+            $app->hook('entity(' . $this->getHookClassPath() . ').randomId', function($id) use($app) {
                 if(!$this->number){
-                    $this->number = 'on-' . $id;
+                    $this->number = $app->config['registration.prefix'] . $id;
                 }
             });
         }
+
         parent::__construct();
     }
 
