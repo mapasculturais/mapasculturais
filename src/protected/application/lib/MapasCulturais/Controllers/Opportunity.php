@@ -488,10 +488,11 @@ class Opportunity extends EntityController {
         }
         
         $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
+        $registration_idsSplittedUsingComma = implode(',', $registration_ids);
         if($registration_ids){
             $rdata = [
                 '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
-                'id' => "IN({$registration_ids})"
+                'id' => "IN({$registration_idsSplittedUsingComma})"
             ];
             
             foreach($this->data as $k => $v){
