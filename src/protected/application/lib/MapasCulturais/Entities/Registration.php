@@ -696,7 +696,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
-
+        
         // validate agents
         foreach($definitionsWithAgents as $def){
             $errors = [];
@@ -775,6 +775,16 @@ class Registration extends \MapasCulturais\Entity
             $metadata_definition = isset($metadata_definitions[$field->fieldName]) ? 
                 $metadata_definitions[$field->fieldName] : null;
 
+
+            $field_name = $field_prefix . $field->id;
+
+            if ($cond_require = @$metadata_definition->config['registrationFieldConfiguration']->config['require']) {
+                $_fied_name = $cond_require['field'];
+                $_fied_value = $cond_require['value'];
+    
+                $field->required = $this->$_fied_name == $_fied_value;
+            }
+
             $errors = [];
 
             $prop_name = $field->getFieldName();
@@ -808,7 +818,7 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if ($errors) {
-                $errorsResult[$field_prefix . $field->id] = $errors;
+                $errorsResult[$field_name] = $errors;
             }
         }
         // @TODO: validar o campo projectName

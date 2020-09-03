@@ -19,7 +19,7 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
     <span class="label">
         <i class="icon icon-space"></i> 
         {{::field.title}} 
-        <span ng-if="::field.required ">obrigatório</span>   
+        <span ng-if="requiredField(field) ">obrigatório</span>   
     </span>
     
     <em class="relation-field-info">(<?php i::_e('Este campo será salvo no espaço relacionado') ?>)</em>

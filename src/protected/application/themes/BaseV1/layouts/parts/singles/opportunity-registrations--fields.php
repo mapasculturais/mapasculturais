@@ -38,7 +38,9 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
                 $this->part($def->configTemplate);
             }
             ?>
-            <p ng-if="data.newFieldConfiguration.fieldType !== 'section'"><label><input type="checkbox" ng-model="data.newFieldConfiguration.required"> <small><?php i::_e("O preenchimento deste campo é obrigatório");?></small></label></p>
+        
+            <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+
             <p ng-if="data.categories.length > 1">
                 <small><?php i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>
                 <label><input type="checkbox" onclick="if (!this.checked)
@@ -89,7 +91,7 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
                                 }
                                 ?>
                                 
-                                <p ng-if="field.fieldType !== 'section'"><label><input type="checkbox" ng-model="field.required"> <?php i::_e("O preenchimento deste campo é obrigatório");?></label></p>
+                                <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
                                 
                                 <p ng-if="data.categories.length > 1">
                                     <small><?php i::_e("Selecione em quais categorias este campo é utilizado");?>:</small><br>

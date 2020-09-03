@@ -1,7 +1,7 @@
 <div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'number'" id="field_{{::field.id}}">
     <span class="label icon"> 
         {{::field.title}} 
-        <span ng-if="::field.required ">obrigatório</span>   
+        <span ng-if="requiredField(field) ">obrigatório</span>   
     </span>
     
     <div ng-if="::field.description" class="attachment-description">{{::field.description}}</div>

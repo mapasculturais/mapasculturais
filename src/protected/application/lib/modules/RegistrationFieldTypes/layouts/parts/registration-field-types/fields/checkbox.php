@@ -1,1 +1,1 @@
-<label><input ng-required="::field.required" ng-model="entity[fieldName]" ng-click="saveField(field, entity[fieldName])" type="checkbox" /> {{::field.title}}</label>
+<label><input ng-required="requiredField(field)" ng-model="entity[fieldName]" ng-click="saveField(field, entity[fieldName])" type="checkbox" /> {{::field.title}}</label>
