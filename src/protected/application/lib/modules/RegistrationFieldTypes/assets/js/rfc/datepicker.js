@@ -1,4 +1,9 @@
 $(function () {
+    let flatpack = MapasCulturais.flatpickr;
+    flatpack.locale = MapasCulturais.lcode.substr(0,2);
+    flatpack.dateFormat = "Y-m-d";
+    flatpack.altInput= true;
+
     $('input[type="date"]').each(function() {
         let $this = $(this);
         if (!$this.data('flatpickr')) {
@@ -7,7 +12,7 @@ $(function () {
                 locale: MapasCulturais.lcode.substr(0,2),
                 dateFormat: "Y-m-d",
                 altInput: true,
-                altFormat: "d/m/Y",
+                altFormat: MapasCulturais.flatpickr.altFormat,
             });
         }
     });

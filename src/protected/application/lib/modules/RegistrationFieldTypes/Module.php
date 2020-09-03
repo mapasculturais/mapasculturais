@@ -29,7 +29,7 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueScript('app', 'flatpickr-pt', 'vendor/flatpickr-pt.js', ['flatpickr']);
 
         $app->view->jsObject['flatpickr'] = [
-            'altFormat' => env('DATEPICKER_VIEW_FORMAT', i::__("d \\de F \\de Y"))
+            'altFormat' => env('DATEPICKER_VIEW_FORMAT', i::__("d/m/Y"))
         ];
     }
 
