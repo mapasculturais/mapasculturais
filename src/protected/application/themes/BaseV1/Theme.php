@@ -884,6 +884,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
 
+            $this->jsObject['lcode'] = $app->config['app.lcode'];
+
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
             $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
@@ -1272,15 +1274,16 @@ class Theme extends MapasCulturais\Theme {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             $json = json_decode($output);
-            if (isset($json->logradouro)) {
+            
+            if (isset($json->cep)) {
                 $response = [
                     'success' => true,
-                    'lat' => $json->latitude,
-                    'lon' => $json->longitude,
-                    'streetName' => $json->logradouro,
-                    'neighborhood' => $json->bairro,
-                    'city' => $json->cidade,
-                    'state' => $json->estado
+                    'lat' => @$json->latitude,
+                    'lon' => @$json->longitude,
+                    'streetName' => @$json->logradouro,
+                    'neighborhood' => @$json->bairro,
+                    'city' => @$json->cidade,
+                    'state' => @$json->estado
                 ];
             } else {
                 $response = [

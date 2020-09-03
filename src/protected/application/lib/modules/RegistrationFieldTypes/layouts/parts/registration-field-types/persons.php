@@ -1,6 +1,9 @@
 <?php use MapasCulturais\i; ?>
-<div ng-if="::field.fieldType == 'persons'" id="field_{{::field.id}}" >
-    <div class="label icon"> {{::field.title}} {{::field.required ? '*' : ''}}</div>
+<div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType == 'persons'" id="field_{{::field.id}}" >
+    <span class="label icon"> 
+        {{::field.title}} 
+        <span ng-if="::field.required ">obrigatório</span>   
+    </span>
     
     <div ng-if="::field.description" class="attachment-description">{{::field.description}}</div>
 

@@ -16,8 +16,12 @@
             ?>
             <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>
 
-            <div ng-if="::field.fieldType === 'file'" id="file_{{::field.id}}" >
-                <div class="label"> {{::field.title}} {{::field.required ? '*' : ''}}</div>
+            <div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'file'" id="file_{{::field.id}}" >
+                <span class="label"> 
+                    {{::field.title}}
+                    <span ng-if="::field.required ">obrigatorio</span>
+                </span>
+
                 <div class="attachment-description">
                     <span ng-if="::field.description">{{::field.description}}</span>
                     <span ng-if="::field.template">

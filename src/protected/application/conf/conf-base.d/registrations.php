@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'registration.prefix' => env('REGISTRATION_PREFIX', 'on-'),
 
     'registration.agentRelationsOptions' => array(
         'dontUse' => \MapasCulturais\i::__('Não utilizar'),
