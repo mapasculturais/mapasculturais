@@ -1,9 +1,8 @@
 <?php 
     // VERIFICAÇÃO SE TEM REGISTRO DE SOLICITAÇÃO DE ESPAÇO
-    //dump($query);
 
     if(!empty($query) ){
-        if( $query[0]['value'] == 'required' || $query[0]['value'] == 'optional') {
+        if( $query[0]->value == 'required' || $query[0]->value == 'optional') {
 ?>
     <div class="registration-fieldset">
         <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?>

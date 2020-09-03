@@ -126,38 +126,32 @@ class Registration extends EntityController {
         });
         parent::__construct();
     }
+    
+     /**
+     * metodo vindo da edição da oportunidade, no campo de ESPAÇO CULTURAL tem que fazer a 
+     * verificação se já tem registro na tabela, se tiver deve fazer um update para o novo
+     * registro, caso contrário, deve fazer o registro
+     */
     function createSpaceRelation() {
         $app = App::i();
-        $user = $app->user;
-        $object_id  = $this->postData['object_id'];
-        $key        = $this->postData['key'];
-        $value      = $this->postData['value'];
-        $conn = $app->em->getConnection();
-        /**
-         * metodo vindo da edição da oportunidade, no campo de ESPAÇO CULTURAL tem que fazer a 
-         * verificação se já tem registro na tabela, se tiver deve fazer um update para o novo
-         * registro, caso contrário, deve fazer o registro
-         */
-        $sel = "SELECT * FROM opportunity_meta WHERE object_id = $object_id AND key = '$key';";
-        $querySel = $conn->fetchAll($sel);
-         if(empty($querySel)) {
-            $insertOM = $conn->executeQuery("INSERT INTO opportunity_meta(object_id,key,value) VALUES ($object_id,'$key','$value')");
-            if($insertOM){
-                $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
-            }else{
-                $this->json(['message' => 'Ocorreu um erro', 'status' => 500, 'type' => 'error']);
-            }
+        $sel = $app->repo('OpportunityMeta')->findOneBy([
+            'owner' =>  $this->postData['object_id'],
+            'key' => $this->postData['key']
+        ]);
+
+         if(empty($sel)) {
+            $op = $app->repo('Opportunity')->find($this->postData['object_id']);
+            $newOpMeta = new OpportunityMeta;
+            $newOpMeta->owner = $op;
+            $newOpMeta->key = $this->postData['key'];
+            $newOpMeta->value = $this->postData['value'];
+            $newOpMeta->save(true);
+            $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
         }else{
-            //UPDATE
-            $up = $conn->executeQuery("UPDATE opportunity_meta SET value = '$value' WHERE object_id = $object_id AND key = '$key'");
-            if($up){
-                $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
-            }else{
-                $this->json(['message' => 'Ocorreu um erro', 'status' => 500, 'type' => 'error']);
-            }
+            $sel->setValue($this->postData['value']);
+            $sel->save(true);
+            $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
         }
-        
-        
     }
     function POST_createSpaceRelation(){
         $this->requireAuthentication();

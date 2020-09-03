@@ -638,9 +638,6 @@ class Registration extends \MapasCulturais\Entity
         $this->sentTimestamp = new \DateTime;
         $this->_agentsData = $this->_getAgentsData();
         $this->_spaceData = $this->_getSpaceData();
-        // var_dump($this->_agentsData);
-        // dump($this->_spaceData);
-        // die();
         $this->save(true);
 
         if($_access_control_enabled){
@@ -726,10 +723,9 @@ class Registration extends \MapasCulturais\Entity
         }
 
         // validate space
-        $conn = $app->em->getConnection();
-        $selValue = $conn->fetchAll("SELECT * FROM opportunity_meta WHERE object_id = $opportunity->id and key = 'useSpaceRelationIntituicao'");
-        if(!empty($selValue) ){
-            $isSpaceRelationRequired = $selValue[0]['value'];
+        $opMeta = $app->repo('OpportunityMeta')->findOneBy(['owner' =>  $opportunity->id, 'key' => 'useSpaceRelationIntituicao']);
+        if(!empty($opMeta) ){
+            $isSpaceRelationRequired = $opMeta->value;
         }        
         $spaceDefined = $this->getSpaceRelation();
        
