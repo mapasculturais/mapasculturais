@@ -1,1 +1,1 @@
-<input ng-required="::field.required" ng-model="entity[fieldName]" ng-blur="saveField(field, entity[fieldName])" data-mask="99.999.999/9999-99" placeholder="__.___.___/____-__">
+<input ng-required="requiredField(field)" ng-model="entity[fieldName]" ng-blur="saveField(field, entity[fieldName])" data-mask="99.999.999/9999-99" placeholder="__.___.___/____-__">

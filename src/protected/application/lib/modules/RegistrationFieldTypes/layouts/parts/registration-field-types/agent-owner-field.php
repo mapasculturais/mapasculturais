@@ -19,7 +19,7 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <span class="label">
         <i class="icon icon-agent"></i> 
         {{::field.title}}
-        <span ng-if="::field.required ">obrigatório</span>        
+        <span ng-if="requiredField(field) ">obrigatório</span>        
 
     </span>
     
