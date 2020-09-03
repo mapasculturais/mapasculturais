@@ -779,10 +779,10 @@ class Registration extends \MapasCulturais\Entity
             $field_name = $field_prefix . $field->id;
 
             if ($cond_require = @$metadata_definition->config['registrationFieldConfiguration']->config['require']) {
-                $_fied_name = $cond_require['field'];
-                $_fied_value = $cond_require['value'];
+                $_fied_name = @$cond_require['field'];
+                $_fied_value = @$cond_require['value'];
     
-                $field->required = $this->$_fied_name == $_fied_value;
+                $field->required = $_fied_name && $this->$_fied_name == $_fied_value;
             }
 
             $errors = [];
