@@ -884,6 +884,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
 
+            $this->jsObject['lcode'] = $app->config['app.lcode'];
+
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
             $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
             $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);

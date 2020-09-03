@@ -19,10 +19,14 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $app->view->enqueueStyle('app', 'rfc', 'css/rfc/registration-field-types.css');
+        $app->view->enqueueStyle('app', 'rfc-datepicker', 'vendor/flatpickr.css');
 
         $app->view->enqueueScript('app', 'rfc-cep', 'js/rfc/location.js');
+        $app->view->enqueueScript('app', 'rfc-datepicker', 'js/rfc/datepicker.js', ['flatpickr']);
         $app->view->includeIbgeJS();
         $app->view->enqueueScript('app', 'customizeble', 'js/customizable.js');
+        $app->view->enqueueScript('app', 'flatpickr', 'vendor/flatpickr.js');
+        $app->view->enqueueScript('app', 'flatpickr-pt', 'vendor/flatpickr-pt.js', ['flatpickr']);
     }
 
     public function register()
