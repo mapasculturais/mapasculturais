@@ -9,9 +9,6 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
-$em = $app->em;
-$conn = $em->getConnection();
-
 $this->addEntityToJs($entity);
 
 $this->addOpportunityToJs($entity->opportunity);
@@ -22,22 +19,14 @@ $this->addRegistrationToJs($entity);
 
 $this->includeAngularEntityAssets($entity);
 
-//dump($entity);
-// dump($action);
-// dump($entity->opportunity);
-
 $_params = [
     'entity' => $entity,
     'action' => $action,
     'opportunity' => $entity->opportunity
 ];
-//ID DA OPORTUNIDADE
-$idOpportunity = $entity->opportunity->id;
-$rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-// CONSULTA AO BANCO PARA SABER SE TEM REGISTRO
-$strNativeQuery = "SELECT * FROM opportunity_meta WHERE object_id = $idOpportunity and key = 'useSpaceRelationIntituicao';";
 
-$query = $conn->fetchAll($strNativeQuery);
+// CONSULTA AO BANCO PARA SABER SE TEM REGISTRO
+$opMetaSpace = $app->repo('OpportunityMeta')->findBy(['owner' =>  $entity->opportunity->id, 'key' => 'useSpaceRelationIntituicao']);
 
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));?>
@@ -55,7 +44,7 @@ $query = $conn->fetchAll($strNativeQuery);
         
         <?php $this->part('singles/registration-edit--agents', $_params);?>
 
-        <?php $this->part('singles/registration-edit--spaces', array('params' => $_params, 'query' => $query) ) ?>
+        <?php $this->part('singles/registration-edit--spaces', array('params' => $_params, 'query' => $opMetaSpace) ) ?>
 
         <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
         <?php //$this->part('singles/registration-edit--seals', $_params) ?>
