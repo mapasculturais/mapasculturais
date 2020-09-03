@@ -2041,11 +2041,17 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                             $scope.entityValidated = false;
                             $scope.entityErrors = response.data;
                             let errors = response.data;
-                            for (let field in $scope.data.fields){
-                               if(errors[$scope.data.fields[field].fieldName]){
-                                    $scope.data.fields[field].error = errors[$scope.data.fields[field].fieldName]
-                               }
-                            } 
+                            for (let index in $scope.data.fields){
+                                let field = $scope.data.fields[index];
+
+                                if(field.fieldType == 'file') {
+                                    field.fieldName = 'file_' + field.id;
+                                } 
+                                
+                                if(errors[field.fieldName]) {
+                                    field.error = errors[field.fieldName]
+                                }
+                            }
                         } else {
                             $scope.entityErrors = null;
                             $scope.entityValidated = true;
