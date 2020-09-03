@@ -981,13 +981,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     
     $scope.requiredField = function(field) {
         if(field.required) {
-            return true;
+            return 1;
         }
-        var requiredFieldName = field.config.require.field;
-        var requeredFieldValue = field.config.require.value;
-
-        if(field.config.require && field.config.require.condition && $scope.entity[requiredFieldName] == requeredFieldValue){
-            return true;
+        
+        if(field.config.require){
+            var requiredFieldName = field.config.require.field;
+            var requeredFieldValue = field.config.require.value;
+    
+            if(field.config.require && field.config.require.condition && $scope.entity[requiredFieldName] == requeredFieldValue){
+                return 2;
+            }
         }
 
         return false;
