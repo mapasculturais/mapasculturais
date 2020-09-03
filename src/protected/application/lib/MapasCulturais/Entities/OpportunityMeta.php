@@ -51,7 +51,15 @@ class OpportunityMeta extends \MapasCulturais\Entity {
      * })
      */
     protected $owner;
+
+    public function getValue() {
+        return $this->value;
+    }
     
+    public function setValue($value) {
+        $this->value = $value;
+    }
+
     function canUser($action, $userOrAgent = null) {
         return $this->owner->canUser($action, $userOrAgent);
     }
