@@ -42,6 +42,14 @@ class OpportunityMeta extends \MapasCulturais\Entity {
      */
     protected $value;
 
+    public function getValue() {
+        return $this->value;
+    }
+
+    public function setValue($value) {
+        $this->value = $value;
+    }
+
     /**
      * @var \MapasCulturais\Entities\Opportunity
      *
