@@ -984,7 +984,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return 1;
         }
         
-        if(field.config.require){
+        if(field.config && field.config.require){
             var requiredFieldName = field.config.require.field;
             var requeredFieldValue = field.config.require.value;
     
