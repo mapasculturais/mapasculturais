@@ -968,7 +968,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
         }
 
-        if (field.config.require && field.config.require.condition && field.config.require.hide) {
+        if (field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
             var requiredFieldName = field.config.require.field;
             var requeredFieldValue = field.config.require.value;
 
