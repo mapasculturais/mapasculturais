@@ -469,10 +469,10 @@ class Module extends \MapasCulturais\Module
                         $metaList = new metaList;
                         $metaList->owner = $entity;
                         $url = $itemArray['value'];
-                        $group = (strpos($url, 'youtube') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
+                        $group = (strpos($url, 'youtube') > 0 || strpos($url, 'youtu.be') > 0 || strpos($url, 'vimeo') > 0) ? 'videos' : 'links';
                         $metaList->group = $group;
-                        $metaList->title = $itemArray['title'];
-                        $metaList->value = $itemArray['value'];
+                        $metaList->title = $itemArray['title'] ?? '' ;
+                        $metaList->value = $itemArray['value'] ?? '' ;
                         $metaList->save(true);
                     }
                 }
