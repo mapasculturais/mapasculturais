@@ -14,7 +14,7 @@ abstract class AuthProvider {
 
     private $_guestUser = null;
 
-    final function __construct(array $config = []) {
+    function __construct(array $config = []) {
         $this->_config = $config;
         $this->_init();
         $this->_authenticatedUser = $this->_getAuthenticatedUser();
