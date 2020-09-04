@@ -13,6 +13,11 @@ $(function () {
                 dateFormat: "Y-m-d",
                 altInput: true,
                 altFormat: MapasCulturais.flatpickr.altFormat,
+                onChange: function(selectedDates, dateStr, instance) {
+                    setTimeout(() => {
+                        $this.trigger('blur')
+                    }, 10);
+                },
             });
         }
     });
