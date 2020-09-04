@@ -492,18 +492,23 @@ class Module extends \MapasCulturais\Module
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
             if($entity_field == '@location'){
-                $result = [
-                    'endereco' => $entity->endereco,
-                    'En_CEP' => $entity->En_CEP,
-                    'En_Nome_Logradouro' => $entity->En_Nome_Logradouro,
-                    'En_Num' => $entity->En_Num,
-                    'En_Complemento' => $entity->En_Complemento,
-                    'En_Bairro' => $entity->En_Bairro,
-                    'En_Municipio' => $entity->En_Municipio,
-                    'En_Estado' => $entity->En_Estado,
-                    'location' => $entity->location,
-                    'publicLocation' => $entity->publicLocation
-                ];
+
+                if($entity->En_Nome_Logradouro && $entity->En_Num && $entity->En_Municipio && $entity->En_Estado) {
+                    $result = [
+                        'endereco' => $entity->endereco,
+                        'En_CEP' => $entity->En_CEP,
+                        'En_Nome_Logradouro' => $entity->En_Nome_Logradouro,
+                        'En_Num' => $entity->En_Num,
+                        'En_Complemento' => $entity->En_Complemento,
+                        'En_Bairro' => $entity->En_Bairro,
+                        'En_Municipio' => $entity->En_Municipio,
+                        'En_Estado' => $entity->En_Estado,
+                        'location' => $entity->location,
+                        'publicLocation' => $entity->publicLocation
+                    ];
+                } else {
+                    $result = null;
+                }
 
                 return $result;
 
