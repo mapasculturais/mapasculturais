@@ -103,4 +103,10 @@ $(function(){
             }
         },1000);
     });
+
+    setTimeout(function() {
+        $('input.js-rfc-input:first').trigger('keypress');
+    }, 5000);
+
+
 });
