@@ -2095,10 +2095,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     }else{
                         $scope.data.sent = true;
                         MapasCulturais.Messages.success(labels['registrationSent']);
-                        if (redirect === undefined){
+                        if (!response.redirect || response.redirect === undefined){
                             document.location = response.singleUrl;
                         }
-                        else if(redirect){
+                        else if(response.redirect){
                             document.location = response.redirect;
                         }
                     }
