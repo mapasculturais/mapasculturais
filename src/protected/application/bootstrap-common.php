@@ -52,7 +52,6 @@ function env($name, $default) {
 }
 
 function __env_not_false($var_name){
-    return true;
     return strtolower(env($var_name, 0)) !== 'false';
 }
 
