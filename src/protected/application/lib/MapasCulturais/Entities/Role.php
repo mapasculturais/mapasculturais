@@ -35,7 +35,7 @@ class Role extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $user;
@@ -54,7 +54,7 @@ class Role extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     protected $subsite;

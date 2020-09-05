@@ -14,7 +14,7 @@ class AgentSealRelation extends SealRelation {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;

@@ -13,7 +13,7 @@ class RequestPermissionCache extends PermissionCache{
      * @var \MapasCulturais\Entities\Request
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Request")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 }

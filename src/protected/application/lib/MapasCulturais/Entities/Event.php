@@ -103,7 +103,7 @@ class Event extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -113,7 +113,7 @@ class Event extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     protected $project = null;
@@ -122,7 +122,7 @@ class Event extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\EventOpportunity[] Opportunities
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $_relatedOpportunities;
 
@@ -136,7 +136,7 @@ class Event extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\ProjectFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
 
@@ -144,7 +144,7 @@ class Event extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
 
@@ -152,7 +152,7 @@ class Event extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\EventTermRelation[] TermRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
 
@@ -161,7 +161,7 @@ class Event extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\EventSealRelation[] EventSealRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
 
@@ -190,7 +190,7 @@ class Event extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      * })
      */
     protected $subsite;

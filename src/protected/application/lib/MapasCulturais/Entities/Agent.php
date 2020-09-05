@@ -129,7 +129,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     protected $parent;
@@ -148,7 +148,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $user;
@@ -188,7 +188,7 @@ class Agent extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\AgentOpportunity[] Opportunities
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentOpportunity", mappedBy="ownerEntity", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $_relatedOpportunities;
 
@@ -202,7 +202,7 @@ class Agent extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
 
@@ -218,7 +218,7 @@ class Agent extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\AgentTermRelation[] TermRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
 
@@ -227,7 +227,7 @@ class Agent extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\AgentSealRelation[] AgentSealRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentSealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
 
@@ -256,7 +256,7 @@ class Agent extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      * })
      */
     protected $subsite;

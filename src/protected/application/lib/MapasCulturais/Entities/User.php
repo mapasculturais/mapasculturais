@@ -99,7 +99,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     protected $profile;

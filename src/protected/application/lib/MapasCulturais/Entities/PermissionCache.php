@@ -71,7 +71,7 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $user;

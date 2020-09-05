@@ -36,7 +36,7 @@ class EventOccurrenceCancellation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_occurrence_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="event_occurrence_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $eventOccurrence;
