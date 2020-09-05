@@ -13,7 +13,7 @@ class AgentOpportunity extends Opportunity{
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $ownerEntity;
 
@@ -22,7 +22,7 @@ class AgentOpportunity extends Opportunity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\AgentOpportunity", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

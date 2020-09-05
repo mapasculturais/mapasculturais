@@ -110,7 +110,7 @@ abstract class Request extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="requester_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="requester_user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $requesterUser;

@@ -331,7 +331,6 @@ class App extends \Slim\Slim{
 
         $doctrine_config->setProxyDir($proxy_dir);
         $doctrine_config->setProxyNamespace($proxy_namespace);
-        \Doctrine\ORM\Proxy\Autoloader::register($proxy_dir, $proxy_namespace);
 
         /** DOCTRINE2 SPATIAL */
 
@@ -391,6 +390,7 @@ class App extends \Slim\Slim{
             $doctrine_config->setSQLLogger($query_logger);
         }
 
+        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('_text', 'text');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
         $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');

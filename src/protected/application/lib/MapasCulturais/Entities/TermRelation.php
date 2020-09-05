@@ -37,7 +37,7 @@ abstract class TermRelation extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Term", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="term_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="term_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $term;

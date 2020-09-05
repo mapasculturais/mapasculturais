@@ -14,7 +14,7 @@ class EventSealRelation extends SealRelation {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;

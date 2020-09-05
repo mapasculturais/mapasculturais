@@ -94,7 +94,7 @@ class Subsite extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Role[] Role
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id", onDelete="CASCADE")
      * })
     */
     protected $_roles;
@@ -140,7 +140,7 @@ class Subsite extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\SubsiteFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
 

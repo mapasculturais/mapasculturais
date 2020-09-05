@@ -76,8 +76,8 @@ class EntityRevision extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToMany(targetEntity="MapasCulturais\Entities\EntityRevisionData")
      * @ORM\JoinTable(name="entity_revision_revision_data",
-     *      joinColumns={@ORM\JoinColumn(name="revision_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="revision_data_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="revision_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="revision_data_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $data;
@@ -88,7 +88,7 @@ class EntityRevision extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $user;

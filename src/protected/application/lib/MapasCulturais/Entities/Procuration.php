@@ -44,7 +44,7 @@ class Procuration extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $user;
@@ -54,7 +54,7 @@ class Procuration extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="attorney_user_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="attorney_user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $attorney;

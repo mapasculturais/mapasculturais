@@ -13,7 +13,7 @@ class ProjectOpportunity extends Opportunity{
      * @var \MapasCulturais\Entities\Project
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $ownerEntity;
@@ -23,7 +23,7 @@ class ProjectOpportunity extends Opportunity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\ProjectOpportunity", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

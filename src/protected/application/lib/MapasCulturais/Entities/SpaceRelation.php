@@ -62,7 +62,7 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $space;
