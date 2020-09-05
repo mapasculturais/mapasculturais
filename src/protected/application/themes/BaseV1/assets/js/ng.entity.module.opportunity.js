@@ -2095,12 +2095,13 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     }else{
                         $scope.data.sent = true;
                         MapasCulturais.Messages.success(labels['registrationSent']);
-                        if (!response.redirect || response.redirect === undefined){
-                            document.location = response.singleUrl;
-                        }
-                        else if(response.redirect){
-                            document.location = response.redirect;
-                        }
+
+                        if (redirectUrl) {
+                            document.location = redirectUrl;
+                        } 
+                        else if(redirectUrl === undefined) {
+                            document.location = response.redirect || response.singleUrl;
+                        } 
                     }
                 });
             };
