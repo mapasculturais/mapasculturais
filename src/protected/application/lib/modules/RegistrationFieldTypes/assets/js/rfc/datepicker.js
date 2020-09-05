@@ -9,6 +9,7 @@ $(function () {
         if (!$this.data('flatpickr')) {
             $this.attr('type', 'text');
             $this.flatpickr({
+                allowInput: true,
                 locale: MapasCulturais.lcode.substr(0,2),
                 dateFormat: "Y-m-d",
                 altInput: true,
@@ -18,6 +19,10 @@ $(function () {
                         $this.trigger('blur')
                     }, 10);
                 },
+            });
+
+            setTimeout(function () { 
+                $this.next().mask('99/99/9999');
             });
         }
     });
