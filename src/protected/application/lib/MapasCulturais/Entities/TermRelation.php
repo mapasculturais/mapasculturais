@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
  * @ORM\DiscriminatorMap({
         "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunityTermRelation",
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectTermRelation",

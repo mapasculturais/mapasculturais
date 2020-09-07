@@ -24,7 +24,8 @@
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
         "psy/psysh": "@stable",
-        "sinergi/browser-detector": "*"
+        "sinergi/browser-detector": "*",
+        "acelaya/doctrine-enum-type": "^2.3"
     },
     "require-dev": {
     },

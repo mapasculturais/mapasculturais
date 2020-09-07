@@ -1255,6 +1255,33 @@ $$
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;        ");
         
+    },
+
+    'create object_type enum type' => function () {
+        $object_types = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\ObjectType::values()));
+
+        __exec("CREATE TYPE object_type AS ENUM($object_types)");
+    }, 
+
+    'create permission_action enum type' => function () {
+        $permission_actions = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\PermissionAction::values()));
+
+        __exec("CREATE TYPE permission_action AS ENUM($permission_actions)");
+    }, 
+
+    'alter tables to use enum types' => function() {
+        __exec("ALTER TABLE pcache ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE pcache ALTER COLUMN action TYPE permission_action USING action::permission_action");
+
+        __exec("ALTER TABLE file ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE agent_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE term_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE entity_revision ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE metadata ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
 
     }
 
