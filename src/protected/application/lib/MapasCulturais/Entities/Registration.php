@@ -674,11 +674,19 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getValidationErrors() {
+<<<<<<< HEAD
         // não validar no cadastro de uma nova inscrição
         if($this->id == null) {
             return [];
         }
         return $this->getSendValidationErrors();
+=======
+        if($this->isNew()) {
+            return parent::getValidationErrors();
+        } else {
+            return $this->getSendValidationErrors();
+        }
+>>>>>>> 09772706d... corrige validação de novas inscrições
     }
 
     function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){
