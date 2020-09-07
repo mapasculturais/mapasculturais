@@ -32,7 +32,7 @@ use \MapasCulturais\i;
  * @ORM\HasLifecycleCallbacks
  *
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
  * @ORM\DiscriminatorMap({
         "MapasCulturais\Entities\Opportunity"                   = "\MapasCulturais\Entities\OpportunityFile",
         "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",

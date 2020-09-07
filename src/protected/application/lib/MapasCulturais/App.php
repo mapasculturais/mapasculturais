@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
+use Acelaya\Doctrine\Type\PhpEnumType;
+
 /**
  * MapasCulturais Application class.
  *
@@ -373,8 +375,22 @@ class App extends \Slim\Slim{
         \MapasCulturais\DoctrineMappings\Types\Geometry::register();
 
 
+        PhpEnumType::registerEnumTypes([
+            'object_type' => DoctrineEnumTypes\ObjectType::class,
+            'permission_action' => DoctrineEnumTypes\PermissionAction::class
+        ]);
 
+        $platform = $this->_em->getConnection()->getDatabasePlatform();
 
+        $platform->registerDoctrineTypeMapping('_text', 'text');
+        $platform->registerDoctrineTypeMapping('point', 'point');
+        $platform->registerDoctrineTypeMapping('geography', 'geography');
+        $platform->registerDoctrineTypeMapping('geometry', 'geometry');
+        $platform->registerDoctrineTypeMapping('object_type', 'object_type');
+        $platform->registerDoctrineTypeMapping('permission_action', 'permission_action');
+        
+
+        // QUERY LOGGER
         if(@$config['app.log.query']){
             if (isset($config['app.queryLogger']) && is_object($config['app.queryLogger'])) {
                 $query_logger = $config['app.queryLogger'];
@@ -386,12 +402,6 @@ class App extends \Slim\Slim{
             }
             $doctrine_config->setSQLLogger($query_logger);
         }
-
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('_text', 'text');
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
-
 
         // ===================================== //
 

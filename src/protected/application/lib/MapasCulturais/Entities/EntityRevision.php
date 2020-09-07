@@ -46,7 +46,7 @@ class EntityRevision extends \MapasCulturais\Entity{
     /**
      * @var integer
      *
-     * @ORM\Column(name="object_type", type="string", length=255, nullable=false)
+     * @ORM\Column(name="object_type", type="object_type", length=255, nullable=false)
      */
     protected $objectType;
 
