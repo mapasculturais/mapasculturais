@@ -70,7 +70,7 @@ class Module extends \MapasCulturais\Module{
              */
             
             $nameSpace = "<a href=\"{espaco/$destination->id}\" target='_blank'>{$destination->name}</a>";
-            $nameProjectSpace = "<a href=\"{oportunidade/}\" target='_blank'>{$origin->opportunity->name}</a>";
+            $nameProjectSpace = (isset($origin->opportunity)) ? "<a href=\"{oportunidade/$origin->opportunity->id}\" target='_blank'>{$origin->opportunity->name}</a>" : "";
 
             if (!is_null($destination->subsite)) {
                 $url_destination_panel = $destination->subsite->url . '/painel/';
