@@ -127,7 +127,7 @@ class Module extends \MapasCulturais\Module
 
     function getAgentFields()
     {
-        $agent_fields = ['name', 'shortDescription', '@location', '@terms:area', '@links'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
         
         $definitions = Agent::getPropertiesMetadata();
         
@@ -143,7 +143,7 @@ class Module extends \MapasCulturais\Module
 
     function getSpaceFields()
     {
-        $space_fields = ['name', 'shortDescription', '@location', '@terms:area', '@links'];
+        $space_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
         
         $definitions = Space::getPropertiesMetadata();
         
