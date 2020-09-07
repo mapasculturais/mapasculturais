@@ -674,6 +674,10 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getValidationErrors() {
+        // não validar no cadastro de uma nova inscrição
+        if($this->id == null) {
+            return [];
+        }
         return $this->getSendValidationErrors();
     }
 
