@@ -674,7 +674,11 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getValidationErrors() {
-        return $this->getSendValidationErrors();
+        if($this->isNew()) {
+            return parent::getValidationErrors();
+        } else {
+            return $this->getSendValidationErrors();
+        }
     }
 
     function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){
