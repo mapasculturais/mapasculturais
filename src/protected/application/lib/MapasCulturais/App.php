@@ -6,9 +6,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use SwiftMailer\SwiftMailer;
-use Mustache\Mustache;
-use WideImage\Exception\Exception;
 
 /**
  * MapasCulturais Application class.
@@ -525,7 +522,7 @@ class App extends \Slim\Slim{
         $this->view->init();
 
         // ===================================== //
-
+        
         // run plugins
         if(isset($config['plugins.enabled']) && is_array($config['plugins.enabled'])){
             foreach($config['plugins.enabled'] as $plugin){
@@ -1562,7 +1559,7 @@ class App extends \Slim\Slim{
                 }
                 $this->em->flush();
                 $conn->commit();
-            } catch (Exception $e ){
+            } catch (\Exception $e ){
                 $this->em->close();
                 $conn->rollBack();
                 if(php_sapi_name()==="cli"){
