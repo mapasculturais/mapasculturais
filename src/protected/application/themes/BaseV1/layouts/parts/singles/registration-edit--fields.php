@@ -15,6 +15,8 @@
             }
             ?>
             
+            <div ng-if="::field.fieldType !== 'file'" ng-repeat="error in field.error" class="alert danger">{{error}}</div>
+            
             <div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'file'" id="file_{{::field.id}}" >
                 <span class="label"> 
                     {{::field.title}}
