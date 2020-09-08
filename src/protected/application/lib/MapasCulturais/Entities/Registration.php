@@ -780,6 +780,9 @@ class Registration extends \MapasCulturais\Entity
 
             if(isset($metadata_definition->config['registrationFieldConfiguration']->config['require'])){
                 if ($cond_require = $metadata_definition->config['registrationFieldConfiguration']->config['require']) {
+                    if(is_object($cond_require)){
+                        $cond_require = (array) $cond_require;
+                    }
                     $_fied_name = isset($cond_require['field']) ? $cond_require['field'] : null;
                     $_fied_value = isset($cond_require['value']) ? $cond_require['value'] : null;
         
