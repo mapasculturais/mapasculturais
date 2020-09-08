@@ -257,7 +257,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $this->_finishRequest($entity);
+            $this->_finishRequest($entity, true);
         }
     }
 
