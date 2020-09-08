@@ -1,5 +1,5 @@
 <div class="ficha-spcultura">
-    <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+    <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
         <div class="alert warning">
             <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
             <?php echo strlen($entity->shortDescription) ?>
