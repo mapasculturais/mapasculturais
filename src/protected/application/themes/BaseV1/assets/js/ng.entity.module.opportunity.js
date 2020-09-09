@@ -969,13 +969,26 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             });
         });
 
-        $scope.$watch('selectedCategory', function(){
-            $timeout(function(){
-                initEditables();
-            });
-        });
-
     }
+
+    $scope.showFieldConfiguration = function (field) {
+        if(field.categories.length === 0) {
+            return true;
+        }
+
+        if(!$scope.data.filterFieldConfigurationByCategory) {
+            return true;
+        }
+
+        if($scope.data.categories.length === 1) {
+            return true;
+        }
+
+        if(!field.categories.includes($scope.data.filterFieldConfigurationByCategory)){
+            console.log($scope.data.filterFieldConfigurationByCategory, field.categories);
+        }
+        return field.categories.includes($scope.data.filterFieldConfigurationByCategory);
+    };
 
     $scope.showField = function(field){
         var result;
@@ -985,7 +998,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
         }
 
-        if (field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
+        if (field.required && field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
             var requiredFieldName = field.config.require.field;
             var requeredFieldValue = field.config.require.value;
 
