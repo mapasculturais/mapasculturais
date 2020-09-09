@@ -808,10 +808,17 @@ class Opportunity extends EntityController {
                 return false; //TODO return error message?
 
             if (!is_null($importSource)) {
-
+                $new_fields_by_old_field_name = [];
 
                 // Fields
-                foreach($importSource->fields as $field) {
+                foreach($importSource->fields as &$field) {
+                    
+                    if(isset($field->config)){
+                        $field->config = (array) $field->config;
+                        if (isset($field->config['require']) && $field->config['require']) {
+                            $field->config['require'] = (array) $field->config['require'];
+                        }
+                    }
 
                     $newField = new Entities\RegistrationFieldConfiguration;
                     $newField->owner = $opportunity;
@@ -821,13 +828,30 @@ class Opportunity extends EntityController {
                     $newField->fieldType = $field->fieldType;
                     $newField->required = $field->required;
                     $newField->categories = $field->categories;
-                    $newField->config = (array) $field->config;
+                    $newField->config = $field->config;
                     $newField->fieldOptions = $field->fieldOptions;
                     $newField->displayOrder = $field->displayOrder;
 
-                    $app->em->persist($newField);
+                    $field->newField = $newField;
 
+                    $new_fields_by_old_field_name[$field->fieldName] = $newField;
+
+                    // salva a primeira vez para obter um id
                     $newField->save();
+                }
+
+                foreach($importSource->fields as &$field) {
+                    $newField = $field->newField;
+                    if(!empty($field->config['require']['field'])){
+                        $field_name = $field->config['require']['field'];
+
+                        $field->config['require']['field'] = $new_fields_by_old_field_name[$field_name]->fieldName;
+                        
+                        $newField->config = $field->config;
+
+                        // salva a segunda vez para a tualizar o config
+                        $newField->save();
+                    }
 
                 }
 
