@@ -29,9 +29,18 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
             <!-- edit-box to add attachment -->
             
             <edit-box  ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-fields" position="right" title="<?php i::esc_attr_e("Adicionar campo");?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" submit-label="<?php i::esc_attr_e("Criar");?>" close-on-cancel='true' on-cancel="closeNewFieldConfigurationEditBox" on-submit="createFieldConfiguration" spinner-condition="data.fieldSpinner">
-            <select ng-model="data.newFieldConfiguration.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
-            <input type="text" ng-model="data.newFieldConfiguration.title" placeholder="<?php i::esc_attr_e("Nome do campo");?>"/>
-            <textarea ng-model="data.newFieldConfiguration.description" placeholder="<?php i::esc_attr_e("Descrição do campo");?>"/></textarea>
+            <label>
+                Nome do campo<br>
+                <input type="text" ng-model="data.newFieldConfiguration.title" placeholder="<?php i::esc_attr_e("Nome do campo");?>"/>
+            </label>
+            <label>
+                Descrição do campo<br>  
+                <textarea ng-model="data.newFieldConfiguration.description" placeholder="<?php i::esc_attr_e("Descrição do campo");?>"/></textarea>
+            </label>
+            <label>
+                Tipo do campo<br>
+                <select ng-model="data.newFieldConfiguration.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
+            </label>
             {{ (field = data.newFieldConfiguration) && false ? '' : ''}}
             <?php 
             foreach($definitions as $def) {
@@ -85,10 +94,18 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
                             </div>
                             <!-- edit-box to edit attachment -->
                             <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-field-{{field.id}}" position="left" title="<?php i::esc_attr_e("Editar Campo");?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" submit-label="<?php i::esc_attr_e("Salvar");?>" close-on-cancel='true' on-cancel="cancelFieldConfigurationEditBox" on-submit="editFieldConfiguration" index="{{$index}}" spinner-condition="data.fieldSpinner">
-                                <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
-                                <input type="text" ng-model="field.title" placeholder="<?php i::esc_attr_e("Nome do campo");?>"/>
-                                <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do campo");?>"/></textarea>
-                                
+                                <label>
+                                    Nome do campo<br>
+                                    <input type="text" ng-model="field.title" placeholder="<?php i::esc_attr_e("Nome do campo");?>"/>
+                                </label>
+                                <label>
+                                    Descrição do campo<br>
+                                    <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do campo");?>"/></textarea>
+                                </label>
+                                <label>
+                                    Tipo do campo<br>
+                                    <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
+                                </label>
                                 <?php 
                                 foreach($definitions as $def) {
                                     $this->part($def->configTemplate);
