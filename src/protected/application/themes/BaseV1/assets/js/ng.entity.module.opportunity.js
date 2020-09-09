@@ -111,7 +111,7 @@
                 var data = {};
                 Object.keys(entity).forEach(function(key) {
                     
-                    if(key.indexOf('field_') === 0){
+                    if(key.indexOf('field_') === 0 || key == 'projectName'){
                         
                         data[key] = entity[key];
 
@@ -811,6 +811,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
     $scope.entity = MapasCulturais.entity.object;
+
 
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations

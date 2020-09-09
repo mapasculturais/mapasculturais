@@ -269,6 +269,7 @@ class Registration extends \MapasCulturais\Entity
         $json = [
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
+            'projectName' => $this->projectName,
             'number' => $this->number,
             'category' => $this->category,
             'owner' => $this->owner->simplify('id,name,singleUrl'),
