@@ -11,13 +11,17 @@ $opportunity = $entity->opportunity;
 
 if ($opportunity->projectName):
     ?>
-    <div class="registration-fieldset">
-        <div class="label"><?php \MapasCulturais\i::_e("Nome do Projeto"); ?> <?php if ($opportunity->projectName == 2) echo "*" ?></div>
-        
-        <h4 class='js-editable-field js-include-editable' id="projectName" data-name="projectName" data-type="text"
-            data-original-title="<?php \MapasCulturais\i::_e("Nome do Projeto"); ?>"
-            data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o nome do projeto"); ?>"
-            data-value="<?php echo $entity->projectName ?>"> <?php echo $entity->projectName ?>
-        </h4>
+    <div class="registration-fieldset" ng-controller="RegistrationFieldsController">
+        <div id="projectName">
+            <span class="label"> 
+                <?php \MapasCulturais\i::_e("Nome do Projeto"); ?>
+                <?php if ($opportunity->projectName == 2) echo " <span> obrigatório </span>"; ?>   
+            </span>
+            <div class="attachment-description"><?php \MapasCulturais\i::esc_attr_e("Informe o nome do projeto"); ?></div>            
+            <div>
+            <!-- TODO: ng-required="requiredField(field)" nao utilizado, deve refatorar para poder utilizar -->
+                <input ng-model="entity['projectName']" type="text" value="<?php echo $entity->projectName ?>" ng-blur="saveField({fieldName:'projectName'}, entity['projectName'])" />
+            </div>
+        </div>
     </div>
 <?php endif; ?>
