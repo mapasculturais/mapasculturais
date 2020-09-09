@@ -61,9 +61,13 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
                     </p>
                 </edit-box>
 
+                <select ng-if="data.categories.length > 0" ng-model="data.filterFieldConfigurationByCategory">
+                    <option value=''><?php i::_e('Exibir os campos de todas as categorias')?></option>
+                    <option ng-repeat="category in data.categories" value="{{category}}"><?php i::_e('Exibir os campos da categoria "{{category}}"') ?></option>
+                </select>
                 <!-- added attachments list -->
                 <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
-                    <li ng-repeat="field in data.fields" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
+                    <li ng-repeat="field in data.fields" ng-show="showFieldConfiguration(field)" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
                         <div ng-if="field.fieldType !== 'file'">
                             <div class="js-open-editbox">
                                 <div class="label">{{field.title}} <em  ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em></div>

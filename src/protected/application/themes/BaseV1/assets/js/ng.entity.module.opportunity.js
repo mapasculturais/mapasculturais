@@ -442,6 +442,23 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         // Fields
         $scope.fieldConfigurationBackups = [];
 
+        $scope.data.filterFieldConfigurationByCategory = null;
+        $scope.showFieldConfiguration = function (field) {
+            if(field.categories.length === 0) {
+                return true;
+            }
+
+            if(!$scope.data.filterFieldConfigurationByCategory) {
+                return true;
+            }
+
+            if($scope.data.categories.length === 1) {
+                return true;
+            }
+
+            return field.categories.includes($scope.data.filterFieldConfigurationByCategory);
+        };
+
         $scope.createFieldConfiguration = function(){
             $scope.data.fieldSpinner = true;
             $scope.data.newFieldConfiguration.displayOrder = $scope.data.fields.length +1;
