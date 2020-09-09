@@ -111,7 +111,7 @@
                 var data = {};
                 Object.keys(entity).forEach(function(key) {
                     
-                    if(key.indexOf('field_') === 0 || key == 'projectName'){
+                    if(key.indexOf('field_') === 0 || key == 'projectName' || key == 'category'){
                         
                         data[key] = entity[key];
 
@@ -959,6 +959,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 
     if($scope.useCategories){
+        $scope.registrationCategories = MapasCulturais.entity.registrationCategories;
 
         RegistrationService.getSelectedCategory().then(function(value){
             $scope.selectedCategory = value;
