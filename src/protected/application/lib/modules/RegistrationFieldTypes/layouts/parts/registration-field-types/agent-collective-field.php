@@ -29,11 +29,11 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <div ng-if="::field.config.entityField == '@location'">
         <?php $this->part('registration-field-types/fields/_location') ?>
     </div>
-    <div ng-if="::field.config.entityField == '@term:area'">
-        <?php $this->part('registration-field-types/fields/checkboxes') ?>
-    </div>
     <div ng-if="::field.config.entityField == '@links'">
         <?php $this->part('registration-field-types/fields/links') ?>
+    </div>
+    <div ng-if="::field.config.entityField == '@terms:area'">
+        <?php $this->part('registration-field-types/fields/checkboxes') ?>
     </div>
     <?php
     foreach ($definitions as $key => $def) :
