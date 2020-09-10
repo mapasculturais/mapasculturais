@@ -9,7 +9,10 @@ class Opportunity extends \MapasCulturais\Repository{
         Traits\RepositoryAgentRelation;
 
 
-    function findByProjectAndOpportunityMeta($project, $key, $value) {
+    function findByProjectAndOpportunityMeta(Project $project, $key, $value) {
+        $projectsIds = $project->getChildrenIds();
+        $projectsIds[] = $project->id;
+
         try {
             $query = $this->_em->createQuery("
             SELECT 
@@ -18,11 +21,11 @@ class Opportunity extends \MapasCulturais\Repository{
                 MapasCulturais\Entities\OpportunityMeta om
                 JOIN MapasCulturais\Entities\ProjectOpportunity po WITH om.owner=po
                 JOIN po.ownerEntity oe
-                WHERE om.key=:key AND om.value=:value AND oe.id=:projectId
+                WHERE om.key=:key AND om.value=:value AND oe.id in (:projectsIds)
             ");
         
             $params = [
-                'projectId' => $project->id,
+                'projectsIds' => $projectsIds,
                 'key'=>$key,
                 'value'=>$value
             ];
