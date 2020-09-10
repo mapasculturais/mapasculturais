@@ -2,10 +2,16 @@
 $this->layout = 'panel'
 ?>
 <div class="panel-list panel-main-content">
+    
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
 	<header class="panel-header clearfix">
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
 		<h2><?php \MapasCulturais\i::_e("Meus apps");?></h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('app', 'create'); ?>"><?php \MapasCulturais\i::_e("Adicionar novo app");?></a>
-	</header>
+        <?php $this->applyTemplateHook('panel-header','end') ?>
+    </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?></a></li>
         <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?></a></li>
