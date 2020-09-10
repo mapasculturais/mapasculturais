@@ -3,10 +3,17 @@ $this->layout = 'panel';
 $label = \MapasCulturais\i::__("Adicionar novo evento");
 ?>
 <div class="panel-list panel-main-content">
+    
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
 	<header class="panel-header clearfix">
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
 		<h2><?php \MapasCulturais\i::_e("Meus eventos"); ?></h2>
         <div class="btn btn-default add"> <?php $this->renderModalFor('event', false, $label); ?> </div>
-	</header>
+	    <?php $this->applyTemplateHook('panel-header','end') ?>
+    </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+	
+	
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo $meta->count; ?>)</a></li>
         <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlEvents);?>)</a></li>

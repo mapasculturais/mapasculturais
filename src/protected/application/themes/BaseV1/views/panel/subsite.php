@@ -7,10 +7,17 @@ if (!$app->user->is('admin')) {
 }
 ?>
 <div class="panel-list panel-main-content">
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
 	<header class="panel-header clearfix">
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
+
 		<h2><?php echo $this->dict('entities: My Subsites');?></h2>
 		<a class="btn btn-default add" href="<?php echo $app->createUrl('subsite', 'create') ?>"><?php echo $this->dict('entities: add new subsite');?></a>
-	</header>
+
+        <?php $this->applyTemplateHook('panel-header','end') ?>
+    </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+
     <ul class="abas clearfix clear">
         <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Ativos') ?></a></li>
         <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Rascunhos') ?></a></li>
