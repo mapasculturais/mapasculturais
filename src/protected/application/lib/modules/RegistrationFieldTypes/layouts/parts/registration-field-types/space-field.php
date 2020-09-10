@@ -35,6 +35,9 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
     <div ng-if="::field.config.entityField == '@terms:area'">
         <?php $this->part('registration-field-types/fields/checkboxes') ?>
     </div>
+    <div ng-if="::field.config.entityField == '@type'">
+        <?php $this->part('registration-field-types/fields/select') ?>
+    </div>
     <div ng-if="::field.config.entityField == '@links'">
         <?php $this->part('registration-field-types/fields/links') ?>
     </div>

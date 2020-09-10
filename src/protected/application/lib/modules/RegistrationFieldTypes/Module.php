@@ -5,12 +5,14 @@ namespace RegistrationFieldTypes;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use \MapasCulturais\Entities\MetaList;
+use MapasCulturais\Entity;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Definitions\Metadata;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
-use SebastianBergmann\Environment\Console;
+
 
 class Module extends \MapasCulturais\Module
 {
@@ -143,7 +145,7 @@ class Module extends \MapasCulturais\Module
 
     function getSpaceFields()
     {
-        $space_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links'];
+        $space_fields = ['name', 'shortDescription', 'longDescription', '@type', '@location', '@terms:area', '@links'];
         
         $definitions = Space::getPropertiesMetadata();
         
@@ -391,7 +393,7 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/space-field',
                 'configTemplate' => 'registration-field-types/space-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                'serialize' => function($value, Registration $registration = null, Metadata $metadata_definition = null) use ($module) {
                     $space_relation = $registration->getSpaceRelation();
 
                     if($space_relation){
@@ -399,7 +401,7 @@ class Module extends \MapasCulturais\Module
                     }
                     return json_encode($value);
                 },
-                'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                'unserialize' => function($value, Registration $registration = null, Metadata $metadata_definition = null) use ($module) {
                     $space_relation = $registration->getSpaceRelation();
                     if($space_relation){
                         return $module->fetchFromEntity($space_relation->space, $value, $registration, $metadata_definition);
@@ -413,11 +415,12 @@ class Module extends \MapasCulturais\Module
         return $registration_field_types;
     }
 
-    function saveToEntity ($entity, $value, $registration = null, $metadata_definition = null) {
-       
+    function saveToEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null) {
+        
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
+            $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
-            $field_id = $metadata_definition->config['registrationFieldConfiguration']->id;
+            $metadata_definition->config['registrationFieldConfiguration']->id;
             if($entity_field == '@location'){
                 if(isset($value['location'])){
                     $entity->location = $value['location'];
@@ -438,7 +441,6 @@ class Module extends \MapasCulturais\Module
                 $entity->name = $entity->name . ' ';
                 $entity->terms['area'] = $value;
             } else if($entity_field == '@links') {
-                $app = App::i();
 
                 $entity->name = $entity->name . ' ';
                 $savedMetaList = $entity->getMetaLists();
@@ -476,11 +478,14 @@ class Module extends \MapasCulturais\Module
                         $metaList->save(true);
                     }
                 }
+            } else if($entity_field == '@type') {
+                $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
+                $entity->type = $type;
             } else {
                 $entity->$entity_field = $value;
             }
             // só salva na entidade se salvou na inscrição
-            App::i()->hook("entity(RegistrationMeta).save:after", function() use($entity) {
+            $app->hook("entity(RegistrationMeta).save:after", function() use($entity) {
                 $entity->save();
             });
             
@@ -489,7 +494,7 @@ class Module extends \MapasCulturais\Module
         return json_encode($value);
     }
 
-    function fetchFromEntity ($entity, $value, $registration = null, $metadata_definition = null) {
+    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null) {
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
@@ -516,6 +521,10 @@ class Module extends \MapasCulturais\Module
 
             } else if($entity_field == '@terms:area') {
                 return $entity->terms['area'];
+
+            } else if($entity_field == '@type') {
+                return $entity->type->name;
+
             } else if($entity_field == '@links') {
                 $metaLists = $entity->getMetaLists();
                 $links = isset($metaLists['links'])? $metaLists['links']:[];

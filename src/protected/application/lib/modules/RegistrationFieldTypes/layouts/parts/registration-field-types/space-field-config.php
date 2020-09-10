@@ -10,6 +10,7 @@ $fields_labels = [
     '@location' => i::__(' Campos de endereço'),
     '@terms:area' => i::__(' Área de atuação'),
     '@links' => i::__(' Links'),
+    '@type' => i::__(' Tipo'),
 
 ];
 foreach ($space_fields as $field) {
@@ -38,6 +39,11 @@ foreach ($space_fields as $field) {
     </div>
     <div ng-if="field.config.entityField == '@terms:area'">
         <?php i::_e("Informe os termos que estarão disponíveis para seleção. <br>Para fazer um mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. Exemplo: <strong>Dança:Artes da Dança</strong>") ?>
+        
+        <textarea ng-model="field.fieldOptions" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>" style="min-height: 75px"/></textarea>
+    </div>
+    <div ng-if="field.config.entityField == '@type'">
+        <?php i::_e("Informe os tipos que estarão disponíveis para seleção. <br>Para fazer um mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. Exemplo: <strong>Biblioteca Privada:Biblioteca</strong> vai exibir somente <em>Biblioteca</em> mas salvará o tipo <em>Biblioteca Privada</em>") ?>
         
         <textarea ng-model="field.fieldOptions" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>" style="min-height: 75px"/></textarea>
     </div>
