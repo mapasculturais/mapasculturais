@@ -2209,17 +2209,25 @@ class App extends \Slim\Slim{
      * @return \MapasCulturais\Definitions\EntityType
      */
     function getRegisteredEntityType(Entity $object){
-        return @$this->_register['entity_types'][$object->getClassName()][$object->type];
+        return $this->_register['entity_types'][$object->getClassName()][(string)$object->type] ?? null;
     }
 
+    function getRegisteredEntityTypeByTypeName($entity, string $type_name) {
+        foreach($this->getRegisteredEntityTypes($entity) as $type) {
+            if (strtolower($type->name) == trim(strtolower($type_name))) {
+                return $type;
+            }
+        }
 
+        return null;
+    }
 
     /**
-     * Returns the Entity Type of the given entity class or object.
+     * Returns the registered entity types for the given entity class or object.
      *
      * @param \MapasCulturais\Entity|string $entity The entity.
      *
-     * @return \MapasCulturais\Definitions\EntityType
+     * @return \MapasCulturais\Definitions\EntityType[]
      */
     function getRegisteredEntityTypes($entity){
         if(is_object($entity))
