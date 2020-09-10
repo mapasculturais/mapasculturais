@@ -2,7 +2,10 @@
 use MapasCulturais\i;
 $app = MapasCulturais\App::i();
 $user = $app->user;
-$compliantUrl = !isset($app->config['module.CompliantSuggestion']['compliantUrl']) ? $app->config['module.CompliantSuggestion']['compliantUrl'] : '';
+$compliantUrl = '';
+if(isset($app->config['module.CompliantSuggestion'])) {
+    $compliantUrl = !isset($app->config['module.CompliantSuggestion']['compliantUrl']) ? $app->config['module.CompliantSuggestion']['compliantUrl'] : '';
+}
 
 if($this->controller->action === 'create')
     return false;
