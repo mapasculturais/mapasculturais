@@ -2612,8 +2612,7 @@ class App extends \Slim\Slim{
         $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
 
         // default encryption protocol to ssl
-        $protocol = isset($this->_config['mailer.protocol']) &&  !empty($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : 'ssl';
-
+        $protocol = isset($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : null;
 
         if ($transport_type == 'smtp' && false !== $server) {
 
