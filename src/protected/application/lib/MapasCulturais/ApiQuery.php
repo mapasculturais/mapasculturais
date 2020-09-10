@@ -1058,7 +1058,7 @@ class ApiQuery {
                 
         foreach($result as $r){
             $owner_id = $r['ownerId'];
-            $action = $r['action'];
+            $action = $r['action']->getValue();
             if(!isset($permissions[$owner_id])){
                 $permissions[$owner_id] = [];
             }
