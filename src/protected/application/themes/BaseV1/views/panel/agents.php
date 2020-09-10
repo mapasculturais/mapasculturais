@@ -4,10 +4,16 @@ $label = \MapasCulturais\i::__("Adicionar novo agente");
 ?>
 <?php /*$this->part('singles/breadcrumb', ['entity' => $app->entity]); */?>
 <div class="panel-list panel-main-content">
+    
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
 	<header class="panel-header clearfix">
-		<h2><?php \MapasCulturais\i::_e("Meus agentes");?></h2>
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
+        <h2><?php \MapasCulturais\i::_e("Meus agentes");?></h2>
         <div class="btn btn-default add"> <?php $this->renderModalFor('agent', false, $label); ?> </div>
-	</header>
+        <?php $this->applyTemplateHook('panel-header','end') ?>
+    </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+
     <ul class="abas clearfix clear">
 
         <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledAgents); ?>)</a></li>
