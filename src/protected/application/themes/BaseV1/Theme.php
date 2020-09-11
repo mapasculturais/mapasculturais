@@ -2169,7 +2169,7 @@ class Theme extends MapasCulturais\Theme {
 
         return $filters;
     }
-
+    
     function addEntityToJs(MapasCulturais\Entity $entity){
         $this->jsObject['entity'] = [
             'id' => $entity->id,
@@ -2180,7 +2180,7 @@ class Theme extends MapasCulturais\Theme {
             'canUserChangeOwner' => $entity->canUser('changeOwner'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
-            'object' => $entity
+            'object' => json_decode(json_encode($entity)) 
         ];
 
         if($entity->usesNested() && $entity->id){
