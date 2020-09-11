@@ -2,13 +2,22 @@
 use MapasCulturais\i;
 $app = MapasCulturais\App::i();
 $user = $app->user;
+$compliantUrl = '';
+if(isset($app->config['module.CompliantSuggestion'])) {
+    $compliantUrl = !isset($app->config['module.CompliantSuggestion']['compliantUrl']) ? $app->config['module.CompliantSuggestion']['compliantUrl'] : '';
+}
+
 if($this->controller->action === 'create')
     return false;
 ?>
 
 <div class="compliant-suggestion-box">
 <?php if(isset($compliant)): ?>
-    <button ng-show="!data.showForm" ng-click="data.showForm = 'compliant'" class="button-form-compliant-suggestion compliant btn-warning"><?php i::_e('Denunciar'); ?></button>
+    <?php if($compliantUrl) { ?>
+        <a class="btn btn-warning" target="_blank" href="<?php echo $compliantUrl?>"> <?php i::_e('Denunciar'); ?> </a>
+    <?php } else { ?>
+        <button ng-show="!data.showForm" ng-click="data.showForm = 'compliant'" class="button-form-compliant-suggestion compliant btn-warning"><?php i::_e('Denunciar'); ?></button>
+    <?php } ?>
 <?php endif;?>
 
 <?php if(isset($suggestion)): ?>
