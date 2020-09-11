@@ -15,12 +15,11 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     }
 }
 ?>
-<div ng-class="field.error ? 'invalidField': '' "  ng-if="::field.fieldType === 'agent-owner-field'" id="field_{{::field.id}}">
+<div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'agent-owner-field'" id="field_{{::field.id}}">
     <span class="label">
         <i class="icon icon-agent"></i> 
         {{::field.title}}
-        <span ng-if="requiredField(field) ">obrigatório</span>        
-
+        <span ng-if="requiredField(field)">obrigatório</span>
     </span>
     
     <em class="relation-field-info">(<?php i::_e('Este campo será salvo no agente responsável pela inscrição') ?>)</em>
@@ -30,7 +29,6 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <div ng-if="::field.config.entityField == '@location'">
         <?php $this->part('registration-field-types/fields/_location') ?>
     </div>
-    <!-- fazer isso funcionar aqu e no agent coletive field e pro space field -->
     <div ng-if="::field.config.entityField == '@links'">
         <?php $this->part('registration-field-types/fields/links') ?>
     </div>
