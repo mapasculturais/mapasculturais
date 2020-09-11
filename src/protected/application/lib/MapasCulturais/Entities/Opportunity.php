@@ -507,6 +507,123 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    function importFields($importSource) {
+        $this->checkPermission('modifyRegistrationFields');
+        
+        $app = App::i();
+        
+        if (!is_null($importSource)) {
+            $new_fields_by_old_field_name = [];
+
+            // Fields
+            foreach($importSource->fields as &$field) {
+                
+                if(isset($field->config)){
+                    $field->config = (array) $field->config;
+                    if (isset($field->config['require']) && $field->config['require']) {
+                        $field->config['require'] = (array) $field->config['require'];
+                    }
+                }
+
+                $newField = new RegistrationFieldConfiguration;
+                $newField->owner = $this;
+                $newField->title = $field->title;
+                $newField->description = $field->description;
+                $newField->maxSize = $field->maxSize;
+                $newField->fieldType = $field->fieldType;
+                $newField->required = $field->required;
+                $newField->categories = $field->categories;
+                $newField->config = $field->config;
+                $newField->fieldOptions = $field->fieldOptions;
+                $newField->displayOrder = $field->displayOrder;
+
+                $field->newField = $newField;
+
+                $new_fields_by_old_field_name[$field->fieldName] = $newField;
+
+                // salva a primeira vez para obter um id
+                $newField->save();
+            }
+
+            foreach($importSource->fields as &$field) {
+                $newField = $field->newField;
+                if(!empty($field->config['require']['field'])){
+                    $field_name = $field->config['require']['field'];
+
+                    if(isset($new_fields_by_old_field_name[$field_name])) {
+                        $field->config['require']['field'] = $new_fields_by_old_field_name[$field_name]->fieldName;
+                        
+                        $newField->config = $field->config;
+
+                        // salva a segunda vez para a tualizar o config
+                        $newField->save();
+                    }
+                    
+                }
+
+            }
+
+            //Files (attachments)
+            foreach($importSource->files as $file) {
+
+                $newFile = new RegistrationFileConfiguration;
+
+                $newFile->owner = $this;
+                $newFile->title = $file->title;
+                $newFile->description = $file->description;
+                $newFile->required = $file->required;
+                $newFile->categories = $file->categories;
+                $newFile->displayOrder = $file->displayOrder;
+
+                $app->em->persist($newFile);
+
+                $newFile->save();
+
+                if (is_object($file->template)) {
+
+                    $originFile = $app->repo("RegistrationFileConfigurationFile")->find($file->template->id);
+
+                    if (is_object($originFile)) { // se nao achamos o arquivo, talvez este campo tenha sido apagado
+
+                        $tmp_file = sys_get_temp_dir() . '/' . $file->template->name;
+
+                        if (file_exists($originFile->path)) {
+                            copy($originFile->path, $tmp_file);
+
+                            $newTemplateFile = array(
+                                'name' => $file->template->name,
+                                'type' => $file->template->mimeType,
+                                'tmp_name' => $tmp_file,
+                                'error' => 0,
+                                'size' => filesize($tmp_file)
+                            );
+
+                            $newTemplate = new RegistrationFileConfigurationFile($newTemplateFile);
+
+                            $newTemplate->owner = $newFile;
+                            $newTemplate->description = $file->template->description;
+                            $newTemplate->group = $file->template->group;
+
+                            $app->em->persist($newTemplate);
+
+                            $newTemplate->save();
+                        }
+
+                    }
+
+                }
+            }
+
+            // Metadata
+            foreach($importSource->meta as $key => $value) {
+                $this->$key = $value;
+            }
+
+            $this->save(true);
+
+        }
+    }
+
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
         $meta_name = $def->getMetadataName();
         return $this->$meta_name != 'dontUse';
