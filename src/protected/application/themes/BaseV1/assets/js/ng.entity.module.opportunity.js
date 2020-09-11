@@ -376,8 +376,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
                 var ii = 1;
 
+                var _fields = [];
+
                 $.each(fields, function(i,f) {
-                    f.displayOrder=ii;
+                    _fields.push({id: f.id, displayOrder: ii, fieldType: f.fieldType});
                     ii++;
                 });
 
@@ -385,7 +387,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
 
                 // requisição para salvar ordem
-                $http.post(saveOrderUrl, {fields: fields});
+                $http.post(saveOrderUrl, {fields: _fields}).success(function(){
+                    MapasCulturais.Messages.success(labels['changesSaved']);
+                });
             }
         };
 
