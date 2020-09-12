@@ -71,12 +71,7 @@ $(function(){
         });
     });
 
-    //Restart entity form
-    function restartingCreateEntity() {
-        $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
-        $('.js-dialog').attr('style', 'display: none');                
-        $('.create-entity').trigger("reset");
-    }
+    
 
     var labels = MapasCulturais.gettext.mapas;
 
@@ -242,6 +237,13 @@ $(function(){
 
     $(window).resize(setEvaluationFormHeight);
 });
+
+//Restart entity form
+function restartingCreateEntity() {
+    $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
+    $('.js-dialog').attr('style', 'display: none');                
+    $('.create-entity').trigger("reset");
+}
 
 MapasCulturais.utils = {
     getObjectProperties: function (obj) {
