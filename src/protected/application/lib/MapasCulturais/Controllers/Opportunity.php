@@ -754,7 +754,7 @@ class Opportunity extends EntityController {
 
         if (!$opportunity->canUser('modify'))
             return false; //TODO return error message?
-
+            
         $opportunityMeta = array(
             'registrationCategories',
             'useAgentRelationColetivo',
@@ -763,7 +763,7 @@ class Opportunity extends EntityController {
             'registrationCategTitle',
             'useAgentRelationInstituicao',
             'introInscricoes',
-            'useSpaceRelation',
+            'useSpaceRelationIntituicao',
             'registrationSeals',
             'registrationLimit'
         );
