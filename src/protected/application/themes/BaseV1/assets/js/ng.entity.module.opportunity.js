@@ -871,14 +871,32 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             
             RegistrationService.updateFields(data)
                 .success(function(){
+                    $scope.removeFieldErrors(field.fieldName);
                     delete field.error;
                 })
                 .error(function(r) {
+                    
                     if (Array.isArray(Object.values(r.data)) && Object.values(r.data).lenght != 0 ){
                         field.error = [Object.values(r.data).join(', ')]
+                        $scope.entityErrors[field.fieldName] = field.error
                     }
                 });
         },delay);
+    }
+
+    $scope.removeFieldErrors = function(fieldName) {
+        if($scope.entityErrors){
+            delete $scope.entityErrors[fieldName];
+            $scope.$apply();
+        }
+    }
+
+    $scope.numFieldErrors = function() {
+        if(!$scope.entityErrors) {
+            return 0
+        } else {
+            return Object.keys($scope.entityErrors).length;
+        }
     }
 
     $scope.remove = function(array, index){
@@ -920,6 +938,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $form.data('onSuccess', true);
             $form.on('ajaxForm.success', function(){
                 MapasCulturais.Messages.success(labels['changesSaved']);
+                var fieldName = $form.parents('.attachment-list-item').data('fieldName');
+                if(fieldName){
+                    $scope.removeFieldErrors(fieldName);
+                } 
             });
         }
     };
