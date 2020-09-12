@@ -9,7 +9,11 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
     if (in_array($key, $agent_fields)) {
         $def = (object) $def;
         if (empty($def->field_type)) {
-            $def->field_type = 'text';
+            if (in_array($key, ['shortDescription', 'longDescription'])) {
+                $def->field_type = 'textarea';
+            } else {
+                $def->field_type = 'text';
+            }
         }
         $definitions[$key] = $def;
     }
