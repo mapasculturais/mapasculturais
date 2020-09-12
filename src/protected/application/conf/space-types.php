@@ -20,7 +20,14 @@ return array(
         	'private' => true,
             'available_for_opportunities' => true
         ),
-
+        'cnpj' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNPJ'),
+            'validations' => array(
+               'v::cnpj()' => \MapasCulturais\i::__('O número de documento informado é inválido.')
+            ),
+            'available_for_opportunities' => true
+        ),
         'telefonePublico' => array(
             'label' => \MapasCulturais\i::__('Telefone Público'),
             'type' => 'string',
