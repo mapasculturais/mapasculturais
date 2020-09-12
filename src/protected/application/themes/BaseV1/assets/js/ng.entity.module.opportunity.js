@@ -910,17 +910,24 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 return;
             }
 
-            jQuery("#wrapper-field_" + field.id + ' input').each(function(){
+            $scope.saveField(field, current, 10000)
+        }, true);
+    });
+
+    $rootScope.$on('repeatDone:registration-fields', function() {
+        setTimeout(function() {
+            $('[js-mask]').each(function() {
                 var $this = jQuery(this);
-                if (!$this.data('js-mask-init') && $this.attr('js-mask')) {
+    
+                if (!$this.data('js-mask-init')) {
+                    
                     $this.mask($this.attr('js-mask'));
                     $this.data('js-mask-init', true);
                 }
             });
-
-            $scope.saveField(field, current, 10000)
-        }, true);
+        }, 200)
     });
+    
 
     var fieldsByName = {};
 

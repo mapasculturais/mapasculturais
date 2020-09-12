@@ -9,7 +9,7 @@ use \MapasCulturais\i;
     <p class="opportunity-field field-En_CEP">
         <label>
             <?= i::__('CEP') ?><br>
-            <input ng-required="requiredField(field)" ng-model="entity[fieldName].En_CEP" data-mask="99999-999"  ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_CEP" size=11 />
+            <input ng-required="requiredField(field)" ng-model="entity[fieldName].En_CEP" js-mask="99999-999"  ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_CEP" size=11 />
         </label>
     </p>
     <section>
