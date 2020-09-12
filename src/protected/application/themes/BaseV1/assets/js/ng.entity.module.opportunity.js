@@ -379,6 +379,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 var _fields = [];
 
                 $.each(fields, function(i,f) {
+                    f.displayOrder = ii;
                     _fields.push({id: f.id, displayOrder: ii, fieldType: f.fieldType});
                     ii++;
                 });
