@@ -71,6 +71,13 @@ $(function(){
         });
     });
 
+    //Restart entity form
+    function restartingCreateEntity() {
+        $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
+        $('.js-dialog').attr('style', 'display: none');                
+        $('.create-entity').trigger("reset");
+    }
+
     var labels = MapasCulturais.gettext.mapas;
 
     MapasCulturais.TemplateManager.init();
@@ -398,7 +405,8 @@ jQuery(document).ready(function(){
         editableEntityAddHash();
     });
 }).on('click', '.close-modal', function() {
-    MapasCulturais.Modal.close('.entity-modal');
+    MapasCulturais.Modal.close('.entity-modal');    
+    restartingCreateEntity();
 });
 
 
@@ -504,6 +512,7 @@ MapasCulturais.Modal = {
             // close button
             $dialog.find('.js-close').click(function (){
                 MapasCulturais.Modal.close(selector);
+                restartingCreateEntity();
                 return false;
             });
         });
