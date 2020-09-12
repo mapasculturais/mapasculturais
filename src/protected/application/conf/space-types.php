@@ -28,6 +28,11 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
+        'razaoSocial' => array(
+            'label' => \MapasCulturais\i::__('Razão Social'),
+            'type' => 'text',
+            'available_for_opportunities' => true
+        ),
         'telefonePublico' => array(
             'label' => \MapasCulturais\i::__('Telefone Público'),
             'type' => 'string',
