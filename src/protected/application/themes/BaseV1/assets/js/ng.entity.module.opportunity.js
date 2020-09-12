@@ -885,18 +885,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.removeFieldErrors = function(fieldName) {
-        if($scope.entityErrors){
-            delete $scope.entityErrors[fieldName];
-            $scope.$apply();
-        }
+        delete $scope.entityErrors[fieldName];
+        $scope.$apply();
     }
 
     $scope.numFieldErrors = function() {
-        if(!$scope.entityErrors) {
-            return 0
-        } else {
-            return Object.keys($scope.entityErrors).length;
-        }
+        return Object.keys($scope.entityErrors).length;
     }
 
     $scope.remove = function(array, index){
@@ -2122,7 +2116,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                                 }
                             }
                         } else {
-                            $scope.entityErrors = null;
+                            $scope.entityErrors = {};
                             $scope.entityValidated = true;
                         }
                     })
