@@ -177,6 +177,12 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/text-config',
             ],
             [
+                'slug' => 'moeda',
+                'name' => \MapasCulturais\i::__('Campo de moeda'),
+                'viewTemplate' => 'registration-field-types/text',
+                'configTemplate' => 'registration-field-types/text-config',
+            ],
+            [
                 'slug' => 'date',
                 'name' => \MapasCulturais\i::__('Campo de data'),
                 'viewTemplate' => 'registration-field-types/date',
