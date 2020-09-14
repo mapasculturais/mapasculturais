@@ -236,7 +236,7 @@
             let email = $('#email-to-admin-set-password').val();
             $.post(MapasCulturais.baseURL + 'auth/adminchangeuserpassword', {password: password, email: email}, function(r){
                 MapasCulturais.Modal.close('#admin-change-user-password');
-                MapasCulturais.Messages.success('Email alterado por sucesso');
+                MapasCulturais.Messages.success('Senha alterada com sucesso');
                 $('#admin-set-user-password').val("");
             });
         })
@@ -250,7 +250,7 @@
                     return;
                 }
                 MapasCulturais.Modal.close('#admin-change-user-email');
-                MapasCulturais.Messages.success('Email alterado por sucesso');
+                MapasCulturais.Messages.success('Email alterado com sucesso');
                 location.reload();
             });
         })
