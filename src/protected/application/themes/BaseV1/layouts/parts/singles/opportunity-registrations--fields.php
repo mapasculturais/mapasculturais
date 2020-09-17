@@ -7,7 +7,7 @@ $editable_class = $can_edit ? 'js-editable' : '';
 
 $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
 
-$this->jsObject['blockedFields'] = $entity->aldirBlancFields;
+$app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
 ?>
 
