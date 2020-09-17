@@ -259,6 +259,8 @@ class App extends \Slim\Slim{
 
             $namespaces = $config['namespaces'];
 
+            $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
+
             foreach($config['plugins'] as $plugin){
                 $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
                 if(!isset($namespaces[$plugin['namespace']])){
@@ -281,7 +283,7 @@ class App extends \Slim\Slim{
         });
 
         // extende a config with theme config files
-
+        
         $theme_class = "\\" . $config['themes.active'] . '\Theme';
         $theme_path = $theme_class::getThemeFolder() . '/';
 
@@ -325,11 +327,8 @@ class App extends \Slim\Slim{
         AnnotationRegistry::registerLoader('class_exists');
         $doctrine_config->setMetadataDriverImpl($driver);
 
-        $proxy_dir = APPLICATION_PATH . 'lib/MapasCulturais/DoctrineProxies';
-        $proxy_namespace = 'MapasCulturais\DoctrineProxies';
-
-        $doctrine_config->setProxyDir($proxy_dir);
-        $doctrine_config->setProxyNamespace($proxy_namespace);
+        $doctrine_config->setProxyDir(DOCTRINE_PROXIES_PATH);
+        $doctrine_config->setProxyNamespace('MapasCulturais\DoctrineProxies');
 
         /** DOCTRINE2 SPATIAL */
 
@@ -365,6 +364,8 @@ class App extends \Slim\Slim{
         $doctrine_config->setResultCacheImpl($this->_mscache);
 
 
+        $doctrine_config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
+        
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
 
