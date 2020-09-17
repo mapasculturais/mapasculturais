@@ -129,8 +129,8 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                                 <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo");?>"></a>
                                 <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir campo");?>"></a>
                             </div>
-                            <div>
-                                <em><small>({{ isBlockedFields(field.id) ? 'Bloqueado' : ''}})</small></em>
+                            <div style="color: red;">
+                                <strong><em><small>({{ isBlockedFields(field.id) ? 'Campo Bloqueado para edição ou deleção' : ''}})</small></em></strong>
                             </div>
                             
                             
