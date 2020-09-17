@@ -54,7 +54,6 @@ RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer/ && \
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 
 WORKDIR /var/www/html/protected
-
 RUN composer.phar install
 
 WORKDIR /var/www/html/protected/application/themes/
@@ -69,16 +68,12 @@ COPY compose/config.d /var/www/html/protected/application/conf/config.d
 RUN ln -s /var/www/html /var/www/src
 
 COPY version.txt /var/www/version.txt
+
 COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
-
-WORKDIR /var/www/scripts/
-
-RUN ./generate-proxies.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /var/www/html/
-
-ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 9000
 
 CMD ["php-fpm"]
