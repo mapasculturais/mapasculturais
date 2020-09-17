@@ -7,6 +7,8 @@ $editable_class = $can_edit ? 'js-editable' : '';
 
 $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
 
+$app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
+
 ?>
 
 <div id="registration-attachments" class="registration-fieldset project-edit-mode">
@@ -121,15 +123,25 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
                                 </p>
                             </edit-box>
 
-                            <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
+
+
+                            <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                                 <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo");?>"></a>
                                 <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir campo");?>"></a>
                             </div>
+                            <div style="color: red;">
+                                <strong><em><small>({{ isBlockedFields(field.id) ? 'Campo Bloqueado para edição ou deleção' : ''}})</small></em></strong>
+                            </div>
+                            
+                            
+
+
                         </div>
 
                             <div ng-if="field.fieldType === 'file'">
                                 <div class="js-open-editbox">
                                     <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</small></em></div>
+
                                     <span ng-if="field.categories.length" class="attachment-description">
                                         <?php i::_e("Somente para");?> <strong>{{field.categories.join(', ')}}</strong>
                                         <br>
@@ -181,11 +193,14 @@ $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
 
                                                 </form>
                                             </edit-box>
-                                            <div ng-if="data.entity.canUserModifyRegistrationFields" class="btn-group">
+
+                                            
+                                            <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                                                 <a ng-click="openFileConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar anexo");?>"></a>
                                                 <a ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);" class="btn btn-default send hltip" title="<?php i::esc_attr_e("enviar modelo");?>" ></a>
                                                 <a ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir anexo");?>"></a>
                                             </div>
+                                            
                                         </div>
                                     </li>
                                 </ul>

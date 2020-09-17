@@ -309,6 +309,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
+    let blockedFields = $scope.data?.blockedFields;
+
     $scope.isEditable = MapasCulturais.isEditable;
     $scope.maxUploadSize = MapasCulturais.maxUploadSize;
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
@@ -349,6 +351,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         required: false,
         categories: []
     };
+
+    $scope.isBlockedFields = function(fieldID){
+        let field = "field_"+fieldID;
+        if(!blockedFields) {
+            return false;
+        }
+        const foundField = blockedFields.find(item => item == field);
+        return foundField ? true : false;
+    }
 
     function processFieldConfiguration(field){
         if(field.fieldOptions instanceof Array){
