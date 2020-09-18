@@ -13,6 +13,20 @@ function toggleAttachedModal(el, modal_id) {
     $("#evt-date-local").toggle();
 }
 
+function copyToClipboard(element) {
+    if (document.selection) {
+      var range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select().createTextRange();
+      document.execCommand("copy");
+    } else if (window.getSelection) {
+      var range = document.createRange();
+      range.selectNode(element);
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+    }
+  }
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';

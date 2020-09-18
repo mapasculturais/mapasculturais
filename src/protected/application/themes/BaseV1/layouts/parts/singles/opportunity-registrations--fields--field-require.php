@@ -12,14 +12,14 @@
             <?php i::_e("Condicionar a obrigatoriedade pelo valor de outro campo") ?>
         </label>
         <div ng-if="field.config.require.condition">
-            <label style="display:inline-block; width: 45%;">
+            <label style="display:block;">
                 <?php i::_e('Campo') ?><br>
                 <select ng-model="field.config.require.field">
                     <option></option>
-                    <option ng-repeat="f in data.fields" value="field_{{f.id}}">{{f.title}}</option>
+                    <option ng-repeat="f in data.fields" ng-if="f != field" value="field_{{f.id}}">#{{f.id}} - {{f.title}}</option>
                 </select>
             </label>
-            <label style="display:inline-block; width: 45%;">
+            <label style="display:block;">
                 <?php i::_e('Valor') ?><br>
                 <input ng-if="!field.options" type="text" ng-model="field.config.require.value">
             </label>

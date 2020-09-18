@@ -397,6 +397,16 @@ article.opportunity .editable-buttons button {
         }
         
     }
+
+    .field-id {
+        // float:right;
+        font-weight: normal;
+        cursor:pointer;
+        color:darkgreen;
+        &:before {
+            content:"#";
+        }
+    }
 }
 
 
