@@ -23,7 +23,7 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
     <span class="label">
         <i class="icon icon-agent"></i> 
         {{::field.title}}
-        <span ng-if="requiredField(field)">obrigatório</span>
+        <span ng-if="requiredField(field)"><?php i::_e('obrigatório') ?></span>
     </span>
     
     <em class="relation-field-info">(<?php i::_e('Este campo será salvo no agente coletivo') ?>)</em>
