@@ -599,9 +599,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlOpportunities(){
         $this->checkPermission('modify');
-
-        $opportunities = App::i()->repo('Opportunity')->findByAgentRelationUser($this, true);
-
+       
+        $opportunities = App::i()->repo('Opportunity')->findByAgentRelationUser($this, true, 1, 0);
+        $opportunities += App::i()->repo('Opportunity')->findByAgentRelationUser($this, true, 1, 1);
+        
         if(!$opportunities)
             $opportunities = [];
 
