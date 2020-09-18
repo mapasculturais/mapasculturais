@@ -425,7 +425,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
 
         $interval(function(){
-            $scope.data.categories = jQuery('#registration-categories .js-categories-values').text().split("\n");
+            var $field = jQuery('#registration-categories .js-categories-values'); 
+            if ($field.hasClass('editable-empty')) {
+                $scope.data.categories = [];
+            } else {
+                $scope.data.categories = $field.text().split("\n");
+            }
         },1000);
 
         $scope.allCategories = function(model){
