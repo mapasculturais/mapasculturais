@@ -7,6 +7,7 @@ $editable_class = $can_edit ? 'js-editable' : '';
 
 $definitions = \MapasCulturais\App::i()->getRegisteredRegistrationFieldTypes();
 
+$app->view->jsObject['blockedOpportunityFields'] = [];
 $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
 ?>
@@ -133,7 +134,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                                 <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir campo");?>"></a>
                             </div>
                             <div style="color: red;">
-                                <strong><em><small>({{ isBlockedFields(field.id) ? 'Campo Bloqueado para edição ou deleção' : ''}})</small></em></strong>
+                                <strong><em><small>{{ isBlockedFields(field.id) ? '(Campo Bloqueado para edição ou deleção)' : ''}}</small></em></strong>
                             </div>
                             
                             
