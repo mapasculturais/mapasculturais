@@ -32,15 +32,15 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             
             <edit-box  ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-fields" position="right" title="<?php i::esc_attr_e("Adicionar campo");?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" submit-label="<?php i::esc_attr_e("Criar");?>" close-on-cancel='true' on-cancel="closeNewFieldConfigurationEditBox" on-submit="createFieldConfiguration" spinner-condition="data.fieldSpinner">
             <label>
-                Nome do campo<br>
+                <?php i::_e('Nome do campo') ?><br>
                 <input type="text" ng-model="data.newFieldConfiguration.title" placeholder="<?php i::esc_attr_e("Nome do campo");?>"/>
             </label>
             <label>
-                Descrição do campo<br>  
+                <?php i::_e('Descrição do campo') ?><br>
                 <textarea ng-model="data.newFieldConfiguration.description" placeholder="<?php i::esc_attr_e("Descrição do campo");?>"/></textarea>
             </label>
             <label>
-                Tipo do campo<br>
+                <?php i::_e('Tipo do campo') ?><br>
                 <select ng-model="data.newFieldConfiguration.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
             </label>
             {{ (field = data.newFieldConfiguration) && false ? '' : ''}}
@@ -100,15 +100,15 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <!-- edit-box to edit attachment -->
                             <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-field-{{field.id}}" position="left" title="<?php i::esc_attr_e("Editar Campo");?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" submit-label="<?php i::esc_attr_e("Salvar");?>" close-on-cancel='true' on-cancel="cancelFieldConfigurationEditBox" on-submit="editFieldConfiguration" index="{{$index}}" spinner-condition="data.fieldSpinner">
                                 <label>
-                                    Nome do campo<br>
+                                    <?php i::_e('Nome do campo') ?><br>
                                     <input type="text" ng-model="field.title" placeholder="<?php i::esc_attr_e("Nome do campo");?>"/>
                                 </label>
                                 <label>
-                                    Descrição do campo<br>
+                                <?php i::_e('Descrição do campo') ?><br>
                                     <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do campo");?>"/></textarea>
                                 </label>
                                 <label>
-                                    Tipo do campo<br>
+                                <?php i::_e('Tipo do campo') ?><br>
                                     <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes" ></select>
                                 </label>
                                 <?php 
