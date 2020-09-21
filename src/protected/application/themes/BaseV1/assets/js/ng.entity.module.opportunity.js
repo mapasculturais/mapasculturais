@@ -905,8 +905,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.removeFieldErrors = function(fieldName) {
-        delete $scope.entityErrors[fieldName];
-        $scope.$apply();
+        if($scope.entityErrors) {
+            delete $scope.entityErrors[fieldName];
+            $scope.$apply();
+        }
     }
 
     $scope.numFieldErrors = function() {
