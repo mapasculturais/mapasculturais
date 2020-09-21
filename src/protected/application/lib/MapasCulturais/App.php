@@ -8,6 +8,8 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
 use Acelaya\Doctrine\Type\PhpEnumType;
+use Exception;
+use MapasCulturais\Entities\User;
 
 /**
  * MapasCulturais Application class.
@@ -136,7 +138,8 @@ class App extends \Slim\Slim{
             'image_transformations' => [],
             'registration_agent_relations' => [],
             'registration_fields' => [],
-            'evaluation_method' => []
+            'evaluation_method' => [],
+            'roles' => []
         ];
 
     protected $_registerLocked = true;
@@ -803,6 +806,51 @@ class App extends \Slim\Slim{
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Dump');
+
+        $roles = [
+            'saasSuperAdmin' => (object) [
+                'name' => i::__('Super Administrador do SaaS'),
+                'plural' => i::__('Super Administradores do SaaS'),
+                'another_roles' => ['saasAdmin', 'superAdmin', 'admin'],
+                'subsite' => false,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('saasSuperAdmin');
+                }
+            ],
+            'saasAdmin' => (object) [
+                'name' => i::__('Administrador do SaaS'),
+                'plural' => i::__('Administradores do SaaS'),
+                'another_roles' => ['superAdmin', 'admin'],
+                'subsite' => false,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('saasSuperAdmin');
+                }
+            ],
+            'superAdmin' => (object) [
+                'name' => i::__('Super Administrador'),
+                'plural' => i::__('Super Administradores'),
+                'another_roles' => ['admin'],
+                'subsite' => true,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('superAdmin', $subsite_id);
+                }
+            ],
+            'admin' => (object) [
+                'name' => i::__('Administrador'),
+                'plural' => i::__('Administradores'),
+                'another_roles' => [],
+                'subsite' => true,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('superAdmin', $subsite_id);
+                }
+            ],
+        ];
+
+        foreach ($roles as $role => $cfg) {
+            $role_definition = new Definitions\Role($role, $cfg->name, $cfg->plural, $cfg->subsite, $cfg->can_user_manage_role, $cfg->another_roles);
+
+            $this->registerRole($role_definition);
+        }
 
         /**
          * @todo melhores mensagens de erro
@@ -1544,6 +1592,20 @@ class App extends \Slim\Slim{
         $this->permissionCachePendingQueue = [];
     }
 
+    public function setCurrentSubsiteId(int $subsite_id = null) {
+        if(is_null($subsite_id)) {
+            $this->_subsite = null;
+        } else {
+            $subsite = $this->repo('Subsite')->find($subsite_id);
+
+            if(!$subsite) {
+                throw new \Exception('Subsite not found');
+            }
+
+            $this->_subsite = $subsite;
+        }
+    }
+
     private $recreatedPermissionCacheList = [];
 
     public function setEntityPermissionCacheAsRecreated(Entity $entity){
@@ -1777,21 +1839,47 @@ class App extends \Slim\Slim{
 
 
     /**********************************************
-     * Register
+     * Register functions
      **********************************************/
 
-    public function registerRole($role){
-
+    /**
+     * Register a new role
+     *
+     * @param Definitions\Role $role the role definition
+     * @return void
+     */
+    public function registerRole(Definitions\Role $role){
+        $this->_register['roles'][$role->getRole()] = $role;
     }
 
+    /**
+     * Returns the registered roles definitions
+     *
+     * @return \MapasCulturais\Definitions\Role[]
+     */
     public function getRoles() {
-        $roles = include APPLICATION_PATH . 'conf/roles.php';
-        return $roles;
+        return $this->_register['roles'];
     }
 
-    public function getRoleName($role){
-        $roles = $this->getRoles();
-        return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
+    /**
+     * Returns the role definition
+     *
+     * @param string $role
+     * @return \MapasCulturais\Definitions\Role|null
+     */
+    public function getRoleDefinition(string $role) {
+        return $this->_register['roles'][$role] ?? null;
+    }
+
+    /**
+     * Returns the role name
+     *
+     * @param string $role
+     * @return string
+     */
+    public function getRoleName(string $role){
+        $def = $this->_register['roles'][$role] ?? null;
+        return $def ? $def->name : $role;
     }
 
 

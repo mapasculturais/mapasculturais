@@ -741,66 +741,6 @@ class Theme extends MapasCulturais\Theme {
                 'text' => ''
             ],
 
-
-
-            // Roles
-            'roles: Super Administrator' => [
-                'name' => i::__('Super Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Super Administrador')
-            ],
-            'roles: Super Administrators' => [
-                'name' => i::__('Super Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Super Administradores')
-            ],
-            'roles: Administrator' => [
-                'name' => i::__('Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Administrador')
-            ],
-            'roles: Administrators' => [
-                'name' => i::__('Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Administradores')
-            ],
-            'roles: Subsite Super Administrator' => [
-                'name' => i::__('Subsite Super Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Super Administrador')
-            ],
-            'roles: Subsite Super Administrators' => [
-                'name' => i::__('Subsite Super Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Super Administradores')
-            ],
-            'roles: Subsite Administrator' => [
-                'name' => i::__('Subsite Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Administrador')
-            ],
-            'roles: Subsite Administrators' => [
-                'name' => i::__('Subsite Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Administradores')
-            ]
-
         ];
     }
 

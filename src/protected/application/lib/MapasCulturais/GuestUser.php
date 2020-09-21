@@ -12,7 +12,7 @@ class GuestUser implements UserInterface{
         return "guest:" . session_id();
     }
 
-    function is($role){
+    function is(string $role, $subsite = false){
         return $role == 'guest';
     }
 
