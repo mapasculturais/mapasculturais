@@ -127,7 +127,11 @@
                 return $http.patch(this.getUrl('single', entity.id), data).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
-                        $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
+                        location.reload();
+                        return false;
+                        // este codigo foi comentado pois não estava atualizando a tela dinamicamente quando se alterada alguns campos,
+                        // porem foi deixado aqui para verificar futuramente o porque de estar bugado
+                        // $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
                     }).
                     error(function(data, status){
                         $rootScope.$emit('error', {message: "Cannot update opportunity registration", data: data, status: status});
