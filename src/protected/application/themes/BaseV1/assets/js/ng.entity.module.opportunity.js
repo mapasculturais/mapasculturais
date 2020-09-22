@@ -127,11 +127,7 @@
                 return $http.patch(this.getUrl('single', entity.id), data).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
-                        location.reload();
-                        return false;
-                        // este codigo foi comentado pois não estava atualizando a tela dinamicamente quando se alterada alguns campos,
-                        // porem foi deixado aqui para verificar futuramente o porque de estar bugado
-                        // $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
+                        $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
                     }).
                     error(function(data, status){
                         $rootScope.$emit('error', {message: "Cannot update opportunity registration", data: data, status: status});
@@ -888,14 +884,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             };
 
             data[field.fieldName] = value;
-            
             RegistrationService.updateFields(data)
                 .success(function(){
                     $scope.removeFieldErrors(field.fieldName);
                     delete field.error;
                 })
                 .error(function(r) {
-                    
                     if (Array.isArray(Object.values(r.data)) && Object.values(r.data).lenght != 0 ){
                         field.error = [Object.values(r.data).join(', ')]
                         $scope.entityErrors[field.fieldName] = field.error
@@ -1043,6 +1037,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
 
     $scope.showField = function(field){
+
+        RegistrationService.getSelectedCategory().then(function(value){
+            $scope.selectedCategory = value;
+        });
+
         var result;
         if (!$scope.useCategories){
             result = true;
