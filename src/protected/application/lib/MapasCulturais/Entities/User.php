@@ -315,9 +315,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             return false;
         }
 
-        if($procuration = $app->repo('Procuration')->findOneBy(['user' => $user, 'attorney' => $this, 'action' => $action])){
+        foreach($this->_attorneyProcurations as $procuration) {
             if($procuration->isValid()){
-                return true;
+                if ($procuration->action == $action) {
+                    return true;
+                }
             } else {
                 $procuration->delete(true);
             }
