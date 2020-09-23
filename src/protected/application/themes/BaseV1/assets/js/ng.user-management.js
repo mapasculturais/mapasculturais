@@ -186,10 +186,31 @@
         $scope.selectGroupAdmin = 'saasSuperAdmin';
         $scope.selectSubsite = 'MapasCulturais';
 
+        function verifyIsValidCPF(cpf){
+            cpf = cpf.replace(/\D/g, '');
+            if(cpf.toString().length != 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+            var result = true;
+            [9,10].forEach(function(j){
+                var soma = 0, r;
+                cpf.split(/(?=)/).splice(0,j).forEach(function(e, i){
+                    soma += parseInt(e) * ((j+2)-(i+1));
+                });
+                r = soma % 11;
+                r = (r <2)?0:11-r;
+                if(r != cpf.substring(j, j+1)) result = false;
+            });
+            return result;
+        }
+
+        function isValidCPF(cpf){
+            return cpf.match(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/);
+        }
+
         if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();
             $('#search-filter .submenu-dropdown li').click(function() {
                 $scope.spinnerShow = true;
+
                 var params = {
                     entity: $(this).data('entity'),
                     keyword: $('#campo-de-busca').val()
@@ -197,9 +218,9 @@
 
                 $scope.data.global.filterEntity = params.entity;
                 $scope.data[params.entity] = {
-                    keyword: params.keyword,
+                    keyword: !isValidCPF(params.keyword) ? params.keyword : '',
                     showAdvancedFilters:false,
-                    filters: {}
+                    filters: isValidCPF(params.keyword) ? {documento: `eq(${params.keyword})`} : {}
                 };
 
                 $window.$timout = $timeout;
