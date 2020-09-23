@@ -52,6 +52,10 @@ class RegistrationMeta extends \MapasCulturais\Entity {
      */
     protected $owner;
 
+    public function canUser($action, $userOrAgent = null){
+        return $this->owner->canUser($action, $userOrAgent);
+    }
+
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).meta(' . $this->key . ').insert:before', $args);
