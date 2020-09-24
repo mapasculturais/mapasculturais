@@ -450,13 +450,14 @@ class Module extends \MapasCulturais\Module
                         $matchedItem=false;
                         if(is_array($value)){
                             foreach ($value as $key => $itemValue) {
-                                if(empty($itemValue['value'])){                            
+                               
+                                if(empty($itemValue->value)){                            
                                     continue;
                                 }
-                                if( $savedMetaListObject->value == $itemValue['value']){
+                                if( $savedMetaListObject->value == $itemValue->value){
                                     $matchedItem = true;
                                     unset($value[$key]);
-                                    $savedMetaListObject->title=$itemValue['title'];
+                                    $savedMetaListObject->title=$itemValue->title;
                                     $savedMetaListObject->save(true);
                                 }   
                             }
