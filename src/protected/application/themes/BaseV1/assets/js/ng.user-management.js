@@ -186,10 +186,15 @@
         $scope.selectGroupAdmin = 'saasSuperAdmin';
         $scope.selectSubsite = 'MapasCulturais';
 
+        function isValidCPF(cpf){
+            return cpf.match(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/);
+        }
+
         if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();
             $('#search-filter .submenu-dropdown li').click(function() {
                 $scope.spinnerShow = true;
+
                 var params = {
                     entity: $(this).data('entity'),
                     keyword: $('#campo-de-busca').val()
@@ -197,9 +202,9 @@
 
                 $scope.data.global.filterEntity = params.entity;
                 $scope.data[params.entity] = {
-                    keyword: params.keyword,
+                    keyword: !isValidCPF(params.keyword) ? params.keyword : '',
                     showAdvancedFilters:false,
-                    filters: {}
+                    filters: isValidCPF(params.keyword) ? {documento: `eq(${params.keyword})`} : {}
                 };
 
                 $window.$timout = $timeout;
