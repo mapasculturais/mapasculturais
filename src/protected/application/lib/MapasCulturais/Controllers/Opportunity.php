@@ -845,12 +845,15 @@ class Opportunity extends EntityController {
                     if(!empty($field->config['require']['field'])){
                         $field_name = $field->config['require']['field'];
 
-                        $field->config['require']['field'] = $new_fields_by_old_field_name[$field_name]->fieldName;
+                        if(isset($new_fields_by_old_field_name[$field_name])) {
+                            $field->config['require']['field'] = $new_fields_by_old_field_name[$field_name]->fieldName;
+                            
+                            $newField->config = $field->config;
+    
+                            // salva a segunda vez para a tualizar o config
+                            $newField->save();
+                        }
                         
-                        $newField->config = $field->config;
-
-                        // salva a segunda vez para a tualizar o config
-                        $newField->save();
                     }
 
                 }
