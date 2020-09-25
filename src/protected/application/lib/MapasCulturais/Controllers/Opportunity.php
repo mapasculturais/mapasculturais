@@ -557,6 +557,38 @@ class Opportunity extends EntityController {
             return $evaluations;
         }
     }
+
+    function API_findRegistrationsAndEvaluations() {
+        $app = App::i();
+                
+        $opportunity = $this->_getOpportunity();
+        $data = $this->data;
+
+        $conn = $app->getEm()->getConnection();
+
+        $sql = "
+        SELECT
+            r.*, re.*, a.name as agentName
+        FROM
+            registration r
+        INNER JOIN pcache pc
+            ON pc.object_id = r.id
+                AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                AND pc.action = 'evaluate'
+                AND pc.user_id = :user_id
+        LEFT JOIN registration_evaluation re
+            ON r.id = re.registration_id
+        INNER JOIN agent a
+            ON a.id = r.agent_id
+                WHERE r.status > 0
+                AND r.opportunity_id = :opportunity_id
+        ";
+
+        $registrations = $conn->fetchAll($sql, ['user_id' => $app->user->id, 'opportunity_id' => $opportunity->id]);
+        
+        $this->apiAddHeaderMetadata($this->data, $registrations, 2101);
+        $this->apiResponse($registrations);
+    }
     
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
