@@ -557,6 +557,94 @@ class Opportunity extends EntityController {
             return $evaluations;
         }
     }
+
+    function API_findRegistrationsAndEvaluations() {
+        $app = App::i();
+                
+        $opportunity = $this->_getOpportunity();
+        $data = $this->data;
+
+        $conn = $app->getEm()->getConnection();
+
+        $resultLength = "
+        SELECT
+            count(r.id)
+        FROM
+            registration r
+        INNER JOIN pcache pc
+            ON pc.object_id = r.id
+                AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                AND pc.action = 'evaluate'
+                AND pc.user_id = :user_id
+        WHERE r.status > 0
+                AND r.opportunity_id = :opportunity_id
+        ";
+
+        $length = $conn->fetchAll($resultLength, [
+            'user_id' => $app->user->id, 
+            'opportunity_id' => $opportunity->id,
+            ]);
+        
+        $sql = "
+        SELECT
+            r.id as registrationId,
+            r.status as registrationStatus,
+            r.consolidated_result as registrationConsolidated_result,
+            r.number as registrationNumber,
+            re.*, 
+            a.id as agentId,
+            a.name as agentName
+        FROM
+            registration r
+        INNER JOIN pcache pc
+            ON pc.object_id = r.id
+                AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                AND pc.action = 'evaluate'
+                AND pc.user_id = :user_id
+        LEFT JOIN registration_evaluation re
+            ON r.id = re.registration_id
+            AND pc.user_id = :user_id
+        INNER JOIN agent a
+            ON a.id = r.agent_id
+                WHERE r.status > 0
+                AND r.opportunity_id = :opportunity_id 
+                ORDER BY r.id
+            LIMIT :limit
+            OFFSET :offset
+        ";
+
+        $limit = isset($data['@limit']) ? $data['@limit'] : 50;
+        $page = isset($data['@page'] ) ? $data['@page'] : 1;
+        $offset = ($page -1) * $limit;
+
+        $registrations = $conn->fetchAll($sql, [
+            'user_id' => $app->user->id, 
+            'opportunity_id' => $opportunity->id,
+            'limit' => $limit,
+            'offset' => $offset
+            ]);
+
+        $registrationWithResultString = array_map(function($registration) use ($opportunity) {
+            return [
+                "registrationid" => $registration['registrationid'],
+                "registrationstatus" => $registration['registrationstatus'],
+                "registrationconsolidated_result" => $registration['registrationconsolidated_result'],
+                "registrationnumber" => $registration['registrationnumber'],
+                "id" => $registration['id'],
+                "registration_id" => $registration['registration_id'],
+                "user_id" => $registration['user_id'],
+                "result" => $registration['result'],
+                "evaluation_data" => $registration['evaluation_data'],
+                "status" => $registration['status'],
+                "agentid" => $registration['agentid'],
+                "agentname" => $registration['agentname'],
+                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result'])
+            ];
+        },$registrations);
+        
+        $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, $length[0]['count']);
+        $this->apiResponse($registrationWithResultString);
+    }
     
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
