@@ -1408,7 +1408,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     $scope.data[meta_key] = metadata;
                     $scope.data[varname] = $scope.data[varname].concat(response);
                 });
-                
             };
 
             this.finish = function(){
@@ -2216,13 +2215,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         }
         $scope.registrations = [];
         $scope.evaluations = {};
+        $scope.registrationAndEvaluations = [];
         $scope.data = {
             keyword: '',
             current: MapasCulturais.registration.id,
             keywords: [],
             pending: false,
             registrations: [],
-            evaluations: []
+            evaluations: [],
+            registrationAndEvaluations: [],
         }
 
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
@@ -2237,6 +2238,25 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
         });
 
+        var registrationAndEvaluationsApi = new OpportunityApiService($scope, 'registrationAndEvaluations', 'findRegistrationsAndEvaluations', {
+            '@opportunity': getOpportunityId(),
+            '@limit': 50,
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+        });
+
+        registrationAndEvaluationsApi.find().success(function(){
+            $scope.registrationAndEvaluations = $scope.data.registrationAndEvaluations.map(object => {
+                return {
+                    files: {},
+                    id: object.registrationid,
+                    number: object.registrationnumber,
+                    owner: {id: object.agentid, name: object.agentname},
+                    singleUrl: `${MapasCulturais.baseURL}/inscricao/${object.registrationid}/`,
+                    resultString: object.resultString
+                }
+            })
+        });
+
 
         $scope.canCall = true; // variavel usada para nao dar "loop" na chamda da API, somente faz uma chamada apos a anterior ter terminada
         $scope.loadMore = () => {
@@ -2249,7 +2269,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     $scope.canCall = true;  
                     $scope.registrations = $scope.data.registrations;
                 });
-
             }
         };
      
@@ -2274,12 +2293,20 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         });
 
         $scope.evaluated = function(registration){
-            return  $scope.evaluations[registration.id] && $scope.evaluations[registration.id].result !== null;
+            return evaluations[registration.id] && evaluations[registration.id].result !== null;
         };
 
-			var labels = MapasCulturais.gettext.moduleOpportunity;
-			$scope.status_str = function(registration) {
+        $scope.newEvaluated = function(registration){
+            return registration.resultString ? true : false;
+        };
+
+        var labels = MapasCulturais.gettext.moduleOpportunity;
+        $scope.status_str = function(registration) {
             return this.evaluated(registration) ? $scope.evaluations[registration.id].resultString : labels['pending'];
+        };
+
+        $scope.registrationStatus = function(registration) {
+            return registration.resultString ? registration.resultString : labels['pending'];
         };
 
         $scope.getEvaluationResult = function(registration) {
@@ -2319,6 +2346,38 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             return result;
         }
+
+
+        $scope.newShow = function(registration){
+            if(registration.status === 0){
+                return false;
+            }
+            var ks = $scope.data.keywords;
+            var result = false;
+            if(ks.length > 0){
+                for(var i in ks){
+                    var k = ks[i];
+                    if(k == registration.number || k == registration.id || registration.owner.name.toLowerCase().indexOf(k) >= 0){
+                        result = true;
+                    }
+
+                    if(registration.resultString.toLowerCase() == k){
+                        result = true;
+                    }
+                }
+            } else {
+                result = true;
+            }
+
+            if($scope.data.pending){
+                if($scope.newEvaluated(registration)){
+                    result = false;
+                }
+            }
+
+            return result;
+        }
+
     }]);
 
 module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsService', 'EditBox', function($scope, $rootScope, RelatedSealsService, EditBox) {
