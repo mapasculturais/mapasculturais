@@ -20,7 +20,7 @@ if(!is_dir(PRIVATE_FILES_PATH)){
     mkdir(PRIVATE_FILES_PATH);
 }
 
-if(!is_dir(SESSIONS_SAVE_PATH)){
+if(!is_dir(SESSIONS_SAVE_PATH) &&  strpos(SESSIONS_SAVE_PATH,'tcp://') === false){
     mkdir(SESSIONS_SAVE_PATH);
 }
 
