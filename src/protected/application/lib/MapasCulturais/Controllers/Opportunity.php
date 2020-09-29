@@ -642,7 +642,7 @@ class Opportunity extends EntityController {
             ];
         },$registrations);
         
-        $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, $length[0]);
+        $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, $length[0]['count']);
         $this->apiResponse($registrationWithResultString);
     }
     
