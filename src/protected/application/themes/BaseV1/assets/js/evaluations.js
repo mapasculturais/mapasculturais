@@ -23,9 +23,14 @@ $(function(){
         $.post(url, data, function(r){
             MapasCulturais.Messages.success(labels.saveMessage);
             if($button.hasClass('js-next')){
-                var $current = $("#registrations-list .registration-item.current");
+                // var $current = $("#registrations-list .registration-item.current");
+                var $current = $(".current");
                 var $next = $current.nextAll('.visible:first');
                 var $link = $next.find('a');
+                //se o proximo registration da lista for igual o registration atual, pule 2 filhos 
+                if($current.find('a').attr('href') == $current.nextAll('.visible:first').find('a').attr('href')) {
+                    $link = $(".registration-item:eq(2)").find('a'); // pegue o segundo filho da lista nos <li>
+                }
                 document.location = $link.attr('href');
             }
         }).fail(function(rs) {

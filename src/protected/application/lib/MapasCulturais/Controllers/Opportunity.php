@@ -568,7 +568,13 @@ class Opportunity extends EntityController {
 
         $sql = "
         SELECT
-            r.*, re.*, a.name as agentName
+            r.id as registrationId,
+            r.status as registrationStatus,
+            r.consolidated_result as registrationConsolidated_result,
+            r.number as registrationNumber,
+            re.*, 
+            a.id as agentId,
+            a.name as agentName
         FROM
             registration r
         INNER JOIN pcache pc
@@ -581,13 +587,43 @@ class Opportunity extends EntityController {
         INNER JOIN agent a
             ON a.id = r.agent_id
                 WHERE r.status > 0
-                AND r.opportunity_id = :opportunity_id
+                AND r.opportunity_id = :opportunity_id 
+                ORDER BY r.id
+            LIMIT :limit
+            OFFSET :offset
         ";
 
-        $registrations = $conn->fetchAll($sql, ['user_id' => $app->user->id, 'opportunity_id' => $opportunity->id]);
+        $limit = isset($data['@limit']) ? $data['@limit'] : 50;
+        $page = isset($data['@page'] ) ? $data['@page'] : 1;
+        $offset = $page * $limit;
+
+        $registrations = $conn->fetchAll($sql, [
+            'user_id' => $app->user->id, 
+            'opportunity_id' => $opportunity->id,
+            'limit' => $limit,
+            'offset' => $offset
+            ]);
+
+        $registrationWithResultString = array_map(function($registration) use ($opportunity) {
+            return [
+                "registrationid" => $registration['registrationid'],
+                "registrationstatus" => $registration['registrationstatus'],
+                "registrationconsolidated_result" => $registration['registrationconsolidated_result'],
+                "registrationnumber" => $registration['registrationnumber'],
+                "id" => $registration['id'],
+                "registration_id" => $registration['registration_id'],
+                "user_id" => $registration['user_id'],
+                "result" => $registration['result'],
+                "evaluation_data" => $registration['evaluation_data'],
+                "status" => $registration['status'],
+                "agentid" => $registration['agentid'],
+                "agentname" => $registration['agentname'],
+                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result'])
+            ];
+        },$registrations);
         
-        $this->apiAddHeaderMetadata($this->data, $registrations, 2101);
-        $this->apiResponse($registrations);
+        $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, 2101);
+        $this->apiResponse($registrationWithResultString);
     }
     
     function API_findEvaluations($opportunity_id = null) {
