@@ -615,7 +615,7 @@ class Opportunity extends EntityController {
 
         $limit = isset($data['@limit']) ? $data['@limit'] : 50;
         $page = isset($data['@page'] ) ? $data['@page'] : 1;
-        $offset = $page -1 * $limit;
+        $offset = ($page -1) * $limit;
 
         $registrations = $conn->fetchAll($sql, [
             'user_id' => $app->user->id, 
