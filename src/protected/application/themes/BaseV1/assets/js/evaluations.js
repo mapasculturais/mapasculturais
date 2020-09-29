@@ -31,7 +31,9 @@ $(function(){
                 if($current.find('a').attr('href') == $current.nextAll('.visible:first').find('a').attr('href')) {
                     $link = $(".registration-item:eq(2)").find('a'); // pegue o segundo filho da lista nos <li>
                 }
-                document.location = $link.attr('href');
+                if($link.attr('href')) {
+                    document.location = $link.attr('href');
+                }
             }
         }).fail(function(rs) {
             if(rs.responseJSON && rs.responseJSON.error){
