@@ -2260,14 +2260,23 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
         $scope.canCall = true; // variavel usada para nao dar "loop" na chamda da API, somente faz uma chamada apos a anterior ter terminada
         $scope.loadMore = () => {
-            if(evaluationsApi.finish()){
+            if(registrationAndEvaluationsApi.finish()){
                 return null;
             }
             if($scope.canCall) {
                 $scope.canCall = false;
-                registrationsApi.find().success(function(){
-                    $scope.canCall = true;  
-                    $scope.registrations = $scope.data.registrations;
+                registrationAndEvaluationsApi.find().success(function(){
+                    $scope.canCall = true;
+                    $scope.registrationAndEvaluations = $scope.data.registrationAndEvaluations.map(object => {
+                        return {
+                            files: {},
+                            id: object.registrationid,
+                            number: object.registrationnumber,
+                            owner: {id: object.agentid, name: object.agentname},
+                            singleUrl: `${MapasCulturais.baseURL}/inscricao/${object.registrationid}/`,
+                            resultString: object.resultString
+                        }
+                    })
                 });
             }
         };
