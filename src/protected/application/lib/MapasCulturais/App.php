@@ -202,10 +202,11 @@ class App extends \Slim\Slim{
 
         if($config['app.offline']){
             $bypass_callable = $config['app.offlineBypassFunction'];
-
-            if(!is_callable($bypass_callable) || !$bypass_callable()){
+            
+            if (php_sapi_name()!=="cli" && (!is_callable($bypass_callable) || !$bypass_callable())) {
                 http_response_code(307);
                 header('Location: ' . $config['app.offlineUrl']);
+                die;
             }
         }
 
