@@ -109,10 +109,10 @@
 
             updateFields: function(entity) {
                 var data = {};
+
                 Object.keys(entity).forEach(function(key) {
-                    
-                    if(key.indexOf('field_') === 0 || key == 'projectName' || key == 'category'){
-                        
+                    // para excluir propriedades do angular
+                    if(key.indexOf('$$') == -1){
                         data[key] = entity[key];
 
                         if (data[key] instanceof Date) {
@@ -120,7 +120,6 @@
                         } else if (data[key] instanceof Array && data[key].length === 0) {
                             data[key] = null;
                         }
-
                     }
                 });
 
@@ -832,7 +831,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
     $scope.entity = MapasCulturais.entity.object;
-
 
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
