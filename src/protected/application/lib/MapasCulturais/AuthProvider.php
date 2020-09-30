@@ -97,8 +97,8 @@ abstract class AuthProvider {
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){
-        App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
         $this->_authenticatedUser = $user;
+        App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
     }
 
     abstract function _getAuthenticatedUser();
