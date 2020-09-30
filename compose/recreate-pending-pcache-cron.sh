@@ -1,7 +1,7 @@
 #!/bin/bash
-
+echo "teste"
 while [ true ]; do
-    /var/www/scripts/recreate-pending-pcache.sh
+    /var/www/scripts/recreate-pending-pcache.sh &
     if [ -z "$PENDING_PCACHE_RECREATION_INTERVAL" ]; then 
         sleep 60        
     else 
