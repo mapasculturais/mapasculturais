@@ -20,8 +20,10 @@ if(!is_dir(PRIVATE_FILES_PATH)){
     mkdir(PRIVATE_FILES_PATH);
 }
 
-if(!is_dir(SESSIONS_SAVE_PATH)){
-    mkdir(SESSIONS_SAVE_PATH);
+if(strpos(SESSIONS_SAVE_PATH,'tcp://') === false){
+    if(!is_dir(SESSIONS_SAVE_PATH)){
+            mkdir(SESSIONS_SAVE_PATH);
+    }
 }
 
 define('AUTOLOAD_TTL', 60 * 5);
