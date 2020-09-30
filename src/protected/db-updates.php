@@ -1283,6 +1283,12 @@ $$
         __exec("ALTER TABLE entity_revision ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
         __exec("ALTER TABLE metadata ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
 
+    },
+
+    'alter table permission_cache_pending add column status' => function() use($conn) {
+        if (!__column_exists('permission_cache_pending', 'status')) {
+            $conn->executeQuery("ALTER TABLE permission_cache_pending ADD status smallint DEFAULT 0");
+        }
     }
 
 ] + $updates ;
