@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 
 use Acelaya\Doctrine\Type\PhpEnumType;
 use Exception;
-use MapasCulturais\DoctrineProxies\__CG__\MapasCulturais\Entities\PermissionCachePending;
+use MapasCulturais\Entities\PermissionCachePending;
 use MapasCulturais\Entities\User;
 
 /**
@@ -1619,10 +1619,12 @@ class App extends \Slim\Slim{
     }
 
     public function recreatePermissionsCache(){
-        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => PermissionCachePending::STATUS_WAITING], ['id' => 'ASC']);
+        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
         if ($item) {
-            $item->status = PermissionCachePending::STATUS_PROCESSING;
+            $this->disableAccessControl();
+            $item->status = 1;
             $item->save(true);
+            $this->enableAccessControl();
 
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
@@ -1632,6 +1634,7 @@ class App extends \Slim\Slim{
                 if ($entity) {
                     $entity->recreatePermissionCache();
                 }
+                
                 $this->em->remove($item);
 
                 $this->em->flush();
@@ -1640,8 +1643,10 @@ class App extends \Slim\Slim{
                 $this->em->close();
                 $conn->rollBack();
 
-                $item->status = PermissionCachePending::STATUS_WAITING;
+                $this->disableAccessControl();
+                $item->status = 0;
                 $item->save(true);
+                $this->enableAccessControl();
             
                 if(php_sapi_name()==="cli"){
                     echo "\n\t - ERROR - {$e->getMessage()}";
