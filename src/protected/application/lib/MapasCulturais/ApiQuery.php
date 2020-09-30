@@ -387,9 +387,7 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
-        $class = $class::getClassName();
-
-        if($class == 'MapasCulturais\Entities\Opportunity' && $this->parentQuery){
+        if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
             $class = $parent_class::getOpportunityClassName();
         }
