@@ -187,7 +187,7 @@
         $scope.selectSubsite = 'MapasCulturais';
 
         function isValidCPF(cpf){
-            return cpf.match(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/);
+            return cpf.match(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/) || cpf.match(/^\d{11}$/);
         }
 
         if($('#user-managerment-search-form').length) {
@@ -206,6 +206,7 @@
                     showAdvancedFilters:false,
                     filters: isValidCPF(params.keyword) ? {documento: `eq(${params.keyword})`} : {}
                 };
+                
 
                 $window.$timout = $timeout;
                 $timeout.cancel($scope.timer);
