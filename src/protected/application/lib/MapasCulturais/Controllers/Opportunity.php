@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use Exception;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
@@ -141,6 +142,8 @@ class Opportunity extends EntityController {
 
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
 
         if(!isset($this->urlData['output']) || $this->urlData['output'] == 'xls'){
             $response = $app->response();
@@ -156,6 +159,8 @@ class Opportunity extends EntityController {
         $this->partial($view, $view_params);
         $output = ob_get_clean();
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
+        
+        
     }
 
 
