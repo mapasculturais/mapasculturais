@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use Exception;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
@@ -71,6 +72,79 @@ class Opportunity extends EntityController {
         }
     }
 
+    function GET_applyEvaluationsSimple() {
+        set_time_limit(0);
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+
+        $app = App::i();
+
+        $entity = $this->requestedEntity;
+
+        $app->disableAccessControl();
+        $opp = $app->repo('Opportunity')->find($entity->id);
+        $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
+
+        if($type != 'simple') {
+            throw new Exception('Ação somente disponivel para avaliações do tipo simples');
+        }
+
+        //@todo
+        //TRANSFORMAR EM SQL
+        // pesquise todas as registrations da opportunity que esta vindo na request
+        $query = App::i()->getEm()->createQuery("
+        SELECT 
+            r
+        FROM
+            MapasCulturais\Entities\Registration r
+        WHERE 
+            r.opportunity = :opportunity_id
+                AND
+            r.status > 0
+        ");
+    
+        $params = [
+            'opportunity_id' => $opp,
+        ];
+
+        $query->setParameters($params);
+
+        $registrations = $query->getResult();
+
+        // faça um foreach em cada registration e pegue as suas avaliações
+        foreach ($registrations as $registration) {
+            $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration'=>$registration->id]);
+
+            $allEvaluationsAreStatus10 = true;
+            //verifique se TODAS as avaliações estão selecionadas, se sim, registration foi aprovada
+            //se não, verifique se a registration tem SOMENTE UMA avaliação, se tiver uma, então o status da registration é o mesmo da avaliação, se tiver mais de uma, o status é "nao selecionado"
+            foreach ($evaluations as $evaluation) {
+                $evaluationStatus = $evaluation->getResult();
+                if($evaluationStatus != 10) {
+                    $allEvaluationsAreStatus10 = false;
+                }
+            }
+            if($allEvaluationsAreStatus10 == true) {
+                $registration->status = 10; //selecionada
+            } 
+            if($allEvaluationsAreStatus10 == false) {
+                if(count($evaluations) > 1) {
+                    $registration->status = 3; // não selecionada
+                }
+                if(count($evaluations) == 1) {
+                    $registration->status = (int)$evaluations[0]->getResult();
+                }
+            } 
+
+            $registration->save();
+        }
+
+        $app->em->flush();
+        $app->enableAccessControl();
+
+        echo "Processo finalizado";
+
+    }
 
     function GET_report(){
         $this->requireAuthentication();

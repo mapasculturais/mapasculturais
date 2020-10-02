@@ -234,4 +234,8 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         
         $this->registration->consolidateResult(true);
     }
+
+    public function getResult() {
+        return $this->result;
+    }
 }
