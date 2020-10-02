@@ -125,21 +125,24 @@ class Opportunity extends EntityController {
                 }
             }
             if($allEvaluationsAreStatus10 == true) {
-                $registration->status = 10; //selecionada
+                $registration->setStatus(10); //selecionada
+                $registration->consolidatedResult = 10; //selecionada
             } 
             if($allEvaluationsAreStatus10 == false) {
                 if(count($evaluations) > 1) {
-                    $registration->status = 3; // não selecionada
+                    $registration->setStatus(3); // não selecionada
+                    $registration->consolidatedResult = 3; // não selecionada
                 }
                 if(count($evaluations) == 1) {
-                    $registration->status = (int)$evaluations[0]->getResult();
+                    $registration->setStatus( (int)$evaluations[0]->getResult() );
+                    $registration->consolidatedResult = (int)$evaluations[0]->getResult();
                 }
             } 
 
-            $registration->save();
+            $registration->save(true);
         }
 
-        $app->em->flush();
+        
         $app->enableAccessControl();
 
         echo "Processo finalizado";
@@ -234,6 +237,9 @@ class Opportunity extends EntityController {
 
 
     function API_findByUserApprovedRegistration(){
+        set_time_limit(0);
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
         $this->requireAuthentication();
         $app = App::i();
 
