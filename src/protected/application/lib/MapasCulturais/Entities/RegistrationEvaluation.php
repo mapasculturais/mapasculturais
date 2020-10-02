@@ -52,7 +52,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="registration_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="registration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $registration;
@@ -62,7 +62,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $user;
@@ -233,5 +233,9 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         parent::postUpdate($args);
         
         $this->registration->consolidateResult(true);
+    }
+
+    public function getResult() {
+        return $this->result;
     }
 }

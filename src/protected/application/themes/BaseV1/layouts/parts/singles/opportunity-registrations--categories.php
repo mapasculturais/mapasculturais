@@ -1,6 +1,8 @@
 <?php
 $can_edit = $entity->canUser('modifyRegistrationFields');
 
+$app->applyHookBoundTo($this, 'opportunity.blockedCategoryFields', [&$entity,&$can_edit]);
+
 $editable_class = $can_edit ? 'js-editable' : '';
 
 if ($can_edit) {
@@ -13,6 +15,9 @@ if ($can_edit) {
     <h4><?php \MapasCulturais\i::_e("Opções");?></h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e('É possível criar opções para os proponentes escolherem na hora de se inscrever, como, por exemplo, "categorias" ou "modalidades". Se não desejar utilizar este recurso, deixe em branco o campo "Opções".');?></p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto.");?> </p>
+
+    <?php $this->applyTemplateHook('categories-messages','begin',[$entity]); ?>
+    
     <p>
         <span class="label"><?php \MapasCulturais\i::_e("Título das opções");?></span><br>
         <span class="<?php echo $editable_class ?>" data-edit="registrationCategTitle" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Título das opções");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um título para o campo de opções");?>"><?php echo $entity->registrationCategTitle ? $entity->registrationCategTitle : \MapasCulturais\i::__('Categoria'); ?></span>

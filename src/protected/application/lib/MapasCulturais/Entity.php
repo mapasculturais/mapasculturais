@@ -207,10 +207,15 @@ abstract class Entity implements \JsonSerializable{
             return $this->user;
         }
 
-        if(!$this->owner)
-            return $app->user;
-
         $owner = $this->owner;
+
+        if(!$owner){
+            return $app->user;
+        }
+
+        if(!($owner instanceof Entity)){
+            return $app->user;
+        }
 
         $user = $owner->getOwnerUser();
 
@@ -361,6 +366,7 @@ abstract class Entity implements \JsonSerializable{
                 }
             }
 
+            $app->applyHookBoundTo($this, 'can(' . $this->getHookClassPath() . '.' . $action . ')', ['user' => $user, 'result' => &$result]);
             $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
         }
@@ -505,6 +511,10 @@ abstract class Entity implements \JsonSerializable{
             $data_array = $data_array + $class::getMetadataMetadata();
         }
 
+        if(isset($data_array['location']) && isset($data_array['publicLocation'])){
+            $data_array['location']['private'] = function(){ return (bool) ! $this->publicLocation; };
+        }
+
 
         return $data_array;
     }
@@ -616,16 +626,16 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $requests = [];
-
+        
         try {
             $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').save:requests', [&$requests]);
             $app->applyHookBoundTo($this, "entity({$this}).save:requests", [&$requests]);
         } catch (Exceptions\WorkflowRequestTransport $e) {
             $requests[] = $e->request;
         }
-
+        
         if (method_exists($this, '_saveNested')) {
-            try {
+           try {
                 $this->_saveNested();
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
@@ -634,13 +644,11 @@ abstract class Entity implements \JsonSerializable{
 
         if (method_exists($this, '_saveOwnerAgent')) {
             try {
-                $this->_saveOwnerAgent();
-
+               $this->_saveOwnerAgent();                
             } catch (Exceptions\WorkflowRequestTransport $e) {
                 $requests[] = $e->request;
             }
         }
-
         try{
             if($this->isNew()){
                 $this->checkPermission('create');
@@ -691,7 +699,7 @@ abstract class Entity implements \JsonSerializable{
             if(!$requests)
                 throw $e;
         }
-
+        
         if($requests){
             foreach($requests as $request)
                 $request->save($flush);

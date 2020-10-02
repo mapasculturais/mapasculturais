@@ -3,14 +3,16 @@ FROM php:7.2-fpm
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip \
         ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
-        libfreetype6-dev libjpeg62-turbo-dev libpng-dev
+        libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y nodejs npm
 
-# Install uglify
+RUN rm -rf /var/lib/apt/lists
+
+# Install uglify and terser
 RUN npm install -g \
-        uglify-js@2.2.0 \
+        terser \
         uglifycss \
         autoprefixer
 
@@ -44,10 +46,11 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 # Copy source
 COPY src/index.php /var/www/html/index.php
-COPY src/protected /var/www/html/protected
+COPY --chown=www-data:www-data src/protected /var/www/html/protected
 
-RUN mkdir -p /var/www/html/protected/vendor /var/www/.composer/ && \
-    chown -R www-data:www-data /var/www/html/protected/vendor/ /var/www/.composer/
+
+RUN mkdir -p /var/www/html/protected/vendor /var/www/html/protected/DoctrineProxies /var/www/.composer && \
+    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/html/protected/DoctrineProxies /var/www/.composer
 
 RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
 

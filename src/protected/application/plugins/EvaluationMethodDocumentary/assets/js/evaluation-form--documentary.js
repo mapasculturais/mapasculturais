@@ -92,7 +92,7 @@ $(function(){
             }
             if(MapasCulturais.evaluation && MapasCulturais.evaluation.evaluationData){
                 for (var id in MapasCulturais.evaluation.evaluationData){
-                    var $field = $('#registration-field-' + id);
+                    var $field = $('#field_' + id);
                     var val = MapasCulturais.evaluation.evaluationData[id];
 
                     $('li.registration-list-item').each(function(){

@@ -13,7 +13,7 @@ class SpacePermissionCache extends PermissionCache{
      * @var \MapasCulturais\Entities\Space
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 }

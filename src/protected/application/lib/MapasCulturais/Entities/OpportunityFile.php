@@ -13,7 +13,7 @@ class OpportunityFile extends File{
      * @var \MapasCulturais\Entities\Opportunity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -23,7 +23,7 @@ class OpportunityFile extends File{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\OpportunityFile", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

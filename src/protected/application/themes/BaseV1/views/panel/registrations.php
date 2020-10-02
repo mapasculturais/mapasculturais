@@ -6,12 +6,18 @@ $drafts = $app->repo('Registration')->findByUser($app->user, Registration::STATU
 $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
 ?>
 <div class="panel-list panel-main-content">
-    <header class="panel-header clearfix">
-            <h2><?php \MapasCulturais\i::_e("Minhas inscrições");?></h2>
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
+	<header class="panel-header clearfix">
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
+        <h2><?php \MapasCulturais\i::_e("Minhas inscrições");?></h2>
+
+        <?php $this->applyTemplateHook('panel-header','end') ?>
     </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+
     <ul class="abas clearfix clear">
-            <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Rascunhos");?></a></li>
-            <li><a href="#enviadas"><?php \MapasCulturais\i::_e("Enviadas");?></a></li>
+            <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?></a></li>
+            <li><a href="#enviadas" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Enviadas");?></a></li>
     </ul>
     <div id="ativos">
         <?php foreach($drafts as $registration): ?>

@@ -11,7 +11,7 @@
         "doctrine/dbal": "*",
         "doctrine/annotations": "*",
         "opauth/openid": "*",
-        "respect/validation": "*",
+        "respect/validation": "1.*",
         "smottt/wideimage": "1.1.1",
         "phpunit/phpunit": "8.*",
         "creof/doctrine2-spatial": "dev-master",
@@ -24,7 +24,8 @@
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
         "psy/psysh": "@stable",
-        "sinergi/browser-detector": "*"
+        "sinergi/browser-detector": "*",
+        "acelaya/doctrine-enum-type": "^2.3"
     },
     "require-dev": {
     },

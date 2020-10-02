@@ -59,9 +59,9 @@ $this->entity = $entity;
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -72,7 +72,7 @@ $this->entity = $entity;
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
-                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
 

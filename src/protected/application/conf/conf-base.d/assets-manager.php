@@ -11,12 +11,12 @@ return [
 
         'process.js' => !$is_production ?
                 'cp {IN} {OUT}':
-                'uglifyjs {IN} -o {OUT} --source-map {OUT}.map --source-map-include-sources --source-map-url /assets/{FILENAME}.map -b -p ' . substr_count(BASE_PATH, '/'),
+                'terser {IN} --source-map --output {OUT} ',
 
         'process.css' => !$is_production ?
                 'cp {IN} {OUT}':
                 'uglifycss {IN} > {OUT}',
 
         'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
-]),
+    ]),
 ];

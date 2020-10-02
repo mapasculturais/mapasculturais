@@ -54,21 +54,21 @@
             </td>
         </tr>
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}">
-            <td class="registration-id-col"><a href="{{evaluation.registration.singleUrl}}">{{evaluation.registration.number}}</a></td>
+            <td class="registration-id-col"><a href="{{evaluation.registration.singleUrl}}" rel='noopener noreferrer'>{{evaluation.registration.number}}</a></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>
                     <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
-                    <a href="{{evaluation.registration.owner.singleUrl}}">{{evaluation.registration.owner.name}}</a>
+                    <a href="{{evaluation.registration.owner.singleUrl}}" rel='noopener noreferrer'>{{evaluation.registration.owner.name}}</a>
                 </p>
 
                 <p ng-repeat="relation in evaluation.registration.agentRelations" ng-if="relation.agent">
                     <span class="label">{{relation.label}}</span><br />
-                    <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
+                    <a href="{{relation.agent.singleUrl}}" rel='noopener noreferrer'>{{relation.agent.name}}</a>
                 </p>
             </td>
             <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}"><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
+                <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}" rel='noopener noreferrer'><div class="screen-reader-text"><?php \MapasCulturais\i::_e("Baixar arquivos");?></div></a>
             </td>
             <td class="registration-status-col">
                 {{getEvaluationStatusLabel(evaluation)}}

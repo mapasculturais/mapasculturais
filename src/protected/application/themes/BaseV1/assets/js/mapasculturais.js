@@ -13,6 +13,20 @@ function toggleAttachedModal(el, modal_id) {
     $("#evt-date-local").toggle();
 }
 
+function copyToClipboard(element) {
+    if (document.selection) {
+      var range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select().createTextRange();
+      document.execCommand("copy");
+    } else if (window.getSelection) {
+      var range = document.createRange();
+      range.selectNode(element);
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+    }
+  }
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
@@ -70,6 +84,8 @@ $(function(){
             }
         });
     });
+
+    
 
     var labels = MapasCulturais.gettext.mapas;
 
@@ -236,6 +252,13 @@ $(function(){
     $(window).resize(setEvaluationFormHeight);
 });
 
+//Restart entity form
+function restartingCreateEntity() {
+    $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
+    $('.js-dialog').attr('style', 'display: none');                
+    $('.create-entity').trigger("reset");
+}
+
 MapasCulturais.utils = {
     getObjectProperties: function (obj) {
         var keys = [];
@@ -398,7 +421,8 @@ jQuery(document).ready(function(){
         editableEntityAddHash();
     });
 }).on('click', '.close-modal', function() {
-    MapasCulturais.Modal.close('.entity-modal');
+    MapasCulturais.Modal.close('.entity-modal');    
+    restartingCreateEntity();
 });
 
 
@@ -499,11 +523,12 @@ MapasCulturais.Modal = {
             if (_title)
                 $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
 
-            $dialog.prepend('<a href="#" class="js-close icon icon-close"></a>');
+            $dialog.prepend('<a href="#" class="js-close icon icon-close" rel="noopener noreferrer"></a>');
 
             // close button
             $dialog.find('.js-close').click(function (){
                 MapasCulturais.Modal.close(selector);
+                restartingCreateEntity();
                 return false;
             });
         });
@@ -869,6 +894,8 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
+                showbuttons: false,
+                onblur: 'submit',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
 //                    multiple: $selector.data('multiple'),
@@ -1403,7 +1430,7 @@ $(function() {
         };
 
         var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
             maxZoom: config.zoomMax,
             minZoom: config.zoomMin
         });
@@ -1477,7 +1504,7 @@ $(function() {
         };
 
         var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
             maxZoom: config.zoomMax,
             minZoom: config.zoomMin
         });

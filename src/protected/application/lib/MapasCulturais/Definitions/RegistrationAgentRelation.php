@@ -7,7 +7,6 @@ namespace MapasCulturais\Definitions;
  * @property-read string $label
  * @property-read string $description
  * @property-read int $type
- * @property-read array $requiredProperties
  * @property-read array $metadataConfiguration
  * @property-read array $metadataName
  */
@@ -23,15 +22,12 @@ class RegistrationAgentRelation extends \MapasCulturais\Definition{
 
     protected $type = null;
 
-    protected $requiredProperties = [];
-
     function __construct($config) {
         $this->required               = $config['required'];
         $this->agentRelationGroupName = $config['agentRelationGroupName'];
         $this->label                  = $config['label'];
         $this->description            = $config['description'];
         $this->type                   = $config['type'];
-        $this->requiredProperties     = $config['requiredProperties'];
     }
 
     function getMetadataName(){

@@ -33,9 +33,11 @@ $_params = [
 
         <?php $this->part('singles/registration-single--header', $_params) ?>
 
-        <?php $this->part('singles/registration-single--categories', $_params) ?>
-
+        <?php $this->part('singles/registration-single--categories', $_params) ?>   
+        
         <?php $this->part('singles/registration-single--agents', $_params) ?>
+
+        <?php $this->part('singles/registration-single--spaces', $_params) ?>
         
         <?php $this->part('singles/registration-single--fields', $_params) ?>
 

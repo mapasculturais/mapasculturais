@@ -3,16 +3,23 @@ $this->layout = 'panel';
 $label = \MapasCulturais\i::__("Adicionar novo evento");
 ?>
 <div class="panel-list panel-main-content">
+    
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
 	<header class="panel-header clearfix">
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
 		<h2><?php \MapasCulturais\i::_e("Meus eventos"); ?></h2>
         <div class="btn btn-default add"> <?php $this->renderModalFor('event', false, $label); ?> </div>
-	</header>
+	    <?php $this->applyTemplateHook('panel-header','end') ?>
+    </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+	
+	
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo $meta->count; ?>)</a></li>
-        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlEvents);?>)</a></li>
-        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($draft); ?>)</a></li>
-        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($trashed); ?>)</a></li>
-        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedEvents);?>)</a></li>
+        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo $meta->count; ?>)</a></li>
+        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlEvents);?>)</a></li>
+        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($draft); ?>)</a></li>
+        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($trashed); ?>)</a></li>
+        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedEvents);?>)</a></li>
     </ul>
     <div id="ativos">
 

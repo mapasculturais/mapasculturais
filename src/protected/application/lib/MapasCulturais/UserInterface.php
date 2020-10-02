@@ -2,7 +2,7 @@
 namespace MapasCulturais;
 
 interface UserInterface{
-    function is($role);
+    function is(string $role, $subsite_id = false);
 
     function isAttorney($action, $user= null);
 }

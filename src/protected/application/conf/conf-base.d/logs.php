@@ -44,6 +44,7 @@ return [
     'app.log.apiCache'      => env('LOG_APICACHE', false),
     'app.log.apiDql'        => env('LOG_APIDQL', false),
     'app.log.assets'        => env('LOG_ASSETS', false),
+    'app.log.auth'          => env('LOG_AUTH', false),
 
     'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 

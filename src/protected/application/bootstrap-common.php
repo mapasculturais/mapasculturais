@@ -8,11 +8,22 @@ define('ACTIVE_THEME_PATH', THEMES_PATH . 'active/');
 define('PLUGINS_PATH', APPLICATION_PATH . 'plugins/');
 define('MODULES_PATH', APPLICATION_PATH . 'lib/modules/');
 
+define('DOCTRINE_PROXIES_PATH', PROTECTED_PATH . 'DoctrineProxies/');
+if(!is_dir(DOCTRINE_PROXIES_PATH)){
+    mkdir(DOCTRINE_PROXIES_PATH);
+}
+
 define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', dirname(BASE_PATH) . '/private-files/'));
 define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', PRIVATE_FILES_PATH . 'sessions/'));
 
-if(!is_dir(SESSIONS_SAVE_PATH)){
-    mkdir(SESSIONS_SAVE_PATH);
+if(!is_dir(PRIVATE_FILES_PATH)){
+    mkdir(PRIVATE_FILES_PATH);
+}
+
+if(strpos(SESSIONS_SAVE_PATH,'tcp://') === false){
+    if(!is_dir(SESSIONS_SAVE_PATH)){
+            mkdir(SESSIONS_SAVE_PATH);
+    }
 }
 
 define('AUTOLOAD_TTL', 60 * 5);
@@ -52,7 +63,6 @@ function env($name, $default) {
 }
 
 function __env_not_false($var_name){
-    return true;
     return strtolower(env($var_name, 0)) !== 'false';
 }
 

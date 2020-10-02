@@ -73,10 +73,13 @@ trait EntityOwnerAgent{
      * @workflow RequestChangeOwnership
      */
     protected function _saveOwnerAgent(){
+
         if(!$this->owner && $this->_newOwner || $this->_newOwner && !$this->_newOwner->equals($this->owner)){
             try{
+                
                 $this->checkPermission('changeOwner');
                 $this->_newOwner->checkPermission('modify');
+                
                 $this->owner = $this->_newOwner;
 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
@@ -94,6 +97,14 @@ trait EntityOwnerAgent{
         }
     }
 
+    protected function _getOwnerSpace() {
+        if(isset($this->_spaceData) && !empty($this->_spaceData)){
+            $arrayOwner = ["owner" => $this->_spaceData];
+            return json_encode($arrayOwner);
+        }else{
+           return '{}';
+        }
+    }
     /**
      * Verify if user can change the entity owner.
      *

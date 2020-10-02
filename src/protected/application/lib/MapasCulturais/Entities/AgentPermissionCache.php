@@ -13,7 +13,7 @@ class AgentPermissionCache extends PermissionCache{
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 }

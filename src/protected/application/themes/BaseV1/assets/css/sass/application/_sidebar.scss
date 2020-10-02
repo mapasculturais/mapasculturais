@@ -166,6 +166,9 @@ body.action-single {
     .widget-list-item > a {
         color: $brand-agent;
     }
+    @media only screen and (max-width: 982px) {
+        margin-top: 20%;
+    }
 }
 .sidebar.space {
     border-top-color: $brand-space;

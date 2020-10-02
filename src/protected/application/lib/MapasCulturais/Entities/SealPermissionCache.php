@@ -13,7 +13,7 @@ class SealPermissionCache extends PermissionCache{
      * @var \MapasCulturais\Entities\Seal
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 }
