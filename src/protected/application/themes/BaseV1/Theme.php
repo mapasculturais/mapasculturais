@@ -182,7 +182,7 @@ class Theme extends MapasCulturais\Theme {
             'home: home_devs' => [
                 'name' => i::__('texto da seção "desenvolvedores" da home'),
                 'description' => '',
-                'text' => i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md" target="_blank">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank">GitHub</a>.')
+                'text' => i::__('Existem algumas maneiras de desenvolvedores interagirem com o Mapas Culturais. A primeira é através da nossa <a href="https://github.com/hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md" target="_blank" rel="noopener noreferrer">API</a>. Com ela você pode acessar os dados públicos no nosso banco de dados e utilizá-los para desenvolver aplicações externas. Além disso, o Mapas Culturais é construído a partir do sofware livre <a href="http://institutotim.org.br/project/mapas-culturais/" target="_blank" rel="noopener noreferrer">Mapas Culturais</a>, criado em parceria com o <a href="http://institutotim.org.br" target="_blank" rel="noopener noreferrer">Instituto TIM</a>, e você pode contribuir para o seu desenvolvimento através do <a href="https://github.com/hacklabr/mapasculturais/" target="_blank" rel="noopener noreferrer">GitHub</a>.')
             ],
 
             // TEXTOS UTILIZADOS NA PÁGINA DE BUSCA, MAPA
@@ -741,66 +741,6 @@ class Theme extends MapasCulturais\Theme {
                 'text' => ''
             ],
 
-
-
-            // Roles
-            'roles: Super Administrator' => [
-                'name' => i::__('Super Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Super Administrador')
-            ],
-            'roles: Super Administrators' => [
-                'name' => i::__('Super Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Super Administradores')
-            ],
-            'roles: Administrator' => [
-                'name' => i::__('Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Administrador')
-            ],
-            'roles: Administrators' => [
-                'name' => i::__('Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Administradores')
-            ],
-            'roles: Subsite Super Administrator' => [
-                'name' => i::__('Subsite Super Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Super Administrador')
-            ],
-            'roles: Subsite Super Administrators' => [
-                'name' => i::__('Subsite Super Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Super Administradores')
-            ],
-            'roles: Subsite Administrator' => [
-                'name' => i::__('Subsite Administrador'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Administrador')
-            ],
-            'roles: Subsite Administrators' => [
-                'name' => i::__('Subsite Administradores'),
-                'description' => '',
-                'examples' => [],
-                'skip' => true,
-                'text' => i::__('Subsite Administradores')
-            ]
-
         ];
     }
 
@@ -883,6 +823,8 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
             $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
+
+            $this->jsObject['lcode'] = $app->config['app.lcode'];
 
             $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
             $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
@@ -1035,7 +977,7 @@ class Theme extends MapasCulturais\Theme {
             $this->transform('favicon');
         });
 
-        $app->hook('entity(<<agent|space|event|project|project|seal>>).file(gallery).insert:after', function() {
+        $app->hook('entity(<<agent|space|event|project|opportunity|seal>>).file(gallery).insert:after', function() {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
@@ -1091,7 +1033,7 @@ class Theme extends MapasCulturais\Theme {
             if ($response['success'] === true) {
                 echo json_encode($response);
             } else {
-                $app->halt(403, $response['error_msg']);
+                $app->halt(400, $response['error_msg']);
             }
 
         });
@@ -1272,15 +1214,16 @@ class Theme extends MapasCulturais\Theme {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             $json = json_decode($output);
-            if (isset($json->logradouro)) {
+            
+            if (isset($json->cep)) {
                 $response = [
                     'success' => true,
-                    'lat' => $json->latitude,
-                    'lon' => $json->longitude,
-                    'streetName' => $json->logradouro,
-                    'neighborhood' => $json->bairro,
-                    'city' => $json->cidade,
-                    'state' => $json->estado
+                    'lat' => @$json->latitude,
+                    'lon' => @$json->longitude,
+                    'streetName' => @$json->logradouro,
+                    'neighborhood' => @$json->bairro,
+                    'city' => @$json->cidade,
+                    'state' => @$json->estado
                 ];
             } else {
                 $response = [
@@ -1536,6 +1479,10 @@ class Theme extends MapasCulturais\Theme {
 
         if (App::i()->config('mode') == 'staging')
             $this->enqueueStyle('app', 'staging', 'css/staging.css', array('main'));
+    }
+
+    function includeIbgeJS() {
+        $this->enqueueScript('app', 'ibge', 'js/ibge.js');
     }
 
     function includeEditableEntityAssets() {
@@ -1808,6 +1755,7 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
+            'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -2161,7 +2109,7 @@ class Theme extends MapasCulturais\Theme {
 
         return $filters;
     }
-
+    
     function addEntityToJs(MapasCulturais\Entity $entity){
         $this->jsObject['entity'] = [
             'id' => $entity->id,
@@ -2172,7 +2120,7 @@ class Theme extends MapasCulturais\Theme {
             'canUserChangeOwner' => $entity->canUser('changeOwner'),
             'canUserCreateRelatedAgentsWithControl' => $entity->canUser('createAgentRelationWithControl'),
             'status' => $entity->status,
-            'object' => $entity
+            'object' => json_decode(json_encode($entity)) 
         ];
 
         if($entity->usesNested() && $entity->id){
@@ -2397,6 +2345,12 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
+        $this->jsObject['entity']['registrationSpace'] = $entity->spaceRelation;
+        $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
+
+        $this->jsObject['entity']['canUserEvaluate'] = $entity->canUser('evaluate');
+        $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');
+
         if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['registration'] = $entity;
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);

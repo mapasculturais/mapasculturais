@@ -4,7 +4,8 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
-
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\Exceptions\BadRequest;
 /**
  * User
  *
@@ -99,7 +100,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     protected $profile;
@@ -170,31 +171,31 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $result;
     }
 
-    function addRole($role_name, $subsite_id = false){
+    
+    /**
+     * Add a role to the user
+     *
+     * @param string $role_name role name
+     * @param null|int $subsite_id
+     * 
+     * @return bool
+     */
+    function addRole(string $role_name, $subsite_id = false) {
         $app = App::i();
+
+        $role_definition = $app->getRoleDefinition($role_name);
+
+        if (is_null($role_definition)) {
+            throw new BadRequest('Trying to remove unregistered role');
+        }
 
         $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
 
-        /**
-         * @todo Verificar permissões de acordo com o subsite, uma possivel refatoração seria utilizar 
-         * apenas um metodo para qualquer subsite, junção entre o 'is' e o checkPermission.
-         */
-        if (!$subsite_id === false) {
-            if(!$app->user->is($role_name, intval($subsite_id))) {
-                throw new Exceptions\PermissionDenied(App::i()->user, $this, $action);
-            }
-        } else {
-            if(method_exists($this, 'canUserAddRole' . $role_name))
-                $this->checkPermission('addRole' . $role_name);
-            else
-                $this->checkPermission('addRole');
-        }
-        
         if(!$this->is($role_name, $subsite_id)){
             $role = new Role;
             $role->user = $this;
             $role->name = $role_name;
-            $role->subsiteId = $subsite_id;
+            $role->subsiteId = $role_definition->subsiteContext ? $subsite_id : null;
             $role->save(true);
             return true;
         }
@@ -202,14 +203,24 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return false;
     }
 
-    function removeRole($role_name, $subsite_id = false){
+    /**
+     * Removes a role of the user
+     *
+     * @param string $role_name
+     * @param null|int $subsite_id
+     * 
+     * @return bool
+     */
+    function removeRole(string $role_name, $subsite_id = false) {
         $app = App::i();
-        $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
 
-        if(method_exists($this, 'canUserRemoveRole' . $role_name))
-            $this->checkPermission('removeRole' . $role_name);
-        else
-            $this->checkPermission('removeRole');
+        $role_definition = $app->getRoleDefinition($role_name);
+
+        if (is_null($role_definition)) {
+            throw new BadRequest('Trying to remove unregistered role');
+        }
+
+        $subsite_id = $subsite_id === false ? $app->getCurrentSubsiteId() : $subsite_id;
         
         foreach($this->roles as $role){
             if($role->name == $role_name && $role->subsiteId == $subsite_id){
@@ -221,77 +232,38 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return false;
     }
 
-    function can($action, \MapasCulturais\Entity $entity){
+    /**
+     * Checks if the user can do an action
+     *
+     * @param string $action action name
+     * @param \MapasCulturais\Entity $entity
+     * 
+     * @return boolean
+     */
+    function can(string $action, \MapasCulturais\Entity $entity){
         return $entity->canUser($action, $this);
     }
 
-    protected function canUserAddRole($user){
-        return $user->is('admin') && $user->id != $this->id;
-    }
-
-    protected function canUserAddRoleAdmin($user){
-        return $user->is('superAdmin') && $user->id != $this->id;
-    }
-
-    protected function canUserAddRoleSuperAdmin($user){
-        return $user->is('superAdmin') && $user->id != $this->id;
-    }
-
-    protected function canUserAddRoleSaasAdmin($user){
-        return $user->is('saasSuperAdmin') && $user->id != $this->id;
-    }
-
-    protected function canUserAddRoleSaasSuperAdmin($user){
-        return $user->is('saasSuperAdmin') && $user->id != $this->id;
-    }
-
-
-    protected function canUserRemoveRole($user){
-        return $user->is('admin') && $user->id != $this->id;
-    }
-
-    protected function canUserRemoveRoleAdmin($user){
-        return $user->is('superAdmin') && $user->id != $this->id;
-    }
-
-    protected function canUserRemoveRoleSuperAdmin($user){
-        return $user->is('superAdmin') && $user->id != $this->id;
-    }
-
-    protected function canUserRemoveRoleSaasAdmin($user){
-        return $user->is('saasSuperAdmin') && $user->id != $this->id;
-    }
-
-    protected function canUserRemoveRoleSaasSuperAdmin($user){
-        return $user->is('saasSuperAdmin') && $user->id != $this->id;
-    }
-
-    function is($role_name, $subsite_id = false){
-        if($role_name === 'admin' && $this->is('superAdmin', $subsite_id)){
-            return true;
-        }
-
-        if($role_name === 'superAdmin' && $this->is('saasAdmin')){
-            return true;
-        }
-
-        if($role_name === 'saasAdmin' && $this->is('saasSuperAdmin')){
-            return true;
-        }
-
+    /**
+     * Checks if the user has the role 
+     *
+     * @param string $role_name
+     * @param null|int $subsite_id
+     * @return boolean
+     */
+    function is(string $role_name, $subsite_id = false){
         $app = App::i();
 
-        if($role_name === 'saasAdmin' || $role_name === 'saasSuperAdmin'){
+        $role_definition = $app->getRoleDefinition($role_name);
+
+        if ($role_definition && !$role_definition->subsiteContext) {
             $subsite_id = null;
-        } else {
-            if (false === $subsite_id) {
-                $subsite_id = $app->getCurrentSubsiteId();
-            }
+        } else if (false === $subsite_id) {
+            $subsite_id = $app->getCurrentSubsiteId();
         }
-
-
+        
         foreach ($this->roles as $role) {
-            if ($role->name == $role_name && $role->subsiteId === $subsite_id) {
+            if ($role->is($role_name) && ($role->subsiteId === $subsite_id || !$role->definition->subsiteContext)) {
                 return true;
             }
         }
@@ -299,7 +271,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return false;
     }
 
-    protected function canUserCreate($user = null){
+    protected function canUserCreate($user){
         // only guest user can create
         return is_null($user) || $user->is('guest');
     }
@@ -343,9 +315,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             return false;
         }
 
-        if($procuration = $app->repo('Procuration')->findOneBy(['user' => $user, 'attorney' => $this, 'action' => $action])){
+        foreach($this->_attorneyProcurations as $procuration) {
             if($procuration->isValid()){
-                return true;
+                if ($procuration->action == $action) {
+                    return true;
+                }
             } else {
                 $procuration->delete(true);
             }
@@ -599,9 +573,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlOpportunities(){
         $this->checkPermission('modify');
-
-        $opportunities = App::i()->repo('Opportunity')->findByAgentRelationUser($this, true);
-
+       
+        $opportunities = App::i()->repo('Opportunity')->findByAgentRelationUser($this, true, 1, 0);
+        $opportunities += App::i()->repo('Opportunity')->findByAgentRelationUser($this, true, 1, 1);
+        
         if(!$opportunities)
             $opportunities = [];
 
@@ -775,7 +750,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old agent registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
+              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
               $notification->save();
 
               // use the notification id to use it later on entity update
@@ -792,7 +767,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
               // message to user about old space registrations
               $notification = new Notification;
               $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$lastUpdateDate->format("d/m/Y"),$space->editUrl);
+              $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$lastUpdateDate->format("d/m/Y"),$space->editUrl);
               $notification->save();
               // use the notification id to use it later on entity update
               $space->sentNotification = $notification->id;
@@ -812,14 +787,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                     if($diff <= 0.00) {
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$agent->name,$relation->seal->name,$agent->editUrl);
                         $notification->save();
                     } elseif($diff <= $app->config['notifications.seal.toExpire']) {
                         $diff = is_int($diff)? $diff: round($diff);
                         $diff = $diff == 0? $diff = 1: $diff;
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href=''>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='' rel='noopener noreferrer'>editar</a>"),$agent->name,$relation->seal->name,((string)$diff),$agent->editUrl);
                         $notification->save();
                     }
                 }
@@ -833,14 +808,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                     if($diff <= 0.00) {
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$relation->seal->name,$space->editUrl);
                         $notification->save();
                     } elseif($diff <= $app->config['notifications.seal.toExpire']) {
                         $diff = is_int($diff)? $diff: round($diff);
                         $diff = $diff == 0? $diff = 1: $diff;
                         $notification = new Notification;
                         $notification->user = $app->user;
-                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
+                        $notification->message = sprintf(\MapasCulturais\i::__("O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s).<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$relation->seal->name,((string)$diff),$space->editUrl);
                         $notification->save();
                     }
                   }

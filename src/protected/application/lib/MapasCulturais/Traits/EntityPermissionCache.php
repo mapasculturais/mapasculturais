@@ -105,6 +105,9 @@ trait EntityPermissionCache {
 
         $already_created_users = [];
         foreach ($users as $user) {
+            if($user->is('guest')){
+                continue;
+            }
             if (is_null($user)) {
                 continue;
             }

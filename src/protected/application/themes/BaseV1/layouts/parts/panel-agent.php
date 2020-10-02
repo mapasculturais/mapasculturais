@@ -32,7 +32,7 @@ $_type = is_object($entity->type) ? $entity->type->name : "";
         <?php
         if(!$can_edit){
             ?>
-            <a href="http://culturaviva.gov.br/cadastrar" target="_blank">Usuário criado na rede cultura viva</a>
+            <a href="http://culturaviva.gov.br/cadastrar" target="_blank" rel='noopener noreferrer'>Usuário criado na rede cultura viva</a>
             <?php
         }else{
         ?>

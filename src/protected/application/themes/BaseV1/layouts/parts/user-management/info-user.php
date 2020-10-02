@@ -1,50 +1,60 @@
 <?php
-  use MapasCulturais\Entities\Agent;
-  use MapasCulturais\Entities\Space;
-  use MapasCulturais\Entities\Event;
+  use \MapasCulturais\i;
+  
+  $app = MapasCulturais\App::i();
+
+  $role_definitions = $app->getRoles();
+
   $current_user = $app->user;
   
   $subsitesAdmin = $app->repo('User')->getSubsitesAdminRoles($current_user->id);
   $this->jsObject['subsitesAdmin'] = $subsitesAdmin;  
 ?>
+
+
+<?php $app->applyHookBoundTo($this, 'adminchangeuserpassword', array("userEmail"=>$user->email)); ?>
+<br><br>
+<?php $app->applyHookBoundTo($this, 'adminchangeuseremail', array("userEmail"=>$user->email)); ?>
+
+
 <div class="user-managerment-infos" ng-init="load(<?php echo $user->id;?>)">  
   <div class="user-info">
     <div style="float:left">
-      <span class="label"><?php \MapasCulturais\i::_e("id:"); ?></span> 
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("id"); ?>" data-emptytext="">
+      <span class="label"><?php i::_e("id:"); ?></span> 
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php i::esc_attr_e("id"); ?>" data-emptytext="">
         <?php echo $user->id;?>
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("email:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="email" data-original-title="<?php \MapasCulturais\i::esc_attr_e("email"); ?>" data-emptytext="">
+      <span class="label"><?php i::_e("email:"); ?></span>
+      <span class="js-editable editable-click editable-empty" data-edit="email" data-original-title="<?php i::esc_attr_e("email"); ?>" data-emptytext="">
         <?php echo $user->email;?> 
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("autenticação:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("autenticação"); ?>" data-emptytext="">
+      <span class="label"><?php i::_e("autenticação:"); ?></span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php i::esc_attr_e("autenticação"); ?>" data-emptytext="">
         <?php echo $user->authProvider;?> <!-- // como pegar pelo ID no registerAuthProvider? -->
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("id autenticação:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("id autenticação"); ?>" data-emptytext="">
+      <span class="label"><?php i::_e("id autenticação:"); ?></span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php i::esc_attr_e("id autenticação"); ?>" data-emptytext="">
         <?php echo $user->authUid;?>
       </span> <br />
     </div>
 
     <div style="float:left">
-      <span class="label"><?php \MapasCulturais\i::_e("status:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("status"); ?>" data-emptytext="">
+      <span class="label"><?php i::_e("status:"); ?></span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php i::esc_attr_e("status"); ?>" data-emptytext="">
         <?php 
           if ($user->status == 1)
-            echo \MapasCulturais\i::_e("Ativo");
+            echo i::_e("Ativo");
           else 
-          echo \MapasCulturais\i::_e("Inativo");
+          echo i::_e("Inativo");
         ?>
       </span> <br />
       <span class="label">último login:</span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("último login"); ?>" data-emptytext="">
-      <?php echo $user->lastLoginTimestamp->format(\MapasCulturais\i::__('d/m/Y à\s H:i'));?>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php i::esc_attr_e("último login"); ?>" data-emptytext="">
+      <?php echo $user->lastLoginTimestamp->format(i::__('d/m/Y à\s H:i'));?>
       </span> <br />
-      <span class="label"><?php \MapasCulturais\i::_e("data criação:"); ?></span>
-      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php \MapasCulturais\i::esc_attr_e("data criação"); ?>" data-emptytext="">
-        <?php echo $user->createTimestamp->format(\MapasCulturais\i::__('d/m/Y à\s H:i'));?> 
+      <span class="label"><?php i::_e("data criação:"); ?></span>
+      <span class="js-editable editable-click editable-empty" data-edit="" data-original-title="<?php i::esc_attr_e("data criação"); ?>" data-emptytext="">
+        <?php echo $user->createTimestamp->format(i::__('d/m/Y à\s H:i'));?> 
       </span> <br />
     </div>
 
@@ -53,13 +63,13 @@
     
   <div>
     <ul class="abas clearfix clear">
-      <li class="active"><a href="#agentes"><?php \MapasCulturais\i::_e("Agentes");?></a></li>
-      <li><a href="#espacos"><?php \MapasCulturais\i::_e("Espaços");?></a></li>
-      <li><a href="#eventos"><?php \MapasCulturais\i::_e("Eventos");?></a></li>
-      <li><a href="#projetos"><?php \MapasCulturais\i::_e("Projetos");?></a></li>
-      <li><a href="#oportunidades"><?php \MapasCulturais\i::_e("Oportunidades");?></a></li>
-      <li><a href="#permissoes"><?php \MapasCulturais\i::_e("Permissões");?></a></li>
-      <li><a href="#atividade"><?php \MapasCulturais\i::_e("Atividades");?></a></li>
+      <li class="active"><a href="#agentes" rel='noopener noreferrer'><?php i::_e("Agentes");?></a></li>
+      <li><a href="#espacos" rel='noopener noreferrer'><?php i::_e("Espaços");?></a></li>
+      <li><a href="#eventos" rel='noopener noreferrer'><?php i::_e("Eventos");?></a></li>
+      <li><a href="#projetos" rel='noopener noreferrer'><?php i::_e("Projetos");?></a></li>
+      <li><a href="#oportunidades" rel='noopener noreferrer'><?php i::_e("Oportunidades");?></a></li>
+      <li><a href="#permissoes" rel='noopener noreferrer'><?php i::_e("Permissões");?></a></li>
+      <li><a href="#atividade" rel='noopener noreferrer'><?php i::_e("Atividades");?></a></li>
     </ul>
   </div>
     
@@ -67,11 +77,11 @@
     
     <div id="agentes" class="aba-content">
       <div class="tab-table">
-        <button class="tablinks active" data-entity="agentes" data-tab="agents-ativos">     <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledAgents);?>)   </button>
-        <button class="tablinks"        data-entity="agentes" data-tab="agents-concedidos"> <?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlAgents);?>)</button>
-        <button class="tablinks"        data-entity="agentes" data-tab="agents-rascunhos">  <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftAgents);?>)     </button>
-        <button class="tablinks"        data-entity="agentes" data-tab="agents-lixeira">    <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedAgents);?>)   </button>
-        <button class="tablinks"        data-entity="agentes" data-tab="agents-arquivo">    <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($app->user->archivedAgents);?>)</button>
+        <button class="tablinks active" data-entity="agentes" data-tab="agents-ativos">     <?php i::_e("Ativos");?>      (<?php echo count($user->enabledAgents);?>)   </button>
+        <button class="tablinks"        data-entity="agentes" data-tab="agents-concedidos"> <?php i::_e("Concedidos");?>  (<?php echo count($user->hasControlAgents);?>)</button>
+        <button class="tablinks"        data-entity="agentes" data-tab="agents-rascunhos">  <?php i::_e("Rascunhos");?>   (<?php echo count($user->draftAgents);?>)     </button>
+        <button class="tablinks"        data-entity="agentes" data-tab="agents-lixeira">    <?php i::_e("Lixeira");?>     (<?php echo count($user->trashedAgents);?>)   </button>
+        <button class="tablinks"        data-entity="agentes" data-tab="agents-arquivo">    <?php i::_e("Arquivo");?>     (<?php echo count($app->user->archivedAgents);?>)</button>
       </div>
       
       <div>
@@ -96,11 +106,11 @@
     <div id="espacos" class="aba-content">
 
       <div class="tab-table">
-        <button class="tablinks active" data-entity="espacos" data-tab="spaces-ativos">    <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledSpaces); ?>)  </button>
-        <button class="tablinks "       data-entity="espacos" data-tab="spaces-concedidos"><?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlSpaces);?>)</button>
-        <button class="tablinks "       data-entity="espacos" data-tab="spaces-rascunhos"> <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftSpaces); ?>)    </button>
-        <button class="tablinks "       data-entity="espacos" data-tab="spaces-lixeira">   <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedSpaces); ?>)  </button>
-        <button class="tablinks "       data-entity="espacos" data-tab="spaces-arquivo">   <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($user->archivedSpaces); ?>) </button>
+        <button class="tablinks active" data-entity="espacos" data-tab="spaces-ativos">    <?php i::_e("Ativos");?>      (<?php echo count($user->enabledSpaces); ?>)  </button>
+        <button class="tablinks "       data-entity="espacos" data-tab="spaces-concedidos"><?php i::_e("Concedidos");?>  (<?php echo count($user->hasControlSpaces);?>)</button>
+        <button class="tablinks "       data-entity="espacos" data-tab="spaces-rascunhos"> <?php i::_e("Rascunhos");?>   (<?php echo count($user->draftSpaces); ?>)    </button>
+        <button class="tablinks "       data-entity="espacos" data-tab="spaces-lixeira">   <?php i::_e("Lixeira");?>     (<?php echo count($user->trashedSpaces); ?>)  </button>
+        <button class="tablinks "       data-entity="espacos" data-tab="spaces-arquivo">   <?php i::_e("Arquivo");?>     (<?php echo count($user->archivedSpaces); ?>) </button>
       </div>
 
       <div>
@@ -126,11 +136,11 @@
     <div id="eventos" class="aba-content">
 
       <div class="tab-table">
-        <button class="tablinks active" data-entity="eventos" data-tab="events-ativos">    <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledEvents); ?>)  </button>
-        <button class="tablinks "       data-entity="eventos" data-tab="events-concedidos"><?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlEvents);?>)</button>
-        <button class="tablinks "       data-entity="eventos" data-tab="events-rascunhos"> <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftEvents); ?>)    </button>
-        <button class="tablinks "       data-entity="eventos" data-tab="events-lixeira">   <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedEvents); ?>)  </button>
-        <button class="tablinks "       data-entity="eventos" data-tab="events-arquivo">   <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($user->archivedEvents); ?>) </button>
+        <button class="tablinks active" data-entity="eventos" data-tab="events-ativos">    <?php i::_e("Ativos");?>      (<?php echo count($user->enabledEvents); ?>)  </button>
+        <button class="tablinks "       data-entity="eventos" data-tab="events-concedidos"><?php i::_e("Concedidos");?>  (<?php echo count($user->hasControlEvents);?>)</button>
+        <button class="tablinks "       data-entity="eventos" data-tab="events-rascunhos"> <?php i::_e("Rascunhos");?>   (<?php echo count($user->draftEvents); ?>)    </button>
+        <button class="tablinks "       data-entity="eventos" data-tab="events-lixeira">   <?php i::_e("Lixeira");?>     (<?php echo count($user->trashedEvents); ?>)  </button>
+        <button class="tablinks "       data-entity="eventos" data-tab="events-arquivo">   <?php i::_e("Arquivo");?>     (<?php echo count($user->archivedEvents); ?>) </button>
       </div>
 
       <div>
@@ -155,11 +165,11 @@
 
     <div id="projetos" class="aba-content">
       <div class="tab-table">
-        <button class="tablinks active" data-entity="projetos" data-tab="projetos-ativos">    <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledProjects); ?>)  </button>
-        <button class="tablinks "       data-entity="projetos" data-tab="projetos-concedidos"><?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlProjects);?>)</button>
-        <button class="tablinks "       data-entity="projetos" data-tab="projetos-rascunhos"> <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftProjects); ?>)    </button>
-        <button class="tablinks "       data-entity="projetos" data-tab="projetos-lixeira">   <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedProjects); ?>)  </button>
-        <button class="tablinks "       data-entity="projetos" data-tab="projetos-arquivo">   <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($user->archivedProjects); ?>) </button>
+        <button class="tablinks active" data-entity="projetos" data-tab="projetos-ativos">    <?php i::_e("Ativos");?>      (<?php echo count($user->enabledProjects); ?>)  </button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-concedidos"><?php i::_e("Concedidos");?>  (<?php echo count($user->hasControlProjects);?>)</button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-rascunhos"> <?php i::_e("Rascunhos");?>   (<?php echo count($user->draftProjects); ?>)    </button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-lixeira">   <?php i::_e("Lixeira");?>     (<?php echo count($user->trashedProjects); ?>)  </button>
+        <button class="tablinks "       data-entity="projetos" data-tab="projetos-arquivo">   <?php i::_e("Arquivo");?>     (<?php echo count($user->archivedProjects); ?>) </button>
       </div>
 
       <div id="projetos-ativos" class="tab-content-table" style="display: block;">
@@ -181,11 +191,11 @@
 
     <div id="oportunidades" class="aba-content">
       <div class="tab-table">
-        <button class="tablinks active" data-entity="oportunidades" data-tab="oportunidades-ativos">    <?php \MapasCulturais\i::_e("Ativos");?>      (<?php echo count($user->enabledOpportunities); ?>)  </button>
-        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-concedidos"><?php \MapasCulturais\i::_e("Concedidos");?>  (<?php echo count($user->hasControlOpportunities);?>)</button>
-        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-rascunhos"> <?php \MapasCulturais\i::_e("Rascunhos");?>   (<?php echo count($user->draftOpportunities); ?>)    </button>
-        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-lixeira">   <?php \MapasCulturais\i::_e("Lixeira");?>     (<?php echo count($user->trashedOpportunities); ?>)  </button>
-        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-arquivo">   <?php \MapasCulturais\i::_e("Arquivo");?>     (<?php echo count($user->archivedOpportunities); ?>) </button>
+        <button class="tablinks active" data-entity="oportunidades" data-tab="oportunidades-ativos">    <?php i::_e("Ativos");?>      (<?php echo count($user->enabledOpportunities); ?>)  </button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-concedidos"><?php i::_e("Concedidos");?>  (<?php echo count($user->hasControlOpportunities);?>)</button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-rascunhos"> <?php i::_e("Rascunhos");?>   (<?php echo count($user->draftOpportunities); ?>)    </button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-lixeira">   <?php i::_e("Lixeira");?>     (<?php echo count($user->trashedOpportunities); ?>)  </button>
+        <button class="tablinks "       data-entity="oportunidades" data-tab="oportunidades-arquivo">   <?php i::_e("Arquivo");?>     (<?php echo count($user->archivedOpportunities); ?>) </button>
       </div>
 
       <div id="oportunidades-ativos" class="tab-content-table" style="display: block;">
@@ -210,18 +220,19 @@
 
         <table class="permissions-table entity-table">
           <caption>
-            <?php \MapasCulturais\i::_e("Permissões");?>
+            <?php i::_e("Permissões");?>
           </caption>
           <thead>
             <tr>
-              <td><?php \MapasCulturais\i::_e("id");?></td>
-              <td><?php \MapasCulturais\i::_e("subsite");?></td>
-              <td><?php \MapasCulturais\i::_e("permissão");?></td>
+              <td><?php i::_e("id");?></td>
+              <td><?php i::_e("subsite");?></td>
+              <td><?php i::_e("permissão");?></td>
             </tr>
           </thead>
           <tbody>
           <?php
             foreach ($roles as $role) {
+              $definition = $app->getRoleDefinition($role['role']);
           ?>
             <tr>
               <td style="white-space: nowrap;  width:1%;"><?php echo $role['id'];?></td>
@@ -231,42 +242,26 @@
 
                   <div id="funcao-do-agente-user-managerment" class="dropdown dropdown-select">
                     <div class="placeholder js-selected">
-                      <span data-role="<?php echo $role['role'];?>" data-subsite="<?php echo $role['subsite_id'];?>"><?php echo $role['role']; ?></span>
+                      <span data-role="<?= $definition->role ?>" data-subsite="<?php echo $role['subsite_id'];?>"><?php echo $definition->name; ?></span>
                     </div>
 
                     <div class="submenu-dropdown js-options">
                       <ul>
+
                         <li data-subsite="<?php echo $role['subsite_id'];?>">
-                          <span><?php \MapasCulturais\i::_e("Normal");?></span>
+                          <span><?php i::_e("Normal");?></span>
                         </li>
 
-                        <?php if ($user->canUser('addRoleAdmin')): ?>
-                          <li data-role="admin" data-subsite="<?php echo $role['subsite_id'];?>">
-                            <span><?php echo $app->getRoleName('admin') ?></span>
-                          </li>
-                        <?php endif; ?>
-
-                        <?php if ($user->canUser('addRoleSuperAdmin')): ?>
-                          <li data-role="superAdmin" data-subsite="<?php echo $role['subsite_id'];?>">
-                            <span><?php echo $app->getRoleName('superAdmin') ?></span>
-                          </li>
-                        <?php endif; ?>
-
-                        <?php if ($user->canUser('addRoleSaasAdmin')): ?>
-                          <li data-role="saasAdmin" data-subsite="<?php echo $role['subsite_id'];?>">
-                            <span><?php echo $app->getRoleName('saasAdmin') ?></span>
-                          </li>
-                        <?php endif; ?>
-                        
-                        <?php if ($user->canUser('addRoleSaasSuperAdmin')): ?>
-                          <li data-role="saasSuperAdmin" data-subsite="<?php echo $role['subsite_id'];?>">
-                            <span><?php echo $app->getRoleName('saasSuperAdmin') ?></span>
-                          </li>
-                        <?php endif; ?>
+                        <?php foreach($role_definitions as $definition): ?>
+                          <?php if($definition->canUserManageRole()): ?>
+                            <li data-role="<?= $definition->role ?>" data-subsite="<?php echo $role['subsite_id'];?>">
+                              <span><?= $definition->name ?></span>
+                            </li>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
                       </ul>
                     </div>
                   </div>
-
                 <?php 
                   } else {
                     echo $role['role'];
@@ -280,14 +275,14 @@
           </tbody>
         </table>
 
-        <a class="add js-open-dialog" data-dialog="#add-roles" data-dialog-block="true">
-          <?php \MapasCulturais\i::_e("Adicionar");?>
+        <a class="add js-open-dialog" data-dialog="#add-roles" data-dialog-block="true" rel='noopener noreferrer'>
+          <?php i::_e("Adicionar");?>
         </a>
 
-        <div id="add-roles" class="js-dialog entity-modal" title="<?php \MapasCulturais\i::_e("Adicionar permissão");?>">
+        <div id="add-roles" class="js-dialog entity-modal" title="<?php i::_e("Adicionar permissão");?>">
           <div>
             <label for="subsiteList"  style="width:125px; display:inline-block">
-              <?php \MapasCulturais\i::_e("Subsite:");?>
+              <?php i::_e("Subsite:");?>
             </label>
             <select id="subsiteList" >
               <?php
@@ -298,27 +293,17 @@
             </select>
             <br />
             <label for="permissionList" style="width:125px; display:inline-block">
-              <?php \MapasCulturais\i::_e("Permissão:");?>
+              <?php i::_e("Permissão:");?>
             </label>
             <select id="permissionList">
-              <?php if ($user->canUser('addRoleAdmin')): ?>
-                <option value="admin"><?php echo $app->getRoleName('admin');?></option>
-              <?php endif; ?>
-
-              <?php if ($user->canUser('addRoleSuperAdmin')): ?>
-                <option value="superAdmin"><?php echo $app->getRoleName('superAdmin'); ?></option>
-              <?php endif; ?>
-
-              <?php if ($user->canUser('addRoleSaasAdmin')): ?>
-                <option value="saasAdmin"><?php echo $app->getRoleName('saasAdmin'); ?></option>
-              <?php endif; ?>
-
-              <?php if ($user->canUser('addRoleSaasSuperAdmin')): ?>
-                <option value="saasSuperAdmin"><?php echo $app->getRoleName('saasSuperAdmin'); ?></option>
-              <?php endif; ?>
+              <?php foreach($role_definitions as $definition): ?>
+                <?php if($definition->canUserManageRole()): ?>
+                  <option value="<?= $definition->role ?>"><?= $definition->name ?></option>
+                <?php endif ?>
+              <?php endforeach; ?>
             </select>
             <br>
-            <button class="btn add" id="user-managerment-addRole" ><?php \MapasCulturais\i::_e("Adicionar permissão");?></button>
+            <button class="btn add" id="user-managerment-addRole" ><?php i::_e("Adicionar permissão");?></button>
           </div>
        </div>
 
@@ -328,19 +313,19 @@
     <div id="atividade" class="aba-content">
       <span ng-show="user.history.spinnerShow">
         <img src="<?php $this->asset('img/spinner.gif') ?>" />
-        <span><?php \MapasCulturais\i::_e("Obtendo histório..."); ?></span>
+        <span><?php i::_e("Obtendo histório..."); ?></span>
       </span>
       <div ng-show="!user.history.spinnerShow">
         <table class="history-table entity-table">
           <caption>
-            <?php \MapasCulturais\i::_e("Log de atividades");?>
+            <?php i::_e("Log de atividades");?>
           </caption>
           <thead>
             <tr>
-              <td><?php \MapasCulturais\i::_e("id da entidade");?></td>
-              <td><?php \MapasCulturais\i::_e("tipo entidade");?></td>
-              <td><?php \MapasCulturais\i::_e("descrição");?></td>
-              <td><?php \MapasCulturais\i::_e("data");?></td>
+              <td><?php i::_e("id da entidade");?></td>
+              <td><?php i::_e("tipo entidade");?></td>
+              <td><?php i::_e("descrição");?></td>
+              <td><?php i::_e("data");?></td>
             </tr>
           </thead>
           <tbody>

@@ -1,5 +1,14 @@
 MapasCulturais = MapasCulturais || {};
 tabIndex = function() { window.tabEnabled = true };
+
+var isDateSupported = function () {
+    var input = document.createElement('input');
+    var value = 'a';
+    input.setAttribute('type', 'date');
+    input.setAttribute('value', value);
+    return (input.value !== value);
+};
+
 jQuery(function(){
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editableform.buttons = '<button type="button" class="editable-cancel btn btn-default">cancelar</button> <button type="submit" class="editable-submit">ok</button>';
@@ -48,6 +57,13 @@ jQuery(function(){
 
         });
         return false;
+    });
+
+    //Máscaras dos formulários de oportunidades
+    $('.registration-edit-mode input').each(function() {
+        if($(this).data('mask')){
+            $(this).mask($(this).data('mask'));
+        }
     });
 
     //Máscaras de telefone, CEP e hora
@@ -116,6 +132,7 @@ jQuery(function(){
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
+
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
@@ -142,6 +159,20 @@ jQuery(function(){
                         });
                 }, 100);
                 break;
+        }
+
+        //Place the buttons below the textarea
+        if(window.innerWidth < 980){
+            if(editable.input.type.trim() === 'textarea'){
+                $('.editable-buttons').css('display', 'block');
+            }
+        }
+        if(editable.input.type.trim() === 'dateuifield'){
+            if (isDateSupported()) {
+                //Remove calendar icon
+                $('.ui-datepicker-trigger').css('display', 'none');
+            }
+
         }
 
         //Experimental Tab Index
@@ -181,7 +212,6 @@ jQuery(function(){
             return false;
         });
     }
-
 
     // Human Crop for images
     $('input.human_crop').change(function() {
@@ -433,7 +463,9 @@ MapasCulturais.Editables = {
                 type: 'text',
                 maxlength : 20,
                 emptytext: entity[field_name].label,
-                placeholder: entity[field_name].label
+                placeholder: entity[field_name].label,
+                showbuttons: false,
+                onblur: 'submit'
             };
 
             var select_value = null;
@@ -458,11 +490,22 @@ MapasCulturais.Editables = {
                 case 'date':
                 case 'datetime':
                     config.type = 'date';
-                    config.format = 'yyyy-mm-dd';
-                    config.viewformat = 'dd/mm/yyyy';
-                    config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+10"};
-                    delete config.placeholder;
-                    config.clear = labels['Limpar'];
+                    if (isDateSupported()) {
+                        $(this).removeAttr('data-showbuttons');
+                        $(this).removeAttr('data-viewformat');
+                        config.display = function (value) {
+                            if(value){
+                                $(this).html(moment(value).format('DD/MM/YYYY'));
+                            }
+                        };
+                        config.tpl = '<input type="date" ></input>';
+                    }else{
+                        config.format     = 'yyyy-mm-dd';
+                        config.viewformat = 'dd/mm/yyyy';
+                        config.datepicker = {weekStart: 1, yearRange: $(this).data('yearrange') ? $(this).data('yearrange') : "1900:+10"};
+                        delete config.placeholder;
+                        config.clear = labels['Limpar'];
+                    }
                     break;
 
                 case 'multiselect':
@@ -561,16 +604,13 @@ MapasCulturais.Editables = {
                 var $datepicker = $(this);
 
                 if(!$(this).data('timepicker')){ //normal datepicker
-
                     $datepicker.editable(config);
                     $datepicker.on('hidden', function(e, editable) {
                         if($(this).editable('getValue', true) == null){
                             $(this).editable('setValue', '');
                         }
                     });
-
                 }else{ //datepicker with related timepicker field
-
                     var $timepicker = $($datepicker.data('timepicker'));
                     var $hidden = $('<input class="js-include-editable" type="hidden">').insertAfter($timepicker);
 
@@ -597,7 +637,6 @@ MapasCulturais.Editables = {
                     });
 
                     $datepicker.on('save', function(e, params) {
-
                         if(params.newValue){
                             if(!$timepicker.editable('getValue', true)){
                                 $timepicker.editable('setValue', '23:59');
@@ -623,7 +662,6 @@ MapasCulturais.Editables = {
                 }
 
             }
-
 
         });
 
@@ -651,7 +689,6 @@ MapasCulturais.Editables = {
             $('.editable-empty.editable-unsaved').each(function(){
                 $(this).editable('setValue', '');
             });
-
             var target; //Vazio
             var $button = $(this); // Retorna submitButton
             var controller = MapasCulturais.request.controller; //Retorna controller da entidade atual
@@ -732,7 +769,7 @@ MapasCulturais.Editables = {
                                 $field = $('.js-editable-type');
                             }else if(MapasCulturais.request.controller === 'registration' && p === 'owner'){
                                 firstShown = true; // don't show editable
-                                $field = $('#registration-agent-owner').parent().find('.registration-label span');
+                                $field = $('#agent_owner').parent().find('.registration-label span');
                             }
 
                             for(var k in response.data[p]){
@@ -790,14 +827,30 @@ MapasCulturais.Editables = {
                                 parent().
                                 removeClass('danger');
 
-
-                        if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
-                            if(response.status == 1) {
-                                document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
+                        
+                        //parametro passado pelo backend para controllar o redirecionamento apos salvar a entidade
+                        // exemplo no backend: 
+                        // $json->redirect = "true";
+                        // $json->url = ['controller'=>'aldirblanc', 'action'=>'selecionaragente'];
+                        if(response.redirect == undefined || response.redirect === 'true' ) {
+                            if(response.url) {
+                                
+                                document.location = MapasCulturais.createUrl(response.url.controller, response.url.action, [response.id]);
+                                
                             } else {
-                                document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+
+                                if(MapasCulturais.request.controller != 'registration' && (action === 'create' || response.status != MapasCulturais.entity.status)){
+                                    if(response.status == 1) {
+                                        document.location = MapasCulturais.createUrl(controller, 'single', [response.id]);
+                                    } else {
+                                        document.location = MapasCulturais.createUrl(controller, 'edit', [response.id]);
+                                    }
+                                }
                             }
+                            
                         }
+
+                        
                     }
                     $submitButton.data('clicked',false);
                 },
@@ -1167,12 +1220,11 @@ $(function(){
             if (r.success) {
                 $('#En_Nome_Logradouro').editable('setValue', r.streetName != null ? r.streetName : '');
                 $('#En_Bairro').editable('setValue', r.neighborhood != null ? r.neighborhood : '');
-                $('#En_Municipio').editable('setValue', r.city != null ? r.city : '');
-                $('#En_Estado').editable('setValue', r.state != null ? r.state : '');
+                $('#En_Municipio').editable('setValue', r.city != null ? r.city.nome : '');
+                $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
                 concatena_enderco();
             }
         });
-
     });
 });
 

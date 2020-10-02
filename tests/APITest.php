@@ -37,30 +37,15 @@ class APITest extends MapasCulturais_TestCase {
             'id' => $simplify,
             'id,singleUrl,editUrl,deleteUrl,destroyUrl,endereco,En_CEP' => $simplify,
 
-            'id,name,user.{id,email,profile.{id,name,singleUrl,editUrl,deleteUrl,endereco,En_CEP}}' => function($entity){
+            'id,name,user.id' => function($entity){
                 $user = $entity->ownerUser;
-                $profile = $user->profile;
                 return [
                     'id' => $entity->id,
                     'name' => $entity->name,
-                    'user' => [
-                        'id' => $user->id,
-                        'email' => $user->email,
-                        'profile' => [
-                            'id' => $profile->id,
-                            'name' => $profile->name,
-                            'singleUrl' => $profile->singleUrl,
-                            'editUrl' => $profile->editUrl,
-                            'deleteUrl' => $profile->deleteUrl,
-                            'endereco' => $profile->endereco,
-                            'En_CEP' => $profile->En_CEP
-                        ]
-                    ]
+                    'user' => $user->id
                 ];
             },
             'id,name,owner' => function($entity){
-                $user = $entity->ownerUser;
-                $profile = $user->profile;
                 return [
                     'id' => $entity->id,
                     'name' => $entity->name,

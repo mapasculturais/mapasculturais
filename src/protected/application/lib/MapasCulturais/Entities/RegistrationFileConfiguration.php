@@ -33,7 +33,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -77,7 +77,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
 

@@ -87,9 +87,9 @@ class WorkflowTest extends MapasCulturais_TestCase{
         foreach($this->entities as $class => $e){
             $this->resetTransactions();
 
-            $user1 = $this->getUser('normal',0);
+            $user1 = $this->getUser('admin',0);
             $user2 = $this->getUser('normal',1);
-            $user3 = $this->getUser('staff',0);
+            $user3 = $this->getUser('normal',0);
 
             $entities = $user1->$e;
             $entity = $entities[0];

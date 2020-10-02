@@ -18,7 +18,7 @@ use MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
  * @ORM\DiscriminatorMap({
         "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunityAgentRelation",
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectAgentRelation",
@@ -84,7 +84,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $agent;

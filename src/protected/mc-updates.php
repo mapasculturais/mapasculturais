@@ -1,5 +1,4 @@
 <?php
-
 return [
     'recreate pcache' => function () {
     $app = \MapasCulturais\App::i();

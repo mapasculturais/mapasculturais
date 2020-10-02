@@ -15,13 +15,19 @@ trait ControllerMetaLists{
 
         $entity = $this->repo()->find($this->data['id']);
 
+        
         $metalist = new \MapasCulturais\Entities\MetaList;
         $metalist->owner = $entity;
 
         foreach($this->postData as $k=>$v){
             $metalist->$k = $v;
         }
+       
+        if($errors = $metalist->getValidationErrors()){
+            $this->errorJson($errors, 403);
+        }
         $metalist->save(true);
+
 
         $this->json($metalist);
     }

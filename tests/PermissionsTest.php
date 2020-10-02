@@ -126,10 +126,10 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
 
 
-        foreach(['normal', 'staff'] as $role){
+        foreach(['normal'] as $role){
             $this->user = $role;
             /*
-             * Asserting thar normal and staff users cannot modify entities of other user
+             * Asserting thar normal users cannot modify entities of other user
              */
             foreach($this->entities as $class => $plural){
                 $this->assertPermissionDenied(function() use ($class){
@@ -141,7 +141,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
 
             /*
-             * Asserting thar normal and staff users can modify their own entities
+             * Asserting thar normal users can modify their own entities
              */
             foreach($this->entities as $class => $plural){
                 $this->assertPermissionGranted(function() use ($class){
@@ -194,9 +194,9 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
         $GROUP = 'group 1';
 
-        $user1 = function (){ return $this->getUser('normal', 0); };
-        $user2 = function (){ return $this->getUser('normal', 1); };
-        $user3 = function (){ return $this->getUser('staff', 0); };
+        $user1 = function (){ return $this->getUser('admin', 0); };
+        $user2 = function (){ return $this->getUser('normal', 0); };
+        $user3 = function (){ return $this->getUser('normal', 1); };
         /*
          * Asserting that owner user and a related agent with control can modify an entity
          */
@@ -858,7 +858,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
         }
 
         /*
-         * Admin user can add and remove role staff
+         * Admin user can add and remove role
          */
         $this->user = 'superAdmin';
 
@@ -881,7 +881,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
     }
 
     function testSoftDeleteDestroy(){
-        foreach(['normal', 'staff', 'admin'] as $role){
+        foreach(['normal', 'admin'] as $role){
             foreach ($this->entities as $class => $plural){
                 $this->resetTransactions();
                 $user = $this->getUser($role, 1);
@@ -911,7 +911,7 @@ class PermissionsTest extends MapasCulturais_TestCase{
 
         }
 
-        foreach(['normal', 'staff', 'admin'] as $role){
+        foreach(['normal', 'admin'] as $role){
             foreach ($this->entities as $class => $plural){
                 $this->resetTransactions();
 

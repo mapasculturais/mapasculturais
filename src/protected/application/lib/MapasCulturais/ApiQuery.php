@@ -387,9 +387,7 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
-        $class = $class::getClassName();
-
-        if($class == 'MapasCulturais\Entities\Opportunity' && $this->parentQuery){
+        if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
             $class = $parent_class::getOpportunityClassName();
         }
@@ -879,8 +877,20 @@ class ApiQuery {
         if($this->_selectingType){
             $types = $app->getRegisteredEntityTypes($this->entityClassName);
         }
+
+        if($this->permissionCacheClassName){
+            $permissions = $this->getViewPrivateDataPermissions($entities);
+        }
         
         foreach ($entities as &$entity){
+            // remove location if the location is not public
+            if($this->permissionCacheClassName && isset($entity['location']) && isset($entity['publicLocation']) && !$entity['publicLocation']){
+                if(!$permissions[$entity['id']]){
+                    $entity['location']->latitude = 0;
+                    $entity['location']->longitude = 0;
+                }
+            }
+
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
             }
@@ -1046,7 +1056,7 @@ class ApiQuery {
                 
         foreach($result as $r){
             $owner_id = $r['ownerId'];
-            $action = $r['action'];
+            $action = $r['action']->getValue();
             if(!isset($permissions[$owner_id])){
                 $permissions[$owner_id] = [];
             }
@@ -1072,6 +1082,12 @@ class ApiQuery {
             }
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
                 $prop = $cfg['property'];
+                
+                // do usuário só permite id e profile
+                if($prop == 'user') {
+                    $cfg['select'] = array_intersect($cfg['select'], ['id', 'profile']);
+                }
+                
                 if($prop == 'permissionTo'){
                     $this->appendPermissions($entities, $cfg['select']);
                     continue;
@@ -1500,6 +1516,7 @@ class ApiQuery {
                 }
             } else {
                 $dql_in = $this->getSubqueryInIdentities($entities);
+                
                 $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
 
                 $query = $this->em->createQuery($dql);

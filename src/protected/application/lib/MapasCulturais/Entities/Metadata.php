@@ -29,7 +29,7 @@ class Metadata extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="object_type", type="smallint", nullable=false)
+     * @ORM\Column(name="object_type", type="object_type", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */

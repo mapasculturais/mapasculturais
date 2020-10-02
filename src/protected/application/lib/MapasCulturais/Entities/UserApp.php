@@ -39,7 +39,7 @@ class UserApp extends \MapasCulturais\Entity {
      * @var \MapasCulturais\Entities\User
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="EAGER")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $user;
 
@@ -79,7 +79,7 @@ class UserApp extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     protected $subsite;

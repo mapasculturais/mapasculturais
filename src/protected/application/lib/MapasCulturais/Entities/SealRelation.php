@@ -68,7 +68,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="seal_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="seal_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $seal;
@@ -81,7 +81,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $agent;
@@ -93,7 +93,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner_relation;
@@ -215,7 +215,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     public function getCertificateText($addLinks = false){
         
         function generateLink($url, $texto){
-            return '<a href=' . $url . '><i>' . $texto .'</i></a>';
+            return '<a href=' . $url . ' rel="noopener noreferrer"><i>' . $texto .'</i></a>';
         }
         
         $app = App::i();

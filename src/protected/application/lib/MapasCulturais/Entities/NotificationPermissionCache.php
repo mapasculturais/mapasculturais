@@ -13,7 +13,7 @@ class NotificationPermissionCache extends PermissionCache{
      * @var \MapasCulturais\Entities\Notification
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Notification")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 }

@@ -86,6 +86,9 @@ class Module extends \MapasCulturais\Module {
 
     public function _init() {
         $app = App::i();
+        $config = $this->_config;
+
+        $app->view->enqueueScript('app', 'recaptcha', 'https://www.google.com/recaptcha/api.js');
 
         $plugin = $this;
 
@@ -98,7 +101,11 @@ class Module extends \MapasCulturais\Module {
         if(array_key_exists('suggestion',$this->_config)) {
             $params['suggestion'] = $this->_config['suggestion'];
         }
-
+        
+        if(array_key_exists('google-recaptcha-sitekey',$app->_config)) {
+            $params['googleRecaptchaSiteKey'] = $app->_config['google-recaptcha-sitekey'];
+        }
+        
         $app->hook('template(<<agent|space|event|project>>.<<single>>.main-content):end', function() use ($app, $plugin, $params) {
             $this->part('compliant_suggestion.php',$params);
         });
@@ -115,7 +122,7 @@ class Module extends \MapasCulturais\Module {
                     'compliantTypeRequired' => i::__('O preenchimento do tipo de denúncia é obrigatório.'),
                     'compliantMessageRequired' => i::__('O preenchimento da mensagem da denúncia é obrigatório.'),
                     'compliantSent' => i::__('A denúncia foi enviada.'),
-
+                    'recaptchaRequired' => i::__('Recaptcha não selecionado ou inválido, tente novamente.'),
                     'suggestionEmailRequired' => i::__('O preenchimento do e-mail é obrigatório.'),
                     'suggestionTypeRequired' => i::__('O preenchimento do tipo de sugestão é obrigatório.'),
                     'suggestionMessageRequired' => i::__('O preenchimento da mensagem é obrigatório.'),
@@ -129,6 +136,12 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('POST(<<agent|space|event|project>>.sendCompliantMessage)', function() use ($plugin) {
             $app = App::i();
+            
+             //Verificando recaptcha v2
+            if (!$plugin->verifyRecaptcha2()) {
+                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            }
+
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             if(array_key_exists('anonimous',$this->data) && $this->data['anonimous']) {
                 $person = \MapasCulturais\i::__("Anônimo");
@@ -197,6 +210,11 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('POST(<<agent|space|event|project>>.sendSuggestionMessage)', function() use ($plugin) {
             $app = App::i();
+
+            //Verificando recaptcha v2
+            if (!$plugin->verifyRecaptcha2()) {
+                throw new \Exception( \MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.') );
+            }
 
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
             $message = "";
@@ -295,4 +313,45 @@ class Module extends \MapasCulturais\Module {
     }
 
     public function register() { }
+
+    public function verificarToken($token, $secretkey)
+    {
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+
+        $data = [
+            "secret" => $secretkey,
+            "response" => $token,
+        ];
+
+        $options = [
+            "http" => [
+                "header" => "Content-type: application/x-www-form-urlencoded\r\n",
+                "method" => "POST",
+                "content" => http_build_query($data), 
+            ],
+        ];
+
+        $context = stream_context_create($options);
+
+        $result = file_get_contents($url, false, $context);
+
+        if ($result === false) {
+            return false;
+        }
+
+        $result = json_decode($result);
+
+        return $result->success;
+    }
+
+    public function verifyRecaptcha2() {
+        $app = App::i();
+        $config = $app->_config;
+    
+        if (!isset($config['google-recaptcha-sitekey'])) return true;
+        if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) return false;
+
+        $token = $_POST["g-recaptcha-response"];
+        return $this->verificarToken($token, $config["google-recaptcha-secret"]);
+    }
 }

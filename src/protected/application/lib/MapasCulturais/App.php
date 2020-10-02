@@ -6,9 +6,11 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use SwiftMailer\SwiftMailer;
-use Mustache\Mustache;
-use WideImage\Exception\Exception;
+
+use Acelaya\Doctrine\Type\PhpEnumType;
+use Exception;
+use MapasCulturais\Entities\PermissionCachePending;
+use MapasCulturais\Entities\User;
 
 /**
  * MapasCulturais Application class.
@@ -43,6 +45,8 @@ use WideImage\Exception\Exception;
  *
  * @property-read array $config
  *
+ * @property-read \MapasCulturais\Module[] $modules active modules
+ * @property-read \MapasCulturais\Plugin[] $plugins active plugins
  *
  * @method \MapasCulturais\App i() Returns the application object
  */
@@ -135,7 +139,8 @@ class App extends \Slim\Slim{
             'image_transformations' => [],
             'registration_agent_relations' => [],
             'registration_fields' => [],
-            'evaluation_method' => []
+            'evaluation_method' => [],
+            'roles' => []
         ];
 
     protected $_registerLocked = true;
@@ -198,10 +203,11 @@ class App extends \Slim\Slim{
 
         if($config['app.offline']){
             $bypass_callable = $config['app.offlineBypassFunction'];
-
-            if(!is_callable($bypass_callable) || !$bypass_callable()){
+            
+            if (php_sapi_name()!=="cli" && (!is_callable($bypass_callable) || !$bypass_callable())) {
                 http_response_code(307);
                 header('Location: ' . $config['app.offlineUrl']);
+                die;
             }
         }
 
@@ -258,6 +264,8 @@ class App extends \Slim\Slim{
 
             $namespaces = $config['namespaces'];
 
+            $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
+
             foreach($config['plugins'] as $plugin){
                 $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
                 if(!isset($namespaces[$plugin['namespace']])){
@@ -280,7 +288,7 @@ class App extends \Slim\Slim{
         });
 
         // extende a config with theme config files
-
+        
         $theme_class = "\\" . $config['themes.active'] . '\Theme';
         $theme_path = $theme_class::getThemeFolder() . '/';
 
@@ -324,12 +332,8 @@ class App extends \Slim\Slim{
         AnnotationRegistry::registerLoader('class_exists');
         $doctrine_config->setMetadataDriverImpl($driver);
 
-        $proxy_dir = APPLICATION_PATH . 'lib/MapasCulturais/DoctrineProxies';
-        $proxy_namespace = 'MapasCulturais\DoctrineProxies';
-
-        $doctrine_config->setProxyDir($proxy_dir);
-        $doctrine_config->setProxyNamespace($proxy_namespace);
-        \Doctrine\ORM\Proxy\Autoloader::register($proxy_dir, $proxy_namespace);
+        $doctrine_config->setProxyDir(DOCTRINE_PROXIES_PATH);
+        $doctrine_config->setProxyNamespace('MapasCulturais\DoctrineProxies');
 
         /** DOCTRINE2 SPATIAL */
 
@@ -365,6 +369,8 @@ class App extends \Slim\Slim{
         $doctrine_config->setResultCacheImpl($this->_mscache);
 
 
+        $doctrine_config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
+        
         // obtaining the entity manager
         $this->_em = EntityManager::create($config['doctrine.database'], $doctrine_config);
 
@@ -375,8 +381,22 @@ class App extends \Slim\Slim{
         \MapasCulturais\DoctrineMappings\Types\Geometry::register();
 
 
+        PhpEnumType::registerEnumTypes([
+            'object_type' => DoctrineEnumTypes\ObjectType::class,
+            'permission_action' => DoctrineEnumTypes\PermissionAction::class
+        ]);
 
+        $platform = $this->_em->getConnection()->getDatabasePlatform();
 
+        $platform->registerDoctrineTypeMapping('_text', 'text');
+        $platform->registerDoctrineTypeMapping('point', 'point');
+        $platform->registerDoctrineTypeMapping('geography', 'geography');
+        $platform->registerDoctrineTypeMapping('geometry', 'geometry');
+        $platform->registerDoctrineTypeMapping('object_type', 'object_type');
+        $platform->registerDoctrineTypeMapping('permission_action', 'permission_action');
+        
+
+        // QUERY LOGGER
         if(@$config['app.log.query']){
             if (isset($config['app.queryLogger']) && is_object($config['app.queryLogger'])) {
                 $query_logger = $config['app.queryLogger'];
@@ -388,11 +408,6 @@ class App extends \Slim\Slim{
             }
             $doctrine_config->setSQLLogger($query_logger);
         }
-
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'point');
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geography', 'geography');
-        $this->_em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('geometry', 'geometry');
-
 
         // ===================================== //
 
@@ -523,7 +538,7 @@ class App extends \Slim\Slim{
         $this->view->init();
 
         // ===================================== //
-
+        
         // run plugins
         if(isset($config['plugins.enabled']) && is_array($config['plugins.enabled'])){
             foreach($config['plugins.enabled'] as $plugin){
@@ -557,7 +572,7 @@ class App extends \Slim\Slim{
     }
 
     public function getVersion(){
-        $version = $this->getVersionFile();
+        $version = trim($this->getVersionFile());
         return sprintf('v%s', $version);
     }
 
@@ -794,92 +809,50 @@ class App extends \Slim\Slim{
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Dump');
 
-        // register registration field types
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'textarea',
-            'name' => \MapasCulturais\i::__('Campo de texto (textarea)')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'text',
-            'name' => \MapasCulturais\i::__('Campo de texto simples')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'date',
-            'name' => \MapasCulturais\i::__('Campo de data')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'url',
-            'name' => \MapasCulturais\i::__('Campo de URL (link)'),
-            'validations' => [
-                'v::url()' => \MapasCulturais\i::__('O valor não é uma URL válida')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'email',
-            'name' => \MapasCulturais\i::__('Campo de email'),
-            'validations' => [
-                'v::email()' => \MapasCulturais\i::__('O valor não é um endereço de email válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'select',
-            'name' => \MapasCulturais\i::__('Seleção única (select)'),
-            'requireValuesConfiguration' => true
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'section',
-            'name' => \MapasCulturais\i::__('Título de Seção')
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'number',
-            'name' => \MapasCulturais\i::__('Campo numérico'),
-            'validations' => [
-                'v::numeric()' => \MapasCulturais\i::__('O valor inserido não é válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'cpf',
-            'name' => \MapasCulturais\i::__('Campo de CPF'),
-            'validations' => [
-                'v::cpf()' => \MapasCulturais\i::__('O cpf inserido não é válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'cnpj',
-            'name' => \MapasCulturais\i::__('Campo de CNPJ'),
-            'validations' => [
-                'v::cnpj()' => \MapasCulturais\i::__('O cnpj inserido não é válido')
-            ]
-        ]));
-
-        $this->registerRegistrationFieldType(new Definitions\RegistrationFieldType([
-            'slug' => 'checkboxes',
-            'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
-            'requireValuesConfiguration' => true,
-            'serialize' => function ($value) {
-                if(!is_array($value)){
-                    if($value){
-                        $value = [$value];
-                    } else {
-                        $value = [];
-                    }
+        $roles = [
+            'saasSuperAdmin' => (object) [
+                'name' => i::__('Super Administrador do SaaS'),
+                'plural' => i::__('Super Administradores do SaaS'),
+                'another_roles' => ['saasAdmin', 'superAdmin', 'admin'],
+                'subsite' => false,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('saasSuperAdmin');
                 }
-                return json_encode($value);
-            },
-            'unserialize' => function ($value) {
-                return json_decode($value);
-            }
-        ]));
+            ],
+            'saasAdmin' => (object) [
+                'name' => i::__('Administrador do SaaS'),
+                'plural' => i::__('Administradores do SaaS'),
+                'another_roles' => ['superAdmin', 'admin'],
+                'subsite' => false,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('saasSuperAdmin');
+                }
+            ],
+            'superAdmin' => (object) [
+                'name' => i::__('Super Administrador'),
+                'plural' => i::__('Super Administradores'),
+                'another_roles' => ['admin'],
+                'subsite' => true,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('superAdmin', $subsite_id);
+                }
+            ],
+            'admin' => (object) [
+                'name' => i::__('Administrador'),
+                'plural' => i::__('Administradores'),
+                'another_roles' => [],
+                'subsite' => true,
+                'can_user_manage_role' => function(UserInterface $user, $subsite_id) {
+                    return $user->is('superAdmin', $subsite_id);
+                }
+            ],
+        ];
+
+        foreach ($roles as $role => $cfg) {
+            $role_definition = new Definitions\Role($role, $cfg->name, $cfg->plural, $cfg->subsite, $cfg->can_user_manage_role, $cfg->another_roles);
+
+            $this->registerRole($role_definition);
+        }
 
         /**
          * @todo melhores mensagens de erro
@@ -895,6 +868,7 @@ class App extends \Slim\Slim{
             'rules' => new Definitions\FileGroup('rules', ['^application/.*'], \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true),
             'logo'  => new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'background' => new Definitions\FileGroup('background',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
+            'share' => new Definitions\FileGroup('share',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], \MapasCulturais\i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], \MapasCulturais\i::__('O arquivo não é um ZIP.'), true, null, true),
@@ -939,6 +913,7 @@ class App extends \Slim\Slim{
         $this->registerFileGroup('subsite',$file_groups['avatar']);
         $this->registerFileGroup('subsite',$file_groups['logo']);
         $this->registerFileGroup('subsite',$file_groups['background']);
+        $this->registerFileGroup('subsite',$file_groups['share']);
         $this->registerFileGroup('subsite',$file_groups['institute']);
         $this->registerFileGroup('subsite',$file_groups['favicon']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
@@ -961,6 +936,7 @@ class App extends \Slim\Slim{
 
             $this->registerRegistrationAgentRelation($def);
         }
+
 
         // all metalist groups
         $metalist_groups = [
@@ -1597,6 +1573,7 @@ class App extends \Slim\Slim{
     }
 
     public function persistPCachePendingQueue(){
+        $created = false;
         foreach($this->permissionCachePendingQueue as $entity) {
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
                     'objectId' => $entity->id, 'objectType' => $entity->getClassName()
@@ -1606,10 +1583,29 @@ class App extends \Slim\Slim{
                 $pendingCache->objectType = $entity->getClassName();
                 $pendingCache->save(true);
                 $this->log->debug("pcache pending: $entity");
+                $created = true;
             }
         }
-        $this->em->flush();
+
+        if ($created) {
+            $this->em->flush();
+        }
+
         $this->permissionCachePendingQueue = [];
+    }
+
+    public function setCurrentSubsiteId(int $subsite_id = null) {
+        if(is_null($subsite_id)) {
+            $this->_subsite = null;
+        } else {
+            $subsite = $this->repo('Subsite')->find($subsite_id);
+
+            if(!$subsite) {
+                throw new \Exception('Subsite not found');
+            }
+
+            $this->_subsite = $subsite;
+        }
     }
 
     private $recreatedPermissionCacheList = [];
@@ -1623,24 +1619,35 @@ class App extends \Slim\Slim{
     }
 
     public function recreatePermissionsCache(){
-        $queue = $this->repo('PermissionCachePending')->findBy([], ['id' => 'ASC']);
-        if (is_array($queue) && count($queue) > 0) {
+        $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
+        if ($item) {
+            $this->disableAccessControl();
+            $item->status = 1;
+            $item->save(true);
+            $this->enableAccessControl();
+
             $conn = $this->em->getConnection();
             $conn->beginTransaction();
 
             try {
-                foreach($queue as $pendingCache) {
-                    $entity = $this->repo($pendingCache->objectType)->find($pendingCache->objectId);
-                    if ($entity) {
-                        $entity->recreatePermissionCache();
-                    }
-                    $this->em->remove($pendingCache);
+                $entity = $this->repo($item->objectType)->find($item->objectId);
+                if ($entity) {
+                    $entity->recreatePermissionCache();
                 }
+                
+                $this->em->remove($item);
+
                 $this->em->flush();
                 $conn->commit();
-            } catch (Exception $e ){
+            } catch (\Exception $e ){
                 $this->em->close();
                 $conn->rollBack();
+
+                $this->disableAccessControl();
+                $item->status = 0;
+                $item->save(true);
+                $this->enableAccessControl();
+            
                 if(php_sapi_name()==="cli"){
                     echo "\n\t - ERROR - {$e->getMessage()}";
                 }
@@ -1845,21 +1852,47 @@ class App extends \Slim\Slim{
 
 
     /**********************************************
-     * Register
+     * Register functions
      **********************************************/
 
-    public function registerRole($role){
-
+    /**
+     * Register a new role
+     *
+     * @param Definitions\Role $role the role definition
+     * @return void
+     */
+    public function registerRole(Definitions\Role $role){
+        $this->_register['roles'][$role->getRole()] = $role;
     }
 
+    /**
+     * Returns the registered roles definitions
+     *
+     * @return \MapasCulturais\Definitions\Role[]
+     */
     public function getRoles() {
-        $roles = include APPLICATION_PATH . 'conf/roles.php';
-        return $roles;
+        return $this->_register['roles'];
     }
 
-    public function getRoleName($role){
-        $roles = $this->getRoles();
-        return key_exists($role, $roles) ? $roles[$role]['name'] : $role;
+    /**
+     * Returns the role definition
+     *
+     * @param string $role
+     * @return \MapasCulturais\Definitions\Role|null
+     */
+    public function getRoleDefinition(string $role) {
+        return $this->_register['roles'][$role] ?? null;
+    }
+
+    /**
+     * Returns the role name
+     *
+     * @param string $role
+     * @return string
+     */
+    public function getRoleName(string $role){
+        $def = $this->_register['roles'][$role] ?? null;
+        return $def ? $def->name : $role;
     }
 
 
@@ -2278,17 +2311,25 @@ class App extends \Slim\Slim{
      * @return \MapasCulturais\Definitions\EntityType
      */
     function getRegisteredEntityType(Entity $object){
-        return @$this->_register['entity_types'][$object->getClassName()][$object->type];
+        return $this->_register['entity_types'][$object->getClassName()][(string)$object->type] ?? null;
     }
 
+    function getRegisteredEntityTypeByTypeName($entity, string $type_name) {
+        foreach($this->getRegisteredEntityTypes($entity) as $type) {
+            if (strtolower($type->name) == trim(strtolower($type_name))) {
+                return $type;
+            }
+        }
 
+        return null;
+    }
 
     /**
-     * Returns the Entity Type of the given entity class or object.
+     * Returns the registered entity types for the given entity class or object.
      *
      * @param \MapasCulturais\Entity|string $entity The entity.
      *
-     * @return \MapasCulturais\Definitions\EntityType
+     * @return \MapasCulturais\Definitions\EntityType[]
      */
     function getRegisteredEntityTypes($entity){
         if(is_object($entity))
@@ -2673,8 +2714,7 @@ class App extends \Slim\Slim{
         $port = isset($this->_config['mailer.port']) &&  !empty($this->_config['mailer.port']) ? $this->_config['mailer.port'] : 25;
 
         // default encryption protocol to ssl
-        $protocol = isset($this->_config['mailer.protocol']) &&  !empty($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : 'ssl';
-
+        $protocol = isset($this->_config['mailer.protocol']) ? $this->_config['mailer.protocol'] : null;
 
         if ($transport_type == 'smtp' && false !== $server) {
 

@@ -11,7 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class PermissionCachePending extends \MapasCulturais\Entity{
+class PermissionCachePending extends \MapasCulturais\Entity {
+
+    const STATUS_WAITING = 0;
+    const STATUS_PROCESSING = 1;
 
     /**
      * @var integer
@@ -38,11 +41,18 @@ class PermissionCachePending extends \MapasCulturais\Entity{
     protected $objectType;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=false)
+     */
+    protected $status = self::STATUS_WAITING;
+
+    /**
      * @var \MapasCulturais\Entities\User
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     //protected $user;

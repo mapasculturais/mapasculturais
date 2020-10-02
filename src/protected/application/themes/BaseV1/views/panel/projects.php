@@ -3,16 +3,22 @@ $this->layout = 'panel';
 $label = \MapasCulturais\i::__("Adicionar novo projeto");
 ?>
 <div class="panel-list panel-main-content">
+    <?php $this->applyTemplateHook('panel-header','before'); ?>
 	<header class="panel-header clearfix">
+        <?php $this->applyTemplateHook('panel-header','begin'); ?>
 		<h2><?php \MapasCulturais\i::_e("Meus projetos");?></h2>
         <div class="btn btn-default add"> <?php $this->renderModalFor('project', false, $label); ?> </div>
-	</header>
+
+        <?php $this->applyTemplateHook('panel-header','end') ?>
+    </header>
+    <?php $this->applyTemplateHook('panel-header','after'); ?>
+
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos"><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledProjects); ?>)</a></li>
-        <li><a href="#permitido"><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlProjects); ?>)</a></li>
-        <li><a href="#rascunhos"><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftProjects); ?>)</a></li>
-        <li><a href="#lixeira"><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedProjects); ?>)</a></li>
-        <li><a href="#arquivo"><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedProjects); ?>)</a></li>
+        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledProjects); ?>)</a></li>
+        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlProjects); ?>)</a></li>
+        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftProjects); ?>)</a></li>
+        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedProjects); ?>)</a></li>
+        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedProjects); ?>)</a></li>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>

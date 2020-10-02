@@ -14,7 +14,7 @@ class RegistrationFile extends File{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -24,7 +24,7 @@ class RegistrationFile extends File{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationFile", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

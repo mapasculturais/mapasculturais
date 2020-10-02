@@ -12,10 +12,10 @@
            readonly="readonly" placeholder="00/00/0000" value="<?php echo $date_to->format('d/m/Y'); ?>">
     <input id="agenda-to" name="until" type="hidden" value="<?php echo $date_to->format('Y-m-d'); ?>">
 
-    <a href="" id="agenda-spreadsheet-button" class="btn btn-primary"><?php \MapasCulturais\i::_e("Baixar Planilha");?></a>
+    <a href="" id="agenda-spreadsheet-button" class="btn btn-primary" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Baixar Planilha");?></a>
 
     <img src="<?php $this->asset('img/spinner-black.gif') ?>" class="spinner" />
     <!-- OCULTADO POR ENQUANTO BOTÃO DE CADSTRAR EVENTO
-    <a class="btn btn-default add" href="#">adicionar evento</a>
+    <a class="btn btn-default add" href="#" rel='noopener noreferrer'>adicionar evento</a>
     -->
 </header>

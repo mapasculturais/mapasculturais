@@ -927,6 +927,30 @@ return [
         __try("DROP INDEX registration_meta_value_idx;");
     },
 
+
+    //Space_Relation
+    'CREATE SEQUENCE REGISTRATION SPACE RELATION registration_space_relation_id_seq' => function() use($conn){
+        $conn->executeQuery("CREATE SEQUENCE space_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+    },
+
+    'CREATE TABLE spacerelation' => function() use($conn){
+        $conn->executeQuery("CREATE TABLE space_relation (id INT NOT NULL, space_id INT DEFAULT NULL, object_id INT NOT NULL, 
+                             create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, 
+                             object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A3023575340 ON space_relation (space_id);");
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A30232D562B ON space_relation (object_id);");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
+    //Adiciona coluna space_data com metadados do espaço vinculado à inscrição
+    'ALTER TABLE registration' => function() use($conn){
+        $conn->executeQuery("ALTER TABLE registration ADD space_data text DEFAULT NULL;");
+    },
+
+    
+    
     'altertable registration_file_and_files_add_order' => function () use($conn){
         if(__column_exists('registration_file_configuration', 'order')){
             echo "ALREADY APPLIED";
@@ -1137,6 +1161,133 @@ return [
             $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
             $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
             
+        }
+    },
+
+    'alter table registration_field_configuration add column config' => function() use($conn){
+        if(!__column_exists('registration_field_configuration', 'config')){
+            __exec("
+                ALTER TABLE registration_field_configuration 
+                ADD config TEXT;
+            ");
+        }
+    },
+
+    'recreate ALL FKs' => function () use($conn) {
+        $sql = "
+DO
+    $$
+    DECLARE r record;
+    BEGIN
+    FOR r IN (SELECT constraint_name, table_name FROM information_schema.table_constraints WHERE table_schema = 'public' AND constraint_type='FOREIGN KEY') LOOP
+        raise info '%','dropping '||r.constraint_name;
+        execute CONCAT('ALTER TABLE \"public\".'||r.table_name||' DROP CONSTRAINT '||r.constraint_name);
+    END LOOP;
+END;
+$$
+;";
+        __exec($sql);
+
+        __exec("ALTER TABLE subsite ADD CONSTRAINT FK_B0F67B6F3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9D727ACA70 FOREIGN KEY (parent_id) REFERENCES agent (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DBDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE role ADD CONSTRAINT FK_57698A6ABDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE file ADD CONSTRAINT FK_8C9F3610727ACA70 FOREIGN KEY (parent_id) REFERENCES file (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE usr ADD CONSTRAINT FK_1762498CCCFA12B8 FOREIGN KEY (profile_id) REFERENCES agent (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space ADD CONSTRAINT FK_2972C13A727ACA70 FOREIGN KEY (parent_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space ADD CONSTRAINT FK_2972C13A3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space ADD CONSTRAINT FK_2972C13ABDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EE727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EE3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEBDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent_relation ADD CONSTRAINT FK_54585EDD3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE term_relation ADD CONSTRAINT FK_EDDF39FDE2C35FC FOREIGN KEY (term_id) REFERENCES term (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF65154778145 FOREIGN KEY (seal_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF6513414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF6517E3C61F9 FOREIGN KEY (owner_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE pcache ADD CONSTRAINT FK_3D853098A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE user_meta ADD CONSTRAINT FK_AD7358FC232D562B FOREIGN KEY (object_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE303414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE notification ADD CONSTRAINT FK_BF5476CAA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE notification ADD CONSTRAINT FK_BF5476CA427EB8A5 FOREIGN KEY (request_id) REFERENCES request (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence ADD CONSTRAINT FK_E61358DC71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence ADD CONSTRAINT FK_E61358DC23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB19A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE request ADD CONSTRAINT FK_3B978F9FBA78F12A FOREIGN KEY (requester_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence_recurrence ADD CONSTRAINT FK_388ECCB140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision ADD CONSTRAINT FK_CF97A98CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A8521DFA7C8F FOREIGN KEY (revision_id) REFERENCES entity_revision (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A852B4906F58 FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BEA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence_cancellation ADD CONSTRAINT FK_A5506736140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;        ");
+        
+    },
+
+    'create object_type enum type' => function () {
+        $object_types = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\ObjectType::values()));
+
+        __exec("CREATE TYPE object_type AS ENUM($object_types)");
+    }, 
+
+    'create permission_action enum type' => function () {
+        $permission_actions = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\PermissionAction::values()));
+
+        __exec("CREATE TYPE permission_action AS ENUM($permission_actions)");
+    }, 
+
+    'alter tables to use enum types' => function() {
+        __exec("ALTER TABLE pcache ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE pcache ALTER COLUMN action TYPE permission_action USING action::permission_action");
+
+        __exec("ALTER TABLE file ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE agent_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE term_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE entity_revision ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE metadata ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+
+    },
+
+    'alter table permission_cache_pending add column status' => function() use($conn) {
+        if (!__column_exists('permission_cache_pending', 'status')) {
+            $conn->executeQuery("ALTER TABLE permission_cache_pending ADD status smallint DEFAULT 0");
         }
     }
 

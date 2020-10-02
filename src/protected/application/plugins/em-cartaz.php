@@ -26,7 +26,7 @@ $app->hook('panel.menu:after', function() use ($app){
     $a_class = $this->template == 'panel/em-cartaz' ? 'active' : '';
 
     $url = $app->createUrl('panel', 'em-cartaz');
-    echo "<li><a class='$a_class' href='$url'><span class='icon icon-em-cartaz'></span> Em Cartaz</a></li>";
+    echo "<li><a class='$a_class' href='$url' rel='noopener noreferrer'><span class='icon icon-em-cartaz'></span> Em Cartaz</a></li>";
 });
 
 
@@ -101,7 +101,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
             $spaceText .= trim($space['space']->name) . ' ';
 
             if($this->action === 'em-cartaz-preview'){
-                '<span> (<a href="' . $space['space']->singleUrl . '">link</a>)</span>. ';
+                '<span> (<a rel="noopener noreferrer" href="' . $space['space']->singleUrl . '">link</a>)</span>. ';
             }
 
             $spaceText = str_replace('..', '.', $spaceText);
@@ -205,7 +205,7 @@ $app->hook('GET(panel.em-cartaz-<<download|preview>>)', function() use ($app, $d
     }
 
     if($this->action === 'em-cartaz-preview'){
-        //$content = '<a href="'.$app->createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
+        //$content = '<a href="'.$app- rel='noopener noreferrer'>createUrl('panel', 'em-cartaz-download').'">Salvar Documento Em Formato Microsoft Word</a>';
 
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
 

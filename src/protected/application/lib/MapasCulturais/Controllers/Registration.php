@@ -5,6 +5,8 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
+use MapasCulturais\Entities\OpportunityMeta;
 
 /**
  * Registration Controller
@@ -101,52 +103,130 @@ class Registration extends EntityController {
             $this->tmpFile = $tmpFile;
         });
 
-        
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
-            
-            
+           
             if(!$registration || !$registration->id){
                 return;
             }
 
             $opportunity = $registration->opportunity;
-            
+           
             $this->registerRegistrationMetadata($opportunity);
             
+        });
+        //Dados recebido vindo da criação do formulário quando seleciona opção do espaço
+        $app->hook('POST(registration.spaceRel)' , function() {
+           $this->createSpaceRelation();
         });
 
         parent::__construct();
     }
+    
+     /**
+     * metodo vindo da edição da oportunidade, no campo de ESPAÇO CULTURAL tem que fazer a 
+     * verificação se já tem registro na tabela, se tiver deve fazer um update para o novo
+     * registro, caso contrário, deve fazer o registro
+     */
+    function createSpaceRelation() {
+        $app = App::i();
+        $sel = $app->repo('OpportunityMeta')->findOneBy([
+            'owner' =>  $this->postData['object_id'],
+            'key' => $this->postData['key']
+        ]);
+
+         if(empty($sel)) {
+            $op = $app->repo('Opportunity')->find($this->postData['object_id']);
+            $newOpMeta = new OpportunityMeta;
+            $newOpMeta->owner = $op;
+            $newOpMeta->key = $this->postData['key'];
+            $newOpMeta->value = $this->postData['value'];
+            $newOpMeta->save(true);
+            $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
+        }else{
+            $sel->setValue($this->postData['value']);
+            $sel->save(true);
+            $this->json(['message' => 'Edição realizada', 'status' => 200, 'type' => 'success']);
+        }
+    }
+    function POST_createSpaceRelation(){
+        $this->requireAuthentication();
+        
+        $app = App::i();
+
+        $space = $app->repo('Space')->find($this->postData['id']);
+        $registration = $app->repo('Registration')->find($this->data['id']);
+
+        $relation = new RegistrationSpaceRelationEntity();
+        $relation->space = $space;
+        $relation->owner = $registration;
+        
+        $this->_finishRequest($relation, true);
+    }
+
+    /**
+     * Removes the space relation with the given id.
+     * 
+     * This action requires authentication.
+     * 
+     * @WriteAPI POST removeSpaceRelation
+     */
+    public function POST_removeSpaceRelation(){
+        $this->requireAuthentication();
+        $app = App::i();
+
+        if(!$this->urlData['id'])
+            $app->pass();
+
+        $registrationEntity = $this->repository->find($this->data['id']);
+        $space = $app->repo('Space')->find($this->postData['id']);
+        
+        if(is_object($registrationEntity) && !is_null($space)){
+            $spaceRelation = $app->repo('SpaceRelation')->findOneBy(array('objectId'=>$registrationEntity->id, 'space'=>(array('id'=>$space->id))));
+            $spaceRelation->delete(true);
+            
+            $this->refresh();
+            $this->deleteUsersWithControlCache();
+
+            if($this->usesPermissionCache()){
+                $this->addToRecreatePermissionsCacheList();
+            }
+            
+            $this->json(true);
+        }        
+    }   
 
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
             $actionName = 'view';
         }
+        
         return parent::createUrl($actionName, $data);
     }
 
     function registerRegistrationMetadata(\MapasCulturais\Entities\Opportunity $opportunity){
-        
+       
         $app = App::i();
         
         if($opportunity->projectName){
+           
             $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
             
             $metadata = new Definitions\Metadata('projectName', $cfg);
             $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
         }
-
+        
         foreach($opportunity->registrationFieldConfigurations as $field){
 
             $cfg = [
                 'label' => $field->title,
                 'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
                 'private' => true,
+                'registrationFieldConfiguration' => $field
             ];
 
             $def = $field->getFieldTypeDefinition();
-
+            
             if($def->requireValuesConfiguration){
                 $cfg['options'] = $field->fieldOptions;
             }
@@ -159,13 +239,32 @@ class Registration extends EntityController {
                 $cfg['unserialize'] = $def->unserialize;
             }
 
+            if($def->defaultValue){
+                $cfg['default_value'] = $def->defaultValue;
+            }
+
+            if($def->validations){
+                $cfg['validations'] = $def->validations;
+            } else {
+                $cfg['validations'] = [];
+            }
+            
+            if($field->required){
+                $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
+            }
+
+            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+
+
             $metadata = new Definitions\Metadata($field->fieldName, $cfg);
 
             $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
         }
+        
     }
     
     function getPreviewEntity(){
+       
         $registration = new $this->entityClassName;
         
         $registration->id = -1;
@@ -180,7 +279,7 @@ class Registration extends EntityController {
      */
     function getRequestedEntity() {
         $preview_entity = $this->getPreviewEntity();
-
+       
         if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
             if(!App::i()->request->isGet()){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
@@ -197,12 +296,13 @@ class Registration extends EntityController {
      */
     function getRequestedOpportunity(){
         $app = App::i();
+       
         if(!isset($this->urlData['opportunityId']) || !intval($this->urlData['opportunityId'])){
             $app->pass();
         }
 
         $opportunity = $app->repo('Opportunity')->find(intval($this->urlData['opportunityId']));
-
+       
         if(!$opportunity){
             $this->pass();
         }
@@ -222,7 +322,7 @@ class Registration extends EntityController {
         $registration->opportunity = $opportunity;
         
         $this->_requestedEntity = $registration;
-
+        
         $this->render('edit', ['entity' => $registration, 'preview' => true]);
     }
 
@@ -242,12 +342,12 @@ class Registration extends EntityController {
 
     function GET_view(){
         $this->requireAuthentication();
-        
+       
         $entity = $this->requestedEntity;
         if(!$entity){
             App::i()->pass();
         }
-
+       
         $entity->checkPermission('view');
 
         if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
@@ -449,5 +549,55 @@ class Registration extends EntityController {
         $this->_finishRequest($registration);
         $app->enableAccessControl();
     
+    }
+
+    function POST_validateEntity() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+        
+        foreach ($this->postData as $field => $value) {
+            $entity->$field = $value;
+        }
+        
+        if ($errors = $entity->getSendValidationErrors()) {
+            $this->errorJson($errors);
+        } else {
+            $this->json(true);
+        }
+    }
+
+    function POST_validateProperties() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+        
+        foreach ($this->postData as $field => $value) {
+            App::i()->log->debug("$field $value");
+            $entity->$field = $value;
+        }
+
+        if ($_errors = $entity->getSendValidationErrors()) {
+            $errors = [];
+            foreach($this->postData as $field => $value){
+                if(key_exists($field, $_errors)){
+                    $errors[$field] = $_errors[$field];
+                }
+            }
+
+            if($errors){
+                $this->errorJson($errors);
+            }
+        } 
+        
+        $this->json(true);
     }
 }

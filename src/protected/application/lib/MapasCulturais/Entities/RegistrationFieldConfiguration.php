@@ -31,7 +31,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -92,6 +92,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      */
     protected $fieldOptions = [];
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="config", type="array", length=255)
+     */
+    protected $config = [];
+
     static function getValidations() {
         return [
             'owner' => [ 
@@ -112,18 +119,22 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
     
     public function setFieldOptions($value){
-        if(!is_array($value)){
+        if (is_string($value)){ 
             $value = explode("\n", $value);
+        } else {
+            $value = (array) $value;
         }
         
         $this->fieldOptions = $value;
     }
     
     public function setCategories($value) {
-        if(!$value){
+        if (!$value) {
             $value = [];
-        } else if (!is_array($value)){
+        } else if (is_string($value)) {
             $value = explode("\n", $value);
+        } else {
+            $value = (array) $value;
         }
         $this->categories = $value;
     }
@@ -151,6 +162,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'required' => $this->required,
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
+        'config' => $this->config,
         'categories' => $this->categories,
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder

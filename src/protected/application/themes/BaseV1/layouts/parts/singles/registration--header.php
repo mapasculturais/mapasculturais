@@ -20,7 +20,7 @@
         <!--.avatar-->
         <div class="entity-type registration-type">
             <div class="icon icon-project"></div>
-            <a><?php echo $opportunity->type->name; ?></a>
+            <a rel='noopener noreferrer'><?php echo $opportunity->type->name; ?></a>
         </div>
         <!--.entity-type-->
         <?php $this->part('entity-parent', ['entity' => $opportunity, 'child_entity_request' => null]) ?>

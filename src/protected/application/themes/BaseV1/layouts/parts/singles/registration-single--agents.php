@@ -5,7 +5,6 @@ foreach($agentsRelated as $k => $agents){
 }
 $agentsRelated['owner'] = $entity->owner;
 ?>
-
 <div class="registration-fieldset">
     <h4><?php \MapasCulturais\i::_e("Agentes (proponentes)");?></h4>
     <!-- agentes relacionados a inscricao -->
@@ -20,7 +19,7 @@ $agentsRelated['owner'] = $entity->owner;
                 <div class="clearfix">
                     <img ng-src="{{::def.agent.avatarUrl || data.assets.avatarAgent}}" class="registration-agent-avatar" />
                     <div>
-                        <a ng-if="def.agent" href="{{::def.agent.singleUrl}}">{{::def.agent.name}}</a>
+                        <a ng-if="def.agent" href="{{::def.agent.singleUrl}}" rel='noopener noreferrer'>{{::def.agent.name}}</a>
                         <span ng-if="!def.agent"><?php \MapasCulturais\i::_e("Não informado");?></span>
                     </div>
                 </div>
@@ -36,7 +35,7 @@ $agentsRelated['owner'] = $entity->owner;
                 <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p> -->
                 <find-entity id='find-entity-registration-{{::def.agentRelationGroupName}}' name='{{::def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Selecionar");?> {{::def.label}}" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
             </edit-box>
-            <a ng-if="::def.agent" class="btn btn-default" ng-click="data['modal-' + def.agentRelationGroupName] = true" data-modal-id="portifolio-{{::def.agentRelationGroupName}}" ><?php \MapasCulturais\i::_e("Visualizar Portfólio");?></a>
+            <a ng-if="::def.agent" class="btn btn-default" ng-click="data['modal-' + def.agentRelationGroupName] = true" data-modal-id="portifolio-{{::def.agentRelationGroupName}}"  rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Visualizar Portfólio");?></a>
         </li>
     </ul>
 </div>

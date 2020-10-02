@@ -3,10 +3,13 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 
 /**
  * Role
  *
+ * @property-read \MapasCulturais\Definitions\Role $definition
+ * 
  * @ORM\Table(name="role")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -35,7 +38,7 @@ class Role extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $user;
@@ -54,7 +57,7 @@ class Role extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     protected $subsite;
@@ -83,6 +86,39 @@ class Role extends \MapasCulturais\Entity{
         }
         
         $this->subsite = $subsite;
+    }
+
+    function is(string $role_name) {
+        $app = App::i();
+        
+        $definition = $app->getRoleDefinition($this->name);
+        
+        return $definition ? $definition->hasRole($role_name) : false;    
+    }
+
+    function getDefinition() {
+        $app = App::i();
+        $role_definition = $app->getRoleDefinition($this->name);
+
+        return $role_definition;
+    }
+
+    protected function canUserCreate($user) {
+        return $this->canUserManage($user);
+    }
+
+    protected function canUserRemove($user) {
+        return $this->canUserManage($user);
+    }
+
+    protected function canUserManage($user) {
+        $role_definition = $this->getDefinition();
+
+        if (!$role_definition) {
+            return false;
+        }
+
+        return $role_definition->canUserManageRole($user, $this->subsiteId);
     }
     
     //============================================================= //

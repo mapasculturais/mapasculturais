@@ -1,16 +1,18 @@
+<?php
+$roles = MapasCulturais\App::i()->getRoles();
+$user_role = null;
+foreach ($roles as $role) {
+    if ($entity->user->is($role->role)) {
+        $user_role = $role;
+        break;
+    }
+}
+?>
 <div id="funcao-do-agente" class="dropdown dropdown-select">
     <div class="placeholder js-selected">
-        
-        <?php if ($entity->user->is('saasSuperAdmin')): ?>
-            <span data-role="superAdmin"><?php echo $app->getRoleName('saasSuperAdmin'); ?></span>
-        <?php elseif ($entity->user->is('saasAdmin')): ?>
-            <span data-role="superAdmin"><?php echo $app->getRoleName('saasAdmin'); ?></span>
-        <?php elseif ($entity->user->is('subiteAdmin')): ?>
-            <span data-role="subsiteAdmin"><?php echo $app->getRoleName('subsiteAdmin'); ?></span>
-        <?php elseif ($entity->user->is('superAdmin')): ?>
-            <span data-role="superAdmin"><?php echo $app->getRoleName('superAdmin'); ?></span>
-        <?php elseif ($entity->user->is('admin')): ?>
-            <span data-role="admin"><?php echo $app->getRoleName('admin'); ?></span>
+        <span><?php \MapasCulturais\i::_e("Normal");?></span>
+        <?php if ($user_role): ?>
+            <span data-role="<?= $role->role ?>"><?= $role->name ?></span>
         <?php else: ?>
             <span><?php \MapasCulturais\i::_e("Normal");?></span>
         <?php endif; ?>
@@ -20,37 +22,13 @@
             <li>
                 <span><?php \MapasCulturais\i::_e("Normal");?></span>
             </li>
-            
-            <?php if ($entity->user->canUser('addRoleAdmin')): ?>
-                <li data-role="admin">
-                    <span><?php echo $app->getRoleName('admin') ?></span>
-                </li>
-            <?php endif; ?>
-
-            <?php if ($entity->user->canUser('addRoleSuperAdmin')): ?>
-                <li data-role="superAdmin">
-                    <span><?php echo $app->getRoleName('superAdmin') ?></span>
-                </li>
-            <?php endif; ?>
-
-            <?php if ($entity->user->canUser('addRoleSubsiteAdmin')): ?>
-                <li data-role="subsiteAdmin">
-                    <span><?php echo $app->getRoleName('subsiteAdmin') ?></span>
-                </li>
-            <?php endif; ?>
-                
-            <?php if ($entity->user->canUser('addRoleSaasAdmin')): ?>
-                <li data-role="saasAdmin">
-                    <span><?php echo $app->getRoleName('saasAdmin') ?></span>
-                </li>
-            <?php endif; ?>
-            
-            <?php if ($entity->user->canUser('addRoleSaasSuperAdmin')): ?>
-                <li data-role="saasSuperAdmin">
-                    <span><?php echo $app->getRoleName('saasSuperAdmin') ?></span>
-                </li>
-            <?php endif; ?>
-
+            <?php foreach($roles as $role): ?>
+                <?php if ($role->canUserManageRole()): ?>
+                    <li data-role="<?=$role->role?>">
+                        <span><?=$role->name ?></span>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </ul>
     </div>
 </div>

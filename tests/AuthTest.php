@@ -45,14 +45,6 @@ class AuthTest extends MapasCulturais_TestCase{
     function testNormalAuthentication(){
         $this->user = 'normal';
         $this->assertFalse($this->app->user->is('guest'), 'Asserting that the user is not guest.');
-        $this->assertFalse($this->app->user->is('staff'), 'Asserting that the user is not admin.');
-        $this->assertFalse($this->app->user->is('admin'), 'Asserting that the user is not admin.');
-        $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
-    }
-
-    function testStaffAuthentication(){
-        $this->user = 'staff';
-        $this->assertTrue($this->app->user->is('staff'), 'Asserting that the user is staff.');
         $this->assertFalse($this->app->user->is('admin'), 'Asserting that the user is not admin.');
         $this->assertFalse($this->app->user->is('superAdmin'), 'Asserting that the user is not super admin.');
     }

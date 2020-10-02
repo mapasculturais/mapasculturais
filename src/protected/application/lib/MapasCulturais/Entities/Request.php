@@ -27,7 +27,8 @@ use MapasCulturais\Traits;
         "EventProject"      = "\MapasCulturais\Entities\RequestEventProject",
         "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
         "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation",
-        "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation"
+        "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation",
+        "SpaceRelation"      = "\MapasCulturais\Entities\RequestSpaceRelation"
    })
  * @ORM\HasLifecycleCallbacks
  */
@@ -109,7 +110,7 @@ abstract class Request extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="requester_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="requester_user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $requesterUser;

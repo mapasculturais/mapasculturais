@@ -13,7 +13,7 @@ class SealFile extends File{
      * @var \MapasCulturais\Entities\Seal
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 
@@ -22,7 +22,7 @@ class SealFile extends File{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\SealFile", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

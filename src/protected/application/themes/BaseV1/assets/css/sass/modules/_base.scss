@@ -133,6 +133,9 @@ select {
 input,
 textarea {
     font-size: $form-fields-font-size;
+    @media screen and (max-width: $screen-tablet) {
+        width: 95%;
+    }
 }
 input,
 button,

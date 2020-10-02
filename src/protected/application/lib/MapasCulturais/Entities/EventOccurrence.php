@@ -100,7 +100,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade="persist")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $event;
@@ -117,7 +117,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $space;
