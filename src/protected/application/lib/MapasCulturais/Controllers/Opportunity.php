@@ -144,12 +144,6 @@ class Opportunity extends EntityController {
 
         echo "Processo finalizado";
 
-        // $dummieRegistration = $registrations[0];
-
-        // //sera que é assim mesmo?
-        // $registrationEvaluations = $app->repo('RegistrationEvaluation')->findBy(['registration'=>$dummieRegistration->id]);
-
-        // var_dump($opp->getEvaluationMethod()->valueToString($registrationEvaluations[0]->getResult()));
     }
 
     function GET_report(){
