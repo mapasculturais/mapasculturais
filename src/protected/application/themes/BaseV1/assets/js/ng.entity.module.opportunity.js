@@ -116,7 +116,7 @@
                         data[key] = entity[key];
 
                         if (data[key] instanceof Date) {
-                            data[key] = moment(data[key]).format('YYYY-MM-D')
+                            data[key] = moment(data[key]).format('YYYY-MM-DD')
                         } else if (data[key] instanceof Array && data[key].length === 0) {
                             data[key] = null;
                         }
