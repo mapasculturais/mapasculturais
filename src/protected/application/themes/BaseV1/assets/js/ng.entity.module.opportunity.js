@@ -180,8 +180,9 @@
             },
 
             getSelectedCategory: function(){
+                
                 return $q(function(resolve){
-                    var interval = setInterval(function(){
+                    var interval = setTimeout(function(){
                         var $editable = jQuery('.js-editable-registrationCategory');
 
                         if($editable.length){
@@ -1034,11 +1035,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return field.categories.includes($scope.data.filterFieldConfigurationByCategory);
     };
 
-    $scope.showField = function(field){
-
+    setInterval(function () {
         RegistrationService.getSelectedCategory().then(function(value){
             $scope.selectedCategory = value;
         });
+    }, 1000);
+
+    $scope.showField = function(field){
 
         var result;
         if (!$scope.useCategories){
