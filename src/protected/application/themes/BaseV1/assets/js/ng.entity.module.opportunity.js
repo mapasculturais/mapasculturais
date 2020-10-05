@@ -116,7 +116,7 @@
                         data[key] = entity[key];
 
                         if (data[key] instanceof Date) {
-                            data[key] = moment(data[key]).format('YYYY-MM-D')
+                            data[key] = moment(data[key]).format('YYYY-MM-DD')
                         } else if (data[key] instanceof Array && data[key].length === 0) {
                             data[key] = null;
                         }
@@ -832,6 +832,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.entity = MapasCulturais.entity.object;
 
+    $scope.entityErrors = {};
+
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
     };
@@ -922,19 +924,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }, true);
     });
 
-    $rootScope.$on('repeatDone:registration-fields', function() {
-        setTimeout(function() {
-            $('[js-mask]').each(function() {
-                var $this = jQuery(this);
-    
-                if (!$this.data('js-mask-init')) {
-                    
-                    $this.mask($this.attr('js-mask'));
-                    $this.data('js-mask-init', true);
-                }
-            });
-        }, 200)
-    });
+    function initMasks() {
+        $('[js-mask]').each(function() {
+            var $this = jQuery(this);
+
+            if (!$this.data('js-mask-init')) {
+                $this.mask($this.attr('js-mask'));
+                $this.data('js-mask-init', true);
+            }
+        });
+    }
+    setInterval(initMasks, 1000);
     
 
     var fieldsByName = {};

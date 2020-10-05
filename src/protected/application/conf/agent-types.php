@@ -68,7 +68,7 @@ return array(
                 'Mulher Cis' => \MapasCulturais\i::__('Mulher Cis'),
                 'Homem Cis' => \MapasCulturais\i::__('Homem Cis'),
                 'Mulher Trans/travesti' => \MapasCulturais\i::__('Mulher Trans/travesti'),
-                'Homem Trans/travesti' => \MapasCulturais\i::__('Homem Trans/travesti'),
+                'Homem Trans' => \MapasCulturais\i::__('Homem Trans'),
                 'Não Binárie/outra variabilidade' => \MapasCulturais\i::__('Não Binárie/outra variabilidade'),
                 'Não declarada' => \MapasCulturais\i::__('Não declarada'),
             ),
