@@ -833,7 +833,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.entity = MapasCulturais.entity.object;
 
-    $scope.entityErrors = {};
+    // $scope.entityErrors = {};
 
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
@@ -902,12 +902,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.removeFieldErrors = function(fieldName) {
         if($scope.entityErrors) {
             delete $scope.entityErrors[fieldName];
-            $scope.$apply();
+            if(!$scope.$$phase) {
+                $scope.$apply();
+            }
         }
     }
 
     $scope.numFieldErrors = function() {
-        return Object.keys($scope.entityErrors).length;
+        if(typeof $scope.entityErrors == 'object') {
+            return Object.keys($scope.entityErrors).length;
+        } else {
+            return 0;
+        }
     }
 
     $scope.remove = function(array, index){
@@ -2127,7 +2133,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                             let errors = response.data;
                             for (let index in $scope.data.fields){
                                 let field = $scope.data.fields[index];
-
+                                
                                 if(field.fieldType == 'file') {
                                     field.fieldName = 'file_' + field.id;
                                 } 
@@ -2136,6 +2142,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                                     field.error = errors[field.fieldName]
                                 }
                             }
+
                         } else {
                             $scope.entityErrors = {};
                             $scope.entityValidated = true;
