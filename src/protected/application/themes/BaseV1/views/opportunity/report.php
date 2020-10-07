@@ -100,7 +100,7 @@ ksort($custom_fields);
 
                     if(is_array($_field_val) && isset($_field_val[0]) && $_field_val[0] instanceof stdClass) {
                         $_field_val = (array)$_field_val[0];
-                    } 
+                    }
 
                     echo "<th>";
                     echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
