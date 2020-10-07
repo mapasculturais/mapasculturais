@@ -41,4 +41,12 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $this->save($flush);
     }
+
+    protected function canUserRemove($user) {
+        return $this->owner->opportunity->canUser('@control');
+    }
+
+    protected function canUserCreate($user) {
+        return $this->owner->opportunity->canUser('@control');
+    }
 }
