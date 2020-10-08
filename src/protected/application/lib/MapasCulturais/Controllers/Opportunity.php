@@ -179,7 +179,7 @@ class Opportunity extends EntityController {
         $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
 
-        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+        $this->reportOutput('report-drafts-csv', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename );
      }
 
     function GET_reportEvaluations(){
@@ -220,22 +220,44 @@ class Opportunity extends EntityController {
         $app = App::i();
         set_time_limit(0);
         ini_set('memory_limit', '-1');
+        
+        if ($view == 'report-drafts-csv') {
 
-        if(!isset($this->urlData['output']) || $this->urlData['output'] == 'xls'){
             $response = $app->response();
             $response['Content-Encoding'] = 'UTF-8';
             $response['Content-Type'] = 'application/force-download';
-            $response['Content-Disposition'] ='attachment; filename=' . $filename . '.xls';
-            $response['Pragma'] ='no-cache';
+            $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.csv';
+            $response['Pragma'] = 'no-cache';
 
-            $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+            $app->contentType('text/csv; charset=UTF-8');
+            
+            ob_start();
+            $this->partial($view, $view_params);
+
+            $output = ob_get_clean();
+            $output = str_replace('<!-- BaseV1/views/opportunity/report-drafts-csv.php # BEGIN -->', '', $output);
+            $output = str_replace('<!-- BaseV1/views/opportunity/report-drafts-csv.php # END -->', '', $output);
+
+            echo $output;
+
+        } else {
+
+            if (!isset($this->urlData['output']) || $this->urlData['output'] == 'xls') {
+                $response = $app->response();
+                $response['Content-Encoding'] = 'UTF-8';
+                $response['Content-Type'] = 'application/force-download';
+                $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.xls';
+                $response['Pragma'] = 'no-cache';
+
+                $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+            }
+
+            ob_start();
+            $this->partial($view, $view_params);
+            $output = ob_get_clean();
+            echo mb_convert_encoding($output, "HTML-ENTITIES", "UTF-8");
+            
         }
-
-        ob_start();
-        $this->partial($view, $view_params);
-        $output = ob_get_clean();
-        echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
-        
         
     }
 
