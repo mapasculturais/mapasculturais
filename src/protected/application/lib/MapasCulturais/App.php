@@ -1621,6 +1621,8 @@ class App extends \Slim\Slim{
     public function recreatePermissionsCache(){
         $item = $this->repo('PermissionCachePending')->findOneBy(['status' => 0], ['id' => 'ASC']);
         if ($item) {
+            $start_time = microtime(true);
+
             $this->disableAccessControl();
             $item->status = 1;
             $item->save(true);
@@ -1640,6 +1642,7 @@ class App extends \Slim\Slim{
                 $this->em->flush();
                 $conn->commit();
             } catch (\Exception $e ){
+                
                 $this->em->close();
                 $conn->rollBack();
 
@@ -1654,6 +1657,12 @@ class App extends \Slim\Slim{
                 throw $e;
             }
 
+            if($this->config['app.log.pcache']){
+                $end_time = microtime(true);
+                $total_time = number_format($end_time - $start_time, 1);
+
+                $this->log->info("PCACHE RECREATED FOR $item IN {$total_time} seconds\n--------\n");
+            }
             $this->permissionCachePendingQueue = [];
         }
     }

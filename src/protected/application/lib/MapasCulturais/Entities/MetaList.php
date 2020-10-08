@@ -198,4 +198,8 @@ class MetaList extends \MapasCulturais\Entity
     public function preUpdate($args = null){ parent::preUpdate($args); }
     /** @ORM\PostUpdate */
     public function postUpdate($args = null){ parent::postUpdate($args); }
+
+    public function __toString() {
+        return $this->title .'-'. $this->value;
+    }
 }
