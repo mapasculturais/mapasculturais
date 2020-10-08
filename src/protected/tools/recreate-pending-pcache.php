@@ -4,7 +4,11 @@ ini_set('memory_limit', '2048M');
 unset($_ENV['LOG_HOOK']);
 require __DIR__ . '/../application/bootstrap.php';
 
-echo "\nCRIANDO OS CACHES DE PERMISSÃO PENDENTES\n";
+$app = MapasCulturais\App::i();
 
-MapasCulturais\App::i()->recreatePermissionsCache();
-MapasCulturais\App::i()->em->getConnection()->close();
+if($app->config['app.log.pcache']){
+    $app->log->debug('RECREATE PENDING PCACHE');
+}
+
+$app->recreatePermissionsCache();
+$app->em->getConnection()->close();
