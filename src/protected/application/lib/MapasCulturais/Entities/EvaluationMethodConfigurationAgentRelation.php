@@ -20,11 +20,6 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
      */
     protected $owner;
     
-    function save($flush = false) {
-        parent::save($flush);
-        $this->owner->opportunity->enqueueToPCacheRecreation();
-    }
-    
     function delete($flush = false) {
         $evaluations = \MapasCulturais\App::i()->repo('RegistrationEvaluation')->findByOpportunityAndUser($this->owner->opportunity, $this->agent->user);
         foreach($evaluations as $eval){
@@ -40,5 +35,13 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->status = self::STATUS_ENABLED;
 
         $this->save($flush);
+    }
+
+    protected function canUserRemove($user) {
+        return $this->owner->opportunity->canUser('@control');
+    }
+
+    protected function canUserCreate($user) {
+        return $this->owner->opportunity->canUser('@control');
     }
 }

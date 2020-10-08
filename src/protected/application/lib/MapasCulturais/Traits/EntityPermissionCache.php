@@ -57,7 +57,7 @@ trait EntityPermissionCache {
         return $class_name;
     }
     
-    function createPermissionsCacheForUsers($users = null, $flush = true, $delete_old = true) {
+    function createPermissionsCacheForUsers($users = null, $flush = false, $delete_old = true) {
         $app = App::i();
         if($this->getEntityState() !== 2){
             $this->refresh();
@@ -67,8 +67,9 @@ trait EntityPermissionCache {
             return;
         }
 
-        if(php_sapi_name()==="cli"){
-            echo "\n\t - RECREATING PERMISSIONS CACHE FOR $this ";
+        if($app->config['app.log.pcache']){
+            $start_time = microtime(true);
+            $app->log->debug("RECREATING pcache FOR $this");
         }
         
         if($this->usesAgentRelation()){
@@ -142,9 +143,14 @@ trait EntityPermissionCache {
                 }
             }
         }
-        if(php_sapi_name()==="cli"){
-            echo "OK \n";
+
+        if($app->config['app.log.pcache']){
+            $end_time = microtime(true);
+            $total_time = number_format($end_time - $start_time, 1);
+
+            $app->log->info("pcache FOR $this CREATED IN {$total_time} seconds\n\n");
         }
+        
         $this->__enabled = true;
     }
     
