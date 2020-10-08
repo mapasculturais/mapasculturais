@@ -81,8 +81,6 @@ class Registration extends \MapasCulturais\Repository{
             $q->setParameter('status', $status);
         }
 
-        \MapasCulturais\App::i()->log->debug($dql);
-
         return $q->getResult();
     }
 
