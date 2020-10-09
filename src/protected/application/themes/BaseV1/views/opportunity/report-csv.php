@@ -96,6 +96,25 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
 
     $outRow = array_merge($outRow, array_map(function($field) use($r) {
         $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "-";
+        if($field['title'] == "ENDEREÇO"){
+            if($_field_val["endereco"] != null){
+                
+                return $_field_val["endereco"];
+            }else{
+                $additional = $_field_val['En_Complemento'] ? " \, " . $_field_val['En_Complemento']: "" ;
+                $neighborhood = $_field_val['En_Bairro'] ? " \, " . $_field_val['En_Bairro']: "" ;
+                $city = $_field_val['En_Municipio'] ? " \, " . $_field_val['En_Municipio']: "" ;
+                $state = $_field_val['En_Estado'] ? " \, " . $_field_val['En_Estado']: "" ;
+                $cep = $_field_val['En_CEP'] ? " - " . $_field_val['En_CEP']: "" ;
+                $address_number = $_field_val['En_Num'] ? " \, " . $_field_val['En_Num']: "" ;
+                $street = $_field_val['En_Nome_Logradouro'] ? $_field_val['En_Nome_Logradouro']: "" ;
+                //montando endereço caso o $_field_val == null
+                $address = $street .  $address_number . $additional . $neighborhood . $city . $state . $cep;
+                
+                return $address;
+            }
+        }
+
 
         if (is_array($_field_val) && isset($_field_val[0]) && $_field_val[0] instanceof stdClass) {
             $_field_val = (array)$_field_val[0];
@@ -103,7 +122,7 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
 
         return (is_array($_field_val)) ? '"' . implode(" - ", $_field_val) . '"' : $_field_val;
     }, $custom_fields));
-
+        
     $outRow[] = (key_exists('zipArchive', $r->files)) ? $r->files['zipArchive']->url : '-';
     $outRow = array_merge($outRow, array_map(function($field) {
         return (is_array($field)) ? '"' . implode(' - ', $field) . '"' : $field;
