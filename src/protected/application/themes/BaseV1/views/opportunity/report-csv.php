@@ -96,10 +96,11 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
 
     $outRow = array_merge($outRow, array_map(function($field) use($r) {
         $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "-";
-        if($field['title'] == "ENDEREÇO"){
-            if($_field_val["endereco"] != null){
+        
+            if(isset($_field_val["endereco"]) && $_field_val["endereco"] != null){
                 return $_field_val["endereco"];
-            }else{
+
+            }elseif(isset($_field_val['En_Nome_Logradouro'])){
                 $additional = $_field_val['En_Complemento'] ? " , " . $_field_val['En_Complemento']: "" ;
                 $neighborhood = $_field_val['En_Bairro'] ? " , " . $_field_val['En_Bairro']: "" ;
                 $city = $_field_val['En_Municipio'] ? " , " . $_field_val['En_Municipio']: "" ;
@@ -109,10 +110,8 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
                 $street = $_field_val['En_Nome_Logradouro'] ? $_field_val['En_Nome_Logradouro']: "" ;
                 //montando endereço caso o $_field_val == null
                 $address = $street .  $address_number . $additional . $neighborhood . $cep . $city . $state;
-                
                 return $address;
             }
-        }
 
 
         if (is_array($_field_val) && isset($_field_val[0]) && $_field_val[0] instanceof stdClass) {
