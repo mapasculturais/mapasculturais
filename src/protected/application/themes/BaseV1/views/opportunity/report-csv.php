@@ -98,18 +98,17 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
         $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "-";
         if($field['title'] == "ENDEREÇO"){
             if($_field_val["endereco"] != null){
-                
                 return $_field_val["endereco"];
             }else{
-                $additional = $_field_val['En_Complemento'] ? " \, " . $_field_val['En_Complemento']: "" ;
-                $neighborhood = $_field_val['En_Bairro'] ? " \, " . $_field_val['En_Bairro']: "" ;
-                $city = $_field_val['En_Municipio'] ? " \, " . $_field_val['En_Municipio']: "" ;
-                $state = $_field_val['En_Estado'] ? " \, " . $_field_val['En_Estado']: "" ;
-                $cep = $_field_val['En_CEP'] ? " - " . $_field_val['En_CEP']: "" ;
-                $address_number = $_field_val['En_Num'] ? " \, " . $_field_val['En_Num']: "" ;
+                $additional = $_field_val['En_Complemento'] ? " , " . $_field_val['En_Complemento']: "" ;
+                $neighborhood = $_field_val['En_Bairro'] ? " , " . $_field_val['En_Bairro']: "" ;
+                $city = $_field_val['En_Municipio'] ? " , " . $_field_val['En_Municipio']: "" ;
+                $state = $_field_val['En_Estado'] ? " , " . $_field_val['En_Estado']: "" ;
+                $cep = $_field_val['En_CEP'] ? " , " . $_field_val['En_CEP']: "" ;
+                $address_number = $_field_val['En_Num'] ? " , " . $_field_val['En_Num']: "" ;
                 $street = $_field_val['En_Nome_Logradouro'] ? $_field_val['En_Nome_Logradouro']: "" ;
                 //montando endereço caso o $_field_val == null
-                $address = $street .  $address_number . $additional . $neighborhood . $city . $state . $cep;
+                $address = $street .  $address_number . $additional . $neighborhood . $cep . $city . $state;
                 
                 return $address;
             }
@@ -130,9 +129,13 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
     return $outRow;
 }, $entity->sentRegistrations);
 
-echo implode(",", $header);
-echo "\r\n";
-foreach ($body as $row) {
-    echo implode(",", $row);
-    echo "\r\n";
+$fh = @fopen('php://output', 'w');
+fprintf($fh, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+fputcsv($fh, $header);
+
+foreach ($body as $d) {
+    fputcsv($fh, $d);
 }
+
+fclose($fh);
