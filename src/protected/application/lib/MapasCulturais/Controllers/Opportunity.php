@@ -165,8 +165,8 @@ class Opportunity extends EntityController {
 
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
 
-        $this->reportOutput('report', ['entity' => $entity], $filename);
-
+        //$this->reportOutput('report', ['entity' => $entity], $filename);
+        $this->reportOutput('report-csv', ['entity' => $entity], $filename);
     }
 
     function GET_reportDrafts(){
@@ -221,7 +221,7 @@ class Opportunity extends EntityController {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
         
-        if ($view == 'report-drafts-csv') {
+        if ($view == 'report-drafts-csv' || $view == 'report-csv') {
 
             $response = $app->response();
             $response['Content-Encoding'] = 'UTF-8';
@@ -235,8 +235,20 @@ class Opportunity extends EntityController {
             $this->partial($view, $view_params);
 
             $output = ob_get_clean();
-            $output = str_replace('<!-- BaseV1/views/opportunity/report-drafts-csv.php # BEGIN -->', '', $output);
-            $output = str_replace('<!-- BaseV1/views/opportunity/report-drafts-csv.php # END -->', '', $output);
+
+            /**
+             * @todo criar regex para os replaces abaixo
+             */
+            $replaces = [
+                '<!-- BaseV1/views/opportunity/report-drafts-csv.php # BEGIN -->',
+                '<!-- BaseV1/views/opportunity/report-drafts-csv.php # END -->',
+                '<!-- BaseV1/views/opportunity/report-csv.php # BEGIN -->',
+                '<!-- BaseV1/views/opportunity/report-csv.php # END -->'
+            ];
+
+            foreach ($replaces as $replace) {
+                $output = str_replace($replace, '', $output);
+            }
 
             echo $output;
 
