@@ -558,21 +558,11 @@ class Opportunity extends EntityController {
 
     function _getOpportunityRegistrations($opportunity, array $registration_ids){
         $app = App::i();
-
-        /* 
-        este cache é apagado quando há modificações nas inscrições, no método:
-        MapasCulturais\Entities\Registration::save
-        */
-        $cache_id = "api:opportunity:{$opportunity->id}:registrations:";
         
         sort($registration_ids);
 
-        if ($app->config['app.useApiCache'] && ($registrations = $app->mscache->fetch($cache_id))) {
-            return $registrations;
-        } else {
-            $registration_ids = implode(',', $registration_ids);
-        }
-
+        $registration_ids = implode(',', $registration_ids);
+        
         $committee = $this->_getOpportunityCommittee($opportunity->id);
         $params = [
             'opp' => $opportunity,
@@ -621,8 +611,6 @@ class Opportunity extends EntityController {
 
             $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
             $registrations = $registrations_query->find();
-
-            $app->mscache->save($cache_id, $registrations, DAY_IN_SECONDS);
     
             return $registrations;
         }
@@ -800,7 +788,6 @@ class Opportunity extends EntityController {
         ")
         ->setParameters($params)
         ->getSingleScalarResult();
-        
         $valuer_by_user = [];
         
         foreach($committee as $valuer){
@@ -836,7 +823,7 @@ class Opportunity extends EntityController {
             $registrations = [];
             $evaluations = [];
         }
-
+        
         $registrations_by_valuer = [];
         foreach($permissions as $p){
             if(!isset($registrations_by_valuer[$p['valuer']])){
