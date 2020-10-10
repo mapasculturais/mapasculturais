@@ -110,6 +110,8 @@ $this->entity = $entity;
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar space">
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
+
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
 
     <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
@@ -119,21 +121,21 @@ $this->entity = $entity;
     <?php $this->part('widget-tags', ['entity' => $entity]); ?>
 
     <?php $this->part('redes-sociais', ['entity' => $entity]); ?>
+
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
 </div>
 <div class="sidebar space sidebar-right">
+    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
+
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar");?> <?php $this->dict('entities: the space') ?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
-    <!-- Related Admin Agents BEGIN -->
-        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Admin Agents END -->
+    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
 
-    <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents', ['entity' => $entity]); ?>
-    <!-- Related Agents END -->
 
     <?php $this->part('singles/space-children', ['entity' => $entity]); ?>
 
@@ -141,7 +143,7 @@ $this->entity = $entity;
 
     <?php $this->part('link-list', ['entity' => $entity]); ?>
 
-    <!-- History BEGIN -->
-        <?php $this->part('history.php', array('entity' => $entity)); ?>
-    <!-- History END -->
+    <?php $this->part('history.php', array('entity' => $entity)); ?>
+    
+    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
 </div>
