@@ -369,9 +369,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 </article>
 <!--.main-content-->
 <div class="sidebar-left sidebar event">
-    <!-- Related Seals BEGIN -->
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
+    
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
-    <!-- Related Seals END -->
 
     <?php if($this->isEditable()): ?>
         <div class="widget">
@@ -419,34 +419,29 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+
+    <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
 <div class="sidebar event sidebar-right">
+    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
+
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento");?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
-    <!-- Related Admin Agents BEGIN -->
-        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Admin Agents END -->
-
-    <!-- Related Agents BEGIN -->
+    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    
     <?php $this->part('related-agents.php', array('entity' => $entity)); ?>
-    <!-- Related Agents END -->
-
-
-    <!-- Downloads BEGIN -->
+    
     <?php $this->part('downloads.php', array('entity' => $entity)); ?>
-    <!-- Downloads END -->
-
-    <!-- Link List BEGIN -->
+    
     <?php $this->part('link-list.php', array('entity' => $entity)); ?>
-    <!-- Link List END -->
+    
+    <?php $this->part('history.php', array('entity' => $entity)); ?>
 
-    <!-- History BEGIN -->
-        <?php $this->part('history.php', array('entity' => $entity)); ?>
-    <!-- History END -->
+    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
 </div>
 <?php if ($this->isEditable()): ?>
 
