@@ -214,7 +214,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     public function postPersist($args = null){
         parent::postPersist($args);
         
-        $this->registration->consolidateResult(true);
+        $this->registration->consolidateResult(true, $this);
     }
 
     /** @ORM\PreRemove */
@@ -223,7 +223,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     public function postRemove($args = null){
         parent::postRemove($args);
         
-        $this->registration->consolidateResult(true);
+        $this->registration->consolidateResult(true, $this);
     }
 
     /** @ORM\PreUpdate */
@@ -232,7 +232,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     public function postUpdate($args = null){
         parent::postUpdate($args);
         
-        $this->registration->consolidateResult(true);
+        $this->registration->consolidateResult(true, $this);
     }
 
     public function getResult() {
