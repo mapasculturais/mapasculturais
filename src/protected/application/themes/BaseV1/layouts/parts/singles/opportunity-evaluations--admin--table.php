@@ -2,11 +2,6 @@
     <a href="<?php echo $this->controller->createUrl('reportEvaluations', [$entity->id]) ?>" class="btn btn-default alignright download"><?php \MapasCulturais\i::_e('Baixar lista de avaliações') ?></a>
     <h3><?php \MapasCulturais\i::_e("Avaliações");?></h3>
     <!--<a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php \MapasCulturais\i::_e("Baixar lista de avaliações");?></a>-->
-
-    <?php if ($app->user->is('admin')) : ?>
-        <a href="<?php echo $this->controller->createUrl('applyEvaluationsSimple', [$entity->id]) ?>" target="_blank" class="btn btn-primary"> Aplicar avaliações simples </a>
-    <?php endif; ?>
-   
 </header>
 <table class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
