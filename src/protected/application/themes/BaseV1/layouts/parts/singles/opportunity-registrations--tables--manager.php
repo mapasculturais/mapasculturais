@@ -9,6 +9,7 @@ use MapasCulturais\i;
         <?php i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
         <div class="close"></div>
     </div>
+    <?php $this->applyTemplateHook('header-inscritos','actions'); ?>
     <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php i::_e("Baixar inscritos");?></a>
     <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('reportDrafts', [$entity->id]); ?>"><?php i::_e("Baixar rascunhos");?></a>
     <?php $this->applyTemplateHook('header-inscritos','end'); ?>
