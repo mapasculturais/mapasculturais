@@ -9,6 +9,9 @@ use \MapasCulturais\App;
  * @property-read string $name
  * @property-read boolean $unique
  * @property-read int $maxFiles
+ * @property-read string $errorMessage
+ * @property-read boolean $private
+ * 
  */
 class FileGroup extends \MapasCulturais\Definition{
     use \MapasCulturais\Traits\MagicGetter;
