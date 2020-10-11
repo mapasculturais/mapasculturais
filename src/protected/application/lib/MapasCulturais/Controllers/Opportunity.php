@@ -613,6 +613,8 @@ class Opportunity extends EntityController {
             $registrations = $registrations_query->find();
     
             return $registrations;
+        } else {
+            return [];
         }
 
     }
