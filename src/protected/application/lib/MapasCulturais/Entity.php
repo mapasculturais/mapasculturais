@@ -860,7 +860,7 @@ abstract class Entity implements \JsonSerializable{
         }
 
         $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, "entity(' . $hook_class_path . ').validations", [&$properties_validations]);
+        App::i()->applyHookBoundTo($this, "entity({$hook_class_path}).validations", [&$properties_validations]);
 
         foreach($properties_validations as $property => $validations){
 
