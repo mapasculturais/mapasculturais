@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entity;
 
 trait EntityPermissionCache {
+    public $__skipQueuingPCacheRecreation = false;
 
     private static $__permissions = [];
     private $__enabled = true;
