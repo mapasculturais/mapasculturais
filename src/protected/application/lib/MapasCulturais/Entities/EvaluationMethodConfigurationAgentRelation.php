@@ -4,6 +4,11 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Relação que define um avaliador de uma oportunidade
+ * 
+ * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $owner
+ * @property \MapasCulturais\Entities\Agent $agent
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
