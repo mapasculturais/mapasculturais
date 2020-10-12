@@ -46,6 +46,8 @@ return [
     'app.log.assets'        => env('LOG_ASSETS', false),
     'app.log.auth'          => env('LOG_AUTH', false),
 
+    'app.log.pcache'        => env('LOG_PCACHE', true),
+
     'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 
 ];

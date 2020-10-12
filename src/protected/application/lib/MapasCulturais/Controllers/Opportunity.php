@@ -72,83 +72,6 @@ class Opportunity extends EntityController {
         }
     }
 
-    function GET_applyEvaluationsSimple() {
-        set_time_limit(0);
-        ini_set('max_execution_time', 0);
-        ini_set('memory_limit', '-1');
-
-        $app = App::i();
-
-        $entity = $this->requestedEntity;
-
-        $app->disableAccessControl();
-        $opp = $app->repo('Opportunity')->find($entity->id);
-        $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
-
-        if($type != 'simple') {
-            throw new Exception('Ação somente disponivel para avaliações do tipo simples');
-        }
-
-        //@todo
-        //TRANSFORMAR EM SQL
-        // pesquise todas as registrations da opportunity que esta vindo na request
-        $query = App::i()->getEm()->createQuery("
-        SELECT 
-            r
-        FROM
-            MapasCulturais\Entities\Registration r
-        WHERE 
-            r.opportunity = :opportunity_id
-                AND
-            r.status > 0
-        ");
-    
-        $params = [
-            'opportunity_id' => $opp,
-        ];
-
-        $query->setParameters($params);
-
-        $registrations = $query->getResult();
-
-        // faça um foreach em cada registration e pegue as suas avaliações
-        foreach ($registrations as $registration) {
-            $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration'=>$registration->id]);
-
-            $allEvaluationsAreStatus10 = true;
-            //verifique se TODAS as avaliações estão selecionadas, se sim, registration foi aprovada
-            //se não, verifique se a registration tem SOMENTE UMA avaliação, se tiver uma, então o status da registration é o mesmo da avaliação, se tiver mais de uma, o status é "nao selecionado"
-            foreach ($evaluations as $evaluation) {
-                $evaluationStatus = $evaluation->getResult();
-                if($evaluationStatus != 10) {
-                    $allEvaluationsAreStatus10 = false;
-                }
-            }
-            if($allEvaluationsAreStatus10 == true) {
-                $registration->setStatus(10); //selecionada
-                $registration->consolidatedResult = 10; //selecionada
-            } 
-            if($allEvaluationsAreStatus10 == false) {
-                if(count($evaluations) > 1) {
-                    $registration->setStatus(3); // não selecionada
-                    $registration->consolidatedResult = 3; // não selecionada
-                }
-                if(count($evaluations) == 1) {
-                    $registration->setStatus( (int)$evaluations[0]->getResult() );
-                    $registration->consolidatedResult = (int)$evaluations[0]->getResult();
-                }
-            } 
-
-            $registration->save(true);
-        }
-
-        
-        $app->enableAccessControl();
-
-        echo "Processo finalizado";
-
-    }
-
     function GET_report(){
         $this->requireAuthentication();
         $app = App::i();
@@ -165,8 +88,8 @@ class Opportunity extends EntityController {
 
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
 
-        $this->reportOutput('report', ['entity' => $entity], $filename);
-
+        //$this->reportOutput('report', ['entity' => $entity], $filename);
+        $this->reportOutput('report-csv', ['entity' => $entity], $filename);
     }
 
     function GET_reportDrafts(){
@@ -179,7 +102,7 @@ class Opportunity extends EntityController {
         $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
 
-        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+        $this->reportOutput('report-drafts-csv', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename );
      }
 
     function GET_reportEvaluations(){
@@ -218,21 +141,59 @@ class Opportunity extends EntityController {
 
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        
+        if ($view == 'report-drafts-csv' || $view == 'report-csv') {
 
-        if(!isset($this->urlData['output']) || $this->urlData['output'] == 'xls'){
             $response = $app->response();
             $response['Content-Encoding'] = 'UTF-8';
             $response['Content-Type'] = 'application/force-download';
-            $response['Content-Disposition'] ='attachment; filename=' . $filename . '.xls';
-            $response['Pragma'] ='no-cache';
+            $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.csv';
+            $response['Pragma'] = 'no-cache';
 
-            $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+            $app->contentType('text/csv; charset=UTF-8');
+            
+            ob_start();
+            $this->partial($view, $view_params);
+
+            $output = ob_get_clean();
+
+            /**
+             * @todo criar regex para os replaces abaixo
+             */
+            $replaces = [
+                '<!-- BaseV1/views/opportunity/report-drafts-csv.php # BEGIN -->',
+                '<!-- BaseV1/views/opportunity/report-drafts-csv.php # END -->',
+                '<!-- BaseV1/views/opportunity/report-csv.php # BEGIN -->',
+                '<!-- BaseV1/views/opportunity/report-csv.php # END -->'
+            ];
+
+            foreach ($replaces as $replace) {
+                $output = str_replace($replace, '', $output);
+            }
+
+            echo $output;
+
+        } else {
+
+            if (!isset($this->urlData['output']) || $this->urlData['output'] == 'xls') {
+                $response = $app->response();
+                $response['Content-Encoding'] = 'UTF-8';
+                $response['Content-Type'] = 'application/force-download';
+                $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.xls';
+                $response['Pragma'] = 'no-cache';
+
+                $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+            }
+
+            ob_start();
+            $this->partial($view, $view_params);
+            $output = ob_get_clean();
+            echo mb_convert_encoding($output, "HTML-ENTITIES", "UTF-8");
+            
         }
-
-        ob_start();
-        $this->partial($view, $view_params);
-        $output = ob_get_clean();
-        echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
+        
     }
 
 
@@ -520,27 +481,16 @@ class Opportunity extends EntityController {
 
     function _getOpportunityRegistrations($opportunity, array $registration_ids){
         $app = App::i();
-
-        /* 
-        este cache é apagado quando há modificações nas inscrições, no método:
-        MapasCulturais\Entities\Registration::save
-        */
-        $cache_id = "api:opportunity:{$opportunity->id}:registrations:";
         
         sort($registration_ids);
 
-        if ($app->config['app.useApiCache'] && ($registrations = $app->mscache->fetch($cache_id))) {
-            return $registrations;
-        } else {
-            $registration_ids = implode(',', $registration_ids);
-        }
-
+        $registration_ids = implode(',', $registration_ids);
+        
         $committee = $this->_getOpportunityCommittee($opportunity->id);
         $params = [
             'opp' => $opportunity,
             'aids' => array_map(function ($el){ return $el['id']; }, $committee)
         ];
-        
         $q = $app->em->createQuery("
             SELECT
                 r.id AS registration, a.userId AS user, a.id AS valuer
@@ -550,10 +500,18 @@ class Opportunity extends EntityController {
                 JOIN p.user u
                 INNER JOIN u.profile a WITH a.id IN (:aids)
             WHERE p.action = 'viewUserEvaluation'
-        ")
-        ->setMaxResults( intval($this->data['@limit']) )
-        ->setFirstResult( (intval($this->data['@page']) - 1) * intval($this->data['@limit']) );
-        
+        ");
+      
+        if (isset($this->data['@limit'])) {
+            $limit = intval($this->data['@limit']);
+            $q->setMaxResults($limit);
+
+            if (isset($this->data['@page'])) {
+                $page = intval($this->data['@page']);
+                $q->setFirstResult(($page - 1) * $limit);
+            }
+        }        
+
         $q->setParameters($params);
         
         $permissions = $q->getArrayResult();
@@ -583,10 +541,10 @@ class Opportunity extends EntityController {
 
             $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
             $registrations = $registrations_query->find();
-
-            $app->mscache->save($cache_id, $registrations, DAY_IN_SECONDS);
     
             return $registrations;
+        } else {
+            return [];
         }
 
     }
@@ -603,7 +561,8 @@ class Opportunity extends EntityController {
         sort($registration_ids);
         $registration_ids = implode(',', $registration_ids); 
 
-        if ($app->config['app.useApiCache'] && ($evaluations = $app->mscache->fetch($cache_id))) {
+        if ($app->config['app.useApiCache'] && $app->mscache->contains($cache_id)) {
+            $evaluations = $app->mscache->fetch($cache_id);
             return $evaluations;
         } else {
         
@@ -632,7 +591,7 @@ class Opportunity extends EntityController {
                 }
             }
 
-            $app->mscache->save($cache_id, $evaluations, DAY_IN_SECONDS);
+            $app->mscache->save($cache_id, $evaluations, 5 * MINUTE_IN_SECONDS);
 
             return $evaluations;
         }
@@ -762,7 +721,6 @@ class Opportunity extends EntityController {
         ")
         ->setParameters($params)
         ->getSingleScalarResult();
-        
         $valuer_by_user = [];
         
         foreach($committee as $valuer){
@@ -798,7 +756,7 @@ class Opportunity extends EntityController {
             $registrations = [];
             $evaluations = [];
         }
-
+        
         $registrations_by_valuer = [];
         foreach($permissions as $p){
             if(!isset($registrations_by_valuer[$p['valuer']])){

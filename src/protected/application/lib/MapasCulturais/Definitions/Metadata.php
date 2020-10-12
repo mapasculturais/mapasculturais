@@ -126,6 +126,16 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->serialize = key_exists('serialize', $config) ? $config['serialize'] : null;
         $this->unserialize = key_exists('unserialize', $config) ? $config['unserialize'] : null;
+
+        if ($this->type == 'json' && !$this->serialize && !$this->unserialize) {
+            $this->serialize = function($value) {
+                return json_encode($value);
+            };
+            
+            $this->unserialize = function($value) {
+                return json_decode($value);
+            };
+        }
         
         $this->available_for_opportunities = key_exists('available_for_opportunities', $config) ? $config['available_for_opportunities'] : false;
 

@@ -40,12 +40,6 @@ define('MONTH_IN_SECONDS', DAY_IN_SECONDS * 30);
 define('YEAR_IN_SECONDS', DAY_IN_SECONDS * 365 );
 
 
-if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-    $_SERVER['HTTPS'] = 'on';
-    $_SERVER['SERVER_PROTOCOL'] = 'HTTP/2.0';
-    $_SERVER['REQUEST_SCHEME'] = 'https';
-}
-
 function env($name, $default) {
     if(defined('GENERATING_CONFIG_DOCUMENTATION')){
         __log_env($name, $default);
@@ -117,3 +111,11 @@ function __log_env($name,$default){
     
     echo "$doc";
 }
+
+
+if (env('MAPAS_HTTPS', false) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+    $_SERVER['HTTPS'] = 'on';
+    $_SERVER['SERVER_PROTOCOL'] = 'HTTP/2.0';
+    $_SERVER['REQUEST_SCHEME'] = 'https';
+}
+
