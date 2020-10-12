@@ -4,6 +4,11 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Relação que define um avaliador de uma oportunidade
+ * 
+ * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $owner
+ * @property \MapasCulturais\Entities\Agent $agent
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
@@ -19,11 +24,6 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
      * })
      */
     protected $owner;
-    
-    function save($flush = false) {
-        parent::save($flush);
-        $this->owner->opportunity->enqueueToPCacheRecreation();
-    }
     
     function delete($flush = false) {
         $evaluations = \MapasCulturais\App::i()->repo('RegistrationEvaluation')->findByOpportunityAndUser($this->owner->opportunity, $this->agent->user);

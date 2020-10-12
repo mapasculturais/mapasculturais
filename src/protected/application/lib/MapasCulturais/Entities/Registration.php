@@ -219,9 +219,6 @@ class Registration extends \MapasCulturais\Entity
         parent::save($flush);
         $app = App::i();
         $opportunity = $this->opportunity;
-
-        // cache utilizado pelo endpoint findEvaluations
-        $app->mscache->delete("api:opportunity:{$opportunity->id}:registrations");
     }
 
     function getSingleUrl(){
@@ -233,23 +230,28 @@ class Registration extends \MapasCulturais\Entity
     }
 
     
-    function consolidateResult($flush = false){
+    function consolidateResult($flush = false, $caller = null){
         $app = App::i();
         
-        $is_access_control_enabled = $app->isAccessControlEnabled();
-        if($is_access_control_enabled){
-            $app->disableAccessControl();
-        }
+        $ac_on = $app->isAccessControlEnabled();
+        if ($ac_on) $app->disableAccessControl();
         
         $em = $this->getEvaluationMethod();
+
+        $result = $em->getConsolidatedResult($this);
+
+        // para que dentro do hook as permissões funcionem
+        if ($ac_on) $app->enableAccessControl();
         
-        $this->consolidatedResult = $em->getConsolidatedResult($this);
+        $app->applyHookBoundTo($this, 'entity(Registration).consolidateResult', [&$result, $caller]);
+        
+        if ($ac_on) $app->disableAccessControl();
+        
+        $this->consolidatedResult = $result;
         
         $this->save($flush);
         
-        if($is_access_control_enabled){
-            $app->enableAccessControl();
-        }
+        if($ac_on) $app->enableAccessControl(); 
     }
 
     static function isPrivateEntity(){
