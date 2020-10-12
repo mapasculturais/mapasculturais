@@ -11,8 +11,13 @@ use MapasCulturais\App;
  * RegistrationMeta
  *
  * @property-read string $result
- * @property \MapasCulturais\Entities\Registration $registration
- * @property array $evaluationData
+ * 
+ * @property integer $id
+ * @property mexed $result
+ * @property object $evaluationData
+ * @property Registration $registration
+ * @property User $user
+ * @property integer $status
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
