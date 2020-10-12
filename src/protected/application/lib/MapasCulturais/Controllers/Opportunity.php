@@ -561,7 +561,8 @@ class Opportunity extends EntityController {
         sort($registration_ids);
         $registration_ids = implode(',', $registration_ids); 
 
-        if ($app->config['app.useApiCache'] && ($evaluations = $app->mscache->fetch($cache_id))) {
+        if ($app->config['app.useApiCache'] && $app->mscache->contains($cache_id)) {
+            $evaluations = $app->mscache->fetch($cache_id);
             return $evaluations;
         } else {
         
@@ -590,7 +591,7 @@ class Opportunity extends EntityController {
                 }
             }
 
-            $app->mscache->save($cache_id, $evaluations, DAY_IN_SECONDS);
+            $app->mscache->save($cache_id, $evaluations, 5 * MINUTE_IN_SECONDS);
 
             return $evaluations;
         }
