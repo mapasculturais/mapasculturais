@@ -42,7 +42,9 @@ $sum = count($cfg["registration"]->columns) + count($cfg["committee"]->columns);
             if (is_array($valuer_pending) && is_null($valuer_pending["evaluation"])) {
                 foreach ($valuer_pending["valuer"] as $key => $v) {
                     if ($key === "name") {
-                        ?>
+                        if (isset($cfg["registration"]->columns['category'])) { ?>
+                            <td style="text-align: center;"> <?php echo ($valuer_pending["registration"]["category"]) ?? "--"; ?> </td>
+                        <?php } ?>
                         <td style="text-align: center;"> <?php echo $valuer_pending["registration"]["owner"]["name"] ?> </td>
                         <td style="text-align: center;"> <?php echo $valuer_pending["registration"]["number"] ?> </td>
                         <td style="text-align: center;"> <?php echo $valuer_pending["valuer"][$key]; ?> </td>
