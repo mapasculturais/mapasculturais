@@ -20,4 +20,18 @@ class Repository extends \Doctrine\ORM\EntityRepository{
 
         return  $paginator->getIterator()->getArrayCopy();
     }
+
+    /**
+     * Returns an Entity
+     *
+     * @param mixed $id
+     * @param int|null $lockMode
+     * @param int|null $lockVersion
+     * 
+     * @return \MapasCulturais\Entity
+     */
+    function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return parent::find($id, $lockMode, $lockVersion);
+    }
 }
