@@ -20,7 +20,6 @@ jQuery(function(){
 
     var labels = MapasCulturais.gettext.editable;
 
-    MapasCulturais.Remove.init();
     MapasCulturais.RemoveBanner.init();
 
     // Registration Valuer Include e Exclude list
@@ -291,36 +290,6 @@ $(window).on('beforeunload', function(){
         return labels['unsavedChanges'];
     }
 });
-
-MapasCulturais.Remove = {
-    init: function(){
-        $('body').on('click','.js-remove-item', function(e){
-            e.stopPropagation();
-            var $this = $(this);
-            MapasCulturais.confirm('Deseja remover este item?', function(){
-                var $target = $($this.data('target'));
-                var href = $this.data('href');
-
-                $.getJSON(href,function(r){
-                    if(r.error){
-                        MapasCulturais.Messages.error(r.data);
-                    }else{
-                        var cb = function(){};
-                        if($this.data('remove-callback'))
-                            cb = $this.data('remove-callback');
-                        $target.remove();
-                        if(typeof cb === 'string')
-                            eval(cb);
-                        else
-                            cb();
-                    }
-                });
-            });
-
-            return false;
-        });
-    }
-}
 
 MapasCulturais.RemoveBanner = {
     init: function(){
@@ -870,158 +839,6 @@ MapasCulturais.Editables = {
     }
 };
 
-MapasCulturais.AjaxUploader = {
-    resetProgressBar: function(containerSelector, acivate){
-        var bar = $(containerSelector).find('.js-ajax-upload-progress .bar');
-        var percent = $(containerSelector).find('.js-ajax-upload-progress .percent');
-        var percentVal = '0%';
-        bar.stop().width(percentVal);
-        percent.html(percentVal);
-        if(!acivate)
-            $(containerSelector).find('.js-ajax-upload-progress .progress').addClass('inactive');
-        else
-            $(containerSelector).find('.js-ajax-upload-progress .progress').removeClass('inactive');
-
-    },
-    animationTime: 100,
-    init: function(selector, extraOptions) {
-        selector = selector || '.js-ajax-upload';
-        extraOptions = extraOptions || {};
-
-        $(selector).each(function(){
-
-            if($(this).data('initialized'))
-                return;
-
-            $(this).show();
-            $(this).data('initialized', true);
-
-            var bar = $(this).parent().find('.js-ajax-upload-progress .bar');
-            var percent = $(this).parent().find('.js-ajax-upload-progress .percent');
-
-            MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
-            var $this = $(this);
-            // bind form using 'ajaxForm'
-            $(this).ajaxForm(Object.assign({
-                beforeSend: function(xhr){
-                    $this.data('xhr', xhr);
-                    //@TODO validate size and type before upload
-                },
-                //target:        '#output1',   // target element(s) to be updated with server response
-                beforeSubmit: function(arr, $form, options) {
-                    MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), true);
-                },
-                uploadProgress: function(event, position, total, percentComplete) {
-                    var percentVal = percentComplete + '%';
-                    bar.animate({'width':percentVal});
-                    percent.html(percentVal);
-                },
-                success: function (response, statusText, xhr, $form)  {
-
-                    var percentVal = '100%';
-                    bar.width(percentVal);
-                    percent.html(percentVal);
-
-                    if(response.error){
-                        var _animation = this.animationTime;
-
-                        MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), false);
-                        var group = $form.data('group');
-                        var error_message = typeof response.data == 'string' ? response.data : response.data[group];
-                        $form.find('div.alert.danger').html(error_message).fadeIn(_animation).delay(5000).fadeOut(_animation);
-
-                        setTimeout(function () {
-                            $('.carregando-arquivo').hide();
-                            $('.submit-attach-opportunity').show();
-                        }, _animation);
-
-                        return;
-                    }
-
-
-                    var $target = $($form.data('target'));
-                    var group = $form.find('input:file').attr('name');
-
-                    var template = $form.find('script').text();
-                    if($form.data('action')){
-                        switch($form.data('action').toString()){
-                            case 'replace':
-                                var html = Mustache.render(template, response[group]);
-                                $target.replaceWith($(html));
-                            break;
-                            case 'set-content':
-
-                                var html = Mustache.render(template, response[group]);
-                                $target.html(html);
-                            break;
-                            case 'a-href':
-                                try{
-                                    $target.attr('href', response[group].url);
-                                }catch (e){}
-
-                            break;
-                            case 'image-src':
-                                try{
-                                    if($form.data('transform'))
-                                        $target.attr('src', response[group].files[$form.data('transform')].url);
-                                    else
-                                        $target.attr('src', response[group].url);
-                                }catch (e){}
-
-                            break;
-                            case 'background-image':
-                                $('#remove-background-button').toggleClass('hide-background-button');
-                                $('#remove-background-button').toggleClass('display-background-button');
-
-                                $target.each(function(){
-                                    try{
-                                        if($form.data('transform'))
-                                            $(this).css('background-image', 'url(' + response[group].files[$form.data('transform')].url + ')');
-                                        else
-                                            $(this).css('background-image', 'url(' + response[group].url + ')');
-                                    }catch (e){}
-                                });
-
-                                $('#remove-background-button a').data('href', response[group].deleteUrl);
-                            break;
-
-                            case 'append':
-                                for(var i in response[group]){
-
-                                    if(!response[group][i].description)
-                                       response[group][i].description = response[group][i].name;
-
-                                   var html = Mustache.render(template, response[group][i]);
-                                   $target.append(html);
-                               }
-                            break;
-
-                        }
-                    }
-                    $form.trigger('ajaxForm.success', [response]);
-
-                    $form.get(0).reset();
-                    if($form.parents('.js-editbox').data('success-callback'))
-                        eval($form.parents('.js-editbox').data('success-callback'));
-
-                    $form.parents('.js-editbox').find('.mc-cancel').click();
-                },
-
-                // other available options:
-                //url:       url         // override for form's 'action' attribute
-                //type:      type        // 'get' or 'post', override for form's 'method' attribute
-                dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
-                //clearForm: true        // clear all form fields after successful submit
-                //resetForm: true        // reset the form after successful submit
-
-                // $.ajax options can be used here too, for example:
-                //timeout:   3000
-            },extraOptions));
-        });
-
-
-    }
-};
 
 MapasCulturais.MetalistManager = {
     init : function() {
