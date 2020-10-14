@@ -6,11 +6,13 @@ use MapasCulturais\i;
 
 $header = [
     'Número',
+    'Data',
+    'Hora',
     'Agente',
     'Email público',
     'Email privado',
     'Email de usuário',
-    'Telefone Público',
+    'Telefone público',
     'Telefone 1',
     'Telefone 2'
 ];
@@ -23,6 +25,8 @@ foreach($registrationsDraftList as $r) {
     if (!empty($agent)) {
         $row = [
             $r->number,
+            date_format($r->createTimestamp, "d/m/Y"),
+            date_format($r->createTimestamp, "H:i:s"),
             $agent->name,
             $agent->emailPublico,
             $agent->emailPrivado,
