@@ -860,7 +860,7 @@ abstract class Entity implements \JsonSerializable{
         }
 
         $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, "entity(' . $hook_class_path . ').validations", [&$properties_validations]);
+        App::i()->applyHookBoundTo($this, "entity({$hook_class_path}).validations", [&$properties_validations]);
 
         foreach($properties_validations as $property => $validations){
 
@@ -953,7 +953,7 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
 
 
-        if($this->usesPermissionCache()){
+        if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
@@ -1008,7 +1008,7 @@ abstract class Entity implements \JsonSerializable{
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
 
 
-        if($this->usesPermissionCache()){
+        if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }
@@ -1090,7 +1090,7 @@ abstract class Entity implements \JsonSerializable{
              */
         }
 
-        if($this->usesPermissionCache()){
+        if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
             if($this->usesAgentRelation()){
                 $this->deleteUsersWithControlCache();
             }

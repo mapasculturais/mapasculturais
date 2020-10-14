@@ -1848,7 +1848,7 @@ class App extends \Slim\Slim{
      * if the given repository class name not starts with a slash this function will prepend \MapasCulturais\Entities\ to the class name
      *
      * @param string $name Repository Class Name
-     * @return \Doctrine\ORM\EntityRepository the Entity Repository
+     * @return Repository the Entity Repository
      */
     public function repo($name){
 

@@ -491,7 +491,6 @@ class Opportunity extends EntityController {
             'opp' => $opportunity,
             'aids' => array_map(function ($el){ return $el['id']; }, $committee)
         ];
-        
         $q = $app->em->createQuery("
             SELECT
                 r.id AS registration, a.userId AS user, a.id AS valuer
@@ -501,10 +500,18 @@ class Opportunity extends EntityController {
                 JOIN p.user u
                 INNER JOIN u.profile a WITH a.id IN (:aids)
             WHERE p.action = 'viewUserEvaluation'
-        ")
-        ->setMaxResults( intval($this->data['@limit']) )
-        ->setFirstResult( (intval($this->data['@page']) - 1) * intval($this->data['@limit']) );
-        
+        ");
+      
+        if (isset($this->data['@limit'])) {
+            $limit = intval($this->data['@limit']);
+            $q->setMaxResults($limit);
+
+            if (isset($this->data['@page'])) {
+                $page = intval($this->data['@page']);
+                $q->setFirstResult(($page - 1) * $limit);
+            }
+        }        
+
         $q->setParameters($params);
         
         $permissions = $q->getArrayResult();
@@ -554,7 +561,8 @@ class Opportunity extends EntityController {
         sort($registration_ids);
         $registration_ids = implode(',', $registration_ids); 
 
-        if ($app->config['app.useApiCache'] && ($evaluations = $app->mscache->fetch($cache_id))) {
+        if ($app->config['app.useApiCache'] && $app->mscache->contains($cache_id)) {
+            $evaluations = $app->mscache->fetch($cache_id);
             return $evaluations;
         } else {
         
@@ -583,7 +591,7 @@ class Opportunity extends EntityController {
                 }
             }
 
-            $app->mscache->save($cache_id, $evaluations, DAY_IN_SECONDS);
+            $app->mscache->save($cache_id, $evaluations, 5 * MINUTE_IN_SECONDS);
 
             return $evaluations;
         }
