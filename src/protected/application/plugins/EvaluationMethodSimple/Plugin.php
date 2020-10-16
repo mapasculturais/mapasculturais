@@ -201,7 +201,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 return i::__('Selecionada');
                 break;
             default:
-                return '';
+                return $value ?: '';
 
         }
     }

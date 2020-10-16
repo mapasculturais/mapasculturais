@@ -188,7 +188,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             return i::__('Inválida');
         }
 
-        return '';
+        return $value ?: '';
 
     }
     
