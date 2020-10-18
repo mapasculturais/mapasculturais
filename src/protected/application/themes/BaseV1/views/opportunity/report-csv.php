@@ -84,10 +84,13 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
     
     $dataHoraEnvio = $r->sentTimestamp;
     
+    $em = $r->getEvaluationMethod();
+    $result_string = $em->valueToString($r->consolidatedResult);
+
     $outRow = array_values(array_filter([
         $r->number,
         showIfField($entity->projectName, $r->projectName),
-        '"' . $r->getEvaluationResultString() . '"',
+        '"' . $result_string . '"',
         '"' . returnStatus($r) . '"',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('H:i') : '-'),
@@ -123,7 +126,12 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
             $_field_val = (array)$_field_val[0];
         }
 
+        if (is_array($_field_val) && isset($_field_val['group']) && isset($_field_val['title']) && isset($_field_val['value'])) {
+            $_field_val = $_field_val['title'] . ' - ' . $_field_val['value'];
+        }
+
         return (is_array($_field_val)) ? '"' . implode(" - ", $_field_val) . '"' : $_field_val;
+        
     }, $custom_fields));
         
     $outRow[] = (key_exists('zipArchive', $r->files)) ? $r->files['zipArchive']->url : '-';
