@@ -62,8 +62,8 @@ use \MapasCulturais\App;
 abstract class Controller{
     use Traits\MagicGetter,
         Traits\MagicSetter,
-        Traits\MagicCallers,
-        Traits\Singleton;
+        Traits\MagicCallers;
+        
 
 
     /**
@@ -89,6 +89,44 @@ abstract class Controller{
     protected $action = null;
     
     protected $method = null;
+
+    
+    /**
+     * Array of instances of this class and all subclasses.
+     * @var array
+     */
+    protected static $_singletonInstances = [];
+
+    /**
+     * 
+     * @var string controller id
+     */
+    protected $_id = null;
+
+    /**
+     * Returns the singleton instance. This method creates the instance when called for the first time.
+     * @return self
+     */
+    static public function i(string $controller_id): Controller {
+        $class = get_called_class();
+
+        $id = "{$class}:{$controller_id}";
+
+        if (!key_exists($id, self::$_singletonInstances)) {
+            self::$_singletonInstances[$id] = new $class;
+            self::$_singletonInstances[$id]->_id = $controller_id;
+        }
+
+        return self::$_singletonInstances[$id];
+    }
+
+    /**
+     * This class use Singleton
+     * @return true
+     */
+    public static function usesSingleton(){
+        return true;
+    }
     
     // =================== GETTERS ================== //
 
@@ -100,7 +138,7 @@ abstract class Controller{
      * @return string The controller id.
      */
     public function getId(){
-        return App::i()->controllerId($this);
+        return $this->_id;
     }
 
     /**

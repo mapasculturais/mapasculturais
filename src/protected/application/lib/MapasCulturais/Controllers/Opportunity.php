@@ -120,6 +120,9 @@ class Opportunity extends EntityController {
 
         $entity->checkPermission('canUserViewEvaluations');
 
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
         $committee = $entity->getEvaluationCommittee();
