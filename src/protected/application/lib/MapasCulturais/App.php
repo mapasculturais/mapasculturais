@@ -2077,7 +2077,7 @@ class App extends \Slim\Slim{
         $id = strtolower($id);
         if(key_exists($id, $this->_register['controllers']) && class_exists($this->_register['controllers'][$id])){
             $class = $this->_register['controllers'][$id];
-            return $class::i();
+            return $class::i($id);
         }else{
             return null;
         }
@@ -2108,7 +2108,7 @@ class App extends \Slim\Slim{
      */
     public function getControllerByClass($controller_class){
         if(key_exists($controller_class, $this->_register['controllers-by-class']) && class_exists($controller_class)){
-            return $controller_class::i();
+            return $controller_class::i($this->_register['controllers-by-class'][$controller_class]);
         }else{
             return null;
         }
