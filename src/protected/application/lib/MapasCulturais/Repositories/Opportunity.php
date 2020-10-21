@@ -3,24 +3,36 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 use MapasCulturais\Entities\ProjectOpportunity;
 use MapasCulturais\Entities\Project;
+use DateTime;
+
 
 class Opportunity extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
         Traits\RepositoryAgentRelation;
 
-    function findRegistrationDateByIds($opportunitiesIds) {
+    function findRegistrationWithDateByIds($opportunitiesIds, $open = false) {
+        $today = new DateTime('now');
+        $params = [
+            'opportunitiesIds' => $opportunitiesIds,
+           
+        ];
+        $extraQuery = "";
+        if ($open){
+            $params['today'] = $today;
+            $extraQuery = " AND op.registrationFrom <= :today AND 
+            op.registrationTo >= :today";
+        }
         $query = $this->_em->createQuery("
         SELECT 
             op.id, op.name, op.registrationFrom, op.registrationTo
         FROM
             MapasCulturais\Entities\Opportunity op
         WHERE 
-            op.id in (:opportunitiesIds)
-        ");
+            op.id in (:opportunitiesIds) AND
+            op.status = 1 ". $extraQuery
+        );
     
-        $params = [
-            'opportunitiesIds' => $opportunitiesIds,
-        ];
+       
 
         $query->setParameters($params);
 
