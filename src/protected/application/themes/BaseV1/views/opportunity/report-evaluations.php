@@ -72,17 +72,11 @@ $sum = count($cfg["registration"]->columns) + count($cfg["committee"]->columns);
 
         foreach ($pending_evaluations as $valuer_pending) :
 
-            $chave = $valuer_pending["registration"]["id"] . ':' . $valuer_pending['evaluation']['user'];
             $chaveValuer = $valuer_pending["registration"]["id"] . ':' . $valuer_pending['valuer']['user'];
-            
-            if ($array[$chave] ?? false) {
-                continue;
-            }
             if ($array[$chaveValuer] ?? false) {
                 continue;
             }
 
-            $array[$chave] = true;
 
             if (is_array($valuer_pending) && is_null($valuer_pending["evaluation"])) {
                 echo '<tr>';
