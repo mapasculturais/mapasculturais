@@ -555,49 +555,34 @@ class Opportunity extends EntityController {
     function _getOpportunityEvaluations($opportunity, array $registration_ids) {
         $app = App::i();
 
-        /* 
-        este cache é apagado quando há modificações nas avaliações, no método:
-        MapasCulturais\Entities\RegistrationEvaluation::save
-        */
-        $cache_id = "api:opportunity:{$opportunity->id}:evaluations";
-
         sort($registration_ids);
         $registration_ids = implode(',', $registration_ids); 
 
-        if ($app->config['app.useApiCache'] && $app->mscache->contains($cache_id)) {
-            $evaluations = $app->mscache->fetch($cache_id);
-            return $evaluations;
-        } else {
+        $edata = [
+            '@select' => 'id,result,evaluationData,registration,user,status',
+            'registration' => "IN({$registration_ids})"
+        ];
         
-            $edata = [
-                '@select' => 'id,result,evaluationData,registration,user,status',
-                'registration' => "IN({$registration_ids})"
-            ];
-            
-            foreach($this->data as $k => $v){
-                if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
-                    $edata[substr($k, 11)] = $v;
-                }
+        foreach($this->data as $k => $v){
+            if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
+                $edata[substr($k, 11)] = $v;
             }
-            
-            $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
-            $evaluations = [];
-            
-            $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
-
-            foreach($evaluations_query->find() as $e){
-                if(isset($valuer_by_user[$e['user']])){
-                    $e['agent'] = $valuer_by_user[$e['user']];
-                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                    $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
-                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
-                }
-            }
-
-            $app->mscache->save($cache_id, $evaluations, 5 * MINUTE_IN_SECONDS);
-
-            return $evaluations;
         }
+        
+        $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
+        $evaluations = [];
+        
+        $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
+        foreach($evaluations_query->find() as $e){
+            if(isset($valuer_by_user[$e['user']])){
+                $e['agent'] = $valuer_by_user[$e['user']];
+                $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
+                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+            }
+        }
+        return $evaluations;
+        
     }
 
     function API_findRegistrationsAndEvaluations() {
