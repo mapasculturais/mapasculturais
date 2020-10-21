@@ -27,17 +27,63 @@ $sum = count($cfg["registration"]->columns) + count($cfg["committee"]->columns);
         </tr>
     </thead>
     <tbody>
-        <?php foreach($evaluations as $evaluation): ?>
-            <tr>
-            <?php foreach($cfg as $section): ?>
-                <?php foreach($section->columns as $column): $getter = $column->getValue; ?>
-                    <td style="text-align: center;"> <?php echo $getter($evaluation); ?> </td>
+        <?php
+
+        $label_result = '';
+        $array = [];
+
+        foreach ($evaluations as $evaluation) :
+
+            $chave = $evaluation->registration->id . ':' . $evaluation->user->id;
+            if ($array[$chave] ?? false) {
+                continue;
+            }
+            $array[$chave] = true;
+
+        ?>
+        <tr>
+            <?php foreach ($cfg as $section) :
+
+                if (isset($section->columns['result'])) {
+                    $label_result = $section->columns['result']->label;
+                }
+
+            ?>
+                <?php foreach ($section->columns as $column) : $getter = $column->getValue; ?>
+                    <td style="text-align: center;">
+                        <?php
+
+                        if ($label_result == $column->label) {
+                            if (empty($getter($evaluation))) {
+                                echo 'Pendente';
+                            } else {
+                                echo $getter($evaluation);
+                            }
+                        } else {
+                            echo $getter($evaluation);
+                        }
+
+                        ?>
+                    </td>
                 <?php endforeach; ?>
             <?php endforeach; ?>
-            </tr>
+        </tr>
         <?php endforeach;
 
-        foreach ($pending_evaluations as $valuer_pending):
+        foreach ($pending_evaluations as $valuer_pending) :
+
+            $chave = $valuer_pending["registration"]["id"] . ':' . $valuer_pending['evaluation']['user'];
+            $chaveValuer = $valuer_pending["registration"]["id"] . ':' . $valuer_pending['valuer']['user'];
+            
+            if ($array[$chave] ?? false) {
+                continue;
+            }
+            if ($array[$chaveValuer] ?? false) {
+                continue;
+            }
+
+            $array[$chave] = true;
+
             if (is_array($valuer_pending) && is_null($valuer_pending["evaluation"])) {
                 echo '<tr>';
                 foreach ($valuer_pending["valuer"] as $key => $v) {
