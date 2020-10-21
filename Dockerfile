@@ -1,26 +1,35 @@
-FROM php:7.2-fpm
+FROM php:7.2-fpm-stretch
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip \
+RUN unlink /etc/localtime
+
+RUN ln -s /usr/share/zoneinfo/America/Fortaleza /etc/localtime
+
+RUN apt-get update  && apt-get install -y --no-install-recommends && rm -rf /var/lib/apt/lists/* \
+        curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip libxml2-dev\
         ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
-        libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim
+        libfreetype6-dev libjpeg62-turbo-dev libpng-dev
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs npm
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get update && apt-get install -y nodejs && apt-get clean
+RUN npm install npm --global
 
-RUN rm -rf /var/lib/apt/lists
-
-# Install uglify and terser
+# Install uglify
 RUN npm install -g \
-        terser \
+        uglify-js@2.2.0 \
         uglifycss \
+        terser \
         autoprefixer
 
 # Install sass
 RUN gem install sass -v 3.4.22
 
 # Install extensions
-RUN docker-php-ext-install opcache pdo_pgsql zip xml curl json 
+RUN docker-php-ext-install opcache pdo_pgsql xml curl json
+
+RUN apt-get update && apt-get install -y --fix-missing \
+    zlib1g-dev \
+    libzip-dev
+RUN docker-php-ext-install zip
 
 # Install GD
 RUN docker-php-ext-install -j$(nproc) iconv \
@@ -35,46 +44,35 @@ RUN pecl install apcu \
 RUN pecl install imagick-beta \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
 
-# Install redis
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
+# Install xdebug
+RUN pecl install xdebug \
+    docker-php-ext-enable xdebug 
+
+# Copy xdebug configration
+COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # Install composer
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer.phar
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copy source
-COPY src/index.php /var/www/html/index.php
-COPY --chown=www-data:www-data src/protected /var/www/html/protected
+# Clear package lists
+RUN rm -rf /var/lib/apt/lists/*
 
+# Copy php.ini configuration
+COPY ./php.ini /usr/local/etc/php/conf.d/custom-php.ini
 
-RUN mkdir -p /var/www/html/protected/vendor /var/www/html/protected/DoctrineProxies /var/www/.composer && \
-    chown -R www-data:www-data /var/www/html/protected/vendor /var/www/html/protected/DoctrineProxies /var/www/.composer
+# Permissions
+RUN chown -R root:www-data /var/www/html
+RUN chmod u+rwx,g+rx,o+rx /var/www/html
+RUN find /var/www/html -type d -exec chmod u+rwx,g+rx,o+rx {} +
+RUN find /var/www/html -type f -exec chmod u+rw,g+rw,o+r {} +
+RUN mkdir /var/log/nginx/
+RUN chown -R root:www-data /var/log/nginx/
+RUN chmod -R 777 /var/log/nginx/
 
-RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-framework /var/www/html/geojson
-
-WORKDIR /var/www/html/protected
-RUN composer.phar install
-
-WORKDIR /var/www/html/protected/application/themes/
-
-RUN find . -maxdepth 1 -mindepth 1 -exec echo "compilando sass do tema " {} \; -exec sass {}/assets/css/sass/main.scss {}/assets/css/main.css -E "UTF-8" \;
-
-COPY scripts /var/www/scripts
-COPY compose/production/php.ini /usr/local/etc/php/php.ini
-COPY compose/config.php /var/www/html/protected/application/conf/config.php
-COPY compose/config.d /var/www/html/protected/application/conf/config.d
-
-RUN ln -s /var/www/html /var/www/src
-
-COPY version.txt /var/www/version.txt
-
-COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
-COPY compose/entrypoint.sh /entrypoint.sh
+COPY ./recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
+COPY ./entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-WORKDIR /var/www/html/
-EXPOSE 9000
-
 CMD ["php-fpm"]
+
+EXPOSE 9000
