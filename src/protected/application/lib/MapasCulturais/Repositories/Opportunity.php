@@ -10,8 +10,18 @@ class Opportunity extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
         Traits\RepositoryAgentRelation;
 
-    function findOpenRegistrationByIds($opportunitiesIds) {
+    function findRegistrationWithDateByIds($opportunitiesIds, $open = false) {
         $today = new DateTime('now');
+        $params = [
+            'opportunitiesIds' => $opportunitiesIds,
+           
+        ];
+        $extraQuery = "";
+        if ($open){
+            $params['today'] = $today;
+            $extraQuery = " AND op.registrationFrom <= :today AND 
+            op.registrationTo >= :today";
+        }
         $query = $this->_em->createQuery("
         SELECT 
             op.id, op.name, op.registrationFrom, op.registrationTo
@@ -19,15 +29,10 @@ class Opportunity extends \MapasCulturais\Repository{
             MapasCulturais\Entities\Opportunity op
         WHERE 
             op.id in (:opportunitiesIds) AND
-            op.registrationFrom <= :today AND 
-            op.registrationTo >= :today AND 
-            op.status = 1
-        ");
+            op.status = 1 ". $extraQuery
+        );
     
-        $params = [
-            'opportunitiesIds' => $opportunitiesIds,
-            'today'            => $today
-        ];
+       
 
         $query->setParameters($params);
 
