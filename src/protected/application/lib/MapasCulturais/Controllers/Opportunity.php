@@ -630,7 +630,7 @@ class Opportunity extends EntityController {
                 AND pc.user_id = :user_id
         LEFT JOIN registration_evaluation re
             ON r.id = re.registration_id
-            AND pc.user_id = :user_id
+            AND re.user_id = :user_id
         INNER JOIN agent a
             ON a.id = r.agent_id
                 WHERE r.status > 0
