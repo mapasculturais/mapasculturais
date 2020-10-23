@@ -45,7 +45,7 @@ foreach($committee as $valuer){
             <?php
             endforeach;
             foreach($include_list as $valuer):
-                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
+                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersIncludeList);
             ?>
                 <li>
                     <label>
