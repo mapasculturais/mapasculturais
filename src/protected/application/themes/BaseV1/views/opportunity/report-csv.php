@@ -70,9 +70,10 @@ $header = array_merge($header, array_map(function($field) {
 
 $header[] = i::__('Anexos');
 
-$header = array_merge($header, array_map(function($prop) {
-    return 'Espaço - ' . SpaceRelation::getPropertyLabel($prop);
-}, $space_properties));
+// @todo: descomentar após correção do space_data que está vazio após envio
+// $header = array_merge($header, array_map(function($prop) {
+//     return 'Espaço - ' . SpaceRelation::getPropertyLabel($prop);
+// }, $space_properties));
 
 $header = array_values(array_map('mb_strtoupper', $header));
 
