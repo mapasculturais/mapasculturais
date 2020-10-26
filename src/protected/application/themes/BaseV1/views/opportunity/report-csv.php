@@ -5,6 +5,8 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space as SpaceRelation;
 use MapasCulturais\i;
 
+$app = MapasCulturais\App::i();
+
 function returnStatus($registration)
 {
     switch ($registration->status) {
@@ -143,6 +145,8 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
 
 $fh = @fopen('php://output', 'w');
 fprintf($fh, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+$app->applyHook('opportunity.registrations.reportCSV', [&$header, &$body]);
 
 fputcsv($fh, $header);
 
