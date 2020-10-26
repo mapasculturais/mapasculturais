@@ -70,11 +70,14 @@ $header = array_merge($header, array_map(function($field) {
 
 $header[] = i::__('Anexos');
 
-$header = array_merge($header, array_map(function($prop) {
-    return 'Espaço - ' . SpaceRelation::getPropertyLabel($prop);
-}, $space_properties));
+// @todo: descomentar após correção do space_data que está vazio após envio
+// $header = array_merge($header, array_map(function($prop) {
+//     return 'Espaço - ' . SpaceRelation::getPropertyLabel($prop);
+// }, $space_properties));
 
 $header = array_values(array_map('mb_strtoupper', $header));
+
+$registrations = $entity->sentRegistrations;
 
 /**
  * array de linhas de entradas do CSV
@@ -141,12 +144,12 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
         return (is_array($field)) ? '"' . implode(' - ', $field) . '"' : $field;
     }, $r->getSpaceData()));
     return $outRow;
-}, $entity->sentRegistrations);
+}, $registrations);
 
 $fh = @fopen('php://output', 'w');
 fprintf($fh, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-$app->applyHook('opportunity.registrations.reportCSV', [&$header, &$body]);
+$app->applyHook('opportunity.registrations.reportCSV', [$entity, $registrations, &$header, &$body]);
 
 fputcsv($fh, $header);
 
