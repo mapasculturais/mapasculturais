@@ -196,6 +196,9 @@ class FileSystem extends \MapasCulturais\Storage{
         }
         \MapasCulturais\App::i()->em->refresh($entity);
         $files = array_map(function($item){
+            if (is_array($item)) {
+                $item = $item[0];
+            }
             return '"'.$this->getPath($item).'"';
         }, $entity->files);
 
