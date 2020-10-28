@@ -48,9 +48,10 @@ RUN docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-install -j$(nproc) gd
     
 # Install composer
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer.phar
-
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --version=1.10.16 --install-dir=/usr/local/bin && \
+    rm composer-setup.php
+    
 # Copy source
 COPY src/index.php /var/www/html/index.php
 COPY src/protected /var/www/html/protected
