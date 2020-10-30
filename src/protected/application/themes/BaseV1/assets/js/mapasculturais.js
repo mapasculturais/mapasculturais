@@ -102,6 +102,16 @@ $(function(){
     MapasCulturais.Video.setupVideoGallery('.js-videogallery');
     MapasCulturais.Search.init(".js-search");
 
+    // confirmação para excluir entidades
+    $(".js--remove-entity-button").click(function(e){
+        return confirm(labels.confirmRemoveEntity);
+    });
+
+    // confirmação para excluir entidades
+    $(".js--destroy-entity-button").click(function(e){
+        return confirm(labels.confirmDestroyEntity);
+    });
+
     // bind alert close buttons
     $('.alert .close').click(function(){
         $(this).parent().slideUp('fast');
