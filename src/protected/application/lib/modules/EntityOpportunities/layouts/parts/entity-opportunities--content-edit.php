@@ -5,7 +5,10 @@ use MapasCulturais\Entities\Opportunity;
 $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
 ?>
+<?php $this->applyTemplateHook('entity-opportunities','before'); ?>
 <div id="entity-opportunities" class="aba-content">
+    <?php $this->applyTemplateHook('entity-opportunities','begin'); ?>
+
     <section class="highlighted-message clearfix">
         <p><?php i::_e("Configurações da aba Oportunidade") ?></p>
         <span class="label"><?php \MapasCulturais\i::_e("Utilizar a aba de oportunidades?");?>:</span>
@@ -33,4 +36,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
     <?php foreach($entity->getOpportunities(Opportunity::STATUS_DRAFT) as $opportunity): ?>
         <?php $this->part('entity-opportunities--item', ['opportunity' => $opportunity, 'entity' => $entity]) ?>
     <?php endforeach; ?>
+
+    <?php $this->applyTemplateHook('entity-opportunities','end'); ?>
 </div>
+<?php $this->applyTemplateHook('entity-opportunities','after'); ?>
