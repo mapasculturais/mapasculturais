@@ -359,10 +359,31 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
 
-    function getAllRegistrations(){
+    function getAllRegistrations($status = null){
         // ============ IMPORTANTE =============//
         // @TODO implementar findSentByOpportunity no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['opportunity' => $this]);
+        $app = App::i();
+
+        if ($status == 'sent') {
+            $status_dql = is_null($status) ? '' : 'r.status > 0 AND';
+        } else {
+            $status_dql = is_null($status) ? '' : "r.status = {$status} AND";
+        }
+
+        $query = $app->em->createQuery("
+        SELECT 
+            r
+        FROM 
+            MapasCulturais\\Entities\\Registration r
+        WHERE 
+            $status_dql
+            r.opportunity = :opportunity
+        ");
+        
+        $query->setParameter('opportunity', $this);
+
+        // $registrations = $query->getResult($query::HYDRATE_SIMPLEOBJECT);
+        $registrations = $query->getResult();
 
         return $registrations;
     }
@@ -377,14 +398,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return \MapasCulturais\Entities\Registration[]
      */
     function getSentRegistrations(){
-        $registrations = $this->getAllRegistrations();
-
-        $result = [];
-        foreach($registrations as $re){
-            if($re->status > 0)
-                $result[] = $re;
-        }
-        return $result;
+        return $this->getAllRegistrations('sent');
     }
 
     /**
