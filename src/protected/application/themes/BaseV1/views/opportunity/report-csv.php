@@ -105,6 +105,8 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
     $outRow = array_merge($outRow, array_map(function($field) use($r) {
         $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "-";
 
+        $_field_val = str_replace(';', ',', $_field_val);
+
         if (is_object($_field_val)){
             $_field_val = (array)$_field_val;
         }
