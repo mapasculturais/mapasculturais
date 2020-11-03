@@ -142,7 +142,7 @@ class Registration extends \MapasCulturais\Entity
 
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade="remove", orphanRemoval=true, fetch="EAGER")
     */
     protected $__metadata = [];
 
