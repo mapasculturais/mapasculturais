@@ -81,7 +81,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $sections = $result;
         });
 
-        $app->hook('GET(opportunity.applyEvaluationsSimple)', function() {
+        $app->hook('POST(opportunity.applyEvaluationsSimple)', function() {
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -95,7 +95,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
     
             if($type != 'simple') {
-                throw new Exception('Ação somente disponivel para avaliações do tipo simples');
+                $this->errorJson(i::__('Somente para avaliações simplificadas'), 400);
+                die;
+            }
+
+            $new_status = intval($this->data['to']);
+            if (!in_array($new_status, [0,2,3,8,10])) {
+                $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
+                die;
             }
     
             $opp->checkPermission('@control');
@@ -107,48 +114,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             FROM
                 MapasCulturais\Entities\Registration r
             WHERE 
-                r.opportunity = :opportunity_id
-                    AND
+                r.opportunity = :opportunity_id AND
+                r.consolidatedResult = :consolidated_result AND
                 r.status > 0
             ");
         
             $params = [
-                'opportunity_id' => $opp,
+                'opportunity_id' => $opp->id,
+                'consolidated_result' => $this->data['from']
             ];
     
             $query->setParameters($params);
     
             $registrations = $query->getResult();
-    
+            
             // faça um foreach em cada registration e pegue as suas avaliações
             foreach ($registrations as $registration) {
-                $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration'=>$registration->id]);
-    
-                $allEvaluationsAreStatus10 = true;
-                //verifique se TODAS as avaliações estão selecionadas, se sim, registration foi aprovada
-                //se não, verifique se a registration tem SOMENTE UMA avaliação, se tiver uma, então o status da registration é o mesmo da avaliação, se tiver mais de uma, o status é "nao selecionado"
-                foreach ($evaluations as $evaluation) {
-                    $evaluationStatus = $evaluation->getResult();
-                    if($evaluationStatus != 10) {
-                        $allEvaluationsAreStatus10 = false;
-                    }
-                }
-                if($allEvaluationsAreStatus10 == true) {
-                    $registration->setStatus(10); //selecionada
-                    $registration->consolidatedResult = 10; //selecionada
-                } 
-                if($allEvaluationsAreStatus10 == false) {
-                    if(count($evaluations) > 1) {
-                        $registration->setStatus(3); // não selecionada
-                        $registration->consolidatedResult = 3; // não selecionada
-                    }
-                    if(count($evaluations) == 1) {
-                        $registration->setStatus( (int)$evaluations[0]->getResult() );
-                        $registration->consolidatedResult = (int)$evaluations[0]->getResult();
-                    }
-                } 
-    
+                $app->log->debug("Alterando status da inscrição {$registration->number} para {$new_status}");
+                $app->disableAccessControl();
+                $registration->consolidatedResult = "$new_status";
+                $registration->setStatus($new_status);
                 $registration->save(true);
+                $app->enableAccessControl();
             }
 
     
@@ -156,9 +143,21 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     
         });
 
-        $app->hook('template(opportunity.single.header-inscritos):actions', function(){
-            $this->part('simple--apply-results', ['entity' => $this->controller->requestedEntity]);
-
+        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
+            $opportunity = $this->controller->requestedEntity;
+            $consolidated_results = $app->em->getConnection()->fetchAll("
+                SELECT 
+                    consolidated_result evaluation,
+                    COUNT(*) as num
+                FROM 
+                    registration
+                WHERE 
+                    opportunity_id = :opportunity AND
+                    status > 0 
+                GROUP BY consolidated_result
+                ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+            
+            $this->part('simple--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
     }
 
@@ -188,16 +187,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function valueToString($value) {
         switch ($value) {
-            case 2:
+            case '2':
                 return i::__('Inválida');
                 break;
-            case 3:
+            case '3':
                 return i::__('Não selecionada');
                 break;
-            case 8:
+            case '8':
                 return i::__('Suplente');
                 break;
-            case 10:
+            case '10':
                 return i::__('Selecionada');
                 break;
             default:
