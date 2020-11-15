@@ -99,11 +99,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 die;
             }
 
-            $new_status = intval($this->data['to']);
-            if (!in_array($new_status, [0,2,3,8,10])) {
+            if (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,2,3,8,10])) {
                 $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
                 die;
             }
+            $new_status = intval($this->data['to']);
     
             $opp->checkPermission('@control');
 
