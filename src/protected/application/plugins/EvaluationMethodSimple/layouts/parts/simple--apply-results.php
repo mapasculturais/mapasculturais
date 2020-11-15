@@ -12,7 +12,7 @@ $em = $entity->getEvaluationMethod();
 </a>
   
 <edit-box id="apply-consolidated-results-editbox" position="bottom" 
-            title="<?php i::esc_attr_e('Aplicar resultado das avaliações') ?>" 
+            title="<?php i::esc_attr_e('Aplicar resultado das avaliações simples') ?>" 
             spinner-condition="data.applying"
             cancel-label="Cancelar" 
             submit-label="<?php i::_e('Aplicar') ?>"
