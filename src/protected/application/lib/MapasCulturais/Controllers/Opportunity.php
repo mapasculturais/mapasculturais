@@ -120,7 +120,7 @@ class Opportunity extends EntityController {
 
         $entity->checkPermission('canUserViewEvaluations');
 
-        set_time_limit(0);
+        ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
         
         $app->controller('Registration')->registerRegistrationMetadata($entity);
@@ -144,7 +144,7 @@ class Opportunity extends EntityController {
 
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
-        set_time_limit(0);
+        ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
         
         if ($view == 'report-drafts-csv' || $view == 'report-csv') {
@@ -201,7 +201,6 @@ class Opportunity extends EntityController {
 
 
     function API_findByUserApprovedRegistration(){
-        set_time_limit(0);
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
         $this->requireAuthentication();
