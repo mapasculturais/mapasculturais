@@ -145,6 +145,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
             $opportunity = $this->controller->requestedEntity;
+    
+            if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'simple') {
+                return;
+            }
+            
             $consolidated_results = $app->em->getConnection()->fetchAll("
                 SELECT 
                     consolidated_result evaluation,
