@@ -20,7 +20,7 @@ $em = $entity->getEvaluationMethod();
             on-submit="applyEvaluations">
 
     <label>
-        <?php i::_e('Avaliação') ?> aqui??
+        <?php i::_e('Avaliação') ?>
         <select ng-model="data.applyFrom">
             <?php 
             foreach($consolidated_results as $consolidated_result): 
