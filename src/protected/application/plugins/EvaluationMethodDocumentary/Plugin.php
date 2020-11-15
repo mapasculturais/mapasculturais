@@ -59,8 +59,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     function enqueueScriptsAndStyles() {
         $app = App::i();
 
+        $app->view->enqueueScript('app', 'documentary-evaluation', 'js/ng.evaluationMethod.documentary.js', ['entity.module.opportunity']);
         $app->view->enqueueScript('app', 'documentary-evaluation-form', 'js/evaluation-form--documentary.js', ['entity.module.opportunity']);
         $app->view->enqueueStyle('app', 'documentary-evaluation-method', 'css/documentary-evaluation-method.css');
+        
+        $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.documentary';
     }
 
     public function _init() {
@@ -139,6 +142,90 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $result['evaluation'] = $sections['evaluation'];
 
             $sections = $result;
+        });
+
+        $app->hook('POST(opportunity.applyEvaluationsDocumentary)', function() {
+            $this->requireAuthentication();
+
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
+            ini_set('memory_limit', '-1');
+    
+            $app = App::i();
+    
+            $opp = $this->requestedEntity;
+    
+            $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
+    
+            if($type != 'documentary') {
+                $this->errorJson(i::__('Somente para avaliações documentais'), 400);
+                die;
+            }
+
+            $new_status = intval($this->data['to']);
+            if (!in_array($new_status, [0,2,3,8,10])) {
+                $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
+                die;
+            }
+    
+            $opp->checkPermission('@control');
+
+            // pesquise todas as registrations da opportunity que esta vindo na request
+            $query = App::i()->getEm()->createQuery("
+            SELECT 
+                r
+            FROM
+                MapasCulturais\Entities\Registration r
+            WHERE 
+                r.opportunity = :opportunity_id AND
+                r.consolidatedResult = :consolidated_result AND
+                r.status > 0
+            ");
+        
+            $params = [
+                'opportunity_id' => $opp->id,
+                'consolidated_result' => $this->data['from']
+            ];
+    
+            $query->setParameters($params);
+    
+            $registrations = $query->getResult();
+            
+            // faça um foreach em cada registration e pegue as suas avaliações
+            foreach ($registrations as $registration) {
+                $app->log->debug("Alterando status da inscrição {$registration->number} para {$new_status}");
+                $app->disableAccessControl();
+                $registration->consolidatedResult = "$new_status";
+                $registration->setStatus($new_status);
+                $registration->save(true);
+                $app->enableAccessControl();
+            }
+
+    
+            $this->finish("Processo finalizado", 200);
+    
+        });
+
+        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
+            $opportunity = $this->controller->requestedEntity;
+            
+            if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'documentary') {
+                return;
+            }
+
+            $consolidated_results = $app->em->getConnection()->fetchAll("
+                SELECT 
+                    consolidated_result evaluation,
+                    COUNT(*) as num
+                FROM 
+                    registration
+                WHERE 
+                    opportunity_id = :opportunity AND
+                    status > 0 
+                GROUP BY consolidated_result
+                ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+            
+            $this->part('documentary--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
     }
 
