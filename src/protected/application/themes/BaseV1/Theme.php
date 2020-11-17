@@ -986,7 +986,46 @@ class Theme extends MapasCulturais\Theme {
             $this->type = 1;
         });
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
+
+        $format_doc = function($documento){
+            $documento = trim(str_replace(['%','.','/','-'],'', $documento));
+            $formatted = false;
+            if (strlen($documento) == 11) {
+                $b1 = substr($documento,0,3);
+                $b2 = substr($documento,3,3);
+                $b3 = substr($documento,6,3);
+                $dv = substr($documento,-2);
+                $formatted = "$b1.$b2.$b3-$dv";
+            } else if(strlen($documento)==14) {
+                $b1 = substr($documento,0,2);
+                $b2 = substr($documento,2,3);
+                $b3 = substr($documento,5,3);
+                $b4 = substr($documento,8,4);
+                $dv = substr($documento,-2);
+                $formatted = "$b1.$b2.$b3/$b4-$dv";
+            }
+
+            return $formatted;
+        };
+
+        // faz a keyword buscar pelo documento do owner nas inscrições
+        $app->hook('repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) use($format_doc) {
+            
+            if ($format_doc($keyword)) {
+                $joins .= " LEFT JOIN o.__metadata doc WITH doc.key = 'documento'";
+            }
+        });
+
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) use($format_doc) {
+
+            if ($doc = $format_doc($keyword)) {
+                $doc2 = trim(str_replace(['%','.','/','-'],'', $keyword));
+                $where .= " OR doc.value = '$doc' OR doc.value = '$doc2'";
+            }
+        });
+
+        // faz a keyword buscar pelos termos das taxonomias
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join,-repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
             $class = $this->getClassName();
@@ -999,7 +1038,7 @@ class Theme extends MapasCulturais\Theme {
                             t.taxonomy = '{$taxonomy->slug}'";
         });
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) {
+        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where,-repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
             $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
         });
 
