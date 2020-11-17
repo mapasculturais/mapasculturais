@@ -117,6 +117,7 @@ use MapasCulturais\i;
                 </div>
                 <div ng-if="data.registrations.length >= 1 ">
                     <strong> {{ data.registrations.length }} </strong>
+                    <span ng-if="data.registrationsAPIMetadata.count > 1"> de {{ data.registrationsAPIMetadata.count }}</i> </span>
                     <span ng-if="data.registrations.length === 1"> <?php i::_e("inscrição encontrada"); ?> </span>
                     <span ng-if="data.registrations.length > 1"> <?php i::_e("inscrições encontradas"); ?> </span>
                     <?php i::_e(" com os filtros selecionados."); ?>
