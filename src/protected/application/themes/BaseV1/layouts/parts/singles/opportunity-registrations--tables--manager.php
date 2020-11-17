@@ -29,7 +29,7 @@ use MapasCulturais\i;
 
 <div id="filtro-inscritos">
     <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
-    <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
+    <input ng-model="data.registrationsFilter" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
 </div>
 
 <div class="dropdown" style="width:100%; margin:10px 0px;">
@@ -126,7 +126,7 @@ use MapasCulturais\i;
         </td>
     </tr>
     <tbody>
-    <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
+    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
     <?php $this->applyTemplateHook('registration-list-item','begin'); ?>
             <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}" rel='noopener noreferrer'>{{reg.number}}</a></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>

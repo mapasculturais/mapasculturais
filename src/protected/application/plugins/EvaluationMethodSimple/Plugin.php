@@ -47,6 +47,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     public function _init()
     {
         $app = App::i();
+
+        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
+            $key = trim(strtolower(str_replace('%','',$keyword)));
+            
+            $value = null;
+            if (in_array($key, explode(',', i::__('inválida,invalida,inválido,invalido')))) {
+                $value = '2';
+            } else if (in_array($key, explode(',', i::__('não selecionado,nao selecionado,não selecionada,nao selecionada')))) {
+                $value = '3';
+            } else if ($key == i::__('suplente')) {
+                $value = '8';
+            } else if (in_array($key, explode(',', i::__('selecionado,selecionada')))) {
+                $value = '10';
+            }
+
+            if ($value) {
+                $where .= " OR e.consolidatedResult = '$value'";
+            } 
+            
+            $where .= " OR unaccent(lower(e.consolidatedResult)) LIKE unaccent(lower(:keyword))";
+        });
+
         $app->hook('evaluationsReport(simple).sections', function (Entities\Opportunity $opportunity, &$sections) use ($app) {
             $columns = [];
             $evaluations = $opportunity->getEvaluations();
