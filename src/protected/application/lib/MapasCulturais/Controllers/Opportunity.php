@@ -395,6 +395,7 @@ class Opportunity extends EntityController {
         $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);
         
         $registrations = $query->find();
+
         $em = $opportunity->getEvaluationMethod();
         foreach($registrations as &$reg) {
             if(in_array('consolidatedResult', $query->selecting)){
@@ -418,10 +419,8 @@ class Opportunity extends EntityController {
                 return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
             });
         }
-
-        $total = $app->repo('Registration')->countByOpportunity($opportunity, false, -1);
         
-        $this->apiAddHeaderMetadata($this->data, $registrations, $total);
+        $this->apiAddHeaderMetadata($this->data, $registrations, $query->count());
         $this->apiResponse($registrations);
     }
 
