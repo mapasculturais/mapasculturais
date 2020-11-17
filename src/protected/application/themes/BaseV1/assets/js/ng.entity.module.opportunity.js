@@ -1485,6 +1485,38 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
     };
 
     if(jQuery('.js-registration-list').length) {
+        var do_filter = function(){
+            $timeout.cancel($scope.filterTimeout);
+            $scope.filterTimeout = $timeout(function() {
+                var qdata = {
+                    'status': 'GT(-1)',
+                    '@files': '(zipArchive):url',
+                    '@opportunity': getOpportunityId(),
+                    '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
+                };
+                
+                for(var prop in $scope.registrationsFilters){
+                    if (prop == 'keyword') {
+
+                        qdata['@keyword'] = $scope.registrationsFilters[prop];
+                    } else if($scope.registrationsFilters[prop] || $scope.registrationsFilters[prop] === 0){
+                        qdata[prop] = 'EQ(' + $scope.registrationsFilters[prop] + ')'
+                    }
+                }
+                registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', qdata);
+                $scope.findRegistrations();
+            },1500);
+        };
+
+        //data.registrations.filtro
+        $scope.data.last_search_value = undefined;
+        $scope.$watch('data.registrationsFilter', function(new_val, old_val) {
+            if (new_val != $scope.data.last_search_value) {
+                $scope.data.last_search_value = new_val;
+                $scope.registrationsFilters.keyword = new_val;
+                do_filter();
+            }
+        });
         $scope.findRegistrations = function(){
             if(registrationsApi.finish()){
                 return null;
@@ -1505,21 +1537,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             });
         }
     
-        $scope.$watch('registrationsFilters', function(){
-            var qdata = {
-                'status': 'GT(-1)',
-                '@files': '(zipArchive):url',
-                '@opportunity': getOpportunityId(),
-                '@select': 'id,singleUrl,category,status,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,' + select_fields.join(',')
-            };
-            for(var prop in $scope.registrationsFilters){
-                if($scope.registrationsFilters[prop] || $scope.registrationsFilters[prop] === 0){
-                    qdata[prop] = 'EQ(' + $scope.registrationsFilters[prop] + ')'
-                }
-            }
-            registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', qdata);
-            $scope.findRegistrations();
-        }, true);
+        $scope.$watch('registrationsFilters', do_filter, true);
     
         $scope.$watch('evaluationsFilters', function(){
             var qdata = {
