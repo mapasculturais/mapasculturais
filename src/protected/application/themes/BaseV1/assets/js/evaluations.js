@@ -13,7 +13,7 @@ $(function(){
 
     $formContainer.find('.js-evaluation-submit').on('click', function(){
         var $button = $(this);
-        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.registration.id, 'status': 'evaluated'});
+        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': 'evaluated'});
         var data = $form.serialize();
 
         if(!data){
