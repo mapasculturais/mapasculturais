@@ -29,7 +29,7 @@ trait EntityArchive{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:before');
 
-        $this->status = self::STATUS_ARCHIVED;
+        $this->setStatus(self::STATUS_ARCHIVED);
         
         $this->save($flush);
 
@@ -48,7 +48,11 @@ trait EntityArchive{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unarchive:before');
 
-        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
+        if ($this->usesDraft()) {
+            $this->setStatus(self::STATUS_DRAFT);
+        } else {
+            $this->setStatus(self::STATUS_ENABLED);
+        }
 
         $this->save($flush);
         
