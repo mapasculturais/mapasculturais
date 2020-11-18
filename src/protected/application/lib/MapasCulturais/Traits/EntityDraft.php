@@ -29,7 +29,7 @@ trait EntityDraft{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').publish:before');
 
-        $this->status = self::STATUS_ENABLED;
+        $this->setStatus(self::STATUS_ENABLED);
 
         $this->save($flush);
         
@@ -49,7 +49,7 @@ trait EntityDraft{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').unpublish:before');
 
-        $this->status = self::STATUS_DRAFT;
+        $this->setStatus(self::STATUS_DRAFT);
 
         $this->save($flush);
         
