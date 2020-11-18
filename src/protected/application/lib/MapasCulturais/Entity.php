@@ -221,26 +221,52 @@ abstract class Entity implements \JsonSerializable{
 
         return $user;
     }
-    
-    function setStatus($status){
+
+    /**
+     * Set entity status
+     * 
+     * @param int $status 
+     * @return void 
+     */    
+    function setStatus(int $status){
+        $app = App::i();
+
         if($status != $this->status){
-            $class = $this->getClassName();
+            $hook_class_path = $this->getHookClassPath();
             
             switch($status){
-                case $class::STATUS_ARCHIVED:
+                case self::STATUS_ARCHIVED:
                     if($this->usesArchive()){
                         $this->checkPermission('archive');
                     }
                     break;
                 
-                case $class::STATUS_TRASH:
+                case self::STATUS_TRASH:
                     if($this->usesSoftDelete()){
                         $this->checkPermission('remove');
                     }
                     break;
-                    
+
+                case self::STATUS_DRAFT:
+                    if ($this->usesSoftDelete() && $this->status == self::STATUS_TRASH) {
+                        $this->checkPermission('undelete');
+                    } else if ($this->usesArchive() && $this->status == self::STATUS_ARCHIVED) {
+                        $this->checkPermission('unarchive');
+                    }
+                    break;
+
+                case self::STATUS_ENABLED:
+                    if ($this->usesSoftDelete() && $this->status == self::STATUS_TRASH) {
+                        $this->checkPermission('undelete');
+                    } else if ($this->usesArchive() && $this->status == self::STATUS_ARCHIVED) {
+                        $this->checkPermission('unarchive');
+                    }
+                    break;
             }
         }
+
+        $app->applyHookBoundTo($this, "entity({$hook_class_path}).setStatus({$status})", [&$status]);
+
         $this->status = $status;
     }
 
