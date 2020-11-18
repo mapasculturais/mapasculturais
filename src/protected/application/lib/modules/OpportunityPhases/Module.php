@@ -489,15 +489,9 @@ class Module extends \MapasCulturais\Module{
         });
 
         // muda o status de publicação dos oportunidades
-        $app->hook('view.partial(singles/control--edit-buttons).params', function(&$params) use ($app){
-            $opportunity = self::getRequestedOpportunity();
-
-            if(!$opportunity){
-                return;
-            }
-
-            if($opportunity->isOpportunityPhase){
-                $params['status_enabled'] = -1;
+        $app->hook('entity(<<*>>Opportunity).setStatus(1)', function(&$status) {
+            if ($this->isOpportunityPhase) {
+                $status = -1;
             }
         });
 

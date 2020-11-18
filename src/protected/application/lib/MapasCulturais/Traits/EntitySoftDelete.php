@@ -47,7 +47,7 @@ trait EntitySoftDelete{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').delete:before');
         
-        $this->status = self::STATUS_TRASH;
+        $this->setStatus(self::STATUS_TRASH);
 
         $this->save($flush);
         
@@ -77,7 +77,11 @@ trait EntitySoftDelete{
         $app = App::i();
         $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').undelete:before');
         
-        $this->status = $this->usesDraft() ? self::STATUS_DRAFT : self::STATUS_ENABLED;
+        if ($this->usesDraft()) {
+            $this->setStatus(self::STATUS_DRAFT);
+        } else {
+            $this->setStatus(self::STATUS_ENABLED);
+        }
         
         $this->save($flush);
         
