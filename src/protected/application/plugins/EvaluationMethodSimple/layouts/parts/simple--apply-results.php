@@ -36,9 +36,9 @@ $em = $entity->getEvaluationMethod();
         <?php i::_e('Status') ?>
         <select ng-model="data.applyTo">
             <option value="0"><?php i::_e('Rascunho') ?></option>
+            <option value="1"><?php i::_e('Pendente') ?></option>
             <option ng-repeat="status in data.registrationStatusesNames" value="{{status.value}}">{{status.label}}</option>
         </select>
     </label>
-
 </edit-box>
 </div>
