@@ -850,6 +850,61 @@ class Opportunity extends EntityController {
         $this->apiResponse($_result);
     }
 
+    function ALL_reconsolidateResults() {
+        $this->requireAuthentication();
+
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+
+        $opportunity = $this->requestedEntity;
+
+        $opportunity->checkPermission('@control');
+        
+        $app = App::i();
+
+        $conn = $app->em->getConnection();
+
+        $conn->executeQuery("
+            UPDATE 
+                registration
+            SET
+                consolidated_result = '0'
+            WHERE
+                opportunity_id = :opp AND
+                id IN (
+                    SELECT registration_id 
+                    FROM registration_evaluation
+                )
+        ", ['opp' => $opportunity->id]);
+
+        $evaluations = $conn->fetchAll("
+            SELECT re.id, r.number 
+            FROM registration_evaluation re, registration r
+            WHERE
+                r.id = re.registration_id AND
+                re.registration_id IN (
+                    SELECT id FROM registration WHERE opportunity_id = :opp
+                )
+            ORDER BY re.id ASC
+        ", ['opp' => $opportunity->id]); 
+        
+        $repo = $app->repo('RegistrationEvaluation');
+        $c = 0;
+        $num = count($evaluations);
+        foreach ($evaluations as $ev) {
+            $c++;
+            $ev = (object) $ev;
+            $eval = $repo->find($ev->id);
+            $app->log->debug("({$c}/{$num}) reconsolidando avaliação da inscrição {$ev->number}");
+            $eval->setEvaluationData($eval->getEvaluationData());
+            $eval->registration->__skipQueuingPCacheRecreation = true;
+            $eval->save(true);
+
+            $app->em->clear();
+        }
+
+    }
+
     function GET_exportFields() {
         $this->requireAuthentication();
 
