@@ -450,8 +450,6 @@ class Module extends \MapasCulturais\Module{
                 $r->save(true);
 
                 $new_registrations[] = $reg;
-
-                $app->em->clear();
             }
 
             $target_opportunity->save(true);
