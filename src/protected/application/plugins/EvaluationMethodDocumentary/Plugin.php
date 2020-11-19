@@ -195,7 +195,6 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             foreach ($registrations as $registration) {
                 $app->log->debug("Alterando status da inscrição {$registration->number} para {$new_status}");
                 $app->disableAccessControl();
-                $registration->consolidatedResult = "$new_status";
                 $registration->setStatus($new_status);
                 $registration->save(true);
                 $app->enableAccessControl();
