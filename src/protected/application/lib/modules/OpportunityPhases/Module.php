@@ -410,10 +410,6 @@ class Module extends \MapasCulturais\Module{
 
             $target_opportunity ->checkPermission('@control');
 
-            if($target_opportunity->previousPhaseRegistrationsImported){
-                $this->errorJson(\MapasCulturais\i::__('As inscrições já foram importadas para esta fase'), 400);
-            }
-
             $previous_phase = self::getPreviousPhase($target_opportunity);
 
             $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
@@ -431,6 +427,11 @@ class Module extends \MapasCulturais\Module{
 
             $app->disableAccessControl();
             foreach ($registrations as $r){
+                if ($r->nextPhaseRegistrationId) {
+                    continue;
+                }
+                $app->log->debug("Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
+
                 $reg = new Entities\Registration;
                 $reg->owner = $r->owner;
                 $reg->opportunity = $target_opportunity;
@@ -450,8 +451,6 @@ class Module extends \MapasCulturais\Module{
 
                 $new_registrations[] = $reg;
             }
-
-            $target_opportunity->previousPhaseRegistrationsImported = true;
 
             $target_opportunity->save(true);
 
