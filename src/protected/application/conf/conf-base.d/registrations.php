@@ -9,6 +9,13 @@ return [
         'optional' => \MapasCulturais\i::__('Opcional')
     ),
 
+    /* 
+    Array que define quais propriedades do reponsável serão exportados.
+    
+    ex: `["genero","raca"]` 
+    */
+    'registration.reportOwnerProperties' => json_decode(env('REGISTRATION_REPORT_OWNER_PROPERTIES', '["genero"]')),
+
     'registration.propertiesToExport' => array(
         'id',
         'name',
