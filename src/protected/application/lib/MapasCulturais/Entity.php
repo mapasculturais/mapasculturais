@@ -231,8 +231,9 @@ abstract class Entity implements \JsonSerializable{
     function setStatus(int $status){
         $app = App::i();
 
+        $hook_class_path = $this->getHookClassPath();
+        
         if($status != $this->status){
-            $hook_class_path = $this->getHookClassPath();
             
             switch($status){
                 case self::STATUS_ARCHIVED:
