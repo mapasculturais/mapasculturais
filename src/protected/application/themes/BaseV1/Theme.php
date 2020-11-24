@@ -988,7 +988,7 @@ class Theme extends MapasCulturais\Theme {
 
 
         $format_doc = function($documento){
-            $documento = trim(str_replace(['%','.','/','-'],'', $documento));
+            $documento = preg_replace('#[^\d]*#','',$documento);
             $formatted = false;
             if (strlen($documento) == 11) {
                 $b1 = substr($documento,0,3);
@@ -1016,7 +1016,7 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where', function(&$where, $keyword) use($format_doc) {
+        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) use($format_doc) {
 
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%','.','/','-'],'', $keyword));
