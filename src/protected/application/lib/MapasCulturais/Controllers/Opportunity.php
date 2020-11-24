@@ -86,7 +86,9 @@ class Opportunity extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
+        $date = date('Y-m-d.Hi');
+
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes--%s"), $entity->id, $date);
 
         //$this->reportOutput('report', ['entity' => $entity], $filename);
         $this->reportOutput('report-csv', ['entity' => $entity], $filename);
@@ -100,7 +102,10 @@ class Opportunity extends EntityController {
         $entity->checkPermission('@control');
         $app->controller('Registration')->registerRegistrationMetadata($entity);
         $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
+
+        $date = date('Y-m-d.Hi');
+
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos--%s"), $entity->id, $date);
 
         $this->reportOutput('report-drafts-csv', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename );
      }
