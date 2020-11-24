@@ -216,7 +216,7 @@ trait EntityAgentRelation {
         if($this->isUserAdmin($user))
             return true;
 
-        $ids = $this->getIdsOfUsersWithControl();
+        $ids = $this->getIdsOfUsersWithControl() ?: [];
 
         return in_array($user->id, $ids);
     }
