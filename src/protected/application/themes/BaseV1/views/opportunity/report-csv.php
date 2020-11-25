@@ -145,8 +145,8 @@ foreach($registrations as $i => $r) {
     $outRow = array_values(array_filter([
         $r->number,
         showIfField($entity->projectName, $r->projectName),
-        $result_string,
-        returnStatus($origial_r),
+        $result_string ?: '""',
+        returnStatus($origial_r) ?: '""',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('H:i') : '-'),
         showIfField($entity->registrationCategories, $r->category)
