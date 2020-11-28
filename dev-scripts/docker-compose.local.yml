@@ -5,7 +5,7 @@ services:
       context: ../
       dockerfile: compose/local/Dockerfile
     ports:
-      - "80:80"
+      - "81:80"
     volumes:
       - ../src/protected:/var/www/html/protected
       - ../scripts:/var/www/scripts
@@ -26,7 +26,7 @@ services:
       # - DB_PASS=mapas
 
       - APP_LCODE=pt_BR,es_ES
-      - ACTIVE_THEME=SpCultura
+      - ACTIVE_THEME=Saude
       - APP_MODE=development
 
     depends_on:
@@ -44,6 +44,6 @@ services:
     ports:
       - "5470:5432"
     volumes:
-      - ../docker-data/postgres:/var/lib/postgresql/data
+      - ../docker-data/postgres:/var/lib/postgresql
       - ../db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
       - ../db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql

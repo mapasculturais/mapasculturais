@@ -10,10 +10,10 @@ return [
     'themes.active' => env('ACTIVE_THEME', 'MapasCulturais\Themes\BaseV1'),
 
     /* Nome do site. É utilizado para a formação dos títulos das páginas. */
-    'app.siteName' => env('SITE_NAME', i::__('Mapas Culturais')),
+    'app.siteName' => env('SITE_NAME', i::__('Mapas da Saúde')),
 
     /* Breve descrição do site. É utilizado como texto de compartilhamento da página principal do site. */
-    'app.siteDescription' => env('SITE_DESCRIPTION', i::__('O Mapas Culturais é uma plataforma livre para mapeamento cultural.')),
+    'app.siteDescription' => env('SITE_DESCRIPTION', i::__('Mapa da Saúde.')),
     
     /* Ids dos selos verificadores. Para utilizar múltiplos selos informe os ids separados por vírgula. */
     'app.verifiedSealsIds' => explode(',', env('VERIFIED_SEALS', '1')),
@@ -30,7 +30,7 @@ return [
     Define o modo em que a aplicação está rodando. 
     Os valores possíveis são as constantes `APPMODE_PRODUCTION`, `APPMODE_STAGING` e `APPMODE_DEVELOPMENT`.
     */
-    'app.mode' => env('APP_MODE', APPMODE_PRODUCTION),
+    'app.mode' => env('APP_MODE', APPMODE_DEVELOPMENT),
 
     /* 
     Define se o Doctrine está rodando em modo de desenvolvimento, o que basicamente evita o cacheamento dos metadados do mapeamento do ORM.

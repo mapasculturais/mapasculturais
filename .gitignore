@@ -11,6 +11,7 @@ db/arquivos.tar.gz
 src/protected/application/conf/config.php
 src/protected/application/conf/conf-test-local.php
 src/protected/application/lib/MapasCulturais/DoctrineProxies/*
+src/protected/DoctrineProxies/*
 src/protected/application/themes/mapasculturais-*
 src/protected/vendor
 src/pub
