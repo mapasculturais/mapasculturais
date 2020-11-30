@@ -896,11 +896,14 @@ class Opportunity extends EntityController {
         $repo = $app->repo('RegistrationEvaluation');
         $c = 0;
         $num = count($evaluations);
+
+        $app->applyHookBoundTo($this, 'controller(opportunity).reconsolidateResult', [$opportunity, &$evaluations]);
+
         foreach ($evaluations as $ev) {
             $c++;
             $ev = (object) $ev;
             $eval = $repo->find($ev->id);
-            $app->log->debug("({$c}/{$num}) reconsolidando avaliação da inscrição {$ev->number}");
+            $app->log->debug("({$c}/{$num}) reconsolidando avaliação da inscrição {$ev->number} (ID: {$ev->id})");
             $eval->setEvaluationData($eval->getEvaluationData());
             $eval->registration->__skipQueuingPCacheRecreation = true;
             $eval->save(true);
