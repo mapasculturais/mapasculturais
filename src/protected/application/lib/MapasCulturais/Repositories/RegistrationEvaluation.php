@@ -7,7 +7,7 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
      *
      * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @param \MapasCulturais\Entities\User $user
-     * @return \MapasCulturais\Entities\Registration[]
+     * @return \MapasCulturais\Entities\RegistrationEvaluation[]
      */
     function findByOpportunityAndUser(\MapasCulturais\Entities\Opportunity $opportunity, $user){
         if($user->is('guest') || !$opportunity->id){
