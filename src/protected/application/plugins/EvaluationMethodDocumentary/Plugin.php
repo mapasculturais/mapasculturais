@@ -167,6 +167,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 die;
             }
             $new_status = intval($this->data['to']);
+            
+            $apply_status = $this->data['status'] ?? false;
+            if ($apply_status == 'all') {
+                $status = 'r.status > 0';
+            } else {
+                $status = 'r.status = 1';
+            }
     
             $opp->checkPermission('@control');
 
@@ -179,7 +186,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             WHERE 
                 r.opportunity = :opportunity_id AND
                 r.consolidatedResult = :consolidated_result AND
-                r.status > 0
+                $status
             ");
         
             $params = [
@@ -201,7 +208,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
 
     
-            $this->finish("Processo finalizado", 200);
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
     
         });
 
