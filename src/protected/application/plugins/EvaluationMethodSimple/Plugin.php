@@ -125,7 +125,15 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
                 die;
             }
+
             $new_status = intval($this->data['to']);
+            
+            $apply_status = $this->data['status'] ?? false;
+            if ($apply_status == 'all') {
+                $status = 'r.status > 0';
+            } else {
+                $status = 'r.status = 1';
+            }
     
             $opp->checkPermission('@control');
 
@@ -138,7 +146,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             WHERE 
                 r.opportunity = :opportunity_id AND
                 r.consolidatedResult = :consolidated_result AND
-                r.status > 0
+                $status
             ");
         
             $params = [
