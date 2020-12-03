@@ -2,8 +2,11 @@
 use MapasCulturais\i;
 $plugin = $app->plugins['EvaluationMethodTechnical'];
 
+$params = ['registration' => $entity, 'opportunity' => $opportunity];
 ?>
+<?php $this->applyTemplateHook('evaluationForm.technical', 'before', $params); ?>
 <div ng-controller="TechnicalEvaluationMethodFormController" class="technical-evaluation-form">
+    <?php $this->applyTemplateHook('evaluationForm.technical', 'begin', $params); ?>
     <section ng-repeat="section in ::data.sections">
         <table>
             <tr>
@@ -45,5 +48,6 @@ $plugin = $app->plugins['EvaluationMethodTechnical'];
         <?php i::_e('Pontuação Total'); ?>: <strong>{{total(total)}}</strong><br>
         <?php i::_e('Pontuação Máxima'); ?>: <strong>{{max(total)}}</strong>
     </div>
-
+    <?php $this->applyTemplateHook('evaluationForm.technical', 'end', $params); ?>
 </div>
+<?php $this->applyTemplateHook('evaluationForm.technical', 'after', $params); ?>
