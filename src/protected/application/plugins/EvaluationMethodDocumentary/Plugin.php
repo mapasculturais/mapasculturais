@@ -208,7 +208,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
 
     
-            $this->finish("Processo finalizado", 200);
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
     
         });
 
