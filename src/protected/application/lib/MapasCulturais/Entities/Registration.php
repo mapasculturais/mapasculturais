@@ -508,9 +508,7 @@ class Registration extends \MapasCulturais\Entity
     
 
     function setStatus($status){
-        if(App::i()->user->is('admin')) {
-            $this->status = $status;
-        }
+        // do nothing
     }
 
     function _setStatusTo($status){

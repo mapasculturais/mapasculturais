@@ -5,6 +5,7 @@ namespace EvaluationMethodSimple;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Registration;
 
 class Plugin extends \MapasCulturais\EvaluationMethod {
 
@@ -161,8 +162,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             // faça um foreach em cada registration e pegue as suas avaliações
             foreach ($registrations as $registration) {
                 $app->log->debug("Alterando status da inscrição {$registration->number} para {$new_status}");
+                
+                switch ($new_status) {
+                    case Registration::STATUS_DRAFT:
+                        $registration->setStatusToDraft();
+                    break;
+                    case Registration::STATUS_INVALID:
+                        $registration->setStatusToInvalid();
+                    break;
+                    case Registration::STATUS_NOTAPPROVED:
+                        $registration->setStatusToNotApproved();
+                    break;
+                    case Registration::STATUS_WAITLIST:
+                        $registration->setStatusToWaitlist();
+                    break;
+                    case Registration::STATUS_APPROVED:
+                        $registration->setStatusToApproved();
+                    break;
+                    default:
+                        $registration->_setStatusTo($new_status);
+                    
+                }
                 $app->disableAccessControl();
-                $registration->setStatus($new_status);
                 $registration->save(true);
                 $app->enableAccessControl();
             }
