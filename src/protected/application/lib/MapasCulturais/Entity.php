@@ -475,7 +475,6 @@ abstract class Entity implements \JsonSerializable{
      * <code>
      * /**
      *  * Example
-     *  {@*}
      *  array(
      *     'name' => array(
      *         'required' => true,
@@ -849,7 +848,6 @@ abstract class Entity implements \JsonSerializable{
      * <code>
      * /**
      *  * Example of the array of errors:
-     *  {@*}
      * array(
      *     'name' => [ 'The name is required' ],
      *     'email' => [ 'The first error message', 'The second error message' ]
