@@ -785,7 +785,7 @@ class App extends \Slim\Slim{
         // @TODO veridicar se isto está sendo usado, se não remover
         $this->registerAuthProvider('OpenID');
         $this->registerAuthProvider('logincidadao');
-
+        $this->registerAuthProvider('keycloak');
 
         // register controllers
 
