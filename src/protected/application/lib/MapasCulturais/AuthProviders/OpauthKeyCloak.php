@@ -35,20 +35,6 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
             'callback_url' => $app->createUrl('auth','response')
         ];
         
-        
-        //  SaaS -- BEGIN
-        $app->hook('template(subsite.<<*>>.tabs):end', function() use($app){
-            if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
-                $this->part('singles/subsite--login-cidadao--tab');
-            }
-        });
-        
-        $app->hook('template(subsite.<<*>>.tabs-content):end', function() use($app){
-            if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
-                $this->part('singles/subsite--login-cidadao--content');
-            }
-        });
-        
         $metadata = [
             'key_cloak__id' => ['label' => 'KeyCloak Client ID', 'private' => 'true'],
             'key_cloak__secret' => ['label' => 'Key Cloak Client Secret', 'private' => 'true']
@@ -99,7 +85,7 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
         
         if($config['logout_url']){
             $app->hook('auth.logout:after', function() use($app, $config){
-                $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
+                $app->redirect($config['logout_url'] . '?redirect_uri=' . $app->baseUrl);
             });
         }
         
