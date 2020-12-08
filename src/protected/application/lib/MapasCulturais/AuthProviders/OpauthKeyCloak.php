@@ -227,21 +227,27 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
         $user->authProvider = $response['auth']['provider'];
         $user->authUid = $response['auth']['uid'];
         $user->email = $response['auth']['raw']['email'];
+        $user->cpf = $response['auth']['raw']['CPF'];
+        $user->telefone = $response['auth']['raw']['TELEFONE'];
         $app->em->persist($user);
-
         // cria um agente do tipo user profile para o usuário criado acima
         $agent = new Entities\Agent($user);
         $agent->status = 0;
 
         if(isset($response['auth']['raw']['name']) && isset($response['auth']['raw']['surname'])){
             $agent->name = $response['auth']['raw']['name'] . ' ' . $response['auth']['raw']['surname'];
+            $agent->nomeCompleto = $response['auth']['raw']['name'] . ' ' . $response['auth']['raw']['surname'];
         }else if(isset($response['auth']['raw']['name'])){
-            $agent->name = $response['auth']['raw']['name'];
+            $agent->name            = $response['auth']['raw']['name'];
+            $agent->nomeCompleto    = $response['auth']['raw']['name'];
         }else{
-            $agent->name = '';
+            $agent->name        = '';
+            $agent->nomeCompleto= '';
         }
 
         $agent->emailPrivado = $user->email;
+        $agent->documento = $user->cpf;
+        $agent->telefone1 = $user->telefone;
         $agent->save();
         $app->em->persist($agent);
         $app->em->flush();
