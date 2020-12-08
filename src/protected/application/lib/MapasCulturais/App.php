@@ -762,7 +762,7 @@ class App extends \Slim\Slim{
         $this->registerAuthProvider('OpenID');
         $this->registerAuthProvider('logincidadao');
 
-        
+
         // register controllers
 
         $this->registerController('site',    'MapasCulturais\Controllers\Site');
