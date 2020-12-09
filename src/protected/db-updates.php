@@ -1291,7 +1291,8 @@ $$
         }
     },
 
-    'create view evaluations' => function() use($conn) {
+    'CREATE VIEW evaluation' => function() use($conn) {
+        
         $conn->executeQuery("
             CREATE VIEW evaluations AS (
                 SELECT 
@@ -1302,48 +1303,47 @@ $$
                     opportunity_id,
                     valuer_user_id,
                     valuer_agent_id,
-                    max(evaluation_id) as evaluation_id,
-                    max(evaluation_result) as evaluation_result,
-                    max(evaluation_status) as evaluation_status
+                    max(evaluation_id) AS evaluation_id,
+                    max(evaluation_result) AS evaluation_result,
+                    max(evaluation_status) AS evaluation_status
                 FROM (
                     SELECT 
-                        r.id as registration_id, 
-                        r.number as registration_number, 
-                        r.category as registration_category, 
-                        r.agent_id as registration_agent_id, 
-                        re.user_id as valuer_user_id, 
-                        a.id as valuer_agent_id, 
+                        r.id AS registration_id, 
+                        r.number AS registration_number, 
+                        r.category AS registration_category, 
+                        r.agent_id AS registration_agent_id, 
+                        re.user_id AS valuer_user_id, 
+                        a.id AS valuer_agent_id, 
                         r.opportunity_id,
-                        re.id as evaluation_id,
-                        re.result as evaluation_result,
-                        re.status as evaluation_status
+                        re.id AS evaluation_id,
+                        re.result AS evaluation_result,
+                        re.status AS evaluation_status
                     FROM registration r 
-                        join registration_evaluation re 
-                            on re.registration_id = r.id 
+                        JOIN registration_evaluation re 
+                            ON re.registration_id = r.id 
                         JOIN agent a 
                             ON a.user_id = re.user_id
-
                         where 
                             r.status > 0
                     UNION
                     SELECT 
-                        r2.id as registration_id, 
-                        r2.number as registration_number, 
-                        r2.category as registration_category,
-                        r2.agent_id as registration_agent_id, 
-                        p2.user_id as valuer_user_id, 
-                        a2.id as valuer_agent_id, 
+                        r2.id AS registration_id, 
+                        r2.number AS registration_number, 
+                        r2.category AS registration_category,
+                        r2.agent_id AS registration_agent_id, 
+                        p2.user_id AS valuer_user_id, 
+                        a2.id AS valuer_agent_id, 
                         r2.opportunity_id,
-                        NULL as evaluation_id,
-                        NULL as evaluation_result,
-                        NULL as evaluation_status
+                        NULL AS evaluation_id,
+                        NULL AS evaluation_result,
+                        NULL AS evaluation_status
                     FROM registration r2 
-                        join pcache p2 
-                            on r2.id = p2.object_id
+                        JOIN pcache p2 
+                            ON r2.id = p2.object_id
                         JOIN agent a2 
                             ON a2.user_id = p2.user_id
 
-                        where 
+                        WHERE 
                             p2.object_type = 'MapasCulturais\Entities\Registration' AND 
                             p2.action = 'viewUserEvaluation' AND
                             
@@ -1357,8 +1357,7 @@ $$
                                         object_id = r2.opportunity_id
                                 )
                             ) 
-                ) as evaluations_view 
-                WHERE opportunity_id = 1
+                ) AS evaluations_view 
                 GROUP BY
                     registration_id,
                     registration_number,
