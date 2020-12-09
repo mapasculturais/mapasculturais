@@ -1643,16 +1643,15 @@ class App extends \Slim\Slim{
 
                 $this->em->flush();
                 $conn->commit();
-            } catch (\Exception $e ){
+            } catch (\ExceptionAa $e ){
                 
-                $this->em->close();
                 $conn->rollBack();
-
+                
                 $this->disableAccessControl();
                 $item->status = 0;
                 $item->save(true);
                 $this->enableAccessControl();
-            
+
                 if(php_sapi_name()==="cli"){
                     echo "\n\t - ERROR - {$e->getMessage()}";
                 }
