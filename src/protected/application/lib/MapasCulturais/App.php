@@ -149,7 +149,7 @@ class App extends \Slim\Slim{
     protected $_excludeHooks = [];
 
 
-    protected $_accessControlEnabled = true;
+    protected $_disableAccessControl = 0;
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
@@ -621,15 +621,17 @@ class App extends \Slim\Slim{
     }
 
     function enableAccessControl(){
-        $this->_accessControlEnabled = true;
+        if ($this->_disableAccessControl > 0) {
+            $this->_disableAccessControl--;
+        }
     }
 
     function disableAccessControl(){
-        $this->_accessControlEnabled = false;
+        $this->_disableAccessControl++;
     }
 
     function isAccessControlEnabled(){
-        return $this->_accessControlEnabled;
+        return $this->_disableAccessControl == 0;
     }
 
     function enableWorkflow(){
