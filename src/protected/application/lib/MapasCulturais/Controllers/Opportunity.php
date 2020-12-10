@@ -488,6 +488,10 @@ class Opportunity extends EntityController {
     function _getOpportunityRegistrations($opportunity, array $registration_ids){
         $app = App::i();
         
+        if (empty($registration_ids)) {
+            return [];
+        }
+
         sort($registration_ids);
 
         $registration_ids = implode(',', $registration_ids);
@@ -506,7 +510,7 @@ class Opportunity extends EntityController {
                 JOIN p.user u
                 INNER JOIN u.profile a WITH a.id IN (:aids)
             WHERE 
-                p.action = 'viewUserEvaluation' AND
+                p.action = 'viewPrivateData' AND
                 r.id IN ({$registration_ids})
 
         ");      
@@ -743,15 +747,12 @@ class Opportunity extends EntityController {
             $sql_limit
         ", $params);
 
-        
         $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
-        // $valuers_ids = array_filter(array_unique(array_map(function($r) { return $r['valuer_agent_id']; }, $evaluations)));
-
+        
         $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
-
-
+        
         $_result = [];
         
         foreach($evaluations as $eval) {
@@ -761,7 +762,7 @@ class Opportunity extends EntityController {
                 'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null
             ];
         }
-
+        
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
             return $_result;
         }
