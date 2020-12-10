@@ -23,7 +23,6 @@ class FileSystem extends \MapasCulturais\Storage{
      * /**
      *  * Sample Configuration (optional)
      *  * In below example the files will be accessible at url http://mapasculturais.domain/relative/url/
-     *  {@*}
      *  new \MapasCulturais\Storage\FileSystem(array(
      *      'dir' => '/full/path/',
      *      'baseUrl' => '/relative/url/'

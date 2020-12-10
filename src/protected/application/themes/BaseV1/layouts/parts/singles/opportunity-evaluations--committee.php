@@ -72,8 +72,8 @@ $method = $entity->getEvaluationMethod();
                 <div ng-if="admin.status === -5" class="alert warning"><?php i::_e('Aguardando confirmação do avaliador')?></div>
                 <div class="committee--info ">
                     <span class="btn btn-danger delete alignright" ng-click="deleteAdminRelation(admin)"><?php i::_e("Excluir");?></span>
-                    <span ng-if="admin.hasControl" class="btn btn-warning delete alignright mr10" ng-click="disableAdminRelation(admin)"><?php i::_e("Desabilitar");?></span>
-                    <span ng-if="!admin.hasControl" class="btn btn-default add alignright mr10" ng-click="enableAdminRelation(admin)"><?php i::_e("Habilitar");?></span>
+                    <span ng-if="admin.status == 1" class="btn btn-warning delete alignright mr10" ng-click="disableAdminRelation(admin)"><?php i::_e("Desabilitar");?></span>
+                    <span ng-if="admin.status == 8" class="btn btn-default add alignright mr10" ng-click="enableAdminRelation(admin)"><?php i::_e("Habilitar");?></span>
                     <?php if($entity->canUser('reopenValuerEvaluations')): ?>
                         <span ng-if="admin.status === 10" class="btn btn-success alignright mr10" ng-click="reopenEvaluations(admin)"><?php i::_e("Reabrir avaliações");?></span>
                     <?php endif; ?>
