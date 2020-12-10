@@ -8,9 +8,13 @@ use MapasCulturais\App;
 /**
  * AgentRelation
  *
- *
  * @property-read int $id The Id of the relation.
  * @property string $group Agent relation group name.
+ * @property bool $hasControl
+ * @property int $status
+ * @property int $objectId
+ * @property \MapasCulturais\Entities\Agent $agent
+ * @property \DateTime $createTimestamp
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
  *

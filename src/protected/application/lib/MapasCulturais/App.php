@@ -149,7 +149,7 @@ class App extends \Slim\Slim{
     protected $_excludeHooks = [];
 
 
-    protected $_accessControlEnabled = true;
+    protected $_disableAccessControlCount = 0;
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
@@ -613,6 +613,7 @@ class App extends \Slim\Slim{
         for ($i = 0; $i < $length; $i++) {
             $token .= $codeAlphabet[self::crypto_rand_secure(0, $max)];
         }
+        
         return $token;
     }
 
@@ -621,15 +622,17 @@ class App extends \Slim\Slim{
     }
 
     function enableAccessControl(){
-        $this->_accessControlEnabled = true;
+        if ($this->_disableAccessControlCount > 0) {
+            $this->_disableAccessControlCount--;
+        }
     }
 
     function disableAccessControl(){
-        $this->_accessControlEnabled = false;
+        $this->_disableAccessControlCount++;
     }
 
     function isAccessControlEnabled(){
-        return $this->_accessControlEnabled;
+        return $this->_disableAccessControlCount == 0;
     }
 
     function enableWorkflow(){
@@ -1641,16 +1644,15 @@ class App extends \Slim\Slim{
 
                 $this->em->flush();
                 $conn->commit();
-            } catch (\Exception $e ){
+            } catch (\ExceptionAa $e ){
                 
-                $this->em->close();
                 $conn->rollBack();
-
+                
                 $this->disableAccessControl();
                 $item->status = 0;
                 $item->save(true);
                 $this->enableAccessControl();
-            
+
                 if(php_sapi_name()==="cli"){
                     echo "\n\t - ERROR - {$e->getMessage()}";
                 }

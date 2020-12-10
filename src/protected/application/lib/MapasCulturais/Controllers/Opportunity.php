@@ -488,6 +488,10 @@ class Opportunity extends EntityController {
     function _getOpportunityRegistrations($opportunity, array $registration_ids){
         $app = App::i();
         
+        if (empty($registration_ids)) {
+            return [];
+        }
+
         sort($registration_ids);
 
         $registration_ids = implode(',', $registration_ids);
@@ -495,7 +499,7 @@ class Opportunity extends EntityController {
         $committee = $this->_getOpportunityCommittee($opportunity->id);
         $params = [
             'opp' => $opportunity,
-            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
+            'aids' => array_map(function ($el){ return $el['id']; }, $committee),
         ];
         $q = $app->em->createQuery("
             SELECT
@@ -505,18 +509,11 @@ class Opportunity extends EntityController {
                 JOIN p.owner r WITH r.opportunity = :opp
                 JOIN p.user u
                 INNER JOIN u.profile a WITH a.id IN (:aids)
-            WHERE p.action = 'viewUserEvaluation'
-        ");
-      
-        if (isset($this->data['@limit'])) {
-            $limit = intval($this->data['@limit']);
-            $q->setMaxResults($limit);
+            WHERE 
+                p.action = 'viewPrivateData' AND
+                r.id IN ({$registration_ids})
 
-            if (isset($this->data['@page'])) {
-                $page = intval($this->data['@page']);
-                $q->setFirstResult(($page - 1) * $limit);
-            }
-        }        
+        ");      
 
         $q->setParameters($params);
         
@@ -546,8 +543,11 @@ class Opportunity extends EntityController {
             }
 
             $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-            $registrations = $registrations_query->find();
-    
+            $registrations = [];
+            foreach($registrations_query->find() as $reg){
+                $registrations[$reg['id']] = $reg;
+            }
+
             return $registrations;
         } else {
             return [];
@@ -555,15 +555,19 @@ class Opportunity extends EntityController {
 
     }
 
-    function _getOpportunityEvaluations($opportunity, array $registration_ids) {
+    function _getOpportunityEvaluations($opportunity, $evaluation_ids) {
         $app = App::i();
 
-        sort($registration_ids);
-        $registration_ids = implode(',', $registration_ids); 
+        if (empty($evaluation_ids)) {
+            return [];
+        }
+        
+        sort($evaluation_ids);
+        $evaluation_ids = implode(',', $evaluation_ids); 
 
         $edata = [
             '@select' => 'id,result,evaluationData,registration,user,status',
-            'registration' => "IN({$registration_ids})"
+            'id' => "IN({$evaluation_ids})"
         ];
         
         foreach($this->data as $k => $v){
@@ -581,7 +585,7 @@ class Opportunity extends EntityController {
                 $e['agent'] = $valuer_by_user[$e['user']];
                 $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
                 $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
-                $evaluations[$e['user'] . ':' . $e['registration']] = $e;
+                $evaluations[$e['id']] = $e;
             }
         }
         return $evaluations;
@@ -680,173 +684,85 @@ class Opportunity extends EntityController {
         $this->requireAuthentication();
         
         $app = App::i();
-        
-        $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';
-        
-        if(preg_match('#(valuer|registration|evaluation|category)( +(asc|desc))?#i', $_order, $matches)){
-            $order = $matches[1];
-            $by = isset($matches[3]) ? strtolower($matches[3]) : 'asc';
-        } else {
-            $this->apiErrorResponse('invalid @order value');
-        }
+        $conn = $app->em->getConnection();
         
         $opportunity = $this->_getOpportunity($opportunity_id);
 
         $committee = $this->_getOpportunityCommittee($opportunity_id);
 
-        $params = [
-            'opp' => $opportunity,
-            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
-        ];
+        foreach($committee as $valuer){
+            $valuer_by_id[$valuer['user']] = $valuer;
+        }
+        
+        $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+                
+        $params = ['opp' => $opportunity->id];
+        
+        $queryNumberOfResults = $conn->fetchColumn("
+            SELECT count(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opp AND
+                valuer_user_id IN({$users})
+        ", $params);
 
-        //variavel utilizada para dizer para a paginação qual o limite maximo para ser paginado
-        $queryNumberOfResults = $app->em->createQuery("  
-            SELECT
-                count(r.id)
-            FROM
-                MapasCulturais\Entities\RegistrationPermissionCache p
-                JOIN p.owner r WITH r.opportunity = :opp
-                JOIN p.user u
-                INNER JOIN u.profile a WITH a.id IN (:aids)
-            WHERE p.action = 'viewUserEvaluation'
-        ")
-        ->setParameters($params)
-        ->getSingleScalarResult();
-        $valuer_by_user = [];
+        $valuer_by_id = [];
         
         foreach($committee as $valuer){
-            $valuer_by_user[$valuer['user']] = $valuer;
+            $valuer_by_id[$valuer['id']] = $valuer;
         }
-        
-        $q = $app->em->createQuery("
-            SELECT
-                r.id AS registration, a.userId AS user, a.id AS valuer
-            FROM
-                MapasCulturais\Entities\RegistrationPermissionCache p
-                JOIN p.owner r WITH r.opportunity = :opp
-                JOIN p.user u
-                INNER JOIN u.profile a WITH a.id IN (:aids)
-            WHERE p.action = 'viewUserEvaluation'
-        ");
-        
-        $params = [
-            'opp' => $opportunity,
-            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
-        ];
-        
-        $q->setParameters($params);
-        
-        $permissions = $q->getArrayResult();
-        $registration_ids = array_unique(array_map(function($r) { return $r['registration']; }, $permissions));
-        
-        if($registration_ids){
-            $registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
-            $evaluations = $this->_getOpportunityEvaluations($opportunity, $registration_ids);
+
+        $sql_limit = "";
+        if (isset($this->data['@limit'])) {
+            $limit = intval($this->data['@limit']);
             
-        } else {
-            $registrations = [];
-            $evaluations = [];
+            $sql_limit = "LIMIT $limit";
+
+            if (isset($this->data['@page'])) {
+                $page = intval($this->data['@page']);
+                $offset = ($page - 1) * $limit;
+                $sql_limit .= " OFFSET {$offset}";
+            }
+        }  
+
+        $sql_status = "";
+        if (isset($this->data['status'])) {
+            if(preg_match('#EQ\( *(-?\d) *\)#', $this->data['status'], $matches)) {
+                $status = $matches[1];
+                $sql_status = " AND evaluation_status = {$status}";
+            }
         }
         
-        $registrations_by_valuer = [];
-        foreach($permissions as $p){
-            if(!isset($registrations_by_valuer[$p['valuer']])){
-                $registrations_by_valuer[$p['valuer']] = [];
-            }
-            $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
-        }
+        $evaluations = $conn->fetchAll("
+            SELECT 
+                registration_id, 
+                evaluation_id, 
+                valuer_agent_id
+            FROM evaluations
+            WHERE
+                opportunity_id = :opp AND
+                valuer_user_id IN({$users})
+                $sql_status
+            ORDER BY evaluation_id DESC
+            $sql_limit
+        ", $params);
+
+        $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
+        $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
+        
+        $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
+        $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
         
         $_result = [];
-
-        $status_id = (isset($this->data['status']) && !is_null($this->data['status'])) ? filter_var($this->data['status'],FILTER_SANITIZE_NUMBER_INT) : null;
-
-        if(!is_null($status_id) && $status_id >= 0){
-            $edata['status'] =  $this->data['status'];
+        
+        foreach($evaluations as $eval) {
+            $_result[] = [
+                'evaluation' => $_evaluations[$eval['evaluation_id']] ?? null,
+                'registration' => $_registrations[$eval['registration_id']] ?? null,
+                'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null
+            ];
         }
         
-        foreach($registrations as &$registration){
-            foreach($valuer_by_user as $user_id => $valuer){
-                if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])) {
-
-                    $has_evaluation = isset($evaluations[$user_id . ':' . $registration['id']]);
-                    if ($status_id == null) {
-                        $_result[] = [
-                            'registration' => $registration,
-                            'evaluation' => ($has_evaluation) ? $evaluations[$user_id . ':' . $registration['id']] : null,
-                            'valuer' => $valuer
-                        ];
-                    } else {
-                        if ($status_id >= 0 && $has_evaluation){
-                            $_result[] = [
-                                'registration' => $registration,
-                                'evaluation' => $evaluations[$user_id . ':' . $registration['id']],
-                                'valuer' => $valuer
-                            ];
-                        }
-
-                        if ($status_id < 0 && !$has_evaluation){
-                            $_result[] = [
-                                'registration' => $registration,
-                                'evaluation' => null,
-                                'valuer' => $valuer
-                            ];
-                        }
-                    }
-
-                }
-            }
-        }
-        
-        if(isset($this->data['@omitEmpty'])){
-            $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
-        }
-
-        if(isset($this->data['evaluated'])){
-            if ( $this->data['evaluated'] === 'EQ(1)') {
-                $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
-            }
-            if ( $this->data['evaluated'] === 'EQ(-1)') {
-                $_result = array_filter($_result, function($e) { if($e['evaluation'] == null) return $e; });
-            }
-        }
-
-        list($order, $order_by) = explode(' ', $_order);
-        
-        $order_by = $order_by == 'asc' ? 1 : -1;
-        
-        switch ($order) {
-            case 'valuer':
-                usort($_result, function($e1, $e2) use($order_by){
-                    return strcasecmp($e1['valuer']['name'], $e2['valuer']['name']) * $order_by;
-                });
-                break;
-                
-            case 'category':
-                usort($_result, function($e1, $e2) use($order_by){
-                    return strcasecmp($e1['registration']['category'], $e2['registration']['category']) * $order_by;
-                });
-                break;
-                
-            case 'registration':
-                usort($_result, function($e1, $e2) use($order_by){
-                    if($e1['registration']['id'] > $e2['registration']['id']){
-                        return $order_by;
-                    } elseif($e1['registration']['id'] < $e2['registration']['id']){
-                        return $order_by * -1;
-                    } else {
-                        return 0;
-                    }
-                });
-                break;
-                
-            case 'evaluation':
-                usort($_result, function($e1, $e2) use($order_by, $opportunity){
-                    $em = $opportunity->getEvaluationMethod();
-                    return $em->cmpValues($e1['evaluation']['result'], $e2['evaluation']['result']) * $order_by;
-                });
-                break;
-        }
-
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
             return $_result;
         }
