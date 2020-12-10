@@ -149,7 +149,7 @@ class App extends \Slim\Slim{
     protected $_excludeHooks = [];
 
 
-    protected $_disableAccessControl = 0;
+    protected $_disableAccessControlCount = 0;
     protected $_workflowEnabled = true;
 
     protected $_plugins = [];
@@ -613,6 +613,7 @@ class App extends \Slim\Slim{
         for ($i = 0; $i < $length; $i++) {
             $token .= $codeAlphabet[self::crypto_rand_secure(0, $max)];
         }
+        
         return $token;
     }
 
@@ -621,17 +622,17 @@ class App extends \Slim\Slim{
     }
 
     function enableAccessControl(){
-        if ($this->_disableAccessControl > 0) {
-            $this->_disableAccessControl--;
+        if ($this->_disableAccessControlCount > 0) {
+            $this->_disableAccessControlCount--;
         }
     }
 
     function disableAccessControl(){
-        $this->_disableAccessControl++;
+        $this->_disableAccessControlCount++;
     }
 
     function isAccessControlEnabled(){
-        return $this->_disableAccessControl == 0;
+        return $this->_disableAccessControlCount == 0;
     }
 
     function enableWorkflow(){
