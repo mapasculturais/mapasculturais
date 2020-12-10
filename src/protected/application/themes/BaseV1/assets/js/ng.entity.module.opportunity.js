@@ -301,21 +301,10 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
             return deferred.promise;
         },
         disableValuer: function(relation){
-            return $http.post(this.getUrl('disableValuer'), {relationId: relation.id})
-                .success(
-                    function(response){
-                        deferred.resolve(response);
-                    }
-                );
+            return $http.post(this.getUrl('disableValuer'), {relationId: relation.id});
         },
         enableValuer: function(relation){
-            return $http.post(this.getUrl('enableValuer'), {relationId: relation.id})
-                .success(
-                    function(response){
-                        deferred.resolve(response);
-                    }
-                );
-            
+            return $http.post(this.getUrl('enableValuer'), {relationId: relation.id});
         }
     };
 }]);
