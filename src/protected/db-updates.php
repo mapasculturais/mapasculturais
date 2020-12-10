@@ -1368,6 +1368,18 @@ $$
                     opportunity_id
             )
         ");
+    },
+
+    'valuer disabling refactor' => function() use($conn) {
+        $conn->executeQuery("
+            UPDATE 
+                agent_relation 
+            SET 
+                status = 8, 
+                has_control = true 
+            WHERE
+                object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
+                has_control IS false");
     }
 
 ] + $updates ;
