@@ -299,6 +299,23 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
                 }
             );
             return deferred.promise;
+        },
+        disableValuer: function(relation){
+            return $http.post(this.getUrl('disableValuer'), {relationId: relation.id})
+                .success(
+                    function(response){
+                        deferred.resolve(response);
+                    }
+                );
+        },
+        enableValuer: function(relation){
+            return $http.post(this.getUrl('enableValuer'), {relationId: relation.id})
+                .success(
+                    function(response){
+                        deferred.resolve(response);
+                    }
+                );
+            
         }
     };
 }]);
@@ -1101,7 +1118,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
 }]);
 
-
     module.controller('EvaluationMethodConfigurationController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', 'OpportunityApiService', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox, OpportunityApiService) {
         var labels = MapasCulturais.gettext.moduleOpportunity;
         var emconfig = MapasCulturais.entity.object.evaluationMethodConfiguration;
@@ -1331,21 +1347,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     });
             }
         };
-
         $scope.disableAdminRelation = function(relation){
-            relation.hasControl = false;
-            RelatedAgentsService.removeControl(relation.agent.id).
-                        error(function(){
-                            relation.hasControl = true;
-                        });
+            relation.status = 8;
+            EvaluationMethodConfigurationService.disableValuer(relation).error(function() {
+                relation.status = 1;
+            });
         };
 
         $scope.enableAdminRelation = function(relation){
-            relation.hasControl = true;
-            RelatedAgentsService.giveControl(relation.agent.id).
-                        error(function(){
-                            relation.hasControl = false;
-                        });
+            relation.status = 1;
+            EvaluationMethodConfigurationService.enableValuer(relation).error(function() {
+                relation.status = 8;
+            });
         };
 
 
