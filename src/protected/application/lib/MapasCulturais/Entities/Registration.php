@@ -1029,8 +1029,12 @@ class Registration extends \MapasCulturais\Entity
     
         $evaluation = $this->getUserEvaluation($user);
 
-        if ($evaluation && !$is_valuer) {
-            return false;
+        if(!$is_valuer){
+            if($evaluation){
+                return true;
+            } else {
+                return false;
+            }
         }
     
         $can = $this->canUserViewUserEvaluation($user);
