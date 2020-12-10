@@ -1313,7 +1313,7 @@ $$
                         r.category AS registration_category, 
                         r.agent_id AS registration_agent_id, 
                         re.user_id AS valuer_user_id, 
-                        a.id AS valuer_agent_id, 
+                        u.profile_id AS valuer_agent_id, 
                         r.opportunity_id,
                         re.id AS evaluation_id,
                         re.result AS evaluation_result,
@@ -1321,8 +1321,8 @@ $$
                     FROM registration r 
                         JOIN registration_evaluation re 
                             ON re.registration_id = r.id 
-                        JOIN agent a 
-                            ON a.user_id = re.user_id
+                        JOIN usr u 
+                            ON u.id = re.user_id
                         where 
                             r.status > 0
                     UNION
@@ -1332,7 +1332,7 @@ $$
                         r2.category AS registration_category,
                         r2.agent_id AS registration_agent_id, 
                         p2.user_id AS valuer_user_id, 
-                        a2.id AS valuer_agent_id, 
+                        u2.profile_id AS valuer_agent_id, 
                         r2.opportunity_id,
                         NULL AS evaluation_id,
                         NULL AS evaluation_result,
@@ -1340,12 +1340,12 @@ $$
                     FROM registration r2 
                         JOIN pcache p2 
                             ON r2.id = p2.object_id
-                        JOIN agent a2 
-                            ON a2.user_id = p2.user_id
+                        JOIN usr u2 
+                            ON u2.id = p2.user_id
 
                         WHERE 
                             p2.object_type = 'MapasCulturais\Entities\Registration' AND 
-                            p2.action = 'viewUserEvaluation' AND
+                            p2.action = 'evaluate' AND
                             
                             r2.status > 0 AND
                             p2.user_id IN (
