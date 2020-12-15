@@ -179,16 +179,18 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             $opp->checkPermission('@control');
 
             // pesquise todas as registrations da opportunity que esta vindo na request
-            $query = App::i()->getEm()->createQuery("
+            $dql = "
             SELECT 
-                r
+                r.id
             FROM
                 MapasCulturais\Entities\Registration r
             WHERE 
                 r.opportunity = :opportunity_id AND
                 r.consolidatedResult = :consolidated_result AND
+                r.status <> $new_status AND
                 $status
-            ");
+            ";
+            $query = $app->em->createQuery($dql);
         
             $params = [
                 'opportunity_id' => $opp->id,
@@ -197,11 +199,21 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     
             $query->setParameters($params);
     
-            $registrations = $query->getResult();
+            $registrations = $query->getScalarResult();
+
+            $count = 0;
+            $total = count($registrations);
             
+            if ($total > 0) {
+                $opp->enqueueToPCacheRecreation();
+            }
             // faça um foreach em cada registration e pegue as suas avaliações
-            foreach ($registrations as $registration) {
-                $app->log->debug("Alterando status da inscrição {$registration->number} para {$new_status}");
+            foreach ($registrations as $reg) {
+                $count++;
+                $registration = $app->repo('Registration')->find($reg['id']);
+                $registration->__skipQueuingPCacheRecreation = true;
+
+                $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
                 switch ($new_status) {
                     case Registration::STATUS_DRAFT:
                         $registration->setStatusToDraft();
@@ -226,6 +238,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 $registration->save(true);
                 $app->enableAccessControl();
             }
+
 
     
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
