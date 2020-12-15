@@ -1087,8 +1087,9 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewPrivateData($user){
-        $can = $this->__canUserViewPrivateData($user);
+        $can = $this->__canUserViewPrivateData($user) || $this->opportunity->canUser('@control', $user);
 
+        // @todo fazer essa verificação por meio de hook no módulo de fases (#1659)
         $canUserEvaluateNextPhase = false;
         if($this->getMetadata('nextPhaseRegistrationId') !== null) {
             $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
