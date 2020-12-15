@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb5e51c9a3d27ea257185ab8b1bde610",
+    "content-hash": "8cd9fbcdef72c633b49c267c93251399",
     "packages": [
         {
             "name": "acelaya/doctrine-enum-type",
@@ -1440,16 +1440,16 @@
         },
         {
             "name": "hacklab/bank-account-validator",
-            "version": "1.1.0",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hacklabr/validador-bancario.git",
-                "reference": "d07f084c152f4a247afdd311d38b4598e63e3cfb"
+                "reference": "13d306ef65d4dd8425189a1949f18889ada6e206"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hacklabr/validador-bancario/zipball/d07f084c152f4a247afdd311d38b4598e63e3cfb",
-                "reference": "d07f084c152f4a247afdd311d38b4598e63e3cfb",
+                "url": "https://api.github.com/repos/hacklabr/validador-bancario/zipball/13d306ef65d4dd8425189a1949f18889ada6e206",
+                "reference": "13d306ef65d4dd8425189a1949f18889ada6e206",
                 "shasum": ""
             },
             "require": {
@@ -1478,7 +1478,7 @@
                 }
             ],
             "description": "A simple brazilian account validator",
-            "time": "2020-12-10T21:36:49+00:00"
+            "time": "2020-12-15T21:32:46+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -5016,8 +5016,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "creof/doctrine2-spatial": 20,
-        "psy/psysh": 0,
-        "hacklab/bank-account-validator": 20
+        "psy/psysh": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,
