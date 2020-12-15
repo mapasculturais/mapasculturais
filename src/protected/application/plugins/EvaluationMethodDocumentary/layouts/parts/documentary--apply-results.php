@@ -40,7 +40,7 @@ $em = $entity->getEvaluationMethod();
             <option ng-repeat="status in data.registrationStatusesNames" value="{{status.value}}">{{status.label}}</option>
         </select>
     </label>
-    <label><input type="checkbox" ng-model="data.status" ng-true-value="all" ng-false-value="pending"> <?= i::__("Aplicar a todas as inscrições enviadas") ?> </label><br>
+    <label><input type="checkbox" ng-model="data.status" ng-true-value="'all'" ng-false-value="'pending'"> <?= i::__("Aplicar a todas as inscrições enviadas") ?> </label><br>
     <em><?php i::_e('Deixando desmarcado, o status será aplicado somente às inscrições com status pendente'); ?></em>
 </edit-box>
 </div>
