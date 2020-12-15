@@ -1568,7 +1568,9 @@ class App extends \Slim\Slim{
     private $permissionCachePendingQueue = [];
 
     public function enqueueEntityToPCacheRecreation(Entity $entity){
-        $this->permissionCachePendingQueue["$entity"] = $entity;
+        if (!$entity->__skipQueuingPCacheRecreation) {
+            $this->permissionCachePendingQueue["$entity"] = $entity;
+        }
     }
 
     public function isEntityEnqueuedToPCacheRecreation(Entity $entity){

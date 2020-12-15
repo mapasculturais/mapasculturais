@@ -170,7 +170,7 @@ trait EntityPermissionCache {
        
     function enqueueToPCacheRecreation($skip_extra = false){
         $app = App::i();
-        if($app->isEntityEnqueuedToPCacheRecreation($this)){
+        if($app->isEntityEnqueuedToPCacheRecreation($this) || $this->__skipQueuingPCacheRecreation){
             return false;
         }
         
