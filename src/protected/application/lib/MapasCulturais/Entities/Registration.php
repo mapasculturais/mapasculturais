@@ -523,8 +523,8 @@ class Registration extends \MapasCulturais\Entity
         $this->status = $status;
         $this->save(true);
         $app->enableAccessControl();
-        $app->enqueueEntityToPCacheRecreation($this);
-        $app->enqueueEntityToPCacheRecreation($this->opportunity);
+        
+        $this->enqueueToPCacheRecreation();
     }
 
     function setAgentsSealRelation() {
