@@ -1289,6 +1289,97 @@ $$
         if (!__column_exists('permission_cache_pending', 'status')) {
             $conn->executeQuery("ALTER TABLE permission_cache_pending ADD status smallint DEFAULT 0");
         }
+    },
+
+    'CREATE VIEW evaluation' => function() use($conn) {
+        
+        $conn->executeQuery("
+            CREATE VIEW evaluations AS (
+                SELECT 
+                    registration_id,
+                    registration_number,
+                    registration_category,
+                    registration_agent_id,
+                    opportunity_id,
+                    valuer_user_id,
+                    valuer_agent_id,
+                    max(evaluation_id) AS evaluation_id,
+                    max(evaluation_result) AS evaluation_result,
+                    max(evaluation_status) AS evaluation_status
+                FROM (
+                    SELECT 
+                        r.id AS registration_id, 
+                        r.number AS registration_number, 
+                        r.category AS registration_category, 
+                        r.agent_id AS registration_agent_id, 
+                        re.user_id AS valuer_user_id, 
+                        u.profile_id AS valuer_agent_id, 
+                        r.opportunity_id,
+                        re.id AS evaluation_id,
+                        re.result AS evaluation_result,
+                        re.status AS evaluation_status
+                    FROM registration r 
+                        JOIN registration_evaluation re 
+                            ON re.registration_id = r.id 
+                        JOIN usr u 
+                            ON u.id = re.user_id
+                        where 
+                            r.status > 0
+                    UNION
+                    SELECT 
+                        r2.id AS registration_id, 
+                        r2.number AS registration_number, 
+                        r2.category AS registration_category,
+                        r2.agent_id AS registration_agent_id, 
+                        p2.user_id AS valuer_user_id, 
+                        u2.profile_id AS valuer_agent_id, 
+                        r2.opportunity_id,
+                        NULL AS evaluation_id,
+                        NULL AS evaluation_result,
+                        NULL AS evaluation_status
+                    FROM registration r2 
+                        JOIN pcache p2 
+                            ON r2.id = p2.object_id
+                        JOIN usr u2 
+                            ON u2.id = p2.user_id
+
+                        WHERE 
+                            p2.object_type = 'MapasCulturais\Entities\Registration' AND 
+                            p2.action = 'evaluate' AND
+                            
+                            r2.status > 0 AND
+                            p2.user_id IN (
+                                SELECT user_id FROM agent WHERE id in (
+                                    SELECT agent_id 
+                                    FROM agent_relation 
+                                    WHERE 
+                                        object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND 
+                                        object_id = r2.opportunity_id
+                                )
+                            ) 
+                ) AS evaluations_view 
+                GROUP BY
+                    registration_id,
+                    registration_number,
+                    registration_category,
+                    registration_agent_id,
+                    valuer_user_id,
+                    valuer_agent_id,
+                    opportunity_id
+            )
+        ");
+    },
+
+    'valuer disabling refactor' => function() use($conn) {
+        $conn->executeQuery("
+            UPDATE 
+                agent_relation 
+            SET 
+                status = 8, 
+                has_control = true 
+            WHERE
+                object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
+                has_control IS false");
     }
 
 ] + $updates ;

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     const STATUS_SENT = 10;
+    const STATUS_DISABLED = 8;
 
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
@@ -36,6 +37,22 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     
     function reopen($flush = true){
         $this->owner->opportunity->checkPermission('reopenValuerEvaluations');
+
+        $this->status = self::STATUS_ENABLED;
+
+        $this->save($flush);
+    }
+
+    function disable($flush = true){
+        $this->owner->opportunity->checkPermission('@control');
+
+        $this->status = self::STATUS_DISABLED;
+
+        $this->save($flush);
+    }
+
+    function enable($flush = true){
+        $this->owner->opportunity->checkPermission('@control');
 
         $this->status = self::STATUS_ENABLED;
 

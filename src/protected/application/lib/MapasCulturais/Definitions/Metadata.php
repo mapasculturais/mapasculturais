@@ -94,7 +94,6 @@ class Metadata extends \MapasCulturais\Definition{
      * <code>
      * /**
      *  * $config example
-     * {@*}
      * new \MapasCulturais\Definitions\Metadata('age', array(
      *      'label' => 'Your Age',
      *      'type' => 'text',

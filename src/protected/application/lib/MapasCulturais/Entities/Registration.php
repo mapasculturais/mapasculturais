@@ -508,9 +508,7 @@ class Registration extends \MapasCulturais\Entity
     
 
     function setStatus($status){
-        if(App::i()->user->is('admin')) {
-            $this->status = $status;
-        }
+        // do nothing
     }
 
     function _setStatusTo($status){
@@ -1005,37 +1003,45 @@ class Registration extends \MapasCulturais\Entity
         return $result;
     }
     protected function canUserEvaluate($user){
-        if($this->opportunity->canUser('@control')){
-            $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
-            $valuers = $evaluation_method_configuration->getRelatedAgents();
-            $is_valuer = false;
-            
-            if(isset($valuers['group-admin']) && is_array($valuers['group-admin'])){
-                foreach($valuers['group-admin'] as $agent){
-                    if($agent->user->id == $user->id){
-                        $is_valuer = true;
-                    }
-                }
-            }
-
-            if(!$is_valuer){
-                return false;
-            }
-        }
-
-        $can = $this->canUserViewUserEvaluation($user);
-
-        $evaluation_sent = false;
-
-        if($this->opportunity->publishedRegistrations){
-            return false;
-        }
-
         if($user->is('guest')){
             return false;
         }
 
-        if($evaluation = $this->getUserEvaluation($user)){
+        if($this->opportunity->publishedRegistrations){
+            return false;
+        }
+        
+        $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
+        $valuers = $evaluation_method_configuration->getRelatedAgents('group-admin', true);
+        
+        $is_valuer = false;
+        
+        foreach ($valuers as $agent_relation) {
+            if ($agent_relation->status != 1) {
+                continue;
+            }
+
+            $agent = $agent_relation->agent;
+            if($agent->user->id == $user->id ){
+                $is_valuer = true;
+            }
+        }
+    
+        $evaluation = $this->getUserEvaluation($user);
+
+        if(!$is_valuer){
+            if($evaluation){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    
+        $can = $this->canUserViewUserEvaluation($user);
+
+        $evaluation_sent = false;
+
+        if($evaluation){
             $evaluation_sent = $evaluation->status === RegistrationEvaluation::STATUS_SENT;
         }
 
@@ -1043,9 +1049,10 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewUserEvaluation($user){
-        if($this->status <= 0) {
+        if($this->status <= 0 || $user->is('guest')) {
             return false;
         }
+        $app = App::i();
 
         $can = $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
 
@@ -1060,6 +1067,14 @@ class Registration extends \MapasCulturais\Entity
             $can = true;
         }
 
+        if (!$can) {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $this,
+                'user' => $user
+            ]);
+            $can = isset($evaluation);
+        }
+
         return $can;
     }
 
@@ -1072,8 +1087,9 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewPrivateData($user){
-        $can = $this->__canUserViewPrivateData($user);
+        $can = $this->__canUserViewPrivateData($user) || $this->opportunity->canUser('@control', $user);
 
+        // @todo fazer essa verificação por meio de hook no módulo de fases (#1659)
         $canUserEvaluateNextPhase = false;
         if($this->getMetadata('nextPhaseRegistrationId') !== null) {
             $next_phase_registration = App::i()->repo('Registration')->find($this->getMetadata('nextPhaseRegistrationId'));
