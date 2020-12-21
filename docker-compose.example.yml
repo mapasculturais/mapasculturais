@@ -40,6 +40,7 @@ services:
       - ./docker-data/private-files:/var/www/private-files
       - ./docker-data/pcache-cron.log:/var/www/scripts/nohup.out
       - ./tests:/var/www/tests
+      - ./compose/production/php.ini:/usr/local/etc/php/php.ini
     links:
       - db
     environment:
