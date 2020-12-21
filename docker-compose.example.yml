@@ -50,14 +50,6 @@ services:
       - APP_LCODE=pt_BR
       - ACTIVE_THEME=Saude
       - APP_MODE=development
-      - LOGOUT_URL=https://dev.id.org.br/auth/realms/saude/protocol/openid-connect/logout
-      - CLIENT_ID=DigitalSaude
-      - CLIENT_SECRET=1085ca2a-ab21-46ef-828d-5fb01b43c918
-      - AUTH_ENDPOINT=https://dev.id.org.br/auth/realms/saude/protocol/openid-connect/auth
-      - TOKEN_ENDPOINT=https://dev.id.org.br/auth/realms/saude/protocol/openid-connect/token
-      - USER_INFO_ENDPOINT=https://dev.id.org.br/auth/realms/saude/protocol/openid-connect/userinfo
-      - REDIRECT_URI=http://localhost/autenticacao/keycloak/oauth2callback
-      - CEP_TOKEN=1a54ab41e1e7b2cdc6d4d0e4b50ce26d
       - PENDING_PCACHE_RECREATION_INTERVAL=60
 
     depends_on:
