@@ -37,20 +37,4 @@ nohup /recreate-pending-pcache-cron.sh &
 
 touch /mapas-ready
 
-# PHP-FPM
-FPM_CONFIG_FILE="/usr/local/etc/php-fpm.d/www.conf"
-if [ -f $FPM_CONFIG_FILE ]; then
-    FPM_pm="${FPM_pm:-dynamic}"
-    FPM_pm_max_children="${FPM_pm_max_children:-5}"
-    FPM_pm_start_servers="${FPM_pm_start_servers:-2}"
-    FPM_pm_min_spare_servers="${FPM_pm_min_spare_servers:-1}"
-    FPM_pm_max_spare_servers="${FPM_pm_max_spare_servers:-3}"
-
-    sed -i "s/FPM_pm_max_children/$FPM_pm_max_children/g" $FPM_CONFIG_FILE
-    sed -i "s/FPM_pm_start_servers/$FPM_pm_start_servers/g" $FPM_CONFIG_FILE
-    sed -i "s/FPM_pm_min_spare_servers/$FPM_pm_min_spare_servers/g" $FPM_CONFIG_FILE
-    sed -i "s/FPM_pm_max_spare_servers/$FPM_pm_max_spare_servers/g" $FPM_CONFIG_FILE
-    sed -i "s/FPM_pm/$FPM_pm/g" $FPM_CONFIG_FILE
-fi
-
 exec "$@"
