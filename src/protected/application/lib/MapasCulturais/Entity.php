@@ -681,7 +681,8 @@ abstract class Entity implements \JsonSerializable{
                 $is_new = true;
 
                 if($this->usesOriginSubsite() && $app->getCurrentSubsiteId()){
-                    $this->setSubsite($app->getCurrentSubsite());
+                    $subsite = $app->repo('Subsite')->find($app->getCurrentSubsiteId());
+                    $this->setSubsite($subsite);
                 }
 
             }else{
