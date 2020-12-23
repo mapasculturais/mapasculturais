@@ -2,6 +2,7 @@
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
+
 return array(
     'metadata' => array(
         'nomeCompleto' => array(
@@ -9,18 +10,17 @@ return array(
             'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'documento' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF ou CNPJ'),
-//            'validations' => array(
-//                'required' => \MapasCulturais\i::__('Seu CPF ou CNPJ deve ser informado.'),
-//                'unique' => \MapasCulturais\i::__('Este documento já está registrado em nosso sistema.'),
-//                'v::oneOf(v::cpf(), v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.'),
-//                'v::regex("#^(\d{2}(\.\d{3}){2}/\d{4}-\d{2})|(\d{3}\.\d{3}\.\d{3}-\d{2})$#")' => \MapasCulturais\i::__('Utilize o formato xxx.xxx.xxx-xx para CPF e xx.xxx.xxx/xxxx-xx para CNPJ.')
-//            )
+            'validations' => array(
+               'v::oneOf(v::cpf(),v::cnpj())' => \MapasCulturais\i::__('O número de documento informado é inválido.')
+            ),
+            'available_for_opportunities' => true
         ),
 
 
@@ -35,7 +35,8 @@ return array(
                 'Amarela' => \MapasCulturais\i::__('Amarela'),
                 'Parda' => \MapasCulturais\i::__('Parda'),
                 'Indígena' => \MapasCulturais\i::__('Indígena')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'dataDeNascimento' => array(
@@ -44,7 +45,8 @@ return array(
             'type' => 'date',
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
-            )
+            ),
+            'available_for_opportunities' => true
         ),
 
         'localizacao' => array(
@@ -63,14 +65,15 @@ return array(
             'type' => 'select',
             'options' => array(
                 '' => \MapasCulturais\i::__('Não Informar'),
-                'Mulher Transexual' => \MapasCulturais\i::__('Mulher Transexual'),
-                'Mulher' => \MapasCulturais\i::__('Mulher'),
-                'Homem Transexual' => \MapasCulturais\i::__('Homem Transexual'),
-                'Homem' => \MapasCulturais\i::__('Homem'),
-                'Não Binário' => \MapasCulturais\i::__('Não Binário'),
-                'Travesti' => \MapasCulturais\i::__('Travesti'),
-                'Outras' => \MapasCulturais\i::__('Outras')
-            )
+                'Mulher Cis' => \MapasCulturais\i::__('Mulher Cis'),
+                'Homem Cis' => \MapasCulturais\i::__('Homem Cis'),
+                'Mulher Trans/travesti' => \MapasCulturais\i::__('Mulher Trans/travesti'),
+                'Homem Trans' => \MapasCulturais\i::__('Homem Trans'),
+                'Não Binárie/outra variabilidade' => \MapasCulturais\i::__('Não Binárie/outra variabilidade'),
+                'Não declarada' => \MapasCulturais\i::__('Não declarada'),
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'select'
         ),
 
         'orientacaoSexual' => array(
@@ -85,14 +88,22 @@ return array(
                 'Bissexual' => \MapasCulturais\i::__('Bissexual'),
                 'Assexual' => \MapasCulturais\i::__('Assexual'),
                 'Outras' => \MapasCulturais\i::__('Outras')
-            )
+            ),
+            'available_for_opportunities' => true
         ),
-
+        
+        
+        
+        
+        
+        
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(
-                'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
-            )
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é email válido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
 
         'emailPrivado' => array(
@@ -100,16 +111,20 @@ return array(
             'label' => \MapasCulturais\i::__('Email Privado'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('O email privado é obrigatório.'),
-                'v::email()' => \MapasCulturais\i::__('O email privado não é um email válido.')
-            )
+                'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'email'
         ),
 
         'telefonePublico' => array(
             'label' => \MapasCulturais\i::__('Telefone Público'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
-            )
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
         'telefone1' => array(
@@ -117,8 +132,10 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone 1'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 1 no formato (xx) xxxx-xxxx.')
-            )
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
 
@@ -127,8 +144,10 @@ return array(
             'label' => \MapasCulturais\i::__('Telefone 2'),
             'type' => 'string',
             'validations' => array(
-                'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone 2 no formato (xx) xxxx-xxxx.')
-            )
+                'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'brPhone'
         ),
 
         'endereco' => array(
@@ -212,36 +231,69 @@ return array(
                 'TO'=>'Tocantins',
             )
         ],
+        'En_Pais' => [
+            'label' => \MapasCulturais\i::__('País'),
+            'type' => 'select',
+            'options' => [
+                'AD' => 'Andorra',
+                'AR' => 'Argentina',
+                'BO' => 'Bolivia',
+                'BR' => 'Brasil',
+                'CL' => 'Chile',
+                'CO' => 'Colombia',
+                'CR' => 'Costa Rica',
+                'CU' => 'Cuba',
+                'EC' => 'Ecuador',
+                'SV' => 'El Salvador',
+                'ES' => 'España',
+                'GT' => 'Guatemala',
+                'HN' => 'Honduras',
+                'MX' => 'México',
+                'NI' => 'Nicarágua',
+                'PA' => 'Panamá',
+                'PY' => 'Paraguay',
+                'PE' => 'Perú',
+                'PT' => 'Portugal',
+                'DO' => 'República Dominicana',
+                'UY' => 'Uruguay',
+                'VE' => 'Venezuela',
+            ]
+        ],
 
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(
                 "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'facebook' => array(
             'label' => \MapasCulturais\i::__('Facebook'),
             'validations' => array(
                 "v::url('facebook.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'twitter' => array(
             'label' => \MapasCulturais\i::__('Twitter'),
             'validations' => array(
                 "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'googleplus' => array(
             'label' => \MapasCulturais\i::__('Google+'),
             'validations' => array(
                 "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
+            ),
+            'available_for_opportunities' => true
         ),
         'instagram' => array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'validations' => array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
-            )
+            ),
+            'available_for_opportunities' => true
         )
     ),
     'items' => array(

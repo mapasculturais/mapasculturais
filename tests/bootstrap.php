@@ -18,28 +18,8 @@ use MapasCulturais\App;
 
 date_default_timezone_set('America/Sao_Paulo');
 
-function env($name, $default) {
-    $result = isset($_ENV[$name]) ? $_ENV[$name] : $default;
-
-    if (strtolower(trim($result)) == 'true') {
-        $result = true;
-    } else if (strtolower(trim($result)) == 'false') {
-        $result = false;
-    }
-
-    return $result;
-}
-
-require_once __DIR__."/../src/protected/vendor/autoload.php";
-
-define('BASE_PATH', realpath(__DIR__.'/../src') . '/');
-define('PROTECTED_PATH', BASE_PATH . 'protected/');
-define('APPLICATION_PATH', PROTECTED_PATH . 'application/');
-define('THEMES_PATH', APPLICATION_PATH . 'themes/');
-define('ACTIVE_THEME_PATH',  THEMES_PATH . 'active/');
-define('PLUGINS_PATH', APPLICATION_PATH.'/plugins/');
-define('MODULES_PATH', APPLICATION_PATH.'lib/modules/');
-define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
+require __DIR__ . "/../src/protected/application/bootstrap-common.php";
+require_once __DIR__ . "/../src/protected/vendor/autoload.php";
 
  // Prepare a mock environment
 \Slim\Environment::mock(array_merge(array(

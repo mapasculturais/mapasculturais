@@ -14,7 +14,7 @@ class SpaceSealRelation extends SealRelation {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;

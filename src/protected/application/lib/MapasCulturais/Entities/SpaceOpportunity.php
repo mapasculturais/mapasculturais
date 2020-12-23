@@ -13,7 +13,7 @@ class SpaceOpportunity extends Opportunity{
      * @var \MapasCulturais\Entities\Space
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $ownerEntity;
 
@@ -22,7 +22,7 @@ class SpaceOpportunity extends Opportunity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\SpaceOpportunity", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entity;
 
 trait EntityPermissionCache {
+    public $__skipQueuingPCacheRecreation = false;
 
     private static $__permissions = [];
     private $__enabled = true;
@@ -57,7 +58,7 @@ trait EntityPermissionCache {
         return $class_name;
     }
     
-    function createPermissionsCacheForUsers($users = null, $flush = true, $delete_old = true) {
+    function createPermissionsCacheForUsers($users = null, $flush = false, $delete_old = true) {
         $app = App::i();
         if($this->getEntityState() !== 2){
             $this->refresh();
@@ -67,8 +68,9 @@ trait EntityPermissionCache {
             return;
         }
 
-        if(php_sapi_name()==="cli"){
-            echo "\n\t - RECREATING PERMISSIONS CACHE FOR $this ";
+        if($app->config['app.log.pcache']){
+            $start_time = microtime(true);
+            $app->log->debug("RECREATING pcache FOR $this");
         }
         
         if($this->usesAgentRelation()){
@@ -95,6 +97,7 @@ trait EntityPermissionCache {
             }
         }
 
+
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
         $permissions = $this->getPermissionsList();
@@ -104,6 +107,8 @@ trait EntityPermissionCache {
         $isStatusNotDraft = ($this->status > Entity::STATUS_DRAFT);
 
         $already_created_users = [];
+        $users = array_unique($users);
+
         foreach ($users as $user) {
             if($user->is('guest')){
                 continue;
@@ -142,9 +147,14 @@ trait EntityPermissionCache {
                 }
             }
         }
-        if(php_sapi_name()==="cli"){
-            echo "OK \n";
+
+        if($app->config['app.log.pcache']){
+            $end_time = microtime(true);
+            $total_time = number_format($end_time - $start_time, 1);
+
+            $app->log->info("pcache FOR $this CREATED IN {$total_time} seconds\n\n");
         }
+        
         $this->__enabled = true;
     }
     

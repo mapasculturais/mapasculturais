@@ -2,6 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Traits;
 
 /**
@@ -33,6 +34,23 @@ class Site extends \MapasCulturais\Controller {
 
     function GET_search() {
         $this->render('search');
+    }
+
+    function ALL_clearCache() {
+        $app = App::i();
+        echo '<pre>';
+        if ($app->user->is('superAdmin')) {
+            i::_e('Deletando cache do site... ');
+            $app->cache->flushAll();
+            i::_e("ok\n");
+        }
+
+        if ($app->user->is('saasSuperAdmin')) {
+            i::_e('Deletado cache do multisite...');
+            $app->mscache->flushAll();
+            i::_e("ok\n");
+        }        
+        echo '</pre>';
     }
     
     function ALL_error() {

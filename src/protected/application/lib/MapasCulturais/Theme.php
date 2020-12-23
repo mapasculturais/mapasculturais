@@ -55,7 +55,7 @@ abstract class Theme extends \Slim\View {
 
     protected $_assetManager = null;
 
-    protected $documentMeta = null;
+    public $documentMeta = [];
 
     /**
      * CSS Classes to print in body tag
@@ -479,6 +479,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function printDocumentMeta(){
+        
         foreach($this->documentMeta as $metacfg){
             $meta = "\n <meta";
             foreach($metacfg as $prop => $val){
@@ -511,7 +512,13 @@ abstract class Theme extends \Slim\View {
     }
 
     function asset($file, $print = true){
+        $app = App::i();
+        $app->applyHook('asset(' . $file . ')', [&$file]);
+        
         $url = $this->getAssetManager()->assetUrl($file);
+
+        $app->applyHook('asset(' . $file . '):url', [&$url]);
+
         if($print){
             echo $url;
         }
@@ -554,7 +561,11 @@ abstract class Theme extends \Slim\View {
     }
 
     function isEditable(){
-        return (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+        $result = (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+
+        App::i()->applyHookBoundTo($this, 'mapasculturais.isEditable', [&$result]);
+
+        return $result;
     }
 
     function isSearch(){
@@ -611,7 +622,7 @@ abstract class Theme extends \Slim\View {
         if ($this->isEditable() && true !== $force)
             return $text;
         
-        return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4">$1$2$3$4</a>', $text);
+        return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4" rel="noopener noreferrer">$1$2$3$4</a>', $text);
         
     }
 }

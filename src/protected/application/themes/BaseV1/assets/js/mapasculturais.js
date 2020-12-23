@@ -8,9 +8,83 @@ function charCounter(obj){
         $('#charCounter').text(($(obj).val().length + '/' + max[1]));
 }
 
+function toggleAttachedModal(el, modal_id) {
+    $("div#" + modal_id).toggle();
+    $("#evt-date-local").toggle();
+}
+
+function copyToClipboard(element) {
+    if (document.selection) {
+      var range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select().createTextRange();
+      document.execCommand("copy");
+    } else if (window.getSelection) {
+      var range = document.createRange();
+      range.selectNode(element);
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+    }
+  }
+
 $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
+
+    $("form.create-entity").submit(function (e) {
+        $('.modal-loading').show();
+        $(this).hide();
+
+        e.preventDefault();
+        var _url = $(this).data('entity');
+        var _entity = $(this).serializeArray();
+        var _form = $(this).data('formid');
+        var self = this;
+        $.ajax({
+            url: _url, type: 'POST',
+            data: _entity,
+            success: function(r) {
+                if (r.id) {
+                    var name = r.name;
+                    /*
+                     @TODO: usar string localizada
+                    */
+                    var msg = name + " criado com sucesso!";
+                    MapasCulturais.Messages.success(msg);
+
+                    if (r.editUrl) {
+                        $('.modal-loading').hide();
+                        $(self).prev().show();
+                        $(self).prev().find('.entidade').text(msg);
+                        $(self).prev().find('.new-name').text(name);
+
+                        var $view_btn = $(self).prev().find('.view-entity');
+                        var $link = $(self).prev().find('.entity-url');
+                        var $edit_btn = $(self).prev().find('.edit-entity');
+
+                        $($edit_btn).attr('href', r.editUrl);
+                        $($view_btn).attr('href', r.singleUrl);
+                        $($link).attr('href', r.singleUrl);
+
+                        if ($(self).hasClass('is-attached')) {
+                            toggleAttachedModal(this,_form);
+                        }
+                        // $('.entity-modal').find('.js-close').click();
+                    }
+
+                } else if (r.error && r.data) {
+                    for (var erro in r.data) {
+                        var _msg = r.data[erro];
+                        MapasCulturais.Messages.error(_msg);
+                        alert(_msg);
+                    }
+
+                    return false;
+                }
+            }
+        });
+    });
+    
 
     var labels = MapasCulturais.gettext.mapas;
 
@@ -22,9 +96,21 @@ $(function(){
     MapasCulturais.EditBox.initBoxes('.js-editbox');
     MapasCulturais.EditBox.initButtons('.js-open-editbox');
 
+    MapasCulturais.AjaxUploader.init();
+    MapasCulturais.Remove.init();
 
     MapasCulturais.Video.setupVideoGallery('.js-videogallery');
     MapasCulturais.Search.init(".js-search");
+
+    // confirmação para excluir entidades
+    $(".js--remove-entity-button").click(function(e){
+        return confirm(labels.confirmRemoveEntity);
+    });
+
+    // confirmação para excluir entidades
+    $(".js--destroy-entity-button").click(function(e){
+        return confirm(labels.confirmDestroyEntity);
+    });
 
     // bind alert close buttons
     $('.alert .close').click(function(){
@@ -176,6 +262,13 @@ $(function(){
 
     $(window).resize(setEvaluationFormHeight);
 });
+
+//Restart entity form
+function restartingCreateEntity() {
+    $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
+    $('.js-dialog').attr('style', 'display: none');                
+    $('.create-entity').trigger("reset");
+}
 
 MapasCulturais.utils = {
     getObjectProperties: function (obj) {
@@ -338,6 +431,9 @@ jQuery(document).ready(function(){
     $(window).on('hashchange', function(){
         editableEntityAddHash();
     });
+}).on('click', '.close-modal', function() {
+    MapasCulturais.Modal.close('.entity-modal');    
+    restartingCreateEntity();
 });
 
 
@@ -432,13 +528,18 @@ MapasCulturais.Modal = {
             var $dialog = $(this);
             /*$dialog.hide();  Moved to style.css */
 
+
+            var _title = $(this).attr('title');
             $dialog.data('dialog-init', 1);
-            $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
-            $dialog.prepend('<a href="#" class="js-close icon icon-close"></a>');
+            if (_title)
+                $dialog.prepend('<h2>' + $(this).attr('title') + '</h2>');
+
+            $dialog.prepend('<a href="#" class="js-close icon icon-close" rel="noopener noreferrer"></a>');
 
             // close button
             $dialog.find('.js-close').click(function (){
                 MapasCulturais.Modal.close(selector);
+                restartingCreateEntity();
                 return false;
             });
         });
@@ -473,6 +574,10 @@ MapasCulturais.Modal = {
         //alert('closing');
         $dialog.find('.editable').editable('hide');
         $dialog.hide();
+        if($('#blockdiv').is(':visible')){
+            $('#blockdiv').hide();
+            $('body').css('overflow','visible');
+        }
         return;
     },
 
@@ -498,6 +603,14 @@ MapasCulturais.Modal = {
     }
 };
 
+MapasCulturais.addEntity = function(e) {
+    var _modal = e.context.dataset.dialog;
+    if (_modal) {
+        $('#blockdiv').show();
+        $('body').css('overflow','hidden');
+        MapasCulturais.Modal.open(_modal);
+    }
+};
 
 MapasCulturais.EditBox = {
     time: 'fast',
@@ -645,6 +758,188 @@ MapasCulturais.EditBox = {
     }
 };
 
+MapasCulturais.Remove = {
+    init: function(){
+        $('body').on('click','.js-remove-item', function(e){
+            e.stopPropagation();
+            var $this = $(this);
+            MapasCulturais.confirm('Deseja remover este item?', function(){
+                var $target = $($this.data('target'));
+                var href = $this.data('href');
+
+                $.getJSON(href,function(r){
+                    if(r.error){
+                        MapasCulturais.Messages.error(r.data);
+                    }else{
+                        var cb = function(){};
+                        if($this.data('remove-callback'))
+                            cb = $this.data('remove-callback');
+                        $target.remove();
+                        if(typeof cb === 'string')
+                            eval(cb);
+                        else
+                            cb();
+                    }
+                });
+            });
+
+            return false;
+        });
+    }
+}
+
+MapasCulturais.AjaxUploader = {
+    resetProgressBar: function(containerSelector, acivate){
+        var bar = $(containerSelector).find('.js-ajax-upload-progress .bar');
+        var percent = $(containerSelector).find('.js-ajax-upload-progress .percent');
+        var percentVal = '0%';
+        bar.stop().width(percentVal);
+        percent.html(percentVal);
+        if(!acivate)
+            $(containerSelector).find('.js-ajax-upload-progress .progress').addClass('inactive');
+        else
+            $(containerSelector).find('.js-ajax-upload-progress .progress').removeClass('inactive');
+
+    },
+    animationTime: 100,
+    init: function(selector, extraOptions) {
+        selector = selector || '.js-ajax-upload';
+        extraOptions = extraOptions || {};
+
+        $(selector).each(function(){
+
+            if($(this).data('initialized'))
+                return;
+
+            $(this).show();
+            $(this).data('initialized', true);
+
+            var bar = $(this).parent().find('.js-ajax-upload-progress .bar');
+            var percent = $(this).parent().find('.js-ajax-upload-progress .percent');
+
+            MapasCulturais.AjaxUploader.resetProgressBar($(this).parent(), false);
+            var $this = $(this);
+            // bind form using 'ajaxForm'
+            $(this).ajaxForm(Object.assign({
+                beforeSend: function(xhr){
+                    $this.data('xhr', xhr);
+                    //@TODO validate size and type before upload
+                },
+                //target:        '#output1',   // target element(s) to be updated with server response
+                beforeSubmit: function(arr, $form, options) {
+                    MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), true);
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.animate({'width':percentVal});
+                    percent.html(percentVal);
+                },
+                success: function (response, statusText, xhr, $form)  {
+
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+
+                    if(response.error){
+                        var _animation = this.animationTime;
+
+                        MapasCulturais.AjaxUploader.resetProgressBar($form.parent(), false);
+                        var group = $form.data('group');
+                        var error_message = typeof response.data == 'string' ? response.data : response.data[group];
+                        $form.find('div.alert.danger').html(error_message).fadeIn(_animation).delay(5000).fadeOut(_animation);
+
+                        setTimeout(function () {
+                            $('.carregando-arquivo').hide();
+                            $('.submit-attach-opportunity').show();
+                        }, _animation);
+
+                        return;
+                    }
+
+
+                    var $target = $($form.data('target'));
+                    var group = $form.find('input:file').attr('name');
+
+                    var template = $form.find('script').text();
+                    if($form.data('action')){
+                        switch($form.data('action').toString()){
+                            case 'replace':
+                                var html = Mustache.render(template, response[group]);
+                                $target.replaceWith($(html));
+                            break;
+                            case 'set-content':
+
+                                var html = Mustache.render(template, response[group]);
+                                $target.html(html);
+                            break;
+                            case 'a-href':
+                                try{
+                                    $target.attr('href', response[group].url);
+                                }catch (e){}
+
+                            break;
+                            case 'image-src':
+                                try{
+                                    if($form.data('transform'))
+                                        $target.attr('src', response[group].files[$form.data('transform')].url);
+                                    else
+                                        $target.attr('src', response[group].url);
+                                }catch (e){}
+
+                            break;
+                            case 'background-image':
+                                $('#remove-background-button').toggleClass('hide-background-button');
+                                $('#remove-background-button').toggleClass('display-background-button');
+
+                                $target.each(function(){
+                                    try{
+                                        if($form.data('transform'))
+                                            $(this).css('background-image', 'url(' + response[group].files[$form.data('transform')].url + ')');
+                                        else
+                                            $(this).css('background-image', 'url(' + response[group].url + ')');
+                                    }catch (e){}
+                                });
+
+                                $('#remove-background-button a').data('href', response[group].deleteUrl);
+                            break;
+
+                            case 'append':
+                                for(var i in response[group]){
+
+                                    if(!response[group][i].description)
+                                       response[group][i].description = response[group][i].name;
+
+                                   var html = Mustache.render(template, response[group][i]);
+                                   $target.append(html);
+                               }
+                            break;
+
+                        }
+                    }
+                    $form.trigger('ajaxForm.success', [response]);
+
+                    $form.get(0).reset();
+                    if($form.parents('.js-editbox').data('success-callback'))
+                        eval($form.parents('.js-editbox').data('success-callback'));
+
+                    $form.parents('.js-editbox').find('.mc-cancel').click();
+                },
+
+                // other available options:
+                //url:       url         // override for form's 'action' attribute
+                //type:      type        // 'get' or 'post', override for form's 'method' attribute
+                dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
+                //clearForm: true        // clear all form fields after successful submit
+                //resetForm: true        // reset the form after successful submit
+
+                // $.ajax options can be used here too, for example:
+                //timeout:   3000
+            },extraOptions));
+        });
+
+
+    }
+};
 
 MapasCulturais.Video = {
     collection : {},
@@ -792,6 +1087,8 @@ MapasCulturais.Search = {
 
             $selector.editable({
                 type:'select2',
+                showbuttons: false,
+                onblur: 'submit',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2:{
 //                    multiple: $selector.data('multiple'),
@@ -1326,7 +1623,7 @@ $(function() {
         };
 
         var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
             maxZoom: config.zoomMax,
             minZoom: config.zoomMin
         });
@@ -1400,7 +1697,7 @@ $(function() {
         };
 
         var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright">Contrib. OpenStreetMap</a>, ',
+            attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
             maxZoom: config.zoomMax,
             minZoom: config.zoomMin
         });

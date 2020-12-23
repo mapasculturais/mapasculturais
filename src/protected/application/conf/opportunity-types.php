@@ -26,7 +26,9 @@ return array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições no projeto deve ser um número inteiro")
             )
         ),
-
+        'useSpaceRelationIntituicao' => array(
+            'label' => \MapasCulturais\i::__('Espaço Cultural'),
+        ),
         'site' => array(
             'label' => \MapasCulturais\i::__('Site'),
             'validations' => array(

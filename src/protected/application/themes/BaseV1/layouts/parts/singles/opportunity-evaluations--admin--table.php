@@ -42,7 +42,7 @@
 
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}" >
             <td class="registration-id-col">
-                <a href='{{evaluation.evaluation.singleUrl}}'>
+                <a href='{{evaluation.evaluation.singleUrl || evaluation.registration.singleUrl}}' rel='noopener noreferrer'>
                     <strong>{{evaluation.registration.number}}</strong>
                 </a>
             </td>
@@ -51,7 +51,7 @@
             <td class="registration-agents-col">
                 <p>
                     <span class="label"><?php \MapasCulturais\i::_e("Responsável");?></span><br />
-                    <a href="{{evaluation.registration.owner.singleUrl}}">{{evaluation.registration.owner.name}}</a>
+                    <a href="{{evaluation.registration.owner.singleUrl}}" rel='noopener noreferrer'>{{evaluation.registration.owner.name}}</a>
                 </p>
             </td>
             <td class="registration-status-col">

@@ -13,7 +13,7 @@ class EvaluationMethodConfigurationPermissionCache extends PermissionCache{
      * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 }

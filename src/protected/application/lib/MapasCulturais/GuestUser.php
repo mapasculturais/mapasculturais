@@ -8,15 +8,11 @@ class GuestUser implements UserInterface{
 
     public $profile = null;
     
-    function __construct() {
-        $this->profile = new \stdClass;
-    }
-    
     function __toString() {
         return "guest:" . session_id();
     }
 
-    function is($role){
+    function is(string $role, $subsite = false){
         return $role == 'guest';
     }
 
@@ -26,5 +22,9 @@ class GuestUser implements UserInterface{
     
     function equals($obj){
         return $this == $obj;
+    }
+
+    function getOwnerUser() {
+        return $this;
     }
 }

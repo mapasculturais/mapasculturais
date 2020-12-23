@@ -13,7 +13,7 @@ class ProjectFile extends File{
      * @var \MapasCulturais\Entities\Project
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -23,7 +23,7 @@ class ProjectFile extends File{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\ProjectFile", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

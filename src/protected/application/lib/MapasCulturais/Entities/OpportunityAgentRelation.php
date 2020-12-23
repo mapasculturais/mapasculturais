@@ -17,7 +17,7 @@ class OpportunityAgentRelation extends AgentRelation {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;

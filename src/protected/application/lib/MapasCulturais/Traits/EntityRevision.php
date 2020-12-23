@@ -119,11 +119,8 @@ trait EntityRevision{
 
     public function _newCreatedRevision() {
         $revisionData = $this->_getRevisionData();
-        $action = $this->controller->action;
-        $message = "";
-        if($action == Revision::ACTION_CREATED) {
-            $message = i::__("Registro criado.");
-        }
+        $message = i::__("Registro criado.");
+        
         $revision = new Revision($revisionData,$this,Revision::ACTION_CREATED,$message);
         $revision->save(true);
     }

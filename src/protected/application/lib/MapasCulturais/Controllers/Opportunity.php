@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use Exception;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
@@ -71,7 +72,6 @@ class Opportunity extends EntityController {
         }
     }
 
-
     function GET_report(){
         $this->requireAuthentication();
         $app = App::i();
@@ -86,10 +86,12 @@ class Opportunity extends EntityController {
 
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes"), $entity->id);
+        $date = date('Y-m-d.Hi');
 
-        $this->reportOutput('report', ['entity' => $entity], $filename);
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes--%s"), $entity->id, $date);
 
+        //$this->reportOutput('report', ['entity' => $entity], $filename);
+        $this->reportOutput('report-csv', ['entity' => $entity], $filename);
     }
 
     function GET_reportDrafts(){
@@ -100,9 +102,12 @@ class Opportunity extends EntityController {
         $entity->checkPermission('@control');
         $app->controller('Registration')->registerRegistrationMetadata($entity);
         $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos"), $entity->id);
 
-        $this->reportOutput('report-drafts', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename);
+        $date = date('Y-m-d.Hi');
+
+        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos--%s"), $entity->id, $date);
+
+        $this->reportOutput('report-drafts-csv', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename );
      }
 
     function GET_reportEvaluations(){
@@ -120,6 +125,9 @@ class Opportunity extends EntityController {
 
         $entity->checkPermission('canUserViewEvaluations');
 
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+        
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
         $committee = $entity->getEvaluationCommittee();
@@ -141,25 +149,65 @@ class Opportunity extends EntityController {
 
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+        
+        if ($view == 'report-drafts-csv' || $view == 'report-csv') {
 
-        if(!isset($this->urlData['output']) || $this->urlData['output'] == 'xls'){
             $response = $app->response();
             $response['Content-Encoding'] = 'UTF-8';
             $response['Content-Type'] = 'application/force-download';
-            $response['Content-Disposition'] ='attachment; filename=' . $filename . '.xls';
-            $response['Pragma'] ='no-cache';
+            $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.csv';
+            $response['Pragma'] = 'no-cache';
 
-            $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+            $app->contentType('text/csv; charset=UTF-8');
+            
+            ob_start();
+            $this->partial($view, $view_params);
+
+            $output = ob_get_clean();
+
+            /**
+             * @todo criar regex para os replaces abaixo
+             */
+            $replaces = [
+                '<!-- BaseV1/views/opportunity/report-drafts-csv.php # BEGIN -->',
+                '<!-- BaseV1/views/opportunity/report-drafts-csv.php # END -->',
+                '<!-- BaseV1/views/opportunity/report-csv.php # BEGIN -->',
+                '<!-- BaseV1/views/opportunity/report-csv.php # END -->'
+            ];
+
+            foreach ($replaces as $replace) {
+                $output = str_replace($replace, '', $output);
+            }
+
+            echo $output;
+
+        } else {
+
+            if (!isset($this->urlData['output']) || $this->urlData['output'] == 'xls') {
+                $response = $app->response();
+                $response['Content-Encoding'] = 'UTF-8';
+                $response['Content-Type'] = 'application/force-download';
+                $response['Content-Disposition'] = 'attachment; filename=' . $filename . '.xls';
+                $response['Pragma'] = 'no-cache';
+
+                $app->contentType('application/vnd.ms-excel; charset=UTF-8');
+            }
+
+            ob_start();
+            $this->partial($view, $view_params);
+            $output = ob_get_clean();
+            echo mb_convert_encoding($output, "HTML-ENTITIES", "UTF-8");
+            
         }
-
-        ob_start();
-        $this->partial($view, $view_params);
-        $output = ob_get_clean();
-        echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
+        
     }
 
 
     function API_findByUserApprovedRegistration(){
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
         $this->requireAuthentication();
         $app = App::i();
 
@@ -186,7 +234,6 @@ class Opportunity extends EntityController {
     */
     protected function _getOpportunity($opportunity_id = null) {
         $app = App::i();
-
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
         } else {
@@ -353,6 +400,7 @@ class Opportunity extends EntityController {
         $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);
         
         $registrations = $query->find();
+
         $em = $opportunity->getEvaluationMethod();
         foreach($registrations as &$reg) {
             if(in_array('consolidatedResult', $query->selecting)){
@@ -376,26 +424,12 @@ class Opportunity extends EntityController {
                 return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
             });
         }
-
-        $total = $app->repo('Registration')->countByOpportunity($opportunity, false, -1);
         
-        $this->apiAddHeaderMetadata($this->data, $registrations, $total);
+        $this->apiAddHeaderMetadata($this->data, $registrations, $query->count());
         $this->apiResponse($registrations);
     }
-    
-    function API_findEvaluations($opportunity_id = null) {
-        $this->requireAuthentication();
-        
-        $app = App::i();
-        
-        $_order = isset($this->data['@order']) ? strtolower($this->data['@order']) : 'valuer asc';
-        
-        if(preg_match('#(valuer|registration|evaluation|category)( +(asc|desc))?#i', $_order, $matches)){
-            $order = $matches[1];
-            $by = isset($matches[3]) ? strtolower($matches[3]) : 'asc';
-        } else {
-            $this->apiErrorResponse('invalid @order value');
-        }
+
+    protected function _getOpportunityCommittee($opportunity_id) {
         
         $opportunity = $this->_getOpportunity($opportunity_id);
 
@@ -435,13 +469,38 @@ class Opportunity extends EntityController {
         } else {
             $committee = [];
         }
+
+        return $committee;
+    }
+
+    function _getOpportunityValuerByUser($opportunity_id){
+        $committee = $this->_getOpportunityCommittee($opportunity_id);
         
         $valuer_by_user = [];
         
         foreach($committee as $valuer){
             $valuer_by_user[$valuer['user']] = $valuer;
         }
+
+        return $valuer_by_user;
+    }
+
+    function _getOpportunityRegistrations($opportunity, array $registration_ids){
+        $app = App::i();
         
+        if (empty($registration_ids)) {
+            return [];
+        }
+
+        sort($registration_ids);
+
+        $registration_ids = implode(',', $registration_ids);
+        
+        $committee = $this->_getOpportunityCommittee($opportunity->id);
+        $params = [
+            'opp' => $opportunity,
+            'aids' => array_map(function ($el){ return $el['id']; }, $committee),
+        ];
         $q = $app->em->createQuery("
             SELECT
                 r.id AS registration, a.userId AS user, a.id AS valuer
@@ -450,14 +509,12 @@ class Opportunity extends EntityController {
                 JOIN p.owner r WITH r.opportunity = :opp
                 JOIN p.user u
                 INNER JOIN u.profile a WITH a.id IN (:aids)
-            WHERE p.action = 'viewUserEvaluation'
-        ");
-        
-        $params = [
-            'opp' => $opportunity,
-            'aids' => array_map(function ($el){ return $el['id']; }, $committee)
-        ];
-        
+            WHERE 
+                p.action = 'viewPrivateData' AND
+                r.id IN ({$registration_ids})
+
+        ");      
+
         $q->setParameters($params);
         
         $permissions = $q->getArrayResult();
@@ -472,10 +529,11 @@ class Opportunity extends EntityController {
         }
         
         $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
+        $registration_idsSplittedUsingComma = implode(',', $registration_ids);
         if($registration_ids){
             $rdata = [
                 '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
-                'id' => "IN(" . implode(',', $registration_ids).  ")"
+                'id' => "IN({$registration_idsSplittedUsingComma})"
             ];
             
             foreach($this->data as $k => $v){
@@ -483,155 +541,292 @@ class Opportunity extends EntityController {
                     $rdata[substr($k, 13)] = $v;
                 }
             }
-            
+
             $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-            $registrations = $registrations_query->find();
-
-            $edata = [
-                '@select' => 'id,result,evaluationData,registration,user,status',
-                'registration' => "IN(" . implode(',', $registration_ids).  ")"
-            ];
-
-            $status_id = (isset($this->data['status']) && !is_null($this->data['status'])) ? filter_var($this->data['status'],FILTER_SANITIZE_NUMBER_INT) : null;
-
-            if(!is_null($status_id) && $status_id >= 0){
-                $edata['status'] =  $this->data['status'];
-            }
-            
-            foreach($this->data as $k => $v){
-                if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
-                    $edata[substr($k, 11)] = $v;
-                }
-            }
-            
-            $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
-            $evaluations = [];
-            $eq = $evaluations_query->find();
-            
-            foreach($eq as $e){
-                if(isset($valuer_by_user[$e['user']])){
-                    $e['agent'] = $valuer_by_user[$e['user']];
-                    $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                    $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
-                    $evaluations[$e['user'] . ':' . $e['registration']] = $e;
-                }
-            }
-            
-        } else {
             $registrations = [];
-            $evaluations = [];
+            foreach($registrations_query->find() as $reg){
+                $registrations[$reg['id']] = $reg;
+            }
+
+            return $registrations;
+        } else {
+            return [];
         }
+
+    }
+
+    function _getOpportunityEvaluations($opportunity, $evaluation_ids) {
+        $app = App::i();
+
+        if (empty($evaluation_ids)) {
+            return [];
+        }
+        
+        sort($evaluation_ids);
+        $evaluation_ids = implode(',', $evaluation_ids); 
+
+        $edata = [
+            '@select' => 'id,result,evaluationData,registration,user,status',
+            'id' => "IN({$evaluation_ids})"
+        ];
+        
+        foreach($this->data as $k => $v){
+            if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
+                $edata[substr($k, 11)] = $v;
+            }
+        }
+        
+        $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
+        $evaluations = [];
+        
+        $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
+        foreach($evaluations_query->find() as $e){
+            if(isset($valuer_by_user[$e['user']])){
+                $e['agent'] = $valuer_by_user[$e['user']];
+                $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
+                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                $evaluations[$e['id']] = $e;
+            }
+        }
+        return $evaluations;
+        
+    }
+
+    function API_findRegistrationsAndEvaluations() {
+        $app = App::i();
+                
+        $opportunity = $this->_getOpportunity();
+        $data = $this->data;
+
+        $conn = $app->getEm()->getConnection();
+
+        $resultLength = "
+        SELECT
+            count(r.id)
+        FROM
+            registration r
+        INNER JOIN pcache pc
+            ON pc.object_id = r.id
+                AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                AND pc.action = 'evaluate'
+                AND pc.user_id = :user_id
+        WHERE r.status > 0
+                AND r.opportunity_id = :opportunity_id
+        ";
+
+        $length = $conn->fetchAll($resultLength, [
+            'user_id' => $app->user->id, 
+            'opportunity_id' => $opportunity->id,
+            ]);
+        
+        $sql = "
+        SELECT
+            r.id as registrationId,
+            r.status as registrationStatus,
+            r.consolidated_result as registrationConsolidated_result,
+            r.number as registrationNumber,
+            re.*, 
+            a.id as agentId,
+            a.name as agentName
+        FROM
+            registration r
+        INNER JOIN pcache pc
+            ON pc.object_id = r.id
+                AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                AND pc.action = 'evaluate'
+                AND pc.user_id = :user_id
+        LEFT JOIN registration_evaluation re
+            ON r.id = re.registration_id
+            AND re.user_id = :user_id
+        INNER JOIN agent a
+            ON a.id = r.agent_id
+                WHERE r.status > 0
+                AND r.opportunity_id = :opportunity_id 
+                ORDER BY r.id
+            LIMIT :limit
+            OFFSET :offset
+        ";
+
+        $limit = isset($data['@limit']) ? $data['@limit'] : 50;
+        $page = isset($data['@page'] ) ? $data['@page'] : 1;
+        $offset = ($page -1) * $limit;
+
+        $registrations = $conn->fetchAll($sql, [
+            'user_id' => $app->user->id, 
+            'opportunity_id' => $opportunity->id,
+            'limit' => $limit,
+            'offset' => $offset
+            ]);
+
+        $registrationWithResultString = array_map(function($registration) use ($opportunity) {
+            return [
+                "registrationid" => $registration['registrationid'],
+                "registrationstatus" => $registration['registrationstatus'],
+                "registrationconsolidated_result" => $registration['registrationconsolidated_result'],
+                "registrationnumber" => $registration['registrationnumber'],
+                "id" => $registration['id'],
+                "registration_id" => $registration['registration_id'],
+                "user_id" => $registration['user_id'],
+                "result" => $registration['result'],
+                "evaluation_data" => $registration['evaluation_data'],
+                "status" => $registration['status'],
+                "agentid" => $registration['agentid'],
+                "agentname" => $registration['agentname'],
+                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result'])
+            ];
+        },$registrations);
+        
+        $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, $length[0]['count']);
+        $this->apiResponse($registrationWithResultString);
+    }
+    
+    function API_findEvaluations($opportunity_id = null) {
+        $this->requireAuthentication();
+        
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        
+        $opportunity = $this->_getOpportunity($opportunity_id);
+
+        $committee = $this->_getOpportunityCommittee($opportunity_id);
+
+        foreach($committee as $valuer){
+            $valuer_by_id[$valuer['user']] = $valuer;
+        }
+        
+        $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+                
+        $params = ['opp' => $opportunity->id];
+        
+        $queryNumberOfResults = $conn->fetchColumn("
+            SELECT count(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opp AND
+                valuer_user_id IN({$users})
+        ", $params);
+
+        $valuer_by_id = [];
+        
+        foreach($committee as $valuer){
+            $valuer_by_id[$valuer['id']] = $valuer;
+        }
+
+        $sql_limit = "";
+        if (isset($this->data['@limit'])) {
+            $limit = intval($this->data['@limit']);
+            
+            $sql_limit = "LIMIT $limit";
+
+            if (isset($this->data['@page'])) {
+                $page = intval($this->data['@page']);
+                $offset = ($page - 1) * $limit;
+                $sql_limit .= " OFFSET {$offset}";
+            }
+        }  
+
+        $sql_status = "";
+        if (isset($this->data['status'])) {
+            if(preg_match('#EQ\( *(-?\d) *\)#', $this->data['status'], $matches)) {
+                $status = $matches[1];
+                $sql_status = " AND evaluation_status = {$status}";
+            }
+        }
+        
+        $evaluations = $conn->fetchAll("
+            SELECT 
+                registration_id, 
+                evaluation_id, 
+                valuer_agent_id
+            FROM evaluations
+            WHERE
+                opportunity_id = :opp AND
+                valuer_user_id IN({$users})
+                $sql_status
+            ORDER BY evaluation_id DESC
+            $sql_limit
+        ", $params);
+
+        $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
+        $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
+        
+        $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
+        $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
         
         $_result = [];
         
-        foreach($registrations as &$registration){
-            foreach($valuer_by_user as $user_id => $valuer){
-                if(isset($registrations_by_valuer[$valuer['id']][$registration['id']])) {
-
-                    $has_evaluation = isset($evaluations[$user_id . ':' . $registration['id']]);
-                    if ($status_id == null) {
-                        $_result[] = [
-                            'registration' => $registration,
-                            'evaluation' => ($has_evaluation) ? $evaluations[$user_id . ':' . $registration['id']] : null,
-                            'valuer' => $valuer
-                        ];
-                    } else {
-                        if ($status_id >= 0 && $has_evaluation){
-                            $_result[] = [
-                                'registration' => $registration,
-                                'evaluation' => $evaluations[$user_id . ':' . $registration['id']],
-                                'valuer' => $valuer
-                            ];
-                        }
-
-                        if ($status_id < 0 && !$has_evaluation){
-                            $_result[] = [
-                                'registration' => $registration,
-                                'evaluation' => null,
-                                'valuer' => $valuer
-                            ];
-                        }
-                    }
-
-                }
-            }
+        foreach($evaluations as $eval) {
+            $_result[] = [
+                'evaluation' => $_evaluations[$eval['evaluation_id']] ?? null,
+                'registration' => $_registrations[$eval['registration_id']] ?? null,
+                'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null
+            ];
         }
         
-        if(isset($this->data['@omitEmpty'])){
-            $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
-        }
-
-        if(isset($this->data['evaluated'])){
-            if ( $this->data['evaluated'] === 'EQ(1)') {
-                $_result = array_filter($_result, function($e) { if($e['evaluation']) return $e; });
-            }
-            if ( $this->data['evaluated'] === 'EQ(-1)') {
-                $_result = array_filter($_result, function($e) { if($e['evaluation'] == null) return $e; });
-            }
-        }
-
-        list($order, $order_by) = explode(' ', $_order);
-        
-        $order_by = $order_by == 'asc' ? 1 : -1;
-        
-        switch ($order) {
-            case 'valuer':
-                usort($_result, function($e1, $e2) use($order_by){
-                    return strcasecmp($e1['valuer']['name'], $e2['valuer']['name']) * $order_by;
-                });
-                break;
-                
-            case 'category':
-                usort($_result, function($e1, $e2) use($order_by){
-                    return strcasecmp($e1['registration']['category'], $e2['registration']['category']) * $order_by;
-                });
-                break;
-                
-            case 'registration':
-                usort($_result, function($e1, $e2) use($order_by){
-                    if($e1['registration']['id'] > $e2['registration']['id']){
-                        return $order_by;
-                    } elseif($e1['registration']['id'] < $e2['registration']['id']){
-                        return $order_by * -1;
-                    } else {
-                        return 0;
-                    }
-                });
-                break;
-                
-            case 'evaluation':
-                usort($_result, function($e1, $e2) use($order_by, $opportunity){
-                    $em = $opportunity->getEvaluationMethod();
-                    return $em->cmpValues($e1['evaluation']['result'], $e2['evaluation']['result']) * $order_by;
-                });
-                break;
-        }
-        
-        // paginação
-        if(isset($this->data['@limit'])){
-            $limit = $this->data['@limit'];
-            $page = isset($this->data['@page']) ? $this->data['@page'] : null;
-            
-            if (isset($this->data['@offset'])) {
-                $offset = $this->data['@offset'];
-            } else if ($page && $page > 1 && $limit) {
-                $offset = $limit * ($page - 1);
-            } else {
-                $offset = 0;
-            }
-            
-            $result = array_slice($_result, $offset, $limit);
-            
-        } else {
-            $result = $_result;
-        }
-
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
-            return $result;
+            return $_result;
         }
 
-        $this->apiAddHeaderMetadata($this->data, $result, count($_result));
-        $this->apiResponse($result);
+        $this->apiAddHeaderMetadata($this->data, $_result, $queryNumberOfResults);
+        $this->apiResponse($_result);
+    }
+
+    function ALL_reconsolidateResults() {
+        $this->requireAuthentication();
+
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+
+        $opportunity = $this->requestedEntity;
+
+        $opportunity->checkPermission('@control');
+        
+        $app = App::i();
+
+        $conn = $app->em->getConnection();
+
+        $conn->executeQuery("
+            UPDATE 
+                registration
+            SET
+                consolidated_result = '0'
+            WHERE
+                opportunity_id = :opp AND
+                id IN (
+                    SELECT registration_id 
+                    FROM registration_evaluation
+                )
+        ", ['opp' => $opportunity->id]);
+
+        $evaluations = $conn->fetchAll("
+            SELECT re.id, r.number 
+            FROM registration_evaluation re, registration r
+            WHERE
+                r.id = re.registration_id AND
+                re.registration_id IN (
+                    SELECT id FROM registration WHERE opportunity_id = :opp
+                )
+            ORDER BY re.id ASC
+        ", ['opp' => $opportunity->id]); 
+        
+        $repo = $app->repo('RegistrationEvaluation');
+        $c = 0;
+        $num = count($evaluations);
+
+        $app->applyHookBoundTo($this, 'controller(opportunity).reconsolidateResult', [$opportunity, &$evaluations]);
+
+        foreach ($evaluations as $ev) {
+            $c++;
+            $ev = (object) $ev;
+            $eval = $repo->find($ev->id);
+            $app->log->debug("({$c}/{$num}) reconsolidando avaliação da inscrição {$ev->number} (ID: {$ev->id})");
+            $eval->setEvaluationData($eval->getEvaluationData());
+            $eval->registration->__skipQueuingPCacheRecreation = true;
+            $eval->save(true);
+
+            $app->em->clear();
+        }
+
     }
 
     function GET_exportFields() {
@@ -643,14 +838,14 @@ class Opportunity extends EntityController {
             $app->pass();
         }
 
-        $fields = $user = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
-        $files = $user = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $fields = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+        $files = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
 
         $opportunity =  $app->repo("Opportunity")->find($this->urlData['id']);
 
         if (!$opportunity->canUser('modify'))
             return false; //TODO return error message?
-
+            
         $opportunityMeta = array(
             'registrationCategories',
             'useAgentRelationColetivo',
@@ -659,6 +854,7 @@ class Opportunity extends EntityController {
             'registrationCategTitle',
             'useAgentRelationInstituicao',
             'introInscricoes',
+            'useSpaceRelationIntituicao',
             'registrationSeals',
             'registrationLimit'
         );
@@ -699,93 +895,7 @@ class Opportunity extends EntityController {
 
             $opportunity =  $app->repo("Opportunity")->find($opportunity_id);
 
-            if (!$opportunity->canUser('modifyRegistrationFields'))
-                return false; //TODO return error message?
-
-            if (!is_null($importSource)) {
-
-
-                // Fields
-                foreach($importSource->fields as $field) {
-
-                    $newField = new Entities\RegistrationFieldConfiguration;
-                    $newField->owner = $opportunity;
-                    $newField->title = $field->title;
-                    $newField->description = $field->description;
-                    $newField->maxSize = $field->maxSize;
-                    $newField->fieldType = $field->fieldType;
-                    $newField->required = $field->required;
-                    $newField->categories = $field->categories;
-                    $newField->fieldOptions = $field->fieldOptions;
-                    $newField->displayOrder = $field->displayOrder;
-
-                    $app->em->persist($newField);
-
-                    $newField->save();
-
-                }
-
-                //Files (attachments)
-                foreach($importSource->files as $file) {
-
-                    $newFile = new Entities\RegistrationFileConfiguration;
-
-                    $newFile->owner = $opportunity;
-                    $newFile->title = $file->title;
-                    $newFile->description = $file->description;
-                    $newFile->required = $file->required;
-                    $newFile->categories = $file->categories;
-                    $newFile->displayOrder = $file->displayOrder;
-
-                    $app->em->persist($newFile);
-
-                    $newFile->save();
-
-                    if (is_object($file->template)) {
-
-                        $originFile = $app->repo("RegistrationFileConfigurationFile")->find($file->template->id);
-
-                        if (is_object($originFile)) { // se nao achamos o arquivo, talvez este campo tenha sido apagado
-
-                            $tmp_file = sys_get_temp_dir() . '/' . $file->template->name;
-
-                            if (file_exists($originFile->path)) {
-                                copy($originFile->path, $tmp_file);
-
-                                $newTemplateFile = array(
-                                    'name' => $file->template->name,
-                                    'type' => $file->template->mimeType,
-                                    'tmp_name' => $tmp_file,
-                                    'error' => 0,
-                                    'size' => filesize($tmp_file)
-                                );
-
-                                $newTemplate = new Entities\RegistrationFileConfigurationFile($newTemplateFile);
-
-                                $newTemplate->owner = $newFile;
-                                $newTemplate->description = $file->template->description;
-                                $newTemplate->group = $file->template->group;
-
-                                $app->em->persist($newTemplate);
-
-                                $newTemplate->save();
-                            }
-
-                        }
-
-                    }
-                }
-
-                // Metadata
-                foreach($importSource->meta as $key => $value) {
-                    $opportunity->$key = $value;
-                }
-
-                $opportunity->save(true);
-
-                $app->em->flush();
-
-            }
+            $opportunity->importFields($importSource);
 
         }
 

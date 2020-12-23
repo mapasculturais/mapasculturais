@@ -387,9 +387,7 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
-        $class = $class::getClassName();
-
-        if($class == 'MapasCulturais\Entities\Opportunity' && $this->parentQuery){
+        if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
             $class = $parent_class::getOpportunityClassName();
         }
@@ -1058,7 +1056,7 @@ class ApiQuery {
                 
         foreach($result as $r){
             $owner_id = $r['ownerId'];
-            $action = $r['action'];
+            $action = $r['action']->getValue();
             if(!isset($permissions[$owner_id])){
                 $permissions[$owner_id] = [];
             }
@@ -1084,6 +1082,12 @@ class ApiQuery {
             }
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
                 $prop = $cfg['property'];
+                
+                // do usuário só permite id e profile
+                if($prop == 'user') {
+                    $cfg['select'] = array_intersect($cfg['select'], ['id', 'profile']);
+                }
+                
                 if($prop == 'permissionTo'){
                     $this->appendPermissions($entities, $cfg['select']);
                     continue;

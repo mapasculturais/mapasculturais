@@ -24,13 +24,13 @@ $this->addRelatedAgentsToJs($entity);
         </h3>
         <div class="agentes clearfix">
             <div class="avatar" ng-repeat="(i, relation) in group.relations" ng-class="{pending: relation.status < 0}">
-                <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable">
+                <a href="{{relation.agent.singleUrl}}" ng-if="!isEditable" rel='noopener noreferrer'>
                     <img ng-src="{{avatarUrl(relation.agent)}}" />
                 </a>
                 <img ng-if="isEditable" ng-src="{{avatarUrl(relation.agent)}}" />
 
                 <div class="descricao-do-agente">
-                    <h1><a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a></h1>
+                    <h1><a href="{{relation.agent.singleUrl}}" rel='noopener noreferrer'>{{relation.agent.name}}</a></h1>
                     <div class="alert warning" ng-if="relation.status < 0"><?php \MapasCulturais\i::_e("Aguardando confirmação.");?></div>
                     <div class="objeto-meta">
                         <div ng-if="relation.agent.terms.area">
@@ -46,12 +46,11 @@ $this->addRelatedAgentsToJs($entity);
                         </div>
                     </div>
                     <div ng-if="isEditable && (!relation.hasControl || canChangeControl) && !disabledCD(group.name)">
-                        <a href="#" class="btn btn-danger delete" ng-click="deleteRelation(relation)"><?php \MapasCulturais\i::_e("Excluir");?></a>
+                        <a href="#" class="btn btn-danger delete" ng-click="deleteRelation(relation)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Excluir");?></a>
                     </div>
                 </div>
             </div>
             <div ng-if="isEditable && !disabledCD(group.name)" ng-if="isEditable && !disabledCD(group.name)" ng-click="editbox.open(getCreateAgentRelationEditBoxId(group.name), $event)" class="hltip editable editable-empty" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar Integrante a este Grupo");?>"></div>
-            
             <edit-box ng-if="isEditable" id="{{getCreateAgentRelationEditBoxId(group.name)}}" position="left" title="<?php \MapasCulturais\i::esc_attr_e("Adicionar agente relacionado");?>" spinner-condition="spinners[group.name]" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel='true'>
                 <find-entity entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" spinner-condition="spinners[group.name]" description="" group="{{group.name}}" filter="filterResult" select="createRelation"></find-entity>
             </edit-box>

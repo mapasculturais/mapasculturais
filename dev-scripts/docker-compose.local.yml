@@ -11,6 +11,7 @@ services:
       - ../scripts:/var/www/scripts
       - ../compose/config.php:/var/www/html/protected/application/conf/config.php
       - ../compose/config.d:/var/www/html/protected/application/conf/config.d
+      - ../compose/local/config.local.php:/var/www/html/protected/application/conf/config.d/z.config.local.php
       - ../docker-data/assets:/var/www/html/assets
       - ../docker-data/public-files:/var/www/html/files
       - ../docker-data/private-files:/var/www/private-files
@@ -24,17 +25,9 @@ services:
       # - DB_USER=mapas
       # - DB_PASS=mapas
 
-      - APP_MODE=development
-      - SLIM_DEBUG=true
-
       - APP_LCODE=pt_BR,es_ES
-
       - ACTIVE_THEME=SpCultura
-
-      - LOG_ENABLED=true
-      - LOG_LEVEL=DEBUG
-      - LOG_HOOK=true 
-      - PENDING_PCACHE_RECREATION_INTERVAL=10
+      - APP_MODE=development
 
     depends_on:
       - db

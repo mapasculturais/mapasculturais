@@ -192,6 +192,12 @@ trait EntityAgentRelation {
 
         foreach($relations as $relation){
             $u = $relation->agent->user;
+
+            // excui o usuário guest se por algum motivo ele estiver na lista
+            if ($u->is('guest')) {
+                continue;
+            }
+
             if(!in_array($u->id, $ids)){
                 $ids[] = $u->id;
                 $result[] = $u;
@@ -202,7 +208,6 @@ trait EntityAgentRelation {
             $app->msCache->save($cache_id, $ids, $app->config['app.permissionsCache.lifetime']);
         }
 
-
         return $result;
 
     }
@@ -211,7 +216,7 @@ trait EntityAgentRelation {
         if($this->isUserAdmin($user))
             return true;
 
-        $ids = $this->getIdsOfUsersWithControl();
+        $ids = $this->getIdsOfUsersWithControl() ?: [];
 
         return in_array($user->id, $ids);
     }
@@ -222,6 +227,10 @@ trait EntityAgentRelation {
         $relation->agent = $agent;
         $relation->owner = $this;
         $relation->group = $group;
+
+        if($errors = $relation->getValidationErrors()){
+            throw new \Exception(\MapasCulturais\i::__('Error to create agent relation'));
+        }
 
         if($has_control)
             $relation->hasControl = true;

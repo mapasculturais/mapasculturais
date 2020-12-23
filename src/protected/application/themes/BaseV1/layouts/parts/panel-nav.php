@@ -71,7 +71,7 @@
             <?php $this->applyTemplateHook('nav.panel.userManagement','after'); ?>
         <?php endif; ?>
 
-        <?php if($app->user->is('admin')): ?>
+        <?php if($app->user->is('superAdmin')): ?>
             <?php $this->applyTemplateHook('nav.panel.adminManagement','before'); ?>
             <li>
                 <a <?php if ($this->template == 'panel/user-management' && isset($_GET['admin'])) echo 'class="active"'; ?> href="<?php echo $app->createUrl('panel', 'userManagement')?>?admin">

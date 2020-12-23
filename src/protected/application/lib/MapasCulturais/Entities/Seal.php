@@ -93,7 +93,7 @@ class Seal extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 
@@ -114,7 +114,7 @@ class Seal extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\SealFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__files;
 
@@ -122,7 +122,7 @@ class Seal extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\SealAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__agentRelations;
     
@@ -151,7 +151,7 @@ class Seal extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     protected $subsite;
@@ -163,7 +163,7 @@ class Seal extends \MapasCulturais\Entity
             ],
             'shortDescription' => [
                 'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+                'v::stringType()->length(0,2000)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 2000 caracteres')
             ],
             'validPeriod' => [
                 'required' => \MapasCulturais\i::__('Validade do selo é obrigatória.'),

@@ -14,7 +14,7 @@ abstract class AuthProvider {
 
     private $_guestUser = null;
 
-    final function __construct(array $config = []) {
+    function __construct(array $config = []) {
         $this->_config = $config;
         $this->_init();
         $this->_authenticatedUser = $this->_getAuthenticatedUser();
@@ -89,11 +89,6 @@ abstract class AuthProvider {
      * @param string $redirect_path
      */
     protected function _setRedirectPath($redirect_path) {
-        if (isset($_COOKIE['mapasculturais_user_nav_url'])) {
-            $_SESSION['mapasculturais.auth.redirect_path'] = $_COOKIE['mapasculturais_user_nav_url'];
-            return;
-        }
-
         $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
@@ -102,8 +97,8 @@ abstract class AuthProvider {
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){
-        App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
         $this->_authenticatedUser = $user;
+        App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
     }
 
     abstract function _getAuthenticatedUser();

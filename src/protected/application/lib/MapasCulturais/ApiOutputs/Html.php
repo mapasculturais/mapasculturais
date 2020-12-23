@@ -619,7 +619,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                         } else {
                                             
                                             if(isset($v->name) && isset($v->singleUrl)){
-                                                echo "<a href=\"$v->singleUrl\">$v->name</a>";
+                                                echo "<a  rel='noopener noreferrer' href=\"$v->singleUrl\">$v->name</a>";
+                                            } else if(isset($v->number) && isset($v->singleUrl)){
+                                                echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->number</a>";
                                             } else {
                                                 $this->printTable($v);
                                             }
@@ -692,8 +694,10 @@ class Html extends \MapasCulturais\ApiOutput{
                             <?php endif; ?>
                         <?php else:
                             if($k==='name' && !empty($item->singleUrl)){
-                                $v = '<a href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
-                            }elseif(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
+                                $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                            }else if($k==='number' && !empty($item->singleUrl)){
+                                    $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                            }else if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                 continue;
                             }
                             ?>
@@ -715,7 +719,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                     } else {
                                         
                                         if(isset($v->name) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v->singleUrl\">$v->name</a>";
+                                            echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->name</a>";
+                                        } else if(isset($v->number) && isset($v->singleUrl)){
+                                            echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->number</a>";
                                         } else {
                                             $this->printTable($v);
                                         }

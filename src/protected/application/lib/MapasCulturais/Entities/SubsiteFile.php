@@ -13,7 +13,7 @@ class SubsiteFile extends File {
      * @var \MapasCulturais\Entities\Subsite
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 
@@ -22,7 +22,7 @@ class SubsiteFile extends File {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;

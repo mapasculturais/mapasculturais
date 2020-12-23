@@ -394,9 +394,12 @@ class Module extends \MapasCulturais\Module{
 
             if($next_id = $registration->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($next_id);
-                if($next_phase_registration->canUser('view')){
-                    $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                if ($next_phase_registration) {
+                    if($next_phase_registration->canUser('view')){
+                        $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
+                    }
                 }
+                
             }
         });
 
@@ -406,10 +409,6 @@ class Module extends \MapasCulturais\Module{
             $target_opportunity = self::getRequestedOpportunity();
 
             $target_opportunity ->checkPermission('@control');
-
-            if($target_opportunity->previousPhaseRegistrationsImported){
-                $this->errorJson(\MapasCulturais\i::__('As inscrições já foram importadas para esta fase'), 400);
-            }
 
             $previous_phase = self::getPreviousPhase($target_opportunity);
 
@@ -428,6 +427,11 @@ class Module extends \MapasCulturais\Module{
 
             $app->disableAccessControl();
             foreach ($registrations as $r){
+                if ($r->nextPhaseRegistrationId) {
+                    continue;
+                }
+                $app->log->debug("Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
+
                 $reg = new Entities\Registration;
                 $reg->owner = $r->owner;
                 $reg->opportunity = $target_opportunity;
@@ -447,8 +451,6 @@ class Module extends \MapasCulturais\Module{
 
                 $new_registrations[] = $reg;
             }
-
-            $target_opportunity->previousPhaseRegistrationsImported = true;
 
             $target_opportunity->save(true);
 
@@ -486,15 +488,9 @@ class Module extends \MapasCulturais\Module{
         });
 
         // muda o status de publicação dos oportunidades
-        $app->hook('view.partial(singles/control--edit-buttons).params', function(&$params) use ($app){
-            $opportunity = self::getRequestedOpportunity();
-
-            if(!$opportunity){
-                return;
-            }
-
-            if($opportunity->isOpportunityPhase){
-                $params['status_enabled'] = -1;
+        $app->hook('entity(<<*>>Opportunity).setStatus(1)', function(&$status) {
+            if ($this->isOpportunityPhase) {
+                $status = -1;
             }
         });
 
@@ -601,7 +597,9 @@ class Module extends \MapasCulturais\Module{
 
             if($registration_id = $this->nextPhaseRegistrationId){
                 $next_phase_registration = $app->repo('Registration')->find($registration_id);
-                $result = $next_phase_registration->canUser('view', $user);
+                if ($next_phase_registration) {
+                    $result = $next_phase_registration->canUser('view', $user);
+                }                
             }
         });
 
