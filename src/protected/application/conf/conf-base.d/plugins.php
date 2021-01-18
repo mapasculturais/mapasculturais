@@ -7,6 +7,6 @@ return [
         'EvaluationMethodDocumentary' => ['namespace' => 'EvaluationMethodDocumentary'],
         'LocationStateCity' => [
             'namespace' => 'LocationStateCity'
-            ]
+        ],
     ]
 ];
