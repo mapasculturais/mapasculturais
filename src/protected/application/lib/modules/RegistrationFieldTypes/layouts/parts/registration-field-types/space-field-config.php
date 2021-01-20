@@ -25,7 +25,7 @@ foreach ($space_fields as $field) {
 }
 ?>
 <div ng-if="field.fieldType === 'space-field'" >
-    <?php i::_e('Campo do epaço:') ?>
+    <?php i::_e('Campo do espaço:') ?>
 
     <select ng-model="field.config.entityField">
     <?php foreach ($fields_options as $key => $label) : ?>
