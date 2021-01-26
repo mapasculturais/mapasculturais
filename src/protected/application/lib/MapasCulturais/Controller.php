@@ -280,6 +280,15 @@ abstract class Controller{
         
         $this->method = $method;
 
+        foreach($app->config['ini.set'] as $pattern => $configs) {
+            $pattern = str_replace('*', '.*', $pattern);
+            if(preg_match("#{$pattern}#i", "{$this->method} {$this->id}/{$this->action}")) {
+                foreach($configs as $varname => $newvalue) {
+                    ini_set($varname, $newvalue);
+                }
+            }
+        }
+
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";
         
