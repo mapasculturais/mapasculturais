@@ -797,16 +797,15 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
 
             $prop_name = $field->getFieldName();
-            $val = $this->$prop_name;
+            $val = (string) $this->$prop_name;
 
-            $empty = (is_string($val) && !trim($val)) || !$val;
+            $empty = trim($val) === '';
 
-            if ($field_required) {
-                if ($empty) {
+            if ($empty) {
+                if($field_required) {
                     $errors[] = \MapasCulturais\i::__('O campo é obrigatório.');
                 }
-            }
-            if (!$empty){
+            } else {
                 
                 $validations = isset($metadata_definition->config['validations']) ? 
                     $metadata_definition->config['validations']: [];
