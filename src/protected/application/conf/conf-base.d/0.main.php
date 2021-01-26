@@ -56,4 +56,27 @@ return [
     
     /* Valor do header Access-Control-Allow-Origin da api de leitura. */
     'api.accessControlAllowOrigin' => env('API_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
+
+    /*
+    Define valores de inicialização do PHP para rotas específicas
+    
+    para usar como variável de ambiente deve ser passado um json 
+    ex: [{"API agent/find":{"memory_limit":"1024M"}}]
+
+    configurando via PHP:
+    ex:
+    ```
+    [
+        'API agent/find' => [
+            'memory_limit' => '1024M',
+            'max_execution_time' => -1
+        ],
+        'API *' => [
+            'memory_limit' => '256M',
+            'max_execution_time' => -1
+        ],
+    ]
+    ```
+    */
+    'ini.set' => json_decode(env('PHP_INI_SET', '[]'))
 ];
