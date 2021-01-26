@@ -197,7 +197,7 @@ class Event extends \MapasCulturais\Entity
 
     private $_newProject = false;
 
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Eventos');
         else
