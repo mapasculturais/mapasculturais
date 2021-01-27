@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 use MapasCulturais\Traits;
 
 /**
@@ -182,6 +183,26 @@ class Seal extends \MapasCulturais\Entity
     	}
     	return true;
     }
+
+    protected function canUserRemove($user) {
+        $app = App::i();
+        
+        if(in_array($this->id, $app->config['app.verifiedSealsIds'])) {
+            return false;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
+
+    protected function canUserArchive($user) {
+        $app = App::i();
+        
+        if(in_array($this->id, $app->config['app.verifiedSealsIds'])) {
+            return false;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
     
     public static function getEntityTypeLabel($plural = false) {
         if ($plural)
@@ -189,6 +210,7 @@ class Seal extends \MapasCulturais\Entity
         else
             return \MapasCulturais\i::__('Selo');
     }
+
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
