@@ -389,7 +389,9 @@ class ApiQuery {
         
         if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
-            $class = $parent_class::getOpportunityClassName();
+            if($parent_class != 'MapasCulturais\Entities\Opportunity') {
+                $class = $parent_class::getOpportunityClassName();
+            }
         }
         
         $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
