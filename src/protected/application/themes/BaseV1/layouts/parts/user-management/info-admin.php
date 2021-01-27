@@ -3,9 +3,9 @@
   use MapasCulturais\Entities\Agent;
   use MapasCulturais\Entities\Space;
   use MapasCulturais\Entities\Event;
+use MapasCulturais\i;
 
-
-  $this->requireAuthentication();
+$this->requireAuthentication();
   $app = App::i(); 
   $roles = [];
   foreach ($app->getRoles() as $def) {
@@ -73,12 +73,18 @@
   <div style="width: 100%;">
     <table class="user-admin-table entity-table">
       <caption>
-        <?php \MapasCulturais\i::_e('Administradores do Subsite:'); ?>
-        <select id="subsites" ng-model="selectSubsite" style="margin-bottom: 0px; min-width: 140px;">
-          <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles.users" value="{{key}}">
-            {{key}}
-          </option>
-        </select>
+        <div ng-if="hasSubsites()">
+          <?php \MapasCulturais\i::_e('Administradores do Subsite:'); ?>
+          <select id="subsites" ng-model="selectSubsite" style="margin-bottom: 0px; min-width: 140px;">
+            <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles.users" value="{{key}}">
+              {{key}}
+            </option>
+          </select>
+        </div>
+        <div ng-if="!hasSubsites()">
+          <?php i::_e('Administradores') ?>
+        </div>
+
       </caption>
 
       <thead>
