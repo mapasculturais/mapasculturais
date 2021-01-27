@@ -182,13 +182,18 @@ $(function(){
             var change = function(){
                 $('#funcao-do-agente .js-selected span').html(label);
                 $('#funcao-do-agente .js-selected span').data('role', roleToAdd);
+                console.log(label);
             };
 
-            if(roleToRemove)
-                $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.entity.id, {role: roleToRemove}, function(r){ if(r && !r.error) change(); });
-
-            if(roleToAdd)
-                $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.entity.id, {role: roleToAdd}, function(r){ if(r && !r.error) change(); });
+            if(roleToAdd){
+                $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.entity.id, {role: roleToAdd}, function(r){ 
+                    if(r && !r.error) change(); 
+                });
+            } else {
+                $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.entity.id, {role: roleToRemove}, function(r){ 
+                    if(r && !r.error) change(); 
+                });
+            }
 
 
         });
@@ -222,15 +227,6 @@ $(function(){
             }
         };
     }
-
-
-    // confirm
-
-    $('a.js-confirm-before-go').click(function() {
-        if (!confirm($(this).data('confirm-text')))
-            return false;
-    });
-
 
 
     // confirm

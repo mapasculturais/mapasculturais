@@ -78,6 +78,14 @@
                 roles: rls
             }
         }
+        
+        $scope.hasSubsites = function () {
+            if(MapasCulturais.infoAdmin && MapasCulturais.infoAdmin.roles && MapasCulturais.infoAdmin.roles.users){
+                return Object.keys(MapasCulturais.infoAdmin.roles.users).length > 1;
+            } else {
+                return false;
+            }
+        };
 
         $scope.spinnerShow = true;
 
