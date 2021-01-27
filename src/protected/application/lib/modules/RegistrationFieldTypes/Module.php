@@ -45,9 +45,7 @@ class Module extends \MapasCulturais\Module
 
         $this->register_agent_field();
         $this->register_space_field();
-        if ($app->config["app.enableLocationPatch"] ?? false) {
-            $this->applyLocationPatch();
-        }
+        $this->applyLocationPatch();
         foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
@@ -607,6 +605,13 @@ class Module extends \MapasCulturais\Module
     private function applyLocationPatch()
     {
         $app = App::i();
+        if (!($app->config["app.enableLocationPatch"] ?? false)) {
+            $app->hook("GET(agent.locationPatch)", function() {
+                $this->json([]);
+                return;
+            });
+            return;
+        }
         $meta = "lastGeocodingAttempt";
         $this->registerAgentMetadata($meta, [
             "label" => i::__("Data e hora da última tentativa de geocoding"),
