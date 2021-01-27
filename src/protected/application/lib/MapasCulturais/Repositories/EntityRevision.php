@@ -34,15 +34,16 @@ class EntityRevision extends \MapasCulturais\Repository{
                                             WHERE e.id = {$id}");
         $qryRev->setMaxResults(1);
         $entityRevision = $qryRev->getOneOrNullResult();
-        $actualEntity = $app->repo($entityRevision->objectType)->find($entityRevision->objectId);
+        $objectType = $entityRevision->objectType->getValue();
+        $actualEntity = $app->repo($objectType)->find($entityRevision->objectId);
         $entityRevisioned = new \stdClass();
         $entityRevisioned->controller_id =  $actualEntity->getControllerId();
         $entityRevisioned->id = $actualEntity->id;
-        $entityRevisioned->entityClassName = $entityRevision->objectType;
+        $entityRevisioned->entityClassName = $objectType;
         $entityRevisioned->userCanView = $actualEntity->canUser('viewPrivateData');
         $entityRevisioned->entity = $actualEntity;
 
-        $registeredMetadata = $app->getRegisteredMetadata($entityRevision->objectType);
+        $registeredMetadata = $app->getRegisteredMetadata($objectType);
 
         foreach(array_keys($registeredMetadata) as $metadata) {
             $entityRevisioned->$metadata = null;
