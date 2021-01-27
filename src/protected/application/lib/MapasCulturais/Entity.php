@@ -491,7 +491,7 @@ abstract class Entity implements \JsonSerializable{
      *
      * @return array the metadata of this entity properties.
      */
-    public static function getPropertiesMetadata(){
+    public static function getPropertiesMetadata($include_column_name = false){
         $__class = get_called_class();
         $class = $__class::getClassName();
 
@@ -508,8 +508,12 @@ abstract class Entity implements \JsonSerializable{
                 'required'  => !$value['nullable'],
                 'type' => $value['type'],
                 'length' => $value['length'],
-                'label' => $class::_getConfiguredPropertyLabel($key)
+                'label' => $class::_getConfiguredPropertyLabel($key),
             ];
+
+            if ($include_column_name && isset($value['columnName'])) {
+                $metadata['columnName'] = $value['columnName'];
+            }
 
             if($key[0] == '_'){
                 $prop = substr($key, 1);
