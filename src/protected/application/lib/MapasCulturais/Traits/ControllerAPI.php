@@ -76,9 +76,9 @@ trait ControllerAPI{
             return;
 
         $response_meta = [
-            'count' => $count,
-            'page' => isset($qdata['@page']) ? $qdata['@page'] : 1,
-            'limit' => isset($qdata['@limit']) ? $qdata['@limit'] : null,
+            'count' => intval($count),
+            'page' => isset($qdata['@page']) ? intval($qdata['@page']) : 1,
+            'limit' => isset($qdata['@limit']) ? intval($qdata['@limit']) : null,
             'numPages' => isset($qdata['@limit']) ? intval($count / $qdata['@limit']) + 1 : 1,
             'keyword' => isset($qdata['@keyword']) ? $qdata['@keyword'] : '',
             'order' => isset($qdata['@order']) ? $qdata['@order'] : ''

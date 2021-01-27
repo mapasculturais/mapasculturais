@@ -719,9 +719,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                     } else {
                                         
                                         if(isset($v->name) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->name</a>";
+                                            echo "<a href=\"$v->singleUrl\" rel='noopener noreferrer'>$v->name</a>";
                                         } else if(isset($v->number) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->number</a>";
+                                            echo "<a href=\"$v->singleUrl\" rel='noopener noreferrer'>$v->number</a>";
                                         } else {
                                             $this->printTable($v);
                                         }
