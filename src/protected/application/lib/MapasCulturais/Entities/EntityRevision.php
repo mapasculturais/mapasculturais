@@ -23,6 +23,7 @@ class EntityRevision extends \MapasCulturais\Entity{
     const ACTION_TRASHED        = 'delete';
     const ACTION_UNTRASHED      = 'undelete';
     const ACTION_DELETED        = 'delete';
+    const ACTION_AUTOUPDATED    = 'autoupdated'; // for implicit modifications
 
 
 
