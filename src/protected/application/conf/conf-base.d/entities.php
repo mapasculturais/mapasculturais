@@ -27,6 +27,7 @@ return [
         '@default' => array(
             'id' => i::__('Id'),
             'name' => i::__('Nome'),
+            '_type' => i::__('Tipo'),
             'createTimestamp' => i::__('Data de Criação'),
             'updateTimestamp' => i::__('Data de Atualização'),
             'shortDescription' => i::__('Descrição Curta'),

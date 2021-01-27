@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 
 use MapasCulturais\Entities\Agent;
@@ -275,7 +276,18 @@ class Panel extends \MapasCulturais\Controller {
     	$this->requireAuthentication();
     	$user = $this->_getUser();
 
-    	$this->render('seals', ['user' => $user]);
+        $app = App::i();
+
+        $query = new ApiQuery(Seal::class, ['@permissions' => '@control', '@order' => 'name ASC']);
+        $seal_ids = $query->findIds();
+        
+        if ($seal_ids) {
+            $seals = $app->repo('Seal')->findBy(['id' => $seal_ids]);
+        } else {
+            $seals = [];
+        }
+
+        $this->render('seals', ['user' => $user, 'seals' => $seals]);
     }
 
     /**
