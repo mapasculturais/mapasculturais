@@ -10,7 +10,6 @@ foreach ($roles as $role) {
 ?>
 <div id="funcao-do-agente" class="dropdown dropdown-select">
     <div class="placeholder js-selected">
-        <span><?php \MapasCulturais\i::_e("Normal");?></span>
         <?php if ($user_role): ?>
             <span data-role="<?= $role->role ?>"><?= $role->name ?></span>
         <?php else: ?>
@@ -19,7 +18,7 @@ foreach ($roles as $role) {
     </div>
     <div class="submenu-dropdown js-options">
         <ul>
-            <li>
+            <li data-role="">
                 <span><?php \MapasCulturais\i::_e("Normal");?></span>
             </li>
             <?php foreach($roles as $role): ?>
