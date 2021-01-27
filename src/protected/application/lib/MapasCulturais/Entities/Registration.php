@@ -797,9 +797,21 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
 
             $prop_name = $field->getFieldName();
-            $val = (string) $this->$prop_name;
+            $val = $this->$prop_name;
 
-            $empty = trim($val) === '';
+            $empty = false;
+
+            if(is_array($val)){
+                if(count($val) === 0) {
+                    $empty = true;
+                }
+            } else if (is_object($val)){
+                if($val == (object) []) {
+                    $empty = true;
+                }
+            } else {
+                $empty = trim((string) $val) === '';
+            }
 
             if ($empty) {
                 if($field_required) {
