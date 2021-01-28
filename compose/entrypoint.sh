@@ -24,11 +24,13 @@ echo "\ncorrigindo status da fila de criação de cache de permissão\n\n";
 
 $pdo->query("UPDATE permission_cache_pending SET status = 0;");
 '
+
 if ! cmp /var/www/version.txt /var/www/private-files/deployment-version >/dev/null 2>&1
 then
-    cd /var/www/scripts
-    ./deploy.sh
+    /var/www/scripts/deploy.sh
     cp /var/www/version.txt /var/www/private-files/deployment-version
+else
+    /var/www/scripts/db-update.sh
 fi
 
 chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files
