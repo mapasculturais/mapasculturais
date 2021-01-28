@@ -2,17 +2,19 @@
 
 namespace RegistrationFieldTypes;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\i;
-use \MapasCulturais\Entities\MetaList;
+use MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\EntityRevision;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\Metadata;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
-
+use MapasCulturais\Types\GeoPoint;
 
 class Module extends \MapasCulturais\Module
 {
@@ -43,7 +45,7 @@ class Module extends \MapasCulturais\Module
 
         $this->register_agent_field();
         $this->register_space_field();
-
+        $this->applyLocationPatch();
         foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
@@ -582,5 +584,144 @@ class Module extends \MapasCulturais\Module
         } else {
             return json_decode($value);
         }
+    }
+
+    static function locationPatchSave($agent, $sessionData, $location=null)
+    {
+        $app = App::i();
+        $app->disableAccessControl();
+        $agent->setMetadata("lastGeocodingAttempt", $sessionData["timestamp"]);
+        if ($location) {
+            $agent->location = $location;
+        }
+        if (!isset($agent->getMetadata()["endereco"])) {
+            $agent->setMetadata("endereco", $sessionData["address"]);
+        }
+        $agent->save(true);
+        $app->enableAccessControl();
+        return;
+    }
+
+    private function applyLocationPatch()
+    {
+        $app = App::i();
+        if ($app->config["app.enableLocationPatch"]) {
+            $app->hook("GET(agent.locationPatch)", function() {
+                $this->json([]);
+                return;
+            });
+            return;
+        }
+        $meta = "lastGeocodingAttempt";
+        $this->registerAgentMetadata($meta, [
+            "label" => i::__("Data e hora da última tentativa de geocoding"),
+            "type" => "string",
+            "private" => true,
+        ]);
+        $app->hook("entity(EntityRevision).save:requests",
+                   function(&$requests) use ($app) {
+            if (($this->objectType != "MapasCulturais\Entities\Agent") ||
+                ($_SERVER["REQUEST_URI"] != "/agent/locationPatch/")) {
+                return;
+            }
+            $this->action = EntityRevision::ACTION_AUTOUPDATED;
+            return;
+        });
+        $app->hook("GET(agent.locationPatch)", function() use ($app, $meta) {
+            $type = "MapasCulturais\\Entities\\Agent";
+            $action = EntityRevision::ACTION_AUTOUPDATED;
+            $sql = "SELECT a.id FROM agent AS a WHERE
+                        (a._geo_location=ST_GeographyFromText('Point(0 0)') OR
+                         a._geo_location IS null) AND EXISTS (
+                            SELECT id FROM agent_meta WHERE
+                                key='En_Nome_Logradouro' AND object_id=a.id
+                        ) AND EXISTS (
+                            SELECT id FROM agent_meta WHERE
+                                key='En_Municipio' AND object_id=a.id
+                        ) AND EXISTS (
+                            SELECT id FROM agent_meta WHERE
+                                key='En_Estado' AND object_id=a.id
+                        ) AND (
+                            (
+                                SELECT COALESCE(
+                                    (
+                                        SELECT create_timestamp FROM
+                                            entity_revision WHERE id=(
+                                                SELECT MAX(id) FROM
+                                                    entity_revision WHERE
+                                                        object_id=a.id AND
+                                                        object_type='$type' AND
+                                                        action!='$action'
+                                        )
+                                    ), (
+                                        SELECT to_timestamp('99991231235959',
+                                                            'YYYYMMDDHH24MISS')
+                                    )
+                                )
+                            ) > (
+                            -- (SELECT now() - interval '1 day') > (
+                                SELECT to_timestamp(
+                                    (
+                                        SELECT COALESCE(
+                                            (
+                                                SELECT value FROM agent_meta WHERE
+                                                    object_id=a.id AND key='$meta'
+                                            ), '19800101000000'
+                                        )
+                                    ), 'YYYYMMDDHH24MISS'
+                                )
+                            )
+                        ) LIMIT 256";
+            $rsm = new \Doctrine\ORM\Query\ResultSetMappingBuilder($app->em);
+            $rsm->addRootEntityFromClassMetadata("\\$type", "a");
+            $agents = $app->em->createNativeQuery($sql, $rsm)->getResult();
+            if (empty($agents)) {
+                $this->json([]);
+                return;
+            }
+            $agent = $app->repo("Agent")->find($agents[array_rand($agents)]);
+            $token = uniqid();
+            $meta = $agent->getMetadata();
+            $app->log->debug(json_encode($meta));
+            $num = $meta["En_Num"] ?? "";
+            $nbhood = isset($meta["En_Bairro"]) ?
+                      "{$meta["En_Bairro"]}, " : "";
+            $_SESSION["agent-locationPatch-$token"] = [
+                "id" => $agent->id,
+                "timestamp" => (new DateTime())->format("YmdHis"),
+                "address" => ("{$meta["En_Nome_Logradouro"]} $num, $nbhood" .
+                              "{$meta["En_Municipio"]}, {$meta["En_Estado"]}")
+            ];
+            $this->json([
+                "query" => ("$num {$meta["En_Nome_Logradouro"]}, $nbhood" .
+                            "{$meta["En_Municipio"]}, {$meta["En_Estado"]}"),
+                "token" => $token]);
+            return;
+        });
+        $app->hook("POST(agent.locationPatch)", function() use ($app) {
+            $rToken = $this->postData["token"] ?? "";
+            $sessionData = $_SESSION["agent-locationPatch-$rToken"] ?? null;
+            if (!$sessionData) {
+                $this->errorJson(["message" => "Invalid token."], 400);
+                return;
+            }
+            $agentID = $sessionData["id"] ?? 0;
+            $agent = $app->repo("Agent")->find($agentID);
+            if (!$agent) {
+                unset($_SESSION["agent-locationPatch-$rToken"]);
+                $this->errorJson(["message" => "Agent not found."], 500);
+                return;
+            } else if (!isset($this->postData["latitude"]) ||
+                       !isset($this->postData["longitude"])) {
+                Module::locationPatchSave($agent, $sessionData);
+            } else {
+                $loc = new GeoPoint(floatVal($this->postData["longitude"]),
+                                    floatVal($this->postData["latitude"]));
+                Module::locationPatchSave($agent, $sessionData, $loc);
+            }
+            unset($_SESSION["agent-locationPatch-$rToken"]);
+            return;
+        });
+        return;
     }
 }
