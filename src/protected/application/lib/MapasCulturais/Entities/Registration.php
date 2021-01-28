@@ -725,7 +725,7 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($errors){
-                $errorsResult[$agent_prefix . $def->agentRelationGroupName] = implode(' ', $errors);
+                $errorsResult[$agent_prefix . $def->agentRelationGroupName] = [implode(' ', $errors)];
             }
         }
 
