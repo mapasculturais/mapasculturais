@@ -605,7 +605,7 @@ class Module extends \MapasCulturais\Module
     private function applyLocationPatch()
     {
         $app = App::i();
-        if ($app->config["app.enableLocationPatch"]) {
+        if (!$app->config["app.enableLocationPatch"]) {
             $app->hook("GET(agent.locationPatch)", function() {
                 $this->json([]);
                 return;
