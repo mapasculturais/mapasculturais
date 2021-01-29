@@ -65,8 +65,14 @@ jQuery(function(){
         }
     });
 
-    //Máscaras de telefone, CEP e hora
+    //Máscara de moeda BRL para campos com a classe .js-mask-currency
+    if($('.js-mask-currency').length){
+        $('.js-mask-currency').mask('###.###.###.###.###.##0,00', {
+            reverse: true
+        });
+    }
 
+    //Máscaras de telefone, CEP e hora
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-editablemask')) {
             var mask = $(this).data('mask');
