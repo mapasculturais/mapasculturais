@@ -39,6 +39,15 @@ class Validator extends \Respect\Validation\Validator{
     static function brPhone(){
         return self::regex('/^\(?\d{2}\)?[ ]*\d{4,5}-?\d{4}$/');
     }
+
+    /**
+     * Validates brazilian currency format
+     *
+     * @return type
+     */
+    static function brCurrency(){
+        return self::regex('/^((([1-9]\d?\d?)(\.\d{3})*)|([1-9]\d*)|0),(\d{2})$/');
+    }
     
     /**
      * Validates Time
