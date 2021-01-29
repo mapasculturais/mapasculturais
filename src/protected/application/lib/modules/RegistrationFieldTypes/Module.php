@@ -180,6 +180,15 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/text-config',
             ],
             [
+                'slug' => 'currency',
+                'name' => \MapasCulturais\i::__('Campo de moeda (R$)'),
+                'viewTemplate' => 'registration-field-types/currency',
+                'configTemplate' => 'registration-field-types/currency-config',
+                'validations' => [
+                    'v::brCurrency()' => \MapasCulturais\i::__('O valor não está no formato de moeda real (R$)')
+                ]
+            ],
+            [
                 'slug' => 'date',
                 'name' => \MapasCulturais\i::__('Campo de data'),
                 'viewTemplate' => 'registration-field-types/date',
