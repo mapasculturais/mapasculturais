@@ -649,8 +649,7 @@ class Module extends \MapasCulturais\Module
             } else {
                 $count = (int) $conn->fetchColumn("
                     SELECT count(a.id) FROM agent AS a WHERE
-                        (a._geo_location=ST_GeographyFromText('Point(0 0)') OR
-                        a._geo_location IS null) AND EXISTS (
+                        (a.location[0] = 0 AND a.location[1] = 0) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
                                 key='En_Nome_Logradouro' AND object_id=a.id
                         ) AND EXISTS (
