@@ -627,10 +627,43 @@ class Module extends \MapasCulturais\Module
             $this->action = EntityRevision::ACTION_AUTOUPDATED;
             return;
         });
+        
         $app->hook("GET(agent.locationPatch)", function() use ($app, $meta) {
+            
+            $conn = $app->em->getConnection();
+            $cache_id = 'locationPatch.count';
+            if($app->cache->contains($cache_id)){
+                $count = $app->cache->fetch($cache_id);
+                if($count > 1){
+                    $app->cache->save($cache_id, $count - 1, 300);
+                }
+            } else {
+                $count = (int) $conn->fetchColumn("
+                    SELECT count(a.id) FROM agent AS a WHERE
+                        (a._geo_location=ST_GeographyFromText('Point(0 0)') OR
+                        a._geo_location IS null) AND EXISTS (
+                            SELECT id FROM agent_meta WHERE
+                                key='En_Nome_Logradouro' AND object_id=a.id
+                        ) AND EXISTS (
+                            SELECT id FROM agent_meta WHERE
+                                key='En_Municipio' AND object_id=a.id
+                        ) AND EXISTS (
+                            SELECT id FROM agent_meta WHERE
+                                key='En_Estado' AND object_id=a.id
+                        )");
+
+                        
+                if($count > 100){
+                    $app->cache->save($cache_id, $count, 600);
+                }
+            }
+
+            $offset = rand(0, $count - 1);
+
             $type = "MapasCulturais\\Entities\\Agent";
             $action = EntityRevision::ACTION_AUTOUPDATED;
-            $sql = "SELECT a.id FROM agent AS a WHERE
+
+            $agent_id = $conn->fetchColumn("SELECT a.id FROM agent AS a WHERE
                         (a._geo_location=ST_GeographyFromText('Point(0 0)') OR
                          a._geo_location IS null) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
@@ -641,51 +674,16 @@ class Module extends \MapasCulturais\Module
                         ) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
                                 key='En_Estado' AND object_id=a.id
-                        ) AND (
-                            (
-                                SELECT COALESCE(
-                                    (
-                                        SELECT create_timestamp FROM
-                                            entity_revision WHERE id=(
-                                                SELECT MAX(id) FROM
-                                                    entity_revision WHERE
-                                                        object_id=a.id AND
-                                                        object_type='$type' AND
-                                                        action!='$action'
-                                        )
-                                    ), (
-                                        SELECT to_timestamp('99991231235959',
-                                                            'YYYYMMDDHH24MISS')
-                                    )
-                                )
-                            ) > (
-                            -- (SELECT now() - interval '1 day') > (
-                                SELECT to_timestamp(
-                                    (
-                                        SELECT COALESCE(
-                                            (
-                                                SELECT value FROM agent_meta WHERE
-                                                    object_id=a.id AND key='$meta'
-                                            ), '19800101000000'
-                                        )
-                                    ), 'YYYYMMDDHH24MISS'
-                                )
-                            )
-                        ) LIMIT 256";
-            $rsm = new \Doctrine\ORM\Query\ResultSetMappingBuilder($app->em);
-            $rsm->addRootEntityFromClassMetadata("\\$type", "a");
-            $agents = $app->em->createNativeQuery($sql, $rsm)->getResult();
-            if (empty($agents)) {
-                $this->json([]);
-                return;
-            }
-            $agent = $app->repo("Agent")->find($agents[array_rand($agents)]);
+                        ) LIMIT 1 OFFSET {$offset}");
+
+            $agent = $app->repo("Agent")->find($agent_id);
             $token = uniqid();
             $meta = $agent->getMetadata();
             $app->log->debug(json_encode($meta));
             $num = $meta["En_Num"] ?? "";
             $nbhood = isset($meta["En_Bairro"]) ?
                       "{$meta["En_Bairro"]}, " : "";
+                      
             $_SESSION["agent-locationPatch-$token"] = [
                 "id" => $agent->id,
                 "timestamp" => (new DateTime())->format("YmdHis"),
