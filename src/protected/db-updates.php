@@ -90,6 +90,36 @@ foreach($registered_taxonomies as $def){
 
 
 return [
+    'UPDATING ENUM TYPES' => function() use($conn) {
+        $reg = \Acelaya\Doctrine\Type\PhpEnumType::getTypeRegistry();
+        
+        foreach ($reg->getMap() as $enum_type => $type){
+            if(get_class($type) == 'Acelaya\Doctrine\Type\PhpEnumType') {
+                $values = $conn->fetchAll("
+                    SELECT e.enumlabel AS value
+                    FROM pg_type t 
+                        JOIN pg_enum e ON t.oid = e.enumtypid  
+                        JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace 
+                    WHERE t.typname = '{$enum_type}'");
+
+                $actual_values = array_map(function($item) { return $item['value']; }, $values);
+                
+                $reflection = new \ReflectionObject($type);
+                $property = $reflection->getProperty('enumClass');
+                $property->setAccessible (true);
+                $class = $property->getValue($type);
+                
+                foreach($class::toArray() as $value){
+                    if(!in_array($value, $actual_values)) {
+                        echo "\n- ALTER TYPE {$enum_type} ADD VALUE '$value'\n";
+                        __exec("ALTER TYPE {$enum_type} ADD VALUE '$value'");
+                    }
+                }
+            }
+        }
+
+        return false;
+    },
 
     'alter tablel term taxonomy type' => function() use ($conn) {
         $conn->executeQuery("ALTER TABLE term ALTER taxonomy TYPE VARCHAR(64);");

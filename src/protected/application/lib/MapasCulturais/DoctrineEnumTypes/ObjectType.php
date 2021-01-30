@@ -2,19 +2,32 @@
 
 namespace MapasCulturais\DoctrineEnumTypes;
 
+use MapasCulturais\App;
+use MapasCulturais\DoctrineEnumType;
 use MyCLabs\Enum\Enum;
 
-class ObjectType extends Enum {
-    public const Agent = 'MapasCulturais\Entities\Agent';
-    public const EvaluationMethodConfiguration = 'MapasCulturais\Entities\EvaluationMethodConfiguration';
-    public const Event = 'MapasCulturais\Entities\Event';
-    public const Notification = 'MapasCulturais\Entities\Notification';
-    public const Opportunity = 'MapasCulturais\Entities\Opportunity';
-    public const Project = 'MapasCulturais\Entities\Project';
-    public const Registration = 'MapasCulturais\Entities\Registration';
-    public const RegistrationFileConfiguration = 'MapasCulturais\Entities\RegistrationFileConfiguration';
-    public const Request = 'MapasCulturais\Entities\Request';
-    public const Seal = 'MapasCulturais\Entities\Seal';
-    public const Space = 'MapasCulturais\Entities\Space';
-    public const Subsite = 'MapasCulturais\Entities\Subsite';
+class ObjectType extends DoctrineEnumType
+{
+    public static function getTypeName(): string
+    {
+        return 'object_type';
+    }
+
+    protected static function getKeysValues(): array
+    {
+        return [
+            'Agent' => 'MapasCulturais\Entities\Agent',
+            'EvaluationMethodConfiguration' => 'MapasCulturais\Entities\EvaluationMethodConfiguration',
+            'Event' => 'MapasCulturais\Entities\Event',
+            'Notification' => 'MapasCulturais\Entities\Notification',
+            'Opportunity' => 'MapasCulturais\Entities\Opportunity',
+            'Project' => 'MapasCulturais\Entities\Project',
+            'Registration' => 'MapasCulturais\Entities\Registration',
+            'RegistrationFileConfiguration' => 'MapasCulturais\Entities\RegistrationFileConfiguration',
+            'Request' => 'MapasCulturais\Entities\Request',
+            'Seal' => 'MapasCulturais\Entities\Seal',
+            'Space' => 'MapasCulturais\Entities\Space',
+            'Subsite' => 'MapasCulturais\Entities\Subsite'
+        ];
+    }
 }
