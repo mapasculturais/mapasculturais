@@ -13,7 +13,7 @@ class ObjectType extends DoctrineEnumType
         return 'object_type';
     }
 
-    public static function getKeysValues(): array
+    protected static function getKeysValues(): array
     {
         return [
             'Agent' => 'MapasCulturais\Entities\Agent',

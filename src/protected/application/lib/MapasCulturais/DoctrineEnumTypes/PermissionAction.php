@@ -2,16 +2,16 @@
 
 namespace MapasCulturais\DoctrineEnumTypes;
 
-use MyCLabs\Enum\Enum;
+use MapasCulturais\DoctrineEnumType;
 
-class PermissionAction extends Enum
+class PermissionAction extends DoctrineEnumType
 {
     public static function getTypeName(): string
     {
         return 'permission_action';
     }
 
-    public static function getKeysValues(): array
+    protected static function getKeysValues(): array
     {
         return [
             'approve' => 'approve',
