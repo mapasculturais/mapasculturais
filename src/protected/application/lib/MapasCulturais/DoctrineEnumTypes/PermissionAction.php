@@ -2,45 +2,56 @@
 
 namespace MapasCulturais\DoctrineEnumTypes;
 
-use MyCLabs\Enum\Enum;
+use MapasCulturais\DoctrineEnumType;
 
-class PermissionAction extends Enum {
-    public const approve = 'approve';
-    public const archive = 'archive';
-    public const changeOwner = 'changeOwner';
-    public const changeStatus = 'changeStatus';
-    public const control = '@control';
-    public const create = 'create';
-    public const createAgentRelation = 'createAgentRelation';
-    public const createAgentRelationWithControl = 'createAgentRelationWithControl';
-    public const createEvents = 'createEvents';
-    public const createSealRelation = 'createSealRelation';
-    public const createSpaceRelation = 'createSpaceRelation';
-    public const destroy = 'destroy';
-    public const evaluate = 'evaluate';
-    public const evaluateRegistrations = 'evaluateRegistrations';
-    public const modify = 'modify';
-    public const modifyRegistrationFields = 'modifyRegistrationFields';
-    public const modifyValuers = 'modifyValuers';
-    public const publish = 'publish';
-    public const publishRegistrations = 'publishRegistrations';
-    public const register = 'register';
-    public const reject = 'reject';
-    public const remove = 'remove';
-    public const removeAgentRelation = 'removeAgentRelation';
-    public const removeAgentRelationWithControl = 'removeAgentRelationWithControl';
-    public const removeSealRelation = 'removeSealRelation';
-    public const removeSpaceRelation = 'removeSpaceRelation';
-    public const reopenValuerEvaluations = 'reopenValuerEvaluations';
-    public const requestEventRelation = 'requestEventRelation';
-    public const send = 'send';
-    public const sendUserEvaluations = 'sendUserEvaluations';
-    public const unpublish = 'unpublish';
-    public const view = 'view';
-    public const viewConsolidatedResult = 'viewConsolidatedResult';
-    public const viewEvaluations = 'viewEvaluations';
-    public const viewPrivateData = 'viewPrivateData';
-    public const viewPrivateFiles = 'viewPrivateFiles';
-    public const viewRegistrations = 'viewRegistrations';
-    public const viewUserEvaluation = 'viewUserEvaluation';
+class PermissionAction extends DoctrineEnumType
+{
+    public static function getTypeName(): string
+    {
+        return 'permission_action';
+    }
+
+    protected static function getKeysValues(): array
+    {
+        return [
+            'approve' => 'approve',
+            'archive' => 'archive',
+            'changeOwner' => 'changeOwner',
+            'changeStatus' => 'changeStatus',
+            'control' => '@control',
+            'create' => 'create',
+            'createAgentRelation' => 'createAgentRelation',
+            'createAgentRelationWithControl' => 'createAgentRelationWithControl',
+            'createEvents' => 'createEvents',
+            'createSealRelation' => 'createSealRelation',
+            'createSpaceRelation' => 'createSpaceRelation',
+            'destroy' => 'destroy',
+            'evaluate' => 'evaluate',
+            'evaluateRegistrations' => 'evaluateRegistrations',
+            'modify' => 'modify',
+            'modifyRegistrationFields' => 'modifyRegistrationFields',
+            'modifyValuers' => 'modifyValuers',
+            'publish' => 'publish',
+            'publishRegistrations' => 'publishRegistrations',
+            'register' => 'register',
+            'reject' => 'reject',
+            'remove' => 'remove',
+            'removeAgentRelation' => 'removeAgentRelation',
+            'removeAgentRelationWithControl' => 'removeAgentRelationWithControl',
+            'removeSealRelation' => 'removeSealRelation',
+            'removeSpaceRelation' => 'removeSpaceRelation',
+            'reopenValuerEvaluations' => 'reopenValuerEvaluations',
+            'requestEventRelation' => 'requestEventRelation',
+            'send' => 'send',
+            'sendUserEvaluations' => 'sendUserEvaluations',
+            'unpublish' => 'unpublish',
+            'view' => 'view',
+            'viewConsolidatedResult' => 'viewConsolidatedResult',
+            'viewEvaluations' => 'viewEvaluations',
+            'viewPrivateData' => 'viewPrivateData',
+            'viewPrivateFiles' => 'viewPrivateFiles',
+            'viewRegistrations' => 'viewRegistrations',
+            'viewUserEvaluation' => 'viewUserEvaluation',
+        ];
+    }
 }
