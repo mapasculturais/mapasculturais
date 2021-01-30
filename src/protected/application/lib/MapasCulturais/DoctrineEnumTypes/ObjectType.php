@@ -2,9 +2,7 @@
 
 namespace MapasCulturais\DoctrineEnumTypes;
 
-use MapasCulturais\App;
 use MapasCulturais\DoctrineEnumType;
-use MyCLabs\Enum\Enum;
 
 class ObjectType extends DoctrineEnumType
 {
