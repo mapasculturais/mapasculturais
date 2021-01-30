@@ -108,7 +108,8 @@ return [
                 $property = $reflection->getProperty('enumClass');
                 $property->setAccessible (true);
                 $class = $property->getValue($type);
-                foreach($class::getKeysValues() as $value){
+                
+                foreach($class::toArray() as $value){
                     if(!in_array($value, $actual_values)) {
                         echo "\n- ALTER TYPE {$enum_type} ADD VALUE '$value'\n";
                         __exec("ALTER TYPE {$enum_type} ADD VALUE '$value'");
