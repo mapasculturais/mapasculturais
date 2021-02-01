@@ -2,7 +2,7 @@
 <div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType == 'links'" id="field_{{::field.id}}" >
     <span class="label icon"> 
         {{::field.title}} 
-        <span ng-if="requiredField(field) ">obrigatório</span>       
+        <span ng-if="requiredField(field)" class="required_form">(<?php \MapasCulturais\i::_e('Obrigatório'); ?>)</span>
 
     </span>
     
