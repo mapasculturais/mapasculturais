@@ -1,7 +1,32 @@
-.charts-static .pie > div{
-    float: left;
-    width: 33.33333%;
+#reports div{
+    overflow: hidden;
 }
+.charts-static .line .line-one{    
+    width: 100%;
+}
+
+.charts-static .pie .line-one > div{
+    float: left;
+    width: 50%;
+}
+
+
+.charts-static .pie .line-two .chart-pie {
+    width: 50%;
+}
+
+.charts-static .pie .line-two > div{
+    text-align: -webkit-center;
+}
+
+.charts-static .pie .line-three .chart-pie {
+    width: 50%;
+}
+
+.charts-static .pie .line-three > div{
+    text-align: -webkit-center;
+}
+
 
 .header-reports > div{
     float: left;
