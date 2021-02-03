@@ -3,6 +3,7 @@
 namespace Reports;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Opportunity;
 
 class Module extends \MapasCulturais\Module
 {
@@ -26,7 +27,8 @@ class Module extends \MapasCulturais\Module
                 $this->part('opportunity-reports', [
                     'registrationByTime' => $self->registrationsByTime($opportunity),
                     'registrationsByStatus' => $self->registrationsByStatus($opportunity),
-                    'registrationsByEvaluation' => $self->registrationsByEvaluation($opportunity)
+                    'registrationsByEvaluation' => $self->registrationsByEvaluation($opportunity),
+                    'registrationsByEvaluationStatus' => $self->registrationsByEvaluationStatus($opportunity)
                 
                 ]);
             }
@@ -148,7 +150,7 @@ class Module extends \MapasCulturais\Module
     }
 
     /**
-     * Inscrições agrupadas por status
+     * Inscrições agrupadas por avaliação
      * 
      * @return array
      */
@@ -163,17 +165,51 @@ class Module extends \MapasCulturais\Module
         $data = [];
         $params = ['opportunity_id' => $opp->id];
 
-        $query = "SELECT count(*) as evaluated FROM registration r WHERE r.id IN (SELECT re.registration_id FROM registration_evaluation re) AND r.opportunity_id = :opportunity_id";
+        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0'";
 
         $evaluated = $conn->fetchAll($query, $params);
 
-        $query = "SELECT count(*) as notEvaluated FROM registration r WHERE r.id NOT IN (SELECT re.registration_id FROM registration_evaluation re) AND r.opportunity_id = :opportunity_id";
+        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0'";
 
         $notEvaluated = $conn->fetchAll($query, $params);
-
-        
         
         return array_merge($evaluated, $notEvaluated);
+    }
+
+    /**
+     * Inscrições agrupadas por status da avaliação
+     * 
+     * @return array
+     */
+    public function registrationsByEvaluationStatus(Opportunity $opp): array
+    {
+        $app = App::i();       
+
+        $em = $opp->getEvaluationMethod();
+
+        
+        //Pega conexão
+        $conn = $app->em->getConnection();
+
+        //Seleciona e agrupa inscrições ao longo do tempo
+        $data = [];
+        $params = ['opportunity_id' => $opp->id];
+
+        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' GROUP BY consolidated_result";
+
+        $evaluations = $conn->fetchAll($query, $params);
+        
+        $cont = 0;
+        foreach ($evaluations as  $evaluation){
+            if($cont < 8){
+                $data[$em->valueToString($evaluation['consolidated_result'])] = $evaluation['count'];
+                $cont ++;
+            }
+        }
+
+
+        return $data;
+        
     }
     
    

@@ -1,7 +1,10 @@
 <?php
 $label = ['Rascunho', "Enviadas"];
 $values = [];
+$height = '30vh';
+$width = '10%';
 $total = 0;
+
 foreach ($data as $key => $value){
     if($key == "Rascunho"){
         $values[0] = $value;
@@ -15,6 +18,8 @@ $this->part('charts/pie', [
     'serie' => [
         ['label' => $label[0], 'data' => $values[0], 'color' => 'yellow'],
         ['label' => $label[1], 'data' => $values[1], 'color' => 'green']
-    ]
+    ],
+    'height' => $height,
+    'width' => $width
 ]);
 ?>

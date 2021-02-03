@@ -3,7 +3,8 @@ $l_initiated = [];
 $v_initiated = [];
 $l_sent = [];
 $v_sent = [];
-$height = '20vw';
+$height = '30vh';
+$width = '100%';
 
 foreach ($data['initiated'] as $key => $value){
     $l_initiated[] = $key;
@@ -23,5 +24,7 @@ $this->part('charts/line', [
         ['label' => 'Enviadas', 'data' => $v_sent, 'color' => '#76e012', 'type' => 'line', 'fill' => false],
         
     ],
-    'height' => $height
+    'height' => $height,
+    'width' => $width,
+
 ]);

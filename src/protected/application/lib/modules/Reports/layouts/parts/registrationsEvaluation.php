@@ -3,6 +3,8 @@ $label = [];
 $values = [];
 $l_notEvaluated = [];
 $v_notEvaluated = [];
+$height = '30%';
+$width = '100%';
 $total = 0;
 
 
@@ -27,7 +29,9 @@ foreach ($data as $key => $value){
 $this->part('charts/pie', [
     'labels' => $label,
     'data' => $values,
-    'color' => ['black', 'white', 'yellow']
+    'color' => ['black', 'white', 'yellow'],
+    'height' => $height,
+    'width' => $width,
 ]);
 
 
