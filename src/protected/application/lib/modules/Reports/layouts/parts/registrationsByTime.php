@@ -1,30 +1,52 @@
 <?php
+use MapasCulturais\i;
+
+var_dump($data);
 $l_initiated = [];
 $v_initiated = [];
 $l_sent = [];
 $v_sent = [];
 $height = '30vh';
 $width = '100%';
+$color = [
+    '#FF9A00',
+    '#e500ff'
+];
 
-foreach ($data['initiated'] as $key => $value){
-    $l_initiated[] = $key;
-    $v_initiated[] = $value;
+$serie = [];
+$cont = 0;
+foreach ($data as $key_data => $values){
+    $serie[$cont] = [
+        'label' => $key_data,              
+        'color' => $color[$cont],
+        'type' => 'line',
+        'fill' => false
+    ];
+
+    foreach ($values as $key_v => $value){
+        $labels[] = $key_v;
+        $serie[$cont]['data'][] = $value;
+    }
+    $cont ++;
 }
 
-foreach ($data['sent'] as $key => $value){
-    $l_sent[] = $key;
-    $v_sent[] = $value;
-}
+$labels = array_unique($labels);
+sort($labels);
 
 $this->part('charts/line', [
-    // 'horizontal' => true,
-    'labels' => array_merge($l_initiated, $l_sent),
-    'series' => [
-        ['label' => 'Iniciada', 'data' => $v_initiated, 'color' => '#800', 'type' => 'line', 'fill' => false],
-        ['label' => 'Enviadas', 'data' => $v_sent, 'color' => '#76e012', 'type' => 'line', 'fill' => false],
-        
-    ],
+    'vertical' => true,
+    'labels' => $labels,
+    'series' => $serie,
     'height' => $height,
-    'width' => $width,
-
+    'width' => $width
 ]);
+
+function color()
+{
+    mt_srand((double)microtime()*1000000);
+    $c = '';
+    while(strlen($c)<6){
+        $c .= sprintf("%02X", mt_rand(0, 255));
+    }
+    return "#".$c;
+}

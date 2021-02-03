@@ -29,23 +29,29 @@ use MapasCulturais\i;
         <div class="pie">
             <div class="line-one">
                 <div>
+                    <?php i::_e("Rascunhos X Enviadas"); ?> <br>
                     <?php $this->part('registrationsDraftVsSent', ['data' => $registrationsByStatus]); ?>
                 </div>
-                
+
                 <div>
-                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation]); ?>
-                </div>
+                    <?php i::_e("Inscrições por status"); ?> <br>
+                    <?php $this->part('registrationsStatus', ['data' => $registrationsByStatus]); ?>
+                </div>                
             </div>
 
             <div class="line-two">
                 <div>
-                    <?php $this->part('registrationsStatus', ['data' => $registrationsByStatus]); ?>
+                    <?php i::_e("Inscrições por avaliações"); ?> <br>
+                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation]); ?>
+                </div>
+
+                <div>
+                    <?php i::_e("Inscrições por status da avaliação"); ?> <br>
+                    <?php $this->part('registrationsByEvaluationStatus', ['data' => $registrationsByEvaluationStatus]); ?>
                 </div>
             </div>
             <div class="line-three">
-                <div>
-                    <?php $this->part('registrationsByEvaluationStatus', ['data' => $registrationsByEvaluationStatus]); ?>
-                </div>
+                
             </div>
         </div>
     </div>

@@ -1,4 +1,6 @@
 <?php
+use MapasCulturais\i;
+
 $label = ['Rascunho', "Enviadas"];
 $values = [];
 $height = '30vh';
