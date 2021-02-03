@@ -5,6 +5,7 @@ return [
     'app.useGoogleGeocode'      => env('MAPS_USE_GOOGLE_GEOCODE', false),
     'app.googleApiKey'          => env('MAPS_GOOGLE_API_KEY', ''),
     'app.enableLocationPatch'   => env('MAPS_ENABLE_LOCATION_PATCH', false),
+    'app.locationPatchCutoff'   => env('MAPS_LOCATION_PATCH_CUTOFF', '19800101000001'),
 
     'maps.center'  => explode(',', env('MAPS_CENTER', '-14.2400732,-53.1805018')), 
     
