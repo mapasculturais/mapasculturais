@@ -79,7 +79,7 @@ class Module extends \MapasCulturais\Module
         FROM registration r 
         WHERE opportunity_id = :opportunity_id
         GROUP BY to_char(create_timestamp , 'YYYY-MM-DD')
-        ORDER BY date";
+        ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
         foreach ($result as $value){
             $initiated[$value['date']] = $value['total'];
@@ -89,16 +89,16 @@ class Module extends \MapasCulturais\Module
         to_char(sent_timestamp , 'YYYY-MM-DD') as date, 
         count(*) as total 
         FROM registration r 
-        WHERE opportunity_id = :opportunity_id
+        WHERE opportunity_id = :opportunity_id AND r.status > 0
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
-        ORDER BY date";
+        ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
         
         foreach ($result as $value){
             $sent[$value['date']] = $value['total'];
         }
         
-        return ["initiated" => $initiated, 'sent' => $sent];
+        return ['Finalizadas' => $sent, "Iniciadas" => $initiated];
     }
 
      /**
