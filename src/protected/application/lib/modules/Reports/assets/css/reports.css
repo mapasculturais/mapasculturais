@@ -19,12 +19,49 @@
 
 .chart-container header h3 {
     float: left;
+    font-size: 28px;
 }
 
 .chart-container header button {
     float: right;
 }
 
+/* Chart container */
+#reports .chart-container {
+    margin-bottom: 45px;
+}
+
+/* Legends */
+#reports .chart-container .legends-chats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 15px;
+    padding-top: 25px;
+}
+#reports .chart-container .legends-chats .each {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    width: 33%;
+}
+#reports .chart-container .legends-chats .each .dot {
+    border-radius: 15px;
+    display: inline-block;
+    height: 15px;
+    margin-right: 5px;
+    min-width: 15px;
+    width: 15px;
+}
+#reports .chart-container .legends-chats .each p {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+/* Footer*/
 #reports footer {
     border-top: 1px solid #888888;
     margin-top: 25px;
