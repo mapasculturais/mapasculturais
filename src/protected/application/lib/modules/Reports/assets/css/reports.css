@@ -16,17 +16,10 @@
     width: 50%;
 }
 
-
-
-
-
-
-.header-reports > div{
+.chart-container header h3 {
     float: left;
-    width: 50%;
 }
 
-.header-reports > span{
-    display: block;
-    margin-bottom: 45px;
+.chart-container header button {
+    float: right;
 }

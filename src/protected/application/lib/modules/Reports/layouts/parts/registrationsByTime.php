@@ -1,13 +1,14 @@
 <?php
+
 use MapasCulturais\i;
 
-var_dump($data);
 $l_initiated = [];
 $v_initiated = [];
 $l_sent = [];
 $v_sent = [];
 $height = '30vh';
 $width = '100%';
+$title = i::__('Total de registro ao longo do tempo');
 $color = [
     '#FF9A00',
     '#e500ff'
@@ -35,6 +36,7 @@ sort($labels);
 
 $this->part('charts/line', [
     'vertical' => true,
+    'title' => $title,
     'labels' => $labels,
     'series' => $serie,
     'height' => $height,
