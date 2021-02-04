@@ -42,9 +42,8 @@ $legends = $legends ?? null;
         <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
     </header>
     
-    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
-    
     <canvas id="<?= $chart_id ?>"></canvas>
+    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
 </div>
 
 <script>

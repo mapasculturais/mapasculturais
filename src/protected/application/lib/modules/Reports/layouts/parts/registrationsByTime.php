@@ -6,7 +6,7 @@ use MapasCulturais\i;
 $count = 0;
 $colors = [];
 $serie = [];
-$height = '40vh';
+$height = 'auto';
 $width = '100%';
 $title = i::__('Total de registro ao longo do tempo');
 
