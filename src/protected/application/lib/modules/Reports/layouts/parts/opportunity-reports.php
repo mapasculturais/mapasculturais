@@ -38,4 +38,8 @@ use MapasCulturais\i;
             </div>
         </div>
     </div>
+
+    <footer>
+        <button class="btn btn-default add"><?php i::_e('Criar novo gráfico'); ?></button>
+    </footer>
 </div>
