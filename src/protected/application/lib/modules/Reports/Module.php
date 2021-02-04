@@ -25,6 +25,9 @@ class Module extends \MapasCulturais\Module
             
             if($opportunity->canUser('@control')){
                 $this->part('opportunity-reports', [
+                    'color' => function() use ($self){
+                        return $self->color();
+                    },
                     'registrationByTime' => $self->registrationsByTime($opportunity),
                     'registrationsByStatus' => $self->registrationsByStatus($opportunity),
                     'registrationsByEvaluation' => $self->registrationsByEvaluation($opportunity),
@@ -212,5 +215,14 @@ class Module extends \MapasCulturais\Module
         
     }
     
+    function color()
+    {
+        mt_srand((double) microtime() * 1000000);
+        $c = '';
+        while (strlen($c) < 6) {
+            $c .= sprintf("%02X", mt_rand(0, 255));
+        }
+        return "#" . $c;
+    }
    
 }

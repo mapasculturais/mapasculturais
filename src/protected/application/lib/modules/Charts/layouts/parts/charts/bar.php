@@ -61,9 +61,15 @@ $height = $height ?? '50vw';
 $horizontal = $horizontal ?? false;
 ?>
 <div class="chart-container chart-bar" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
-    <?php if($title): ?>
-        <h2><?= $title ?></h2>
-    <?php endif; ?>
+    <header>
+        <?php if($title): ?>
+            <h2><?= $title ?></h2>
+        <?php endif; ?>
+        <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
+    </header>
+    
+    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
+
     <canvas id="<?= $chart_id ?>"></canvas>
 </div>
 
@@ -77,6 +83,7 @@ $horizontal = $horizontal ?? false;
             },
             options: {
                 responsive: true,
+                legend: false
             }
         };
         console.log(config);

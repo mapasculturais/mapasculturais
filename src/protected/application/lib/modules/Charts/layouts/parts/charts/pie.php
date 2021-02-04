@@ -3,37 +3,47 @@
  * 
   $this->part('charts/pie', [
        'serie' => [
-           ['label' => 'Preto', 'data' => 66, 'color' => 'black'],
-           ['label' => 'Branco', 'data' => 120, 'color' => 'white'],
-           ['label' => 'Amarelo', 'data' => 70, 'color' => 'yellow']
+           ['label' => 'Preto', 'data' => 66, 'colors' => 'black'],
+           ['label' => 'Branco', 'data' => 120, 'colors' => 'white'],
+           ['label' => 'Amarelo', 'data' => 70, 'colors' => 'yellow']
        ]
   ]);
   
   $this->part('charts/pie', [
        'labels' => ['Preto', 'Branco', 'Amarelo'],
        'data' => [66, 120, 70],
-       'color' => ['black', 'white', 'yellow']
+       'colors' => ['black', 'white', 'yellow']
   ]);
  * 
  */
+
+
+
 $title = $title ?? null;
 $chart_id = uniqid('chart-pie-');
-$colors = [];
-if (isset($serie) && is_array($serie)) {
+if (isset($serie) && is_array($serie)) {    
     $data = array_map(function($item) { return $item['data']; }, $serie);
     $labels = array_map(function($item) { return $item['label']; }, $serie);
-    if(isset($serie[0]['color'])) {
-        $colors = array_map(function($item) { return $item['color']; }, $serie);
+    if(isset($serie[0]['colors'])) {
+        $colors = array_map(function($item) { return $item['colors']; }, $serie);
     }
 }
 
 $width = $width ?? '50vw';
 $height = $height ?? '50vw';
+$legends = $legends ?? null;
 ?>
-<div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
-    <?php if($title): ?>
-        <h2><?= $title ?></h2>
-    <?php endif; ?>
+<!-- <div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;"> -->
+<div class="chart-container chart-pie">
+    <header>
+        <?php if($title): ?>
+            <h2><?= $title ?></h2>
+        <?php endif; ?>
+        <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
+    </header>
+    
+    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
+    
     <canvas id="<?= $chart_id ?>"></canvas>
 </div>
 
@@ -53,6 +63,7 @@ $height = $height ?? '50vw';
             },
             options: {
                 responsive: true,
+                legend: false
             }
         };
 
