@@ -8,12 +8,13 @@
 .charts-static .pie .line-one > div{
     float: left;
     width: 50%;
+    margin-bottom: 20px;
 }
-
 
 .charts-static .pie .line-two > div {
     float: left;
     width: 50%;
+    margin-bottom: 20px;
 }
 
 .chart-container header h3 {

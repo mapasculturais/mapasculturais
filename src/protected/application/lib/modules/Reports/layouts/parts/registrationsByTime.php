@@ -2,53 +2,48 @@
 
 use MapasCulturais\i;
 
-$l_initiated = [];
-$v_initiated = [];
-$l_sent = [];
-$v_sent = [];
-$height = '30vh';
+//Recebe os valores do sistema
+$count = 0;
+$colors = [];
+$serie = [];
+$height = '40vh';
 $width = '100%';
 $title = i::__('Total de registro ao longo do tempo');
-$color = [
-    '#FF9A00',
-    '#e500ff'
-];
 
-$serie = [];
-$cont = 0;
-foreach ($data as $key_data => $values){
-    $serie[$cont] = [
-        'label' => $key_data,              
-        'color' => $color[$cont],
+//Prepara os dados para o gráfico
+foreach ($data as $key_data => $values) {
+    $tempColor = is_callable($color) ? $color() : $color;
+    $serie[$count] = [
+        'label' => $key_data,
+        'colors' => $tempColor,
         'type' => 'line',
-        'fill' => false
+        'fill' => false,
     ];
 
-    foreach ($values as $key_v => $value){
+    $colors[$count] = $tempColor;
+
+    foreach ($values as $key_v => $value) {
         $labels[] = $key_v;
-        $serie[$cont]['data'][] = $value;
+        $serie[$count]['data'][] = $value;
     }
-    $cont ++;
+    $count++;
 }
 
 $labels = array_unique($labels);
 sort($labels);
 
+$dataLabels = array_map(function ($label) {
+    return (new DateTime($label))->format('d/m/Y');
+}, $labels);
+
+// Imprime o gráfico na tela
 $this->part('charts/line', [
     'vertical' => true,
     'title' => $title,
-    'labels' => $labels,
+    'labels' => $dataLabels,
     'series' => $serie,
     'height' => $height,
-    'width' => $width
+    'width' => $width,
+    'legends' => $labels,
+    'colors' => $colors,
 ]);
-
-function color()
-{
-    mt_srand((double)microtime()*1000000);
-    $c = '';
-    while(strlen($c)<6){
-        $c .= sprintf("%02X", mt_rand(0, 255));
-    }
-    return "#".$c;
-}
