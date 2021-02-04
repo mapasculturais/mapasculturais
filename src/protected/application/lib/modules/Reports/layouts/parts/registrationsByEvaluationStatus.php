@@ -12,6 +12,7 @@ $title = i::__('Inscrições por status da avaliação');
 //Prepara os dados para o gráfic
 foreach ($data as $key => $value) {
     $label[] = $key;
+    $legends[] = $key;
     $values[] = $value;
     $colors[] = is_callable($color) ? $color() : $color;
 }
@@ -21,6 +22,6 @@ $this->part('charts/pie', [
     'labels' => $label,
     'data' => $values,
     'colors' => $colors,
-    'legends' => $label,
+    'legends' => $legends,
     'title' => $title,
 ]);

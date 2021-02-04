@@ -17,7 +17,6 @@ use MapasCulturais\i;
  */
 $title = $title ?? null;
 $chart_id = uniqid('chart-line-');
-$colors = [];
 $datasets = [];
 
 if (isset($series) && is_array($series)) {
@@ -26,7 +25,7 @@ if (isset($series) && is_array($series)) {
         $dataset['fill'] = $dataset['fill'] ?? false;
         $dataset['borderWidth'] = $dataset['borderWidth'] ?? 2;
         if(isset($dataset['color'])) {
-            $dataset[$color_key] = $dataset['color'];
+            $dataset[$color_key] = $dataset['colors'];
             unset($dataset['color']);
         }
         return $dataset;

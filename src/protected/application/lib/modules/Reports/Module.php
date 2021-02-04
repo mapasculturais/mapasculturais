@@ -7,13 +7,13 @@ use MapasCulturais\Entities\Opportunity;
 
 class Module extends \MapasCulturais\Module
 {
-    
-    function _init()
+
+    public function _init()
     {
         $app = App::i();
 
         $self = $this;
-        
+
         // Adiciona a aba do módulo de relatórios
         $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
             $this->part('opportunity-reports--tab');
@@ -22,24 +22,24 @@ class Module extends \MapasCulturais\Module
         //Adiciona o conteúdo dentro da aba dos relatórios
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
             $opportunity = $this->controller->requestedEntity;
-            
-            if($opportunity->canUser('@control')){
+
+            if ($opportunity->canUser('@control')) {
                 $this->part('opportunity-reports', [
-                    'color' => function() use ($self){
+                    'color' => function () use ($self) {
                         return $self->color();
                     },
                     'registrationByTime' => $self->registrationsByTime($opportunity),
                     'registrationsByStatus' => $self->registrationsByStatus($opportunity),
                     'registrationsByEvaluation' => $self->registrationsByEvaluation($opportunity),
-                    'registrationsByEvaluationStatus' => $self->registrationsByEvaluationStatus($opportunity)
-                
+                    'registrationsByEvaluationStatus' => $self->registrationsByEvaluationStatus($opportunity),
+
                 ]);
             }
-           
+
         });
     }
 
-    function register()
+    public function register()
     {
         $app = App::i();
 
@@ -50,23 +50,24 @@ class Module extends \MapasCulturais\Module
             $self->enqueueScriptsAndStyles();
         });
     }
-    
-    function enqueueScriptsAndStyles() {
+
+    public function enqueueScriptsAndStyles()
+    {
         $app = App::i();
 
         $app->view->enqueueStyle('app', 'reports', 'css/reports.css');
-        $app->view->enqueueScript('app', 'reports', 'js/ng.reports.js', ['entity.module.opportunity']);       
+        $app->view->enqueueScript('app', 'reports', 'js/ng.reports.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.reports';
     }
-    
+
     /**
      * Inscrições VS tempo
-     * 
+     *
      * @return array
      */
     public function registrationsByTime($opp): array
     {
-        $app = App::i();       
+        $app = App::i();
 
         //Pega conexão
         $conn = $app->em->getConnection();
@@ -76,42 +77,42 @@ class Module extends \MapasCulturais\Module
         $sent = [];
         $params = ['opportunity_id' => $opp->id];
 
-        $query = "SELECT 
-        to_char(create_timestamp , 'YYYY-MM-DD') as date, 
-        count(*) as total 
-        FROM registration r 
+        $query = "SELECT
+        to_char(create_timestamp , 'YYYY-MM-DD') as date,
+        count(*) as total
+        FROM registration r
         WHERE opportunity_id = :opportunity_id
         GROUP BY to_char(create_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
-        foreach ($result as $value){
+        foreach ($result as $value) {
             $initiated[$value['date']] = $value['total'];
         }
 
-        $query = "SELECT 
-        to_char(sent_timestamp , 'YYYY-MM-DD') as date, 
-        count(*) as total 
-        FROM registration r 
+        $query = "SELECT
+        to_char(sent_timestamp , 'YYYY-MM-DD') as date,
+        count(*) as total
+        FROM registration r
         WHERE opportunity_id = :opportunity_id AND r.status > 0
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
-        
-        foreach ($result as $value){
+
+        foreach ($result as $value) {
             $sent[$value['date']] = $value['total'];
         }
-        
+
         return ['Finalizadas' => $sent, "Iniciadas" => $initiated];
     }
 
-     /**
+    /**
      * Inscrições agrupadas por status
-     * 
+     *
      * @return array
      */
     public function registrationsByStatus($opp): array
     {
-        $app = App::i();       
+        $app = App::i();
 
         //Pega conexão
         $conn = $app->em->getConnection();
@@ -124,7 +125,7 @@ class Module extends \MapasCulturais\Module
 
         $result = $conn->fetchAll($query, $params);
 
-        foreach ($result as $value){
+        foreach ($result as $value) {
             switch ($value['status']) {
                 case 0:
                     $status = "Rascunho";
@@ -148,18 +149,18 @@ class Module extends \MapasCulturais\Module
 
             $data[$status] = $value['count'];
         }
-        
+
         return $data;
     }
 
     /**
      * Inscrições agrupadas por avaliação
-     * 
+     *
      * @return array
      */
     public function registrationsByEvaluation($opp): array
     {
-        $app = App::i();       
+        $app = App::i();
 
         //Pega conexão
         $conn = $app->em->getConnection();
@@ -175,22 +176,21 @@ class Module extends \MapasCulturais\Module
         $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0'";
 
         $notEvaluated = $conn->fetchAll($query, $params);
-        
+
         return array_merge($evaluated, $notEvaluated);
     }
 
     /**
      * Inscrições agrupadas por status da avaliação
-     * 
+     *
      * @return array
      */
     public function registrationsByEvaluationStatus(Opportunity $opp): array
     {
-        $app = App::i();       
+        $app = App::i();
 
         $em = $opp->getEvaluationMethod();
 
-        
         //Pega conexão
         $conn = $app->em->getConnection();
 
@@ -201,21 +201,20 @@ class Module extends \MapasCulturais\Module
         $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' GROUP BY consolidated_result";
 
         $evaluations = $conn->fetchAll($query, $params);
-        
+
         $cont = 0;
-        foreach ($evaluations as  $evaluation){
-            if($cont < 8){
+        foreach ($evaluations as $evaluation) {
+            if ($cont < 8) {
                 $data[$em->valueToString($evaluation['consolidated_result'])] = $evaluation['count'];
-                $cont ++;
+                $cont++;
             }
         }
 
-
         return $data;
-        
+
     }
-    
-    function color()
+
+    public function color()
     {
         mt_srand((double) microtime() * 1000000);
         $c = '';
@@ -224,5 +223,5 @@ class Module extends \MapasCulturais\Module
         }
         return "#" . $c;
     }
-   
+
 }

@@ -23,6 +23,7 @@ foreach ($data as $key => $value) {
         }
 
         $label[] = $status;
+        $legends[] = $status;
         $values[] = $v;
         $colors[] = is_callable($color) ? $color() : $color;
     }
@@ -36,6 +37,6 @@ $this->part('charts/pie', [
     'colors' => $colors,
     'height' => $height,
     'width' => $width,
-    'legends' => $label,
+    'legends' => $legends,
     'title' => $title,
 ]);
