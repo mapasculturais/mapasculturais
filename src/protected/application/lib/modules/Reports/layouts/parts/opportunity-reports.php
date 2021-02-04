@@ -5,19 +5,9 @@ use MapasCulturais\i;
 
 ?>
 <div class="aba-content" id="reports">
-    <div class="header-reports">   
-        <span>
-            <?php i::_e("Veja abaixo os gráficos referentes a essa oportinidade"); ?>  <br>
-        </span>
-        <div>
-            <h5><?php i::_e("Total de registro ao longo do tempo"); ?></h5>
-        </div>
-
-        <div>
-            <button  class="btn btn-default download"> <?php i::_e("Baixar gráfico em CSV"); ?></button>
-        </div>
-    </div>
-
+    <header>   
+        <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportinidade"); ?></p>
+    </header>
 
     <div class="charts-static">
         <div class="line">

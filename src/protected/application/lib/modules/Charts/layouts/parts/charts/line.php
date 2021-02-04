@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use MapasCulturais\i;
+
 /**
  * 
   $this->part('charts/line', [
@@ -34,10 +37,13 @@ $width = $width ?? '50vw';
 $height = $height ?? '50vw';
 
 ?>
-<div class="chart-container chart-line" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
-    <?php if($title): ?>
-        <h2><?= $title ?></h2>
-    <?php endif; ?>
+<div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+    <header>
+        <?php if ($title) : ?>
+            <h3><?= $title ?></h3>
+        <?php endif; ?>
+        <button class="btn btn-default download"><?php i::_e("Baixar em CSV"); ?></button>
+    </header>
     <canvas id="<?= $chart_id ?>"></canvas>
 </div>
 
