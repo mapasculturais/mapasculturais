@@ -3,6 +3,7 @@ use MapasCulturais\i;
 
 //Recebe os valores do sistema
 $label = [i::__('Rascunhos'), i::__('Enviadas')];
+$legends = [i::__('Rascunhos'), i::__('Enviadas')];
 $values = [];
 $height = '30vh';
 $width = '10%';
@@ -29,7 +30,7 @@ $this->part('charts/pie', [
     ],
     'height' => $height,
     'width' => $width,
-    'legends' => $label,
+    'legends' => $legends,
     'colors' => $colors,
     'title' => $title,
 ]);

@@ -11,6 +11,7 @@ $title = i::__('Inscrições por status');
 foreach ($data as $key => $value) {
     if ($key != i::__('Rascunho')) {
         $label[] = $key;
+        $legends[] = $key;
         $values[] = $value;
         $colors[] = is_callable($color) ? $color() : $color;
     }
@@ -21,6 +22,6 @@ $this->part('charts/pie', [
     'labels' => $label,
     'data' => $values,
     'colors' => $colors,
-    'legends' => $label,
+    'legends' => $legends,
     'title' => $title,
 ]);

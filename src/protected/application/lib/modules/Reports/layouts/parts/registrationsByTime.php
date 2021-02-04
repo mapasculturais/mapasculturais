@@ -19,7 +19,7 @@ foreach ($data as $key_data => $values) {
         'type' => 'line',
         'fill' => false,
     ];
-
+    $legends[$count] = $key_data;
     $colors[$count] = $tempColor;
 
     foreach ($values as $key_v => $value) {
@@ -44,6 +44,6 @@ $this->part('charts/line', [
     'series' => $serie,
     'height' => $height,
     'width' => $width,
-    'legends' => $labels,
+    'legends' => $legends,
     'colors' => $colors,
 ]);
