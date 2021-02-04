@@ -24,3 +24,22 @@
 .chart-container header button {
     float: right;
 }
+
+#reports footer {
+    border-top: 1px solid #888888;
+    margin-top: 25px;
+    padding: 45px 15px 25px;
+    text-align: center;
+}
+
+#reports footer .add {
+    background-color: rgba(255,154,0,0.7);
+    border: 0;
+    border-radius: 5px;
+    color: #111111;
+    font-size: 14px;
+    height: auto;
+    line-height: 1;
+    margin-bottom: 0;
+    padding: 17px 50px;
+}
