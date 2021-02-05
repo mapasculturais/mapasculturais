@@ -43,6 +43,7 @@
     align-items: center;
     box-sizing: border-box;
     display: flex;
+    justify-content: center;
     margin-bottom: 10px;
     padding-right: 5px;
     width: 33%;
