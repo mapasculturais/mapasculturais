@@ -5,7 +5,9 @@ use MapasCulturais\i;
 $label = [];
 $values = [];
 $colors = [];
-$title = i::__('Inscrições por status');
+$height = '30vw';
+$width = '100%';
+$title = i::__('Status das inscrições');
 
 //Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
@@ -24,4 +26,6 @@ $this->part('charts/pie', [
     'colors' => $colors,
     'legends' => $legends,
     'title' => $title,
+    'height' => $height,
+    'width' => $width,
 ]);

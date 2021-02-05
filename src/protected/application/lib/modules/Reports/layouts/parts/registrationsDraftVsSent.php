@@ -5,13 +5,14 @@ use MapasCulturais\i;
 $label = [i::__('Rascunhos'), i::__('Enviadas')];
 $legends = [i::__('Rascunhos'), i::__('Enviadas')];
 $values = [];
-$height = '30vh';
-$width = '10%';
+$height = '30vw';
+$width = '100%';
 $total = 0;
-$title = i::__('Rascunhos X Enviadas');
+$title = i::__('Status de envio das inscrições');
 
 //Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
+    
     if ($key == i::__('Rascunho')) {
         $values[0] = $value;
         $colors[0] = is_callable($color) ? $color() : $color;
@@ -33,4 +34,6 @@ $this->part('charts/pie', [
     'legends' => $legends,
     'colors' => $colors,
     'title' => $title,
+    'height' => $height,
+    'width' => $width,
 ]);

@@ -23,17 +23,31 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
             $opportunity = $this->controller->requestedEntity;
 
-            if ($opportunity->canUser('@control')) {
-                $this->part('opportunity-reports', [
-                    'color' => function () use ($self) {
-                        return $self->color();
-                    },
-                    'registrationByTime' => $self->registrationsByTime($opportunity),
-                    'registrationsByStatus' => $self->registrationsByStatus($opportunity),
-                    'registrationsByEvaluation' => $self->registrationsByEvaluation($opportunity),
-                    'registrationsByEvaluationStatus' => $self->registrationsByEvaluationStatus($opportunity),
+            $sendHook = [];
 
-                ]);
+           
+            if($registrationsByTime = $self->registrationsByTime($opportunity)){
+                $sendHook['registrationsByTime'] = $registrationsByTime;
+            }
+
+            if($registrationsByStatus = $self->registrationsByStatus($opportunity)){
+                $sendHook['registrationsByStatus'] = $registrationsByStatus;
+            }
+
+            if($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)){
+                $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
+            }
+
+            if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)){
+                $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
+            }
+
+            $sendHook['color'] = function () use ($self) {
+                return $self->color();
+            };
+            
+            if ($opportunity->canUser('@control')) {
+                $this->part('opportunity-reports', $sendHook);
             }
 
         });
@@ -63,9 +77,9 @@ class Module extends \MapasCulturais\Module
     /**
      * Inscrições VS tempo
      *
-     * @return array
+     * 
      */
-    public function registrationsByTime($opp): array
+    public function registrationsByTime($opp)
     {
         $app = App::i();
 
@@ -101,16 +115,21 @@ class Module extends \MapasCulturais\Module
         foreach ($result as $value) {
             $sent[$value['date']] = $value['total'];
         }
-
+        
+        if(!$sent || !$initiated){
+            return false;
+        }
+        
         return ['Finalizadas' => $sent, "Iniciadas" => $initiated];
+
     }
 
     /**
      * Inscrições agrupadas por status
      *
-     * @return array
+     *
      */
-    public function registrationsByStatus($opp): array
+    public function registrationsByStatus($opp)
     {
         $app = App::i();
 
@@ -150,15 +169,19 @@ class Module extends \MapasCulturais\Module
             $data[$status] = $value['count'];
         }
 
+        if(!$data){
+            return false;
+        }
+
         return $data;
     }
 
     /**
      * Inscrições agrupadas por avaliação
      *
-     * @return array
+     * 
      */
-    public function registrationsByEvaluation($opp): array
+    public function registrationsByEvaluation($opp)
     {
         $app = App::i();
 
@@ -177,15 +200,27 @@ class Module extends \MapasCulturais\Module
 
         $notEvaluated = $conn->fetchAll($query, $params);
 
-        return array_merge($evaluated, $notEvaluated);
+        $merge = array_merge($evaluated, $notEvaluated);
+        
+        foreach($merge as $m){
+            foreach ($m as $v){
+              if(empty($v)){
+                  return false;
+              }
+            }
+        }
+        
+
+       
+        return $merge;
     }
 
     /**
      * Inscrições agrupadas por status da avaliação
      *
-     * @return array
+     * 
      */
-    public function registrationsByEvaluationStatus(Opportunity $opp): array
+    public function registrationsByEvaluationStatus(Opportunity $opp)
     {
         $app = App::i();
 
@@ -210,6 +245,9 @@ class Module extends \MapasCulturais\Module
             }
         }
 
+        if(!$data){
+            return false;
+        }
         return $data;
 
     }
