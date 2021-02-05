@@ -25,27 +25,30 @@ class Module extends \MapasCulturais\Module
 
             $sendHook = [];
 
-           
-            if($registrationsByTime = $self->registrationsByTime($opportunity)){
+            if ($registrationsByTime = $self->registrationsByTime($opportunity)) {
                 $sendHook['registrationsByTime'] = $registrationsByTime;
             }
 
-            if($registrationsByStatus = $self->registrationsByStatus($opportunity)){
+            if ($registrationsByStatus = $self->registrationsByStatus($opportunity)) {
                 $sendHook['registrationsByStatus'] = $registrationsByStatus;
             }
 
-            if($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)){
+            if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)) {
                 $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
             }
 
-            if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)){
+            if ($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)) {
                 $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
+            }
+
+            if ($registrationsByCategory = $self->registrationsByCategory($opportunity)) {
+                $sendHook['registrationsByCategory'] = $registrationsByCategory;
             }
 
             $sendHook['color'] = function () use ($self) {
                 return $self->color();
             };
-            
+
             if ($opportunity->canUser('@control')) {
                 $this->part('opportunity-reports', $sendHook);
             }
@@ -77,7 +80,7 @@ class Module extends \MapasCulturais\Module
     /**
      * Inscrições VS tempo
      *
-     * 
+     *
      */
     public function registrationsByTime($opp)
     {
@@ -115,11 +118,11 @@ class Module extends \MapasCulturais\Module
         foreach ($result as $value) {
             $sent[$value['date']] = $value['total'];
         }
-        
-        if(!$sent || !$initiated){
+
+        if (!$sent || !$initiated) {
             return false;
         }
-        
+
         return ['Finalizadas' => $sent, "Iniciadas" => $initiated];
 
     }
@@ -169,7 +172,7 @@ class Module extends \MapasCulturais\Module
             $data[$status] = $value['count'];
         }
 
-        if(!$data){
+        if (!$data) {
             return false;
         }
 
@@ -179,7 +182,7 @@ class Module extends \MapasCulturais\Module
     /**
      * Inscrições agrupadas por avaliação
      *
-     * 
+     *
      */
     public function registrationsByEvaluation($opp)
     {
@@ -201,24 +204,22 @@ class Module extends \MapasCulturais\Module
         $notEvaluated = $conn->fetchAll($query, $params);
 
         $merge = array_merge($evaluated, $notEvaluated);
-        
-        foreach($merge as $m){
-            foreach ($m as $v){
-              if(empty($v)){
-                  return false;
-              }
+
+        foreach ($merge as $m) {
+            foreach ($m as $v) {
+                if (empty($v)) {
+                    return false;
+                }
             }
         }
-        
 
-       
         return $merge;
     }
 
     /**
      * Inscrições agrupadas por status da avaliação
      *
-     * 
+     *
      */
     public function registrationsByEvaluationStatus(Opportunity $opp)
     {
@@ -245,9 +246,40 @@ class Module extends \MapasCulturais\Module
             }
         }
 
-        if(!$data){
-            return false;
+        return $data;
+
+    }
+
+    /**
+     * Inscrições agrupadas pela vategoria
+     *
+     *
+     */
+    public function registrationsByCategory(Opportunity $opp)
+    {
+        $app = App::i();
+
+        $em = $opp->getEvaluationMethod();
+
+        //Pega conexão
+        $conn = $app->em->getConnection();
+
+        //Seleciona e agrupa inscrições ao longo do tempo
+        $data = [];
+        $params = ['opportunity_id' => $opp->id];
+
+        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity_id group by category";
+
+        $data = $conn->fetchAll($query, $params);
+
+        foreach ($data as $value) {
+            foreach ($value as $v) {
+                if (empty($v)) {
+                    return false;
+                }
+            }
         }
+
         return $data;
 
     }
