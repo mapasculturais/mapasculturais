@@ -65,6 +65,18 @@ $height = $height ?? '50vw';
                         
                     }
                 },
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display:false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            borderDash: [5, 5],
+                        }
+                    }]
+                }
             }
         };
         
