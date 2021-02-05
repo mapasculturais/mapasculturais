@@ -37,9 +37,7 @@ $legends = $legends ?? null;
 <!-- <div class="chart-container chart-pie"> -->
     <header>
         <?php if($title): ?>
-            <div class="title">
-                <h2><?= $title ?></h2>
-            </div>
+            <h3><?= $title ?></h3>
         <?php endif; ?>
         <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
     </header>

@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $label = [i::__('Rascunhos'), i::__('Enviadas')];
 $legends = [i::__('Rascunhos'), i::__('Enviadas')];
 $values = [];
-$height = '30vw';
+$height = 'auto';
 $width = '100%';
 $total = 0;
 $title = i::__('Status de envio das inscrições');

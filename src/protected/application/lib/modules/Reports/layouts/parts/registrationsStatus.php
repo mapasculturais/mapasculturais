@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $label = [];
 $values = [];
 $colors = [];
-$height = '30vw';
+$height = 'auto';
 $width = '100%';
 $title = i::__('Status das inscrições');
 
