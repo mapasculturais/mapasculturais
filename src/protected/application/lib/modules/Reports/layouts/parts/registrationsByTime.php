@@ -8,7 +8,7 @@ $colors = [];
 $serie = [];
 $height = 'auto';
 $width = '100%';
-$title = i::__('Total de registro ao longo do tempo');
+$title = i::__('Inscrições ao longo do tempo');
 
 //Prepara os dados para o gráfico
 foreach ($data as $key_data => $values) {

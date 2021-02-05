@@ -4,10 +4,10 @@ use MapasCulturais\i;
 //Recebe os valores do sistema
 $label = [];
 $values = [];
-$height = '50vw';
+$height = '30vw';
 $width = '100%';
 $colors = [];
-$title = i::__('Inscrições por status da avaliação');
+$title = i::__('Status de avaliações');
 
 //Prepara os dados para o gráfic
 foreach ($data as $key => $value) {
@@ -24,4 +24,6 @@ $this->part('charts/pie', [
     'colors' => $colors,
     'legends' => $legends,
     'title' => $title,
+    'height' => $height,
+    'width' => $width,
 ]);

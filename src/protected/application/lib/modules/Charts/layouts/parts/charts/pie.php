@@ -33,11 +33,13 @@ $width = $width ?? '50vw';
 $height = $height ?? '50vw';
 $legends = $legends ?? null;
 ?>
-<!-- <div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;"> -->
-<div class="chart-container chart-pie">
+<div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
+<!-- <div class="chart-container chart-pie"> -->
     <header>
         <?php if($title): ?>
-            <h2><?= $title ?></h2>
+            <div class="title">
+                <h2><?= $title ?></h2>
+            </div>
         <?php endif; ?>
         <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
     </header>
@@ -62,7 +64,34 @@ $legends = $legends ?? null;
             },
             options: {
                 responsive: true,
-                legend: false
+                legend: false,
+                layout: {
+                    padding: {
+                        right: 0,
+                        top: 35,
+                        bottom: 25
+                    }
+                },      
+                plugins: {
+            datalabels: {
+                display: 'auto',
+               formatter: (value, ctx) => {
+                  let sum = 0;
+                  let dataArr = ctx.chart.data.datasets[0].data;
+                  dataArr.map(data => {
+                      sum += data;
+                  });
+                  let percentage = (value*100 / sum).toFixed(2)+"%";
+                  return value + "\n"+"("+percentage+")";
+                },
+                anchor:"end",
+                align: "end",
+                color: '#000',
+
+            }
+        },
+        
+                
             }
         };
 

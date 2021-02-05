@@ -61,6 +61,11 @@
     margin-bottom: 0;
 }
 
+/*Title*/
+.chart-container .title{
+    text-align: center;
+}
+
 /* Footer*/
 #reports footer {
     border-top: 1px solid #888888;

@@ -24,9 +24,9 @@ if (isset($series) && is_array($series)) {
         $color_key = 'borderColor';
         $dataset['fill'] = $dataset['fill'] ?? false;
         $dataset['borderWidth'] = $dataset['borderWidth'] ?? 2;
-        if(isset($dataset['color'])) {
+        if(isset($dataset['colors'])) {
             $dataset[$color_key] = $dataset['colors'];
-            unset($dataset['color']);
+            unset($dataset['colors']);
         }
         return $dataset;
     }, $series);
@@ -39,7 +39,9 @@ $height = $height ?? '50vw';
 <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
     <header>
         <?php if ($title) : ?>
-            <h3><?= $title ?></h3>
+            <div class="title">
+                <h3><?= $title ?></h3>
+            </div>
         <?php endif; ?>
         <button class="btn btn-default download"><?php i::_e("Baixar em CSV"); ?></button>
     </header>
@@ -58,7 +60,13 @@ $height = $height ?? '50vw';
             },
             options: {
                 responsive: true,
-                legend: false
+                legend: false,
+                plugins: {
+                    datalabels: {
+                        display: false,
+                        
+                    }
+                },
             }
         };
         

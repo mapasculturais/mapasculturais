@@ -4,13 +4,11 @@ use MapasCulturais\i;
 //Recebe os valores do sistema
 $label = [];
 $values = [];
-$l_notEvaluated = [];
-$v_notEvaluated = [];
-$height = '30%';
+$height = '30vw';
 $width = '100%';
 $total = 0;
 $colors = [];
-$title = i::__('Inscrições por avaliações');
+$title = i::__('Resultado da avaliação');
 
 //Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
