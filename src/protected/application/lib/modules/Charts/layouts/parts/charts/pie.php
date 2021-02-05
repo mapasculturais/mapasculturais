@@ -32,6 +32,9 @@ if (isset($serie) && is_array($serie)) {
 $width = $width ?? '50vw';
 $height = $height ?? '50vw';
 $legends = $legends ?? null;
+$right = $right ?? 0;
+$top = $top ?? 35;
+$bottom = $bottom ?? 25;
 ?>
 <div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
 <!-- <div class="chart-container chart-pie"> -->
@@ -66,27 +69,30 @@ $legends = $legends ?? null;
                 legend: false,
                 layout: {
                     padding: {
-                        right: 0,
-                        top: 35,
-                        bottom: 25
-                    }
+                        right: <?=$right?>,
+                        top: <?=$top?>,
+                        bottom: <?=$bottom?>
+                    },
+                    
                 },      
                 plugins: {
             datalabels: {
-                display: 'auto',
+                display: function(context) {
+                    
+                },
                formatter: (value, ctx) => {
                   let sum = 0;
                   let dataArr = ctx.chart.data.datasets[0].data;
                   dataArr.map(data => {
                       sum += data;
                   });
+
                   let percentage = (value*100 / sum).toFixed(2)+"%";
-                  return value + "\n"+"("+percentage+")";
+                  return value + "\n"+"("+percentage+") \n\n";
                 },
                 anchor:"end",
                 align: "end",
                 color: '#000',
-
             }
         },
         
