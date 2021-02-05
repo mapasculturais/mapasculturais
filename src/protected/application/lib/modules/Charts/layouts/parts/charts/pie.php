@@ -51,7 +51,8 @@ $legends = $legends ?? null;
         var dataset = {
             data: <?= json_encode($data) ?>,
             label: '<?= $title ?>',
-            backgroundColor: <?= json_encode($colors) ?>
+            backgroundColor: <?= json_encode($colors) ?>,
+            borderWidth: 0
         };
 
         var config = {
