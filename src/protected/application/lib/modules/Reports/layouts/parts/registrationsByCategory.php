@@ -29,5 +29,5 @@ $this->part('charts/pie', [
     'width' => $width,
     'legends' => $legends,
     'title' => $title,
-    'top' => 60
+    'top' => 70
 ]);
