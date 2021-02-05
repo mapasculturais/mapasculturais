@@ -49,8 +49,8 @@ use MapasCulturais\i;
 
             <div class="line-three">
                 <div>
-                <?php if(isset($registrationByCategory)){?>
-                    <?php $this->part('registrationByCategory', ['data' => $registrationByCategory, 'color' => $color]);?>
+                <?php if(isset($registrationsByCategory)){?>
+                    <?php $this->part('registrationsByCategory', ['data' => $registrationsByCategory, 'color' => $color]);?>
                 <?php } ?>
                 </div>              
             </div>
