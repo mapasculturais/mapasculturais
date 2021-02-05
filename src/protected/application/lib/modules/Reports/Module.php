@@ -41,11 +41,11 @@ class Module extends \MapasCulturais\Module
             if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)){
                 $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
             }
-
-            $registrationByCategory = $self->registrationByCategory($opportunity);
             
-            $sendHook['registrationByCategory'] = $registrationByCategory;
-
+            if($registrationsByCategory = $self->registrationsByCategory($opportunity)){
+                $sendHook['registrationsByCategory'] = $registrationsByCategory;
+            }
+            
             $sendHook['color'] = function () use ($self) {
                 return $self->color();
             };
@@ -261,7 +261,7 @@ class Module extends \MapasCulturais\Module
      *
      * 
      */
-    public function registrationByCategory(Opportunity $opp)
+    public function registrationsByCategory(Opportunity $opp)
     {
         $app = App::i();
 
@@ -278,7 +278,10 @@ class Module extends \MapasCulturais\Module
 
         $data = $conn->fetchAll($query, $params);
 
-       
+        if($data){
+            return false;
+        }
+        
         return $data;
 
     }
