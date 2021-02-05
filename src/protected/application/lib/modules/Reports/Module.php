@@ -42,6 +42,10 @@ class Module extends \MapasCulturais\Module
                 $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
             }
 
+            $registrationByCategory = $self->registrationByCategory($opportunity);
+            
+            $sendHook['registrationByCategory'] = $registrationByCategory;
+
             $sendHook['color'] = function () use ($self) {
                 return $self->color();
             };
@@ -248,6 +252,33 @@ class Module extends \MapasCulturais\Module
         if(!$data){
             return false;
         }
+        return $data;
+
+    }
+
+    /**
+     * Inscrições agrupadas pela vategoria
+     *
+     * 
+     */
+    public function registrationByCategory(Opportunity $opp)
+    {
+        $app = App::i();
+
+        $em = $opp->getEvaluationMethod();
+
+        //Pega conexão
+        $conn = $app->em->getConnection();
+
+        //Seleciona e agrupa inscrições ao longo do tempo
+        $data = [];
+        $params = ['opportunity_id' => $opp->id];
+
+        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity_id group by category";
+
+        $data = $conn->fetchAll($query, $params);
+
+       
         return $data;
 
     }
