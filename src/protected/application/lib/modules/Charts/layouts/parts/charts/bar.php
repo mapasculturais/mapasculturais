@@ -63,9 +63,7 @@ $horizontal = $horizontal ?? false;
 <div class="chart-container chart-bar" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
     <header>
         <?php if($title): ?>
-            <div class="title">
-                <h2><?= $title ?></h2>
-            </div>
+            <h3><?= $title ?></h3>
         <?php endif; ?>
         <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
     </header>

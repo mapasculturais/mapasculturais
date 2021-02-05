@@ -4,7 +4,7 @@ use MapasCulturais\i;
 //Recebe os valores do sistema
 $label = [];
 $values = [];
-$height = '30vw';
+$height = 'auto';
 $width = '100%';
 $colors = [];
 $title = i::__('Status de avaliações');

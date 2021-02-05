@@ -4,7 +4,7 @@ use MapasCulturais\i;
 //Recebe os valores do sistema
 $label = [];
 $values = [];
-$height = '30vw';
+$height = 'auto';
 $width = '100%';
 $total = 0;
 $colors = [];
