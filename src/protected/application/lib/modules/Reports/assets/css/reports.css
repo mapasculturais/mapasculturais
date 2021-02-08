@@ -27,6 +27,11 @@
     font-size: 28px;
 }
 
+.chart-container header i {
+    float: right;
+    margin-right: 40px;
+}
+
 .chart-container header button {
     float: right;
 }
@@ -90,4 +95,19 @@
     line-height: 1;
     margin-bottom: 0;
     padding: 17px 50px;
+}
+
+.open-dropDown{
+    display: none;
+}
+
+.open-dropDown.active{
+    display: block;
+
+}
+
+.open-dropDown.active ul{
+    list-style: none;
+    padding-left: 0;
+    
 }

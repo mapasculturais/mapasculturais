@@ -42,7 +42,9 @@ $bottom = $bottom ?? 25;
         <?php if($title): ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
-        <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
+       <div class="drop-down">           
+            <?php $this->part('charts-reports-drop-down-data', ['chart_id' => $chart_id, 'opportunity' => $opportunity]); ?>
+       </div>
     </header>
     
     <canvas id="<?= $chart_id ?>"></canvas>

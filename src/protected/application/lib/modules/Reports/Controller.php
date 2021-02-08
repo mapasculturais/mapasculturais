@@ -2,15 +2,16 @@
 
 namespace Reports;
 
-use MapasCulturais\App;
 use MapasCulturais\i;
+use League\Csv\Writer;
+use MapasCulturais\App;
+use MapasCulturais\Entities\File;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\File;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -74,6 +75,78 @@ class Controller extends \MapasCulturais\Controller
         }
 
         return $filters;
+    }
+
+     /**
+     * Inscrições agrupadas por status
+     *
+     *
+     */
+    public function GET_exportRegistrationsByStatus()
+    {
+        $app = App::i();
+
+        //Pega conexão
+        $conn = $app->em->getConnection();
+
+        $request = $this->data;
+
+       
+        //Seleciona e agrupa inscrições ao longo do tempo
+        $data = [];
+        $params = ['opportunity_id' => $request['opportunity_id']];
+        
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity_id GROUP BY status";
+
+        $result = $conn->fetchAll($query, $params);
+        
+        foreach ($result as $value) {
+            switch ($value['status']) {
+                case 0:
+                    $status = "Rascunho";
+                    break;
+                case 1:
+                    $status = "Pendente";
+                    break;
+                case 2:
+                    $status = "Inválida";
+                    break;
+                case 3:
+                    $status = "Não Selecionada";
+                    break;
+                case 8:
+                    $status = "Suplente";
+                    break;
+                case 10:
+                    $status = "Selecionada";
+                    break;
+            }
+
+            $data[$status] = $value['count'];
+        }
+
+        $csv_data = [];
+        foreach ($data as $key => $value){
+            $csv_data[][$key] = $value;
+        }
+ 
+        $header = [
+            'STATUS',
+            'QAUNTIDADE'
+        ];
+
+        $csv = Writer::createFromString();
+
+        $csv->setDelimiter(';');
+
+        $csv->insertOne($header);
+
+        foreach ($csv_data as $csv_line) {
+            $csv->insertOne($csv_line);
+        }
+
+        $csv->output("arquivo.csv");
+
     }
 
     function getEntityDailyData(string $table, string $entity_class, array $entity_fields = [], array $metadata = [])
