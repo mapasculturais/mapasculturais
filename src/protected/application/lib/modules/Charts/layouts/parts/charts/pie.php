@@ -42,9 +42,7 @@ $bottom = $bottom ?? 25;
         <?php if($title): ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
-       <div class="drop-down">           
-            <?php $this->part('charts-reports-drop-down-data', ['chart_id' => $chart_id, 'opportunity' => $opportunity]); ?>
-       </div>
+        <?php $this->part('charts-reports-dropdown-data', ['chart_id' => $chart_id, 'opportunity' => $opportunity]); ?>
     </header>
     
     <canvas id="<?= $chart_id ?>"></canvas>
