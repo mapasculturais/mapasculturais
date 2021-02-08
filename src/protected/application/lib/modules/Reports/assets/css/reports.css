@@ -27,18 +27,54 @@
     font-size: 28px;
 }
 
-.chart-container header i {
-    float: right;
-    margin-right: 40px;
-}
-
 .chart-container header button {
     float: right;
+}
+
+.chart-container header > a {
+    position: absolute;
+    top: 5px;
+    right: 15px;
 }
 
 /* Chart container */
 #reports .chart-container {
     margin-bottom: 45px;
+}
+
+/* Dropdown */
+#reports .chart-container .dropdown-content {
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 25%);
+    box-sizing: border-box;
+    display: none;
+    background-color: #f1f1f1;
+    padding: 20px;
+    position: absolute;
+    right: 30px;
+    text-align: left;
+    top: 50px;
+    width: 80%;
+}
+
+#reports .chart-container .dropdown-content.active {
+    display: block;
+}
+
+#reports .chart-container .dropdown-content h4 {
+    border-bottom: 1px solid #888888;
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    text-align: left;
+}
+
+#reports .chart-container .dropdown-content ul {
+    list-style: none;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 /* Legends */
@@ -95,19 +131,4 @@
     line-height: 1;
     margin-bottom: 0;
     padding: 17px 50px;
-}
-
-.open-dropDown{
-    display: none;
-}
-
-.open-dropDown.active{
-    display: block;
-
-}
-
-.open-dropDown.active ul{
-    list-style: none;
-    padding-left: 0;
-    
 }
