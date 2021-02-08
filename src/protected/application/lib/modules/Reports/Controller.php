@@ -127,12 +127,12 @@ class Controller extends \MapasCulturais\Controller
 
         $csv_data = [];
         foreach ($data as $key => $value){
-            $csv_data[][$key] = $value;
+            $csv_data[] = [$key, $value];
         }
  
         $header = [
             'STATUS',
-            'QAUNTIDADE'
+            'QUANTIDADE'
         ];
 
         $csv = Writer::createFromString();
