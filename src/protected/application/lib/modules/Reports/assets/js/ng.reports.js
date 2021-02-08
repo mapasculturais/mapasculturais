@@ -16,6 +16,11 @@
         
         $scope.data = {
             reportsData: [],
+            dropdownData: false,
+            idDrop: ""
+        };
+        
+        $scope.openDropdown = function(dropId){
         };
     }]);
     
@@ -37,3 +42,11 @@
     }]);
 
 })(angular);
+
+
+
+function openDropdown(dropId)
+{
+    $("#drop-"+dropId.name).toggleClass('active');
+}
+
