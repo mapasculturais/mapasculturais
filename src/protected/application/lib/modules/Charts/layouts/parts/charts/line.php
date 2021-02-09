@@ -20,20 +20,19 @@ $chart_id = uniqid('chart-line-');
 $datasets = [];
 
 if (isset($series) && is_array($series)) {
-    $datasets = array_map(function($dataset) {
-        
+    $datasets = array_map(function ($dataset) {
+
         $dataset['fill'] = $dataset['fill'] ?? false;
         $dataset['pointBorderWidth'] = $dataset['pointBorderWidth'] ?? '0';
         $dataset['radius'] = $dataset['radius'] ?? '4';
         $dataset['hoverRadius'] = $dataset['hoverRadius'] ?? $dataset['radius'] + 1;
 
-        if(isset($dataset['colors'])) {
+        if (isset($dataset['colors'])) {
             $dataset['borderColor'] = $dataset['borderColor'] ?? $dataset['colors'];
             $dataset['pointBackgroundColor'] = $dataset['pointBackgroundColor'] ?? $dataset['colors'];
             unset($dataset['colors']);
         }
         return $dataset;
-
     }, $series);
 }
 
@@ -48,7 +47,7 @@ $height = $height ?? '50vw';
         <?php endif; ?>
         <button class="btn btn-default download"><?php i::_e("Baixar em CSV"); ?></button>
     </header>
-    
+
     <canvas id="<?= $chart_id ?>"></canvas>
     <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
 </div>
@@ -67,13 +66,13 @@ $height = $height ?? '50vw';
                 plugins: {
                     datalabels: {
                         display: false,
-                        
+
                     }
                 },
                 scales: {
                     xAxes: [{
                         gridLines: {
-                            display:false
+                            display: false
                         }
                     }],
                     yAxes: [{
@@ -84,14 +83,14 @@ $height = $height ?? '50vw';
                 }
             }
         };
-        
+
         config.data.datasets.forEach(function(dataset) {
             dataset.backgroundColor = dataset.backgroundColor || MapasCulturais.Charts.dynamicColors();
         });
 
         var ctx = document.getElementById("<?= $chart_id ?>").getContext('2d');
         ctx.canvas.width = 1000;
-		ctx.canvas.height = 300;
+        ctx.canvas.height = 300;
         MapasCulturais.Charts.charts["<?= $chart_id ?>"] = new Chart(ctx, config);
     });
 </script>
