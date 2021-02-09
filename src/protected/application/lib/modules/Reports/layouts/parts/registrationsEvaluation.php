@@ -38,5 +38,6 @@ $this->part('charts/pie', [
     'legends' => $legends,
     'title' => $title,
     'top' => 70,
-    'opportunity' => $opportunity
+    'opportunity' => $opportunity,
+    'action' => 'exportRegistrationsByEvaluation'
 ]);
