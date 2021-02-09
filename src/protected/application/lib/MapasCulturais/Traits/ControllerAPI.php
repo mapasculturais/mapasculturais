@@ -546,10 +546,9 @@ trait ControllerAPI{
     }
 
     public function apiQuery($api_params, $options = []){
-        unset($api_params['homologado_rcv'], $api_params['rcv_tipo']);
-            if(isset($api_params['@version']) == 1){
-                unset($api_params['@version']);
-                return $this->apiQueryV1($api_params, $options);
+        if(isset($api_params['@version']) == 1){
+            unset($api_params['@version']);
+            return $this->apiQueryV1($api_params, $options);
         }
         
         $app = App::i();
