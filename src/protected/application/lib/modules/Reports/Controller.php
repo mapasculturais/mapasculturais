@@ -2,6 +2,7 @@
 
 namespace Reports;
 
+use DateTime;
 use MapasCulturais\i;
 use League\Csv\Writer;
 use MapasCulturais\App;
@@ -354,6 +355,85 @@ class Controller extends \MapasCulturais\Controller
 
     }
     
+     /**
+     * Gera CSV das Inscrições VS tempo
+     *
+     * 
+     */
+    public function GET_registrationsByTime()
+    {
+        $app = App::i();
+
+        $request = $this->data;      
+
+        //Pega conexão
+        $conn = $app->em->getConnection();
+
+        //Seleciona e agrupa inscrições ao longo do tempo
+        $initiated = [];
+        $sent = [];
+        $params = ['opportunity_id' => $request['opportunity_id']];
+
+        $query = "SELECT
+        to_char(create_timestamp , 'YYYY-MM-DD') as date,
+        count(*) as total
+        FROM registration r
+        WHERE opportunity_id = :opportunity_id
+        GROUP BY to_char(create_timestamp , 'YYYY-MM-DD')
+        ORDER BY date ASC";
+        $initiated = $conn->fetchAll($query, $params);
+        
+
+        $query = "SELECT
+        to_char(sent_timestamp , 'YYYY-MM-DD') as date,
+        count(*) as total
+        FROM registration r
+        WHERE opportunity_id = :opportunity_id AND r.status > 0
+        GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
+        ORDER BY date ASC";
+        $sent = $conn->fetchAll($query, $params);       
+        
+        if(!$sent || !$initiated){
+            return false;
+        }
+        
+        $header = [
+            i::__('STATUS'),
+            i::__('DATA'),
+            i::__('QUANTIDADE')
+        ];
+
+        $result = [];
+        $count = 0;
+        foreach($sent as $key => $value){
+            $result[$count]['status'] =  i::__('Enviada');
+            $result[$count] += $value;
+
+            $count ++;
+        }
+
+        foreach($initiated as $key => $value){
+            $result[$count]['status'] =  i::__('Iniciada');
+            $result[$count] += $value;
+
+            $count ++;
+
+        }
+        
+        $return = array_map(function($index){
+            $date = new DateTime($index['date']);
+            return [
+                'status' => $index['status'],
+                'data' => $date->format('d/m/Y'),
+                'total' => $index['total'],
+
+            ];
+        }, $result);
+
+        $this->createCsv($header, $return);
+
+    }
+
     /**
      * Gera o CSV
      *
