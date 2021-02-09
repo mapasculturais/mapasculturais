@@ -26,5 +26,6 @@ $this->part('charts/pie', [
     'title' => $title,
     'height' => $height,
     'width' => $width,
-    'opportunity' => $opportunity
+    'opportunity' => $opportunity,
+    'action' => 'exportRegistrationsByEvaluationStatus'
 ]);
