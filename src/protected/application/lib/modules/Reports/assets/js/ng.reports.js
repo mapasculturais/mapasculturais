@@ -44,9 +44,11 @@
 })(angular);
 
 
-
-function openDropdown(dropId)
-{
-    $("#drop-"+dropId.name).toggleClass('active');
+function openDropdown(dropId) {
+    if ($("#drop-" + dropId.name).hasClass('active')) {
+        $("#drop-" + dropId.name).removeClass('active');
+    } else {
+        $(".dropdown-content.active").removeClass('active');
+        $("#drop-" + dropId.name).addClass('active');
+    }
 }
-
