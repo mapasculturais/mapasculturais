@@ -78,21 +78,18 @@ class Controller extends \MapasCulturais\Controller
     }
 
      /**
-     * Inscrições agrupadas por status
+     * Gera CSV das inscrições agrupadas por status
      *
      *
      */
     public function GET_exportRegistrationsByStatus()
     {
         $app = App::i();
-
-        //Pega conexão
+        
         $conn = $app->em->getConnection();
 
-        $request = $this->data;
-
-       
-        //Seleciona e agrupa inscrições ao longo do tempo
+        $request = $this->data;      
+        
         $data = [];
         $params = ['opportunity_id' => $request['opportunity_id']];
         
@@ -103,22 +100,22 @@ class Controller extends \MapasCulturais\Controller
         foreach ($result as $value) {
             switch ($value['status']) {
                 case 0:
-                    $status = "Rascunho";
+                    $status = i::__('Rascunho');
                     break;
                 case 1:
-                    $status = "Pendente";
+                    $status = i::__('Pendente');
                     break;
                 case 2:
-                    $status = "Inválida";
+                    $status = i::__('Inválida');
                     break;
                 case 3:
-                    $status = "Não Selecionada";
+                    $status = i::__('Não Selecionada');
                     break;
                 case 8:
-                    $status = "Suplente";
+                    $status = i::__('Suplente');
                     break;
                 case 10:
-                    $status = "Selecionada";
+                    $status = i::__('Selecionada');
                     break;
             }
 
@@ -131,10 +128,240 @@ class Controller extends \MapasCulturais\Controller
         }
  
         $header = [
-            'STATUS',
-            'QUANTIDADE'
+            i::__('STATUS'),
+            i::__('QUANTIDADE')
         ];
 
+        $this->createCsv($header, $csv_data);
+
+    }
+
+    /**
+     * Gera CSV das inscrições agrupadas por avaliação
+     *
+     * 
+     */
+    public function GET_exportRegistrationsByEvaluation()
+    {
+        $app = App::i();
+    
+        $conn = $app->em->getConnection();
+
+        $request = $this->data;
+        
+        $data = [];
+        $params = ['opportunity_id' => $request['opportunity_id']];
+
+        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0'";
+
+        $evaluated = $conn->fetchAll($query, $params);
+
+        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0'";
+
+        $notEvaluated = $conn->fetchAll($query, $params);
+
+        $data = array_merge($evaluated, $notEvaluated);
+        
+        foreach($data as $m){
+            foreach ($m as $v){
+              if(empty($v)){
+                  return false;
+              }
+            }
+        }
+      
+        $result = [];
+        foreach($data as $m){
+            foreach ($m as $key => $v){
+                $result[] = [$key, $v];
+            }
+        }
+
+        $csv_data = [];
+        $csv_data = array_map(function($index){
+            if($index[0] == "evaluated"){
+                return [
+                    i::__('AVALIADA'),
+                    $index[1]
+                ];
+            }else{
+                return [
+                    i::__('NAO AVALIADA'),
+                    $index[1]
+                ];
+            }
+        },$result);        
+      
+        $header = [
+            i::__('STATUS'),
+            i::__('QUANTIDADE')
+        ];
+
+     
+        $this->createCsv($header, $csv_data);
+        
+    }
+
+    /**
+     * Gera CSV das inscrições agrupadas por status da avaliação
+     *
+     * 
+     */
+    public function GET_exportRegistrationsByEvaluationStatus()
+    {
+        $app = App::i();       
+
+        $request = $this->data;
+        
+        $opp = $app->repo("Opportunity")->find($request['opportunity_id']);
+
+        $em = $opp->getEvaluationMethod();
+        
+        $conn = $app->em->getConnection();
+        
+        $data = [];
+        $params = ['opportunity_id' => $request['opportunity_id']];
+
+        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' GROUP BY consolidated_result";
+
+        $evaluations = $conn->fetchAll($query, $params);
+
+        $cont = 0;
+        foreach ($evaluations as $evaluation) {
+            if ($cont < 8) {
+                $data[$em->valueToString($evaluation['consolidated_result'])] = $evaluation['count'];
+                $cont++;
+            }
+        }
+
+        $csv_data = [];
+        foreach ($data as $key => $value){
+            $csv_data[] = [$key, $value];
+        }
+        
+        $header = [
+            i::__('STATUS'),
+            i::__('QUANTIDADE')
+        ];
+        
+        $this->createCsv($header, $csv_data);
+    }
+
+     /**
+     * Gera CSV das inscrições  agrupadas pela categoria
+     *
+     * 
+     */
+    public function GET_exportRegistrationsByCategory()
+    {
+        $app = App::i();
+
+        $request = $this->data;
+        
+        $opp = $app->repo("Opportunity")->find($request['opportunity_id']);
+
+        $em = $opp->getEvaluationMethod();
+          
+        $conn = $app->em->getConnection();
+    
+        $csv_data = [];
+        $params = ['opportunity_id' => $opp->id];
+
+        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity_id group by category";
+
+        $csv_data = $conn->fetchAll($query, $params);
+
+        foreach ($csv_data as $value){
+            foreach ($value as $v)
+            {
+                if(empty($v)){
+                    return false;
+                }
+            }
+        }
+       
+        $header = [
+            i::__('CATEGORIA'),
+            i::__('QUANTIDADE'),
+        ];
+
+        $this->createCsv($header, $csv_data);
+    }
+
+     /**
+     * Gera CSV das inscrições agrupadas por status
+     *
+     *
+     */
+    public function GET_exportRegistrationsDraftVsSent()
+    {
+        $app = App::i();
+        
+        $conn = $app->em->getConnection();
+
+        $request = $this->data;      
+        
+        $data = [];
+        $params = ['opportunity_id' => $request['opportunity_id']];
+        
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity_id GROUP BY status";
+
+        $result = $conn->fetchAll($query, $params);
+        
+        foreach ($result as $value) {
+            switch ($value['status']) {
+                case 0:
+                    $status = i::__('Rascunho');
+                    break;
+                case 1:
+                    $status = i::__('Pendente');
+                    break;
+                case 2:
+                    $status = i::__('Inválida');
+                    break;
+                case 3:
+                    $status = i::__('Não Selecionada');
+                    break;
+                case 8:
+                    $status = i::__('Suplente');
+                    break;
+                case 10:
+                    $status = i::__('Selecionada');
+                    break;
+            }
+
+            $data[$status] = $value['count'];
+        }
+
+        $csv_data = [];
+        $total = 0;
+        foreach ($data as $key => $value){
+            if($key == "Rascunho"){
+                $csv_data[0] = ['Rascunho', $value];
+            }else{                
+                $total = ($total + $value);
+                $csv_data[1] = ['Enviadas', $total];
+            }
+            
+        }
+        
+        $header = [
+            i::__('STATUS'),
+            i::__('QUANTIDADE')
+        ];
+
+        $this->createCsv($header, $csv_data);
+
+    }
+    
+    /**
+     * Gera o CSV
+     *
+     * @param array $header
+     * @param array $csv_daa      
+     */
+    private function createCsv($header, $csv_data)
+    {
         $csv = Writer::createFromString();
 
         $csv->setDelimiter(';');
@@ -146,8 +373,8 @@ class Controller extends \MapasCulturais\Controller
         }
 
         $csv->output("arquivo.csv");
-
     }
+
 
     function getEntityDailyData(string $table, string $entity_class, array $entity_fields = [], array $metadata = [])
     {

@@ -37,5 +37,6 @@ $this->part('charts/pie', [
     'height' => $height,
     'width' => $width,
     'top' => 70,
-    'opportunity' => $opportunity
+    'opportunity' => $opportunity,
+    'action' => 'exportRegistrationsDraftVsSent'
 ]);
