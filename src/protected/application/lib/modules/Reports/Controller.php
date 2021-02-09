@@ -133,7 +133,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE')
         ];
 
-        $this->createCsv($header, $csv_data);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
 
     }
 
@@ -199,7 +199,7 @@ class Controller extends \MapasCulturais\Controller
         ];
 
      
-        $this->createCsv($header, $csv_data);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
         
     }
 
@@ -245,7 +245,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE')
         ];
         
-        $this->createCsv($header, $csv_data);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
     }
 
      /**
@@ -286,7 +286,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE'),
         ];
 
-        $this->createCsv($header, $csv_data);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
     }
 
      /**
@@ -351,7 +351,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE')
         ];
 
-        $this->createCsv($header, $csv_data);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
 
     }
     
@@ -430,7 +430,7 @@ class Controller extends \MapasCulturais\Controller
             ];
         }, $result);
 
-        $this->createCsv($header, $return);
+        $this->createCsv($header, $result, $request['action'], $request['opportunity_id']);
 
     }
 
@@ -440,8 +440,10 @@ class Controller extends \MapasCulturais\Controller
      * @param array $header
      * @param array $csv_daa      
      */
-    private function createCsv($header, $csv_data)
+    private function createCsv($header, $csv_data, $action, $opp)
     {
+        $date = new DateTime();
+        $fileName =$date->format('dmY')."-".$action."-opp-".$opp."-".md5(json_encode($csv_data)).".csv";
         $csv = Writer::createFromString();
 
         $csv->setDelimiter(';');
@@ -452,7 +454,7 @@ class Controller extends \MapasCulturais\Controller
             $csv->insertOne($csv_line);
         }
 
-        $csv->output("arquivo.csv");
+        $csv->output($fileName);
     }
 
 

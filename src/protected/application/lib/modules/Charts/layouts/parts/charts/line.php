@@ -39,7 +39,7 @@ if (isset($series) && is_array($series)) {
 
 $width = $width ?? '50vw';
 $height = $height ?? '50vw';
-$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id]); 
+$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]); 
 ?>
 <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
     <header>
