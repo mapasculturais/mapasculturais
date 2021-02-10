@@ -606,6 +606,7 @@ class Module extends \MapasCulturais\Module
         if (!isset($agent->getMetadata()["endereco"])) {
             $agent->setMetadata("endereco", $sessionData["address"]);
         }
+        $agent->__skipQueuingPCacheRecreation = true;
         $agent->save(true);
         $app->enableAccessControl();
         return;
