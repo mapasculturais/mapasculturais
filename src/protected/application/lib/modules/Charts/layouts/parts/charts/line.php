@@ -80,6 +80,79 @@ $height = $height ?? '50vw';
                             borderDash: [5, 5],
                         }
                     }]
+                },
+                tooltips: {
+
+                    // Desabilita o tooltip padrão
+                    enabled: false,
+
+                    // Adiciona o tooltip personalizado
+                    custom: function(tooltipModel) {
+
+                        // Tooltip wrap
+                        var tooltipWrap = document.getElementById('chartjs-tooltip');
+
+                        // Cria o tooltip na primeira renderização
+                        if (!tooltipWrap) {
+                            tooltipWrap = document.createElement('div');
+                            tooltipWrap.id = 'chartjs-tooltip';
+                            tooltipWrap.innerHTML = '<section></section><div class="point-tooltip"></div>';
+                            document.body.appendChild(tooltipWrap);
+                        }
+
+                        // Exibe o tooltip apenas no hover
+                        if (tooltipModel.opacity === 0) {
+                            tooltipWrap.style.opacity = 0;
+                            return;
+                        }
+
+                        // Retorna os itens do tooltip
+                        function getBody(bodyItem) {
+                            return bodyItem.lines;
+                        }
+
+                        // Define o conteúdo do tooltip
+                        if (tooltipModel.body) {
+
+                            var bodyLines = tooltipModel.body.map(getBody);
+
+                            innerHtml = '<div class="custom-tooltip">';
+                            bodyLines.forEach(function(body, i) {
+                                innerHtml += '<span><b>' + body + '</b></span>';
+                            });
+                            innerHtml += '</div>';
+
+                            var tooltipContent = tooltipWrap.querySelector('section');
+                            tooltipContent.innerHTML = innerHtml;
+
+                        }
+
+                        // Section do tooltip
+                        tooltipContent.style.backgroundColor = 'rgba(17,17,17,0.8)';
+                        tooltipContent.style.padding = '15px';
+
+                        // Seta inferior do tooltip
+                        var pointTooltip = tooltipWrap.querySelector('.point-tooltip');
+                        pointTooltip.style.width = 0;
+                        pointTooltip.style.height = 0;
+                        pointTooltip.style.borderLeft = '10px solid transparent';
+                        pointTooltip.style.borderRight = '10px solid transparent';
+                        pointTooltip.style.borderTop = '10px solid rgba(17,17,17,0.8)';
+                        pointTooltip.style.margin = '0 auto';
+
+                        // Posição do tooltip
+                        var position = this._chart.canvas.getBoundingClientRect();
+
+                        // Posicionamento e demais personalizações do tooltip
+                        tooltipWrap.style.opacity = 1;
+                        tooltipWrap.style.position = 'absolute';
+                        tooltipWrap.style.left = ((position.left + window.pageXOffset + tooltipModel.caretX) - tooltipWrap.offsetWidth / 2) + 'px';
+                        tooltipWrap.style.top = ((position.top + window.pageYOffset + tooltipModel.caretY) - tooltipWrap.offsetHeight - 25) + 'px';
+                        tooltipWrap.style.fontSize = '14px';
+                        tooltipWrap.style.color = '#ffffff';
+                        tooltipWrap.style.pointerEvents = 'none';
+                        
+                    }
                 }
             }
         };
