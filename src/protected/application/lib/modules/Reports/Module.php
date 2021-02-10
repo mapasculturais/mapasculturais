@@ -20,11 +20,11 @@ class Module extends \MapasCulturais\Module
         });
 
         //Adiciona o conteúdo dentro da aba dos relatórios
-        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
+        
+        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {            
             $opportunity = $this->controller->requestedEntity;
-
+            $dataOportunity = $opportunity->getEvaluationCommittee();
             $sendHook = [];
-
            
             if($registrationsByTime = $self->registrationsByTime($opportunity)){
                 $sendHook['registrationsByTime'] = $registrationsByTime;
@@ -38,12 +38,17 @@ class Module extends \MapasCulturais\Module
                 $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
             }
 
-            if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)){
-                $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
-            }
-            
+            if($dataOportunity[0]->owner->type == 'technical'){
+                if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatusBar($opportunity)){                  
+                    $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;         
+                }
+            }else{
+                if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)){                  
+                    $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;         
+                }
+            }            
             if($registrationsByCategory = $self->registrationsByCategory($opportunity)){
-                $sendHook['registrationsByCategory'] = $registrationsByCategory;
+               $sendHook['registrationsByCategory'] = $registrationsByCategory;
             }
             
             $sendHook['opportunity'] = $opportunity;
@@ -254,6 +259,57 @@ class Module extends \MapasCulturais\Module
       
         return $data;
 
+    }
+
+    /**
+     * Inscrições agrupadas por status da avaliação
+     *
+     * 
+     */
+    public function registrationsByEvaluationStatusBar(Opportunity $opp)
+    {
+        $app = App::i();
+
+        $em = $opp->getEvaluationMethod();
+
+        //Pega conexão
+        $conn = $app->em->getConnection();
+
+        //Seleciona e agrupa inscrições ao longo do tempo
+        
+        $params = ['opportunity_id' => $opp->id]; 
+        
+        $result = [];
+        $a = 0;
+        $b = 20;
+        $label = "";
+        for($i = 0; $i < 100; $i+=20){
+
+            if($i > 0){
+                $a = $b+1;
+                $b = $b + 20;
+            }
+            
+            $query = "SELECT count(consolidated_result) 
+            FROM registration r 
+            WHERE opportunity_id = :opportunity_id 
+            AND consolidated_result <> '0' AND 
+            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}";
+            
+            $label = "de ".$a." a ". $b;
+
+            $result[$label] = $conn->fetchAll($query, $params);
+            
+
+        }
+        
+        $data = [];
+        foreach ($result as $key => $value){
+            $data[$key] = $value[0]['count'];
+
+        }
+        
+        return $data;
     }
 
     /**
