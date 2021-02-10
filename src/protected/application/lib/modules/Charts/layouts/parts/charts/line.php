@@ -38,18 +38,18 @@ if (isset($series) && is_array($series)) {
 
 $width = $width ?? '50vw';
 $height = $height ?? '50vw';
-
+$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]); 
 ?>
 <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
     <header>
         <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
-        <button class="btn btn-default download"><?php i::_e("Baixar em CSV"); ?></button>
+        <a href="<?=$route?>" class="btn btn-default download"><?php i::_e("Baixar em CSV"); ?></a>
     </header>
 
     <canvas id="<?= $chart_id ?>"></canvas>
-    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
+    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors,'opportunity' => $opportunity]); ?>
 </div>
 
 <script>

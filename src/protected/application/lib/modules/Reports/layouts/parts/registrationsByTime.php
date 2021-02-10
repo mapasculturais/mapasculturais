@@ -45,5 +45,7 @@ $this->part('charts/line', [
     'height' => $height,
     'width' => $width,
     'legends' => $legends,
-    'colors' => $colors
+    'colors' => $colors,
+    'opportunity' => $opportunity,
+    'action' => 'registrationsByTime'
 ]);

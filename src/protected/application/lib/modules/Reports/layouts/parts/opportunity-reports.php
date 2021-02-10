@@ -14,7 +14,7 @@ use MapasCulturais\i;
             <div class="line">
                 <div class="line-one ">
                     <?php if(isset($registrationsByTime)){?>
-                        <?php $this->part('registrationsByTime', ['data' => $registrationsByTime, 'color' => $color]);?>
+                        <?php $this->part('registrationsByTime', ['data' => $registrationsByTime, 'color' => $color, 'opportunity' => $opportunity]);?>
                     <?php } ?>
                 </div>
             </div>
