@@ -17,6 +17,10 @@
     margin-bottom: 20px;
 }
 
+.charts-static .pie .line-two.chart-full > div {
+    width: 100%;
+}
+
 .charts-static .pie .line-three > div {
     width: 100%;
     margin-bottom: 20px;

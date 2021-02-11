@@ -20,43 +20,44 @@ class Module extends \MapasCulturais\Module
         });
 
         //Adiciona o conteúdo dentro da aba dos relatórios
-        
-        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {            
+
+        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
             $opportunity = $this->controller->requestedEntity;
             $dataOportunity = $opportunity->getEvaluationCommittee();
             $sendHook = [];
-           
-            if($registrationsByTime = $self->registrationsByTime($opportunity)){
+
+            if ($registrationsByTime = $self->registrationsByTime($opportunity)) {
                 $sendHook['registrationsByTime'] = $registrationsByTime;
             }
 
-            if($registrationsByStatus = $self->registrationsByStatus($opportunity)){
+            if ($registrationsByStatus = $self->registrationsByStatus($opportunity)) {
                 $sendHook['registrationsByStatus'] = $registrationsByStatus;
             }
 
-            if($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)){
-                $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
+            if ($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)) {
+                $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
             }
 
-            if($dataOportunity[0]->owner->type == 'technical'){
-                if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatusBar($opportunity)){                  
-                    $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;         
+            if ($dataOportunity[0]->owner->type == 'technical') {
+                if ($registrationsByEvaluation = $self->registrationsByEvaluationStatusBar($opportunity)) {
+                    $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
-            }else{
-                if($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)){                  
-                    $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;         
+            } else {
+                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)) {
+                    $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
-            }            
-            if($registrationsByCategory = $self->registrationsByCategory($opportunity)){
-               $sendHook['registrationsByCategory'] = $registrationsByCategory;
             }
-            
+
+            if ($registrationsByCategory = $self->registrationsByCategory($opportunity)) {
+                $sendHook['registrationsByCategory'] = $registrationsByCategory;
+            }
+
             $sendHook['opportunity'] = $opportunity;
 
             $sendHook['color'] = function () use ($self) {
                 return $self->color();
             };
-            
+
             if ($opportunity->canUser('@control')) {
                 $this->part('opportunity-reports', $sendHook);
             }
@@ -88,7 +89,7 @@ class Module extends \MapasCulturais\Module
     /**
      * Inscrições VS tempo
      *
-     * 
+     *
      */
     public function registrationsByTime($opp)
     {
@@ -126,11 +127,11 @@ class Module extends \MapasCulturais\Module
         foreach ($result as $value) {
             $sent[$value['date']] = $value['total'];
         }
-        
-        if(!$sent || !$initiated){
+
+        if (!$sent || !$initiated) {
             return false;
         }
-        
+
         return ['Finalizadas' => $sent, "Iniciadas" => $initiated];
 
     }
@@ -180,7 +181,7 @@ class Module extends \MapasCulturais\Module
             $data[$status] = $value['count'];
         }
 
-        if(!$data){
+        if (!$data) {
             return false;
         }
 
@@ -190,7 +191,7 @@ class Module extends \MapasCulturais\Module
     /**
      * Inscrições agrupadas por avaliação
      *
-     * 
+     *
      */
     public function registrationsByEvaluation($opp)
     {
@@ -212,24 +213,22 @@ class Module extends \MapasCulturais\Module
         $notEvaluated = $conn->fetchAll($query, $params);
 
         $merge = array_merge($evaluated, $notEvaluated);
-        
-        foreach($merge as $m){
-            foreach ($m as $v){
-              if(empty($v)){
-                  return false;
-              }
+
+        foreach ($merge as $m) {
+            foreach ($m as $v) {
+                if (empty($v)) {
+                    return false;
+                }
             }
         }
-        
 
-       
         return $merge;
     }
 
     /**
      * Inscrições agrupadas por status da avaliação
      *
-     * 
+     *
      */
     public function registrationsByEvaluationStatus(Opportunity $opp)
     {
@@ -256,7 +255,6 @@ class Module extends \MapasCulturais\Module
             }
         }
 
-      
         return $data;
 
     }
@@ -264,7 +262,7 @@ class Module extends \MapasCulturais\Module
     /**
      * Inscrições agrupadas por status da avaliação
      *
-     * 
+     *
      */
     public function registrationsByEvaluationStatusBar(Opportunity $opp)
     {
@@ -276,46 +274,45 @@ class Module extends \MapasCulturais\Module
         $conn = $app->em->getConnection();
 
         //Seleciona e agrupa inscrições ao longo do tempo
-        
-        $params = ['opportunity_id' => $opp->id]; 
-        
+
+        $params = ['opportunity_id' => $opp->id];
+
         $result = [];
         $a = 0;
         $b = 20;
         $label = "";
-        for($i = 0; $i < 100; $i+=20){
+        for ($i = 0; $i < 100; $i += 20) {
 
-            if($i > 0){
-                $a = $b+1;
+            if ($i > 0) {
+                $a = $b + 1;
                 $b = $b + 20;
             }
-            
-            $query = "SELECT count(consolidated_result) 
-            FROM registration r 
-            WHERE opportunity_id = :opportunity_id 
-            AND consolidated_result <> '0' AND 
+
+            $query = "SELECT count(consolidated_result)
+            FROM registration r
+            WHERE opportunity_id = :opportunity_id
+            AND consolidated_result <> '0' AND
             cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}";
-            
-            $label = "de ".$a." a ". $b;
+
+            $label = "de " . $a . " a " . $b;
 
             $result[$label] = $conn->fetchAll($query, $params);
-            
 
         }
-        
+
         $data = [];
-        foreach ($result as $key => $value){
+        foreach ($result as $key => $value) {
             $data[$key] = $value[0]['count'];
 
         }
-        
+
         return $data;
     }
 
     /**
      * Inscrições agrupadas pela vategoria
      *
-     * 
+     *
      */
     public function registrationsByCategory(Opportunity $opp)
     {
@@ -323,7 +320,7 @@ class Module extends \MapasCulturais\Module
 
         $em = $opp->getEvaluationMethod();
 
-        //Pega conexão      
+        //Pega conexão
         $conn = $app->em->getConnection();
 
         //Seleciona e agrupa inscrições ao longo do tempo
@@ -334,15 +331,14 @@ class Module extends \MapasCulturais\Module
 
         $data = $conn->fetchAll($query, $params);
 
-        foreach ($data as $value){
-            foreach ($value as $v)
-            {
-                if(empty($v)){
+        foreach ($data as $value) {
+            foreach ($value as $v) {
+                if (empty($v)) {
                     return false;
                 }
             }
         }
-       
+
         return $data;
 
     }
