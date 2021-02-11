@@ -55,7 +55,7 @@ if (isset($series) && is_array($series)) {
     }, $series);
 }
 
-$width = $width ?? '50vw';
+$width = $width ?? '100%';
 $height = $height ?? '50vw';
 
 $horizontal = $horizontal ?? false;

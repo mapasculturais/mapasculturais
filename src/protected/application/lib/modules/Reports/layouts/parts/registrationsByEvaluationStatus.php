@@ -1,7 +1,6 @@
 <?php
 
 use MapasCulturais\i;
-$dataOportunity = $opportunity->getEvaluationCommittee();
 //Recebe os valores do sistema
 $label = [];
 $values = [];
@@ -13,26 +12,6 @@ $count = 0;
 $title = i::__('Status de avaliações');
 
 
-
-
-if($dataOportunity[0]->owner->type == 'technical'){
-    $series[0]['color'] = is_callable($color) ? $color() : $color;
-
-    foreach ($data as $key => $value) {  
-        $label[] = $key;
-        $values[] = $value;
-    }
-    
-    $series[0]['color'];
-
-    $this->part('charts/bar', [
-        'labels' => $label,
-        'series' => [
-            ['label' => 'Quantidade', 'data' => $values, 'color' => '#EB7E33'],
-        ],
-        'legends' => []
-    ]);
-}else{
     //Prepara os dados para o gráfic
     foreach ($data as $key => $value) {
         $label[] = $key;
@@ -55,4 +34,4 @@ if($dataOportunity[0]->owner->type == 'technical'){
     'opportunity' => $opportunity,
     'action' => 'exportRegistrationsByEvaluationStatus'
 ]);
-}
+
