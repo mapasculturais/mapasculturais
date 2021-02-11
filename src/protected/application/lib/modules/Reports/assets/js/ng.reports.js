@@ -16,8 +16,9 @@
         
         $scope.data = {
             reportsData: [],
-            dropdownData: false,
-            idDrop: ""
+            reportModal: false,
+            graficType: true,
+            graficData:false
         };
         
         $scope.openDropdown = function(dropId){

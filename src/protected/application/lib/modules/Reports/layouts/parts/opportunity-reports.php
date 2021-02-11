@@ -76,7 +76,9 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
         </div>
 
         <footer>
-            <button class="btn btn-default add"><?php i::_e('Criar novo gráfico');?></button>
+            <button ng-click="data.reportModal=true" class="btn btn-default add"><?php i::_e('Criar novo gráfico');?></button>
         </footer>
     </div>
+
+    <?php $this->applyTemplateHook('opportunity-dynamic-reports','end');?>
 </div>
