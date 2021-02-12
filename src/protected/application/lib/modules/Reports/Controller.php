@@ -13,9 +13,13 @@ use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Traits;
+
 
 class Controller extends \MapasCulturais\Controller
 {
+    
+    use Traits\ControllerAPI;
     protected function fetch($sql, $params = [])
     {
         $app = App::i();
@@ -85,6 +89,8 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsByStatus()
     {
+        $this->requireAuthentication();
+
         $app = App::i();
         
         $conn = $app->em->getConnection();
@@ -92,9 +98,9 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;      
         
         $data = [];
-        $params = ['opportunity_id' => $request['opportunity_id']];
+        $params = ['opportunity' => $request['opportunity']];
         
-        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity_id GROUP BY status";
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity GROUP BY status";
 
         $result = $conn->fetchAll($query, $params);
         
@@ -133,7 +139,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE')
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
 
     }
 
@@ -144,6 +150,8 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsByEvaluation()
     {
+        $this->requireAuthentication();
+
         $app = App::i();
     
         $conn = $app->em->getConnection();
@@ -151,13 +159,13 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         
         $data = [];
-        $params = ['opportunity_id' => $request['opportunity_id']];
+        $params = ['opportunity' => $request['opportunity']];
 
-        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0'";
+        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result <> '0'";
 
         $evaluated = $conn->fetchAll($query, $params);
 
-        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0'";
+        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result = '0'";
 
         $notEvaluated = $conn->fetchAll($query, $params);
 
@@ -199,7 +207,7 @@ class Controller extends \MapasCulturais\Controller
         ];
 
      
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
         
     }
 
@@ -210,20 +218,18 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsByEvaluationStatus()
     {
-        $app = App::i();       
+        $opp = $this->getOpportunity();
 
-        $request = $this->data;
-        
-        $opp = $app->repo("Opportunity")->find($request['opportunity_id']);
+        $app = App::i();  
 
         $em = $opp->getEvaluationMethod();
         
         $conn = $app->em->getConnection();
         
         $data = [];
-        $params = ['opportunity_id' => $request['opportunity_id']];
+        $params = ['opportunity' => $opp->id];
 
-        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' GROUP BY consolidated_result";
+        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result <> '0' GROUP BY consolidated_result";
 
         $evaluations = $conn->fetchAll($query, $params);
 
@@ -245,7 +251,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE')
         ];
         
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
     }
 
      /**
@@ -255,20 +261,18 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsByCategory()
     {
+        $opp = $this->getOpportunity();
+
         $app = App::i();
-
-        $request = $this->data;
         
-        $opp = $app->repo("Opportunity")->find($request['opportunity_id']);
-
         $em = $opp->getEvaluationMethod();
           
         $conn = $app->em->getConnection();
     
         $csv_data = [];
-        $params = ['opportunity_id' => $opp->id];
+        $params = ['opportunity' => $opp->id];
 
-        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity_id group by category";
+        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity group by category";
 
         $csv_data = $conn->fetchAll($query, $params);
 
@@ -286,7 +290,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE'),
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
     }
 
      /**
@@ -296,16 +300,16 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsDraftVsSent()
     {
+        $opp = $this->getOpportunity();
+
         $app = App::i();
         
         $conn = $app->em->getConnection();
-
-        $request = $this->data;      
         
         $data = [];
-        $params = ['opportunity_id' => $request['opportunity_id']];
+        $params = ['opportunity' => $opp->id];
         
-        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity_id GROUP BY status";
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity GROUP BY status";
 
         $result = $conn->fetchAll($query, $params);
         
@@ -351,7 +355,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE')
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
 
     }
     
@@ -362,23 +366,21 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_registrationsByTime()
     {
-        $app = App::i();
+        $opp = $this->getOpportunity();
 
-        $request = $this->data;      
-
-        //Pega conexão
+        $app = App::i();       
+        
         $conn = $app->em->getConnection();
-
-        //Seleciona e agrupa inscrições ao longo do tempo
+        
         $initiated = [];
         $sent = [];
-        $params = ['opportunity_id' => $request['opportunity_id']];
+        $params = ['opportunity' => $opp->id];
 
         $query = "SELECT
         to_char(create_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id
+        WHERE opportunity_id = :opportunity
         GROUP BY to_char(create_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $initiated = $conn->fetchAll($query, $params);
@@ -388,7 +390,7 @@ class Controller extends \MapasCulturais\Controller
         to_char(sent_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id AND r.status > 0
+        WHERE opportunity_id = :opportunity AND r.status > 0
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $sent = $conn->fetchAll($query, $params);       
@@ -430,7 +432,105 @@ class Controller extends \MapasCulturais\Controller
             ];
         }, $result);
 
-        $this->createCsv($header, $result, $request['action'], $request['opportunity_id']);
+        $this->createCsv($header, $result, $this->data['action'], $opp->id);
+
+    }
+
+    public function GET_dataOportunityReport()
+    {
+
+        $this->requireAuthentication();
+
+        $app = App::i();
+        
+        $request = $this->data;
+
+        $fieldsUse = [
+            'raca',
+            'genero',
+            'orientacaoSexual',
+            'En_Estado',
+            'En_Municipio',
+            'En_Bairro',
+            'dataDeNascimento'
+        ];
+        
+        $opp = $app->repo("Opportunity")->find($request['opportunity']);       
+        $agents = $app->repo("Agent")->find($request['opportunity']);
+        
+        $dataOportunity = $opp->getEvaluationCommittee();
+
+        $oppSelectFields = [];
+        foreach ($opp->registrationFieldConfigurations as $value){
+            if($value->fieldType == "select"){
+                $oppSelectFields[$value->id] = $value->title;
+            }
+        }
+
+        $agentSelectFields = [];
+        $agentsFields = $agents->getPropertiesMetadata();
+        foreach ($agentsFields as $key => $value){
+            if(isset($value['type']) && ($value['type'] == "select") && (in_array($key, $fieldsUse))){
+                $agentSelectFields[$key] = $value['options'];
+            }
+        }
+
+        $temp = [];
+        foreach ($agentSelectFields as $key_a => $fields){
+            foreach ($fields as $key_b => $value){               
+
+               if($value == "Não Informar"){
+
+               }else{
+                $temp[$key_a][$key_b] = $value;  
+               }
+            }
+        }
+        $agentSelectFields = $temp;        
+       
+        $return = [
+            'opportunityType' => $dataOportunity[0]->owner->type->id,
+            'categories' => $opp->registrationCategories,
+            'oppSelectFields' => $oppSelectFields,
+            'agentSelectFields' => $agentSelectFields
+        ];        
+        
+        $this->apiResponse($return);
+    }
+
+    private function getRegistrationIds()
+    {
+        $opp = $this->getOpportunity();
+
+        $app = App::i();       
+        
+        $conn = $app->em->getConnection();
+        
+        $params = ['opportunity' => $opp->id];
+
+        $query = "SELECT r.id FROM registration r 
+        JOIN agent a ON r.agent_id  = a.id 
+        JOIN opportunity o ON r.opportunity_id = o.id 
+        WHERE r.opportunity_id = :opportunity";
+        return $conn->fetchAll($query, $params);
+    }
+    
+    /**
+     *Retorna a opportunidade
+     *
+     * @return object
+     */
+    private function getOpportunity(): Opportunity
+    {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $request = $this->data;
+        
+        $opp = $app->repo("Opportunity")->find($request['opportunity']);
+
+        return $opp;
 
     }
 
