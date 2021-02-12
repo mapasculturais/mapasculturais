@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * 
     $this->part('charts/bar', [
@@ -39,15 +40,15 @@ $colors = [];
 $datasets = [];
 
 if (isset($series) && is_array($series)) {
-    $datasets = array_map(function($dataset) {
+    $datasets = array_map(function ($dataset) {
         $type = $dataset['type'] ?? 'bar';
         $color_key = 'backgroundColor';
-        if($type == 'line') {
+        if ($type == 'line') {
             $color_key = 'borderColor';
             $dataset['fill'] = $dataset['fill'] ?? false;
             $dataset['borderWidth'] = $dataset['borderWidth'] ?? 2;
         }
-        if(isset($dataset['color'])) {
+        if (isset($dataset['color'])) {
             $dataset[$color_key] = $dataset['color'];
             unset($dataset['color']);
         }
@@ -60,14 +61,13 @@ $height = $height ?? '50vw';
 
 $horizontal = $horizontal ?? false;
 ?>
-<div class="chart-container chart-bar" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
+<div class="chart-container chart-bar" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
     <header>
-        <?php if($title): ?>
+        <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
-        <!-- <button class="btn btn-default download"><?php //i::_e("Baixar em CSV"); ?></button> -->
     </header>
-    
+
     <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
 
     <canvas id="<?= $chart_id ?>"></canvas>
@@ -75,6 +75,112 @@ $horizontal = $horizontal ?? false;
 
 <script>
     $(window).on('load', function() {
+
+        Chart.elements.Rectangle.prototype.draw = function() {
+            var ctx = this._chart.ctx;
+            var vm = this._view;
+            var left, right, top, bottom, signX, signY, borderSkipped, radius;
+            var borderWidth = vm.borderWidth;
+
+            // Set Radius Here
+            var cornerRadius = 5;
+
+            if (!vm.horizontal) {
+                // bar
+                left = vm.x - vm.width / 2;
+                right = vm.x + vm.width / 2;
+                top = vm.y;
+                bottom = vm.base;
+                signX = 1;
+                signY = bottom > top ? 1 : -1;
+                borderSkipped = vm.borderSkipped || 'bottom';
+            } else {
+                // horizontal bar
+                left = vm.base;
+                right = vm.x;
+                top = vm.y - vm.height / 2;
+                bottom = vm.y + vm.height / 2;
+                signX = right > left ? 1 : -1;
+                signY = 1;
+                borderSkipped = vm.borderSkipped || 'left';
+            }
+
+            ctx.beginPath();
+            ctx.fillStyle = vm.backgroundColor;
+            ctx.lineWidth = borderWidth;
+
+            var corners = [
+                [left, bottom],
+                [left, top],
+                [right, top],
+                [right, bottom]
+            ];
+
+            var borders = ['bottom', 'left', 'top', 'right'];
+            var startCorner = borders.indexOf(borderSkipped, 0);
+            if (startCorner === -1) {
+                startCorner = 0;
+            }
+
+            function cornerAt(index) {
+                return corners[(startCorner + index) % 4];
+            }
+
+            var corner = cornerAt(0);
+            ctx.moveTo(corner[0], corner[1]);
+
+            for (var i = 1; i < 4; i++) {
+                corner = cornerAt(i);
+                nextCornerId = i + 1;
+                if (nextCornerId == 4) {
+                    nextCornerId = 0
+                }
+
+                nextCorner = cornerAt(nextCornerId);
+
+                width = corners[2][0] - corners[1][0];
+                height = corners[0][1] - corners[1][1];
+                x = corners[1][0];
+                y = corners[1][1];
+
+                var radius = cornerRadius;
+
+                // Fix radius being too large
+                if (radius > height / 2) {
+                    radius = height / 2;
+                }
+                if (radius > width / 2) {
+                    radius = width / 2;
+                }
+
+                var lastVisible = 0;
+                for (var findLast = 0, findLastTo = this._chart.data.datasets.length; findLast < findLastTo; findLast++) {
+                    if (!this._chart.getDatasetMeta(findLast).hidden) {
+                        lastVisible = findLast;
+                    }
+                }
+                var rounded = this._datasetIndex === lastVisible;
+
+                if (rounded) {
+                    ctx.moveTo(x + radius, y);
+                    ctx.lineTo(x + width - radius, y);
+                    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                    ctx.lineTo(x + width, y + height);
+                    ctx.lineTo(x, y + height);
+                    ctx.lineTo(x, y + radius);
+                    ctx.quadraticCurveTo(x, y, x + radius, y);
+                } else {
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + width, y);
+                    ctx.lineTo(x + width, y + height);
+                    ctx.lineTo(x, y + height);
+                    ctx.lineTo(x, y);
+                }
+            }
+
+            ctx.fill();
+        };
+
         var config = {
             type: '<?= $horizontal ? 'horizontalBar' : 'bar' ?>',
             data: {
@@ -83,19 +189,33 @@ $horizontal = $horizontal ?? false;
             },
             options: {
                 responsive: true,
-                legend: false
+                legend: false,
+                plugins: {
+                    datalabels: {
+                        display: false
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            borderDash: [5, 5],
+                        }
+                    }]
+                },
             }
         };
-        console.log(config);
 
-        
         config.data.datasets.forEach(function(dataset) {
             dataset.backgroundColor = dataset.backgroundColor || MapasCulturais.Charts.dynamicColors();
         });
 
-        console.log(config);
-
         var ctx = document.getElementById("<?= $chart_id ?>").getContext('2d');
         MapasCulturais.Charts.charts["<?= $chart_id ?>"] = new Chart(ctx, config);
+
     });
 </script>
