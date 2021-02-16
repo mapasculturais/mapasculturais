@@ -36,7 +36,7 @@ $_of_the_type = [
     21	=> \MapasCulturais\i::__("do Simpósio"),
     35  => \MapasCulturais\i::__("da Inscrição"),
 ];
-
+//<!-- BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php # BEGIN -->
 $viewing_phase = $this->controller->requestedEntity;
 
 
@@ -63,7 +63,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             
             <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)"  rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Adicionar fase");?></a>
         <?php endif; ?>
-        <ul>
+        <ul  class="list-group">
 
         <?php foreach($phases as $phase): ?>
             <?php if($viewing_phase->equals($phase)): ?>
@@ -84,23 +84,39 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                     .
                 </li>
             <?php else: ?>
-                <li>
-                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>"><?= $phase->name ?></a>
+                <li class="list-group-item">
+                   
                     <?php if($phase->registrationFrom && $phase->registrationTo): ?>
-                        - <em>
-                            <?php
-                            /* Translators: "de" como início de um intervalo de data *DE* 25/1 a 25/2 às 13:00 */
-                            \MapasCulturais\i::_e('de'); ?>
-                            <?= $phase->registrationFrom->format('d/m/Y') ?>
-                            <?php
-                            /* Translators: "a" indicando intervalo de data de 25/1 *A* 25/2 às 13:00 */
-                            \MapasCulturais\i::_e('a'); ?>
-                            <?= $phase->registrationTo->format('d/m/Y') ?>
-                            <?php
-                            /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
-                            \MapasCulturais\i::_e('às'); ?>
-                            <?= $phase->registrationTo->format('H:i') ?>
-                        </em>
+                        <div style="width: 100%;">
+                            <div style="width: 16%; float:left">
+                                <button class="btn-access" style="float: left;" > 
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>" 
+                                    title="Acessar <?= $phase->name ?>">
+                                        Acessar
+                                    </a>
+                                </button>
+                            </div>
+                            <div style="width: 100%;">
+                                <label class="margin-phase-name"> <strong><?= $phase->name ?></strong></label>
+                            - <em>
+                                <?php
+                                /* Translators: "de" como início de um intervalo de data *DE* 25/1 a 25/2 às 13:00 */
+                                \MapasCulturais\i::_e('de'); ?>
+                                <?= $phase->registrationFrom->format('d/m/Y') ?>
+                                <?php
+                                /* Translators: "a" indicando intervalo de data de 25/1 *A* 25/2 às 13:00 */
+                                \MapasCulturais\i::_e('a'); ?>
+                                <?= $phase->registrationTo->format('d/m/Y') ?>
+                                <?php
+                                /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
+                                \MapasCulturais\i::_e('às'); ?>
+                                <?= $phase->registrationTo->format('H:i') ?>
+                            </em>
+                            </div>
+                        </div>
+                        
+                        
 
                     <?php elseif($phase->registrationTo): ?>
                         - <em>
