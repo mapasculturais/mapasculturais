@@ -36,10 +36,7 @@ $_of_the_type = [
     21	=> \MapasCulturais\i::__("do Simpósio"),
     35  => \MapasCulturais\i::__("da Inscrição"),
 ];
-//<!-- BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php # BEGIN -->
 $viewing_phase = $this->controller->requestedEntity;
-
-
 $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
 ?>
