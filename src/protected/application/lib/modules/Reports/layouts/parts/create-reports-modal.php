@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 
-<div ng-class="{hidden:!data.reportModal}" ng-click="data.reportModal=false" class="bg-reports-modal" id="reportsModal">
+<div ng-class="{hidden:!data.reportModal}" class="bg-reports-modal" id="reportsModal">
 <div class="reports-modal">
     <div class="grafic-type" ng-class="{hidden:!data.graficType}">
             <header>
@@ -128,7 +128,7 @@ use MapasCulturais\i;
                
         </div>
         <footer>
-            <button class="btn btn-default" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false" class="js-close"><?php i::_e("Cancelar"); ?></button>
+            <button class="btn btn-default close-modal" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false"><?php i::_e("Cancelar"); ?></button>
             <button class="btn btn-default"  class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
             <button class="btn btn-primary" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()"  class="js-close"><?php i::_e("Proxima etapa"); ?></button>
             <button class="btn btn-primary" ng-if="data.graficData == true"><?php i::_e("Gerar gráfico"); ?></button>
