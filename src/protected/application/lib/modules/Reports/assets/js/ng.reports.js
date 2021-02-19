@@ -80,7 +80,7 @@ $(document).ready(function () {
     document.body.addEventListener('click', function (e) {
         if (e.target.id === 'btnOpenModal') {
             document.body.style.overflowY = 'hidden';
-        } else if (e.target.id === 'reportsModal' || e.target.className.search('close-modal') >= 1) {
+        } else if (e.target.className.search('close-modal') >= 1) {
             document.body.style.overflowY = 'auto';
         }
     }, false);
