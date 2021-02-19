@@ -2,12 +2,12 @@
 use MapasCulturais\i;
 ?>
 
-<div >
-<!-- <div ng-class="{hidden:!data.reportModal}"> -->
+<div ng-class="{hidden:!data.reportModal}" ng-click="data.reportModal=false" class="bg-reports-modal" id="reportsModal">
+<div class="reports-modal">
     <div class="grafic-type" ng-class="{hidden:!data.graficType}">
             <header>
                 <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico"); ?></h2>
-                <a ng-click="data.reportModal=false"><i class="fas fa-times"></i></a>
+                <a ng-click="data.reportModal=false"><i class="fas fa-times close-modal"></i></a>
             </header>        
         
             <h5><?php i::_e("Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"); ?></h5>
@@ -34,7 +34,7 @@ use MapasCulturais\i;
         <!-- <div class="grafic-data" ng-class="{hidden:!data.graficData}"> -->
             <header>
                 <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico de pizza"); ?></h2>
-                <a ng-click="data.reportModal=false"><i class="fas fa-times"></i></a>
+                <a ng-click="data.reportModal=false"><i class="fas fa-times close-modal"></i></a>
             </header>        
         
             <h5><?php i::_e("Agora defina o título e dados exibido no gráfico"); ?></h5>
@@ -135,3 +135,5 @@ use MapasCulturais\i;
         </footer>
 
     </div>
+
+</div><!-- /.bg-reports-modal -->
