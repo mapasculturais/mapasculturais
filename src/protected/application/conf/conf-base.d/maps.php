@@ -18,5 +18,7 @@ return [
     'maps.zoom.max'         => (int) env('MAPS_ZOOM_MAX', 18),
     'maps.zoom.min'         => (int) env('MAPS_ZOOM_MIN', 5),
 
+    'maps.tileServer'       => env('MAPS_TILESERVER', 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'),
+
     'maps.geometryFieldQuery' => "ST_SimplifyPreserveTopology(geom, 0.001)",
 ];
