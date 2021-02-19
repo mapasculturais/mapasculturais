@@ -606,6 +606,7 @@ class Module extends \MapasCulturais\Module
         if (!isset($agent->getMetadata()["endereco"])) {
             $agent->setMetadata("endereco", $sessionData["address"]);
         }
+        $agent->__skipQueuingPCacheRecreation = true;
         $agent->save(true);
         $app->enableAccessControl();
         return;
@@ -614,6 +615,15 @@ class Module extends \MapasCulturais\Module
     private function applyLocationPatch()
     {
         $app = App::i();
+        $meta = "lastGeocodingAttempt";
+        $app->hook("entity(Agent).save:requests",
+                   function (&$requests) use ($meta) {
+            if (($_SERVER["REQUEST_URI"] != "/agent/locationPatch/") &&
+                $this->getMetadata($meta)) {
+                $this->setMetadata($meta, "19800101000000");
+            }
+            return;
+        });
         if (!$app->config["app.enableLocationPatch"]) {
             $app->hook("GET(agent.locationPatch)", function() {
                 $this->json([]);
@@ -621,14 +631,13 @@ class Module extends \MapasCulturais\Module
             });
             return;
         }
-        $meta = "lastGeocodingAttempt";
         $this->registerAgentMetadata($meta, [
             "label" => i::__("Data e hora da última tentativa de geocoding"),
             "type" => "string",
             "private" => true,
         ]);
         $app->hook("entity(EntityRevision).save:requests",
-                   function(&$requests) use ($app) {
+                   function(&$requests) {
             if (($this->objectType != "MapasCulturais\Entities\Agent") ||
                 ($_SERVER["REQUEST_URI"] != "/agent/locationPatch/")) {
                 return;
@@ -636,20 +645,19 @@ class Module extends \MapasCulturais\Module
             $this->action = EntityRevision::ACTION_AUTOUPDATED;
             return;
         });
-        
         $app->hook("GET(agent.locationPatch)", function() use ($app, $meta) {
-            
+            $cutoff = $app->config["app.locationPatchCutoff"];
             $conn = $app->em->getConnection();
-            $cache_id = 'locationPatch.count';
-            if($app->cache->contains($cache_id)){
+            $cache_id = "locationPatch.count";
+            if ($app->cache->contains($cache_id)) {
                 $count = $app->cache->fetch($cache_id);
-                if($count > 1){
-                    $app->cache->save($cache_id, $count - 1, 300);
+                if ($count > 1) {
+                    $app->cache->save($cache_id, ($count - 1), 300);
                 }
             } else {
                 $count = (int) $conn->fetchColumn("
                     SELECT count(a.id) FROM agent AS a WHERE
-                        (a.location[0] = 0 AND a.location[1] = 0) AND EXISTS (
+                        (a.location[0]=0 AND a.location[1]=0) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
                                 key='En_Nome_Logradouro' AND object_id=a.id
                         ) AND EXISTS (
@@ -658,22 +666,33 @@ class Module extends \MapasCulturais\Module
                         ) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
                                 key='En_Estado' AND object_id=a.id
+                        ) AND (
+                            (
+                                SELECT to_timestamp(
+                                    '$cutoff', 'YYYYMMDDHH24MISS'
+                                )
+                            ) > (
+                                SELECT to_timestamp(
+                                    (
+                                        SELECT COALESCE(
+                                            (
+                                                SELECT value FROM agent_meta
+                                                WHERE
+                                                    object_id=a.id AND
+                                                    key='$meta'
+                                            ), '19800101000000'
+                                        )
+                                    ), 'YYYYMMDDHH24MISS'
+                                )
+                            )
                         )");
-
-                        
-                if($count > 100){
+                if ($count > 100) {
                     $app->cache->save($cache_id, $count, 600);
                 }
             }
-
-            $offset = rand(0, $count - 1);
-
-            $type = "MapasCulturais\\Entities\\Agent";
-            $action = EntityRevision::ACTION_AUTOUPDATED;
-
+            $offset = max(0, rand(0, ($count - 1)));
             $agent_id = $conn->fetchColumn("SELECT a.id FROM agent AS a WHERE
-                        (a._geo_location=ST_GeographyFromText('Point(0 0)') OR
-                         a._geo_location IS null) AND EXISTS (
+                        (a.location[0]=0 AND a.location[1]=0) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
                                 key='En_Nome_Logradouro' AND object_id=a.id
                         ) AND EXISTS (
@@ -682,16 +701,37 @@ class Module extends \MapasCulturais\Module
                         ) AND EXISTS (
                             SELECT id FROM agent_meta WHERE
                                 key='En_Estado' AND object_id=a.id
+                        ) AND (
+                            (
+                                SELECT to_timestamp(
+                                    '$cutoff', 'YYYYMMDDHH24MISS'
+                                )
+                            ) > (
+                                SELECT to_timestamp(
+                                    (
+                                        SELECT COALESCE(
+                                            (
+                                                SELECT value FROM agent_meta
+                                                WHERE
+                                                    object_id=a.id AND
+                                                    key='$meta'
+                                            ), '19800101000000'
+                                        )
+                                    ), 'YYYYMMDDHH24MISS'
+                                )
+                            )
                         ) LIMIT 1 OFFSET {$offset}");
 
             $agent = $app->repo("Agent")->find($agent_id);
+            if (!$agent) {
+                $this->json([]);
+                return;
+            }
             $token = uniqid();
             $meta = $agent->getMetadata();
-            $app->log->debug(json_encode($meta));
             $num = $meta["En_Num"] ?? "";
             $nbhood = isset($meta["En_Bairro"]) ?
                       "{$meta["En_Bairro"]}, " : "";
-                      
             $_SESSION["agent-locationPatch-$token"] = [
                 "id" => $agent->id,
                 "timestamp" => (new DateTime())->format("YmdHis"),
