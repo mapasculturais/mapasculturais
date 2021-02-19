@@ -159,3 +159,26 @@
     margin-bottom: 0;
     padding: 17px 50px;
 }
+
+/* Modal */
+.bg-reports-modal {
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1401;
+}
+.reports-modal{
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
+    height: auto;
+    margin: 100px auto;
+    min-height: 400px;
+    padding: 0.75rem;
+    position: relative;
+    width: 80%;
+}
