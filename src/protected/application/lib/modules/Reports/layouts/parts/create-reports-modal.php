@@ -10,22 +10,23 @@ use MapasCulturais\i;
                 <a ng-click="data.reportModal=false"><i class="fas fa-times close-modal"></i></a>
             </header>        
         
-            <h5><?php i::_e("Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"); ?></h5>
-            <p><?php i::_e("Tipo de visualização"); ?></p>
-            <div>
-                <label><input ng-model="data.reportsData.type"  value="pie" type="radio"> <i class="fas fa-chart-pie"></i> <span><?php i::_e("Gráfico de pizza");?></span> </label>
+            <p><?php i::_e("Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"); ?></p>
+            <p><b><?php i::_e("Tipo de visualização"); ?></b></p>
+
+            <div class="line">
+                <label><input ng-model="data.reportsData.type"  value="pie" type="radio"> <i class="fas fa-chart-pie"></i> <span><b><?php i::_e("Gráfico de pizza");?></b></span> </label>
             </div>
 
-            <div>
-                <label><input ng-model="data.reportsData.type"  value="line" type="radio"> <i class="fas fa-chart-area"></i> <span><?php i::_e("Gráfico de linha");?></span> </label>
+            <div class="line">
+                <label><input ng-model="data.reportsData.type"  value="line" type="radio"> <i class="fas fa-chart-area"></i> <span><b><?php i::_e("Gráfico de linha");?></b></span> </label>
             </div>
 
-            <div>
-                <label><input ng-model="data.reportsData.type"  value="bar" type="radio">  <i class="far fa-chart-bar"></i> <span><?php i::_e("Gráfico de barra");?></span> </label>
+            <div class="line">
+                <label><input ng-model="data.reportsData.type"  value="bar" type="radio">  <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de barra");?></b></span> </label>
             </div>
 
-            <div>
-                <label><input ng-model="data.reportsData.type"  value="table" type="radio"> <i class="fas fa-th-list"></i> <span><?php i::_e("Gráfico de tabela");?></span> </label>
+            <div class="line">
+                <label><input ng-model="data.reportsData.type"  value="table" type="radio"> <i class="fas fa-th-list"></i> <span><b><?php i::_e("Gráfico de tabela");?></b></span> </label>
             </div>       
         
     </div> 
@@ -128,9 +129,9 @@ use MapasCulturais\i;
                
         </div>
         <footer>
-            <button class="btn btn-default close-modal" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false"><?php i::_e("Cancelar"); ?></button>
-            <button class="btn btn-default"  class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
-            <button class="btn btn-primary" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()"  class="js-close"><?php i::_e("Proxima etapa"); ?></button>
+            <button class="btn btn-default close-modal cancel" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false"><?php i::_e("Cancelar"); ?></button>
+            <button class="btn btn-default draft"  class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
+            <button class="btn btn-primary next" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()"  class="js-close"><?php i::_e("Proxima etapa"); ?></button>
             <button class="btn btn-primary" ng-if="data.graficData == true"><?php i::_e("Gerar gráfico"); ?></button>
         </footer>
 
