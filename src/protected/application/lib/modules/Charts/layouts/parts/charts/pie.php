@@ -17,7 +17,7 @@
  * 
  */
 
-
+use MapasCulturais\i;
 
 $title = $title ?? null;
 $chart_id = uniqid('chart-pie-');
@@ -35,6 +35,9 @@ $legends = $legends ?? null;
 $right = $right ?? 0;
 $top = $top ?? 35;
 $bottom = $bottom ?? 25;
+
+$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
+
 ?>
 <div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
 <!-- <div class="chart-container chart-pie"> -->
@@ -42,7 +45,7 @@ $bottom = $bottom ?? 25;
         <?php if($title): ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
-        <?php $this->part('charts-reports-dropdown-data', ['chart_id' => $chart_id, 'opportunity' => $opportunity, 'action' => $action]); ?>
+        <a href="<?= $route ?>" name="<?= $chart_id ?>" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
     </header>
     
     <canvas id="<?= $chart_id ?>"></canvas>
