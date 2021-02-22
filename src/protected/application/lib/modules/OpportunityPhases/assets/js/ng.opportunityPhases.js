@@ -15,14 +15,15 @@
     module.factory('OpportunityPhasesService', ['$http', '$rootScope', function ($http, $rootScope) {
             return {
                 serviceProperty: null,
-                getUrl: function(){
-                    return MapasCulturais.baseURL // + controllerId  + '/' + actionName 
-                },
-                doSomething: function (param) {
+                createPhase: function (param) {
                     var data = {
                         prop: name
                     };
-                    return $http.post(this.getUrl(), data).
+                    var opportunity_id = MapasCulturais.entity.object.parent ? MapasCulturais.entity.object.parent.id : MapasCulturais.entity.object.id;
+
+                    var url = MapasCulturais.createUrl('opportunity', 'createNextPhase', {id: opportunity_id, evaluationMethod: 'simple'});
+
+                    return $http.post(url, data).
                             success(function (data, status) {
                                 $rootScope.$emit('something', {message: "Something was done", data: data, status: status});
                             }).
@@ -41,16 +42,19 @@
             };
 
             $scope.newPhaseEditBoxSubmit = function () {
-                alert('submit');
+                
                 if($scope.data.step == 1) {
                     $scope.data.step++;
                 } else {
-                    alert('submit');
+                    $scope.data.spinner = true;
+                    OpportunityPhasesService.createPhase().success(function(){
+                        $scope.data.spinner = false;    
+                    });
                 }
             }
 
             $scope.newPhaseEditBoxCancel = function () {
-                alert('cancelar');
+                $scope.data.spinner = false;
                 $scope.data.step = 1;
             }
 
