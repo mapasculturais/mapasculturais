@@ -48,7 +48,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 <?php if($this->isEditable() || count($phases) > 0): ?>
 <?php if($this->isEditable()): ?>
 <div ng-controller="OpportunityPhasesController">
-<edit-box id="new-opportunity-phase" position="top" title="<?php i::esc_attr_e('Escolha o método de avaliação da nova fase') ?>"  cancel-label="<?php i::esc_attr_e("Cancelar");?>" close-on-cancel="true" submit-label="{{data.step == 1 ? '<?php i::_e("Avançar");?>' : '<?php i::_e("Criar");?>' }}" on-cancel="newPhaseEditBoxCancel" on-submit="newPhaseEditBoxSubmit" >
+<edit-box id="new-opportunity-phase" position="top" title="<?php i::esc_attr_e('Escolha o método de avaliação da nova fase') ?>"  cancel-label="<?php i::esc_attr_e("Cancelar");?>" close-on-cancel="true" submit-label="{{data.step == 1 ? '<?php i::_e("Avançar");?>' : '<?php i::_e("Criar");?>' }}" on-cancel="newPhaseEditBoxCancel" on-submit="newPhaseEditBoxSubmit" spinner-condition=data.spinner>
     <ul ng-if="data.step == 1" class="evaluation-methods">
         <?php foreach($evaluation_methods as $method): ?>
         <li class="evaluation-methods--item">

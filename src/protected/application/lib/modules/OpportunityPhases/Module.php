@@ -312,7 +312,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // action para criar uma nova fase no oportunidade
-        $app->hook('GET(opportunity.createNextPhase)', function() use($app){
+        $app->hook('POST(opportunity.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
 
             $_phases = [
@@ -369,7 +369,7 @@ class Module extends \MapasCulturais\Module{
 
             $emconfig->save(true);
 
-            $app->redirect($phase->editUrl);
+            $this->json($phase);
         });
 
         // redireciona para a página do oportunidade após deletar uma fase
