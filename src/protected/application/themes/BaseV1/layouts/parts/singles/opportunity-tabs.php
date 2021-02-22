@@ -2,6 +2,8 @@
 <ul class="abas clearfix">
     <?php $this->applyTemplateHook('tabs','begin'); ?>
     <li class="active"><a href="#main-content" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Principal");?></a></li>
+    
+    <li><a href="#form-config" rel="noopener noreferrer"><?php \MapasCulturais\i::_e("Configuração do Formulário"); ?></a></li>
 
     <?php if($this->isEditable()): ?>
         <?php if(!$entity->isNew()): ?>
