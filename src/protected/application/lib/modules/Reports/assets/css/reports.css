@@ -269,7 +269,7 @@
     font-size: 14px;
     height: auto;
     line-height: 1;
-    margin: 0 12px;
+    margin: 0 12px 15px;
     padding: 17px 50px;
 }
 .reports-modal footer button:hover {
@@ -304,4 +304,26 @@
 }
 .reports-modal .flex .column:last-child {
     padding-right: 0;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+
+    .reports-modal .line > select,
+    .reports-modal .line .column > select {
+        width: 100%;
+    }
+
+    .reports-modal .flex {
+        display: block;
+    }
+    .reports-modal .flex .column {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .reports-modal footer button {
+        width: 70%;
+    }
+
 }
