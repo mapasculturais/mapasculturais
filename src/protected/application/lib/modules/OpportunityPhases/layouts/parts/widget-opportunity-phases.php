@@ -45,8 +45,9 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 ?>
 <?php if($this->isEditable() || count($phases) > 0): ?>
 <?php if($this->isEditable()): ?>
-<edit-box id="new-opportunity-phase" position="top" title="<?php \MapasCulturais\i::esc_attr_e('Escolha o método de avaliação da nova fase') ?>"  cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel="true">
-    <ul class="evaluation-methods">
+<div ng-controller="OpportunityPhasesController">
+<edit-box id="new-opportunity-phase" position="top" title="<?php \MapasCulturais\i::esc_attr_e('Escolha o método de avaliação da nova fase') ?>"  cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar");?>" close-on-cancel="true" submit-label="{{data.step == 1 ? '<?php \MapasCulturais\i::_e("Avançar");?>' : '<?php \MapasCulturais\i::_e("Criar");?>' }}" on-cancel="newPhaseEditBoxCancel" on-submit="newPhaseEditBoxSubmit" >
+    <ul ng-if="data.step == 1" class="evaluation-methods">
         <?php foreach($evaluation_methods as $method): ?>
         <li class="evaluation-methods--item">
             <a href="<?php echo $this->controller->createUrl('createNextPhase', [$opportunity->id, 'evaluationMethod' => $method->slug]) ?>">
@@ -56,6 +57,9 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </li>
         <?php endforeach; ?>
     </ul>
+    <div ng-if="data.step == 2">
+        <h1> ASDASD </h1>
+    </div>
 </edit-box>
 <?php endif; ?>
     <div class="opportunity-phases clear">
@@ -134,4 +138,5 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <?php endforeach; ?>
         </ul>
     </div>
+</div>
 <?php endif; ?>
