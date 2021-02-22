@@ -186,6 +186,10 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
+        $app->hook('view.render(<<*>>):before', function() use($app) {
+            $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
+            $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
+        },1000);
 
 
         // registra os metadados das inscrićões das fases anteriores
