@@ -16,7 +16,7 @@ $this->part('charts/pie', [
     'colors' => ['black', 'white', 'yellow']
 ]);
 
-*/
+ */
 
 use MapasCulturais\i;
 
@@ -47,18 +47,22 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
 
 ?>
 
-<div class="chart-container chart-pie" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
-    <!-- <div class="chart-container chart-pie"> -->
+<div class="chart-wrap">
+
     <header>
         <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
         <a href="<?= $route ?>" name="<?= $chart_id ?>" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
     </header>
+    <div class="chart-container chart-pie" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+        <canvas id="<?= $chart_id ?>"></canvas>
+    </div>
+    <footer>
+        <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
+    </footer>
 
-    <canvas id="<?= $chart_id ?>"></canvas>
-    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
-</div>
+</div><!-- /.chart-wrap -->
 
 <script>
     $(window).on('load', function() {

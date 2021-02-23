@@ -6,7 +6,7 @@ $label = [];
 $values = [];
 $colors = [];
 $height = 'auto';
-$width = '100%';
+$width = '60%';
 $title = i::__('Status das inscrições');
 
 //Prepara os dados para o gráfico

@@ -26,22 +26,27 @@
     margin-bottom: 20px;
 }
 
-.chart-container header h3 {
+/* Chart wrap */
+#reports .chart-wrap {
+    width: 100%;
+}
+
+#reports .chart-wrap header h3 {
     display: inline;
     font-size: 28px;
     padding-right: 15px;
 }
 
-.chart-container header button {
+#reports .chart-wrap header button {
     float: right;
 }
 
-.chart-container header > a {
+#reports .chart-wrap header > a {
     line-height: 35px;
     margin-right: 15px;
 }
 
-.chart-container header > a i {
+#reports .chart-wrap header > a i {
     color: #111111;
     font-size: 0.8rem;
     opacity: 0.5;
@@ -50,44 +55,69 @@
     -moz-transition: all 0.3s ease-in-out;
 }
 
-.chart-container header > a:hover i {
+#reports .chart-wrap header > a:hover i {
     opacity: 1;
 }
 
 /* Chart container */
 #reports .chart-container {
+    float: left;
     margin-bottom: 45px;
+    width: 60%;
 }
 
-/* Legends */
-#reports .chart-container .legends-chats {
+/* Chart footer */
+#reports .chart-wrap footer {
+    box-sizing: border-box;
+    float: left;
+    width: 40%;
+}
+
+/* Chart footer/legends */
+#reports .chart-wrap footer .legends-chats {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     padding-bottom: 15px;
     padding-top: 25px;
 }
-#reports .chart-container .legends-chats .each {
+
+#reports .chart-wrap footer .legends-chats .each {
     align-items: center;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
     margin-bottom: 10px;
     padding-right: 5px;
-    width: 33%;
+    width: 100%;
 }
-#reports .chart-container .legends-chats .each .dot {
-    border-radius: 15px;
+
+#reports .chart-wrap footer .legends-chats .each .dot {
+    border-radius: 12px;
     display: inline-block;
-    height: 15px;
+    height: 12px;
     margin-right: 5px;
-    min-width: 15px;
-    width: 15px;
+    min-width: 12px;
+    width: 12px;
 }
-#reports .chart-container .legends-chats .each p {
+
+#reports .chart-wrap footer .legends-chats .each p {
     font-size: 12px;
     line-height: 1.4;
     margin-bottom: 0;
+}
+
+/* Legends line */
+#reports .chart-wrap .chart-line + footer {
+    width: 100%;
+}
+
+#reports .chart-wrap .chart-line + footer .legends-chats {
+    flex-direction: row;
+    justify-content: center;
+}
+
+#reports .chart-wrap .chart-line + footer .legends-chats .each {
+    padding: 0 15px;
+    width: auto;
 }
 
 /*Title*/
@@ -96,14 +126,14 @@
 }
 
 /* Footer*/
-#reports footer {
+#reports > footer {
     border-top: 1px solid #888888;
     margin-top: 25px;
     padding: 45px 15px 25px;
     text-align: center;
 }
 
-#reports footer .add {
+#reports > footer .add {
     background-color: rgba(255,154,0,0.7);
     border: 0;
     border-radius: 5px;

@@ -39,20 +39,26 @@ if (isset($series) && is_array($series)) {
 $width = $width ?? '50vw';
 $height = $height ?? '50vw';
 
-$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity' => $opportunity, 'action' => $action]); 
+$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity' => $opportunity, 'action' => $action]);
 
 ?>
-<div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+
+<div class="chart-wrap">
+
     <header>
         <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
         <a href="<?= $route ?>" name="<?= $chart_id ?>" class="btn btn-default hltip download" title="<?php i::_e("Baixar em CSV"); ?>">Baixar em CSV</a>
     </header>
+    <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+        <canvas id="<?= $chart_id ?>"></canvas>
+    </div>
+    <footer>
+        <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors, 'opportunity' => $opportunity]); ?>
+    </footer>
 
-    <canvas id="<?= $chart_id ?>"></canvas>
-    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors,'opportunity' => $opportunity]); ?>
-</div>
+</div><!-- /.chart-wrap -->
 
 <script>
     $(window).on('load', function() {
@@ -153,7 +159,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity' =
                         tooltipWrap.style.fontSize = '14px';
                         tooltipWrap.style.color = '#ffffff';
                         tooltipWrap.style.pointerEvents = 'none';
-                        
+
                     }
                 }
             }
