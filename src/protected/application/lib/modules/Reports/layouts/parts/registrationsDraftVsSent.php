@@ -6,7 +6,7 @@ $label = [i::__('Rascunhos'), i::__('Enviadas')];
 $legends = [i::__('Rascunhos'), i::__('Enviadas')];
 $values = [];
 $height = 'auto';
-$width = '100%';
+$width = '60%';
 $total = 0;
 $title = i::__('Status de envio das inscrições');
 

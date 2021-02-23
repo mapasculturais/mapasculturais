@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $label = [];
 $values = [];
 $height = 'auto';
-$width = '100%';
+$width = '60%';
 $colors = [];
 $series = [];
 $count = 0;
