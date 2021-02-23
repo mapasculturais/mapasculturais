@@ -39,22 +39,35 @@ use MapasCulturais\i;
                 <a ng-click="data.reportModal=false"><i class="fas fa-times close-modal"></i></a>
             </header>        
         
-            <h5><?php i::_e("Agora defina o título e dados exibido no gráfico"); ?></h5>
+            <p><?php i::_e("Agora defina o título e dados exibido no gráfico"); ?></p>
             
             <div>
-                <div>
-                    <label><?php i::_e("Título do gráfico"); ?></label>
-                    <input type="text" ng-model="data.reportData.title">
+                <div class="line flex">
+                    <div class="column">
+                        <label><?php i::_e("Título do gráfico"); ?></label>
+                        <input type="text" ng-model="data.reportsData.title" placeholder="<?php i::_e("Digite um título que represente os dados do novo gráfico"); ?>">
+                    </div>
+                    <div class="column">
+                        <label><?php i::_e("Breve descrição"); ?></label>
+                        <input type="text" ng-model="data.reportsData.description" placeholder="<?php i::_e("Digite uma descrição resumida"); ?>">
+                    </div> 
                 </div> 
+                <div class="line flex">
+                    <div class="column">
+                        <label><?php i::_e("Dados a serem exibidos"); ?></label>
+                        <select>
+                            <option><?php i::_e("Seleciona um dado"); ?></option>                                    
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-                <div>
-                    <label><?php i::_e("Breve descrição"); ?></label>
-                    <input type="text" ng-model="data.reportData.description">
-                </div> 
-
-                <div>
-                    <label><?php i::_e("Dados a serem exibidos"); ?></label>
-                    <select ng-model="data.reportData.typeData">
+            <hr>
+           
+            <div>
+                <div ng-if="data.reportsData.categories.length > 0">
+                    <label><?php i::_e("Categoria da oportunidade"); ?></label>
+                    <select>
                         <option value=""><?php i::_e("Todas"); ?></option>
                         <option ng-repeat="dataSelect in  data.dataDisplay" label="{{dataSelect.label}}">{{dataSelect.value}}</option>                                       
                     </select>

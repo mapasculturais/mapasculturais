@@ -27,9 +27,9 @@
 }
 
 .chart-container header h3 {
-    float: left;
+    display: inline;
     font-size: 28px;
-    padding-right: 45px;
+    padding-right: 15px;
 }
 
 .chart-container header button {
@@ -37,9 +37,8 @@
 }
 
 .chart-container header > a {
-    position: absolute;
-    top: 5px;
-    right: 25px;
+    line-height: 35px;
+    margin-right: 15px;
 }
 
 .chart-container header > a i {
@@ -58,50 +57,6 @@
 /* Chart container */
 #reports .chart-container {
     margin-bottom: 45px;
-}
-
-/* Dropdown */
-#reports .chart-container .dropdown-content {
-    border: none;
-    border-top: 4px solid #1c5690;
-    border-radius: 2px;
-    box-shadow: 0 3px 10px 0 rgb(0 0 0 / 30%);
-    box-sizing: border-box;
-    display: none;
-    background-color: #ffffff;
-    padding: 0.75rem;
-    position: absolute;
-    right: 30px;
-    text-align: left;
-    top: 50px;
-    width: 80%;
-}
-
-#reports .chart-container .dropdown-content.active {
-    display: block;
-}
-
-#reports .chart-container .dropdown-content h4 {
-    border-bottom: 1px solid #eeeeee;
-    display: block;
-    font-size: 1rem;
-    line-height: 1rem;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.75rem;
-    text-align: left;
-}
-
-#reports .chart-container .dropdown-content ul {
-    list-style: none;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-#reports .chart-container .dropdown-content li,
-#reports .chart-container .dropdown-content a,
-#reports .chart-container .dropdown-content p {
-    font-size: 0.75rem;
 }
 
 /* Legends */
@@ -175,8 +130,10 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.5);
+    font-size: 14px;
     height: auto;
     margin: 100px auto;
+    max-width: 960px;
     min-height: 400px;
     padding: 25px;
     position: relative;
@@ -223,7 +180,7 @@
     color: #555;
     display: flex;
 }
-.reports-modal .line label:hover {
+.reports-modal .grafic-type .line label:hover {
     color: #111;
     cursor: pointer;
 }
@@ -231,11 +188,32 @@
     height: 20px;
     margin-right: 15px;
 }
-.reports-modal .line label:hover i::before,
-.reports-modal .line label input:checked + i::before,
-.reports-modal .line label input:checked ~ span {
+.reports-modal .grafic-type .line label:hover i::before,
+.reports-modal .grafic-type .line label input:checked + i::before,
+.reports-modal .grafic-type .line label input:checked ~ span {
     color: #111;
 }
+
+.reports-modal .grafic-data label {
+    font-weight: bold;
+}
+
+.reports-modal .line > input,
+.reports-modal .line .column > input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+.reports-modal .line > select,
+.reports-modal .line .column > select {
+    cursor: pointer;
+    width: auto;
+}
+.reports-modal .line > input::placeholder,
+.reports-modal .line .column > input::placeholder {
+    color: #999;
+}
+
 .reports-modal footer {
     text-align: center;
 }
@@ -246,7 +224,7 @@
     font-size: 14px;
     height: auto;
     line-height: 1;
-    margin: 0 12px;
+    margin: 0 12px 15px;
     padding: 17px 50px;
 }
 .reports-modal footer button:hover {
@@ -264,4 +242,43 @@
 .reports-modal footer .next {
     border-radius: 5px;
     background-color: #FF9A00;
+}
+
+/* Grid Flex */
+.reports-modal .flex {
+    display: flex;
+    justify-content: space-between;
+}
+.reports-modal .flex .column {
+    padding-left: 15px;
+    padding-right: 15px;
+    flex-grow: 1;
+}
+.reports-modal .flex .column:first-child {
+    padding-left: 0;
+}
+.reports-modal .flex .column:last-child {
+    padding-right: 0;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+
+    .reports-modal .line > select,
+    .reports-modal .line .column > select {
+        width: 100%;
+    }
+
+    .reports-modal .flex {
+        display: block;
+    }
+    .reports-modal .flex .column {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .reports-modal footer button {
+        width: 70%;
+    }
+
 }
