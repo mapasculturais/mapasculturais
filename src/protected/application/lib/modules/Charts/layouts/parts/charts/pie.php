@@ -1,31 +1,38 @@
-<?php 
+<?php
+
 /**
  * 
-  $this->part('charts/pie', [
-       'serie' => [
-           ['label' => 'Preto', 'data' => 66, 'colors' => 'black'],
-           ['label' => 'Branco', 'data' => 120, 'colors' => 'white'],
-           ['label' => 'Amarelo', 'data' => 70, 'colors' => 'yellow']
-       ]
-  ]);
-  
-  $this->part('charts/pie', [
-       'labels' => ['Preto', 'Branco', 'Amarelo'],
-       'data' => [66, 120, 70],
-       'colors' => ['black', 'white', 'yellow']
-  ]);
- * 
- */
+$this->part('charts/pie', [
+    'serie' => [
+        ['label' => 'Preto', 'data' => 66, 'colors' => 'black'],
+        ['label' => 'Branco', 'data' => 120, 'colors' => 'white'],
+        ['label' => 'Amarelo', 'data' => 70, 'colors' => 'yellow']
+    ]
+]);
+
+$this->part('charts/pie', [
+    'labels' => ['Preto', 'Branco', 'Amarelo'],
+    'data' => [66, 120, 70],
+    'colors' => ['black', 'white', 'yellow']
+]);
+
+*/
 
 use MapasCulturais\i;
 
 $title = $title ?? null;
 $chart_id = uniqid('chart-pie-');
-if (isset($serie) && is_array($serie)) {    
-    $data = array_map(function($item) { return $item['data']; }, $serie);
-    $labels = array_map(function($item) { return $item['label']; }, $serie);
-    if(isset($serie[0]['colors'])) {
-        $colors = array_map(function($item) { return $item['colors']; }, $serie);
+if (isset($serie) && is_array($serie)) {
+    $data = array_map(function ($item) {
+        return $item['data'];
+    }, $serie);
+    $labels = array_map(function ($item) {
+        return $item['label'];
+    }, $serie);
+    if (isset($serie[0]['colors'])) {
+        $colors = array_map(function ($item) {
+            return $item['colors'];
+        }, $serie);
     }
 }
 
@@ -39,15 +46,16 @@ $bottom = $bottom ?? 25;
 $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
 
 ?>
-<div class="chart-container chart-pie" style="position: relative; height:<?=$height?>; width:<?=$width?>;">
-<!-- <div class="chart-container chart-pie"> -->
+
+<div class="chart-container chart-pie" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+    <!-- <div class="chart-container chart-pie"> -->
     <header>
-        <?php if($title): ?>
+        <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
         <a href="<?= $route ?>" name="<?= $chart_id ?>" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
     </header>
-    
+
     <canvas id="<?= $chart_id ?>"></canvas>
     <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
 </div>
@@ -72,36 +80,35 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
                 legend: false,
                 layout: {
                     padding: {
-                        right: <?=$right?>,
-                        top: <?=$top?>,
-                        bottom: <?=$bottom?>
+                        right: <?= $right ?>,
+                        top: <?= $top ?>,
+                        bottom: <?= $bottom ?>
                     },
-                    
-                },      
-                plugins: {
-                    datalabels: {     
-                    display: function(context, ctx) {
-                    },           
-                    formatter: (value, ctx) => {
-                        let sum = 0;
-                        let dataArr = ctx.chart.data.datasets[0].data;
-                        dataArr.map(data => {
-                            sum += data;
-                        });
 
-                        let percentage = (value*100 / sum).toFixed(2)+"%";
-                        
-                        return value + " "+"("+percentage+") \n\n";
-                    },
-                    anchor:"end",
-                    align: "end",
-                    color: '#000',
-                    overlap: 'auto',
-                
-                }
-            },
-        
-                
+                },
+                plugins: {
+                    datalabels: {
+                        display: function(context, ctx) {},
+                        formatter: (value, ctx) => {
+                            let sum = 0;
+                            let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(data => {
+                                sum += data;
+                            });
+
+                            let percentage = (value * 100 / sum).toFixed(2) + "%";
+
+                            return value + " " + "(" + percentage + ") \n\n";
+                        },
+                        anchor: "end",
+                        align: "end",
+                        color: '#000',
+                        overlap: 'auto',
+
+                    }
+                },
+
+
             }
         };
 
