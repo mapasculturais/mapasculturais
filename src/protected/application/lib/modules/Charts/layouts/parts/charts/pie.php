@@ -76,25 +76,27 @@ $bottom = $bottom ?? 25;
                     
                 },      
                 plugins: {
-            datalabels: {
-                display: function(context) {
-                    
-                },
-               formatter: (value, ctx) => {
-                  let sum = 0;
-                  let dataArr = ctx.chart.data.datasets[0].data;
-                  dataArr.map(data => {
-                      sum += data;
-                  });
+                    datalabels: {     
+                    display: function(context, ctx) {
+                    },           
+                    formatter: (value, ctx) => {
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => {
+                            sum += data;
+                        });
 
-                  let percentage = (value*100 / sum).toFixed(2)+"%";
-                  return value + "\n"+"("+percentage+") \n\n";
-                },
-                anchor:"end",
-                align: "end",
-                color: '#000',
-            }
-        },
+                        let percentage = (value*100 / sum).toFixed(2)+"%";
+                        
+                        return value + " "+"("+percentage+") \n\n";
+                    },
+                    anchor:"end",
+                    align: "end",
+                    color: '#000',
+                    overlap: 'auto',
+                
+                }
+            },
         
                 
             }
