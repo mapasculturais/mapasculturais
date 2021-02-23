@@ -28,7 +28,12 @@
 
 /* Chart wrap */
 #reports .chart-wrap {
+    margin-bottom: 45px;
     width: 100%;
+}
+
+#reports .chart-wrap header {
+    margin-bottom: 30px;
 }
 
 #reports .chart-wrap header h3 {
@@ -62,7 +67,7 @@
 /* Chart container */
 #reports .chart-container {
     float: left;
-    margin-bottom: 45px;
+    margin-bottom: 30px;
     width: 60%;
 }
 
@@ -77,8 +82,6 @@
 #reports .chart-wrap footer .legends-chats {
     display: flex;
     flex-direction: column;
-    padding-bottom: 15px;
-    padding-top: 25px;
 }
 
 #reports .chart-wrap footer .legends-chats .each {
