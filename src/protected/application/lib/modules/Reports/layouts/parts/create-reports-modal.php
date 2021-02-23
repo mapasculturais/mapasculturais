@@ -5,7 +5,7 @@ use MapasCulturais\i;
 
 <!-- <canvas id="dinamic-grafic"></canvas> -->
 
-<div ng-class="{hidden:!data.reportModal}" ng-click="data.reportModal=false" class="bg-reports-modal" id="reportsModal">
+<div ng-class="{hidden:!data.reportModal}" class="bg-reports-modal" id="reportsModal">
     <div class="reports-modal">
 
         <div class="grafic-type" ng-class="{hidden:!data.graficType}">
