@@ -29,7 +29,6 @@ $this->part('charts/pie', [
     'width' => $width,
     'legends' => $legends,
     'title' => $title,
-    'top' => 70,
     'opportunity' => $opportunity,
     'action' => 'exportRegistrationsByCategory'
 ]);

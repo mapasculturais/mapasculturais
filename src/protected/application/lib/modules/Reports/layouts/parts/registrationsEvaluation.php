@@ -31,7 +31,6 @@ if ($dataOportunity[0]->owner->type == 'technical') {
         'width' => $width,
         // 'legends' => $legends,
         'title' => $title,
-        'top' => 70,
         'opportunity' => $opportunity,
         'action' => 'exportRegistrationsByEvaluation',
     ]);
@@ -63,7 +62,6 @@ if ($dataOportunity[0]->owner->type == 'technical') {
         'width' => $width,
         'legends' => $legends,
         'title' => $title,
-        'top' => 70,
         'opportunity' => $opportunity,
         'action' => 'exportRegistrationsByEvaluation',
     ]);

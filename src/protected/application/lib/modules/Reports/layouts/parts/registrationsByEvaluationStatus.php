@@ -29,8 +29,6 @@ $title = i::__('Status de avaliações');
     'title' => $title,
     'height' => $height,
     'width' => $width,
-    'top' => 70,
-    'bottom' => 30,
     'opportunity' => $opportunity,
     'action' => 'exportRegistrationsByEvaluationStatus'
 ]);

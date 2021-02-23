@@ -40,8 +40,8 @@ $width = $width ?? '50vw';
 $height = $height ?? '50vw';
 $legends = $legends ?? null;
 $right = $right ?? 0;
-$top = $top ?? 35;
-$bottom = $bottom ?? 25;
+$top = $top ?? 0;
+$bottom = $bottom ?? 0;
 
 $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
 
@@ -92,23 +92,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
                 },
                 plugins: {
                     datalabels: {
-                        display: function(context, ctx) {},
-                        formatter: (value, ctx) => {
-                            let sum = 0;
-                            let dataArr = ctx.chart.data.datasets[0].data;
-                            dataArr.map(data => {
-                                sum += data;
-                            });
-
-                            let percentage = (value * 100 / sum).toFixed(2) + "%";
-
-                            return value + " " + "(" + percentage + ") \n\n";
-                        },
-                        anchor: "end",
-                        align: "end",
-                        color: '#000',
-                        overlap: 'auto',
-
+                        display: false
                     }
                 },
 

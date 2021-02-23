@@ -28,7 +28,6 @@ $this->part('charts/pie', [
     'title' => $title,
     'height' => $height,
     'width' => $width,
-    'top' => 70,
     'opportunity' => $opportunity,
     'action' => 'exportRegistrationsByStatus'
 ]);
