@@ -1,8 +1,9 @@
 <?php
 use MapasCulturais\i;
 ?>
-
-<div ng-class="{hidden:!data.reportModal}" class="bg-reports-modal" id="reportsModal">
+ <canvas id="dinamic-grafic"></canvas>
+ <div>
+<!-- <div ng-class="{hidden:!data.reportModal}" ng-click="data.reportModal=false" class="bg-reports-modal" id="reportsModal"> -->
 <div class="reports-modal">
     <div class="grafic-type" ng-class="{hidden:!data.graficType}">
             <header>
@@ -14,19 +15,19 @@ use MapasCulturais\i;
             <p><b><?php i::_e("Tipo de visualização"); ?></b></p>
 
             <div class="line">
-                <label><input ng-model="data.reportsData.type"  value="pie" type="radio"> <i class="fas fa-chart-pie"></i> <span><b><?php i::_e("Gráfico de pizza");?></b></span> </label>
+                <label><input ng-model="data.reportData.type"  value="pie" type="radio"> <i class="fas fa-chart-pie"></i> <span><b><?php i::_e("Gráfico de pizza");?></b></span> </label>
             </div>
 
             <div class="line">
-                <label><input ng-model="data.reportsData.type"  value="line" type="radio"> <i class="fas fa-chart-area"></i> <span><b><?php i::_e("Gráfico de linha");?></b></span> </label>
+                <label><input ng-model="data.reportData.type"  value="line" type="radio"> <i class="fas fa-chart-area"></i> <span><b><?php i::_e("Gráfico de linha");?></b></span> </label>
             </div>
 
             <div class="line">
-                <label><input ng-model="data.reportsData.type"  value="bar" type="radio">  <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de barra");?></b></span> </label>
+                <label><input ng-model="data.reportData.type"  value="bar" type="radio">  <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de barra");?></b></span> </label>
             </div>
 
             <div class="line">
-                <label><input ng-model="data.reportsData.type"  value="table" type="radio"> <i class="fas fa-th-list"></i> <span><b><?php i::_e("Gráfico de tabela");?></b></span> </label>
+                <label><input ng-model="data.reportData.type"  value="table" type="radio"> <i class="fas fa-th-list"></i> <span><b><?php i::_e("Gráfico de tabela");?></b></span> </label>
             </div>       
         
     </div> 
@@ -43,96 +44,28 @@ use MapasCulturais\i;
             <div>
                 <div>
                     <label><?php i::_e("Título do gráfico"); ?></label>
-                    <input type="text" ng-model="data.reportsData.title">
+                    <input type="text" ng-model="data.reportData.title">
                 </div> 
 
                 <div>
                     <label><?php i::_e("Breve descrição"); ?></label>
-                    <input type="text" ng-model="data.reportsData.description">
+                    <input type="text" ng-model="data.reportData.description">
                 </div> 
 
                 <div>
                     <label><?php i::_e("Dados a serem exibidos"); ?></label>
-                    <select>
-                        <option>Seleciona um dado</option>                                    
+                    <select ng-model="data.reportData.typeData">
+                        <option value=""><?php i::_e("Todas"); ?></option>
+                        <option ng-repeat="dataSelect in  data.dataDisplay" label="{{dataSelect.label}}">{{dataSelect.value}}</option>                                       
                     </select>
                 </div> 
             </div>
-
-            <hr>
-           
-            <div>
-                <div ng-if="data.reportsData.categories.length > 0">
-                    <label><?php i::_e("Categoria da oportunidade"); ?></label>
-                    <select>
-                        <option value=""><?php i::_e("Todas"); ?></option>
-                        <option ng-repeat="categories in  data.reportsData.categories" >{{categories}}</option>                                    
-                    </select>
-                </div> 
-
-                <div >
-                    <label><?php i::_e("Gênero"); ?></label>
-                    <select>
-                        <option value=""><?php i::_e("Todos"); ?></option>
-                        <option ng-repeat="genero in  data.reportsData.agentSelectFields.genero" >{{genero}}</option>                                    
-                    </select>
-                </div> 
-
-                <div>
-                    <label><?php i::_e("Raça"); ?></label>
-                    <select>
-                        <option value=""><?php i::_e("Todas"); ?></option>
-                        <option ng-repeat="raca in  data.reportsData.agentSelectFields.raca" >{{raca}}</option>                                    
-                    </select>
-                </div>
-
-                <div>
-                
-                    <label><?php i::_e("Faixa etária"); ?></label>
-                    <select ng-model="data.reportsData.breed">
-                    <option value=""><?php i::_e("Todas"); ?></option>
-                        <option ng-repeat="ageRange in  data.ageRange" >{{ageRange.range}}</option>                                      
-                    </select>
-                </div>
-
-                <div>
-                    <label><?php i::_e("Orientação sexual"); ?></label>
-                    <select ng-model="data.reportsData.sesualOrientation">
-                        <option value=""><?php i::_e("Todas"); ?></option>
-                        <option value="{{fIndex}}" ng-repeat="orientacaoSexual in  data.reportsData.agentSelectFields.orientacaoSexual" >{{orientacaoSexual}}</option>                                    
-                    </select>
-                </div>
-
-                <div>
-                
-                    <label><?php i::_e("Estado"); ?></label>
-                    <select ng-model="data.reportsData.state">
-                    <option value=""><?php i::_e("Todos"); ?></option>
-                    <option ng-repeat="En_Estado in  data.reportsData.agentSelectFields.En_Estado" >{{En_Estado}}</option>                                    
-                    </select>
-                </div>
-
-                <div>
-                    <label><?php i::_e("Município"); ?></label>
-                    <select ng-model="data.reportsData.county">
-                        <option value=""><?php i::_e("Todos"); ?></option>                                  
-                    </select>
-                </div>
-
-                <div>
-                    <label><?php i::_e("Bairro"); ?></label>
-                    <select ng-model="data.reportsData.neighborhood">
-                        <option value=""><?php i::_e("Todos"); ?></option>                                
-                    </select>
-                </div>
-            </div>
-               
         </div>
         <footer>
             <button class="btn btn-default close-modal cancel" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false"><?php i::_e("Cancelar"); ?></button>
             <button class="btn btn-default draft"  class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
             <button class="btn btn-primary next" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()"  class="js-close"><?php i::_e("Proxima etapa"); ?></button>
-            <button class="btn btn-primary" ng-if="data.graficData == true"><?php i::_e("Gerar gráfico"); ?></button>
+            <button class="btn btn-primary" ng-click="createGrafic()" ng-if="data.graficData == true"><?php i::_e("Gerar gráfico"); ?></button>
         </footer>
 
     </div>

@@ -15,51 +15,93 @@
     module.controller('Reports',['$scope', 'ReportsService','$window', function($scope, ReportsService, $window){
         
         $scope.data = {
-            reportsData: [],
+            reportData: {},
             reportModal: false,
             graficType: true,
-            graficData:false,
-            ageRange: [               
-                {range:"0 - 4", value: "0:4"},
-                {range:"5 - 9", value: "5:9"},
-                {range:"10 - 14", value: "10:14"},
-                {range:"15 - 19", value: "15:19"},
-                {range:"20 - 24", value: "20:24"},
-                {range:"25 - 29", value: "25:29"},
-                {range:"30 - 34", value: "30:34"},
-                {range:"35 - 39", value: "35:39"},
-                {range:"40 - 44", value: "40:44"},
-                {range:"45 - 49", value: "45:49"},
-                {range:"50 - 54", value: "50:54"},
-                {range:"55 - 59", value: "55:59"},
-                {range:"60 - 64", value: "60:64"},
-                {range:"65 - 69", value: "65:69"},
-                {range:"70 - 74", value: "70:74"},
-                {range:"75 - 79", value: "75:79"},
-                {range:"80 ou mais", value: "80"},
+            graficData:false,            
+            dataDisplay:[
+               {label: "Categoria da oportunidade", value: "category"},
+               {label: "Gênero", value: "genre"},
+               {label: "Raça", value: "breed"},
+               {label: "Faixa etária", value: "ageRange"},
+               {label: "Orientação sexual", value: "sexualOrientation"},
+               {label: "Estado", value: "state"},
+               {label: "Município", value: "county"},
+               {label: "Bairro", value: "neighborhood"} ,
             ]
         };
         
-        ReportsService.find({opportunity_id:MapasCulturais.entity.id}).success(function (data, status, headers){
-            $scope.data.reportsData = data;           
-        });        
+        
+        $scope.createGrafic = function() { 
+            console.log($scope.data.reportData);           
+            // ReportsService.create({reportData: $scope.data.reportData}).success(function (data, status, headers){
+            //     $scope.graficGenerate(data);
+            // });
+        }
+
+
+        $scope.graficGenerate = function(reportData) {
+            console.log(reportData)           
+            
+            var config = {
+                type: reportData.typeGrafic,
+                data: {
+                    labels: reportData.labels,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: reportData.data,
+                        backgroundColor: reportData.backgroundColor,
+                        borderColor: reportData.backgroundColor,
+                        borderWidth: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    legend: false,
+                    plugins: {
+                        datalabels: {     
+                        display: function(context, ctx) {
+                        },           
+                        formatter: (value, ctx) => {
+                            let sum = 0;
+                            let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(data => {
+                                sum += data;
+                            });
+    
+                            let percentage = (value*100 / sum).toFixed(2)+"%";
+                            
+                            return value + " "+"("+percentage+") \n\n";
+                        },
+                        anchor:"end",
+                        align: "end",                        
+                    
+                    }
+                }
+                }
+            };
+    
+    
+            var ctx = document.getElementById("dinamic-grafic").getContext('2d');
+            MapasCulturais.Charts.charts["dinamic-grafic"] = new Chart(ctx, config);
+        }
        
     }]);
     
     module.factory('ReportsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
-        return {
-            find: function (data) {
-                
-                var url = MapasCulturais.createUrl('reports', 'dataOportunityReport', {opportunity:MapasCulturais.entity.id});
-                
-                return $http.get(url, data).
+        return {            
+            create: function (data) {
+               
+                var url = MapasCulturais.createUrl('reports', 'createGrafic', {opportunity: MapasCulturais.entity.id});
+
+                return $http.post(url, data).
                 success(function (data, status, headers) {
                     $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
                 }).
                 error(function (data, status) {
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
-        }
+            }
         };
     }]);
 
