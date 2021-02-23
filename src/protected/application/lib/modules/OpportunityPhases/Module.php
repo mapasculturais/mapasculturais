@@ -1,6 +1,7 @@
 <?php
 namespace OpportunityPhases;
 
+use MapasCulturais\ApiQuery;
 use MapasCulturais\App,
     MapasCulturais\i,
     MapasCulturais\Entities,
@@ -51,24 +52,34 @@ class Module extends \MapasCulturais\Module{
     /**
      * Retorna a última fase do oportunidade
      *
-     * @param \MapasCulturais\Entities\Opportunity $base_opportunity
+     * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @return \MapasCulturais\Entities\Opportunity
      */
-    static function getLastPhase(Entities\Opportunity $base_opportunity){
+    static function getLastPhase(Entities\Opportunity $opportunity) {
         $app = App::i();
 
-        if ($base_opportunity->canUser('@control')) {
-            $status = [0,-1];
+        $base_opportunity = self::getBaseOpportunity($opportunity);
+
+        $params = [
+            '@select'=>'id',
+            'parent' => "EQ({$base_opportunity->id})",
+            'status' => 'IN(0,-1)',
+            '@permissions' => 'view',
+            '@order' => 'registrationFrom DESC',
+            '@limit' => 1
+        ];
+
+        $app->applyHook('entity(Opportunity).getLastPhase:params', [$base_opportunity, &$params]);
+
+        $query = new ApiQuery(Entities\Opportunity::class, $params);
+
+        if ($ids = $query->findIds()) {
+            $last_phase = $app->repo('Opportunity')->find($ids[0]);
         } else {
-            $status = -1;
+            $last_phase = $base_opportunity;
         }
 
-        $result = $app->repo('Opportunity')->findOneBy([
-            'parent' => $base_opportunity,
-            'status' => $status
-        ],['createTimestamp' => 'DESC', 'id' => 'DESC']);
-
-        return $result ? $result : $base_opportunity;
+        return $last_phase;
     }
 
     /**
@@ -186,6 +197,10 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
+        $app->hook('view.render(<<*>>):before', function() use($app) {
+            $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
+            $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
+        },1000);
 
 
         // registra os metadados das inscrićões das fases anteriores
@@ -308,7 +323,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // action para criar uma nova fase no oportunidade
-        $app->hook('GET(opportunity.createNextPhase)', function() use($app){
+        $app->hook('POST(opportunity.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
 
             $_phases = [
@@ -365,7 +380,7 @@ class Module extends \MapasCulturais\Module{
 
             $emconfig->save(true);
 
-            $app->redirect($phase->editUrl);
+            $this->json($phase);
         });
 
         // redireciona para a página do oportunidade após deletar uma fase
@@ -495,7 +510,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // remove alguns campos da configuracao da oportunidade
-        $app->hook('view.partial(singles/opportunity-registrations--<<fields--project-name|agent-relations|categories>>).params', function (&$params, &$template) use ($app) {
+        $app->hook('view.partial(singles/opportunity-registrations--<<fields--project-name|(agent|space)-relations|categories>>).params', function (&$params, &$template) use ($app) {
             $opportunity = self::getRequestedOpportunity();
 
             if($opportunity->isOpportunityPhase){
