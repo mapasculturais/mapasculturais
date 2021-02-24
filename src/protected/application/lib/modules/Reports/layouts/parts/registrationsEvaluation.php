@@ -9,6 +9,7 @@ $width = '60%';
 $total = 0;
 $colors = [];
 $title = i::__('Resultado da avaliação');
+$total = '';
 
 if ($dataOportunity[0]->owner->type == 'technical') {
     $series[0]['color'] = is_callable($color) ? $color() : $color;
@@ -35,28 +36,35 @@ if ($dataOportunity[0]->owner->type == 'technical') {
         'action' => 'exportRegistrationsByEvaluation',
     ]);
 } else {
-    //Prepara os dados para o gráfico
+
+    $total = [];
     foreach ($data as $key => $value) {
         foreach ($value as $v_key => $v) {
+            $total[] = $v;
+        }
+    }
+    $total = array_sum(array_column($total, null));
 
+    // Prepara os dados para o gráfico
+    foreach ($data as $key => $value) {
+        foreach ($value as $v_key => $v) {
             if ($v_key == "evaluated") {
                 $status = i::__('Avaliada');
             } else {
                 $status = i::__('Não avaliada');
             }
-
             $label[] = $status;
-            $legends[] = $status;
+            $legends[] = $status . '<br>' . $v . ' (' . number_format(($v / $total) * 100, 0, '.', '') . '%)';
             $values[] = $v;
             $colors[] = is_callable($color) ? $color() : $color;
         }
-
     }
 
     // Imprime o gráfico na tela
     $this->part('charts/pie', [
         'labels' => $label,
         'data' => $values,
+        'total' => $total,
         'colors' => $colors,
         'height' => $height,
         'width' => $width,

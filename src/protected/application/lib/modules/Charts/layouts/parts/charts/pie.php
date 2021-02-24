@@ -34,6 +34,7 @@ if (isset($serie) && is_array($serie)) {
             return $item['colors'];
         }, $serie);
     }
+    $total = array_sum($data);
 }
 
 $width = $width ?? '50vw';
@@ -42,6 +43,7 @@ $legends = $legends ?? null;
 $right = $right ?? 0;
 $top = $top ?? 0;
 $bottom = $bottom ?? 0;
+$total = $total ?? 0;
 
 $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
 
@@ -70,7 +72,8 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
             data: <?= json_encode($data) ?>,
             label: '<?= $title ?>',
             backgroundColor: <?= json_encode($colors) ?>,
-            borderWidth: 0
+            borderWidth: 0,
+            total: <?= json_encode($total) ?>
         };
 
         var config = {
@@ -88,15 +91,28 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
                         top: <?= $top ?>,
                         bottom: <?= $bottom ?>
                     },
-
                 },
                 plugins: {
                     datalabels: {
                         display: false
                     }
                 },
-
-
+                tooltips: {
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            return data['labels'][tooltipItem[0]['index']];
+                        },
+                        label: function(tooltipItem, data) {
+                            var dataset = data['datasets'][0];
+                            if (data['datasets'][0]['total'] > 0) {
+                                var percent = Math.round((dataset['data'][tooltipItem['index']] / data['datasets'][0]['total']) * 100)
+                                return ' ' + data['datasets'][0]['data'][tooltipItem['index']] + ' (' + percent + '%)';
+                            } else {
+                                return ' ' + data['datasets'][0]['data'][tooltipItem['index']];
+                            }
+                        }
+                    }
+                }
             }
         };
 
