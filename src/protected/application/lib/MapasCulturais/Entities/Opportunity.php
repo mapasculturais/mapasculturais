@@ -305,7 +305,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
@@ -324,6 +326,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
             ]
         ];
+
+        $hook_class = self::getHookClassPath();
+
+        $app->applyHook("entity($hook_class).validations", [&$validations]);
+
+        return $validations;
     }
 
     static function getClassName() {
