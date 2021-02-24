@@ -1,4 +1,6 @@
+<?php $this->applyTemplateHook('registration-config','before'); ?>
 <div id="form-config" class="aba-content">
+    <?php $this->applyTemplateHook('registration-config','begin'); ?>
     <?php $this->part('singles/opportunity-registrations--import', ['entity' => $entity]) ?>
 
     <?php if ($this->isEditable()): ?>
@@ -19,4 +21,6 @@
     <?php endif; ?>
 
     <?php $this->part('singles/opportunity-registrations--export', ['entity' => $entity]) ?>
+    <?php $this->applyTemplateHook('registration-config','end'); ?>
 </div>
+<?php $this->applyTemplateHook('registration-config','after'); ?>
