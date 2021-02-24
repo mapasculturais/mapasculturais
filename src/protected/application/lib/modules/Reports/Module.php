@@ -38,7 +38,7 @@ class Module extends \MapasCulturais\Module
                 $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
             }
 
-            if ($dataOportunity[0]->owner->type == 'technical') {
+            if (isset($dataOportunity[0]->owner->type) && $dataOportunity[0]->owner->type == 'technical') {
                 if ($registrationsByEvaluation = $self->registrationsByEvaluationStatusBar($opportunity)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
