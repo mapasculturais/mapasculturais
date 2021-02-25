@@ -41,14 +41,21 @@
                 step: 1,
             };
 
+            $scope.newPhasePostData = {
+                evaluationMethod: null
+            };
+
             $scope.newPhaseEditBoxSubmit = function () {
-                
+
                 if($scope.data.step == 1) {
                     $scope.data.step++;
                 } else {
                     $scope.data.spinner = true;
                     OpportunityPhasesService.createPhase().success(function(){
-                        $scope.data.spinner = false;    
+                        $scope.data.spinner = false;
+                    }).error(function() {
+                        $scope.data.spinner = false;
+                        MapasCulturais.Messages.error('ERROR');
                     });
                 }
             }
