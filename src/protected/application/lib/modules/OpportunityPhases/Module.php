@@ -55,7 +55,7 @@ class Module extends \MapasCulturais\Module{
      * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @return \MapasCulturais\Entities\Opportunity
      */
-    static function getLastPhase(Entities\Opportunity $opportunity) {
+    static function getLastCreatedPhase(Entities\Opportunity $opportunity) {
         $app = App::i();
 
         $base_opportunity = self::getBaseOpportunity($opportunity);
@@ -69,7 +69,7 @@ class Module extends \MapasCulturais\Module{
             '@limit' => 1
         ];
 
-        $app->applyHook('entity(Opportunity).getLastPhase:params', [$base_opportunity, &$params]);
+        $app->applyHook('entity(Opportunity).getLastCreatedPhase:params', [$base_opportunity, &$params]);
 
         $query = new ApiQuery(Entities\Opportunity::class, $params);
 
@@ -358,7 +358,7 @@ class Module extends \MapasCulturais\Module{
             $phase->useRegistrations = true;
             $phase->isOpportunityPhase = true;
 
-            $last_phase = self::getLastPhase($parent);
+            $last_phase = self::getLastCreatedPhase($parent);
 
             $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
