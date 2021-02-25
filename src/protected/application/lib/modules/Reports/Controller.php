@@ -437,112 +437,98 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
-    public function ALL_dataOportunityReport()
+    public function ALL_dataOpportunityReport()
     {
-
         $this->requireAuthentication();
-
         $app = App::i();
-
         $request = $this->data;
-
         $fieldsUse = [
-            'raca',
-            'genero',
-            'orientacaoSexual',
-            'En_Estado',
-            'En_Municipio',
-            'En_Bairro',
-            'dataDeNascimento',
+            "raca",
+            "genero",
+            "orientacaoSexual",
+            "En_Estado",
+            "En_Municipio",
+            "En_Bairro",
+            "dataDeNascimento",
         ];
-
-        $opp = $app->repo("Opportunity")->find($request['opportunity']);
-        $agents = $app->repo("Agent")->find($request['opportunity']);
-
-        $dataOportunity = $opp->getEvaluationCommittee();
-
+        $opp = $app->repo("Opportunity")->find($request["opportunity"]);
+        $dataOpportunity = $opp->getEvaluationCommittee();
         $oppSelectFields = [];
         foreach ($opp->registrationFieldConfigurations as $value) {
             if ($value->fieldType == "select") {
                 $oppSelectFields[] = [
-                    'label' => $value->title,
-                    'value' => $value->id
+                    "label" => $value->title,
+                    "value" => $value->fieldName,
+                    "source" => "registration_meta",
                 ];
             }
         }
-
-       
-        $agentSelectFields = [];
-        $agentsFields = $agents->getPropertiesMetadata();
-        foreach ($agentsFields as $key => $value) {
-            if (isset($value['type']) && ($value['type'] == "select") && (in_array($key, $fieldsUse))) {
-                $agentSelectFields[$key] = $value['options'];
-            }
-        }
-
-        $temp = [];
-        foreach ($agentSelectFields as $key_a => $fields) {
-            $oppSelectFields[] = [
-                'label' => $key_a,
-                'value' => $key_a
-            ];
-        }
-
-        echo '<pre>';
-        var_dump($oppSelectFields);
-        echo '</pre>';
-
-        $agentSelectFields = $temp;
-
+        $agentClass = Agent::getClassName();
+        $agentFields = $this->getEntitySelectFields($agentClass, "agent",
+                                                    $fieldsUse);
+        $collectiveFields = (($opp->useAgentRelationColetivo ?? "dontUse") !=
+                             "dontUse") ?
+                            $this->getEntitySelectFields($agentClass,
+                                                         "agent") : [];
+        $instFields = (($opp->useAgentRelationInstituicao ?? "dontUse") !=
+                       "dontUse") ?
+                      $this->getEntitySelectFields($agentClass, "agent") : [];
+        $spaceFields = (($opp->useSpaceRelationIntituicao ?? "dontUse") !=
+                        "dontUse") ?
+                       $this->getEntitySelectFields(Space::getClassName(),
+                                                    "space") : [];
         $return = [
-            'opportunityType' => $dataOportunity[0]->owner->type->id,
-            'categories' => $opp->registrationCategories,
-            'oppSelectFields' => $oppSelectFields,
-            'agentSelectFields' => $agentSelectFields,
+            "opportunityType" => $dataOpportunity[0]->owner->type->id,
+            "categories" => (is_array($opp->registrationCategories) ?
+                             $opp->registrationCategories : []),
+            "registrationFields" => $oppSelectFields,
+            "agentFields" => $agentFields,
+            "collectiveFields" => $collectiveFields,
+            "institutionFields" => $instFields,
+            "spaceFields" => $spaceFields,
         ];
-
-        
-
-        // $this->apiResponse($return);
+        $this->apiResponse($return);
     }
-
 
     public function POST_createGrafic()
     {
         $opp = $this->getOpportunity();
-        
         $app = App::i();
-        
         $request = $this->data;
-        $reportData = $request['reportData'];        
+        $reportData = $request["reportData"];
         $conn = $app->em->getConnection();
 
-        $params = ['opportunity' => $opp->id];
-        
-        $mapped = [
-            "category" => 'registration',
-            "genre" => "agent"
+        $params = [
+            "opportunity" => $opp->id,
+            "field" => $reportData["typeData"],
         ];
 
+        $regWhere = "r.status > 0 AND r.opportunity_id = :opportunity";
+        $regMetaSubQuery = "(SELECT object_id, value FROM registration_meta WHERE key = :field)";
+        $agentMetaSubQuery = "(SELECT object_id, value FROM agent_meta WHERE key = :field)";
+        $selMeta = "SELECT value, count(*) AS quantity FROM registration r";
+        $groupMeta = "GROUP BY value";
         $sqls = [
-            'category' => "SELECT category, count(category) as quantity FROM registration r WHERE r.status > 0 AND r.opportunity_id = :opportunity GROUP BY category",
+            "registration" => "SELECT :field, count(:field) AS quantity FROM registration r WHERE $regWhere GROUP BY :field",
+            "registration_meta" => "$selMeta LEFT OUTER JOIN $regMetaSubQuery AS m ON r.id = m.object_id WHERE $regWhere $groupMeta",
+            "agent_meta" => "$selMeta JOIN agent a ON r.agent_id = a.id LEFT OUTER JOIN $agentMetaSubQuery m ON a.id = m.object_id WHERE $regWhere $groupMeta",
         ];
 
-        $query = $sqls[$reportData['typeData']];
+        $query = $sqls[$reportData["source"]];
 
         $result = $conn->fetchAll($query, $params);
-       
+
         $return = [];
         $labels = [];
         $color = [];
         $data = [];
 
-        foreach ($result as $key => $value){              
+        foreach ($result as $key => $value){
             $color[] = $this->color();
             $labels[] = $value['category'];
             $data[] = $value['quantity'];
         }
-        
+
         $return = [
             'labels' => $labels,
             'backgroundColor' => $color,
@@ -551,8 +537,27 @@ class Controller extends \MapasCulturais\Controller
             'typeGrafic' => $reportData['type'],
             'period' => $this->getPeriod($opp->createTimestamp)
         ];
-        
+
         $this->apiResponse($return);
+    }
+
+    private function getEntitySelectFields($entityClass, $baseName,
+                                           $includeFields=null)
+    {
+        $selectFields = [];
+        $fields = $entityClass::getPropertiesMetadata();
+        foreach ($fields as $key => $value) {
+            if ((($value["type"] ?? "") == "select") &&
+                (!$includeFields || in_array($key, $includeFields))) {
+                $selectFields[] = [
+                    "label" => $value["label"],
+                    "value" => $key,
+                    "source" => ($baseName . ($value["isMetadata"] ?
+                                              "_meta" : "")),
+                ];
+            }
+        }
+        return $selectFields;
     }
 
     private function getPeriod($dateStart)
