@@ -3,7 +3,7 @@
 use MapasCulturais\i;
 ?>
 
-<!-- <canvas id="dinamic-grafic"></canvas> -->
+<canvas id="dinamic-grafic"></canvas>
 
 <div ng-class="{hidden:!data.reportModal}" class="bg-reports-modal" id="reportsModal">
     <div class="reports-modal">

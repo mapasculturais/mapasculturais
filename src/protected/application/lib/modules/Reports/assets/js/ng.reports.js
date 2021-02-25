@@ -53,8 +53,8 @@
             
             ReportsService.create({reportData: reportData}).success(function (data, status, headers){
                 
-                console.log(data);
-                // $scope.graficGenerate(data);
+                // console.log(data);
+                $scope.graficGenerate(data);
             });
         }
 
