@@ -366,6 +366,10 @@ class Module extends \MapasCulturais\Module{
 
             $phase->registrationFrom = $_from;
             $phase->registrationTo = $_to;
+
+            if (isset($this->postData['isLastPhase']) && $this->postData['isLastPhase']) {
+                $phase->isLastPhase = true;
+            }
             
             $phase->save(true);
 

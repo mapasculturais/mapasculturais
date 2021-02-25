@@ -76,7 +76,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <hr style="height:1px;border-width:0;color:gray;">
             <ul class="evaluation-methods">
                 <li class="evaluation-methods--item">
-                    <input type="checkbox" name="lastPhase" id="lastPhase" value="{{ newPhasePostData.lastPhase }}" ng-model="newPhasePostData.lastPhase">
+                    <input type="checkbox" name="lastPhase" id="lastPhase" ng-model="newPhasePostData.isLastPhase" ng-false-value="">
                     <label for="lastPhase"><?php i::_e("Está será a última fase"); ?></label>
                     <p class="evaluation-methods--name"><?php i::_e("Assinale apenas se for a fase final"); ?></p>
                 </li>
