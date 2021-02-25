@@ -19,29 +19,47 @@
             reportModal: false,
             graficType: true,
             graficData:false,            
-            dataDisplay:[
-               {label: "Categoria da oportunidade", value: "category"},
-               {label: "Gênero", value: "genre"},
-               {label: "Raça", value: "breed"},
-               {label: "Faixa etária", value: "ageRange"},
-               {label: "Orientação sexual", value: "sexualOrientation"},
-               {label: "Estado", value: "state"},
-               {label: "Município", value: "county"},
-               {label: "Bairro", value: "neighborhood"} ,
-            ]
+            dataDisplay:[],
+            estado: {
+                'owner': '(Agente Responsável)',
+                'instituicao': '(Agente Instituição relacionada)',
+                'coletivo': '(Agente Coletivo)',
+                'space': '(Espaço)'
+            }
         };
-        
+
+        ReportsService.findDataOpportunity().success(function (data, status, headers){
+            var dataOpportunity = angular.copy(data);
+
+            $scope.data.dataDisplay =  dataOpportunity.map(function(index){
+              
+                if(index.label == "Estado"){
+                    index.label = index.label+" " + $scope.data.estado[index.source.type];
+                    return index;
+                }else{
+                    return index
+                }                
+            });
+
+        })
         
         $scope.createGrafic = function() { 
-            console.log($scope.data.reportData);           
-            // ReportsService.create({reportData: $scope.data.reportData}).success(function (data, status, headers){
-            //     $scope.graficGenerate(data);
-            // });
+            var index = $scope.data.reportData.dataDisplay;
+
+            var reportData = {
+                graficType: $scope.data.reportData.type,
+                data: $scope.data.dataDisplay[index]
+            };
+            
+            ReportsService.create({reportData: reportData}).success(function (data, status, headers){
+                
+                console.log(data);
+                // $scope.graficGenerate(data);
+            });
         }
 
 
         $scope.graficGenerate = function(reportData) {
-            console.log(reportData)           
             
             var config = {
                 type: reportData.typeGrafic,
@@ -89,7 +107,19 @@
     }]);
     
     module.factory('ReportsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
-        return {            
+        return {  
+            findDataOpportunity: function (data) {
+               
+                var url = MapasCulturais.createUrl('reports', 'dataOpportunityReport', {opportunity: MapasCulturais.entity.id});
+
+                return $http.post(url, data).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
+                });
+            },          
             create: function (data) {
                
                 var url = MapasCulturais.createUrl('reports', 'createGrafic', {opportunity: MapasCulturais.entity.id});
