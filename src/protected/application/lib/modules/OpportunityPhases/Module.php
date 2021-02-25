@@ -366,8 +366,7 @@ class Module extends \MapasCulturais\Module{
 
             $phase->registrationFrom = $_from;
             $phase->registrationTo = $_to;
-
-
+            
             $phase->save(true);
 
             $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
@@ -642,6 +641,13 @@ class Module extends \MapasCulturais\Module{
 
         $app->registerMetadata($def__prev, 'MapasCulturais\Entities\Registration');
         $app->registerMetadata($def__next, 'MapasCulturais\Entities\Registration');
+
+        // Last phase metadata
+        $this->registerOpportunityMetadata('isLastPhase', [
+            'label' => i::__('Indica se a oportunidade é a última fase da oportunidade'),
+            'type' => 'boolean',
+            'default' => false
+        ]);
     }
 
 }

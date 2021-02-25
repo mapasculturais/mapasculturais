@@ -21,7 +21,7 @@
                     };
                     var opportunity_id = MapasCulturais.entity.object.parent ? MapasCulturais.entity.object.parent.id : MapasCulturais.entity.object.id;
 
-                    var url = MapasCulturais.createUrl('opportunity', 'createNextPhase', {id: opportunity_id, evaluationMethod: 'simple'});
+                    var url = MapasCulturais.createUrl('opportunity', 'createNextPhase', {id: opportunity_id, evaluationMethod: 'simple' });
 
                     return $http.post(url, data).
                             success(function (data, status) {
@@ -42,7 +42,8 @@
             };
 
             $scope.newPhasePostData = {
-                evaluationMethod: null
+                evaluationMethod: null,
+                lastPhase: false
             };
 
             $scope.newPhaseEditBoxSubmit = function () {
@@ -53,9 +54,9 @@
                     $scope.data.spinner = true;
                     OpportunityPhasesService.createPhase().success(function(){
                         $scope.data.spinner = false;
-                    }).error(function() {
+                    }).error(function(err) {
                         $scope.data.spinner = false;
-                        MapasCulturais.Messages.error('ERROR');
+                        MapasCulturais.Messages.error(err.message);
                     });
                 }
             }
