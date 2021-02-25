@@ -468,8 +468,8 @@ class Controller extends \MapasCulturais\Controller
                 $oppSelectFields[] = [
                     "label" => $value->title,
                     "value" => $value->fieldName,
-                    "source" => [
-                        'registration_meta'
+                    'source' => [
+                       'table' => 'registration_meta'
                     ],
                 ];
             }
@@ -574,25 +574,23 @@ class Controller extends \MapasCulturais\Controller
             "field" => $reportData['data']["value"],
         ];
         
-
+       
         $regWhere = "AND r.status > 0";
-        $regMetaSubQuery = "(SELECT object_id, value FROM registration_meta WHERE key = :field)";
+        $regMetaSubQuery = "(SELECT object_id, value FROM registration_meta WHERE key = '{$reportData['data']["value"]}')";
         $agentMetaSubQuery = "(SELECT object_id, value FROM agent_meta WHERE key = '{$reportData['data']["value"]}')";
-        $selMeta = "SELECT value, count(*) AS quantity FROM registration r";
+        $selMeta = "SELECT value AS field, count(*) AS quantity FROM registration r";
         $groupMeta = "GROUP BY value";
         $sqls = [
             "registration" => "SELECT {$params['field']} AS field, count(*) AS quantity FROM {$reportData['data']["source"]['table']} r WHERE r.opportunity_id = :opportunity {$regWhere} GROUP BY {$params['field']}",
-            "registration_meta" => "$selMeta LEFT OUTER JOIN $regMetaSubQuery AS m ON r.id = m.object_id WHERE $regWhere $groupMeta",
+            "registration_meta" => "$selMeta LEFT OUTER JOIN $regMetaSubQuery AS m ON r.id = m.object_id WHERE r.opportunity_id = :opportunity $regWhere $groupMeta",
             "agent_meta" => "$selMeta JOIN agent a ON r.agent_id = a.id LEFT OUTER JOIN $agentMetaSubQuery m ON a.id = m.object_id WHERE r.opportunity_id = :opportunity $regWhere $groupMeta"
         ];
 
       
         $query = $sqls[$reportData['data']["source"]['table']];
-        
+       
         $result = $conn->fetchAll($query, $params);
         
-        $this->apiResponse($result);
-        exit;
         $return = [];
         $labels = [];
         $color = [];
@@ -628,10 +626,9 @@ class Controller extends \MapasCulturais\Controller
                 $selectFields[] = [
                     "label" => $value["label"],
                     "value" => $key,
-                    "source" => [
-                        "table" => ($baseName . ($value["isMetadata"] ?
-                                              "_meta" : "")), 
-                                              "type" => $type
+                    'source' => [
+                        "table" => ($baseName . ($value["isMetadata"] ? "_meta" : "")), 
+                        "type" => $type
                     ],
                 ];
             }
