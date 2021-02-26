@@ -47,7 +47,7 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
         </div><!-- /.charts-static -->
 
         <footer>
-            <button ng-click="data.reportModal=true" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
+            <button ng-click="data.reportModal=true;data.graficType=true" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
         </footer>
     </div>
 

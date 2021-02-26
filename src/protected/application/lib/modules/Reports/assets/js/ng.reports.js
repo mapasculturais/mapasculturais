@@ -51,16 +51,14 @@
                 data: $scope.data.dataDisplay[index]
             };
             
-            ReportsService.create({reportData: reportData}).success(function (data, status, headers){
-                
-                // console.log(data);
+            ReportsService.create({reportData: reportData}).success(function (data, status, headers){                
                 $scope.graficGenerate(data);
             });
         }
 
 
-        $scope.graficGenerate = function(reportData) {
-            
+        $scope.graficGenerate = function(reportData) {          
+
             var config = {
                 type: reportData.typeGrafic,
                 data: {
@@ -99,9 +97,18 @@
                 }
             };
     
-    
+           
             var ctx = document.getElementById("dinamic-grafic").getContext('2d');
+
+            ctx.canvas.width = 1000;
+            ctx.canvas.height = 300;
+        
+            if(MapasCulturais.Charts.charts["dinamic-grafic"]){
+                MapasCulturais.Charts.charts["dinamic-grafic"].destroy();
+            }
             MapasCulturais.Charts.charts["dinamic-grafic"] = new Chart(ctx, config);
+            $scope.data.reportModal = false;
+            $scope.data.graficData = false;
         }
        
     }]);
