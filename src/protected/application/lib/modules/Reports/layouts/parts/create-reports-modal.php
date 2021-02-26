@@ -71,7 +71,7 @@ use MapasCulturais\i;
             <button class="btn btn-default close-modal cancel" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false"><?php i::_e("Cancelar"); ?></button>
             <button class="btn btn-default draft" class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
             <button class="btn btn-primary next" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()" class="js-close"><?php i::_e("Proxima etapa"); ?></button>
-            <button class="btn btn-primary" ng-click="createGrafic()" ng-if="data.graficData == true"><?php i::_e("Gerar gráfico"); ?></button>
+            <button class="btn btn-primary next" ng-click="createGrafic()" ng-if="data.graficData == true"><?php i::_e("Gerar gráfico"); ?></button>
         </footer>
 
     </div><!-- /.reports-modal -->
