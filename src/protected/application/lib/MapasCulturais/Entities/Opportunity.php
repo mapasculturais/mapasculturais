@@ -256,25 +256,31 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
     
     function getEvaluationCommittee($return_relation = true){
-        $result = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
+        $app = App::i();
+
+        $committee = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
         
         if(!$return_relation) {
-            $result = array_map(function($r){ return $r->agent; }, $result);
+            $committee = array_map(function($r){ return $r->agent; }, $committee);
         }
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluationCommittee", [&$committee, $return_relation]);
         
-        return $result;
+        return $committee;
     }
 
     /*
      * @TODO: renomear esta funcao para um nome mais adequado.
      */
     function getEvaluations($include_empty = false){
+        $app = App::i();
+
         // @TODO: melhorar performance. talvez utilizando a ApiQuery na entidade RegistrationEvaluation ?
         $committee = $this->getEvaluationCommittee(false);
         
         $registrations = $this->getSentRegistrations();
         
-        $result = [];
+        $evaluations = [];
         
         foreach($registrations as $reg){
             foreach($committee as $agent){
@@ -288,13 +294,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
                             'registration' => $reg->simplify('id,number,category,singleUrl,owner,consolidatedResult')
                         ];
                         
-                        $result[] = $item;
+                        $evaluations[] = $item;
                     }
                 }
             }
         }
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluations", [&$evaluations, $include_empty]);
         
-        return $result;
+        return $evaluations;
     }
 
     public static function getEntityTypeLabel($plural = false) {
@@ -305,7 +313,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
@@ -324,6 +334,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
             ]
         ];
+
+        $hook_class = self::getHookClassPath();
+
+        $app->applyHook("entity($hook_class).validations", [&$validations]);
+
+        return $validations;
     }
 
     static function getClassName() {
@@ -478,11 +494,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function publishRegistrations(){
         $this->checkPermission('publishRegistrations');
-
+        $app = App::i();
+        
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:before");
+        
         $this->publishedRegistrations = true;
 
         // atribui os selos as inscrições selecionadas
-        $app = App::i();
         $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
 
         foreach ($registrations as $registration) {
@@ -492,6 +510,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->enqueueEntityToPCacheRecreation($this);
 
         $this->save(true);
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:after");
     }
 
     function sendUserEvaluations($user = null){
@@ -502,6 +521,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         $this->checkPermission('sendUserEvaluations', $user);
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:before", [$user]);
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
@@ -519,6 +540,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->em->flush();
         
         $app->enableAccessControl();
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:after", [$user]);
     }
 
     function importFields($importSource) {
@@ -526,6 +549,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         $app = App::i();
         
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:before", [&$importSource]);
+
+        $created_fields = [];
+        $created_files = [];
+
         if (!is_null($importSource)) {
             $new_fields_by_old_field_name = [];
 
@@ -557,6 +585,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                 // salva a primeira vez para obter um id
                 $newField->save();
+
+                $created_fields[] = $newField;
             }
 
             foreach($importSource->fields as &$field) {
@@ -592,6 +622,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $app->em->persist($newFile);
 
                 $newFile->save();
+
+                $created_files[] = $newFile;
+
 
                 if (is_object($file->template)) {
 
@@ -634,6 +667,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
 
             $this->save(true);
+
+            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:after", [&$importSource, &$created_fields, &$created_files]);
 
         }
     }

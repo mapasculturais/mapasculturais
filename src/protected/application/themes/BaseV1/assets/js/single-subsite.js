@@ -11,7 +11,7 @@ $(function(){
         center: new L.LatLng(obj.latitude || mapsDefaults.latitude, obj.longitude || mapsDefaults.longitude)
     };
     
-    var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    var openStreetMap = L.tileLayer(MapasCulturais.mapsTileServer, {
         attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
         maxZoom: config.zoomMax,
         minZoom: config.zoomMin
