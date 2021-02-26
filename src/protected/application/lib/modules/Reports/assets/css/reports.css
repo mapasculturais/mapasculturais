@@ -158,7 +158,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1401;
+    z-index: 1800;
 }
 .reports-modal {
     background-color: #fff;
@@ -241,6 +241,7 @@
 .reports-modal .line > select,
 .reports-modal .line .column > select {
     cursor: pointer;
+    max-width: 100%;
     width: auto;
 }
 .reports-modal .line > input::placeholder,
@@ -271,11 +272,11 @@
     color: #666;
 }
 .reports-modal footer .draft {
-    background-color: #B1B1B1;
+    background-color: rgba(177, 177, 177,0.7);
 }
 .reports-modal footer .next {
     border-radius: 5px;
-    background-color: #FF9A00;
+    background-color: rgba(255,154,0,0.7);
 }
 
 /* Grid Flex */
@@ -287,6 +288,7 @@
     padding-left: 15px;
     padding-right: 15px;
     flex-grow: 1;
+    max-width: 100%;
 }
 .reports-modal .flex .column:first-child {
     padding-left: 0;

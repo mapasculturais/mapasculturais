@@ -184,14 +184,3 @@ function openDropdown(dropId) {
         $("#drop-" + dropId.name).addClass('active');
     }
 }
-
-// Remove scroll da página quando o modal de criação dos gráficos está aberto
-$(document).ready(function () {
-    document.body.addEventListener('click', function (e) {
-        if (e.target.id === 'btnOpenModal') {
-            document.body.style.overflowY = 'hidden';
-        } else if (e.target.className.search('close-modal') >= 1) {
-            document.body.style.overflowY = 'auto';
-        }
-    }, false);
-});
