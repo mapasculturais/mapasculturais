@@ -35,8 +35,8 @@ use MapasCulturais\i;
 
         </div>
 
-        <div class="grafic-data">
-            <!-- <div class="grafic-data" ng-class="{hidden:!data.graficData}"> -->
+        <!--<div class="grafic-data">-->
+        <div class="grafic-data" ng-class="{hidden:!data.graficData}">
             <header>
                 <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico de pizza"); ?></h2>
                 <a ng-click="data.reportModal=false" class="close-modal"><i class=" fas fa-times close-modal"></i></a>
@@ -63,7 +63,7 @@ use MapasCulturais\i;
                         </select>
                     </div>
                 </div>
-            </div>           
+            </div>
         </div>
 
         <footer>

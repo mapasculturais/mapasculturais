@@ -442,164 +442,81 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
         $app = App::i();
         $request = $this->data;
-        
-        $fieldsUse = [
-            'collective' => [
-                "En_Estado",
-                "En_Municipio",
-            ],
-            'agent' => [
-                "raca",
-                "genero",
-                "orientacaoSexual",
-                "En_Estado",
-                "En_Municipio",
-                "En_Bairro",
-                "dataDeNascimento",
-            ], 
-
-        ];
-
-        $opp = $app->repo("Opportunity")->find($request["opportunity"]);
-        $dataOpportunity = $opp->getEvaluationCommittee();
-        $oppSelectFields = [];
-        foreach ($opp->registrationFieldConfigurations as $value) {
-            if ($value->fieldType == "select") {
-                $oppSelectFields[] = [
-                    "label" => $value->title,
-                    "value" => $value->fieldName,
-                    'source' => [
-                       'table' => 'registration_meta'
-                    ],
-                ];
-            }
-        }
-        $agentClass = Agent::getClassName();    
-        
-        $this->getEntitySelectFields($oppSelectFields,'owner', $agentClass, "agent", $fieldsUse['agent']);
-        
-        if(($opp->useAgentRelationColetivo ?? "dontUse") != "dontUse"){
-            $this->getEntitySelectFields($oppSelectFields,'coletivo', $agentClass, "agent", $fieldsUse['collective']);
-
-            $oppSelectFields[] = [
-                'label' => i::__('Área de atuação do agente coletivo'),
-                'value' => 'term',
-                'source' => [
-                    'table' => 'term',
-                    'type' => 'coletivo'
-                ]
-            ];
-
-        }
-
-        if(($opp->useAgentRelationInstituicao ?? "dontUse") != "dontUse"){
-            $this->getEntitySelectFields($oppSelectFields,'instituicao', $agentClass, "agent", $fieldsUse['collective']);
-
-            $oppSelectFields[] = [
-                'label' => i::__('Área de atuação da instituição'),
-                'value' => 'term',
-                'source' => [
-                    'table' => 'term',
-                    'type' => 'instituicao'
-                ]
-            ];
-
-        }
-
-        if(($opp->useSpaceRelationIntituicao ?? "dontUse") != "dontUse"){
-            $this->getEntitySelectFields($oppSelectFields,'space', Space::getClassName(), "space", $fieldsUse['collective']);
-
-        }
-
-        $oppSelectFields[] = [
-            'label' => i::__('Categoria'),
-            'value' => 'category',
-            'source' => [
-                'table' => 'registration'
-            ]
-        ];
-
-        $oppSelectFields[] = [
-            'label' => i::__('Status'),
-            'value' => 'status',
-            'source' => [
-                'table' => 'registration'
-            ]
-        ];
-
-        $oppSelectFields[] = [
-            'label' => i::__('Avaliação'),
-            'value' => 'consolidated_result',
-            'source' => [
-                'table' => 'registration'
-            ]
-        ];
-
-        $oppSelectFields[] = [
-            'label' => i::__('Área de atuação do agente responsável'),
-            'value' => 'term',
-            'source' => [
-                'table' => 'term',
-                'type' => 'owner'
-            ]
-        ];
-
-        $oppSelectFields[] = [
-            'label' => i::__('Faixa etária'),
-            'value' => 'dataDeNascimento',
-            'source' => [
-                'table' => 'agent_meta',
-                'type' => 'date'
-            ]
-        ];
-        
-    
-        // var_dump($oppSelectFields);
-        $this->apiResponse($oppSelectFields);
+        $opportunity = $app->repo("Opportunity")->find($request["opportunity"]);
+        $this->apiResponse($this->getValidFields($opportunity));
     }
 
     public function POST_createGrafic()
     {
-        
+        $this->requireAuthentication();
         $opp = $this->getOpportunity();
         $app = App::i();
         $request = $this->data;
         $reportData = $request["reportData"];
         $conn = $app->em->getConnection();
-        
-       
-       
-        $params = [
-            "opportunity" => $opp->id,
-            "field" => $reportData['data']["value"],
+        // map front-end names back to real table names
+        $tableDic = [
+            "r" => "registration",
+            "rm" => "registration_meta",
+            "a" => "agent",
+            "am" => "agent_meta",
+            "s" => "space",
+            "sm" => "space_meta",
+            "t" => "term"
         ];
-        
-       
-        $regWhere = "AND r.status > 0";
-        $regMetaSubQuery = "(SELECT object_id, value FROM registration_meta WHERE key = '{$reportData['data']["value"]}')";
-        $agentMetaSubQuery = "(SELECT object_id, value FROM agent_meta WHERE key = '{$reportData['data']["value"]}')";
-        $selMeta = "SELECT value AS field, count(*) AS quantity FROM registration r";
-        $groupMeta = "GROUP BY value";
-        $sqls = [
-            "registration" => "SELECT {$params['field']} AS field, count(*) AS quantity FROM {$reportData['data']["source"]['table']} r WHERE r.opportunity_id = :opportunity {$regWhere} GROUP BY {$params['field']}",
-            "registration_meta" => "$selMeta LEFT OUTER JOIN $regMetaSubQuery AS m ON r.id = m.object_id WHERE r.opportunity_id = :opportunity $regWhere $groupMeta",
-            "agent_meta" => "$selMeta JOIN agent a ON r.agent_id = a.id LEFT OUTER JOIN $agentMetaSubQuery m ON a.id = m.object_id WHERE r.opportunity_id = :opportunity $regWhere $groupMeta"
-        ];
+        if (!isset($tableDic[$reportData["data"]["source"]["table"]])) {
+            $this->jsonError("Invalid parameter.");
+        }
+        // get all field names for this opportunity to validate received ones
+        $fieldList = array_map(function ($item) {
+            return $item["value"];
+        }, $this->getValidFields($opp));
+        if (!in_array($reportData["data"]["value"], $fieldList)) {
+            $this->jsonError("Invalid parameter.");
+        }
 
-      
-        $query = $sqls[$reportData['data']["source"]['table']];
-       
-        $result = $conn->fetchAll($query, $params);
-        
+        $field = $reportData["data"]["value"];
+        $table = $tableDic[$reportData["data"]["source"]["table"]];
+
+        $regWhere = "r.opportunity_id = :opportunity AND r.status > 0";
+        $regToAgent = "JOIN agent a ON r.agent_id = a.id";
+        $metaSubQuery = "(SELECT object_id, value FROM $table WHERE key = '$field')";
+        $selMain = "SELECT $field AS value, count(*) AS quantity FROM registration r";
+        $selMeta = "SELECT value, count(*) AS quantity FROM registration r";
+        $groupMeta = "GROUP BY value";
+        $groupMain = "GROUP BY $field";
+        // the dateToAge type requires a special conversion; handling main case is probably unnecessary
+        if (($reportData["data"]["source"]["type"] ?? "") == "dateToAge") {
+            $selMain = "SELECT div(date_part('year', age(to_timestamp($field, 'YYYY-MM-DD')))::integer, 5) as value, count(*) as quantity FROM registration r";
+            $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($field, 'YYYY-MM-DD')))::integer, 5)";
+            $selMeta = "SELECT div(date_part('year', age(to_timestamp(value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
+            $groupMeta = "GROUP BY div(date_part('year', age(to_timestamp(value, 'YYYY-MM-DD')))::integer, 5)";
+        }
+        $sqls = [
+            "registration" => "$selMain WHERE $regWhere $groupMain",
+            "registration_meta" => "$selMeta LEFT OUTER JOIN $metaSubQuery AS m ON r.id = m.object_id WHERE $regWhere $groupMeta",
+            "agent" => "$selMain $regToAgent WHERE $regWhere $groupMain",
+            "agent_meta" => "$selMeta $regToAgent LEFT OUTER JOIN $metaSubQuery AS m ON a.id = m.object_id WHERE $regWhere $groupMeta"
+        ];
+        $query = $sqls[$table];
+
+        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
+
         $return = [];
         $labels = [];
         $color = [];
         $data = [];
 
-        foreach ($result as $key => $value){
+        foreach ($result as $item) {
             $color[] = $this->color();
-            $labels[] = $value['field'];
-            $data[] = $value['quantity'];
+            if (!isset($item["value"])) {
+                $labels[] = i::__("(dado não informado)");
+            } else if (($reportData["data"]["source"]["type"] ?? "") == "dateToAge") {
+                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
+            } else {
+                $labels[] = $item["value"];
+            }
+            $data[] = $item["quantity"];
         }
 
         $return = [
@@ -611,9 +528,63 @@ class Controller extends \MapasCulturais\Controller
             'period' => $this->getPeriod($opp->createTimestamp, 'P1D')
         ];
 
-           
-        
         $this->apiResponse($return);
+    }
+
+    private function fieldDefinition($label, $value, $table, $type=null)
+    {
+        return [
+            "label" => $label,
+            "value" => $value,
+            "source" => isset($type) ? ["table" => $table, "type" => $type] : ["table" => $table]
+        ];
+    }
+
+    private function getValidFields($opportunity)
+    {
+        $fieldsUse = [
+            "collective" => [
+                "En_Estado",
+                "En_Municipio",
+            ],
+            "agent" => [
+                "raca",
+                "genero",
+                "orientacaoSexual",
+                "En_Estado",
+                "En_Municipio",
+                "En_Bairro",
+                "dataDeNascimento",
+            ],
+        ];
+        $dataOpportunity = $opportunity->getEvaluationCommittee();
+        $fields = [];
+        if (!empty($opportunity->registrationCategories)) {
+            $fields[] = $this->fieldDefinition(i::__("Categoria"), "category", "r");
+        }
+        $fields[] = $this->fieldDefinition(i::__("Status"), "status", "r");
+        $fields[] = $this->fieldDefinition(i::__("Avaliação"), "consolidated_result", "r");
+        foreach ($opportunity->registrationFieldConfigurations as $value) {
+            if ($value->fieldType == "select") {
+                $fields[] = $this->fieldDefinition($value->title, $value->fieldName, "rm");
+            }
+        }
+        $agentClass = Agent::getClassName();
+        $fields[] = $this->fieldDefinition(i::__("Faixa etária"), "dataDeNascimento", "am", "dateToAge");
+        $this->getEntitySelectFields($fields, "owner", $agentClass, "a", $fieldsUse["agent"]);
+        $fields[] = $this->fieldDefinition(i::__("Área de atuação do agente responsável"), "term", "t", "owner");
+        if (($opportunity->useAgentRelationColetivo ?? "dontUse") != "dontUse") {
+            $this->getEntitySelectFields($fields, "coletivo", $agentClass, "a", $fieldsUse["collective"]);
+            $fields[] = $this->fieldDefinition(i::__("Área de atuação do agente coletivo"), "term", "t", "coletivo");
+        }
+        if (($opportunity->useAgentRelationInstituicao ?? "dontUse") != "dontUse") {
+            $this->getEntitySelectFields($fields, "instituicao", $agentClass, "a", $fieldsUse["collective"]);
+            $fields[] = $this->fieldDefinition(i::__("Área de atuação da instituição"), "term", "t", "instituicao");
+        }
+        if(($opportunity->useSpaceRelationIntituicao ?? "dontUse") != "dontUse") {
+            $this->getEntitySelectFields($fields, "space", Space::getClassName(), "s", $fieldsUse["collective"]);
+        }
+        return $fields;
     }
 
     private function getEntitySelectFields(&$selectFields, $type, $entityClass, $baseName,
@@ -627,7 +598,7 @@ class Controller extends \MapasCulturais\Controller
                     "label" => $value["label"],
                     "value" => $key,
                     'source' => [
-                        "table" => ($baseName . ($value["isMetadata"] ? "_meta" : "")), 
+                        "table" => ($baseName . ($value["isMetadata"] ? "m" : "")),
                         "type" => $type
                     ],
                 ];
@@ -644,13 +615,13 @@ class Controller extends \MapasCulturais\Controller
         );
 
         $return = [];
-        
+
         foreach ($period as $recurrence) {
             $return[] =  $recurrence->format('Y-m-d');
         }
-        
+
         return $return;
-       
+
     }
 
     private function getRegistrationIds()
