@@ -54,7 +54,7 @@ class MetaList extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=2048, nullable=false)
+     * @ORM\Column(name="value", type="text", nullable=false)
      */
     public $value;
 

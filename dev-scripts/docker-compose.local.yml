@@ -15,7 +15,6 @@ services:
       - ../docker-data/assets:/var/www/html/assets
       - ../docker-data/public-files:/var/www/html/files
       - ../docker-data/private-files:/var/www/private-files
-      - ../docker-data/pcache-cron.log:/var/www/scripts/nohup.out
       - ../tests:/var/www/tests
     links:
       - db
@@ -36,7 +35,7 @@ services:
     tty: true
       
   db:
-    image: mdillon/postgis:10
+    image: mdillon/postgis:11
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
@@ -45,5 +44,4 @@ services:
       - "5470:5432"
     volumes:
       - ../docker-data/postgres:/var/lib/postgresql/data
-      - ../db/schema.sql:/docker-entrypoint-initdb.d/0.schema.sql
-      - ../db/initial-data.sql:/docker-entrypoint-initdb.d/1.data.sql
+      - ../db/dump.sql:/docker-entrypoint-initdb.d/dump.sql

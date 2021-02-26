@@ -400,6 +400,8 @@ abstract class Theme extends \Slim\View {
             $title =$app->getReadableName($this->controller->action);
         }
 
+        $app->applyHookBoundTo($this, 'mapasculturais.getTitle', [&$title]);
+
         return $title;
     }
 
