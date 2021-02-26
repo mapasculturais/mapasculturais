@@ -360,6 +360,10 @@ class Module extends \MapasCulturais\Module{
 
             $last_phase = self::getLastCreatedPhase($parent);
 
+            if ($last_phase->isLastPhase) {
+                $this->errorJson('Já foi criada a última fase!', 400);
+            }
+
             $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to->add(date_interval_create_from_date_string('1 days'));
