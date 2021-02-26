@@ -13,6 +13,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
@@ -437,6 +438,43 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
+    public function POST_saveGrafic()
+    {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        
+        $reportData = $this->data['reportData'];
+
+        $opp = $app->repo("Opportunity")->find($reportData['opportunity']);
+
+        $value = is_array($reportData['columns'][0]['value']) ? implode('-',$reportData['columns'][0]['value']) :$reportData['columns'][0]['value'];
+        $source = is_array($reportData['columns'][0]['source']) ? implode('-',$reportData['columns'][0]['source']) :$reportData['columns'][0]['source'];
+
+        $identifier = md5($reportData['opportunity']."-".$reportData['typeGrafic']."-".$source."-".$value);
+        $this->data['identifier'] = $identifier;
+        
+        $conn = $app->em->getConnection();
+          
+        $params = [
+            "identifier" => "%identifier\":\"{$identifier}%"
+        ];      
+        
+        $query = "SELECT * FROM metalist WHERE value like :identifier";
+        if(!($metalist = $conn->fetchAll($query, $params))){
+            $metaList = new metaList;
+            $metaList->value = json_encode($this->data) ;
+        }else{            
+            $metaList = $app->repo("MetaList")->find($metalist[0]['id']);           
+            $metaList->value = json_encode($this->data);
+        }
+
+        $metaList->owner = $opp;
+        $metaList->group = 'reports';
+        $metaList->title = 'Grafico' ;
+        $metaList->save(true);
+    }
+
     public function ALL_dataOpportunityReport()
     {
         $this->requireAuthentication();
@@ -501,7 +539,7 @@ class Controller extends \MapasCulturais\Controller
         $query = $sqls[$table];
 
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
-
+       
         $return = [];
         $labels = [];
         $color = [];

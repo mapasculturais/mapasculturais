@@ -4,6 +4,8 @@ namespace Reports;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Definitions\MetaListGroup;
+
 
 class Module extends \MapasCulturais\Module
 {
@@ -81,6 +83,23 @@ class Module extends \MapasCulturais\Module
         $app->hook('view.includeAngularEntityAssets:after', function () use ($self) {
             $self->enqueueScriptsAndStyles();
         });
+
+        $metalist = new MetaListGroup('reports',
+            [
+                'title' => [
+                    'label' => 'Titulo'
+                ],
+                'value' => [
+                    'label' => 'Gráfico',
+                    'validations' => [
+                        'required' => '',                           
+                    ]
+                ],
+            ],
+            \MapasCulturais\i::__(''),
+            true
+        );
+        $app->registerMetaListGroup('reports', $metalist);
     }
 
     public function enqueueScriptsAndStyles()

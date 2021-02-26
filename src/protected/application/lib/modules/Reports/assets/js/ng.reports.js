@@ -50,15 +50,29 @@
                 graficType: $scope.data.reportData.type,
                 data: $scope.data.dataDisplay[index]
             };
+  
             
-            ReportsService.create({reportData: reportData}).success(function (data, status, headers){                
-                $scope.graficGenerate(data);
+            var configGrafic = {
+                typeGrafic:$scope.data.reportData.type,
+                opportunity: MapasCulturais.entity.id,
+                title: $scope.data.reportData.title,
+                description: $scope.data.reportData.description,
+                columns:[
+                    {
+                        source: $scope.data.dataDisplay[index].source,
+                        value: $scope.data.dataDisplay[index].value
+                    }
+                ]
+            }
+            
+            ReportsService.create({reportData: reportData}).success(function (data, status, headers){  
+                $scope.graficGenerate(data, configGrafic);
             });
         }
 
 
-        $scope.graficGenerate = function(reportData) {          
-
+        $scope.graficGenerate = function(reportData, configGrafic) {          
+          
             var config = {
                 type: reportData.typeGrafic,
                 data: {
@@ -109,6 +123,11 @@
             MapasCulturais.Charts.charts["dinamic-grafic"] = new Chart(ctx, config);
             $scope.data.reportModal = false;
             $scope.data.graficData = false;
+
+            
+            ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
+                 console.log(data);
+            });
         }
        
     }]);
@@ -130,6 +149,18 @@
             create: function (data) {
                
                 var url = MapasCulturais.createUrl('reports', 'createGrafic', {opportunity: MapasCulturais.entity.id});
+
+                return $http.post(url, data).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
+                });
+            },
+            save: function (data) {
+               
+                var url = MapasCulturais.createUrl('reports', 'saveGrafic', {});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
