@@ -9,6 +9,11 @@ namespace MapasCulturais\Definitions;
  * @see \MapasCulturais\App::registerEntityType()
  * @see \MapasCulturais\App::entityTypeExists()
  * @see \MapasCulturais\App::getRegisteredEntityTypes()
+ * 
+ * @property string $entity_class
+ * @property int $id
+ * @property string $name
+ * 
  */
 class EntityType extends \MapasCulturais\Definition{
 

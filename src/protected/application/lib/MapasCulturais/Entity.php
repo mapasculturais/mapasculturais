@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Criteria;
  * @property-read array $propertiesMetadata Properties Metadata
  * @property-read \MapasCulturais\Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
  * @property-read \MapasCulturais\Entities\User $ownerUser The User owner of this entity
+ * @property-read string $hookClassPath
  *
  *
  * @hook **entity.new** - Executed when the __construct method of any entity is called.
