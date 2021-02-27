@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
@@ -494,23 +495,37 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function publishRegistrations(){
         $this->checkPermission('publishRegistrations');
-        $app = App::i();
         
+        $app = App::i();
+        $app->em->beginTransaction();
+
         $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:before");
         
         $this->publishedRegistrations = true;
+        $this->save(true);
+        
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => "EQ({$this->id})", 
+            'status'=>'EQ(10)'
+        ]);
 
-        // atribui os selos as inscrições selecionadas
-        $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
+        $registration_ids = $query->findIds();
 
-        foreach ($registrations as $registration) {
+        foreach ($registration_ids as $registration_id) {
+            $registration = $app->repo('Registration')->find($registration_id);
+
+            // @todo: fazer dos selos em oportunidades um módulo separado (OpportunitySeals ??)
             $registration->setAgentsSealRelation();
+            
+            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistration", [$registration]);
+
+            $app->em->flush();
+            $app->em->clear();
         }
 
-        $app->enqueueEntityToPCacheRecreation($this);
-
-        $this->save(true);
         $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:after");
+
+        $app->em->commit();
     }
 
     function sendUserEvaluations($user = null){
