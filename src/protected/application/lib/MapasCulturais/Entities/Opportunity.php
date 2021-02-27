@@ -9,6 +9,20 @@ use MapasCulturais\App;
 /**
  * Opportunity
  *
+ * @property-read int $id
+ * @property-read int $status
+ * @property-read \DateTime $createTimestamp
+ * @property-read \DateTime $updateTimestamp
+ * 
+ * @property string $name
+ * @property string $shortDescription
+ * @property \DateTime $registrationFrom
+ * @property \DateTime $registrationTo
+ * @property array $registrationCategories
+ * @property self $parent
+ * @property Agent $owner
+ * 
+ * 
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
  * @property \MapasCulturais\Entity $ownerEntity
  *
