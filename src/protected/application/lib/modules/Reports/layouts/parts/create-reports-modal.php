@@ -61,7 +61,7 @@ use MapasCulturais\i;
                         </select>
                     </div>
 
-                    <div class="column" ng-class="{hidden:data.reportData.type == 'pie'}">
+                    <div class="column" ng-if="data.reportData.type == 'bar' || data.reportData.type == 'table'">
                         <label><?php i::_e("Dados a serem exibidos"); ?></label>
                         <select ng-model="data.reportData.dataDisplayB">
                             <option ng-repeat="(key, dataSelectB) in  data.dataDisplayB" value="{{key}}" label="{{dataSelectB.label}}"></option>
