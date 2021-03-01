@@ -56,8 +56,15 @@ use MapasCulturais\i;
                 <div class="line flex">
                     <div class="column">
                         <label><?php i::_e("Dados a serem exibidos"); ?></label>
-                        <select ng-model="data.reportData.dataDisplay">
-                            <option ng-repeat="(key, dataSelect) in  data.dataDisplay" value="{{key}}" label="{{dataSelect.label}}"></option>
+                        <select ng-model="data.reportData.dataDisplayA">
+                            <option ng-repeat="(key, dataSelectA) in  data.dataDisplayA" value="{{key}}" label="{{dataSelectA.label}}"></option>
+                        </select>
+                    </div>
+
+                    <div class="column" ng-class="{hidden:data.reportData.type == 'pie'}">
+                        <label><?php i::_e("Dados a serem exibidos"); ?></label>
+                        <select ng-model="data.reportData.dataDisplayB">
+                            <option ng-repeat="(key, dataSelectB) in  data.dataDisplayB" value="{{key}}" label="{{dataSelectB.label}}"></option>
                         </select>
                     </div>
                 </div>

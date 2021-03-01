@@ -19,7 +19,8 @@
             reportModal: false,
             graficType: true,
             graficData:false,            
-            dataDisplay:[],
+            dataDisplayA:[],
+            dataDisplayB:[],
             state: {
                 'owner': '(Agente Responsável)',
                 'instituicao': '(Agente Instituição relacionada)',
@@ -32,7 +33,7 @@
         ReportsService.findDataOpportunity().success(function (data, status, headers){
             var dataOpportunity = angular.copy(data);
 
-            $scope.data.dataDisplay =  dataOpportunity.map(function(index){
+            $scope.data.dataDisplayA =  dataOpportunity.map(function(index){
               
                 if(index.label == "Estado"){
                     index.label = index.label+" " + $scope.data.state[index.source.type];
@@ -42,19 +43,50 @@
                 }                
             });
 
+            $scope.data.dataDisplayB =  dataOpportunity.map(function(index){
+              
+                if(index.label == "Estado"){
+                    index.label = index.label+" " + $scope.data.state[index.source.type];
+                    return index;
+                }else{
+                    return index
+                }                
+            });
+
+            ReportsService.loading({opportunity: MapasCulturais.entity.id}).success(function (data, status, headers){
+                
+                var dataDisplayA = $scope.data.dataDisplayA;
+                var dataDisplayB = $scope.data.dataDisplayB;
+                
+                var reportData = data.map(function(item, index){
+                    return {
+                        data:dataDisplayA[index],
+                        graficType: item.reportData.typeGrafic
+                    }
+                });
+                console.log(reportData)
+                reportData.forEach(function(index){
+                   
+                });
+                
+            });
+            
         })
         
-        $scope.createGrafic = function() { 
+        $scope.createGrafic = function() {
+
             if(!($scope.data.reportData.title) || !($scope.data.reportData.description)){
                 MapasCulturais.Messages.error("Defina um título e uma descrição para esse grágico");                
                 return;
             }
-            
-            var index = $scope.data.reportData.dataDisplay;
+           
+            var indexA = $scope.data.reportData.dataDisplayA;
+            var indexB = $scope.data.reportData.dataDisplayB;
             
             var reportData = {
                 graficType: $scope.data.reportData.type,
-                data: $scope.data.dataDisplay[index]
+                dataA: $scope.data.dataDisplayA[indexA],
+                dataB: $scope.data.dataDisplayB[indexB]
             };
             
             var configGrafic = {
@@ -64,14 +96,14 @@
                 description: $scope.data.reportData.description,
                 columns:[
                     {
-                        source: $scope.data.dataDisplay[index].source,
-                        value: $scope.data.dataDisplay[index].value
+                        source: $scope.data.dataDisplayA[indexA].source,
+                        value: $scope.data.dataDisplayA[indexA].value
                     }
                 ]
             }
-            
-            ReportsService.create({reportData: reportData}).success(function (data, status, headers){  
-                
+
+            ReportsService.create({reportData: reportData}).success(function (data, status, headers){    
+                // console.log(data);            
                 $scope.graficGenerate(data, configGrafic);
             });
         }
@@ -82,8 +114,10 @@
             
         }
 
-        $scope.graficGenerate = function(reportData, configGrafic) {          
-          
+        $scope.graficGenerate = function(reportData, configGrafic) {
+            
+            $scope.data.reportData.titleDinamicGrafic = $scope.data.reportData.title;
+
             var config = {
                 type: reportData.typeGrafic,
                 data: {
@@ -102,7 +136,7 @@
                     layout: {
                         padding: {                            
                             top: 65,
-                            bottom: 15
+                            bottom: 30
                         },
                     },
                     plugins: {
@@ -180,6 +214,18 @@
             save: function (data) {
                
                 var url = MapasCulturais.createUrl('reports', 'saveGrafic', {});
+
+                return $http.post(url, data).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
+                });
+            },
+            loading: function (data) {
+               
+                var url = MapasCulturais.createUrl('reports', 'loadingGrafic', {});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
