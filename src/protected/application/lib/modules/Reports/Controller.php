@@ -438,6 +438,26 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
+    public function POST_loadingGrafic()
+    {
+        $this->requireAuthentication();
+
+        $opp = $this->getOpportunity();
+
+        $app = App::i();
+
+        $params = ['objectId' => $opp->id, "group" => "reports"];
+
+        $metalist = $app->repo("MetaList")->findBy($params);
+
+        $return = [];
+        foreach ($metalist as $data){
+            $return[] = json_decode($data->value);
+        }
+
+        $this->apiResponse($return);
+    }
+
     public function POST_saveGrafic()
     {
         $this->requireAuthentication();
@@ -492,6 +512,8 @@ class Controller extends \MapasCulturais\Controller
         $app = App::i();
         $request = $this->data;
         $reportData = $request["reportData"];
+        $dataA = $reportData["dataA"];
+        $dataB = $reportData["dataB"];
         $conn = $app->em->getConnection();
         // map front-end names back to real table names
         $tableDic = [
@@ -503,19 +525,19 @@ class Controller extends \MapasCulturais\Controller
             "sm" => "space_meta",
             "t" => "term"
         ];
-        if (!isset($tableDic[$reportData["data"]["source"]["table"]])) {
+        if (!isset($tableDic[$dataA["source"]["table"]])) {
             $this->jsonError("Invalid parameter.");
         }
         // get all field names for this opportunity to validate received ones
         $fieldList = array_map(function ($item) {
             return $item["value"];
         }, $this->getValidFields($opp));
-        if (!in_array($reportData["data"]["value"], $fieldList)) {
+        if (!in_array($dataA["value"], $fieldList)) {
             $this->jsonError("Invalid parameter.");
         }
 
-        $field = $reportData["data"]["value"];
-        $table = $tableDic[$reportData["data"]["source"]["table"]];
+        $field = $dataA["value"];
+        $table = $tableDic[$dataA["source"]["table"]];
 
         $regWhere = "r.opportunity_id = :opportunity AND r.status > 0";
         $regToAgent = "JOIN agent a ON r.agent_id = a.id";
@@ -525,7 +547,7 @@ class Controller extends \MapasCulturais\Controller
         $groupMeta = "GROUP BY value";
         $groupMain = "GROUP BY $field";
         // the dateToAge type requires a special conversion; handling main case is probably unnecessary
-        if (($reportData["data"]["source"]["type"] ?? "") == "dateToAge") {
+        if (($dataA["source"]["type"] ?? "") == "dateToAge") {
             $selMain = "SELECT div(date_part('year', age(to_timestamp($field, 'YYYY-MM-DD')))::integer, 5) as value, count(*) as quantity FROM registration r";
             $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($field, 'YYYY-MM-DD')))::integer, 5)";
             $selMeta = "SELECT div(date_part('year', age(to_timestamp(value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
@@ -539,7 +561,7 @@ class Controller extends \MapasCulturais\Controller
         ];
         $query = $sqls[$table];
         
-        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
+        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);        
         
         $return = [];
         $labels = [];
@@ -550,7 +572,7 @@ class Controller extends \MapasCulturais\Controller
             $color[] = $this->color();
             if (!isset($item["value"])) {
                 $labels[] = i::__("(dado não informado)");
-            } else if (($reportData["data"]["source"]["type"] ?? "") == "dateToAge") {
+            } else if (($dataA["source"]["type"] ?? "") == "dateToAge") {
                 $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
             } else {
                 if($field == "consolidated_result"){
