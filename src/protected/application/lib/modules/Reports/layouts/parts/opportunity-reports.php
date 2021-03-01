@@ -46,10 +46,14 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
             <?php } ?>
         </div><!-- /.charts-static -->
 
+        <?php $this->applyTemplateHook('reports-footer', 'before'); ?>
+
         <footer>
             <button ng-click="data.reportModal=true;data.graficType=true" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
         </footer>
+
+        <?php $this->applyTemplateHook('reports-footer', 'after'); ?>
+
     </div>
 
-    <?php $this->applyTemplateHook('opportunity-dynamic-reports','end');?>
 </div>

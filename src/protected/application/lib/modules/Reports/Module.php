@@ -68,8 +68,12 @@ class Module extends \MapasCulturais\Module
 
         });
 
-        $app->hook('template(opportunity.single.opportunity-dynamic-reports):end', function () use ($app, $self) {
+        $app->hook('template(opportunity.single.reports-footer):before', function () use ($app, $self) {
             $this->part('create-reports-modal', []);
+        });
+
+        $app->hook('template(opportunity.single.reports-footer):before', function () {
+            $this->part('dynamic-reports');
         });
     }
 

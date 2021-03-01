@@ -113,7 +113,9 @@
     
            
             var ctx = document.getElementById("dinamic-grafic").getContext('2d');
-
+            
+            document.querySelector('.dinamic-grafic').style.height = 'auto';
+            
             ctx.canvas.width = 1000;
             ctx.canvas.height = 300;
         

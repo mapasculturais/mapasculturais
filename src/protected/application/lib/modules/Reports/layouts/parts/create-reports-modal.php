@@ -2,9 +2,6 @@
 
 use MapasCulturais\i;
 ?>
-<div class="dinamic-grafic" style="position: relative; height:100vw; width:55vw;">
-    <canvas id="dinamic-grafic"></canvas>
-</div>
 
 <div ng-class="{hidden:!data.reportModal}" class="bg-reports-modal" id="reportsModal">
     <div class="reports-modal">
