@@ -488,6 +488,7 @@ class Controller extends \MapasCulturais\Controller
     {
         $this->requireAuthentication();
         $opp = $this->getOpportunity();
+        $em = $opp->getEvaluationMethod();
         $app = App::i();
         $request = $this->data;
         $reportData = $request["reportData"];
@@ -537,9 +538,9 @@ class Controller extends \MapasCulturais\Controller
             "agent_meta" => "$selMeta $regToAgent LEFT OUTER JOIN $metaSubQuery AS m ON a.id = m.object_id WHERE $regWhere $groupMeta"
         ];
         $query = $sqls[$table];
-
+        
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
-       
+        
         $return = [];
         $labels = [];
         $color = [];
@@ -552,10 +553,18 @@ class Controller extends \MapasCulturais\Controller
             } else if (($reportData["data"]["source"]["type"] ?? "") == "dateToAge") {
                 $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
             } else {
-                $labels[] = $item["value"];
+                if($field == "consolidated_result"){
+                    $labels[] = $em->valueToString($item["value"]);//Traduz a avaliação
+                }else{
+                    $labels[] = $item["value"];
+                }
             }
+            
             $data[] = $item["quantity"];
+
         }
+
+        
 
         $return = [
             'labels' => $labels,

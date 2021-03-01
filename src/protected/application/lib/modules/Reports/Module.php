@@ -276,11 +276,11 @@ class Module extends \MapasCulturais\Module
 
         $evaluations = $conn->fetchAll($query, $params);
 
-        $cont = 0;
+        $count = 0;
         foreach ($evaluations as $evaluation) {
-            if ($cont < 8) {
+            if ($count < 8) {
                 $data[$em->valueToString($evaluation['consolidated_result'])] = $evaluation['count'];
-                $cont++;
+                $count++;
             }
         }
 
