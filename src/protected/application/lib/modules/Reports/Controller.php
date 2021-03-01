@@ -99,7 +99,7 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
 
         $data = [];
-        $params = ['opportunity' => $request['opportunity']];
+        $params = ['opportunity' => $request['opportunity_id']];
 
         $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity GROUP BY status";
 
@@ -140,7 +140,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE'),
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
 
     }
 
