@@ -158,7 +158,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1800;
+    z-index: 1200;
 }
 .reports-modal {
     background-color: #fff;
@@ -166,7 +166,7 @@
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.5);
     font-size: 14px;
     height: auto;
-    margin: 100px auto;
+    margin: 20vh auto 100px;
     max-width: 960px;
     min-height: 400px;
     padding: 25px;
