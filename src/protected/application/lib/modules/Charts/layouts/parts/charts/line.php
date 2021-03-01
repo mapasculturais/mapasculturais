@@ -39,7 +39,7 @@ if (isset($series) && is_array($series)) {
 $width = $width ?? '50vw';
 $height = $height ?? '50vw';
 
-$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity' => $opportunity, 'action' => $action]);
+$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
 
 ?>
 

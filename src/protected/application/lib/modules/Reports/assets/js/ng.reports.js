@@ -189,7 +189,7 @@
         return {  
             findDataOpportunity: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'dataOpportunityReport', {opportunity: MapasCulturais.entity.id});
+                var url = MapasCulturais.createUrl('reports', 'dataOpportunityReport', {opportunity_id: MapasCulturais.entity.id});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
@@ -201,7 +201,7 @@
             },          
             create: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'createGrafic', {opportunity: MapasCulturais.entity.id});
+                var url = MapasCulturais.createUrl('reports', 'createGrafic', {opportunity_id: MapasCulturais.entity.id});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
