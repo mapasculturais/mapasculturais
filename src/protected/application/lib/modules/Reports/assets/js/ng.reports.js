@@ -76,7 +76,7 @@
         $scope.createGrafic = function() {
 
             if(!($scope.data.reportData.title) || !($scope.data.reportData.description)){
-                MapasCulturais.Messages.error("Defina um título e uma descrição para esse grágico");                
+                MapasCulturais.Messages.error("Defina um título e uma descrição para esse gráfico");                
                 return;
             }
            
