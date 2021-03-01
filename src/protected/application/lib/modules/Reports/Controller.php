@@ -466,7 +466,7 @@ class Controller extends \MapasCulturais\Controller
         
         $reportData = $this->data['reportData'];
 
-        $opp = $app->repo("Opportunity")->find($reportData['opportunity']);
+        $opp = $app->repo("Opportunity")->find($reportData['opportunity_id']);
 
         $value = is_array($reportData['columns'][0]['value']) ? implode('-',$reportData['columns'][0]['value']) :$reportData['columns'][0]['value'];
         $source = is_array($reportData['columns'][0]['source']) ? implode('-',$reportData['columns'][0]['source']) :$reportData['columns'][0]['source'];
@@ -500,7 +500,7 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
         $app = App::i();
         $request = $this->data;
-        $opportunity = $app->repo("Opportunity")->find($request["opportunity"]);
+        $opportunity = $app->repo("Opportunity")->find($request["opportunity_id"]);
         $this->apiResponse($this->getValidFields($opportunity));
     }
 
