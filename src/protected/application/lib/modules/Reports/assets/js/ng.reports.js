@@ -20,12 +20,13 @@
             graficType: true,
             graficData:false,            
             dataDisplay:[],
-            estado: {
+            state: {
                 'owner': '(Agente Responsável)',
                 'instituicao': '(Agente Instituição relacionada)',
                 'coletivo': '(Agente Coletivo)',
                 'space': '(Espaço)'
-            }
+            },
+            typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
         };
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -34,7 +35,7 @@
             $scope.data.dataDisplay =  dataOpportunity.map(function(index){
               
                 if(index.label == "Estado"){
-                    index.label = index.label+" " + $scope.data.estado[index.source.type];
+                    index.label = index.label+" " + $scope.data.state[index.source.type];
                     return index;
                 }else{
                     return index
@@ -44,13 +45,17 @@
         })
         
         $scope.createGrafic = function() { 
+            if(!($scope.data.reportData.title) || !($scope.data.reportData.description)){
+                MapasCulturais.Messages.error("Defina um título e uma descrição para esse grágico");                
+                return;
+            }
+            
             var index = $scope.data.reportData.dataDisplay;
-
+            
             var reportData = {
                 graficType: $scope.data.reportData.type,
                 data: $scope.data.dataDisplay[index]
             };
-  
             
             var configGrafic = {
                 typeGrafic:$scope.data.reportData.type,
@@ -66,10 +71,16 @@
             }
             
             ReportsService.create({reportData: reportData}).success(function (data, status, headers){  
+                
                 $scope.graficGenerate(data, configGrafic);
             });
         }
 
+        $scope.nextStep = function () {
+            var type = $scope.data.reportData.type;
+            $scope.data.grafic = $scope.data.typeGraficDictionary[type];
+            
+        }
 
         $scope.graficGenerate = function(reportData, configGrafic) {          
           
@@ -88,6 +99,12 @@
                 options: {
                     responsive: true,
                     legend: false,
+                    layout: {
+                        padding: {                            
+                            top: 65,
+                            bottom: 15
+                        },
+                    },
                     plugins: {
                         datalabels: {     
                         display: function(context, ctx) {
