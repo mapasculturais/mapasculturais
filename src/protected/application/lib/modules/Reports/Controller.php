@@ -358,7 +358,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE'),
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
+        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity_id']);
 
     }
 
@@ -701,7 +701,7 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
 
-        $opp = $app->repo("Opportunity")->find($request['opportunity']);
+        $opp = $app->repo("Opportunity")->find($request['opportunity_id']);
 
         return $opp;
 
