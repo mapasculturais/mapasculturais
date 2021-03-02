@@ -513,9 +513,9 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         $reportData = $request["reportData"];
         $dataA = $reportData["dataA"];
-        $dataB = $reportData["dataB"];
+        $dataB = isset($reportData["dataB"]) ?? "";
         $conn = $app->em->getConnection();
-        $query = $this->buildQuery($dataA, $opp);
+        $query = $this->buildQuery($dataA, $opp, $reportData, $em);
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
         $return = [];
         $labels = [];
@@ -547,8 +547,12 @@ class Controller extends \MapasCulturais\Controller
         $this->apiResponse($return);
     }
 
-    private function buildQuery($data, $op)
+    private function buildQuery($data, $opp, $reportData, $em)
     {
+        $app = App::i();
+
+        $conn = $app->em->getConnection();
+        
         // map front-end names back to real table names
         $tableDic = [
             "r" => "registration",
@@ -565,7 +569,7 @@ class Controller extends \MapasCulturais\Controller
         // get all field names for this opportunity to validate received ones
         $fieldList = array_map(function ($item) {
             return $item["value"];
-        }, $this->getValidFields($op));
+        }, $this->getValidFields($opp));
         if (!in_array($data["value"], $fieldList)) {
             $this->jsonError("Invalid parameter.");
         }
@@ -618,7 +622,47 @@ class Controller extends \MapasCulturais\Controller
             "space_meta" => "$selMeta LEFT OUTER JOIN (SELECT sr.object_id, $tbCode.value FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.object_id WHERE sr.$regType AND $tbCode.key = '$field') AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMeta",
             "term" => "$selMain LEFT OUTER JOIN $termSubQuery WHERE $regWhere $groupMain",
         ];
-        return $sqls[$table];
+        $query = $sqls[$table];
+        
+        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);        
+        
+        $return = [];
+        $labels = [];
+        $color = [];
+        $data = [];
+
+        foreach ($result as $item) {
+            $color[] = $this->color();
+            if (!isset($item["value"])) {
+                $labels[] = i::__("(dado não informado)");
+            } else if (($dataA["source"]["type"] ?? "") == "dateToAge") {
+                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
+            } else {
+                if($field == "consolidated_result"){
+                    $labels[] = $em->valueToString($item["value"]);//Traduz a avaliação
+                }else{
+                    $labels[] = $item["value"];
+                }
+            }
+            
+            $data[] = $item["quantity"];
+
+        }
+
+        
+
+        $return = [
+            'labels' => $labels,
+            'backgroundColor' => $color,
+            'borderWidth' => 0,
+            'data' => $data,
+            'typeGrafic' => $reportData['graficType'],
+            'period' => $this->getPeriod($opp->createTimestamp, 'P1D')
+        ];
+
+        
+
+        $this->apiResponse($return);
     }
 
     private function fieldDefinition($label, $value, $table, $type=null)
