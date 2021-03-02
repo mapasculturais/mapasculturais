@@ -91,7 +91,7 @@
             
             var configGrafic = {
                 typeGrafic:$scope.data.reportData.type,
-                opportunity: MapasCulturais.entity.id,
+                opportunity_id: MapasCulturais.entity.id,
                 title: $scope.data.reportData.title,
                 description: $scope.data.reportData.description,
                 columns:[
