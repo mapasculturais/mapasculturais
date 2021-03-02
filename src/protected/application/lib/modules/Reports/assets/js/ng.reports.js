@@ -105,6 +105,11 @@
             ReportsService.create({reportData: reportData}).success(function (data, status, headers){    
                 // console.log(data);            
                 $scope.graficGenerate(data, configGrafic);
+                $scope.data.reportData.type = '';
+                $scope.data.reportData.title = '';
+                $scope.data.reportData.description = '';
+                $scope.data.reportData.dataDisplayA = '';
+                $scope.data.reportData.dataDisplayB = '';
             });
         }
 
