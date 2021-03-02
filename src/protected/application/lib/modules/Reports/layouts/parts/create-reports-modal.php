@@ -9,7 +9,7 @@ use MapasCulturais\i;
         <div class="grafic-type" ng-class="{hidden:!data.graficType}">
             <header>
                 <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico"); ?></h2>
-                <a ng-click="data.reportModal=false" class="close-modal"><i class=" fas fa-times close-modal"></i></a>
+                <a ng-click="clearModal()" class="close-modal"><i class="fas fa-times close-modal"></i></a>
             </header>
 
             <p><?php i::_e("Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"); ?></p>
@@ -37,7 +37,7 @@ use MapasCulturais\i;
         <div class="grafic-data" ng-class="{hidden:!data.graficData}">
             <header>
                 <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico de {{data.grafic}}"); ?></h2>
-                <a ng-click="data.reportModal=false" class="close-modal"><i class=" fas fa-times close-modal"></i></a>
+                <a ng-click="clearModal()" class="close-modal"><i class="fas fa-times close-modal"></i></a>
             </header>
 
             <p><?php i::_e("Agora defina o título e dados exibido no gráfico"); ?></p>
@@ -72,7 +72,7 @@ use MapasCulturais\i;
         </div>
 
         <footer>
-            <button class="btn btn-default close-modal cancel" ng-click="data.graficData=false; data.graficType=true; data.reportModal=false"><?php i::_e("Cancelar"); ?></button>
+            <button class="btn btn-default close-modal cancel" ng-click="clearModal();"><?php i::_e("Cancelar"); ?></button>
             <button class="btn btn-default draft" class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
             <button class="btn btn-primary next" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()" class="js-close" ng-disabled="!data.reportData.type"><?php i::_e("Proxima etapa"); ?></button>
             <button class="btn btn-primary next" ng-click="createGrafic()" ng-if="data.graficData == true" ng-disabled="!data.reportData.title || !data.reportData.description || !data.reportData.dataDisplayA"><?php i::_e("Gerar gráfico"); ?></button>

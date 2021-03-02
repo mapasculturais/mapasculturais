@@ -187,6 +187,18 @@
                  console.log(data);
             });
         }
+
+        $scope.clearModal = function() {
+
+            $scope.data.reportModal = false;
+            $scope.data.graficData = false;
+            $scope.data.reportData.type = '';
+            $scope.data.reportData.title = '';
+            $scope.data.reportData.description = '';
+            $scope.data.reportData.dataDisplayA = '';
+            $scope.data.reportData.dataDisplayB = '';
+
+        }
        
     }]);
     
