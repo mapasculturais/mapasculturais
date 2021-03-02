@@ -207,9 +207,12 @@
             $scope.data.reportModal = false;
             $scope.data.graficData = false;
 
-            ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
-                $scope.clearModal();
-            });
+            if(!identifier){
+                ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
+                    $scope.clearModal();
+                });
+            }
+           
         }
 
         $scope.clearModal = function() {
