@@ -8,7 +8,12 @@ use MapasCulturais\App,
 /**
  * Defines that this entity has agents related to it.
  *
- * @property-read \MapasCulturais\Entities\AgentRelation[] $relatedAgents The agents related to this entity
+ * @property-read \MapasCulturais\Entities\Agent[] $relatedAgents The agents related to this entity
+ * @property-read \MapasCulturais\Entities\AgentRelation[] $agentRelations 
+ * @property-read \MapasCulturais\Entities\AgentRelation[] $agentRelationsGrouped
+ * @property-read string $agentRelationEntityClassName
+ * @property-read int[] $idsOfUsersWithControl
+ * @property-read \MapasCulturais\Entities\User[] $usersWithControl
  *
  */
 trait EntityAgentRelation {
