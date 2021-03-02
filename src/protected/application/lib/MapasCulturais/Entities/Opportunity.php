@@ -61,6 +61,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive;
+        
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer

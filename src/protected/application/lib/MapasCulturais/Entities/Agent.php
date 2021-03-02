@@ -56,6 +56,8 @@ class Agent extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
+    protected $__enableMagicGetterHook = true;
+
     protected function validateLocation(){
         if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
             return true;
