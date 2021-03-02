@@ -16,14 +16,12 @@
             return {
                 serviceProperty: null,
                 createPhase: function (param) {
-                    var data = {
-                        prop: name
-                    };
+
                     var opportunity_id = MapasCulturais.entity.object.parent ? MapasCulturais.entity.object.parent.id : MapasCulturais.entity.object.id;
 
-                    var url = MapasCulturais.createUrl('opportunity', 'createNextPhase', {id: opportunity_id, evaluationMethod: 'simple'});
+                    var url = MapasCulturais.createUrl('opportunity', 'createNextPhase', {id: opportunity_id });
 
-                    return $http.post(url, data).
+                    return $http.post(url, param).
                             success(function (data, status) {
                                 $rootScope.$emit('something', {message: "Something was done", data: data, status: status});
                             }).
@@ -42,7 +40,8 @@
             };
 
             $scope.newPhasePostData = {
-                evaluationMethod: null
+                evaluationMethod: null,
+                isLastPhase: ''
             };
 
             $scope.newPhaseEditBoxSubmit = function () {
@@ -51,11 +50,11 @@
                     $scope.data.step++;
                 } else {
                     $scope.data.spinner = true;
-                    OpportunityPhasesService.createPhase().success(function(){
+                    OpportunityPhasesService.createPhase($scope.newPhasePostData).success(function(){
                         $scope.data.spinner = false;
-                    }).error(function() {
+                    }).error(function(err) {
                         $scope.data.spinner = false;
-                        MapasCulturais.Messages.error('ERROR');
+                        MapasCulturais.Messages.error(err.message);
                     });
                 }
             }
