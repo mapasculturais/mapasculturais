@@ -103,13 +103,7 @@
             }
 
             ReportsService.create({reportData: reportData}).success(function (data, status, headers){    
-                // console.log(data);            
                 $scope.graficGenerate(data, configGrafic);
-                $scope.data.reportData.type = '';
-                $scope.data.reportData.title = '';
-                $scope.data.reportData.description = '';
-                $scope.data.reportData.dataDisplayA = '';
-                $scope.data.reportData.dataDisplayB = '';
             });
         }
 
@@ -166,8 +160,7 @@
                 }
                 }
             };
-    
-           
+
             var ctx = document.getElementById("dinamic-grafic").getContext('2d');
             
             document.querySelector('.dinamic-grafic').style.height = 'auto';
@@ -182,9 +175,8 @@
             $scope.data.reportModal = false;
             $scope.data.graficData = false;
 
-            
             ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
-                 console.log(data);
+                $scope.clearModal();
             });
         }
 
