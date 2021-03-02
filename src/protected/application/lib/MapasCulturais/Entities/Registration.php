@@ -40,6 +40,8 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_INVALID = 2;
 
 
+    protected $__enableMagicGetterHook = true;
+
     /**
      * @var integer
      *
