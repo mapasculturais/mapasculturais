@@ -207,18 +207,21 @@
             $scope.data.reportModal = false;
             $scope.data.graficData = false;
 
-            
-            if(!identifier){
-                ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){
-                });
-            }
+            ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
+                $scope.clearModal();
+            });
+        }
 
+        $scope.clearModal = function() {
+
+            $scope.data.reportModal = false;
+            $scope.data.graficData = false;
             $scope.data.reportData.type = '';
             $scope.data.reportData.title = '';
             $scope.data.reportData.description = '';
             $scope.data.reportData.dataDisplayA = '';
             $scope.data.reportData.dataDisplayB = '';
-            
+
         }
        
     }]);
