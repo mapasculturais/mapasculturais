@@ -468,10 +468,17 @@ class Controller extends \MapasCulturais\Controller
 
         $opp = $app->repo("Opportunity")->find($reportData['opportunity_id']);
 
-        $value = is_array($reportData['columns'][0]['value']) ? implode('-',$reportData['columns'][0]['value']) :$reportData['columns'][0]['value'];
-        $source = is_array($reportData['columns'][0]['source']) ? implode('-',$reportData['columns'][0]['source']) :$reportData['columns'][0]['source'];
+        $value = "";
+        $source = "";       
+        foreach ($reportData['columns'] as $v){
+            $value .= $v['value'];
+            $source .= is_array($v['source']) ? implode(",",$v['source']) : $v['source'];
+        
+
+        }
 
         $identifier = md5($reportData['opportunity_id'] . "-" . $reportData['typeGrafic'] . "-" . $source . "-" . $value);
+        
         $this->data['identifier'] = $identifier;
 
         $conn = $app->em->getConnection();
@@ -479,7 +486,7 @@ class Controller extends \MapasCulturais\Controller
         $params = [
             "identifier" => "%identifier\":\"{$identifier}%"
         ];
-
+       
         $query = "SELECT * FROM metalist WHERE value like :identifier";
         if (!($metalist = $conn->fetchAll($query, $params))) {
             $metaList = new metaList;
@@ -513,9 +520,9 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         $reportData = $request["reportData"];
         $dataA = $reportData["dataA"];
-        $dataB = isset($reportData["dataB"]) ?? "";
+        $dataB = $reportData["dataB"];
         $conn = $app->em->getConnection();
-        $query = $this->buildQuery($dataA, $opp, $reportData, $em);
+        $query = $this->buildQuery($dataA, $opp);
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
         $return = [];
         $labels = [];
@@ -544,15 +551,12 @@ class Controller extends \MapasCulturais\Controller
             "typeGrafic" => $reportData["graficType"],
             "period" => $this->getPeriod($opp->createTimestamp, "P1D")
         ];
+        
         $this->apiResponse($return);
     }
-
-    private function buildQuery($data, $opp, $reportData, $em)
-    {
-        $app = App::i();
-
-        $conn = $app->em->getConnection();
         
+    private function buildQuery($data, $op)
+    {
         // map front-end names back to real table names
         $tableDic = [
             "r" => "registration",
@@ -569,7 +573,7 @@ class Controller extends \MapasCulturais\Controller
         // get all field names for this opportunity to validate received ones
         $fieldList = array_map(function ($item) {
             return $item["value"];
-        }, $this->getValidFields($opp));
+        }, $this->getValidFields($op));
         if (!in_array($data["value"], $fieldList)) {
             $this->jsonError("Invalid parameter.");
         }
@@ -622,47 +626,7 @@ class Controller extends \MapasCulturais\Controller
             "space_meta" => "$selMeta LEFT OUTER JOIN (SELECT sr.object_id, $tbCode.value FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.object_id WHERE sr.$regType AND $tbCode.key = '$field') AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMeta",
             "term" => "$selMain LEFT OUTER JOIN $termSubQuery WHERE $regWhere $groupMain",
         ];
-        $query = $sqls[$table];
-        
-        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);        
-        
-        $return = [];
-        $labels = [];
-        $color = [];
-        $data = [];
-
-        foreach ($result as $item) {
-            $color[] = $this->color();
-            if (!isset($item["value"])) {
-                $labels[] = i::__("(dado não informado)");
-            } else if (($dataA["source"]["type"] ?? "") == "dateToAge") {
-                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
-            } else {
-                if($field == "consolidated_result"){
-                    $labels[] = $em->valueToString($item["value"]);//Traduz a avaliação
-                }else{
-                    $labels[] = $item["value"];
-                }
-            }
-            
-            $data[] = $item["quantity"];
-
-        }
-
-        
-
-        $return = [
-            'labels' => $labels,
-            'backgroundColor' => $color,
-            'borderWidth' => 0,
-            'data' => $data,
-            'typeGrafic' => $reportData['graficType'],
-            'period' => $this->getPeriod($opp->createTimestamp, 'P1D')
-        ];
-
-        
-
-        $this->apiResponse($return);
+        return $sqls[$table];
     }
 
     private function fieldDefinition($label, $value, $table, $type=null)

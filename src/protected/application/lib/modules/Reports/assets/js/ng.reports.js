@@ -28,6 +28,7 @@
                 'space': '(Espaço)'
             },
             typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
+            loadingGrafics:[]
         };
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -52,26 +53,66 @@
                     return index
                 }                
             });
+        });
+        ReportsService.createHtmlLegends({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
+            var reportData = data.map(function(item, index){
+                return {                        
+                    identifier: item.identifier,
+                    configGrafic:{
+                        title: item.reportData.title,
+                        description: item.reportData.description,
+                        opportunity_id: item.reportData.opportunity_id,
+                    },
+                    reportData:{                           
+                        graficType: item.reportData.typeGrafic,
+                        dataA: item.reportData.columns[0], 
+                        dataB: item.reportData.columns[1],                             
+                    },
+                }
+            });
+            reportData.forEach(function(index){
+                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){                    
+            
+                    
+                    var legends = data.labels.map(function(item,index){
+                        return {
+                            color: data.backgroundColor[index],
+                            value: item
+                        };
+                    });
+                    
+                    $scope.data.loadingGrafics.push({
+                        identifier: index.identifier,                           
+                        legends: legends,
+                    });
+                });
+            });
 
-            ReportsService.loading({opportunity: MapasCulturais.entity.id}).success(function (data, status, headers){
-                
-                var dataDisplayA = $scope.data.dataDisplayA;
-                var dataDisplayB = $scope.data.dataDisplayB;
-                
-                var reportData = data.map(function(item, index){
-                    return {
-                        data:dataDisplayA[index],
-                        graficType: item.reportData.typeGrafic
-                    }
-                });
-                console.log(reportData)
-                reportData.forEach(function(index){
-                   
-                });
-                
+        });
+
+        ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
+            var reportData = data.map(function(item, index){
+                return {                        
+                    identifier: item.identifier,
+                    configGrafic:{
+                        title: item.reportData.title,
+                        description: item.reportData.description,
+                        opportunity_id: item.reportData.opportunity_id,
+                    },
+                    reportData:{                           
+                        graficType: item.reportData.typeGrafic,
+                        dataA: item.reportData.columns[0], 
+                        dataB: item.reportData.columns[1],                            
+                    },
+                }
             });
             
-        })
+            reportData.forEach(function(index){
+                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){                    
+                    $scope.graficGenerate(data, index.configGrafic, index.identifier);
+                });
+            });
+        });
         
         $scope.createGrafic = function() {
 
@@ -98,12 +139,15 @@
                     {
                         source: $scope.data.dataDisplayA[indexA].source,
                         value: $scope.data.dataDisplayA[indexA].value
+                    },
+                    {
+                        source: indexB ? $scope.data.dataDisplayB[indexB].source : "",
+                        value:  indexB ? $scope.data.dataDisplayB[indexB].value : ""
                     }
                 ]
             }
 
-            ReportsService.create({reportData: reportData}).success(function (data, status, headers){    
-                // console.log(data);            
+            ReportsService.create({reportData: reportData}).success(function (data, status, headers){ 
                 $scope.graficGenerate(data, configGrafic);
             });
         }
@@ -114,9 +158,9 @@
             
         }
 
-        $scope.graficGenerate = function(reportData, configGrafic) {
-            
-            $scope.data.reportData.titleDinamicGrafic = $scope.data.reportData.title;
+        $scope.graficGenerate = function(reportData, configGrafic = false, identifier = false) {     
+
+            $scope.data.reportData.titleDinamicGrafic =  configGrafic.title ?? $scope.data.reportData.title;
 
             var config = {
                 type: reportData.typeGrafic,
@@ -141,46 +185,40 @@
                     },
                     plugins: {
                         datalabels: {     
-                        display: function(context, ctx) {
-                        },           
-                        formatter: (value, ctx) => {
-                            let sum = 0;
-                            let dataArr = ctx.chart.data.datasets[0].data;
-                            dataArr.map(data => {
-                                sum += data;
-                            });
-    
-                            let percentage = (value*100 / sum).toFixed(2)+"%";
-                            
-                            return value + " "+"("+percentage+") \n\n";
-                        },
-                        anchor:"end",
-                        align: "end",                        
-                    
+                        display: false,
                     }
                 }
                 }
             };
-    
-           
-            var ctx = document.getElementById("dinamic-grafic").getContext('2d');
             
-            document.querySelector('.dinamic-grafic').style.height = 'auto';
+            var divDinamic = !identifier ? "-" : "-"+identifier
+            var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
+            
+            document.querySelector('.dinamic-grafic'+divDinamic).style.height = 'auto';
+            
             
             ctx.canvas.width = 1000;
             ctx.canvas.height = 300;
         
-            if(MapasCulturais.Charts.charts["dinamic-grafic"]){
-                MapasCulturais.Charts.charts["dinamic-grafic"].destroy();
+            if(MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic]){
+                MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic].destroy();
             }
-            MapasCulturais.Charts.charts["dinamic-grafic"] = new Chart(ctx, config);
+            MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic] = new Chart(ctx, config);
             $scope.data.reportModal = false;
             $scope.data.graficData = false;
 
             
-            ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
-                 console.log(data);
-            });
+            if(!identifier){
+                ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){
+                });
+            }
+
+            $scope.data.reportData.type = '';
+            $scope.data.reportData.title = '';
+            $scope.data.reportData.description = '';
+            $scope.data.reportData.dataDisplayA = '';
+            $scope.data.reportData.dataDisplayB = '';
+            
         }
        
     }]);
@@ -224,6 +262,18 @@
                 });
             },
             loading: function (data) {
+               
+                var url = MapasCulturais.createUrl('reports', 'loadingGrafic', {});
+
+                return $http.post(url, data).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
+                });
+            },
+            createHtmlLegends: function (data) {
                
                 var url = MapasCulturais.createUrl('reports', 'loadingGrafic', {});
 
