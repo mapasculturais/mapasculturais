@@ -53,8 +53,8 @@
                 }                
             });
 
-            ReportsService.loading({opportunity: MapasCulturais.entity.id}).success(function (data, status, headers){
-                
+            ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers) {
+
                 var dataDisplayA = $scope.data.dataDisplayA;
                 var dataDisplayB = $scope.data.dataDisplayB;
                 

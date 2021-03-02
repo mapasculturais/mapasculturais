@@ -515,7 +515,7 @@ class Controller extends \MapasCulturais\Controller
         $dataA = $reportData["dataA"];
         $dataB = isset($reportData["dataB"]) ?? "";
         $conn = $app->em->getConnection();
-        $query = $this->buildQuery($dataA, $opp, $reportData, $em);
+        $query = $this->buildQuery($dataA, $opp, ($reportData["graficType"] == "line"));
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
         $return = [];
         $labels = [];
@@ -523,36 +523,31 @@ class Controller extends \MapasCulturais\Controller
         $data = [];
         // post-processing may be necessary depending on type, so obtain it
         $type = $dataA["source"]["type"] ?? "";
-        foreach ($result as $item) {
-            $color[] = $this->color();
-            if (!isset($item["value"])) {
-                $labels[] = i::__("(dado não informado)");
-            } else if ($type == "dateToAge") {
-                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
-            } else if ($type == "valueToString") {
-                $labels[] = $em->valueToString($item["value"]);
-            } else {
-                $labels[] = $item["value"];
+        if ($reportData["graficType"] == "line") {
+            $return = $this->prepareTimeSeries($result, $type, $em);
+            $return["opportunity"] = $opp->id;
+            $return["typeGrafic"] = "line";
+            $return["borderWidth"] = 0;
+        } else {
+            foreach ($result as $item) {
+                $color[] = $this->color();
+                $labels[] = $this->generateLabel($item["value"], $type, $em);
+                $data[] = $item["quantity"];
             }
-            $data[] = $item["quantity"];
+            $return = [
+                "labels" => $labels,
+                "backgroundColor" => $color,
+                "borderWidth" => 0,
+                "data" => $data,
+                "typeGrafic" => $reportData["graficType"],
+                "period" => $this->getPeriod($opp->createTimestamp, "P1D")
+            ];
         }
-        $return = [
-            "labels" => $labels,
-            "backgroundColor" => $color,
-            "borderWidth" => 0,
-            "data" => $data,
-            "typeGrafic" => $reportData["graficType"],
-            "period" => $this->getPeriod($opp->createTimestamp, "P1D")
-        ];
         $this->apiResponse($return);
     }
 
-    private function buildQuery($data, $opp, $reportData, $em)
+    private function buildQuery($data, $op, $timeline=false)
     {
-        $app = App::i();
-
-        $conn = $app->em->getConnection();
-        
         // map front-end names back to real table names
         $tableDic = [
             "r" => "registration",
@@ -569,7 +564,7 @@ class Controller extends \MapasCulturais\Controller
         // get all field names for this opportunity to validate received ones
         $fieldList = array_map(function ($item) {
             return $item["value"];
-        }, $this->getValidFields($opp));
+        }, $this->getValidFields($op));
         if (!in_array($data["value"], $fieldList)) {
             $this->jsonError("Invalid parameter.");
         }
@@ -578,6 +573,9 @@ class Controller extends \MapasCulturais\Controller
         $field = $data["value"];
         $tbCode = $data["source"]["table"];
         $table = $tableDic[$tbCode];
+        // query parts - head and tail
+        $select = $timeline ? "SELECT to_char(r.create_timestamp , 'YYYY-MM-DD') AS date," : "SELECT";
+        $tail = $timeline ? ", to_char(r.create_timestamp , 'YYYY-MM-DD') ORDER BY date, value ASC" : "";
         // query parts - object type conditions
         $agentType = "object_type = 'MapasCulturais\\Entities\\Agent'";
         $regType = "object_type = 'MapasCulturais\\Entities\\Registration'";
@@ -588,20 +586,20 @@ class Controller extends \MapasCulturais\Controller
         $regToAgent = "JOIN agent a ON r.agent_id = a.id";
         $regToSpace = "(SELECT s.$field, sr.object_id FROM space_relation sr JOIN space s ON s.id = sr.space_id WHERE $regType)";
         // query parts - top-level select
-        $selMain = "SELECT $tbCode.$field AS value, count(*) AS quantity FROM registration r";
-        $selMeta = "SELECT $tbCode.value, count(*) AS quantity FROM registration r";
+        $selMain = "$select $tbCode.$field AS value, count(*) AS quantity FROM registration r";
+        $selMeta = "$select $tbCode.value, count(*) AS quantity FROM registration r";
         // query parts - group expressions
-        $groupMeta = "GROUP BY $tbCode.value";
-        $groupMain = "GROUP BY $tbCode.$field";
+        $groupMeta = "GROUP BY $tbCode.value$tail";
+        $groupMain = "GROUP BY $tbCode.$field" . $tail;
         // query parts - subqueries
         $metaSubQuery = "(SELECT object_id, value FROM $table WHERE key = '$field')";
         $termSubQuery = "(SELECT $tbCode.$field, tr.object_id FROM $table $tbCode JOIN term_relation tr ON tr.term_id = $tbCode.id WHERE $tbCode.taxonomy = 'area' AND tr.$agentType) AS $tbCode ON $tbCode.object_id = r.agent_id";
         // the dateToAge type requires a special conversion; handling main case is probably unnecessary
         if ($type == "dateToAge") {
-            $selMain = "SELECT div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
-            $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5)";
-            $selMeta = "SELECT div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
-            $groupMeta = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5)";
+            $selMain = "$select div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
+            $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5)$tail";
+            $selMeta = "$select div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
+            $groupMeta = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5)$tail";
         // these types of agents are obtained from agent_relation
         } else if (($type == "coletivo") || ($type == "instituicao")) {
             $idField = ($table == "agent") ? "id" : "object_id";
@@ -622,47 +620,7 @@ class Controller extends \MapasCulturais\Controller
             "space_meta" => "$selMeta LEFT OUTER JOIN (SELECT sr.object_id, $tbCode.value FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.object_id WHERE sr.$regType AND $tbCode.key = '$field') AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMeta",
             "term" => "$selMain LEFT OUTER JOIN $termSubQuery WHERE $regWhere $groupMain",
         ];
-        $query = $sqls[$table];
-        
-        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);        
-        
-        $return = [];
-        $labels = [];
-        $color = [];
-        $data = [];
-
-        foreach ($result as $item) {
-            $color[] = $this->color();
-            if (!isset($item["value"])) {
-                $labels[] = i::__("(dado não informado)");
-            } else if (($dataA["source"]["type"] ?? "") == "dateToAge") {
-                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
-            } else {
-                if($field == "consolidated_result"){
-                    $labels[] = $em->valueToString($item["value"]);//Traduz a avaliação
-                }else{
-                    $labels[] = $item["value"];
-                }
-            }
-            
-            $data[] = $item["quantity"];
-
-        }
-
-        
-
-        $return = [
-            'labels' => $labels,
-            'backgroundColor' => $color,
-            'borderWidth' => 0,
-            'data' => $data,
-            'typeGrafic' => $reportData['graficType'],
-            'period' => $this->getPeriod($opp->createTimestamp, 'P1D')
-        ];
-
-        
-
-        $this->apiResponse($return);
+        return $sqls[$table];
     }
 
     private function fieldDefinition($label, $value, $table, $type=null)
@@ -673,6 +631,20 @@ class Controller extends \MapasCulturais\Controller
             "source" => isset($type) ? ["table" => $table, "type" => $type] :
                                        ["table" => $table]
         ];
+    }
+
+    private function generateLabel($value, $type, $evalMethod)
+    {
+        if (!isset($value)) {
+            return i::__("(dado não informado)");
+        }
+        if ($type == "dateToAge") {
+            return ("" . ($value * 5) . "-" . (($value * 5) + 4));
+        }
+        if ($type == "valueToString") {
+            return $evalMethod->valueToString($value);
+        }
+        return $value;
     }
 
     private function getValidFields($opportunity)
@@ -809,6 +781,48 @@ class Controller extends \MapasCulturais\Controller
         }
 
         $csv->output($fileName);
+    }
+
+    private function prepareTimeSeries($data, $type, $evalMethod)
+    {
+        $series = [];
+        $times = [];
+        $outColours = [];
+        $outLines = [];
+        $outSeries = [];
+        $outTimes = [];
+        foreach ($data as $item) {
+            $label = $this->generateLabel($item["value"], $type, $evalMethod);
+            if (!isset($series[$label])) {
+                $series[$label] = [];
+            }
+            $series[$label][$item["date"]] = $item["quantity"];
+            if ((sizeof($times) < 1) ||
+                ($times[sizeof($times) - 1] != $item["date"])) {
+                $times[] = $item["date"];
+                $outTimes[] = (new DateTime($item["date"]))->format("d/m/Y");
+            }
+        }
+        foreach (array_keys($series) as $label) {
+            $current = [
+                "label" => $label,
+                "colors" => $this->color(),
+                "type" => "line",
+                "fill" => false,
+                "data" => []
+            ];
+            foreach ($times as $time) {
+                $current[] = $series[$label][$time] ?? 0;
+            }
+            $outLines[] = $label;
+            $outSeries[] = $current;
+        }
+        return [
+            "labels" => $outTimes,
+            "series" => $outSeries,
+            "legends" => $outLines,
+            "colors" => $outColours
+        ];
     }
 
     public function getEntityDailyData(string $table, string $entity_class, array $entity_fields = [], array $metadata = [])
