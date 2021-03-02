@@ -55,7 +55,7 @@ class Module extends \MapasCulturais\Module{
      * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @return \MapasCulturais\Entities\Opportunity
      */
-    static function getLastPhase(Entities\Opportunity $opportunity) {
+    static function getLastCreatedPhase(Entities\Opportunity $opportunity) {
         $app = App::i();
 
         $base_opportunity = self::getBaseOpportunity($opportunity);
@@ -69,7 +69,7 @@ class Module extends \MapasCulturais\Module{
             '@limit' => 1
         ];
 
-        $app->applyHook('entity(Opportunity).getLastPhase:params', [$base_opportunity, &$params]);
+        $app->applyHook('entity(Opportunity).getLastCreatedPhase:params', [$base_opportunity, &$params]);
 
         $query = new ApiQuery(Entities\Opportunity::class, $params);
 
@@ -358,7 +358,7 @@ class Module extends \MapasCulturais\Module{
             $phase->useRegistrations = true;
             $phase->isOpportunityPhase = true;
 
-            $last_phase = self::getLastPhase($parent);
+            $last_phase = self::getLastCreatedPhase($parent);
 
             $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
@@ -367,7 +367,10 @@ class Module extends \MapasCulturais\Module{
             $phase->registrationFrom = $_from;
             $phase->registrationTo = $_to;
 
-
+            if (isset($this->postData['isLastPhase']) && $this->postData['isLastPhase']) {
+                $phase->isLastPhase = true;
+            }
+            
             $phase->save(true);
 
             $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
@@ -642,6 +645,13 @@ class Module extends \MapasCulturais\Module{
 
         $app->registerMetadata($def__prev, 'MapasCulturais\Entities\Registration');
         $app->registerMetadata($def__next, 'MapasCulturais\Entities\Registration');
+
+        // Last phase metadata
+        $this->registerOpportunityMetadata('isLastPhase', [
+            'label' => i::__('Indica se a oportunidade é a última fase da oportunidade'),
+            'type' => 'boolean',
+            'default' => false
+        ]);
     }
 
 }
