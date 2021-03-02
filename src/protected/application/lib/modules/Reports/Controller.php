@@ -463,7 +463,7 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
 
         $app = App::i();
-        
+
         $reportData = $this->data['reportData'];
 
         $opp = $app->repo("Opportunity")->find($reportData['opportunity_id']);
@@ -471,21 +471,21 @@ class Controller extends \MapasCulturais\Controller
         $value = is_array($reportData['columns'][0]['value']) ? implode('-',$reportData['columns'][0]['value']) :$reportData['columns'][0]['value'];
         $source = is_array($reportData['columns'][0]['source']) ? implode('-',$reportData['columns'][0]['source']) :$reportData['columns'][0]['source'];
 
-        $identifier = md5($reportData['opportunity']."-".$reportData['typeGrafic']."-".$source."-".$value);
+        $identifier = md5($reportData['opportunity_id'] . "-" . $reportData['typeGrafic'] . "-" . $source . "-" . $value);
         $this->data['identifier'] = $identifier;
-        
+
         $conn = $app->em->getConnection();
-          
+
         $params = [
             "identifier" => "%identifier\":\"{$identifier}%"
-        ];      
-        
+        ];
+
         $query = "SELECT * FROM metalist WHERE value like :identifier";
-        if(!($metalist = $conn->fetchAll($query, $params))){
+        if (!($metalist = $conn->fetchAll($query, $params))) {
             $metaList = new metaList;
             $metaList->value = json_encode($this->data) ;
-        }else{            
-            $metaList = $app->repo("MetaList")->find($metalist[0]['id']);           
+        } else {
+            $metaList = $app->repo("MetaList")->find($metalist[0]['id']);
             $metaList->value = json_encode($this->data);
         }
 
@@ -515,6 +515,40 @@ class Controller extends \MapasCulturais\Controller
         $dataA = $reportData["dataA"];
         $dataB = $reportData["dataB"];
         $conn = $app->em->getConnection();
+        $query = $this->buildQuery($dataA, $opp);
+        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
+        $return = [];
+        $labels = [];
+        $color = [];
+        $data = [];
+        // post-processing may be necessary depending on type, so obtain it
+        $type = $dataA["source"]["type"] ?? "";
+        foreach ($result as $item) {
+            $color[] = $this->color();
+            if (!isset($item["value"])) {
+                $labels[] = i::__("(dado não informado)");
+            } else if ($type == "dateToAge") {
+                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
+            } else if ($type == "valueToString") {
+                $labels[] = $em->valueToString($item["value"]);
+            } else {
+                $labels[] = $item["value"];
+            }
+            $data[] = $item["quantity"];
+        }
+        $return = [
+            "labels" => $labels,
+            "backgroundColor" => $color,
+            "borderWidth" => 0,
+            "data" => $data,
+            "typeGrafic" => $reportData["graficType"],
+            "period" => $this->getPeriod($opp->createTimestamp, "P1D")
+        ];
+        $this->apiResponse($return);
+    }
+
+    private function buildQuery($data, $op)
+    {
         // map front-end names back to real table names
         $tableDic = [
             "r" => "registration",
@@ -525,79 +559,66 @@ class Controller extends \MapasCulturais\Controller
             "sm" => "space_meta",
             "t" => "term"
         ];
-        if (!isset($tableDic[$dataA["source"]["table"]])) {
+        if (!isset($tableDic[$data["source"]["table"]])) {
             $this->jsonError("Invalid parameter.");
         }
         // get all field names for this opportunity to validate received ones
         $fieldList = array_map(function ($item) {
             return $item["value"];
-        }, $this->getValidFields($opp));
-        if (!in_array($dataA["value"], $fieldList)) {
+        }, $this->getValidFields($op));
+        if (!in_array($data["value"], $fieldList)) {
             $this->jsonError("Invalid parameter.");
         }
-
-        $field = $dataA["value"];
-        $table = $tableDic[$dataA["source"]["table"]];
-
+        // basic information from the request
+        $type = $data["source"]["type"] ?? "";
+        $field = $data["value"];
+        $tbCode = $data["source"]["table"];
+        $table = $tableDic[$tbCode];
+        // query parts - object type conditions
+        $agentType = "object_type = 'MapasCulturais\\Entities\\Agent'";
+        $regType = "object_type = 'MapasCulturais\\Entities\\Registration'";
+        $spaceType = "object_type = 'MapasCulturais\\Entities\\Space'";
+        // query parts - common registration conditions
         $regWhere = "r.opportunity_id = :opportunity AND r.status > 0";
+        // query parts - registration-to-X expressions
         $regToAgent = "JOIN agent a ON r.agent_id = a.id";
+        $regToSpace = "(SELECT s.$field, sr.object_id FROM space_relation sr JOIN space s ON s.id = sr.space_id WHERE $regType)";
+        // query parts - top-level select
+        $selMain = "SELECT $tbCode.$field AS value, count(*) AS quantity FROM registration r";
+        $selMeta = "SELECT $tbCode.value, count(*) AS quantity FROM registration r";
+        // query parts - group expressions
+        $groupMeta = "GROUP BY $tbCode.value";
+        $groupMain = "GROUP BY $tbCode.$field";
+        // query parts - subqueries
         $metaSubQuery = "(SELECT object_id, value FROM $table WHERE key = '$field')";
-        $selMain = "SELECT $field AS value, count(*) AS quantity FROM registration r";
-        $selMeta = "SELECT value, count(*) AS quantity FROM registration r";
-        $groupMeta = "GROUP BY value";
-        $groupMain = "GROUP BY $field";
+        $termSubQuery = "(SELECT $tbCode.$field, tr.object_id FROM $table $tbCode JOIN term_relation tr ON tr.term_id = $tbCode.id WHERE $tbCode.taxonomy = 'area' AND tr.$agentType) AS $tbCode ON $tbCode.object_id = r.agent_id";
         // the dateToAge type requires a special conversion; handling main case is probably unnecessary
-        if (($dataA["source"]["type"] ?? "") == "dateToAge") {
-            $selMain = "SELECT div(date_part('year', age(to_timestamp($field, 'YYYY-MM-DD')))::integer, 5) as value, count(*) as quantity FROM registration r";
-            $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($field, 'YYYY-MM-DD')))::integer, 5)";
-            $selMeta = "SELECT div(date_part('year', age(to_timestamp(value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
-            $groupMeta = "GROUP BY div(date_part('year', age(to_timestamp(value, 'YYYY-MM-DD')))::integer, 5)";
+        if ($type == "dateToAge") {
+            $selMain = "SELECT div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
+            $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5)";
+            $selMeta = "SELECT div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
+            $groupMeta = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5)";
+        // these types of agents are obtained from agent_relation
+        } else if (($type == "coletivo") || ($type == "instituicao")) {
+            $idField = ($table == "agent") ? "id" : "object_id";
+            $selTarget = str_ends_with($table, "_meta") ? "$tbCode.value" : "$tbCode.$field";
+            $regToAgent = "LEFT OUTER JOIN (SELECT $selTarget, ar.agent_id AS id, ar.object_id FROM agent_relation ar JOIN $table $tbCode ON ar.agent_id = $tbCode.$idField WHERE ar.$regType AND ar.type = '$type') AS a ON a.object_id = r.id";
+            $termSubQuery = "(SELECT $tbCode.$field, ar.object_id FROM agent_relation ar JOIN term_relation tr ON tr.object_id = ar.agent_id JOIN $table $tbCode ON $tbCode.id = tr.term_id WHERE ar.$regType AND ar.type = '$type' AND $tbCode.taxonomy = 'area' AND tr.$agentType AND tr.object_id = ar.agent_id) AS $tbCode ON $tbCode.object_id = r.id";
+        // handle term searches for spaces
+        } else if ($type == "space") {
+            $termSubQuery = "(SELECT $tbCode.$field, sr.object_id FROM space_relation sr JOIN term_relation tr ON tr.object_id = sr.space_id JOIN $table $tbCode ON $tbCode.id = tr.term_id WHERE sr.$regType AND $tbCode.taxonomy = 'area' AND tr.$spaceType AND tr.object_id = sr.space_id) AS $tbCode ON $tbCode.object_id = r.id";
         }
+        // possible queries using the query parts above, by source table
         $sqls = [
             "registration" => "$selMain WHERE $regWhere $groupMain",
-            "registration_meta" => "$selMeta LEFT OUTER JOIN $metaSubQuery AS m ON r.id = m.object_id WHERE $regWhere $groupMeta",
+            "registration_meta" => "$selMeta LEFT OUTER JOIN $metaSubQuery AS $tbCode ON r.id = $tbCode.object_id WHERE $regWhere $groupMeta",
             "agent" => "$selMain $regToAgent WHERE $regWhere $groupMain",
-            "agent_meta" => "$selMeta $regToAgent LEFT OUTER JOIN $metaSubQuery AS m ON a.id = m.object_id WHERE $regWhere $groupMeta"
+            "agent_meta" => "$selMeta $regToAgent LEFT OUTER JOIN $metaSubQuery AS $tbCode ON a.id = $tbCode.object_id WHERE $regWhere $groupMeta",
+            "space" => "$selMain LEFT OUTER JOIN $regToSpace AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMain",
+            "space_meta" => "$selMeta LEFT OUTER JOIN (SELECT sr.object_id, $tbCode.value FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.object_id WHERE sr.$regType AND $tbCode.key = '$field') AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMeta",
+            "term" => "$selMain LEFT OUTER JOIN $termSubQuery WHERE $regWhere $groupMain",
         ];
-        $query = $sqls[$table];
-        
-        $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);        
-        
-        $return = [];
-        $labels = [];
-        $color = [];
-        $data = [];
-
-        foreach ($result as $item) {
-            $color[] = $this->color();
-            if (!isset($item["value"])) {
-                $labels[] = i::__("(dado não informado)");
-            } else if (($dataA["source"]["type"] ?? "") == "dateToAge") {
-                $labels[] = "" . ($item["value"] * 5) . "-" . (($item["value"] * 5) + 4);
-            } else {
-                if($field == "consolidated_result"){
-                    $labels[] = $em->valueToString($item["value"]);//Traduz a avaliação
-                }else{
-                    $labels[] = $item["value"];
-                }
-            }
-            
-            $data[] = $item["quantity"];
-
-        }
-
-        
-
-        $return = [
-            'labels' => $labels,
-            'backgroundColor' => $color,
-            'borderWidth' => 0,
-            'data' => $data,
-            'typeGrafic' => $reportData['graficType'],
-            'period' => $this->getPeriod($opp->createTimestamp, 'P1D')
-        ];
-
-        $this->apiResponse($return);
+        return $sqls[$table];
     }
 
     private function fieldDefinition($label, $value, $table, $type=null)
@@ -605,7 +626,8 @@ class Controller extends \MapasCulturais\Controller
         return [
             "label" => $label,
             "value" => $value,
-            "source" => isset($type) ? ["table" => $table, "type" => $type] : ["table" => $table]
+            "source" => isset($type) ? ["table" => $table, "type" => $type] :
+                                       ["table" => $table]
         ];
     }
 
@@ -626,13 +648,13 @@ class Controller extends \MapasCulturais\Controller
                 "dataDeNascimento",
             ],
         ];
-        $dataOpportunity = $opportunity->getEvaluationCommittee();
+        //$dataOpportunity = $opportunity->getEvaluationCommittee();
         $fields = [];
         if (!empty($opportunity->registrationCategories)) {
             $fields[] = $this->fieldDefinition(i::__("Categoria"), "category", "r");
         }
         $fields[] = $this->fieldDefinition(i::__("Status"), "status", "r");
-        $fields[] = $this->fieldDefinition(i::__("Avaliação"), "consolidated_result", "r");
+        $fields[] = $this->fieldDefinition(i::__("Avaliação"), "consolidated_result", "r", "valueToString");
         foreach ($opportunity->registrationFieldConfigurations as $value) {
             if ($value->fieldType == "select") {
                 $fields[] = $this->fieldDefinition($value->title, $value->fieldName, "rm");
@@ -718,15 +740,8 @@ class Controller extends \MapasCulturais\Controller
     private function getOpportunity(): Opportunity
     {
         $this->requireAuthentication();
-
-        $app = App::i();
-
         $request = $this->data;
-
-        $opp = $app->repo("Opportunity")->find($request['opportunity_id']);
-
-        return $opp;
-
+        return App::i()->repo("Opportunity")->find($request["opportunity_id"]);
     }
 
     /**
