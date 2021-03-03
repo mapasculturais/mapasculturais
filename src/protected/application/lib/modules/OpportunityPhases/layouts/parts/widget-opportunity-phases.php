@@ -46,7 +46,6 @@ $viewing_phase = $this->controller->requestedEntity;
 $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
 $last_created_phase = Module::getLastCreatedPhase($opportunity);
-
 ?>
 <?php if($this->isEditable() || count($phases) > 0): ?>
 <?php if($this->isEditable()): ?>
@@ -90,12 +89,9 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
 <?php endif; ?>
     <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
-            <?php if (isset($last_created_phase->isLastPhase)) {
-                if($last_created_phase->isLastPhase): ?>
-                <?php else: ?>
+            <?php if(!$last_created_phase->isLastPhase): ?>
                     <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)"  rel='noopener noreferrer'><?php i::_e("Adicionar fase");?></a>
-                <?php endif;
-            } ?>
+            <?php endif; ?>
         <?php endif; ?>
         <ul>
 
@@ -119,8 +115,7 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
                 </li>
             <?php else: ?>
                 <li>
-                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>">
-                        <?= $phase->isLastPhase ? 'Última fase' : $phase->name ?>
+                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>"><?=  $phase->name ?>
                     </a>
                     <?php if($phase->registrationFrom && $phase->registrationTo): ?>
                         - <em>
@@ -163,6 +158,9 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
 
                     <?php if($phase->status === 0): ?>
                         <em><?php i::_e('(rascunho)'); ?></em>
+                    <?php endif; ?>
+                    <?php if($opportunity->canUser('@control')): ?>
+                        <em><?php i::_e('(última fase)'); ?></em>
                     <?php endif; ?>
                 </li>
             <?php endif; ?>
