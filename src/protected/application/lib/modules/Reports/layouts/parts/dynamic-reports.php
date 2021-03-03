@@ -5,12 +5,22 @@ use MapasCulturais\i;
 ?>
 
 <div class="charts-dynamic">
-    <div class="dinamic-grafic-" style="position: relative;" ng-style="{'width': (grafic.type == 'pie') ? '60%' : '100%', 'height': (data.creatingGraph) ? 'auto' : '0'}">
-        <canvas id="dinamic-grafic-"></canvas>
-    </div>
+    <div class="chart-wrap" ng-style="{'height': (data.creatingGraph) ? 'auto' : '0'}">
+        <header>
+            <h3>{{data.reportData.titleDinamicGrafic}}</h3>
+            <a href="" name="" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
+        </header>
+
+        <div class="chart-container chart-{{data.reportData.type}}" style="position: relative;" ng-style="{'width': (data.reportData.type == 'pie') ? '60%' : '100%', 'height': (data.creatingGraph) ? 'auto' : '0'}">
+            <canvas id="dinamic-grafic-"></canvas>            
+        </div>
+
+        <footer>
+            <div class="legends-chats" id="dinamic-legends-"></div>
+        </footer>
+    </div>   
 
     <div class="chart-wrap" ng-repeat="grafic in data.loadingGrafics">
-
         <header>
             <h3>{{grafic.title}}</h3>
             <a href="" name="{{grafic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
@@ -20,10 +30,7 @@ use MapasCulturais\i;
         </div>
 
         <footer>
-            <div class="legends-chats" id="dinamic-legends-{{grafic.identifier}}">
-                
-                   
-            </div>
+            <div class="legends-chats" id="dinamic-legends-{{grafic.identifier}}"></div>
         </footer>
 
     </div>

@@ -31,7 +31,8 @@
             typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
             loadingGrafics:[],
             graphicColors: [],
-            legends: []
+            legends: [],
+            type: ""
         };
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -84,6 +85,7 @@
                         identifier: index.identifier,
                         type: data.typeGrafic,                           
                     });
+                    
                 });
             });
 
@@ -147,7 +149,8 @@
                 ]
             }
 
-            ReportsService.create({reportData: reportData}).success(function (data, status, headers){ 
+            ReportsService.create({reportData: reportData}).success(function (data, status, headers){
+                $scope.data.reportData.titleDinamicGrafic =  $scope.data.reportData.title;
                 $scope.graficGenerate(data, configGrafic);
             });
         }
@@ -159,8 +162,6 @@
         }
 
         $scope.graficGenerate = function(reportData, configGrafic = false, identifier = false) {  
-            $scope.data.reportData.titleDinamicGrafic =  configGrafic.title ?? $scope.data.reportData.title;
-            
             if(reportData.typeGrafic == "line"){
                 var serie = reportData.series.map(function (item, index){
                     return {
@@ -183,6 +184,7 @@
                 }];
             }
 
+            $scope.data.type = reportData.typeGrafic;
             var config = {
                 type: reportData.typeGrafic,
                 data: {
@@ -203,12 +205,13 @@
 
             var divDinamic = !identifier ? "-" : "-"+identifier
 
-            
             var legends = document.getElementById("dinamic-legends"+divDinamic);
-
+      
+            console.log(divDinamic)
 
             if(reportData.typeGrafic == "line"){
                 reportData.series.map(function(item,index){
+                    // console.log(index)
                     var span = document.createElement("span");
                     var p = document.createElement("p");
                     var each = document.createElement("div");
@@ -227,6 +230,7 @@
 
             }else{
                 reportData.labels.map(function(item,index){
+                    // console.log(reportData.data[index])
                     var span = document.createElement("span");
                     var p = document.createElement("p");
                     var each = document.createElement("div");
@@ -241,6 +245,7 @@
                     each.appendChild(p);
                 });
             }
+        
 
             var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
         
@@ -253,7 +258,7 @@
 
             if(!identifier){
                 ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
-                    $scope.clearModal();
+                    // $scope.clearModal();
                     $scope.data.creatingGraph = true;
                 });
             }
