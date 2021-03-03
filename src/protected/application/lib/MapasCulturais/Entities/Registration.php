@@ -864,7 +864,11 @@ class Registration extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, "entity($this->hookClassPath).sendValidationErrors", [&$errorsResult]);
 
         return $errorsResult;
-    }    
+    }
+
+    function registerFieldsMetadata() {
+        $this->opportunity->registerRegistrationMetadata();
+    }
 
     protected function _getSpaceData(){
         $app = App::i();
