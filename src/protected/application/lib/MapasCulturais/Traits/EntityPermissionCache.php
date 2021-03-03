@@ -4,6 +4,10 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
+/**
+ * @property-read string $permissionCacheClassName
+ * @property-read string[] $permissionsList
+ */
 trait EntityPermissionCache {
     public $__skipQueuingPCacheRecreation = false;
 
