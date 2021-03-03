@@ -1,5 +1,6 @@
 <?php
 $result = [];
+
 foreach ($legends as $key_l => $legend) {
     $result[$legend] = $colors[$key_l];
 } ?>
@@ -13,3 +14,4 @@ foreach ($legends as $key_l => $legend) {
     <?php endforeach; ?>
 
 </div>
+

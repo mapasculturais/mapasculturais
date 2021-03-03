@@ -29,7 +29,8 @@
             },
             typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
             loadingGrafics:[],
-            graphicColors: []
+            graphicColors: [],
+            legends: []
         };
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -75,38 +76,13 @@
                 }
             });
             reportData.forEach(function(index){
-                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
-                    
-                    var id = 'id-' + index.identifier;
-                    var colors = [];
-                    if(data.typeGrafic == "line"){
-                        
-                        var legends = data.series.map(function(item,index){
-                            return {
-                                color: item.colors,
-                                value: item.label
-                            };
-                        });
-                    }else{
-                        var legends = data.labels.map(function(item,index){
-                            colors.push(data.backgroundColor[index]);
-                            return {
-                                color: data.backgroundColor[index],
-                                value: item
-                            };
-                        });
-                    }
-                    
+                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){ 
                     $scope.data.loadingGrafics.push({
                         title:index.configGrafic.title,
                         description: index.configGrafic.description,
                         identifier: index.identifier,
                         type: data.typeGrafic,                           
-                        legends: legends,
                     });
-
-                    $scope.data.graphicColors[id] = colors;
-                    
                 });
             });
 
@@ -132,12 +108,7 @@
             
             reportData.forEach(function(index){
                 ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
-
-                    var id = 'id-' + index.identifier;
-                    data.backgroundColor = $scope.data.graphicColors[id];
-
                     $scope.graficGenerate(data, index.configGrafic, index.identifier);
-
                 });
             });
         });
@@ -187,7 +158,6 @@
         }
 
         $scope.graficGenerate = function(reportData, configGrafic = false, identifier = false) {  
-               
             $scope.data.reportData.titleDinamicGrafic =  configGrafic.title ?? $scope.data.reportData.title;
             
             if(reportData.typeGrafic == "line"){
@@ -228,8 +198,49 @@
                 }
                 }
             };
-            
+            $scope.data.legends = [];
+
             var divDinamic = !identifier ? "-" : "-"+identifier
+
+            
+            var legends = document.getElementById("dinamic-legends"+divDinamic);
+
+
+            if(reportData.typeGrafic == "line"){
+                reportData.series.map(function(item,index){
+                    var span = document.createElement("span");
+                    var p = document.createElement("p");
+                    var each = document.createElement("div");
+
+                    span.style.backgroundColor = item.colors;
+                    p.textContent = item.label;
+                    
+                    span.classList.add("dot");
+                    each.classList.add("each");
+                    legends.appendChild(each);
+                    each.appendChild(span);
+                    each.appendChild(p);
+
+                   
+                });
+
+            }else{
+                reportData.labels.map(function(item,index){
+                    var span = document.createElement("span");
+                    var p = document.createElement("p");
+                    var each = document.createElement("div");
+
+                    span.style.backgroundColor = reportData.backgroundColor[index];
+                    p.textContent = item;
+                    
+                    span.classList.add("dot");
+                    each.classList.add("each");
+                    legends.appendChild(each);
+                    each.appendChild(span);
+                    each.appendChild(p);
+                });
+            }
+
             var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
         
             if(MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic]){
