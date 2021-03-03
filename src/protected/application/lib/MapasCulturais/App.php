@@ -196,10 +196,13 @@ class App extends \Slim\Slim{
         if($config['slim.debug'])
             error_reporting(E_ALL ^ E_STRICT);
 
-
-        session_save_path(SESSIONS_SAVE_PATH);
+        if ($config['app.mode'] == APPMODE_PRODUCTION)
+            session_save_path(SESSIONS_SAVE_PATH);
         
         session_start();
+
+        session_regenerate_id();
+
 
         if($config['app.offline']){
             $bypass_callable = $config['app.offlineBypassFunction'];
