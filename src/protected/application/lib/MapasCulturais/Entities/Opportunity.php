@@ -5,7 +5,7 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
-
+use MapasCulturais\Definitions\Metadata as MetadataDefinition;
 /**
  * Opportunity
  *
@@ -675,6 +675,69 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
         
         return $relation->status === EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
+    }
+
+    function registerRegistrationMetadata(){
+       
+        $app = App::i();
+
+        $registered_metadata = $app->getRegisteredMetadata(Registration::class);
+        
+        if (!isset($registered_metadata['projectName']) && $this->projectName){
+            $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
+            
+            $metadata = new MetadataDefinition('projectName', $cfg);
+            $app->registerMetadata($metadata, Registration::class);
+        }
+        
+        foreach($this->registrationFieldConfigurations as $field){
+            if (isset($registered_metadata[$field->getFieldName()])) {
+                continue;
+            }
+
+            $cfg = [
+                'label' => $field->title,
+                'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
+                'private' => true,
+                'registrationFieldConfiguration' => $field
+            ];
+
+            $def = $field->getFieldTypeDefinition();
+            
+            if($def->requireValuesConfiguration){
+                $cfg['options'] = $field->fieldOptions;
+            }
+
+            if(is_callable($def->serialize)){
+                $cfg['serialize'] = $def->serialize;
+            }
+
+            if(is_callable($def->unserialize)){
+                $cfg['unserialize'] = $def->unserialize;
+            }
+
+            if($def->defaultValue){
+                $cfg['default_value'] = $def->defaultValue;
+            }
+
+            if($def->validations){
+                $cfg['validations'] = $def->validations;
+            } else {
+                $cfg['validations'] = [];
+            }
+            
+            if($field->required){
+                $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
+            }
+
+            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+
+
+            $metadata = new MetadataDefinition ($field->fieldName, $cfg);
+
+            $app->registerMetadata($metadata, Registration::class);
+        }
+        
     }
 
     protected function genericPermissionVerification($user){

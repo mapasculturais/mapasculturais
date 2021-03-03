@@ -848,7 +848,11 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $errorsResult;
-    }    
+    }
+
+    function registerFieldsMetadata() {
+        $this->opportunity->registerRegistrationMetadata();
+    }
 
     protected function _getSpaceData(){
         $app = App::i();
