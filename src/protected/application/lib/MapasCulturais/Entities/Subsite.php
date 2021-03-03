@@ -28,6 +28,8 @@ class Subsite extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityArchive;
+        
+    protected $__enableMagicGetterHook = true;
 
 
     /**

@@ -28,6 +28,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     use \MapasCulturais\Traits\EntityMetadata;
 
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer
