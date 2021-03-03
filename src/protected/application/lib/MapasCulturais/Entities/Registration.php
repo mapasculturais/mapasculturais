@@ -28,9 +28,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntitySealRelation {
-            Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
-        }
+        Traits\EntityRevision;
 
 
     const STATUS_SENT = self::STATUS_ENABLED;
