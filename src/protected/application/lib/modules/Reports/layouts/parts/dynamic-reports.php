@@ -5,7 +5,7 @@ use MapasCulturais\i;
 ?>
 
 <div class="charts-dynamic">
-    <div class="dinamic-grafic-" style="position: relative; height:auto; width:100%;">
+    <div class="dinamic-grafic-" style="position: relative;" ng-style="{'width': (grafic.type == 'pie') ? '60%' : '100%', 'height': (data.creatingGraph) ? 'auto' : '0'}">
         <canvas id="dinamic-grafic-"></canvas>
     </div>
 

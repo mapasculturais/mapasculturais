@@ -19,6 +19,7 @@
             reportModal: false,
             graficType: true,
             graficData:false,            
+            creatingGraph: false,
             dataDisplayA:[],
             dataDisplayB:[],
             state: {
@@ -242,6 +243,7 @@
             if(!identifier){
                 ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
                     $scope.clearModal();
+                    $scope.data.creatingGraph = true;
                 });
             }
            
