@@ -28,7 +28,8 @@
                 'space': '(Espaço)'
             },
             typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
-            loadingGrafics:[]
+            loadingGrafics:[],
+            graphicColors: []
         };
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -70,11 +71,15 @@
                     },
                 }
             });
-            reportData.forEach(function(index){
-                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){                    
             
+            reportData.forEach(function(index){
+                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
                     
+                    var id = 'id-' + index.identifier;
+                    var colors = [];
+
                     var legends = data.labels.map(function(item,index){
+                        colors.push(data.backgroundColor[index]);
                         return {
                             color: data.backgroundColor[index],
                             value: item
@@ -85,6 +90,9 @@
                         identifier: index.identifier,                           
                         legends: legends,
                     });
+
+                    $scope.data.graphicColors[id] = colors;
+                    
                 });
             });
 
@@ -108,8 +116,13 @@
             });
             
             reportData.forEach(function(index){
-                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){                    
+                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
+
+                    var id = 'id-' + index.identifier;
+                    data.backgroundColor = $scope.data.graphicColors[id];
+
                     $scope.graficGenerate(data, index.configGrafic, index.identifier);
+
                 });
             });
         });
@@ -193,7 +206,7 @@
             
             var divDinamic = !identifier ? "-" : "-"+identifier
             var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
-            
+
             document.querySelector('.dinamic-grafic'+divDinamic).style.height = 'auto';
             
             
