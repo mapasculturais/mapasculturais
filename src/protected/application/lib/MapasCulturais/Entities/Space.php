@@ -7,8 +7,17 @@ use MapasCulturais\App;
 
 /**
  * Space
- * @property-read \MapasCulturais\Entities\Agent $owner The owner of this space
- *
+ * 
+ * @property-read int $id
+ * @property string $name
+ * @property boolean $public
+ * @property string $shortDescription
+ * @property string $longDescription
+ * @property int $status
+ * @property-read \DateTime $createTimestamp
+ * @property-read \DateTime $updateTimestamp
+ * @property-read \MapasCulturais\Entities\EventOccurrence[] $eventOccurrences
+ * 
  * @ORM\Table(name="space")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Space")
@@ -34,6 +43,8 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityArchive,
         Traits\EntityRevision,
         Traits\EntityOpportunities;
+        
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer
