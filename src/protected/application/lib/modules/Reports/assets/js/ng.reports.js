@@ -220,12 +220,6 @@
                 options: {
                     responsive: true,
                     legend: false,
-                    layout: {
-                        padding: {                            
-                            top: 65,
-                            bottom: 30
-                        },
-                    },
                     plugins: {
                         datalabels: {     
                         display: false,
@@ -236,13 +230,6 @@
             
             var divDinamic = !identifier ? "-" : "-"+identifier
             var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
-            
-
-            document.querySelector('.dinamic-grafic'+divDinamic).style.height = 'auto';
-            
-            
-            ctx.canvas.width = 1000;
-            ctx.canvas.height = 300;
         
             if(MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic]){
                 MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic].destroy();
