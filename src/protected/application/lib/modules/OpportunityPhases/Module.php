@@ -196,12 +196,35 @@ class Module extends \MapasCulturais\Module{
     function _init () {
         $app = App::i();
 
+        $registration_repository = $app->repo('Registration');
+
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
+
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
         },1000);
 
+        $app->hook('entity(Registration).get(previousPhase)', function(&$value) use($registration_repository) {
+            if($this->previousPhaseRegistrationId) {
+                $value = $registration_repository->find($this->previousPhaseRegistrationId);
+            }
+        });
+
+        $app->hook('entity(Registration).get(nextPhase)', function(&$value) use($registration_repository) {
+            if ($this->nextPhaseRegistrationId) {
+                $value = $registration_repository->find($this->nextPhaseRegistrationId);
+            }
+        });
+
+        $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
+            $opportunity = $this->opportunity;
+
+            if ($opportunity->isOpportunityPhase) {
+                $first_phase = Module::getBaseOpportunity($opportunity);
+                $value = $registration_repository->findOneBy(['opportunity' => $first_phase, 'number' => $this->number]);
+            }
+        });
 
         // registra os metadados das inscrićões das fases anteriores
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
