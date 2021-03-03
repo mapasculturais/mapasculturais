@@ -110,9 +110,7 @@ class Registration extends EntityController {
                 return;
             }
 
-            $opportunity = $registration->opportunity;
-           
-            $this->registerRegistrationMetadata($opportunity);
+            $registration->registerFieldsMetadata();
             
         });
         //Dados recebido vindo da criação do formulário quando seleciona opção do espaço
@@ -205,62 +203,7 @@ class Registration extends EntityController {
     }
 
     function registerRegistrationMetadata(\MapasCulturais\Entities\Opportunity $opportunity){
-       
-        $app = App::i();
-        
-        if($opportunity->projectName){
-           
-            $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
-            
-            $metadata = new Definitions\Metadata('projectName', $cfg);
-            $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
-        }
-        
-        foreach($opportunity->registrationFieldConfigurations as $field){
-
-            $cfg = [
-                'label' => $field->title,
-                'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
-                'private' => true,
-                'registrationFieldConfiguration' => $field
-            ];
-
-            $def = $field->getFieldTypeDefinition();
-            
-            if($def->requireValuesConfiguration){
-                $cfg['options'] = $field->fieldOptions;
-            }
-
-            if(is_callable($def->serialize)){
-                $cfg['serialize'] = $def->serialize;
-            }
-
-            if(is_callable($def->unserialize)){
-                $cfg['unserialize'] = $def->unserialize;
-            }
-
-            if($def->defaultValue){
-                $cfg['default_value'] = $def->defaultValue;
-            }
-
-            if($def->validations){
-                $cfg['validations'] = $def->validations;
-            } else {
-                $cfg['validations'] = [];
-            }
-            
-            if($field->required){
-                $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
-            }
-
-            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
-
-
-            $metadata = new Definitions\Metadata($field->fieldName, $cfg);
-
-            $app->registerMetadata($metadata, 'MapasCulturais\Entities\Registration');
-        }
-        
+        $opportunity->registerRegistrationMetadata();
     }
     
     function getPreviewEntity(){
