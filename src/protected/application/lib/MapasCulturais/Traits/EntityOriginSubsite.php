@@ -3,6 +3,11 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @property-read string $originSiteUrl
+ * @property \MapasCulturais\Entities\Subsite $subsite
+ * @property-read int $subsiteId
+ */
 trait EntityOriginSubsite{
 
     static function usesOriginSubsite(){

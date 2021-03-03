@@ -1,6 +1,9 @@
 <?php
 namespace MapasCulturais\Traits;
 
+/**
+ * @property-read \MapasCulturais\Entities\File $avatar
+ */
 trait EntityAvatar{
     
     protected $_avatar;
