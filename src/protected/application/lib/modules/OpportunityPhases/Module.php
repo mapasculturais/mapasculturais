@@ -226,6 +226,14 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $metadata_key) use($app) {
+            
+            while(!$value && $this->previousPhase) {
+                $this->previousPhase->registerFieldsMetadata();
+                $value = $this->previousPhase->$metadata_key;
+            }
+        });
+
         // registra os metadados das inscrićões das fases anteriores
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
