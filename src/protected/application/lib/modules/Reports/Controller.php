@@ -850,7 +850,7 @@ class Controller extends \MapasCulturais\Controller
                 "data" => []
             ];
             foreach ($times as $time) {
-                $current[] = $series[$label][$time] ?? 0;
+                $current['data'][] = $series[$label][$time] ?? 0;
             }
             $outLines[] = $label;
             $outSeries[] = $current;

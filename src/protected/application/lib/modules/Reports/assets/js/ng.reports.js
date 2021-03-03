@@ -57,6 +57,7 @@
         });
 
         ReportsService.createHtmlLegends({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
+           
 
             var reportData = data.map(function(item, index){
                 return {                        
@@ -78,14 +79,23 @@
                     
                     var id = 'id-' + index.identifier;
                     var colors = [];
-
-                    var legends = data.labels.map(function(item,index){
-                        colors.push(data.backgroundColor[index]);
-                        return {
-                            color: data.backgroundColor[index],
-                            value: item
-                        };
-                    });
+                    if(data.typeGrafic == "line"){
+                        
+                        var legends = data.series.map(function(item,index){
+                            return {
+                                color: item.colors,
+                                value: item.label
+                            };
+                        });
+                    }else{
+                        var legends = data.labels.map(function(item,index){
+                            colors.push(data.backgroundColor[index]);
+                            return {
+                                color: data.backgroundColor[index],
+                                value: item
+                            };
+                        });
+                    }
                     
                     $scope.data.loadingGrafics.push({
                         title:index.configGrafic.title,
@@ -102,6 +112,7 @@
         });
 
         ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
+
             var reportData = data.map(function(item, index){
                 return {                        
                     identifier: item.identifier,
@@ -174,21 +185,37 @@
             
         }
 
-        $scope.graficGenerate = function(reportData, configGrafic = false, identifier = false) {     
-
+        $scope.graficGenerate = function(reportData, configGrafic = false, identifier = false) {  
+               
             $scope.data.reportData.titleDinamicGrafic =  configGrafic.title ?? $scope.data.reportData.title;
+            
+            if(reportData.typeGrafic == "line"){
+                var serie = reportData.series.map(function (item, index){
+                    return {
+                        label: item.label,
+                        backgroundColor: item.colors,
+                        borderColor:item.colors,
+                        type: item.type,
+                        fill: item.fill,
+                        data: item.data
+                    }
+                })
+                var _datasets = serie;               
+            }else{
+                var _datasets = [{
+                    label: '# of Votes',
+                    data: reportData.data,
+                    backgroundColor: reportData.backgroundColor,
+                    borderColor: reportData.backgroundColor,
+                    borderWidth: false
+                }];
+            }
 
             var config = {
                 type: reportData.typeGrafic,
                 data: {
                     labels: reportData.labels,
-                    datasets: [{
-                        label: '# of Votes',
-                        data: reportData.data,
-                        backgroundColor: reportData.backgroundColor,
-                        borderColor: reportData.backgroundColor,
-                        borderWidth: false
-                    }]
+                    datasets: _datasets
                 },
                 options: {
                     responsive: true,
@@ -209,6 +236,7 @@
             
             var divDinamic = !identifier ? "-" : "-"+identifier
             var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
+            
 
             document.querySelector('.dinamic-grafic'+divDinamic).style.height = 'auto';
             
