@@ -11,7 +11,7 @@ use MapasCulturais\i;
 <div class="chart-wrap" ng-repeat="grafic in data.loadingGrafics">
     
         <header>
-            <h3>Titulo</h3>
+            <h3>{{grafic.title}}</h3>
             <a href="" name="{{grafic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
         </header>
         <div class="chart-container dinamic-grafic-{{grafic.identifier}}" style="position: relative; height:200px; width:100%;">
