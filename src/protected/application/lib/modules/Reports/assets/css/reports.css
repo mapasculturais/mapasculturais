@@ -1,6 +1,7 @@
 #reports div{
     overflow: hidden;
 }
+
 .charts-static .line .line-one{    
     width: 100%;
 }
@@ -24,6 +25,10 @@
 .charts-static .pie .line-three > div {
     width: 100%;
     margin-bottom: 20px;
+}
+
+.charts-dynamic {
+    border-top: 1px solid #888888;
 }
 
 /* Chart wrap */
