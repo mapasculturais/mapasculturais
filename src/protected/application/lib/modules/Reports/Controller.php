@@ -465,7 +465,7 @@ class Controller extends \MapasCulturais\Controller
         $app = App::i();
 
         $reportData = $this->data['reportData'];
-
+              
         $opp = $app->repo("Opportunity")->find($reportData['opportunity_id']);
 
         $value = "";
@@ -473,8 +473,6 @@ class Controller extends \MapasCulturais\Controller
         foreach ($reportData['columns'] as $v){
             $value .= $v['value'];
             $source .= is_array($v['source']) ? implode(",",$v['source']) : $v['source'];
-        
-
         }
 
         $identifier = md5($reportData['opportunity_id'] . "-" . $reportData['typeGrafic'] . "-" . $source . "-" . $value);
@@ -651,6 +649,9 @@ class Controller extends \MapasCulturais\Controller
         if ($type == "valueToString") {
             return $evalMethod->valueToString($value);
         }
+        if ($type == "status") {
+            return $this->statusToString($value);
+        }
         return $value;
     }
 
@@ -676,7 +677,7 @@ class Controller extends \MapasCulturais\Controller
         if (!empty($opportunity->registrationCategories)) {
             $fields[] = $this->fieldDefinition(i::__("Categoria"), "category", "r");
         }
-        $fields[] = $this->fieldDefinition(i::__("Status"), "status", "r");
+        $fields[] = $this->fieldDefinition(i::__("Status"), "status", "r", 'status');
         $fields[] = $this->fieldDefinition(i::__("Avaliação"), "consolidated_result", "r", "valueToString");
         foreach ($opportunity->registrationFieldConfigurations as $value) {
             if ($value->fieldType == "select") {
@@ -766,6 +767,36 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         return App::i()->repo("Opportunity")->find($request["opportunity_id"]);
     }
+
+    /**
+     * Retorna o status em forma de string
+     */
+
+     private function statusToString($value)
+     {
+        switch ($value) {
+            case 0:
+                $status = "Rascunho";
+                break;
+            case 1:
+                $status = "Pendente";
+                break;
+            case 2:
+                $status = "Inválida";
+                break;
+            case 3:
+                $status = "Não Selecionada";
+                break;
+            case 8:
+                $status = "Suplente";
+                break;
+            case 10:
+                $status = "Selecionada";
+                break;
+        }
+
+        return $status;
+     }
 
     /**
      * Gera o CSV

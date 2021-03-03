@@ -55,7 +55,9 @@
                 }                
             });
         });
+
         ReportsService.createHtmlLegends({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
+
             var reportData = data.map(function(item, index){
                 return {                        
                     identifier: item.identifier,
@@ -71,7 +73,6 @@
                     },
                 }
             });
-            
             reportData.forEach(function(index){
                 ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
                     
@@ -87,6 +88,8 @@
                     });
                     
                     $scope.data.loadingGrafics.push({
+                        title:index.configGrafic.title,
+                        description: index.configGrafic.description,
                         identifier: index.identifier,                           
                         legends: legends,
                     });
