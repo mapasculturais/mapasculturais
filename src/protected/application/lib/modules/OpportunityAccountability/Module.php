@@ -16,57 +16,81 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         // impede que a fase de prestação de contas seja considerada a última fase da oportunidade
-        $app->hook('entity(Opportunity).getLastPhase:params', function(Opportunity $base_opportunity, &$params) {
+        $app->hook('entity(Opportunity).getLastCreatedPhase:params', function(Opportunity $base_opportunity, &$params) {
             $params['isAccountabilityPhase'] = 'NULL()';
         });
 
         // na publicação da última fase, cria os projetos
-        $app->hook('entity(ProjectOpportunity).publishRegistration', function (Registration $registration) use($app) {
-            $last_phase = PhasesModule::getLastPhase($this);
+        $app->hook('entity(Opportunity).publishRegistration', function (Registration $registration) use($app) {
+            if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
+                return;
+            }
+
+            $last_phase = PhasesModule::getLastCreatedPhase($this);
             
             if (!$this->equals($last_phase)) {
                 return;
             }
 
-            // se não usa o campo nome do projeto, não criar projeto para prestação de conta
-            if (!$this->projectName) {
-                return;
-            }
-            
             $project = new Project;
-            $project->parent = $this->ownerEntity;
-            $project->name = $registration->projectName;
+            $project->status = 0;
+            $project->type = 0;
+            $project->name = $registration->projectName ?: ' ';
+            $project->parent = $app->repo('Project')->find($this->ownerEntity->id);
             $project->isAccountability = true;
             $project->owner = $registration->owner;
-            $project->accountabilityRegistrationId = $registration->id;
+            
+            $project->registration = $registration;
+            $project->opportunity = $this; 
 
             $project->save(true);
+
+            $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
         });
     }
 
     function register()
     {
+        $app = App::i();
+        $project_repository = $app->repo('Project');
+        $registration_repository = $app->repo('Registration');
+
         $this->registerProjectMetadata('isAccountability', [
             'label' => i::__('Indica que o projeto é vinculado à uma inscrição aprovada numa oportunidade'),
             'type' => 'boolean',
             'default' => false
         ]);
 
-        $this->registerProjectMetadata('accountabilityOpportunityId', [
-            'label' => i::__('Id da oportunidade'),
-            'type' => 'numeric'
+        $this->registerProjectMetadata('opportunity', [
+            'label' => i::__('Oportunidade da prestação de contas vinculada a este projeto'),
+            'type' => 'Opportunity',
+            'serialize' => function (Opportunity $opportunity) {
+                return $opportunity->id;
+            },
+            'unserialize' => function ($opportunity_id) use($project_repository) {
+                if ($opportunity_id) {
+                    return $project_repository->find($opportunity_id);
+                } else {
+                    return null;
+                }
+            }
         ]);
 
-        $this->registerProjectMetadata('accountabilityRegistrationNumber', [
-            'label' => i::__('Número da inscrição que originou o projeto'),
-            'type' => 'string',
-        ]);
-
-        $this->registerProjectMetadata('accountabilityRegistrationId', [
-            'label' => i::__('Id da inscrição da prestação de contas'),
+        $this->registerProjectMetadata('registration', [
+            'label' => i::__('Inscrição da oportunidade da prestação de contas vinculada a este projeto (primeira fase)'),
             'type' => 'number',
-            'private' => true
+            'private' => true,
+            'serialize' => function (Registration $registration) {
+                return $registration->id;
+            },
+            'unserialize' => function ($registration_id) use($registration_repository) {
+                if ($registration_id) {
+                    return $registration_repository->find($registration_id);
+                } else {
+                    return null;
+                }
+            }
         ]);
 
         $this->registerOpportunityMetadata('isAccountabilityPhase', [
