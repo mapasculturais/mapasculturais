@@ -727,10 +727,13 @@ abstract class Entity implements \JsonSerializable{
                 }
             }
             $this->refresh();
-            if($is_new){
-                $this->_newCreatedRevision();
-            } else {
-                $this->_newModifiedRevision();
+
+            if($this->usesRevision()) {
+                if($is_new){
+                    $this->_newCreatedRevision();
+                } else {
+                    $this->_newModifiedRevision();
+                }
             }
 
             // delete the entity cache

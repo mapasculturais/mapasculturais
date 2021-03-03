@@ -1410,6 +1410,10 @@ $$
             WHERE
                 object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
                 has_control IS false");
+    },
+
+    'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
+        __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
     }
 
 ] + $updates ;
