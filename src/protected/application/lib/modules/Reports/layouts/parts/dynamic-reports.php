@@ -20,11 +20,9 @@ use MapasCulturais\i;
         </div>
 
         <footer>
-            <div class="legends-chats">
-                <div class="each" ng-repeat="legend in grafic.legends">
-                    <span class="dot" style="background-color: {{legend.color}}"></span>
-                    <p>{{legend.value}}</p>
-                </div>
+            <div class="legends-chats" id="dinamic-legends-{{grafic.identifier}}">
+                
+                   
             </div>
         </footer>
 
