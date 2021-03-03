@@ -109,19 +109,23 @@
     margin-bottom: 0;
 }
 
-/* Chart footer/legends/line */
-#reports .chart-wrap .chart-line + footer {
+/* Chart footer/legends/line /bar */
+#reports .chart-wrap .chart-line + footer,
+#reports .chart-wrap .chart-bar + footer {
     width: 100%;
 }
 
-#reports .chart-wrap .chart-line + footer .legends-chats {
+#reports .chart-wrap .chart-line + footer .legends-chats,
+#reports .chart-wrap .chart-bar + footer .legends-chats {
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
 }
 
-#reports .chart-wrap .chart-line + footer .legends-chats .each {
+#reports .chart-wrap .chart-line + footer .legends-chats .each,
+#reports .chart-wrap .chart-bar + footer .legends-chats .each {
     padding: 0 15px;
-    width: auto;
+    width: 33.3333%;
 }
 
 /*Title*/

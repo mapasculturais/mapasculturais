@@ -100,7 +100,8 @@
                     $scope.data.loadingGrafics.push({
                         title:index.configGrafic.title,
                         description: index.configGrafic.description,
-                        identifier: index.identifier,                           
+                        identifier: index.identifier,
+                        type: data.typeGrafic,                           
                         legends: legends,
                     });
 

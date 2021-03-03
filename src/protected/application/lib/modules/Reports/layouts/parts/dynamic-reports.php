@@ -15,7 +15,7 @@ use MapasCulturais\i;
             <h3>{{grafic.title}}</h3>
             <a href="" name="{{grafic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
         </header>
-        <div class="chart-container dinamic-grafic-{{grafic.identifier}}" style="position: relative; height:auto; width:60%;">
+        <div class="chart-container dinamic-grafic-{{grafic.identifier}} chart-{{grafic.type}}" style="position: relative; height:auto;" ng-style="{'width': (grafic.type == 'pie') ? '60%' : '100%'}">
             <canvas id="dinamic-grafic-{{grafic.identifier}}"></canvas>
         </div>
 
