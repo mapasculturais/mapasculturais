@@ -5,7 +5,7 @@ use MapasCulturais\i;
 ?>
 
 <div class="charts-dynamic">
-    <div class="chart-wrap" ng-style="{'height': (data.creatingGraph) ? 'auto' : '0'}">
+    <div class="chart-wrap" style="height: 'auto'" ng-style="{'display': (data.creatingGraph) ? 'block' : 'none'}">
         <header>
             <h3>{{data.reportData.titleDinamicGrafic}}</h3>
             <a href="" name="" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
