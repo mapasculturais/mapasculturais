@@ -18,12 +18,12 @@ foreach ($data as $key => $value) {
     if ($key == i::__('Rascunho')) {
         $values[0] = $value;
         $colors[0] = is_callable($color) ? $color() : $color;
-        $legends[0] = i::__('Rascunhos') . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 0, '.', '') . '%)';
+        $legends[0] = i::__('Rascunhos') . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 2, '.', '') . '%)';
     } else {
         $count = ($count + $value);
         $values[1] = $count;
         $colors[1] = is_callable($color) ? $color() : $color;
-        $legends[1] = i::__('Enviadas') . '<br>' . $count . ' (' . number_format(($count / $total) * 100, 0, '.', '') . '%)';
+        $legends[1] = i::__('Enviadas') . '<br>' . $count . ' (' . number_format(($count / $total) * 100, 2, '.', '') . '%)';
     }
 
 }
