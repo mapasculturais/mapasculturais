@@ -206,12 +206,9 @@
             var divDinamic = !identifier ? "-" : "-"+identifier
 
             var legends = document.getElementById("dinamic-legends"+divDinamic);
-      
-            console.log(divDinamic)
-
+            
             if(reportData.typeGrafic == "line"){
                 reportData.series.map(function(item,index){
-                    // console.log(index)
                     var span = document.createElement("span");
                     var p = document.createElement("p");
                     var each = document.createElement("div");
@@ -224,19 +221,20 @@
                     legends.appendChild(each);
                     each.appendChild(span);
                     each.appendChild(p);
-
-                   
                 });
 
             }else{
+                var sum = 0;
                 reportData.labels.map(function(item,index){
-                    // console.log(reportData.data[index])
+                    var sum = $scope.sumData(reportData);
+                    var value = reportData.data[index];
+                    console.log()
                     var span = document.createElement("span");
                     var p = document.createElement("p");
                     var each = document.createElement("div");
 
                     span.style.backgroundColor = reportData.backgroundColor[index];
-                    p.textContent = item;
+                    p.innerHTML += item +'<br>'+ value + " ("+ ((value/sum)*100).toFixed(2)+"%)";
                     
                     span.classList.add("dot");
                     each.classList.add("each");
@@ -245,8 +243,6 @@
                     each.appendChild(p);
                 });
             }
-        
-
             var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
         
             if(MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic]){
@@ -258,10 +254,20 @@
 
             if(!identifier){
                 ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
-                    // $scope.clearModal();
+                    $scope.clearModal();
                     $scope.data.creatingGraph = true;
                 });
             }
+           
+        }
+
+        $scope.sumData = function(reportData){
+            var sum = 0;
+            reportData.data.forEach(function(item){
+                sum += item;
+            })
+
+            return sum;
            
         }
 
