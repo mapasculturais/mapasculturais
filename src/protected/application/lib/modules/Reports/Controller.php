@@ -452,7 +452,10 @@ class Controller extends \MapasCulturais\Controller
 
         $return = [];
         foreach ($metalist as $data){
-            $return[] = json_decode($data->value);
+            $return[] = [
+                'id' => $data->id,
+                'value' => json_decode($data->value)
+            ];
         }
 
         $this->apiResponse($return);
