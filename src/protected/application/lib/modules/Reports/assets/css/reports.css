@@ -29,6 +29,7 @@
 
 .charts-dynamic {
     border-top: 1px solid #888888;
+    padding-top: 45px;
 }
 
 /* Chart wrap */
@@ -167,7 +168,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1200;
+    z-index: 1800;
 }
 .reports-modal {
     background-color: #fff;
