@@ -60,51 +60,50 @@
         });
 
         ReportsService.createHtmlLegends({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
-           
-
             var reportData = data.map(function(item, index){
                 return {                        
-                    identifier: item.identifier,
+                    identifier: item.value.identifier,
                     configGrafic:{
-                        title: item.reportData.title,
-                        description: item.reportData.description,
-                        opportunity_id: item.reportData.opportunity_id,
+                        graficId:item.id,
+                        title: item.value.reportData.title,
+                        description: item.value.reportData.description,
+                        opportunity_id: item.value.reportData.opportunity_id,
                     },
                     reportData:{                           
-                        graficType: item.reportData.typeGrafic,
-                        dataA: item.reportData.columns[0], 
-                        dataB: item.reportData.columns[1],                             
+                        graficType: item.value.reportData.typeGrafic,
+                        dataA: item.value.reportData.columns[0], 
+                        dataB: item.value.reportData.columns[1],                             
                     },
                 }
             });
+
             reportData.forEach(function(index){
-                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){ 
+                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
                     $scope.data.loadingGrafics.push({
+                        graficId:index.configGrafic.graficId,
                         title:index.configGrafic.title,
                         description: index.configGrafic.description,
                         identifier: index.identifier,
                         type: data.typeGrafic,                           
                     });
-                    
                 });
             });
-
         });
 
         ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
-
             var reportData = data.map(function(item, index){
                 return {                        
-                    identifier: item.identifier,
+                    identifier: item.value.identifier,
                     configGrafic:{
-                        title: item.reportData.title,
-                        description: item.reportData.description,
-                        opportunity_id: item.reportData.opportunity_id,
+                        graficId:item.id,
+                        title: item.value.reportData.title,
+                        description: item.value.reportData.description,
+                        opportunity_id: item.value.reportData.opportunity_id,
                     },
                     reportData:{                           
-                        graficType: item.reportData.typeGrafic,
-                        dataA: item.reportData.columns[0], 
-                        dataB: item.reportData.columns[1],                            
+                        graficType: item.value.reportData.typeGrafic,
+                        dataA: item.value.reportData.columns[0], 
+                        dataB: item.value.reportData.columns[1],                            
                     },
                 }
             });
@@ -173,6 +172,7 @@
                         data: item.data
                     }
                 })
+
                 var _datasets = serie;               
             }else{
                 var _datasets = [{
@@ -196,9 +196,9 @@
                     legend: false,
                     plugins: {
                         datalabels: {     
-                        display: false,
+                            display: false,
+                        }
                     }
-                }
                 }
             };
             $scope.data.legends = [];
