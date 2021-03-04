@@ -261,6 +261,24 @@
            
         }
 
+        $scope.deleteGraphic = function(data) {
+
+            if (!confirm("Você tem certeza que deseja deletar esse gráfico?")) {
+                return;
+            }
+
+            ReportsService.remove(data).success(function(data){
+
+                $scope.data.loadingGrafics = $scope.data.loadingGrafics.filter(function(item) {
+                    if (item.graficId != data) return item;
+                });
+
+                MapasCulturais.Messages.success("Gráfico deletado com sucesso");
+                
+            });
+            
+        }
+
         $scope.sumData = function(reportData){
             var sum = 0;
             reportData.data.forEach(function(item){
@@ -346,6 +364,18 @@
                 error(function (data, status) {
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
+            },
+            remove: function (data) {
+
+                var url = MapasCulturais.createUrl('reports', 'deleteGraphic', { opportunity_id: MapasCulturais.entity.id, graphic_id: data });
+                
+                return $http.delete(url).
+                    success(function (data, status, headers) {
+                        $rootScope.$emit('reports.remove', { message: "Reports deleted", data: data, status: status });
+                    }).error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Reports not deleted for this opportunity", data: data, status: status });
+                    });
+
             }
         };
     }]);

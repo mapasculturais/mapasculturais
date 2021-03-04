@@ -554,6 +554,29 @@ class Controller extends \MapasCulturais\Controller
         $this->apiResponse($return);
     }
 
+    public function DELETE_deleteGraphic() {
+
+        $this->requireAuthentication();
+        
+        $app = App::i();
+
+        $graphic_id = $this->data['graphic_id'];
+        $opportunity = $this->data['opportunity_id'];
+
+        $params = ['id' => $graphic_id, 'objectId' => $opportunity, "group" => "reports"];
+        $metalist = $app->repo("MetaList")->findOneBy($params);
+        
+        $return = false;
+       
+        if ($metalist) {
+            $return = $graphic_id;
+            $metalist->delete(true);
+        }
+
+        $this->apiResponse($return);
+
+    }
+
     private function buildQuery($data, $op, $timeline=false)
     {
         // map front-end names back to real table names
