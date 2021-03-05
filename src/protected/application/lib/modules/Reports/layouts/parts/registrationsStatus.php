@@ -21,7 +21,7 @@ $total = array_sum($total);
 foreach ($data as $key => $value) {
     if ($key != i::__('Rascunho')) {
         $label[] = $key;
-        $legends[] = $key . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 0, '.', '') . '%)';
+        $legends[] = $key . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 2, '.', '') . '%)';
         $values[] = $value;
         $colors[] = is_callable($color) ? $color() : $color;
     }

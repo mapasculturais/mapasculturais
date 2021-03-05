@@ -54,7 +54,7 @@ if ($dataOportunity[0]->owner->type == 'technical') {
                 $status = i::__('Não avaliada');
             }
             $label[] = $status;
-            $legends[] = $status . '<br>' . $v . ' (' . number_format(($v / $total) * 100, 0, '.', '') . '%)';
+            $legends[] = $status . '<br>' . $v . ' (' . number_format(($v / $total) * 100, 2, '.', '') . '%)';
             $values[] = $v;
             $colors[] = is_callable($color) ? $color() : $color;
         }
