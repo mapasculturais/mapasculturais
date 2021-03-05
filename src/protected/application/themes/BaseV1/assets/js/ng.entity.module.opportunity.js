@@ -348,6 +348,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         title: null,
         description: null,
         maxSize: null,
+        mask: null,
+        maskOptions: null,
         required: false,
         categories: []
     };
@@ -520,6 +522,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 config: model.config,
                 description: model.description,
                 maxSize: model.maxSize,
+                mask: model.mask,
+                maskOptions: model.maskOptions,
                 required: model.required,
                 categories: model.categories.length ? model.categories : '',
 
@@ -876,7 +880,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         
         delete field.error;
         $timeout.cancel(timeouts['entity_' + field.fieldName]);
-        
+
+        $('#registration-btn-send').hide();
+        $('#registration-form-loading').show();
+
         timeouts['entity_' + field.fieldName] = $timeout(function(){
             field.unchangedFieldJSON = JSON.stringify(value);
 
@@ -889,12 +896,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 .success(function(){
                     $scope.removeFieldErrors(field.fieldName);
                     delete field.error;
+
+                    $('#registration-btn-send').show();
+                    $('#registration-form-loading').hide();
                 })
                 .error(function(r) {
                     if (Array.isArray(Object.values(r.data)) && Object.values(r.data).lenght != 0 ){
                         field.error = [Object.values(r.data).join(', ')]
                         $scope.entityErrors[field.fieldName] = field.error
                     }
+
+                    $('#registration-btn-send').show();
+                    $('#registration-form-loading').hide();
                 });
         },delay);
     }
@@ -936,7 +949,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             var $this = jQuery(this);
 
             if (!$this.data('js-mask-init')) {
-                $this.mask($this.attr('js-mask'));
+                if(!$this.attr('js-mask-options'))
+                    $this.mask($this.attr('js-mask'));
+                else
+                    $this.mask($this.attr('js-mask'),JSON.parse($this.attr('js-mask-options')));
+
                 $this.data('js-mask-init', true);
             }
         });
