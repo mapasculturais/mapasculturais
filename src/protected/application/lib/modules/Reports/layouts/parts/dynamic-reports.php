@@ -9,6 +9,7 @@ use MapasCulturais\i;
         <header>
         <h3>{{graphic.reportData.title}}</h3>
             <a href="" name="{{graphic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
+            <button ng-click='deleteGraphic(graphic.reportData.graphicId)'><?php i::_e('Excluir'); ?></button>
         </header>
         <div class="chart-container dinamic-graphic-{{graphic.identifier}} chart-{{graphic.reportData.typeGrafic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.reportData.typeGrafic == 'pie') ? '60%' : '100%'}">
             <canvas id="dinamic-graphic-{{graphic.identifier}}"></canvas>
