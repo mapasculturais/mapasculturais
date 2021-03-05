@@ -456,16 +456,16 @@ class Controller extends \MapasCulturais\Controller
             $params = ['objectId' => $opp->id, "group" => "reports"];
     
             $metalists = $app->repo("MetaList")->findBy($params);
-    
-            
+          
             foreach ($metalists as $metalist){
-                $value = json_decode($metalist->value, true);                
+                $value = json_decode($metalist->value, true);
+                $value['reportData']['graphicId'] = $metalist->id;
                 $value['data'] = $this->getData($value['reportData'], $opp);
                 $return[] = $value;
-
+                
             }
         }else{
-           
+
             $return =  $this->getData($request['reportData'], $opp);
             
         }
@@ -514,6 +514,9 @@ class Controller extends \MapasCulturais\Controller
         $metaList->group = 'reports';
         $metaList->title = 'Grafico' ;
         $metaList->save(true);
+
+        $this->apiResponse($metaList->id);
+
     }
 
     public function ALL_dataOpportunityReport()
@@ -562,22 +565,21 @@ class Controller extends \MapasCulturais\Controller
         return $return;
     }
 
-    public function DELETE_deleteGraphic() {
+    public function DELETE_graphic() {
 
         $this->requireAuthentication();
         
         $app = App::i();
 
-        $graphic_id = $this->data['graphic_id'];
-        $opportunity = $this->data['opportunity_id'];
+        $graphicId = $this->data['graphicId'];
 
-        $params = ['id' => $graphic_id, 'objectId' => $opportunity, "group" => "reports"];
+        $params = ['id' => $graphicId, "group" => "reports"];
         $metalist = $app->repo("MetaList")->findOneBy($params);
         
         $return = false;
        
         if ($metalist) {
-            $return = $graphic_id;
+            $return = $graphicId;
             $metalist->delete(true);
         }
 

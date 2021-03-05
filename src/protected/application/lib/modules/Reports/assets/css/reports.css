@@ -50,6 +50,7 @@
 }
 
 #reports .chart-wrap header button {
+    cursor: pointer;
     float: right;
 }
 

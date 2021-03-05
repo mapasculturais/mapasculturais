@@ -83,14 +83,17 @@
             }
 
             ReportsService.loading({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
-            
-                $scope.data.loadingGrafics.push({
+                
+                var length = $scope.data.loadingGrafics.push({
                     reportData: reportData,
                     identifier: Math.random().toString(36).substr(2, 9),
-                    data: data, 
-                   
+                    data: data
                 });
-                ReportsService.save({reportData: reportData}).success(function (data, status, headers){  
+
+                ReportsService.save({reportData: reportData}).success(function (data, status, headers){
+                    length = length - 1;
+                    $scope.data.loadingGrafics[length].reportData.graphicId = data;
+
                     $scope.clearModal();
                     $scope.data.creatingGraph = true;
                 });
@@ -153,6 +156,23 @@
                     MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic] = new Chart(ctx, config);
                 },2000);
             });
+        }
+
+        $scope.deleteGraphic = function (id) {
+
+            if (!confirm("Você tem certeza que deseja deletar esse gráfico?")) {
+                return;
+            }
+
+            ReportsService.delete(id).success(function () {
+
+                $scope.data.loadingGrafics = $scope.data.loadingGrafics.filter(function (item) {
+                    if (item.reportData.graphicId != id) return item;
+                });
+
+                MapasCulturais.Messages.success("Gráfico deletado com sucesso");
+            });
+
         }
 
         $scope.sumData = function(reportData){
@@ -234,18 +254,17 @@
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
             },
-            remove: function (data) {
+            delete: function (data) {
 
-                var url = MapasCulturais.createUrl('reports', 'deleteGraphic', { opportunity_id: MapasCulturais.entity.id, graphic_id: data });
+                var url = MapasCulturais.createUrl('reports', 'graphic', {'graphicId': data});
                 
-                return $http.delete(url).
+                return $http.delete(url, data).
                     success(function (data, status, headers) {
                         $rootScope.$emit('reports.remove', { message: "Reports deleted", data: data, status: status });
                     }).error(function (data, status) {
                         $rootScope.$emit('error', { message: "Reports not deleted for this opportunity", data: data, status: status });
                     });
-
-            }
+            },
             
         };
     }]);
