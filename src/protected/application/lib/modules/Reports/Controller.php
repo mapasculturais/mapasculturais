@@ -441,22 +441,35 @@ class Controller extends \MapasCulturais\Controller
     public function POST_loadingGrafic()
     {
         $this->requireAuthentication();
-
+    
         $opp = $this->getOpportunity();
 
         $app = App::i();
 
-        $params = ['objectId' => $opp->id, "group" => "reports"];
-
-        $metalist = $app->repo("MetaList")->findBy($params);
-
         $return = [];
-        foreach ($metalist as $data){
-            $return[] = [
-                'id' => $data->id,
-                'value' => json_decode($data->value)
-            ];
+
+        $request = $this->data;
+        
+       
+        if(!(isset($request['reportData']))){
+            
+            $params = ['objectId' => $opp->id, "group" => "reports"];
+    
+            $metalists = $app->repo("MetaList")->findBy($params);
+    
+            
+            foreach ($metalists as $metalist){
+                $value = json_decode($metalist->value, true);                
+                $value['data'] = $this->getData($value['reportData'], $opp);
+                $return[] = $value;
+
+            }
+        }else{
+           
+            $return =  $this->getData($request['reportData'], $opp);
+            
         }
+        
 
         $this->apiResponse($return);
     }
@@ -512,18 +525,14 @@ class Controller extends \MapasCulturais\Controller
         $this->apiResponse($this->getValidFields($opportunity));
     }
 
-    public function POST_createGrafic()
+    public function getData($reportData, $opp)
     {
-        $this->requireAuthentication();
-        $opp = $this->getOpportunity();
         $em = $opp->getEvaluationMethod();
         $app = App::i();
-        $request = $this->data;
-        $reportData = $request["reportData"];
-        $dataA = $reportData["dataA"];
-        $dataB = $reportData["dataB"];
+        $dataA = $reportData['columns'][0];
+        $dataB = $reportData['columns'][1];
         $conn = $app->em->getConnection();
-        $query = $this->buildQuery($dataA, $opp, ($reportData["graficType"] == "line"));
+        $query = $this->buildQuery($dataA, $opp, ($reportData['typeGrafic'] == "line"));
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
         $return = [];
         $labels = [];
@@ -531,7 +540,7 @@ class Controller extends \MapasCulturais\Controller
         $data = [];
         // post-processing may be necessary depending on type, so obtain it
         $type = $dataA["source"]["type"] ?? "";
-        if ($reportData["graficType"] == "line") {
+        if ($reportData['typeGrafic'] == "line") {
             $return = $this->prepareTimeSeries($result, $type, $em);
             $return["opportunity"] = $opp->id;
             $return["typeGrafic"] = "line";
@@ -547,11 +556,10 @@ class Controller extends \MapasCulturais\Controller
                 "backgroundColor" => $color,
                 "borderWidth" => 0,
                 "data" => $data,
-                "typeGrafic" => $reportData["graficType"],
-                "period" => $this->getPeriod($opp->createTimestamp, "P1D")
+                "typeGrafic" => $reportData['typeGrafic'],
             ];
         }
-        $this->apiResponse($return);
+        return $return;
     }
 
     public function DELETE_deleteGraphic() {
@@ -698,7 +706,6 @@ class Controller extends \MapasCulturais\Controller
                 "dataDeNascimento",
             ],
         ];
-        //$dataOpportunity = $opportunity->getEvaluationCommittee();
         $fields = [];
         if (!empty($opportunity->registrationCategories)) {
             $fields[] = $this->fieldDefinition(i::__("Categoria"), "category", "r");
@@ -746,25 +753,7 @@ class Controller extends \MapasCulturais\Controller
             }
         }
     }
-
-    private function getPeriod($dateStart, $period)
-    {
-        $period = new \DatePeriod(
-            $dateStart,
-            new \DateInterval($period),
-            new \DateTime()
-        );
-
-        $return = [];
-
-        foreach ($period as $recurrence) {
-            $return[] =  $recurrence->format('Y-m-d');
-        }
-
-        return $return;
-
-    }
-
+    
     private function getRegistrationIds()
     {
         $opp = $this->getOpportunity();
