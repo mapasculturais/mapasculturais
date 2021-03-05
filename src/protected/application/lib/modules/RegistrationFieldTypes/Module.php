@@ -24,7 +24,7 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'rfc-datepicker', 'vendor/flatpickr.css');
         
         $app->hook('view.render(<<*>>):before', function () use ($app) {
-            $this->jsObject['assets']['fundo'] = $app->view->asset('img/loading.gif', false);
+            $this->jsObject['assets']['fundo'] = $app->view->asset('img/loading-registration.gif', false);
         });
         
 
