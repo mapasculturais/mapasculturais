@@ -105,7 +105,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
                         label: function(tooltipItem, data) {
                             var dataset = data['datasets'][0];
                             if (data['datasets'][0]['total'] > 0) {
-                                var percent = Math.round((dataset['data'][tooltipItem['index']] / data['datasets'][0]['total']) * 100)
+                                var percent = Number(Math.round((dataset['data'][tooltipItem['index']] / data['datasets'][0]['total']) * 100 + 'e2') + 'e-2');
                                 return ' ' + data['datasets'][0]['data'][tooltipItem['index']] + ' (' + percent + '%)';
                             } else {
                                 return ' ' + data['datasets'][0]['data'][tooltipItem['index']];

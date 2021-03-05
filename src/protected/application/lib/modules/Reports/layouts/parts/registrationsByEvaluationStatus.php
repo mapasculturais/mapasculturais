@@ -15,7 +15,7 @@ $total = array_sum(array_column($data, null));
 // Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
     $label[] = $key;
-    $legends[] = $key . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 0, '.', '') . '%)';
+    $legends[] = $key . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 2, '.', '') . '%)';
     $values[] = $value;
     $colors[] = is_callable($color) ? $color() : $color;
 }
