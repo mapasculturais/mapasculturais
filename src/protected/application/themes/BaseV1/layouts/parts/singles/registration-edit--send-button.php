@@ -4,7 +4,7 @@
         <p class="registration-help"><?php \MapasCulturais\i::_e("Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição.");?> <strong><?php \MapasCulturais\i::_e("Depois de enviada, não será mais possível editá-la.");?></strong></p>
         <a id="registration-btn-send" class="btn btn-primary" ng-click="sendRegistration()" rel='noopener noreferrer' style="width: 200px; height: 35px; font-size: 20px; display: block; vertical-align: middle; text-align: center; line-height: 35px; margin: auto;"><?php \MapasCulturais\i::_e("Enviar inscrição");?></a>
         <p id="registration-form-loading" class="registration-help" style="display:none; text-align:center;"> 
-            <img src="<?php $this->asset('img/loading.gif'); ?>" />
+            <img src="<?php $this->asset('img/loading-registration.gif'); ?>" />
             <br>
             <strong>Aguardando alterações na ficha de inscrição</strong>
         </p>
