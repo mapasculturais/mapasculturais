@@ -528,6 +528,11 @@ class Controller extends \MapasCulturais\Controller
         $this->apiResponse($this->getValidFields($opportunity));
     }
 
+    public function ALL_csvDynamicGraphic()
+    {
+        $this->apiResponse($this->data);
+    }
+
     public function getData($reportData, $opp)
     {
         $em = $opp->getEvaluationMethod();
@@ -837,6 +842,10 @@ class Controller extends \MapasCulturais\Controller
 
         $csv->output($fileName);
     }
+
+    
+
+   
 
     private function prepareTimeSeries($data, $type, $evalMethod)
     {
