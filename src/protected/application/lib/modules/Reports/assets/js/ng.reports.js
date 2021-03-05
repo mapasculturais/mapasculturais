@@ -30,9 +30,6 @@
             },
             typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
             loadingGrafics:[],
-            graphicColors: [],
-            legends: [],
-            type: ""
         };
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -59,80 +56,16 @@
             });
         });
 
-        ReportsService.createHtmlLegends({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
-           
-
-            var reportData = data.map(function(item, index){
-                return {                        
-                    identifier: item.identifier,
-                    configGrafic:{
-                        title: item.reportData.title,
-                        description: item.reportData.description,
-                        opportunity_id: item.reportData.opportunity_id,
-                    },
-                    reportData:{                           
-                        graficType: item.reportData.typeGrafic,
-                        dataA: item.reportData.columns[0], 
-                        dataB: item.reportData.columns[1],                             
-                    },
-                }
-            });
-            reportData.forEach(function(index){
-                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){ 
-                    $scope.data.loadingGrafics.push({
-                        title:index.configGrafic.title,
-                        description: index.configGrafic.description,
-                        identifier: index.identifier,
-                        type: data.typeGrafic,                           
-                    });
-                    
-                });
-            });
-
-        });
-
-        ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
-
-            var reportData = data.map(function(item, index){
-                return {                        
-                    identifier: item.identifier,
-                    configGrafic:{
-                        title: item.reportData.title,
-                        description: item.reportData.description,
-                        opportunity_id: item.reportData.opportunity_id,
-                    },
-                    reportData:{                           
-                        graficType: item.reportData.typeGrafic,
-                        dataA: item.reportData.columns[0], 
-                        dataB: item.reportData.columns[1],                            
-                    },
-                }
-            });
-            
-            reportData.forEach(function(index){
-                ReportsService.create({reportData: index.reportData}).success(function (data, status, headers){
-                    $scope.graficGenerate(data, index.configGrafic, index.identifier);
-                });
-            });
+        ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){            
+            $scope.data.loadingGrafics = data;
+            $scope.graficGenerate();
         });
         
         $scope.createGrafic = function() {
-
-            if(!($scope.data.reportData.title) || !($scope.data.reportData.description)){
-                MapasCulturais.Messages.error("Defina um título e uma descrição para esse gráfico");                
-                return;
-            }
-           
+            
             var indexA = $scope.data.reportData.dataDisplayA;
-            var indexB = $scope.data.reportData.dataDisplayB;
-            
+            var indexB = $scope.data.reportData.dataDisplayB;            
             var reportData = {
-                graficType: $scope.data.reportData.type,
-                dataA: $scope.data.dataDisplayA[indexA],
-                dataB: $scope.data.dataDisplayB[indexB]
-            };
-            
-            var configGrafic = {
                 typeGrafic:$scope.data.reportData.type,
                 opportunity_id: MapasCulturais.entity.id,
                 title: $scope.data.reportData.title,
@@ -146,12 +79,22 @@
                         source: indexB ? $scope.data.dataDisplayB[indexB].source : "",
                         value:  indexB ? $scope.data.dataDisplayB[indexB].value : ""
                     }
-                ]
+                ],
             }
 
-            ReportsService.create({reportData: reportData}).success(function (data, status, headers){
-                $scope.data.reportData.titleDinamicGrafic =  $scope.data.reportData.title;
-                $scope.graficGenerate(data, configGrafic);
+            ReportsService.loading({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
+            
+                $scope.data.loadingGrafics.push({
+                    reportData: reportData,
+                    identifier: Math.random().toString(36).substr(2, 9),
+                    data: data, 
+                   
+                });
+                ReportsService.save({reportData: reportData}).success(function (data, status, headers){  
+                    $scope.clearModal();
+                    $scope.data.creatingGraph = true;
+                });
+                $scope.graficGenerate();
             });
         }
 
@@ -161,104 +104,55 @@
             
         }
 
-        $scope.graficGenerate = function(reportData, configGrafic = false, identifier = false) {  
-            if(reportData.typeGrafic == "line"){
-                var serie = reportData.series.map(function (item, index){
-                    return {
-                        label: item.label,
-                        backgroundColor: item.colors,
-                        borderColor:item.colors,
-                        type: item.type,
-                        fill: item.fill,
-                        data: item.data
-                    }
-                })
-                var _datasets = serie;               
-            }else{
-                var _datasets = [{
-                    label: '# of Votes',
-                    data: reportData.data,
-                    backgroundColor: reportData.backgroundColor,
-                    borderColor: reportData.backgroundColor,
-                    borderWidth: false
-                }];
-            }
+        $scope.graficGenerate = function() {
+            var _datasets;
+            $scope.data.loadingGrafics.forEach(function(item){
+                
+                if(item.reportData.typeGrafic == "line"){
+                    _datasets = item.data.series.map(function (serie){
+                       return {                             
+                            label: serie.label,
+                            backgroundColor: serie.colors,
+                            borderColor: serie.colors,
+                            type: serie.type,
+                            fill: serie.fill,
+                            data: serie.data
+                        }
+                    });
+                }else{
+                    _datasets = [{
+                        label: '',
+                        data: item.data.data,
+                        backgroundColor: item.data.backgroundColor,
+                        borderColor: item.data.backgroundColor,
+                        borderWidth: false
+                    }];
 
-            $scope.data.type = reportData.typeGrafic;
-            var config = {
-                type: reportData.typeGrafic,
-                data: {
-                    labels: reportData.labels,
-                    datasets: _datasets
-                },
-                options: {
-                    responsive: true,
-                    legend: false,
-                    plugins: {
-                        datalabels: {     
-                        display: false,
-                    }
                 }
-                }
-            };
-            $scope.data.legends = [];
+                
+                var config = {
+                    type: item.reportData.typeGrafic,
+                    data: {
+                        labels: item.data.labels,
+                        datasets: _datasets
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false,
+                        plugins: {
+                            datalabels: {     
+                                display: false,
+                            }
+                        }
+                    }
+                };
 
-            var divDinamic = !identifier ? "-" : "-"+identifier
-
-            var legends = document.getElementById("dinamic-legends"+divDinamic);
-            
-            if(reportData.typeGrafic == "line"){
-                reportData.series.map(function(item,index){
-                    var span = document.createElement("span");
-                    var p = document.createElement("p");
-                    var each = document.createElement("div");
-
-                    span.style.backgroundColor = item.colors;
-                    p.textContent = item.label;
-                    
-                    span.classList.add("dot");
-                    each.classList.add("each");
-                    legends.appendChild(each);
-                    each.appendChild(span);
-                    each.appendChild(p);
-                });
-
-            }else{
-                var sum = 0;
-                reportData.labels.map(function(item,index){
-                    var sum = $scope.sumData(reportData);
-                    var value = reportData.data[index];
-                    console.log()
-                    var span = document.createElement("span");
-                    var p = document.createElement("p");
-                    var each = document.createElement("div");
-
-                    span.style.backgroundColor = reportData.backgroundColor[index];
-                    p.innerHTML += item +'<br>'+ value + " ("+ ((value/sum)*100).toFixed(2)+"%)";
-                    
-                    span.classList.add("dot");
-                    each.classList.add("each");
-                    legends.appendChild(each);
-                    each.appendChild(span);
-                    each.appendChild(p);
-                });
-            }
-            var ctx = document.getElementById("dinamic-grafic"+divDinamic).getContext('2d');
-        
-            if(MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic]){
-                MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic].destroy();
-            }
-            MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic] = new Chart(ctx, config);
-            $scope.data.reportModal = false;
-            $scope.data.graficData = false;
-
-            if(!identifier){
-                ReportsService.save({reportData: configGrafic}).success(function (data, status, headers){  
-                    $scope.clearModal();
-                    $scope.data.creatingGraph = true;
-                });
-            }
-           
+                var divDinamic = !item.identifier ? "" : item.identifier;
+                setTimeout(function() {
+                    var ctx = document.getElementById("dinamic-graphic-"+divDinamic).getContext('2d');
+                    MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic] = new Chart(ctx, config);
+                },2000);
+            });
         }
 
         $scope.sumData = function(reportData){
@@ -271,8 +165,15 @@
            
         }
 
-        $scope.clearModal = function() {
+        $scope.getLabelColor = function(graphic, index){
+            if(graphic.reportData.typeGrafic == "line"){               
+                return graphic.data.series[index].colors;
+            }else{
+                return graphic.data.backgroundColor[index];
+            }
+        }
 
+        $scope.clearModal = function() {
             $scope.data.reportModal = false;
             $scope.data.graficData = false;
             $scope.data.reportData.type = '';
@@ -280,9 +181,7 @@
             $scope.data.reportData.description = '';
             $scope.data.reportData.dataDisplayA = '';
             $scope.data.reportData.dataDisplayB = '';
-
         }
-       
     }]);
     
     module.factory('ReportsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
@@ -299,11 +198,11 @@
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
             },          
-            create: function (data) {
-               
-                var url = MapasCulturais.createUrl('reports', 'createGrafic', {opportunity_id: MapasCulturais.entity.id});
+            getData: function (data) {
+              
+                var url = MapasCulturais.createUrl('reports', 'data', {opportunity_id: MapasCulturais.entity.id});
 
-                return $http.post(url, data).
+                return $http.get(url, data).
                 success(function (data, status, headers) {
                     $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
                 }).
@@ -334,30 +233,8 @@
                 error(function (data, status) {
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
-            },
-            createHtmlLegends: function (data) {
-               
-                var url = MapasCulturais.createUrl('reports', 'loadingGrafic', {});
-
-                return $http.post(url, data).
-                success(function (data, status, headers) {
-                    $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
-                }).
-                error(function (data, status) {
-                    $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
-                });
             }
         };
     }]);
 
 })(angular);
-
-
-function openDropdown(dropId) {
-    if ($("#drop-" + dropId.name).hasClass('active')) {
-        $("#drop-" + dropId.name).removeClass('active');
-    } else {
-        $(".dropdown-content.active").removeClass('active');
-        $("#drop-" + dropId.name).addClass('active');
-    }
-}
