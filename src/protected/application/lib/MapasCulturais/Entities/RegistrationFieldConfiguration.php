@@ -58,6 +58,20 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $maxSize;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="mask", type="string", nullable=true)
+     */
+    protected $mask;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mask_options", type="string", nullable=true)
+     */
+    protected $maskOptions;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="categories", type="array", nullable=true)
@@ -159,6 +173,8 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'title' => $this->title,
         'description' => $this->description,
         'maxSize' => $this->maxSize,
+        'mask' => $this->mask,
+        'maskOptions' => $this->maskOptions,
         'required' => $this->required,
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,

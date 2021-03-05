@@ -1289,6 +1289,20 @@ $$
         if (!__column_exists('permission_cache_pending', 'status')) {
             $conn->executeQuery("ALTER TABLE permission_cache_pending ADD status smallint DEFAULT 0");
         }
-    }
+    },
+
+    'Add field for mask from registration field configuration' => function () use($conn) {
+        if(__column_exists('registration_field_configuration', 'mask')){
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN mask text;");
+    },
+
+    'Add field for mask_options size from registration field configuration' => function () use($conn) {
+        if(__column_exists('registration_field_configuration', 'mask_options')){
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN mask_options text;");
+    },
 
 ] + $updates ;
