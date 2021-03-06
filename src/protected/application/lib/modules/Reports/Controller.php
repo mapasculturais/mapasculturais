@@ -713,9 +713,7 @@ class Controller extends \MapasCulturais\Controller
         if (!$timeSeries) {
             return "";
         }
-        $order = array_slice($targets, 1);
-        array_unshift($order, "r.create_timestamp");
-        return (" ORDER BY " . implode(", ", $order). " ASC");
+        return (" ORDER BY " . implode(", ", $targets). " ASC");
     }
 
     private function querySelect($targets, $timeSeries)
@@ -861,7 +859,7 @@ class Controller extends \MapasCulturais\Controller
                "WITH table0 AS (SELECT sr.object_id, t.term FROM space_relation sr JOIN term_relation tr ON sr.space_id = tr.object_id JOIN term t ON tr.term_id = t.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration' AND tr.object_type = 'MapasCulturais\\Entities\\Space' AND t.taxonomy = 'area'), table1 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado') SELECT table0.term AS value0, table1.value AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id LEFT OUTER JOIN table1 ON r.agent_id = table1.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.term, table1.value");
         // single field timeseries query
         assert($this->buildQuery([["value" => "En_Estado", "source" => ["table" => "am", "type" => "owner"]]], $op, true) ==
-               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado') SELECT to_char(r.create_timestamp, 'YYYY-MM-DD') AS date, table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY to_char(r.create_timestamp, 'YYYY-MM-DD'), table0.value ORDER BY r.create_timestamp, table0.value ASC");
+               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado') SELECT to_char(r.create_timestamp, 'YYYY-MM-DD') AS date, table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY to_char(r.create_timestamp, 'YYYY-MM-DD'), table0.value ORDER BY to_char(r.create_timestamp, 'YYYY-MM-DD'), table0.value ASC");
         // single field age range query
         assert($this->buildQuery([["value" => "dataDeNascimento", "source" => ["table" => "am", "type" => "dateToAge"]]], $op) ==
                "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'dataDeNascimento') SELECT div(date_part('year', age(to_timestamp(table0.value, 'YYYY-MM-DD')))::integer, 5) AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY div(date_part('year', age(to_timestamp(table0.value, 'YYYY-MM-DD')))::integer, 5)");
