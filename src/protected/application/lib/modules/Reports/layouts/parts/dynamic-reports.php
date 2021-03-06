@@ -8,7 +8,7 @@ use MapasCulturais\i;
     <div class="chart-wrap" ng-repeat="(key, graphic) in data.loadingGrafics">    
         <header>
         <h3>{{graphic.reportData.title}}</h3>
-            <a href="" ng-click="createCsv(key)" name="{{graphic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
+            <a href="" ng-click="createCsv(graphic.reportData.graphicId)" name="{{graphic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
             <button ng-click='deleteGraphic(graphic.reportData.graphicId)'><?php i::_e('Excluir'); ?></button>
         </header>
         <div class="chart-container dinamic-graphic-{{graphic.identifier}} chart-{{graphic.reportData.typeGrafic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.reportData.typeGrafic == 'pie') ? '60%' : '100%'}">
