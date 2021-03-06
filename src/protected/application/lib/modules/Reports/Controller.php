@@ -530,7 +530,44 @@ class Controller extends \MapasCulturais\Controller
 
     public function ALL_csvDynamicGraphic()
     {
-        $this->apiResponse($this->data);
+       
+       
+        $this->requireAuthentication();
+    
+        $opp = $this->getOpportunity();
+        
+        $app = App::i();
+
+        $return = null;
+
+        $request = $this->data;
+        
+        $params = ['objectId' => $opp->id, "group" => "reports", "id" => $request['graphicId']];
+
+        $metalists = $app->repo("MetaList")->findBy($params);
+        
+        $action =  i::__('dynamicGrafic');
+       
+        foreach ($metalists as $metalist){
+            $value = json_decode($metalist->value, true);
+            $value['reportData']['graphicId'] = $metalist->id;
+            $value['data'] = $this->getData($value['reportData'], $opp);
+            $return = $value;
+            
+        }
+        
+        $csv_data = [];
+        $header = [i::__($return['reportData']['title']), i::__('QUANTIDADE')];
+        if($return['reportData']['typeGrafic'] == "line"){
+            foreach ($return['data']['series'] as $key => $value){
+                $csv_data[] = [$value['label'], array_sum($value['data'])];
+            }
+        }else{
+            foreach ($return['data']['data'] as $key => $value){
+                $csv_data[] = [$return['data']['labels'][$key], $value];
+            }
+        }
+        $this->createCsv($header, $csv_data, $action, $opp->id);
     }
 
     public function getData($reportData, $opp)

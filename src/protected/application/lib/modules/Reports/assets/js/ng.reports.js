@@ -82,8 +82,7 @@
             $scope.graficGenerate();
         });
         
-        $scope.createGrafic = function() {
-            
+        $scope.createGrafic = function() {            
             var indexA = $scope.data.reportData.dataDisplayA;
             var indexB = $scope.data.reportData.dataDisplayB;            
             var reportData = {
@@ -136,30 +135,20 @@
 
                     legendsToString = [];
                 });
-                
-               
                 $scope.graficGenerate();
             });
-        
         }
-
         
-
         $scope.nextStep = function () {
             var type = $scope.data.reportData.type;
             $scope.data.grafic = $scope.data.typeGraficDictionary[type];
-            
         }
 
-        $scope.createCsv = function (index) {
-            var reportData = $scope.data.loadingGrafics[index].reportData 
-
-            ReportsService.loading({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
-            });
-            
-            
+        $scope.createCsv = function (graphicId) {
+           var url = MapasCulturais.createUrl('reports','csvDynamicGraphic', {graphicId: graphicId, opportunity_id:MapasCulturais.entity.id});
+           document.location = url;
         }
-
+        
         $scope.graficGenerate = function() {
             var _datasets;
             $scope.data.loadingGrafics.forEach(function(item){
@@ -236,8 +225,6 @@
                 var sum = $scope.sumData(item.data);
                 return item.data.labels[index] +'\n'+ value + " ("+ ((value/sum)*100).toFixed(2)+"%)";
             }
-      
-            
         }
 
         $scope.sumData = function(reportData){
@@ -248,7 +235,6 @@
             })
 
             return sum;
-           
         }
 
         $scope.sumSerie = function(reportData){
@@ -342,7 +328,6 @@
                         $rootScope.$emit('error', { message: "Reports not deleted for this opportunity", data: data, status: status });
                     });
             },
-            
         };
     }]);
 
