@@ -124,6 +124,7 @@
     font-size: 12px;
     line-height: 1.4;
     margin-bottom: 0;
+    white-space: pre-wrap;
 }
 
 /* Chart footer/legends/line /bar */
