@@ -63,7 +63,7 @@ class Module extends \MapasCulturais\Module{
         $params = [
             '@select'=>'id',
             'parent' => "EQ({$base_opportunity->id})",
-            'status' => 'IN(0,-1)',
+            'status' => 'GTE(-1)',
             '@permissions' => 'view',
             '@order' => 'registrationFrom DESC',
             '@limit' => 1
@@ -381,6 +381,12 @@ class Module extends \MapasCulturais\Module{
         $app->hook('POST(opportunity.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
 
+            $last_phase = self::getLastCreatedPhase($parent);
+
+            if ($last_phase->isLastPhase) {
+                $this->errorJson(i::__('Já foi criada a última fase!'), 400);
+            }
+
             $_phases = [
                 \MapasCulturais\i::__('Segunda fase'),
                 \MapasCulturais\i::__('Terceira fase'),
@@ -407,13 +413,11 @@ class Module extends \MapasCulturais\Module{
 
             $phase->name = $_phases[$num_phases];
             $phase->registrationCategories = $parent->registrationCategories;
-            $phase->shortDescription = sprintf(\MapasCulturais\i::__('Descrição da %s'), $_phases[$num_phases]);
+            $phase->shortDescription = sprintf(i::__('Descrição da %s'), $_phases[$num_phases]);
             $phase->type = $parent->type;
             $phase->owner = $parent->owner;
             $phase->useRegistrations = true;
             $phase->isOpportunityPhase = true;
-
-            $last_phase = self::getLastCreatedPhase($parent);
 
             $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
