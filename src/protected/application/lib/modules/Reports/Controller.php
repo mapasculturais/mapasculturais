@@ -515,7 +515,12 @@ class Controller extends \MapasCulturais\Controller
         $metaList->title = 'Grafico' ;
         $metaList->save(true);
 
-        $this->apiResponse($metaList->id);
+        $return = [
+            'graphicId' => $metaList->id,
+            'identifier' => $identifier
+        ];
+
+        $this->apiResponse($return);
 
     }
 

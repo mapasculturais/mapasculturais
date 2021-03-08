@@ -101,25 +101,22 @@
                     }
                 ],
             }
+
+            ReportsService.save({reportData:reportData}).success(function (data, status, headers){
+
+                $scope.data.loadingGrafics = $scope.data.loadingGrafics.filter(function (item) {
+                    if (item.reportData.graphicId != data.graphicId) return item;
+                });
+
+                $scope.clearModal();
+                $scope.data.creatingGraph = data;
+
+            });
             
             ReportsService.loading({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
                 
-                var length = $scope.data.loadingGrafics.push({
-                    reportData: reportData,
-                    identifier: Math.random().toString(36).substr(2, 9),
-                    data: data
-                });
-
-                ReportsService.save({reportData: reportData}).success(function (data, status, headers){
-                    length = length - 1;
-                    $scope.data.loadingGrafics[length].reportData.graphicId = data;
-
-                    $scope.clearModal();
-                    $scope.data.creatingGraph = true;
-                });
-
                 var legendsToString = [];
-                $scope.data.loadingGrafics.forEach(function(item){                    
+                $scope.data.loadingGrafics.forEach(function(item){
                     if(item.reportData.typeGrafic == "line"){
                         var total = $scope.sumSerie(item);
                         item.data.series.forEach(function(value, index){
@@ -135,6 +132,15 @@
 
                     legendsToString = [];
                 });
+                
+                reportData.graphicId = $scope.data.creatingGraph.graphicId;
+
+                $scope.data.loadingGrafics.push({
+                    reportData: reportData,
+                    identifier: Math.random().toString(36).substr(2, 9),
+                    data: data
+                });
+
                 $scope.graficGenerate();
             });
         }
@@ -152,7 +158,7 @@
         $scope.graficGenerate = function() {
             var _datasets;
             $scope.data.loadingGrafics.forEach(function(item){
-                
+
                 if(item.reportData.typeGrafic == "line"){
                     _datasets = item.data.series.map(function (serie){
                        return {                             
