@@ -554,16 +554,18 @@ class Controller extends \MapasCulturais\Controller
         $color = [];
         $data = [];
         // post-processing may be necessary depending on type, so obtain it
-        $type = $dataA["source"]["type"] ?? "";
-        if ($reportData["typeGrafic"] == "line") {
-            $return = $this->prepareTimeSeries($result, $type, $em);
-            $return["opportunity"] = $opp->id;
-            $return["typeGrafic"] = "line";
-            $return["borderWidth"] = 0;
+        $typeA = $dataA["source"]["type"] ?? "";
+        if ($reportData["typeGrafic"] != "pie") {
+            $typeB = $dataB["source"]["type"] ?? "";
+            $return = ($reportData["typeGrafic"] == "line") ?
+                      $this->prepareTimeSeries($result, $typeA, $opp, $em) :
+                      $this->prepareGroupedSeries($result, $typeA, $typeB,
+                                                  $reportData["typeGrafic"],
+                                                  $opp, $em);
         } else {
             foreach ($result as $item) {
                 $color[] = $this->color();
-                $labels[] = $this->generateLabel($item["value0"], $type, $em);
+                $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
                 $data[] = $item["quantity"];
             }
             $return = [
@@ -1041,46 +1043,68 @@ class Controller extends \MapasCulturais\Controller
         $csv->output($fileName);
     }
 
-    private function prepareTimeSeries($data, $type, $evalMethod)
+    private function prepareGroupedSeries($data, $typeA, $typeB, $chartType,
+                                          $opportunity, $evalMethod)
+    {
+        return $this->prepareSeries($data, $typeA, "value1", $chartType,
+                                    $opportunity, $evalMethod,
+                                    function ($value) use ($typeB,
+                                                           $evalMethod) {
+            return $this->generateLabel($value, $typeB, $evalMethod);
+        });
+    }
+
+    private function prepareSeries($data, $type, $key, $chartType,
+                                   $opportunity, $evalMethod, $labelCallback)
     {
         $series = [];
-        $times = [];
+        $points = [];
         $outColours = [];
         $outLines = [];
         $outSeries = [];
-        $outTimes = [];
+        $outPoints = [];
         foreach ($data as $item) {
             $label = $this->generateLabel($item["value0"], $type, $evalMethod);
             if (!isset($series[$label])) {
                 $series[$label] = [];
             }
-            $series[$label][$item["date"]] = $item["quantity"];
-            if ((sizeof($times) < 1) ||
-                ($times[sizeof($times) - 1] != $item["date"])) {
-                $times[] = $item["date"];
-                $outTimes[] = (new DateTime($item["date"]))->format("d/m/Y");
+            $series[$label][$item[$key]] = $item["quantity"];
+            if ((sizeof($points) < 1) || !in_array($item[$key], $points)) {
+                $points[] = $item[$key];
+                $outPoints[] = $labelCallback($item[$key]);
             }
         }
         foreach (array_keys($series) as $label) {
             $current = [
                 "label" => $label,
                 "colors" => $this->color(),
-                "type" => "line",
+                "type" => $chartType,
                 "fill" => false,
                 "data" => []
             ];
-            foreach ($times as $time) {
-                $current["data"][] = $series[$label][$time] ?? 0;
+            foreach ($points as $point) {
+                $current["data"][] = $series[$label][$point] ?? 0;
             }
             $outLines[] = $label;
             $outSeries[] = $current;
         }
         return [
-            "labels" => $outTimes,
+            "labels" => $outPoints,
             "series" => $outSeries,
             "legends" => $outLines,
-            "colors" => $outColours
+            "colors" => $outColours,
+            "typeGrafic" => $chartType,
+            "opportunity" => $opportunity->id,
+            "borderWidth" => 0
         ];
+    }
+
+    private function prepareTimeSeries($data, $type, $opportunity, $evalMethod)
+    {
+        return $this->prepareSeries($data, $type, "date", "line", $opportunity,
+                                    $evalMethod, function ($value) {
+            return (new DateTime($value))->format("d/m/Y");
+        });
     }
 
     public function getEntityDailyData(string $table, string $entity_class, array $entity_fields = [], array $metadata = [])
