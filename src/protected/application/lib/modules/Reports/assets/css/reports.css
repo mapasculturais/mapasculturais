@@ -50,8 +50,13 @@
 }
 
 #reports .chart-wrap header button {
+    border: 0;
     cursor: pointer;
-    float: right;
+    padding-top: 0;
+}
+
+#reports .chart-wrap header button.delete:hover {
+    color: #cc3333;
 }
 
 #reports .chart-wrap header > a {
@@ -142,7 +147,6 @@
 
 /* Footer*/
 #reports > footer {
-    border-top: 1px solid #888888;
     margin-top: 25px;
     padding: 45px 15px 25px;
     text-align: center;
