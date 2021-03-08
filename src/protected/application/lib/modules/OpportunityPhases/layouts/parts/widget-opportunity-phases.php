@@ -1,5 +1,6 @@
 <?php
 use MapasCulturais\i;
+use OpportunityPhases\Module;
 
 $_of_the_type = [
     7	=> i::__("do Ciclo"),
@@ -44,6 +45,7 @@ $viewing_phase = $this->controller->requestedEntity;
 
 $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
+$last_created_phase = Module::getLastCreatedPhase($opportunity);
 ?>
 <?php if($this->isEditable() || count($phases) > 0): ?>
 <?php if($this->isEditable()): ?>
@@ -87,8 +89,9 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 <?php endif; ?>
     <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
-            
-            <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)"  rel='noopener noreferrer'><?php i::_e("Adicionar fase");?></a>
+            <?php if(!$last_created_phase->isLastPhase): ?>
+                    <a class="btn btn-default add" ng-click="editbox.open('new-opportunity-phase', $event)"  rel='noopener noreferrer'><?php i::_e("Adicionar fase");?></a>
+            <?php endif; ?>
         <?php endif; ?>
         <ul>
 
@@ -112,7 +115,8 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 </li>
             <?php else: ?>
                 <li>
-                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>"><?= $phase->name ?></a>
+                    <a href="<?= $this->isEditable() ? $phase->editUrl : $phase->singleUrl?>"><?=  $phase->name ?>
+                    </a>
                     <?php if($phase->registrationFrom && $phase->registrationTo): ?>
                         - <em>
                             <?php
@@ -154,6 +158,9 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
                     <?php if($phase->status === 0): ?>
                         <em><?php i::_e('(rascunho)'); ?></em>
+                    <?php endif; ?>
+                    <?php if($opportunity->canUser('@control')): ?>
+                        <em><?php i::_e('(última fase)'); ?></em>
                     <?php endif; ?>
                 </li>
             <?php endif; ?>

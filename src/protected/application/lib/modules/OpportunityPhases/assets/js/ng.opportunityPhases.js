@@ -55,7 +55,7 @@
                         $window.location = result.editUrl;
                     }).error(function(err) {
                         $scope.data.spinner = false;
-                        MapasCulturais.Messages.error(err.message);
+                        MapasCulturais.Messages.error(err.data);
                     });
                 }
             }
