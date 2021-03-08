@@ -32,7 +32,7 @@
             };
         }]);
 
-    module.controller('OpportunityPhasesController', ['$scope', '$rootScope', '$timeout', 'OpportunityPhasesService', 'EditBox', function ($scope, $rootScope, $timeout, OpportunityPhasesService, EditBox) {
+    module.controller('OpportunityPhasesController', ['$scope', '$window', '$rootScope', '$timeout', 'OpportunityPhasesService', 'EditBox', function ($scope, $window, $rootScope, $timeout, OpportunityPhasesService, EditBox) {
             $scope.editbox = EditBox;
             $scope.data = {
                 spinner: false,
@@ -50,8 +50,9 @@
                     $scope.data.step++;
                 } else {
                     $scope.data.spinner = true;
-                    OpportunityPhasesService.createPhase($scope.newPhasePostData).success(function(){
+                    OpportunityPhasesService.createPhase($scope.newPhasePostData).success(function(result){
                         $scope.data.spinner = false;
+                        $window.location = result.editUrl;
                     }).error(function(err) {
                         $scope.data.spinner = false;
                         MapasCulturais.Messages.error(err.message);
