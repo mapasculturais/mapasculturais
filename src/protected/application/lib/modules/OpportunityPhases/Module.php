@@ -209,11 +209,19 @@ class Module extends \MapasCulturais\Module{
             if($this->previousPhaseRegistrationId) {
                 $value = $registration_repository->find($this->previousPhaseRegistrationId);
             }
+
+            if($value == $this) {
+                $value = null;
+            }
         });
 
         $app->hook('entity(Registration).get(nextPhase)', function(&$value) use($registration_repository) {
             if ($this->nextPhaseRegistrationId) {
                 $value = $registration_repository->find($this->nextPhaseRegistrationId);
+            }
+
+            if($value == $this) {
+                $value = null;
             }
         });
 
@@ -223,6 +231,10 @@ class Module extends \MapasCulturais\Module{
             if ($opportunity->isOpportunityPhase) {
                 $first_phase = Module::getBaseOpportunity($opportunity);
                 $value = $registration_repository->findOneBy(['opportunity' => $first_phase, 'number' => $this->number]);
+            }
+
+            if($value == $this) {
+                $value = null;
             }
         });
 

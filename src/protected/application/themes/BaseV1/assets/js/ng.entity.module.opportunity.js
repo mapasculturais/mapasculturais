@@ -109,7 +109,7 @@
 
             updateFields: function(entity) {
                 var data = {};
-
+                
                 Object.keys(entity).forEach(function(key) {
                     // para excluir propriedades do angular
                     if(key.indexOf('$$') == -1){
@@ -403,7 +403,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
                 var url = new UrlService('opportunity');
                 var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
-
                 // requisição para salvar ordem
                 $http.post(saveOrderUrl, {fields: _fields}).success(function(){
                     MapasCulturais.Messages.success(labels['changesSaved']);
@@ -418,26 +417,29 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fields: fields,
             newFileConfiguration: angular.copy(fileConfigurationSkeleton),
             newFieldConfiguration: angular.copy(fieldConfigurationSkeleton),
-            entity: $scope.$parent.data.entity,
+            entity: MapasCulturais.registration || $scope.$parent.data.entity,
             fieldTypes: fieldTypes,
             fieldsWithOptions: fieldTypes.filter(function(e) { if(e.requireValuesConfiguration) return e; }).map(function(e) { return e.slug; } ),
             fieldTypesBySlug: fieldTypesBySlug,
             fieldsRequiredLabel: labels['requiredLabel'],
             fieldsOptionalLabel: labels['optionalLabel'],
-            categories: []
+            categories: MapasCulturais.entity.registrationCategories
         };
+
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
 
-        $interval(function(){
-            var $field = jQuery('#registration-categories .js-categories-values'); 
-            if ($field.hasClass('editable-empty')) {
-                $scope.data.categories = [];
-            } else {
-                $scope.data.categories = $field.text().split("\n");
-            }
-        },1000);
+        if(jQuery('#registration-categories').length) {
+            $interval(function(){
+                var $field = jQuery('#registration-categories .js-categories-values'); 
+                if ($field.hasClass('editable-empty')) {
+                    $scope.data.categories = [];
+                } else {
+                    $scope.data.categories = $field.text().split("\n");
+                }
+            },1000);
+        }
 
         $scope.allCategories = function(model){
             return model.categories.length === 0;
@@ -837,7 +839,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
-    $scope.entity = MapasCulturais.entity.object;
+    $scope.entity = MapasCulturais.registration;
 
     // $scope.entityErrors = {};
 
@@ -887,7 +889,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             field.unchangedFieldJSON = JSON.stringify(value);
 
             var data = {
-                id: MapasCulturais.entity.object.id
+                id: MapasCulturais.entity.registrationId
             };
 
             data[field.fieldName] = value;
@@ -1009,6 +1011,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }, 700);
         });
     };
+    
 
     $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
 
@@ -2145,7 +2148,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             }
 
             $scope.validateRegistration = function(callback='') {
-                RegistrationService.validateEntity($scope.data.entity.id)
+                RegistrationService.validateEntity($scope.data.registration.id)
                     .success(function(response) {
                         if(response.error) {
                             $scope.entityValidated = false;
@@ -2174,7 +2177,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             }; 
             $scope.data.sent = false;
             $scope.sendRegistration = function(redirectUrl){
-                RegistrationService.send($scope.data.entity.id).success(function(response){
+                RegistrationService.send($scope.data.registration.id).success(function(response){
                     $('.js-response-error').remove();
                     if(response.error){
                         var focused = false;
