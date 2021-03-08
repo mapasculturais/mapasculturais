@@ -106,28 +106,10 @@ class Controller extends \MapasCulturais\Controller
         $result = $conn->fetchAll($query, $params);
 
         foreach ($result as $value) {
-            switch ($value['status']) {
-                case 0:
-                    $status = i::__('Rascunho');
-                    break;
-                case 1:
-                    $status = i::__('Pendente');
-                    break;
-                case 2:
-                    $status = i::__('Inválida');
-                    break;
-                case 3:
-                    $status = i::__('Não Selecionada');
-                    break;
-                case 8:
-                    $status = i::__('Suplente');
-                    break;
-                case 10:
-                    $status = i::__('Selecionada');
-                    break;
+            $status = $this->statusToString($value["status"]);
+            if ($status) {
+                $data[$status] = $value["count"];
             }
-
-            $data[$status] = $value['count'];
         }
 
         $csv_data = [];
@@ -317,34 +299,16 @@ class Controller extends \MapasCulturais\Controller
         $result = $conn->fetchAll($query, $params);
 
         foreach ($result as $value) {
-            switch ($value['status']) {
-                case 0:
-                    $status = i::__('Rascunho');
-                    break;
-                case 1:
-                    $status = i::__('Pendente');
-                    break;
-                case 2:
-                    $status = i::__('Inválida');
-                    break;
-                case 3:
-                    $status = i::__('Não Selecionada');
-                    break;
-                case 8:
-                    $status = i::__('Suplente');
-                    break;
-                case 10:
-                    $status = i::__('Selecionada');
-                    break;
+            $status = $this->statusToString($value["status"]);
+            if ($status) {
+                $data[$status] = $value["count"];
             }
-
-            $data[$status] = $value['count'];
         }
 
         $csv_data = [];
         $total = 0;
         foreach ($data as $key => $value) {
-            if ($key == "Rascunho") {
+            if ($key == i::__("Rascunho")) {
                 $csv_data[0] = ['Rascunho', $value];
             } else {
                 $total = ($total + $value);
@@ -579,10 +543,11 @@ class Controller extends \MapasCulturais\Controller
     {
         $em = $opp->getEvaluationMethod();
         $app = App::i();
-        $dataA = $reportData['columns'][0];
-        $dataB = $reportData['columns'][1];
+        $dataA = $reportData["columns"][0];
+        $dataB = $reportData["columns"][1];
         $conn = $app->em->getConnection();
-        $query = $this->buildQuery($dataA, $opp, ($reportData['typeGrafic'] == "line"));
+        $query = $this->buildQuery($reportData["columns"], $opp,
+                                   ($reportData["typeGrafic"] == "line"));
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
         $return = [];
         $labels = [];
@@ -590,7 +555,7 @@ class Controller extends \MapasCulturais\Controller
         $data = [];
         // post-processing may be necessary depending on type, so obtain it
         $type = $dataA["source"]["type"] ?? "";
-        if ($reportData['typeGrafic'] == "line") {
+        if ($reportData["typeGrafic"] == "line") {
             $return = $this->prepareTimeSeries($result, $type, $em);
             $return["opportunity"] = $opp->id;
             $return["typeGrafic"] = "line";
@@ -598,7 +563,7 @@ class Controller extends \MapasCulturais\Controller
         } else {
             foreach ($result as $item) {
                 $color[] = $this->color();
-                $labels[] = $this->generateLabel($item["value"], $type, $em);
+                $labels[] = $this->generateLabel($item["value0"], $type, $em);
                 $data[] = $item["quantity"];
             }
             $return = [
@@ -606,7 +571,7 @@ class Controller extends \MapasCulturais\Controller
                 "backgroundColor" => $color,
                 "borderWidth" => 0,
                 "data" => $data,
-                "typeGrafic" => $reportData['typeGrafic'],
+                "typeGrafic" => $reportData["typeGrafic"],
             ];
         }
         return $return;
@@ -634,7 +599,142 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
-    private function buildQuery($data, $op, $timeline=false)
+    private function buildQuery($columns, $op, $timeSeries=false)
+    {
+        // FIXME: remove empty definitions at the source, not here
+        $columns = array_filter($columns, function ($item) {
+            return (strlen($item["value"]) > 0);
+        });
+        $out = "";
+        $tables = $this->queryTables($columns);
+        $fields = $this->queryFields($columns, $op);
+        $tbCodes = array_map(function ($column) {
+            return $column["source"]["table"];
+        }, $columns);
+        $types = array_map(function ($column) {
+            return ($column["source"]["type"] ?? "");
+        }, $columns);
+        $ctes = $this->queryCTEs($fields, $tbCodes, $tables, $types);
+        if (!empty($ctes)) {
+            $out .= ("WITH " . implode(", ", array_map(function ($i, $cte) {
+                return "table$i AS $cte";
+            }, array_keys($ctes), $ctes)) . " ");
+        }
+        $targets = $this->queryTargets($columns, $tables, $types,
+                                       sizeof($ctes), $timeSeries);
+        $out .= ("SELECT " . $this->querySelect($targets, $timeSeries) .
+                 " FROM registration r " .
+                 $this->queryJoins($tables, $types, $ctes) .
+                 "WHERE r.opportunity_id = :opportunity AND r.status > 0 " .
+                 "GROUP BY " . $this->queryGroup($targets) .
+                 $this->queryOrder($targets, $timeSeries));
+        return $out;
+    }
+
+    private function queryCTEs($fields, $tbCodes, $tables, $types)
+    {
+        $ctes = [];
+        if (($cte = $this->queryTemplateCTE($fields[0], $tbCodes[0],
+                                            $tables[0], $types[0]))) {
+            $ctes[] = $cte;
+        }
+        if ((sizeof($tables) > 1) &&
+            (($tables[1] == "term") || str_ends_with($tables[1], "_meta") ||
+             ($tables[0] != $tables[1]) || ($types[0] != $types[1]))) {
+            if (($cte = $this->queryTemplateCTE($fields[1], $tbCodes[1],
+                                                $tables[1], $types[1]))) {
+                // agent and space CTEs come with a %s that needs to go
+                if (($tables[1] == "agent") || ($tables[1] == "space")) {
+                    $s = (($tables[0] == "registration") || !empty($ctes)) ?
+                         "" : ", {$tbCodes[1]}.{$fields[1]}";
+                    $cte = sprintf($cte, $s);
+                }
+                $ctes[] = $cte;
+            }
+        }
+        if (($tables[0] == "agent") || ($tables[0] == "space")) {
+            if ((sizeof($ctes) == 2) || (sizeof($tables) == 1) ||
+                ($tables[1] == "registration")) {
+                $ctes[0] = sprintf($ctes[0], "");
+            } else {
+                $ctes[0] = sprintf($ctes[0], ", {$tbCodes[1]}.{$fields[1]}");
+            }
+        }
+        return $ctes;
+    }
+
+    private function queryFields($columns, $op)
+    {
+        // get all field names for this opportunity to validate received ones
+        $fieldList = array_map(function ($item) {
+            return $item["value"];
+        }, $this->getValidFields($op));
+        return array_map(function ($item) use ($fieldList) {
+            if (!in_array($item["value"], $fieldList)) {
+                $this->errorJson("Invalid parameter.");
+            }
+            return $item["value"];
+        }, $columns);
+    }
+
+    private function queryGroup($targets)
+    {
+        return implode(", ", $targets);
+    }
+
+    private function queryJoins($tables, $types, $ctes)
+    {
+        if (empty($ctes)) {
+            return "";
+        }
+        $joins = "LEFT OUTER JOIN table0 ON r.id = table0.object_id ";
+        $i = ($tables[0] == "registration") ? 1 : 0;
+        if ($this->queryMatchAgent($tables[$i], $types[$i])) {
+            $joins = ($tables[$i] == "agent") ? "" : "LEFT OUTER ";
+            $joins .= "JOIN table0 ON r.agent_id = table0.object_id ";
+        }
+        if (sizeof($ctes) > 1) {
+            if ($this->queryMatchAgent($tables[1], $types[1])) {
+                $joins .= (($tables[$i] == "agent_meta") ?
+                            "" : "LEFT OUTER ");
+                $joins .= "JOIN table1 ON r.agent_id = table1.object_id ";
+            } else {
+                $joins .= ("LEFT OUTER JOIN table1 ON r.id = " .
+                            "table1.object_id ");
+            }
+        }
+        return $joins;
+    }
+
+    private function queryMatchAgent($table, $type)
+    {
+        return ((str_starts_with($table, "agent") && ($type != "coletivo") &&
+                 ($type != "instituicao")) ||
+                (($table == "term") && ($type == "owner")));
+    }
+
+    private function queryOrder($targets, $timeSeries)
+    {
+        if (!$timeSeries) {
+            return "";
+        }
+        return (" ORDER BY " . implode(", ", $targets). " ASC");
+    }
+
+    private function querySelect($targets, $timeSeries)
+    {
+        $out = array_map(function ($i, $target) use ($timeSeries) {
+            if ($timeSeries && ($i == 0)) {
+                return "$target AS date";
+            }
+            $n = $timeSeries ? ($i - 1) : $i;
+            return "$target AS value$n";
+        }, array_keys($targets), $targets);
+        $out[] = "count(*) AS quantity";
+        return implode(", ", $out);
+    }
+
+    private function queryTables($columns)
     {
         // map front-end names back to real table names
         $tableDic = [
@@ -646,69 +746,132 @@ class Controller extends \MapasCulturais\Controller
             "sm" => "space_meta",
             "t" => "term"
         ];
-        if (!isset($tableDic[$data["source"]["table"]])) {
-            $this->jsonError("Invalid parameter.");
+        return array_map(function ($column) use ($tableDic) {
+            if (!isset($tableDic[$column["source"]["table"]])) {
+                $this->errorJson("Invalid parameter.");
+            }
+            return $tableDic[$column["source"]["table"]];
+        }, $columns);
+    }
+
+    private function queryTargets($columns, $tables, $types, $nctes,
+                                  $timeSeries)
+    {
+        $out = array_map(function ($i, $column) use ($tables, $types, $nctes) {
+            $src = $column["source"]["table"];
+            if ($tables[$i] != "registration") {
+                $src = "table" . (min($i, ($nctes - 1)));
+            }
+            $field = str_ends_with($tables[$i], "_meta") ? "$src.value" :
+                     "$src.{$column["value"]}";
+            if ($types[$i] == "dateToAge") {
+                $field = "div(date_part('year', age(to_timestamp($field, " .
+                         "'YYYY-MM-DD')))::integer, 5)";
+            }
+            return $field;
+        }, array_keys($columns), $columns);
+        if ($timeSeries) {
+            array_unshift($out, "to_char(r.create_timestamp, 'YYYY-MM-DD')");
         }
-        // get all field names for this opportunity to validate received ones
-        $fieldList = array_map(function ($item) {
-            return $item["value"];
-        }, $this->getValidFields($op));
-        if (!in_array($data["value"], $fieldList)) {
-            $this->jsonError("Invalid parameter.");
-        }
-        // basic information from the request
-        $type = $data["source"]["type"] ?? "";
-        $field = $data["value"];
-        $tbCode = $data["source"]["table"];
-        $table = $tableDic[$tbCode];
-        // query parts - head and tail
-        $select = $timeline ? "SELECT to_char(r.create_timestamp , 'YYYY-MM-DD') AS date," : "SELECT";
-        $tail = $timeline ? ", to_char(r.create_timestamp , 'YYYY-MM-DD') ORDER BY date, value ASC" : "";
-        // query parts - object type conditions
+        return $out;
+    }
+
+    private function queryTemplateCTE($field, $tbCode, $table, $type)
+    {
+        // object type expressions used in relation tables
         $agentType = "object_type = 'MapasCulturais\\Entities\\Agent'";
         $regType = "object_type = 'MapasCulturais\\Entities\\Registration'";
         $spaceType = "object_type = 'MapasCulturais\\Entities\\Space'";
-        // query parts - common registration conditions
-        $regWhere = "r.opportunity_id = :opportunity AND r.status > 0";
-        // query parts - registration-to-X expressions
-        $regToAgent = "JOIN agent a ON r.agent_id = a.id";
-        $regToSpace = "(SELECT s.$field, sr.object_id FROM space_relation sr JOIN space s ON s.id = sr.space_id WHERE $regType)";
-        // query parts - top-level select
-        $selMain = "$select $tbCode.$field AS value, count(*) AS quantity FROM registration r";
-        $selMeta = "$select $tbCode.value, count(*) AS quantity FROM registration r";
-        // query parts - group expressions
-        $groupMeta = "GROUP BY $tbCode.value$tail";
-        $groupMain = "GROUP BY $tbCode.$field" . $tail;
-        // query parts - subqueries
-        $metaSubQuery = "(SELECT object_id, value FROM $table WHERE key = '$field')";
-        $termSubQuery = "(SELECT $tbCode.$field, tr.object_id FROM $table $tbCode JOIN term_relation tr ON tr.term_id = $tbCode.id WHERE $tbCode.taxonomy = 'area' AND tr.$agentType) AS $tbCode ON $tbCode.object_id = r.agent_id";
-        // the dateToAge type requires a special conversion; handling main case is probably unnecessary
-        if ($type == "dateToAge") {
-            $selMain = "$select div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
-            $groupMain = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.$field, 'YYYY-MM-DD')))::integer, 5)$tail";
-            $selMeta = "$select div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5) AS value, count(*) AS quantity FROM registration r";
-            $groupMeta = "GROUP BY div(date_part('year', age(to_timestamp($tbCode.value, 'YYYY-MM-DD')))::integer, 5)$tail";
-        // these types of agents are obtained from agent_relation
-        } else if (($type == "coletivo") || ($type == "instituicao")) {
-            $idField = ($table == "agent") ? "id" : "object_id";
-            $selTarget = str_ends_with($table, "_meta") ? "$tbCode.value" : "$tbCode.$field";
-            $regToAgent = "LEFT OUTER JOIN (SELECT $selTarget, ar.agent_id AS id, ar.object_id FROM agent_relation ar JOIN $table $tbCode ON ar.agent_id = $tbCode.$idField WHERE ar.$regType AND ar.type = '$type') AS a ON a.object_id = r.id";
-            $termSubQuery = "(SELECT $tbCode.$field, ar.object_id FROM agent_relation ar JOIN term_relation tr ON tr.object_id = ar.agent_id JOIN $table $tbCode ON $tbCode.id = tr.term_id WHERE ar.$regType AND ar.type = '$type' AND $tbCode.taxonomy = 'area' AND tr.$agentType AND tr.object_id = ar.agent_id) AS $tbCode ON $tbCode.object_id = r.id";
-        // handle term searches for spaces
-        } else if ($type == "space") {
-            $termSubQuery = "(SELECT $tbCode.$field, sr.object_id FROM space_relation sr JOIN term_relation tr ON tr.object_id = sr.space_id JOIN $table $tbCode ON $tbCode.id = tr.term_id WHERE sr.$regType AND $tbCode.taxonomy = 'area' AND tr.$spaceType AND tr.object_id = sr.space_id) AS $tbCode ON $tbCode.object_id = r.id";
-        }
-        // possible queries using the query parts above, by source table
-        $sqls = [
-            "registration" => "$selMain WHERE $regWhere $groupMain",
-            "registration_meta" => "$selMeta LEFT OUTER JOIN $metaSubQuery AS $tbCode ON r.id = $tbCode.object_id WHERE $regWhere $groupMeta",
-            "agent" => "$selMain $regToAgent WHERE $regWhere $groupMain",
-            "agent_meta" => "$selMeta $regToAgent LEFT OUTER JOIN $metaSubQuery AS $tbCode ON a.id = $tbCode.object_id WHERE $regWhere $groupMeta",
-            "space" => "$selMain LEFT OUTER JOIN $regToSpace AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMain",
-            "space_meta" => "$selMeta LEFT OUTER JOIN (SELECT sr.object_id, $tbCode.value FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.object_id WHERE sr.$regType AND $tbCode.key = '$field') AS $tbCode ON $tbCode.object_id = r.id WHERE $regWhere $groupMeta",
-            "term" => "$selMain LEFT OUTER JOIN $termSubQuery WHERE $regWhere $groupMain",
+        // CTEs by source table (considering owner agent)
+        $ctes = [
+            "registration_meta" => "(SELECT $tbCode.object_id, $tbCode.value FROM $table $tbCode WHERE $tbCode.key = '$field')",
+            "agent" => "(SELECT $tbCode.id AS object_id, $tbCode.$field%s FROM $table $tbCode)",
+            "agent_meta" => "(SELECT $tbCode.object_id, $tbCode.value FROM $table $tbCode WHERE $tbCode.key = '$field')",
+            "space" => "(SELECT sr.object_id, $tbCode.$field%s FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.id WHERE sr.$regType)",
+            "space_meta" => "(SELECT sr.object_id, $tbCode.value FROM space_relation sr JOIN $table $tbCode ON sr.space_id = $tbCode.object_id WHERE sr.$regType AND $tbCode.key = '$field')",
+            "term" => "(SELECT tr.object_id, $tbCode.$field FROM term_relation tr JOIN $table $tbCode ON tr.term_id = $tbCode.id WHERE tr.$agentType AND $tbCode.taxonomy = 'area')"
         ];
-        return $sqls[$table];
+        // if not owner agent, fix the CTEs that change from the above
+        if (($type == "coletivo") || ($type == "instituicao")) {
+            $ctes["agent"] = "(SELECT ar.object_id, $tbCode.$field%s FROM agent_relation ar JOIN $table $tbCode ON ar.agent_id = $tbCode.id WHERE ar.type = '$type' AND ar.$regType)";
+            $ctes["agent_meta"] = "(SELECT ar.object_id, $tbCode.value FROM agent_relation ar JOIN $table $tbCode ON ar.agent_id = $tbCode.object_id WHERE ar.type = '$type' AND ar.$regType AND $tbCode.key = '$field')";
+            $ctes["term"] = "(SELECT ar.object_id, $tbCode.$field FROM agent_relation ar JOIN term_relation tr ON ar.agent_id = tr.object_id JOIN $table $tbCode ON tr.term_id = $tbCode.id WHERE ar.type = '$type' AND ar.$regType AND tr.$agentType AND $tbCode.taxonomy = 'area')";
+        } else if ($type == "space") {
+            $ctes["term"] = "(SELECT sr.object_id, $tbCode.$field FROM space_relation sr JOIN term_relation tr ON sr.space_id = tr.object_id JOIN $table $tbCode ON tr.term_id = $tbCode.id WHERE sr.$regType AND tr.$spaceType AND $tbCode.taxonomy = 'area')";
+        }
+        return ($ctes[$table] ?? null);
+    }
+
+    private function queryTest($op)
+    {
+        $fields = $this->getValidFields($op);
+        $field = null;
+        foreach ($fields as $item) {
+            if ($item["source"]["table"] == "rm") {
+                $field = $item["value"];
+                break;
+            }
+        }
+        // single field queries
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "r"]]], $op) ==
+               "SELECT r.status AS value0, count(*) AS quantity FROM registration r WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY r.status");
+        if ($field) {
+            assert($this->buildQuery([["value" => $field, "source" => ["table" => "rm"]]], $op) ==
+                   "WITH table0 AS (SELECT rm.object_id, rm.value FROM registration_meta rm WHERE rm.key = '$field') SELECT table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.value");
+        }
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "a", "type" => "owner"]]], $op) ==
+               "WITH table0 AS (SELECT a.id AS object_id, a.status FROM agent a) SELECT table0.status AS value0, count(*) AS quantity FROM registration r JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "a", "type" => "coletivo"]]], $op) ==
+               "WITH table0 AS (SELECT ar.object_id, a.status FROM agent_relation ar JOIN agent a ON ar.agent_id = a.id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration') SELECT table0.status AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "s"]]], $op) ==
+               "WITH table0 AS (SELECT sr.object_id, s.status FROM space_relation sr JOIN space s ON sr.space_id = s.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration') SELECT table0.status AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status");
+        assert($this->buildQuery([["value" => "En_Estado", "source" => ["table" => "am", "type" => "owner"]]], $op) ==
+               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado') SELECT table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.value");
+        assert($this->buildQuery([["value" => "En_Estado", "source" => ["table" => "am", "type" => "coletivo"]]], $op) ==
+               "WITH table0 AS (SELECT ar.object_id, am.value FROM agent_relation ar JOIN agent_meta am ON ar.agent_id = am.object_id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration' AND am.key = 'En_Estado') SELECT table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.value");
+        assert($this->buildQuery([["value" => "En_Estado", "source" => ["table" => "sm"]]], $op) ==
+               "WITH table0 AS (SELECT sr.object_id, sm.value FROM space_relation sr JOIN space_meta sm ON sr.space_id = sm.object_id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration' AND sm.key = 'En_Estado') SELECT table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.value");
+        assert($this->buildQuery([["value" => "term", "source" => ["table" => "t", "type" => "owner"]]], $op) ==
+               "WITH table0 AS (SELECT tr.object_id, t.term FROM term_relation tr JOIN term t ON tr.term_id = t.id WHERE tr.object_type = 'MapasCulturais\\Entities\\Agent' AND t.taxonomy = 'area') SELECT table0.term AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.term");
+        assert($this->buildQuery([["value" => "term", "source" => ["table" => "t", "type" => "coletivo"]]], $op) ==
+               "WITH table0 AS (SELECT ar.object_id, t.term FROM agent_relation ar JOIN term_relation tr ON ar.agent_id = tr.object_id JOIN term t ON tr.term_id = t.id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration' AND tr.object_type = 'MapasCulturais\\Entities\\Agent' AND t.taxonomy = 'area') SELECT table0.term AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.term");
+        assert($this->buildQuery([["value" => "term", "source" => ["table" => "t", "type" => "space"]]], $op) ==
+               "WITH table0 AS (SELECT sr.object_id, t.term FROM space_relation sr JOIN term_relation tr ON sr.space_id = tr.object_id JOIN term t ON tr.term_id = t.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration' AND tr.object_type = 'MapasCulturais\\Entities\\Space' AND t.taxonomy = 'area') SELECT table0.term AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.term");
+        // double field queries
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "r"]], ["value" => "consolidated_result", "source" => ["table" => "r"]]], $op) ==
+               "SELECT r.status AS value0, r.consolidated_result AS value1, count(*) AS quantity FROM registration r WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY r.status, r.consolidated_result");
+        if ($field) {
+            assert($this->buildQuery([["value" => $field, "source" => ["table" => "rm"]], ["value" => "consolidated_result", "source" => ["table" => "r"]]], $op) ==
+                   "WITH table0 AS (SELECT rm.object_id, rm.value FROM registration_meta rm WHERE rm.key = '$field') SELECT table0.value AS value0, r.consolidated_result AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.value, r.consolidated_result");
+            assert($this->buildQuery([["value" => "consolidated_result", "source" => ["table" => "r"]], ["value" => $field, "source" => ["table" => "rm"]]], $op) ==
+                   "WITH table0 AS (SELECT rm.object_id, rm.value FROM registration_meta rm WHERE rm.key = '$field') SELECT r.consolidated_result AS value0, table0.value AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY r.consolidated_result, table0.value");
+        }
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "r"]], ["value" => "status", "source" => ["table" => "a", "type" => "owner"]]], $op) ==
+               "WITH table0 AS (SELECT a.id AS object_id, a.status FROM agent a) SELECT r.status AS value0, table0.status AS value1, count(*) AS quantity FROM registration r JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY r.status, table0.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "a", "type" => "owner"]], ["value" => "status", "source" => ["table" => "r"]]], $op) ==
+               "WITH table0 AS (SELECT a.id AS object_id, a.status FROM agent a) SELECT table0.status AS value0, r.status AS value1, count(*) AS quantity FROM registration r JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status, r.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "r"]], ["value" => "status", "source" => ["table" => "a", "type" => "coletivo"]]], $op) ==
+               "WITH table0 AS (SELECT ar.object_id, a.status FROM agent_relation ar JOIN agent a ON ar.agent_id = a.id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration') SELECT r.status AS value0, table0.status AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY r.status, table0.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "a", "type" => "coletivo"]], ["value" => "status", "source" => ["table" => "r"]]], $op) ==
+               "WITH table0 AS (SELECT ar.object_id, a.status FROM agent_relation ar JOIN agent a ON ar.agent_id = a.id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration') SELECT table0.status AS value0, r.status AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status, r.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "a", "type" => "coletivo"]], ["value" => "status", "source" => ["table" => "s"]]], $op) ==
+               "WITH table0 AS (SELECT ar.object_id, a.status FROM agent_relation ar JOIN agent a ON ar.agent_id = a.id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration'), table1 AS (SELECT sr.object_id, s.status FROM space_relation sr JOIN space s ON sr.space_id = s.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration') SELECT table0.status AS value0, table1.status AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id LEFT OUTER JOIN table1 ON r.id = table1.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status, table1.status");
+        assert($this->buildQuery([["value" => "status", "source" => ["table" => "s"]], ["value" => "status", "source" => ["table" => "a", "type" => "coletivo"]]], $op) ==
+               "WITH table0 AS (SELECT sr.object_id, s.status FROM space_relation sr JOIN space s ON sr.space_id = s.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration'), table1 AS (SELECT ar.object_id, a.status FROM agent_relation ar JOIN agent a ON ar.agent_id = a.id WHERE ar.type = 'coletivo' AND ar.object_type = 'MapasCulturais\\Entities\\Registration') SELECT table0.status AS value0, table1.status AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id LEFT OUTER JOIN table1 ON r.id = table1.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.status, table1.status");
+        assert($this->buildQuery([["value" => "En_Estado", "source" => ["table" => "am", "type" => "owner"]], ["value" => "term", "source" => ["table" => "t", "type" => "space"]]], $op) ==
+               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado'), table1 AS (SELECT sr.object_id, t.term FROM space_relation sr JOIN term_relation tr ON sr.space_id = tr.object_id JOIN term t ON tr.term_id = t.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration' AND tr.object_type = 'MapasCulturais\\Entities\\Space' AND t.taxonomy = 'area') SELECT table0.value AS value0, table1.term AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id LEFT OUTER JOIN table1 ON r.id = table1.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.value, table1.term");
+        assert($this->buildQuery([["value" => "term", "source" => ["table" => "t", "type" => "space"]], ["value" => "En_Estado", "source" => ["table" => "am", "type" => "owner"]]], $op) ==
+               "WITH table0 AS (SELECT sr.object_id, t.term FROM space_relation sr JOIN term_relation tr ON sr.space_id = tr.object_id JOIN term t ON tr.term_id = t.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration' AND tr.object_type = 'MapasCulturais\\Entities\\Space' AND t.taxonomy = 'area'), table1 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado') SELECT table0.term AS value0, table1.value AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.id = table0.object_id LEFT OUTER JOIN table1 ON r.agent_id = table1.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY table0.term, table1.value");
+        // single field timeseries query
+        assert($this->buildQuery([["value" => "En_Estado", "source" => ["table" => "am", "type" => "owner"]]], $op, true) ==
+               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'En_Estado') SELECT to_char(r.create_timestamp, 'YYYY-MM-DD') AS date, table0.value AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY to_char(r.create_timestamp, 'YYYY-MM-DD'), table0.value ORDER BY to_char(r.create_timestamp, 'YYYY-MM-DD'), table0.value ASC");
+        // single field age range query
+        assert($this->buildQuery([["value" => "dataDeNascimento", "source" => ["table" => "am", "type" => "dateToAge"]]], $op) ==
+               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'dataDeNascimento') SELECT div(date_part('year', age(to_timestamp(table0.value, 'YYYY-MM-DD')))::integer, 5) AS value0, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY div(date_part('year', age(to_timestamp(table0.value, 'YYYY-MM-DD')))::integer, 5)");
+        // double field with age range query
+        assert($this->buildQuery([["value" => "dataDeNascimento", "source" => ["table" => "am", "type" => "dateToAge"]], ["value" => "term", "source" => ["table" => "t", "type" => "space"]]], $op) ==
+               "WITH table0 AS (SELECT am.object_id, am.value FROM agent_meta am WHERE am.key = 'dataDeNascimento'), table1 AS (SELECT sr.object_id, t.term FROM space_relation sr JOIN term_relation tr ON sr.space_id = tr.object_id JOIN term t ON tr.term_id = t.id WHERE sr.object_type = 'MapasCulturais\\Entities\\Registration' AND tr.object_type = 'MapasCulturais\\Entities\\Space' AND t.taxonomy = 'area') SELECT div(date_part('year', age(to_timestamp(table0.value, 'YYYY-MM-DD')))::integer, 5) AS value0, table1.term AS value1, count(*) AS quantity FROM registration r LEFT OUTER JOIN table0 ON r.agent_id = table0.object_id LEFT OUTER JOIN table1 ON r.id = table1.object_id WHERE r.opportunity_id = :opportunity AND r.status > 0 GROUP BY div(date_part('year', age(to_timestamp(table0.value, 'YYYY-MM-DD')))::integer, 5), table1.term");
+        return;
     }
 
     private function fieldDefinition($label, $value, $table, $type=null)
@@ -802,7 +965,7 @@ class Controller extends \MapasCulturais\Controller
             }
         }
     }
-    
+
     private function getRegistrationIds()
     {
         $opp = $this->getOpportunity();
@@ -840,26 +1003,19 @@ class Controller extends \MapasCulturais\Controller
      {
         switch ($value) {
             case 0:
-                $status = "Rascunho";
-                break;
+                return i::__("Rascunho");
             case 1:
-                $status = "Pendente";
-                break;
+                return i::__("Pendente");
             case 2:
-                $status = "Inválida";
-                break;
+                return i::__("Inválida");
             case 3:
-                $status = "Não Selecionada";
-                break;
+                return i::__("Não Selecionada");
             case 8:
-                $status = "Suplente";
-                break;
+                return i::__("Suplente");
             case 10:
-                $status = "Selecionada";
-                break;
+                return i::__("Selecionada");
         }
-
-        return $status;
+        return null;
      }
 
     /**
@@ -885,10 +1041,6 @@ class Controller extends \MapasCulturais\Controller
         $csv->output($fileName);
     }
 
-    
-
-   
-
     private function prepareTimeSeries($data, $type, $evalMethod)
     {
         $series = [];
@@ -898,7 +1050,7 @@ class Controller extends \MapasCulturais\Controller
         $outSeries = [];
         $outTimes = [];
         foreach ($data as $item) {
-            $label = $this->generateLabel($item["value"], $type, $evalMethod);
+            $label = $this->generateLabel($item["value0"], $type, $evalMethod);
             if (!isset($series[$label])) {
                 $series[$label] = [];
             }
@@ -918,7 +1070,7 @@ class Controller extends \MapasCulturais\Controller
                 "data" => []
             ];
             foreach ($times as $time) {
-                $current['data'][] = $series[$label][$time] ?? 0;
+                $current["data"][] = $series[$label][$time] ?? 0;
             }
             $outLines[] = $label;
             $outSeries[] = $current;

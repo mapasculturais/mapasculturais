@@ -7,7 +7,7 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
 <div ng-controller='Reports'>
     <div class="aba-content" id="reports">
         <header>
-            <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportinidade");?></p>
+            <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportunidade");?></p>
         </header>
 
         <div class="charts-static">
