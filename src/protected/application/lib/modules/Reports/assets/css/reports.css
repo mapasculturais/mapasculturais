@@ -77,6 +77,11 @@
     opacity: 1;
 }
 
+#reports .chart-wrap header .description {
+    font-size: 14px;
+    line-height: 0;
+}
+
 /* Chart container */
 #reports .chart-container {
     float: left;
@@ -147,7 +152,6 @@
 
 /* Footer*/
 #reports > footer {
-    margin-top: 25px;
     padding: 45px 15px 25px;
     text-align: center;
 }
