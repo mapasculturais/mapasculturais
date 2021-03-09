@@ -499,8 +499,6 @@ class Controller extends \MapasCulturais\Controller
 
     public function ALL_csvDynamicGraphic()
     {
-       
-       
         $this->requireAuthentication();
     
         $opp = $this->getOpportunity();
@@ -522,20 +520,29 @@ class Controller extends \MapasCulturais\Controller
             $value['reportData']['graphicId'] = $metalist->id;
             $value['data'] = $this->getData($value['reportData'], $opp);
             $return = $value;
-            
         }
-        
+
         $csv_data = [];
-        $header = [i::__($return['reportData']['title']), i::__('QUANTIDADE')];
-        if($return['reportData']['typeGraphic'] == "line"){
+        if($return['reportData']['typeGraphic'] != "pie"){
+            
+            $header = $return['data']['labels'];
+            array_unshift($header, "");
+
+            $csv_data = [];
             foreach ($return['data']['series'] as $key => $value){
-                $csv_data[] = [$value['label'], array_sum($value['data'])];
+                $csv_data[][$key] = $value['label'];
+                foreach ($value['data'] as $k => $v){                    
+                    $csv_data[$key][] = $v;
+                }
             }
-        }else{
+        
+        }else{           
+            $header = [i::__($return['reportData']['title']), i::__('QUANTIDADE')];
             foreach ($return['data']['data'] as $key => $value){
                 $csv_data[] = [$return['data']['labels'][$key], $value];
             }
         }
+        
         $this->createCsv($header, $csv_data, $action, $opp->id);
     }
 
