@@ -129,11 +129,13 @@
                         var total = $scope.sumSerie(graphic);
                         legendsToString.push($scope.legendsToString(total, graphic, index));
                     });
+                    graphic.data.tooltips = graphic.data.legends;
                     graphic.data.legends = legendsToString;
                 }else{
                     graphic.data.data.forEach(function(value, index){
                         legendsToString.push($scope.legendsToString(value, graphic, index));
                     });
+                    graphic.data.tooltips = graphic.data.labels;
                     graphic.data.labels = legendsToString;
                 }
               
@@ -225,24 +227,6 @@
                                     display: false,
                                 }
                             },
-                            tooltips: {
-                                callbacks: {
-                                    title: function(tooltipItem, data) {
-                                        return item.data.tooltips[tooltipItem[0].index];
-                                    },
-                                    label: function(tooltipItem, data) {
-                                        let value = data.datasets[0].data[tooltipItem.index];
-                                        let sum = 0;
-                                        let dataset = data['datasets'][0].data;
-                                        dataset.map(data => {
-                                            sum += data;
-                                        });
-
-                                        let percentage = (value*100 / sum).toFixed(2)+"%";
-                                        return value + "\n"+"("+percentage+")";
-                                    }
-                                }
-                            }
                         }
                     };
     
