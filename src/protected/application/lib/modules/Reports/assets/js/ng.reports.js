@@ -84,12 +84,15 @@
         
         $scope.createGraphic = function() {            
             var indexA = $scope.data.reportData.dataDisplayA;
-            var indexB = $scope.data.reportData.dataDisplayB;            
+            var indexB = $scope.data.reportData.dataDisplayB; 
+            var fieldA = indexA ? $scope.data.dataDisplayA[indexA].label : "";
+            var fieldB = indexB ? " x " +$scope.data.dataDisplayB[indexB].label : "";        
             var reportData = {
                 typeGraphic:$scope.data.reportData.type,
                 opportunity_id: MapasCulturais.entity.id,
                 title: $scope.data.reportData.title,
                 description: $scope.data.reportData.description,
+                fields: fieldA + fieldB,
                 columns:[
                     {
                         source: $scope.data.dataDisplayA[indexA].source,
@@ -101,7 +104,6 @@
                     }
                 ],
             }
-
             ReportsService.save({reportData:reportData}).success(function (data, status, headers){
 
                 $scope.data.graphics = $scope.data.graphics.filter(function (item) {
@@ -158,7 +160,9 @@
         
         $scope.graphicGenerate = function() {
             var _datasets;
-            $scope.data.graphics.forEach(function(item){  
+            $scope.data.graphics.forEach(function(item){ 
+            console.log(item)  
+
                 if(item.reportData.typeGraphic == "table"){
                     var sumLines = [];
                     var sumColumns = [];
