@@ -63,7 +63,7 @@ class Module extends \MapasCulturais\Module{
         $params = [
             '@select'=>'id',
             'parent' => "EQ({$base_opportunity->id})",
-            'status' => 'IN(0,-1)',
+            'status' => 'GTE(-1)',
             '@permissions' => 'view',
             '@order' => 'registrationFrom DESC',
             '@limit' => 1
@@ -209,11 +209,19 @@ class Module extends \MapasCulturais\Module{
             if($this->previousPhaseRegistrationId) {
                 $value = $registration_repository->find($this->previousPhaseRegistrationId);
             }
+
+            if($value == $this) {
+                $value = null;
+            }
         });
 
         $app->hook('entity(Registration).get(nextPhase)', function(&$value) use($registration_repository) {
             if ($this->nextPhaseRegistrationId) {
                 $value = $registration_repository->find($this->nextPhaseRegistrationId);
+            }
+
+            if($value == $this) {
+                $value = null;
             }
         });
 
@@ -224,14 +232,30 @@ class Module extends \MapasCulturais\Module{
                 $first_phase = Module::getBaseOpportunity($opportunity);
                 $value = $registration_repository->findOneBy(['opportunity' => $first_phase, 'number' => $this->number]);
             }
+
+            if($value == $this) {
+                $value = null;
+            }
         });
 
         $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $metadata_key) use($app) {
-            
-            while(!$value && $this->previousPhase) {
+            if(!$value && $this->previousPhase) {
                 $this->previousPhase->registerFieldsMetadata();
-                $value = $this->previousPhase->$metadata_key;
+                
+                $cache_id = "registration:{$this->number}:$metadata_key";
+                if($app->cache->contains($cache_id)) {
+                    $value = $app->cache->fetch($cache_id);
+                } else {
+                    $value = $this->previousPhase->$metadata_key;
+                    $app->cache->save($cache_id, $value, DAY_IN_SECONDS);
+                }
             }
+        });
+
+
+        $app->hook('entity(registration).meta(<<projectName|field_*>>).update:after', function() use($app) {
+            $cache_id = "registration:{$this->owner->number}:{$this->key}";
+            $app->cache->delete($cache_id);
         });
 
         // registra os metadados das inscrićões das fases anteriores
@@ -357,6 +381,12 @@ class Module extends \MapasCulturais\Module{
         $app->hook('POST(opportunity.createNextPhase)', function() use($app){
             $parent = $this->requestedEntity;
 
+            $last_phase = self::getLastCreatedPhase($parent);
+
+            if ($last_phase->isLastPhase) {
+                $this->errorJson(i::__('Já foi criada a última fase!'), 400);
+            }
+
             $_phases = [
                 \MapasCulturais\i::__('Segunda fase'),
                 \MapasCulturais\i::__('Terceira fase'),
@@ -383,13 +413,11 @@ class Module extends \MapasCulturais\Module{
 
             $phase->name = $_phases[$num_phases];
             $phase->registrationCategories = $parent->registrationCategories;
-            $phase->shortDescription = sprintf(\MapasCulturais\i::__('Descrição da %s'), $_phases[$num_phases]);
+            $phase->shortDescription = sprintf(i::__('Descrição da %s'), $_phases[$num_phases]);
             $phase->type = $parent->type;
             $phase->owner = $parent->owner;
             $phase->useRegistrations = true;
             $phase->isOpportunityPhase = true;
-
-            $last_phase = self::getLastCreatedPhase($parent);
 
             $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
             $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
