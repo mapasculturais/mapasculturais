@@ -98,6 +98,7 @@
 
 .charts-dynamic .chart-table table {
     margin-bottom: 0;
+    width: 100%;
 }
 
 .charts-dynamic .chart-table table thead tr th {
@@ -146,6 +147,10 @@
     margin-right: 5px;
     min-width: 12px;
     width: 12px;
+}
+
+#reports .chart-wrap .chart-table + footer .legends-chats .each .dot {
+    background-color: #d0d0d0 !important;
 }
 
 #reports .chart-wrap footer .legends-chats .each p {
