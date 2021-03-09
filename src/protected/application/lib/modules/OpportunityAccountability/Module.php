@@ -8,6 +8,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
+use MapasCulturais\ApiQuery;
 
 class Module extends \MapasCulturais\Module
 {
@@ -15,19 +16,22 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
+        $registration_repository = $app->repo('Registration');
+
         // impede que a fase de prestação de contas seja considerada a última fase da oportunidade
         $app->hook('entity(Opportunity).getLastCreatedPhase:params', function(Opportunity $base_opportunity, &$params) {
             $params['isAccountabilityPhase'] = 'NULL()';
         });
 
-        // Adidiona o checkbox haverá última fase
-        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
+        $app->hook('entity(Registration).get(accountabilityPhase)', function(&$value) use ($registration_repository){
+            $opportunity = $this->opportunity->parent ?: $this->opportunity;
+            $accountability_phase = $opportunity->accountabilityPhase;
 
-            $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
+            $value = $registration_repository->findOneBy([
+                'opportunity' => $accountability_phase,
+                'number' => $this->number
+             ]);
         });
-
-        //
-        $app->hook('entity(Opportunity).insert:after', function () use($app) {});
 
         // na publicação da última fase, cria os projetos
         $app->hook('entity(Opportunity).publishRegistration', function (Registration $registration) use($app) {
@@ -35,9 +39,7 @@ class Module extends \MapasCulturais\Module
                 return;
             }
 
-            $last_phase = PhasesModule::getLastCreatedPhase($this);
-            
-            if (!$this->equals($last_phase)) {
+            if (!$this->isLastPhase) {
                 return;
             }
 
@@ -48,21 +50,52 @@ class Module extends \MapasCulturais\Module
             $project->parent = $app->repo('Project')->find($this->ownerEntity->id);
             $project->isAccountability = true;
             $project->owner = $registration->owner;
-            
-            $project->registration = $registration;
-            $project->opportunity = $this; 
+
+            $project->registration = $registration->firstPhase;
+            $project->opportunity = $this->parent ?: $this;
 
             $project->save(true);
 
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
         });
+
+        $app->hook('template(project.single.tabs):end', function(){
+            $project = $this->controller->requestedEntity;
+
+            if ($project->isAccountability) {
+                if ($project->canUser('@control')) {
+                    $this->part('accountability/project-tab');
+                }
+            }
+        },1000);
+
+        $app->hook('template(project.single.tabs-content):end', function(){
+            $project = $this->controller->requestedEntity;
+
+            if ($project->isAccountability) {
+                if($project->canUser('@control')){
+                    $this->part('accountability/project-tab-content');
+                }
+            }
+        },1000);
+
+        // Adidiona o checkbox haverá última fase
+        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
+            $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
+        });
+
+        //
+        $app->hook('entity(Opportunity).insert:after', function () use ($app) {
+        });
+
+
     }
 
     function register()
     {
         $app = App::i();
-        $project_repository = $app->repo('Project');
+        $opportunity_repository = $app->repo('Opportunity');
         $registration_repository = $app->repo('Registration');
 
         $this->registerProjectMetadata('isAccountability', [
@@ -77,9 +110,10 @@ class Module extends \MapasCulturais\Module
             'serialize' => function (Opportunity $opportunity) {
                 return $opportunity->id;
             },
-            'unserialize' => function ($opportunity_id) use($project_repository) {
+            'unserialize' => function ($opportunity_id, $opportunity) use($opportunity_repository, $app) {
+
                 if ($opportunity_id) {
-                    return $project_repository->find($opportunity_id);
+                    return $opportunity_repository->find($opportunity_id);
                 } else {
                     return null;
                 }
@@ -106,6 +140,21 @@ class Module extends \MapasCulturais\Module
             'label' => i::__('Indica se a oportunidade é uma fase de prestação de contas'),
             'type' => 'boolean',
             'default' => false
+        ]);
+
+        $this->registerOpportunityMetadata('accountabilityPhase', [
+            'label' => i::__('Indica se a oportunidade é uma fase de prestação de contas'),
+            'type' => 'Opportunity',
+            'serialize' => function (Opportunity $opportunity) {
+                return $opportunity->id;
+            },
+            'unserialize' => function ($opportunity_id, $opportunity) use($opportunity_repository) {
+                if ($opportunity_id) {
+                    return $opportunity_repository->find($opportunity_id);
+                } else {
+                    return null;
+                }
+            }
         ]);
     }
 }

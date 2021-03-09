@@ -93,7 +93,7 @@ class App extends \Slim\Slim{
 
     /**
      * The Route Manager.
-     * @var \MapasCulturais\RouteManager
+     * @var \MapasCulturais\RoutesManager
      */
     protected $_routesManager = null;
 

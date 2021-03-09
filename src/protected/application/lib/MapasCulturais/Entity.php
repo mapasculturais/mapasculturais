@@ -821,7 +821,12 @@ abstract class Entity implements \JsonSerializable{
             $registered_metadata = $this->getRegisteredMetadata();
             foreach($registered_metadata as $def){
                 $meta_key = $def->key;
-                $result[$meta_key] = $this->$meta_key;
+                $meta_value = $this->$meta_key;
+                if ($meta_value instanceof Entity) {
+                    $result[$meta_key] = $meta_value->id;
+                } else {
+                    $result[$meta_key] = $meta_value;
+                }
             }
         }
 
