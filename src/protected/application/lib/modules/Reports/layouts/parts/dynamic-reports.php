@@ -19,12 +19,19 @@ use MapasCulturais\i;
                     <tr>
                         <th></th>
                         <th ng-repeat="(key, label) in graphic.data.labels">{{label}}</th>
+                        <th><?php i::_e("Total"); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="(key, serie) in graphic.data.series track by $index">                    
                         <td >{{serie.label}}</td>
                         <td ng-repeat="(key, value) in serie.data track by $index">{{value}}</td>
+                        <td>{{graphic.data.sumLines[key]}}</td>
+                    </tr>
+                    <tr>
+                        <td><?php i::_e("Total"); ?></td>
+                        <td ng-repeat="(key, sumColumn) in graphic.data.sumColumns track by $index">{{sumColumn}}</td> 
+                        <td>{{graphic.data.total}}</td>
                     </tr>
                 </tbody>
             </table> 

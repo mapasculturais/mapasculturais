@@ -157,6 +157,38 @@
         $scope.graphicGenerate = function() {
             var _datasets;
             $scope.data.graphics.forEach(function(item){  
+                if(item.reportData.typeGraphic == "table"){
+                    var sumLines = [];
+                    var sumColumns = [];
+                    item.data.series.forEach(function(serie){
+                        var sum = 0;
+                        serie.data.forEach(function(value){
+                            sum = sum+value;
+                        });
+                        sumLines.push(sum);
+                    });
+                    
+                    item.data.series.forEach(function(serie, linha){
+                        if(linha == 0){
+                            for(var i=0; i< serie.data.length; i++){
+                                sumColumns[i] = 0;
+                            }
+                        }
+                       
+                        serie.data.forEach(function(value, coluna){
+                            sumColumns[coluna] = sumColumns[coluna]+serie.data[coluna];
+                        });
+                        
+                    });
+                    var total = sumColumns.reduce(function(ac, value) {
+                        return ac + value;
+                    });
+                    
+                    item.data.total = total;
+                    item.data.sumLines = sumLines;
+                    item.data.sumColumns = sumColumns;
+                    
+                }
                 if(item.reportData.typeGraphic != "pie"){
                     _datasets = item.data.series.map(function (serie){
                        return {                             
@@ -199,7 +231,6 @@
                                         return item.data.tooltips[tooltipItem[0].index];
                                     },
                                     label: function(tooltipItem, data) {
-                                        console.log(tooltipItem)
                                         let value = data.datasets[0].data[tooltipItem.index];
                                         let sum = 0;
                                         let dataset = data['datasets'][0].data;
