@@ -126,6 +126,60 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
+    public function GET_registrationsByEvaluationStatusBar()
+    {
+        $app = App::i();
+
+        $opp = $this->getOpportunity();
+
+        $em = $opp->getEvaluationMethod();
+
+        //Pega conexão
+        $conn = $app->em->getConnection();
+        
+
+        $request = $this->data;
+
+        //Seleciona e agrupa inscrições ao longo do tempo
+
+        $params = ['opportunity_id' => $opp->id];
+
+        $result = [];
+        $a = 0;
+        $b = 20;
+        $label = "";
+        for ($i = 0; $i < 100; $i += 20) {
+
+            if ($i > 0) {
+                $a = $b + 1;
+                $b = $b + 20;
+            }
+
+            $query = "SELECT count(consolidated_result)
+            FROM registration r
+            WHERE opportunity_id = :opportunity_id
+            AND consolidated_result <> '0' AND
+            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}";
+
+            $label = "de " . $a . " a " . $b;
+
+            $result[$label] = $conn->fetchAll($query, $params);
+
+        }
+        $header = [
+            i::__('AVALIACAO'),
+            i::__('QUANTIDADE'),
+        ];
+        $data = [];
+        foreach ($result as $key => $value) {
+            
+            $csv_data[] = [$key, $value[0]['count']];
+
+        }
+
+        $this->createCsv($header, $csv_data, $request['action'], $opp->id);
+    }
+
     /**
      * Gera CSV das inscrições agrupadas por avaliação
      *
