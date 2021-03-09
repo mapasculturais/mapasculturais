@@ -234,7 +234,7 @@
     color: #555;
     display: flex;
 }
-.reports-modal .grafic-type .line label:hover {
+.reports-modal .graphic-type .line label:hover {
     color: #111;
     cursor: pointer;
 }
@@ -242,13 +242,13 @@
     height: 20px;
     margin-right: 15px;
 }
-.reports-modal .grafic-type .line label:hover i::before,
-.reports-modal .grafic-type .line label input:checked + i::before,
-.reports-modal .grafic-type .line label input:checked ~ span {
+.reports-modal .graphic-type .line label:hover i::before,
+.reports-modal .graphic-type .line label input:checked + i::before,
+.reports-modal .graphic-type .line label input:checked ~ span {
     color: #111;
 }
 
-.reports-modal .grafic-data label {
+.reports-modal .graphic-data label {
     font-weight: bold;
 }
 

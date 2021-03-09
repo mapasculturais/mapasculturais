@@ -17,8 +17,8 @@
         $scope.data = {
             reportData: {},
             reportModal: false,
-            graficType: true,
-            graficData:false,            
+            graphicType: true,
+            graphicData:false,            
             creatingGraph: false,
             dataDisplayA:[],
             dataDisplayB:[],
@@ -28,8 +28,8 @@
                 'coletivo': '(Agente Coletivo)',
                 'space': '(Espaço)'
             },
-            typeGraficDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
-            loadingGrafics:[],
+            typeGraphicDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
+            loadingGraphics:[],
             csvRef: []
         };
 
@@ -58,10 +58,10 @@
         });
 
         ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){ 
-            
+                
             var legendsToString = [];
             data.forEach(function(item){
-                if(item.reportData.typeGrafic != "pie"){
+                if(item.reportData.typeGraphic != "pie"){
                     var total = $scope.sumSerie(item);
                     item.data.series.forEach(function(value, index){
                         legendsToString.push($scope.legendsToString(total, item, index));
@@ -77,15 +77,15 @@
                 legendsToString = [];
             });
             
-            $scope.data.loadingGrafics = data;
-            $scope.graficGenerate();
+            $scope.data.loadingGraphics = data;
+            $scope.graphicGenerate();
         });
         
-        $scope.createGrafic = function() {            
+        $scope.createGraphic = function() {            
             var indexA = $scope.data.reportData.dataDisplayA;
             var indexB = $scope.data.reportData.dataDisplayB;            
             var reportData = {
-                typeGrafic:$scope.data.reportData.type,
+                typeGraphic:$scope.data.reportData.type,
                 opportunity_id: MapasCulturais.entity.id,
                 title: $scope.data.reportData.title,
                 description: $scope.data.reportData.description,
@@ -103,7 +103,7 @@
 
             ReportsService.save({reportData:reportData}).success(function (data, status, headers){
 
-                $scope.data.loadingGrafics = $scope.data.loadingGrafics.filter(function (item) {
+                $scope.data.loadingGraphics = $scope.data.loadingGraphics.filter(function (item) {
                     if (item.reportData.graphicId != data.graphicId) return item;
                 });
 
@@ -123,7 +123,7 @@
                 };
                 
                 var legendsToString = [];
-                if(graphic.reportData.typeGrafic != "pie"){
+                if(graphic.reportData.typeGraphic != "pie"){
                     graphic.data.series.forEach(function(value, index){
                         var total = $scope.sumSerie(graphic);
                         legendsToString.push($scope.legendsToString(total, graphic, index));
@@ -136,15 +136,16 @@
                     graphic.data.labels = legendsToString;
                 }
               
-                $scope.data.loadingGrafics.push(graphic);
-                $scope.graficGenerate();
+                $scope.data.loadingGraphics.push(graphic);
+                $scope.graphicGenerate();
+                
                 
             });
         }
         
         $scope.nextStep = function () {
             var type = $scope.data.reportData.type;
-            $scope.data.grafic = $scope.data.typeGraficDictionary[type];
+            $scope.data.graphic = $scope.data.typeGraphicDictionary[type];
         }
 
         $scope.createCsv = function (graphicId) {
@@ -152,11 +153,11 @@
            document.location = url;
         }
         
-        $scope.graficGenerate = function() {
+        $scope.graphicGenerate = function() {
             var _datasets;
-            $scope.data.loadingGrafics.forEach(function(item){
+            $scope.data.loadingGraphics.forEach(function(item){
 
-                if(item.reportData.typeGrafic != "pie"){
+                if(item.reportData.typeGraphic != "pie"){
                     _datasets = item.data.series.map(function (serie){
                        return {                             
                             label: serie.label,
@@ -179,7 +180,7 @@
                 }
                 
                 var config = {
-                    type: item.reportData.typeGrafic,
+                    type: item.reportData.typeGraphic,
                     data: {
                         labels: item.data.labels,
                         datasets: _datasets
@@ -198,7 +199,7 @@
                 var divDinamic = !item.identifier ? "" : item.identifier;
                 setTimeout(function() {
                     var ctx = document.getElementById("dinamic-graphic-"+divDinamic).getContext('2d');
-                    MapasCulturais.Charts.charts["dinamic-grafic"+divDinamic] = new Chart(ctx, config);
+                    MapasCulturais.Charts.charts["dinamic-graphic"+divDinamic] = new Chart(ctx, config);
                 },2000);
             });
         }
@@ -211,7 +212,7 @@
 
             ReportsService.delete(id).success(function () {
 
-                $scope.data.loadingGrafics = $scope.data.loadingGrafics.filter(function (item) {
+                $scope.data.loadingGraphics = $scope.data.loadingGraphics.filter(function (item) {
                     if (item.reportData.graphicId != id) return item;
                 });
 
@@ -221,7 +222,7 @@
 
         $scope.legendsToString = function(value,item, index){
             
-            if(item.reportData.typeGrafic != "pie"){
+            if(item.reportData.typeGraphic != "pie"){
                 var sum = $scope.sumData(item.data.series[index]);
                 return item.data.series[index].label +'\n'+ sum + " ("+ ((sum/value)*100).toFixed(2)+"%)";
             }else{
@@ -252,7 +253,7 @@
         }
 
         $scope.getLabelColor = function(graphic, index){
-            if(graphic.reportData.typeGrafic != "pie"){               
+            if(graphic.reportData.typeGraphic != "pie"){               
                 return graphic.data.series[index].colors;
             }else{
                 return graphic.data.backgroundColor[index];
@@ -261,7 +262,8 @@
 
         $scope.clearModal = function() {
             $scope.data.reportModal = false;
-            $scope.data.graficData = false;
+            $scope.data.graphicData = false;
+            $scope.data.graphicType = true;
             $scope.data.reportData.type = '';
             $scope.data.reportData.title = '';
             $scope.data.reportData.description = '';
@@ -298,7 +300,7 @@
             },
             save: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'saveGrafic', {});
+                var url = MapasCulturais.createUrl('reports', 'saveGraphic', {});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
@@ -310,7 +312,7 @@
             },
             loading: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'loadingGrafic', {});
+                var url = MapasCulturais.createUrl('reports', 'loadingGraphic', {});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {

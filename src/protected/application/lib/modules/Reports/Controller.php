@@ -402,7 +402,7 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
-    public function POST_loadingGrafic()
+    public function POST_loadingGraphic()
     {
         $this->requireAuthentication();
     
@@ -438,7 +438,7 @@ class Controller extends \MapasCulturais\Controller
         $this->apiResponse($return);
     }
 
-    public function POST_saveGrafic()
+    public function POST_saveGraphic()
     {
         $this->requireAuthentication();
 
@@ -455,7 +455,7 @@ class Controller extends \MapasCulturais\Controller
             $source .= is_array($v['source']) ? implode(",",$v['source']) : $v['source'];
         }
 
-        $identifier = md5($reportData['opportunity_id'] . "-" . $reportData['typeGrafic'] . "-" . $source . "-" . $value);
+        $identifier = md5($reportData['opportunity_id'] . "-" . $reportData['typeGraphic'] . "-" . $source . "-" . $value);
         
         $this->data['identifier'] = $identifier;
 
@@ -476,7 +476,7 @@ class Controller extends \MapasCulturais\Controller
 
         $metaList->owner = $opp;
         $metaList->group = 'reports';
-        $metaList->title = 'Grafico' ;
+        $metaList->title = 'Graphico' ;
         $metaList->save(true);
 
         $return = [
@@ -515,7 +515,7 @@ class Controller extends \MapasCulturais\Controller
 
         $metalists = $app->repo("MetaList")->findBy($params);
         
-        $action =  i::__('dynamicGrafic');
+        $action =  i::__('dynamicGraphic');
        
         foreach ($metalists as $metalist){
             $value = json_decode($metalist->value, true);
@@ -527,7 +527,7 @@ class Controller extends \MapasCulturais\Controller
         
         $csv_data = [];
         $header = [i::__($return['reportData']['title']), i::__('QUANTIDADE')];
-        if($return['reportData']['typeGrafic'] == "line"){
+        if($return['reportData']['typeGraphic'] == "line"){
             foreach ($return['data']['series'] as $key => $value){
                 $csv_data[] = [$value['label'], array_sum($value['data'])];
             }
@@ -547,7 +547,7 @@ class Controller extends \MapasCulturais\Controller
         $dataB = $reportData["columns"][1];
         $conn = $app->em->getConnection();
         $query = $this->buildQuery($reportData["columns"], $opp,
-                                   ($reportData["typeGrafic"] == "line"));
+                                   ($reportData["typeGraphic"] == "line"));
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
         $return = [];
         $labels = [];
@@ -555,12 +555,12 @@ class Controller extends \MapasCulturais\Controller
         $data = [];
         // post-processing may be necessary depending on type, so obtain it
         $typeA = $dataA["source"]["type"] ?? "";
-        if ($reportData["typeGrafic"] != "pie") {
+        if ($reportData["typeGraphic"] != "pie") {
             $typeB = $dataB["source"]["type"] ?? "";
-            $return = ($reportData["typeGrafic"] == "line") ?
+            $return = ($reportData["typeGraphic"] == "line") ?
                       $this->prepareTimeSeries($result, $typeA, $opp, $em) :
                       $this->prepareGroupedSeries($result, $typeA, $typeB,
-                                                  $reportData["typeGrafic"],
+                                                  $reportData["typeGraphic"],
                                                   $opp, $em);
         } else {
             foreach ($result as $item) {
@@ -573,7 +573,7 @@ class Controller extends \MapasCulturais\Controller
                 "backgroundColor" => $color,
                 "borderWidth" => 0,
                 "data" => $data,
-                "typeGrafic" => $reportData["typeGrafic"],
+                "typeGraphic" => $reportData["typeGraphic"],
             ];
         }
         return $return;
@@ -1093,7 +1093,7 @@ class Controller extends \MapasCulturais\Controller
             "series" => $outSeries,
             "legends" => $outLines,
             "colors" => $outColours,
-            "typeGrafic" => $chartType,
+            "typeGraphic" => $chartType,
             "opportunity" => $opportunity->id,
             "borderWidth" => 0
         ];

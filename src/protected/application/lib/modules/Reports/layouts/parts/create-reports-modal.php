@@ -6,7 +6,7 @@ use MapasCulturais\i;
 <div ng-class="{hidden:!data.reportModal}" class="bg-reports-modal" id="reportsModal">
     <div class="reports-modal">
 
-        <div class="grafic-type" ng-class="{hidden:!data.graficType}">
+        <div class="graphic-type" ng-class="{hidden:!data.graphicType}">
             <header>
                 <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico"); ?></h2>
                 <a ng-click="clearModal()" class="close-modal"><i class="fas fa-times close-modal"></i></a>
@@ -33,10 +33,10 @@ use MapasCulturais\i;
 
         </div>
 
-        <!--<div class="grafic-data">-->
-        <div class="grafic-data" ng-class="{hidden:!data.graficData}">
+        <!--<div class="graphic-data">-->
+        <div class="graphic-data" ng-class="{hidden:!data.graphicData}">
             <header>
-                <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico de {{data.grafic}}"); ?></h2>
+                <h2 class="report-modal-title"><?php i::_e("Criar novo gráfico de {{data.graphic}}"); ?></h2>
                 <a ng-click="clearModal()" class="close-modal"><i class="fas fa-times close-modal"></i></a>
             </header>
 
@@ -74,8 +74,8 @@ use MapasCulturais\i;
         <footer>
             <button class="btn btn-default close-modal cancel" ng-click="clearModal();"><?php i::_e("Cancelar"); ?></button>
             <button class="btn btn-default draft" class="js-close"><?php i::_e("Salvar rascunho"); ?></button>
-            <button class="btn btn-primary next" ng-if="data.graficType == true" ng-click="data.graficData=true; data.graficType=false;nextStep()" class="js-close" ng-disabled="!data.reportData.type"><?php i::_e("Proxima etapa"); ?></button>
-            <button class="btn btn-primary next" ng-click="createGrafic()" ng-if="data.graficData == true" ng-disabled="!data.reportData.title || !data.reportData.description || !data.reportData.dataDisplayA"><?php i::_e("Gerar gráfico"); ?></button>
+            <button class="btn btn-primary next" ng-if="data.graphicType == true" ng-click="data.graphicData=true; data.graphicType=false;nextStep()" class="js-close" ng-disabled="!data.reportData.type"><?php i::_e("Proxima etapa"); ?></button>
+            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true" ng-disabled="!data.reportData.title || !data.reportData.description || !data.reportData.dataDisplayA"><?php i::_e("Gerar gráfico"); ?></button>
         </footer>
 
     </div><!-- /.reports-modal -->
