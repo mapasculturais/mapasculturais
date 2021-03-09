@@ -58,13 +58,12 @@
         });
 
         ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){ 
-
+            
             var legendsToString = [];
             data.forEach(function(item){
-                if(item.reportData.typeGrafic == "line"){
+                if(item.reportData.typeGrafic != "pie"){
                     var total = $scope.sumSerie(item);
                     item.data.series.forEach(function(value, index){
-                        
                         legendsToString.push($scope.legendsToString(total, item, index));
                     });
                     item.data.legends = legendsToString;
@@ -114,34 +113,32 @@
             });
             
             ReportsService.loading({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
-                
-                var legendsToString = [];
-                $scope.data.loadingGrafics.forEach(function(item){
-                    if(item.reportData.typeGrafic == "line"){
-                        var total = $scope.sumSerie(item);
-                        item.data.series.forEach(function(value, index){
-                            legendsToString.push($scope.legendsToString(total, item, index));
-                        });
-                        item.data.legends = legendsToString;
-                    }else{
-                        item.data.data.forEach(function(value, index){
-                            legendsToString.push($scope.legendsToString(value, item, index));
-                        });
-                        item.data.labels = legendsToString;
-                    }
 
-                    legendsToString = [];
-                });
-                
                 reportData.graphicId = $scope.data.creatingGraph.graphicId;
 
-                $scope.data.loadingGrafics.push({
+                var graphic = {
                     reportData: reportData,
-                    identifier: Math.random().toString(36).substr(2, 9),
+                    identifier: $scope.data.creatingGraph.identifier,
                     data: data
-                });
-
+                };
+                
+                var legendsToString = [];
+                if(graphic.reportData.typeGrafic != "pie"){
+                    graphic.data.series.forEach(function(value, index){
+                        var total = $scope.sumSerie(graphic);
+                        legendsToString.push($scope.legendsToString(total, graphic, index));
+                    });
+                    graphic.data.legends = legendsToString;
+                }else{
+                    graphic.data.data.forEach(function(value, index){
+                        legendsToString.push($scope.legendsToString(value, graphic, index));
+                    });
+                    graphic.data.labels = legendsToString;
+                }
+              
+                $scope.data.loadingGrafics.push(graphic);
                 $scope.graficGenerate();
+                
             });
         }
         
@@ -159,7 +156,7 @@
             var _datasets;
             $scope.data.loadingGrafics.forEach(function(item){
 
-                if(item.reportData.typeGrafic == "line"){
+                if(item.reportData.typeGrafic != "pie"){
                     _datasets = item.data.series.map(function (serie){
                        return {                             
                             label: serie.label,
@@ -223,8 +220,8 @@
         }
 
         $scope.legendsToString = function(value,item, index){
-           
-            if(item.reportData.typeGrafic == "line"){
+            
+            if(item.reportData.typeGrafic != "pie"){
                 var sum = $scope.sumData(item.data.series[index]);
                 return item.data.series[index].label +'\n'+ sum + " ("+ ((sum/value)*100).toFixed(2)+"%)";
             }else{
@@ -255,7 +252,7 @@
         }
 
         $scope.getLabelColor = function(graphic, index){
-            if(graphic.reportData.typeGrafic == "line"){               
+            if(graphic.reportData.typeGrafic != "pie"){               
                 return graphic.data.series[index].colors;
             }else{
                 return graphic.data.backgroundColor[index];
