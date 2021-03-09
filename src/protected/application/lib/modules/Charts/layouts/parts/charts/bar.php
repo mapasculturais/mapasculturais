@@ -34,6 +34,9 @@
     ]);
  * 
  */
+
+use MapasCulturais\i;
+
 $title = $title ?? null;
 $chart_id = uniqid('chart-bar-');
 $colors = [];
@@ -60,18 +63,25 @@ $width = $width ?? '100%';
 $height = $height ?? '50vw';
 
 $horizontal = $horizontal ?? false;
+
+$route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id' => $opportunity->id, 'action' => $action]);
+
 ?>
-<div class="chart-container chart-bar" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+
+<div class="chart-wrap">
+
     <header>
         <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
+        <a href="<?= $route ?>" name="<?= $chart_id ?>" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
     </header>
 
-    <?php $this->part('chart-legends', ["legends" => $legends, "colors" => $colors]); ?>
+    <div class="chart-container chart-bar" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
+        <canvas id="<?= $chart_id ?>"></canvas>
+    </div>
 
-    <canvas id="<?= $chart_id ?>"></canvas>
-</div>
+</div><!-- /.chart-wrap -->
 
 <script>
     $(window).on('load', function() {
