@@ -2,6 +2,7 @@
     overflow: hidden;
 }
 
+/* Charts statics */
 .charts-static .line .line-one{    
     width: 100%;
 }
@@ -79,7 +80,7 @@
 
 #reports .chart-wrap header .description {
     font-size: 14px;
-    line-height: 0;
+    line-height: 1.6;
 }
 
 /* Chart container */
@@ -87,6 +88,33 @@
     float: left;
     margin-bottom: 30px;
     width: 60%;
+}
+
+/* Charts dynamics */
+/* Chart table */
+#reports .charts-dynamic .chart-table {
+    overflow-x: auto;
+}
+
+.charts-dynamic .chart-table table {
+    margin-bottom: 0;
+}
+
+.charts-dynamic .chart-table table thead tr th {
+    line-height: 1.6;
+    min-width: 1.5rem;
+}
+
+.charts-dynamic .chart-table table tbody tr:nth-child(odd) {
+    background-color: #e4e4e4;
+}
+
+.charts-dynamic .chart-table table tbody tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.charts-dynamic .chart-table table tr td:first-child {
+    text-align: left;
 }
 
 /* Chart footer */
@@ -127,7 +155,11 @@
     white-space: pre-wrap;
 }
 
-/* Chart footer/legends/line /bar */
+#reports .chart-wrap footer .legends-chats .each p::first-letter {
+    text-transform: uppercase;
+}
+
+/* Chart footer/legends /line /bar /table */
 #reports .chart-wrap .chart-line + footer,
 #reports .chart-wrap .chart-bar + footer,
 #reports .chart-wrap .chart-table + footer{
@@ -139,7 +171,6 @@
 #reports .chart-wrap .chart-table + footer .legends-chats {
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
 }
 
 #reports .chart-wrap .chart-line + footer .legends-chats .each,
@@ -294,7 +325,7 @@
     background-color: #DDDDDD;
     color: #666;
 }
-.reports-modal footer .draft {
+.reports-modal footer .back {
     background-color: rgba(177, 177, 177,0.7);
 }
 .reports-modal footer .next {
