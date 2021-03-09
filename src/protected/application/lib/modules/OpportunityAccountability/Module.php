@@ -20,6 +20,15 @@ class Module extends \MapasCulturais\Module
             $params['isAccountabilityPhase'] = 'NULL()';
         });
 
+        // Adidiona o checkbox haverá última fase
+        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
+
+            $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
+        });
+
+        //
+        $app->hook('entity(Opportunity).insert:after', function () use($app) {});
+
         // na publicação da última fase, cria os projetos
         $app->hook('entity(Opportunity).publishRegistration', function (Registration $registration) use($app) {
             if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
