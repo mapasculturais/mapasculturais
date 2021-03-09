@@ -13,7 +13,7 @@ use MapasCulturais\i;
             <p class="description">{{graphic.reportData.description}}</p>
         </header>
         
-        <div ng-if="graphic.reportData.typeGraphic == 'table'" class="chart-container dinamic-graphic-{{graphic.identifier}} chart-{{graphic.reportData.typeGraphic}}" style="position: relative; height:auto; width: 100%;">
+        <div ng-if="graphic.reportData.typeGraphic == 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.reportData.typeGraphic}}" style="position: relative; height:auto; width: 100%;">
             <table>
                 <thead>
                     <tr>
@@ -30,12 +30,12 @@ use MapasCulturais\i;
             </table> 
         </div>            
     
-        <div ng-if="graphic.reportData.typeGraphic != 'table'" class="chart-container dinamic-graphic-{{graphic.identifier}} chart-{{graphic.reportData.typeGraphic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.reportData.typeGraphic == 'pie') ? '60%' : '100%'}">
-            <canvas id="dinamic-graphic-{{graphic.identifier}}"></canvas>
+        <div ng-if="graphic.reportData.typeGraphic != 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.reportData.typeGraphic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.reportData.typeGraphic == 'pie') ? '60%' : '100%'}">
+            <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
         </div>
         
         <footer>
-            <div class="legends-chats" id="dinamic-legends-{{graphic.identifier}}">
+            <div class="legends-chats" id="dynamic-legends-{{graphic.identifier}}">
                 <div class="each" ng-if="graphic.reportData.typeGraphic != 'pie'" ng-repeat="(key, label) in graphic.data.legends">
                     <span class="dot" ng-style="{'background-color': getLabelColor(graphic, key)}"></span><p>{{label}}<p>
                 </div>

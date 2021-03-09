@@ -215,10 +215,10 @@
                         }
                     };
     
-                    var divDinamic = !item.identifier ? "" : item.identifier;
+                    var divDynamic = !item.identifier ? "" : item.identifier;
                     setTimeout(function() {
-                        var ctx = document.getElementById("dinamic-graphic-"+divDinamic).getContext('2d');
-                        MapasCulturais.Charts.charts["dinamic-graphic"+divDinamic] = new Chart(ctx, config);
+                        var ctx = document.getElementById("dynamic-graphic-"+divDynamic).getContext('2d');
+                        MapasCulturais.Charts.charts["dynamic-graphic"+divDynamic] = new Chart(ctx, config);
                     },2000);
                 }
             });
