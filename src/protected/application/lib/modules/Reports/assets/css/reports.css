@@ -300,8 +300,7 @@
 .reports-modal .line > select,
 .reports-modal .line .column > select {
     cursor: pointer;
-    max-width: 100%;
-    width: auto;
+    width: 100%;
 }
 .reports-modal .line > input::placeholder,
 .reports-modal .line .column > input::placeholder {
@@ -361,11 +360,6 @@
 
 /* Responsive Modal */
 @media (max-width: 600px) {
-
-    .reports-modal .line > select,
-    .reports-modal .line .column > select {
-        width: 100%;
-    }
 
     .reports-modal .flex {
         display: block;
