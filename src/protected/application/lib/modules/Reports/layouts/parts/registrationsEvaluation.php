@@ -32,7 +32,7 @@ if ($dataOportunity[0]->owner->type == 'technical') {
         'width' => '100%',
         'title' => $title,
         'opportunity' => $opportunity,
-        'action' => 'exportRegistrationsByEvaluation',
+        'action' => 'registrationsByEvaluationStatusBar',
     ]);
 } else {
 
