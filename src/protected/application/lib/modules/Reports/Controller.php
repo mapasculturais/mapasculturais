@@ -895,6 +895,9 @@ class Controller extends \MapasCulturais\Controller
 
     private function generateLabel($value, $type, $evalMethod)
     {
+        if(empty($value)) {
+            return "Não informado";
+        }
         if (!isset($value)) {
             return i::__("(dado não informado)");
         }
