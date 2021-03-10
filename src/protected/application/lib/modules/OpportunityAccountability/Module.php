@@ -60,7 +60,7 @@ class Module extends \MapasCulturais\Module
 
         });
 
-        $app->hook('template(project.single.tabs):end', function(){
+        $app->hook('template(project.<<single|edit>>.tabs):end', function(){
             $project = $this->controller->requestedEntity;
 
             if ($project->isAccountability) {
@@ -70,7 +70,7 @@ class Module extends \MapasCulturais\Module
             }
         },1000);
 
-        $app->hook('template(project.single.tabs-content):end', function(){
+        $app->hook('template(project.<<single|edit>>.tabs-content):end', function(){
             $project = $this->controller->requestedEntity;
 
             if ($project->isAccountability) {
