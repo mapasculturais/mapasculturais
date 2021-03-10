@@ -45,11 +45,11 @@ use MapasCulturais\i;
         <footer>
             <div class="legends-chats" id="dynamic-legends-{{graphic.identifier}}">
                 <div class="each" ng-if="graphic.reportData.typeGraphic != 'pie'" ng-repeat="(key, label) in graphic.data.legends">
-                    <span class="dot" ng-style="{'background-color': getLabelColor(graphic, key)}"></span><p>{{label}}<p>
+                    <span class="dot" ng-style="{'background-color': getLabelColor(graphic, key)}"></span><p>{{label}}</p>
                 </div>
 
                 <div class="each" ng-if="graphic.reportData.typeGraphic == 'pie'" ng-repeat="(key, label) in graphic.data.labels">
-                    <span class="dot" ng-style="{'background-color': getLabelColor(graphic, key)}"></span><p>{{label}}<p>
+                    <span class="dot" ng-style="{'background-color': getLabelColor(graphic, key)}"></span><p>{{label}}</p>
                 </div>
             </div>
         </footer>
