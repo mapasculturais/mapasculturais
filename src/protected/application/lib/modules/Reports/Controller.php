@@ -327,7 +327,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE'),
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
+        $this->createCsv($header, $csv_data, $request['action'], $opp->id);
     }
 
     /**
@@ -456,8 +456,10 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
-    public function POST_loadingGraphic()
+    public function GET_getGraphic()
     {
+      
+
         $this->requireAuthentication();
     
         $opp = $this->getOpportunity();
@@ -468,7 +470,6 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         
-       
         if(!(isset($request['reportData']))){
             
             $params = ['objectId' => $opp->id, "group" => "reports"];
@@ -483,12 +484,10 @@ class Controller extends \MapasCulturais\Controller
                 
             }
         }else{
-
-            $return =  $this->getData($request['reportData'], $opp);
-            
+            $reportData = json_decode($request['reportData'], true);
+            $return =  $this->getData($reportData, $opp);
         }
         
-
         $this->apiResponse($return);
     }
 
@@ -542,7 +541,7 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
-    public function ALL_dataOpportunityReport()
+    public function GET_dataOpportunityReport()
     {
         $this->requireAuthentication();
         $app = App::i();
