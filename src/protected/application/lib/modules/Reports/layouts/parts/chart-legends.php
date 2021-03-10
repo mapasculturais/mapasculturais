@@ -5,7 +5,7 @@ foreach ($legends as $key_l => $legend) {
     $result[$legend] = $colors[$key_l];
 } ?>
 
-<div class="legends-chats">
+<div class="legends-charts">
 
     <?php foreach ($result as $key => $value) : ?>
         <div class="each">
