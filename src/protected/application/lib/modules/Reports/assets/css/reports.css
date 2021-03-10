@@ -126,12 +126,12 @@
 }
 
 /* Chart footer/legends */
-#reports .chart-wrap footer .legends-chats {
+#reports .chart-wrap footer .legends-charts {
     display: flex;
     flex-direction: column;
 }
 
-#reports .chart-wrap footer .legends-chats .each {
+#reports .chart-wrap footer .legends-charts .each {
     align-items: center;
     box-sizing: border-box;
     display: flex;
@@ -140,7 +140,7 @@
     width: 100%;
 }
 
-#reports .chart-wrap footer .legends-chats .each .dot {
+#reports .chart-wrap footer .legends-charts .each .dot {
     border-radius: 12px;
     display: inline-block;
     height: 12px;
@@ -149,18 +149,18 @@
     width: 12px;
 }
 
-#reports .chart-wrap .chart-table + footer .legends-chats .each .dot {
+#reports .chart-wrap .chart-table + footer .legends-charts .each .dot {
     background-color: #d0d0d0 !important;
 }
 
-#reports .chart-wrap footer .legends-chats .each p {
+#reports .chart-wrap footer .legends-charts .each p {
     font-size: 12px;
     line-height: 1.4;
     margin-bottom: 0;
     white-space: pre-wrap;
 }
 
-#reports .chart-wrap footer .legends-chats .each p::first-letter {
+#reports .chart-wrap footer .legends-charts .each p::first-letter {
     text-transform: uppercase;
 }
 
@@ -171,16 +171,16 @@
     width: 100%;
 }
 
-#reports .chart-wrap .chart-line + footer .legends-chats,
-#reports .chart-wrap .chart-bar + footer .legends-chats,
-#reports .chart-wrap .chart-table + footer .legends-chats {
+#reports .chart-wrap .chart-line + footer .legends-charts,
+#reports .chart-wrap .chart-bar + footer .legends-charts,
+#reports .chart-wrap .chart-table + footer .legends-charts {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-#reports .chart-wrap .chart-line + footer .legends-chats .each,
-#reports .chart-wrap .chart-bar + footer .legends-chats .each,
-#reports .chart-wrap .chart-table + footer .legends-chats .each {
+#reports .chart-wrap .chart-line + footer .legends-charts .each,
+#reports .chart-wrap .chart-bar + footer .legends-charts .each,
+#reports .chart-wrap .chart-table + footer .legends-charts .each {
     padding: 0 15px;
     width: 33.3333%;
 }
