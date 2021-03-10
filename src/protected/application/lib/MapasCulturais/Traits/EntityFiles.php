@@ -18,6 +18,7 @@ use MapasCulturais\Entities\File;
  * </code>
  *
  * @property-read \MapasCulturais\Entities\File[] $files Files of this entities grouped by file groups.
+ * @property-read string $fileClassName
  *
  * @see \MapasCulturais\Definitions\FileGroup
  * @see \MapasCulturais\App::registerFileGroup()

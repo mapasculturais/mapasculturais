@@ -871,6 +871,8 @@ class Theme extends MapasCulturais\Theme {
               );
             };
 
+            $this->jsObject['mapsTileServer'] = $app->config['maps.tileServer'];
+
             $this->jsObject['mapMaxClusterRadius']          = $app->config['maps.maxClusterRadius'];
             $this->jsObject['mapSpiderfyDistanceMultiplier']= $app->config['maps.spiderfyDistanceMultiplier'];
             $this->jsObject['mapMaxClusterElements']        = $app->config['maps.maxClusterElements'];

@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Criteria;
  * @property-read array $propertiesMetadata Properties Metadata
  * @property-read \MapasCulturais\Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
  * @property-read \MapasCulturais\Entities\User $ownerUser The User owner of this entity
+ * @property-read string $hookClassPath
  *
  *
  * @hook **entity.new** - Executed when the __construct method of any entity is called.
@@ -65,6 +66,11 @@ abstract class Entity implements \JsonSerializable{
     protected $_validationErrors = [];
 
     private static $_jsonSerializeNestedObjects = [];
+    
+    /**
+     * enable or disable the usage of magic getter hook to filter properties values
+     */
+    protected $__enableMagicGetterHook = false;
 
     /**
      * Creates the new empty entity object adding an empty point to properties of type 'point' and,
@@ -95,9 +101,9 @@ abstract class Entity implements \JsonSerializable{
             $this->setOwner($app->user->profile);
         }
 
-        $hook_class_path = $this->getHookClassPath();
+        $hook_prefix = $this->getHookPrefix();
 
-        App::i()->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').new');
+        $app->applyHookBoundTo($this, "{$hook_prefix}.new");
 
     }
 
@@ -231,7 +237,6 @@ abstract class Entity implements \JsonSerializable{
     function setStatus(int $status){
         $app = App::i();
 
-        $hook_class_path = $this->getHookClassPath();
         
         if($status != $this->status){
             
@@ -265,8 +270,9 @@ abstract class Entity implements \JsonSerializable{
                     break;
             }
         }
+        $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "entity({$hook_class_path}).setStatus({$status})", [&$status]);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.setStatus({$status})", [&$status]);
 
         $this->status = $status;
     }
@@ -394,7 +400,7 @@ abstract class Entity implements \JsonSerializable{
             }
 
             $app->applyHookBoundTo($this, 'can(' . $this->getHookClassPath() . '.' . $action . ')', ['user' => $user, 'result' => &$result]);
-            $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
+            $app->applyHookBoundTo($this, $this->getHookPrefix() . '.canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
         }
 
@@ -425,7 +431,8 @@ abstract class Entity implements \JsonSerializable{
 
         $app = App::i();
 
-        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').isUserAdmin(' . $role . ')', ['user' => $user, 'role' => $role, 'result' => &$result]);
+        $hook_prefix = $this->getHookPrefix();
+        $app->applyHookBoundTo($this, "{$hook_prefix}.isUserAdmin({$role})", ['user' => $user, 'role' => $role, 'result' => &$result]);
 
         return $result;
     }
@@ -637,6 +644,11 @@ abstract class Entity implements \JsonSerializable{
         return preg_replace('#^MapasCulturais\.Entities\.#','',str_replace('\\','.',$class));
     }
 
+    public static function getHookPrefix($class = null) {
+        $hook_class_path = self::getHookClassPath($class);
+        return "entity({$hook_class_path})";
+    }
+
     public function getEntityType(){
         return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
     }
@@ -658,7 +670,8 @@ abstract class Entity implements \JsonSerializable{
         $requests = [];
         
         try {
-            $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').save:requests', [&$requests]);
+            $hook_prefix = $this->getHookPrefix();
+            $app->applyHookBoundTo($this, "{$hook_prefix}.save:requests", [&$requests]);
             $app->applyHookBoundTo($this, "entity({$this}).save:requests", [&$requests]);
         } catch (Exceptions\WorkflowRequestTransport $e) {
             $requests[] = $e->request;
@@ -714,10 +727,13 @@ abstract class Entity implements \JsonSerializable{
                 }
             }
             $this->refresh();
-            if($is_new){
-                $this->_newCreatedRevision();
-            } else {
-                $this->_newModifiedRevision();
+
+            if($this->usesRevision()) {
+                if($is_new){
+                    $this->_newCreatedRevision();
+                } else {
+                    $this->_newModifiedRevision();
+                }
             }
 
             // delete the entity cache
@@ -805,7 +821,12 @@ abstract class Entity implements \JsonSerializable{
             $registered_metadata = $this->getRegisteredMetadata();
             foreach($registered_metadata as $def){
                 $meta_key = $def->key;
-                $result[$meta_key] = $this->$meta_key;
+                $meta_value = $this->$meta_key;
+                if ($meta_value instanceof Entity) {
+                    $result[$meta_key] = $meta_value->id;
+                } else {
+                    $result[$meta_key] = $meta_value;
+                }
             }
         }
 
@@ -864,6 +885,8 @@ abstract class Entity implements \JsonSerializable{
      * @return array
      */
     public function getValidationErrors(){
+        $app = App::i();
+
         $errors = $this->_validationErrors;
         $class = get_called_class();
 
@@ -889,8 +912,9 @@ abstract class Entity implements \JsonSerializable{
             }
         }
 
-        $hook_class_path = $this->getHookClassPath();
-        App::i()->applyHookBoundTo($this, "entity({$hook_class_path}).validations", [&$properties_validations]);
+        $hook_prefix = $this->getHookPrefix();
+        
+        $app->applyHookBoundTo($this, "{$hook_prefix}.validations", [&$properties_validations]);
 
         foreach($properties_validations as $property => $validations){
 
@@ -975,12 +999,12 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).save:before**
      */
     public function prePersist($args = null){
-        $hook_class_path = $this->getHookClassPath();
-
         $app = App::i();
+        
+        $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:before', $args);
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:before", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before", $args);
 
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
@@ -1009,16 +1033,17 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).save:after**
      */
     public function postPersist($args = null){
-        $hook_class_path = $this->getHookClassPath();
         $app = App::i();
+        
+        $hook_prefix = $this->getHookPrefix();
 
         $repo = $app->repo($this->className);
         if($repo->usesCache()){
             $repo->deleteEntityCache($this->id);
         }
 
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').insert:after', $args);
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
     }
 
     /**
@@ -1031,11 +1056,11 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).remove:before**
      */
     public function preRemove($args = null){
-        $hook_class_path = $this->getHookClassPath();
-
         $app = App::i();
+        
+        $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:before', $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.remove:before", $args);
 
 
         if($this->usesPermissionCache() && !$this->__skipQueuingPCacheRecreation){
@@ -1056,14 +1081,16 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).remove:after**
      */
     public function postRemove($args = null){
-        $hook_class_path = $this->getHookClassPath();
         $app = App::i();
         $repo = $app->repo($this->className);
-        if($repo->usesCache())
+
+        if ($repo->usesCache()) {
             $repo->deleteEntityCache($this->id);
+        }
+        
+        $hook_prefix = $this->getHookPrefix();
 
-
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').remove:after', $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.remove:after", $args);
 
         if($this->usesRevision()) {
             //$this->_newDeletedRevision();
@@ -1091,10 +1118,10 @@ abstract class Entity implements \JsonSerializable{
      */
     public function preUpdate($args = null){
         $app = App::i();
-
-        $hook_class_path = $this->getHookClassPath();
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:before', $args);
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:before', $args);
+        
+        $hook_prefix = $this->getHookPrefix();
+        $app->applyHookBoundTo($this, "{$hook_prefix}.update:before", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:before", $args);
 
         if (property_exists($this, 'updateTimestamp')) {
             $this->updateTimestamp = new \DateTime;
@@ -1148,10 +1175,10 @@ abstract class Entity implements \JsonSerializable{
      * @ORM\PostUpdate
      */
     public function postUpdate($args = null){
-        $hook_class_path = $this->getHookClassPath();
         $app = App::i();
+        $hook_prefix = $this->getHookClassPath();
 
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').update:after', $args);
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').save:after', $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.update:after", $args);
+        $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
     }
 }
