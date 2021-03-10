@@ -173,15 +173,15 @@
                         sumLines.push(sum);
                     });
                     
-                    item.data.series.forEach(function(serie, linha){
-                        if(linha == 0){
+                    item.data.series.forEach(function(serie, line){
+                        if(line == 0){
                             for(var i=0; i< serie.data.length; i++){
                                 sumColumns[i] = 0;
                             }
                         }
                        
-                        serie.data.forEach(function(value, coluna){
-                            sumColumns[coluna] = sumColumns[coluna]+serie.data[coluna];
+                        serie.data.forEach(function(value, column){
+                            sumColumns[column] = sumColumns[column]+serie.data[column];
                         });
                         
                     });
