@@ -56,6 +56,15 @@
     padding-top: 0;
 }
 
+#reports .chart-wrap header .type {
+    cursor: pointer;
+    padding: 3px 0 0 4px;
+}
+
+#reports .chart-wrap header .type i {
+    color: #666;
+}
+
 #reports .chart-wrap header button.delete:hover {
     color: #cc3333;
 }
