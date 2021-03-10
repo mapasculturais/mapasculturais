@@ -56,8 +56,7 @@
             });
         });
 
-        ReportsService.loading({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){ 
-                
+        ReportsService.getData({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){ 
             var legendsToString = [];            
             data.forEach(function(item){
                 if(item.reportData.typeGraphic != "pie"){
@@ -115,8 +114,7 @@
 
             });
             
-            ReportsService.loading({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
-
+            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:reportData}).success(function (data, status, headers){
                 reportData.graphicId = $scope.data.creatingGraph.graphicId;
 
                 var graphic = {
@@ -316,7 +314,7 @@
                
                 var url = MapasCulturais.createUrl('reports', 'dataOpportunityReport', {opportunity_id: MapasCulturais.entity.id});
 
-                return $http.post(url, data).
+                return $http.get(url, data).
                 success(function (data, status, headers) {
                     $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
                 }).
@@ -336,11 +334,11 @@
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
             },
-            loading: function (data) {
+            getData: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'loadingGraphic', {});
+                var url = MapasCulturais.createUrl('reports', 'getGraphic', {});
 
-                return $http.post(url, data).
+                return $http.get(url, {params:data}).
                 success(function (data, status, headers) {
                     $rootScope.$emit('registration.create', {message: "Reports found", data: data, status: status});
                 }).
