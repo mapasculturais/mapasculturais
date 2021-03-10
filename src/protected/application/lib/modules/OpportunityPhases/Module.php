@@ -410,31 +410,57 @@ class Module extends \MapasCulturais\Module{
 
             $target_opportunity ->checkPermission('@control');
 
-            $previous_phase = self::getPreviousPhase($target_opportunity);
+            $previous_phase = self::getPreviousPhase($target_opportunity);          
 
-            $registrations = array_filter($previous_phase->getSentRegistrations(), function($item){
-                if($item->status === Entities\Registration::STATUS_APPROVED || $item->status === Entities\Registration::STATUS_WAITLIST){
-                    return $item;
-                }
-            });
+            $dql = "
+                SELECT 
+                    r1.id 
+                FROM 
+                    MapasCulturais\Entities\Registration r1
+                WHERE 
+                    r1.opportunity = :previous_opportunity AND
+                    r1.status IN (10,8) AND
+                    r1.number NOT IN (
+                        SELECT 
+                            r2.number 
+                        FROM 
+                            MapasCulturais\Entities\Registration r2 
+                        WHERE 
+                            r2.opportunity = :target_opportunity
+                    )";
 
-            if(count($registrations) < 1){
+            $query = $app->em->createQuery($dql);
+
+            $query->setParameters([
+                'previous_opportunity' => $previous_phase,
+                'target_opportunity' => $target_opportunity
+            ]);
+
+            $registration_ids = array_map(function($item){ return $item['id']; }, $query->getArrayResult());
+
+            if(count($registration_ids) < 1){
                 $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas fase anterior'), 400);
             }
 
             $new_registrations = [];
 
+            $reg_repo = $app->repo('Registration');
+            $opp_repo = $app->repo('Opportunity');
 
+            $total = count($registration_ids);
+            $count = 0;
             $app->disableAccessControl();
-            foreach ($registrations as $r){
-                if ($r->nextPhaseRegistrationId) {
-                    continue;
-                }
-                $app->log->debug("Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
+            foreach ($registration_ids as $registration_id){
+                $count++;
+                
+                $r = $reg_repo->find($registration_id);
 
+                $app->log->debug("({$count}/{$total}) Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
+                
                 $reg = new Entities\Registration;
+                $reg->__skipQueuingPCacheRecreation = true;
                 $reg->owner = $r->owner;
-                $reg->opportunity = $target_opportunity;
+                $reg->opportunity = $opp_repo->find($target_opportunity->id);
                 $reg->status = Entities\Registration::STATUS_DRAFT;
                 $reg->number = $r->number;
 
@@ -445,15 +471,18 @@ class Module extends \MapasCulturais\Module{
                 if(isset($this->data['sent'])){
                     $reg->send();
                 }
-
+                $r->__skipQueuingPCacheRecreation = true;
                 $r->nextPhaseRegistrationId = $reg->id;
                 $r->save(true);
 
                 $new_registrations[] = $reg;
+
+                $app->em->clear();
             }
 
-            $target_opportunity->save(true);
+            $opp_repo->find($target_opportunity->id)->save(true);
 
+            $app->enqueueEntityToPCacheRecreation($target_opportunity);
             $app->enableAccessControl();
 
             $this->finish($new_registrations);

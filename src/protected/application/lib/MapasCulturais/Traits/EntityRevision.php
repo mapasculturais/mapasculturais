@@ -5,6 +5,10 @@ use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities\EntityRevision as Revision;
 
+/**
+ * @property-read \MapasCulturais\Entities\EntityRevision $lastRevision
+ * @property-read \MapasCulturais\Entities\EntityRevision[] $revisions
+ */
 trait EntityRevision{
 
     /**

@@ -6,6 +6,9 @@ use MapasCulturais\App;
  * Defines that the owner of the entity is an Agent.
  * 
  * Use this trait only in subclasses of **\MapasCulturais\Entity** with property **owner** that is a *many to one* relation with **\MapasCulturais\Entities\Agent**.
+ * 
+ * @property \MapasCulturais\Entities\Agent $owner
+ * @property-write int $ownerId
  */
 trait EntityOwnerAgent{
     

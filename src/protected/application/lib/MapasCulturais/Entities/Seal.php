@@ -28,6 +28,8 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
         Traits\EntitySealRelation;
+        
+    protected $__enableMagicGetterHook = true;
 
     const STATUS_RELATED = -1;
 
