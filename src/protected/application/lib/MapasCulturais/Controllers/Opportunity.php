@@ -681,7 +681,6 @@ class Opportunity extends EntityController {
     }
     
     function API_findEvaluations($opportunity_id = null) {
-        die();
         $this->requireAuthentication();
         
         $app = App::i();
