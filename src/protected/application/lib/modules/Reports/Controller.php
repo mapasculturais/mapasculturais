@@ -327,7 +327,7 @@ class Controller extends \MapasCulturais\Controller
             i::__('QUANTIDADE'),
         ];
 
-        $this->createCsv($header, $csv_data, $request['action'], $request['opportunity']);
+        $this->createCsv($header, $csv_data, $request['action'], $opp->id);
     }
 
     /**
