@@ -161,7 +161,6 @@
         $scope.graphicGenerate = function() {
             var _datasets;
             $scope.data.graphics.forEach(function(item){ 
-            console.log(item)  
 
                 if(item.reportData.typeGraphic == "table"){
                     var sumLines = [];
