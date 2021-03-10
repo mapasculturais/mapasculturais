@@ -28,7 +28,9 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityRevision;
+        Traits\EntityRevision {
+            Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
+        }
 
 
     const STATUS_SENT = self::STATUS_ENABLED;
@@ -268,6 +270,8 @@ class Registration extends \MapasCulturais\Entity
     }
     
     function jsonSerialize() {
+        $this->registerFieldsMetadata();
+        
         $json = [
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
@@ -286,7 +290,7 @@ class Registration extends \MapasCulturais\Entity
             $json['evaluationResultString'] = $this->getEvaluationResultString();
         }
 
-        foreach($this->getRegisteredMetadata() as $meta_key => $def){
+        foreach($this->getRegisteredMetadata(null, true) as $meta_key => $def){
             if(substr($meta_key, 0, 6) === 'field_'){
                 $json[$meta_key] = $this->$meta_key;
             }
@@ -1117,7 +1121,7 @@ class Registration extends \MapasCulturais\Entity
 
     protected function canUserViewPrivateData($user){
         $can = $this->__canUserViewPrivateData($user) || $this->opportunity->canUser('@control', $user);
-
+        
         // @todo fazer essa verificação por meio de hook no módulo de fases (#1659)
         $canUserEvaluateNextPhase = false;
         if($this->getMetadata('nextPhaseRegistrationId') !== null) {
