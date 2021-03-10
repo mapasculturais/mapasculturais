@@ -10,7 +10,7 @@ use MapasCulturais\i;
             <h3>{{graphic.reportData.title}}</h3>
             <button ng-click="createCsv(graphic.reportData.graphicId)" name="{{graphic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></button>
             <button ng-click="deleteGraphic(graphic.reportData.graphicId)" class="hltip delete" title="<?php i::_e("Excluir gráfico"); ?>"></button>
-            <span class="type"><i class="fas fa-info-circle" title="{{graphic.reportData.fields}}"></i></span>
+            <span class="hltip type" title="{{graphic.reportData.fields}}"><i class="fas fa-info-circle"></i></span>
             <p class="description">{{graphic.reportData.description}}</p>
         </header>
         
