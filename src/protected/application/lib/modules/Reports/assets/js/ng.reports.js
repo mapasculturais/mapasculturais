@@ -417,7 +417,7 @@
             },
             save: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'saveGraphic', {});
+                var url = MapasCulturais.createUrl('reports', 'saveGraphic', {opportunity_id: MapasCulturais.entity.id});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
@@ -429,7 +429,7 @@
             },
             getData: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'getGraphic', {});
+                var url = MapasCulturais.createUrl('reports', 'getGraphic', {pportunity_id: MapasCulturais.entity.id});
 
                 return $http.get(url, {params:data}).
                 success(function (data, status, headers) {
