@@ -3,8 +3,9 @@
 use MapasCulturais\i;
 
 ?>
-
+<?php $this->applyTemplateHook('dynamic-reports', 'before'); ?>
 <div class="charts-dynamic">
+    <?php $this->applyTemplateHook('dynamic-reports', 'begin'); ?>
     <div class="chart-wrap" ng-repeat="(key, graphic) in data.graphics">    
         <header>
             <h3>{{graphic.reportData.title}}</h3>
@@ -55,4 +56,6 @@ use MapasCulturais\i;
         </footer>
 
     </div>
+    <?php $this->applyTemplateHook('dynamic-reports', 'end'); ?>
 </div>
+<?php $this->applyTemplateHook('dynamic-reports', 'after'); ?>

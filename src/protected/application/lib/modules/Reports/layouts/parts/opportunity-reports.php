@@ -4,7 +4,9 @@ namespace RegistrationPayments;
 use MapasCulturais\i;
 $dataOportunity = $opportunity->getEvaluationCommittee();
 ?>
+<?php $this->applyTemplateHook('opportunity-reports', 'before'); ?>
 <div ng-controller='Reports'>
+<?php $this->applyTemplateHook('opportunity-reports', 'begin'); ?>
     <div class="aba-content" id="reports">
         <header>
             <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportunidade");?></p>
@@ -52,8 +54,9 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
             <button ng-click="data.reportModal=true;data.graficType=true" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
         </footer>
 
-        <?php $this->applyTemplateHook('reports-footer', 'after'); ?>
-
+        <?php $this->applyTemplateHook('reports-footer', 'and'); ?>
+        <?php $this->applyTemplateHook('opportunity-reports', 'end'); ?>
     </div>
 
 </div>
+<?php $this->applyTemplateHook('opportunity-reports', 'after'); ?>
