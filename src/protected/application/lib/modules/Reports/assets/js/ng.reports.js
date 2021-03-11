@@ -441,7 +441,7 @@
             },
             delete: function (data) {
 
-                var url = MapasCulturais.createUrl('reports', 'graphic', {'graphicId': data});
+                var url = MapasCulturais.createUrl('metalist', 'single', [data]);
                 
                 return $http.delete(url, data).
                     success(function (data, status, headers) {
