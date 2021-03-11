@@ -645,28 +645,6 @@ class Controller extends \MapasCulturais\Controller
         return $return;
     }
 
-    public function DELETE_graphic() {
-
-        $this->requireAuthentication();
-        
-        $app = App::i();
-
-        $graphicId = $this->data['graphicId'];
-
-        $params = ['id' => $graphicId, "group" => "reports"];
-        $metalist = $app->repo("MetaList")->findOneBy($params);
-        
-        $return = false;
-       
-        if ($metalist) {
-            $return = $graphicId;
-            $metalist->delete(true);
-        }
-
-        $this->apiResponse($return);
-
-    }
-
     public function buildQuery($columns, $op, $timeSeries=false)
     {
         // FIXME: remove empty definitions at the source, not here
@@ -974,21 +952,16 @@ class Controller extends \MapasCulturais\Controller
 
     private function getValidFields($opportunity)
     {
+        $app = App::i();
+        
+        $moduleConfig = $app->modules['Reports']->config;
         $fieldsUse = [
-            "collective" => [
-                "En_Estado",
-                "En_Municipio",
-            ],
-            "agent" => [
-                "raca",
-                "genero",
-                "orientacaoSexual",
-                "En_Estado",
-                "En_Municipio",
-                "En_Bairro",
-                "dataDeNascimento",
-            ],
+            "collective" => $moduleConfig['collective'],
+            "agent" => $moduleConfig['agent'],
         ];
+
+        $app->applyHookBoundTo($this,"module(Reports).agentFields",[&$fieldsUse]);
+
         $fields = [];
         if (!empty($opportunity->registrationCategories)) {
             $fields[] = $this->fieldDefinition(i::__("Categoria"), "category", "r");
