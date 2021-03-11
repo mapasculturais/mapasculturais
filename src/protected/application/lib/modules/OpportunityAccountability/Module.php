@@ -90,6 +90,14 @@ class Module extends \MapasCulturais\Module
         });
 
 
+        $app->hook('template(project.<<single|edit>>.header-content):before', function () {
+            $project = $this->controller->requestedEntity;
+
+            if ($project->isAccountability) {
+                $this->part('accountability/project-opportunity', ['opportunity' => $project->opportunity]);
+            }
+        });
+        
     }
 
     function register()
