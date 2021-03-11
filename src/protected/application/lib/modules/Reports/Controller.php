@@ -90,7 +90,8 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsByStatus()
     {
-        $this->requireAuthentication();
+        $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
@@ -131,6 +132,7 @@ class Controller extends \MapasCulturais\Controller
         $app = App::i();
 
         $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $em = $opp->getEvaluationMethod();
 
@@ -187,7 +189,8 @@ class Controller extends \MapasCulturais\Controller
      */
     public function GET_exportRegistrationsByEvaluation()
     {
-        $this->requireAuthentication();
+        $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
@@ -255,6 +258,7 @@ class Controller extends \MapasCulturais\Controller
     public function GET_exportRegistrationsByEvaluationStatus()
     {
         $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
@@ -300,6 +304,7 @@ class Controller extends \MapasCulturais\Controller
     public function GET_exportRegistrationsByCategory()
     {
         $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
@@ -338,6 +343,7 @@ class Controller extends \MapasCulturais\Controller
     public function GET_exportRegistrationsDraftVsSent()
     {
         $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $request = $this->data;
 
@@ -388,6 +394,7 @@ class Controller extends \MapasCulturais\Controller
     public function GET_registrationsByTime()
     {
         $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
@@ -458,11 +465,8 @@ class Controller extends \MapasCulturais\Controller
 
     public function GET_getGraphic()
     {
-      
-
-        $this->requireAuthentication();
-    
         $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
@@ -493,13 +497,14 @@ class Controller extends \MapasCulturais\Controller
 
     public function POST_saveGraphic()
     {
-        $this->requireAuthentication();
+        $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
 
         $app = App::i();
 
         $reportData = $this->data['reportData'];
               
-        $opp = $app->repo("Opportunity")->find($reportData['opportunity_id']);
+        $opp = $app->repo("Opportunity")->find($opp->id);
 
         $value = "";
         $source = "";       
@@ -508,7 +513,7 @@ class Controller extends \MapasCulturais\Controller
             $source .= is_array($v['source']) ? implode(",",$v['source']) : $v['source'];
         }
 
-        $identifier = md5($reportData['opportunity_id'] . "-" . $reportData['typeGraphic'] . "-" . $source . "-" . $value);
+        $identifier = md5($opp->id . "-" . $reportData['typeGraphic'] . "-" . $source . "-" . $value);
         
         $this->data['identifier'] = $identifier;
 
@@ -543,10 +548,11 @@ class Controller extends \MapasCulturais\Controller
 
     public function GET_dataOpportunityReport()
     {
-        $this->requireAuthentication();
-        $app = App::i();
-        $request = $this->data;
-        $opportunity = $app->repo("Opportunity")->find($request["opportunity_id"]);
+        $opp = $this->getOpportunity();
+        $opp->checkPermission('viewReport');
+
+        $app = App::i();        
+        $opportunity = $app->repo("Opportunity")->find($opp->id);
         $this->apiResponse($this->getValidFields($opportunity));
     }
 
