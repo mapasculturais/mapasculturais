@@ -49,7 +49,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
         <?php if ($title) : ?>
             <h3><?= $title ?></h3>
         <?php endif; ?>
-        <a href="<?= $route ?>" name="<?= $chart_id ?>" class="btn btn-default hltip download" title="<?php i::_e("Baixar em CSV"); ?>">Baixar em CSV</a>
+        <a href="<?= $route ?>" name="<?= $chart_id ?>" class="btn btn-default hltip download" title="<?php i::_e("Baixar em CSV"); ?>"><?php i::_e("Baixar em CSV"); ?></a>
     </header>
     <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
         <canvas id="<?= $chart_id ?>"></canvas>
