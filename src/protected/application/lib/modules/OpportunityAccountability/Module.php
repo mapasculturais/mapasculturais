@@ -32,13 +32,13 @@ class Module extends \MapasCulturais\Module
                 'number' => $this->number
              ]);
         });
-        
+
         // na publicação da última fase, cria os projetos
         $app->hook('entity(Opportunity).publishRegistration', function (Registration $registration) use($app) {
             if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
                 return;
             }
-            
+
             if (!$this->isLastPhase) {
                 return;
             }
@@ -50,9 +50,9 @@ class Module extends \MapasCulturais\Module
             $project->parent = $app->repo('Project')->find($this->ownerEntity->id);
             $project->isAccountability = true;
             $project->owner = $registration->owner;
-            
+
             $project->registration = $registration->firstPhase;
-            $project->opportunity = $this->parent ?: $this; 
+            $project->opportunity = $this->parent ?: $this;
 
             $project->save(true);
 
@@ -79,7 +79,17 @@ class Module extends \MapasCulturais\Module
                 }
             }
         },1000);
-        
+
+        // Adidiona o checkbox haverá última fase
+        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
+            $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
+        });
+
+        //
+        $app->hook('entity(Opportunity).insert:after', function () use ($app) {
+        });
+
+
     }
 
     function register()
@@ -101,7 +111,7 @@ class Module extends \MapasCulturais\Module
                 return $opportunity->id;
             },
             'unserialize' => function ($opportunity_id, $opportunity) use($opportunity_repository, $app) {
-                
+
                 if ($opportunity_id) {
                     return $opportunity_repository->find($opportunity_id);
                 } else {
