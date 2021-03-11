@@ -7,7 +7,7 @@ $opportunity->registerRegistrationMetadata();
 
 $_params = [
     'entity' => $registration,
-    'action' => $action,
+    'action' => $this->controller->action,
     'opportunity' => $opportunity
 ];
 

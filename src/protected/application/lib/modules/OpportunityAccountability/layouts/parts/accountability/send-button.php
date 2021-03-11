@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $date_to = strftime( i::__("%d de {%B} de %G às %H:%M") , $entity->opportunity->registrationTo->getTimestamp());
 $full_date_to = preg_replace_callback("/{(.*?)}/", function($matches) use ($app) {
     return strtolower($app::txt(str_replace(['{', '}'], ['',''], $matches[0]))); //removes curly brackets from the matched pattern and convert its content to lowercase
-}, $date);
+}, $date_to);
 ?>
 <div class="registration-fieldset">
     <?php if($entity->opportunity->isRegistrationOpen()): ?>
