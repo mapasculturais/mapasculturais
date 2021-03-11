@@ -429,7 +429,7 @@
             },
             getData: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'getGraphic', {pportunity_id: MapasCulturais.entity.id});
+                var url = MapasCulturais.createUrl('reports', 'getGraphic', {opportunity_id: MapasCulturais.entity.id});
 
                 return $http.get(url, {params:data}).
                 success(function (data, status, headers) {
