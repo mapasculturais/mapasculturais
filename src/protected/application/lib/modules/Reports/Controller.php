@@ -667,7 +667,7 @@ class Controller extends \MapasCulturais\Controller
 
     }
 
-    private function buildQuery($columns, $op, $timeSeries=false)
+    public function buildQuery($columns, $op, $timeSeries=false)
     {
         // FIXME: remove empty definitions at the source, not here
         $columns = array_filter($columns, function ($item) {
