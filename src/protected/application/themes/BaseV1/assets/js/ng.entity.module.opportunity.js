@@ -835,7 +835,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
-    $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
+    $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.registration.id);
 
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
