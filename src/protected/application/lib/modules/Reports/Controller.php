@@ -163,7 +163,7 @@ class Controller extends \MapasCulturais\Controller
             AND consolidated_result <> '0' AND
             cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}";
 
-            $label = "de " . $a . " a " . $b;
+            $label = i::__('de ') . $a . i::__(' a ') . $b;
 
             $result[$label] = $conn->fetchAll($query, $params);
 
@@ -434,14 +434,14 @@ class Controller extends \MapasCulturais\Controller
 
         $result = [];
         $count = 0;
-        foreach ($sent as $key => $value) {
+        foreach ($sent as  $value) {
             $result[$count]['status'] = i::__('Enviada');
             $result[$count] += $value;
 
             $count++;
         }
 
-        foreach ($initiated as $key => $value) {
+        foreach ($initiated as $value) {
             $result[$count]['status'] = i::__('Iniciada');
             $result[$count] += $value;
 
