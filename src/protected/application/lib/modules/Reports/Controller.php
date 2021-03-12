@@ -483,7 +483,7 @@ class Controller extends \MapasCulturais\Controller
             foreach ($metalists as $metalist){
                 $value = json_decode($metalist->value, true);
                 $value['reportData']['graphicId'] = $metalist->id;
-                $value['data'] = $this->getData($value['reportData'], $opp);
+                $value['data'] = $this->getData($value, $opp);
                 $return[] = $value;
                 
             }
@@ -502,8 +502,9 @@ class Controller extends \MapasCulturais\Controller
 
         $app = App::i();
 
-        $reportData = $this->data['reportData'];
-              
+        $request = $this->data;
+        $reportData = $request;
+          
         $opp = $app->repo("Opportunity")->find($opp->id);
 
         $value = "";
@@ -577,12 +578,12 @@ class Controller extends \MapasCulturais\Controller
         foreach ($metalists as $metalist){
             $value = json_decode($metalist->value, true);
             $value['reportData']['graphicId'] = $metalist->id;
-            $value['data'] = $this->getData($value['reportData'], $opp);
+            $value['data'] = $this->getData($value, $opp);
             $return = $value;
         }
 
         $csv_data = [];
-        if($return['reportData']['typeGraphic'] != "pie"){
+        if($return['typeGraphic'] != "pie"){
             
             $header = $return['data']['labels'];
             array_unshift($header, "");
@@ -596,7 +597,7 @@ class Controller extends \MapasCulturais\Controller
             }
         
         }else{           
-            $header = [i::__($return['reportData']['title']), i::__('QUANTIDADE')];
+            $header = [i::__($return['title']), i::__('QUANTIDADE')];
             foreach ($return['data']['data'] as $key => $value){
                 $csv_data[] = [$return['data']['labels'][$key], $value];
             }
@@ -607,6 +608,7 @@ class Controller extends \MapasCulturais\Controller
 
     public function getData($reportData, $opp)
     {
+         
         $em = $opp->getEvaluationMethod();
         $app = App::i();
         $dataA = $reportData["columns"][0];
