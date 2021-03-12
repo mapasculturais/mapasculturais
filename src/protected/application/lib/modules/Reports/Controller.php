@@ -459,7 +459,7 @@ class Controller extends \MapasCulturais\Controller
             ];
         }, $result);
 
-        $this->createCsv($header, $result, $this->data['action'], $opp->id);
+        $this->createCsv($header, $return, $this->data['action'], $opp->id);
 
     }
 
