@@ -75,8 +75,8 @@ use MapasCulturais\i;
             <button class="btn btn-default close-modal cancel" ng-click="clearModal();"><?php i::_e("Cancelar"); ?></button>
             <button class="btn btn-default back" ng-if="data.graphicData == true" ng-click="data.graphicData=false; data.graphicType=true;" class=""><?php i::_e("Voltar"); ?></button>
             <button class="btn btn-primary next" ng-if="data.graphicType == true" ng-click="data.graphicData=true; data.graphicType=false;nextStep()" class="js-close" ng-disabled="!data.dataForm.type"><?php i::_e("Proxima etapa"); ?></button>
-            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'pie' || data.dataForm.type == 'line')" ng-disabled="!data.dataForm.title || !data.dataForm.description || !data.dataForm.dataDisplayA"><?php i::_e("Gerar gráfico"); ?></button>
-            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'bar' || data.dataForm.type == 'table')" ng-disabled="!data.dataForm.title || !data.dataForm.description || !data.dataForm.dataDisplayA || !data.dataForm.dataDisplayB"><?php i::_e("Gerar gráfico"); ?></button>
+            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'pie' || data.dataForm.type == 'line')" ng-disabled="!data.dataForm.title || !data.dataForm.dataDisplayA"><?php i::_e("Gerar gráfico"); ?></button>
+            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'bar' || data.dataForm.type == 'table')" ng-disabled="!data.dataForm.title  || !data.dataForm.dataDisplayA || !data.dataForm.dataDisplayB"><?php i::_e("Gerar gráfico"); ?></button>
         </footer>
 
     </div><!-- /.reports-modal -->
