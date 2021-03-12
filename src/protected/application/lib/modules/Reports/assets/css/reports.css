@@ -218,6 +218,10 @@
 }
 
 /* Modal */
+.bg-reports-modal.open{
+    display:block;
+}
+
 .bg-reports-modal {
     background-color: rgba(0,0,0,0.4);
     height: 100%;
@@ -227,6 +231,7 @@
     top: 0;
     width: 100%;
     z-index: 1800;
+    display:none;
 }
 .reports-modal {
     background-color: #fff;
