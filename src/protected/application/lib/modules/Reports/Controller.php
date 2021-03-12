@@ -369,10 +369,10 @@ class Controller extends \MapasCulturais\Controller
         $total = 0;
         foreach ($data as $key => $value) {
             if ($key == i::__("Rascunho")) {
-                $csv_data[0] = ['Rascunho', $value];
+                $csv_data[0] = [i::__("Rascunho"), $value];
             } else {
                 $total = ($total + $value);
-                $csv_data[1] = ['Enviadas', $total];
+                $csv_data[1] = [i::__("Enviadas"), $total];
             }
 
         }
