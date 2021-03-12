@@ -504,9 +504,7 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         $reportData = $request;
-          
-        $opp = $app->repo("Opportunity")->find($opp->id);
-
+        
         $value = "";
         $source = "";       
         foreach ($reportData['columns'] as $v){
