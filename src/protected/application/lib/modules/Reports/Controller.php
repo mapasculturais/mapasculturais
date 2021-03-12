@@ -497,22 +497,23 @@ class Controller extends \MapasCulturais\Controller
 
     public function POST_saveGraphic()
     {
-        $opp = $this->getOpportunity();
-        $opp->checkPermission('viewReport');
+        $this->requireAuthentication();
 
         $app = App::i();
 
         $request = $this->data;
-        $reportData = $request;
+        $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
+        
+        $opp->checkPermission('viewReport');
         
         $value = "";
         $source = "";       
-        foreach ($reportData['columns'] as $v){
+        foreach ($request['columns'] as $v){
             $value .= $v['value'];
             $source .= is_array($v['source']) ? implode(",",$v['source']) : $v['source'];
         }
 
-        $identifier = md5($opp->id . "-" . $reportData['typeGraphic'] . "-" . $source . "-" . $value);
+        $identifier = md5($opp->id . "-" . $request['typeGraphic'] . "-" . $source . "-" . $value);
         
         $this->data['identifier'] = $identifier;
 
@@ -533,7 +534,7 @@ class Controller extends \MapasCulturais\Controller
 
         $metaList->owner = $opp;
         $metaList->group = 'reports';
-        $metaList->title = 'Graphico' ;
+        $metaList->title = 'Graphic' ;
         $metaList->save(true);
 
         $return = [
