@@ -85,8 +85,15 @@ class Module extends \MapasCulturais\Module
             $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
         });
 
-        //
-        $app->hook('entity(Opportunity).insert:after', function () use ($app) {
+        $self = $this;
+        $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
+
+            $opportunityData = $app->controller('opportunity');
+
+            if ($this->isLastPhase && isset($opportunityData->postData['hasAccountability']) && $opportunityData->postData['hasAccountability']) {
+                
+                $self->createAccountabilityPhase($this->parent);
+            }
         });
 
 
@@ -156,5 +163,38 @@ class Module extends \MapasCulturais\Module
                 }
             }
         ]);
+    }
+
+    // Migrar essa função para o módulo "Opportunity phase"
+    function createAccountabilityPhase(Opportunity $parent)
+    {
+
+        $opportunity_class_name = $parent->getSpecializedClassName();
+
+        $last_phase = \OpportunityPhases\Module::getLastCreatedPhase($parent);
+
+        $phase = new $opportunity_class_name;
+
+        $phase->status = Opportunity::STATUS_DRAFT;
+        $phase->parent = $parent;
+        $phase->ownerEntity = $parent->ownerEntity;
+
+        $phase->name = i::__('Prestação de Contas');
+        $phase->registrationCategories = $parent->registrationCategories;
+        $phase->shortDescription = i::__('Descrição da Prestação de Contas');
+        $phase->type = $parent->type;
+        $phase->owner = $parent->owner;
+        $phase->useRegistrations = true;
+        $phase->isOpportunityPhase = true;
+        $phase->isAccountabilityPhase = true;
+
+        $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+        $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+        $_to->add(date_interval_create_from_date_string('1 days'));
+
+        $phase->registrationFrom = $_from;
+        $phase->registrationTo = $_to;
+
+        $phase->save(true);
     }
 }
