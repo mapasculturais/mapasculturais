@@ -2491,4 +2491,31 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
 
 }]);
 
+    module.controller('OpportunityProjects', ['$scope', '$rootScope', 'OpportunityProjectsApiService', function ($scope, $rootScope, OpportunityProjectsApiService){
+
+        $scope.data.projects = [];
+
+        OpportunityProjectsApiService.find().success(function (data, status, headers) {
+            $scope.data.projects = data;
+        });
+
+    }]);
+
+    module.factory('OpportunityProjectsApiService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+
+        return {
+            find: function (data) {
+
+                var query = '?@select=id,name,shortDescription,type,files:(avatar.avatarMedium,avatar.avatarBig):url&opportunity=EQ(' + MapasCulturais.entity.id + ')';
+             
+                return $http.get(MapasCulturais.createUrl('api/project', 'find') + query).
+                    success(function (data, status, headers) {
+                    }).
+                    error(function (data, status) {
+                    });
+            }
+        };
+        
+    }]);
+
 })(angular);
