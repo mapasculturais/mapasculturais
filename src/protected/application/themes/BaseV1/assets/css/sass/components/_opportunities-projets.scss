@@ -1,0 +1,102 @@
+//
+// Opportunities/Projects
+// --------------------------------------------------
+body.controller-opportunity #projects {
+
+    .card {
+        box-sizing: border-box;
+        float: left;
+        margin-bottom: 45px;
+        padding-right: 15px;
+        width: 50%;
+
+        header {
+            .thumb {
+                float: left;
+                margin: 0 15px 15px 0;
+                max-width: 100px;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .type {
+            color: $brand-project;
+            font-weight: bold;
+        }
+
+        .label {
+            color: #666666;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .content {
+            clear: left;
+            display: block;
+        }
+
+        footer {
+            .tags {
+                border-bottom: 1px solid #CCCCCC;
+                margin: 20px auto 10px;
+                padding-bottom: 20px;
+                width: 100%;
+                span:not(.label) {
+                    background-color: $brand-project;
+                    color: #FFFFFF;
+                    font-size: 12px;
+                    margin-left: 5px;
+                    text-transform: uppercase;
+                    padding: 3px 7px;
+                }
+            }
+
+            .status {
+                color: #222222;
+                height: auto;
+                padding: 0;
+                text-align: left;
+
+                p {
+                    display: inline-block;
+                    font-weight: bold;
+                }
+
+                button {
+                    background-color: #1C5690;
+                    border-radius: 4px;
+                    color: #FFFFFF;
+                    cursor: pointer;
+                    font-size: 11px;
+                    font-weight: bold;
+                    float: right;
+                    padding: 4px 12px;
+                }
+            }
+        }
+
+        &:nth-child(even) {
+            padding-left: 15px;
+            padding-right: 0;
+
+            @media (max-width: 520px) {
+                padding-left: 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+            padding-right: 0;
+            width: 100%;
+        }
+    }
+}
