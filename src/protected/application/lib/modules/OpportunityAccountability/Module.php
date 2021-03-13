@@ -97,6 +97,22 @@ class Module extends \MapasCulturais\Module
                 $this->part('accountability/project-opportunity', ['opportunity' => $project->opportunity]);
             }
         });
+
+        // 
+        $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
+
+            // $entity = $this->controller->requestedEntity;
+            // $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
+
+        });
+
+        //
+        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
+
+            // $entity = $this->controller->requestedEntity;
+            // $this->part('singles/opportunity-projects', ['entity' => $entity]);
+
+        });
         
     }
 
