@@ -167,9 +167,8 @@
         
         $scope.graphicGenerate = function() {
             var _datasets;
-            $scope.data.graphics.forEach(function(item){ 
-
-                if(item.reportData.typeGraphic == "table"){
+            $scope.data.graphics.forEach(function(item){
+                if(item.typeGraphic == "table"){
                     var sumLines = [];
                     var sumColumns = [];
                     item.data.series.forEach(function(serie){
@@ -369,21 +368,21 @@
             }
         }
 
-        $scope.sumData = function(reportData){
+        $scope.sumData = function(grafic){
 
             var sum = 0;
-            reportData.data.forEach(function(item){
+            grafic.data.forEach(function(item){
                 sum += item;
             })
 
             return sum;
         }
 
-        $scope.sumSerie = function(reportData){
+        $scope.sumSerie = function(grafic){
           
             var sum = 0;
             var total = 0;
-            reportData.data.series.forEach(function(item){
+            grafic.data.series.forEach(function(item){
                 sum = $scope.sumData(item);
                         total = total + sum;
             });
