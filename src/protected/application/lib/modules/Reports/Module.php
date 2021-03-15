@@ -2,6 +2,9 @@
 
 namespace Reports;
 
+use DateTime;
+use DatePeriod;
+use DateInterval;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Definitions\MetaListGroup;
@@ -152,6 +155,7 @@ class Module extends \MapasCulturais\Module
         $result = $conn->fetchAll($query, $params);
         foreach ($result as $value) {
             $initiated[$value['date']] = $value['total'];
+            $date['create_timestamp'][] = $value['date'];
         }
 
         $query = "SELECT
@@ -165,13 +169,46 @@ class Module extends \MapasCulturais\Module
 
         foreach ($result as $value) {
             $sent[$value['date']] = $value['total'];
+            $date['sent'][] = $value['date'];
         }
 
         if (!$sent || !$initiated) {
             return false;
         }
 
-        return ['Finalizadas' => $sent, "Iniciadas" => $initiated];
+        $merge = array_merge($date['sent'], $date['create_timestamp']);
+
+        $end = (new DateTime(max(array_column($merge,null))))->modify('+1 day');
+
+        $period = new DatePeriod(
+            new DateTime(min(array_column($merge,null))),
+            new DateInterval('P1D'),
+            $end
+       );
+
+        $range = [];
+        foreach ($period as $key => $value){
+          $range[] = $value->format('Y-m-d');
+        }
+
+        $ini = [];
+        $sen = [];
+        foreach ($range as $date){
+            if(!isset($initiated[$date])){
+                $ini[$date] = 0;
+            }else{
+                $ini[$date] = $initiated[$date];
+            }
+
+            if(!isset($sent[$date])){
+                $sen[$date] = 0;
+            }else{
+                $sen[$date] = $sent[$date];
+            }
+        }
+
+
+        return ['Finalizadas' => $sen, "Iniciadas" => $ini];
 
     }
 
