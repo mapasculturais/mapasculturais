@@ -2506,9 +2506,9 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
         return {
             find: function (data) {
 
-                var query = '?@select=id,name,shortDescription,type,files:(avatar.avatarMedium,avatar.avatarBig):url&opportunity=EQ(' + MapasCulturais.entity.id + ')';
+                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo,files:(avatar.avatarMedium,avatar.avatarBig):url&opportunity=EQ(' + MapasCulturais.entity.id + ')';
              
-                return $http.get(MapasCulturais.createUrl('api/project', 'find') + query).
+                return $http.get(MapasCulturais.createUrl('api/project', 'find') + qdata).
                     success(function (data, status, headers) {
                     }).
                     error(function (data, status) {
