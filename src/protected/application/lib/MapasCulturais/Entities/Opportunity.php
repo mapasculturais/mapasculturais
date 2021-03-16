@@ -92,21 +92,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="short_description", type="text", nullable=true)
+     * @ORM\Column(name="short_description", type="text", nullable=false)
      */
     protected $shortDescription;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_from", type="datetime", nullable=true)
+     * @ORM\Column(name="registration_from", type="datetime", nullable=false)
      */
     protected $registrationFrom;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_to", type="datetime", nullable=true)
+     * @ORM\Column(name="registration_to", type="datetime", nullable=false)
      */
     protected $registrationTo;
 
