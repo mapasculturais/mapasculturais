@@ -104,7 +104,38 @@ class Module extends \MapasCulturais\Module
                 $this->part('accountability/project-opportunity', ['opportunity' => $project->opportunity]);
             }
         });
-        
+
+        /**
+         * Substituição dos seguintes termos 
+         * - avaliação por parecer
+         * - avaliador por parecerista
+         * - inscrição por prestação de contas
+         */
+        $replacements = [
+            'Nenhuma avaliação enviada' => 'Nenhum parecer técnico enviado',
+            'Configuração da Avaliação' => 'Configuração do Parecer Técnico',
+            'Comissão de Avaliação' => 'Comissão de Pareceristas',
+            'Inscrição' => 'Prestacão de Contas',
+            'inscrição' => 'prestacão de contas',
+            'Inscritos' => 'Prestacoes de Contas',
+            'Inscrições' => 'Prestações de Contas',
+            'inscrições' => 'prestações de contas',
+            'Avaliação' => 'Parecer Técnico',
+            'avaliação' => 'parecer técnico',
+            'Avaliações' => 'Pareceres',
+            'avaliações' => 'pareceres',
+            'Avaliador' => 'Parecerista',
+            'avaliador' => 'parecerista',
+            'Avaliadores' => 'Pareceristas',
+            'avaliadores' => 'pareceristas',
+        ];
+
+        $app->hook('view.partial(singles/opportunity-<<tabs|evaluations--admin--table|registrations--tables--manager|evaluations--committee>>):after', function($template, &$html) use($replacements) {
+            $phase = $this->controller->requestedEntity;
+            if ($phase->isAccountabilityPhase) {
+                $html = str_replace(array_keys($replacements), array_values($replacements), $html);
+            }
+         });        
     }
 
     function register()
