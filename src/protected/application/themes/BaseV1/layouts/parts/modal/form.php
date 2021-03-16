@@ -1,7 +1,7 @@
 <?php
 $url = $app->createUrl($entity_name);
 $classes = $this->getModalClasses($use_modal);
-$name = mb_strtolower($new_entity->getEntityTypeLabel());
+$name = mb_strtolower($entity_classname::getEntityTypeLabel());
 
 $title = sprintf(\MapasCulturais\i::__("Crie um %s com informações básicas"), $name);
 $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
@@ -15,9 +15,9 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
     <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
           data-entity="<?php echo $url; ?>" data-formid="<?php echo $modal_id; ?>" id="form-for-<?php echo $modal_id; ?>">
 
-        <?php $this->renderModalFields($new_entity, $entity_name, $modal_id); ?>
-        <?php $this->renderModalRequiredMetadata($new_entity, $entity_name); ?>
-        <?php $this->renderModalTaxonomies($new_entity, $entity_name); ?>
+        <?php $this->renderModalFields($entity_classname, $entity_name, $modal_id); ?>
+        <?php $this->renderModalRequiredMetadata($entity_classname, $entity_name); ?>
+        <?php $this->renderModalTaxonomies($entity_classname, $entity_name); ?>
 
         <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
         <?php $this->part('modal/footer', ['entity' => $entity_name]); ?>
