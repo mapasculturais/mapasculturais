@@ -4,31 +4,39 @@ namespace OpportunityAccountability;
 
 use MapasCulturais\i;
 
-?>
-<div ng-controller='OpportunityProjects'>
+$app = \MapasCulturais\App::i();
 
+?>
+
+<div ng-controller='OpportunityProjects'>
     <div class="card" ng-repeat="project in data.projects">
         <header>
-            <div class="thumb"><img src="<?php $this->asset('img/avatar--project.png'); ?>"></div>
-            <h3>{{project.name}}</h3>
-            <p><span class="label">Tipo:</span> <span class="type">{{project.type.name}}</span></p>
-            <p><span class="label">Inscrições:</span> de 13/01/21 até 31/03/21</p>
+            <div class="thumb">
+                <a href="<?php echo $app->createUrl('project', 'single'); ?>{{project.id}}">
+                    <img ng-if="!project.avatar" src="<?php $this->asset('img/avatar--project.png'); ?>">
+                    <img ng-if="project.avatar" src="{{project.avatar}}">
+                </a>
+            </div>
+            <h3><a href="<?php echo $app->createUrl('project', 'single'); ?>{{project.id}}">{{project.name}}</a></h3>
+            <p ng-if="project.type.name"><span class="label"><?php i::_e('Tipo:'); ?></span> <a class="type" href="<?php echo $app->createUrl('site', 'search'); ?>##(global:(filterEntity:event,viewMode:list))">{{project.type.name}}</a></p>
+            <p ng-if="project.registrationFrom && project.registrationTo"><span class="label"><?php i::_e('Inscrições:'); ?></span> <?php i::_e('de'); ?> {{project.registrationFrom | date:"dd/MM/yyyy"}} <?php i::_e('até'); ?> {{project.registrationTo | date:"dd/MM/yyyy"}}</p>
         </header>
 
         <div class="content">
-            <p>{{project.shortDescription}}</p>
+            <p ng-if="project.shortDescription">{{project.shortDescription}}</p>
         </div>
 
         <footer>
-            <div class="tags">
-                <p><span class="label">Tags:</span>
-                    <span ng-repeat="tag in project.terms.tag">{{tag}}</span>
+            <div class="tags" ng-if="project.terms.tag.length">
+                <p>
+                    <span class="label"><?php i::_e('Tags:'); ?></span>
+                    <a ng-repeat="tag in project.terms.tag" class="tag" href="<?php echo $app->createUrl('site', 'search'); ?>##(project:(keyword:'{{tag}}'),global:(enabled:(project:!t),filterEntity:project,viewMode:list))">{{tag}}</a>
                 </p>
             </div>
 
             <div class="status">
-                <p><span>Status:</span> {{project.status}}</p>
-                <button>Ver agenda</button>
+                <p><span><?php i::_e('Status:'); ?></span></p>
+                <a class="button" href="<?php echo $app->createUrl('site', 'search'); ?>##(event:(keyword:'{{project.name}}'),global:(enabled:(event:!t),filterEntity:event,viewMode:list))"><?php i::_e('Ver agenda'); ?></a>
             </div>
         </footer>
     </div><!-- /.card -->
