@@ -2695,8 +2695,7 @@ class Theme extends MapasCulturais\Theme {
         
         foreach ($properties as $field => $definition) {
             $show_field = 
-                !$definition['isMetadata'] && 
-                !$definition['isEntityRelation'] && 
+                !$definition['isMetadata'] && !$definition['isEntityRelation'] && 
                 ($definition['required'] || isset($properties_validations[$field]['required']) );
             
             $app->applyHook("modal({$entity_name}).field({$field})", [$entity_classname, &$definition, &$show_field]);
@@ -2706,11 +2705,15 @@ class Theme extends MapasCulturais\Theme {
                     $this->part("modal/field--entity-type", ['entity_classname' => $entity_classname, 'definition' => $definition, 'modal_id' => $modal_id]);
 
                 } else if ($definition['type'] === 'string') {
-                   
+                    
                     $this->part('modal/field--input-text', ['entity_classname' => $entity_classname, 'field' => $field, 'definition' => $definition, 'modal_id' => $modal_id]);
                     
                 } else if ($definition['type'] === 'text'){
                     $this->part("modal/field--textarea", ['entity_classname' => $entity_classname, 'field' => $field, 'definition' => $definition, 'modal_id' => $modal_id]);
+                
+                }else if ($definition['type'] === 'datetime'){
+                    $this->part("modal/field--input-datetime", ['entity_classname' => $entity_classname, 'field' => $field, 'definition' => $definition, 'modal_id' => $modal_id]);
+                
                 }
             }
         }
