@@ -7,9 +7,8 @@ $title = sprintf(\MapasCulturais\i::__("Crie um %s com informações básicas"),
 $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 ?>
 
-<?php $this->applyTemplateHook("{$entity_name}-modal", 'before'); ?>
 <div id="<?php echo $modal_id; ?>" class="entity-modal <?php echo $classes['classes']; ?>" title="<?php echo $title; ?>" style="display: none">
-    <?php $this->applyTemplateHook("{$entity_name}-modal", 'begin'); ?>
+
     <?php $this->part('modal/before-form'); ?>
     <?php $this->part('modal/feedback', ['entity_name' => $entity_name, 'label' => $name]); ?>
 
@@ -23,11 +22,15 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
         <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
         <?php $this->part('modal/footer', ['entity' => $entity_name]); ?>
 
-        <?php $this->part('modal/actions', ['entity_name' => $entity_name, 'classes' => $classes, 'name' => $name, 'modal_id' => $modal_id]); ?>
+        <div class="actions">
+            <button type="button" class="btn btn-default <?php echo $classes['cancel_class']; ?>" data-form-id='<?php echo $modal_id; ?>'>
+                <?php \MapasCulturais\i::_e("Cancelar"); ?>
+            </button>
+            <input type="submit" class="btn btn-primary" value="Adicionar <?php echo $name; ?>">
+        </div>
 
     </form>
 
     <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?>
-    <?php $this->applyTemplateHook("{$entity_name}-modal", 'end'); ?>
+
 </div>
-<?php $this->applyTemplateHook("{$entity_name}-modal", 'after'); ?>
