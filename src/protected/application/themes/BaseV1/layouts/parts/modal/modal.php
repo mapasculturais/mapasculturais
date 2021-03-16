@@ -1,6 +1,7 @@
 <?php
 $form_part = [
-    'event' => 'modal/form-event'
+    'event' => 'modal/form-event',
+    'opportunity' => 'modal/form-opportunity'
 ];
 
 $part_name = $form_part[$entity_name] ?? 'modal/form';
