@@ -15,6 +15,8 @@ class ObjectType extends DoctrineEnumType
     {
         return [
             'Agent' => 'MapasCulturais\Entities\Agent',
+            'ChatMessage' => 'MapasCulturais\Entities\ChatMessage',
+            'ChatThread' => 'MapasCulturais\Entities\ChatThread',
             'EvaluationMethodConfiguration' => 'MapasCulturais\Entities\EvaluationMethodConfiguration',
             'Event' => 'MapasCulturais\Entities\Event',
             'Notification' => 'MapasCulturais\Entities\Notification',
