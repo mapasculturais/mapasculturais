@@ -140,7 +140,8 @@ class App extends \Slim\Slim{
             'registration_agent_relations' => [],
             'registration_fields' => [],
             'evaluation_method' => [],
-            'roles' => []
+            'roles' => [],
+            'chat_thread_types' => [],
         ];
 
     protected $_registerLocked = true;
@@ -1950,6 +1951,25 @@ class App extends \Slim\Slim{
         }
     }
 
+    function registerChatThreadType(Definitions\ChatThreadType $definition)
+    {
+        if (isset($this->_register['chat_thread_types'][$definition->slug])) {
+            throw new \Exception("Attempting to re-register " .
+                                 "{$definition->slug}.");
+        }
+        $this->_register['chat_thread_types'][$definition->slug] = $definition;
+        return;
+    }
+
+    function getRegisteredChatThreadTypes(): array
+    {
+        return $this->_register['chat_thread_types'];
+    }
+
+    function getRegisteredChatThreadType($slug)
+    {
+        return ($this->_register['chat_thread_types'][$slug] ?? null);
+    }
 
     /**
      * Register a API Output Class
