@@ -93,12 +93,16 @@ class ChatMessage extends \MapasCulturais\Entity
         return;
     }
 
-    public function save($flush = false)
+    public function save($flush=false)
     {
         parent::save($flush);
-
+        $app = App::i();
         $this->thread->lastMessageTimestamp = new \DateTime;
+        $this->thread->sendNotifications($this);
+        $app->disableAccessControl();
         $this->thread->save(true);
+        $app->enableAccessControl();
+        return;
     }
 
     static function isPrivateEntity()
