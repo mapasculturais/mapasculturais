@@ -5,6 +5,7 @@ namespace Reports;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Definitions\MetaListGroup;
+use MapasCulturais\i;
 
 
 class Module extends \MapasCulturais\Module
