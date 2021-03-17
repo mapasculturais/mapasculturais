@@ -25,7 +25,7 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
                 <?php $this->part('registrationsStatus', ['data' => $registrationsByStatus, 'color' => $color, 'opportunity' => $opportunity]);?>
             <?php } ?>
 
-            <?php if ($dataOportunity[0]->owner->type == 'technical') { ?>
+            <?php if ($opportunity->evaluationMethod->slug == 'technical') { ?>
                 <?php if (isset($registrationsByEvaluation)) {?>
                     <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'color' => $color, 'opportunity' => $opportunity]);?>
                 <?php } ?>
