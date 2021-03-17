@@ -11,7 +11,7 @@ $colors = [];
 $title = i::__('Resultado da avaliação');
 $total = '';
 
-if ($dataOportunity[0]->owner->type == 'technical') {
+if ($opportunity->evaluationMethod->slug == 'technical') {
     $series[0]['color'] = is_callable($color) ? $color() : $color;
 
     foreach ($data as $key => $value) {
