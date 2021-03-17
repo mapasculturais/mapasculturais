@@ -807,6 +807,9 @@ class App extends \Slim\Slim{
         $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
         $this->registerController('permissionCache',   'MapasCulturais\Controllers\PermissionCache');
 
+        // chat message controller
+        $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
+
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
