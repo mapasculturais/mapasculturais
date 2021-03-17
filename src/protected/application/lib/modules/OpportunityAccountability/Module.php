@@ -112,22 +112,23 @@ class Module extends \MapasCulturais\Module
          * - inscrição por prestação de contas
          */
         $replacements = [
-            'Nenhuma avaliação enviada' => 'Nenhum parecer técnico enviado',
-            'Configuração da Avaliação' => 'Configuração do Parecer Técnico',
-            'Comissão de Avaliação' => 'Comissão de Pareceristas',
-            'Inscrição' => 'Prestacão de Contas',
-            'inscrição' => 'prestacão de contas',
-            'Inscritos' => 'Prestacoes de Contas',
-            'Inscrições' => 'Prestações de Contas',
-            'inscrições' => 'prestações de contas',
-            'Avaliação' => 'Parecer Técnico',
-            'avaliação' => 'parecer técnico',
-            'Avaliações' => 'Pareceres',
-            'avaliações' => 'pareceres',
-            'Avaliador' => 'Parecerista',
-            'avaliador' => 'parecerista',
-            'Avaliadores' => 'Pareceristas',
-            'avaliadores' => 'pareceristas',
+            i::__('Nenhuma avaliação enviada') => i::__('Nenhum parecer técnico enviado'),
+            i::__('Configuração da Avaliação') => i::__('Configuração do Parecer Técnico'),
+            i::__('Comissão de Avaliação') => i::__('Comissão de Pareceristas'),
+            i::__('Inscrição') => i::__('Prestacão de Contas'),
+            i::__('inscrição') => i::__('prestacão de contas'),
+            // inscritos deve conter somente a versão com o I maiúsculo para não quebrar o JS
+            i::__('Inscritos') => i::__('Prestacoes de Contas'),
+            i::__('Inscrições') => i::__('Prestações de Contas'),
+            i::__('inscrições') => i::__('prestações de contas'),
+            i::__('Avaliação') => i::__('Parecer Técnico'),
+            i::__('avaliação') => i::__('parecer técnico'),
+            i::__('Avaliações') => i::__('Pareceres'),
+            i::__('avaliações') => i::__('pareceres'),
+            i::__('Avaliador') => i::__('Parecerista'),
+            i::__('avaliador') => i::__('parecerista'),
+            i::__('Avaliadores') => i::__('Pareceristas'),
+            i::__('avaliadores') => i::__('pareceristas'),
         ];
 
         $app->hook('view.partial(singles/opportunity-<<tabs|evaluations--admin--table|registrations--tables--manager|evaluations--committee>>):after', function($template, &$html) use($replacements) {
