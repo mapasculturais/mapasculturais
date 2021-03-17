@@ -85,8 +85,15 @@ class Module extends \MapasCulturais\Module
             $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
         });
 
-        //
-        $app->hook('entity(Opportunity).insert:after', function () use ($app) {
+        $self = $this;
+        $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
+
+            $opportunityData = $app->controller('opportunity');
+
+            if ($this->isLastPhase && isset($opportunityData->postData['hasAccountability']) && $opportunityData->postData['hasAccountability']) {
+                
+                $self->createAccountabilityPhase($this->parent);
+            }
         });
 
 
@@ -114,6 +121,38 @@ class Module extends \MapasCulturais\Module
 
         });
         
+        /**
+         * Substituição dos seguintes termos 
+         * - avaliação por parecer
+         * - avaliador por parecerista
+         * - inscrição por prestação de contas
+         */
+        $replacements = [
+            i::__('Nenhuma avaliação enviada') => i::__('Nenhum parecer técnico enviado'),
+            i::__('Configuração da Avaliação') => i::__('Configuração do Parecer Técnico'),
+            i::__('Comissão de Avaliação') => i::__('Comissão de Pareceristas'),
+            i::__('Inscrição') => i::__('Prestacão de Contas'),
+            i::__('inscrição') => i::__('prestacão de contas'),
+            // inscritos deve conter somente a versão com o I maiúsculo para não quebrar o JS
+            i::__('Inscritos') => i::__('Prestacoes de Contas'),
+            i::__('Inscrições') => i::__('Prestações de Contas'),
+            i::__('inscrições') => i::__('prestações de contas'),
+            i::__('Avaliação') => i::__('Parecer Técnico'),
+            i::__('avaliação') => i::__('parecer técnico'),
+            i::__('Avaliações') => i::__('Pareceres'),
+            i::__('avaliações') => i::__('pareceres'),
+            i::__('Avaliador') => i::__('Parecerista'),
+            i::__('avaliador') => i::__('parecerista'),
+            i::__('Avaliadores') => i::__('Pareceristas'),
+            i::__('avaliadores') => i::__('pareceristas'),
+        ];
+
+        $app->hook('view.partial(singles/opportunity-<<tabs|evaluations--admin--table|registrations--tables--manager|evaluations--committee>>):after', function($template, &$html) use($replacements) {
+            $phase = $this->controller->requestedEntity;
+            if ($phase->isAccountabilityPhase) {
+                $html = str_replace(array_keys($replacements), array_values($replacements), $html);
+            }
+         });        
     }
 
     function register()
@@ -180,5 +219,38 @@ class Module extends \MapasCulturais\Module
                 }
             }
         ]);
+    }
+
+    // Migrar essa função para o módulo "Opportunity phase"
+    function createAccountabilityPhase(Opportunity $parent)
+    {
+
+        $opportunity_class_name = $parent->getSpecializedClassName();
+
+        $last_phase = \OpportunityPhases\Module::getLastCreatedPhase($parent);
+
+        $phase = new $opportunity_class_name;
+
+        $phase->status = Opportunity::STATUS_DRAFT;
+        $phase->parent = $parent;
+        $phase->ownerEntity = $parent->ownerEntity;
+
+        $phase->name = i::__('Prestação de Contas');
+        $phase->registrationCategories = $parent->registrationCategories;
+        $phase->shortDescription = i::__('Descrição da Prestação de Contas');
+        $phase->type = $parent->type;
+        $phase->owner = $parent->owner;
+        $phase->useRegistrations = true;
+        $phase->isOpportunityPhase = true;
+        $phase->isAccountabilityPhase = true;
+
+        $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+        $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+        $_to->add(date_interval_create_from_date_string('1 days'));
+
+        $phase->registrationFrom = $_from;
+        $phase->registrationTo = $_to;
+
+        $phase->save(true);
     }
 }
