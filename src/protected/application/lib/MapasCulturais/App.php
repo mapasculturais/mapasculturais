@@ -1438,7 +1438,7 @@ class App extends \Slim\Slim{
         $lines = file($filename);
         $line = trim($lines[$fileline - 1]);
 
-        $this->log->debug("hook >> $name (\033[33m$filename:$fileline\033[0m)");
+        $this->log->debug("hook >> \033[37m$name \033[0m(\033[33m$filename:$fileline\033[0m)");
         $this->log->debug("     >> \033[32m$line\033[0m\n");
     }
 
