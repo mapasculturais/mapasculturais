@@ -40,7 +40,6 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
             $opportunity = $this->controller->requestedEntity;
-            $dataOportunity = $opportunity->getEvaluationCommittee();
             $sendHook = [];
 
             if ($registrationsByTime = $self->registrationsByTime($opportunity)) {
@@ -55,7 +54,7 @@ class Module extends \MapasCulturais\Module
                 $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
             }
 
-            if ($dataOportunity[0]->owner->type == 'technical') {
+            if ($opportunity->evaluationMethod->slug == 'technical') {
                 if ($registrationsByEvaluation = $self->registrationsByEvaluationStatusBar($opportunity)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
