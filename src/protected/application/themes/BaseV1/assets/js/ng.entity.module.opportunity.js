@@ -2494,25 +2494,26 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
     module.controller('OpportunityProjects', ['$scope', '$rootScope', 'OpportunityProjectsApiService', function ($scope, $rootScope, OpportunityProjectsApiService){
 
         $scope.data.projects = [];
+        $scope.data.projectsAPIMetadata = {
+            limit: 50,
+            offset: null,
+            page: 1
+        }
 
-        OpportunityProjectsApiService.find().success(function (data, status, headers) {
-            
+        OpportunityProjectsApiService.find($scope.data.projectsAPIMetadata).success(function (data, status, headers) {
             $scope.data.projects = data;
-
-            $scope.data.projects.forEach(function(project, index) {
-                $scope.data.projects[index].registrationFrom = $scope.data.projects[index].registrationFrom ? moment($scope.data.projects[index].registrationFrom.date).format('YYYY-MM-DD') : null;
-                $scope.data.projects[index].registrationTo = $scope.data.projects[index].registrationTo ? moment($scope.data.projects[index].registrationTo.date).format('YYYY-MM-DD') : null;
-                $scope.data.projects[index].avatar = $scope.avatarUrl(project);
-            });
-
+            $scope.data.projectsAPIMetadata = JSON.parse(headers()['api-metadata']);
+            $scope.data.projectsAPIMetadata.limit = 50;
         });
 
-        $scope.avatarUrl = function (project) {
-            if (project['@files:avatar.avatarMedium'])
-                return project['@files:avatar.avatarMedium'].url;
-            else
-                return null;
-        };
+        $scope.loadMore = function () {
+            $scope.data.projectsAPIMetadata.page = $scope.data.projectsAPIMetadata.page + 1;
+            $scope.data.projectsAPIMetadata.offset = $scope.data.projectsAPIMetadata.page - 1;
+
+            OpportunityProjectsApiService.find($scope.data.projectsAPIMetadata).success(function (data, status, headers) {
+                $scope.data.projects.push(data[0]);
+            });
+        }
 
     }]);
 
@@ -2521,12 +2522,20 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
         return {
             find: function (data) {
 
-                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo&@files=(avatar.avatarMedium):url&opportunity=EQ(' + MapasCulturais.entity.id + ')&@limit=20&@page=1';
+                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo&@files=(avatar.avatarMedium):url&opportunity=EQ(' + MapasCulturais.entity.id + ')&@order=createTimestamp DESC&@offset=' + data.offset + '&@limit=' + data.limit + '';
              
                 return $http.get(MapasCulturais.createUrl('api/project', 'find') + qdata).
                     success(function (data, status, headers) {
+                        for (var i = 0; i < data.length; i++) {
+                            var url = MapasCulturais.createUrl('inscricao', data[i].registration_id);
+                            data[i].registrationFrom = data[i].registrationFrom ? moment(data[i].registrationFrom.date).format('YYYY-MM-DD') : null;
+                            data[i].registrationTo = data[i].registrationTo ? moment(data[i].registrationTo.date).format('YYYY-MM-DD') : null;
+                            data[i].avatar = data[i]['@files:avatar.avatarMedium'].url;
+                        }
+                        $rootScope.$emit('project.find', { message: "Projects found", data: data, status: status });
                     }).
                     error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Projects not found for this opportunity", data: data, status: status });
                     });
             }
         };

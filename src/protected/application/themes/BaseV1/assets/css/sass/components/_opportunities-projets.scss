@@ -3,124 +3,158 @@
 // --------------------------------------------------
 body.controller-opportunity #projects {
 
+    & > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        @media (max-width: 520px) {
+            display: block;
+        }
+    }
+    
+    margin: 0 -15px;
+    
     .card {
         box-sizing: border-box;
-        float: left;
         margin-bottom: 45px;
-        padding-right: 15px;
-        width: 50%;
+        padding: 0 7.5px;
+        width: 100%;
 
-        header {
-            .thumb {
-                float: left;
-                margin: 5px 15px 15px 0;
-                max-width: 100px;
-            }
+        & > .content {
+            background-color: #E8E8E8;
+            border-radius: 2px;
+            padding: 15px;
+            
+            header {
+                .thumb {
+                    float: left;
+                    margin: 5px 15px 15px 0;
+                    max-width: 100px;
+                }
 
-            h3 {
-                display: flex;
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem;
+                h3 {
+                    display: flex;
+                    font-size: 1.5rem;
+                    margin-bottom: 0.5rem;
 
-                &:hover {
-                    a {
-                        text-decoration: none;
-                        opacity: 0.7;
+                    &:hover {
+                        a {
+                            text-decoration: none;
+                            opacity: 0.7;
+                        }
                     }
+                }
+
+                p {
+                    clear: left;
                 }
             }
 
             p {
+                font-size: 14px;
+                line-height: 1.4rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .type {
+                color: $brand-project;
+                font-weight: bold;
+            }
+
+            .label {
+                color: #666666;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .content {
                 clear: left;
-            }
-        }
-
-        p {
-            font-size: 14px;
-            line-height: 1.4rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .type {
-            color: $brand-project;
-            font-weight: bold;
-        }
-
-        .label {
-            color: #666666;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .content {
-            clear: left;
-            display: block;
-        }
-
-        footer {
-            .tags {
-                border-bottom: 1px solid #CCCCCC;
-                margin: 20px auto 10px;
-                padding-bottom: 20px;
-                width: 100%;
-
-                p {
-                    margin-bottom: 0;
-                }
-
-                a {
-                    background-color: $brand-project;
-                    color: #FFFFFF;
-                    font-size: 12px;
-                    margin-left: 5px;
-                    text-transform: uppercase;
-                }
+                display: block;
             }
 
-            .status {
-                color: #222222;
-                height: auto;
-                padding: 0;
-                text-align: left;
+            footer {
+                .tags {
+                    border-bottom: 1px solid #CCCCCC;
+                    margin: 15px auto 10px;
+                    padding-bottom: 20px;
+                    width: 100%;
 
-                p {
-                    display: none; // oculta temporariamente o status
-                    // display: inline-block;
-                    font-weight: bold;
+                    p {
+                        margin-bottom: 0;
+                    }
+
+                    a {
+                        background-color: $brand-project;
+                        color: #FFFFFF;
+                        font-size: 12px;
+                        margin-bottom: 5px;
+                        margin-left: 5px;
+                        text-transform: uppercase;
+                    }
                 }
 
-                a.button {
-                    background-color: #1C5690;
-                    border-radius: 4px;
-                    color: #FFFFFF;
-                    cursor: pointer;
-                    font-size: 11px;
-                    font-weight: bold;
-                    float: right;
+                .status {
+                    color: #222222;
                     height: auto;
-                    line-height: 1;
-                    margin: 0 0 .75rem;
-                    padding: 10px 12px;
+                    overflow: hidden;
+                    padding: 0;
+                    text-align: left;
 
-                    &:hover {
-                        text-decoration: none;
+                    p {
+                        display: none; // oculta temporariamente o status
+                        // display: inline-block;
+                        font-weight: bold;
+                    }
+
+                    a.button {
+                        background-color: #1C5690;
+                        border-radius: 4px;
+                        color: #FFFFFF;
+                        cursor: pointer;
+                        font-size: 11px;
+                        font-weight: bold;
+                        float: right;
+                        height: auto;
+                        line-height: 1;
+                        margin: 0;
+                        padding: 10px 12px;
+
+                        &:hover {
+                            text-decoration: none;
+                        }
                     }
                 }
             }
         }
 
-        &:nth-child(even) {
-            padding-left: 15px;
-            padding-right: 0;
+        @media (max-width: 520px) {
+            margin: 0;
+            padding: 15px;
+            width: 100%;
+        }
+    }
 
-            @media (max-width: 520px) {
-                padding-left: 0;
+    & > div > footer {
+        clear: left;
+        display: block;
+        padding: 30px 15px 0;
+        text-align: center;    
+
+        button {
+            background-color: #DDDDDD;
+            border: 0;
+            border-radius: 5px;
+            color: #666666;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            height: auto;
+            margin-bottom: 0;
+            padding: 10px 70px;
+            &:hover {
+                opacity: 0.7;
             }
         }
 
-        @media (max-width: 520px) {
-            padding-right: 0;
-            width: 100%;
-        }
     }
 }
