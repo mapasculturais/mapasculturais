@@ -1414,6 +1414,53 @@ $$
 
     'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
         __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
+    },
+
+    'create chat tables' => function () {
+        if (!__sequence_exists("chat_thread_id_seq")) {
+            __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_thread")) {
+            __exec("CREATE TABLE chat_thread (
+                id INT NOT NULL,
+                status INT NOT NULL,
+                object_id INT NOT NULL,
+                object_type VARCHAR(255) NOT NULL,
+                identifier VARCHAR(255) NOT NULL,
+                description TEXT DEFAULT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                last_message_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("COMMENT ON COLUMN chat_thread.object_type IS '(DC2Type:object_type)'");
+        }
+        if (!__sequence_exists("chat_message_id_seq")) {
+            __exec("CREATE SEQUENCE chat_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_message")) {
+            __exec("CREATE TABLE chat_message (
+                id INT NOT NULL,
+                chat_thread_id INT NOT NULL,
+                parent_id INT DEFAULT NULL,
+                user_id INT NOT NULL,
+                payload TEXT NOT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("CREATE INDEX IDX_FAB3FC16C47D5262 ON chat_message (chat_thread_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16727ACA70 ON chat_message (parent_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16A76ED395 ON chat_message (user_id)");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16C47D5262
+                FOREIGN KEY (chat_thread_id) REFERENCES chat_thread (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16727ACA70
+                FOREIGN KEY (parent_id) REFERENCES chat_message (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16A76ED395
+                FOREIGN KEY (user_id) REFERENCES usr (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+        }
     }
 
 ] + $updates ;

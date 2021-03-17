@@ -31,6 +31,7 @@ class PermissionAction extends DoctrineEnumType
             'modify' => 'modify',
             'modifyRegistrationFields' => 'modifyRegistrationFields',
             'modifyValuers' => 'modifyValuers',
+            'post' => 'post',
             'publish' => 'publish',
             'publishRegistrations' => 'publishRegistrations',
             'register' => 'register',
