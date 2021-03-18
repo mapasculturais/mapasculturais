@@ -1529,6 +1529,16 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'ibge', 'js/ibge.js');
     }
 
+    function includeChatAssets() {
+
+        $app = App::i();
+
+        $app->view->enqueueScript('app', 'ng.mc.module.notifications', 'js/ng.mc.module.notifications.js');
+        $app->view->enqueueScript('app', 'ng.mc.directive.editBox', 'js/ng.mc.directive.editBox.js');
+        $app->view->enqueueScript('app', 'ng.module.chat', 'js/ng.module.chat.js', ['mapasculturais']);
+
+    }
+
     function includeEditableEntityAssets() {
 
         $versions = $this->_libVersions;

@@ -309,7 +309,7 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {  
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -2487,5 +2487,90 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
     jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
 
 }]);
+
+    module.controller('OpportunityProjects', ['$scope', '$rootScope', 'OpportunityProjectsApiService', function ($scope, $rootScope, OpportunityProjectsApiService){
+
+        this.chat = {
+            chatId: '',
+            name: 'Chat de Exemplo',
+            messages: {}
+        }
+
+        // $scope.data.components = {
+        //     chat: {
+        //         chatId: '',
+        //         name: 'Chat de Exemplo',
+        //         messages: { }
+        //     }
+        // }
+
+        $scope.data.projects = [];
+        $scope.data.projectsAPIMetadata = {
+            limit: 50,
+            offset: null,
+            page: 1
+        }
+
+        OpportunityProjectsApiService.find($scope.data.projectsAPIMetadata).success(function (data, status, headers) {
+            $scope.data.projects = data;
+            $scope.data.projectsAPIMetadata = JSON.parse(headers()['api-metadata']);
+            $scope.data.projectsAPIMetadata.limit = 50;
+        });
+
+        $scope.loadMore = function () {
+            $scope.data.projectsAPIMetadata.page = $scope.data.projectsAPIMetadata.page + 1;
+            $scope.data.projectsAPIMetadata.offset = $scope.data.projectsAPIMetadata.page - 1;
+
+            OpportunityProjectsApiService.find($scope.data.projectsAPIMetadata).success(function (data, status, headers) {
+                $scope.data.projects.push(data[0]);
+            });
+        }
+
+    }]);
+
+    module.factory('OpportunityProjectsApiService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+
+        return {
+            find: function (data) {
+
+                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo&@files=(avatar.avatarMedium):url&opportunity=EQ(' + MapasCulturais.entity.id + ')&@order=createTimestamp DESC&@offset=' + data.offset + '&@limit=' + data.limit + '';
+             
+                return $http.get(MapasCulturais.createUrl('api/project', 'find') + qdata).
+                    success(function (data, status, headers) {
+                        for (var i = 0; i < data.length; i++) {
+                            var url = MapasCulturais.createUrl('inscricao', data[i].registration_id);
+                            data[i].registrationFrom = data[i].registrationFrom ? moment(data[i].registrationFrom.date).format('YYYY-MM-DD') : null;
+                            data[i].registrationTo = data[i].registrationTo ? moment(data[i].registrationTo.date).format('YYYY-MM-DD') : null;
+                            data[i].avatar = data[i]['@files:avatar.avatarMedium'].url;
+                        }
+                        $rootScope.$emit('project.find', { message: "Projects found", data: data, status: status });
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Projects not found for this opportunity", data: data, status: status });
+                    });
+            }
+        };
+        
+    }]);
+
+    function controllerChat() {
+
+        var self = this.chat;
+
+        return $.get('').
+            success(function (data) {
+                self.chatId = 'testeId';
+                self.messages = data;
+            });
+
+    }
+
+    module.component('chat', {
+        templateUrl: MapasCulturais.templateUrl.chat,
+        bindings: {
+            chat: '='
+        },
+        controller: controllerChat
+    })
 
 })(angular);
