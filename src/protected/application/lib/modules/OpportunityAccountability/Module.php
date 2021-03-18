@@ -23,6 +23,7 @@ class Module extends \MapasCulturais\Module
             $params['isAccountabilityPhase'] = 'NULL()';
         });
 
+        // retorna a inscrição da fase de prestação de contas
         $app->hook('entity(Registration).get(accountabilityPhase)', function(&$value) use ($registration_repository){
             $opportunity = $this->opportunity->parent ?: $this->opportunity;
             $accountability_phase = $opportunity->accountabilityPhase;
@@ -31,6 +32,16 @@ class Module extends \MapasCulturais\Module
                 'opportunity' => $accountability_phase,
                 'number' => $this->number
              ]);
+        });
+
+        // retorna o projeto relacionado à inscricão
+        $app->hook('entity(Registration).get(project)', function(&$value) {
+            if (!$value) {
+                $first_phase = $this->firstPhase;
+                if ($first_phase && $first_phase->id != $this->id) {
+                    $value = $first_phase->project;
+                }
+            }
         });
 
         // na publicação da última fase, cria os projetos
@@ -51,10 +62,15 @@ class Module extends \MapasCulturais\Module
             $project->isAccountability = true;
             $project->owner = $registration->owner;
 
-            $project->registration = $registration->firstPhase;
+            $first_phase = $registration->firstPhase;
+
+            $project->registration = $first_phase;
             $project->opportunity = $this->parent ?: $this;
 
-            $project->save(true);
+            $project->save();
+
+            $first_phase->project = $project;
+            $first_phase->save(true);
 
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
@@ -105,6 +121,15 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
+
+            $entity = $this->controller->requestedEntity;
+
+            eval(\psy\sh());
+            // $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
+
+        });
+
         /**
          * Substituição dos seguintes termos 
          * - avaliação por parecer
@@ -136,7 +161,26 @@ class Module extends \MapasCulturais\Module
             if ($phase->isAccountabilityPhase) {
                 $html = str_replace(array_keys($replacements), array_values($replacements), $html);
             }
-         });        
+         });
+
+         // substitui botões de importar inscrições da fase anterior
+         $app->hook('view.partial(import-last-phase-button).params', function ($data, &$template) {
+            $opportunity = $this->controller->requestedEntity;
+            
+            if ($opportunity->isAccountabilityPhase) {
+                $template = "accountability/import-last-phase-button";
+            }
+         });
+
+         // redireciona a ficha de inscrição da fase de prestação de contas para o projeto relacionado
+         $app->hook('GET(registration.view):before', function() use($app) {
+            $registration = $this->requestedEntity;
+            if ($registration->opportunity->isAccountabilityPhase) {
+                if ($project = $registration->project) {
+                    $app->redirect($project->singleUrl . '#/tab=accountability');
+                }
+            }
+         });
     }
 
     function register()
@@ -144,6 +188,7 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
         $opportunity_repository = $app->repo('Opportunity');
         $registration_repository = $app->repo('Registration');
+        $project_repository = $app->repo('Project');
 
         $this->registerProjectMetadata('isAccountability', [
             'label' => i::__('Indica que o projeto é vinculado à uma inscrição aprovada numa oportunidade'),
@@ -169,7 +214,7 @@ class Module extends \MapasCulturais\Module
 
         $this->registerProjectMetadata('registration', [
             'label' => i::__('Inscrição da oportunidade da prestação de contas vinculada a este projeto (primeira fase)'),
-            'type' => 'number',
+            'type' => 'Registration',
             'private' => true,
             'serialize' => function (Registration $registration) {
                 return $registration->id;
@@ -177,6 +222,22 @@ class Module extends \MapasCulturais\Module
             'unserialize' => function ($registration_id) use($registration_repository) {
                 if ($registration_id) {
                     return $registration_repository->find($registration_id);
+                } else {
+                    return null;
+                }
+            }
+        ]);
+
+        $this->registerRegistrationMetadata('project', [
+            'label' => i::__('Projeto da prestação de contas vinculada a esta inscrição (primeira fase)'),
+            'type' => 'Project',
+            'private' => true,
+            'serialize' => function (Project $project) {
+                return $project->id;
+            },
+            'unserialize' => function ($project_id) use($project_repository) {
+                if ($project_id) {
+                    return $project_repository->find($project_id);
                 } else {
                     return null;
                 }
