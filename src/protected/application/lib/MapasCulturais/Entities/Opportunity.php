@@ -796,7 +796,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
             }
 
-            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+            $app->applyHookBoundTo($this, "controller(opportunity).registerFieldType({$field->fieldType})", [$field, &$cfg]);
 
 
             $metadata = new MetadataDefinition ($field->fieldName, $cfg);
