@@ -86,6 +86,7 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
             <?php $this->applyTemplateHook('new-phase-form', 'end') ?>
         </div>
 </edit-box>
+</div>
 <?php endif; ?>
     <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
@@ -168,5 +169,4 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
         <?php endforeach; ?>
         </ul>
     </div>
-</div>
 <?php endif; ?>
