@@ -2490,20 +2490,6 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
 
     module.controller('OpportunityProjects', ['$scope', '$rootScope', 'OpportunityProjectsApiService', function ($scope, $rootScope, OpportunityProjectsApiService){
 
-        this.chat = {
-            chatId: '',
-            name: 'Chat de Exemplo',
-            messages: {}
-        }
-
-        // $scope.data.components = {
-        //     chat: {
-        //         chatId: '',
-        //         name: 'Chat de Exemplo',
-        //         messages: { }
-        //     }
-        // }
-
         $scope.data.projects = [];
         $scope.data.projectsAPIMetadata = {
             limit: 50,
@@ -2552,25 +2538,5 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
         };
         
     }]);
-
-    function controllerChat() {
-
-        var self = this.chat;
-
-        return $.get('').
-            success(function (data) {
-                self.chatId = 'testeId';
-                self.messages = data;
-            });
-
-    }
-
-    module.component('chat', {
-        templateUrl: MapasCulturais.templateUrl.chat,
-        bindings: {
-            chat: '='
-        },
-        controller: controllerChat
-    })
 
 })(angular);

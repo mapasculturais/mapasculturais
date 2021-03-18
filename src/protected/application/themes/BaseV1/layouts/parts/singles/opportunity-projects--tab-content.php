@@ -6,18 +6,7 @@ use MapasCulturais\i;
 
 $app = \MapasCulturais\App::i();
 
-$this->includeChatAssets();
-
 ?>
-
-<div ng-controller='ChatController'>
-    {{data.teste}}
-</div>
-
-<!-- <div class="controller-chat">
-    <chat chat="$ctrl.chat"></chat>
-    <chat chat="$ctrl.chat" id="{{$ctrl.chat.chatId}}"></chat>
-</div> -->
 
 <div ng-controller='OpportunityProjects'>
 
