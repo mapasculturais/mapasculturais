@@ -140,6 +140,28 @@ class ChatThread extends \MapasCulturais\Entity
         return $this->_ownerEntity;
     }
 
+    public function getParticipants()
+    {
+        $participants = [
+            "owner" => [$this->owner->user],
+            "admin" => $this->getUsersWithControl()
+        ];
+        $agent_relations = array_values($this->getAgentRelations());
+        $participants = array_reduce($agent_relations,
+                                      function ($previous, $relation) {
+            $current = $previous;
+            if (!isset($current[$relation->group])) {
+                $current[$relation->group] = [];
+            }
+            if (!in_array($relation->agent->user,
+                          $current[$relation->group])) {
+                $current[$relation->group][] = $relation->agent->user;
+            }
+            return $current;
+        }, $participants);
+        return $participants;
+    }
+
     public function sendNotifications(ChatMessage $message)
     {
         self::registeredType($this->type)->sendNotifications($message);
