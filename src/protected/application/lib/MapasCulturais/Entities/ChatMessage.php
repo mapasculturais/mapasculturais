@@ -124,12 +124,13 @@ class ChatMessage extends \MapasCulturais\Entity
 
     protected function getExtraPermissionCacheUsers()
     {
-        $agent_relations = array_values($this->thread->getAgentRelations());
-        $related_users = array_map(function ($relation) {
-            return $relation->agent->user;
-        }, $agent_relations);
-        $control_users = $this->thread->getUsersWithControl();
-        return array_unique(array_merge($related_users, $control_users));
+        $participants = $this->thread->getParticipants();
+        $groups = array_keys($participants);
+        $flat = array_reduce($groups,
+                             function ($previous, $group) use ($participants) {
+            return array_merge($previous, $participants[$group]);
+        }, []);
+        return array_unique($flat);
     }
 
     protected function canUserCreate($user)
