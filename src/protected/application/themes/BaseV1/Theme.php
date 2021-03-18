@@ -854,6 +854,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.mcSelect',
                 'mc.module.notifications',
                 'mc.module.findEntity',
+                'ng.module.chat',
 
                 'ngSanitize',
             ];
@@ -895,6 +896,7 @@ class Theme extends MapasCulturais\Theme {
             $this->addDocumentMetas();
             $this->includeVendorAssets();
             $this->includeCommonAssets();
+            $this->includeChatAssets();
             $this->_populateJsObject();
         });
 

@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
 
-    var app = angular.module('chat.app', [
+    var app = angular.module('ng.module.chat', [
         "mc.directive.editBox",
         "mc.module.notifications",
         "ngSanitize"
@@ -41,12 +41,17 @@
         var adjustingBoxPosition = false;
         $scope.editbox = EditBox;
         $scope.data = {
-            teste: 'Prestação de contas',
+            threadId: null,
             spinner: false,
+            
             apiQuery: {
 
             }
         };
+
+        $scope.setThreadId = function(threadId) {
+            $scope.data.threadId = threadId;
+        }
 
         var adjustBoxPosition = function () {
             setTimeout(function () {
