@@ -35,8 +35,8 @@ return [
             'certificateText' => i::__('Conteúdo da Impressão do Certificado'),
             'validPeriod'	=> i::__('Período de Validade'),
             'status' => i::__('Status'),
-            'registrationFrom' => 'Data de início das inscrições', 
-            'registrationTo' => 'Data final das inscrições'
+            'registrationFrom' => i::__('Data de início das inscrições'), 
+            'registrationTo' => i::__('Data final das inscrições')
         ),
 
         'MapasCulturais\Entities\Agent' => array(
