@@ -1,0 +1,22 @@
+chat {
+    background-color: #d4e5e5;
+    border-radius: 5px;
+    padding: 15px;
+
+    .message {
+        background-color: azure;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+        padding: 15px;
+
+        p {
+            margin-bottom: 0;
+            
+            &.name {
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
