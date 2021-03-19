@@ -121,15 +121,26 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        // Adiciona aba de projetos nas oportunidades com prestação de contas após a publicação da última fase
         $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
 
             $entity = $this->controller->requestedEntity;
 
-            eval(\psy\sh());
-            // $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
-
+            // accountabilityPhase existe apenas quando lastPhase existe
+            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+                $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
+            }
         });
+        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
 
+            $entity = $this->controller->requestedEntity;
+
+            // accountabilityPhase existe apenas quando lastPhase existe
+            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+                $this->part('singles/opportunity-projects', ['entity' => $entity]);
+            }
+        });
+        
         /**
          * Substituição dos seguintes termos 
          * - avaliação por parecer
