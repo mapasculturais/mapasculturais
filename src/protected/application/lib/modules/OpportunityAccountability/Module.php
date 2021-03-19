@@ -275,6 +275,31 @@ class Module extends \MapasCulturais\Module
                 }
             }
         ]);
+
+        $thread_type_description = i::__('Conversação entre proponente e parecerista no campo da prestação de contas');
+        
+        $definition = new ChatThreadType('accountability-field', $thread_type_description, function (ChatMessage $message) {
+            $thread = $message->thread;
+            $evaluation = $thread->ownerEntity;
+            $registraion = $evaluation->registration;
+
+            if ($message->thread->checkUserRole($message->user, 'admin')) {
+                // mensagem do parecerista
+                $notification = new Notification;
+                $notification->user = $registraion->agent->user;
+                $notification->message = i::__("Nova mensagem do parecerista da prestação de contas número {$registraion->number}");
+                $notification->save(true);
+            } else {
+                // mensagem do usuário
+                $notification = new Notification;
+                $notification->user = $evaluation->user;
+                $notification->message = i::__("Nova mensagem na na prestação de contas número {$registraion->number}");
+                $notification->save(true);
+
+            }
+        });
+
+        $app->registerChatThreadType($definition);
     }
 
     // Migrar essa função para o módulo "Opportunity phase"
