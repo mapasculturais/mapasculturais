@@ -211,7 +211,7 @@ class ChatThread extends \MapasCulturais\Entity
     }
 
     //============================================================= //
-    // The following lines ara used by MapasCulturais hook system.
+    // The following lines are used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
 
