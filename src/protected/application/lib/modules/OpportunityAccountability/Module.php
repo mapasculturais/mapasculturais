@@ -289,12 +289,14 @@ class Module extends \MapasCulturais\Module
                 $notification->user = $registraion->agent->user;
                 $notification->message = i::__("Nova mensagem do parecerista da prestação de contas número {$registraion->number}");
                 $notification->save(true);
+                $this->sendEmailForNotification($message, $notification, 'admin', 'participant');
             } else {
-                // mensagem do usuário
+                // mensagem do usuário responsável pela prestação de contas
                 $notification = new Notification;
                 $notification->user = $evaluation->user;
                 $notification->message = i::__("Nova mensagem na na prestação de contas número {$registraion->number}");
                 $notification->save(true);
+                $this->sendEmailForNotification($message, $notification, 'participant', 'admin');
 
             }
         });

@@ -179,6 +179,28 @@ class ChatThread extends \MapasCulturais\Entity
         return false;
     }
 
+    function highestRoleForUser($user)
+    {
+        foreach ($this->participants["owner"] as $owner) {
+            if ($owner->id == $user->id) {
+                return "owner";
+            }
+        }
+        foreach ($this->participants["admin"] as $admin) {
+            if ($admin->id == $user->id) {
+                return "admin";
+            }
+        }
+        foreach (array_keys($this->participants) as $group) {
+            foreach ($this->participants[$group] as $participant) {
+                if ($participant->id == $user->id) {
+                    return $group;
+                }
+            }
+        }
+        return null;
+    }
+
     public function sendNotifications(ChatMessage $message)
     {
         self::registeredType($this->type)->sendNotifications($message);
@@ -228,7 +250,7 @@ class ChatThread extends \MapasCulturais\Entity
     }
 
     //============================================================= //
-    // The following lines ara used by MapasCulturais hook system.
+    // The following lines are used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
 
