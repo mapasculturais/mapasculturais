@@ -264,6 +264,11 @@ function restartingCreateEntity() {
     $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
     $('.js-dialog').attr('style', 'display: none');                
     $('.create-entity').trigger("reset");
+    $(".modal-feedback-event").css('display', 'none');
+    $(".create-event").css('display', 'block');
+    $(".js-event-occurrence").html("");
+    $(".cancel-action").css('display', 'block');
+    $(".btn-event").css('display', 'block'); 
 }
 
 MapasCulturais.utils = {

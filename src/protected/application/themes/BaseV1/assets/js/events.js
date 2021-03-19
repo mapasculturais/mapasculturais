@@ -43,6 +43,12 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     var $startsAt = $dialog.find('form').find('.js-event-time');
     var $duration = $dialog.find('form').find('.js-event-duration');
     var $endsAt = $dialog.find('form').find('.js-event-end-time');
+    var eventId = $dialog.find('form').find('.event-id');
+    
+    if(!MapasCulturais.eventId){
+        MapasCulturais.eventId =  MapasCulturais.entity.id;
+    }
+    eventId.val(MapasCulturais.eventId);
 
     $startsAt.mask('00:00', {
       onComplete: function(time) {
@@ -163,7 +169,7 @@ MapasCulturais.EventOccurrenceManager = {
                         $('.js-event-occurrence').append($renderedData);
                     }
                     MapasCulturais.Modal.initButtons($editBtn);
-                    $form.parents('.js-dialog').find('.js-close').click();
+                    MapasCulturais.Modal.close('#dialog-event-occurrence');
 
                     //Por enquanto sempre inicializa o mapa
                     MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
