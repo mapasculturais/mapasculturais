@@ -15,6 +15,7 @@ $(document).
 });
 
 MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
+    $("#dialog-event-occurrence").addClass('occurrence-open');
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));
     var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-form');
@@ -170,6 +171,7 @@ MapasCulturais.EventOccurrenceManager = {
                     }
                     MapasCulturais.Modal.initButtons($editBtn);
                     MapasCulturais.Modal.close('#dialog-event-occurrence');
+                    $("#dialog-event-occurrence").removeClass('occurrence-open');
 
                     //Por enquanto sempre inicializa o mapa
                     if($('#occurrence-map-'+response.id).length){

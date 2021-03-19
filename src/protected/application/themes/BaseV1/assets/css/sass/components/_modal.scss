@@ -206,10 +206,6 @@
     }
 }
 
-.js-dialog .dialog-event{
-    z-index: 1901;
-}
-
 .js-event-occurrence {
     list-style-type: none;
 }
@@ -219,4 +215,16 @@
     margin-top: 10px;
     background-color: #00000014;
     padding: 5px;
+}
+
+#dialog-event-occurrence {
+    margin-left: -403px !important;
+    width: 40% !important;
+    z-index: 1901 !important;
+}
+
+.tip-yellowsimple{
+    z-index: 1901 !important;
+    left: 30% !important;
+    top: 19% !important;
 }
