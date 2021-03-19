@@ -27,13 +27,40 @@
                     prop: name
                 };
                 return $http.post(this.getUrl(), data).
+                success(function (data, status) {
+                    $rootScope.$emit('something', { message: "Something was done", data: data, status: status });
+                }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Cannot do something", data: data, status: status });
+                    });
+                },
+                
+            find: function (data) {
+
+                var qdata = '';
+
+                return $http.get(qdata).
                     success(function (data, status) {
                         $rootScope.$emit('something', { message: "Something was done", data: data, status: status });
                     }).
                     error(function (data, status) {
                         $rootScope.$emit('error', { message: "Cannot do something", data: data, status: status });
                     });
-            }
+
+            },
+            
+            create: function (message) {
+                
+                // var url = MapasCulturais.createUrl('chatMessage', {});
+
+                // return $http.post(url, message).
+                //     success(function (data, status) {
+                //         $rootScope.$emit('something', { message: "Something was done", data: data, status: status });
+                //     }).
+                //     error(function (data, status) {
+                //         $rootScope.$emit('error', { message: "Cannot do something", data: data, status: status });
+                //     });
+            },
         };
     }]);
 
@@ -42,6 +69,7 @@
         $scope.editbox = EditBox;
         $scope.data = {
             threadId: null,
+            messages: [],
             spinner: false,
             
             apiQuery: {
@@ -61,11 +89,33 @@
             });
         };
 
+        $scope.sendMessage = function (message) {
+            ChatService.create();
+
+            var newMessage = {
+                title: 'Nome',
+                body: message
+            }
+
+            // user_id
+            // chat_thread_id
+            $scope.data.messages.push(newMessage);
+            $scope.data.newMessage = '';
+
+        }
+
         $rootScope.$on('repeatDone:findEntity:find-entity-module-name-owner', adjustBoxPosition);
 
         $scope.$watch('data.spinner', function (ov, nv) {
             if (ov && !nv)
                 adjustBoxPosition();
+        });
+
+        ChatService.find($scope.data.threadId).success(function (data, status, headers) {
+
+            //$scope.data.apiMetadata = JSON.parse(headers()['api-metadata']);
+            $scope.data.messages = data;
+          
         });
 
     }]);

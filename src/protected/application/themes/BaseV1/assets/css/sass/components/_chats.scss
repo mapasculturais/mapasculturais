@@ -1,21 +1,83 @@
-chat {
-    background-color: #d4e5e5;
+.chat {
+    background-color: #e2e2e2;
     border-radius: 5px;
+    max-height: 800px;
+    overflow-x: hidden;
     padding: 15px;
 
     .message {
-        background-color: azure;
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
         border-radius: 5px;
         box-sizing: border-box;
+        float: right;
         margin-bottom: 15px;
         padding: 15px;
+        transition: all 0.3s ease-in-out;
+        width: 80%;
+
+        &.received {
+            background-color: rgba(255, 255, 255, 0.2);
+            float: left;
+        }
 
         p {
+            color: #222222;
             margin-bottom: 0;
-            
+
             &.name {
+                color: #000000;
                 font-weight: bold;
                 margin-bottom: 5px;
+            }
+        }
+
+        &:hover {
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    footer {
+        border-top: 1px solid #cdcdcd;
+        display: block;
+        float: left;
+        margin-top: 10px;
+        padding-top: 25px;
+        width: 100%;
+
+        input[type="text"] {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            float: left;
+            height: auto;
+            margin-bottom: 0;
+            margin-right: 15px;
+            padding: 15px;
+            width: 80%;
+        }
+
+        button {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            cursor: pointer;
+            float: left;
+            height: 48px;
+            opacity: 1;
+            padding: 15px 0;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            width: calc(20% - 15px);
+            
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.7;
+            }
+
+            &:hover {
+                background-color: #dddddd;
+                border-color: #bbbbbb;
             }
         }
     }
