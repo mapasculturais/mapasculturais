@@ -112,7 +112,11 @@ class ChatMessage extends \MapasCulturais\Entity
 
     function setParent($parent)
     {
-        $this->parent = App::i()->repo("ChatMessage")->find($parent);
+        if (!isset($parent) || empty($parent)){
+            $this->parent = null;
+        } else {
+            $this->parent = App::i()->repo("ChatMessage")->find($parent);
+        }
         return;
     }
 
