@@ -291,30 +291,31 @@ class Module extends \MapasCulturais\Module
         ]);
 
         $thread_type_description = i::__('Conversação entre proponente e parecerista no campo da prestação de contas');
-        
         $definition = new ChatThreadType('accountability-field', $thread_type_description, function (ChatMessage $message) {
             $thread = $message->thread;
             $evaluation = $thread->ownerEntity;
-            $registraion = $evaluation->registration;
-
+            $registration = $evaluation->registration;
+            $notification_content = '';
+            $sender = '';
+            $recipient = '';
+            $notification = new Notification;
             if ($message->thread->checkUserRole($message->user, 'admin')) {
                 // mensagem do parecerista
-                $notification = new Notification;
-                $notification->user = $registraion->agent->user;
-                $notification->message = i::__("Nova mensagem do parecerista da prestação de contas número {$registraion->number}");
-                $notification->save(true);
-                $this->sendEmailForNotification($message, $notification, 'admin', 'participant');
+                $notification->user = $registration->agent->user;
+                $notification_content = i::__("Nova mensagem do parecerista da prestação de contas número %s");
+                $sender = 'admin';
+                $recipient = 'participant';
             } else {
                 // mensagem do usuário responsável pela prestação de contas
-                $notification = new Notification;
                 $notification->user = $evaluation->user;
-                $notification->message = i::__("Nova mensagem na na prestação de contas número {$registraion->number}");
-                $notification->save(true);
-                $this->sendEmailForNotification($message, $notification, 'participant', 'admin');
-
+                $notification_content = i::__("Nova mensagem na prestação de contas número %s");
+                $sender = 'participant';
+                $recipient = 'admin';
             }
+            $notification->message = sprintf($notification_content, $registration->number);
+            $notification->save(true);
+            $this->sendEmailForNotification($message, $notification, $sender, $recipient);
         });
-
         $app->registerChatThreadType($definition);
 
         $this->evaluationMethod->register();
