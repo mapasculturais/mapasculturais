@@ -160,7 +160,7 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
                     <?php if($phase->status === 0): ?>
                         <em><?php i::_e('(rascunho)'); ?></em>
                     <?php endif; ?>
-                    <?php if($opportunity->canUser('@control')): ?>
+                    <?php if($phase->isLastPhase && $opportunity->canUser('@control')): ?>
                         <em><?php i::_e('(última fase)'); ?></em>
                     <?php endif; ?>
                 </li>
