@@ -23,14 +23,16 @@ class ChatThreadType extends \MapasCulturais\Definition
         return;
     }
 
-    public function sendEmailForNotification(Notification $notification,
-                                             string $template_suffix=null)
+    public function sendEmailForNotification(ChatMessage $message,
+                                             Notification $notification,
+                                             string $sender_group,
+                                             string $recipient_group)
     {
         $app = App::i();
         $search_paths = [];
-        if (isset($template_suffix)) {
-            $search_paths[] = "chat-thread-{$this->slug}-$template_suffix" .
-                              ".html";
+        foreach (["$sender_group-$recipient_group", $sender_group,
+                  $recipient_group] as $option) {
+            $search_paths[] = "chat-thread-{$this->slug}-$option.html";
         }
         $search_paths[] = "chat-thread-{$this->slug}.html";
         $search_paths[] = "chat-thread.html";
@@ -49,12 +51,15 @@ class ChatThreadType extends \MapasCulturais\Definition
             "siteName" => $app->view->dict("site: name", false),
             "user" => $notification->user->profile->name,
             "baseUrl" => $app->getBaseUrl(),
+            "messagePayload" => ($message->payload ??
+                                 i::__("Entre no site com seu usuário para " .
+                                       "visualizar."))
         ];
         $email_params = [
             "from" => $app->config["mailer.from"],
             "to" => ($notification->user->profile->emailPrivado ??
                      $notification->user->emailPublico),
-            "subject" => i::__("Notificação de chat"),
+            "subject" => i::__("Você tem uma nova mensagem"),
             "body" => $mustache->render($template, $params)
         ];
         if (!isset($email_params["to"])) {
