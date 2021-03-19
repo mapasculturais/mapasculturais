@@ -172,9 +172,11 @@ MapasCulturais.EventOccurrenceManager = {
                     MapasCulturais.Modal.close('#dialog-event-occurrence');
 
                     //Por enquanto sempre inicializa o mapa
-                    MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
-                    MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
-
+                    if($('#occurrence-map-'+response.id).length){
+                        MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
+                        MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
+                    }
+                    
                     if(response.pending){
                         MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
                     }
