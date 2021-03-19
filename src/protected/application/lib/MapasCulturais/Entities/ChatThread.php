@@ -39,13 +39,6 @@ class ChatThread extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
-    protected $status;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="object_id", type="integer", nullable=false)
      */
     protected $objectId;
@@ -56,6 +49,13 @@ class ChatThread extends \MapasCulturais\Entity
      * @ORM\Column(name="object_type", type="object_type", length=255, nullable=false)
      */
     protected $objectType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", nullable=false)
+     */
+    protected $type;
 
     /**
      * @var string
@@ -81,9 +81,16 @@ class ChatThread extends \MapasCulturais\Entity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_message_timestamp", type="datetime", nullable=false)
+     * @ORM\Column(name="last_message_timestamp", type="datetime", nullable=true)
      */
     protected $lastMessageTimestamp;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer", nullable=false)
+     */
+    protected $status;
 
     /**
      * @var \MapasCulturais\Entities\ChatThreadAgentRelation[] Agent Relations
@@ -131,6 +138,51 @@ class ChatThread extends \MapasCulturais\Entity
             $this->_ownerEntity = $repo->find($this->objectId);
         }
         return $this->_ownerEntity;
+    }
+
+    public function getParticipants()
+    {
+        $participants = [
+            "owner" => [$this->owner->user],
+            "admin" => $this->getUsersWithControl()
+        ];
+        $agent_relations = array_values($this->getAgentRelations());
+        $participants = array_reduce($agent_relations,
+                                      function ($previous, $relation) {
+            $current = $previous;
+            if (!isset($current[$relation->group])) {
+                $current[$relation->group] = [];
+            }
+            if (!in_array($relation->agent->user,
+                          $current[$relation->group])) {
+                $current[$relation->group][] = $relation->agent->user;
+            }
+            return $current;
+        }, $participants);
+        return $participants;
+    }
+
+    public function sendNotifications(ChatMessage $message)
+    {
+        self::registeredType($this->type)->sendNotifications($message);
+        return;
+    }
+
+    function setType(string $slug)
+    {
+        self::registeredType($slug);
+        $this->type = $slug;
+        return;
+    }
+
+    static private function registeredType($slug)
+    {
+        $registered = App::i()->getRegisteredChatThreadType($slug);
+        if (!isset($registered)) {
+            throw new \Exception("{$slug} is not a registered chat thread " .
+                                 "type.");
+        }
+        return $registered;
     }
 
     /**
