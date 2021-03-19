@@ -854,6 +854,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.mcSelect',
                 'mc.module.notifications',
                 'mc.module.findEntity',
+                'ng.module.chat',
 
                 'ngSanitize',
             ];
@@ -895,6 +896,7 @@ class Theme extends MapasCulturais\Theme {
             $this->addDocumentMetas();
             $this->includeVendorAssets();
             $this->includeCommonAssets();
+            $this->includeChatAssets();
             $this->_populateJsObject();
         });
 
@@ -1527,6 +1529,16 @@ class Theme extends MapasCulturais\Theme {
 
     function includeIbgeJS() {
         $this->enqueueScript('app', 'ibge', 'js/ibge.js');
+    }
+
+    function includeChatAssets() {
+
+        $app = App::i();
+
+        $app->view->enqueueScript('app', 'ng.mc.module.notifications', 'js/ng.mc.module.notifications.js');
+        $app->view->enqueueScript('app', 'ng.mc.directive.editBox', 'js/ng.mc.directive.editBox.js');
+        $app->view->enqueueScript('app', 'ng.module.chat', 'js/ng.module.chat.js', ['mapasculturais']);
+
     }
 
     function includeEditableEntityAssets() {
