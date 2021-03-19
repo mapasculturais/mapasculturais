@@ -125,7 +125,7 @@ class ChatThread extends \MapasCulturais\Entity
 
     public function getOwner(): Entity
     {
-        return $this->getOwnerEntity()->owner;
+        return $this->getOwnerEntity()->ownerUser->profile;
     }
 
     /**
