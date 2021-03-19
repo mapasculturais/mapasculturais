@@ -891,11 +891,23 @@ class Theme extends MapasCulturais\Theme {
             );
 
             $this->jsObject['routes'] = $app->config['routes'];
-
+            
             $this->addDocumentMetas();
             $this->includeVendorAssets();
             $this->includeCommonAssets();
             $this->_populateJsObject();
+            
+            $this->enqueueScript('app', 'events-js', 'js/events.js', array('mapasculturais'));
+            $this->localizeScript('singleEvents', [
+                'correctErrors' => \MapasCulturais\i::__('Corrija os erros indicados abaixo.'),
+                'requestAddToSpace' => \MapasCulturais\i::__('Sua requisição para adicionar este evento no espaço %s foi enviada.'),
+                'notAllowed' => \MapasCulturais\i::__('Você não tem permissão para criar eventos nesse espaço.'),
+                'unexpectedError' => \MapasCulturais\i::__('Erro inesperado.'),
+                'confirmDescription' => \MapasCulturais\i::__('As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?'),
+                'Erro'=> \MapasCulturais\i::__('Erro'),
+            ]);
+    
+            
         });
 
         $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
@@ -1480,8 +1492,12 @@ class Theme extends MapasCulturais\Theme {
         $this->getAssetManager()->publishFolder('fonts/');
 
         $this->enqueueStyle('app', 'main', 'css/main.css');
+        $this->enqueueStyle('app', 'fontawesome', 'https://use.fontawesome.com/releases/v5.8.2/css/all.css');
+
 
         $this->enqueueScript('app', 'tim', 'js/tim.js');
+        $this->enqueueScript('app', 'modal-js', 'js/modal.js');
+        
         $this->localizeScript('tim', [
             'previous' => i::__('Anterior'),
             'next' => i::__('Próxima'),
@@ -2619,7 +2635,7 @@ class Theme extends MapasCulturais\Theme {
     public function renderModalFor($entity_name, $show_icon = true, $label = "", $classes = "", $use_modal = true) {
         $app = App::i();
         
-        $entity_classname = $app->controller($entity_name)->entityClassName;
+        $entity_classname = $app->controller($entity_name)->entityClassName;        
 
         $current_entity_classname = $this->controller->entityClassName;
         
