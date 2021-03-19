@@ -1,0 +1,8 @@
+
+<h1>Chat: {{$ctrl.chat.name}}</h1>
+
+<div ng-repeat="item in $ctrl.chat.messages" class="message">
+    <p class="name">{{item.title}}</p>
+    <p>{{item.body}}</p>
+</div>
+
