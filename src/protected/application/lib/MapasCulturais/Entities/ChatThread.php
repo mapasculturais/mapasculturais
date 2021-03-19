@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\Entity;
 use MapasCulturais\Traits;
 use MapasCulturais\UserInterface;
 
@@ -11,7 +12,7 @@ use MapasCulturais\UserInterface;
  * ChatThread
  *
  * @property-read int $id
- * @property \MapasCulturais\Entity $object the owner of this chat thread
+ * @property \MapasCulturais\Entity $ownerEntity the owner of this chat thread
  * @property string $identifier
  * @property string $description
  * @property-read \DateTime $createTimestamp
@@ -122,7 +123,7 @@ class ChatThread extends \MapasCulturais\Entity
         return parent::canUser($action, $user);
     }
 
-    public function getOwner()
+    public function getOwner(): Entity
     {
         return $this->getOwnerEntity()->owner;
     }
@@ -131,7 +132,7 @@ class ChatThread extends \MapasCulturais\Entity
      * Returns the owner entity of this chat thread.
      * @return \MapasCulturais\Entity
      */
-    public function getOwnerEntity()
+    public function getOwnerEntity(): Entity
     {
         if (!$this->_ownerEntity && ($this->objectType && $this->objectId)) {
             $repo = App::i()->repo((string) $this->objectType);
@@ -143,7 +144,7 @@ class ChatThread extends \MapasCulturais\Entity
     public function getParticipants()
     {
         $participants = [
-            "owner" => [$this->owner->user],
+            "owner" => [$this->ownerUser],
             "admin" => $this->getUsersWithControl()
         ];
         $agent_relations = array_values($this->getAgentRelations());
@@ -160,6 +161,22 @@ class ChatThread extends \MapasCulturais\Entity
             return $current;
         }, $participants);
         return $participants;
+    }
+
+    function checkUserRole(User $user, string $role) 
+    {
+        if ($role == 'owner') {
+            return $user->id == $this->ownerUser->id;
+
+        } else if ($role == 'admin') {
+            return $this->canUser('@control', $user);
+            
+        } else {
+            $participants = $this->getParticipants();
+            return isset($participants[$role]) && in_array($user, $participants[$role]);
+        }
+
+        return false;
     }
 
     public function sendNotifications(ChatMessage $message)
