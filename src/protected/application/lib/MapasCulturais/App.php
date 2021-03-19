@@ -2669,6 +2669,12 @@ class App extends \Slim\Slim{
         });
     }
 
+    /**
+     * Unregister an Evaluation Method
+     * @param \MapasCulturais\Definitions\EvaluationMethod $def
+     */
+    function unregisterEvaluationMethod($slug){
+        unset($this->_register['evaluation_method'][$slug]);
     }
 
     /**
