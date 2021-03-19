@@ -2661,8 +2661,14 @@ class App extends \Slim\Slim{
      * Returns the evaluation methods definitions
      * @return \MapasCulturais\Definitions\EvaluationMethod[];
      */
-    function getRegisteredEvaluationMethods(){
-        return $this->_register['evaluation_method'];
+    function getRegisteredEvaluationMethods($return_internal = false){
+        return array_filter($this->_register['evaluation_method'], function(Definitions\EvaluationMethod $em) use ($return_internal) {
+            if($return_internal || !$em->internal) {
+                return $em;
+            }
+        });
+    }
+
     }
 
     /**
