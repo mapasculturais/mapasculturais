@@ -275,6 +275,39 @@ class Module extends \MapasCulturais\Module
                 }
             }
         ]);
+
+        $that = $this;
+        $chat_type_def = new \MapasCulturais\Definitions\ChatThreadType("accountability", i::__("Discussões sobre avaliações"),
+                                                                        function (\MapasCulturais\Entities\ChatMessage $message) use ($that) {
+            $sent_emails = [];
+            $participants_map = $message->thread->participants;
+            $sender_group = $that->highestGroupForUser($message->user,
+                                                       $participants_map);
+            if ($sender_group == null) {
+                throw new \Exception("The user {$message->user->id} is not " .
+                                     "a participant of thread " .
+                                     "{$message->thread->id}.");
+            }
+            foreach ($participants_map["owner"] as $owner) {
+                $that->notifyRecipient($message, $this, $sender_group, "owner",
+                                       $owner, $sent_emails);
+            }
+            foreach ($participants_map["admin"] as $admin) {
+                $that->notifyRecipient($message, $this, $sender_group, "admin",
+                                       $admin, $sent_emails);
+            }
+            foreach (array_keys($participants_map) as $group) {
+                if (($group == "owner") || ($group == "admin")) {
+                    continue;
+                }
+                foreach ($participants_map[$group] as $participant) {
+                    $that->notifyRecipient($message, $this, $sender_group,
+                                           $group, $participant, $sent_emails);
+                }
+            }
+            return;
+        });
+        $app->registerChatThreadType($chat_type_def);
     }
 
     // Migrar essa função para o módulo "Opportunity phase"
@@ -308,5 +341,47 @@ class Module extends \MapasCulturais\Module
         $phase->registrationTo = $_to;
 
         $phase->save(true);
+    }
+
+    function highestGroupForUser($user, $participants_map)
+    {
+        foreach ($participants_map["owner"] as $owner) {
+            if ($owner->id == $user->id) {
+                return "owner";
+            }
+        }
+        foreach ($participants_map["admin"] as $admin) {
+            if ($admin->id == $user->id) {
+                return "admin";
+            }
+        }
+        foreach (array_keys($participants_map) as $group) {
+            foreach ($participants_map[$group] as $participant) {
+                if ($participant->id == $user->id) {
+                    return $group;
+                }
+            }
+        }
+        return null;
+    }
+
+    function notifyRecipient($message, $mailer, $sender_group,
+                             $recipient_group, $recipient, &$skip)
+    {
+        if (($recipient->id == $message->user->id) ||
+            isset($skip[$recipient->id])) {
+            return;
+        }
+        $skip[$recipient->id] = true;
+        $notification = new \MapasCulturais\Entities\Notification();
+        $notification->user = $recipient;
+        $url = $message->thread->ownerEntity->singleUrl;
+        $label = i::__("avaliação");
+        $link = "<a rel='noopener noreferrer' href=\"{$url}\">{$label}</a>";
+        $notification->message = i::__("Nova mensagem de chat em: ") . $link;
+        $notification->save(true);
+        $mailer->sendEmailForNotification($notification,
+                                          "$sender_group-$recipient_group");
+        return;
     }
 }
