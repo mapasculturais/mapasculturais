@@ -9,12 +9,26 @@ use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
 use MapasCulturais\ApiQuery;
+use MapasCulturais\Entities\ChatMessage;
+use MapasCulturais\Definitions\ChatThreadType;
+use MapasCulturais\Entities\Notification;
 
+/**
+ * @property Module $evaluationMethod
+ */
 class Module extends \MapasCulturais\Module
 {
+    /**
+     * @var Module
+     */
+    protected $evaluationMethod;
+
     function _init()
     {
         $app = App::i();
+
+        $this->evaluationMethod = new EvaluationMethod($this->_config);
+        $this->evaluationMethod->module = $this;
 
         $registration_repository = $app->repo('Registration');
 
@@ -302,6 +316,8 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->registerChatThreadType($definition);
+
+        $this->evaluationMethod->register();
     }
 
     // Migrar essa função para o módulo "Opportunity phase"
