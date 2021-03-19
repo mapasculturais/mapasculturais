@@ -15,3 +15,7 @@ $part_name = $form_part[$entity_name] ?? 'modal/form';
 </a>
 
 <?php $this->part($part_name, ['entity_name' => $entity_name, 'entity_classname' => $entity_classname, 'modal_id' => $modal_id, 'use_modal' => true]); ?>
+
+<div id="dialog-event-occurrence" class="js-dialog dialog-event" style="z-index:1901">
+    <div class="js-dialog-content js-dialog-event-occurrence"></div>
+</div>   

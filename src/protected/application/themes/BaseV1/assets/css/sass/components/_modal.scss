@@ -205,3 +205,18 @@
         margin-bottom: 20px;
     }
 }
+
+.js-dialog .dialog-event{
+    z-index: 1901;
+}
+
+.js-event-occurrence {
+    list-style-type: none;
+}
+
+.js-event-occurrence li{
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #00000014;
+    padding: 5px;
+}
