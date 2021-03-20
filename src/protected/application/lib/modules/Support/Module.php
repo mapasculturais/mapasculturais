@@ -36,23 +36,28 @@ class Module extends \MapasCulturais\Module
         });
 
 
-        $app->hook("can(Registration.support)", function ($user, &$result) {
-            if ($result) {
-                return;
-            }
-            foreach (($this->opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []) as $agent) {
-                if ($agent->user->id == $user->id) {
-                    $result = true;
-                    return;
-                }
-            }
-            return;
+        $app->hook("can(Registration.support)", function ($user, &$result) use ($self) {
+                $result=$self->isSupportUser($this->opportunity, $user);
+
         });
+
+
         $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) {
             if (!$result) {
                 $result = $this->canUser("support", $user);
             }
             return;
+        });
+
+
+        // redireciona a ficha de inscrição para o suporte
+        $app->hook('GET(registration.view):before', function() use($app) {
+            $registration = $this->requestedEntity;
+
+            if ($registration->canUser('support', $app->user)){
+                $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
+            }
+            
         });
     }
 
@@ -77,5 +82,13 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'support', 'css/support.css');
         $app->view->enqueueScript('app', 'support', 'js/ng.support.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.support';
+    }
+    public function isSupportUser($opportunity, $user){
+        foreach (($opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []) as $agent) {
+            if ($agent->user->id == $user->id) {
+                return true;
+            }
+        }
+        return false;
     }
 }
