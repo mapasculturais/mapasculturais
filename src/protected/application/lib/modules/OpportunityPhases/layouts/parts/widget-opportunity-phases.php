@@ -86,6 +86,7 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
             <?php $this->applyTemplateHook('new-phase-form', 'end') ?>
         </div>
 </edit-box>
+</div>
 <?php endif; ?>
     <div class="opportunity-phases clear">
         <?php if($this->isEditable()): ?>
@@ -111,7 +112,6 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
                     /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
                     i::_e('às'); ?>
                     <strong class="js-editable" id="registrationTo_time" data-viewformat="dd/mm/yyyy" data-datetime-value="<?php echo $phase->registrationTo ? $phase->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="<?php i::esc_attr_e('Hora final'); ?>" data-emptytext="<?php i::esc_attr_e('Hora final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('H:i') : ''; ?></strong>
-                    .
                 </li>
             <?php else: ?>
                 <li>
@@ -159,7 +159,7 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
                     <?php if($phase->status === 0): ?>
                         <em><?php i::_e('(rascunho)'); ?></em>
                     <?php endif; ?>
-                    <?php if($opportunity->canUser('@control')): ?>
+                    <?php if($phase->isLastPhase && $opportunity->canUser('@control')): ?>
                         <em><?php i::_e('(última fase)'); ?></em>
                     <?php endif; ?>
                 </li>
@@ -168,5 +168,4 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
         <?php endforeach; ?>
         </ul>
     </div>
-</div>
 <?php endif; ?>

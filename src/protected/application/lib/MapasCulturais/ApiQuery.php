@@ -1095,7 +1095,11 @@ class ApiQuery {
                 
                 // do usuário só permite id e profile
                 if($prop == 'user') {
-                    $cfg['select'] = array_intersect($cfg['select'], ['id', 'profile']);
+                    $cfg['select'] = array_filter($cfg['select'], function($field) {
+                        if ($field == 'id' || substr($field, 0, 7) == 'profile') {
+                            return $field;
+                        }
+                    });
                 }
                 
                 if($prop == 'permissionTo'){

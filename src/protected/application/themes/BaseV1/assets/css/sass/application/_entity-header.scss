@@ -4,7 +4,7 @@
     margin-bottom: 2rem;
     position: relative;
     @media screen and (min-width: $screen-tablet) {
-        margin-bottom: 4rem;
+        margin-bottom: 3.75rem;
     }
     h2 {
         font-size: $font-size-h4;
@@ -14,6 +14,17 @@
             font-size: $font-size-h2;
             line-height: $line-height-h2;
             margin-top: 0;
+        }
+    }
+    h5 {
+        &.entity-parent-title {
+            font-family: $font-family-base;
+            font-size: $font-size-smaller;
+            font-weight: $btn-font-weight;
+            text-transform: uppercase;
+            & > a {
+                font-weight: $btn-font-weight;
+            }
         }
     }
     @media print {
@@ -125,6 +136,7 @@ article.seal {
     }
     .project-type {
         color: $brand-project;
+        margin-bottom: $line-height-base;
     }
     .opportunity-type, .registration-type {
         color: $brand-opportunity;
@@ -156,6 +168,15 @@ article.seal {
         }
     }
     .entity-parent-title {
+        font-family: $font-family-base;
+        font-size: $font-size-smaller;
+        font-weight: $btn-font-weight;
+        margin-bottom: $line-height-half;
+        text-transform: uppercase;
+        > a {
+            color: $brand-project;
+            font-weight: $btn-font-weight;
+        }
         &:after {
             // content: ' »';
         }
