@@ -140,7 +140,8 @@ class App extends \Slim\Slim{
             'registration_agent_relations' => [],
             'registration_fields' => [],
             'evaluation_method' => [],
-            'roles' => []
+            'roles' => [],
+            'chat_thread_types' => [],
         ];
 
     protected $_registerLocked = true;
@@ -807,6 +808,9 @@ class App extends \Slim\Slim{
         $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
         $this->registerController('permissionCache',   'MapasCulturais\Controllers\PermissionCache');
 
+        // chat message controller
+        $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
+
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
@@ -1438,7 +1442,7 @@ class App extends \Slim\Slim{
         $lines = file($filename);
         $line = trim($lines[$fileline - 1]);
 
-        $this->log->debug("hook >> $name (\033[33m$filename:$fileline\033[0m)");
+        $this->log->debug("hook >> \033[37m$name \033[0m(\033[33m$filename:$fileline\033[0m)");
         $this->log->debug("     >> \033[32m$line\033[0m\n");
     }
 
@@ -1947,6 +1951,25 @@ class App extends \Slim\Slim{
         }
     }
 
+    function registerChatThreadType(Definitions\ChatThreadType $definition)
+    {
+        if (isset($this->_register['chat_thread_types'][$definition->slug])) {
+            throw new \Exception("Attempting to re-register " .
+                                 "{$definition->slug}.");
+        }
+        $this->_register['chat_thread_types'][$definition->slug] = $definition;
+        return;
+    }
+
+    function getRegisteredChatThreadTypes(): array
+    {
+        return $this->_register['chat_thread_types'];
+    }
+
+    function getRegisteredChatThreadType($slug)
+    {
+        return ($this->_register['chat_thread_types'][$slug] ?? null);
+    }
 
     /**
      * Register a API Output Class
@@ -2638,8 +2661,20 @@ class App extends \Slim\Slim{
      * Returns the evaluation methods definitions
      * @return \MapasCulturais\Definitions\EvaluationMethod[];
      */
-    function getRegisteredEvaluationMethods(){
-        return $this->_register['evaluation_method'];
+    function getRegisteredEvaluationMethods($return_internal = false){
+        return array_filter($this->_register['evaluation_method'], function(Definitions\EvaluationMethod $em) use ($return_internal) {
+            if($return_internal || !$em->internal) {
+                return $em;
+            }
+        });
+    }
+
+    /**
+     * Unregister an Evaluation Method
+     * @param \MapasCulturais\Definitions\EvaluationMethod $def
+     */
+    function unregisterEvaluationMethod($slug){
+        unset($this->_register['evaluation_method'][$slug]);
     }
 
     /**

@@ -30,8 +30,9 @@ use MapasCulturais\App;
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentAgentRelation",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceAgentRelation",
         "MapasCulturais\Entities\Seal"          = "\MapasCulturais\Entities\SealAgentRelation",
-        "MapasCulturais\Entities\Registration" = "\MapasCulturais\Entities\RegistrationAgentRelation",
+        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationAgentRelation",
         "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation",
+        "MapasCulturais\Entities\ChatThread"    = "\MapasCulturais\Entities\ChatThreadAgentRelation",
    })
  */
 abstract class AgentRelation extends \MapasCulturais\Entity

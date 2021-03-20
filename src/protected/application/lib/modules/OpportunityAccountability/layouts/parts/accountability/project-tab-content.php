@@ -1,0 +1,37 @@
+<?php
+$entity = $this->controller->requestedEntity;
+$registration = $entity->registration->accountabilityPhase;
+$opportunity = $registration->opportunity;
+
+$opportunity->registerRegistrationMetadata();
+
+$_params = [
+    'entity' => $registration,
+    'action' => $this->controller->action,
+    'opportunity' => $opportunity
+];
+
+$this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
+$this->jsObject['entity']['entity']['object']['opportunity'] = $opportunity;
+
+$this->addOpportunityToJs($opportunity);
+
+$this->addOpportunitySelectFieldsToJs($opportunity);
+
+$this->addRegistrationToJs($registration);
+
+$this->includeAngularEntityAssets($opportunity);
+
+?>
+<div id="accountability" class="aba-content" ng-controller="OpportunityController">
+    <h2><?= $registration->number ?></h2>
+    <?php $this->part('singles/project--events', $_params) ?>
+    <?php if($registration->status > MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
+        <?php $this->part('singles/registration-single--fields', $_params) ?>
+    <?php else: ?>
+        <?php $this->part('singles/registration-edit--fields', $_params) ?>
+        <?php $this->part('accountability/send-button', $_params) ?>
+
+    <?php endif; ?>
+
+</div>
