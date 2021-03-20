@@ -35,7 +35,25 @@ class Module extends \MapasCulturais\Module
             $this->part('support/opportunity-support');
         });
 
-       
+
+        $app->hook("can(Registration.support)", function ($user, &$result) {
+            if ($result) {
+                return;
+            }
+            foreach (($this->opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []) as $agent) {
+                if ($agent->user->id == $user->id) {
+                    $result = true;
+                    return;
+                }
+            }
+            return;
+        });
+        $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) {
+            if (!$result) {
+                $result = $this->canUser("support", $user);
+            }
+            return;
+        });
     }
 
 
