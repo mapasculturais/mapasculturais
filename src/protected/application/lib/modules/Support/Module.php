@@ -16,7 +16,6 @@ class Module extends \MapasCulturais\Module
         parent::__construct($config);
     }
 
-
     public function _init()
     {
         $app = App::i();
@@ -35,10 +34,35 @@ class Module extends \MapasCulturais\Module
             $this->part('support/opportunity-support');
         });
 
-
+        $app->hook("PATCH(registration.single):before", function () use ($app) {
+            $app->em->beginTransaction();
+            return;
+        });
+        $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app) {
+            if ($this->owner->canUser("@control")) {
+                return;
+            }
+            foreach ($this->owner->opportunity->agentRelations as $relation) {
+                if (($relation->group != self::SUPPORT_GROUP) || ($relation->agent->user->id != $app->user->id)) {
+                    continue;
+                }
+                if (($relation->metadata["registrationPermissions"][$this->key] ?? "") == "rw") {
+                    return;
+                }
+            }
+            $app->em->rollback();
+            throw new \Exception("Permission denied.");
+            return;
+        });
+        $app->hook("slim.after", function () use ($app) {
+            if ($app->em->getConnection()->getTransactionNestingLevel() > 0) {
+                $app->em->commit();
+            }
+            return;
+        });
         $app->hook("can(Registration.support)", function ($user, &$result) use ($self) {
-                $result=$self->isSupportUser($this->opportunity, $user);
-
+            $result = $self->isSupportUser($this->opportunity, $user);
+            return;
         });
 
 
@@ -60,7 +84,6 @@ class Module extends \MapasCulturais\Module
             
         });
     }
-
 
     public function register()
     {
