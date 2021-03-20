@@ -16,7 +16,7 @@ use MapasCulturais\i;
         </div>
     </div>
     <footer>
-        <textarea class="new-message" ng-model="data.newMessage" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
+        <textarea class="new-message" ng-model="data.newMessage" ng-style="{'height': (!data.newMessage) ? 'auto' : ''}" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
         <button ng-disabled="!data.newMessage" ng-click="sendMessage(data.newMessage)"><?php i::_e("Enviar"); ?></button>
     </footer>
 </div>

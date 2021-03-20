@@ -11,6 +11,7 @@ use MapasCulturais\i;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\ChatMessage;
 use MapasCulturais\Definitions\ChatThreadType;
+use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Notification;
 
 /**
@@ -18,6 +19,7 @@ use MapasCulturais\Entities\Notification;
  */
 class Module extends \MapasCulturais\Module
 {
+    public const CHAT_THREAD_TYPE = "accountability-field";
     /**
      * @var Module
      */
@@ -213,6 +215,27 @@ class Module extends \MapasCulturais\Module
                 }
             }
          });
+
+        $app->hook("POST(chatMessage.opportunityAccountability)", function () use ($app) {
+            $this->requireAuthentication();
+            $evaluation_id = $this->data["evaluation"];
+            $evaluation = $app->repo("RegistrationEvaluation")->find($evaluation_id);
+            if ($evaluation->ownerUser->id != $app->user->id) {
+                $this->errorJson("The user {$app->user->id} is not authorized to create a chat thread in this context.");
+            }
+            if ($app->repo("ChatThread")->findOneBy([
+                "objectId" => $evaluation->id,
+                "objectType" => $evaluation->getClassName(),
+                "identifier" => $this->data["identifier"],
+                "type" => self::CHAT_THREAD_TYPE]) !== null) {
+                    $this->errorJson("An entity with the same specification already exists.");
+            }
+            $description = sprintf(i::__("Prestação de contas número %s"), $evaluation->registration->number);
+            $thread = new ChatThread($evaluation, $this->data["identifier"], self::CHAT_THREAD_TYPE, $description);
+            $thread->save(true);
+            $thread->createAgentRelation($evaluation->registration->owner, "participant");
+            $this->json(["thread_id" => $thread->id]);
+         });
     }
 
     function register()
@@ -298,7 +321,7 @@ class Module extends \MapasCulturais\Module
         ]);
 
         $thread_type_description = i::__('Conversação entre proponente e parecerista no campo da prestação de contas');
-        $definition = new ChatThreadType('accountability-field', $thread_type_description, function (ChatMessage $message) {
+        $definition = new ChatThreadType(self::CHAT_THREAD_TYPE, $thread_type_description, function (ChatMessage $message) {
             $thread = $message->thread;
             $evaluation = $thread->ownerEntity;
             $registration = $evaluation->registration;
