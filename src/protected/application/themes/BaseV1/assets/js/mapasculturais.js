@@ -242,7 +242,6 @@ $(function(){
     if ($(window).width() < 768) {
         $('.agentes-relacionados .avatar').on('click hover', function () {
             $('.descricao-do-agente').hide();
-
             var descAgent = $(this).find('.descricao-do-agente');
             var descAgentHeight = descAgent.outerHeight();
             descAgent.show().css('top',-((descAgentHeight)+10));
@@ -273,7 +272,8 @@ function restartingCreateEntity() {
         $(".create-event").css('display', 'block');
         $(".js-event-occurrence").html("");
         $(".cancel-action").css('display', 'block');
-        $(".btn-event").css('display', 'block'); 
+        $(".btn-event").css('display', 'block');
+        $('.event-occurrence-list').addClass("hidden"); 
     }
    
 }
