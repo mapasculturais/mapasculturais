@@ -8,11 +8,6 @@ $(document).ready(function() {
         let url = MapasCulturais.createUrl('evento', [MapasCulturais.eventId]);
         document.location = url;
     });
-
-    let element = document.getElementById("dialog-event-occurrence");
-    element.children[0].addEventListener("click", function(event) {
-        $("#dialog-event-occurrence").removeClass('occurrence-open');
-    })
 });
 
 
@@ -40,8 +35,9 @@ function saveEvent(formId, complete = false){
             $(".btn-event").toggle('hidden');
             $("#IdEvent").val(data.id);
             MapasCulturais.eventId = data.id;
+            $(document).trigger('createEvent', data);
         }else{
-            $(".message").html("<b>Não foi possível inserir o evento.</b>");
+            $(".message").html("<p class='alert danger'>Não foi possível inserir o evento.</p>");
         }
     })
     .fail(function(jqXHR, textStatus, msg) {

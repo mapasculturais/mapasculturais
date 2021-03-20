@@ -28,9 +28,11 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 
         <!-- Criação de ventos -->
         <div class="create-event">
+            <?php $this->applyTemplateHook('event-modal-form', 'before' )?>
             <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
                 data-entity="<?php echo $url; ?>" data-formid="<?php echo $modal_id; ?>" id="form-for-<?php echo $modal_id; ?>">                        
-                    <?php $this->part('modal/before-form'); ?>
+                <?php $this->applyTemplateHook('event-modal-form', 'begin' )?>
+                <?php $this->part('modal/before-form'); ?>
                     <?php $this->renderModalFields($entity_classname, $entity_name, $modal_id); ?>
                     <?php $this->renderModalRequiredMetadata($entity_classname, $entity_name); ?>
                     <?php $this->renderModalTaxonomies($entity_classname, $entity_name); ?>
@@ -38,13 +40,19 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
                     <input type="hidden" name="parent_id" value="<?php echo $app->user->profile->id; ?>">
                     <?php $this->part('modal/footer', ['entity' => $entity_name]); ?>            
                     <?php $app->applyHook('mapasculturais.add_entity_modal.form:after'); ?>
+                    <?php $this->applyTemplateHook('event-modal-form', 'end' )?>
             </form>  <!-- Fim Criação deventos -->
+            <?php $this->applyTemplateHook('event-modal-form', 'after' )?>
         </div>        
     </div><!-- Fim body --> 
     <?php $this->part('modal/event-occurrence-form.php', ['entity' => $entity_name]); ?>   
     <!-- Footer --> 
 
-    <ul class="js-event-occurrence"></ul>
+    <div class="event-occurrence-list hidden">
+        <h2><?php \MapasCulturais\i::_e("Espacos vinculados a esse evento");?></h2>
+        <ul class="js-event-occurrence"></ul>
+    </div>
+    
 
     <footer>
         <?php $this->part('modal/actions-event', ['entity_name' => $entity_name, 'classes' => $classes, 'name' => $name, 'modal_id' => $modal_id]); ?>
@@ -52,7 +60,9 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 
     <script type="text/html" id="event-occurrence-item" class="js-mustache-template">
             <li>
-                <a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a> - <strong>{{rule.description}}</strong> - <?php \MapasCulturais\i::_e("R$");?>{{rule.price}}
+                <?php \MapasCulturais\i::_e("Local:");?> <a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a> <br>
+                <?php \MapasCulturais\i::_e("Data:");?> <strong>{{rule.description}}</strong><br>
+                <?php \MapasCulturais\i::_e("Valor:");?> <?php \MapasCulturais\i::_e("R$");?>{{rule.price}}<br>
             </li>       
     </script>
 </div>

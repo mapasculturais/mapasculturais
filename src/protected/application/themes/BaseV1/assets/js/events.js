@@ -14,7 +14,7 @@ $(document).
         toggleAttachedModal(this, modal);
 });
 
-MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
+MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){    
     $("#dialog-event-occurrence").addClass('occurrence-open');
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));
@@ -167,6 +167,7 @@ MapasCulturais.EventOccurrenceManager = {
                     if(isEditing){
                         $('#event-occurrence-'+response.id).replaceWith($renderedData);
                     }else{
+                        $('.event-occurrence-list').removeClass("hidden");
                         $('.js-event-occurrence').append($renderedData);
                     }
                     MapasCulturais.Modal.initButtons($editBtn);
