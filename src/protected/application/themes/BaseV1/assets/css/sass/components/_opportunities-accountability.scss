@@ -1,12 +1,108 @@
 //
-// Opportunitiesa-ccountability/Projects
+// Opportunities Accountability
 // --------------------------------------------------
-.event-link{ 
-    margin-bottom: 1.5rem;
-    padding: 25px 15px 15px 15px;
-    border: 1px solid #eee;
-    border-radius: 2px;
+
+#accountability {
+    padding-top: $padding-large;
+
+    .highlighted-message {
+        margin-bottom: $margin-large;
+    }
+
+    h4 {
+        margin-bottom: $margin-large;
+    }
+
+    p {
+        margin-bottom: $margin-large;
+    }
+
+    .registration-fieldset {
+        margin-bottom: $margin-large;
+
+        .registration-help {
+            margin-bottom: $margin-large;
+        }
+    }
+
+    .attachment-list {
+        .attachment-list-item {
+            margin-bottom: $margin-medium;
+            margin-top: 0;
+            padding-bottom: $margin-medium;
+            padding-top: 0;
+
+            &.attachment-list-item-type-section {
+                margin-bottom: $margin-medium;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .label {
+                margin-bottom: $margin-small;
+            }
+
+            .attachment-description {
+                margin-bottom: 0;
+            }
+
+            input {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+                max-width: 100%;
+                min-width: 230px;
+
+                &[type="checkbox"] {
+                    margin-right: $margin-small;
+                    margin-top: 0;
+                    min-width: auto;
+                }
+            }
+
+            select {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+                max-width: 100%;
+                min-width: 230px;
+            }
+
+            textarea {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+                max-width: 100%;
+                min-width: 230px;
+            }
+
+            button {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+            }
+
+            .alert {
+                margin: $margin-small 0 0 0;
+            }
+
+            .field-required {
+                display: inline-block;
+
+                .description {
+                    display: none;
+                }
+
+                .icon-required {
+                    color: red;
+                }
+            }
+        }
+    }
 }
+
+
+//
+// Opportunities Accountability/Projects
+// --------------------------------------------------
 
 .add-event{
     box-sizing: border-box;
@@ -31,7 +127,6 @@
         overflow: hidden;
         margin-top: 0px;
         text-align: center;
-        margin-bottom: 15px;
         ul{
             padding: 5px 5px 5px 15px;
             height: auto;
