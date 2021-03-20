@@ -34,7 +34,8 @@ $button = "";
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver Meus eventos");?>"><?php echo $count->events; ?></a>
                         <span class="user-stats-value hltip">|</span>
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'events') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Eventos Cedidos");?>"><?php echo count($app->user->hasControlEvents);?></a>
-                        <?php $this->renderModalFor('event', false, false, "icon icon-add alignright"); ?>
+                        <?php $this->renderModalFor('event', false, false, "icon icon-add alignright"); ?>  
+                                          
                     </div>
                 </div>
             </div>
@@ -102,6 +103,7 @@ $button = "";
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'opportunities') ?>" title="<?php \MapasCulturais\i::esc_attr_e("Ver minhas oportunidades");?>"><?php echo $count->opportunities; ?></a>
                         <span class="user-stats-value hltip">|</span>
                         <a class="user-stats-value hltip" href="<?php echo $app->createUrl('panel', 'opportunities') ?>#tab=permitido" title="<?php \MapasCulturais\i::esc_attr_e("Ver Oportunidades Cedidas");?>"><?php echo count($app->user->hasControlOpportunities);?></a>
+                        <?php $this->renderModalFor('opportunity', false, false, "icon icon-add alignright"); ?>
                     </div>
                 </div>
             </div>

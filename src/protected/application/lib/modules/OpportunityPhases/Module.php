@@ -195,7 +195,6 @@ class Module extends \MapasCulturais\Module{
 
     function _init () {
         $app = App::i();
-
         $registration_repository = $app->repo('Registration');
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
@@ -204,6 +203,28 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['angularAppDependencies'][] = 'OpportunityPhases';
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
         },1000);
+
+        
+        $app->hook('entity(Opportunity).get(firstPhase)', function(&$value) {
+            if ($this->isOpportunityPhase) {
+                $value = $this->parent;
+            } else {
+                $value = $this;
+            }
+        });
+        
+        $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
+            $first_phase = $this->firstPhase;
+            $value = Module::getLastCreatedPhase($first_phase);
+        });
+        
+        $app->hook('entity(Opportunity).get(lastPhase)', function(&$value) {
+            $first_phase = $this->firstPhase;
+            $phase = Module::getLastCreatedPhase($first_phase);
+            if ($phase && $phase->isLastPhase) {
+                $value = $phase;
+            }
+        });
 
         $app->hook('entity(Registration).get(previousPhase)', function(&$value) use($registration_repository) {
             if($this->previousPhaseRegistrationId) {

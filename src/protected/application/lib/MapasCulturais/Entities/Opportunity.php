@@ -93,21 +93,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="short_description", type="text", nullable=true)
+     * @ORM\Column(name="short_description", type="text", nullable=false)
      */
     protected $shortDescription;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_from", type="datetime", nullable=true)
+     * @ORM\Column(name="registration_from", type="datetime", nullable=false)
      */
     protected $registrationFrom;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_to", type="datetime", nullable=true)
+     * @ORM\Column(name="registration_to", type="datetime", nullable=false)
      */
     protected $registrationTo;
 
@@ -796,7 +796,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
             }
 
-            $app->applyHookBoundTo($this, "controller({$this->id}).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+            $app->applyHookBoundTo($this, "controller(opportunity).registerFieldType({$field->fieldType})", [$field, &$cfg]);
 
 
             $metadata = new MetadataDefinition ($field->fieldName, $cfg);

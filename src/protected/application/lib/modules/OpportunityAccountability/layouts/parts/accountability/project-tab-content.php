@@ -25,6 +25,7 @@ $this->includeAngularEntityAssets($opportunity);
 ?>
 <div id="accountability" class="aba-content" ng-controller="OpportunityController">
     <h2><?= $registration->number ?></h2>
+    <?php $this->part('singles/project--events', $_params) ?>
     <?php if($registration->status > MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
         <?php $this->part('singles/registration-single--fields', $_params) ?>
     <?php else: ?>
