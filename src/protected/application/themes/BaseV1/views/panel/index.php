@@ -143,11 +143,11 @@ $button = "";
         <?php $this->applyTemplateHook('content.entities','end'); ?>
     </section>
     <?php $this->applyTemplateHook('content.entities','after'); ?>
-
-
+    
+<div class="panel-activities">
     <?php if($opportunitiesToEvaluate = $app->user->opportunitiesCanBeEvaluated): ?>
     <?php $this->applyTemplateHook('content.avaluations','before'); ?>
-    <section id="avaliacoes">
+    <section id="avaliacoes" class="panel-list">
         <?php $this->applyTemplateHook('content.avaluations','begin'); ?>
         <header>
             <h2><?php \MapasCulturais\i::_e("Avaliações pendentes");?></h2>
@@ -162,8 +162,10 @@ $button = "";
 
     <?php $drafts = $app->repo('Registration')->findByUser($app->user, \MapasCulturais\Entities\Registration::STATUS_DRAFT, 3); ?>
     <?php if ($drafts): ?>
-    <section id="inscricoes-rascunho">
-        <h2><?php \MapasCulturais\i::_e("Inscrições não enviadas");?></h2>
+    <section id="inscricoes-rascunho" class="panel-list">
+        <header>
+            <h2><?php \MapasCulturais\i::_e("Formulários ainda não enviados");?></h2>
+        </header>
         <?php foreach($drafts as $registration): ?>
             <?php $this->part('panel-registration', array('registration' => $registration)); ?>
         <?php endforeach; ?>
@@ -172,8 +174,10 @@ $button = "";
 
     <?php $sent = $app->repo('Registration')->findByUser($app->user, 'sent', 3); ?>
     <?php if ($sent): ?>
-        <section id="inscricoes-enviadas">
-            <h2><?php \MapasCulturais\i::_e("Inscrições enviadas");?></h2>
+        <section id="inscricoes-enviadas" class="panel-list">
+            <header>
+                <h2><?php \MapasCulturais\i::_e("Formulários enviados");?></h2>
+            </header>
             <?php foreach($sent as $registration): ?>
                 <?php $this->part('panel-registration', array('registration' => $registration)); ?>
             <?php endforeach; ?>
@@ -225,6 +229,7 @@ $button = "";
     </section>
     <?php $this->applyTemplateHook('content.notification','after'); ?>
     <?php endif; ?>
+</div>
 
     <?php $this->applyTemplateHook('settings','before'); ?>
     <ul class="panel-settings">

@@ -94,6 +94,11 @@
         letter-spacing: .1em;
         font-size: .70rem;
     }
+
+
+    &:first {
+        border-top: 0;
+    }
 }
 
 .event {
