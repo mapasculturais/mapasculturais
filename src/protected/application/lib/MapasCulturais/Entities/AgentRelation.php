@@ -91,6 +91,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
+    protected $agent;
 
      /**
      * @var object
@@ -99,7 +100,6 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      */
     protected $metadata;
 
-    protected $agent;
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
