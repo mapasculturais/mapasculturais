@@ -10,7 +10,7 @@ if(!($events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1
 } 
 ?>
 <?php $this->applyTemplateHook('project-event', 'before' )?>
-<div class="event-link">  
+<div class="event-link registration-fieldset clearfix">  
     <?php $this->applyTemplateHook('project-event', 'begin' )?>  
     <header>
         <div class="title">
