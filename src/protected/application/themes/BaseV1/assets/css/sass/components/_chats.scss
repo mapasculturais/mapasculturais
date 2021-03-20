@@ -1,73 +1,85 @@
 .chat {
     background-color: #e2e2e2;
     border-radius: 5px;
-    max-height: 800px;
-    overflow-x: hidden;
+    margin-bottom: 30px;
+    overflow: hidden;
+    padding: 0 10px 10px;
     position: relative;
-
-    .container {
-        overflow: hidden;
-        padding: 15px 15px;
-    }
-
+    
     .message {
-        background-color: #ffffff;
-        border: 1px solid #dddddd;
-        border-radius: 5px;
         box-sizing: border-box;
-        float: right;
-        margin-bottom: 15px;
-        padding: 15px;
+        float: left;
+        margin-bottom: 5px;
         transition: all 0.3s ease-in-out;
-        width: 80%;
+        width: 85%;
 
         &.received {
-            background-color: rgba(255, 255, 255, 0.2);
-            float: left;
+            float: right;
         }
 
-        p {
-            color: #222222;
+        .date {
+            color: #000000;
+            display: block;
             font-size: 14px;
-            line-height: 22px;
-            margin-bottom: 0;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+        }
 
-            &.name {
-                color: #000000;
-                font-weight: bold;
-                margin-bottom: 5px;
+        .time {
+            color: #888888;
+            font-size: 10px;
+            font-style: italic;
+            font-weight: lighter;
+            position: absolute;
+            right: 7px;
+            top: 10px;
+        }
+        
+        .container {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            position: relative;
+
+            &:hover {
+                box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.07);
             }
-        }
+            p {
+                color: #222222;
+                font-size: 12px;
+                line-height: 22px;
+                margin-bottom: 0;
+                white-space: pre-line;
 
-        &:hover {
-            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-        }
+                &.name {
+                    color: #000000;
+                    font-weight: bold;
+                    margin: 0 30px 0 0;
+                }                
+            }
+        }        
     }
 
     footer {
-        background-color: #e0e0e0;
-        bottom: 0;
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #cdcdcd;
         box-sizing: border-box;
-        display: block;
-        left: 0;
-        margin-top: 10px;
+        display: inline-block;
+        margin-top: 5px;
         overflow: hidden;
-        padding: 25px 15px 15px 15px;
-        position:-webkit-sticky;
-        position:sticky;
+        padding: 10px 0 0 0;
         width: 100%;
 
-        input[type="text"] {
+        textarea {
             background-color: #ffffff;
             border: 1px solid #dddddd;
             border-radius: 5px;
             float: left;
             height: auto;
-            margin-bottom: 0;
-            margin-right: 15px;
-            padding: 15px;
-            width: 80%;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            padding: 10px;
+            width: 100%;
         }
 
         button {
@@ -75,13 +87,15 @@
             border: 1px solid #dddddd;
             border-radius: 5px;
             cursor: pointer;
-            float: left;
-            height: 48px;
+            float: right;
+            height: 38px;
+            margin-bottom: 0;
             opacity: 1;
-            padding: 15px 0;
+            padding: 0 15px;
+            resize: horizontal;
             text-align: center;
             transition: all 0.3s ease-in-out;
-            width: calc(20% - 15px);
+            width: auto;
             
             &:disabled {
                 cursor: not-allowed;

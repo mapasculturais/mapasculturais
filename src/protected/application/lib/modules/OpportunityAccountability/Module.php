@@ -308,7 +308,7 @@ class Module extends \MapasCulturais\Module
             $notification = new Notification;
             if ($message->thread->checkUserRole($message->user, 'admin')) {
                 // mensagem do parecerista
-                $notification->user = $registration->agent->user;
+                $notification->user = $registration->owner->user;
                 $notification_content = i::__("Nova mensagem do parecerista da prestação de contas número %s");
                 $sender = 'admin';
                 $recipient = 'participant';
