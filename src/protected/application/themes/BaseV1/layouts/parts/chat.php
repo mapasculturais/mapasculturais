@@ -16,7 +16,7 @@ use MapasCulturais\i;
         </div>
     </div>
     <footer>
-        <input type="text" ng-model="data.newMessage" ng-keypress="($event.which === 13 && data.newMessage.length) ? sendMessage(data.newMessage) : ''" placeholder="<?php i::_e("Escreva uma mensagem"); ?>">
+        <textarea class="new-message" ng-model="data.newMessage" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
         <button ng-disabled="!data.newMessage" ng-click="sendMessage(data.newMessage)"><?php i::_e("Enviar"); ?></button>
     </footer>
 </div>

@@ -119,9 +119,19 @@
                 adjustBoxPosition();
         });
 
-        ChatService.find($scope.data.threadId).success(function (data, status, headers) {
-            $scope.data.messages = data;
-        });
+        setTimeout(() => {
+            ChatService.find($scope.data.threadId).success(function (data, status, headers) {
+                $scope.data.messages = data;
+            });
+
+            // @todo: Mover para local adequado
+            $("textarea.new-message").each(function () {
+                this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;min-height:52px");
+            }).on("input", function () {
+                this.style.height = "auto";
+                this.style.height = (this.scrollHeight) + "px";
+            });
+        }, 0);
 
     }]);
 })(angular);
