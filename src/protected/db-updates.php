@@ -1416,6 +1416,17 @@ $$
         __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
     },
 
+    'add timestamp columns to registration_evaluation' => function () {
+        if (__column_exists('registration_evaluation', 'create_timestamp') &&
+            __column_exists('registration_evaluation', 'update_timestamp')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
+        __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
+        return true;
+    },
+
     'create chat tables' => function () {
         if (!__sequence_exists("chat_thread_id_seq")) {
             __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
@@ -1462,6 +1473,6 @@ $$
                 FOREIGN KEY (user_id) REFERENCES usr (id)
                 ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
         }
-    }
+    },
 
 ] + $updates ;
