@@ -91,6 +91,14 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
+
+     /**
+     * @var object
+     *
+     * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     */
+    protected $metadata;
+
     protected $agent;
 
     function jsonSerialize() {
