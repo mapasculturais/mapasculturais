@@ -1,0 +1,21 @@
+.support-content{
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    border: 1px solid #eee;
+    border-radius: 2px;
+}
+
+
+.fields-association-modal {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    height: auto;
+    margin: 20vh auto 100px;
+    max-width: 960px;
+    min-height: 400px;
+    padding: 25px;
+    position: relative;
+    width: 80%;
+}

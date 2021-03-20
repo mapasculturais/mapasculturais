@@ -24,18 +24,19 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         // Adiciona a aba do módulo de suporte dentro da opportunidade
-        $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
+        $app->hook('template(opportunity.edit.tabs):end', function () use ($app) {
             if ($this->controller->requestedEntity->canUser("@control")) {
                 $this->part('support/opportunity-support--tab');
             }
         });
 
-        // Adiciona conteúdo na aba de suporte dentro da opportunidade
-        $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
-            $this->part('support/opportunity-support');
+        //Adiciona conteúdo na aba de suporte dentro da opportunidade
+        $app->hook('template(opportunity.edit.tabs-content):end', function () use ($app, $self) {
+            $entity = $this->controller->requestedEntity; 
+            if($entity->canUser('@control')){
+                $this->part('support/opportunity-support', ['entity' => $entity]);
+            }
         });
-
-       
     }
 
 
