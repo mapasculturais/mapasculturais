@@ -84,7 +84,7 @@ $(function(){
             }
         });
     });
-    
+
 
     var labels = MapasCulturais.gettext.mapas;
 
@@ -186,12 +186,12 @@ $(function(){
             };
 
             if(roleToAdd){
-                $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.entity.id, {role: roleToAdd}, function(r){ 
-                    if(r && !r.error) change(); 
+                $.post(MapasCulturais.baseURL + 'agent/addRole/' + MapasCulturais.entity.id, {role: roleToAdd}, function(r){
+                    if(r && !r.error) change();
                 });
             } else {
-                $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.entity.id, {role: roleToRemove}, function(r){ 
-                    if(r && !r.error) change(); 
+                $.post(MapasCulturais.baseURL + 'agent/removeRole/' + MapasCulturais.entity.id, {role: roleToRemove}, function(r){
+                    if(r && !r.error) change();
                 });
             }
 
@@ -260,22 +260,22 @@ $(function(){
 });
 
 //Restart entity form
-function restartingCreateEntity() {    
+function restartingCreateEntity() {
     if($("#dialog-event-occurrence").hasClass('occurrence-open')){
         $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");
         $('.create-entity').trigger("reset");
         $(".js-event-occurrence").html("");
     }else{
-        $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
-        $('.js-dialog').attr('style', 'display: none');                
+        $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");
+        $('.js-dialog').attr('style', 'display: none');
         $('.create-entity').trigger("reset");
         $(".modal-feedback-event").css('display', 'none');
         $(".create-event").css('display', 'block');
         $(".js-event-occurrence").html("");
         $(".cancel-action").css('display', 'block');
-        $(".btn-event").css('display', 'block'); 
+        $(".btn-event").css('display', 'block');
     }
-   
+
 }
 
 MapasCulturais.utils = {
@@ -440,7 +440,7 @@ jQuery(document).ready(function(){
         editableEntityAddHash();
     });
 }).on('click', '.close-modal', function() {
-    MapasCulturais.Modal.close('.entity-modal');    
+    MapasCulturais.Modal.close('.entity-modal');
     restartingCreateEntity();
 });
 
@@ -456,16 +456,16 @@ MapasCulturais.Messages = {
         var delayToFadeOut = this.delayToFadeOut;
         var marginTop = 42;
         $container.append($message);
-        
+
 
         if($container.hasClass('js-not-editable')){
-            
+
             function animateAndShow(cb){
                 MapasCulturais.Messages.animated = true;
                 $mainSection.animate({marginTop: parseInt($mainSection.css('margin-top')) + marginTop}, 'fast', cb);
             }
             $container.slideDown('fast');
-            
+
             var cb = function( animate ){
                 $message.css('display', 'inline-block').css('display', 'inline-block').delay(delayToFadeOut).fadeOut(this.fadeOutSpeed, function() {
                     $(this).remove();
@@ -477,7 +477,7 @@ MapasCulturais.Messages = {
                     }
                 });
             };
-            
+
             if(MapasCulturais.Messages.animated) {
                 cb();
             } else {
@@ -1533,6 +1533,15 @@ MapasCulturais.Search = {
             },
 
             selection: function(entity, $selector){
+
+                if($selector.data('inputSelector')) {
+                    var $input = $($selector.data('inputSelector'));
+                    $input.val(entity.id);
+
+                    var selectedEntity = $('input[name="objectType"]:checked').val();
+                    //console.log(selectedEntity);
+                }
+
                 $selector.data('entity', entity);
                 return entity.name;
             },
@@ -1544,7 +1553,9 @@ MapasCulturais.Search = {
             onClear: function($selector){ },
 
             ajaxData: function(searchParams, $selector){
-                var excludedIds = [$selector.editable('getValue').ownerId];
+                const value = $selector.editable('getValue').ownerId;
+
+                var excludedIds = value ? [value] : [];
 
                 if(MapasCulturais.request.controller === 'agent' && MapasCulturais.entity.id){
                     excludedIds.push(MapasCulturais.entity.id);
@@ -1615,8 +1626,8 @@ $(function() {
             shadowUrl: MapasCulturais.assets.pinShadow,
             iconSize: [35, 43], // size of the icon
             shadowSize: [40, 16], // size of the shadow
-            iconAnchor: [20, 43], // point of the icon which will correspond to marker's location            
-            shadowAnchor: [6, 16], // the same for the shadow            
+            iconAnchor: [20, 43], // point of the icon which will correspond to marker's location
+            shadowAnchor: [6, 16], // the same for the shadow
             popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
         };
 
@@ -1689,8 +1700,8 @@ $(function() {
             shadowUrl: MapasCulturais.assets.pinShadow,
             iconSize: [35, 43], // size of the icon
             shadowSize: [40, 16], // size of the shadow
-            iconAnchor: [20, 43], // point of the icon which will correspond to marker's location            
-            shadowAnchor: [6, 16], // the same for the shadow            
+            iconAnchor: [20, 43], // point of the icon which will correspond to marker's location
+            shadowAnchor: [6, 16], // the same for the shadow
             popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
         };
 

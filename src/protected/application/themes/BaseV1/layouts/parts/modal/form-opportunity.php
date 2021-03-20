@@ -17,6 +17,101 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 
     <form method="POST" class="create-entity <?php echo ($use_modal) ? "" : "is-attached"; ?>" action="<?php echo $url; ?>"
           data-entity="<?php echo $url; ?>" data-formid="<?php echo $modal_id; ?>" id="form-for-<?php echo $modal_id; ?>">
+
+        <p>
+            <label style="margin-left: 15px;">
+                <input name="objectType" type="radio" value="project" checked style="width: auto;">
+                Projeto
+            </label>
+
+            <label style="margin-left: 15px;">
+                <input name="objectType" type="radio" value="agent" style="width: auto;">
+                Agente
+            </label>
+
+            <label style="margin-left: 15px;">
+                <input name="objectType" type="radio" value="space" style="width: auto;">
+                Espaço
+            </label>
+
+            <label style="margin-left: 15px;">
+                <input name="objectType" type="radio" value="event" style="width: auto;">
+                Evento
+            </label>
+        </p>
+
+        <?php $inputHiddenId = uniqid('ownerEntity-'); ?>
+        <input type="hidden" name="ownerEntity" id="<?php echo $inputHiddenId; ?>">
+
+        <div class="js-ownerAgent">
+            <label class="js-search js-include-editable"
+                data-field-name='ownerEntity'
+                data-emptytext="<?php i::esc_attr_e("Selecione um agente");?>"
+                data-search-box-width="400px"
+                data-search-box-placeholder="<?php i::esc_attr_e("Selecione um agente");?>"
+                data-entity-controller="agent"
+                data-search-result-template="#agent-search-result-template"
+                data-selection-template="#agent-response-template"
+                data-no-result-template="#agent-response-no-results-template"
+                data-selection-format="changeOwner"
+                data-auto-open="true"
+                data-input-selector="#<?php echo $inputHiddenId; ?>"
+                title="<?php i::esc_attr_e("Repassar propriedade");?>"
+            >Buscar</label>
+        </div>
+
+        <div class="js-ownerEvent">
+            <label class="js-search js-include-editable"
+                data-field-name='ownerEntity'
+                data-emptytext="<?php i::esc_attr_e("Selecione um evento");?>"
+                data-search-box-width="400px"
+                data-search-box-placeholder="<?php i::esc_attr_e("Selecione um evento");?>"
+                data-entity-controller="event"
+                data-search-result-template="#agent-search-result-template"
+                data-selection-template="#agent-response-template"
+                data-no-result-template="#agent-response-no-results-template"
+                data-selection-format="changeOwner"
+                data-auto-open="true"
+                data-input-selector="#<?php echo $inputHiddenId; ?>"
+                title="<?php i::esc_attr_e("Repassar propriedade");?>"
+            >Buscar</label>
+        </div>
+
+        <div class="js-ownerSpace">
+            <label class="js-search js-include-editable"
+                data-field-name='ownerEntity'
+                data-emptytext="<?php i::esc_attr_e("Selecione um espaço");?>"
+                data-search-box-width="400px"
+                data-search-box-placeholder="<?php i::esc_attr_e("Selecione um espaço");?>"
+                data-entity-controller="space"
+                data-search-result-template="#agent-search-result-template"
+                data-selection-template="#agent-response-template"
+                data-no-result-template="#agent-response-no-results-template"
+                data-selection-format="changeOwner"
+                data-auto-open="true"
+                data-input-selector="#<?php echo $inputHiddenId; ?>"
+                title="<?php i::esc_attr_e("Repassar propriedade");?>"
+            >Buscar</label>
+        </div>
+
+        <div class="js-ownerProject">
+            <label class="js-search js-include-editable"
+                data-field-name='ownerEntity'
+                data-emptytext="<?php i::esc_attr_e("Selecione um projeto");?>"
+                data-search-box-width="400px"
+                data-search-box-placeholder="<?php i::esc_attr_e("Selecione um projeto");?>"
+                data-entity-controller="project"
+                data-search-result-template="#agent-search-result-template"
+                data-selection-template="#agent-response-template"
+                data-no-result-template="#agent-response-no-results-template"
+                data-selection-format="changeOwner"
+                data-auto-open="true"
+                data-input-selector="#<?php echo $inputHiddenId; ?>"
+                title="<?php i::esc_attr_e("Repassar propriedade");?>"
+            >Buscar</label>
+        </div>
+
+        <!--<input type="text" name="ownerEntity">-->
         
        <?php $this->part('modal/field--select', ['entity_classname' => $entity_classname,'evaluation_methods' => $evaluation_methods]); ?>
 
