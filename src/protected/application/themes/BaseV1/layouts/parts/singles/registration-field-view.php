@@ -1,3 +1,4 @@
+<?php $this->applyTemplateHook('registration-field-item', 'begin') ?>
 <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links' ">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
@@ -33,3 +34,4 @@
     <a ng-if="field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank" rel='noopener noreferrer'>{{::field.file.name}}</a>
     <span ng-if="!field.file"><em><?php \MapasCulturais\i::_e("Arquivo não enviado."); ?></em></span>
 </div>
+<?php $this->applyTemplateHook('registration-field-item', 'end') ?>
