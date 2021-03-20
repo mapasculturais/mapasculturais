@@ -23,6 +23,7 @@ class ObjectType extends DoctrineEnumType
             'Opportunity' => 'MapasCulturais\Entities\Opportunity',
             'Project' => 'MapasCulturais\Entities\Project',
             'Registration' => 'MapasCulturais\Entities\Registration',
+            'RegistrationEvaluation' => 'MapasCulturais\Entities\RegistrationEvaluation',
             'RegistrationFileConfiguration' => 'MapasCulturais\Entities\RegistrationFileConfiguration',
             'Request' => 'MapasCulturais\Entities\Request',
             'Seal' => 'MapasCulturais\Entities\Seal',
