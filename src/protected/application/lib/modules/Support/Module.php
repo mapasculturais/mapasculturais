@@ -6,6 +6,8 @@ use MapasCulturais\App;
 
 class Module extends \MapasCulturais\Module
 {
+    public const SUPPORT_GROUP = "@support";
+
     public function __construct(array $config = [])
     {
         $app = App::i();
