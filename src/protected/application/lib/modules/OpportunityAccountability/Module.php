@@ -154,6 +154,13 @@ class Module extends \MapasCulturais\Module
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
             }
         });
+
+        /**
+         * Hook dentro  do modal de eventos
+         */
+        $app->hook('template(project.single.event-modal-form):begin', function (){
+            echo "<input type='hidden' name='projectId' value='{$this->controller->requestedEntity->id}'>";
+        });
         
         /**
          * Substituição dos seguintes termos 
