@@ -103,6 +103,20 @@ class ChatThread extends \MapasCulturais\Entity
 
     protected $_ownerEntity;
 
+    public function __construct($ownerEntity, $identifier, $type,
+                                $description=null,
+                                $status=self::STATUS_ENABLED)
+    {
+        $this->objectType = $ownerEntity->getClassName();
+        $this->objectId = $ownerEntity->id;
+        $this->identifier = $identifier;
+        $this->type = $type;
+        $this->description = $description;
+        $this->status = $status;
+        parent::__construct();
+        return;
+    }
+
     public function canUser($action, $userOrAgent=null)
     {
         $app = App::i();
