@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Entity;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
@@ -78,7 +79,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="smallint", nullable=true)
+     * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     protected $_type;
 
@@ -464,6 +465,19 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
         }else{
             $this->registrationTo = null;
+        }
+    }
+
+    function setOwnerEntity($entity){
+        if ($entity instanceof Entity) {
+            $this->ownerEntity = $entity;
+        }
+        else {
+            $app = App::i();
+
+            $ownerEntityClassName = substr($this->getSpecializedClassName(), 24, -11);
+            $this->ownerEntity = $app->repo($ownerEntityClassName)->find($entity);
+
         }
     }
 

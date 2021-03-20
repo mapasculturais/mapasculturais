@@ -1,12 +1,12 @@
 $(document).ready(function() {
     $(".edit-entity").click(function(){
         let url = MapasCulturais.createUrl('eventos', 'edita', [MapasCulturais.eventId]);
-        document.location = url;        
+        document.location = url;
     });
-    
+
     $(".view-entity").click(function(){
         let url = MapasCulturais.createUrl('evento', [MapasCulturais.eventId]);
-        document.location = url;        
+        document.location = url;
     });
 
     let element = document.getElementById("dialog-event-occurrence");
@@ -31,15 +31,15 @@ function saveEvent(formId, complete = false){
         }
     })
     .done(function(data) {
-        $(".spinner").hide(); 
-        $(".message").html("");       
-        if(!(data.hasOwnProperty('error'))){           
-            $(".create-event").toggle('hidden');    
+        $(".spinner").hide();
+        $(".message").html("");
+        if(!(data.hasOwnProperty('error'))){
+            $(".create-event").toggle('hidden');
             $(".modal-feedback-event").toggle('hidden');
             $(".cancel-action").toggle('hidden');
-            $(".btn-event").toggle('hidden');      
+            $(".btn-event").toggle('hidden');
             $("#IdEvent").val(data.id);
-            MapasCulturais.eventId = data.id;            
+            MapasCulturais.eventId = data.id;
         }else{
             $(".message").html("<b>Não foi possível inserir o evento.</b>");
         }
@@ -48,4 +48,3 @@ function saveEvent(formId, complete = false){
         alert('Erro inesperado, fale com administrador.');
     });
 }
-
