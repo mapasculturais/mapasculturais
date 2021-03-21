@@ -37,6 +37,31 @@
             });
         }
 
+        // script para remover o scroll do body quando o modal está aberto
+        var modal = document.querySelectorAll('.bg-support-modal');
+        modal.forEach((each)=>{
+            var contains = each.classList.contains('open');
+            var body = document.querySelector('body');
+            var observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.attributeName == "class") {
+                        var currentClass = mutation.target.classList.contains('open');
+                        if (contains !== currentClass) {
+                            contains = currentClass;
+                            if (currentClass) {
+                                body.classList.add('modal-oppened');
+                            } else {
+                                body.classList.remove('modal-oppened');
+                            }
+                        }
+                    }
+                });
+            });
+            observer.observe(each, { attributes: true });
+        });
+
+        
+
     }]);
 
     module.controller('Support', ['$scope', 'SupportService', '$window', function ($scope, SupportService, $window) {

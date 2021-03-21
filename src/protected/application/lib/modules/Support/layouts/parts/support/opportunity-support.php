@@ -11,7 +11,9 @@ use MapasCulturais\i;
             <p><?php i::_e("Gerencie os agentes de suporte dessa oportunidade."); ?></p>
         </header>
 
-        <div class="support-content">
+        <p class="support-message" ng-if="!data.agents.length"><?php i::_e("Nenhum agente cadastrado"); ?></p>
+
+        <div class="support-content" ng-if="data.agents.length">
             <?php $this->applyTemplateHook('opportunity-support', 'begin'); ?>
 
             <div class="support-body">
@@ -24,7 +26,7 @@ use MapasCulturais\i;
                             <span class="committee--group">{{agent.group}}</span>
                         </div>
 
-                        <div ng-class="{open:data.openModal}" class="bg-support-modal" id="reportsModal">
+                        <div ng-class="{open:data.openModal}" class="bg-support-modal">
                             <div class="support-content-modal">
                                 <?php $this->part('support/opportunity-support-fields-association', ['entity' => $entity]); ?>
                             </div>
