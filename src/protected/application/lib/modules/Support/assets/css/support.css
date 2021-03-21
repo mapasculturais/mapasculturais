@@ -33,6 +33,11 @@
     font-style: italic;
 }
 
+#support .support-message {
+    color: #666666;
+    font-style: italic;
+}
+
 /* Modal */
 body.modal-oppened {
     overflow: hidden !important;
