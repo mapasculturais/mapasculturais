@@ -7,8 +7,8 @@ use MapasCulturais\i;
     <?php $this->applyTemplateHook('opportunity-support-fields-association-modal', 'begin'); ?>
 
     <header>
-        <h3><?php i::_e("Selecione os campos que o agente poderá manipular"); ?></h3>
-        <a ng-click="data.openModal = false" class="icon icon-close" rel="noopener noreferrer"></a>
+        <h2 class="support-modal-title"><?php i::_e("Selecione os campos que o agente poderá manipular"); ?></h2>
+        <a ng-click="data.openModal = false" class="x"><i class="fas fa-times x"></i></a>
     </header>
 
     <div class="modal-body">
@@ -24,8 +24,8 @@ use MapasCulturais\i;
                 </label>
             </li>
         </ul>
-
     </div>
+
     <footer></footer>
 
     <?php $this->applyTemplateHook('opportunity-support-fields-association-modal', 'end'); ?>
