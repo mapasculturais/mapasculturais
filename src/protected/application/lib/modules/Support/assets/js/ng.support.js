@@ -60,6 +60,24 @@
            $scope.data.agents = data
         });
     }]);
+
+    module.controller('SupportForm',['$scope', 'SupportService','$window', function($scope, SupportService, $window){        
+        $scope.userAllowedFields = MapasCulturais.userAllowedFields
+        
+        $scope.canUserEdit = function(field){
+            if (field.fieldType == 'file'){
+                if (MapasCulturais.userAllowedFields[field.groupName] == 'rw'){
+                    return true
+                }
+                return false
+            }
+            if (MapasCulturais.userAllowedFields[field.fieldName] == 'rw'){
+                return true
+            }
+        return false
+
+        };    
+    }]);
     
     module.factory('SupportService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
        return {

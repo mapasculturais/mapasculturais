@@ -87,6 +87,13 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
+        $app->hook("entity(Registration).permissionCacheUsers", function (&$users) {
+            $support_users = array_map(function ($agent) {
+                return $agent->user;
+            }, ($this->opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []));
+            $users = array_values(array_unique(array_merge($users, $support_users)));
+            return;
+        });
 
         // redireciona a ficha de inscrição para o suporte
         $app->hook('GET(registration.view):before', function() use($app) {
