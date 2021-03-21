@@ -7,6 +7,7 @@ use MapasCulturais\App;
 class Module extends \MapasCulturais\Module
 {
     public const SUPPORT_GROUP = "@support";
+    protected $inTransaction = false;
 
     public function __construct(array $config = [])
     {
@@ -37,8 +38,14 @@ class Module extends \MapasCulturais\Module
             }
         });
         // permissões granulares com uso de transactions
-        $app->hook("PATCH(registration.single):before", function () use ($app) {
-            $app->em->beginTransaction();
+        $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
+            if ($self->isSupportUser($this->requestedEntity->opportunity, $app->user) ){
+                $self->inTransaction = true;
+                $app->hook("can(<<Agent|Space>>.<<@control|modify>>)", function($user,&$result) {
+                    $result = true;
+                });
+                $app->em->beginTransaction();
+            }
             return;
         });
         $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app) {
@@ -57,8 +64,8 @@ class Module extends \MapasCulturais\Module
             throw new \Exception("Permission denied.");
             return;
         });
-        $app->hook("slim.after", function () use ($app) {
-            if ($app->em->getConnection()->getTransactionNestingLevel() > 0) {
+        $app->hook("slim.after", function () use ($app, $self) {
+            if ($self->inTransaction) {
                 $app->em->commit();
             }
             return;
@@ -74,12 +81,13 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
-        $app->hook("can(RegistrationFile.<<create|remove>>)", function ($user, &$result) {
+        $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) {
             if (!$this->owner->canUser("@control")) {
                 $result = false;
+                $key = $this->group ?? $this->key;
                 foreach ($this->owner->opportunity->agentRelations as $relation) {
-                    if (($relation->agent->user->id == $user->id) &&
-                        (($relation->metadata["registrationPermissions"][$this->group] ?? "") == "rw")) {
+                    if ((($relation->group == self::SUPPORT_GROUP) && $relation->agent->user->id == $user->id) &&
+                        (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
                             $result = true;
                             return;
                         }
