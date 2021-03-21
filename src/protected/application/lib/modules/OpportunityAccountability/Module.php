@@ -95,8 +95,10 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(project.<<single|edit>>.tabs):end', function(){
             $project = $this->controller->requestedEntity;
 
-            if ($project->isAccountability) {
-                if ($project->canUser('@control')) {
+            if ($project->isAccountability) {                
+                if ($project->canUser('@control') || $project->opportunity->canUser('@controll')) {
+                    $this->part('accountability/project-tab');
+                } else if (($reg = $project->registration->accountabilityPhase) && $reg->canUser('evaluate'))  {
                     $this->part('accountability/project-tab');
                 }
             }
@@ -106,7 +108,9 @@ class Module extends \MapasCulturais\Module
             $project = $this->controller->requestedEntity;
 
             if ($project->isAccountability) {
-                if($project->canUser('@control')){
+                if ($project->canUser('@control') || $project->opportunity->canUser('@controll')) {
+                    $this->part('accountability/project-tab-content');
+                } else if (($reg = $project->registration->accountabilityPhase) && $reg->canUser('evaluate'))  {
                     $this->part('accountability/project-tab-content');
                 }
             }
@@ -147,6 +151,7 @@ class Module extends \MapasCulturais\Module
                 $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
             }
         });
+
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
 
             $entity = $this->controller->requestedEntity;
@@ -236,6 +241,21 @@ class Module extends \MapasCulturais\Module
             $thread->createAgentRelation($evaluation->registration->owner, "participant");
             $this->json(["thread_id" => $thread->id]);
          });
+
+         $app->hook('entity(Registration).get(project)', function(&$value, $metadata_key) use($app) {
+            
+            if(!$value && $this->previousPhase) {
+                $this->previousPhase->registerFieldsMetadata();
+                
+                $cache_id = "registration:{$this->number}:$metadata_key";
+                if($app->cache->contains($cache_id)) {
+                    $value = $app->cache->fetch($cache_id);
+                } else {
+                    $value = $this->previousPhase->$metadata_key;
+                    $app->cache->save($cache_id, $value, DAY_IN_SECONDS);
+                }
+            }
+        });
     }
 
     function register()
@@ -270,7 +290,6 @@ class Module extends \MapasCulturais\Module
         $this->registerProjectMetadata('registration', [
             'label' => i::__('Inscrição da oportunidade da prestação de contas vinculada a este projeto (primeira fase)'),
             'type' => 'Registration',
-            'private' => true,
             'serialize' => function (Registration $registration) {
                 return $registration->id;
             },
@@ -286,7 +305,6 @@ class Module extends \MapasCulturais\Module
         $this->registerRegistrationMetadata('project', [
             'label' => i::__('Projeto da prestação de contas vinculada a esta inscrição (primeira fase)'),
             'type' => 'Project',
-            'private' => true,
             'serialize' => function (Project $project) {
                 return $project->id;
             },
