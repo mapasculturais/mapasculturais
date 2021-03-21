@@ -11,7 +11,9 @@ use MapasCulturais\i;
             <p><?php i::_e("Gerencie os agentes de suporte dessa oportunidade."); ?></p>
         </header>
 
-        <div class="support-content">
+        <p class="support-message" ng-if="!data.agents.length"><?php i::_e("Nenhum agente cadastrado"); ?></p>
+
+        <div class="support-content" ng-if="data.agents.length">
             <?php $this->applyTemplateHook('opportunity-support', 'begin'); ?>
 
             <div class="support-body">
