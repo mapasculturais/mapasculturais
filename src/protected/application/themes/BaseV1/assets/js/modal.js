@@ -10,9 +10,12 @@ $(document).ready(function() {
     });
 
     let element = document.getElementById("dialog-event-occurrence");
-    element.children[0].addEventListener("click", function(event) {
-        $("#dialog-event-occurrence").removeClass('occurrence-open');
-    })
+    if (typeof (element) != 'undefined' && element != null) {
+        element.children[0].addEventListener("click", function(event) {
+            $("#dialog-event-occurrence").removeClass('occurrence-open');
+        })
+    }
+
 });
 
 
