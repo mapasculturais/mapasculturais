@@ -23,7 +23,6 @@ use MapasCulturais\i;
                             <span ng-click="data.openModal = true" class="btn btn-default add alignright mr10 ng-scope"><?php i::_e("Autorizar campos"); ?></span>
                             <img class="committee--avatar" ng-src="{{(agent.agent.avatar.avatarSmall.url) ? agent.agent.avatar.avatarSmall.url : data.defaultAvatar}}" src="{{(agent.agent.avatar.avatarSmall.url) ? agent.agent.avatar.avatarSmall.url : data.defaultAvatar}}">
                             <span class="committee--name ng-binding">{{agent.agent.name}}</span>
-                            <span class="committee--group">{{agent.group}}</span>
                         </div>
 
                         <div ng-class="{open:data.openModal}" class="bg-support-modal">
