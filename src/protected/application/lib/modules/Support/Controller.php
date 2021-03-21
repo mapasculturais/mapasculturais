@@ -35,30 +35,48 @@ class Controller extends \MapasCulturais\Controller
         $this->apiResponse($agents);
     }
 
-    //Salva o metadado de permissão de campos
-    public function PATCH_setPermissonFields()
+    /**
+     * Salva o metadado de permissão de campos
+     */
+    public function PUT_opportunityPermissions()
     {
         $app = App::i();
-        $request = $this->data;
 
-        $agent = $app->repo('Agent')->findOneBy(['id' => $request['agentId']]);
-        $agent_relation = $app->repo('AgentRelation')->findOneBy(['agent' => $agent, 'group' => Module::SUPPORT_GROUP]);
+        $opportunity = $this->getOpportunity();
+        if(!$opportunity){
+            $app->pass();
+        }
+        
+        $opportunity->checkPermission('@control');
 
-        unset($request['agentId']);
-        unset($request['opportunity_id']);
-        $request_filter = array_filter($request);
-        $result['registrationPermissions'] = $request_filter;
-        $agent_relation->metadata = json_encode($result);
+     
+        $agent_id = $this->urlData['agentId'] ?? null;
+        $agent = $app->repo('Agent')->findOneBy(['id' => $agent_id]);
+        if(!$agent){
+            $app->pass();
+        }
+
+        $agent_relation = $app->repo('AgentRelation')->findOneBy(['objectId' => $opportunity->id, 'agent' => $agent, 'group' => Module::SUPPORT_GROUP]);
+        if(!$agent_relation){
+            $this->errorJson('Usuário não é do grupo de suporte', 400);
+        }
+        
+        $permissions = array_filter( $this->postData);
+        
+        $result['registrationPermissions'] = $permissions;
+        $agent_relation->metadata = $result;
         $agent_relation->save(true);
+
+        $this->json($agent_relation);
     }
 
     /**
      * Pega a oportunidade
      */
-    private function getOpportunity()
+    protected function getOpportunity()
     {
         $this->requireAuthentication();
-        $request = $this->data;
-        return App::i()->repo("Opportunity")->find($request["opportunity_id"]);
+        $opportunity_id = $this->urlData['opportunityId'] ?? null;      
+        return App::i()->repo("Opportunity")->find($opportunity_id);
     }
 }

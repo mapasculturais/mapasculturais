@@ -14,13 +14,12 @@ use MapasCulturais\i;
     <div class="modal-body">
         <ul>
             <li ng-repeat="(key,field) in data.fields">
-    
                 <label>
                     <span class="field-title">{{field.title}}</span>                   
-                    <select ng-change="savePermission({{agent.agent.id}})" ng-model="data.userPermissions[field.fieldName]">
-                        <option value=""><?php i::_e("Sem permissão"); ?></option>
-                        <option value="ro"><?php i::_e("Visualizar"); ?></option>
-                        <option value="rw"><?php i::_e("Modificar"); ?></option>
+                    <select ng-change="savePermission({{agent.agent.id}})" ng-model="data.userPermissions[field.ref]">
+                        <option ng-selected="agent.metadata.registrationPermissions[field.ref] === ''" value=""><?php i::_e("Sem permissão"); ?></option>
+                        <option ng-selected="agent.metadata.registrationPermissions[field.ref] === 'ro'" value="ro"><?php i::_e("Visualizar"); ?></option>
+                        <option ng-selected="agent.metadata.registrationPermissions[field.ref] === 'rw'"value="rw"><?php i::_e("Modificar"); ?></option>
                     </select>
                     <strong><span ng-if="field.fieldType == 'file'"><?php i::_e("Campo tipo anexo"); ?></span></strong>
                 </label>

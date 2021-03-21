@@ -3,7 +3,7 @@
     var module = angular.module('ng.support', []);
 
     module.config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $httpProvider.defaults.transformRequest = function (data) {
             var result = angular.isObject(data) && String(data) !== '[object File]' ? $.param(data) : data;
@@ -22,12 +22,16 @@
             return a.displayOrder - b.displayOrder;
         });
 
-
+        $scope.data.fields.map(function(item){
+            if(item.fieldType == "file"){
+                item.ref = item.groupName;
+            }else{
+                item.ref = item.fieldName;
+            }
+        });
+        
         $scope.savePermission = function (agentId) {
-
-            $scope.data.userPermissions.agentId = agentId;
-
-            SupportService.setPermissonFields($scope.data.userPermissions).success(function (data, status, headers) {
+            SupportService.savePermission(MapasCulturais.entity.id, agentId, $scope.data.userPermissions).success(function (data, status, headers) {
                 MapasCulturais.Messages.success('Permissoes salvas com sucesso.');
             });
         }
@@ -36,19 +40,19 @@
 
     module.controller('Support', ['$scope', 'SupportService', '$window', function ($scope, SupportService, $window) {
         $scope.data = {
-            agents: [],
+            agents: []
         };
 
-        SupportService.findAgentsRelation().success(function (data, status, headers) {
-            $scope.data.agents = data
+        SupportService.findAgentsRelation(MapasCulturais.entity.id).success(function (data, status, headers) {
+            $scope.data.agents = data;
         });
     }]);
 
     module.factory('SupportService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
         return {
-            findAgentsRelation: function (data, agentId) {
+            findAgentsRelation: function (opportunityId, data) {
 
-                var url = MapasCulturais.createUrl('support', 'getAgentsRelation', { opportunity_id: MapasCulturais.entity.id });
+                var url = MapasCulturais.createUrl('support', 'getAgentsRelation', {opportunityId});
 
                 return $http.get(url, data).
                     success(function (data, status, headers) {
@@ -58,11 +62,11 @@
                         $rootScope.$emit('error', { message: "Reports not found for this opportunity", data: data, status: status });
                     });
             },
-            setPermissonFields: function (data) {
+            savePermission: function (opportunityId, agentId, data) {
 
-                var url = MapasCulturais.createUrl('support', 'setPermissonFields', { opportunity_id: MapasCulturais.entity.id });
+                var url = MapasCulturais.createUrl('support', 'opportunityPermissions', {opportunityId, agentId});
 
-                return $http.patch(url, data).
+                return $http.put(url, data).
                     success(function (data, status, headers) {
                         $rootScope.$emit('registration.create', { message: "Reports found", data: data, status: status });
                     }).
