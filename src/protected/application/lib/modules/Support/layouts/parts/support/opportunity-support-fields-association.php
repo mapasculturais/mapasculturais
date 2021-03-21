@@ -12,7 +12,6 @@ use MapasCulturais\i;
     </header>
 
     <div class="modal-body">
-    {{agent.metadata['field_1797']}}
         <ul>
             <li ng-repeat="(key,field) in data.fields">
     
