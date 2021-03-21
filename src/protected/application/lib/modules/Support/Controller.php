@@ -8,17 +8,15 @@ class Controller extends \MapasCulturais\Controller
 
     function GET_registration()
     {
-
         $this->requireAuthentication();
         $app = App::i();
-
-        $registration = new \MapasCulturais\Entities\Registration;
         $registration = $app->repo('Registration')->find($this->data['id']);
-        if ($registration){
+        $relation = $app->repo('AgentRelation')->findOneBy(['agent' => $app->user->profile, 'objectId' => $registration->opportunity->id, 'group' => '@support' ]);
+        if ($registration && $registration->canUser('support') ){
             $registration->registerFieldsMetadata();
-            $registration->checkPermission('view');
             $this->render('registration', [
-                'entity' => $registration
+                'entity' => $registration,
+                'userAllowedFields' => $relation->metadata
             ]);
         }
 
