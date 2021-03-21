@@ -162,12 +162,9 @@
         $scope.createGroup = function(){
             if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName ) && $scope.data.newGroupName.toLowerCase().trim() !== 'registration' && $scope.data.newGroupName.toLowerCase().trim() !== 'group-admin' ){
                 var newGroup = {name: $scope.data.newGroupName, relations: []};
-                newGroup.log(newGroup);
-                
-                if(item.name.indexOf("@") == -1){
+                if(newGroup.name.indexOf("@") == -1){
                     $scope.groups = [newGroup].concat($scope.groups);
                 }
-
                 $scope.data.newGroupName = '';
                 EditBox.close('new-related-agent-group');
             }
