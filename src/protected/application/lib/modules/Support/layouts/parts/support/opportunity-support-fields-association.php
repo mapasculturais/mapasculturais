@@ -12,21 +12,24 @@ use MapasCulturais\i;
     </header>
 
     <div class="modal-body">
+    {{agent.metadata['field_1797']}}
         <ul>
             <li ng-repeat="(key,field) in data.fields">
+    
                 <label>
-                    <span class="field-title">{{field.title}}</span>
-                    <select ng-change="savePermission(field.id)" ng-model="data.userPermissions[field.fieldName]">
-                        <option value="">Sem permissão</option>
-                        <option value="ro">Visualizar</option>
-                        <option value="rw">Modificar</option>
+                    <span class="field-title">{{field.title}}</span>                   
+                    <select ng-change="savePermission({{agent.agent.id}})" ng-model="data.userPermissions[field.fieldName]">
+                        <option value=""><?php i::_e("Sem permissão"); ?></option>
+                        <option value="ro"><?php i::_e("Visualizar"); ?></option>
+                        <option value="rw"><?php i::_e("Modificar"); ?></option>
                     </select>
+                    <strong><span ng-if="field.fieldType == 'file'"><?php i::_e("Campo tipo anexo"); ?></span></strong>
                 </label>
             </li>
         </ul>
     </div>
-
-    <footer></footer>
+    <footer>
+    </footer>
 
     <?php $this->applyTemplateHook('opportunity-support-fields-association-modal', 'end'); ?>
 </div>
