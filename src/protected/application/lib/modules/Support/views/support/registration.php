@@ -46,11 +46,25 @@ $_params = [
 ];
 ?>
 
+<div id="editable-entity" class="clearfix sombra " data-action="<?php echo $action; ?>" data-entity="<?php echo $this->controller->id ?>" data-id="<?php echo $entity->id ?>">
+    <?php $this->part('editable-entity-logo') ?>
+    <div class="controles">
+    </div>
+</div>
+
 <article class="main-content registration" ng-controller="OpportunityController">
     <?php $this->part('singles/registration--header', $_params); ?>
 
     <article ng-controller="SupportForm">
+    
         <?php $this->applyTemplateHook('form','begin'); ?>
+        <h3 class="registration-header"><?php \MapasCulturais\i::_e("Formulário de Inscrição");?></h3>
+        <div class="registration-fieldset">
+            <h4><?php \MapasCulturais\i::_e("Número da Inscrição");?></h4>
+            <div class="registration-id">
+                <?php echo $entity->number ?>
+            </div>
+        </div>
         <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
             <!--
             <h4><?php \MapasCulturais\i::_e("Campos adicionais do formulário de inscrição.");?></h4>
