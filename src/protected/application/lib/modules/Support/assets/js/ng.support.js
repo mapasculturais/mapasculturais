@@ -15,6 +15,7 @@
         $scope.data = {
             openModal: false,
             userPermissions: {},
+            defaultAvatar: MapasCulturais.assets.avatarAgent,
             fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations),
         };
 
