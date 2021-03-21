@@ -1,10 +1,37 @@
-.support-content{
+#support {
+    padding-top: 1.3rem;
+}
+
+#support header h4,
+#support header p {
+    margin-bottom: 2.5rem;
+}
+
+#support .support-content {
     margin-bottom: 1.5rem;
     padding: 0.5rem;
     border: 1px solid #eee;
     border-radius: 2px;
 }
 
+#support .support-content .committee {
+    overflow: hidden;
+}
+
+#support .support-content .committee .btn {
+    margin: 5px 0 0 0;
+}
+
+#support .support-content .committee .committee--name {
+    display: block;
+    padding-top: 5px;
+}
+
+#support .support-content .committee .committee--group {
+    color: #333333;
+    display: block;
+    font-style: italic;
+}
 
 .fields-association-modal {
     background-color: #fff;
