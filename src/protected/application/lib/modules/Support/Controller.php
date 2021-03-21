@@ -4,6 +4,7 @@ namespace Support;
 
 use MapasCulturais\App;
 use MapasCulturais\Traits;
+use MapasCulturais\i;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -58,7 +59,7 @@ class Controller extends \MapasCulturais\Controller
 
         $agent_relation = $app->repo('AgentRelation')->findOneBy(['objectId' => $opportunity->id, 'agent' => $agent, 'group' => Module::SUPPORT_GROUP]);
         if(!$agent_relation){
-            $this->errorJson('Usuário não é do grupo de suporte', 400);
+            $this->errorJson(i::__("Usuário não é do grupo de suporte"), 400);
         }
         
         $permissions = array_filter( $this->postData);
