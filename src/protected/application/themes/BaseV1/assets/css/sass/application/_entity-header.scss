@@ -18,13 +18,7 @@
     }
     h5 {
         &.entity-parent-title {
-            font-family: $font-family-base;
-            font-size: $font-size-smaller;
-            font-weight: $btn-font-weight;
-            text-transform: uppercase;
-            & > a {
-                font-weight: $btn-font-weight;
-            }
+            font-size: $font-size-base;
         }
     }
     @media print {
@@ -136,10 +130,11 @@ article.seal {
     }
     .project-type {
         color: $brand-project;
-        margin-bottom: $line-height-base;
+        margin-bottom: $line-height-half;
     }
     .opportunity-type, .registration-type {
         color: $brand-opportunity;
+        margin-bottom: $line-height-half;
     }
     .agent-type {
         color: $brand-agent;
@@ -164,19 +159,15 @@ article.seal {
         font-weight: 100;
         margin-bottom: 0;
         > a {
+            color: $gray-darker;
             font-weight: 100;
         }
     }
     .entity-parent-title {
-        font-family: $font-family-base;
-        font-size: $font-size-smaller;
+        font-size: $font-size-base;
         font-weight: $btn-font-weight;
         margin-bottom: $line-height-half;
-        text-transform: uppercase;
-        > a {
-            color: $brand-project;
-            font-weight: $btn-font-weight;
-        }
+
         &:after {
             // content: ' »';
         }
