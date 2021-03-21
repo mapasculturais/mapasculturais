@@ -36,7 +36,7 @@ class Module extends \MapasCulturais\Module
                 $this->part('support/opportunity-support', ['entity' => $entity]);
             }
         });
-
+        // permissões granulares com uso de transactions
         $app->hook("PATCH(registration.single):before", function () use ($app) {
             $app->em->beginTransaction();
             return;
@@ -63,19 +63,30 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
+        // permissões gerais
         $app->hook("can(Registration.support)", function ($user, &$result) use ($self) {
             $result = $self->isSupportUser($this->opportunity, $user);
             return;
         });
-
-
         $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) {
             if (!$result) {
                 $result = $this->canUser("support", $user);
             }
             return;
         });
-
+        $app->hook("can(RegistrationFile.<<create|remove>>)", function ($user, &$result) {
+            if (!$this->owner->canUser("@control")) {
+                $result = false;
+                foreach ($this->owner->opportunity->agentRelations as $relation) {
+                    if (($relation->agent->user->id == $user->id) &&
+                        (($relation->metadata["registrationPermissions"][$this->group] ?? "") == "rw")) {
+                            $result = true;
+                            return;
+                        }
+                }
+            }
+            return;
+        });
 
         // redireciona a ficha de inscrição para o suporte
         $app->hook('GET(registration.view):before', function() use($app) {
@@ -84,7 +95,6 @@ class Module extends \MapasCulturais\Module
             if ($registration->canUser('support', $app->user)){
                 $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
             }
-            
         });
     }
 
@@ -109,7 +119,9 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueScript('app', 'support', 'js/ng.support.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.support';
     }
-    public function isSupportUser($opportunity, $user){
+
+    public function isSupportUser($opportunity, $user)
+    {
         foreach (($opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []) as $agent) {
             if ($agent->user->id == $user->id) {
                 return true;
