@@ -26,7 +26,7 @@ use MapasCulturais\i;
                             <span class="committee--group">{{agent.group}}</span>
                         </div>
 
-                        <div ng-class="{open:data.openModal}" class="bg-support-modal" id="reportsModal">
+                        <div ng-class="{open:data.openModal}" class="bg-support-modal">
                             <div class="support-content-modal">
                                 <?php $this->part('support/opportunity-support-fields-association', ['entity' => $entity]); ?>
                             </div>
