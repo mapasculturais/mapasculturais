@@ -22,7 +22,7 @@ $this->includeEditableEntityAssets();
 $fields = $this->jsObject['entity']['registrationFieldConfigurations'];
 foreach ($fields as $key => $f) {
     $name=$f->fieldName;
-    if( !isset($userAllowedFields->$name)){
+    if( !isset($userAllowedFields[$name])){
         unset($fields[$key]);
     }
 }
@@ -33,7 +33,7 @@ $this->jsObject['userAllowedFields'] = $userAllowedFields;
 $files = $this->jsObject['entity']['registrationFileConfigurations'];
 foreach ($files as $key => $f) {
     $name=$f->getFileGroupName();
-    if( !isset($userAllowedFields->$name)){
+    if( !isset($userAllowedFields[$name])){
         unset($files[$key]);
     }
 }

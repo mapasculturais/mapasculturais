@@ -16,13 +16,15 @@ class Controller extends \MapasCulturais\Controller
         $app = App::i();
         $registration = $app->repo('Registration')->find($this->data['id']);
         $relation = $app->repo('AgentRelation')->findOneBy(['agent' => $app->user->profile, 'objectId' => $registration->opportunity->id, 'group' => '@support']);
-        if ($registration && $registration->canUser('support')) {
-            $registration->registerFieldsMetadata();
-            $this->render('registration', [
-                'entity' => $registration,
-                'userAllowedFields' => $relation->metadata
-            ]);
+        if (!($registration && $registration->canUser('support'))){
+            $this->pass();
+            die;
         }
+        $registration->registerFieldsMetadata();
+        $this->render('registration', [
+            'entity' => $registration,
+            'userAllowedFields' => $relation->metadata['registrationPermissions']
+        ]);
     }
 
     /**
