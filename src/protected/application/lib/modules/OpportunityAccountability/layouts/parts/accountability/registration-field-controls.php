@@ -2,16 +2,22 @@
 use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('accountability-registration-field-controls', 'before') ?>
-<div class='accountability-registration-field-controls' style="padding: 1em;">
+<div class='accountability-registration-field-controls'>
     <?php $this->applyTemplateHook('accountability-registration-field-controls', 'begin') ?>
     <label>
-        <input type="checkbox" ng-model="evaluationData.openFields[getFieldIdentifier(field)]">
-        <?= i::__('Campo aberto para edição') ?>
-    </label>
+        <?= i::__('Abrir campo para edição') ?>
+        <span class="switch">
+            <input type="checkbox" ng-model="evaluationData.openFields[getFieldIdentifier(field)]">
+            <span class="slider"></span>
+        </span>
+    </label><br>
 
     <label>
-        <input type="checkbox" ng-model="openChats[getFieldIdentifier(field)]" ng-change="toggleChat(field)" >
-        <?= i::__('Conversação aberta') ?>
+        <?= i::__('Abrir conversação com proponente') ?>
+        <span class="switch">
+            <input type="checkbox" ng-model="openChats[getFieldIdentifier(field)]" ng-change="toggleChat(field)" >
+            <span class="slider"></span>
+        </span>
     </label>
     
     <?php $this->applyTemplateHook('accountability-registration-field-controls', 'end') ?>
