@@ -34,7 +34,9 @@ return [
             'longDescription' => i::__('Descrição Longa'),
             'certificateText' => i::__('Conteúdo da Impressão do Certificado'),
             'validPeriod'	=> i::__('Período de Validade'),
-            'status' => i::__('Status')
+            'status' => i::__('Status'),
+            'registrationFrom' => i::__('Data de início das inscrições'), 
+            'registrationTo' => i::__('Data final das inscrições')
         ),
 
         'MapasCulturais\Entities\Agent' => array(
