@@ -2,7 +2,6 @@
 use MapasCulturais\App;
 use MapasCulturais\i;
 $app = App::i();
-$project = $this->controller->requestedEntity;
 $class = ""; 
 if(!($events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1]))){
     $events = [(object)['id'=> null ,'name' => i::__("Não foram encontrados eventos")]];  
@@ -10,25 +9,27 @@ if(!($events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1
 } 
 ?>
 <?php $this->applyTemplateHook('project-event', 'before' )?>
-<div class="event-link">  
+<div class="event-link registration-fieldset clearfix">  
     <?php $this->applyTemplateHook('project-event', 'begin' )?>  
     <header>
         <div class="title">
             <?php i::_e("Eventos vinculados a este projeto"); ?>
-            <?php $this->renderModalFor('event', false, i::__("Adicionar Evento"), "btn add-event add");?>
+            <?php if($project->canUser('@control')): ?>
+                <?php $this->renderModalFor('event', false, i::__("Adicionar Evento"), "btn add-event add");?>
+            <?php endif; ?>
         </div>
     </header>
 
     <div class="event-status <?=$class?>"> 
-           <ul class="js-event-list">
-                <?php foreach ($events as $event){?>  
-                    <?php $url = $event->id ? $app->createUrl('evento', $event->id) : "#";?>
-                    <li>
-                        <div><span class="icon icon-event"></span></div>
-                        <div><a href="<?=$url?>"><?=$event->name?></a></div> 
-                    </li>
-                <?php } ?>
-           </ul>
+        <ul class="js-event-list">
+            <?php foreach ($events as $event){?>  
+                <?php $url = $event->id ? $app->createUrl('evento', $event->id) : "#";?>
+                <li>
+                    <div><span class="icon icon-event"></span></div>
+                    <div><a href="<?=$url?>"><?=$event->name?></a></div> 
+                </li>
+            <?php } ?>
+        </ul>
     </div>
     <?php $this->applyTemplateHook('project-event', 'end' )?>  
 </div>

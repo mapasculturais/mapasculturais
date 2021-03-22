@@ -79,6 +79,7 @@
             newMessage: '',
             previousMessage: {},
             spinner: false,
+            sending: false,
             currentUserId: MapasCulturais.userProfile.id,
             
             apiQuery: {
@@ -86,8 +87,12 @@
             }
         };
 
-        $scope.setThreadId = function(threadId) {
+        $scope.init = function(threadId) {
             $scope.data.threadId = threadId;
+        }
+
+        $scope.isChatClosed = function() {
+            return $rootScope.closedChats && $rootScope.closedChats[$scope.data.threadId];
         }
 
         var adjustBoxPosition = function () {
@@ -99,15 +104,21 @@
         };
 
         $scope.sendMessage = function (message) {
+            if($scope.data.sending){
+                return;
+            }
 
             var newMessage = {
                 thread: $scope.data.threadId,
                 payload: message
             };
 
+            $scope.data.sending = true;
+
             ChatService.create(newMessage).success(function (data, status, headers) {
                 $scope.data.messages.push(data);
                 $scope.data.newMessage = '';
+                $scope.data.sending = false;
             });
 
         }

@@ -319,6 +319,18 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('template(panel.<<*>>.panel-evaluation-title):end', function ($opportunity) {
+            if ($opportunity->isOpportunityPhase) {
+                $this->part('opportunity-phase-base-name', ['entity' => $opportunity]);
+            }
+        });
+
+        $app->hook('template(panel.<<*>>.panel-registration-title):end', function ($registration) {
+            if ($registration->opportunity->isOpportunityPhase) {
+                $this->part('opportunity-phase-base-name', ['entity' => $registration->opportunity]);
+            }
+        });
+
         // unifica as fichas de inscricão
         $app->hook('template(registration.view.form):begin', function() use($app){
             $entity = $this->controller->requestedEntity;
