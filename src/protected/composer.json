@@ -26,12 +26,19 @@
         "psy/psysh": "@stable",
         "sinergi/browser-detector": "*",
         "acelaya/doctrine-enum-type": "^2.3",
-        "hacklab/bank-account-validator": "1.1.2"
+        "hacklab/bank-account-validator": "1.1.2",
+        "mapasculturais/sdk": "dev-master"
     },
     "require-dev": {
     },
-    "repositories": [{
-        "type": "git",
-        "url": "https://github.com/hacklabr/opauth-logincidadao.git"
-        }]
-    }
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/hacklabr/opauth-logincidadao.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/mapasculturais/MapasSDK.git"
+        }
+    ]
+}
