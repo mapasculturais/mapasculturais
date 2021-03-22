@@ -31,6 +31,13 @@ $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
 
+    $("textarea.auto-height").each(function () {
+        this.setAttribute("style", "width:100%;height:" + (this.scrollHeight) + "px;overflow-y:hidden;min-height:52px");
+    }).on("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight+5) + "px";
+    });
+
     $("form.create-entity").submit(function (e) {
         $('.modal-loading').show();
         $(this).hide();

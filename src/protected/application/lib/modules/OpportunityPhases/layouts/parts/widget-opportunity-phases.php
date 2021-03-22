@@ -112,7 +112,6 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
                     /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */
                     i::_e('às'); ?>
                     <strong class="js-editable" id="registrationTo_time" data-viewformat="dd/mm/yyyy" data-datetime-value="<?php echo $phase->registrationTo ? $phase->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="<?php i::esc_attr_e('Hora final'); ?>" data-emptytext="<?php i::esc_attr_e('Hora final'); ?>"><?php echo $phase->registrationTo ? $phase->registrationTo->format('H:i') : ''; ?></strong>
-                    .
                 </li>
             <?php else: ?>
                 <li>
