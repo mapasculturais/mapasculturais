@@ -5,7 +5,7 @@
     <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
         <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
-        <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
+        <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class="(field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : 'type-section'">
             <?php $this->applyTemplateHook('registration-field-item', 'begin') ?>
             <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links' ">
                 <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
