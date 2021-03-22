@@ -98,7 +98,7 @@ article.opportunity .editable-buttons button {
 }
 .registration-fieldset {
 	margin-bottom: $line-height-base;
-	padding: $padding-small;
+	padding: $padding-large;
 	border: $thin-row;
 	border-radius: $border-radius-base;
 	&.project-edit-mode:hover {
@@ -167,7 +167,7 @@ article.opportunity .editable-buttons button {
         }
     }
     @media screen and (min-width: $screen-desktop) {
-        padding: $padding-base;
+        padding: $padding-large;
     }
 }
 .registration-help {
