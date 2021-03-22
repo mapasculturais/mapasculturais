@@ -59,20 +59,95 @@
             });
             observer.observe(each, { attributes: true });
         });
-
-        
-
     }]);
 
     module.controller('Support', ['$scope', 'SupportService', '$window', function ($scope, SupportService, $window) {
         $scope.data = {
-            agents: []
+            agents: [],
+            agentsRelations: [],
+            agentsRelationsIgnoreSearch: []
         };
 
-        SupportService.findAgentsRelation(MapasCulturais.entity.id).success(function (data, status, headers) {
-            $scope.data.agents = data;
+        SupportService.getAgentsRelation(MapasCulturais.entity.id).success(function (data, status, headers) {
+            data.forEach(function (item){
+                $scope.data.agentsRelationsIgnoreSearch.push(item.agent.id);                
+            });
+            $scope.data.agentsRelations = data;
         });
+        
+        
+
+        $scope.findAgents = function(){            
+            $scope.searchTimeOut = null;
+            $scope.data.spinner = true;
+            $scope.searchTimeOut = setTimeout(function() {
+                MapasCulturais.searchIgnore = $scope.data.agentsRelationsIgnoreSearch.join([',']) || null; 
+                              
+                SupportService.findAgents(MapasCulturais.searchIgnore, $scope.data.searshAgents).success(function (data, status, headers) {
+                    $scope.data.agents = data;
+                    $scope.data.spinner = false;
+                 });
+            },1500);
+        }
+
+       
+        $scope.editBoxCancel = function(){
+            MapasCulturais.EditBox.close('#add-age');
+            $scope.data.agents = {};  
+            $sacope.data.searshAgents = "";
+        }
+
+        $scope.editBoxOpen = function(){
+            MapasCulturais.EditBox.open('#add-age');         
+        }
+
+        $scope.selectAgent = function(agent){
+            var data = {
+                agentId: agent.id,
+                group: '@support'
+            };
+         
+            
+            SupportService.createRelation(MapasCulturais.entity.id, data).success(function (data, status, headers) {
+                MapasCulturais.Messages.success('Permissoes salvas com sucesso.');
+                $scope.data.agentsRelations.push(data);
+                $scope.data.agents = {};
+                $scope.data.searshAgents = "";
+                $scope.data.agentsRelationsIgnoreSearch.push(data.agent.id);
+                MapasCulturais.EditBox.close('#add-age');                
+            });
+        }
+
+        
+        $scope.deleteAgentRelation = function(agentId){
+            var data = {
+                agentId: agentId,
+                group: '@support'
+            };
+
+          
+            if(confirm('Voce realmente deseja remover a relação deste agente?')){
+                SupportService.deleteRelation(MapasCulturais.entity.id, data).success(function (data, status, headers) {
+                    $scope.data.agentsRelations.forEach(function (item, index){
+                        if(item.agent.id == agentId){
+                            $scope.data.agentsRelations.splice(index,1);
+                        }                        
+                    });   
+
+                    $scope.data.agentsRelationsIgnoreSearch.forEach(function (item, index){
+                        if(item == agentId){
+                            $scope.data.agentsRelationsIgnoreSearch.splice(index,1);
+                        }                       
+                    }); 
+                    
+                    MapasCulturais.Messages.success('Agente removido com sucesso!');
+                });
+            }
+        }
+
+
     }]);
+
     module.controller('SupportForm',['$scope', 'SupportService','$window', function($scope, SupportService, $window){        
         $scope.userAllowedFields = MapasCulturais.userAllowedFields
         
@@ -92,7 +167,7 @@
     }]);
     module.factory('SupportService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
         return {
-            findAgentsRelation: function (opportunityId, data) {
+            getAgentsRelation: function (opportunityId, data) {
 
                 var url = MapasCulturais.createUrl('support', 'getAgentsRelation', {opportunityId});
 
@@ -115,7 +190,48 @@
                     error(function (data, status) {
                         $rootScope.$emit('error', { message: "Reports not found for this opportunity", data: data, status: status });
                     });
-            }
+            },
+            findAgents: function (searchIgnore, data) {
+                
+                var complete = "";
+                if(searchIgnore){
+                    complete = '&id=!IN('+searchIgnore+')';
+                }
+
+                var qdata = '?@files=(avatar.avatarSmall):url&@limit=20&@order=name&@page=1&@select=id,name,type,shortDescription,terms&name=ILIKE(*'+data+'*)&parent=NULL()&status=GT(0)&type=EQ(1)'+complete;
+
+                var url = MapasCulturais.createUrl('api/agent', 'find') + qdata;
+
+                return $http.get(url, data).
+                    success(function (data, status, headers) {
+                        $rootScope.$emit('registration.create', { message: "Reports found", data: data, status: status });
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Reports not found for this opportunity", data: data, status: status });
+                    });
+            },
+            createRelation: function (opportunityId, data) {
+                var url = MapasCulturais.createUrl('opportunity', 'createAgentRelation', [opportunityId]);
+
+                return $http.post(url, data).
+                    success(function (data, status, headers) {
+                        $rootScope.$emit('registration.create', { message: "Reports found", data: data, status: status });
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Reports not found for this opportunity", data: data, status: status });
+                    });
+            },
+            deleteRelation: function (opportunityId, data) {
+                var url = MapasCulturais.createUrl('opportunity', 'removeAgentRelation', [opportunityId]);
+
+                return $http.post(url, data).
+                    success(function (data, status, headers) {
+                        $rootScope.$emit('registration.create', { message: "Reports found", data: data, status: status });
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Reports not found for this opportunity", data: data, status: status });
+                    });
+            },
         };
     }]);
 
