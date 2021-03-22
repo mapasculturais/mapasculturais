@@ -31,7 +31,7 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 <div id="accountability" class="aba-content" ng-controller="OpportunityController">
     <div ng-controller="AccountabilityEvaluationForm">
     <?php $this->applyTemplateHook('accountability-content', 'begin', $template_hook_params) ?>
-    
+
     <?php if(!$registration->canUser('evaluate')): ?>
         <section class="highlighted-message clearfix">
             <?php

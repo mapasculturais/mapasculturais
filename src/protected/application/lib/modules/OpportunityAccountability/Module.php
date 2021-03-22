@@ -208,13 +208,17 @@ class Module extends \MapasCulturais\Module
         },-10);
 
         // adiciona controles de abrir e fechar chat e campo para edição
-        $app->hook('template(project.single.registration-field-item):end', function () {
+        $app->hook('template(project.single.registration-field-item):begin', function () {
             $project = $this->controller->requestedEntity;
             if (($accountability = $project->registration->accountabilityPhase ?? null) && $project->canUser('evaluate')) {
                 $project = $this->controller->requestedEntity;
                 $this->part('accountability/registration-field-controls');
             }
 
+        });
+
+        $app->hook('template(project.single.registration-field-item):end', function () {
+            echo '<div class="clearfix"></div>';
             $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
         });
 
