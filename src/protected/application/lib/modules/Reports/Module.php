@@ -8,6 +8,7 @@ use DateInterval;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Definitions\MetaListGroup;
+use MapasCulturais\i;
 
 
 class Module extends \MapasCulturais\Module
@@ -231,33 +232,33 @@ class Module extends \MapasCulturais\Module
 
         $result = $conn->fetchAll($query, $params);
 
+        $status_names = [
+            '0' => i::__('Rascunho'),
+            '1' => i::__('Pendente'),
+            '2' => i::__('Inválida'),
+            '3' => i::__('Não Selecionada'),
+            '8' => i::__('Suplente'),
+            '10' => i::__('Selecionada')
+        ];
+
+        $data = [
+                i::__('Rascunho') => 0,
+                i::__('Pendente') => 0,
+                i::__('Inválida') => 0,
+                i::__('Não Selecionada') => 0,
+                i::__('Suplente') => 0,
+                i::__('Selecionada') => 0
+            ];
+
         foreach ($result as $value) {
-            switch ($value['status']) {
-                case 0:
-                    $status = "Rascunho";
-                    break;
-                case 1:
-                    $status = "Pendente";
-                    break;
-                case 2:
-                    $status = "Inválida";
-                    break;
-                case 3:
-                    $status = "Não Selecionada";
-                    break;
-                case 8:
-                    $status = "Suplente";
-                    break;
-                case 10:
-                    $status = "Selecionada";
-                    break;
+
+            $status = $status_names[$value['status']] ?? null;
+
+            if (!$status) {
+                continue;
             }
 
             $data[$status] = $value['count'];
-        }
-
-        if (!$data) {
-            return false;
         }
 
         return $data;
