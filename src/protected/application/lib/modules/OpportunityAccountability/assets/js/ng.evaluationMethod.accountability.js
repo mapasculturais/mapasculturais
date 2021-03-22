@@ -206,5 +206,9 @@
         }
     }]);
 
+    module.controller('OpportunityAccountability',['$scope', function($scope){
+        $scope.canUserEdit = function(field){
+        }            
+    }]);
 
 })(angular);

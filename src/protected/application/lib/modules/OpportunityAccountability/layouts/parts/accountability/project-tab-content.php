@@ -56,7 +56,24 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
     </div>
     
     <?php $this->part('singles/project--events', ['project' => $entity]) ?>
-   
+
+    <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">    
+        <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
+        <ul class="attachment-list" ng-controller="RegistrationFieldsController">
+            <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
+                <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
+                    <div ng-if="canUserEdit(field)">
+                        <?php $this->part('singles/registration-field-edit') ?>
+                    </div>
+                    <div ng-if="!canUserEdit(field)" >
+                        <?php $this->part('singles/registration-field-view') ?>
+                    </div>
+                </li>
+            <?php $this->applyTemplateHook('registration-field-list', 'end') ?>
+        </ul>
+        <?php $this->applyTemplateHook('registration-field-list', 'after') ?>
+    </div>
+
     <?php if($registration->status > MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
 
         <?php $this->part('singles/registration-single--fields', $_params) ?>
