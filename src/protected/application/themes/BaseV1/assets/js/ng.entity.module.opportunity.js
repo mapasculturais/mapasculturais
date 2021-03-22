@@ -1093,12 +1093,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.printField = function(field, value){
 
         if (field.fieldType === 'date') {
-            return moment(value).format('DD-MM-YYYY');
+            return moment(value).format('DD/MM/YYYY');
         } else if (field.fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
-        } else if (value instanceof Array) {
+        }  else if (field.fieldType === 'agent-owner-field' && typeof value ==='object' || field.fieldType === 'agent-collective-field' && typeof value ==='object'){
+            // FORMATANDO A DATA DE NASCIMENTO
+            return moment(value).format('DD/MM/YYYY');
+        }else if (value instanceof Array) {
             return value.join(', ');
         } else {
             return value;
