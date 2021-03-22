@@ -4,6 +4,7 @@
     <li class="active"><a href="#main-content" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Principal");?></a></li>
 
     <?php if($this->isEditable()): ?>
+        <li><a href="#form-config" rel="noopener noreferrer"><?php \MapasCulturais\i::_e("Configuração do Formulário"); ?></a></li>
         <?php if(!$entity->isNew()): ?>
             <li><a href="#evaluations-config" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Configuração da Avaliação");?></a></li>
         <?php endif; ?>

@@ -49,6 +49,7 @@ $this->includeMapAssets();
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 

@@ -31,6 +31,13 @@ $(function(){
 //    $.fn.select2.defaults.separator = '; ';
 //    $.fn.editabletypes.select2.defaults.viewseparator = '; ';
 
+    $("textarea.auto-height").each(function () {
+        this.setAttribute("style", "width:100%;height:" + (this.scrollHeight) + "px;overflow-y:hidden;min-height:52px");
+    }).on("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight+5) + "px";
+    });
+
     $("form.create-entity").submit(function (e) {
         $('.modal-loading').show();
         $(this).hide();
@@ -242,7 +249,6 @@ $(function(){
     if ($(window).width() < 768) {
         $('.agentes-relacionados .avatar').on('click hover', function () {
             $('.descricao-do-agente').hide();
-
             var descAgent = $(this).find('.descricao-do-agente');
             var descAgentHeight = descAgent.outerHeight();
             descAgent.show().css('top',-((descAgentHeight)+10));
@@ -260,10 +266,23 @@ $(function(){
 });
 
 //Restart entity form
-function restartingCreateEntity() {
-    $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
-    $('.js-dialog').attr('style', 'display: none');                
-    $('.create-entity').trigger("reset");
+function restartingCreateEntity() {    
+    if($("#dialog-event-occurrence").hasClass('occurrence-open')){
+        $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");
+        $('.create-entity').trigger("reset");
+        $(".js-event-occurrence").html("");
+    }else{
+        $('.modal-loading, .modal-feedback, .create-entity').removeAttr("style");                
+        $('.js-dialog').attr('style', 'display: none');                
+        $('.create-entity').trigger("reset");
+        $(".modal-feedback-event").css('display', 'none');
+        $(".create-event").css('display', 'block');
+        $(".js-event-occurrence").html("");
+        $(".cancel-action").css('display', 'block');
+        $(".btn-event").css('display', 'block');
+        $('.event-occurrence-list').addClass("hidden"); 
+    }
+   
 }
 
 MapasCulturais.utils = {
@@ -534,7 +553,7 @@ MapasCulturais.Modal = {
 
             // close button
             $dialog.find('.js-close').click(function (){
-                MapasCulturais.Modal.close(selector);
+                MapasCulturais.Modal.close($dialog);
                 restartingCreateEntity();
                 return false;
             });
