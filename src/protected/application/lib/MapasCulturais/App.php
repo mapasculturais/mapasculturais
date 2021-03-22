@@ -808,7 +808,8 @@ class App extends \Slim\Slim{
         $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
         $this->registerController('permissionCache',   'MapasCulturais\Controllers\PermissionCache');
 
-        // chat message controller
+        // chat controllers
+        $this->registerController('chatThread', 'MapasCulturais\Controllers\ChatThread');
         $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
