@@ -20,6 +20,7 @@
 
 #support .support-content .committee .btn {
     margin: 5px 0 0 0;
+    margin-right: 15px;
 }
 
 #support .support-content .committee .committee--name {
@@ -93,4 +94,33 @@ body.modal-oppened {
     border-bottom: 1px solid #ccc;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
+}
+
+#support .support-content-modal .modal-body ul {
+    margin: 0 -10px;
+}
+
+#support .support-content-modal .modal-body ul li {
+    align-items: center;
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    margin: 0 10px 5px;
+    padding: 5px 5px 5px 10px;
+}
+
+#support .support-content-modal .modal-body ul li:hover {
+    background-color: #f5f5f5;
+}
+
+#support .support-content-modal .modal-body ul li label {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#support .support-content-modal .modal-body ul li select {
+    cursor: pointer;
+    margin-bottom: 0;
 }
