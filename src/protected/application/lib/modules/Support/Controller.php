@@ -14,16 +14,19 @@ class Controller extends \MapasCulturais\Controller
     {
         $this->requireAuthentication();
         $app = App::i();
-        $registration = $app->repo('Registration')->find($this->data['id']);
-        $relation = $app->repo('AgentRelation')->findOneBy(['agent' => $app->user->profile, 'objectId' => $registration->opportunity->id, 'group' => '@support']);
-        if (!($registration && $registration->canUser('support'))){
+        $registration = $app->repo("Registration")->find($this->data["id"]);
+        if (!($registration && $registration->canUser("support"))) {
             $this->pass();
-            die;
         }
         $registration->registerFieldsMetadata();
-        $this->render('registration', [
-            'entity' => $registration,
-            'userAllowedFields' => $relation->metadata['registrationPermissions']
+        $relation = $app->repo("AgentRelation")->findOneBy([
+            "agent" => $app->user->profile,
+            "objectId" => $registration->opportunity->id,
+            "group" => Module::SUPPORT_GROUP
+        ]);
+        $this->render("registration", [
+            "entity" => $registration,
+            "userAllowedFields" => ($relation->metadata["registrationPermissions"] ?? [])
         ]);
     }
 
@@ -44,32 +47,36 @@ class Controller extends \MapasCulturais\Controller
     public function PUT_opportunityPermissions()
     {
         $app = App::i();
-
         $opportunity = $this->getOpportunity();
-        if(!$opportunity){
+        if (!$opportunity) {
             $app->pass();
         }
-        
-        $opportunity->checkPermission('@control');
-
-     
-        $agent_id = $this->urlData['agentId'] ?? null;
-        $agent = $app->repo('Agent')->findOneBy(['id' => $agent_id]);
-        if(!$agent){
+        $opportunity->checkPermission("@control");
+        $agent_id = $this->urlData["agentId"] ?? null;
+        $agent = $app->repo("Agent")->find($agent_id);
+        if (!$agent) {
             $app->pass();
         }
-
-        $agent_relation = $app->repo('AgentRelation')->findOneBy(['objectId' => $opportunity->id, 'agent' => $agent, 'group' => Module::SUPPORT_GROUP]);
-        if(!$agent_relation){
+        $agent_relation = $app->repo("AgentRelation")->findOneBy([
+            "objectId" => $opportunity->id,
+            "agent" => $agent,
+            "group" => Module::SUPPORT_GROUP
+        ]);
+        if (!$agent_relation) {
             $this->errorJson(i::__("Usuário não é do grupo de suporte"), 400);
         }
-        
-        $permissions = array_filter( $this->postData);
-        
-        $result['registrationPermissions'] = $permissions;
+        $result = $agent_relation->metadata;
+        foreach ($this->postData as $key => $value) {
+            if (!$value) {
+                if (isset($result["registrationPermission"][$key])) {
+                    unset($result["registrationPermission"][$key]);
+                }
+            } else {
+                $result["registrationPermissions"][$key] = $value;
+            }
+        }
         $agent_relation->metadata = $result;
         $agent_relation->save(true);
-
         $this->json($agent_relation);
     }
 
