@@ -142,6 +142,12 @@ class ChatThread extends \MapasCulturais\Entity
         return $this->getOwnerEntity()->ownerUser->profile;
     }
 
+    public function getOwnerUser()
+    {
+
+        return $this->getOwner()->user;
+    }
+
     /**
      * Returns the owner entity of this chat thread.
      * @return \MapasCulturais\Entity
@@ -260,7 +266,12 @@ class ChatThread extends \MapasCulturais\Entity
                 return true;
             }
         }
-        return false;
+        
+        if($user->id == $this->ownerUser->id) {
+            return true;
+        }
+
+        return $this->ownerEntity->canUser('view');
     }
 
     //============================================================= //
