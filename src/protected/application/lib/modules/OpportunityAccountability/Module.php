@@ -13,6 +13,7 @@ use MapasCulturais\Entities\ChatMessage;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Entities\RegistrationEvaluation;
 
 /**
  * @property Module $evaluationMethod
@@ -96,23 +97,26 @@ class Module extends \MapasCulturais\Module
             $project = $this->controller->requestedEntity;
 
             if ($project->isAccountability) {                
-                if ($project->canUser('@control') || $project->opportunity->canUser('@controll')) {
-                    $this->part('accountability/project-tab');
-                } else if (($reg = $project->registration->accountabilityPhase) && $reg->canUser('evaluate'))  {
+                if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
                     $this->part('accountability/project-tab');
                 }
             }
         },1000);
 
+        // cria permissão project.evaluate para o projeto de prestaçao de contas
+        $app->hook('can(Project.evaluate)', function($user, &$result) {
+            $registration = $this->registration->accountabilityPhase ?? null;
+
+            $result = $registration && $registration->canUser('evaluate', $user);
+        });
+
         $app->hook('template(project.<<single|edit>>.tabs-content):end', function(){
             $project = $this->controller->requestedEntity;
 
             if ($project->isAccountability) {
-                if ($project->canUser('@control') || $project->opportunity->canUser('@controll')) {
+                if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
                     $this->part('accountability/project-tab-content');
-                } else if (($reg = $project->registration->accountabilityPhase) && $reg->canUser('evaluate'))  {
-                    $this->part('accountability/project-tab-content');
-                }
+                } 
             }
         },1000);
 
@@ -131,7 +135,6 @@ class Module extends \MapasCulturais\Module
                 $self->createAccountabilityPhase($this->parent);
             }
         });
-
 
         $app->hook('template(project.<<single|edit>>.header-content):before', function () {
             $project = $this->controller->requestedEntity;
@@ -153,13 +156,66 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
-
             $entity = $this->controller->requestedEntity;
 
             // accountabilityPhase existe apenas quando lastPhase existe
             if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
             }
+        });
+
+        /**
+         * adiciona o formulário do parecerista
+         */
+        $app->hook('template(project.single.accountability-content):end', function() use($app) {
+            $project = $this->controller->requestedEntity;
+            if ($accountability = $project->registration->accountabilityPhase ?? null) {
+                $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability]);
+
+                $form_params = [
+                    'opportunity' => $accountability->opportunity, 
+                    'registraton' => $accountability,
+                    'evaluation' => $evaluation,
+                ];
+
+                $this->jsObject['evaluation'] = $evaluation;
+
+                $this->part('accountability--evaluation-form', $form_params) ;
+            }
+        });
+
+        // adiciona controller angular ao formulário de avaliação
+        $app->hook('template(project.single.accountability-content):begin', function () use($app) {
+            $project = $this->controller->requestedEntity;
+            if ($accountability = $project->registration->accountabilityPhase ?? null) {
+                if ($evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability])) {
+                    $criteria = [
+                        'objectType' => RegistrationEvaluation::class, 
+                        'objectId' => $evaluation->id, 
+                        'type' => self::CHAT_THREAD_TYPE
+                    ];
+                    $chat_threads = $app->repo('ChatThread')->findBy($criteria);
+
+                    $chats_grouped = [];
+
+                    foreach($chat_threads as $thread) {
+                        $chats_grouped[$thread->identifier] = $thread;
+                    }
+
+                    $this->jsObject['accountabilityChatThreads'] = (object) $chats_grouped;
+                }
+            }
+        },-10);
+
+        // adiciona controles de abrir e fechar chat e campo para edição
+        $app->hook('template(project.single.registration-field-item):end', function () {
+            $project = $this->controller->requestedEntity;
+            if (($accountability = $project->registration->accountabilityPhase ?? null) && $project->canUser('evaluate')) {
+                $project = $this->controller->requestedEntity;
+                $this->part('accountability/registration-field-controls');
+            }
+
+            $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
         });
 
         /**
@@ -211,6 +267,26 @@ class Module extends \MapasCulturais\Module
             }
          });
 
+         // cria a avaliação se é um parecerista visitando pela primeira vez o projeto
+         $app->hook('GET(project.single):before', function() use($app) {
+            $project = $this->requestedEntity;
+
+            if($project && $project->isAccountability && $project->canUser('evaluate')) {
+                if($accountability = $project->registration->accountabilityPhase ?? null) {
+                    $criteria = [
+                        'registration' => $accountability
+                    ];
+
+                    if (!$app->repo('RegistrationEvaluation')->findOneBy($criteria)) {
+                        $evaluation = new RegistrationEvaluation;
+                        $evaluation->user = $app->user;
+                        $evaluation->registration = $accountability;
+                        $evaluation->save(true);
+                    }
+                }
+            }
+         });
+
          // redireciona a ficha de inscrição da fase de prestação de contas para o projeto relacionado
          $app->hook('GET(registration.view):before', function() use($app) {
             $registration = $this->requestedEntity;
@@ -221,7 +297,8 @@ class Module extends \MapasCulturais\Module
             }
          });
 
-        $app->hook("POST(chatMessage.opportunityAccountability)", function () use ($app) {
+
+        $app->hook("POST(chatThread.createAccountabilityField)", function () use ($app) {
             $this->requireAuthentication();
             $evaluation_id = $this->data["evaluation"];
             $evaluation = $app->repo("RegistrationEvaluation")->find($evaluation_id);
@@ -238,8 +315,10 @@ class Module extends \MapasCulturais\Module
             $description = sprintf(i::__("Prestação de contas número %s"), $evaluation->registration->number);
             $thread = new ChatThread($evaluation, $this->data["identifier"], self::CHAT_THREAD_TYPE, $description);
             $thread->save(true);
+            $app->disableAccessControl();
             $thread->createAgentRelation($evaluation->registration->owner, "participant");
-            $this->json(["thread_id" => $thread->id]);
+            $app->enableAccessControl();
+            $this->json($thread);
          });
 
          $app->hook('entity(Registration).get(project)', function(&$value, $metadata_key) use($app) {
@@ -360,7 +439,7 @@ class Module extends \MapasCulturais\Module
                 $sender = 'participant';
                 $recipient = 'admin';
             }
-            $notification->message = sprintf($notification_content, $registration->number);
+            $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
             $notification->save(true);
             $this->sendEmailForNotification($message, $notification, $sender, $recipient);
         });

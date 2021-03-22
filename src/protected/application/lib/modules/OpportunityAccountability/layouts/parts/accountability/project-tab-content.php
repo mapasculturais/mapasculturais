@@ -22,10 +22,17 @@ $this->addRegistrationToJs($registration);
 
 $this->includeAngularEntityAssets($opportunity);
 
+$template_hook_params = ['project' => $entity, 'registration' => $registration, 'opportunity' => $opportunity];
 ?>
+<?php $this->applyTemplateHook('accountability-content', 'before', $template_hook_params) ?>
 <div id="accountability" class="aba-content" ng-controller="OpportunityController">
+    <div ng-controller="AccountabilityEvaluationForm">
+    <?php $this->applyTemplateHook('accountability-content', 'begin', $template_hook_params) ?>
+    
     <h2><?= $registration->number ?></h2>
+    
     <?php $this->part('singles/project--events', ['project' => $entity]) ?>
+   
     <?php if($registration->status > MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
         <?php $this->part('singles/registration-single--fields', $_params) ?>
     <?php else: ?>
@@ -34,4 +41,7 @@ $this->includeAngularEntityAssets($opportunity);
 
     <?php endif; ?>
 
+    <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params) ?>
+    </div>
 </div>
+<?php $this->applyTemplateHook('accountability-content', 'after', $template_hook_params) ?>
