@@ -71,3 +71,23 @@
     }
     
 }
+
+
+.accountability-evaluation-form {
+    section {
+        margin-bottom: 1.25em;
+
+        &.actions {
+            text-align: right;
+        }
+    }
+
+}
+
+.accountability-registration-field-controls {
+    text-align: right;
+
+    label {
+        margin-right: 2em;
+    }
+}
