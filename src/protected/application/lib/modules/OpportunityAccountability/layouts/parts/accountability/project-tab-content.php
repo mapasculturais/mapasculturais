@@ -48,7 +48,11 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 
     <div class="registration-fieldset clearfix">
         <h4><?php i::_e("Número da Inscrição"); ?></h4>
-        <div class="registration-id alignleft"><?= $registration->number ?></div>
+        <?php if($registration->canUser('evaluate')): ?>
+            <div class="registration-id alignleft"><a href="<?=$registration->singleUrl?>" style="font-weight: normal;"><?= $registration->number ?></a></div>
+        <?php else: ?>
+            <div class="registration-id alignleft"><?= $registration->number ?></div>
+        <?php endif; ?>
     </div>
     
     <?php $this->part('singles/project--events', ['project' => $entity]) ?>
