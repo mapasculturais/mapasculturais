@@ -1,20 +1,23 @@
-<?php use MapasCulturais\i; ?>
-<div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType == 'persons'" id="field_{{::field.id}}" >
-    <span class="label icon"> 
-        {{::field.title}} 
-        <span ng-if="requiredField(field) ">obrigatório</span>   
+<?php
+
+use MapasCulturais\i; ?>
+
+<div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType == 'persons'" id="field_{{::field.id}}">
+    <span class="label icon">
+        {{::field.title}}
+        <div ng-if="requiredField(field)" class="field-required"><span class="description"><?php i::_e('obrigatório') ?></span><span class="icon-required">*</span></div>
     </span>
-    
+
     <div ng-if="::field.description" class="attachment-description">{{::field.description}}</div>
 
     <div ng-repeat="person in entity[fieldName]">
         <label ng-if="::field.config.name" style="display:inline-block">
             <?php i::_e('Nome') ?>: <br>
-            <input ng-model="person.name" ng-blur="saveField(field, entity[fieldName])" required >
+            <input ng-model="person.name" ng-blur="saveField(field, entity[fieldName])" required>
         </label>
         <label ng-if="::field.config.cpf" style="display:inline-block">
             <?php i::_e('CPF') ?>: <br>
-            <input ng-model="person.cpf" ng-blur="saveField(field, entity[fieldName])" js-mask="999.999.999-99" placeholder="___.___.___-__" required >
+            <input ng-model="person.cpf" ng-blur="saveField(field, entity[fieldName])" js-mask="999.999.999-99" placeholder="___.___.___-__" required>
         </label>
         <label ng-if="::field.config.relationship" style="display:inline-block">
             <?php i::_e('Parentesco') ?>: <br>
@@ -31,9 +34,9 @@
                 <option value="10"><?php i::_e("Não Parente") ?></option>
             </select>
         </label>
-        
+
         <button ng-click="remove(entity[fieldName], $index); saveField(field, entity[fieldName], 0);" class="btn btn-danger"><?php i::_e('remover') ?></button>
     </div>
-    
+
     <button ng-click="entity[fieldName] = entity[fieldName].concat([{}])" class="btn btn-primary"><?php i::_e('adicionar') ?></button>
 </div>
