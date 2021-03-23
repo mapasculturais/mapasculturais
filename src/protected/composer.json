@@ -20,7 +20,7 @@
         "michelf/php-markdown": "1.*",
         "opauth/logincidadao" : "*",
         "curl/curl": "1.2.0",
-        "firebase/php-jwt": "^2.2",
+        "firebase/php-jwt": "4.*",
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
         "psy/psysh": "@stable",
