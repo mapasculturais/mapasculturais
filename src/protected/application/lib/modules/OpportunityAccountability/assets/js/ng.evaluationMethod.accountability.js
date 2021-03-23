@@ -208,6 +208,10 @@
 
     module.controller('OpportunityAccountability',['$scope', function($scope){
         $scope.canUserEdit = function(field){
+           if(MapasCulturais.accountabilityPermissions[field.fieldName] === "true"){
+               return true;
+           }
+           return false;
         }            
     }]);
 

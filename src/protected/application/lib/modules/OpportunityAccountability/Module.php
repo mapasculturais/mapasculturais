@@ -25,10 +25,14 @@ class Module extends \MapasCulturais\Module
      * @var Module
      */
     protected $evaluationMethod;
-
+    
+    protected $inTransaction = false;
+    
     function _init()
     {
         $app = App::i();
+        
+        $self = $this;
 
         $this->evaluationMethod = new EvaluationMethod($this->_config);
         $this->evaluationMethod->module = $this;
@@ -120,12 +124,69 @@ class Module extends \MapasCulturais\Module
             }
         },1000);
 
+        $app->hook('can(Registration.modify)', function($user, &$result) use ($app){
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this]);
+            if($this->ownerUser->id == $user->id){
+                $evaluetion_data = json_decode(json_encode($evaluation->evaluationData), true);
+
+                foreach ($evaluetion_data['openFields'] as $value){
+                    if($value == "true"){
+                        $result = true;
+                        return;
+                    }
+                }
+            }            
+        });
+        
+        $app->hook('PATCH(registration.single):before', function() use ($app, $self){
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->requestedEntity]);
+            if($app->user->id == $this->requestedEntity->ownerUser->id){
+                $evaluetion_data = json_decode(json_encode($evaluation->evaluationData), true);
+               
+                foreach ($evaluetion_data['openFields'] as $value){
+                    if($value == "true"){
+
+                       $app->em->beginTransaction();
+                       $self->inTransaction = true;
+
+                       $app->hook('can(<<Agent|Space>>.<<@control|modify>>)',function($user, &$result){
+                            $result = true;                            
+                       });
+                    }
+                }
+            }
+        });
+
+        $app->hook('entity(RegistrationMeta).update:before', function($param) use ($app){
+           
+            if($this->owner->canUser('@control')){
+                return;
+            }
+
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->owner]);
+            $evaluetion_data = json_decode(json_encode($evaluation->evaluationData), true);
+
+            if($evaluetion_data['openFields'][$this->key] == "true"){
+                return;
+            }          
+            
+            $app->em->rollback();
+            throw new \Exception("Permission denied!");
+        });
+
+        $app->hook('slim.after', function() use ($app, $self){
+            if($self->inTransaction){
+            $app->log->debug('Entrou aqui');
+
+                $app->em->commit();
+            }
+        });       
+
         // Adidiona o checkbox haverá última fase
         $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
             $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
         });
 
-        $self = $this;
         $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
 
             $opportunityData = $app->controller('opportunity');
@@ -169,12 +230,13 @@ class Module extends \MapasCulturais\Module
          */
         $app->hook('template(project.single.accountability-content):end', function() use($app) {
             $project = $this->controller->requestedEntity;
+            
             if ($accountability = $project->registration->accountabilityPhase ?? null) {
                 $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability]);
 
                 $form_params = [
                     'opportunity' => $accountability->opportunity, 
-                    'registraton' => $accountability,
+                    'registration' => $accountability,
                     'evaluation' => $evaluation,
                 ];
 

@@ -1,10 +1,16 @@
 <?php
 
 use MapasCulturais\i;
-
+use MapasCulturais\App;
+$app = App::i();
 $entity = $this->controller->requestedEntity;
 $registration = $entity->registration->accountabilityPhase;
 $opportunity = $registration->opportunity;
+$evaluetion = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration]);
+
+if($evaluetion){
+    $this->jsObject['accountabilityPermissions'] = $evaluetion->evaluationData->openFields;
+}
 
 $opportunity->registerRegistrationMetadata();
 
@@ -61,7 +67,7 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
         <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
         <ul class="attachment-list" ng-controller="RegistrationFieldsController">
             <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
-                <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
+                <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
                     <div ng-if="canUserEdit(field)">
                         <?php $this->part('singles/registration-field-edit') ?>
                     </div>
