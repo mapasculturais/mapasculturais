@@ -7,7 +7,15 @@ $(document).ready(function() {
     $(".view-entity").click(function(){
         let url = MapasCulturais.createUrl('evento', [MapasCulturais.eventId]);
         document.location = url;        
-    });    
+    });
+
+    let element = document.getElementById("dialog-event-occurrence");
+    if (typeof (element) != 'undefined' && element != null) {
+        element.children[0].addEventListener("click", function(event) {
+            $("#dialog-event-occurrence").removeClass('occurrence-open');
+        })
+    }
+
 });
 
 

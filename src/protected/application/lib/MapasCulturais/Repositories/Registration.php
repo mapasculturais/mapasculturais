@@ -46,7 +46,7 @@ class Registration extends \MapasCulturais\Repository {
      * @param mixed $status = all all|sent|Entities\Registration::STATUS_*|[Entities\Registration::STATUS_*, Entities\Registration::STATUS_*]
      * @return \MapasCulturais\Entities\Registration[]
      */
-    function findByUser($user, $status = 'all'){
+    function findByUser($user, $status = 'all', int $limit = null){
         if($user->is('guest')){
             return [];
         }
@@ -78,7 +78,7 @@ class Registration extends \MapasCulturais\Repository {
 
         $q = $this->_em->createQuery($dql);
         $q->setParameter('agents', $user->agents ? $user->agents->toArray() : [-1]);
-
+        $q->setMaxResults($limit);
         if( $status !== false ){
             $q->setParameter('status', $status);
         }
