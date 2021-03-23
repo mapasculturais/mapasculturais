@@ -12,6 +12,7 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\ChatMessage;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities\ChatThread;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\RegistrationEvaluation;
 
@@ -525,6 +526,7 @@ class Module extends \MapasCulturais\Module
     // Migrar essa função para o módulo "Opportunity phase"
     function createAccountabilityPhase(Opportunity $parent)
     {
+        $app = App::i();
 
         $opportunity_class_name = $parent->getSpecializedClassName();
 
@@ -553,5 +555,11 @@ class Module extends \MapasCulturais\Module
         $phase->registrationTo = $_to;
 
         $phase->save(true);
+        $app->disableAccessControl();
+        $evaluation_method_configuration = new EvaluationMethodConfiguration;
+        $evaluation_method_configuration->opportunity = $phase;
+        $evaluation_method_configuration->type = 'accountability';
+        $evaluation_method_configuration->save(true);
+        $app->disableAccessControl();
     }
 }
