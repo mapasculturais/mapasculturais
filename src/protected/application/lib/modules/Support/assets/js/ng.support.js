@@ -75,7 +75,14 @@
             $scope.data.agentsRelations = data;
         });
         
-        
+        $scope.avatarUrl = function(entity){
+            if(entity['@files:avatar.avatarSmall'])
+                return entity['@files:avatar.avatarSmall'].url;
+            else if(entity.avatar && entity.avatar.avatarSmall)
+                return entity.avatar.avatarSmall.url;
+            else
+                return MapasCulturais.defaultAvatarURL;
+        };
 
         $scope.findAgents = function(){            
             $scope.searchTimeOut = null;
@@ -83,7 +90,7 @@
             $scope.searchTimeOut = setTimeout(function() {
                 MapasCulturais.searchIgnore = $scope.data.agentsRelationsIgnoreSearch.join([',']) || null; 
                               
-                SupportService.findAgents(MapasCulturais.searchIgnore, $scope.data.searshAgents).success(function (data, status, headers) {
+                SupportService.findAgents(MapasCulturais.searchIgnore, $scope.data.searchAgents).success(function (data, status, headers) {
                     $scope.data.agents = data;
                     $scope.data.spinner = false;
                  });
@@ -94,7 +101,7 @@
         $scope.editBoxCancel = function(){
             MapasCulturais.EditBox.close('#add-age');
             $scope.data.agents = {};  
-            $sacope.data.searshAgents = "";
+            $scope.data.searchAgents = "";
         }
 
         $scope.editBoxOpen = function(){
@@ -112,7 +119,7 @@
                 MapasCulturais.Messages.success('Permissoes salvas com sucesso.');
                 $scope.data.agentsRelations.push(data);
                 $scope.data.agents = {};
-                $scope.data.searshAgents = "";
+                $scope.data.searchAgents = "";
                 $scope.data.agentsRelationsIgnoreSearch.push(data.agent.id);
                 MapasCulturais.EditBox.close('#add-age');                
             });
