@@ -16,7 +16,11 @@ use MapasCulturais\i;
         <ul>
             <li ng-repeat="(key,field) in data.fields" ng-class="type-{{field.fieldType}}">
                 <label>
-                    <span class="field-title">{{field.title}}</span>                   
+                    <div>
+                        <code class="field-id">#{{field.id}}</code>
+                        <span class="field-title">{{field.title}}</span>
+                        <span class="field-type"><strong><?php i::_e('Tipo:'); ?></strong> {{field.fieldType}}</span>
+                    </div>
                     <select ng-change="savePermission({{agentRelation.agent.id}})" ng-model="data.userPermissions[field.ref]">
                         <option ng-selected="agentRelation.metadata.registrationPermissions[field.ref] === ''" value=""><?php i::_e("Sem permissão"); ?></option>
                         <option ng-selected="agentRelation.metadata.registrationPermissions[field.ref] === 'ro'" value="ro"><?php i::_e("Visualizar"); ?></option>

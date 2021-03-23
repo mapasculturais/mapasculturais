@@ -120,6 +120,20 @@ body.modal-oppened {
     width: 100%;
 }
 
+#support .support-content-modal .modal-body ul li label code {
+    font-weight: normal;
+    cursor: pointer;
+    color: darkgreen;
+}
+
+#support .support-content-modal .modal-body ul li label .field-type {
+    display: block;
+    word-wrap: break-word;
+    font-size: 0.75rem;
+    color: #999;
+    margin-bottom: 0;
+}
+
 #support .support-content-modal .modal-body ul li select {
     cursor: pointer;
     margin-bottom: 0;
