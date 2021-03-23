@@ -69,7 +69,11 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
             <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
                 <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
                     <div ng-if="canUserEdit(field)">
-                        <?php $this->part('singles/registration-field-edit') ?>
+                        <?php
+                            $this->applyTemplateHook('registration-field-item', 'begin');
+                            $this->part('singles/registration-field-edit');
+                            $this->applyTemplateHook('registration-field-item', 'end');
+                        ?>
                     </div>
                     <div ng-if="!canUserEdit(field)" >
                         <?php $this->part('singles/registration-field-view') ?>
@@ -79,14 +83,6 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
         </ul>
         <?php $this->applyTemplateHook('registration-field-list', 'after') ?>
     </div>
-
-    <?php if($registration->status > MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
-
-        <?php $this->part('singles/registration-single--fields', $_params) ?>
-    <?php else : ?>
-        <?php $this->part('singles/registration-edit--fields', $_params) ?>
-        <?php $this->part('accountability/send-button', $_params) ?>
-    <?php endif; ?>
 
     <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params) ?>
     </div>
