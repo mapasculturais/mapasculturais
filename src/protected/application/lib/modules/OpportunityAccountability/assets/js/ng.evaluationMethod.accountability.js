@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     var module = angular.module('ng.evaluationMethod.accountability', []);
-    
+
 
     module.config(['$httpProvider', function ($httpProvider) {
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -15,12 +15,12 @@
 
 
     module.factory('ApplyAccountabilityEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
-        
+
         return {
             apply: function (from, to, status) {
                 var data = {from: from, to: to, status};
                 var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsAccountability', [MapasCulturais.entity.id]);
-                
+
                 return $http.post(url, data).
                     success(function (data, status) {
                         $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
@@ -33,7 +33,7 @@
     }]);
 
     module.controller('ApplyAccountabilityEvaluationResults',['$scope', 'RegistrationService', 'ApplyAccountabilityEvaluationService', 'EditBox', function($scope, RegistrationService, ApplyAccountabilityEvaluationService, EditBox){
-        
+
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter((status) => {
             if(status.value > 1) return status;
@@ -80,7 +80,7 @@
     }]);
 
     module.factory('AccountabilityEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
-        
+
         return {
             save: function (registrationId, evaluationData, uid) {
                 var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [registrationId]);
@@ -118,11 +118,12 @@
 
         $scope.chatThreads = MapasCulturais.accountabilityChatThreads;
         $scope.openChats = {};
+        $scope.openFields = {};
 
         $scope.evaluationData = MapasCulturais.evaluation.evaluationData;
-        
+
         $rootScope.closedChats = $rootScope.closedChats || {};
-        
+
         Object.keys($scope.chatThreads).forEach(function(identifier) {
             const chat = $scope.chatThreads[identifier];
 
@@ -131,10 +132,15 @@
                 $rootScope.closedChats[chat.id] = true;
             }
         });
-        
+
         if (!$scope.evaluationData.openFields) {
             $scope.evaluationData.openFields = {};
         }
+
+        Object.keys($scope.evaluationData.openFields).forEach(function (key) {
+            $scope.openFields[key] = ($scope.evaluationData.openFields[key] == "true");
+            return;
+        });
 
         $scope.getFieldIdentifier = function(field) {
             return field.fieldName || field.group;
@@ -152,6 +158,16 @@
 
         $scope.chatExists = function(field) {
             return this.getChatByField(field) != undefined;
+        };
+
+        $scope.toggleOpen = function(field) {
+            const identifier = $scope.getFieldIdentifier(field);
+            $scope.evaluationData.openFields[identifier] = $scope.openFields[identifier];
+            AccountabilityEvaluationService.save(registrationId, $scope.evaluationData,
+            MapasCulturais.evaluation.user).success(function () {
+                MapasCulturais.Messages.success('Salvo');
+                return;
+            });
         };
 
         $scope.toggleChat = function(field) {
@@ -212,7 +228,7 @@
                return true;
            }
            return false;
-        }            
+        }
     }]);
 
 })(angular);

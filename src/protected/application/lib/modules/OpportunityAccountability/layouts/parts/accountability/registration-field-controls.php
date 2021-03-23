@@ -7,7 +7,7 @@ use MapasCulturais\i;
     <label>
         <?= i::__('Abrir campo para edição') ?>
         <span class="switch">
-            <input type="checkbox" ng-model="evaluationData.openFields[getFieldIdentifier(field)]">
+            <input type="checkbox" ng-model="openFields[getFieldIdentifier(field)]" ng-change="toggleOpen(field)" >
             <span class="slider"></span>
         </span>
     </label><br>
@@ -19,7 +19,7 @@ use MapasCulturais\i;
             <span class="slider"></span>
         </span>
     </label>
-    
+
     <?php $this->applyTemplateHook('accountability-registration-field-controls', 'end') ?>
 </div>
 <?php $this->applyTemplateHook('accountability-registration-field-controls', 'after') ?>
