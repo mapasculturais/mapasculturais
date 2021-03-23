@@ -46,6 +46,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <?php $this->part('singles/opportunity-header--owner-entity', ['entity' => $entity]) ?>
 
         <!--.header-image-->
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 

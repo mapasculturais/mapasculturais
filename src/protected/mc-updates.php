@@ -22,6 +22,40 @@ return [
         });
     },
 
+    'create registrations history entries' => function() {
+        $app = \MapasCulturais\App::i();
+        foreach (['Registration'] as $class){
+            DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entities\Registration $entity) use ($app) {
+                $entity->registerFieldsMetadata();
+
+                $user = $entity->owner->user;
+                $app->user = $user;
+                $app->auth->authenticatedUser = $user;
+                $entity->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_CREATED;
+
+                /*
+                 * Versão de Criação
+                 */
+                $entity->_newCreatedRevision();
+            });
+        }
+        $app->auth->logout();
+    },
+
+    'create evaluations history entries' => function () {
+        $app = \MapasCulturais\App::i();
+        DB_UPDATE::enqueue('RegistrationEvaluation', 'id > 0', function (MapasCulturais\Entities\RegistrationEvaluation $eval) use ($app) {
+            $user = $eval->owneruser;
+            $app->user = $user;
+            $app->auth->authenticatedUser = $user;
+            // versão de criação
+            $eval->_newCreatedRevision();
+            return;
+        });
+        $app->auth->logout();
+        return;
+    },
+
     'create entities history entries' => function() {
         $app = \MapasCulturais\App::i();
         foreach (['Agent', 'Space', 'Event'] as $class){

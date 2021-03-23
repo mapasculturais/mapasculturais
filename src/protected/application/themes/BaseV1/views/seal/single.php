@@ -30,6 +30,7 @@ $this->includeAngularEntityAssets($entity);
 
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
             

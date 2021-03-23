@@ -854,6 +854,7 @@ class Theme extends MapasCulturais\Theme {
                 'mc.directive.mcSelect',
                 'mc.module.notifications',
                 'mc.module.findEntity',
+                'ng.module.chat',
 
                 'ngSanitize',
             ];
@@ -895,6 +896,7 @@ class Theme extends MapasCulturais\Theme {
             $this->addDocumentMetas();
             $this->includeVendorAssets();
             $this->includeCommonAssets();
+            $this->includeChatAssets();
             $this->_populateJsObject();
             
             $this->enqueueScript('app', 'events-js', 'js/events.js', array('mapasculturais'));
@@ -1543,6 +1545,16 @@ class Theme extends MapasCulturais\Theme {
 
     function includeIbgeJS() {
         $this->enqueueScript('app', 'ibge', 'js/ibge.js');
+    }
+
+    function includeChatAssets() {
+
+        $app = App::i();
+
+        $app->view->enqueueScript('app', 'ng.mc.module.notifications', 'js/ng.mc.module.notifications.js');
+        $app->view->enqueueScript('app', 'ng.mc.directive.editBox', 'js/ng.mc.directive.editBox.js');
+        $app->view->enqueueScript('app', 'ng.module.chat', 'js/ng.module.chat.js', ['mapasculturais']);
+
     }
 
     function includeEditableEntityAssets() {
@@ -2402,6 +2414,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
                 $entity->opportunity->registrationFileConfigurations->toArray() : array();
 
+        $this->jsObject['entity']['registrationId'] = $entity->id;
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
         $this->jsObject['entity']['registrationFiles'] = $entity->files;
         $this->jsObject['entity']['registrationAgents'] = array();
@@ -2411,8 +2424,9 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['canUserEvaluate'] = $entity->canUser('evaluate');
         $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');
 
+        $this->jsObject['registration'] = $entity;
+        
         if($entity->opportunity->canUser('viewEvaluations')){
-            $this->jsObject['registration'] = $entity;
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);
             $this->jsObject['evaluationConfiguration'] = $entity->opportunity->evaluationMethodConfiguration;
         }

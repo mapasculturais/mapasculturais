@@ -12,6 +12,5 @@ $editable = $this->isEditable() && !isset($disable_editable);
         <?php /* Translators: "às" indicando horário de data de 25/1 a 25/2 *ÀS* 13:00 */ ?>
         <?php \MapasCulturais\i::_e("às");?>
         <strong <?php if($editable): ?> class="js-editable" id="registrationTo_time" <?php endif; ?> data-datetime-value="<?php echo $entity->registrationTo ? $entity->registrationTo->format('Y-m-d H:i') : ''; ?>" data-placeholder="<?php \MapasCulturais\i::esc_attr_e("Hora final");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Hora final");?>"><?php echo $entity->registrationTo ? $entity->registrationTo->format('H:i') : ''; ?></strong>
-        .
     </div>
 <?php endif; ?>

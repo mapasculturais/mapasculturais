@@ -8,7 +8,7 @@
 	<div class="objeto-meta">
         <?php $this->applyTemplateHook('panel-new-fields-before','begin', [ $entity ]); ?>
         <?php $this->applyTemplateHook('panel-new-fields-before','end'); ?>
-		<div><span class="label">Tipo:</span> <?php echo $entity->type->name?></div>
+		<div><span class="label">Tipo:</span> <?php echo $entity->type->name ?? \MapasCulturais\i::_e('Não informado'); ?></div>
                 <?php if($entity->registrationFrom || $entity->registrationTo): ?>
                     <div>
                         <span class="label"><?php \MapasCulturais\i::_e("Inscrições:");?></span>

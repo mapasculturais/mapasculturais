@@ -100,7 +100,7 @@ trait EntityPermissionCache {
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
         }
-
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
