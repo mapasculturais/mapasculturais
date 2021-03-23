@@ -137,7 +137,7 @@
         }
 
         $scope.getFieldIdentifier = function(field) {
-            return field.fieldName || field.group;
+            return field.fieldName || field.groupName;
         }
 
         $scope.getChatByField = function (field) {
