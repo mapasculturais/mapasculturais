@@ -20,8 +20,15 @@ $total = array_sum($total);
 //Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
     if ($key != i::__('Rascunho')) {
+
+        if($value == 0 || $value == "0"){
+            $percent = 0;
+        }else{
+            $percent = number_format(($value / $total) * 100, 2, '.', '');
+        }
+
         $label[] = $key;
-        $legends[] = $key . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 2, '.', '') . '%)';
+        $legends[] = $key . '<br>' . $value . ' (' . $percent . '%)';
         $values[] = $value;
         $colors[] = is_callable($color) ? $color() : $color;
     }

@@ -69,14 +69,10 @@ class Fake extends \MapasCulturais\AuthProvider {
      * @return string
      */
     public function getRedirectPath() {
-        $url = isset($_COOKIE['mapasculturais_user_nav_url']) ? $_COOKIE['mapasculturais_user_nav_url'] : null;
-        if (!is_null($url) && filter_var($url, FILTER_VALIDATE_URL)) {
-            $path = $url;
-        } else {
-            $path = key_exists('mapasculturais.auth.redirect_path', $_SESSION) ?
-                $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site', '');
-        }
-
+        
+        $path = key_exists('mapasculturais.auth.redirect_path', $_SESSION) ?
+            $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site', '');
+    
         unset($_SESSION['mapasculturais.auth.redirect_path']);
 
         return $path;
