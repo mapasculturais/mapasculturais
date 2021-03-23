@@ -91,8 +91,10 @@ class Module extends \MapasCulturais\Module
 
             $project->save();
 
+            $app->disableAccessControl();
             $first_phase->project = $project;
             $first_phase->save(true);
+            $app->enableAccessControl();
 
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
