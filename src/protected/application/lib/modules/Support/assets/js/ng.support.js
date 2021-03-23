@@ -23,11 +23,22 @@
             return a.displayOrder - b.displayOrder;
         });
 
+        $scope.returnTypeDescription = function(fieldType) {
+            var fields = MapasCulturais.registrationFieldTypes.reduce(function (prev, curr) {
+                prev[curr.slug] = curr;
+                return prev;
+            }, {});
+
+            return fields[fieldType].name;
+        }
+
         $scope.data.fields.map(function(item){
             if(item.fieldType == "file"){
                 item.ref = item.groupName;
+                item.typeDescription = 'Arquivo'; // @todo: internacionalizar
             }else{
                 item.ref = item.fieldName;
+                item.typeDescription = $scope.returnTypeDescription(item.fieldType);
             }
         });
         
