@@ -14,7 +14,7 @@ use MapasCulturais\i;
     <!--Content modal -->
     <div class="modal-body">
         <ul>
-            <li ng-repeat="(key,field) in data.fields" ng-class="type-{{field.fieldType}}">
+            <li ng-repeat="(key,field) in data.fields" ng-class="type-{{field.fieldType}}" ng-if="field.fieldType != 'section'">
                 <label>
                     <div>
                         <code class="field-id">#{{field.id}}</code>
