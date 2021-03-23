@@ -69,10 +69,14 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
             <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
                 <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
                     <div ng-if="canUserEdit(field)">
-                        <?php
-                            $this->applyTemplateHook('registration-field-item', 'begin');
-                            $this->part('singles/registration-field-edit');
-                            $this->applyTemplateHook('registration-field-item', 'end');
+                        <?php                            
+                            if($registration->canUser('modify')){
+                                $this->applyTemplateHook('registration-field-item', 'begin');
+                                $this->part('singles/registration-field-edit');
+                                $this->applyTemplateHook('registration-field-item', 'end');
+                            }else{
+                                $this->part('singles/registration-field-view');
+                            }                            
                         ?>
                     </div>
                     <div ng-if="!canUserEdit(field)" >
