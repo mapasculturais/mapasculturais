@@ -26,9 +26,13 @@ class Module extends \MapasCulturais\Module
      */
     protected $evaluationMethod;
 
+    protected $inTransaction = false;
+
     function _init()
     {
         $app = App::i();
+
+        $self = $this;
 
         $this->evaluationMethod = new EvaluationMethod($this->_config);
         $this->evaluationMethod->module = $this;
@@ -96,7 +100,7 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(project.<<single|edit>>.tabs):end', function(){
             $project = $this->controller->requestedEntity;
 
-            if ($project->isAccountability) {                
+            if ($project->isAccountability) {
                 if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
                     $this->part('accountability/project-tab');
                 }
@@ -116,22 +120,62 @@ class Module extends \MapasCulturais\Module
             if ($project->isAccountability) {
                 if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
                     $this->part('accountability/project-tab-content');
-                } 
+                }
             }
         },1000);
+
+        $app->hook('can(Registration.modify)', function ($user, &$result) use ($app) {
+            if (($this->canUser('@control', $user)) && Module::hasOpenFields($this, $app)) {
+                $result = true;
+            }
+        });
+
+        $app->hook('PATCH(registration.single):before', function () use ($app, $self) {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->requestedEntity]);
+            if (($this->requestedEntity->canUser('@control')) && Module::hasOpenFields($this->requestedEntity, $app)) {
+                $app->em->beginTransaction();
+                $self->inTransaction = true;
+                $app->hook('can(<<Agent|Space>>.<<@control|modify>>)', function ($user, &$result) {
+                    $result = true;
+                });
+            }
+        });
+
+        $app->hook('entity(RegistrationMeta).update:before', function ($params) use ($app, $self) {
+            if ($this->owner->canUser('@control')) {
+                return;
+            }
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->owner]);
+            if (!$evaluation || !isset($evaluation->evaluationData)) {
+                return;
+            }
+            $evaluation_data = json_decode(json_encode($evaluation->evaluationData), true);
+            if (($evaluation_data["openFields"][$this->key] ?? "") == "true") {
+                return;
+            }
+            if ($self->inTransaction) {
+                $app->em->rollback();
+                throw new \Exception("Permission denied!");
+            }
+            return;
+        });
+
+        $app->hook('slim.after', function() use ($app, $self) {
+            if ($self->inTransaction) {
+                $app->em->commit();
+            }
+        });
 
         // Adidiona o checkbox haverá última fase
         $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
             $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
         });
 
-        $self = $this;
         $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
 
             $opportunityData = $app->controller('opportunity');
 
             if ($this->isLastPhase && isset($opportunityData->postData['hasAccountability']) && $opportunityData->postData['hasAccountability']) {
-                
                 $self->createAccountabilityPhase($this->parent);
             }
         });
@@ -167,20 +211,22 @@ class Module extends \MapasCulturais\Module
         /**
          * adiciona o formulário do parecerista
          */
-        $app->hook('template(project.single.accountability-content):end', function() use($app) {
+        $app->hook('template(project.single.accountability-content):end', function () use ($app) {
             $project = $this->controller->requestedEntity;
-            if ($accountability = $project->registration->accountabilityPhase ?? null) {
+            if ($accountability = ($project->registration->accountabilityPhase ?? null)) {
                 $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability]);
-
                 $form_params = [
-                    'opportunity' => $accountability->opportunity, 
-                    'registraton' => $accountability,
+                    'opportunity' => $accountability->opportunity,
+                    'registration' => $accountability,
                     'evaluation' => $evaluation,
                 ];
-
                 $this->jsObject['evaluation'] = $evaluation;
-
-                $this->part('accountability--evaluation-form', $form_params) ;
+                
+                if (!$evaluation || !$evaluation->canUser('modify')) {
+                    return;
+                }
+                
+                $this->part('accountability--evaluation-form', $form_params);
             }
         });
 
@@ -190,8 +236,8 @@ class Module extends \MapasCulturais\Module
             if ($accountability = $project->registration->accountabilityPhase ?? null) {
                 if ($evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability])) {
                     $criteria = [
-                        'objectType' => RegistrationEvaluation::class, 
-                        'objectId' => $evaluation->id, 
+                        'objectType' => RegistrationEvaluation::class,
+                        'objectId' => $evaluation->id,
                         'type' => self::CHAT_THREAD_TYPE
                     ];
                     $chat_threads = $app->repo('ChatThread')->findBy($criteria);
@@ -228,9 +274,9 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(project.single.event-modal-form):begin', function (){
             echo "<input type='hidden' name='projectId' value='{$this->controller->requestedEntity->id}'>";
         });
-        
+
         /**
-         * Substituição dos seguintes termos 
+         * Substituição dos seguintes termos
          * - avaliação por parecer
          * - avaliador por parecerista
          * - inscrição por prestação de contas
@@ -265,7 +311,7 @@ class Module extends \MapasCulturais\Module
          // substitui botões de importar inscrições da fase anterior
          $app->hook('view.partial(import-last-phase-button).params', function ($data, &$template) {
             $opportunity = $this->controller->requestedEntity;
-            
+
             if ($opportunity->isAccountabilityPhase) {
                 $template = "accountability/import-last-phase-button";
             }
@@ -301,6 +347,15 @@ class Module extends \MapasCulturais\Module
             }
          });
 
+        $app->hook("entity(RegistrationEvaluation).update:before", function ($params) use ($app) {
+             if (($this->status == RegistrationEvaluation::STATUS_EVALUATED) &&
+                 $this->registration->opportunity->isAccountabilityPhase) {
+                $data = json_decode(json_encode($this->evaluationData), true);
+                unset($data["openFields"]);
+                $this->evaluationData = $data;
+            }
+             return;
+         });
 
         $app->hook("POST(chatThread.createAccountabilityField)", function () use ($app) {
             $this->requireAuthentication();
@@ -326,10 +381,10 @@ class Module extends \MapasCulturais\Module
          });
 
          $app->hook('entity(Registration).get(project)', function(&$value, $metadata_key) use($app) {
-            
+
             if(!$value && $this->previousPhase) {
                 $this->previousPhase->registerFieldsMetadata();
-                
+
                 $cache_id = "registration:{$this->number}:$metadata_key";
                 if($app->cache->contains($cache_id)) {
                     $value = $app->cache->fetch($cache_id);
@@ -450,6 +505,21 @@ class Module extends \MapasCulturais\Module
         $app->registerChatThreadType($definition);
 
         $this->evaluationMethod->register();
+    }
+
+    static function hasOpenFields($registration, $app)
+    {
+        $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+        if (!$evaluation || !property_exists($evaluation, "evaluationData")) {
+            return false;
+        }
+        $evaluation_data = json_decode(json_encode($evaluation->evaluationData), true);
+        foreach (($evaluation_data["openFields"] ?? []) as $value) {
+            if ($value == "true") {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Migrar essa função para o módulo "Opportunity phase"

@@ -16,7 +16,7 @@ $closed = $closed ?? 'false';
             <p>{{item.payload}}</p>
         </div>
     </div>
-    <footer ng-if="!isChatClosed()">
+    <footer ng-if="!isChatClosed()" ng-style="{'border-top-width': (data.messages.length == 0) ? '0px' : '1px'}">
         <textarea class="new-message" ng-model="data.newMessage" ng-style="{'height': (!data.newMessage) ? 'auto' : ''}" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
         <button ng-disabled="!data.newMessage || data.sending" ng-click="sendMessage(data.newMessage)"><?php i::_e("Enviar"); ?></button>
     </footer>

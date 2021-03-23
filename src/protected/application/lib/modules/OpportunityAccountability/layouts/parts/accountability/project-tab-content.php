@@ -1,10 +1,14 @@
 <?php
 
 use MapasCulturais\i;
-
+use MapasCulturais\App;
+$app = App::i();
 $entity = $this->controller->requestedEntity;
 $registration = $entity->registration->accountabilityPhase;
 $opportunity = $registration->opportunity;
+$evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration]);
+
+$this->jsObject['accountabilityPermissions'] = $evaluation->evaluationData->openFields ?? [];
 
 $opportunity->registerRegistrationMetadata();
 
@@ -41,7 +45,7 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 
             printf(i::__("Prazo da prestação é de %s a %s até às %s."), '<strong>' . $registration_from . '</strong>', '<strong>' . $registration_to . '</strong>', '<strong>' . $registration_to_hour . '</strong>'); ?>
         </section>
-    
+
         <h4><?php i::_e("Formulário de prestação de contas"); ?></h4>
         <p><?php i::_e("Confira as informações e preencha os campos em aberto para realizar a prestação solicitada pela equipe gestora da oportunidade."); ?></p>
     <?php endif; ?>
@@ -54,16 +58,33 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
             <div class="registration-id alignleft"><?= $registration->number ?></div>
         <?php endif; ?>
     </div>
-    
-    <?php $this->part('singles/project--events', ['project' => $entity]) ?>
-   
-    <?php if($registration->status > MapasCulturais\Entities\Registration::STATUS_DRAFT): ?>
 
-        <?php $this->part('singles/registration-single--fields', $_params) ?>
-    <?php else : ?>
-        <?php $this->part('singles/registration-edit--fields', $_params) ?>
-        <?php $this->part('accountability/send-button', $_params) ?>
-    <?php endif; ?>
+    <?php $this->part('singles/project--events', ['project' => $entity]) ?>
+
+    <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
+        <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
+        <ul class="attachment-list" ng-controller="RegistrationFieldsController">
+            <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
+                <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
+                    <div ng-if="canUserEdit(field)">
+                        <?php                            
+                            if($registration->canUser('modify')){
+                                $this->applyTemplateHook('registration-field-item', 'begin');
+                                $this->part('singles/registration-field-edit');
+                                $this->applyTemplateHook('registration-field-item', 'end');
+                            }else{
+                                $this->part('singles/registration-field-view');
+                            }                            
+                        ?>
+                    </div>
+                    <div ng-if="!canUserEdit(field)" >
+                        <?php $this->part('singles/registration-field-view') ?>
+                    </div>
+                </li>
+            <?php $this->applyTemplateHook('registration-field-list', 'end') ?>
+        </ul>
+        <?php $this->applyTemplateHook('registration-field-list', 'after') ?>
+    </div>
 
     <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params) ?>
     </div>

@@ -94,6 +94,14 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      */
     protected $agent;
 
+     /**
+     * @var object
+     *
+     * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     */
+    protected $metadata;
+
+
     function jsonSerialize() {
         $result = parent::jsonSerialize();
         $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl');
