@@ -238,3 +238,12 @@
 .tip-yellowsimple{
     z-index: 1901 !important;   
 }
+
+.select-owner-entity{
+    display: none ;
+    margin-bottom: 20px !important;
+}
+
+.select-owner-entity.active{
+    display: block;
+}
