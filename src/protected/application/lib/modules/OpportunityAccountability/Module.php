@@ -141,7 +141,7 @@ class Module extends \MapasCulturais\Module
             }
         });
 
-        $app->hook('entity(RegistrationMeta).update:before', function ($param) use ($app, $self) {
+        $app->hook('entity(RegistrationMeta).update:before', function ($params) use ($app, $self) {
             if ($this->owner->canUser('@control')) {
                 return;
             }
@@ -343,6 +343,16 @@ class Module extends \MapasCulturais\Module
                     $app->redirect($project->singleUrl . '#/tab=accountability');
                 }
             }
+         });
+
+        $app->hook("entity(RegistrationEvaluation).update:before", function ($params) use ($app) {
+             if (($this->status == RegistrationEvaluation::STATUS_EVALUATED) &&
+                 $this->registration->opportunity->isAccountabilityPhase) {
+                $data = json_decode(json_encode($this->evaluationData), true);
+                unset($data["openFields"]);
+                $this->evaluationData = $data;
+            }
+             return;
          });
 
         $app->hook("POST(chatThread.createAccountabilityField)", function () use ($app) {
