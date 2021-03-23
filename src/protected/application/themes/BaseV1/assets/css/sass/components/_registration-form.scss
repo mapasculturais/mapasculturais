@@ -16,12 +16,14 @@
 }
 article.project .highlighted-message .btn {
     @media screen and (min-width: $screen-tablet) {
-        margin-bottom: $margin-small;
+        float: none !important;
+        margin-left: 0 !important;
     }
 }
 article.opportunity .highlighted-message .btn {
     @media screen and (min-width: $screen-tablet) {
-        margin-bottom: $margin-small;
+        float: none !important;
+        margin-left: 0 !important;
     }
 }
 
