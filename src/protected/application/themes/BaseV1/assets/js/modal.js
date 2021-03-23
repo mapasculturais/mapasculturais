@@ -8,8 +8,15 @@ $(document).ready(function() {
         let url = MapasCulturais.createUrl('evento', [MapasCulturais.eventId]);
         document.location = url;
     });
+    selectRadio('js-ownerProject')
+   
 });
 
+
+function selectRadio(owener){
+      $('.owner-select').find('.active').removeClass('active')
+      $('.'+owener).addClass('active');
+}
 
 function saveEvent(formId, complete = false){
     let url = MapasCulturais.createUrl('eventos', '');
