@@ -7,7 +7,7 @@ use MapasCulturais\App,
     MapasCulturais\Entities,
     MapasCulturais\Definitions,
     MapasCulturais\Exceptions;
-
+use MapasCulturais\Entities\Opportunity;
 
 class Module extends \MapasCulturais\Module{
 
@@ -195,6 +195,7 @@ class Module extends \MapasCulturais\Module{
 
     function _init () {
         $app = App::i();
+        $self = $this;
         $registration_repository = $app->repo('Registration');
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
@@ -514,88 +515,18 @@ class Module extends \MapasCulturais\Module{
         });
 
         // action para importar as inscrições da última fase concluida
-        $app->hook('GET(opportunity.importLastPhaseRegistrations)', function() use($app) {
+        $app->hook('GET(opportunity.importLastPhaseRegistrations)', function() use($app, $self) {
             ini_set('max_execution_time', 0);
             $target_opportunity = self::getRequestedOpportunity();
 
-            $target_opportunity ->checkPermission('@control');
+            $as_draft = !isset($this->data['sent']);
+            $registrations = $self->importLastPhaseRegistrations($target_opportunity, $as_draft);
 
-            $previous_phase = self::getPreviousPhase($target_opportunity);          
-
-            $dql = "
-                SELECT 
-                    r1.id 
-                FROM 
-                    MapasCulturais\Entities\Registration r1
-                WHERE 
-                    r1.opportunity = :previous_opportunity AND
-                    r1.status IN (10,8) AND
-                    r1.number NOT IN (
-                        SELECT 
-                            r2.number 
-                        FROM 
-                            MapasCulturais\Entities\Registration r2 
-                        WHERE 
-                            r2.opportunity = :target_opportunity
-                    )";
-
-            $query = $app->em->createQuery($dql);
-
-            $query->setParameters([
-                'previous_opportunity' => $previous_phase,
-                'target_opportunity' => $target_opportunity
-            ]);
-
-            $registration_ids = array_map(function($item){ return $item['id']; }, $query->getArrayResult());
-
-            if(count($registration_ids) < 1){
+            if(count($registrations) < 1){
                 $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas fase anterior'), 400);
             }
 
-            $new_registrations = [];
-
-            $reg_repo = $app->repo('Registration');
-            $opp_repo = $app->repo('Opportunity');
-
-            $total = count($registration_ids);
-            $count = 0;
-            $app->disableAccessControl();
-            foreach ($registration_ids as $registration_id){
-                $count++;
-                
-                $r = $reg_repo->find($registration_id);
-
-                $app->log->debug("({$count}/{$total}) Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
-                
-                $reg = new Entities\Registration;
-                $reg->__skipQueuingPCacheRecreation = true;
-                $reg->owner = $r->owner;
-                $reg->opportunity = $opp_repo->find($target_opportunity->id);
-                $reg->status = Entities\Registration::STATUS_DRAFT;
-                $reg->number = $r->number;
-
-                $reg->previousPhaseRegistrationId = $r->id;
-                $reg->category = $r->category;
-                $reg->save(true);
-
-                if(isset($this->data['sent'])){
-                    $reg->send();
-                }
-                $r->__skipQueuingPCacheRecreation = true;
-                $r->nextPhaseRegistrationId = $reg->id;
-                $r->save(true);
-
-                $new_registrations[] = $reg;
-
-                $app->em->clear();
-            }
-
-            $opp_repo->find($target_opportunity->id)->save(true);
-
-            $app->enqueueEntityToPCacheRecreation($target_opportunity);
-            $app->enableAccessControl();
-
-            $this->finish($new_registrations);
+            $this->finish($registrations);
         });
 
         // desliga a edição do campo principal de data quando vendo uma fase
@@ -774,5 +705,89 @@ class Module extends \MapasCulturais\Module{
             'default' => false
         ]);
     }
+
+
+    function importLastPhaseRegistrations(Opportunity $target_opportunity, $as_draft = false) {
+        $app = App::i();
+
+        $target_opportunity ->checkPermission('@control');
+
+        $previous_phase = self::getPreviousPhase($target_opportunity);          
+
+        $dql = "
+            SELECT 
+                r1.id 
+            FROM 
+                MapasCulturais\Entities\Registration r1
+            WHERE 
+                r1.opportunity = :previous_opportunity AND
+                r1.status IN (10,8) AND
+                r1.number NOT IN (
+                    SELECT 
+                        r2.number 
+                    FROM 
+                        MapasCulturais\Entities\Registration r2 
+                    WHERE 
+                        r2.opportunity = :target_opportunity
+                )";
+
+        $query = $app->em->createQuery($dql);
+
+        $query->setParameters([
+            'previous_opportunity' => $previous_phase,
+            'target_opportunity' => $target_opportunity
+        ]);
+
+        $registration_ids = array_map(function($item){ return $item['id']; }, $query->getArrayResult());
+
+        if(count($registration_ids) < 1){
+            return [];
+        }
+
+        $new_registrations = [];
+
+        $reg_repo = $app->repo('Registration');
+        $opp_repo = $app->repo('Opportunity');
+
+        $total = count($registration_ids);
+        $count = 0;
+        $app->disableAccessControl();
+        foreach ($registration_ids as $registration_id){
+            $count++;
+            
+            $r = $reg_repo->find($registration_id);
+
+            $app->log->debug("({$count}/{$total}) Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
+            
+            $reg = new Entities\Registration;
+            $reg->__skipQueuingPCacheRecreation = true;
+            $reg->owner = $r->owner;
+            $reg->opportunity = $opp_repo->find($target_opportunity->id);
+            $reg->status = Entities\Registration::STATUS_DRAFT;
+            $reg->number = $r->number;
+
+            $reg->previousPhaseRegistrationId = $r->id;
+            $reg->category = $r->category;
+            $reg->save(true);
+
+            if(!$as_draft){
+                $reg->send();
+            }
+            $r->__skipQueuingPCacheRecreation = true;
+            $r->nextPhaseRegistrationId = $reg->id;
+            $r->save(true);
+
+            $new_registrations[] = $reg;
+
+            $app->em->clear();
+        }
+
+        $opp_repo->find($target_opportunity->id)->save(true);
+
+        $app->enqueueEntityToPCacheRecreation($target_opportunity);
+        $app->enableAccessControl();
+
+        return $new_registrations;
+    } 
 
 }

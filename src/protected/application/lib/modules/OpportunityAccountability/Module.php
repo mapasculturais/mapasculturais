@@ -76,6 +76,15 @@ class Module extends \MapasCulturais\Module
                 return;
             }
 
+            if ($registration->status != Registration::STATUS_APPROVED) {
+                return;
+            }
+
+            // se não há prestação de contas
+            if (!$this->parent->accountabilityPhase) {
+                return;
+            }
+
             $project = new Project;
             $project->status = 0;
             $project->type = 0;
@@ -94,10 +103,32 @@ class Module extends \MapasCulturais\Module
             $app->disableAccessControl();
             $first_phase->project = $project;
             $first_phase->save(true);
+
             $app->enableAccessControl();
 
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
+        });
+
+        $app->hook('entity(Opportunity).publishRegistrations:after', function () {
+            if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
+                return;
+            }
+
+            if (!$this->isLastPhase) {
+                return;
+            }
+
+            // se não há prestação de contas
+            if (!$this->parent->accountabilityPhase) {
+                return;
+            }
+
+            $app = App::i();
+
+            $module = $app->modules['OpportunityPhases'];
+
+            $module->importLastPhaseRegistrations($this->parent->accountabilityPhase, true);
         });
 
         $app->hook('template(project.<<single|edit>>.tabs):end', function(){
@@ -557,6 +588,10 @@ class Module extends \MapasCulturais\Module
         $phase->registrationTo = $_to;
 
         $phase->save(true);
+
+        $parent->accountabilityPhase = $phase;
+        $parent->save(true);
+
         $app->disableAccessControl();
         $evaluation_method_configuration = new EvaluationMethodConfiguration;
         $evaluation_method_configuration->opportunity = $phase;
