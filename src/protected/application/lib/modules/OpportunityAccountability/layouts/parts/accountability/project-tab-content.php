@@ -8,9 +8,7 @@ $registration = $entity->registration->accountabilityPhase;
 $opportunity = $registration->opportunity;
 $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration]);
 
-if ($evaluation) {
-    $this->jsObject['accountabilityPermissions'] = $evaluation->evaluationData->openFields ?? [];
-}
+$this->jsObject['accountabilityPermissions'] = $evaluation->evaluationData->openFields ?? [];
 
 $opportunity->registerRegistrationMetadata();
 
