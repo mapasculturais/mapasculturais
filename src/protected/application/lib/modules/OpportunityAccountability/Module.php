@@ -215,7 +215,7 @@ class Module extends \MapasCulturais\Module
             $project = $this->controller->requestedEntity;
             if ($accountability = ($project->registration->accountabilityPhase ?? null)) {
                 $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability]);
-                if (!$evaluation->canUser('modify')) {
+                if (!$evaluation || !$evaluation->canUser('modify')) {
                     return;
                 }
                 $form_params = [
