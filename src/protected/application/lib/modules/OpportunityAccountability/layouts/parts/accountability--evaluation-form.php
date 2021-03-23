@@ -1,5 +1,6 @@
 <?php
 use MapasCulturais\i;
+use MapasCulturais\Entities\RegistrationEvaluation;
 
 $template_hook_params = ['registration' => $registration, 'opportunity' => $opportunity];
 $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? " disabled" : "";
