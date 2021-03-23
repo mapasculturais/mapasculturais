@@ -124,63 +124,47 @@ class Module extends \MapasCulturais\Module
             }
         },1000);
 
-        $app->hook('can(Registration.modify)', function($user, &$result) use ($app){
-            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this]);
-            if($this->ownerUser->id == $user->id){
-                $evaluetion_data = json_decode(json_encode($evaluation->evaluationData), true);
-
-                foreach ($evaluetion_data['openFields'] as $value){
-                    if($value == "true"){
-                        $result = true;
-                        return;
-                    }
-                }
-            }            
+        $app->hook('can(Registration.modify)', function ($user, &$result) use ($app) {
+            if (($this->ownerUser->id == $user->id) && Module::hasOpenFields($this, $app)) {
+                $result = true;
+            }
         });
-        
-        $app->hook('PATCH(registration.single):before', function() use ($app, $self){
+
+        $app->hook('PATCH(registration.single):before', function () use ($app, $self) {
             $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->requestedEntity]);
-            if($app->user->id == $this->requestedEntity->ownerUser->id){
-                $evaluetion_data = json_decode(json_encode($evaluation->evaluationData), true);
-               
-                foreach ($evaluetion_data['openFields'] as $value){
-                    if($value == "true"){
-
-                       $app->em->beginTransaction();
-                       $self->inTransaction = true;
-
-                       $app->hook('can(<<Agent|Space>>.<<@control|modify>>)',function($user, &$result){
-                            $result = true;                            
-                       });
-                    }
-                }
+            if (($app->user->id == $this->requestedEntity->ownerUser->id) && Module::hasOpenFields($this->requestedEntity, $app)) {
+                $app->em->beginTransaction();
+                $self->inTransaction = true;
+                $app->hook('can(<<Agent|Space>>.<<@control|modify>>)', function ($user, &$result) {
+                    $result = true;
+                });
             }
         });
 
-        $app->hook('entity(RegistrationMeta).update:before', function($param) use ($app){
-           
-            if($this->owner->canUser('@control')){
+        $app->hook('entity(RegistrationMeta).update:before', function ($param) use ($app, $self) {
+            if ($this->owner->canUser('@control')) {
                 return;
             }
-
             $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->owner]);
-            $evaluetion_data = json_decode(json_encode($evaluation->evaluationData), true);
-
-            if($evaluetion_data['openFields'][$this->key] == "true"){
+            if (!$evaluation || !isset($evaluation->evaluationData)) {
                 return;
-            }          
-            
-            $app->em->rollback();
-            throw new \Exception("Permission denied!");
+            }
+            $evaluation_data = json_decode(json_encode($evaluation->evaluationData), true);
+            if (($evaluation_data["openFields"][$this->key] ?? "") == "true") {
+                return;
+            }
+            if ($self->inTransaction) {
+                $app->em->rollback();
+                throw new \Exception("Permission denied!");
+            }
+            return;
         });
 
-        $app->hook('slim.after', function() use ($app, $self){
-            if($self->inTransaction){
-            $app->log->debug('Entrou aqui');
-
+        $app->hook('slim.after', function() use ($app, $self) {
+            if ($self->inTransaction) {
                 $app->em->commit();
             }
-        });       
+        });
 
         // Adidiona o checkbox haverá última fase
         $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
@@ -512,6 +496,21 @@ class Module extends \MapasCulturais\Module
         $app->registerChatThreadType($definition);
 
         $this->evaluationMethod->register();
+    }
+
+    static function hasOpenFields($registration, $app)
+    {
+        $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+        if (!$evaluation || !property_exists($evaluation, "evaluationData")) {
+            return false;
+        }
+        $evaluation_data = json_decode(json_encode($evaluation->evaluationData), true);
+        foreach (($evaluation_data["openFields"] ?? []) as $value) {
+            if ($value == "true") {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Migrar essa função para o módulo "Opportunity phase"
