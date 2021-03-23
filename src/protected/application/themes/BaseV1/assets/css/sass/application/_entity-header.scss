@@ -4,7 +4,7 @@
     margin-bottom: 2rem;
     position: relative;
     @media screen and (min-width: $screen-tablet) {
-        margin-bottom: 4rem;
+        margin-bottom: 3.75rem;
     }
     h2 {
         font-size: $font-size-h4;
@@ -14,6 +14,11 @@
             font-size: $font-size-h2;
             line-height: $line-height-h2;
             margin-top: 0;
+        }
+    }
+    h5 {
+        &.entity-parent-title {
+            font-size: $font-size-base;
         }
     }
     @media print {
@@ -125,9 +130,11 @@ article.seal {
     }
     .project-type {
         color: $brand-project;
+        margin-bottom: $line-height-half;
     }
     .opportunity-type, .registration-type {
         color: $brand-opportunity;
+        margin-bottom: $line-height-half;
     }
     .agent-type {
         color: $brand-agent;
@@ -152,10 +159,15 @@ article.seal {
         font-weight: 100;
         margin-bottom: 0;
         > a {
+            color: $gray-darker;
             font-weight: 100;
         }
     }
     .entity-parent-title {
+        font-size: $font-size-base;
+        font-weight: $btn-font-weight;
+        margin-bottom: $line-height-half;
+
         &:after {
             // content: ' »';
         }

@@ -20,18 +20,25 @@
         "michelf/php-markdown": "1.*",
         "opauth/logincidadao" : "*",
         "curl/curl": "1.2.0",
-        "firebase/php-jwt": "^2.2",
+        "firebase/php-jwt": "4.*",
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
         "psy/psysh": "@stable",
         "sinergi/browser-detector": "*",
         "acelaya/doctrine-enum-type": "^2.3",
-        "hacklab/bank-account-validator": "1.1.2"
+        "hacklab/bank-account-validator": "1.1.2",
+        "mapasculturais/sdk": "dev-master"
     },
     "require-dev": {
     },
-    "repositories": [{
-        "type": "git",
-        "url": "https://github.com/hacklabr/opauth-logincidadao.git"
-        }]
-    }
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/hacklabr/opauth-logincidadao.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/mapasculturais/MapasSDK.git"
+        }
+    ]
+}

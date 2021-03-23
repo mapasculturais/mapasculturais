@@ -43,7 +43,7 @@ trait MagicGetter{
             $app = App::i();
             $hookPrefix = self::getHookPrefix();
             $hook_name =  "{$hookPrefix}.get({$name})";
-            $app->applyHookBoundTo($this, $hook_name, [&$value]);
+            $app->applyHookBoundTo($this, $hook_name, [&$value, $name]);
         }
 
         return $value;

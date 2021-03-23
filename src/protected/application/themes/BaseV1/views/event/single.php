@@ -111,6 +111,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('header.status','after'); ?>
 
         <!--.header-image-->
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
