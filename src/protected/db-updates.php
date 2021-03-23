@@ -1415,6 +1415,12 @@ $$
     'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
         __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
     },
+    'Add metadata to Agent Relation' => function () use($conn) {
+        if(__column_exists('agent_relation', 'metadata')){
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE agent_relation ADD COLUMN metadata json;");
+    },
 
     'add timestamp columns to registration_evaluation' => function () {
         if (__column_exists('registration_evaluation', 'create_timestamp') &&

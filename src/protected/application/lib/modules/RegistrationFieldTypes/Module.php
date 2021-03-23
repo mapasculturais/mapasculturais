@@ -477,7 +477,7 @@ class Module extends \MapasCulturais\Module
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
             if($entity_field == '@location'){
-                if(isset($value['location'])){
+                if(!empty($value['location']['latitude']) && !empty($value['location']['longitude']) ){
                     $entity->location = $value['location'];
                 }
 
