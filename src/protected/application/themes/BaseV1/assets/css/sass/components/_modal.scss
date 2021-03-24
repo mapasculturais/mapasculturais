@@ -205,3 +205,45 @@
         margin-bottom: 20px;
     }
 }
+
+.js-event-occurrence {
+    list-style-type: none;
+}
+
+.event-occurrence-list{
+    padding: 5px 5px 5px 15px;
+    height: auto;
+    border-left: 3px solid #1C5690;
+    margin: 30px 0;
+
+}
+
+.event-occurrence-list ul{
+  margin-left: 0;
+}
+
+.event-occurrence-list li{
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #00000014;
+    padding: 10px;
+}
+
+#dialog-event-occurrence {
+    margin-left: -403px !important;
+    width: 40% !important;
+    z-index: 1901 !important;
+}
+
+.tip-yellowsimple{
+    z-index: 1901 !important;   
+}
+
+.select-owner-entity{
+    display: none ;
+    margin-bottom: 20px !important;
+}
+
+.select-owner-entity.active{
+    display: block;
+}
