@@ -31,8 +31,8 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         // Adiciona a aba do módulo de relatórios
-        $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
-            if ($this->controller->requestedEntity->canUser("@control")) {
+        $app->hook('template(opportunity.single.tabs):end', function () use ($app, $self) {
+            if ($this->controller->requestedEntity->canUser("@control") && $self->hasRegistrations($this->controller->requestedEntity)) {
                 $this->part('opportunity-reports--tab');
             }
         });
@@ -75,7 +75,7 @@ class Module extends \MapasCulturais\Module
                 return $self->color();
             };
 
-            if ($opportunity->canUser('@control')) {
+            if ($opportunity->canUser('@control') && $self->hasRegistrations($opportunity)) {
                 $this->part('opportunity-reports', $sendHook);
             }
 
@@ -126,6 +126,23 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'reports', 'css/reports.css');
         $app->view->enqueueScript('app', 'reports', 'js/ng.reports.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.reports';
+    }
+
+    /**
+     * Verifica se a oportunidade passada como parâmetro possui inscrições
+     */
+    public function hasRegistrations(\MapasCulturais\Entities\Opportunity $opportunity)
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $registrations = $conn->fetchAll("SELECT id FROM registration WHERE opportunity_id = $opportunity->id");
+
+        if (count($registrations) >= 1) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
