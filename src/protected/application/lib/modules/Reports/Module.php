@@ -71,6 +71,8 @@ class Module extends \MapasCulturais\Module
 
             $sendHook['opportunity'] = $opportunity;
 
+            $sendHook['self'] = $self;
+
             $sendHook['color'] = function () use ($self) {
                 return $self->color();
             };
@@ -143,6 +145,30 @@ class Module extends \MapasCulturais\Module
         }
 
         return false;
+    }
+
+    /**
+     * Verifica se existem dados suficientes para gerar o gráfico
+     */
+    public function checkIfChartHasData(array $values) {
+
+        if (count($values) > 1) {
+    
+            $count = 0;
+            foreach ($values as $key => $value) {
+                if ($value > 1)
+                    $count++;
+            }
+    
+            if ($count >= 2)
+                return true;
+                
+            return false;
+    
+        }
+    
+        return false;
+    
     }
 
     /**

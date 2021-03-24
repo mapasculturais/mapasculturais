@@ -20,16 +20,20 @@ foreach ($data as $key => $value) {
     $legends[] = $value['category'] . '<br>' . $value['count'] . ' (' . number_format(($value['count'] / $total) * 100, 2, '.', '') . '%)';
 }
 
-// Imprime o gráfico na tela
-$this->part('charts/pie', [
-    'labels' => $label,
-    'data' => $values,
-    'total' => $total,
-    'colors' => $colors,
-    'height' => $height,
-    'width' => $width,
-    'legends' => $legends,
-    'title' => $title,
-    'opportunity' => $opportunity,
-    'action' => 'exportRegistrationsByCategory'
-]);
+if ($self->checkIfChartHasData($values)) {
+
+    // Imprime o gráfico na tela
+    $this->part('charts/pie', [
+        'labels' => $label,
+        'data' => $values,
+        'total' => $total,
+        'colors' => $colors,
+        'height' => $height,
+        'width' => $width,
+        'legends' => $legends,
+        'title' => $title,
+        'opportunity' => $opportunity,
+        'action' => 'exportRegistrationsByCategory'
+    ]);
+
+}

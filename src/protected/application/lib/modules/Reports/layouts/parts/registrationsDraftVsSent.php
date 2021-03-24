@@ -42,20 +42,24 @@ foreach ($data as $key => $value) {
 
 }
 
-// Imprime o gráfico na tela
-$this->part('charts/pie', [
-    'serie' => [
-        ['label' => $label[0], 'data' => $values[0], 'colors' => $colors[0]],
-        ['label' => $label[1], 'data' => $values[1], 'colors' => $colors[1]],
-    ],
-    'total' => $total,
-    'height' => $height,
-    'width' => $width,
-    'legends' => $legends,
-    'colors' => $colors,
-    'title' => $title,
-    'height' => $height,
-    'width' => $width,
-    'opportunity' => $opportunity,
-    'action' => 'exportRegistrationsDraftVsSent'
-]);
+if ($self->checkIfChartHasData($values)) {
+
+    // Imprime o gráfico na tela
+    $this->part('charts/pie', [
+        'serie' => [
+            ['label' => $label[0], 'data' => $values[0], 'colors' => $colors[0]],
+            ['label' => $label[1], 'data' => $values[1], 'colors' => $colors[1]],
+        ],
+        'total' => $total,
+        'height' => $height,
+        'width' => $width,
+        'legends' => $legends,
+        'colors' => $colors,
+        'title' => $title,
+        'height' => $height,
+        'width' => $width,
+        'opportunity' => $opportunity,
+        'action' => 'exportRegistrationsDraftVsSent'
+    ]);
+
+}

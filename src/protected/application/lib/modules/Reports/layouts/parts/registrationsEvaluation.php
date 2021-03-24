@@ -22,18 +22,22 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
 
     $series[0]['color'];
 
-    $this->part('charts/bar', [
-        'labels' => $label,
-        'series' => [
-            ['label' => 'Quantidade', 'data' => $values, 'color' => '#EB7E33'],
-        ],
-        'legends' => [],
-        'height' => $height,
-        'width' => '100%',
-        'title' => $title,
-        'opportunity' => $opportunity,
-        'action' => 'registrationsByEvaluationStatusBar',
-    ]);
+    if ($self->checkIfChartHasData($values)) {
+
+        $this->part('charts/bar', [
+            'labels' => $label,
+            'series' => [
+                ['label' => 'Quantidade', 'data' => $values, 'color' => '#EB7E33'],
+            ],
+            'legends' => [],
+            'height' => $height,
+            'width' => '100%',
+            'title' => $title,
+            'opportunity' => $opportunity,
+            'action' => 'registrationsByEvaluationStatusBar',
+        ]);
+
+    }
 } else {
 
     $total = [];
@@ -59,17 +63,21 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
         }
     }
 
-    // Imprime o gráfico na tela
-    $this->part('charts/pie', [
-        'labels' => $label,
-        'data' => $values,
-        'total' => $total,
-        'colors' => $colors,
-        'height' => $height,
-        'width' => $width,
-        'legends' => $legends,
-        'title' => $title,
-        'opportunity' => $opportunity,
-        'action' => 'exportRegistrationsByEvaluation',
-    ]);
+    if ($self->checkIfChartHasData($values)) {
+
+        // Imprime o gráfico na tela
+        $this->part('charts/pie', [
+            'labels' => $label,
+            'data' => $values,
+            'total' => $total,
+            'colors' => $colors,
+            'height' => $height,
+            'width' => $width,
+            'legends' => $legends,
+            'title' => $title,
+            'opportunity' => $opportunity,
+            'action' => 'exportRegistrationsByEvaluation',
+        ]);
+
+    }    
 }

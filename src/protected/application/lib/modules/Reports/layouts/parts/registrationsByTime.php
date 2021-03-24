@@ -21,7 +21,7 @@ foreach ($data as $key_data => $values) {
     ];
     $legends[$count] = $key_data;
     $colors[$count] = $tempColor;
-
+    
     foreach ($values as $key_v => $value) {
         $labels[] = $key_v;
         $serie[$count]['data'][] = $value;
@@ -36,16 +36,20 @@ $dataLabels = array_map(function ($label) {
     return (new DateTime($label))->format('d/m/Y');
 }, $labels);
 
-// Imprime o gráfico na tela
-$this->part('charts/line', [
-    'vertical' => true,
-    'title' => $title,
-    'labels' => $dataLabels,
-    'series' => $serie,
-    'height' => $height,
-    'width' => $width,
-    'legends' => $legends,
-    'colors' => $colors,
-    'opportunity' => $opportunity,
-    'action' => 'registrationsByTime'
-]);
+if ($self->checkIfChartHasData(array_column($serie, 'data'))) {
+
+    // Imprime o gráfico na tela
+    $this->part('charts/line', [
+        'vertical' => true,
+        'title' => $title,
+        'labels' => $dataLabels,
+        'series' => $serie,
+        'height' => $height,
+        'width' => $width,
+        'legends' => $legends,
+        'colors' => $colors,
+        'opportunity' => $opportunity,
+        'action' => 'registrationsByTime'
+    ]);
+
+}
