@@ -15,7 +15,7 @@ while(true){
         echo "\nconectado com sucesso ao banco pgsql:host={$dbhost};port=5432;dbname={$dbname};user={$dbuser};\n";
         break;
     } catch (Exception $e) {
-        echo "..";        
+        echo "..";
     }
     sleep(1);
 }
@@ -31,6 +31,7 @@ then
     cp /var/www/version.txt /var/www/private-files/deployment-version
 else
     /var/www/scripts/db-update.sh
+    /var/www/scripts/mc-db-updates.sh
 fi
 
 chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files

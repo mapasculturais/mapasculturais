@@ -34,6 +34,40 @@ class Opportunity extends EntityController {
         parent::GET_create();
     }
 
+    function POST_index($data = null)
+    {
+        $app = App::i();
+
+        $classes = [
+            'agent' => Entities\AgentOpportunity::class,
+            'event' => Entities\EventOpportunity::class,
+            'space' => Entities\SpaceOpportunity::class,
+            'project' => Entities\ProjectOpportunity::class,
+        ];
+
+        $class = $classes[$this->data['objectType']] ?? null;
+
+        // objectType é agent,space,project ou event
+        if($class){
+
+            $self = $this;
+            $app->hook('entity(Opportunity).insert:after', function () use($self, $app) {
+
+                $definition = $app->getRegisteredEvaluationMethodBySlug($self->data['evaluationMethod']);
+
+                $emconfig = new Entities\EvaluationMethodConfiguration;
+
+                $emconfig->opportunity = $this;
+
+                $emconfig->type = $definition->slug;
+
+                $emconfig->save(true);
+            });
+            $this->entityClassName = $class;
+            parent::POST_index($data);
+        }
+    }
+
     function ALL_sendEvaluations(){
         $this->requireAuthentication();
 
@@ -127,7 +161,7 @@ class Opportunity extends EntityController {
 
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
-        
+
         $app->controller('Registration')->registerRegistrationMetadata($entity);
 
         $committee = $entity->getEvaluationCommittee();
@@ -151,7 +185,7 @@ class Opportunity extends EntityController {
         $app = App::i();
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
-        
+
         if ($view == 'report-drafts-csv' || $view == 'report-csv') {
 
             $response = $app->response();
@@ -161,7 +195,7 @@ class Opportunity extends EntityController {
             $response['Pragma'] = 'no-cache';
 
             $app->contentType('text/csv; charset=UTF-8');
-            
+
             ob_start();
             $this->partial($view, $view_params);
 
@@ -199,9 +233,9 @@ class Opportunity extends EntityController {
             $this->partial($view, $view_params);
             $output = ob_get_clean();
             echo mb_convert_encoding($output, "HTML-ENTITIES", "UTF-8");
-            
+
         }
-        
+
     }
 
 
@@ -228,7 +262,7 @@ class Opportunity extends EntityController {
 
         $this->apiResponse($opportunities);
     }
-    
+
     /**
     * @return \MapasCulturais\Entities\Opportunity
     */
@@ -254,12 +288,12 @@ class Opportunity extends EntityController {
 
         return $opportunity;
     }
-    
+
     function getSelectFields(Entities\Opportunity $opportunity){
         $app = App::i();
-        
+
         $fields = [];
-        
+
         foreach($opportunity->registrationFieldConfigurations as $field){
             if($field->fieldType == 'select'){
                 if(!isset($fields[$field->fieldName])){
@@ -267,21 +301,21 @@ class Opportunity extends EntityController {
                 }
             }
         }
-        
+
         $app->applyHookBoundTo($this, 'controller(opportunity).getSelectFields', [$opportunity, &$fields]);
-        
+
         return $fields;
     }
-    
+
     function API_evaluationCommittee(){
         $this->requireAuthentication();
-        
+
         $opportunity = $this->_getOpportunity();
-        
+
         $opportunity->checkPermission('@control');
-        
+
         $relations = $opportunity->getEvaluationCommittee();
-        
+
         if(is_array($relations)){
             $result = array_map(function($e){
                 $r = $e->simplify('id,hasControl,status,createdAt');
@@ -297,51 +331,51 @@ class Opportunity extends EntityController {
         $this->apiAddHeaderMetadata($this->data, $result, count($result));
         $this->apiResponse($result);
     }
-    
+
     function API_selectFields(){
         $app = App::i();
-        
+
         $opportunity = $this->_getOpportunity();
-        
+
         $fields = $this->getSelectFields($opportunity);
-        
+
         $this->apiResponse($fields);
     }
 
     function API_findRegistrations() {
         $app = App::i();
-        
+
         $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
-        
+
         $opportunity = $this->_getOpportunity();
         $data = $this->data;
         $data['opportunity'] = "EQ({$opportunity->id})";
-        
+
         $_opportunity = $opportunity;
         $opportunity_tree = [];
         while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
         }
-        
+
         $opportunity_tree = array_reverse($opportunity_tree);
-        
+
         $last_query_ids = null;
-        
+
         $select_values = [];
-        
+
         foreach($opportunity_tree as $current){
             $app->controller('registration')->registerRegistrationMetadata($current);
             $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,previousPhaseRegistrationId'];
-            
+
             if($current->publishedRegistrations){
                 $cdata['status'] = 'IN(10,8)';
             }
-            
+
             foreach($current->registrationFieldConfigurations as $field){
                 if($field->fieldType == 'select'){
                     $cdata['@select'] .= ",{$field->fieldName}";
-                    
+
                     if(isset($data[$field->fieldName])){
                         $cdata[$field->fieldName] = $data[$field->fieldName];
                         unset($data[$field->fieldName]);
@@ -357,26 +391,26 @@ class Opportunity extends EntityController {
             }
             $_disable_access_control = $current->publishedRegistrations && !$current->canUser('viewEvaluations');
             $q = new ApiQuery('MapasCulturais\Entities\Registration', $cdata, false, false, $_disable_access_control);
-            
+
             $regs = $q->find();
-            
+
             foreach($regs as $reg){
-                
+
                 if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
                     $select_values[$reg['id']] = $reg + $select_values[$reg['previousPhaseRegistrationId']];
                 } else {
                     $select_values[$reg['id']] = $reg;
                 }
             }
-            
+
             $ids = array_map(function ($r) { return $r['id']; }, $regs);
             $last_query_ids = implode(',', $ids);
         }
-        
+
         $app->controller('registration')->registerRegistrationMetadata($opportunity);
-        
+
         unset($data['@opportunity']);
-        
+
         if(!is_null($last_query_ids)){
             if($last_query_ids){
                 $data['previousPhaseRegistrationId'] = "IN($last_query_ids)";
@@ -384,13 +418,13 @@ class Opportunity extends EntityController {
                 $data['id'] = "IN(-1)";
             }
         }
-        
+
         if($select_values){
             $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
         }
-        
+
         if($opportunity->publishedRegistrations && !$opportunity->canUser('viewEvaluations')){
-            
+
             if(isset($data['status'])){
                 $data['status'] = 'AND(IN(10,8),' . $data['status'] . ')';
             } else {
@@ -398,7 +432,7 @@ class Opportunity extends EntityController {
             }
         }
         $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);
-        
+
         $registrations = $query->find();
 
         $em = $opportunity->getEvaluationMethod();
@@ -406,7 +440,7 @@ class Opportunity extends EntityController {
             if(in_array('consolidatedResult', $query->selecting)){
                 $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
             }
-            
+
             if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
                 $values = $select_values[$reg['previousPhaseRegistrationId']];
                 foreach($reg as $key => $val){
@@ -424,13 +458,13 @@ class Opportunity extends EntityController {
                 return $em->cmpValues($e1['consolidatedResult'], $e2['consolidatedResult']) * -1;
             });
         }
-        
+
         $this->apiAddHeaderMetadata($this->data, $registrations, $query->count());
         $this->apiResponse($registrations);
     }
 
     protected function _getOpportunityCommittee($opportunity_id) {
-        
+
         $opportunity = $this->_getOpportunity($opportunity_id);
 
         $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
@@ -441,7 +475,7 @@ class Opportunity extends EntityController {
 
         $committee_ids = implode(
             ',',
-            array_map( 
+            array_map(
                 function($e){return $e['agent']; },
                 array_filter( $committee_relations, function($e){ return empty($e['agent']) ? false : $e['agent']; })
             )
@@ -456,15 +490,15 @@ class Opportunity extends EntityController {
             if(!$opportunity->canUser('@control')){
                 $vdata['@permissions'] = '@control';
             }
-            
+
             foreach($this->data as $k => $v){
                 if(strtolower(substr($k, 0, 7)) === 'valuer:'){
                     $vdata[substr($k, 7)] = $v;
                 }
             }
-            
+
             $committee_query = new ApiQuery('MapasCulturais\Entities\Agent', $vdata);
-            
+
             $committee = $committee_query->find();
         } else {
             $committee = [];
@@ -475,9 +509,9 @@ class Opportunity extends EntityController {
 
     function _getOpportunityValuerByUser($opportunity_id){
         $committee = $this->_getOpportunityCommittee($opportunity_id);
-        
+
         $valuer_by_user = [];
-        
+
         foreach($committee as $valuer){
             $valuer_by_user[$valuer['user']] = $valuer;
         }
@@ -487,7 +521,7 @@ class Opportunity extends EntityController {
 
     function _getOpportunityRegistrations($opportunity, array $registration_ids){
         $app = App::i();
-        
+
         if (empty($registration_ids)) {
             return [];
         }
@@ -495,7 +529,7 @@ class Opportunity extends EntityController {
         sort($registration_ids);
 
         $registration_ids = implode(',', $registration_ids);
-        
+
         $committee = $this->_getOpportunityCommittee($opportunity->id);
         $params = [
             'opp' => $opportunity,
@@ -513,21 +547,21 @@ class Opportunity extends EntityController {
                 p.action = 'viewPrivateData' AND
                 r.id IN ({$registration_ids})
 
-        ");      
+        ");
 
         $q->setParameters($params);
-        
+
         $permissions = $q->getArrayResult();
-        
+
         $registrations_by_valuer = [];
-        
+
         foreach($permissions as $p){
             if(!isset($registrations_by_valuer[$p['valuer']])){
                 $registrations_by_valuer[$p['valuer']] = [];
             }
             $registrations_by_valuer[$p['valuer']][$p['registration']] = true;
         }
-        
+
         $registration_ids = array_map(function($r) { return $r['registration']; }, $permissions);
         $registration_idsSplittedUsingComma = implode(',', $registration_ids);
         if($registration_ids){
@@ -535,7 +569,7 @@ class Opportunity extends EntityController {
                 '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
                 'id' => "IN({$registration_idsSplittedUsingComma})"
             ];
-            
+
             foreach($this->data as $k => $v){
                 if(strtolower(substr($k, 0, 13)) === 'registration:'){
                     $rdata[substr($k, 13)] = $v;
@@ -561,24 +595,24 @@ class Opportunity extends EntityController {
         if (empty($evaluation_ids)) {
             return [];
         }
-        
+
         sort($evaluation_ids);
-        $evaluation_ids = implode(',', $evaluation_ids); 
+        $evaluation_ids = implode(',', $evaluation_ids);
 
         $edata = [
             '@select' => 'id,result,evaluationData,registration,user,status',
             'id' => "IN({$evaluation_ids})"
         ];
-        
+
         foreach($this->data as $k => $v){
             if(strtolower(substr($k, 0, 11)) === 'evaluation:'){
                 $edata[substr($k, 11)] = $v;
             }
         }
-        
+
         $evaluations_query = new ApiQuery('MapasCulturais\Entities\RegistrationEvaluation', $edata);
         $evaluations = [];
-        
+
         $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
         foreach($evaluations_query->find() as $e){
             if(isset($valuer_by_user[$e['user']])){
@@ -589,12 +623,12 @@ class Opportunity extends EntityController {
             }
         }
         return $evaluations;
-        
+
     }
 
     function API_findRegistrationsAndEvaluations() {
         $app = App::i();
-                
+
         $opportunity = $this->_getOpportunity();
         $data = $this->data;
 
@@ -615,10 +649,10 @@ class Opportunity extends EntityController {
         ";
 
         $length = $conn->fetchAll($resultLength, [
-            'user_id' => $app->user->id, 
+            'user_id' => $app->user->id,
             'opportunity_id' => $opportunity->id,
             ]);
-        
+
         $sql = "
         SELECT
             r.id as registrationId,
@@ -652,7 +686,7 @@ class Opportunity extends EntityController {
         $offset = ($page -1) * $limit;
 
         $registrations = $conn->fetchAll($sql, [
-            'user_id' => $app->user->id, 
+            'user_id' => $app->user->id,
             'opportunity_id' => $opportunity->id,
             'limit' => $limit,
             'offset' => $offset
@@ -675,17 +709,17 @@ class Opportunity extends EntityController {
                 "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result'])
             ];
         },$registrations);
-        
+
         $this->apiAddHeaderMetadata($this->data, $registrationWithResultString, $length[0]['count']);
         $this->apiResponse($registrationWithResultString);
     }
-    
+
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
-        
+
         $app = App::i();
         $conn = $app->em->getConnection();
-        
+
         $opportunity = $this->_getOpportunity($opportunity_id);
 
         $committee = $this->_getOpportunityCommittee($opportunity_id);
@@ -693,11 +727,11 @@ class Opportunity extends EntityController {
         foreach($committee as $valuer){
             $valuer_by_id[$valuer['user']] = $valuer;
         }
-        
+
         $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
-                
+
         $params = ['opp' => $opportunity->id];
-        
+
         $queryNumberOfResults = $conn->fetchColumn("
             SELECT count(*) 
             FROM evaluations 
@@ -707,7 +741,7 @@ class Opportunity extends EntityController {
         ", $params);
 
         $valuer_by_id = [];
-        
+
         foreach($committee as $valuer){
             $valuer_by_id[$valuer['id']] = $valuer;
         }
@@ -715,7 +749,7 @@ class Opportunity extends EntityController {
         $sql_limit = "";
         if (isset($this->data['@limit'])) {
             $limit = intval($this->data['@limit']);
-            
+
             $sql_limit = "LIMIT $limit";
 
             if (isset($this->data['@page'])) {
@@ -723,7 +757,7 @@ class Opportunity extends EntityController {
                 $offset = ($page - 1) * $limit;
                 $sql_limit .= " OFFSET {$offset}";
             }
-        }  
+        }
 
         $sql_status = "";
         if (isset($this->data['status'])) {
@@ -732,7 +766,7 @@ class Opportunity extends EntityController {
                 $sql_status = " AND evaluation_status = {$status}";
             }
         }
-        
+
         $evaluations = $conn->fetchAll("
             SELECT 
                 registration_id, 
@@ -749,12 +783,12 @@ class Opportunity extends EntityController {
 
         $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
-        
+
         $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
-        
+
         $_result = [];
-        
+
         foreach($evaluations as $eval) {
             $_result[] = [
                 'evaluation' => $_evaluations[$eval['evaluation_id']] ?? null,
@@ -762,7 +796,7 @@ class Opportunity extends EntityController {
                 'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null
             ];
         }
-        
+
         if (!is_null($opportunity_id) && is_int($opportunity_id)) {
             return $_result;
         }
@@ -780,7 +814,7 @@ class Opportunity extends EntityController {
         $opportunity = $this->requestedEntity;
 
         $opportunity->checkPermission('@control');
-        
+
         $app = App::i();
 
         $conn = $app->em->getConnection();
@@ -807,8 +841,8 @@ class Opportunity extends EntityController {
                     SELECT id FROM registration WHERE opportunity_id = :opp
                 )
             ORDER BY re.id ASC
-        ", ['opp' => $opportunity->id]); 
-        
+        ", ['opp' => $opportunity->id]);
+
         $repo = $app->repo('RegistrationEvaluation');
         $c = 0;
         $num = count($evaluations);
@@ -845,7 +879,7 @@ class Opportunity extends EntityController {
 
         if (!$opportunity->canUser('modify'))
             return false; //TODO return error message?
-            
+
         $opportunityMeta = array(
             'registrationCategories',
             'useAgentRelationColetivo',

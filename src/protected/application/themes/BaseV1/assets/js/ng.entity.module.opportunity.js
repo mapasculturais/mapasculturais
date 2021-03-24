@@ -109,7 +109,7 @@
 
             updateFields: function(entity) {
                 var data = {};
-
+                
                 Object.keys(entity).forEach(function(key) {
                     // para excluir propriedades do angular
                     if(key.indexOf('$$') == -1){
@@ -309,7 +309,7 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$timeout', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $timeout, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {  
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -403,7 +403,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
                 var url = new UrlService('opportunity');
                 var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
-
                 // requisição para salvar ordem
                 $http.post(saveOrderUrl, {fields: _fields}).success(function(){
                     MapasCulturais.Messages.success(labels['changesSaved']);
@@ -418,26 +417,29 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fields: fields,
             newFileConfiguration: angular.copy(fileConfigurationSkeleton),
             newFieldConfiguration: angular.copy(fieldConfigurationSkeleton),
-            entity: $scope.$parent.data.entity,
+            entity: MapasCulturais.registration || $scope.$parent.data.entity,
             fieldTypes: fieldTypes,
             fieldsWithOptions: fieldTypes.filter(function(e) { if(e.requireValuesConfiguration) return e; }).map(function(e) { return e.slug; } ),
             fieldTypesBySlug: fieldTypesBySlug,
             fieldsRequiredLabel: labels['requiredLabel'],
             fieldsOptionalLabel: labels['optionalLabel'],
-            categories: []
+            categories: MapasCulturais.entity.registrationCategories
         };
+
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
 
-        $interval(function(){
-            var $field = jQuery('#registration-categories .js-categories-values'); 
-            if ($field.hasClass('editable-empty')) {
-                $scope.data.categories = [];
-            } else {
-                $scope.data.categories = $field.text().split("\n");
-            }
-        },1000);
+        if(jQuery('#registration-categories').length) {
+            $interval(function(){
+                var $field = jQuery('#registration-categories .js-categories-values'); 
+                if ($field.hasClass('editable-empty')) {
+                    $scope.data.categories = [];
+                } else {
+                    $scope.data.categories = $field.text().split("\n");
+                }
+            },1000);
+        }
 
         $scope.allCategories = function(model){
             return model.categories.length === 0;
@@ -833,11 +835,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
-    $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.entity.id);
+    $scope.uploadUrl = registrationsUrl.create('upload', MapasCulturais.registration.id);
 
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
-    $scope.entity = MapasCulturais.entity.object;
+    $scope.entity = MapasCulturais.registration;
 
     // $scope.entityErrors = {};
 
@@ -887,7 +889,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             field.unchangedFieldJSON = JSON.stringify(value);
 
             var data = {
-                id: MapasCulturais.entity.object.id
+                id: MapasCulturais.entity.registrationId
             };
 
             data[field.fieldName] = value;
@@ -1009,6 +1011,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }, 700);
         });
     };
+    
 
     $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
 
@@ -2145,7 +2148,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             }
 
             $scope.validateRegistration = function(callback='') {
-                RegistrationService.validateEntity($scope.data.entity.id)
+                RegistrationService.validateEntity($scope.data.registration.id)
                     .success(function(response) {
                         if(response.error) {
                             $scope.entityValidated = false;
@@ -2174,7 +2177,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             }; 
             $scope.data.sent = false;
             $scope.sendRegistration = function(redirectUrl){
-                RegistrationService.send($scope.data.entity.id).success(function(response){
+                RegistrationService.send($scope.data.registration.id).success(function(response){
                     $('.js-response-error').remove();
                     if(response.error){
                         var focused = false;
@@ -2487,5 +2490,56 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
     jQuery("#registrationSeals").editable('setValue',$scope.entity.registrationSeals);
 
 }]);
+
+    module.controller('OpportunityProjects', ['$scope', '$rootScope', 'OpportunityProjectsApiService', function ($scope, $rootScope, OpportunityProjectsApiService){
+
+        $scope.data.projects = [];
+        $scope.data.projectsAPIMetadata = {
+            limit: 50,
+            offset: null,
+            page: 1
+        }
+
+        OpportunityProjectsApiService.find($scope.data.projectsAPIMetadata).success(function (data, status, headers) {
+            $scope.data.projects = data;
+            $scope.data.projectsAPIMetadata = JSON.parse(headers()['api-metadata']);
+            $scope.data.projectsAPIMetadata.limit = 50;
+        });
+
+        $scope.loadMore = function () {
+            $scope.data.projectsAPIMetadata.page = $scope.data.projectsAPIMetadata.page + 1;
+            $scope.data.projectsAPIMetadata.offset = $scope.data.projectsAPIMetadata.page - 1;
+
+            OpportunityProjectsApiService.find($scope.data.projectsAPIMetadata).success(function (data, status, headers) {
+                $scope.data.projects.push(data[0]);
+            });
+        }
+
+    }]);
+
+    module.factory('OpportunityProjectsApiService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+
+        return {
+            find: function (data) {
+
+                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo&@files=(avatar.avatarMedium):url&opportunity=EQ(' + MapasCulturais.entity.id + ')&@order=createTimestamp DESC&@offset=' + data.offset + '&@limit=' + data.limit + '';
+             
+                return $http.get(MapasCulturais.createUrl('api/project', 'find') + qdata).
+                    success(function (data, status, headers) {
+                        for (var i = 0; i < data.length; i++) {
+                            var url = MapasCulturais.createUrl('inscricao', data[i].registration_id);
+                            data[i].registrationFrom = data[i].registrationFrom ? moment(data[i].registrationFrom.date).format('YYYY-MM-DD') : null;
+                            data[i].registrationTo = data[i].registrationTo ? moment(data[i].registrationTo.date).format('YYYY-MM-DD') : null;
+                            data[i].avatar = data[i]['@files:avatar.avatarMedium'].url;
+                        }
+                        $rootScope.$emit('project.find', { message: "Projects found", data: data, status: status });
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', { message: "Projects not found for this opportunity", data: data, status: status });
+                    });
+            }
+        };
+        
+    }]);
 
 })(angular);

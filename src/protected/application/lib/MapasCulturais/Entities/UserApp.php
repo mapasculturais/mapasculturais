@@ -9,6 +9,15 @@ use MapasCulturais\Traits;
 
 /**
  * UserApp
+ * 
+ * @property int $id
+ * @property User $user
+ * @property string $name
+ * @property int $status
+ * @property Subsite $subsite
+ * 
+ * @property-read string $publicKey
+ * @property-read string $privateKey
  *
  * @ORM\Table(name="user_app")
  * @ORM\Entity
