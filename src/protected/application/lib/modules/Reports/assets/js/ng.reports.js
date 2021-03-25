@@ -28,6 +28,7 @@
                 'coletivo': '(Agente Coletivo)',
                 'space': '(Espaço)'
             },
+            error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
             graphics:[]          
         };
@@ -57,7 +58,7 @@
         });
 
         ReportsService.getData({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
-        
+
             var legendsToString = [];            
             data.forEach(function(item){
                
@@ -106,8 +107,15 @@
                     }
                 ],
             }
-            
             ReportsService.save(config).success(function (data, status, headers){
+                
+                if (data.error) {
+                    $scope.clearModal();
+                    MapasCulturais.Messages.error("Dados insuficientes para gerar a visualização desse gráfico");
+                    $scope.data.error = data.error;
+                    return;
+                }
+
                 $scope.data.graphics = $scope.data.graphics.filter(function (item) {
                     if (item.reportData.graphicId != data.graphicId) return item;
                 });
@@ -116,7 +124,7 @@
                 $scope.data.creatingGraph = data;
 
             });
-            
+
             ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config}).success(function (data, status, headers){   
 
                 config.graphicId = $scope.data.creatingGraph.graphicId;
@@ -147,11 +155,11 @@
                     graphic.data.tooltips = graphic.data.labels;
                     graphic.data.labels = legendsToString;
                 }
-                
-                $scope.data.graphics.push(graphic);
-                $scope.graphicGenerate();
-                
-                
+
+                if (!$scope.data.error) {
+                    $scope.data.graphics.push(graphic);
+                    $scope.graphicGenerate();
+                }
             });
         }
         

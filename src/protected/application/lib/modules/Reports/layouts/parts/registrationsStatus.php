@@ -17,8 +17,17 @@ foreach ($data as $key => $value) {
 }
 $total = array_sum($total);
 
+$generate_colors = [];
+
 //Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
+
+    do {
+        $new_color = is_callable($color) ? $color() : $color;
+    } while (in_array($new_color, $generate_colors));
+    
+    $generate_colors[] = $new_color;
+
     if ($key != i::__('Rascunho')) {
 
         if($value == 0 || $value == "0"){
@@ -30,7 +39,7 @@ foreach ($data as $key => $value) {
         $label[] = $key;
         $legends[] = $key . '<br>' . $value . ' (' . $percent . '%)';
         $values[] = $value;
-        $colors[] = is_callable($color) ? $color() : $color;
+        $colors[] = $new_color;
     }
 }
 

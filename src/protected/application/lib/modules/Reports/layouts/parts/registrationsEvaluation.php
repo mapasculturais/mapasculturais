@@ -20,8 +20,6 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
         $legends[] = $key;
     }
 
-    $series[0]['color'];
-
     if ($self->checkIfChartHasData($values)) {
 
         $this->part('charts/bar', [
@@ -50,7 +48,17 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
 
     // Prepara os dados para o gráfico
     foreach ($data as $key => $value) {
+
+        $generate_colors = [];
+
         foreach ($value as $v_key => $v) {
+
+            do {
+                $new_color = is_callable($color) ? $color() : $color;
+            } while (in_array($new_color, $generate_colors));
+            
+            $generate_colors[] = $new_color;
+
             if ($v_key == "evaluated") {
                 $status = i::__('Avaliada');
             } else {
@@ -59,7 +67,7 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
             $label[] = $status;
             $legends[] = $status . '<br>' . $v . ' (' . number_format(($v / $total) * 100, 2, '.', '') . '%)';
             $values[] = $v;
-            $colors[] = is_callable($color) ? $color() : $color;
+            $colors[] = $new_color;
         }
     }
 
