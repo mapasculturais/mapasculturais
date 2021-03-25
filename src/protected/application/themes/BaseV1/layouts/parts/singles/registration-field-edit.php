@@ -24,7 +24,7 @@ foreach ($definitions as $def) {
     </div>
     <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank" rel='noopener noreferrer'>{{field.file.name}}</a>
 
-    <div class="btn-group">
+    <div>
         <!-- se já subiu o arquivo-->
         <!-- se não subiu ainda -->
         <a class="btn btn-default" ng-class="{'send':!field.file,'edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? 'enviar' : 'editar'}} <?php \MapasCulturais\i::_e("anexo"); ?>">{{!field.file ? 'Enviar' : 'Editar'}}</a>
