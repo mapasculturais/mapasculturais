@@ -82,6 +82,11 @@
     module.factory('AccountabilityEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
 
         return {
+            reopen: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl("registration", "saveEvaluation", {id: registrationId, status: "draft"});
+                return $http.post(url, {data: evaluationData, uid});
+            },
+
             save: function (registrationId, evaluationData, uid) {
                 var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [registrationId]);
                 return $http.post(url, {data: evaluationData, uid});
@@ -212,12 +217,29 @@
 
 
         $scope.sendEvaluation = function () {
-            if(!confirm("Você tem certeza que deseja finalizer o parecer técnico? \n\nApós a finalização não será mais possível modificar o parecer.")){
+            if (!confirm("Você tem certeza que deseja finalizer o parecer técnico?\n\nApós a finalização não será mais possível modificar o parecer.")) {
                 return;
             }
-
-            AccountabilityEvaluationService.send(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function() {
+            AccountabilityEvaluationService.send(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
                 MapasCulturais.Messages.success('Salvo');
+                setTimeout(function () {
+                    location.reload();
+                    return;
+                }, 500);
+            });
+        }
+
+        $scope.reopenAccountability = function () {
+            // TODO: i18n
+            if (!confirm("Você tem certeza que deseja reabrir a prestação de contas?\n\nA abertura dos campos para edição deverá ser feita manualmente.")) {
+                return;
+            }
+            AccountabilityEvaluationService.reopen(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
+                MapasCulturais.Messages.success("Prestação de contas reaberta.");
+                setTimeout(function () {
+                    location.reload();
+                    return;
+                }, 500);
             });
         }
     }]);

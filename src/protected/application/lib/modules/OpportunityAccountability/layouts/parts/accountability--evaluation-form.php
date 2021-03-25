@@ -33,7 +33,11 @@ $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? "
     </section>
 
     <section class="actions">
-        <button class="btn btn-primary align-right" ng-click="sendEvaluation()" <?=$disable?>><?php i::_e('Finalizar e enviar o parecer técnico') ?></button>
+        <?php if (!empty($disable)) { ?>
+            <button class="btn btn-primary align-right" ng-click="reopenAccountability()"><?php i::_e("Reabrir prestação de contas") ?></button>
+        <?php } else { ?>
+            <button class="btn btn-primary align-right" ng-click="sendEvaluation()"><?php i::_e("Finalizar e enviar o parecer técnico") ?></button>
+        <?php } ?>
     </section>
     <?php $this->applyTemplateHook('evaluationForm.accountability', 'end', $template_hook_params) ?>
 </div>
