@@ -503,9 +503,25 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
-        
         $opp->checkPermission('viewReport');
-        
+                
+        $preload = $this->getData($this->data, $opp);
+
+        /**
+         * Verifica se existe dados suficientes para gerar o gráfico
+         */ 
+        if ($preload['typeGraphic'] == 'pie') {
+            if (!$this->checkIfChartHasData($preload['data'])) {
+                $this->apiResponse(['error' => true]);
+                return;
+            }
+        } else {
+            if (!$this->checkIfChartHasData($preload['series'])) {
+                $this->apiResponse(['error' => true]);
+                return;
+            }
+        }
+
         $value = "";
         $source = "";       
         foreach ($request['columns'] as $v){
@@ -539,7 +555,8 @@ class Controller extends \MapasCulturais\Controller
 
         $return = [
             'graphicId' => $metaList->id,
-            'identifier' => $identifier
+            'identifier' => $identifier,
+            'error' => false
         ];
 
         $this->apiResponse($return);
@@ -607,7 +624,6 @@ class Controller extends \MapasCulturais\Controller
 
     public function getData($reportData, $opp)
     {
-         
         $em = $opp->getEvaluationMethod();
         $app = App::i();
         $dataA = $reportData["columns"][0];
@@ -620,6 +636,7 @@ class Controller extends \MapasCulturais\Controller
         $labels = [];
         $color = [];
         $data = [];
+        $generate_colors = [];
         // post-processing may be necessary depending on type, so obtain it
         $typeA = $dataA["source"]["type"] ?? "";
         if ($reportData["typeGraphic"] != "pie") {
@@ -631,7 +648,13 @@ class Controller extends \MapasCulturais\Controller
                                                   $opp, $em);
         } else {
             foreach ($result as $item) {
-                $color[] = $this->color();
+                
+                do {
+                    $new_color = $this->color();
+                } while (in_array($new_color, $generate_colors));
+                
+                $generate_colors[] = $new_color;
+                $color[] = $new_color;
                 $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
                 $data[] = $item["quantity"];
             }
@@ -1117,10 +1140,19 @@ class Controller extends \MapasCulturais\Controller
                 $outPoints[] = $labelCallback($item[$key]);
             }
         }
+
+        $generate_colors = [];
         foreach (array_keys($series) as $label) {
+
+            do {
+                $new_color = $this->color();
+            } while (in_array($new_color, $generate_colors));
+            
+            $generate_colors[] = $new_color;
+
             $current = [
                 "label" => $label,
-                "colors" => $this->color(),
+                "colors" => $new_color,
                 "type" => $chartType,
                 "fill" => false,
                 "data" => []
@@ -1397,5 +1429,29 @@ class Controller extends \MapasCulturais\Controller
 
         return $colors[$rand];
 
+    }
+
+     /**
+     * Verifica se existem dados suficientes para gerar o gráfico
+     */
+    public function checkIfChartHasData(array $values) {
+
+        if (count($values) > 1) {
+    
+            $count = 0;
+            foreach ($values as $key => $value) {
+                if ($value > 1)
+                    $count++;
+            }
+    
+            if ($count >= 2)
+                return true;
+                
+            return false;
+    
+        }
+    
+        return false;
+    
     }
 }

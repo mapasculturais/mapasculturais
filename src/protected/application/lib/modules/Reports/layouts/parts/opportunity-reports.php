@@ -51,7 +51,7 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
         <?php $this->applyTemplateHook('reports-footer', 'before'); ?>
 
         <footer>
-            <button ng-click="data.reportModal=true;data.graficType=true" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
+            <button ng-click="data.reportModal=true;data.graficType=true;data.error=false" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
         </footer>
 
         <?php $this->applyTemplateHook('reports-footer', 'and'); ?>

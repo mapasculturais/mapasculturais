@@ -12,8 +12,17 @@ $title = i::__('Status de envio das inscrições');
 
 $total = array_sum($data);
 
+$generate_colors = [];
+
 //Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
+
+    do {
+        $new_color = is_callable($color) ? $color() : $color;
+    } while (in_array($new_color, $generate_colors));
+    
+    $generate_colors[] = $new_color;
+
     if ($key == i::__('Rascunho')) {
 
         if($value == 0 || $value == "0"){
@@ -23,9 +32,10 @@ foreach ($data as $key => $value) {
         }
         
         $values[0] = $value;
-        $colors[0] = is_callable($color) ? $color() : $color;
+        $colors[0] = $new_color;
       
         $legends[0] = i::__('Rascunhos') . '<br>' . $value . ' (' . $percent . '%)';
+
     } else {
         
         if($value == 0 || $value == "0"){
@@ -36,8 +46,9 @@ foreach ($data as $key => $value) {
 
         $count = ($count + $value);
         $values[1] = $count;
-        $colors[1] = is_callable($color) ? $color() : $color;
+        $colors[1] = $new_color;
         $legends[1] = i::__('Enviadas') . '<br>' . $count . ' (' . $percent . '%)';
+        
     }
 
 }
