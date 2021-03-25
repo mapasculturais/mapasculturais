@@ -2522,7 +2522,7 @@ module.controller('SealsController', ['$scope', '$rootScope', 'RelatedSealsServi
         return {
             find: function (data) {
 
-                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo&@files=(avatar.avatarMedium):url&opportunity=EQ(' + MapasCulturais.entity.id + ')&@order=createTimestamp DESC&@offset=' + data.offset + '&@limit=' + data.limit + '';
+                var qdata = '?@select=id,name,shortDescription,type,status,terms,registrationFrom,registrationTo,owner.{id,name,singleUrl}&@files=(avatar.avatarMedium):url&opportunity=EQ(' + MapasCulturais.entity.id + ')&@order=createTimestamp DESC&@offset=' + data.offset + '&@limit=' + data.limit + '';
              
                 return $http.get(MapasCulturais.createUrl('api/project', 'find') + qdata).
                     success(function (data, status, headers) {

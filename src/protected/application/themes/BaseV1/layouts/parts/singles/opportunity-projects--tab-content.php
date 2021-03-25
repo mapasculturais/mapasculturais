@@ -19,6 +19,7 @@ $app = \MapasCulturais\App::i();
                     </a>
                 </div>
                 <h3><a href="<?php echo $app->createUrl('project', 'single'); ?>{{project.id}}">{{project.name}}</a></h3>
+                <p ng-if="project.owner.name"><span class="label"><?php i::_e('Por:'); ?></span> <a class="agent color-agent" href="{{project.owner.singleUrl}}">{{project.owner.name}}</a></p>
                 <p ng-if="project.type.name"><span class="label"><?php i::_e('Tipo:'); ?></span> <a class="type" href="<?php echo $app->createUrl('site', 'search'); ?>##(global:(filterEntity:event,viewMode:list))">{{project.type.name}}</a></p>
                 <p ng-if="project.registrationFrom && project.registrationTo"><span class="label"><?php i::_e('Inscrições:'); ?></span> <?php i::_e('de'); ?> {{project.registrationFrom | date:"dd/MM/yyyy"}} <?php i::_e('até'); ?> {{project.registrationTo | date:"dd/MM/yyyy"}}</p>
             </header>
