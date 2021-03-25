@@ -142,10 +142,10 @@ class Module extends \MapasCulturais\Module
         },1000);
 
         // cria permissão project.evaluate para o projeto de prestaçao de contas
-        $app->hook('can(Project.evaluate)', function($user, &$result) {
+        $app->hook("can(Project.evaluate)", function($user, &$result) use ($app) {
             $registration = $this->registration->accountabilityPhase ?? null;
-
-            $result = $registration && $registration->canUser('evaluate', $user);
+            $evaluation = $registration ? $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]) : null;
+            $result = ($registration->canUser("evaluate", $user) ?? false) && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_SENT);
         });
 
         $app->hook('template(project.<<single|edit>>.tabs-content):end', function(){
@@ -255,11 +255,9 @@ class Module extends \MapasCulturais\Module
                     'evaluation' => $evaluation,
                 ];
                 $this->jsObject['evaluation'] = $evaluation;
-                
                 if (!$evaluation || !$evaluation->canUser('modify')) {
                     return;
                 }
-                
                 $this->part('accountability--evaluation-form', $form_params);
             }
         });
@@ -288,13 +286,12 @@ class Module extends \MapasCulturais\Module
         },-10);
 
         // adiciona controles de abrir e fechar chat e campo para edição
-        $app->hook('template(project.single.registration-field-item):begin', function () {
+        $app->hook("template(project.single.registration-field-item):begin", function () use ($app) {
             $project = $this->controller->requestedEntity;
-            if (($accountability = $project->registration->accountabilityPhase ?? null) && $project->canUser('evaluate')) {
-                $project = $this->controller->requestedEntity;
-                $this->part('accountability/registration-field-controls');
+            $evaluation = $project->registration->accountabilityPhase ?$app->repo("RegistrationEvaluation")->findOneBy(["registration" => $project->registration->accountabilityPhase]) : null;
+            if ($project->canUser("evaluate") && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_EVALUATED)) {
+                $this->part("accountability/registration-field-controls");
             }
-
         });
 
         $app->hook('template(project.single.registration-field-item):end', function () {
@@ -387,6 +384,14 @@ class Module extends \MapasCulturais\Module
                 $data = json_decode(json_encode($this->evaluationData), true);
                 unset($data["openFields"]);
                 $this->evaluationData = $data;
+                $criteria = [
+                    "objectType" => RegistrationEvaluation::class,
+                    "objectId" => $this->id,
+                    "type" => self::CHAT_THREAD_TYPE
+                ];
+                foreach ($app->repo("ChatThread")->findBy($criteria) as $thread) {
+                    $thread->status = ChatThread::STATUS_DISABLED;
+                }
             }
              return;
          });
