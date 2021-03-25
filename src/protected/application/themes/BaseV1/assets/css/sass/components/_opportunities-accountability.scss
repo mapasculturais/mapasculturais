@@ -131,29 +131,48 @@
         overflow: hidden;
         margin-top: 0px;
         text-align: center;
-        ul{
+        width: 100%;
+        .js-event-list{
             padding: 5px 5px 5px 15px;
             height: auto;
             border-left: 3px solid #1C5690;
             margin: 30px 0 0;
-        }
-        li {
-            box-sizing: border-box;
-            display: block;
-            width: 100%;
-            list-style-type: none;
-            color: #111111;
-            font-family: "Open Sans";
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 32px;
-            overflow: hidden;            
-            div {
-                float: left;
-                margin-right: 10px;
+
+            .event-item {
+                border: solid 1px #0000000f;
+                padding: 5px;   
             }
-           
+
+            li {
+                box-sizing: border-box;
+                display: block;
+                width: 100%;
+                list-style-type: none;
+                color: #111111;
+                font-family: "Open Sans";
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 32px;
+                overflow: hidden;  
+                margin-bottom: 10px;
+                       
+                div {
+                    float: left;
+                    margin-right: 10px;
+                }
+            }
+
+            .occurrence-list{
+                width: 100%;
+                text-align: left;
+                list-style: circle;
+                border: 0 !important;
+                li{
+                    font-weight: normal;
+                }
+            }
         }
+        
         
     }
     

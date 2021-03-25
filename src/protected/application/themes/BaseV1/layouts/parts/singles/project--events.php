@@ -7,6 +7,8 @@ if(!($events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1
     $events = [(object)['id'=> null ,'name' => i::__("Não foram encontrados eventos")]];  
     $class = "no-event";
 } 
+
+
 ?>
 <?php $this->applyTemplateHook('project-event', 'before' )?>
 <div class="event-link registration-fieldset clearfix">  
@@ -22,14 +24,22 @@ if(!($events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1
 
     <div class="event-status <?=$class?>"> 
         <ul class="js-event-list">
-            <?php foreach ($events as $event){?>  
+            <?php foreach ($events as $event){?>                
                 <?php $url = $event->id ? $app->createUrl('evento', $event->id) : "#";?>
-                <li>
+                <li class="event-item">
                     <div><span class="icon icon-event"></span></div>
-                    <div><a href="<?=$url?>"><?=$event->name?></a></div> 
-                </li>
+                    <div><a href="<?=$url?>"><?=$event->name?></a></div>                   
+                        <ul class="occurrence-list">
+                            <?php foreach ($event->occurrences as $occurrence){ ?>
+                            <li>
+                                <small><?=$occurrence->space->name?> - <?= $create_rule_string($occurrence) ?></small>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                    </li>
             <?php } ?>
         </ul>
+       
     </div>
     <?php $this->applyTemplateHook('project-event', 'end' )?>  
 </div>

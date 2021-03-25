@@ -153,7 +153,11 @@ class Module extends \MapasCulturais\Module
 
             if ($project->isAccountability) {
                 if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
-                    $this->part('accountability/project-tab-content');
+                    $this->part('accountability/project-tab-content', [
+                        'create_rule_string' => function($occurrence){
+                            return $occurrence->rule->description. " - " . $occurrence->rule->price;
+                        }                    
+                    ]);
                 }
             }
         },1000);
