@@ -59,7 +59,7 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
         <?php endif; ?>
     </div>
 
-    <?php $this->part('singles/project--events', ['project' => $entity]) ?>
+    <?php $this->part('singles/project--events', ['project' => $entity, 'create_rule_string' => $create_rule_string]) ?>
 
     <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
         <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
