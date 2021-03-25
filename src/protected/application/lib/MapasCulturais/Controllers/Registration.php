@@ -398,7 +398,7 @@ class Registration extends EntityController {
             }
         }
     }
-    
+
     function POST_saveEvaluation(){
         $registration = $this->getRequestedEntity();
         if(isset($this->postData['uid'])){
@@ -406,15 +406,26 @@ class Registration extends EntityController {
         } else {
             $user = null;
         }
-        
-        if(isset($this->urlData['status']) && $this->urlData['status'] === 'evaluated'){
-            if($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
-                $this->errorJson($errors, 400);
-                return;
-            } else {
+
+        if (isset($this->urlData['status'])) {
+            if ($this->urlData['status'] === 'evaluated') {
+                if ($errors = $registration->getEvaluationMethod()->getValidationErrors($registration->getEvaluationMethodConfiguration(), $this->postData['data'])){
+                    $this->errorJson($errors, 400);
+                    return;
+                }
                 $status = Entities\RegistrationEvaluation::STATUS_EVALUATED;
-                $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            } else if ($this->urlData['status'] === 'draft') {
+                $evaluation = $registration->getUserEvaluation($user);
+                if (!$evaluation || !$evaluation->canUser('modify', $user)) {
+                    $this->errorJson("User {$user->id} is trying to modify evaluation {$evaluation->id}.", 401);
+                    return;
+                }
+                $status = Entities\RegistrationEvaluation::STATUS_DRAFT;
+            } else {
+                $this->errorJson("Invalid evaluation status {$this->urlData["status"]} received from client.", 400);
+                return;
             }
+            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
