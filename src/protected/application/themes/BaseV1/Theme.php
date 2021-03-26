@@ -2422,6 +2422,8 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
 
         $this->jsObject['entity']['canUserEvaluate'] = $entity->canUser('evaluate');
+        $this->jsObject['entity']['canUserModify'] = $entity->canUser('modify');
+        $this->jsObject['entity']['canUserSend'] = $entity->canUser('send');
         $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');
 
         $this->jsObject['registration'] = $entity;
