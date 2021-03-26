@@ -8,7 +8,7 @@ $full_date_to = preg_replace_callback("/{(.*?)}/", function($matches) use ($app)
 }, $date_to);
 ?>
 <div class="registration-fieldset">
-    <?php if($entity->opportunity->isRegistrationOpen()): ?>
+    <?php if($entity->canUser('send')): ?>
         <p class="registration-help"><?php i::_e("Certifique-se que você preencheu as informações corretamente antes de enviar sua prestação de contas.");?> <strong><?php i::_e("Depois de enviada, não será mais possível editá-la.");?></strong></p>
         <p class="registration-help"><?php i::_e("A prestaçao de contas pode ser enviada até") ?> <?= $full_date_to ?></p>
         <a class="btn btn-primary" ng-click="sendRegistration()" rel='noopener noreferrer'><?php i::_e("Enviar prestação de contas");?></a>
