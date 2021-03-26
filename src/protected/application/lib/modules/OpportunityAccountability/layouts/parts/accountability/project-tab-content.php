@@ -85,7 +85,11 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
         </ul>
         <?php $this->applyTemplateHook('registration-field-list', 'after') ?>
     </div>
-
+    
+    <?php if($registration->canUser('modify')){?>
+        <?php $this->part('accountability/send-button', ['entity' => $registration]) ?>
+    <?php }?>
+    
     <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params) ?>
     </div>
 </div>
