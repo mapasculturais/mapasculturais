@@ -1,10 +1,13 @@
 <?php
-use MapasCulturais\App;
 use MapasCulturais\i;
+use MapasCulturais\App;
+use MapasCulturais\Entities\RegistrationEvaluation;
 $app = App::i();
 $class = ""; 
 
 $events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1]);
+$project = $this->controller->requestedEntity;
+$evaluation = $project->registration->accountabilityPhase ?$app->repo("RegistrationEvaluation")->findOneBy(["registration" => $project->registration->accountabilityPhase]) : null;
 
 ?>
 <?php $this->applyTemplateHook('project-event', 'before' )?>
@@ -19,6 +22,17 @@ $events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1]);
         </div>
     </header>
 
+    <?php if($project->canUser('evaluate') && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_EVALUATED)){ ?>
+        <div class='accountability-registration-field-controls'>
+            <label>
+                <?= i::__('Abrir conversação com proponente') ?>
+                <span class="switch" ng-controller="AccountabilityEvaluationForm">
+                    <input type="checkbox" ng-model="openChats[getFieldIdentifier(events)]" ng-change="toggleChat(events)" >
+                    <span class="slider"></span>
+                </span>
+            </label>
+        </div>
+    <?php } ?>
     <div class="event-status <?=$class?>"> 
 
         <?php if ($events) : ?>
@@ -43,6 +57,7 @@ $events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1]);
         <?php endif; ?>
        
     </div>
+
     <?php $this->applyTemplateHook('project-event', 'end' )?>  
 </div>
 <?php $this->applyTemplateHook('project-event', 'after' )?> 

@@ -240,9 +240,10 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
             $entity = $this->controller->requestedEntity;
+            $base_phase = $entity->parent ? : $entity;
 
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
             }
         });
@@ -302,6 +303,11 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(project.single.registration-field-item):end', function () {
             echo '<div class="clearfix"></div>';
             $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
+        });
+
+        $app->hook('template(project.single.project-event):end', function () {            
+            echo '<div class="clearfix"></div>';
+            $this->part('chat', ['thread_id' => 'getChatByField(false).id', 'closed' => '!isChatOpen()']);
         });
 
         /**
