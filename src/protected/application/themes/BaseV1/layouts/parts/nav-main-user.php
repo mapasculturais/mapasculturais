@@ -69,16 +69,9 @@
             <?php $this->applyTemplateHook('nav.dropdown.projects','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'projects') ?>"><?php \MapasCulturais\i::_e("Meus Projetos");?></a>
-                <?php $this->renderModalFor('project'); ?>
-                <?php /* <a class="add" href="<?php echo $app->createUrl('project', 'create') ?>"></a> */ ?>
+                <?php $this->renderModalFor('project'); ?>                
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.projects','after'); ?>
-
-            <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
-            <li>
-                <a href="<?php echo $app->createUrl('panel', 'registrations') ?>"><?php \MapasCulturais\i::_e("Minhas Inscrições");?></a>
-            </li>
-            <?php $this->applyTemplateHook('nav.dropdown.registrations','after'); ?>
         <?php endif; ?>
 
         <?php if($app->isEnabled('opportunities')): ?>
