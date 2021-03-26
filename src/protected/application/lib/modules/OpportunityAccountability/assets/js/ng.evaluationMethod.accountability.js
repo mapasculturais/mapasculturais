@@ -260,22 +260,19 @@
         }
     }]);
 
-    module.controller('OpportunityAccountability',['$scope', function($scope){
-        $scope.canUserEdit = function(field){
-
-            if(MapasCulturais.entity.status == 0){
+    module.controller('OpportunityAccountability', ['$scope', function ($scope) {
+        $scope.canUserEdit = function (field) {
+            if (MapasCulturais.entity.status == 0) {
                 return true;
             }
-            
-            if(field.fieldType == "file"){
-                var ref = field.groupName
-            }else{
-                var ref = field.fieldName
-            }           
-           if(MapasCulturais.accountabilityPermissions[ref] === "true"){
+            if (MapasCulturais.entity.canUserModify) { // vem da registration, ver método addRegistrationToJs no PHP
+                return true;
+            }
+            var ref = field.fieldType == "file" ? field.groupName : field.fieldName;
+            if (MapasCulturais.accountabilityPermissions[ref] === "true") {
                return true;
-           }
-           return false;
+            }
+            return false;
         }
     }]);
 

@@ -3,7 +3,7 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities\RegistrationEvaluation;
 $app = App::i();
-$class = ""; 
+$class = "";
 
 $events = $app->repo('Event')->findBy(['project' => $project, 'status' => 1]);
 $project = $this->controller->requestedEntity;
@@ -11,8 +11,8 @@ $evaluation = $project->registration->accountabilityPhase ?$app->repo("Registrat
 
 ?>
 <?php $this->applyTemplateHook('project-event', 'before' )?>
-<div class="event-link registration-fieldset clearfix">  
-    <?php $this->applyTemplateHook('project-event', 'begin' )?>  
+<div class="event-link registration-fieldset clearfix">
+    <?php $this->applyTemplateHook('project-event', 'begin' )?>
     <header>
         <div class="title">
             <?php i::_e("Eventos vinculados a este projeto"); ?>
@@ -33,15 +33,15 @@ $evaluation = $project->registration->accountabilityPhase ?$app->repo("Registrat
             </label>
         </div>
     <?php } ?>
-    <div class="event-status <?=$class?>"> 
+    <div class="event-status <?=$class?>">
 
         <?php if ($events) : ?>
             <ul class="js-event-list">
-                <?php foreach ($events as $event){?>                
+                <?php foreach ($events as $event){?>
                     <?php $url = $event->id ? $app->createUrl('evento', $event->id) : "#";?>
                     <li class="event-item">
                         <div><span class="icon icon-event"></span></div>
-                        <div><a href="<?=$url?>"><?=$event->name?></a></div>                   
+                        <div><a href="<?=$url?>"><?=$event->name?></a></div>
                             <ul class="occurrence-list">
                                 <?php foreach ($event->occurrences as $occurrence){ ?>
                                 <li>
@@ -53,14 +53,13 @@ $evaluation = $project->registration->accountabilityPhase ?$app->repo("Registrat
                 <?php } ?>
             </ul>
         <?php else : ?>
-            <p><?php i::_e('Nenhum evento encontrado nesse projeto'); ?></p>
+            <p><?php i::_e('Nenhum evento encontrado neste projeto'); ?></p>
         <?php endif; ?>
-       
-    </div>
 
-    <?php $this->applyTemplateHook('project-event', 'end' )?>  
+    </div>
+    <?php $this->applyTemplateHook('project-event', 'end'); ?>
 </div>
-<?php $this->applyTemplateHook('project-event', 'after' )?> 
+<?php $this->applyTemplateHook('project-event', 'after'); ?>
 
 <script>
     $(document).on('createEvent', function(e,event){
@@ -90,6 +89,6 @@ $evaluation = $project->registration->accountabilityPhase ?$app->repo("Registrat
         z-index: 1901 !important;
     }
     .tip-yellowsimple{
-        z-index: 1901 !important;      
+        z-index: 1901 !important;
     }
 </style>
