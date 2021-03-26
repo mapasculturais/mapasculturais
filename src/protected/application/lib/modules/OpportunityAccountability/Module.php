@@ -128,7 +128,9 @@ class Module extends \MapasCulturais\Module
 
             $module = $app->modules['OpportunityPhases'];
 
-            $module->importLastPhaseRegistrations($this->parent->accountabilityPhase, true);
+            $this->registerRegistrationMetadata();
+
+            $registrations = $module->importLastPhaseRegistrations($this, $this->parent->accountabilityPhase, true);
         });
 
         $app->hook('template(project.<<single|edit>>.tabs):end', function(){
