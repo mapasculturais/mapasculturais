@@ -144,10 +144,10 @@ class Module extends \MapasCulturais\Module
         },1000);
 
         // cria permissão project.evaluate para o projeto de prestaçao de contas
-        $app->hook("can(Project.evaluate)", function($user, &$result) use ($app) {
+        $app->hook("can(Project.evaluate)", function ($user, &$result) use ($app) {
             $registration = $this->registration->accountabilityPhase ?? null;
             $evaluation = $registration ? $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]) : null;
-            $result = ($registration->canUser("evaluate", $user) ?? false) && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_SENT);
+            $result = ($registration->canUser("evaluate", $user) ?? false) && (!$evaluation || ($evaluation->status < RegistrationEvaluation::STATUS_SENT));
         });
 
         $app->hook('template(project.<<single|edit>>.tabs-content):end', function(){
@@ -232,18 +232,20 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
 
             $entity = $this->controller->requestedEntity;
-
+            $base_phase = $entity->parent ? : $entity;
+            
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
             }
         });
 
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
             $entity = $this->controller->requestedEntity;
+            $base_phase = $entity->parent ? : $entity;
 
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
             }
         });
@@ -303,6 +305,11 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(project.single.registration-field-item):end', function () {
             echo '<div class="clearfix"></div>';
             $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
+        });
+
+        $app->hook('template(project.single.project-event):end', function () {            
+            echo '<div class="clearfix"></div>';
+            $this->part('chat', ['thread_id' => 'getChatByField(false).id', 'closed' => '!isChatOpen()']);
         });
 
         /**

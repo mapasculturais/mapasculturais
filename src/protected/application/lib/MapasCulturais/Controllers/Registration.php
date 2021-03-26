@@ -425,7 +425,7 @@ class Registration extends EntityController {
                 $this->errorJson("Invalid evaluation status {$this->urlData["status"]} received from client.", 400);
                 return;
             }
-            $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user, $status);
+            $evaluation = $registration->saveUserEvaluation(($this->postData['data'] ?? []), $user, $status);
         } else {
             $evaluation = $registration->saveUserEvaluation($this->postData['data'], $user);
         }
