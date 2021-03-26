@@ -133,15 +133,11 @@ class Module extends \MapasCulturais\Module
             $registrations = $module->importLastPhaseRegistrations($this, $this->parent->accountabilityPhase, true);
         });
 
-        $app->hook('template(project.<<single|edit>>.tabs):end', function(){
-            $project = $this->controller->requestedEntity;
-
-            if ($project->isAccountability) {
-                if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
-                    $this->part('accountability/project-tab');
-                }
+        $app->hook("template(project.<<single|edit>>.tabs):end", function () {
+            if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
+                $this->part("accountability/project-tab");
             }
-        },1000);
+        }, 1000);
 
         // cria permissão project.evaluate para o projeto de prestaçao de contas
         $app->hook("can(Project.evaluate)", function ($user, &$result) use ($app) {
@@ -150,19 +146,15 @@ class Module extends \MapasCulturais\Module
             $result = ($registration->canUser("evaluate", $user) ?? false) && (!$evaluation || ($evaluation->status < RegistrationEvaluation::STATUS_SENT));
         });
 
-        $app->hook('template(project.<<single|edit>>.tabs-content):end', function(){
-            $project = $this->controller->requestedEntity;
-
-            if ($project->isAccountability) {
-                if ($project->canUser('@control') || $project->canUser('evaluate') || $project->opportunity->canUser('@controll')) {
-                    $this->part('accountability/project-tab-content', [
-                        'create_rule_string' => function($occurrence){
-                            return $occurrence->rule->description. " - " . $occurrence->rule->price;
-                        }                    
-                    ]);
-                }
+        $app->hook("template(project.<<single|edit>>.tabs-content):end", function () {
+            if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
+                $this->part("accountability/project-tab-content", [
+                    "create_rule_string" => function ($occurrence) {
+                        return "{$occurrence->rule->description} - {$occurrence->rule->price}";
+                    }
+                ]);
             }
-        },1000);
+        }, 1000);
 
         $app->hook('can(Registration.modify)', function ($user, &$result) use ($app) {
             if (($this->canUser('@control', $user)) && Module::hasOpenFields($this, $app)) {
@@ -230,10 +222,8 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona aba de projetos nas oportunidades com prestação de contas após a publicação da última fase
         $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
-
             $entity = $this->controller->requestedEntity;
-            $base_phase = $entity->parent ? : $entity;
-            
+            $base_phase = $entity->parent ?? $entity;
             // accountabilityPhase existe apenas quando lastPhase existe
             if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
@@ -242,8 +232,7 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
             $entity = $this->controller->requestedEntity;
-            $base_phase = $entity->parent ? : $entity;
-
+            $base_phase = $entity->parent ?? $entity;
             // accountabilityPhase existe apenas quando lastPhase existe
             if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
@@ -307,7 +296,7 @@ class Module extends \MapasCulturais\Module
             $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
         });
 
-        $app->hook('template(project.single.project-event):end', function () {            
+        $app->hook('template(project.single.project-event):end', function () {
             echo '<div class="clearfix"></div>';
             $this->part('chat', ['thread_id' => 'getChatByField(false).id', 'closed' => '!isChatOpen()']);
         });
@@ -364,13 +353,11 @@ class Module extends \MapasCulturais\Module
          // cria a avaliação se é um parecerista visitando pela primeira vez o projeto
          $app->hook('GET(project.single):before', function() use($app) {
             $project = $this->requestedEntity;
-
-            if($project && $project->isAccountability && $project->canUser('evaluate')) {
-                if($accountability = $project->registration->accountabilityPhase ?? null) {
+            if ($project && $project->isAccountability && $project->canUser('evaluate')) {
+                if ($accountability = $project->registration->accountabilityPhase ?? null) {
                     $criteria = [
                         'registration' => $accountability
                     ];
-
                     if (!$app->repo('RegistrationEvaluation')->findOneBy($criteria)) {
                         $evaluation = new RegistrationEvaluation;
                         $evaluation->user = $app->user;
@@ -569,6 +556,17 @@ class Module extends \MapasCulturais\Module
         foreach (($evaluation_data["openFields"] ?? []) as $value) {
             if ($value == "true") {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    static function shouldDisplayProjectAccountabilityUI($controller)
+    {
+        $project = $controller->requestedEntity;
+        if ($project->isAccountability) {
+            if ($project->canUser("@control") || $project->canUser("evaluate") || $project->opportunity->canUser("@control")) {
+                return ($project->status > Project::STATUS_DRAFT);
             }
         }
         return false;
