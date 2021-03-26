@@ -265,9 +265,7 @@
             if (MapasCulturais.entity.status == 0) {
                 return true;
             }
-            if (MapasCulturais.entity.canUserModify) { // vem da registration, ver método addRegistrationToJs no PHP
-                return true;
-            }
+            
             var ref = field.fieldType == "file" ? field.groupName : field.fieldName;
             if (MapasCulturais.accountabilityPermissions[ref] === "true") {
                return true;

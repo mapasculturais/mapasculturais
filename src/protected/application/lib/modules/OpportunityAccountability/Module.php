@@ -110,7 +110,7 @@ class Module extends \MapasCulturais\Module
 
         });
 
-        $app->hook('entity(Opportunity).publishRegistrations:after', function () {
+        $app->hook('entity(Opportunity).publishRegistrations:after', function () use ($app) {
             if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
                 return;
             }
@@ -124,13 +124,28 @@ class Module extends \MapasCulturais\Module
                 return;
             }
 
-            $app = App::i();
-
             $module = $app->modules['OpportunityPhases'];
 
             $this->registerRegistrationMetadata();
 
-            $registrations = $module->importLastPhaseRegistrations($this, $this->parent->accountabilityPhase, true);
+            $module->importLastPhaseRegistrations($this, $this->parent->accountabilityPhase, true);
+        });
+
+        // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
+        $app->hook('entity(Registration).send:after', function() use($app) {
+            if ($this->opportunity->isAccountabilityPhase) {
+                if ($evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this])) {
+                    $evdata = $evaluation->evaluationData;
+
+                    unset($evdata->openFields);
+
+                    $evaluation->evaluationData = $evdata;
+
+                    $app->disableAccessControl();
+                    $evaluation->save(true);
+                    $app->enableAccessControl();
+                }
+            }
         });
 
         $app->hook("template(project.<<single|edit>>.tabs):end", function () {
