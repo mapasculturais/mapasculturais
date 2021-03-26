@@ -145,8 +145,18 @@ class Module extends \MapasCulturais\Module{
         $result = $base_opportunity;
 
         foreach($phases as $p){
-            if($p->createTimestamp < $phase->createTimestamp){
-                $result = $p;
+            if ($p->registrationFrom && $phase->registrationFrom) {
+                if ($p->registrationFrom < $phase->registrationFrom) {
+                    $result = $p;
+                }
+            } else if ($p->createTimestamp != $phase->createTimestamp) {
+                if ($p->createTimestamp < $phase->createTimestamp) {
+                    $result = $p;
+                }
+            } else {
+                if ($p->id < $phase->id) {
+                    $result = $p;
+                }
             }
         }
 
