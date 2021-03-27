@@ -145,8 +145,18 @@ class Module extends \MapasCulturais\Module{
         $result = $base_opportunity;
 
         foreach($phases as $p){
-            if($p->createTimestamp < $phase->createTimestamp){
-                $result = $p;
+            if ($p->registrationFrom && $phase->registrationFrom) {
+                if ($p->registrationFrom < $phase->registrationFrom) {
+                    $result = $p;
+                }
+            } else if ($p->createTimestamp != $phase->createTimestamp) {
+                if ($p->createTimestamp < $phase->createTimestamp) {
+                    $result = $p;
+                }
+            } else {
+                if ($p->id < $phase->id) {
+                    $result = $p;
+                }
             }
         }
 
@@ -520,7 +530,9 @@ class Module extends \MapasCulturais\Module{
             $target_opportunity = self::getRequestedOpportunity();
 
             $as_draft = !isset($this->data['sent']);
-            $registrations = $self->importLastPhaseRegistrations($target_opportunity, $as_draft);
+            $previous_phase = self::getPreviousPhase($target_opportunity);
+
+            $registrations = $self->importLastPhaseRegistrations($previous_phase, $target_opportunity, $as_draft);
 
             if(count($registrations) < 1){
                 $this->errorJson(\MapasCulturais\i::__('Não há inscrições aprovadas fase anterior'), 400);
@@ -707,12 +719,10 @@ class Module extends \MapasCulturais\Module{
     }
 
 
-    function importLastPhaseRegistrations(Opportunity $target_opportunity, $as_draft = false) {
+    function importLastPhaseRegistrations(Opportunity $previous_phase, Opportunity $target_opportunity, $as_draft = false) {
         $app = App::i();
 
         $target_opportunity ->checkPermission('@control');
-
-        $previous_phase = self::getPreviousPhase($target_opportunity);          
 
         $dql = "
             SELECT 
