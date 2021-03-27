@@ -148,16 +148,32 @@
         });
 
         $scope.getFieldIdentifier = function(field) {
+            
+            if(!field){
+                return "events";
+            }
+
             return field.fieldName || field.groupName;
         }
 
         $scope.getChatByField = function (field) {
-            let identifier = $scope.getFieldIdentifier(field);
+            if(!field){
+                var _field = {'fieldName':'events'}
+            }else{
+                var _field = field
+            }
+            
+            let identifier = $scope.getFieldIdentifier(_field);
             return this.chatThreads[identifier];
         }
 
         $scope.isChatOpen = function(field) {
-            let chat = this.getChatByField(field)
+            if(!field){
+                var _field = {'fieldName':'events'}
+            }else{
+                var _field = field
+            }
+            let chat = this.getChatByField(_field)
             return !! chat && chat.status == 1;
         };
 
@@ -244,18 +260,17 @@
         }
     }]);
 
-    module.controller('OpportunityAccountability',['$scope', function($scope){
-        $scope.canUserEdit = function(field){
-
-            if(field.fieldType == "file"){
-                var ref = field.groupName
-            }else{
-                var ref = field.fieldName
-            }           
-           if(MapasCulturais.accountabilityPermissions[ref] === "true"){
+    module.controller('OpportunityAccountability', ['$scope', function ($scope) {
+        $scope.canUserEdit = function (field) {
+            if (MapasCulturais.entity.status == 0) {
+                return true;
+            }
+            
+            var ref = field.fieldType == "file" ? field.groupName : field.fieldName;
+            if (MapasCulturais.accountabilityPermissions[ref] === "true") {
                return true;
-           }
-           return false;
+            }
+            return false;
         }
     }]);
 

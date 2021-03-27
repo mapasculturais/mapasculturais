@@ -663,7 +663,7 @@ class Registration extends \MapasCulturais\Entity
         $app->enqueueEntityToPCacheRecreation($this->opportunity);
         $app->enqueueEntityToPCacheRecreation($this);
 
-        $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:before");
+        $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:after");
 
     }
 
