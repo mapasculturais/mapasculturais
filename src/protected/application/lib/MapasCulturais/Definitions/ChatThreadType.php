@@ -58,7 +58,7 @@ class ChatThreadType extends \MapasCulturais\Definition
         $email_params = [
             "from" => $app->config["mailer.from"],
             "to" => ($notification->user->profile->emailPrivado ??
-                     $notification->user->emailPublico),
+                     $notification->user->profile->emailPublico),
             "subject" => i::__("Você tem uma nova mensagem"),
             "body" => $mustache->render($template, $params)
         ];
