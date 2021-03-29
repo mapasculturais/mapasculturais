@@ -463,10 +463,13 @@ class Module extends \MapasCulturais\Module{
             if (isset($this->postData['isLastPhase']) && $this->postData['isLastPhase']) {
                 $phase->isLastPhase = true;
             }
-            
+
+            $evaluation_method = $this->data['evaluationMethod'];
+            $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [$phase, &$evaluation_method]);
+
             $phase->save(true);
 
-            $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
+            $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
 
             $emconfig = new Entities\EvaluationMethodConfiguration;
 

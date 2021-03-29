@@ -201,8 +201,19 @@ class Module extends \MapasCulturais\Module
         });
 
         // Adidiona o checkbox haverá última fase
-        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
-            $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
+        $app->hook('template(opportunity.edit.new-phase-form-step2):end', function () use ($app) {
+            $this->part('widget-opportunity-accountability');
+        });
+
+        // Adicionar radio button para criar apenas fase de prestação de contas
+        $app->hook('template(opportunity.edit.new-phase-form-step1):end', function () use ($app, $self) {
+            $this->part('widget-opportunity-phase-only');
+        });
+
+        //
+        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app, $self) {
+            $this->part('accountability-phase-confirmation');
+
         });
 
         $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
@@ -427,6 +438,19 @@ class Module extends \MapasCulturais\Module
                     $app->cache->save($cache_id, $value, DAY_IN_SECONDS);
                 }
             }
+        });
+
+         // Chamar o hook para criação de fase de prestação de contas
+        $app->hook('module(OpportunityPhases).createNextPhase(accountability):before', function ($phase, $evaluation_method) use ($app) {
+
+            $phase->name = i::__('Prestação de Contas');
+            $phase->shortDescription = i::__('Descrição da Prestação de Contas');
+            $phase->isOpportunityPhase = true;
+            $phase->isAccountabilityPhase = true;
+            $phase->isLastPhase = true;
+
+            $phase->save(true);
+
         });
     }
 
