@@ -449,8 +449,6 @@ class Module extends \MapasCulturais\Module
             $phase->isAccountabilityPhase = true;
             $phase->isLastPhase = true;
 
-            $phase->save(true);
-
         });
     }
 
