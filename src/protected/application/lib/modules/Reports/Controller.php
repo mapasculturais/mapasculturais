@@ -500,6 +500,7 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
 
         $app = App::i();
+        $module = $app->modules['Reports'];
 
         $request = $this->data;
         $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
@@ -511,12 +512,12 @@ class Controller extends \MapasCulturais\Controller
          * Verifica se existe dados suficientes para gerar o gráfico
          */ 
         if ($preload['typeGraphic'] == 'pie') {
-            if (!$this->checkIfChartHasData($preload['data'])) {
+            if (!$module->checkIfChartHasData($preload['data'])) {
                 $this->apiResponse(['error' => true]);
                 return;
             }
         } else {
-            if (!$this->checkIfChartHasData($preload['series'])) {
+            if (!$module->checkIfChartHasData($preload['series'])) {
                 $this->apiResponse(['error' => true]);
                 return;
             }
@@ -626,12 +627,15 @@ class Controller extends \MapasCulturais\Controller
     {
         $em = $opp->getEvaluationMethod();
         $app = App::i();
+        $module = $app->modules['Reports'];
+
         $dataA = $reportData["columns"][0];
         $dataB = $reportData["columns"][1];
         $conn = $app->em->getConnection();
         $query = $this->buildQuery($reportData["columns"], $opp,
                                    ($reportData["typeGraphic"] == "line"));
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
+        
         $return = [];
         $labels = [];
         $color = [];
@@ -650,7 +654,7 @@ class Controller extends \MapasCulturais\Controller
             foreach ($result as $item) {
                 
                 do {
-                    $new_color = $this->color();
+                    $new_color = $module->color();
                 } while (in_array($new_color, $generate_colors));
                 
                 $generate_colors[] = $new_color;
@@ -1123,12 +1127,16 @@ class Controller extends \MapasCulturais\Controller
     private function prepareSeries($data, $type, $key, $chartType,
                                    $opportunity, $evalMethod, $labelCallback)
     {
+        $app = App::i();
+        $module = $app->modules['Reports'];
+
         $series = [];
         $points = [];
         $outColours = [];
         $outLines = [];
         $outSeries = [];
         $outPoints = [];
+
         foreach ($data as $item) {
             $label = $this->generateLabel($item["value0"], $type, $evalMethod);
             if (!isset($series[$label])) {
@@ -1145,7 +1153,7 @@ class Controller extends \MapasCulturais\Controller
         foreach (array_keys($series) as $label) {
 
             do {
-                $new_color = $this->color();
+                $new_color = $module->color();
             } while (in_array($new_color, $generate_colors));
             
             $generate_colors[] = $new_color;
@@ -1385,73 +1393,5 @@ class Controller extends \MapasCulturais\Controller
         }
 
         return $result;
-    }
-
-    public function color()
-    {
-
-        $colors = [
-            '#333333',
-            '#1c5690',
-            '#b3b921',
-            '#1dabc6',
-            '#e83f96',
-            '#cc0033',
-            '#9966cc',
-            '#40b4b4',
-            '#cc9933',
-            '#cc3333',
-            '#66cc66',
-            '#003c46',
-            '#d62828',
-            '#5a189a',
-            '#00afb9',
-            '#38b000',
-            '#3a0ca3',
-            '#489fb5',
-            '#245501',
-            '#708d81',
-            '#00bbf9',
-            '#f15bb5',
-            '#ffdab9',
-            '#5f0f40',
-            '#e9ff70',
-            '#fcf6bd',
-            '#4a5759',
-            '#06d6a0',
-            '#cce3de',
-            '#f3ac01'
-        ];
-
-        $rand = mt_rand(0, count($colors) - 1);
-
-        shuffle($colors);
-
-        return $colors[$rand];
-
-    }
-
-     /**
-     * Verifica se existem dados suficientes para gerar o gráfico
-     */
-    public function checkIfChartHasData(array $values) {
-
-        if (count($values) > 1) {
-    
-            $count = 0;
-            foreach ($values as $key => $value) {
-                if ($value > 1)
-                    $count++;
-            }
-    
-            if ($count >= 2)
-                return true;
-                
-            return false;
-    
-        }
-    
-        return false;
-    
     }
 }
