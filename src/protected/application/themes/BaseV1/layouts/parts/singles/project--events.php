@@ -44,13 +44,11 @@ $evaluation = $project->registration->accountabilityPhase ? $app->repo("Registra
                     <li class="event-item">
                         <div><span class="icon icon-event"></span></div>
                         <div><a href="<?= $url ?>"><?= $event->name ?></a></div>
-                        <ul class="occurrence-list">
+                        <div class="occurrence-list">
                             <?php foreach ($event->occurrences as $occurrence) { ?>
-                                <li>
-                                    <small><?= $occurrence->space->name ?> - <?= $create_rule_string($occurrence) ?></small>
-                                </li>
+                                <p><?= $occurrence->space->name ?> <small>- (<?= $create_rule_string($occurrence) ?>)</small></p>
                             <?php } ?>
-                        </ul>
+                        </div>
                     </li>
                 <?php } ?>
             </ul>
