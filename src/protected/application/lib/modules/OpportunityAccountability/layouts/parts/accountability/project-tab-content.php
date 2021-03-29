@@ -2,6 +2,7 @@
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Registration;
 $app = App::i();
 $entity = $this->controller->requestedEntity;
 $registration = $entity->registration->accountabilityPhase;
@@ -88,6 +89,10 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 
     <?php if ($registration->canUser('modify')) { ?>
         <?php $this->part('accountability/send-button', ['entity' => $registration]); ?>
+    <?php } else { ?>
+        <?php if($registration->status > Registration::STATUS_DRAFT){ ?>
+            <?php $this->part('accountability/registration-message', ['entity' => $registration]); ?>
+        <?php }?>
     <?php }?>
 
     <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params); ?>
