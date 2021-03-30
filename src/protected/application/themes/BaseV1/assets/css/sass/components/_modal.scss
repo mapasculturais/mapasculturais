@@ -127,6 +127,7 @@
 }
 
 .entity-modal {
+    max-width: 100%;
     width: 800px;
 
     form.create-entity {
@@ -170,7 +171,10 @@
 
     input, textarea { width: 100%; }
 
-    select { display: block !important; }
+    select {
+        display: block !important;
+        max-width: 100%;
+    }
 
     .actions {
         float: left;
