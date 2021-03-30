@@ -25,8 +25,11 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property Agent $owner
  * 
  * 
- * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property RegistrationFileConfiguration $registrationFileConfigurations
+ * @property RegistrationFieldConfiguration $registrationFieldConfigurations
  * @property \MapasCulturais\Entity $ownerEntity
+ * 
  *
  * @ORM\Table(name="opportunity", indexes={
  *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
@@ -183,20 +186,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $evaluationMethodConfiguration;
 
     /**
-     * @var \MapasCulturais\Entities\RegistrationFileConfiguration[] RegistrationFileConfiguration
-     *
-     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFileConfiguration", mappedBy="owner", fetch="LAZY")
-     */
-    public $registrationFileConfigurations;
-
-    /**
-     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
-     *
-     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
-     */
-    public $registrationFieldConfigurations;
-
-    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
@@ -248,6 +237,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $_subsiteId;
     
     abstract function getSpecializedClassName();
+
+    /**
+     * 
+     * @return RegistrationFileConfiguration[]
+     */
+    public function getRegistrationFileConfigurations() {
+        return App::i()->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
+    }
+
+    /**
+     * 
+     * @return RegistrationFieldConfiguration[]
+     */
+    public function getRegistrationFieldConfigurations() {
+        return App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
+    }
 
     /**
      * Returns the Evaluation Method Definition Object

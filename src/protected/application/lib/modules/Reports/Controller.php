@@ -503,9 +503,25 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
-        
         $opp->checkPermission('viewReport');
-        
+                
+        $preload = $this->getData($this->data, $opp);
+
+        /**
+         * Verifica se existe dados suficientes para gerar o gráfico
+         */ 
+        if ($preload['typeGraphic'] == 'pie') {
+            if (!$this->checkIfChartHasData($preload['data'])) {
+                $this->apiResponse(['error' => true]);
+                return;
+            }
+        } else {
+            if (!$this->checkIfChartHasData($preload['series'])) {
+                $this->apiResponse(['error' => true]);
+                return;
+            }
+        }
+
         $value = "";
         $source = "";       
         foreach ($request['columns'] as $v){
@@ -539,7 +555,8 @@ class Controller extends \MapasCulturais\Controller
 
         $return = [
             'graphicId' => $metaList->id,
-            'identifier' => $identifier
+            'identifier' => $identifier,
+            'error' => false
         ];
 
         $this->apiResponse($return);
@@ -607,7 +624,6 @@ class Controller extends \MapasCulturais\Controller
 
     public function getData($reportData, $opp)
     {
-         
         $em = $opp->getEvaluationMethod();
         $app = App::i();
         $dataA = $reportData["columns"][0];
@@ -620,6 +636,7 @@ class Controller extends \MapasCulturais\Controller
         $labels = [];
         $color = [];
         $data = [];
+        $generate_colors = [];
         // post-processing may be necessary depending on type, so obtain it
         $typeA = $dataA["source"]["type"] ?? "";
         if ($reportData["typeGraphic"] != "pie") {
@@ -631,7 +648,13 @@ class Controller extends \MapasCulturais\Controller
                                                   $opp, $em);
         } else {
             foreach ($result as $item) {
-                $color[] = $this->color();
+                
+                do {
+                    $new_color = $this->color();
+                } while (in_array($new_color, $generate_colors));
+                
+                $generate_colors[] = $new_color;
+                $color[] = $new_color;
                 $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
                 $data[] = $item["quantity"];
             }
@@ -1117,10 +1140,19 @@ class Controller extends \MapasCulturais\Controller
                 $outPoints[] = $labelCallback($item[$key]);
             }
         }
+
+        $generate_colors = [];
         foreach (array_keys($series) as $label) {
+
+            do {
+                $new_color = $this->color();
+            } while (in_array($new_color, $generate_colors));
+            
+            $generate_colors[] = $new_color;
+
             $current = [
                 "label" => $label,
-                "colors" => $this->color(),
+                "colors" => $new_color,
                 "type" => $chartType,
                 "fill" => false,
                 "data" => []
@@ -1355,13 +1387,71 @@ class Controller extends \MapasCulturais\Controller
         return $result;
     }
 
-    private function color()
+    public function color()
     {
-        mt_srand((double) microtime() * 1000000);
-        $c = '';
-        while (strlen($c) < 6) {
-            $c .= sprintf("%02X", mt_rand(0, 255));
+
+        $colors = [
+            '#333333',
+            '#1c5690',
+            '#b3b921',
+            '#1dabc6',
+            '#e83f96',
+            '#cc0033',
+            '#9966cc',
+            '#40b4b4',
+            '#cc9933',
+            '#cc3333',
+            '#66cc66',
+            '#003c46',
+            '#d62828',
+            '#5a189a',
+            '#00afb9',
+            '#38b000',
+            '#3a0ca3',
+            '#489fb5',
+            '#245501',
+            '#708d81',
+            '#00bbf9',
+            '#f15bb5',
+            '#ffdab9',
+            '#5f0f40',
+            '#e9ff70',
+            '#fcf6bd',
+            '#4a5759',
+            '#06d6a0',
+            '#cce3de',
+            '#f3ac01'
+        ];
+
+        $rand = mt_rand(0, count($colors) - 1);
+
+        shuffle($colors);
+
+        return $colors[$rand];
+
+    }
+
+     /**
+     * Verifica se existem dados suficientes para gerar o gráfico
+     */
+    public function checkIfChartHasData(array $values) {
+
+        if (count($values) > 1) {
+    
+            $count = 0;
+            foreach ($values as $key => $value) {
+                if ($value > 1)
+                    $count++;
+            }
+    
+            if ($count >= 2)
+                return true;
+                
+            return false;
+    
         }
-        return "#" . $c;
+    
+        return false;
+    
     }
 }
