@@ -50,41 +50,45 @@ $last_created_phase = Module::getLastCreatedPhase($opportunity);
 <?php if($this->isEditable() || count($phases) > 0): ?>
 <?php if($this->isEditable()): ?>
 <div ng-controller="OpportunityPhasesController">
-<edit-box id="new-opportunity-phase" position="top" title="<?php i::esc_attr_e('Escolha o método de avaliação da nova fase') ?>"  cancel-label="<?php i::esc_attr_e("Cancelar");?>" close-on-cancel="true" submit-label="{{data.step == 1 ? '<?php i::_e("Avançar");?>' : '<?php i::_e("Criar");?>' }}" on-cancel="newPhaseEditBoxCancel" on-submit="newPhaseEditBoxSubmit" spinner-condition=data.spinner>
+<edit-box id="new-opportunity-phase" position="top" title="<?php i::esc_attr_e('Criar nova fase') ?>"  cancel-label="<?php i::esc_attr_e("Cancelar");?>" close-on-cancel="true" submit-label="{{data.step == 1 ? '<?php i::_e("Avançar");?>' : '<?php i::_e("Criar");?>' }}" on-cancel="newPhaseEditBoxCancel" on-submit="newPhaseEditBoxSubmit" spinner-condition=data.spinner>
+	<?php $this->applyTemplateHook('new-phase-form', 'begin') ?>
     <ul ng-if="data.step == 1" class="evaluation-methods">
+	    <?php $this->applyTemplateHook('new-phase-form-step1', 'begin') ?>
         <?php foreach($evaluation_methods as $method): ?>
         <label for="evaluationItem-<?php echo $method->slug; ?>">
         <li class="evaluation-methods--item">
-            <input type="radio" id="evaluationItem-<?php echo $method->slug; ?>" name="evaluationMethod" value="<?php echo $method->slug ?>" ng-model="newPhasePostData.evaluationMethod">
+            <input type="radio" id="evaluationItem-<?php echo $method->slug; ?>" ng-change="data.step = 2" name="evaluationMethod" value="<?php echo $method->slug ?>" ng-model="newPhasePostData.evaluationMethod">
             <?php echo $method->name; ?>
             <p class="evaluation-methods--name"><?php echo $method->description; ?></p>
         </li>
         </label>
         <?php endforeach; ?>
+	    <?php $this->applyTemplateHook('new-phase-form-step1', 'end') ?>
     </ul>
-        <div ng-if="data.step == 2">
-            <?php $this->applyTemplateHook('new-phase-form', 'begin') ?>
-            <ul class="evaluation-methods">
-                <?php foreach($evaluation_methods as $method): ?>
-                    <label>
-                        <li ng-if="newPhasePostData.evaluationMethod=='<?php echo $method->slug; ?>'" class="evaluation-methods--item">
-                        <input type="radio" value="<?php echo $method->slug ?>" checked>
-                    <?php echo $method->name; ?>
-                    <p class="evaluation-methods--name"><?php echo $method->description; ?></p>
-                </li>
-                    </label>
-                <?php endforeach; ?>
-            </ul>
-            <hr style="height:1px;border-width:0;color:gray;">
-            <ul class="evaluation-methods">
-                <li class="evaluation-methods--item">
-                    <input type="checkbox" name="lastPhase" id="lastPhase" ng-model="newPhasePostData.isLastPhase" ng-false-value="">
-                    <label for="lastPhase"><?php i::_e("Está será a última fase"); ?></label>
-                    <p class="evaluation-methods--name"><?php i::_e("Assinale apenas se for a fase final"); ?></p>
-                </li>
-            </ul>
-            <?php $this->applyTemplateHook('new-phase-form', 'end') ?>
-        </div>
+    <div ng-if="data.step == 2">
+        <?php $this->applyTemplateHook('new-phase-form-step2', 'begin') ?>
+        <ul class="evaluation-methods">
+            <?php foreach($evaluation_methods as $method): ?>
+                <label>
+                    <li ng-if="newPhasePostData.evaluationMethod=='<?php echo $method->slug; ?>'" class="evaluation-methods--item">
+                    <input type="radio" value="<?php echo $method->slug ?>" checked>
+                <?php echo $method->name; ?>
+                <p class="evaluation-methods--name"><?php echo $method->description; ?></p>
+            </li>
+                </label>
+            <?php endforeach; ?>
+        </ul>
+        <hr style="height:1px;border-width:0;color:gray;">
+        <ul class="evaluation-methods">
+            <li class="evaluation-methods--item">
+                <input type="checkbox" name="lastPhase" id="lastPhase" ng-model="newPhasePostData.isLastPhase" ng-false-value="">
+                <label for="lastPhase"><?php i::_e("Está será a última fase"); ?></label>
+                <p class="evaluation-methods--name"><?php i::_e("Assinale apenas se for a fase final"); ?></p>
+            </li>
+        </ul>
+        <?php $this->applyTemplateHook('new-phase-form-step2', 'end') ?>
+    </div>
+	<?php $this->applyTemplateHook('new-phase-form', 'end') ?>
 </edit-box>
 </div>
 <?php endif; ?>
