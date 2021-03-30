@@ -19,6 +19,7 @@ services:
     links:
       - db
     environment:
+      - PENDING_PCACHE_RECREATION_INTERVAL=15
       # - DB_HOST=db
       # - DB_NAME=mapas
       # - DB_USER=mapas
