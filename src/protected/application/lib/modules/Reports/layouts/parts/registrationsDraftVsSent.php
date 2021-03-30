@@ -37,18 +37,19 @@ foreach ($data as $key => $value) {
         $legends[0] = i::__('Rascunhos') . '<br>' . $value . ' (' . $percent . '%)';
 
     } else {
-        
-        if($value == 0 || $value == "0"){
-            $percent = 0;
-        }else{
-            $percent = number_format(($count / $total) * 100, 2, '.', '');
-        }
 
         $count = ($count + $value);
         $values[1] = $count;
         $colors[1] = $new_color;
+
+        if ($value == 0 || $value == "0") {
+            $percent = 0;
+        } else {
+            $percent = number_format(($count / $total) * 100, 2, '.', '');
+        }
+
         $legends[1] = i::__('Enviadas') . '<br>' . $count . ' (' . $percent . '%)';
-        
+
     }
 
 }
