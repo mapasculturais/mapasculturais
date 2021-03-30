@@ -156,9 +156,12 @@ class Module extends \MapasCulturais\Module
 
         // cria permissão project.evaluate para o projeto de prestaçao de contas
         $app->hook("can(Project.evaluate)", function ($user, &$result) use ($app) {
-            $registration = $this->registration->accountabilityPhase ?? null;
-            $evaluation = $registration ? $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]) : null;
-            $result = ($registration->canUser("evaluate", $user) ?? false) && (!$evaluation || ($evaluation->status < RegistrationEvaluation::STATUS_SENT));
+            if (!$this->registration->accountabilityPhase) { // we have no interest in this if it isn't an accountability project
+                return;
+            }
+            $registration = $this->registration->accountabilityPhase;
+            $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+            $result = $registration->canUser("evaluate", $user) && (!$evaluation || ($evaluation->status < RegistrationEvaluation::STATUS_SENT));
         });
 
         $app->hook("template(project.<<single|edit>>.tabs-content):end", function () {
