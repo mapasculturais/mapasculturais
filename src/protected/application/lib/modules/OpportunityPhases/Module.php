@@ -473,10 +473,13 @@ class Module extends \MapasCulturais\Module{
             if (isset($this->postData['isLastPhase']) && $this->postData['isLastPhase']) {
                 $phase->isLastPhase = true;
             }
-            
+
+            $evaluation_method = $this->data['evaluationMethod'];
+            $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [$phase, &$evaluation_method]);
+
             $phase->save(true);
 
-            $definition = $app->getRegisteredEvaluationMethodBySlug($this->data['evaluationMethod']);
+            $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
 
             $emconfig = new Entities\EvaluationMethodConfiguration;
 
@@ -756,6 +759,7 @@ class Module extends \MapasCulturais\Module{
 
         $new_registrations = [];
 
+        $agent_repo = $app->repo('Agent');
         $reg_repo = $app->repo('Registration');
         $opp_repo = $app->repo('Opportunity');
 
@@ -771,13 +775,14 @@ class Module extends \MapasCulturais\Module{
             
             $reg = new Entities\Registration;
             $reg->__skipQueuingPCacheRecreation = true;
-            $reg->owner = $r->owner;
+            $reg->owner = $agent_repo->find($r->owner->id);
             $reg->opportunity = $opp_repo->find($target_opportunity->id);
             $reg->status = Entities\Registration::STATUS_DRAFT;
             $reg->number = $r->number;
 
             $reg->previousPhaseRegistrationId = $r->id;
             $reg->category = $r->category;
+            
             $reg->save(true);
 
             if(!$as_draft){
@@ -785,6 +790,7 @@ class Module extends \MapasCulturais\Module{
             }
             $r->__skipQueuingPCacheRecreation = true;
             $r->nextPhaseRegistrationId = $reg->id;
+
             $r->save(true);
 
             $new_registrations[] = $reg;

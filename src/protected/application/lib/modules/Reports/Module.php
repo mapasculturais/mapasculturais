@@ -31,8 +31,8 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         // Adiciona a aba do módulo de relatórios
-        $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
-            if ($this->controller->requestedEntity->canUser("@control")) {
+        $app->hook('template(opportunity.single.tabs):end', function () use ($app, $self) {
+            if ($this->controller->requestedEntity->canUser("@control") && $self->hasRegistrations($this->controller->requestedEntity)) {
                 $this->part('opportunity-reports--tab');
             }
         });
@@ -71,11 +71,13 @@ class Module extends \MapasCulturais\Module
 
             $sendHook['opportunity'] = $opportunity;
 
+            $sendHook['self'] = $self;
+
             $sendHook['color'] = function () use ($self) {
                 return $self->color();
             };
 
-            if ($opportunity->canUser('@control')) {
+            if ($opportunity->canUser('@control') && $self->hasRegistrations($opportunity)) {
                 $this->part('opportunity-reports', $sendHook);
             }
 
@@ -126,6 +128,47 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'reports', 'css/reports.css');
         $app->view->enqueueScript('app', 'reports', 'js/ng.reports.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.reports';
+    }
+
+    /**
+     * Verifica se a oportunidade passada como parâmetro possui inscrições
+     */
+    public function hasRegistrations(\MapasCulturais\Entities\Opportunity $opportunity)
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $registrations = $conn->fetchAll("SELECT id FROM registration WHERE opportunity_id = $opportunity->id");
+
+        if (count($registrations) >= 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Verifica se existem dados suficientes para gerar o gráfico
+     */
+    public function checkIfChartHasData(array $values) {
+
+        if (count($values) > 1) {
+    
+            $count = 0;
+            foreach ($values as $key => $value) {
+                if ($value > 1)
+                    $count++;
+            }
+    
+            if ($count >= 2)
+                return true;
+                
+            return false;
+    
+        }
+    
+        return false;
+    
     }
 
     /**
@@ -421,12 +464,46 @@ class Module extends \MapasCulturais\Module
 
     public function color()
     {
-        mt_srand((double) microtime() * 1000000);
-        $c = '';
-        while (strlen($c) < 6) {
-            $c .= sprintf("%02X", mt_rand(0, 255));
-        }
-        return "#" . $c;
+
+        $colors = [
+            '#333333',
+            '#1c5690',
+            '#b3b921',
+            '#1dabc6',
+            '#e83f96',
+            '#cc0033',
+            '#9966cc',
+            '#40b4b4',
+            '#cc9933',
+            '#cc3333',
+            '#66cc66',
+            '#003c46',
+            '#d62828',
+            '#5a189a',
+            '#00afb9',
+            '#38b000',
+            '#3a0ca3',
+            '#489fb5',
+            '#245501',
+            '#708d81',
+            '#00bbf9',
+            '#f15bb5',
+            '#ffdab9',
+            '#5f0f40',
+            '#e9ff70',
+            '#fcf6bd',
+            '#4a5759',
+            '#06d6a0',
+            '#cce3de',
+            '#f3ac01'
+        ];
+
+        $rand = mt_rand(0, count($colors) - 1);
+
+        shuffle($colors);
+
+        return $colors[$rand];
+
     }
 
 }

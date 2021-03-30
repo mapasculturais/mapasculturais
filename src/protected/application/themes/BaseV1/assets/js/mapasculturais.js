@@ -1104,6 +1104,7 @@ MapasCulturais.Search = {
                 type: 'select2',
                 showbuttons: false,
                 onblur: 'submit',
+                mode:'inline',
                 name: $selector.data('field-name') ? $selector.data('field-name') : null,
                 select2: {
                     //                    multiple: $selector.data('multiple'),
