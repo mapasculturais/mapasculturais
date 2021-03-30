@@ -262,11 +262,10 @@
 
     module.controller('OpportunityAccountability', ['$scope', function ($scope) {
         $scope.canUserEdit = function (field) {
-            if (MapasCulturais.entity.status == 0) {
+            if (MapasCulturais.entity.registrationStatus == 0) {
                 return true;
             }
-            
-            var ref = field.fieldType == "file" ? field.groupName : field.fieldName;
+            var ref = (field.fieldType == "file") ? field.groupName : field.fieldName;
             if (MapasCulturais.accountabilityPermissions[ref] === "true") {
                return true;
             }
