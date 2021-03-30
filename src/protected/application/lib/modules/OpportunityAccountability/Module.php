@@ -180,6 +180,18 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        // barra envio da prestação de contas se o projeto não estiver publicado
+        $app->hook("can(Registration.send)", function ($user, &$result) {
+            $project = $this->firstPhase->project;
+            if (!$project || !($this->opportunity->isAccountabilityPhase ?? false)) {
+                return;
+            }
+            if (($project->isAccountability ?? false) && ($project->status != Project::STATUS_ENABLED)) {
+                $result = false;
+            }
+            return;
+        });
+
         $app->hook('PATCH(registration.single):before', function () use ($app, $self) {
             $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->requestedEntity]);
             if (($this->requestedEntity->canUser('@control')) && Module::hasOpenFields($this->requestedEntity, $app)) {
@@ -314,7 +326,7 @@ class Module extends \MapasCulturais\Module
         // adiciona controles de abrir e fechar chat e campo para edição
         $app->hook("template(project.single.registration-field-item):begin", function () use ($app) {
             $project = $this->controller->requestedEntity;
-            $evaluation = $project->registration->accountabilityPhase ?$app->repo("RegistrationEvaluation")->findOneBy(["registration" => $project->registration->accountabilityPhase]) : null;
+            $evaluation = $project->registration->accountabilityPhase ? $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $project->registration->accountabilityPhase]) : null;
             if ($project->canUser("evaluate") && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_EVALUATED)) {
                 $this->part("accountability/registration-field-controls");
             }
