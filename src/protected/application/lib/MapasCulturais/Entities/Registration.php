@@ -219,8 +219,6 @@ class Registration extends \MapasCulturais\Entity
 
     function save($flush = false){
         parent::save($flush);
-        $app = App::i();
-        $opportunity = $this->opportunity;
     }
 
     function getSingleUrl(){
