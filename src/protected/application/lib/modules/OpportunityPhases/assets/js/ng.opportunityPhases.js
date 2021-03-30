@@ -41,7 +41,7 @@
 
             $scope.newPhasePostData = {
                 evaluationMethod: null,
-                isLastPhase: ''
+                isLastPhase: '',
             };
 
             $scope.newPhaseEditBoxSubmit = function () {
@@ -63,6 +63,7 @@
             $scope.newPhaseEditBoxCancel = function () {
                 $scope.data.spinner = false;
                 $scope.data.step = 1;
+                $scope.newPhasePostData.evaluationMethod = null;
             }
 
         }]);
