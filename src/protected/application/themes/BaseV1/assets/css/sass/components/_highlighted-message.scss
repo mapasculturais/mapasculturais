@@ -6,6 +6,12 @@
 
     .opportunity-phases {
         float: left;
+        margin-top: 0;
+
+        & > a.btn {
+            margin-bottom: $margin-small;
+            margin-top: $margin-small;
+        }
 
         ul {
             &:last-child {
@@ -13,6 +19,7 @@
             }
 
             li {
+                margin-top: 0;
                 &:last-child {
                     margin-bottom: 0;
                 }
