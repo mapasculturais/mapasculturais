@@ -119,28 +119,32 @@
 }
 
 .event-link {   
-    .title{
-        height: 24px;
-        color: #111111;
-        font-family: Aleo;
-        font-size: 24px;
-        letter-spacing: 0;
-        line-height: 29px;
+    
+    header {
+        margin-bottom: $margin-medium;
+
+        .title{
+            height: 24px;
+            color: #111111;
+            font-family: Aleo;
+            font-size: 24px;
+            letter-spacing: 0;
+            line-height: 29px;
+        }
     }
-    .event-status {        
+
+    .event-status {
         overflow: hidden;
-        margin-top: 0px;
-        text-align: center;
         width: 100%;
+
         .js-event-list{
-            padding: 5px 5px 5px 15px;
+            padding: 0 0 0 15px;
             height: auto;
             border-left: 3px solid #1C5690;
-            margin: 30px 0 0;
+            margin: 0;
 
             .event-item {
-                border: solid 1px #0000000f;
-                padding: 5px;   
+                padding: 5px 10px 5px 0;
             }
 
             li {
@@ -151,7 +155,6 @@
                 color: #111111;
                 font-family: "Open Sans";
                 font-size: 16px;
-                font-weight: 600;
                 line-height: 32px;
                 overflow: hidden;  
                 margin-bottom: 10px;
@@ -160,16 +163,37 @@
                     float: left;
                     margin-right: 10px;
                 }
+
+                ul {
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
 
-            .occurrence-list{
-                width: 100%;
+            .occurrence-list {
+                clear: left;
+                margin-left: 25px;
                 text-align: left;
-                list-style: circle;
-                border: 0 !important;
-                li{
-                    font-weight: normal;
+
+                p {
+                    line-height: 1.3rem;
+                    margin-bottom: $margin-smaller;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
                 }
+            }
+        }
+
+        p {
+            &:last-child {
+                margin-bottom: 0;
             }
         }
         

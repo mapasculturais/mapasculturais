@@ -2,13 +2,14 @@
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Registration;
 $app = App::i();
 $entity = $this->controller->requestedEntity;
 $registration = $entity->registration->accountabilityPhase;
 $opportunity = $registration->opportunity;
 $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration]);
 
-$this->jsObject['accountabilityPermissions'] = $evaluation->evaluationData->openFields ?? [];
+$this->jsObject['accountabilityPermissions'] = json_decode($registration->openFields) ?? [];
 
 $opportunity->registerRegistrationMetadata();
 
@@ -26,6 +27,7 @@ $this->addOpportunityToJs($opportunity);
 $this->addOpportunitySelectFieldsToJs($opportunity);
 
 $this->addRegistrationToJs($registration);
+$this->jsObject['entity']['registrationStatus'] = $registration->status;
 
 $this->includeAngularEntityAssets($opportunity);
 
@@ -88,6 +90,10 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 
     <?php if ($registration->canUser('modify')) { ?>
         <?php $this->part('accountability/send-button', ['entity' => $registration]); ?>
+    <?php } else { ?>
+        <?php if($registration->status > Registration::STATUS_DRAFT){ ?>
+            <?php $this->part('accountability/registration-message', ['entity' => $registration]); ?>
+        <?php }?>
     <?php }?>
 
     <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params); ?>
