@@ -8,23 +8,56 @@ Mapas Culturais é uma plataforma colaborativa que reúne informações sobre ag
 
 A plataforma já está em uso em diversos municipios, estados, no governo federal em diversos projetos do ministério da cultura e até mesmo fora do Brasil no Uruguai. Instalações recentes: 
 
-* http://spcultura.prefeitura.sp.gov.br
-* http://estadodacultura.sp.gov.br
-* http://jpcultura.joaopessoa.pb.gov.br
-* http://cultura.sobral.ce.gov.br
-* http://mapa.cultura.ce.gov.br
-* http://blumenaumaiscultura.com.br
-* http://mapa.cultura.rs.gov.br
-* http://culturaz.santoandre.sp.gov.br
-* http://mapa.cultura.to.gov.br
-* https://mapas.cultura.mt.gov.br
-* http://mapaculturalbh.pbh.gov.br
-* http://lugaresdacultura.org.br
-* http://mapas.cultura.gov.br
-* http://culturaviva.gov.br
-* http://bibliotecas.cultura.gov.br
-* http://museus.cultura.gov.br
-* https://mapas.cultura.mt.gov.br
+### Instalações em nível federal ou internacional
+- IberculturaViva - https://mapa.iberculturaviva.org/
+- Mapa Uruguai - http://culturaenlinea.uy/
+- SNIIC - http://mapas.cultura.gov.br/
+- Museus - http://museus.cultura.gov.br/
+- Sistema Nacional de Bibliotecas Públicas - http://bibliotecas.cultura.gov.br/
+- Cultura Viva - http://culturaviva.gov.br/
+- Pontos de Memória - http://pontosdememoria.cultura.gov.br/
+
+### Instalações estaduais
+- Distrito Federal - http://mapa.cultura.df.gov.br/
+- Ceará - https://mapacultural.secult.ce.gov.br/
+- Espírito Santo - https://mapa.cultura.es.gov.br/
+- Maranhão - http://ma.mapas.cultura.gov.br/
+- Mato Grosso - https://mapas.mt.gov.br/
+- Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
+- Pará - https://mapacultural.pa.gov.br/
+- Paraíba - http://pb.mapas.cultura.gov.br/
+- Pernambuco - https://www.mapacultural.pe.gov.br/
+- Sergipe - http://mapas.cultura.se.gov.br/
+- Tocantins - http://mapa.cultura.to.gov.br/
+### Instalações municipais
+- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
+- Camaçari - http://camacari.ba.mapas.cultura.gov.br/
+- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
+- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
+- Sobral - https://cultura.sobral.ce.gov.br/
+- Juazeiro do Norte - https://mapacultural.juazeiro.ce.gov.br/
+- Belo Horizonte - http://mapaculturalbh.pbh.gov.br/
+- Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
+- Ipatinga - http://mapacultural.ipatinga.mg.gov.br/
+- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/
+- João Pessoa - http://jpcultura.joaopessoa.pb.gov.br/
+- Londrina - https://londrinacultura.londrina.pr.gov.br/
+- Foz do Iguaçu - http://mapadaculturafoz.pmfi.pr.gov.br/
+- Maringa - http://maringacultura.maringa.pr.gov.br:38081/
+- Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
+- Laguna - http://laguna.sc.mapas.cultura.gov.br/
+- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/
+- Rio Grande - http://mapacultural.riogrande.rs.gov.br/
+- São Paulo - http://spcultura.prefeitura.sp.gov.br/
+- Santo André - http://culturaz.santoandre.sp.gov.br/
+- São Caetano do Sul - http://mapacultural.saocaetanodosul.sp.gov.br/
+- Osasco - http://osasco.sp.mapas.cultura.gov.br/
+- Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/
+- Guaruja - http://mapadacultura.guaruja.sp.gov.br/
+- Varzea Paulista - http://janelacultural.varzeapaulista.sp.gov.br/
+- Itu - http://mapacultural.itu.sp.gov.br/
+- Guarulhos - http://grucultura.guarulhos.sp.gov.br/
+- Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
@@ -105,37 +138,7 @@ Vale lembrar que os requisitos de hardware podem variar de acordo com a latênci
 * Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
  
 
-### Ambientes de desenvolvimento e teste
-Estes ambientes possuem integração contínua com os branches e temas atuais. Para maiores detalhes, ver [Guia do desenvolvedor](doc/developer-guide.md). 
-
-As urls de testes functionam da seguinte maneira:
-
-* http://nomedacidade.uf.ambiente.map.as e
-* http://uf.ambiente.map.as
-
-Os ambientes possíveis são **stable**, **rc** e **master**, onde:
-
-stable: É a última versão de produção que está disponibilizada do software
-rc: Sigla de **Release Candidate**, onde as features (funcionalidades) são homologadas antes de irem para a versão **stable**
-master: Ambiente de desenvolvimento, em constante evolução antes de ter pacotes de features para irem para a versão **rc**
-
-Exemplos:
-* http://saopaulo.sp.stable.map.as
-* http://blumenau.sc.rc.map.as
-* http://santoandre.sp.master.map.as
-* http://ce.rc.map.as
-* http://rs.stable.map.as
-* http://df.master.map.as
-* http://museus.minc.rc.map.as (minc)
-* http://bibliotecas.minc.stable.map.as (minc)
-
 ### Stories & Tests
-
-- Stories for development: 
-[![Stories in Dev Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:dev-ready)](https://waffle.io/mapasculturais/mapasculturais) 
-- Stories for test: 
-[![Stories in Test Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:test-ready)](https://waffle.io/mapasculturais/mapasculturais)
-- Stories for deploy: [![Stories in Deploy Ready](https://badge.waffle.io/hacklabr/mapasculturais.png?label=status:tested)](https://waffle.io/mapasculturais/mapasculturais)
 - Travis:
 [![Build Status](https://secure.travis-ci.org/mapasculturais/mapasculturais.png)](http://travis-ci.org/mapasculturais/mapasculturais)
 
