@@ -2,19 +2,20 @@
 
 namespace OpportunityAccountability;
 
-use OpportunityPhases\Module as PhasesModule;
-use MapasCulturais\App;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\Registration;
+use stdClass;
 use MapasCulturais\i;
+use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
-use MapasCulturais\Entities\ChatMessage;
-use MapasCulturais\Definitions\ChatThreadType;
+use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\ChatThread;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\ChatMessage;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Entities\Registration;
+use OpportunityPhases\Module as PhasesModule;
+use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 /**
  * @property Module $evaluationMethod
@@ -133,16 +134,11 @@ class Module extends \MapasCulturais\Module
 
         // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
         $app->hook('entity(Registration).send:after', function() use($app) {
-            if ($this->opportunity->isAccountabilityPhase) {
-                if ($evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this])) {
-                    $evdata = $evaluation->evaluationData;
-
-                    unset($evdata->openFields);
-
-                    $evaluation->evaluationData = $evdata;
-
+            if ($this->opportunity->isAccountabilityPhase) {                
+                if ($registration = $app->repo('Registration')->findOneBy(['id' => $this->id])) {                   
                     $app->disableAccessControl();
-                    $evaluation->save(true);
+                    $registration->openFields = new stdClass();
+                    $registration->save(true);
                     $app->enableAccessControl();
                 }
             }
@@ -494,6 +490,8 @@ class Module extends \MapasCulturais\Module
         $registration_repository = $app->repo('Registration');
         $project_repository = $app->repo('Project');
 
+        $app->registerController('accountability', Controller::class);
+
         $this->registerProjectMetadata('isAccountability', [
             'label' => i::__('Indica que o projeto é vinculado à uma inscrição aprovada numa oportunidade'),
             'type' => 'boolean',
@@ -545,6 +543,18 @@ class Module extends \MapasCulturais\Module
                 }
             }
         ]);
+
+        $this->registerRegistrationMetadata('openFields', [
+            'label' => i::__('Campos abertos para o proponente preencher após o envio da inscrição'),
+            'type' => 'json',
+            'private' => true,
+            'default_value' => '{}', 
+            'serialize' => function($value, $registration){
+                $registration->checkPermission('evaluate');
+                return json_encode($value);
+            }
+        ]);
+
 
         $this->registerOpportunityMetadata('isAccountabilityPhase', [
             'label' => i::__('Indica se a oportunidade é uma fase de prestação de contas'),
@@ -600,12 +610,13 @@ class Module extends \MapasCulturais\Module
 
     static function hasOpenFields($registration, $app)
     {
-        $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
-        if (!$evaluation || !property_exists($evaluation, "evaluationData")) {
+        $openFields = json_decode($registration->openFields, true) ?? false;
+
+        if(!$openFields){
             return false;
         }
-        $evaluation_data = json_decode(json_encode($evaluation->evaluationData), true);
-        foreach (($evaluation_data["openFields"] ?? []) as $value) {
+                
+        foreach (($openFields ?? []) as $value) {
             if ($value == "true") {
                 return true;
             }
