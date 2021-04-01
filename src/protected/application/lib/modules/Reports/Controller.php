@@ -653,12 +653,9 @@ class Controller extends \MapasCulturais\Controller
         } else {
             foreach ($result as $item) {
                 
-                do {
-                    $new_color = $module->color();
-                } while (in_array($new_color, $generate_colors));
-                
-                $generate_colors[] = $new_color;
-                $color[] = $new_color;
+                $color = $this->getChartColors();
+
+                $color[] = $color[0];
                 $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
                 $data[] = $item["quantity"];
             }
@@ -1152,15 +1149,11 @@ class Controller extends \MapasCulturais\Controller
         $generate_colors = [];
         foreach (array_keys($series) as $label) {
 
-            do {
-                $new_color = $module->color();
-            } while (in_array($new_color, $generate_colors));
-            
-            $generate_colors[] = $new_color;
+            $color = $this->getChartColors();
 
             $current = [
                 "label" => $label,
-                "colors" => $new_color,
+                "colors" => $color[0],
                 "type" => $chartType,
                 "fill" => false,
                 "data" => []

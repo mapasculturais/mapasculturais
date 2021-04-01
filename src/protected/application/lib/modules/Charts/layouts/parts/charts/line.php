@@ -166,7 +166,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
         };
 
         config.data.datasets.forEach(function(dataset) {
-            dataset.backgroundColor = dataset.backgroundColor || MapasCulturais.Charts.dynamicColors();
+            dataset.backgroundColor = dataset.backgroundColor || MapasCulturais.getChartColors();
         });
 
         var ctx = document.getElementById("<?= $chart_id ?>").getContext('2d');

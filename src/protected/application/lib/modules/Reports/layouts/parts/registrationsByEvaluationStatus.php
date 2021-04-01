@@ -12,21 +12,15 @@ $count = 0;
 $title = i::__('Status de avaliações');
 $total = array_sum(array_column($data, null));
 
-$generate_colors = [];
-
 // Prepara os dados para o gráfico
 foreach ($data as $key => $value) {
 
-    do {
-        $new_color = is_callable($color) ? $color() : $color;
-    } while (in_array($new_color, $generate_colors));
-    
-    $generate_colors[] = $new_color;
+    $color = $self->getChartColors();
 
     $label[] = $key;
     $legends[] = $key . '<br>' . $value . ' (' . number_format(($value / $total) * 100, 2, '.', '') . '%)';
     $values[] = $value;
-    $colors[] = $new_color;
+    $colors[] = $color[0];
     
 }
 

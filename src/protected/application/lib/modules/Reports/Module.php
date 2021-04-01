@@ -13,6 +13,12 @@ use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module
 {
+
+    protected $chartColors = [
+        'colors' => ['#333333','#1c5690','#b3b921','#1dabc6','#e83f96','#cc0033','#9966cc','#40b4b4','#cc9933','#cc3333','#66cc66','#003c46','#d62828','#5a189a','#00afb9','#38b000','#3a0ca3','#489fb5','#245501','#708d81','#00bbf9','#f15bb5','#ffdab9','#5f0f40','#e9ff70','#fcf6bd','#4a5759','#06d6a0','#cce3de','#f3ac01'],
+        'pointer' => 0
+    ];
+
     public function __construct(array $config = [])
     {
         $app = App::i();
@@ -73,10 +79,6 @@ class Module extends \MapasCulturais\Module
 
             $sendHook['self'] = $self;
 
-            $sendHook['color'] = function () use ($self) {
-                return $self->color();
-            };
-
             if ($opportunity->canUser('@control') && $self->hasRegistrations($opportunity)) {
                 $this->part('opportunity-reports', $sendHook);
             }
@@ -90,6 +92,11 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(opportunity.single.reports-footer):before', function () {
             $this->part('dynamic-reports');
         });
+
+        $app->hook('mapasculturais.head', function () use ($app, $self) {
+            $app->view->jsObject['chartColors'] = $self->chartColors;
+        });
+
     }
 
     public function register()
@@ -462,47 +469,26 @@ class Module extends \MapasCulturais\Module
 
     }
 
-    public function color()
+    /**
+     * Retorna cores para os gráficos
+     */
+    public function getChartColors($quantity = 1)
     {
 
-        $colors = [
-            '#333333',
-            '#1c5690',
-            '#b3b921',
-            '#1dabc6',
-            '#e83f96',
-            '#cc0033',
-            '#9966cc',
-            '#40b4b4',
-            '#cc9933',
-            '#cc3333',
-            '#66cc66',
-            '#003c46',
-            '#d62828',
-            '#5a189a',
-            '#00afb9',
-            '#38b000',
-            '#3a0ca3',
-            '#489fb5',
-            '#245501',
-            '#708d81',
-            '#00bbf9',
-            '#f15bb5',
-            '#ffdab9',
-            '#5f0f40',
-            '#e9ff70',
-            '#fcf6bd',
-            '#4a5759',
-            '#06d6a0',
-            '#cce3de',
-            '#f3ac01'
-        ];
+        $pointer = $this->chartColors['pointer'];
+        $colors = [];
 
-        $rand = mt_rand(0, count($colors) - 1);
+        for ($i = 0; $i < $quantity; $i++) {
+            $colors[] = $this->chartColors['colors'][$pointer];
 
-        shuffle($colors);
+            $pointer++;
+            if ($pointer >= count($this->chartColors['colors'])) {
+                $pointer = 0;
+            }
+        }
+        $this->chartColors['pointer'] = $pointer;
 
-        return $colors[$rand];
+        return $colors;
 
     }
 
