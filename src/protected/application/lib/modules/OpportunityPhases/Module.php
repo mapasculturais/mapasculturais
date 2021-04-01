@@ -376,7 +376,7 @@ class Module extends \MapasCulturais\Module{
 
                 $opportunity = $reg->opportunity;
 
-                if($opportunity->registrationFieldConfigurations->count() || $opportunity->registrationFileConfigurations->count()){
+                if (count($opportunity->registrationFieldConfigurations) || count($opportunity->registrationFileConfigurations)) {
                     $empty = new Entities\RegistrationFieldConfiguration;
                     $empty->owner = $opportunity;
                     $empty->title = '';
