@@ -10,25 +10,19 @@ $height = 'auto';
 $width = '100%';
 $title = i::__('Inscrições ao longo do tempo');
 
-$generate_colors = [];
-
 //Prepara os dados para o gráfico
 foreach ($data as $key_data => $values) {
 
-    do {
-        $new_color = is_callable($color) ? $color() : $color;
-    } while (in_array($new_color, $generate_colors));
-    
-    $generate_colors[] = $new_color;
-        
+    $color = $self->getChartColors();
+
     $serie[$count] = [
         'label' => $key_data,
-        'colors' => $new_color,
+        'colors' => $color[0],
         'type' => 'line',
         'fill' => false,
     ];
     $legends[$count] = $key_data;
-    $colors[$count] = $new_color;
+    $colors[$count] = $color[0];
     
     foreach ($values as $key_v => $value) {
         $labels[] = $key_v;

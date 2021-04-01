@@ -65,6 +65,8 @@
                 if(item.typeGraphic != "pie"){
                     var total = $scope.sumSerie(item);
                     item.data.series.forEach(function(value, index){
+                        var color = MapasCulturais.getChartColors();
+                        value.colors = color[0];
                         legendsToString.push($scope.legendsToString(total, item, index));
                     });
                     item.data.tooltips = item.data.legends;
@@ -75,6 +77,7 @@
                         legendsToString.push($scope.legendsToString(value, item, index));
                        
                     });
+                    item.data.backgroundColor = MapasCulturais.getChartColors(item.data.data.length);
                     item.data.tooltips = item.data.labels;
                     item.data.labels = legendsToString;
                 }
@@ -143,6 +146,8 @@
                 var legendsToString = [];
                 if(graphic.typeGraphic != "pie"){                    
                     graphic.data.series.forEach(function(value, index){
+                        var color = MapasCulturais.getChartColors();
+                        value.colors = color[0];
                         var total = $scope.sumSerie(graphic);
                         legendsToString.push($scope.legendsToString(total, graphic, index));
                     });
@@ -152,6 +157,7 @@
                     graphic.data.data.forEach(function(value, index){
                         legendsToString.push($scope.legendsToString(value, graphic, index));
                     });
+                    graphic.data.backgroundColor = MapasCulturais.getChartColors(graphic.data.data.length);
                     graphic.data.tooltips = graphic.data.labels;
                     graphic.data.labels = legendsToString;
                 }
