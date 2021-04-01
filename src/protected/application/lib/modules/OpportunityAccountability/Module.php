@@ -104,9 +104,8 @@ class Module extends \MapasCulturais\Module
             $app->disableAccessControl();
             $first_phase->project = $project;
             $first_phase->save(true);
-
             $app->enableAccessControl();
-
+            self::sendAccountabilityProjectEmail($project);
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
         });
@@ -133,15 +132,16 @@ class Module extends \MapasCulturais\Module
         });
 
         // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
-        $app->hook('entity(Registration).send:after', function() use($app) {
-            if ($this->opportunity->isAccountabilityPhase) {                
-                if ($registration = $app->repo('Registration')->findOneBy(['id' => $this->id])) {                   
-                    $app->disableAccessControl();
-                    $registration->openFields = new stdClass();
-                    $registration->save(true);
-                    $app->enableAccessControl();
-                }
+        $app->hook("entity(Registration).send:after", function () use ($app) {
+            if (!$this->opportunity->isAccountabilityPhase) {
+                return;
             }
+            $app->disableAccessControl();
+            $this->openFields = new stdClass();
+            $this->save(true);
+            $app->enableAccessControl();
+            self::notifyAccountabilitySubmitted($this);
+            return;
         });
 
         $app->hook("template(project.<<single|edit>>.tabs):end", function () {
@@ -170,15 +170,15 @@ class Module extends \MapasCulturais\Module
             }
         }, 1000);
 
-        $app->hook('can(Registration.modify)', function ($user, &$result) use ($app) {
-            if (($this->canUser('@control', $user)) && Module::hasOpenFields($this, $app)) {
+        $app->hook("can(Registration.modify)", function ($user, &$result) use ($app) {
+            if (($this->canUser("@control", $user)) && Module::hasOpenFields($this)) {
                 $result = true;
             }
         });
 
         // barra envio da prestação de contas se o projeto não estiver publicado
         $app->hook("can(Registration.send)", function ($user, &$result) {
-            $project = $this->firstPhase->project;
+            $project = $this->firstPhase->project ?? null;
             if (!$project || !($this->opportunity->isAccountabilityPhase ?? false)) {
                 return;
             }
@@ -188,27 +188,26 @@ class Module extends \MapasCulturais\Module
             return;
         });
 
-        $app->hook('PATCH(registration.single):before', function () use ($app, $self) {
-            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->requestedEntity]);
-            if (($this->requestedEntity->canUser('@control')) && Module::hasOpenFields($this->requestedEntity, $app)) {
+        $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
+            if (($this->requestedEntity->canUser("@control")) && Module::hasOpenFields($this->requestedEntity)) {
                 $app->em->beginTransaction();
                 $self->inTransaction = true;
-                $app->hook('can(<<Agent|Space>>.<<@control|modify>>)', function ($user, &$result) {
+                $app->hook("can(<<Agent|Space>>.<<@control|modify>>)", function ($user, &$result) {
                     $result = true;
                 });
             }
         });
 
-        $app->hook('entity(RegistrationMeta).update:before', function ($params) use ($app, $self) {
-            if ($this->owner->canUser('@control')) {
+        $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app, $self) {
+            if ($this->owner->canUser("@control")) {
                 return;
             }
-            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->owner]);
-            if (!$evaluation || !isset($evaluation->evaluationData)) {
+            $registration = $this->owner;
+            if (!isset($registration->openFields)) {
                 return;
             }
-            $evaluation_data = json_decode(json_encode($evaluation->evaluationData), true);
-            if (($evaluation_data["openFields"][$this->key] ?? "") == "true") {
+            $openFields = json_decode($registration->openFields, true);
+            if (($openFields[$this->key] ?? "") == "true") {
                 return;
             }
             if ($self->inTransaction) {
@@ -415,12 +414,11 @@ class Module extends \MapasCulturais\Module
             }
          });
 
+        // fecha os campos e os chats ao enviar o parecer
         $app->hook("entity(RegistrationEvaluation).update:before", function ($params) use ($app) {
              if (($this->status == RegistrationEvaluation::STATUS_EVALUATED) &&
                  $this->registration->opportunity->isAccountabilityPhase) {
-                $data = json_decode(json_encode($this->evaluationData), true);
-                unset($data["openFields"]);
-                $this->evaluationData = $data;
+                $this->registration->openFields = new stdClass();
                 $criteria = [
                     "objectType" => RegistrationEvaluation::class,
                     "objectId" => $this->id,
@@ -548,7 +546,7 @@ class Module extends \MapasCulturais\Module
             'label' => i::__('Campos abertos para o proponente preencher após o envio da inscrição'),
             'type' => 'json',
             'private' => true,
-            'default_value' => '{}', 
+            'default_value' => '{}',
             'serialize' => function($value, $registration){
                 $registration->checkPermission('evaluate');
                 return json_encode($value);
@@ -608,20 +606,73 @@ class Module extends \MapasCulturais\Module
         $this->evaluationMethod->register();
     }
 
-    static function hasOpenFields($registration, $app)
+    static function hasOpenFields($registration)
     {
-        $openFields = json_decode($registration->openFields, true) ?? false;
-
-        if(!$openFields){
-            return false;
-        }
-                
+        $openFields = json_decode($registration->openFields, true);
         foreach (($openFields ?? []) as $value) {
             if ($value == "true") {
                 return true;
             }
         }
         return false;
+    }
+
+    // moved from send-button.php
+    static function fullTextDate($timestamp)
+    {
+        $app = App::i();
+        /* translators: gets full date in the format "26 de {January} de 2015 às 17:00" and uses App translation to replace english month name inside curly brackets to the equivalent in portuguese. It avoids requiring the operating system to have portuguese locale as used in this example: http://pt.stackoverflow.com/a/21642 */
+        $date_tmp = strftime(i::__("%d de {%B} de %G às %H:%M"), $timestamp);
+        return preg_replace_callback("/{(.*?)}/", function ($matches) use ($app) {
+            return strtolower($app::txt(str_replace(["{", "}"], ["", ""], $matches[0]))); // removes curly brackets from the matched pattern and convert its content to lowercase
+        }, $date_tmp);
+    }
+
+    static function notifyAccountabilitySubmitted($registration)
+    {
+        $app = App::i();
+        $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+        if (!$evaluation) {
+            return;
+        }
+        $notification_content = i::__("Prestação de contas número %s re-enviada");
+        $notification = new Notification;
+        $notification->user = $evaluation->user;
+        $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
+        $notification->save(true);
+        return;
+    }
+
+    static function sendAccountabilityProjectEmail(Project $project)
+    {
+        $app = App::i();
+        $template = "accountability/project-communication.html";
+        $phase = $project->opportunity->accountabilityPhase;
+        $start = self::fullTextDate($phase->registrationFrom->getTimestamp());
+        $end = self::fullTextDate($phase->registrationTo->getTimestamp());
+        $params = [
+            "siteName" => $app->view->dict("site: name", false),
+            "user" => $project->owner->name,
+            "baseUrl" => $app->getBaseUrl(),
+            "opportunityTitle" => $project->opportunity->name,
+            "projectUrl" => $project->getEditUrl(),
+            "accountabilityStartDate" => $start,
+            "accountabilityEndDate" => $end
+        ];
+        $email_params = [
+            "from" => $app->config["mailer.from"],
+            "to" => ($project->owner->emailPrivado ??
+                     $project->owner->emailPublico ??
+                     $project->ownerUser->email),
+            "subject" => sprintf(i::__("Novo projeto criado no %s"),
+                                 $params["siteName"]),
+            "body" => $app->renderMustacheTemplate($template, $params)
+        ];
+        if (!isset($email_params["to"])) {
+            return;
+        }
+        $app->createAndSendMailMessage($email_params);
+        return;
     }
 
     static function shouldDisplayProjectAccountabilityUI($controller)

@@ -215,7 +215,6 @@ class Module extends \MapasCulturais\Module{
             $app->view->enqueueScript('app', 'ng.opportunityPhases', 'js/ng.opportunityPhases.js', ['mapasculturais']);
         },1000);
 
-        
         $app->hook('entity(Opportunity).get(firstPhase)', function(&$value) {
             if ($this->isOpportunityPhase) {
                 $value = $this->parent;
@@ -223,12 +222,12 @@ class Module extends \MapasCulturais\Module{
                 $value = $this;
             }
         });
-        
+
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
         });
-        
+
         $app->hook('entity(Opportunity).get(lastPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $phase = Module::getLastCreatedPhase($first_phase);
@@ -273,7 +272,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $metadata_key) use($app) {
             if(!$value && $this->previousPhase) {
                 $this->previousPhase->registerFieldsMetadata();
-                
+
                 $cache_id = "registration:{$this->number}:$metadata_key";
                 if($app->cache->contains($cache_id)) {
                     $value = $app->cache->fetch($cache_id);
@@ -305,7 +304,7 @@ class Module extends \MapasCulturais\Module{
                 $this->registerRegistrationMetadata($opportunity);
             }
         });
-        
+
         $app->hook('controller(opportunity).getSelectFields', function(Entities\Opportunity $opportunity, array &$fields) use($app) {
             while($opportunity = $opportunity->parent){
                 foreach($opportunity->registrationFieldConfigurations as $field){
@@ -401,7 +400,7 @@ class Module extends \MapasCulturais\Module{
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
 
                     $field_name = $field->fieldName;
-                    
+
                     $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
                 }
 
@@ -523,7 +522,7 @@ class Module extends \MapasCulturais\Module{
                         $this->part('next-phase-registration-link', ['next_phase_registration' => $next_phase_registration, 'registration' => $registration]);
                     }
                 }
-                
+
             }
         });
 
@@ -684,7 +683,7 @@ class Module extends \MapasCulturais\Module{
                 $next_phase_registration = $app->repo('Registration')->find($registration_id);
                 if ($next_phase_registration) {
                     $result = $next_phase_registration->canUser('view', $user);
-                }                
+                }
             }
         });
 
@@ -695,8 +694,16 @@ class Module extends \MapasCulturais\Module{
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
-    }
 
+        // envia e-mail para os aprovados na última fase
+        $app->hook("entity(Opportunity).publishRegistrations:after", function () use ($app) {
+            if (!$this instanceof \MapasCulturais\Entities\ProjectOpportunity || !$this->isLastPhase) {
+                return;
+            }
+            self::sendApprovalEmails($this);
+            return;
+        });
+    }
 
     function register () {
         $app = App::i();
@@ -728,19 +735,19 @@ class Module extends \MapasCulturais\Module{
         $target_opportunity ->checkPermission('@control');
 
         $dql = "
-            SELECT 
-                r1.id 
-            FROM 
+            SELECT
+                r1.id
+            FROM
                 MapasCulturais\Entities\Registration r1
-            WHERE 
+            WHERE
                 r1.opportunity = :previous_opportunity AND
                 r1.status IN (10,8) AND
                 r1.number NOT IN (
-                    SELECT 
-                        r2.number 
-                    FROM 
-                        MapasCulturais\Entities\Registration r2 
-                    WHERE 
+                    SELECT
+                        r2.number
+                    FROM
+                        MapasCulturais\Entities\Registration r2
+                    WHERE
                         r2.opportunity = :target_opportunity
                 )";
 
@@ -768,11 +775,11 @@ class Module extends \MapasCulturais\Module{
         $app->disableAccessControl();
         foreach ($registration_ids as $registration_id){
             $count++;
-            
+
             $r = $reg_repo->find($registration_id);
 
             $app->log->debug("({$count}/{$total}) Importando inscrição {$r->number} para a oportunidade {$target_opportunity->name} ({$target_opportunity->id})");
-            
+
             $reg = new Entities\Registration;
             $reg->__skipQueuingPCacheRecreation = true;
             $reg->owner = $agent_repo->find($r->owner->id);
@@ -782,7 +789,7 @@ class Module extends \MapasCulturais\Module{
 
             $reg->previousPhaseRegistrationId = $r->id;
             $reg->category = $r->category;
-            
+
             $reg->save(true);
 
             if(!$as_draft){
@@ -804,6 +811,38 @@ class Module extends \MapasCulturais\Module{
         $app->enableAccessControl();
 
         return $new_registrations;
-    } 
+    }
 
+    static function sendApprovalEmails(Opportunity $opportunity)
+    {
+        $app = App::i();
+        $registrations = $app->repo("Registration")->findBy([
+            "opportunity" => $opportunity,
+            "status" => Entities\Registration::STATUS_APPROVED
+        ]);
+        foreach ($registrations as $registration) {
+            $template = "opportunityphases/selected-communication.html";
+            $params = [
+                "siteName" => $app->view->dict("site: name", false),
+                "user" => $registration->owner->name,
+                "baseUrl" => $app->getBaseUrl(),
+                "opportunityTitle" => $opportunity->name
+            ];
+            $email_params = [
+                "from" => $app->config["mailer.from"],
+                "to" => ($registration->owner->emailPrivado ??
+                         $registration->owner->emailPublico ??
+                         $registration->ownerUser->email),
+                "subject" => sprintf(i::__("Aviso sobre a sua inscrição na " .
+                                           "oportunidade %s"),
+                                     $opportunity->name),
+                "body" => $app->renderMustacheTemplate($template, $params)
+            ];
+            if (!isset($email_params["to"])) {
+                return;
+            }
+            $app->createAndSendMailMessage($email_params);
+        }
+        return;
+    }
 }
