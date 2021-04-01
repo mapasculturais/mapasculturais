@@ -67,6 +67,23 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        $app->hook("entity(Opportunity).validations", function (&$validations) {
+            if (!($this instanceof Opportunity)) { // pula o hook unbound
+                return;
+            }
+            if (!$this->isAccountabilityPhase) {
+                return;
+            }
+            $key = "(\$value >= \$this->lastPhase->registrationTo)";
+            $value =  i::__("A prestação de contas não pode ter início antes do término da última fase.");
+            if (in_array("registrationFrom", $validations)) {
+                $validations["registrationFrom"][$key] = $value;
+            } else {
+                $validations["registrationFrom"] = [$key => $value];
+            }
+            return;
+        });
+
         // na publicação da última fase, cria os projetos
         $app->hook('entity(Opportunity).publishRegistration', function (Registration $registration) use($app) {
             if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
@@ -417,7 +434,7 @@ class Module extends \MapasCulturais\Module
         // fecha os campos e os chats ao enviar o parecer
         $app->hook("entity(RegistrationEvaluation).update:before", function ($params) use ($app) {
              if (($this->status == RegistrationEvaluation::STATUS_EVALUATED) &&
-                 $this->registration->opportunity->isAccountabilityPhase) {
+                $this->registration->opportunity->isAccountabilityPhase) {
                 $this->registration->openFields = new stdClass();
                 $criteria = [
                     "objectType" => RegistrationEvaluation::class,
