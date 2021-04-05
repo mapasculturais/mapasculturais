@@ -65,6 +65,7 @@ $_params = [
                 <?php echo $entity->number ?>
             </div>
         </div>
+        <div class="registration-fieldset ng-scope" ng-if="data.fields.length == 0"><?php \MapasCulturais\i::_e("Não existem campos disponíveis para suporte.");?></div>
         <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
             <!--
             <h4><?php \MapasCulturais\i::_e("Campos adicionais do formulário de inscrição.");?></h4>
