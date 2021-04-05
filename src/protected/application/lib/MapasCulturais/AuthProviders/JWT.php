@@ -3,7 +3,7 @@
 namespace MapasCulturais\AuthProviders;
 
 use MapasCulturais\App;
-
+use \Firebase\JWT\JWT as FireJWT; 
 class JWT extends \MapasCulturais\AuthProvider {
 
     protected $__user = null;
@@ -13,7 +13,10 @@ class JWT extends \MapasCulturais\AuthProvider {
         $token = $this->_config['token'];
 
         try {
-            $jwt_data = \JWT::decode($token);
+            $exploded = array_map(function($item) {
+                return json_decode(base64_decode($item));
+            }, explode('.', $token));
+            $jwt_data = $exploded[1] ?? null;
             if (isset($jwt_data->pk)) {
                 $pk = $jwt_data->pk;
 
@@ -24,7 +27,7 @@ class JWT extends \MapasCulturais\AuthProvider {
                     die;
                 }
 
-                \JWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
+                FireJWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
                 $user = $userapp->user;
                 $this->__user = $user;
                 return true;

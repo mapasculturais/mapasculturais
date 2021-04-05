@@ -118,7 +118,8 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
 
         if (dataset.backgroundColor.length == 0) {
             for (var i in dataset.data) {
-                dataset.backgroundColor.push(MapasCulturais.Charts.dynamicColors());
+                var color = MapasCulturais.getChartColors();
+                dataset.backgroundColor.push(color[0]);
             }
         }
 

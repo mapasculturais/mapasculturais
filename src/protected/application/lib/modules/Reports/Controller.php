@@ -500,12 +500,29 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
 
         $app = App::i();
+        $module = $app->modules['Reports'];
 
         $request = $this->data;
         $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
-        
         $opp->checkPermission('viewReport');
-        
+                
+        $preload = $this->getData($this->data, $opp);
+
+        /**
+         * Verifica se existe dados suficientes para gerar o gráfico
+         */ 
+        if ($preload['typeGraphic'] == 'pie') {
+            if (!$module->checkIfChartHasData($preload['data'])) {
+                $this->apiResponse(['error' => true]);
+                return;
+            }
+        } else {
+            if (!$module->checkIfChartHasData($preload['series'])) {
+                $this->apiResponse(['error' => true]);
+                return;
+            }
+        }
+
         $value = "";
         $source = "";       
         foreach ($request['columns'] as $v){
@@ -539,7 +556,8 @@ class Controller extends \MapasCulturais\Controller
 
         $return = [
             'graphicId' => $metaList->id,
-            'identifier' => $identifier
+            'identifier' => $identifier,
+            'error' => false
         ];
 
         $this->apiResponse($return);
@@ -607,19 +625,22 @@ class Controller extends \MapasCulturais\Controller
 
     public function getData($reportData, $opp)
     {
-         
         $em = $opp->getEvaluationMethod();
         $app = App::i();
+        $module = $app->modules['Reports'];
+
         $dataA = $reportData["columns"][0];
         $dataB = $reportData["columns"][1];
         $conn = $app->em->getConnection();
         $query = $this->buildQuery($reportData["columns"], $opp,
                                    ($reportData["typeGraphic"] == "line"));
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
+        
         $return = [];
         $labels = [];
         $color = [];
         $data = [];
+        $generate_colors = [];
         // post-processing may be necessary depending on type, so obtain it
         $typeA = $dataA["source"]["type"] ?? "";
         if ($reportData["typeGraphic"] != "pie") {
@@ -631,7 +652,10 @@ class Controller extends \MapasCulturais\Controller
                                                   $opp, $em);
         } else {
             foreach ($result as $item) {
-                $color[] = $this->color();
+                
+                $color = $this->getChartColors();
+
+                $color[] = $color[0];
                 $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
                 $data[] = $item["quantity"];
             }
@@ -1100,12 +1124,16 @@ class Controller extends \MapasCulturais\Controller
     private function prepareSeries($data, $type, $key, $chartType,
                                    $opportunity, $evalMethod, $labelCallback)
     {
+        $app = App::i();
+        $module = $app->modules['Reports'];
+
         $series = [];
         $points = [];
         $outColours = [];
         $outLines = [];
         $outSeries = [];
         $outPoints = [];
+
         foreach ($data as $item) {
             $label = $this->generateLabel($item["value0"], $type, $evalMethod);
             if (!isset($series[$label])) {
@@ -1117,10 +1145,15 @@ class Controller extends \MapasCulturais\Controller
                 $outPoints[] = $labelCallback($item[$key]);
             }
         }
+
+        $generate_colors = [];
         foreach (array_keys($series) as $label) {
+
+            $color = $this->getChartColors();
+
             $current = [
                 "label" => $label,
-                "colors" => $this->color(),
+                "colors" => $color[0],
                 "type" => $chartType,
                 "fill" => false,
                 "data" => []
@@ -1353,15 +1386,5 @@ class Controller extends \MapasCulturais\Controller
         }
 
         return $result;
-    }
-
-    private function color()
-    {
-        mt_srand((double) microtime() * 1000000);
-        $c = '';
-        while (strlen($c) < 6) {
-            $c .= sprintf("%02X", mt_rand(0, 255));
-        }
-        return "#" . $c;
     }
 }

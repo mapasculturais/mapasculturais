@@ -12,16 +12,18 @@ $title = i::__('Inscrições ao longo do tempo');
 
 //Prepara os dados para o gráfico
 foreach ($data as $key_data => $values) {
-    $tempColor = is_callable($color) ? $color() : $color;
+
+    $color = $self->getChartColors();
+
     $serie[$count] = [
         'label' => $key_data,
-        'colors' => $tempColor,
+        'colors' => $color[0],
         'type' => 'line',
         'fill' => false,
     ];
     $legends[$count] = $key_data;
-    $colors[$count] = $tempColor;
-
+    $colors[$count] = $color[0];
+    
     foreach ($values as $key_v => $value) {
         $labels[] = $key_v;
         $serie[$count]['data'][] = $value;
@@ -36,16 +38,20 @@ $dataLabels = array_map(function ($label) {
     return (new DateTime($label))->format('d/m/Y');
 }, $labels);
 
-// Imprime o gráfico na tela
-$this->part('charts/line', [
-    'vertical' => true,
-    'title' => $title,
-    'labels' => $dataLabels,
-    'series' => $serie,
-    'height' => $height,
-    'width' => $width,
-    'legends' => $legends,
-    'colors' => $colors,
-    'opportunity' => $opportunity,
-    'action' => 'registrationsByTime'
-]);
+if ($self->checkIfChartHasData(array_column($serie, 'data'))) {
+
+    // Imprime o gráfico na tela
+    $this->part('charts/line', [
+        'vertical' => true,
+        'title' => $title,
+        'labels' => $dataLabels,
+        'series' => $serie,
+        'height' => $height,
+        'width' => $width,
+        'legends' => $legends,
+        'colors' => $colors,
+        'opportunity' => $opportunity,
+        'action' => 'registrationsByTime'
+    ]);
+
+}

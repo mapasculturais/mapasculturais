@@ -181,6 +181,9 @@ MapasCulturais.EventOccurrenceManager = {
                     }
                     
                     if(response.pending){
+                        $(".pendin-space-"+response.space.id).html(' Aguardando confirmação do espaço <strong>'+ response.space.name + '</strong>');
+                        $(".pendin-space-"+response.space.id).toggle('hidden');
+                        console.log(response.space)
                         MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
                     }
                 }

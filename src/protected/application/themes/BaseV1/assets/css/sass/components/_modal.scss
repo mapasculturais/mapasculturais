@@ -127,6 +127,7 @@
 }
 
 .entity-modal {
+    max-width: 100%;
     width: 800px;
 
     form.create-entity {
@@ -170,7 +171,10 @@
 
     input, textarea { width: 100%; }
 
-    select { display: block !important; }
+    select {
+        display: block !important;
+        max-width: 100%;
+    }
 
     .actions {
         float: left;
@@ -237,4 +241,13 @@
 
 .tip-yellowsimple{
     z-index: 1901 !important;   
+}
+
+.select-owner-entity{
+    display: none ;
+    margin-bottom: 20px !important;
+}
+
+.select-owner-entity.active{
+    display: block;
 }

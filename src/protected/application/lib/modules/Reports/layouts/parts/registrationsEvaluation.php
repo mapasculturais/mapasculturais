@@ -12,7 +12,9 @@ $title = i::__('Resultado da avaliação');
 $total = '';
 
 if ($opportunity->evaluationMethod->slug == 'technical') {
-    $series[0]['color'] = is_callable($color) ? $color() : $color;
+    
+    $color = $self->getChartColors();
+    $series[0]['color'] = $color[0];
 
     foreach ($data as $key => $value) {
         $label[] = $key;
@@ -20,20 +22,22 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
         $legends[] = $key;
     }
 
-    $series[0]['color'];
+    if ($self->checkIfChartHasData($values)) {
 
-    $this->part('charts/bar', [
-        'labels' => $label,
-        'series' => [
-            ['label' => 'Quantidade', 'data' => $values, 'color' => '#EB7E33'],
-        ],
-        'legends' => [],
-        'height' => $height,
-        'width' => '100%',
-        'title' => $title,
-        'opportunity' => $opportunity,
-        'action' => 'registrationsByEvaluationStatusBar',
-    ]);
+        $this->part('charts/bar', [
+            'labels' => $label,
+            'series' => [
+                ['label' => 'Quantidade', 'data' => $values, 'color' => '#EB7E33'],
+            ],
+            'legends' => [],
+            'height' => $height,
+            'width' => '100%',
+            'title' => $title,
+            'opportunity' => $opportunity,
+            'action' => 'registrationsByEvaluationStatusBar',
+        ]);
+
+    }
 } else {
 
     $total = [];
@@ -46,7 +50,11 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
 
     // Prepara os dados para o gráfico
     foreach ($data as $key => $value) {
+
         foreach ($value as $v_key => $v) {
+
+            $color = $self->getChartColors();
+
             if ($v_key == "evaluated") {
                 $status = i::__('Avaliada');
             } else {
@@ -55,21 +63,25 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
             $label[] = $status;
             $legends[] = $status . '<br>' . $v . ' (' . number_format(($v / $total) * 100, 2, '.', '') . '%)';
             $values[] = $v;
-            $colors[] = is_callable($color) ? $color() : $color;
+            $colors[] = $color[0];
         }
     }
 
-    // Imprime o gráfico na tela
-    $this->part('charts/pie', [
-        'labels' => $label,
-        'data' => $values,
-        'total' => $total,
-        'colors' => $colors,
-        'height' => $height,
-        'width' => $width,
-        'legends' => $legends,
-        'title' => $title,
-        'opportunity' => $opportunity,
-        'action' => 'exportRegistrationsByEvaluation',
-    ]);
+    if ($self->checkIfChartHasData($values)) {
+
+        // Imprime o gráfico na tela
+        $this->part('charts/pie', [
+            'labels' => $label,
+            'data' => $values,
+            'total' => $total,
+            'colors' => $colors,
+            'height' => $height,
+            'width' => $width,
+            'legends' => $legends,
+            'title' => $title,
+            'opportunity' => $opportunity,
+            'action' => 'exportRegistrationsByEvaluation',
+        ]);
+
+    }    
 }

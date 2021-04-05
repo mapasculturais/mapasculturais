@@ -49,7 +49,7 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
     <!-- Footer --> 
 
     <div class="event-occurrence-list hidden">
-        <h2><?php \MapasCulturais\i::_e("Espacos vinculados a esse evento");?></h2>
+        <h2><?php \MapasCulturais\i::_e("Espaços vinculados a esse evento");?></h2>
         <ul class="js-event-occurrence"></ul>
     </div>
     
@@ -60,9 +60,10 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
 
     <script type="text/html" id="event-occurrence-item" class="js-mustache-template">
             <li>
-                <?php \MapasCulturais\i::_e("Local:");?> <a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a> <br>
+                <span class="pendin-space-{{space.id}} hidden warning pending"></span><br><br>
+                <?php \MapasCulturais\i::_e("Local:");?> <a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a><br>
                 <?php \MapasCulturais\i::_e("Data:");?> <strong>{{rule.description}}</strong><br>
-                <?php \MapasCulturais\i::_e("Valor:");?> <?php \MapasCulturais\i::_e("R$");?>{{rule.price}}<br>
+                <?php \MapasCulturais\i::_e("Valor:");?> {{rule.price}}<br>
             </li>       
     </script>
 </div>

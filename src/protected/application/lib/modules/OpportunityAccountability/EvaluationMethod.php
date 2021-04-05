@@ -43,15 +43,9 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
         $errors = [];
-        $empty = true;
-        foreach($data as $prop => $val){
-            if($val['evaluation']){
-                $empty = false;
-            }
-        }
 
-        if($empty){
-            $errors[] = i::__('Nenhum campo foi avaliado');
+        if(empty($data['result']) || empty($data['obs'])) {
+            $errors[] = i::__('É necessário escrever o parecer técnico e informar o resultado');
         }
 
         return $errors;
@@ -70,9 +64,6 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
 
     public function _init() {
         $app = App::i();
-        $app->hook('template(project.single.registration-field-item):end', function () {
-            $this->part('chat', ['thread_id' => 'field.fieldName']);
-        });
 
         /** 
          * @todo implementar o hook
@@ -212,14 +203,16 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
             return 0;
         }
 
-        $result = 1;
+        $result = 0;
 
         foreach ($evaluations as $eval){
             if($eval->status === \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT){
                 return 0;
             }
 
-            $result = ($result === 1 && $this->getEvaluationResult($eval) === 1) ? 1 : -1;
+            if(($evaluation_result = $this->getEvaluationResult($eval)) > $result){
+                $result = $evaluation_result;
+            }
         }
 
         return $result;
@@ -228,29 +221,23 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
         $data = (array) $evaluation->evaluationData;
         
-        if(is_array($data) && count($data) == 0){
-            return 1; // valid
-        }
-
-        foreach ($data as $id => $value) {
-            if(isset($value['evaluation']) && $value['evaluation'] === STATUS_INVALID){
-                return -1;
-            }
-        }
-
-        return 1;
+        return $data['result'] ?? 0;
     }
 
     public function valueToString($value) {
 
-        if($value == 1){
-            return i::__('Válida');
-        } else if($value == -1){
-            return i::__('Inválida');
+        if ($value == 10){
+            return i::__('Aprovado');
+
+        } else if ($value == 8){
+            return i::__('Aprovado com ressalvas');
+
+        } else if ($value == 3) {
+            return i::__('Não aprovado');
+
+        } else {
+            return $value ?: '';
         }
-
-        return $value ?: '';
-
     }
     
     public function fetchRegistrations() {

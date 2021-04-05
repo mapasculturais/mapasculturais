@@ -38,7 +38,6 @@ $em = $entity->getEvaluationMethod();
             <option value="10"><?php i::_e('Aprovada') ?></option>
             <option value="8"><?php i::_e('Aprovada com ressalvas') ?></option>
             <option value="3"><?php i::_e('Não aprovada') ?></option>
-
         </select>
     </label>
     <label><input type="checkbox" ng-model="data.status" ng-true-value="'all'" ng-false-value="'pending'"> <?= i::__("Aplicar a todas as prestações de contas enviadas") ?> </label><br>

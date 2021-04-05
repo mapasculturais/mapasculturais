@@ -8,6 +8,7 @@ class Module extends \MapasCulturais\Module
 {
     public const SUPPORT_GROUP = "@support";
     protected $inTransaction = false;
+    protected $grantedCoarse = false;
 
     public function __construct(array $config = [])
     {
@@ -32,7 +33,7 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona o conteúdo na aba de suporte dentro da opportunidade
         $app->hook('template(opportunity.edit.tabs-content):end', function () use ($app, $self) {
-            $entity = $this->controller->requestedEntity; 
+            $entity = $this->controller->requestedEntity;
             if($entity->canUser('@control')){
                 $this->part('support/opportunity-support', ['entity' => $entity]);
             }
@@ -48,7 +49,7 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
-        $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app) {
+        $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app, $self) {
             if ($this->owner->canUser("@control")) {
                 return;
             }
@@ -60,8 +61,10 @@ class Module extends \MapasCulturais\Module
                     return;
                 }
             }
-            $app->em->rollback();
-            throw new \Exception("Permission denied.");
+            if ($self->inTransaction) {
+                $app->em->rollback();
+                throw new \Exception("Permission denied.");
+            }
             return;
         });
         $app->hook("slim.after", function () use ($app, $self) {
@@ -75,18 +78,21 @@ class Module extends \MapasCulturais\Module
             $result = $self->isSupportUser($this->opportunity, $user);
             return;
         });
-        $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) {
+        $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) use ($self) {
             if (!$result) {
                 $result = $this->canUser("support", $user);
+                $self->grantedCoarse = $result;
             }
             return;
         });
-        $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) {
+        $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($self) {
             if (!$this->owner->canUser("@control")) {
-                $result = false;
+                if ($self->grantedCoarse) {
+                    $result = false;
+                }
                 $key = $this->group ?? $this->key;
                 foreach ($this->owner->opportunity->agentRelations as $relation) {
-                    if ((($relation->group == self::SUPPORT_GROUP) && $relation->agent->user->id == $user->id) &&
+                    if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
                         (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
                             $result = true;
                             return;

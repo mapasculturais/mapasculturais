@@ -808,7 +808,8 @@ class App extends \Slim\Slim{
         $this->registerController('entityRevision',    'MapasCulturais\Controllers\EntityRevision');
         $this->registerController('permissionCache',   'MapasCulturais\Controllers\PermissionCache');
 
-        // chat message controller
+        // chat controllers
+        $this->registerController('chatThread', 'MapasCulturais\Controllers\ChatThread');
         $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
 
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
@@ -1446,6 +1447,8 @@ class App extends \Slim\Slim{
         $this->log->debug("     >> \033[32m$line\033[0m\n");
     }
 
+    protected $hookStack = [];
+
     /**
      * Invoke hook
      * @param  string   $name       The hook name
@@ -1465,10 +1468,18 @@ class App extends \Slim\Slim{
             }
         }
 
+        $this->hookStack[] = (object) [
+            'name' => $name,
+            'args' => $hookArg,
+            'bound' => false,
+        ];
+
         $callables = $this->_getHookCallables($name);
         foreach ($callables as $callable) {
             call_user_func_array($callable, $hookArg);
         }
+
+        array_pop($this->hookStack);
     }
 
     /**
@@ -1491,11 +1502,19 @@ class App extends \Slim\Slim{
             }
         }
 
+        $this->hookStack[] = (object) [
+            'name' => $name,
+            'args' => $hookArg,
+            'bound' => false,
+        ];
+
         $callables = $this->_getHookCallables($name);
         foreach ($callables as $callable) {
             $callable = \Closure::bind($callable, $target_object);
             call_user_func_array($callable, $hookArg);
         }
+
+        array_pop($this->hookStack);
     }
 
 
