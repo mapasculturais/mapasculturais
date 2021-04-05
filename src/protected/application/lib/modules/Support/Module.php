@@ -26,17 +26,21 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona a aba do módulo de suporte na oportunidade
         $app->hook('template(opportunity.<<single|edit>>.tabs):end', function () use ($app, $self) {
-            if ($this->controller->requestedEntity->canUser("@control") || $self->isSupportUser($this->controller->requestedEntity, $app->user)) {
-                $this->part('support/opportunity-support--tab');
+            $entity = $this->controller->requestedEntity; 
+            if ($entity->canUser("@control") || $self->isSupportUser($entity, $app->user)) {
+                $this->part('support/opportunity-support--tab', ['entity' => $entity, 'user' => $app->user, 'module' => $self]);
             }
         });
 
         // Adiciona o conteúdo na aba de suporte dentro da opportunidade
-        $app->hook('template(opportunity.edit.tabs-content):end', function () use ($app, $self) {
-            $entity = $this->controller->requestedEntity;
+        $app->hook('template(opportunity.<<single|edit>>.tabs-content):end', function () use ($app, $self) {
+            $entity = $this->controller->requestedEntity; 
             if($entity->canUser('@control')){
-                $this->part('support/opportunity-support', ['entity' => $entity]);
+                $this->part('support/opportunity-support-settings', ['entity' => $entity]);
             }
+
+            
+                $this->part('support/opportunity-support', ['entity' => $entity]);
         });
         // permissões granulares com uso de transactions
         $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
