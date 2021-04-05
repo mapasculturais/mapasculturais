@@ -116,9 +116,10 @@ class Module extends \MapasCulturais\Module
         // redireciona a ficha de inscrição para o suporte
         $app->hook('GET(registration.view):before', function() use($app) {
             $registration = $this->requestedEntity;
-
             if ($registration->canUser('support', $app->user)){
-                $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
+                if(!$registration->isUserAdmin($app->user)){
+                    $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
+                }
             }
         });
     }
