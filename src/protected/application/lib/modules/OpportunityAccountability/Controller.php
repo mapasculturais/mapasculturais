@@ -2,6 +2,8 @@
 
 namespace OpportunityAccountability;
 
+use DateTime;
+use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 
@@ -13,24 +15,103 @@ class Controller extends \MapasCulturais\Controller
      * Method POST_openFields
      *
      */
-    public function POST_openFields()
+    public function POST_openField()
     {
         $this->requireAuthentication();
-
         $request = $this->data;
-
         $app = App::i();
-
         $registration = $app->repo('Registration')->find($request['id']);
-
         $registration->checkPermission('evaluate');
 
-        $registration->openFields = $request['data'];
+        $openFields = json_decode($registration->openFields, true);
 
+        $field_id = key($request['data']);
+
+        if (isset($openFields[$field_id])) {
+            $openFields[$field_id] = "true";
+        } else {
+            $openFields = array_merge($openFields, [$field_id => "true"]);
+        }
+        
+        $field_title = $this->getFieldTitle($field_id, $registration);
+       
+        $app->hook('entity(EntityRevision).insert:before',function () use ($field_title){            
+            $this->message = i::__("Campo ".$field_title. " aberto para edição");
+        });
+
+        $registration->openFields = $openFields;
+        
         $app->disableAccessControl();
         $registration->save(true);
         $app->enableAccessControl();
+        $this->apiResponse($this->data);
 
-        $this->apiResponse($registration->getMetadata());
+    }
+
+    /**
+     * Method POST_closeFields
+     *
+     */
+    public function POST_closeField()
+    {
+        $this->requireAuthentication();
+        $request = $this->data;
+        $app = App::i();
+        $registration = $app->repo('Registration')->find($request['id']);
+        $registration->checkPermission('evaluate');
+
+        $openFields = json_decode($registration->openFields, true);
+
+        $field_id = key($request['data']);
+
+        if (isset($openFields[$field_id])) {
+            $openFields[$field_id] = "false";
+        } else {
+            $openFields = array_merge($openFields, [$field_id => "false"]);
+        }
+
+        $field_title = $this->getFieldTitle($field_id, $registration);
+       
+        $app->hook('entity(EntityRevision).insert:before',function () use ($field_title){            
+            $this->message = i::__("Campo ".$field_title. " fechado para edição");
+        });
+
+        $registration->openFields = $openFields;
+        
+        $app->disableAccessControl();
+        $registration->save(true);
+        $app->enableAccessControl();
+        $this->apiResponse($this->data);
+
+    }
+
+    static function notifyAccountabilityFieldIsOpen($registration)
+    {
+        $content = i::__("Campo aberto para edição na prestação de contas " .
+                         "número %s");
+        $notification = new \MapasCulturais\Entities\Notification;
+        $notification->user = $registration->ownerUser;
+        $url = $registration->singleUrl;
+        $number = $registration->number;
+        $notification->message = sprintf($content, ("<a href=\"$url\" >" .
+                                                    "$number</a>"));
+        $notification->save(true);
+        return;
+    }
+
+    public function getFieldTitle($field_id, $registration)
+    {
+        $field_id =  trim(preg_replace("/[^0-9]/", "", $field_id));
+
+        $fields_configuration = $registration->opportunity->registrationFieldConfigurations;
+        $files_configuration = $registration->opportunity->registrationFileConfigurations;
+                
+        $fields = array_merge($fields_configuration, $files_configuration);
+        $result = [];
+        foreach ($fields as $field){            
+            $result["field_".$field->id] = $field->title;
+        }
+
+        return $result["field_".$field_id];
     }
 }

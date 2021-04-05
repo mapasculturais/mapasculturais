@@ -12,6 +12,7 @@ use MapasCulturais\App;
  * @ORM\Table(name="entity_revision",indexes={@ORM\Index(name="entity_revision_idx", columns={"object_id", "object_type"})}))
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\EntityRevision")
+ * @ORM\HasLifecycleCallbacks
  */
 class EntityRevision extends \MapasCulturais\Entity{
     const ACTION_CREATED        = 'created';

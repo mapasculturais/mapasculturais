@@ -2412,8 +2412,7 @@ class Theme extends MapasCulturais\Theme {
     }
 
     function addRegistrationToJs(Entities\Registration $entity){
-        $this->jsObject['entity']['registrationFileConfigurations'] = $entity->opportunity->registrationFileConfigurations ?
-                $entity->opportunity->registrationFileConfigurations->toArray() : array();
+        $this->jsObject['entity']['registrationFileConfigurations'] = (array) $entity->opportunity->registrationFileConfigurations;
 
         $this->jsObject['entity']['registrationId'] = $entity->id;
         $this->jsObject['entity']['registrationCategories'] = $entity->opportunity->registrationCategories;
