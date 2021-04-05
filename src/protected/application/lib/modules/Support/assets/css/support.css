@@ -1,40 +1,40 @@
-#support {
+#support-settings {
     padding-top: 1.3rem;
 }
 
-#support header h4,
-#support header p {
+#support-settings header h4,
+#support-settings header p {
     margin-bottom: 2.5rem;
 }
 
-#support .support-content {
+#support-settings .support-content {
     margin-bottom: 1.5rem;
     padding: 0.5rem;
     border: 1px solid #eee;
     border-radius: 2px;
 }
 
-#support .support-content .committee {
+#support-settings .support-content .committee {
     overflow: hidden;
 }
 
-#support .support-content .committee .btn {
+#support-settings .support-content .committee .btn {
     margin: 5px 0 0 0;
     margin-right: 15px;
 }
 
-#support .support-content .committee .committee--name {
+#support-settings .support-content .committee .committee--name {
     display: block;
     padding-top: 5px;
 }
 
-#support .support-content .committee .committee--group {
+#support-settings .support-content .committee .committee--group {
     color: #333333;
     display: block;
     font-style: italic;
 }
 
-#support .support-message {
+#support-settings .support-message {
     color: #666666;
     font-style: italic;
 }
@@ -44,11 +44,11 @@ body.modal-oppened {
     overflow: hidden !important;
 }
 
-#support .bg-support-modal.open {
+#support-settings .bg-support-modal.open {
     display:block;
 }
 
-#support .bg-support-modal {
+#support-settings .bg-support-modal {
     background-color: rgba(0,0,0,0.4);
     height: 100%;
     left: 0;
@@ -60,7 +60,7 @@ body.modal-oppened {
     display:none;
 }
 
-#support .support-content-modal {
+#support-settings .support-content-modal {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 3px 20px 0 rgb(0 0 0 / 50%);
@@ -74,10 +74,10 @@ body.modal-oppened {
     width: 80%;
 }
 
-#support .support-content-modal header {
+#support-settings .support-content-modal header {
     position: relative;
 }
-#support .support-content-modal header a {
+#support-settings .support-content-modal header a {
     color: rgba(17, 17, 17, 0.4);
     line-height: 0;
     padding: 10px;
@@ -86,21 +86,21 @@ body.modal-oppened {
     text-align: center;
     top: 6px;
 }
-#support .support-content-modal header a:hover {
+#support-settings .support-content-modal header a:hover {
     color: rgba(17, 17, 17, 0.8);
 }
 
-#support .support-content-modal .support-modal-title {
+#support-settings .support-content-modal .support-modal-title {
     border-bottom: 1px solid #ccc;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
 }
 
-#support .support-content-modal .modal-body ul {
+#support-settings .support-content-modal .modal-body ul {
     margin: 0 -10px;
 }
 
-#support .support-content-modal .modal-body ul li {
+#support-settings .support-content-modal .modal-body ul li {
     align-items: center;
     display: flex;
     list-style: none;
@@ -109,24 +109,24 @@ body.modal-oppened {
     padding: 5px 5px 5px 10px;
 }
 
-#support .support-content-modal .modal-body ul li:hover {
+#support-settings .support-content-modal .modal-body ul li:hover {
     background-color: #f5f5f5;
 }
 
-#support .support-content-modal .modal-body ul li label {
+#support-settings .support-content-modal .modal-body ul li label {
     align-items: center;
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-#support .support-content-modal .modal-body ul li label code {
+#support-settings .support-content-modal .modal-body ul li label code {
     font-weight: normal;
     cursor: pointer;
     color: darkgreen;
 }
 
-#support .support-content-modal .modal-body ul li label .field-type {
+#support-settings .support-content-modal .modal-body ul li label .field-type {
     display: block;
     word-wrap: break-word;
     font-size: 0.75rem;
@@ -134,7 +134,7 @@ body.modal-oppened {
     margin-bottom: 0;
 }
 
-#support .support-content-modal .modal-body ul li select {
+#support-settings .support-content-modal .modal-body ul li select {
     cursor: pointer;
     margin-bottom: 0;
 }
