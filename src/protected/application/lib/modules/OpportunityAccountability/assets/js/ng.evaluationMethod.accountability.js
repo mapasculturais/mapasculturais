@@ -111,8 +111,13 @@
                 var url = MapasCulturais.createUrl('chatThread', 'open', [chat.id]);
                 return $http.post(url);
             },
-            openFields: function (registrationId, evaluationData, uid) {
-                var url = MapasCulturais.createUrl('accountability', 'openFields', [registrationId]);
+            openField: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('accountability', 'openField', [registrationId]);
+
+                return $http.post(url, {data: evaluationData, uid});
+            },
+            closeField: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('accountability', 'closeField', [registrationId]);
 
                 return $http.post(url, {data: evaluationData, uid});
             },
@@ -187,12 +192,21 @@
         };
 
         $scope.toggleOpen = function(field) {
-            const identifier = $scope.getFieldIdentifier(field);            
-            $scope.evaluationData[identifier] = $scope.openFields[identifier];            
-            AccountabilityEvaluationService.openFields(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
-                MapasCulturais.Messages.success('Salvo');
-                return;
-            });
+            const identifier = $scope.getFieldIdentifier(field); 
+            $scope.evaluationData = {};           
+            $scope.evaluationData[identifier] = $scope.openFields[identifier]; 
+            if($scope.openFields[identifier]){
+                AccountabilityEvaluationService.openField(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
+                    MapasCulturais.Messages.success('Campo aberto para edição');
+                    return;
+                });
+            }else{
+                AccountabilityEvaluationService.closeField(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
+                    MapasCulturais.Messages.success('Campo fechado para edição');
+                    return;
+                });
+            }  
+            
         };
 
         $scope.toggleChat = function(field) {
