@@ -68,8 +68,8 @@ class Controller extends \MapasCulturais\Controller
         $result = $agent_relation->metadata;
         foreach ($this->postData as $key => $value) {
             if (!$value) {
-                if (isset($result["registrationPermission"][$key])) {
-                    unset($result["registrationPermission"][$key]);
+                if (isset($result["registrationPermissions"][$key])) {
+                    unset($result["registrationPermissions"][$key]);
                 }
             } else {
                 $result["registrationPermissions"][$key] = $value;
