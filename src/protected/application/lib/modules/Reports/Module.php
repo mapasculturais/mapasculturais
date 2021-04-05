@@ -56,11 +56,7 @@ class Module extends \MapasCulturais\Module
             if ($registrationsByStatus = $self->registrationsByStatus($opportunity)) {
                 $sendHook['registrationsByStatus'] = $registrationsByStatus;
             }
-
-            if ($registrationsByEvaluationStatus = $self->registrationsByEvaluationStatus($opportunity)) {
-                $sendHook['registrationsByEvaluationStatus'] = $registrationsByEvaluationStatus;
-            }
-
+            
             if ($opportunity->evaluationMethod->slug == 'technical') {
                 if ($registrationsByEvaluation = $self->registrationsByEvaluationStatusBar($opportunity)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;

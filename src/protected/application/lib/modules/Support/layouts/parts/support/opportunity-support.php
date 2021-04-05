@@ -1,67 +1,126 @@
 <?php
-
 use MapasCulturais\i;
+
 ?>
-<div ng-controller='Support'>
-    <?php $this->applyTemplateHook('opportunity-support', 'before');?>
-    <div id="support" class="aba-content" id="support">
-        <!-- Header -->
-        <header>
-            <h4><?php i::_e("Agentes autorizados");?></h4>
-            <a class="btn btn-default add alignright" ng-click="editbox.open('add-age', $event); editBoxOpen()" rel="noopener noreferrer"><?php i::_e("Adicionar agente");?></a>
-            <!-- Edit box add agentes -->
-            <edit-box id="add-age" position="top" title="" cancel-label="" close-on-cancel="true">
-                <h4><?php i::_e("Adicionar agentes");?></h4>
-                <div class="directive-find-entity ">
-                    <input ng-model="data.searchAgents" ng-change="findAgents()" placeholder="buscar por nome" />
-                    <img src="<?php $this->asset('img/spinner-black.gif')?>" class="spinner" ng-class="{hidden:!data.spinner}" />
-                    <ul class="result-container" ng-repeat="(key,agent) in data.agents" style="overflow-y: auto;" ng-click="selectAgent(agent)">
-                        <li class="search-agent clearfix ng-scope">
-                            <img class="search-agent-thumb" ng-src="{{avatarUrl(agent)}}" alt="{{agent.name}}">
-                            <h1 class="ng-binding">{{agent.name}}</h1>
-                            <div class="objeto-meta">
-                                <div class="ng-binding">
-                                    <span class="label"><?php i::_e("área de atuação:");?></span>
-                                    {{agent.terms.area.join(', ')}}
-                                </div>
-                                <div class="ng-binding"><span class="label"><?php i::_e("tipo:");?></span>{{agent.type.name}}</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <a class="btn btn-default cancel alignright" ng-click="editBoxCancel()" rel="noopener noreferrer"><?php i::_e("Cancelar");?></a>
-            </edit-box><!-- Fim edit box add agentes -->
-
-            <p><?php i::_e("Gerencie os agentes de suporte dessa oportunidade.");?></p>
-        </header><!-- Fim header -->
-        <!-- Menssagem caso nao exista agentes -->
-        <p class="support-message" ng-if="!data.agentsRelations.length"><?php i::_e("Nenhum agente cadastrado");?></p>
-        
-        <!-- Content -->
-        <div class="support-content" ng-if="data.agentsRelations.length">
-            <?php $this->applyTemplateHook('opportunity-support', 'begin');?>
-
-            <div class="support-body">
-                <div class="committee ng-scope" ng-repeat="(key,agentRelation) in data.agentsRelations">
-                    <div ng-controller='SupportModal'>
-                        <div class="committee--info">
-                            <span class="btn btn-danger delete alignright" ng-click="deleteAgentRelation(agentRelation.agent.id)"><?php i::_e("Excluir");?></span>
-                            <span ng-click="data.openModal = true" class="btn btn-default add alignright mr10 ng-scope"><?php i::_e("Autorizar campos");?></span>
-                            <img class="committee--avatar" ng-src="{{(agentRelation.agent.avatar.avatarSmall.url) ? agentRelation.agent.avatar.avatarSmall.url : data.defaultAvatar}}" src="{{(agentRelation.agent.avatar.avatarSmall.url) ? agentRelation.agent.avatar.avatarSmall.url : data.defaultAvatar}}">
-                            <span class="committee--name ng-binding">{{agentRelation.agent.name}}</span>
-                        </div>
-
-                        <div ng-class="{open:data.openModal}" class="bg-support-modal">
-                            <div class="support-content-modal">
-                                <?php $this->part('support/opportunity-support-fields-association', ['entity' => $entity]);?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!--Fim content -->
-            <?php $this->applyTemplateHook('opportunity-support', 'end');?>
+<div class="aba-content" id="support">
+    <header id="header-inscritos" class="clearfix">
+        <?php $this->applyTemplateHook('header-inscritos-support','begin'); ?>
+        <h3><?php i::_e("Inscritos");?></h3>
+        <div class="alert info hide-tablet">
+            <?php i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
+            <div class="close"></div>
         </div>
+        <?php $this->applyTemplateHook('header-inscritos-support','actions'); ?>
+        <?php $this->applyTemplateHook('header-inscritos-support','end'); ?>
+    </header>
+
+
+    <div id="filtro-inscritos">
+        <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
+        <input ng-model="data.registrationsFilter" placeholder="<?php i::_e('Busque pelo número de inscrição, status da avaliação, nome ou cpf do responsável') ?>" />
     </div>
-    <?php $this->applyTemplateHook('opportunity-support', 'after');?>
+
+    
+
+    <style>
+        table.fullscreen {
+            background-color: white;
+        }
+    </style>
+    <div id="registrations-table-container">
+    <table id="registrations-table" class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published, 'fullscreen': data.fullscreenTable}"><!-- adicionar a classe registrations-results quando resultados publicados-->
+        <thead>
+            <tr>
+                <?php $this->applyTemplateHook('registration-list-header-support','begin'); ?>
+                <th ng-show="data.registrationTableColumns.number" class="registration-id-col">
+                    <?php i::_e("Inscrição");?>
+                </th>            
+                <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
+                    <mc-select class="left transparent-placeholder" placeholder="status" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
+                </th>
+                <th ng-repeat="field in data.opportunitySelectFields" ng-show="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
+                    <mc-select class="left transparent-placeholder" placeholder="{{field.title}}" model="registrationsFilters[field.fieldName]" data="field.options" title="{{field.title}}"></mc-select>
+                </th>
+                <th ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
+                    <?php i::_e("Agentes");?>
+                </th>
+                <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
+                <?php i::_e("Status");?>
+                </th>
+
+                <?php $this->applyTemplateHook('registration-list-header-support','end'); ?>
+            </tr>
+        </thead>
+        <tr>
+            <td colspan="3">
+                
+                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição.");?></span>
+                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 0"><?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição.");?></span>
+                <span ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count === 1"><?php i::_e("1 inscrição encontrada com os filtros selecionados.");?></span>
+                <span ng-if="!usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">
+                    {{data.registrations.length}} <i> de {{ data.registrationsAPIMetadata.count }}</i> <?php i::_e("inscrições.");?>
+                    <?php if($entity->registrationLimit > 0):?>
+                        | <?php i::_e("Número máximo de vagas na oportunidade:");?> <?php echo $entity->registrationLimit;?>
+                    <?php endif;?>
+                </span>
+                <div ng-if="usingRegistrationsFilters() && data.registrationsAPIMetadata.count > 1">
+                    <div ng-if="data.registrations.length === 0">
+                        <?php i::_e("Nenhuma inscrição encontrada com os filtros selecionados."); ?>
+                    </div>
+                    <div ng-if="data.registrations.length >= 1 ">
+                        <strong> {{ data.registrations.length }} </strong>
+                        <span ng-if="data.registrationsAPIMetadata.count > 1"> de {{ data.registrationsAPIMetadata.count }}</i> </span>
+                        <span ng-if="data.registrations.length === 1"> <?php i::_e("inscrição encontrada"); ?> </span>
+                        <span ng-if="data.registrations.length > 1"> <?php i::_e("inscrições encontradas"); ?> </span>
+                        <?php i::_e(" com os filtros selecionados."); ?>
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
+        <?php $this->applyTemplateHook('registration-list-item-support','begin'); ?>
+                <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}" rel='noopener noreferrer'>{{reg.number}}</a></td>
+                <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
+                <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
+                    {{reg[field.fieldName]}}
+                </td>
+                <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
+                    <p>
+                        <span class="label"><?php i::_e("Responsável");?></span><br />
+                        <a href="{{reg.owner.singleUrl}}" rel='noopener noreferrer'>{{reg.owner.name}}</a>
+                    </p>
+
+                    <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
+                        <span class="label">{{relation.label}}</span><br />
+                        <a href="{{relation.agent.singleUrl}}" rel='noopener noreferrer'>{{relation.agent.name}}</a>
+                    </p>
+                </td>
+                <td ng-show="data.registrationTableColumns.status" class="registration-status-col">
+                    {{getStatusNameById(reg.status)}}
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td align="center">
+                    <div ng-if="data.findingRegistrations">
+                        <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+        <?php
+        $_evaluation_type = $entity->evaluationMethodConfiguration->getType();
+        if( is_object($_evaluation_type) && property_exists($_evaluation_type, "id") && $_evaluation_type->id === "simple" ): ?>
+            <div ng-if="hasEvaluations()">
+                <button class="btn btn-primary" ng-click="applyEvaluations()"> {{ data.confirmEvaluationLabel }} </button>
+            </div>
+        <?php endif; ?>
+
+    </div>
 </div>
