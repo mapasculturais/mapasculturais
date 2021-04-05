@@ -19,7 +19,7 @@ use MapasCulturais\i;
                     <div>
                         <code class="field-id">#{{field.id}}</code>
                         <span class="field-title">{{field.title}}</span>
-                        <span class="field-type"><strong><?php i::_e('Tipo:'); ?></strong> {{field.fieldType}}</span>
+                        <span class="field-type"><strong><?php i::_e('Tipo:'); ?></strong> {{field.typeDescription}}</span>
                     </div>
                     <select ng-change="savePermission({{agentRelation.agent.id}})" ng-model="data.userPermissions[field.ref]">
                         <option ng-selected="agentRelation.metadata.registrationPermissions[field.ref] === ''" value=""><?php i::_e("Sem permissão"); ?></option>
