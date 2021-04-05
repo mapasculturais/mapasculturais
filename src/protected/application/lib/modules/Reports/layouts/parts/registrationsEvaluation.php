@@ -12,7 +12,9 @@ $title = i::__('Resultado da avaliação');
 $total = '';
 
 if ($opportunity->evaluationMethod->slug == 'technical') {
-    $series[0]['color'] = is_callable($color) ? $color() : $color;
+    
+    $color = $self->getChartColors();
+    $series[0]['color'] = $color[0];
 
     foreach ($data as $key => $value) {
         $label[] = $key;
@@ -49,15 +51,9 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
     // Prepara os dados para o gráfico
     foreach ($data as $key => $value) {
 
-        $generate_colors = [];
-
         foreach ($value as $v_key => $v) {
 
-            do {
-                $new_color = is_callable($color) ? $color() : $color;
-            } while (in_array($new_color, $generate_colors));
-            
-            $generate_colors[] = $new_color;
+            $color = $self->getChartColors();
 
             if ($v_key == "evaluated") {
                 $status = i::__('Avaliada');
@@ -67,7 +63,7 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
             $label[] = $status;
             $legends[] = $status . '<br>' . $v . ' (' . number_format(($v / $total) * 100, 2, '.', '') . '%)';
             $values[] = $v;
-            $colors[] = $new_color;
+            $colors[] = $color[0];
         }
     }
 
