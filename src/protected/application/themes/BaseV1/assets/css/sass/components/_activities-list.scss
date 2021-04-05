@@ -1,4 +1,4 @@
-#activities header h2 {
+.panel-activities header h2 {
 	font-size: 1.5rem;
 	line-height: 1;
 }
@@ -13,4 +13,8 @@
 	    	font-size: $font-size-base;
 	    }
 	}
+}
+
+.panel-list {
+	margin-bottom: 2em;
 }

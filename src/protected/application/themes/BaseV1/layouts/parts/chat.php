@@ -3,9 +3,10 @@
 
 use MapasCulturais\i;
 
+$closed = $closed ?? 'false';
 ?>
 
-<div ng-controller="ChatController" ng-init="setThreadId(<?= $thread_id ?>)" ng-class="(data.messages.length) ? 'chat' : 'hidden'">
+<div ng-controller="ChatController" ng-if="<?= $thread_id ?>" ng-hide="data.messages.length == 0 && isChatClosed()" ng-init="init(<?= $thread_id ?>)" class="chat">
     <div ng-repeat="(key, item) in data.messages" class="message" ng-class="(data.currentUserId != item.user.profile.id) ? '' : 'received'">
         <span class="date" ng-if="item.date != data.messages[key - 1].date">{{item.date}}</span>
 
@@ -15,8 +16,8 @@ use MapasCulturais\i;
             <p>{{item.payload}}</p>
         </div>
     </div>
-    <footer>
+    <footer ng-if="!isChatClosed()" ng-style="{'border-top-width': (data.messages.length == 0) ? '0px' : '1px'}">
         <textarea class="new-message" ng-model="data.newMessage" ng-style="{'height': (!data.newMessage) ? 'auto' : ''}" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
-        <button ng-disabled="!data.newMessage" ng-click="sendMessage(data.newMessage)"><?php i::_e("Enviar"); ?></button>
+        <button ng-disabled="!data.newMessage || data.sending" ng-click="sendMessage(data.newMessage)"><?php i::_e("Enviar"); ?></button>
     </footer>
 </div>

@@ -28,6 +28,7 @@
                 'coletivo': '(Agente Coletivo)',
                 'space': '(Espaço)'
             },
+            error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
             graphics:[]          
         };
@@ -57,13 +58,15 @@
         });
 
         ReportsService.getData({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
-        
+
             var legendsToString = [];            
             data.forEach(function(item){
                
                 if(item.typeGraphic != "pie"){
                     var total = $scope.sumSerie(item);
                     item.data.series.forEach(function(value, index){
+                        var color = MapasCulturais.getChartColors();
+                        value.colors = color[0];
                         legendsToString.push($scope.legendsToString(total, item, index));
                     });
                     item.data.tooltips = item.data.legends;
@@ -74,6 +77,7 @@
                         legendsToString.push($scope.legendsToString(value, item, index));
                        
                     });
+                    item.data.backgroundColor = MapasCulturais.getChartColors(item.data.data.length);
                     item.data.tooltips = item.data.labels;
                     item.data.labels = legendsToString;
                 }
@@ -106,8 +110,15 @@
                     }
                 ],
             }
-            
             ReportsService.save(config).success(function (data, status, headers){
+                
+                if (data.error) {
+                    $scope.clearModal();
+                    MapasCulturais.Messages.error("Dados insuficientes para gerar a visualização desse gráfico");
+                    $scope.data.error = data.error;
+                    return;
+                }
+
                 $scope.data.graphics = $scope.data.graphics.filter(function (item) {
                     if (item.reportData.graphicId != data.graphicId) return item;
                 });
@@ -116,7 +127,7 @@
                 $scope.data.creatingGraph = data;
 
             });
-            
+
             ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config}).success(function (data, status, headers){   
 
                 config.graphicId = $scope.data.creatingGraph.graphicId;
@@ -135,6 +146,8 @@
                 var legendsToString = [];
                 if(graphic.typeGraphic != "pie"){                    
                     graphic.data.series.forEach(function(value, index){
+                        var color = MapasCulturais.getChartColors();
+                        value.colors = color[0];
                         var total = $scope.sumSerie(graphic);
                         legendsToString.push($scope.legendsToString(total, graphic, index));
                     });
@@ -144,14 +157,15 @@
                     graphic.data.data.forEach(function(value, index){
                         legendsToString.push($scope.legendsToString(value, graphic, index));
                     });
+                    graphic.data.backgroundColor = MapasCulturais.getChartColors(graphic.data.data.length);
                     graphic.data.tooltips = graphic.data.labels;
                     graphic.data.labels = legendsToString;
                 }
-                
-                $scope.data.graphics.push(graphic);
-                $scope.graphicGenerate();
-                
-                
+
+                if (!$scope.data.error) {
+                    $scope.data.graphics.push(graphic);
+                    $scope.graphicGenerate();
+                }
             });
         }
         

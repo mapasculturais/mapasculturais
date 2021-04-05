@@ -2,17 +2,20 @@
 
 namespace OpportunityAccountability;
 
-use OpportunityPhases\Module as PhasesModule;
-use MapasCulturais\App;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\Registration;
+use stdClass;
 use MapasCulturais\i;
+use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
-use MapasCulturais\Entities\ChatMessage;
-use MapasCulturais\Definitions\ChatThreadType;
+use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\ChatThread;
+use MapasCulturais\Entities\ChatMessage;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Entities\Registration;
+use OpportunityPhases\Module as PhasesModule;
+use MapasCulturais\Definitions\ChatThreadType;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 /**
  * @property Module $evaluationMethod
@@ -25,9 +28,13 @@ class Module extends \MapasCulturais\Module
      */
     protected $evaluationMethod;
 
+    protected $inTransaction = false;
+
     function _init()
     {
         $app = App::i();
+
+        $self = $this;
 
         $this->evaluationMethod = new EvaluationMethod($this->_config);
         $this->evaluationMethod->module = $this;
@@ -60,6 +67,23 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        $app->hook("entity(Opportunity).validations", function (&$validations) {
+            if (!($this instanceof Opportunity)) { // pula o hook unbound
+                return;
+            }
+            if (!$this->isAccountabilityPhase) {
+                return;
+            }
+            $key = "(\$value >= \$this->lastPhase->registrationTo)";
+            $value =  i::__("A prestação de contas não pode ter início antes do término da última fase.");
+            if (in_array("registrationFrom", $validations)) {
+                $validations["registrationFrom"][$key] = $value;
+            } else {
+                $validations["registrationFrom"] = [$key => $value];
+            }
+            return;
+        });
+
         // na publicação da última fase, cria os projetos
         $app->hook('entity(Opportunity).publishRegistration', function (Registration $registration) use($app) {
             if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
@@ -67,6 +91,15 @@ class Module extends \MapasCulturais\Module
             }
 
             if (!$this->isLastPhase) {
+                return;
+            }
+
+            if ($registration->status != Registration::STATUS_APPROVED) {
+                return;
+            }
+
+            // se não há prestação de contas
+            if (!$this->parent->accountabilityPhase) {
                 return;
             }
 
@@ -85,49 +118,152 @@ class Module extends \MapasCulturais\Module
 
             $project->save();
 
+            $app->disableAccessControl();
             $first_phase->project = $project;
             $first_phase->save(true);
-
+            $app->enableAccessControl();
+            self::sendAccountabilityProjectEmail($project);
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
         });
 
-        $app->hook('template(project.<<single|edit>>.tabs):end', function(){
-            $project = $this->controller->requestedEntity;
-
-            if ($project->isAccountability) {
-                if ($project->canUser('@control')) {
-                    $this->part('accountability/project-tab');
-                }
+        $app->hook('entity(Opportunity).publishRegistrations:after', function () use ($app) {
+            if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
+                return;
             }
-        },1000);
 
-        $app->hook('template(project.<<single|edit>>.tabs-content):end', function(){
-            $project = $this->controller->requestedEntity;
-
-            if ($project->isAccountability) {
-                if($project->canUser('@control')){
-                    $this->part('accountability/project-tab-content');
-                }
+            if (!$this->isLastPhase) {
+                return;
             }
-        },1000);
 
-        // Adidiona o checkbox haverá última fase
-        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app) {
-            $app->view->part('widget-opportunity-accountability', ['opportunity' => '']);
+            // se não há prestação de contas
+            if (!$this->parent->accountabilityPhase) {
+                return;
+            }
+
+            $module = $app->modules['OpportunityPhases'];
+
+            $this->registerRegistrationMetadata();
+
+            $module->importLastPhaseRegistrations($this, $this->parent->accountabilityPhase, true);
         });
 
-        $self = $this;
+        // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
+        $app->hook("entity(Registration).send:after", function () use ($app) {
+            if (!$this->opportunity->isAccountabilityPhase) {
+                return;
+            }
+            $app->disableAccessControl();
+            $this->openFields = new stdClass();
+            $this->save(true);
+            $app->enableAccessControl();
+            self::notifyAccountabilitySubmitted($this);
+            return;
+        });
+
+        $app->hook("template(project.<<single|edit>>.tabs):end", function () {
+            if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
+                $this->part("accountability/project-tab");
+            }
+        }, 1000);
+
+        // cria permissão project.evaluate para o projeto de prestaçao de contas
+        $app->hook("can(Project.evaluate)", function ($user, &$result) use ($app) {
+            if (!$this->registration->accountabilityPhase) { // we have no interest in this if it isn't an accountability project
+                return;
+            }
+            $registration = $this->registration->accountabilityPhase;
+            $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+            $result = $registration->canUser("evaluate", $user) && (!$evaluation || ($evaluation->status < RegistrationEvaluation::STATUS_SENT));
+        });
+
+        $app->hook("template(project.<<single|edit>>.tabs-content):end", function () {
+            if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
+                $this->part("accountability/project-tab-content", [
+                    "create_rule_string" => function ($occurrence) {
+                        return "{$occurrence->rule->description} - {$occurrence->rule->price}";
+                    }
+                ]);
+            }
+        }, 1000);
+
+        $app->hook("can(Registration.modify)", function ($user, &$result) use ($app) {
+            if (($this->canUser("@control", $user)) && Module::hasOpenFields($this)) {
+                $result = true;
+            }
+        });
+
+        // barra envio da prestação de contas se o projeto não estiver publicado
+        $app->hook("can(Registration.send)", function ($user, &$result) {
+            $project = $this->firstPhase->project ?? null;
+            if (!$project || !($this->opportunity->isAccountabilityPhase ?? false)) {
+                return;
+            }
+            if (($project->isAccountability ?? false) && ($project->status != Project::STATUS_ENABLED)) {
+                $result = false;
+            }
+            return;
+        });
+
+        $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
+            if (($this->requestedEntity->canUser("@control")) && Module::hasOpenFields($this->requestedEntity)) {
+                $app->em->beginTransaction();
+                $self->inTransaction = true;
+                $app->hook("can(<<Agent|Space>>.<<@control|modify>>)", function ($user, &$result) {
+                    $result = true;
+                });
+            }
+        });
+
+        $app->hook("entity(RegistrationMeta).update:before", function ($params) use ($app, $self) {
+            if ($this->owner->canUser("@control")) {
+                return;
+            }
+            $registration = $this->owner;
+            if (!isset($registration->openFields)) {
+                return;
+            }
+            $openFields = json_decode($registration->openFields, true);
+            if (($openFields[$this->key] ?? "") == "true") {
+                return;
+            }
+            if ($self->inTransaction) {
+                $app->em->rollback();
+                throw new \Exception("Permission denied!");
+            }
+            return;
+        });
+
+        $app->hook('slim.after', function() use ($app, $self) {
+            if ($self->inTransaction) {
+                $app->em->commit();
+            }
+        });
+
+        // Adidiona o checkbox haverá última fase
+        $app->hook('template(opportunity.edit.new-phase-form-step2):end', function () use ($app) {
+            $this->part('widget-opportunity-accountability');
+        });
+
+        // Adicionar radio button para criar apenas fase de prestação de contas
+        $app->hook('template(opportunity.edit.new-phase-form-step1):end', function () use ($app, $self) {
+            $this->part('widget-opportunity-phase-only');
+        });
+
+        //
+        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app, $self) {
+            $this->part('accountability-phase-confirmation');
+
+        });
+
         $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
 
             $opportunityData = $app->controller('opportunity');
 
             if ($this->isLastPhase && isset($opportunityData->postData['hasAccountability']) && $opportunityData->postData['hasAccountability']) {
-                
                 $self->createAccountabilityPhase($this->parent);
             }
         });
-
 
         $app->hook('template(project.<<single|edit>>.header-content):before', function () {
             $project = $this->controller->requestedEntity;
@@ -139,22 +275,91 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona aba de projetos nas oportunidades com prestação de contas após a publicação da última fase
         $app->hook('template(opportunity.single.tabs):end', function () use ($app) {
-
             $entity = $this->controller->requestedEntity;
-
+            $base_phase = $entity->parent ?? $entity;
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
             }
         });
+
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app) {
-
             $entity = $this->controller->requestedEntity;
-
+            $base_phase = $entity->parent ?? $entity;
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $entity->lastPhase->publishedRegistrations) {
+            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
             }
+        });
+
+        /**
+         * adiciona o formulário do parecerista
+         */
+        $app->hook('template(project.single.accountability-content):end', function () use ($app) {
+            $project = $this->controller->requestedEntity;
+            if ($accountability = ($project->registration->accountabilityPhase ?? null)) {
+                $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability]);
+                $form_params = [
+                    'opportunity' => $accountability->opportunity,
+                    'registration' => $accountability,
+                    'evaluation' => $evaluation,
+                ];
+                $this->jsObject['evaluation'] = $evaluation;
+                if (!$evaluation || !$evaluation->canUser('modify')) {
+                    return;
+                }
+                $this->part('accountability--evaluation-form', $form_params);
+            }
+        });
+
+        // adiciona controller angular ao formulário de avaliação
+        $app->hook('template(project.single.accountability-content):begin', function () use($app) {
+            $project = $this->controller->requestedEntity;
+            if ($accountability = $project->registration->accountabilityPhase ?? null) {
+                if ($evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $accountability])) {
+                    $criteria = [
+                        'objectType' => RegistrationEvaluation::class,
+                        'objectId' => $evaluation->id,
+                        'type' => self::CHAT_THREAD_TYPE
+                    ];
+                    $chat_threads = $app->repo('ChatThread')->findBy($criteria);
+
+                    $chats_grouped = [];
+
+                    foreach($chat_threads as $thread) {
+                        $chats_grouped[$thread->identifier] = $thread;
+                    }
+
+                    $this->jsObject['accountabilityChatThreads'] = (object) $chats_grouped;
+                }
+            }
+        },-10);
+
+        // adiciona controles de abrir e fechar chat e campo para edição
+        $app->hook("template(project.single.registration-field-item):begin", function () use ($app) {
+            $project = $this->controller->requestedEntity;
+            $evaluation = $project->registration->accountabilityPhase ? $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $project->registration->accountabilityPhase]) : null;
+            if ($project->canUser("evaluate") && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_EVALUATED)) {
+                $this->part("accountability/registration-field-controls");
+            }
+        });
+
+        //Exibe as reviões de uma prestação de contas
+        $app->hook('template(project.single.sidebar-right):end', function () use ($app) {
+            $entity = $this->controller->requestedEntity;
+            if($entity->registration->accountabilityPhase->canUser("evaluate", $app->getUser())){
+                $this->part("accountability/registration-revisions", ['entity' => $entity]);
+            }
+        });
+
+        $app->hook('template(project.single.registration-field-item):end', function () {
+            echo '<div class="clearfix"></div>';
+            $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
+        });
+
+        $app->hook('template(project.single.project-event):end', function () {
+            echo '<div class="clearfix"></div>';
+            $this->part('chat', ['thread_id' => 'getChatByField(false).id', 'closed' => '!isChatOpen()']);
         });
 
         /**
@@ -163,9 +368,9 @@ class Module extends \MapasCulturais\Module
         $app->hook('template(project.single.event-modal-form):begin', function (){
             echo "<input type='hidden' name='projectId' value='{$this->controller->requestedEntity->id}'>";
         });
-        
+
         /**
-         * Substituição dos seguintes termos 
+         * Substituição dos seguintes termos
          * - avaliação por parecer
          * - avaliador por parecerista
          * - inscrição por prestação de contas
@@ -200,9 +405,27 @@ class Module extends \MapasCulturais\Module
          // substitui botões de importar inscrições da fase anterior
          $app->hook('view.partial(import-last-phase-button).params', function ($data, &$template) {
             $opportunity = $this->controller->requestedEntity;
-            
+
             if ($opportunity->isAccountabilityPhase) {
                 $template = "accountability/import-last-phase-button";
+            }
+         });
+
+         // cria a avaliação se é um parecerista visitando pela primeira vez o projeto
+         $app->hook('GET(project.single):before', function() use($app) {
+            $project = $this->requestedEntity;
+            if ($project && $project->isAccountability && $project->canUser('evaluate')) {
+                if ($accountability = $project->registration->accountabilityPhase ?? null) {
+                    $criteria = [
+                        'registration' => $accountability
+                    ];
+                    if (!$app->repo('RegistrationEvaluation')->findOneBy($criteria)) {
+                        $evaluation = new RegistrationEvaluation;
+                        $evaluation->user = $app->user;
+                        $evaluation->registration = $accountability;
+                        $evaluation->save(true);
+                    }
+                }
             }
          });
 
@@ -216,7 +439,24 @@ class Module extends \MapasCulturais\Module
             }
          });
 
-        $app->hook("POST(chatMessage.opportunityAccountability)", function () use ($app) {
+        // fecha os campos e os chats ao enviar o parecer
+        $app->hook("entity(RegistrationEvaluation).update:before", function ($params) use ($app) {
+             if (($this->status == RegistrationEvaluation::STATUS_EVALUATED) &&
+                $this->registration->opportunity->isAccountabilityPhase) {
+                $this->registration->openFields = new stdClass();
+                $criteria = [
+                    "objectType" => RegistrationEvaluation::class,
+                    "objectId" => $this->id,
+                    "type" => self::CHAT_THREAD_TYPE
+                ];
+                foreach ($app->repo("ChatThread")->findBy($criteria) as $thread) {
+                    $thread->status = ChatThread::STATUS_DISABLED;
+                }
+            }
+             return;
+         });
+
+        $app->hook("POST(chatThread.createAccountabilityField)", function () use ($app) {
             $this->requireAuthentication();
             $evaluation_id = $this->data["evaluation"];
             $evaluation = $app->repo("RegistrationEvaluation")->find($evaluation_id);
@@ -233,9 +473,37 @@ class Module extends \MapasCulturais\Module
             $description = sprintf(i::__("Prestação de contas número %s"), $evaluation->registration->number);
             $thread = new ChatThread($evaluation, $this->data["identifier"], self::CHAT_THREAD_TYPE, $description);
             $thread->save(true);
+            $app->disableAccessControl();
             $thread->createAgentRelation($evaluation->registration->owner, "participant");
-            $this->json(["thread_id" => $thread->id]);
+            $app->enableAccessControl();
+            $this->json($thread);
          });
+
+         $app->hook('entity(Registration).get(project)', function(&$value, $metadata_key) use($app) {
+
+            if(!$value && $this->previousPhase) {
+                $this->previousPhase->registerFieldsMetadata();
+
+                $cache_id = "registration:{$this->number}:$metadata_key";
+                if($app->cache->contains($cache_id)) {
+                    $value = $app->cache->fetch($cache_id);
+                } else {
+                    $value = $this->previousPhase->$metadata_key;
+                    $app->cache->save($cache_id, $value, DAY_IN_SECONDS);
+                }
+            }
+        });
+
+         // Chamar o hook para criação de fase de prestação de contas
+        $app->hook('module(OpportunityPhases).createNextPhase(accountability):before', function ($phase, $evaluation_method) use ($app) {
+
+            $phase->name = i::__('Prestação de Contas');
+            $phase->shortDescription = i::__('Descrição da Prestação de Contas');
+            $phase->isOpportunityPhase = true;
+            $phase->isAccountabilityPhase = true;
+            $phase->isLastPhase = true;
+
+        });
     }
 
     function register()
@@ -244,6 +512,8 @@ class Module extends \MapasCulturais\Module
         $opportunity_repository = $app->repo('Opportunity');
         $registration_repository = $app->repo('Registration');
         $project_repository = $app->repo('Project');
+
+        $app->registerController('accountability', Controller::class);
 
         $this->registerProjectMetadata('isAccountability', [
             'label' => i::__('Indica que o projeto é vinculado à uma inscrição aprovada numa oportunidade'),
@@ -270,7 +540,6 @@ class Module extends \MapasCulturais\Module
         $this->registerProjectMetadata('registration', [
             'label' => i::__('Inscrição da oportunidade da prestação de contas vinculada a este projeto (primeira fase)'),
             'type' => 'Registration',
-            'private' => true,
             'serialize' => function (Registration $registration) {
                 return $registration->id;
             },
@@ -286,7 +555,6 @@ class Module extends \MapasCulturais\Module
         $this->registerRegistrationMetadata('project', [
             'label' => i::__('Projeto da prestação de contas vinculada a esta inscrição (primeira fase)'),
             'type' => 'Project',
-            'private' => true,
             'serialize' => function (Project $project) {
                 return $project->id;
             },
@@ -298,6 +566,18 @@ class Module extends \MapasCulturais\Module
                 }
             }
         ]);
+
+        $this->registerRegistrationMetadata('openFields', [
+            'label' => i::__('Campos abertos para o proponente preencher após o envio da inscrição'),
+            'type' => 'json',
+            'private' => true,
+            'default_value' => '{}',
+            'serialize' => function($value, $registration){
+                $registration->checkPermission('evaluate');
+                return json_encode($value);
+            }
+        ]);
+
 
         $this->registerOpportunityMetadata('isAccountabilityPhase', [
             'label' => i::__('Indica se a oportunidade é uma fase de prestação de contas'),
@@ -342,7 +622,7 @@ class Module extends \MapasCulturais\Module
                 $sender = 'participant';
                 $recipient = 'admin';
             }
-            $notification->message = sprintf($notification_content, $registration->number);
+            $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
             $notification->save(true);
             $this->sendEmailForNotification($message, $notification, $sender, $recipient);
         });
@@ -351,9 +631,90 @@ class Module extends \MapasCulturais\Module
         $this->evaluationMethod->register();
     }
 
+    static function hasOpenFields($registration)
+    {
+        $openFields = json_decode($registration->openFields, true);
+        foreach (($openFields ?? []) as $value) {
+            if ($value == "true") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // moved from send-button.php
+    static function fullTextDate($timestamp)
+    {
+        $app = App::i();
+        /* translators: gets full date in the format "26 de {January} de 2015 às 17:00" and uses App translation to replace english month name inside curly brackets to the equivalent in portuguese. It avoids requiring the operating system to have portuguese locale as used in this example: http://pt.stackoverflow.com/a/21642 */
+        $date_tmp = strftime(i::__("%d de {%B} de %G às %H:%M"), $timestamp);
+        return preg_replace_callback("/{(.*?)}/", function ($matches) use ($app) {
+            return strtolower($app::txt(str_replace(["{", "}"], ["", ""], $matches[0]))); // removes curly brackets from the matched pattern and convert its content to lowercase
+        }, $date_tmp);
+    }
+
+    static function notifyAccountabilitySubmitted($registration)
+    {
+        $app = App::i();
+        $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+        if (!$evaluation) {
+            return;
+        }
+        $notification_content = i::__("Prestação de contas número %s re-enviada");
+        $notification = new Notification;
+        $notification->user = $evaluation->user;
+        $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
+        $notification->save(true);
+        return;
+    }
+
+    static function sendAccountabilityProjectEmail(Project $project)
+    {
+        $app = App::i();
+        $template = "accountability/project-communication.html";
+        $phase = $project->opportunity->accountabilityPhase;
+        $start = self::fullTextDate($phase->registrationFrom->getTimestamp());
+        $end = self::fullTextDate($phase->registrationTo->getTimestamp());
+        $params = [
+            "siteName" => $app->view->dict("site: name", false),
+            "user" => $project->owner->name,
+            "baseUrl" => $app->getBaseUrl(),
+            "opportunityTitle" => $project->opportunity->name,
+            "projectUrl" => $project->getEditUrl(),
+            "accountabilityStartDate" => $start,
+            "accountabilityEndDate" => $end
+        ];
+        $email_params = [
+            "from" => $app->config["mailer.from"],
+            "to" => ($project->owner->emailPrivado ??
+                     $project->owner->emailPublico ??
+                     $project->ownerUser->email),
+            "subject" => sprintf(i::__("Novo projeto criado no %s"),
+                                 $params["siteName"]),
+            "body" => $app->renderMustacheTemplate($template, $params)
+        ];
+        if (!isset($email_params["to"])) {
+            return;
+        }
+        $app->createAndSendMailMessage($email_params);
+        return;
+    }
+
+    static function shouldDisplayProjectAccountabilityUI($controller)
+    {
+        $project = $controller->requestedEntity;
+        if ($project->isAccountability) {
+            if ($project->canUser("@control") || $project->canUser("evaluate") || $project->opportunity->canUser("@control")) {
+                return ($project->status > Project::STATUS_DRAFT);
+            }
+        }
+        return false;
+    }
+
     // Migrar essa função para o módulo "Opportunity phase"
     function createAccountabilityPhase(Opportunity $parent)
     {
+        $app = App::i();
 
         $opportunity_class_name = $parent->getSpecializedClassName();
 
@@ -382,5 +743,15 @@ class Module extends \MapasCulturais\Module
         $phase->registrationTo = $_to;
 
         $phase->save(true);
+
+        $parent->accountabilityPhase = $phase;
+        $parent->save(true);
+
+        $app->disableAccessControl();
+        $evaluation_method_configuration = new EvaluationMethodConfiguration;
+        $evaluation_method_configuration->opportunity = $phase;
+        $evaluation_method_configuration->type = 'accountability';
+        $evaluation_method_configuration->save(true);
+        $app->disableAccessControl();
     }
 }

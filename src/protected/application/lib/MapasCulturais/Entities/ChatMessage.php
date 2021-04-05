@@ -126,6 +126,11 @@ class ChatMessage extends \MapasCulturais\Entity
         return;
     }
 
+    function getOwnerUser()
+    {
+        return $this->user;
+    }
+
     protected function getExtraPermissionCacheUsers()
     {
         $participants = $this->thread->getParticipants();
@@ -134,6 +139,9 @@ class ChatMessage extends \MapasCulturais\Entity
                              function ($previous, $group) use ($participants) {
             return array_merge($previous, $participants[$group]);
         }, []);
+
+        $flat[] = $this->user;
+
         return array_unique($flat);
     }
 

@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     var module = angular.module('ng.evaluationMethod.accountability', []);
-    
+
 
     module.config(['$httpProvider', function ($httpProvider) {
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -15,12 +15,12 @@
 
 
     module.factory('ApplyAccountabilityEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
-        
+
         return {
             apply: function (from, to, status) {
                 var data = {from: from, to: to, status};
                 var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsAccountability', [MapasCulturais.entity.id]);
-                console.log(url, data);
+
                 return $http.post(url, data).
                     success(function (data, status) {
                         $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
@@ -33,7 +33,7 @@
     }]);
 
     module.controller('ApplyAccountabilityEvaluationResults',['$scope', 'RegistrationService', 'ApplyAccountabilityEvaluationService', 'EditBox', function($scope, RegistrationService, ApplyAccountabilityEvaluationService, EditBox){
-        
+
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter((status) => {
             if(status.value > 1) return status;
@@ -78,4 +78,201 @@
                 })
         }
     }]);
+
+    module.factory('AccountabilityEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+
+        return {
+            reopen: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl("registration", "saveEvaluation", {id: registrationId, status: "draft"});
+                return $http.post(url, {data: evaluationData, uid});
+            },
+
+            save: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [registrationId]);
+                return $http.post(url, {data: evaluationData, uid});
+            },
+
+            send: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {id: registrationId, status: 'evaluated'});
+                return $http.post(url, {data: evaluationData, uid});
+            },
+
+            createChat: function (evaluation, identifier) {
+                var url = MapasCulturais.createUrl('chatThread', 'createAccountabilityField');
+                return $http.post(url, {evaluation, identifier});
+            },
+
+            closeChat: function (chat) {
+                var url = MapasCulturais.createUrl('chatThread', 'close', [chat.id]);
+                return $http.post(url);
+            },
+
+            openChat: function (chat) {
+                var url = MapasCulturais.createUrl('chatThread', 'open', [chat.id]);
+                return $http.post(url);
+            },
+            openField: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('accountability', 'openField', [registrationId]);
+
+                return $http.post(url, {data: evaluationData, uid});
+            },
+            closeField: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('accountability', 'closeField', [registrationId]);
+
+                return $http.post(url, {data: evaluationData, uid});
+            },
+        };
+    }]);
+
+    module.controller('AccountabilityEvaluationForm', ['$scope', '$rootScope', 'AccountabilityEvaluationService', function($scope, $rootScope, AccountabilityEvaluationService) {
+        if(!MapasCulturais.evaluation) {
+            return;
+        }
+        const evaluationId = MapasCulturais.evaluation.id;
+        const registrationId = MapasCulturais.evaluation.registration.id;
+
+        $scope.chatThreads = MapasCulturais.accountabilityChatThreads;
+        $scope.openChats = {};
+        $scope.openFields = {};
+
+        $scope.evaluationData = MapasCulturais.accountabilityPermissions;
+
+        $rootScope.closedChats = $rootScope.closedChats || {};
+
+        Object.keys($scope.chatThreads).forEach(function(identifier) {
+            const chat = $scope.chatThreads[identifier];
+
+            $scope.openChats[identifier] = chat.status == 1;
+            if(chat.status != 1) {
+                $rootScope.closedChats[chat.id] = true;
+            }
+        });
+
+        if (!$scope.evaluationData) {
+            $scope.evaluationData = {};
+        }
+
+        Object.keys($scope.evaluationData).forEach(function (key) {
+            $scope.openFields[key] = ($scope.evaluationData[key] == "true");
+            return;
+        });
+
+        $scope.getFieldIdentifier = function(field) {
+            
+            if(!field){
+                return "events";
+            }
+
+            return field.fieldName || field.groupName;
+        }
+
+        $scope.getChatByField = function (field) {
+            if(!field){
+                var _field = {'fieldName':'events'}
+            }else{
+                var _field = field
+            }
+            
+            let identifier = $scope.getFieldIdentifier(_field);
+            return this.chatThreads[identifier];
+        }
+
+        $scope.isChatOpen = function(field) {
+            if(!field){
+                var _field = {'fieldName':'events'}
+            }else{
+                var _field = field
+            }
+            let chat = this.getChatByField(_field)
+            return !! chat && chat.status == 1;
+        };
+
+        $scope.chatExists = function(field) {
+            return this.getChatByField(field) != undefined;
+        };
+
+        $scope.toggleOpen = function(field) {
+            const identifier = $scope.getFieldIdentifier(field); 
+            $scope.evaluationData = {};           
+            $scope.evaluationData[identifier] = $scope.openFields[identifier]; 
+            if($scope.openFields[identifier]){
+                AccountabilityEvaluationService.openField(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
+                    MapasCulturais.Messages.success('Campo aberto para edição');
+                    return;
+                });
+            }else{
+                AccountabilityEvaluationService.closeField(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
+                    MapasCulturais.Messages.success('Campo fechado para edição');
+                    return;
+                });
+            }  
+            
+        };
+
+        $scope.toggleChat = function(field) {
+            const identifier = $scope.getFieldIdentifier(field);
+            if (!this.chatExists(field)) {
+                AccountabilityEvaluationService.createChat(evaluationId, identifier).then(function(response) {
+                    const newChatThread = response.data;
+                    $scope.chatThreads[newChatThread.identifier] = newChatThread;
+                });
+            } else {
+                const chat = this.getChatByField(field);
+                if (this.isChatOpen(field)) {
+                    AccountabilityEvaluationService.closeChat(chat).then(function(response) {
+                        const chat = response.data;
+                        $scope.chatThreads[chat.identifier] = chat;
+                        $rootScope.closedChats[chat.id] = true;
+                    });
+                } else {
+                    AccountabilityEvaluationService.openChat(chat).then(function(response) {
+                        const chat = response.data;
+                        $scope.chatThreads[chat.identifier] = chat;
+                        delete $rootScope.closedChats[chat.id];
+                    });
+                }
+            }
+        };
+
+        $scope.sendEvaluation = function () {
+            if (!confirm("Você tem certeza que deseja finalizer o parecer técnico?\n\nApós a finalização não será mais possível modificar o parecer.")) {
+                return;
+            }
+            AccountabilityEvaluationService.send(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
+                MapasCulturais.Messages.success('Salvo');
+                setTimeout(function () {
+                    location.reload();
+                    return;
+                }, 500);
+            });
+        }
+
+        $scope.reopenAccountability = function () {
+            // TODO: i18n
+            if (!confirm("Você tem certeza que deseja reabrir a prestação de contas?\n\nA abertura dos campos para edição deverá ser feita manualmente.")) {
+                return;
+            }
+            AccountabilityEvaluationService.reopen(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
+                MapasCulturais.Messages.success("Prestação de contas reaberta.");
+                setTimeout(function () {
+                    location.reload();
+                    return;
+                }, 500);
+            });
+        }
+    }]);
+
+    module.controller('OpportunityAccountability', ['$scope', function ($scope) {
+        $scope.canUserEdit = function (field) {
+            if (MapasCulturais.entity.registrationStatus == 0) {
+                return true;
+            }
+            var ref = (field.fieldType == "file") ? field.groupName : field.fieldName;
+            if (MapasCulturais.accountabilityPermissions[ref] === "true") {
+               return true;
+            }
+            return false;
+        }
+    }]);
+
 })(angular);
