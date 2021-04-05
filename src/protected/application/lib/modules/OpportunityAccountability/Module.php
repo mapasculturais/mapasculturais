@@ -344,6 +344,14 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        //Exibe as reviões de uma prestação de contas
+        $app->hook('template(project.single.sidebar-right):end', function () use ($app) {
+            $entity = $this->controller->requestedEntity;
+            if($entity->registration->accountabilityPhase->canUser("evaluate", $app->getUser())){
+                $this->part("accountability/registration-revisions", ['entity' => $entity]);
+            }
+        });
+
         $app->hook('template(project.single.registration-field-item):end', function () {
             echo '<div class="clearfix"></div>';
             $this->part('chat', ['thread_id' => 'getChatByField(field).id', 'closed' => '!isChatOpen(field)']);
