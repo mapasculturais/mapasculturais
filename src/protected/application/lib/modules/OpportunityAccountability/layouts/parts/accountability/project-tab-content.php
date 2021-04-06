@@ -90,11 +90,12 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 
     <?php if ($registration->canUser('modify')) { ?>
         <?php $this->part('accountability/send-button', ['entity' => $registration]); ?>
-    <?php } else { ?>
-        <?php if($registration->status > Registration::STATUS_DRAFT){ ?>
-            <?php $this->part('accountability/registration-message', ['entity' => $registration]); ?>
-        <?php }?>
+    <?php } ?>
+    
+    <?php if($registration->status > Registration::STATUS_DRAFT){ ?>
+        <?php $this->part('accountability/registration-message', ['entity' => $registration]); ?>
     <?php }?>
+    
 
     <?php $this->applyTemplateHook('accountability-content', 'end', $template_hook_params); ?>
     </div>
