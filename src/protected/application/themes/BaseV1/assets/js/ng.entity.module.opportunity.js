@@ -1584,6 +1584,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     $scope.findEvaluations();
                 }
             }
+        } else  if(document.location.hash.indexOf("tab=support") >= 0){
+            if(!$scope.data.findingRegistrations){
+                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
+                    $scope.findRegistrations();
+                }
+            }
         }
     });
 
