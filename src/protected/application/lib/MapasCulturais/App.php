@@ -255,7 +255,7 @@ class App extends \Slim\Slim{
             }
         }
 
-        spl_autoload_register(function($class) use ($config, $available_modules){
+        spl_autoload_register(function($class) use ($config){
             $cache_id = "AUTOLOAD_CLASS:$class";
             if($config['app.useRegisteredAutoloadCache'] && $this->_mscache->contains($cache_id)){
                 $path = $this->_mscache->fetch($cache_id);
@@ -267,10 +267,23 @@ class App extends \Slim\Slim{
 
             $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
 
+            $subfolders = [
+                'Controllers',
+                'Entities',
+                'Repositories'
+            ];
+
             foreach($config['plugins'] as $plugin){
-                $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $plugin['namespace'];
-                if(!isset($namespaces[$plugin['namespace']])){
-                    $namespaces[$plugin['namespace']] = $dir;
+                $namespace = $plugin['namespace'];
+                $dir = isset($plugin['path']) ? $plugin['path'] : PLUGINS_PATH . $namespace;
+                if(!isset($namespaces[$namespace])){
+                    $namespaces[$namespace] = $dir;
+                }
+
+                foreach($subfolders as $subfolder) {
+                    if(!isset($namespaces[$namespace . '\\' . $subfolder])){
+                        $namespaces[$namespace . '\\' . $subfolder] = $dir . '/' . $subfolder;
+                    }   
                 }
             }
 
