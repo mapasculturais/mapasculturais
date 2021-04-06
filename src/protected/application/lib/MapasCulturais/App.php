@@ -578,7 +578,7 @@ class App extends \Slim\Slim{
     }
 
     private function getVersionFile() {
-        $version = \MapasCulturais\i::_e("versão indefinida");
+        $version = \MapasCulturais\i::__("versão indefinida");
         $path = getcwd() . "/../version.txt";
         if (file_exists($path) && $versionFile = fopen($path, "r")) {
             $version = fgets($versionFile);
