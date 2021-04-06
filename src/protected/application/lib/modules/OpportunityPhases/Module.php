@@ -259,14 +259,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             $opportunity = $this->opportunity;
 
-            if ($opportunity->isOpportunityPhase) {
-                $first_phase = Module::getBaseOpportunity($opportunity);
-                $value = $registration_repository->findOneBy(['opportunity' => $first_phase, 'number' => $this->number]);
-            }
+            $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
 
-            if($value == $this) {
-                $value = null;
-            }
         });
 
         $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $metadata_key) use($app) {
@@ -474,9 +468,10 @@ class Module extends \MapasCulturais\Module{
             }
 
             $evaluation_method = $this->data['evaluationMethod'];
-            $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [$phase, &$evaluation_method]);
 
+            $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):before", [&$evaluation_method]);
             $phase->save(true);
+            $app->applyHookBoundTo($phase, "module(OpportunityPhases).createNextPhase({$evaluation_method}):after", [&$evaluation_method]);
 
             $definition = $app->getRegisteredEvaluationMethodBySlug($evaluation_method);
 
@@ -485,7 +480,7 @@ class Module extends \MapasCulturais\Module{
             $emconfig->opportunity = $phase;
 
             $emconfig->type = $definition->slug;
-
+            
             $emconfig->save(true);
 
             $this->json($phase);

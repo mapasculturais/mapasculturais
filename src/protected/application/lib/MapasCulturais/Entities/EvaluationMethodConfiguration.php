@@ -123,6 +123,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $this->opportunity;
     }
 
+    protected function canUserCreate($user){
+        return $this->opportunity->canUser('modify', $user);
+    }
+
     protected function canUserModify($user){
         return $this->opportunity->canUser('modify', $user);
     }
