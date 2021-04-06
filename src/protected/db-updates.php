@@ -1321,8 +1321,9 @@ $$
         }
     },
 
-    'CREATE VIEW evaluation' => function() use($conn) {
-        
+    'RECREATE VIEW evaluations' => function() use($conn) {
+        __try("DROP VIEW evaluations");
+
         $conn->executeQuery("
             CREATE VIEW evaluations AS (
                 SELECT 
@@ -1372,6 +1373,8 @@ $$
                             ON r2.id = p2.object_id
                         JOIN usr u2 
                             ON u2.id = p2.user_id
+                        JOIN evaluation_method_configuration emc
+                            ON emc.opportunity_id = r2.opportunity_id
 
                         WHERE 
                             p2.object_type = 'MapasCulturais\Entities\Registration' AND 
@@ -1384,7 +1387,7 @@ $$
                                     FROM agent_relation 
                                     WHERE 
                                         object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND 
-                                        object_id = r2.opportunity_id
+                                        object_id = emc.id
                                 )
                             ) 
                 ) AS evaluations_view 
