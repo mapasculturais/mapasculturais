@@ -105,7 +105,7 @@ use MapasCulturais\i;
         </tbody>
         <tfoot>
             <tr>
-                <td align="center">
+                <td colspan='3' align="center">
                     <div ng-if="data.findingRegistrations">
                         <img src="<?php $this->asset('img/spinner_192.gif')?>" width="48">
                     </div>
