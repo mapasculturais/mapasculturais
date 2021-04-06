@@ -89,19 +89,21 @@ class Module extends \MapasCulturais\Module
             if (! $this instanceof \MapasCulturais\Entities\ProjectOpportunity) {
                 return;
             }
-
+            
             if (!$this->isLastPhase) {
                 return;
             }
-
+            
             if ($registration->status != Registration::STATUS_APPROVED) {
                 return;
             }
 
             // se não há prestação de contas
-            if (!$this->parent->accountabilityPhase) {
+            if (!$this->firstPhase->accountabilityPhase) {
                 return;
             }
+
+            $app->disableAccessControl();
 
             $project = new Project;
             $project->status = 0;
@@ -117,11 +119,11 @@ class Module extends \MapasCulturais\Module
             $project->opportunity = $this->parent ?: $this;
 
             $project->save();
-
-            $app->disableAccessControl();
             $first_phase->project = $project;
             $first_phase->save(true);
+            
             $app->enableAccessControl();
+            
             self::sendAccountabilityProjectEmail($project);
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.createdAccountabilityProject', [$project]);
 
@@ -137,7 +139,7 @@ class Module extends \MapasCulturais\Module
             }
 
             // se não há prestação de contas
-            if (!$this->parent->accountabilityPhase) {
+            if (!$this->firstPhase->accountabilityPhase) {
                 return;
             }
 
@@ -145,7 +147,7 @@ class Module extends \MapasCulturais\Module
 
             $this->registerRegistrationMetadata();
 
-            $module->importLastPhaseRegistrations($this, $this->parent->accountabilityPhase, true);
+            $module->importLastPhaseRegistrations($this, $this->firstPhase->accountabilityPhase, true);
         });
 
         // fecha os campos abertos pelo parecerista após o reenvio da prestação de contas
@@ -261,7 +263,7 @@ class Module extends \MapasCulturais\Module
             $opportunityData = $app->controller('opportunity');
 
             if ($this->isLastPhase && isset($opportunityData->postData['hasAccountability']) && $opportunityData->postData['hasAccountability']) {
-                $self->createAccountabilityPhase($this->parent);
+                $self->createAccountabilityPhase($this->firstPhase);
             }
         });
 
@@ -495,15 +497,26 @@ class Module extends \MapasCulturais\Module
         });
 
          // Chamar o hook para criação de fase de prestação de contas
-        $app->hook('module(OpportunityPhases).createNextPhase(accountability):before', function ($phase, $evaluation_method) use ($app) {
+        $app->hook('module(OpportunityPhases).createNextPhase(accountability):before', function ($evaluation_method) use ($app) {
 
-            $phase->name = i::__('Prestação de Contas');
-            $phase->shortDescription = i::__('Descrição da Prestação de Contas');
-            $phase->isOpportunityPhase = true;
-            $phase->isAccountabilityPhase = true;
-            $phase->isLastPhase = true;
+            $this->name = i::__('Prestação de Contas');
+            $this->shortDescription = i::__('Descrição da Prestação de Contas');
+            $this->isAccountabilityPhase = true;
+            
+            $first_phase = $this->firstPhase;
+            $last_phase = $first_phase->lastCreatedPhase;
+
+            $last_phase->isLastPhase = true;
+            $last_phase->save();
+        });
+
+        $app->hook('module(OpportunityPhases).createNextPhase(accountability):after', function ($evaluation_method) use ($app) {
+            $first_phase = $this->firstPhase;
+            $first_phase->accountabilityPhase = $this;
+            $first_phase->save();
 
         });
+
     }
 
     function register()
