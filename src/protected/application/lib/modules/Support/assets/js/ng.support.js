@@ -170,6 +170,10 @@
         $scope.userAllowedFields = MapasCulturais.userAllowedFields
         
         $scope.canUserEdit = function(field){
+            if(MapasCulturais.entity.hasControl == true){
+                return true;
+            }
+
             if (field.fieldType == 'file'){
                 if (MapasCulturais.userAllowedFields[field.groupName] == 'rw'){
                     return true
