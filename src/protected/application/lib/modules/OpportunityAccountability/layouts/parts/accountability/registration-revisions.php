@@ -9,7 +9,7 @@ foreach($revisions as $revision){
 }
 
 $result = [
-    'revisions' => $revisions,
+    'revisions' => array_reverse($revisions),
     'dataRevisions' => $dataRevisions
 ];
 
@@ -17,7 +17,7 @@ $result = [
 <?php $this->applyTemplateHook('widget-registration-revision-accountability', 'before'); ?>
 <div class="widget">
 <?php $this->applyTemplateHook('widget-registration-revision-accountability', 'begin'); ?>
-    <h3><?=i::__("Histórico");?></h3>
+    <h4><?=i::__("Histórico");?></h4>
     <ul class="widget-list widget-registration-revision-accountability">
         <?php foreach ($result['revisions'] as $revision){ ?>
             <?php foreach($result['dataRevisions'][$revision->id] as $v){?>
@@ -26,10 +26,10 @@ $result = [
                     <?php $openFields =  json_decode($v->value, true);?>
                 <?php if($openFields){?>
                         <?php if(mb_strpos($revision->message,'Campo') !== false){?>
-                            <li class="widget-list-item"><small><?=$revision->message?> <?=i::__("em");?> <?=$revision->createTimestamp->format('d/m/Y H:i:s')?></small></li>      
+                            <li class="widget-list-item"><strong><?=$revision->createTimestamp->format('d/m/Y H:i:s')?></strong> - <?=$revision->message?>
                         <?php }?>
                     <?php } else {?>
-                        <li class="widget-list-item"><small><?=i::__("Prestação enviada em");?> <?=$v->timestamp->format('d/m/Y H:i:s')?></small></li>
+                        <li class="widget-list-item"><strong><?=$v->timestamp->format('d/m/Y H:i:s')?></strong> - <?=i::__("Prestação de contas enviada");?></li>
                     <?php }?>
                     
                 <?php }?>
