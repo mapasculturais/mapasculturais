@@ -289,6 +289,7 @@ abstract class Entity implements \JsonSerializable{
     }
 
     protected function genericPermissionVerification($user){
+        
         if($user->is('guest'))
             return false;
 
@@ -789,8 +790,9 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
-     *
-     * @return type
+     * Retorna um array com a estrutura que será serializada pela função json_encode
+     * 
+     * @return array
      */
     public function jsonSerialize() {
         $result = [];
