@@ -59,7 +59,7 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
             $last_phase = \OpportunityPhases\Module::getLastCreatedPhase($opportunity);
             $registration_last_phase = $app->repo('Registration')->findOneBy(['opportunity' => $last_phase, 'owner' => $registration->owner]);
             $url = $registration_last_phase ? $registration_last_phase->singleUrl : $registration->singleUrl;
-            
+
             ?>
 
             <div class="registration-id alignleft"><a href="<?= $url ?>" style="font-weight: normal;"><?= $registration->number ?></a></div>
@@ -72,6 +72,11 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
 
     <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
         <?php $this->applyTemplateHook('registration-field-list', 'before'); ?>
+
+        <?php if ($registration->canUser('evaluate')) : ?>
+            <h4><?php i::_e("Formulário de prestação de contas"); ?></h4>
+        <?php endif; ?>
+
         <ul class="attachment-list" ng-controller="RegistrationFieldsController">
             <?php $this->applyTemplateHook('registration-field-list', 'begin'); ?>
                 <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
