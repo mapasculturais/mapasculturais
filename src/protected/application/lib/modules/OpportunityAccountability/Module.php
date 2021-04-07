@@ -163,6 +163,49 @@ class Module extends \MapasCulturais\Module
             return;
         });
 
+        // Remove inscriçõe de prestação de contas do painel minhas inscrições 
+        $app->hook("panel(registration.panel):begin", function (&$sent, &$drafts){
+            foreach ($sent as $key => $registration){
+                if($registration->opportunity->isAccountabilityPhase){
+                    unset($sent[$key]);
+                }
+            }
+
+            foreach ($drafts as $key => $registration){
+                if($registration->opportunity->isAccountabilityPhase){
+                    unset($drafts[$key]);
+                }
+            }
+        });
+
+        // Insere novo painel para mostrar as prestações de contas
+        $app->hook('panel.menu:after', function() use ($app) {
+            $this->part('accountability/accountability-nav-panel');
+        });
+
+        //Cria painel de prestação de contas
+        $app->hook('GET(panel.accountability)', function() use($app) {
+            $this->requireAuthentication();
+            $user = $this->_getUser();
+
+            $this->render('accountabilitys', ['user' => $user]);
+        });
+
+        //Filtra somente as prestações de contas para exibição no painel
+        $app->hook("panel(accountability.panel):begin", function (&$sent, &$drafts){
+            foreach ($sent as $key => $registration){
+                if(!$registration->opportunity->isAccountabilityPhase){
+                    unset($sent[$key]);
+                }
+            }
+
+            foreach ($drafts as $key => $registration){
+                if(!$registration->opportunity->isAccountabilityPhase){
+                    unset($drafts[$key]);
+                }
+            }
+        });
+        
         $app->hook("template(project.<<single|edit>>.tabs):end", function () {
             if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
                 $this->part("accountability/project-tab");
