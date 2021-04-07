@@ -444,8 +444,10 @@ class Module extends \MapasCulturais\Module
             $phase = $this->controller->requestedEntity;
             $terms = [
                 i::__('Avaliações') => i::__('Pareceres'),
-                i::__('Enviar Avaliações') => i::__('Enviar Pareceres'),
-                i::__('inscrições') => i::__('Prestações de Contas')
+                i::__('inscrições') => i::__('prestações de contas'),
+                i::__('Avaliação') => i::__('Parecer Técnico'),
+                i::__('Inscrição') => i::__('Prestacão de Contas'),
+                i::__('avaliação') => i::__('parecer técnico')
             ];
             
             if ($phase->isAccountabilityPhase) {
