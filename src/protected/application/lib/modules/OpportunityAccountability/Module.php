@@ -396,6 +396,20 @@ class Module extends \MapasCulturais\Module
             }
          });
 
+         // Subistitui os termos (avaliações => pareceres) e (inscrições => prestações de contas)
+         $app->hook('view.partial(singles/opportunity-<<evaluations--committee--table>>):after', function($template, &$html){
+            $phase = $this->controller->requestedEntity;
+            $terms = [
+                i::__('Avaliações') => i::__('Pareceres'),
+                i::__('Enviar Avaliações') => i::__('Enviar Pareceres'),
+                i::__('inscrições') => i::__('Prestações de Contas')
+            ];
+            
+            if ($phase->isAccountabilityPhase) {
+                $html = str_replace(array_keys($terms), array_values($terms), $html);
+            }
+         });
+
          // substitui botões de importar inscrições da fase anterior
          $app->hook('view.partial(import-last-phase-button).params', function ($data, &$template) {
             $opportunity = $this->controller->requestedEntity;
