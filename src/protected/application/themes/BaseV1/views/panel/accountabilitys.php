@@ -26,7 +26,7 @@ $app->applyHookBoundTo($this, 'panel(accountability.panel):begin', [&$sent,&$dra
             <?php $this->part('panel-registration', array('registration' => $registration)); ?>
         <?php endforeach; ?>
         <?php if(!$drafts): ?>
-            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum rascunho de inscrição.");?></div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum rascunho de prestação de conta.");?></div>
         <?php endif; ?>
     </div>
     <!-- #ativos-->
@@ -35,7 +35,7 @@ $app->applyHookBoundTo($this, 'panel(accountability.panel):begin', [&$sent,&$dra
             <?php $this->part('panel-registration', array('registration' => $registration)); ?>
         <?php endforeach; ?>
         <?php if(!$sent): ?>
-            <div class="alert info"><?php \MapasCulturais\i::_e("Você não enviou nenhuma inscrição.");?></div>
+            <div class="alert info"><?php \MapasCulturais\i::_e("Você não enviou nenhuma prestação de conta.");?></div>
         <?php endif; ?>
     </div>
     <!-- #lixeira-->
