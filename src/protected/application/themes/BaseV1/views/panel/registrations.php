@@ -4,6 +4,7 @@ $this->layout = 'panel';
 
 $drafts = $app->repo('Registration')->findByUser($app->user, Registration::STATUS_DRAFT);
 $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
+$app->applyHookBoundTo($this, 'panel(registration.panel):begin', [&$sent,&$drafts]);
 ?>
 <div class="panel-list panel-main-content">
     <?php $this->applyTemplateHook('panel-header','before'); ?>
