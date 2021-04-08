@@ -68,38 +68,40 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
         <?php endif; ?>
     </div>
 
-    <?php $this->part('singles/project--events', ['project' => $entity, 'create_rule_string' => $create_rule_string]) ?>
+    <?php if($opportunity->isRegistrationOpen()){ ?>
+        <?php $this->part('singles/project--events', ['project' => $entity, 'create_rule_string' => $create_rule_string]) ?>
 
-    <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
-        <?php $this->applyTemplateHook('registration-field-list', 'before'); ?>
+        <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
+            <?php $this->applyTemplateHook('registration-field-list', 'before'); ?>
 
-        <?php if ($registration->canUser('evaluate')) : ?>
-            <h4><?php i::_e("Formulário de prestação de contas"); ?></h4>
-        <?php endif; ?>
+            <?php if ($registration->canUser('evaluate')) : ?>
+                <h4><?php i::_e("Formulário de prestação de contas"); ?></h4>
+            <?php endif; ?>
 
-        <ul class="attachment-list" ng-controller="RegistrationFieldsController">
-            <?php $this->applyTemplateHook('registration-field-list', 'begin'); ?>
-                <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
-                    <div ng-if="canUserEdit(field)">
-                        <?php
-                            if ($registration->canUser('modify')) {
-                                $this->applyTemplateHook('registration-field-item', 'begin');
-                                $this->part('singles/registration-field-edit');
-                                $this->applyTemplateHook('registration-field-item', 'end');
-                            } else {
-                                $this->part('singles/registration-field-view');
-                            }
-                        ?>
-                    </div>
-                    <div ng-if="!canUserEdit(field)">
-                        <?php $this->part('singles/registration-field-view'); ?>
-                    </div>
-                </li>
-            <?php $this->applyTemplateHook('registration-field-list', 'end'); ?>
-        </ul>
-        <?php $this->applyTemplateHook('registration-field-list', 'after'); ?>
-    </div>
-
+            <ul class="attachment-list" ng-controller="RegistrationFieldsController">
+                <?php $this->applyTemplateHook('registration-field-list', 'begin'); ?>
+                    <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''" ng-controller="OpportunityAccountability">
+                        <div ng-if="canUserEdit(field)">
+                            <?php
+                                if ($registration->canUser('modify')) {
+                                    $this->applyTemplateHook('registration-field-item', 'begin');
+                                    $this->part('singles/registration-field-edit');
+                                    $this->applyTemplateHook('registration-field-item', 'end');
+                                } else {
+                                    $this->part('singles/registration-field-view');
+                                }
+                            ?>
+                        </div>
+                        <div ng-if="!canUserEdit(field)">
+                            <?php $this->part('singles/registration-field-view'); ?>
+                        </div>
+                    </li>
+                <?php $this->applyTemplateHook('registration-field-list', 'end'); ?>
+            </ul>
+            <?php $this->applyTemplateHook('registration-field-list', 'after'); ?>
+        </div>
+    <?php } ?>
+    
     <?php if ($registration->canUser('modify')) { ?>
         <?php $this->part('accountability/send-button', ['entity' => $registration]); ?>
     <?php } ?>
