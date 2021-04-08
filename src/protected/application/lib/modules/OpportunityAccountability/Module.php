@@ -41,6 +41,11 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
+        // Adiciona no painel principal, informações da prestaao de Contas
+        $app->hook('template(panel.index.content.registration):end', function() use ($app){
+            $this->part('accountability/registration-accountability-panel',[]);
+        });
+
         // impede que a fase de prestação de contas seja considerada a última fase da oportunidade
         $app->hook('entity(Opportunity).getLastCreatedPhase:params', function(Opportunity $base_opportunity, &$params) {
             $params['isAccountabilityPhase'] = 'NULL()';
