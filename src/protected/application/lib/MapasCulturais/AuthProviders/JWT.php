@@ -7,6 +7,7 @@ use \Firebase\JWT\JWT as FireJWT;
 class JWT extends \MapasCulturais\AuthProvider {
 
     protected $__user = null;
+    protected $__userApp = null;
 
     protected function _init() {
         $app = App::i();
@@ -30,6 +31,7 @@ class JWT extends \MapasCulturais\AuthProvider {
                 FireJWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
                 $user = $userapp->user;
                 $this->__user = $user;
+                $this->__userApp = $userapp;
                 return true;
             }
         } catch (\Exception $e) {
@@ -40,8 +42,10 @@ class JWT extends \MapasCulturais\AuthProvider {
         die;
     }
 
-    public function _cleanUserSession() {
+    public function _cleanUserSession()
+    {
         $this->__user = null;
+        $this->__userApp = null;
     }
 
     /**
@@ -54,6 +58,11 @@ class JWT extends \MapasCulturais\AuthProvider {
 
     public function _getAuthenticatedUser() {
         return $this->__user;
+    }
+
+    public function getUserApp()
+    {
+        return $this->__userApp;
     }
 
     /**
