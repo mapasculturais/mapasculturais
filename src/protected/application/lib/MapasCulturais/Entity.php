@@ -1171,7 +1171,7 @@ abstract class Entity implements \JsonSerializable{
      */
     public function postUpdate($args = null){
         $app = App::i();
-        $hook_prefix = $this->getHookClassPath();
+        $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.update:after", $args);
         $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
