@@ -167,7 +167,7 @@ $button = "";
         <?php $this->applyTemplateHook('content.registration','begin'); ?>
         <header>
         <?php foreach($drafts as $registration): ?>           
-            <?php if($registration->opportunity->isRegistrationOpen() && !$registration->opportunity->isOpportunityPhase){?>
+            <?php if($registration->opportunity->isRegistrationOpen() && !$registration->opportunity->isAccountabilityPhase){?>
                 <h2><?php \MapasCulturais\i::_e("Inscrições ainda não enviadas");?></h2>
                 <?php break;?>
             <?php } ?>
@@ -175,7 +175,7 @@ $button = "";
             
         </header>
         <?php foreach($drafts as $registration): ?>           
-            <?php if($registration->opportunity->isRegistrationOpen() && !$registration->opportunity->isOpportunityPhase){?>
+            <?php if($registration->opportunity->isRegistrationOpen() && !$registration->opportunity->isAccountabilityPhase){?>
                 <?php $this->part('panel-registration', array('registration' => $registration)); ?>
             <?php } ?>
         <?php endforeach; ?>
@@ -189,7 +189,7 @@ $button = "";
                 <h2><?php \MapasCulturais\i::_e("Inscrições enviadas");?></h2>
             </header>
             <?php foreach($sent as $registration): ?>
-                <?php if(!$registration->opportunity->isOpportunityPhase){?>
+                <?php if(!$registration->opportunity->isAccountabilityPhase){?>
                     <?php $this->part('panel-registration', array('registration' => $registration)); ?>
                 <?php } ?>
             <?php endforeach; ?>
