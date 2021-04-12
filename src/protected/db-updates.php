@@ -1484,4 +1484,26 @@ $$
         }
     },
 
+    'create table job' => function () use($conn) {
+        __exec("CREATE TABLE job (
+                    id VARCHAR(255) NOT NULL, 
+                    name VARCHAR(32) NOT NULL, 
+                    iterations INT NOT NULL, 
+                    iterations_count INT NOT NULL, 
+                    interval_string VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    next_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    last_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    metadata JSON NOT NULL, 
+                    status SMALLINT NOT NULL, 
+                    PRIMARY KEY(id)
+                );");
+
+        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json_array)';");
+
+        __exec("CREATE INDEX job_next_execution_timestamp_idx ON job (next_execution_timestamp);");
+        __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
+   
+    },
+
 ] + $updates ;
