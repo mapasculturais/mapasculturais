@@ -68,6 +68,14 @@ $evaluation = $project->registration->accountabilityPhase ? $app->repo("Registra
             $('.event-status').removeClass('no-event');
             $(".js-event-list").html("");
         }
+        
+        var eventStatus = document.querySelector(".event-status");
+        
+        if(eventStatus.querySelector(".js-event-list") == null){
+            $(".event-status").html("");
+            $('.event-status').append('<ul class="js-event-list"></ul>');
+        }
+        
         let newEvent = $(
             '<li>' +
             '<div><span class="icon icon-event"></span></div>' +
