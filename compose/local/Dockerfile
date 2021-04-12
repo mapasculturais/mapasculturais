@@ -82,6 +82,7 @@ RUN echo "php -S 0.0.0.0:8001 -t /var/www/html /var/www/html/router.php" > /mapa
 COPY version.txt /var/www/version.txt
 
 COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
+COPY compose/jobs-cron.sh /jobs-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
