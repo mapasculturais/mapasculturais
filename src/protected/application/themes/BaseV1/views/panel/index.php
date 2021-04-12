@@ -160,14 +160,24 @@ $button = "";
     <?php $this->applyTemplateHook('content.avaluations','after'); ?>
     <?php endif; ?>
 
-    <?php $drafts = $app->repo('Registration')->findByUser($app->user, \MapasCulturais\Entities\Registration::STATUS_DRAFT, 3); ?>
+    <?php $this->applyTemplateHook('content.registration','before'); ?>
+    <?php $drafts = $app->repo('Registration')->findByUser($app->user, \MapasCulturais\Entities\Registration::STATUS_DRAFT); ?>
     <?php if ($drafts): ?>
-    <section id="inscricoes-rascunho" class="panel-list">
+    <section id="inscricoes-rascunho" class="panel-list">      
+        <?php $this->applyTemplateHook('content.registration','begin'); ?>
         <header>
-            <h2><?php \MapasCulturais\i::_e("Formulários ainda não enviados");?></h2>
+        <?php foreach($drafts as $registration): ?>           
+            <?php if($registration->opportunity->isRegistrationOpen() && !$registration->opportunity->isAccountabilityPhase){?>
+                <h2><?php \MapasCulturais\i::_e("Inscrições ainda não enviadas");?></h2>
+                <?php break;?>
+            <?php } ?>
+        <?php endforeach; ?>
+            
         </header>
-        <?php foreach($drafts as $registration): ?>
-            <?php $this->part('panel-registration', array('registration' => $registration)); ?>
+        <?php foreach($drafts as $registration): ?>           
+            <?php if($registration->opportunity->isRegistrationOpen() && !$registration->opportunity->isAccountabilityPhase){?>
+                <?php $this->part('panel-registration', array('registration' => $registration)); ?>
+            <?php } ?>
         <?php endforeach; ?>
     </section>
     <?php endif; ?>
@@ -176,13 +186,17 @@ $button = "";
     <?php if ($sent): ?>
         <section id="inscricoes-enviadas" class="panel-list">
             <header>
-                <h2><?php \MapasCulturais\i::_e("Formulários enviados");?></h2>
+                <h2><?php \MapasCulturais\i::_e("Inscrições enviadas");?></h2>
             </header>
             <?php foreach($sent as $registration): ?>
-                <?php $this->part('panel-registration', array('registration' => $registration)); ?>
+                <?php if(!$registration->opportunity->isAccountabilityPhase){?>
+                    <?php $this->part('panel-registration', array('registration' => $registration)); ?>
+                <?php } ?>
             <?php endforeach; ?>
+            <?php $this->applyTemplateHook('content.registration','end'); ?>
         </section>
     <?php endif; ?>
+    <?php $this->applyTemplateHook('content.registration','after'); ?>
 
 
     <?php if($app->user->notifications): ?>

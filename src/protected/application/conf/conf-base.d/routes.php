@@ -66,7 +66,8 @@ return [
             'inscricoes'    => 'registrations',
             'agente'        => 'agent',
             'evento'        => 'event',
-            'inscricao'     => 'registration'
+            'inscricao'     => 'registration',
+            'prestacoes-de-contas' => 'accountability'
         ],
 
         'readableNames' => [

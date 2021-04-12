@@ -41,6 +41,11 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
+        // Adiciona no painel principal, informações da prestaao de Contas
+        $app->hook('template(panel.index.content.registration):end', function() use ($app){
+            $this->part('accountability/registration-accountability-panel',[]);
+        });
+
         // impede que a fase de prestação de contas seja considerada a última fase da oportunidade
         $app->hook('entity(Opportunity).getLastCreatedPhase:params', function(Opportunity $base_opportunity, &$params) {
             $params['isAccountabilityPhase'] = 'NULL()';
@@ -163,6 +168,49 @@ class Module extends \MapasCulturais\Module
             return;
         });
 
+        // Remove inscriçõe de prestação de contas do painel minhas inscrições 
+        $app->hook("panel(registration.panel):begin", function (&$sent, &$drafts){
+            foreach ($sent as $key => $registration){
+                if($registration->opportunity->isAccountabilityPhase){
+                    unset($sent[$key]);
+                }
+            }
+
+            foreach ($drafts as $key => $registration){
+                if($registration->opportunity->isAccountabilityPhase){
+                    unset($drafts[$key]);
+                }
+            }
+        });
+
+        // Insere novo painel para mostrar as prestações de contas
+        $app->hook('panel.menu:after', function() use ($app) {
+            $this->part('accountability/accountability-nav-panel');
+        });
+
+        //Cria painel de prestação de contas
+        $app->hook('GET(panel.accountability)', function() use($app) {
+            $this->requireAuthentication();
+            $user = $this->_getUser();
+
+            $this->render('accountabilitys', ['user' => $user]);
+        });
+
+        //Filtra somente as prestações de contas para exibição no painel
+        $app->hook("panel(accountability.panel):begin", function (&$sent, &$drafts){
+            foreach ($sent as $key => $registration){
+                if(!$registration->opportunity->isAccountabilityPhase){
+                    unset($sent[$key]);
+                }
+            }
+
+            foreach ($drafts as $key => $registration){
+                if(!$registration->opportunity->isAccountabilityPhase){
+                    unset($drafts[$key]);
+                }
+            }
+        });
+        
         $app->hook("template(project.<<single|edit>>.tabs):end", function () {
             if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
                 $this->part("accountability/project-tab");
@@ -393,6 +441,22 @@ class Module extends \MapasCulturais\Module
             $phase = $this->controller->requestedEntity;
             if ($phase->isAccountabilityPhase) {
                 $html = str_replace(array_keys($replacements), array_values($replacements), $html);
+            }
+         });
+
+         // Subistitui os termos (avaliações => pareceres) e (inscrições => prestações de contas)
+         $app->hook('view.partial(singles/opportunity-<<evaluations--committee--table>>):after', function($template, &$html){
+            $phase = $this->controller->requestedEntity;
+            $terms = [
+                i::__('Avaliações') => i::__('Pareceres'),
+                i::__('inscrições') => i::__('prestações de contas'),
+                i::__('Avaliação') => i::__('Parecer Técnico'),
+                i::__('Inscrição') => i::__('Prestacão de Contas'),
+                i::__('avaliação') => i::__('parecer técnico')
+            ];
+            
+            if ($phase->isAccountabilityPhase) {
+                $html = str_replace(array_keys($terms), array_values($terms), $html);
             }
          });
 

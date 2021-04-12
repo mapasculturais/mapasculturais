@@ -20,10 +20,14 @@ $this->includeEditableEntityAssets();
 
 // Verify allowed fields
 $fields = $this->jsObject['entity']['registrationFieldConfigurations'];
-foreach ($fields as $key => $f) {
-    $name=$f->fieldName;
-    if( !isset($userAllowedFields[$name])){
-        unset($fields[$key]);
+$this->jsObject['entity']['hasControl'] = $entity->isUserAdmin($app->user) ? $entity->canUser('@control') : false;
+
+if(!$entity->canUser('@control')){
+    foreach ($fields as $key => $f) {
+        $name=$f->fieldName;
+        if( !isset($userAllowedFields[$name])){
+            unset($fields[$key]);
+        }
     }
 }
 $this->jsObject['entity']['registrationFieldConfigurations'] = array_values($fields);

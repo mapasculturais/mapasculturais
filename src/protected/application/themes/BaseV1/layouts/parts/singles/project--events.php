@@ -15,26 +15,26 @@ $evaluation = $project->registration->accountabilityPhase ? $app->repo("Registra
 <?php $this->applyTemplateHook('project-event', 'before') ?>
 <div class="event-link registration-fieldset clearfix">
     <?php $this->applyTemplateHook('project-event', 'begin') ?>
+    
     <header>
-        <div class="title">
-            <?php i::_e("Eventos vinculados a este projeto"); ?>
-            <?php if ($project->canUser('@control')) : ?>
-                <?php $this->renderModalFor('event', false, i::__("Adicionar Evento"), "btn add-event add"); ?>
-            <?php endif; ?>
-        </div>
+        <h4><?php i::_e("Eventos vinculados a este projeto"); ?></h4>
+        <?php if ($project->canUser('@control')) : ?>
+            <?php $this->renderModalFor('event', false, i::__("Adicionar Evento"), "btn add-event add"); ?>
+        <?php endif; ?>
+
+        <?php if ($project->canUser('evaluate') && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_EVALUATED)) : ?>
+            <div class='accountability-registration-field-controls'>
+                <label>
+                    <?= i::__('Abrir conversação com proponente') ?>
+                    <span class="switch" ng-controller="AccountabilityEvaluationForm">
+                        <input type="checkbox" ng-model="openChats[getFieldIdentifier(events)]" ng-change="toggleChat(events)">
+                        <span class="slider"></span>
+                    </span>
+                </label>
+            </div>
+        <?php endif ?>
     </header>
 
-    <?php if ($project->canUser('evaluate') && $evaluation && ($evaluation->status < RegistrationEvaluation::STATUS_EVALUATED)) { ?>
-        <div class='accountability-registration-field-controls'>
-            <label>
-                <?= i::__('Abrir conversação com proponente') ?>
-                <span class="switch" ng-controller="AccountabilityEvaluationForm">
-                    <input type="checkbox" ng-model="openChats[getFieldIdentifier(events)]" ng-change="toggleChat(events)">
-                    <span class="slider"></span>
-                </span>
-            </label>
-        </div>
-    <?php } ?>
     <div class="event-status <?= $class ?>">
 
         <?php if ($events) : ?>
@@ -68,6 +68,14 @@ $evaluation = $project->registration->accountabilityPhase ? $app->repo("Registra
             $('.event-status').removeClass('no-event');
             $(".js-event-list").html("");
         }
+        
+        var eventStatus = document.querySelector(".event-status");
+        
+        if(eventStatus.querySelector(".js-event-list") == null){
+            $(".event-status").html("");
+            $('.event-status').append('<ul class="js-event-list"></ul>');
+        }
+        
         let newEvent = $(
             '<li>' +
             '<div><span class="icon icon-event"></span></div>' +
