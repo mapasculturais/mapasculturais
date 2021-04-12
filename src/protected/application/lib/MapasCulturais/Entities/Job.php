@@ -19,7 +19,11 @@ use stdClass;
  * @property-read string $intervalString
  * @property-read string $type
  * 
- * @ORM\Table(name="job")
+ * @ORM\Table(name="job", indexes={
+ *      @ORM\Index(name="job_next_execution_timestamp_idx", columns={"next_execution_timestamp"}),
+ *      @ORM\Index(name="job_search_idx", columns={"next_execution_timestamp", "iterations_count", "status"})
+ *    }   
+ * )
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
