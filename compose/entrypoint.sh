@@ -36,7 +36,12 @@ fi
 
 chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files
 
-nohup /recreate-pending-pcache-cron.sh &
+cd /
+touch /nohup.out
+nohup /jobs-cron.sh >> /dev/stdout &
+nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
+
+tail -f /nohup.out > /dev/stdout &
 
 touch /mapas-ready
 
