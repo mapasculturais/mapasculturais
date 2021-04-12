@@ -1,8 +1,24 @@
 <?php
-$cache_class = env('CACHE_CLASSNAME', '\\Doctrine\\Common\\Cache\\ApcuCache');
+
+if (env('REDIS_CACHE', false)) {
+    $redis = new \Redis();
+    $redis->connect(env('REDIS_CACHE'));
+    $_cache = new \Doctrine\Common\Cache\RedisCache;
+    $_cache->setRedis($redis);
+    
+    $redis = new \Redis();
+    $redis->connect(env('REDIS_CACHE'));
+    $_mscache = new \Doctrine\Common\Cache\RedisCache;
+    $_mscache->setRedis($redis);
+} else {
+    $cache_class = env('CACHE_CLASSNAME', '\\Doctrine\\Common\\Cache\\ApcuCache');
+    $_cache = new $cache_class;
+    $_mscache = new $cache_class;
+}
 
 return [
-    'app.cache' => new $cache_class,
+    'app.cache' => $_cache,
+    'app.mscache' => $_mscache,
         
     'app.cache.namespace' => env('CACHE_NAMESPACE', @$_SERVER['HTTP_HOST']),
 
