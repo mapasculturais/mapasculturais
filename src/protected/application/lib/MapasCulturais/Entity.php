@@ -842,6 +842,11 @@ abstract class Entity implements \JsonSerializable{
             $result['singleUrl'] = $this->getSingleUrl();
         }
         unset(Entity::$_jsonSerializeNestedObjects[$_uid]);
+
+        if ($this->usesTypes()) {
+            $result['type'] = $this->type->id ?? null;
+        }
+
         return $result;
     }
 
