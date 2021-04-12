@@ -121,15 +121,22 @@
 .event-link {   
     
     header {
-        margin-bottom: $margin-medium;
-
-        .title{
-            height: 24px;
+        h4 {
             color: #111111;
+            float: left;
             font-family: Aleo;
             font-size: 24px;
             letter-spacing: 0;
             line-height: 29px;
+        }
+
+        & > .accountability-registration-field-controls {
+            margin-right: 1em;
+            margin-top: 5px;
+
+            @media screen and (max-width: 768px) {
+                margin-top: 0;
+            }
         }
     }
 
@@ -227,7 +234,13 @@
 }
 
 .accountability-registration-field-controls {
+    font-size: 12px;
     text-align: right;
     float: right;
-    margin-left:2em;
+    margin-left: 2em;
+
+    label {
+        font-weight: bold;
+        color: #333;
+    }
 }

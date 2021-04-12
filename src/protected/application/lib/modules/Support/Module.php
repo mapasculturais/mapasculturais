@@ -24,6 +24,14 @@ class Module extends \MapasCulturais\Module
 
         $self = $this;
 
+        // Adiciona link da página de suporte no topo da ficha de inscrição
+        $app->hook('template(registration.view.header-fieldset):end', function() use ($app){            
+            $entity = $this->controller->requestedEntity;
+            if($entity->isUserAdmin($app->user)){
+                $this->part('support/support-link', ['entity' => $entity]);
+            }
+        });
+
         // Adiciona a aba do módulo de suporte na oportunidade
         $app->hook('template(opportunity.<<single|edit>>.tabs):end', function () use ($app, $self) {
             $entity = $this->controller->requestedEntity; 

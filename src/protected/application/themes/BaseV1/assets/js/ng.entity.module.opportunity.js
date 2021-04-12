@@ -1584,6 +1584,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     $scope.findEvaluations();
                 }
             }
+        } else  if(document.location.hash.indexOf("tab=support") >= 0){
+            if(!$scope.data.findingRegistrations){
+                if(document.body.offsetHeight - $window.pageYOffset <  $window.innerHeight){
+                    $scope.findRegistrations();
+                }
+            }
         }
     });
 
@@ -2177,6 +2183,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             }; 
             $scope.data.sent = false;
             $scope.sendRegistration = function(redirectUrl){
+
+                // TODO: i18n
+                if(!confirm('Ao enviar a prestação de conta, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
+                    return;
+                }
+                
                 RegistrationService.send($scope.data.registration.id).success(function(response){
                     $('.js-response-error').remove();
                     if(response.error){
