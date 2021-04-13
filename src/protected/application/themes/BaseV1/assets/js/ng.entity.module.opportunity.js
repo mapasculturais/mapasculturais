@@ -31,205 +31,205 @@
         }
     }
 
-    module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
-        var url = new UrlService('registration');
-        var labels = MapasCulturais.gettext.moduleOpportunity;
+module.factory('RegistrationService', ['$http', '$rootScope', '$q', 'UrlService', function ($http, $rootScope, $q, UrlService) {
+    var url = new UrlService('registration');
+    var labels = MapasCulturais.gettext.moduleOpportunity;
 
-        return {
-            getUrl: function(action, registrationId){
-                return url.create(action, registrationId);
-            },
+    return {
+        getUrl: function(action, registrationId){
+            return url.create(action, registrationId);
+        },
 
-            register: function (params) {
-                var data = {
-                    opportunityId: MapasCulturais.entity.id,
-                    ownerId: params.owner.id,
-                    category: params.category
-                };
+        register: function (params) {
+            var data = {
+                opportunityId: MapasCulturais.entity.id,
+                ownerId: params.owner.id,
+                category: params.category
+            };
+            return $http.post( this.getUrl(), data).
+            success(function (data, status) {
+                $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
+            }).
+            error(function (data, status) {
+                $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
+            });
+        },
 
-                return $http.post( this.getUrl(), data).
-                success(function (data, status) {
-                    $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
-                }).
-                error(function (data, status) {
-                    $rootScope.$emit('error', {message: "Cannot create opportunity registration", data: data, status: status});
-                });
-            },
+        setMultipleStatus: function(registrations) {
+            var endPoint = url.create('setMultipleStatus');
 
-            setMultipleStatus: function(registrations) {
-                var endPoint = url.create('setMultipleStatus');
+            return $http.post(endPoint, { evaluations: registrations }).
+            success(function (data) {
+                for(var aval in data) {
+                    var slug = _getStatusSlug(data[aval]);
+                    $("#registration-" +  aval).attr('class', slug);
 
-                return $http.post(endPoint, { evaluations: registrations }).
-                success(function (data) {
-                    for(var aval in data) {
-                        var slug = _getStatusSlug(data[aval]);
-                        $("#registration-" +  aval).attr('class', slug);
+                    var txt = $("#registration-" +  aval + " .registration-status-col").first().text();
+                    $("#registration-" + aval + " .registration-status-col .dropdown.js-dropdown div").text(txt);
+                }
+            });
+        },
 
-                        var txt = $("#registration-" +  aval + " .registration-status-col").first().text();
-                        $("#registration-" + aval + " .registration-status-col .dropdown.js-dropdown div").text(txt);
+        setStatusTo: function(registration, registrationStatus){
+            return $http.post(this.getUrl('setStatusTo', registration.id), {status: registrationStatus}).
+            success(function (data, status) {
+                registration.status = data.status;
+                $rootScope.$emit('registration.' + registrationStatus, {message: "Opportunity registration status was setted to " + registrationStatus, data: data, status: status});
+            }).
+            error(function (data, status) {
+                $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " opportunity registration", data: data, status: status});
+            });
+
+        },
+
+        send: function(registrationId){
+            return $http.post(this.getUrl('send', registrationId)).
+            success(function(data, status){
+                $rootScope.$emit('registration.send', {message: "Opportunity registration was send ", data: data, status: status});
+            }).
+            error(function(data, status){
+                $rootScope.$emit('error', {message: "Cannot send opportunity registration", data: data, status: status});
+            });
+        },
+
+        save: function () {
+            //jQuery('a.js-submit-button').click();
+        },
+
+        validateEntity: function(registrationId) {
+            return $http.post(this.getUrl('validateEntity', registrationId)).
+            success(function(data, status){
+                $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
+            }).
+            error(function(data, status){
+                $rootScope.$emit('error', {message: "Cannot validate opportunity registration", data: data, status: status});
+            });
+        }, 
+
+        updateFields: function(entity) {
+            var data = {};
+
+            Object.keys(entity).forEach(function(key) {
+                // para excluir propriedades do angular
+                if(key.indexOf('$$') == -1){
+                    data[key] = entity[key];
+
+                    if (data[key] instanceof Date) {
+                        data[key] = moment(data[key]).format('YYYY-MM-DD')
+                    } else if (data[key] instanceof Array && data[key].length === 0) {
+                        data[key] = null;
                     }
-                });
-            },
+                }
+            });
 
-            setStatusTo: function(registration, registrationStatus){
-                return $http.post(this.getUrl('setStatusTo', registration.id), {status: registrationStatus}).
-                success(function (data, status) {
-                    registration.status = data.status;
-                    $rootScope.$emit('registration.' + registrationStatus, {message: "Opportunity registration status was setted to " + registrationStatus, data: data, status: status});
-                }).
-                error(function (data, status) {
-                    $rootScope.$emit('error', {message: "Cannot " + registrationStatus + " opportunity registration", data: data, status: status});
-                });
-
-            },
-
-            send: function(registrationId){
-                return $http.post(this.getUrl('send', registrationId)).
+            return $http.patch(this.getUrl('single', entity.id), data).
                 success(function(data, status){
-                    $rootScope.$emit('registration.send', {message: "Opportunity registration was send ", data: data, status: status});
+                    MapasCulturais.Messages.success(labels['changesSaved']);
+                    $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
                 }).
                 error(function(data, status){
-                    $rootScope.$emit('error', {message: "Cannot send opportunity registration", data: data, status: status});
+                    console.log(data);
+                    $rootScope.$emit('error', {message: "Cannot update opportunity registration", data: data, status: status});
                 });
-            },
+        },
 
-            save: function () {
-                jQuery('a.js-submit-button').click();
-            },
+        getFields: function () {
+            var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
 
-            validateEntity: function(registrationId) {
-                return $http.post(this.getUrl('validateEntity', registrationId)).
-                success(function(data, status){
-                    $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
-                }).
-                error(function(data, status){
-                    $rootScope.$emit('error', {message: "Cannot validate opportunity registration", data: data, status: status});
-                });
-            }, 
+            var fieldTypesBySlug = {};
 
-            updateFields: function(entity) {
-                var data = {};
+            fieldTypes.forEach(function (e) {
+                fieldTypesBySlug[e.slug] = e;
+            });
 
-                Object.keys(entity).forEach(function(key) {
-                    // para excluir propriedades do angular
-                    if(key.indexOf('$$') == -1){
-                        data[key] = entity[key];
-
-                        if (data[key] instanceof Date) {
-                            data[key] = moment(data[key]).format('YYYY-MM-DD')
-                        } else if (data[key] instanceof Array && data[key].length === 0) {
-                            data[key] = null;
-                        }
-                    }
-                });
-
-                return $http.patch(this.getUrl('single', entity.id), data).
-                    success(function(data, status){
-                        MapasCulturais.Messages.success(labels['changesSaved']);
-                        $rootScope.$emit('registration.update', {message: "Opportunity registration was updated ", data: data, status: status});
-                    }).
-                    error(function(data, status){
-                        $rootScope.$emit('error', {message: "Cannot update opportunity registration", data: data, status: status});
-                    });
-            },
-
-            getFields: function () {
-                var fieldTypes = MapasCulturais.registrationFieldTypes.slice();
-
-                var fieldTypesBySlug = {};
-
-                fieldTypes.forEach(function (e) {
-                    fieldTypesBySlug[e.slug] = e;
-                });
-
-                function processFieldConfiguration(field) {
-                    if(typeof field.fieldOptions === 'string'){
-                        field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
-                    }
-
-                    if(typeof field.config !== 'object' || field.config instanceof Array) {
-                        field.config = {};
-                    }
-
-                    return field;
+            function processFieldConfiguration(field) {
+                if(typeof field.fieldOptions === 'string'){
+                    field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
                 }
 
-                function processFileConfiguration(file) {
-                    file.fieldType = 'file';
-                    file.categories = file.categories || [];
-                    return file;
+                if(typeof field.config !== 'object' || field.config instanceof Array) {
+                    field.config = {};
                 }
 
-                var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
-                var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
+                return field;
+            }
+
+            function processFileConfiguration(file) {
+                file.fieldType = 'file';
+                file.categories = file.categories || [];
+                return file;
+            }
+
+            var _files = MapasCulturais.entity.registrationFileConfigurations.map(processFileConfiguration);
+            var _fields = MapasCulturais.entity.registrationFieldConfigurations.map(processFieldConfiguration);
 
 
-                var fields = _files.concat(_fields);
+            var fields = _files.concat(_fields);
 
-                fields.sort(function(a,b){
-                    if(a.displayOrder > b.displayOrder){
-                        return 1;
-                    } else if(a.displayOrder < b.displayOrder){
-                        return -1;
-                    }else {
-                        return 0;
-                    }
-                });
+            fields.sort(function(a,b){
+                if(a.displayOrder > b.displayOrder){
+                    return 1;
+                } else if(a.displayOrder < b.displayOrder){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            });
 
-                return fields;
-            },
+            return fields;
+        },
 
-            getSelectedCategory: function(){
-                
-                return $q(function(resolve){
-                    var interval = setTimeout(function(){
-                        var $editable = jQuery('.js-editable-registrationCategory');
+        getSelectedCategory: function(){
+            
+            return $q(function(resolve){
+                var interval = setTimeout(function(){
+                    var $editable = jQuery('.js-editable-registrationCategory');
 
-                        if($editable.length){
-                            var editable = $editable.data('editable');
-                            if(editable){
-                                clearInterval(interval);
-                                resolve(editable.value);
-                            }
-                        }else{
-                            resolve(MapasCulturais.entity.object.category);
+                    if($editable.length){
+                        var editable = $editable.data('editable');
+                        if(editable){
+                            clearInterval(interval);
+                            resolve(editable.value);
                         }
-                    },50)
-                });
-            },
+                    }else{
+                        resolve(MapasCulturais.entity.object.category);
+                    }
+                },50)
+            });
+        },
 
-            registrationStatuses: [
-                {value: "", label: labels['allStatus']},
-                {value: 1, label: labels['pending']},
-                {value: 2, label: labels['invalid']},
-                {value: 3, label: labels['notSelected']},
-                {value: 8, label: labels['suplente']},
-                {value: 10, label: labels['selected']},
-                {value: 0, label: labels['draft']}
-            ],
+        registrationStatuses: [
+            {value: "", label: labels['allStatus']},
+            {value: 1, label: labels['pending']},
+            {value: 2, label: labels['invalid']},
+            {value: 3, label: labels['notSelected']},
+            {value: 8, label: labels['suplente']},
+            {value: 10, label: labels['selected']},
+            {value: 0, label: labels['draft']}
+        ],
 
-            registrationStatusesNames: [
-                {value: 1, label: labels['pending']},
-                {value: 2, label: labels['invalid']},
-                {value: 3, label: labels['notSelected']},
-                {value: 8, label: labels['suplente']},
-                {value: 10, label: labels['selected']},
-                {value: 0, label: labels['draft']}
-            ],
+        registrationStatusesNames: [
+            {value: 1, label: labels['pending']},
+            {value: 2, label: labels['invalid']},
+            {value: 3, label: labels['notSelected']},
+            {value: 8, label: labels['suplente']},
+            {value: 10, label: labels['selected']},
+            {value: 0, label: labels['draft']}
+        ],
 
-            publishedRegistrationStatuses: [
-                {value: null, label: labels['allStatus']},
-                {value: 8, label: labels['suplente']},
-                {value: 10, label: labels['selected']}
-            ],
+        publishedRegistrationStatuses: [
+            {value: null, label: labels['allStatus']},
+            {value: 8, label: labels['suplente']},
+            {value: 10, label: labels['selected']}
+        ],
 
-            publishedRegistrationStatusesNames: [
-                {value: 8, label: labels['suplente']},
-                {value: 10, label: labels['selected']}
-            ]
+        publishedRegistrationStatusesNames: [
+            {value: 8, label: labels['suplente']},
+            {value: 10, label: labels['selected']}
+        ]
 
-        };
-    }]);
+    };
+}]);
 
 module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
     return function (controllerId){
@@ -459,6 +459,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         sortFields();
 
         function validationErrors(response){
+            console.log(response)
             Object.keys(response.data).forEach(function(prop){
                 Object.keys(response.data[prop]).forEach(function(error){
                     MapasCulturais.Messages.error(response.data[prop][error]);
@@ -664,7 +665,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             });
         };
 
-    }]);
+}]);
 
 module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$timeout', 'OpportunityEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, OpportunityEventsService, EditBox, $http, UrlService) {
     $scope.events = $scope.data.entity.events.slice();
@@ -2241,6 +2242,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         if (! (MapasCulturais.entity.canUserEvaluate || MapasCulturais.entity.canUserViewUserEvaluations) ) {
             return;
         }
+
         $scope.registrations = [];
         $scope.evaluations = {};
         $scope.registrationAndEvaluations = [];

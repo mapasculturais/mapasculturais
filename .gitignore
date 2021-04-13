@@ -29,3 +29,4 @@ documentation/site
 private-files
 docker-data
 scripts/nohup.out
+docker-compose.prod.yml

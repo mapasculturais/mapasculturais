@@ -726,12 +726,14 @@ MapasCulturais.Editables = {
                     }
                 },
                 success: function(response){
+                    console.log(response)
                     $('.js-pending-project, .js-pending-parent').hide();
                     $('.js-response-error').remove();
+                    var unknow_errors = [];
                     if(response.error){
                         var $field = null;
                         var errors = '';
-                        var unknow_errors = [];
+                        
                         var field_found = false;
                         var firstShown = false;
                         for(var p in response.data){
@@ -760,7 +762,9 @@ MapasCulturais.Editables = {
                                         $field.parent().append(errorHtml);
                                     }
                                 }else{
-                                    unknow_errors.push(response.data[p][k]);
+                                    //console.log(response.data[p])
+                                    unknow_errors.push(response.data[p]);
+                                    //MapasCulturais.Messages.error(response.data[p]);
                                 }
                             }
                             if(!firstShown) {
@@ -774,15 +778,8 @@ MapasCulturais.Editables = {
                                 $(this).parent().find('.danger.hltip').remove();
                             });
                         }
-
                         if(field_found)
                             MapasCulturais.Messages.error(labels['correctErrors']);
-
-                        if(unknow_errors){
-                            for(var i in unknow_errors){
-                                MapasCulturais.Messages.error(unknow_errors[i]);
-                            }
-                        }
 
                     }else{
 
@@ -827,6 +824,37 @@ MapasCulturais.Editables = {
 
                         
                     }
+
+                    if(unknow_errors){
+                        //MapasCulturais.Messages.error(unknow_errors);
+                        //console.log(unknow_errors)
+                        //PARA OUTRAS MENSAGENS DE ERROS
+                         var menError = '';
+                        for(var i in unknow_errors){
+                            //MapasCulturais.Messages.error(unknow_errors[i]);
+                            console.log({i})
+                            console.log(unknow_errors[i])
+                            if(menError !== "O campo é obrigatório." || menError !== "O campo Categoria é obrigatório.") {
+                                menError = unknow_errors[i];
+                                console.log({menError})
+                            }
+                        }
+                        // filtrar valores duplicados
+                        let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
+                        findDuplicates(unknow_errors)
+                        console.log(unknow_errors)
+                        // CASO TENHA MAIS DE UM CAMPO OBRIGATÓRIO
+                        if(unknow_errors.length > 0){
+                            if(menError == "O campo é obrigatório.") {
+                                MapasCulturais.Messages.error('Confira os campo obrigatórios.')
+                            }
+                            if(menError == "O campo Categoria é obrigatório.") {
+                                MapasCulturais.Messages.error('O campo Categoria é obrigatório.')
+                            }
+                            MapasCulturais.Messages.error([...new Set(findDuplicates(unknow_errors))])
+                        }
+                    }
+
                     $submitButton.data('clicked',false);
                 },
                 error : function(response){
@@ -1016,6 +1044,7 @@ MapasCulturais.MetalistManager = {
 
 $(function(){
     function concatena_enderco(){
+        
         var nome_logradouro = $('#En_Nome_Logradouro').editable('getValue', true);
         var cep = $('#En_CEP').editable('getValue', true);
         var numero = $('#En_Num').editable('getValue', true);
@@ -1023,6 +1052,8 @@ $(function(){
         var bairro = $('#En_Bairro').editable('getValue', true);
         var municipio = $('#En_Municipio').editable('getValue', true);
         var estado = $('#En_Estado').editable('getValue', true);
+        //var estado = $('#En_Estado option:selected').text();
+
         if(cep && nome_logradouro && numero && bairro && municipio && estado){
             var endereco = MapasCulturais.buildAddress(nome_logradouro, numero, complemento, bairro, municipio, estado, cep);
             $('#endereco').editable('setValue', endereco);
@@ -1047,6 +1078,36 @@ $(function(){
                 $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
                 concatena_enderco();
             }
+        }).fail(function(response) {
+            MapasCulturais.Messages.error(response.responseText +'. Endereço não encontrado, confira o CEP!');
+          });
+    });
+
+    // QUANDO SALVA O ESTADO O ARRAY COM OS MUNICIPIOS É PREENCHIDO
+    /**
+     * NOTA: ADICIONADO O SELECT2 PARA FACILITAR NA BUSCA DA CIDADE
+     */
+    $('#En_Estado').on('hidden', function () {
+        var estado = $('#En_Estado').editable('getValue', true);
+        var totosDistritos = MapasCulturais['ibge'][estado];
+        var distrito = [];
+        $.each(totosDistritos, function (indexInArray, valueOfElement) { 
+            distrito.push(valueOfElement);
+        });
+        var sourceCity = [];
+        // REMOVENDO O ELEMENTO ATUAL
+        $('#En_Municipio').remove();
+        // CRIANDO  UM ELEMENTO PARA ARRAY COM AS CIDADES
+        $("#divMunicipio").append('<span class="js-editable" id="En_Municipio" data-original-title="Municipio" data-emptytext="Insira o Município" data-type="select2" data-showButtons="bottom"></span>');
+        $.each(distrito[3], function (indexInArray, valueOfElement) { 
+            // POPULANDO O ARRAY
+            sourceCity.push({'id': valueOfElement.nome, 'text': valueOfElement.nome});
+        });
+        //INSTANCIANDO O X-EDITABLE COM SELECT2
+        $('#En_Municipio').editable({
+            mode        : 'inline',
+            source      : sourceCity,
+            placeholder: 'insira um município'
         });
     });
 });
@@ -1080,3 +1141,97 @@ $(function(){
     $.fn.editabletypes.color = Color;
 
 }(window.jQuery));
+
+$(function(){ 
+    //RECEBE A SIGLA E RETORNA O CODIGO DO ESTADO
+    function converterEstados(val) {
+        var data;
+        switch (val.toUpperCase()) {
+            /* UFs */
+            case "AC":
+                data = 12;
+                break;
+            case "AL":
+                data = 27;
+                break;
+            case "AM":
+                data = 13;
+                break;
+            case "AP":
+                data = 16;
+                break;
+            case "BA":
+                data = 29;
+                break;
+            case "CE":
+                data = 23;
+                break;
+            case "DF":
+                data = 53;
+                break;
+            case "ES":
+                data = 32;
+                break;
+            case "GO":
+                data = 52;
+                break;
+            case "MA":
+                data = 21;
+                break;
+            case "MG":
+                data = 31;
+                break;
+            case "MS":
+                data = 50;
+                break;
+            case "MT":
+                data = 51;
+                break;
+            case "PA":
+                data = 15;
+                break;
+            case "PB":
+                data = 25;
+                break;
+            case "PE":
+                data = 26;
+                break;
+            case "PI":
+                data = 22;
+                break;
+            case "PR":
+                data = 41;
+                break;
+            case "RJ":
+                data = 33;
+                break;
+            case "RN":
+                data = 24;
+                break;
+            case "RO":
+                data = 11;
+                break;
+            case "RR":
+                data = 14;
+                break;
+            case "RS":
+                data = 43;
+                break;
+            case "SC":
+                data = 42;
+                break;
+            case "SE":
+                data = 28;
+                break;
+            case "SP":
+                data = 35;
+                break;
+            case "TO":
+                data = 17;
+                break;
+        
+        }
+        return data;
+    }; 
+    
+});

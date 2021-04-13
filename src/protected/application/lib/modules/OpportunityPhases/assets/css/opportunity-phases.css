@@ -4,6 +4,16 @@
 
 .opportunity-phases li {
     margin-bottom:.5em;
+    list-style: none;
+}
+
+.opportunity-phases li a{
+   color: #fff;
+   text-decoration: none;
+}
+.opportunity-phases button a{
+   color: #fff;
+   text-decoration: none;
 }
 
 .opportunity-phases li.active {
@@ -34,4 +44,14 @@ ul.evaluation-methods li:hover {
 
 ul.evaluation-methods li a span {
     font-weight: bold;
+}
+
+.btn-access {
+    color: #fff;
+    background-color: #249243;
+    border: 1px solid #1a6930;
+}
+
+.margin-phase-name {
+    margin-left: 8px;
 }
