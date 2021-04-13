@@ -737,12 +737,6 @@ abstract class Entity implements \JsonSerializable{
                 }
             }
 
-            // delete the entity cache
-            $repo = $this->repo();
-            if($repo->usesCache()){
-                $repo->deleteEntityCache($this->id);
-            }
-
         }catch(Exceptions\PermissionDenied $e){
             if(!$requests)
                 throw $e;
