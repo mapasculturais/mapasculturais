@@ -1039,9 +1039,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_prefix = $this->getHookPrefix();
 
         $repo = $app->repo($this->className);
-        if($repo->usesCache()){
-            $repo->deleteEntityCache($this->id);
-        }
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after", $args);
         $app->applyHookBoundTo($this, "{$hook_prefix}.save:after", $args);
@@ -1085,10 +1082,6 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
         $repo = $app->repo($this->className);
 
-        if ($repo->usesCache()) {
-            $repo->deleteEntityCache($this->id);
-        }
-        
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.remove:after", $args);
