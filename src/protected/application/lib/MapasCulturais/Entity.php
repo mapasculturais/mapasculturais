@@ -832,20 +832,22 @@ abstract class Entity implements \JsonSerializable{
             }
         }
 
-        if($controller_id = $this->getControllerId()){
-            $result['controllerId'] = $controller_id;
-
-            $result['deleteUrl'] = $this->getDeleteUrl();
-
-            $result['editUrl'] = $this->getEditUrl();
-
-            $result['singleUrl'] = $this->getSingleUrl();
-        }
-        unset(Entity::$_jsonSerializeNestedObjects[$_uid]);
-
         if ($this->usesTypes()) {
             $result['type'] = $this->type->id ?? null;
         }
+
+        if ($this->usesTaxonomies()) {
+            $result['terms'] = $this->terms;
+        }
+
+        if($controller_id = $this->getControllerId()){
+            $result['controllerId'] = $controller_id;
+            $result['deleteUrl'] = $this->getDeleteUrl();
+            $result['editUrl'] = $this->getEditUrl();
+            $result['singleUrl'] = $this->getSingleUrl();
+        }
+        
+        unset(Entity::$_jsonSerializeNestedObjects[$_uid]);
 
         return $result;
     }
