@@ -5,3 +5,11 @@
 .widget-registration-revision-accountability{
     list-style: none;
 }
+
+.main-content.registration-tab {
+    background-color: #ffffff;
+    margin-bottom: 0;
+    margin-top: -78px;
+    padding: 0;
+    width: 100%;
+}
