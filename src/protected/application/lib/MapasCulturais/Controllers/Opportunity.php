@@ -94,6 +94,8 @@ class Opportunity extends EntityController {
 
         $opportunity = $this->requestedEntity;
 
+        $opportunity->registerRegistrationMetadata();
+
         if(!$opportunity)
             $app->pass();
 
