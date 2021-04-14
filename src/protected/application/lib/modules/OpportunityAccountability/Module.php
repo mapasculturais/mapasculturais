@@ -237,6 +237,21 @@ class Module extends \MapasCulturais\Module
             }
         }, 1000);
 
+        // aba ficha de inscrição no projeto
+        $app->hook("template(project.single.tabs):end", function () {
+            if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
+                $this->part("accountability/registration-tab");
+            }
+        });
+
+        // conteúdo da aba ficha de inscrição no projeto
+        $app->hook("template(project.single.tabs-content):end", function () {
+            if (Module::shouldDisplayProjectAccountabilityUI($this->controller)) {
+                $entity = $this->controller->requestedEntity;
+                $this->part("accountability/registration-tab-content", ['entity' => $entity]);
+            }
+        });
+
         $app->hook("can(Registration.modify)", function ($user, &$result) use ($app) {
             if (($this->canUser("@control", $user)) && Module::hasOpenFields($this)) {
                 $result = true;

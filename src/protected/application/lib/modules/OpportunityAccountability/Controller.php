@@ -12,6 +12,21 @@ class Controller extends \MapasCulturais\Controller
     use Traits\ControllerAPI;
 
     /**
+     * Method GET_registration
+     */
+    public function GET_registration()
+    {
+        $this->requireAuthentication();
+
+        $request = $this->data;
+        $app = App::i();
+        
+        $registration = $app->repo('Registration')->find($request['id']);
+
+        $this->render('registration', ['entity' => $registration]);
+    }
+
+    /**
      * Method POST_openFields
      *
      */
