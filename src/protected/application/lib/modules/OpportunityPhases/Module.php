@@ -648,6 +648,11 @@ class Module extends \MapasCulturais\Module{
             if($opportunity->isOpportunityPhase){
                 $data['disable_editable'] = true;
             }
+
+            if($opportunity instanceof \MapasCulturais\Entities\Project && $opportunity->isAccountability && $template == 'entity-parent') {
+                $data['disable_editable'] = true;
+            }
+
         });
 
         // remove a aba agenda de um oportunidade que é uma fase de outro oportunidade
