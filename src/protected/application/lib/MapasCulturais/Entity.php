@@ -1080,7 +1080,6 @@ abstract class Entity implements \JsonSerializable{
      */
     public function postRemove($args = null){
         $app = App::i();
-        $repo = $app->repo($this->className);
 
         $hook_prefix = $this->getHookPrefix();
 
