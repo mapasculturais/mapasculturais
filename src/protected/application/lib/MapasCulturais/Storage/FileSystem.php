@@ -63,10 +63,9 @@ class FileSystem extends \MapasCulturais\Storage{
                     $filename = $this->getPath($file);
                     $fcount++;
                 }
+                rename($file->tmpFile['tmp_name'], $filename);
+                chmod($filename, 0666);
             }
-
-            rename($file->tmpFile['tmp_name'], $filename);
-            chmod($filename, 0666);
         }else{
             return false;
         }
