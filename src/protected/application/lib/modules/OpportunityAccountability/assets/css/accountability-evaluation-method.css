@@ -13,3 +13,7 @@
     padding: 0;
     width: 100%;
 }
+
+.actions span{
+    float: left;
+}
