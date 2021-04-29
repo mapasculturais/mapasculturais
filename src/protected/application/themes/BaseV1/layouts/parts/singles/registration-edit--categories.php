@@ -12,7 +12,7 @@
             <div>
             <!-- TODO: ng-required="requiredField(field)" -->
             <!-- foi trocado ng-blur para ng-change, para dar o trigger na função sempre que uma nova opção no select for escolhida -->
-            <select  ng-model="entity['category']" ng-change="saveField({fieldName:'category'}, entity['category'])" >
+            <select  ng-model="entity.category" ng-change="saveField({fieldName:'category'}, entity.category)" >
                 <option ng-repeat="option in registrationCategories" value="{{::option.indexOf(':') >= 0 ? option.split(':')[0] : option}}">{{::option.indexOf(':') >= 0 ? option.split(':')[1] : option}}</option>
             </select>
         </div>
