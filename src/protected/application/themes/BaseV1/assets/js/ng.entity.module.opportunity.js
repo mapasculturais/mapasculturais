@@ -182,15 +182,11 @@
             getSelectedCategory: function(){
                 
                 return $q(function(resolve){
-                    var interval = setTimeout(function(){
-                        var $editable = jQuery('.js-editable-registrationCategory');
+                    setTimeout(function(){
+                        var $field = jQuery('#category select');
 
-                        if($editable.length){
-                            var editable = $editable.data('editable');
-                            if(editable){
-                                clearInterval(interval);
-                                resolve(editable.value);
-                            }
+                        if($field.length){
+                            resolve($field.val());    
                         }else{
                             resolve(MapasCulturais.entity.object.category);
                         }
