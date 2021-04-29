@@ -142,15 +142,13 @@ class Job extends \MapasCulturais\Entity{
 
 
     protected function serializeEntity($value) {
-        if($value instanceof Entity) {
-            $value = "@entity:{$value}";
-
+        if ($value instanceof Entity) {
+            $value = "@entity:{$value->className}:{$value->id}"; // some entities override __toString and we need this particular format
         } else if(is_array($value) || $value instanceof stdClass) {
             foreach($value as &$val) {
                 $val = $this->serializeEntity($val);
             }
         }
-
         return $value;
     }
 

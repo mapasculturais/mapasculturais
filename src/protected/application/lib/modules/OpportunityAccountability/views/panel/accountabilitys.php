@@ -5,6 +5,7 @@ $this->layout = 'panel';
 $drafts = $app->repo('Registration')->findByUser($app->user, Registration::STATUS_DRAFT);
 $sent = $app->repo('Registration')->findByUser($app->user, 'sent');
 $app->applyHookBoundTo($this, 'panel(accountability.panel):begin', [&$sent,&$drafts]);
+$showMessage = true;
 ?>
 
 <div class="panel-list panel-main-content">
@@ -23,9 +24,12 @@ $app->applyHookBoundTo($this, 'panel(accountability.panel):begin', [&$sent,&$dra
     </ul>
     <div id="ativos">
         <?php foreach($drafts as $registration): ?>
-            <?php $this->part('panel-registration', array('registration' => $registration)); ?>
+            <?php if($registration->opportunity->isRegistrationOpen()){?>
+                <?php $showMessage = false;?>
+                <?php $this->part('panel-registration', array('registration' => $registration)); ?>
+            <?php } ?>
         <?php endforeach; ?>
-        <?php if(!$drafts): ?>
+        <?php if(!$drafts || $showMessage): ?>
             <div class="alert info"><?php \MapasCulturais\i::_e("Você não possui nenhum rascunho de prestação de conta.");?></div>
         <?php endif; ?>
     </div>

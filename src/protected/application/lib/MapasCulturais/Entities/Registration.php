@@ -947,9 +947,12 @@ class Registration extends \MapasCulturais\Entity
         }
      
         if($this->canUser('@control', $user)){          
-            if($this->opportunity->registrationFrom <= (new \DateTime())){
+            if((new \DateTime()) >= $this->opportunity->registrationFrom ){
               return true;
-            }        
+            }
+            
+            return false;
+            
         }
 
         if($this->opportunity->canUser('@control', $user)){
@@ -1022,7 +1025,7 @@ class Registration extends \MapasCulturais\Entity
         if($this->status !== self::STATUS_DRAFT){
             return false;
         }else{
-            if(($this->opportunity->registrationFrom <= new \DateTime()) && $this->genericPermissionVerification($user)){
+            if((new \DateTime() >= $this->opportunity->registrationFrom) && $this->genericPermissionVerification($user)){
                 return true;
             }
             return false;
