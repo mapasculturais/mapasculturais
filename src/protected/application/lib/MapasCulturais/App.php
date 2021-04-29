@@ -485,6 +485,8 @@ class App extends \Slim\Slim{
             }
         }
 
+        $this->applyHookBoundTo($this, 'app.init:before');
+
         $config = $this->_config;
 
         $this->applyHookBoundTo($this, 'app.modules.init:before', [&$available_modules]);
@@ -577,7 +579,7 @@ class App extends \Slim\Slim{
         if(defined('DB_UPDATES_FILE') && file_exists(DB_UPDATES_FILE))
             $this->_dbUpdates();
 
-
+        $this->applyHookBoundTo($this, 'app.init:after');
         return $this;
     }
 
@@ -718,6 +720,8 @@ class App extends \Slim\Slim{
             return;
 
         $this->_registered = true;
+
+        $this->applyHookBoundTo($this, 'app.register:before');
 
         // get types and metadata configurations
         if ($theme_space_types = $this->view->resolveFilename('','space-types.php')) {
@@ -1200,6 +1204,7 @@ class App extends \Slim\Slim{
         }
 
         $this->applyHookBoundTo($this, 'app.register',[&$this->_register]);
+        $this->applyHookBoundTo($this, 'app.register:after');
     }
 
 
@@ -1619,7 +1624,7 @@ class App extends \Slim\Slim{
         $type = $this->getRegisteredJobType($type_slug);
         
         if (!$type) {
-            throw new \Exception("invaid job type: {$type_slug}");
+            throw new \Exception("invalid job type: {$type_slug}");
         }
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
@@ -1650,11 +1655,11 @@ class App extends \Slim\Slim{
         $conn = $this->em->getConnection();
 
         $job_id = $conn->fetchColumn("
-            SELECT id 
-            FROM job 
-            WHERE 
-                next_execution_timestamp <= now() AND 
-                iterations_count < iterations AND 
+            SELECT id
+            FROM job
+            WHERE
+                next_execution_timestamp <= now() AND
+                iterations_count < iterations AND
                 status = 0
             ORDER BY next_execution_timestamp ASC
             LIMIT 1");
@@ -1662,9 +1667,11 @@ class App extends \Slim\Slim{
         if ($job_id) {
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
             $job = $this->repo('Job')->find($job_id);
-            
+
             $this->disableAccessControl();
+            $this->applyHookBoundTo($this, "app.executeJob:before");
             $job->execute();
+            $this->applyHookBoundTo($this, "app.executeJob:after");
             $this->enableAccessControl();
         }
     }

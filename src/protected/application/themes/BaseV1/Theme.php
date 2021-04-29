@@ -2354,8 +2354,22 @@ class Theme extends MapasCulturais\Theme {
     function addOpportunityToJs(Entities\Opportunity $entity){
         $app = App::i();
 
+        
+        $registrationStatuses = [
+            ['value' => null, 'label' => i::__('Todas')],
+            ['value' => 1, 'label' => i::__('Pendente')],
+            ['value' => 2, 'label' => i::__('Inválida')],
+            ['value' => 3, 'label' => i::__('Não selecionada')],
+            ['value' => 8, 'label' => i::__('Suplente')],
+            ['value' => 10,'label' => i::__('Selecionada')],
+            ['value' => 0, 'label' => i::__('Rascunho')],
+        ];
+
+        $app->applyHookBoundTo($entity, 'opportunity.registrationStatuses', [&$registrationStatuses]);
+
         $this->jsObject['entity']['registrationFileConfigurations'] = (array) $entity->registrationFileConfigurations;
         $this->jsObject['entity']['registrationFieldConfigurations'] = (array) $entity->registrationFieldConfigurations;
+        $this->jsObject['entity']['registrationStatuses'] = $registrationStatuses;
 
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
         
