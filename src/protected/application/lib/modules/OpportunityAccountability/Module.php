@@ -46,6 +46,29 @@ class Module extends \MapasCulturais\Module
             $this->part('accountability/registration-accountability-panel',[]);
         });
 
+        // Adiciona no painel principal, informações do peojeto de prestação de contas
+        $app->hook('template(panel.index.content.registration):end', function() use ($app){
+            $agent_subquery = new ApiQuery('MapasCulturais\\Entities\\Agent', [
+                'user' => 'EQ(@me)', 
+            ]);
+            
+            $query = new ApiQuery('MapasCulturais\\Entities\\Project', [
+                '@select'=>'id', 
+                'isAccountability' => 'EQ(1)', 
+                'status' => 'GTE(0)',
+                '@permissions' => 'view',
+            ]);
+            
+            $query->addFilterByApiQuery($agent_subquery, 'id', 'owner');
+           
+            $project_ids = $query->findIds();
+            
+            $projects = $app->repo('Project')->findBy(['id' => $project_ids]);
+
+            $this->part('accountability/project-accountability-panel',['projects' => $projects]);
+        });
+        
+
         // impede que a fase de prestação de contas seja considerada a última fase da oportunidade
         $app->hook('entity(Opportunity).getLastCreatedPhase:params', function(Opportunity $base_opportunity, &$params) {
             $params['isAccountabilityPhase'] = 'NULL()';
