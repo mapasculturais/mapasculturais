@@ -130,6 +130,8 @@
                 $scope.data.sending = false;
             });
 
+            $("textarea.new-message").focus();
+
         }
 
         $rootScope.$on('repeatDone:findEntity:find-entity-module-name-owner', adjustBoxPosition);
