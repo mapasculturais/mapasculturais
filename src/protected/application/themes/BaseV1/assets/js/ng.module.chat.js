@@ -103,6 +103,15 @@
             });
         };
 
+        // Verifica se pressionou CTRl+ENTER
+        $scope.handleCtrlEnterAction = function (e) {
+            var chatMessage = this.data.newMessage;
+            if (e.ctrlKey && e.key === 'Enter' && chatMessage.trim() !== '') {
+                e.preventDefault();
+                $scope.sendMessage(chatMessage);
+            }
+        };
+
         $scope.sendMessage = function (message) {
             if($scope.data.sending){
                 return;
