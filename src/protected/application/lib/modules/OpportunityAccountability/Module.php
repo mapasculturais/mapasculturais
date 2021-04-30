@@ -344,6 +344,11 @@ class Module extends \MapasCulturais\Module
 
         });
 
+        //Insere part para insrir informação no editpox de crição de fases, casos seja prestação de contas
+        $app->hook('template(opportunity.edit.new-phase-form):end', function () use ($app, $self) {
+            $this->part('accountability-phase-info');
+        });
+
         $app->hook('entity(Opportunity).insert:after', function () use ($app, $self) {
 
             $opportunityData = $app->controller('opportunity');
