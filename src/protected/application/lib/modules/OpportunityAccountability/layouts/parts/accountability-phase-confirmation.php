@@ -15,7 +15,6 @@ use MapasCulturais\i;
                 </p>
             </li>
         </label>
-        <hr style="height:1px;border-width:0;color:gray;">
-        <p>Texto explicativo</p>
+        <hr style="height:1px;border-width:0;color:gray;">        
     </ul>
 </div>
