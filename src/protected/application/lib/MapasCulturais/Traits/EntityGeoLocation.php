@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use \MapasCulturais\Types\GeoPoint;
+use stdClass;
 
 /**
  * Defines that the entity has a location and geoLocation properties.
@@ -57,6 +58,11 @@ trait EntityGeoLocation{
     function setLocation($location){
         $x = $y = null;
         if(!($location instanceof GeoPoint)){
+
+            if($location instanceof stdClass) {
+                $location = (array) $location;
+            } 
+            
             if(is_array($location) && key_exists('x', $location) && key_exists('y', $location)){
                 $x = $location['x'];
                 $y = $location['y'];
@@ -69,7 +75,8 @@ trait EntityGeoLocation{
                 $x = $location[0];
                 $y = $location[1];
             }else{
-                throw new \Exception(\MapasCulturais\i::__('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values'));
+                App::i()->log->debug(print_r($location, true));
+                throw new \Exception(\MapasCulturais\i::__('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values, ' . gettype($location) . ' given.'));
             }
             $location = new GeoPoint($x,$y);
         }
