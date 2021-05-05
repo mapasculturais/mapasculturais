@@ -1683,7 +1683,8 @@ class App extends \Slim\Slim{
 
     public function enqueueEntityToPCacheRecreation(Entity $entity){
         if (!$entity->__skipQueuingPCacheRecreation) {
-            $this->permissionCachePendingQueue["$entity"] = $entity;
+            $entity_key = $entity->id ? "$entity" : "$entity".spl_object_id($entity);
+            $this->permissionCachePendingQueue["$entity_key"] = $entity;
         }
     }
 
