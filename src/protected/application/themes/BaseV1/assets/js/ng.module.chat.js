@@ -80,6 +80,7 @@
             previousMessage: {},
             spinner: false,
             sending: false,
+            chatFocusTime: 60000,
             currentUserId: MapasCulturais.userProfile.id,
             
             apiQuery: {
@@ -95,11 +96,22 @@
             return $rootScope.closedChats && $rootScope.closedChats[$scope.data.threadId];
         }
 
+        $scope.chatIsFocused = function () {
+            $scope.data.chatFocusTime = 10000;
+            setInterval(getLatestMessages, $scope.data.chatFocusTime);
+        }
+
         var adjustBoxPosition = function () {
             setTimeout(function () {
                 adjustingBoxPosition = true;
                 $('#module-name-owner-button').click();
                 adjustingBoxPosition = false;
+            });
+        };
+
+        var getLatestMessages = function () {
+            ChatService.find($scope.data.threadId).success(function (data, status, headers) {
+                $scope.data.messages = data;
             });
         };
 
@@ -148,12 +160,14 @@
 
             // @todo: Mover para local adequado
             $("textarea.new-message").each(function () {
-                this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;min-height:52px");
+                this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;min-height:2px");
             }).on("input", function () {
                 this.style.height = "auto";
                 this.style.height = (this.scrollHeight) + "px";
             });
         }, 0);
+
+        setInterval(getLatestMessages, $scope.data.chatFocusTime);
 
     }]);
 })(angular);
