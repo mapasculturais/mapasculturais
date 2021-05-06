@@ -41,6 +41,16 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
+        //Evita que inscrições que um parecerisja ja iniciou o parecer sejam exibidas para os demais
+        $app->hook("can(Registration.evaluate)", function ($user, &$result) use ($app) {
+            $registration = $this->accountabilityPhase;
+            $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+            
+            if($evaluation && !$user->equals($evaluation->user)){
+                $result = false;
+            }
+        });
+
         // Adiciona no painel principal, informações da prestaao de Contas
         $app->hook('template(panel.index.content.registration):end', function() use ($app){
             $this->part('accountability/registration-accountability-panel',[]);
