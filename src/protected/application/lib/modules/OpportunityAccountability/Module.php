@@ -513,7 +513,7 @@ class Module extends \MapasCulturais\Module
                 ];
 
                 foreach($registrationStatuses as $key => $status){
-                    if(!in_array($status['value'], [0,1,8,9,10])){
+                    if(!in_array($status['value'], [0,1,3,8,9,10])){
                         unset($registrationStatuses[$key]);
                     }else{
                         $registrationStatuses[$key]['label'] = str_replace(array_keys($terms), array_values($terms), $status['label']);
