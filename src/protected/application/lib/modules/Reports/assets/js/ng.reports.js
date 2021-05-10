@@ -29,7 +29,7 @@
                 'space': '(Espaço)'
             },
             error: false,
-            typeGraphicDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
+            typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
             graphics:[]          
         };
 

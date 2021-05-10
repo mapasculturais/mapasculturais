@@ -24,7 +24,7 @@ use MapasCulturais\i;
             </div>
 
             <div class="line">
-                <label><input ng-model="data.dataForm.type" value="bar" type="radio"> <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de barra"); ?></b></span> </label>
+                <label><input ng-model="data.dataForm.type" value="bar" type="radio"> <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de coluna"); ?></b></span> </label>
             </div>
 
             <div class="line">
