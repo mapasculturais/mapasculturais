@@ -1,7 +1,9 @@
 <?php
 namespace MapasCulturais\Entities;
 
+use MapasCulturais\App;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\JobTypes\ReopenEvaluations;
 
 /**
  * Relação que define um avaliador de uma oportunidade
@@ -38,24 +40,38 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     function reopen($flush = true){
         $this->owner->opportunity->checkPermission('reopenValuerEvaluations');
 
+        $app = App::i();
+
+        $app->applyHookBoundTo($this,"{$this->hookPrefix}.reopen:before");
         $this->status = self::STATUS_ENABLED;
 
         $this->save($flush);
+
+        $job = $app->enqueueJob(ReopenEvaluations::SLUG, ['agentRelation' => $this]);
+        $app->applyHookBoundTo($this,"{$this->hookPrefix}.reopen:after", [$job]);
     }
 
     function disable($flush = true){
         $this->owner->opportunity->checkPermission('@control');
 
+        $app = App::i();
+
+        $app->applyHookBoundTo($this,"{$this->hookPrefix}.disable:before");
         $this->status = self::STATUS_DISABLED;
 
         $this->save($flush);
+        $app->applyHookBoundTo($this,"{$this->hookPrefix}.disable:after");
     }
 
     function enable($flush = true){
         $this->owner->opportunity->checkPermission('@control');
 
+        $app = App::i();
+
+        $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:before");
         $this->status = self::STATUS_ENABLED;
 
         $this->save($flush);
+        $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:after");
     }
 }
