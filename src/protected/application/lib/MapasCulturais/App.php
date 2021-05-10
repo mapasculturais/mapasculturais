@@ -1021,6 +1021,9 @@ class App extends \Slim\Slim{
         $this->registerMetaListGroup('seal', $metalist_groups['links']);
         $this->registerMetaListGroup('seal', $metalist_groups['videos']);
 
+        // register job types
+        $this->registerJobType(new JobTypes\ReopenEvaluations(JobTypes\ReopenEvaluations::SLUG));
+
         // register space types and spaces metadata
         foreach($space_types['items'] as $group_name => $group_config){
             $entity_class = 'MapasCulturais\Entities\Space';
