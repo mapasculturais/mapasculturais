@@ -40,7 +40,7 @@ if (isset($series) && is_array($series)) {
  * Calcula a largura em porcentagem para o gráfico, baseado na quantidade de dados
  */
 $count_data = function ( $data ) {
-    if ( count( $data ) < 30 ) {
+    if ( count( $data ) < 30 || (count( $data ) * 2) < 100) {
         return 100;
     } else {
         return count( $data ) * 2;
