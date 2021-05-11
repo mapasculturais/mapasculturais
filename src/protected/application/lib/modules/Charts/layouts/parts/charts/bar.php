@@ -59,6 +59,18 @@ if (isset($series) && is_array($series)) {
     }, $series);
 }
 
+/**
+ * Calcula a largura em porcentagem para o gráfico, baseado na quantidade de dados
+ */
+$count_data = function ( $data ) {
+    if ( count( $data ) < 30 || (count( $data ) * 2) < 100) {
+        return 100;
+    } else {
+        return count( $data ) * 2;
+    }
+};
+
+
 $width = $width ?? '100%';
 $height = $height ?? '50vw';
 
@@ -76,9 +88,10 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
         <?php endif; ?>
         <a href="<?= $route ?>" name="<?= $chart_id ?>" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></a>
     </header>
-
-    <div class="chart-container chart-bar" style="position: relative; height:<?= $height ?>; width:<?= $width ?>;">
-        <canvas id="<?= $chart_id ?>"></canvas>
+    <div class="chart-scroll">
+        <div class="chart-container chart-bar" style="position: relative; height:<?= $height ?>; width:<?= $count_data($series[0]['data']) ?>%;">
+            <canvas id="<?= $chart_id ?>"></canvas>
+        </div>
     </div>
 
 </div><!-- /.chart-wrap -->
