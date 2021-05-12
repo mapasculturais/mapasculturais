@@ -58,20 +58,15 @@ trait EntityGeoLocation{
     {
         $x = $y = null;
         if (!($location instanceof GeoPoint)) {
-            if ($location instanceof stdClass) {
+            if ($location instanceof stdClass && (isset($location->latitude) && isset($location->longitude) || isset($location->x) && isset($location->y))) {
                 $location = (array) $location;
             }
-            if (is_array($location) && key_exists('x', $location) && key_exists('y', $location)) {
-                $x = $location['x'];
-                $y = $location['y'];
 
-            } elseif (is_array($location) && key_exists('longitude', $location) && key_exists('latitude', $location)) {
-                $x = $location['longitude'];
-                $y = $location['latitude'];
+            $location_values = is_array($location) ? array_values($location) : [];
 
-            } elseif (is_array($location) && (count($location) === 2) && is_numeric($location[0]) && is_numeric($location[1])) {
-                $x = $location[0];
-                $y = $location[1];
+            if (is_array($location_values) && (count($location_values) === 2) && is_numeric($location_values[0]) && is_numeric($location_values[1])) {
+                $x = $location_values[0];
+                $y = $location_values[1];
             } else {
                 throw new \Exception(\MapasCulturais\i::__('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values'));
             }
