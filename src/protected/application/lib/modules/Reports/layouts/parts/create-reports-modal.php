@@ -24,7 +24,7 @@ use MapasCulturais\i;
             </div>
 
             <div class="line">
-                <label><input ng-model="data.dataForm.type" value="bar" type="radio"> <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de barra"); ?></b></span> </label>
+                <label><input ng-model="data.dataForm.type" value="bar" type="radio"> <i class="far fa-chart-bar"></i> <span><b><?php i::_e("Gráfico de coluna"); ?></b></span> </label>
             </div>
 
             <div class="line">
@@ -55,14 +55,17 @@ use MapasCulturais\i;
                 </div>
                 <div class="line flex">
                     <div class="column">
-                        <label><?php i::_e("Dados a serem exibidos"); ?></label>
+
+                        <label ng-if="data.dataForm.type != 'table'"><?php i::_e("Dados a serem exibidos"); ?></label>
+                        <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na coluna"); ?></label>
                         <select ng-model="data.dataForm.dataDisplayA">
                             <option ng-repeat="(key, dataSelectA) in  data.dataDisplayA" value="{{key}}" label="{{dataSelectA.label}}"></option>
                         </select>
                     </div>
 
                     <div class="column" ng-if="data.dataForm.type == 'bar' || data.dataForm.type == 'table'">
-                        <label><?php i::_e("Dados a serem exibidos"); ?></label>
+                        <label ng-if="data.dataForm.type != 'table'"><?php i::_e("Dados a serem exibidos"); ?></label>
+                        <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na linha"); ?></label>
                         <select ng-model="data.dataForm.dataDisplayB">
                             <option ng-repeat="(key, dataSelectB) in  data.dataDisplayB" value="{{key}}" label="{{dataSelectB.label}}"></option>
                         </select>
