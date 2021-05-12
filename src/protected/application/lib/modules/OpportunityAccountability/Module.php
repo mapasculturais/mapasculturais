@@ -41,6 +41,23 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
+        // Altera mensagem da revisão para informar o término de um paracer técnico
+        $app->hook('POST(registration.saveEvaluation):before', function() use ($app){
+            $app->hook('entity(EntityRevision).insert:before',function (){            
+                $this->message = i::__("Parecer técnico finalizado");
+            });
+        });
+
+        //Evita que inscrições que um parecerisja já iniciou o parecer sejam exibidas para os demais
+        $app->hook("can(Registration.evaluate)", function ($user, &$result) use ($app) {
+            $registration = $this->accountabilityPhase;
+            $evaluation = $app->repo("RegistrationEvaluation")->findOneBy(["registration" => $registration]);
+            
+            if($evaluation && !$user->equals($evaluation->user)){
+                $result = false;
+            }
+        });
+
         // Adiciona no painel principal, informações da prestaao de Contas
         $app->hook('template(panel.index.content.registration):end', function() use ($app){
             $this->part('accountability/registration-accountability-panel',[]);
@@ -513,7 +530,7 @@ class Module extends \MapasCulturais\Module
                 ];
 
                 foreach($registrationStatuses as $key => $status){
-                    if(!in_array($status['value'], [0,1,8,9,10])){
+                    if(!in_array($status['value'], [0,1,3,8,9,10]) || $status['value'] == ""){
                         unset($registrationStatuses[$key]);
                     }else{
                         $registrationStatuses[$key]['label'] = str_replace(array_keys($terms), array_values($terms), $status['label']);

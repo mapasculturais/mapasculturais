@@ -29,7 +29,7 @@
                 'space': '(Espaço)'
             },
             error: false,
-            typeGraphicDictionary: {pie: "Pizza", bar: "Barras", line: "Linha", table: "Tabela"},
+            typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
             graphics:[]          
         };
 
@@ -178,10 +178,19 @@
            var url = MapasCulturais.createUrl('reports','csvDynamicGraphic', {graphicId: graphicId, opportunity_id:MapasCulturais.entity.id});
            document.location = url;
         }
+
+        //Calcula a largura em porcentagem para o gráfico, baseado na quantidade de dados
+        $scope.widthCalc = function(data){
+            if(data < 30 || (data * 2) < 100){
+                return  100;  
+            }else{
+               return (data * 2);
+            }
+        }
         
         $scope.graphicGenerate = function() {
             var _datasets;
-            $scope.data.graphics.forEach(function(item){
+            $scope.data.graphics.forEach(function(item, index){
                 if(item.typeGraphic == "table"){
                     var sumLines = [];
                     var sumColumns = [];
@@ -215,6 +224,9 @@
                     
                 }
                 if(item.typeGraphic != "pie"){
+                    
+                    $scope.data.graphics[index].countData = $scope.widthCalc(item.data.series[0].data.length);
+
                     _datasets = item.data.series.map(function (serie){
                        return {                             
                             label: serie.label,

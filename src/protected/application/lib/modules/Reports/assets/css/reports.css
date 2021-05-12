@@ -2,6 +2,11 @@
     overflow: hidden;
 }
 
+#reports div.chart-scroll {
+    margin-bottom: 15px;
+    overflow-x: scroll;
+}
+
 /* Charts statics */
 .charts-static .line .line-one{    
     width: 100%;
@@ -174,20 +179,20 @@
 }
 
 /* Chart footer/legends /line /bar /table */
-#reports .chart-wrap .chart-line + footer,
+#reports .chart-wrap.type-line,
 #reports .chart-wrap .chart-bar + footer,
 #reports .chart-wrap .chart-table + footer{
     width: 100%;
 }
 
-#reports .chart-wrap .chart-line + footer .legends-charts,
+#reports .chart-wrap.type-line .legends-charts,
 #reports .chart-wrap .chart-bar + footer .legends-charts,
 #reports .chart-wrap .chart-table + footer .legends-charts {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-#reports .chart-wrap .chart-line + footer .legends-charts .each,
+#reports .chart-wrap.type-line .legends-charts .each,
 #reports .chart-wrap .chart-bar + footer .legends-charts .each,
 #reports .chart-wrap .chart-table + footer .legends-charts .each {
     padding: 0 15px;
