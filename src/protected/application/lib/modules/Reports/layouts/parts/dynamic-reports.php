@@ -37,12 +37,13 @@ use MapasCulturais\i;
                     </tr>
                 </tbody>
             </table> 
-        </div>            
-    
-        <div ng-if="graphic.typeGraphic != 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.typeGraphic == 'pie') ? '60%' : '100%'}">
-            <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
+        </div>      
+        <div ng-class="{'chart-scroll':graphic.typeGraphic === 'line' || graphic.typeGraphic === 'bar'}">
+            <div ng-if="graphic.typeGraphic != 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.typeGraphic == 'pie') ? '60%' : '{{graphic.countData}}%'}">
+                <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
+            </div>
         </div>
-        
+            
         <footer>
             <div class="legends-charts" id="dynamic-legends-{{graphic.identifier}}">
                 <div class="each" ng-if="graphic.typeGraphic != 'pie'" ng-repeat="(key, label) in graphic.data.legends">
