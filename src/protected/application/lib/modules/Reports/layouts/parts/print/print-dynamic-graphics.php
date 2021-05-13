@@ -37,7 +37,7 @@ use MapasCulturais\i;
             </table> 
         </div>      
         <div ng-class="{'chart-scroll':graphic.typeGraphic === 'line' || graphic.typeGraphic === 'bar'}">
-            <div ng-if="graphic.typeGraphic != 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.typeGraphic == 'pie') ? '60%' : '{{graphic.countData}}%'}">
+            <div ng-if="graphic.typeGraphic != 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto;" ng-style="{'width': (graphic.typeGraphic == 'pie') ? '60%' : '100%'}">
                 <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
             </div>
         </div>

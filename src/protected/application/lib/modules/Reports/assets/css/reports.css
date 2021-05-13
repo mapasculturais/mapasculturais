@@ -2,6 +2,10 @@
     overflow: hidden;
 }
 
+#reports header .print-reports{
+    float: right;
+}
+
 #reports div.chart-scroll {
     margin-bottom: 15px;
     overflow-x: scroll;
