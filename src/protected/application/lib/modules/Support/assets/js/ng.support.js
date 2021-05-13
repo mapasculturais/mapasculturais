@@ -17,6 +17,8 @@
             userPermissions: {},
             defaultAvatar: MapasCulturais.assets.avatarAgent,
             fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations),
+            selectAll: false,
+            selectedExist: false,
         };
 
         $scope.data.fields.sort(function (a, b) {            
@@ -41,6 +43,53 @@
                 item.typeDescription = $scope.returnTypeDescription(item.fieldType);
             }
         });
+
+        $scope.selectedExist = function(){
+            $scope.data.selectedExist = false;
+            $scope.data.fields.forEach(function(field){
+                if(field.checked){
+                    $scope.data.selectedExist = true;
+                    return;
+                }
+            });
+        }
+
+        $scope.selectAll = function(){            
+            $scope.data.selectAll = !$scope.data.selectAll; 
+            $scope.data.selectedExist = $scope.data.selectAll;        
+            $scope.data.fields.forEach(function(field){
+                field.checked = $scope.data.selectAll;
+            });
+        }
+
+        $scope.clearChecked = function(){
+            $scope.data.fields.forEach(function(field){
+                field.checked = false;
+            }); 
+        }
+
+        $scope.getSelectedFields = function(){
+            return $scope.data.fields.filter(function(field){
+                return field.checked;
+            });
+        }
+
+        $scope.setPermissionsOnSelected = function(agentId){
+            $scope.data.setPermissions = {};
+            $scope.data.fields.forEach(function(field){
+                if(field.checked){
+                    $scope.all = true;
+                    $scope.data.setPermissions[field.ref] = $scope.data.permission;
+                    $scope.data.userPermissions[field.ref] = $scope.data.permission;
+                }
+            });
+
+            SupportService.savePermission(MapasCulturais.entity.id, agentId, $scope.data.setPermissions).success(function (data, status, headers) {
+                $scope.all = false;
+                $scope.clearChecked();
+                MapasCulturais.Messages.success('Permissoes salvas com sucesso.');
+            });
+        }
         
         $scope.savePermission = function (agentId) {
             SupportService.savePermission(MapasCulturais.entity.id, agentId, $scope.data.userPermissions).success(function (data, status, headers) {
