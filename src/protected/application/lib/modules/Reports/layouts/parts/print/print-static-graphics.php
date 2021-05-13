@@ -14,6 +14,7 @@ use MapasCulturais\i;
             <?php } ?>
 
             <?php if($module->registrationsByStatus($opportunity)){?>
+                <?php $this->part('registrationsDraftVsSent', ['data' => $module->registrationsByStatus($opportunity), 'opportunity' => $opportunity, 'self' => $module]);?>
                 <?php $this->part('registrationsStatus', ['data' => $module->registrationsByStatus($opportunity), 'opportunity' => $opportunity, 'self' => $module]);?>
             <?php } ?>
 

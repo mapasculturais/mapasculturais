@@ -1,0 +1,12 @@
+.chart-wrap .download{
+    display:none;
+}
+
+.dot {
+    border-radius: 12px;
+    display: inline-block;
+    height: 12px;
+    margin-right: 5px;
+    min-width: 12px;
+    width: 12px;
+}

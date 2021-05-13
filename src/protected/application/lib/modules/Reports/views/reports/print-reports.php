@@ -14,7 +14,7 @@ $this->addEntityToJs($opportunity);
 $this->includeAngularEntityAssets($opportunity);
 $this->includeEditableEntityAssets();
 
-$this->enqueueStyle('app', 'print-reports', 'css/print-reports.css');
+$this->enqueueStyle('app', 'print-reports', 'css/print-reports.css', [], 'print');
 
 $params = [ 
     'opportunity' => $opportunity,
