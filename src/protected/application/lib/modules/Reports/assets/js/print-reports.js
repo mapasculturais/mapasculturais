@@ -2,7 +2,7 @@
 window.onload = function(){
     setTimeout(function(){
         window.print();
-    },1500);
+    }, 3000);
 }
 
 //Escuta o scroll e seta o top do header para que fique fixo na tela
@@ -11,8 +11,16 @@ document.addEventListener('scroll', function(e) {
 });
 
 /**
-     * Ajusta o gráfico durante a impressão
-     */
+ * Ajusta o gráfico durante a impressão
+ */
+ function beforePrint() {
+    setPrinting(true);
+ };
+
+ function afterPrint() {
+    setPrinting(false);
+};
+
 function setPrinting(printing) {
     Chart.helpers.each(Chart.instances, function(chart) {
         chart._printing = printing;
@@ -26,9 +34,9 @@ function setPrinting(printing) {
         var mediaQueryList = window.matchMedia('print');
         mediaQueryList.addListener(function(args) {
             if (args.matches) {
-                setPrinting(true);
+                beforePrint();
             } else {
-                setPrinting(false);
+                afterPrint();
             }
         });
     }
