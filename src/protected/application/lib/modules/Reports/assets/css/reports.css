@@ -4,6 +4,7 @@
 
 #reports header .print-reports{
     float: right;
+    margin-top: 4px;
 }
 
 #reports div.chart-scroll {
@@ -184,21 +185,21 @@
 
 /* Chart footer/legends /line /bar /table */
 #reports .chart-wrap.type-line,
-#reports .chart-wrap .chart-bar + footer,
-#reports .chart-wrap .chart-table + footer{
+#reports .chart-wrap.type-bar,
+#reports .chart-wrap.type-table {
     width: 100%;
 }
 
 #reports .chart-wrap.type-line .legends-charts,
-#reports .chart-wrap .chart-bar + footer .legends-charts,
-#reports .chart-wrap .chart-table + footer .legends-charts {
+#reports .chart-wrap.type-bar .legends-charts,
+#reports .chart-wrap.type-table .legends-charts {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
 #reports .chart-wrap.type-line .legends-charts .each,
-#reports .chart-wrap .chart-bar + footer .legends-charts .each,
-#reports .chart-wrap .chart-table + footer .legends-charts .each {
+#reports .chart-wrap.type-bar .legends-charts .each,
+#reports .chart-wrap.type-table .legends-charts .each {
     padding: 0 15px;
     width: 33.3333%;
 }
