@@ -36,32 +36,3 @@ $params = [
     ?>
 
 </article>
-
-<script>
-    /**
-     * Ajusta o gráfico durante a impressão
-     */
-    function setPrinting(printing) {
-        Chart.helpers.each(Chart.instances, function(chart) {
-            chart._printing = printing;
-            chart.resize();
-            chart.update();
-        });
-    }
-
-    (function() {
-        if (window.matchMedia) {
-            var mediaQueryList = window.matchMedia('print');
-            mediaQueryList.addListener(function(args) {
-                if (args.matches) {
-                    setPrinting(true);
-                } else {
-                    setPrinting(false);
-                }
-            });
-        }
-
-        window.onbeforeprint = beforePrint;
-        window.onafterprint  = afterPrint;
-    }());
-</script>
