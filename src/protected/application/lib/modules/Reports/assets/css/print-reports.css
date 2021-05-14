@@ -1,12 +1,54 @@
-.chart-wrap .download{
-    display:none;
+#print-reports .chart-wrap .download{
+    display: none;
 }
 
-.dot {
-    border-radius: 12px;
-    display: inline-block;
-    height: 12px;
-    margin-right: 5px;
-    min-width: 12px;
-    width: 12px;
+@media print {
+
+    @page {
+        size: 7in 9.25in;
+        margin: 14mm 10mm 14mm 10mm;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+
+    #main-header {
+        border-bottom: 1px solid #666;
+        padding-left: 1.3rem;
+    }
+
+    #print-reports .chart-wrap .download {
+        display: none;
+    }
+
+    #print-reports #main-content-header {
+        border-bottom: 1px solid #666;
+        margin-top: 0;
+        padding: 1.3rem;
+        width: 100%;
+    }
+
+    #print-reports .charts-dynamic {
+        border-top: 0;
+    }
+
+    #print-reports div.chart-scroll {
+        overflow-x: hidden;
+    }
+
+    #print-reports .chart-container {
+        width: 100%;
+    }
+
+    #print-reports .chart-wrap header {
+        margin-bottom: 80px;
+        margin-top: 40px;
+    }
+
+    #print-reports .break-page {
+        page-break-before: always;
+    }
+
 }

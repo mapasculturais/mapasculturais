@@ -14,18 +14,54 @@ $this->addEntityToJs($opportunity);
 $this->includeAngularEntityAssets($opportunity);
 $this->includeEditableEntityAssets();
 
-$this->enqueueStyle('app', 'print-reports', 'css/print-reports.css', [], 'print');
+$this->enqueueStyle('app', 'print-reports', 'css/print-reports.css', ['reports'], 'print');
 
 $params = [ 
     'opportunity' => $opportunity,
-    'module' => $module,
+    'module'      => $module,
+    'print'       => true
 ];
 
 ?>
 
-<article class="main-content registration" ng-controller="Reports">
+<article class="main-content registration" id="print-reports" ng-controller="Reports">
 
-<?php $this->part('print/print-static-graphics', $params);?>
-<?php $this->part('print/print-dynamic-graphics');?>
+    <?php
+
+    $this->part('print/print-header', $params);
+    $this->part('print/print-static-graphics', $params);
+    $this->part('print/print-dynamic-graphics', $params);
+
+    ?>
 
 </article>
+
+
+<script>
+    /**
+     * Ajusta o gráfico durante a impressão
+     */
+    function setPrinting(printing) {
+        Chart.helpers.each(Chart.instances, function(chart) {
+            chart._printing = printing;
+            chart.resize();
+            chart.update();
+        });
+    }
+
+    (function() {
+        if (window.matchMedia) {
+            var mediaQueryList = window.matchMedia('print');
+            mediaQueryList.addListener(function(args) {
+                if (args.matches) {
+                    setPrinting(true);
+                } else {
+                    setPrinting(false);
+                }
+            });
+        }
+
+        window.onbeforeprint = beforePrint;
+        window.onafterprint  = afterPrint;
+    }());
+</script>
