@@ -5,6 +5,10 @@ window.onload = function(){
     }, 3000);
 }
 
+//fecha a página de impressão ao finalizar o processo
+window.addEventListener("afterprint", function(event) { window.close(); });
+window.onafterprint();
+
 //Escuta o scroll e seta o top do header para que fique fixo na tela
 document.addEventListener('scroll', function(e) {
     document.getElementById('main-header').style.top = 0;
