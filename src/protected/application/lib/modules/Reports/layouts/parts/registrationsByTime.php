@@ -9,6 +9,7 @@ $serie = [];
 $height = 'auto';
 $width = '100%';
 $title = i::__('Inscrições ao longo do tempo');
+$print = $print ?? false;
 
 //Prepara os dados para o gráfico
 foreach ($data as $key_data => $values) {
@@ -42,16 +43,17 @@ if ($self->checkIfChartHasData(array_column($serie, 'data'))) {
 
     // Imprime o gráfico na tela
     $this->part('charts/line', [
-        'vertical' => true,
-        'title' => $title,
-        'labels' => $dataLabels,
-        'series' => $serie,
-        'height' => $height,
-        'width' => $width,
-        'legends' => $legends,
-        'colors' => $colors,
+        'vertical'    => true,
+        'title'       => $title,
+        'labels'      => $dataLabels,
+        'series'      => $serie,
+        'height'      => $height,
+        'width'       => $width,
+        'legends'     => $legends,
+        'colors'      => $colors,
         'opportunity' => $opportunity,
-        'action' => 'registrationsByTime'
+        'action'      => 'registrationsByTime',
+        'print'       => $print
     ]);
 
 }

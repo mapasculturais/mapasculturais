@@ -84,6 +84,18 @@ class Controller extends \MapasCulturais\Controller
     }
 
     /**
+     * Página de impressão de dos reports
+     */
+    public function GET_printReports()
+    {
+        $this->requireAuthentication();
+
+        $opp = $this->getOpportunity();
+
+        $this->render('print-reports', ['opportunity' => $opp]);
+    }
+
+    /**
      * Gera CSV das inscrições agrupadas por status
      *
      *

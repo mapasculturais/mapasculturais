@@ -15,9 +15,10 @@ use MapasCulturais\i;
     ]);
  * 
  */
-$title = $title ?? null;
+$title    = $title ?? null;
 $chart_id = uniqid('chart-line-');
 $datasets = [];
+$print    = $print ?? false;
 
 if (isset($series) && is_array($series)) {
     $datasets = array_map(function ($dataset) {
@@ -39,7 +40,12 @@ if (isset($series) && is_array($series)) {
 /**
  * Calcula a largura em porcentagem para o gráfico, baseado na quantidade de dados
  */
-$count_data = function ( $data ) {
+$count_data = function ( $data ) use ( $print ) {
+
+    if ( $print ) {
+        return 100;
+    }
+
     if ( count( $data ) < 30 || (count( $data ) * 2) < 100) {
         return 100;
     } else {
