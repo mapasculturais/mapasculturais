@@ -528,15 +528,15 @@ class Module extends \MapasCulturais\Module
 
          // Remove status desnecessário e subistitui os termos na lista de inscrições da prestação de contas
          $app->hook('opportunity.registrationStatuses', function(&$registrationStatuses){
-            if($this->isAccountabilityPhase){
-                $terms = [
-                    i::__('Suplente') => i::__('Aprovada com resalvas'),
-                    i::__('Selecionada') => i::__('Aprovada'),     
-                    i::__('Não selecionada') => i::__('Não aprovada'),             
-                ];
-
-                foreach($registrationStatuses as $key => $status){
-                    if(!in_array($status['value'], [0,1,3,8,9,10]) || $status['value'] == ""){
+             if($this->isAccountabilityPhase){
+                 $terms = [
+                     i::__('Suplente') => i::__('Aprovada com resalvas'),
+                     i::__('Selecionada') => i::__('Aprovada'),     
+                     i::__('Não selecionada') => i::__('Não aprovada'),             
+                    ];
+                    
+                    foreach($registrationStatuses as $key => $status){
+                        if(!in_array($status['value'], [0,1,3,8,9,10]) || ($status['value'] == "" && !is_int($status['value']))){
                         unset($registrationStatuses[$key]);
                     }else{
                         $registrationStatuses[$key]['label'] = str_replace(array_keys($terms), array_values($terms), $status['label']);
