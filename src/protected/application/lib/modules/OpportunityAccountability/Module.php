@@ -41,10 +41,16 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
-        // Altera mensagem da revisão para informar o término de um paracer técnico
+        // Altera mensagem da revisão para informar o término e a reabertura de um paracer técnico
         $app->hook('POST(registration.saveEvaluation):before', function() use ($app){
-            $app->hook('entity(EntityRevision).insert:before',function (){            
-                $this->message = i::__("Parecer técnico finalizado");
+            $request = $this->data;
+            if($request['status'] == "evaluated"){
+                $message = i::__("Parecer técnico finalizado");
+            }else if($request['status'] == "draft"){
+                $message = i::__("Parecer técnico reaberto");
+            }
+            $app->hook('entity(EntityRevision).insert:before',function () use ($message){
+                $this->message = $message;
             });
         });
 
