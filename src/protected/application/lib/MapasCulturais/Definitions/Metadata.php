@@ -2,6 +2,7 @@
 namespace MapasCulturais\Definitions;
 
 use DateTime;
+use InvalidArgumentException;
 use MapasCulturais\App;
 
 /**
@@ -170,6 +171,15 @@ class Metadata extends \MapasCulturais\Definition{
         $serializers = [
             'json' => function($value) {
                 return json_encode($value);
+            },
+            'DateTime' => function ($value) {
+                if ($value instanceof DateTime) {
+                    return $value->format('Y-m-d H:i:s');
+                } else if (is_string($value)) {
+                    return (new DateTime($value))->format('Y-m-d H:i:s');
+                } else {
+                    throw new InvalidArgumentException('value must be a DateTime or a date time string');
+                }
             }
         ];
 
@@ -186,6 +196,13 @@ class Metadata extends \MapasCulturais\Definition{
         $unserializers = [
             'json' => function($value) {
                 return json_decode($value);
+            },
+            'DateTime' => function($value) {
+                if ($value) {
+                    return new DateTime($value);
+                } else {
+                    return $value;
+                }
             }
         ];
 
