@@ -12,6 +12,10 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
             <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportunidade");?></p>
         </header>
 
+	    <button ng-click="setReportFilter()" class='btn btn-default'>
+		    <?php i::_e('Ver também em rascunho'); ?>
+	    </button>
+
         <div class="charts-static">
             <?php if (isset($registrationsByTime)) {?>
                 <?php $this->part('registrationsByTime', ['data' => $registrationsByTime, 'opportunity' => $opportunity, 'self' => $self]);?>
