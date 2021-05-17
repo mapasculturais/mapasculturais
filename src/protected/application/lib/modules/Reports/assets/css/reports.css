@@ -7,7 +7,7 @@
     margin-top: 4px;
 }
 
-div.chart-scroll {
+#reports div.chart-scroll {
     margin-bottom: 15px;
     overflow-x: scroll;
 }
@@ -186,20 +186,23 @@ div.chart-scroll {
 /* Chart footer/legends /line /bar /table */
 .chart-wrap.type-line footer,
 .chart-wrap.type-bar footer,
-.chart-wrap.type-table footer {
+.chart-wrap.type-table footer,
+.chart-wrap.type-horizontalBar footer {
     width: 100%;
 }
 
 .chart-wrap.type-line .legends-charts,
 .chart-wrap.type-bar .legends-charts,
-.chart-wrap.type-table .legends-charts {
+.chart-wrap.type-table .legends-charts,
+.chart-wrap.type-horizontalBar .legends-charts {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
 .chart-wrap.type-line .legends-charts .each,
 .chart-wrap.type-bar .legends-charts .each,
-.chart-wrap.type-table .legends-charts .each {
+.chart-wrap.type-table .legends-charts .each,
+.chart-wrap.type-horizontalBar .legends-charts .each  {
     padding: 0 15px;
     width: 33.3333%;
 }
