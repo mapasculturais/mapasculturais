@@ -742,7 +742,7 @@ class Module extends \MapasCulturais\Module{
                 MapasCulturais\Entities\Registration r1
             WHERE
                 r1.opportunity = :previous_opportunity AND
-                r1.status IN (10,8) AND
+                r1.status = 10 AND
                 r1.number NOT IN (
                     SELECT
                         r2.number
