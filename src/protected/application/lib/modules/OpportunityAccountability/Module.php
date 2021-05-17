@@ -334,7 +334,7 @@ class Module extends \MapasCulturais\Module
             if (!isset($registration->openFields)) {
                 return;
             }
-            $openFields = json_decode($registration->openFields, true);
+            $openFields = $registration->openFields;
             if (($openFields[$this->key] ?? "") == "true") {
                 return;
             }
@@ -791,7 +791,7 @@ class Module extends \MapasCulturais\Module
 
     static function hasOpenFields($registration)
     {
-        $openFields = json_decode($registration->openFields, true);
+        $openFields = $registration->openFields;
         foreach (($openFields ?? []) as $value) {
             if ($value == "true") {
                 return true;
