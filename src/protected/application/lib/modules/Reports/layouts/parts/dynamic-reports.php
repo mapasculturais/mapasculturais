@@ -40,11 +40,11 @@ use MapasCulturais\i;
                 </table> 
             </div>
         </div>
-
         <div ng-if="graphic.typeGraphic === 'pie'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:60%">
             <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
         </div>
-        <div ng-if="graphic.typeGraphic === 'bar' || graphic.typeGraphic === 'horizontalBar'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:{{graphic.countData}}%">
+        <div ng-if="graphic.typeGraphic === 'bar' || graphic.typeGraphic === 'horizontalBar'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}"
+         style="position: relative; height:auto;" ng-style="{ 'width' : graphic.countData + '%'}">
             <div class="chart-scroll">
                 <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
             </div>
