@@ -291,6 +291,12 @@
                     }];
 
                 }
+
+                var stacked = false;
+                if(item.typeGraphic == "horizontalBar"){
+                    stacked = true;
+                }
+                
                 if(item.typeGraphic != "table"){
                     var config = {
                         type: item.typeGraphic,
@@ -300,6 +306,14 @@
                         },
                         options: {
                             responsive: true,
+                            scales: {
+                                xAxes: [{
+                                   stacked: stacked 
+                                }],
+                                yAxes: [{
+                                   stacked: stacked,
+                                }]
+                             },
                             legend: false,
                             plugins: {
                                 datalabels: {     

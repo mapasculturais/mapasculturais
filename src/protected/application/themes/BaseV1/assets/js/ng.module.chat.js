@@ -80,6 +80,7 @@
             previousMessage: {},
             spinner: false,
             sending: false,
+            chatFocusTime: 60000,
             currentUserId: MapasCulturais.userProfile.id,
             
             apiQuery: {
@@ -95,12 +96,46 @@
             return $rootScope.closedChats && $rootScope.closedChats[$scope.data.threadId];
         }
 
+        $scope.chatIsFocused = function () {
+            $scope.data.chatFocusTime = 10000;
+            setInterval(getLatestMessages, $scope.data.chatFocusTime);
+        }
+
         var adjustBoxPosition = function () {
             setTimeout(function () {
                 adjustingBoxPosition = true;
                 $('#module-name-owner-button').click();
                 adjustingBoxPosition = false;
             });
+        };
+
+        var getLatestMessages = function () {
+            ChatService.find($scope.data.threadId).success(function (data, status, headers) {
+                $scope.data.messages.forEach(function (current) {
+                    
+                    var found = false;
+                    data.forEach(function(returnApi){
+                        if(current.id == returnApi.id){
+                            found = true;
+                        }
+                    });
+
+                    if(!found){
+                        data.push(current);
+                    }
+                });
+
+                $scope.data.messages = data;
+            });
+        };
+
+        // Verifica se pressionou CTRl+ENTER
+        $scope.handleCtrlEnterAction = function (e) {
+            var chatMessage = this.data.newMessage;
+            if (e.ctrlKey && e.key === 'Enter' && chatMessage.trim() !== '') {
+                e.preventDefault();
+                $scope.sendMessage(chatMessage);
+            }
         };
 
         $scope.sendMessage = function (message) {
@@ -120,6 +155,8 @@
                 $scope.data.newMessage = '';
                 $scope.data.sending = false;
             });
+
+            $("textarea.new-message").focus();
 
         }
 
@@ -143,6 +180,8 @@
                 this.style.height = (this.scrollHeight) + "px";
             });
         }, 0);
+
+        setInterval(getLatestMessages, $scope.data.chatFocusTime);
 
     }]);
 })(angular);
