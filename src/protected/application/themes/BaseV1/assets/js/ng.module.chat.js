@@ -111,6 +111,20 @@
 
         var getLatestMessages = function () {
             ChatService.find($scope.data.threadId).success(function (data, status, headers) {
+                $scope.data.messages.forEach(function (current) {
+                    
+                    var found = false;
+                    data.forEach(function(returnApi){
+                        if(current.id == returnApi.id){
+                            found = true;
+                        }
+                    });
+
+                    if(!found){
+                        data.push(current);
+                    }
+                });
+
                 $scope.data.messages = data;
             });
         };
