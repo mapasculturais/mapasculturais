@@ -2,6 +2,7 @@
 
 namespace OpportunityAccountability;
 
+use DateTime;
 use stdClass;
 use MapasCulturais\i;
 use MapasCulturais\App;
@@ -40,6 +41,17 @@ class Module extends \MapasCulturais\Module
         $this->evaluationMethod->module = $this;
 
         $registration_repository = $app->repo('Registration');
+
+        //Adiciona texto explicativo na tela de projetos em rascungo
+        $app->hook('template(project.single.tab-about--highlighted-message):before', function(){
+            $entity = $this->controller->requestedEntity;
+            if($entity->isAccountability){
+                if($entity->status == Project::STATUS_DRAFT){
+                    $from = $entity->opportunity->accountabilityPhase->registrationFrom->format('d/m/Y');
+                    $this->part('accountability-phase-project-info',['from' => $from]);
+                }
+            }
+        });
 
         // Altera mensagem da revisão para informar o término e a reabertura de um paracer técnico
         $app->hook('POST(registration.saveEvaluation):before', function() use ($app){
