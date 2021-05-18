@@ -1428,7 +1428,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mapasculturais/MapasSDK.git",
-                "reference": "698ef50195bc72f04cd2df25c458eb2333e1932d"
+                "reference": "6072b3e9c8f9c35048a1a0c7fe4646c843b9f506"
             },
             "require": {
                 "curl/curl": "*",
@@ -1457,7 +1457,7 @@
             "keywords": [
                 "mapas culturais"
             ],
-            "time": "2019-07-26T17:10:27+00:00"
+            "time": "2021-05-15T14:58:58+00:00"
         },
         {
             "name": "michelf/php-markdown",

@@ -29,7 +29,7 @@ $result = [
                             <li class="widget-list-item"><strong><?=$revision->createTimestamp->format('d/m/Y H:i:s')?></strong> - <?=$revision->message?>
                         <?php }?>
                     <?php } else {?>
-                        <?php if($revision->message == "Parecer técnico finalizado"){ ?>
+                        <?php if($revision->message == "Parecer técnico finalizado" || $revision->message == "Parecer técnico reaberto"){ ?>
                             <li class="widget-list-item"><strong><?=$revision->createTimestamp->format('d/m/Y H:i:s')?></strong> - <?=$revision->message?></li>
                         <?php } else{?>
                             <li class="widget-list-item"><strong><?=$revision->createTimestamp->format('d/m/Y H:i:s')?></strong> - <?=i::__("Prestação de contas enviada");?></li>

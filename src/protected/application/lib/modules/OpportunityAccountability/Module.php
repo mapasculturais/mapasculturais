@@ -41,10 +41,16 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
-        // Altera mensagem da revisão para informar o término de um paracer técnico
+        // Altera mensagem da revisão para informar o término e a reabertura de um paracer técnico
         $app->hook('POST(registration.saveEvaluation):before', function() use ($app){
-            $app->hook('entity(EntityRevision).insert:before',function (){            
-                $this->message = i::__("Parecer técnico finalizado");
+            $request = $this->data;
+            if($request['status'] == "evaluated"){
+                $message = i::__("Parecer técnico finalizado");
+            }else if($request['status'] == "draft"){
+                $message = i::__("Parecer técnico reaberto");
+            }
+            $app->hook('entity(EntityRevision).insert:before',function () use ($message){
+                $this->message = $message;
             });
         });
 
@@ -328,7 +334,7 @@ class Module extends \MapasCulturais\Module
             if (!isset($registration->openFields)) {
                 return;
             }
-            $openFields = json_decode($registration->openFields, true);
+            $openFields = $registration->openFields;
             if (($openFields[$this->key] ?? "") == "true") {
                 return;
             }
@@ -522,15 +528,15 @@ class Module extends \MapasCulturais\Module
 
          // Remove status desnecessário e subistitui os termos na lista de inscrições da prestação de contas
          $app->hook('opportunity.registrationStatuses', function(&$registrationStatuses){
-            if($this->isAccountabilityPhase){
-                $terms = [
-                    i::__('Suplente') => i::__('Aprovada com resalvas'),
-                    i::__('Selecionada') => i::__('Aprovada'),     
-                    i::__('Não selecionada') => i::__('Não aprovada'),             
-                ];
-
-                foreach($registrationStatuses as $key => $status){
-                    if(!in_array($status['value'], [0,1,3,8,9,10]) || $status['value'] == ""){
+             if($this->isAccountabilityPhase){
+                 $terms = [
+                     i::__('Suplente') => i::__('Aprovada com resalvas'),
+                     i::__('Selecionada') => i::__('Aprovada'),     
+                     i::__('Não selecionada') => i::__('Não aprovada'),             
+                    ];
+                    
+                    foreach($registrationStatuses as $key => $status){
+                        if(!in_array($status['value'], [0,1,3,8,9,10]) || ($status['value'] == "" && !is_int($status['value']))){
                         unset($registrationStatuses[$key]);
                     }else{
                         $registrationStatuses[$key]['label'] = str_replace(array_keys($terms), array_values($terms), $status['label']);
@@ -785,7 +791,7 @@ class Module extends \MapasCulturais\Module
 
     static function hasOpenFields($registration)
     {
-        $openFields = json_decode($registration->openFields, true);
+        $openFields = $registration->openFields;
         foreach (($openFields ?? []) as $value) {
             if ($value == "true") {
                 return true;
