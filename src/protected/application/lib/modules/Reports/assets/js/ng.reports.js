@@ -31,10 +31,16 @@
             error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
             graphics:[],
-            reportRegistrationStatus: false
+            reportRegistrationStatus: 'all'
         };
 
+        $scope.statuses = [
+            {value : 'all', title : 'Mostrar todos'},
+            {value : 'draft', title : 'Somente em rascunho'},
+            {value : 'sent', title : 'Somente Aprovados'}
+        ];
 
+        $scope.reportFilter = {};
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
             var dataOpportunity = angular.copy(data);
@@ -61,7 +67,7 @@
         });
 
         $scope.setReportFilter = function(){
-            $scope.data.reportRegistrationStatus = true;
+            $scope.data.reportRegistrationStatus = $scope.reportFilter;
 
             ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
 
