@@ -30,8 +30,11 @@
             },
             error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
-            graphics:[]          
+            graphics:[],
+            reportRegistrationStatus: false
         };
+
+
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
             var dataOpportunity = angular.copy(data);
@@ -57,7 +60,42 @@
             });
         });
 
-        ReportsService.getData({opportunity_id: MapasCulturais.entity.id}).success(function (data, status, headers){
+        $scope.setReportFilter = function(){
+            $scope.data.reportRegistrationStatus = true;
+
+            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
+
+                var legendsToString = [];
+                data.forEach(function(item){
+
+                    if(item.typeGraphic != "pie"){
+                        var total = $scope.sumSerie(item);
+                        item.data.series.forEach(function(value, index){
+                            var color = MapasCulturais.getChartColors();
+                            value.colors = color[0];
+                            legendsToString.push($scope.legendsToString(total, item, index));
+                        });
+                        item.data.tooltips = item.data.legends;
+                        item.data.legends = legendsToString;
+                    }else{
+                        item.data.data.forEach(function(value, index){
+
+                            legendsToString.push($scope.legendsToString(value, item, index));
+
+                        });
+                        item.data.backgroundColor = MapasCulturais.getChartColors(item.data.data.length);
+                        item.data.tooltips = item.data.labels;
+                        item.data.labels = legendsToString;
+                    }
+
+                    legendsToString = [];
+                });
+                $scope.data.graphics = data;
+                $scope.graphicGenerate();
+            });
+        }
+
+        ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
 
             var legendsToString = [];            
             data.forEach(function(item){
@@ -110,7 +148,7 @@
                     }
                 ],
             }
-            ReportsService.save(config).success(function (data, status, headers){
+            ReportsService.save(config, $scope.data.reportRegistrationStatus).success(function (data, status, headers){
                 
                 if (data.error) {
                     $scope.clearModal();
@@ -128,7 +166,7 @@
 
             });
 
-            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config}).success(function (data, status, headers){   
+            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
 
                 config.graphicId = $scope.data.creatingGraph.graphicId;
                 var graphic = {
@@ -447,6 +485,7 @@
             $scope.data.dataForm.dataDisplayA = '';
             $scope.data.dataForm.dataDisplayB = '';
         }
+
     }]);
     
     module.factory('ReportsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
@@ -465,7 +504,7 @@
             },
             save: function (data) {
                
-                var url = MapasCulturais.createUrl('reports', 'saveGraphic', {opportunity_id: MapasCulturais.entity.id});
+                var url = MapasCulturais.createUrl('reports', 'saveGraphic', {opportunity_id: MapasCulturais.entity.id, status: status});
 
                 return $http.post(url, data).
                 success(function (data, status, headers) {
@@ -476,8 +515,8 @@
                 });
             },
             getData: function (data) {
-               
-                var url = MapasCulturais.createUrl('reports', 'getGraphic', {opportunity_id: MapasCulturais.entity.id});
+
+                var url = MapasCulturais.createUrl('reports', 'getGraphic', {opportunity_id: MapasCulturais.entity.id, status: data.status});
 
                 return $http.get(url, {params:data}).
                 success(function (data, status, headers) {
