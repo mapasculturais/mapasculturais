@@ -65,6 +65,8 @@
         $scope.clearChecked = function(){
             $scope.data.fields.forEach(function(field){
                 field.checked = false;
+                $scope.data.selectAll = false;
+                $scope.data.selectedExist = false;
             }); 
         }
 
