@@ -3,14 +3,19 @@ namespace RegistrationPayments;
 
 use MapasCulturais\i;
 $dataOportunity = $opportunity->getEvaluationCommittee();
-?>
+$prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => $opportunity->id))?>
 <?php $this->applyTemplateHook('opportunity-reports', 'before'); ?>
 <div ng-controller='Reports'>
 <?php $this->applyTemplateHook('opportunity-reports', 'begin'); ?>
     <div class="aba-content" id="reports">
         <header>
             <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportunidade");?></p>
+            <a href="<?=$prinUrl?>" class="btn btn-default hltip print-reports" title="" hltitle="Baixar em CSV" target="_blank"><i class="fas fa-print"></i> <?php i::_e("Imprimir");?></a>
         </header>
+
+	    <button ng-click="setReportFilter()" class='btn btn-default'>
+		    <?php i::_e('Ver também em rascunho'); ?>
+	    </button>
 
         <div class="charts-static">
             <?php if (isset($registrationsByTime)) {?>

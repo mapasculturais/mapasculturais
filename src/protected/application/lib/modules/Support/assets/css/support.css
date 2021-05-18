@@ -132,9 +132,19 @@ body.modal-oppened {
     font-size: 0.75rem;
     color: #999;
     margin-bottom: 0;
+    margin-left: 17px;
 }
 
 #support-settings .support-content-modal .modal-body ul li select {
     cursor: pointer;
     margin-bottom: 0;
+}
+
+.multiple-fields {
+    height: 40px;
+    margin-left: 1%;
+}
+
+.multiple-fields select{
+    float: right;
 }

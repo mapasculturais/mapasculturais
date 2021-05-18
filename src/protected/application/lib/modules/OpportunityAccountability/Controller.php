@@ -38,7 +38,7 @@ class Controller extends \MapasCulturais\Controller
         $registration = $app->repo('Registration')->find($request['id']);
         $registration->checkPermission('evaluate');
 
-        $openFields = json_decode($registration->openFields, true);
+        $openFields = (array)$registration->openFields;
 
         $field_id = key($request['data']);
 
@@ -75,7 +75,7 @@ class Controller extends \MapasCulturais\Controller
         $registration = $app->repo('Registration')->find($request['id']);
         $registration->checkPermission('evaluate');
 
-        $openFields = json_decode($registration->openFields, true);
+        $openFields = (array)$registration->openFields;
 
         $field_id = key($request['data']);
 
