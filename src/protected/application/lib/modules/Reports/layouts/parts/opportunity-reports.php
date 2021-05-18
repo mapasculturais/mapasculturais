@@ -13,6 +13,10 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
             <a href="<?=$prinUrl?>" class="btn btn-default hltip print-reports" title="" hltitle="Baixar em CSV" target="_blank"><i class="fas fa-print"></i> <?php i::_e("Imprimir");?></a>
         </header>
 
+	    <button ng-click="setReportFilter()" class='btn btn-default'>
+		    <?php i::_e('Ver também em rascunho'); ?>
+	    </button>
+
         <div class="charts-static">
             <?php if (isset($registrationsByTime)) {?>
                 <?php $this->part('registrationsByTime', ['data' => $registrationsByTime, 'opportunity' => $opportunity, 'self' => $self]);?>
