@@ -12,9 +12,11 @@ $dataOportunity = $opportunity->getEvaluationCommittee();
             <p><?php i::_e("Veja abaixo os gráficos referentes a essa oportunidade");?></p>
         </header>
 
-	    <button ng-click="setReportFilter()" class='btn btn-default'>
-		    <?php i::_e('Ver também em rascunho'); ?>
-	    </button>
+	    <label for="reportFilter">Filtrar dados por
+		    <select ng-model='reportFilter' ng-options="status.value as status.title for status in statuses" ng-click='setReportFilter()'>
+			    <option value="" ng-hide="reportFilter">Selecione uma opção ...</option>
+		    </select>
+	    </label>
 
         <div class="charts-static">
             <?php if (isset($registrationsByTime)) {?>

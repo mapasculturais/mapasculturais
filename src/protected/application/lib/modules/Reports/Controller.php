@@ -670,9 +670,10 @@ class Controller extends \MapasCulturais\Controller
         return $return;
     }
 
-    public function buildQuery($columns, $op, $timeSeries=false, $status = "false")
+    public function buildQuery($columns, $op, $timeSeries=false, $status)
     {
-    	$st = ($status === "true") ? '= 0' : '> 0';
+
+    	$st = ($status === "sent") ? '= 0' : (($status == "draft") ? '> 0' : '>=  0');
 
         // FIXME: remove empty definitions at the source, not here
         $columns = array_filter($columns, function ($item) {
