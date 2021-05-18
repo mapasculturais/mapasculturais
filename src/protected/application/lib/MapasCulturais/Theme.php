@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais;
 
+use ArrayObject;
 use MapasCulturais\App;
 
 /**
@@ -10,8 +11,14 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\View $layout The layout to use when rendering the template.
  * @property \MapasCulturais\Controller $controller The controller that call the render / partial
+ * @property string $template
+ * @property \ArrayObject $documentMeta
+ * @property \ArrayObject $bodyClasses
+ * @property \ArrayObject $bodyProperties
+ * @property \ArrayObject $jsObject
  *
  * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
+ * 
  *
  * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
  * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
@@ -55,6 +62,10 @@ abstract class Theme extends \Slim\View {
 
     protected $_assetManager = null;
 
+    /**
+     * Document meta tags
+     * @var ArrayObject
+     */
     public $documentMeta = [];
 
     /**
@@ -70,7 +81,7 @@ abstract class Theme extends \Slim\View {
     protected $bodyProperties =  null;
 
     /**
-     *
+     * MapasCulturais JS Object
      * @var \ArrayObject
      */
     protected $jsObject = null;

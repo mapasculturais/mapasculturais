@@ -31,6 +31,10 @@ use MapasCulturais\i;
                 <label><input ng-model="data.dataForm.type" value="table" type="radio"> <i class="fas fa-th-list"></i> <span><b><?php i::_e("Gráfico de tabela"); ?></b></span> </label>
             </div>
 
+            <div class="line">
+                <label><input ng-model="data.dataForm.type" value="horizontalBar" type="radio"> <i class="fas fa-bars"></i> <span><b><?php i::_e("Gráfico de barra"); ?></b></span> </label>
+            </div>
+
         </div>
 
         <!--<div class="graphic-data">-->
@@ -56,16 +60,18 @@ use MapasCulturais\i;
                 <div class="line flex">
                     <div class="column">
 
-                        <label ng-if="data.dataForm.type != 'table'"><?php i::_e("Dados a serem exibidos"); ?></label>
+                        <label ng-if="data.dataForm.type != 'table' && data.dataForm.type != 'horizontalBar'"><?php i::_e("Dados a serem exibidos"); ?></label>
                         <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na coluna"); ?></label>
+                        <label ng-if="data.dataForm.type == 'horizontalBar'"><?php i::_e("Dados a serem exibidos na linha"); ?></label>
                         <select ng-model="data.dataForm.dataDisplayA">
                             <option ng-repeat="(key, dataSelectA) in  data.dataDisplayA" value="{{key}}" label="{{dataSelectA.label}}"></option>
                         </select>
                     </div>
 
-                    <div class="column" ng-if="data.dataForm.type == 'bar' || data.dataForm.type == 'table'">
-                        <label ng-if="data.dataForm.type != 'table'"><?php i::_e("Dados a serem exibidos"); ?></label>
+                    <div class="column" ng-if="data.dataForm.type == 'bar' || data.dataForm.type == 'table' || data.dataForm.type == 'horizontalBar'">
+                        <label ng-if="data.dataForm.type != 'table' && data.dataForm.type != 'horizontalBar'"><?php i::_e("Dados a serem exibidos"); ?></label>
                         <label ng-if="data.dataForm.type == 'table'"><?php i::_e("Dados a serem exibidos na linha"); ?></label>
+                        <label ng-if="data.dataForm.type == 'horizontalBar'"><?php i::_e("Dados a serem exibidos na coluna"); ?></label>
                         <select ng-model="data.dataForm.dataDisplayB">
                             <option ng-repeat="(key, dataSelectB) in  data.dataDisplayB" value="{{key}}" label="{{dataSelectB.label}}"></option>
                         </select>
@@ -79,7 +85,7 @@ use MapasCulturais\i;
             <button class="btn btn-default back" ng-if="data.graphicData == true" ng-click="data.graphicData=false; data.graphicType=true;" class=""><?php i::_e("Voltar"); ?></button>
             <button class="btn btn-primary next" ng-if="data.graphicType == true" ng-click="data.graphicData=true; data.graphicType=false;nextStep()" class="js-close" ng-disabled="!data.dataForm.type"><?php i::_e("Proxima etapa"); ?></button>
             <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'pie' || data.dataForm.type == 'line')" ng-disabled="!data.dataForm.title || !data.dataForm.dataDisplayA"><?php i::_e("Gerar gráfico"); ?></button>
-            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'bar' || data.dataForm.type == 'table')" ng-disabled="!data.dataForm.title  || !data.dataForm.dataDisplayA || !data.dataForm.dataDisplayB"><?php i::_e("Gerar gráfico"); ?></button>
+            <button class="btn btn-primary next" ng-click="createGraphic()" ng-if="data.graphicData == true && (data.dataForm.type == 'bar' || data.dataForm.type == 'table' || data.dataForm.type == 'horizontalBar')" ng-disabled="!data.dataForm.title  || !data.dataForm.dataDisplayA || !data.dataForm.dataDisplayB"><?php i::_e("Gerar gráfico"); ?></button>
         </footer>
 
     </div><!-- /.reports-modal -->

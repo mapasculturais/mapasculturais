@@ -1,6 +1,10 @@
 <?php
 namespace MapasCulturais\Definitions;
 
+use DateTime;
+use InvalidArgumentException;
+use MapasCulturais\App;
+
 /**
  * This class defines an Entity Metadata.
  *
@@ -123,19 +127,6 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->private = key_exists('private', $config) ? $config['private'] : false;
 
-        $this->serialize = key_exists('serialize', $config) ? $config['serialize'] : null;
-        $this->unserialize = key_exists('unserialize', $config) ? $config['unserialize'] : null;
-
-        if ($this->type == 'json' && !$this->serialize && !$this->unserialize) {
-            $this->serialize = function($value) {
-                return json_encode($value);
-            };
-            
-            $this->unserialize = function($value) {
-                return json_decode($value);
-            };
-        }
-        
         $this->available_for_opportunities = key_exists('available_for_opportunities', $config) ? $config['available_for_opportunities'] : false;
 
         $this->field_type = key_exists('field_type', $config) ? $config['field_type'] : $this->type;
@@ -170,7 +161,58 @@ class Metadata extends \MapasCulturais\Definition{
             $config['options'] = $new_array;
         }
 
+        $this->serialize = $config['serialize'] ?? $this->getDefaultSerializer();
+        $this->unserialize = $config['unserialize'] ?? $this->getDefaultUnserializer();
+        
         $this->config = $config;
+    }
+
+    function getDefaultSerializer() {
+        $serializers = [
+            'json' => function($value) {
+                return json_encode($value);
+            },
+            'DateTime' => function ($value) {
+                if ($value instanceof DateTime) {
+                    return $value->format('Y-m-d H:i:s');
+                } else if (is_string($value)) {
+                    return (new DateTime($value))->format('Y-m-d H:i:s');
+                } else {
+                    throw new InvalidArgumentException('value must be a DateTime or a date time string');
+                }
+            }
+        ];
+
+        $app = App::i();
+
+        $serializer = $serializers[$this->type] ?? null;
+
+        $app->applyHookBoundTo($this, "metadata({$this->type}).serializer", [&$serializer, &$serializers]);
+
+        return $serializer;
+    }
+
+    function getDefaultUnserializer() {
+        $unserializers = [
+            'json' => function($value) {
+                return json_decode($value);
+            },
+            'DateTime' => function($value) {
+                if ($value) {
+                    return new DateTime($value);
+                } else {
+                    return $value;
+                }
+            }
+        ];
+
+        $app = App::i();
+
+        $unserializer = $unserializers[$this->type] ?? null;
+
+        $app->applyHookBoundTo($this, "metadata({$this->type}).unserializer", [&$unserializer, &$unserializers]);
+
+        return $unserializer;
     }
 
     /**
