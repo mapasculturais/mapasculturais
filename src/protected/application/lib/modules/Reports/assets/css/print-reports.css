@@ -10,7 +10,7 @@
 @media print {
 
     @page {
-        size: 7in 9.25in;
+        /* size: 7in 9.25in; */
         margin: 14mm 10mm 14mm 10mm;
     }
 
@@ -62,6 +62,25 @@
 
     #print-reports .chart-container {
         width: 100%;
+    }
+
+    #print-reports .charts-dynamic .chart-table table {
+        max-width: 100% !important;
+    }
+
+    #print-reports .charts-dynamic .chart-table table td,
+    #print-reports .charts-dynamic .chart-table table th {
+        padding: 0.1rem;
+    }
+
+    #print-reports .charts-dynamic .chart-table table thead tr th {
+        line-height: 1.6;
+        position: relative;
+    }
+
+    #print-reports .charts-dynamic .chart-table table thead tr th span {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
     }
 
     #print-reports .chart-wrap header {
