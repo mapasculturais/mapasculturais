@@ -1321,13 +1321,14 @@ $$
         }
     },
 
-    'RECREATE VIEW evaluations' => function() use($conn) {
+    'RECREATE VIEW evaluations AGAIN!' => function() use($conn) {
         __try("DROP VIEW evaluations");
 
         $conn->executeQuery("
             CREATE VIEW evaluations AS (
                 SELECT 
                     registration_id,
+                    registration_sent_timestamp,
                     registration_number,
                     registration_category,
                     registration_agent_id,
@@ -1340,6 +1341,7 @@ $$
                 FROM (
                     SELECT 
                         r.id AS registration_id, 
+                        r.sent_timestamp AS registration_sent_timestamp,
                         r.number AS registration_number, 
                         r.category AS registration_category, 
                         r.agent_id AS registration_agent_id, 
@@ -1359,6 +1361,7 @@ $$
                     UNION
                     SELECT 
                         r2.id AS registration_id, 
+                        r2.sent_timestamp AS registration_sent_timestamp,
                         r2.number AS registration_number, 
                         r2.category AS registration_category,
                         r2.agent_id AS registration_agent_id, 
@@ -1393,6 +1396,7 @@ $$
                 ) AS evaluations_view 
                 GROUP BY
                     registration_id,
+                    registration_sent_timestamp,
                     registration_number,
                     registration_category,
                     registration_agent_id,
