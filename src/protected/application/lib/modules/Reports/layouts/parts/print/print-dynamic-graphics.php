@@ -14,29 +14,27 @@ use MapasCulturais\i;
         </header>
         
         <div ng-if="graphic.typeGraphic == 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:100%;">
-            <div class="chart-scroll">    
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th ng-repeat="(key, label) in graphic.data.labels">{{label}}</th>
-                            <th><?php i::_e("Total"); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="(key, serie) in graphic.data.series track by $index">                    
-                            <td >{{serie.label}}</td>
-                            <td ng-repeat="(key, value) in serie.data track by $index">{{value}}</td>
-                            <td>{{graphic.data.sumLines[key]}}</td>
-                        </tr>
-                        <tr>
-                            <td><?php i::_e("Total"); ?></td>
-                            <td ng-repeat="(key, sumColumn) in graphic.data.sumColumns track by $index">{{sumColumn}}</td> 
-                            <td>{{graphic.data.total}}</td>
-                        </tr>
-                    </tbody>
-                </table> 
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th ng-repeat="(key, label) in graphic.data.labels"><span>{{label}}</span></th>
+                        <th><span><?php i::_e("Total"); ?></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(key, serie) in graphic.data.series track by $index">                    
+                        <td >{{serie.label}}</td>
+                        <td ng-repeat="(key, value) in serie.data track by $index">{{value}}</td>
+                        <td>{{graphic.data.sumLines[key]}}</td>
+                    </tr>
+                    <tr>
+                        <td><?php i::_e("Total"); ?></td>
+                        <td ng-repeat="(key, sumColumn) in graphic.data.sumColumns track by $index">{{sumColumn}}</td> 
+                        <td>{{graphic.data.total}}</td>
+                    </tr>
+                </tbody>
+            </table> 
         </div>
 
         <div ng-if="graphic.typeGraphic === 'pie'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:60%">
