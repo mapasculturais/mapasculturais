@@ -40,7 +40,8 @@
             {value : 'sent', title : 'Somente Aprovados'}
         ];
 
-        $scope.reportFilter = {};
+        $scope.reportFilter = '';
+
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
             var dataOpportunity = angular.copy(data);
@@ -67,9 +68,14 @@
         });
 
         $scope.setReportFilter = function(){
+
+            var route = MapasCulturais.createUrl('opportunity', 'single', {id: MapasCulturais.entity.id, status: $scope.reportFilter});
+
             $scope.data.reportRegistrationStatus = $scope.reportFilter;
 
-            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
+            window.location = route;
+
+            /*ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
 
                 var legendsToString = [];
                 data.forEach(function(item){
@@ -98,7 +104,7 @@
                 });
                 $scope.data.graphics = data;
                 $scope.graphicGenerate();
-            });
+            });*/
         }
 
         ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){

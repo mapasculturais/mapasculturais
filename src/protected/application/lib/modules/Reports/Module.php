@@ -46,10 +46,17 @@ class Module extends \MapasCulturais\Module
         //Adiciona o conteúdo dentro da aba dos relatórios
 
         $app->hook('template(opportunity.single.tabs-content):end', function () use ($app, $self) {
+        	$request = $this->controller->data;
+        	$statusValue =  $request['status'] ?? 'all';
+
+	        $status = ($statusValue === 'sent') ? '> 0' : (($statusValue === 'draft') ? '= 0' : '>= 0');
+
+	        $app->view->jsObject['reportStatus'] = $statusValue;
+
             $opportunity = $this->controller->requestedEntity;
             $sendHook = [];
 
-            if ($registrationsByTime = $self->registrationsByTime($opportunity)) {
+            if ($registrationsByTime = $self->registrationsByTime($opportunity, '= 0')) {
                 $sendHook['registrationsByTime'] = $registrationsByTime;
             }
 
@@ -179,7 +186,7 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByTime($opp)
+    public function registrationsByTime($opp, $status)
     {
         $app = App::i();
 
@@ -208,7 +215,7 @@ class Module extends \MapasCulturais\Module
         to_char(sent_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id AND r.status > 0
+        WHERE opportunity_id = :opportunity_id AND r.status {$status}
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
