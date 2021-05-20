@@ -32,7 +32,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
 
             <?php if ($opportunity->evaluationMethod->slug == 'technical') { ?>
                 <?php if (isset($registrationsByEvaluation)) {?>
-                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self]);?>
+                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self, 'statusRegistration' => $statusRegistration]);?>
                 <?php } ?>
 
                 <?php if (isset($registrationsByEvaluationStatus)) {?>
@@ -40,7 +40,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
                 <?php } ?>
             <?php } else {?>
                 <?php if (isset($registrationsByEvaluation)) {?>
-                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self]);?>
+                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self, 'statusRegistration' => $statusRegistration]);?>
                 <?php } ?>
 
                 <?php if (isset($registrationsByEvaluationStatus)) {?>
