@@ -37,10 +37,10 @@
         $scope.statuses = [
             {value : 'all', title : 'Mostrar todos'},
             {value : 'draft', title : 'Somente em rascunho'},
-            {value : 'sent', title : 'Somente Aprovados'}
+            {value : 'approved', title : 'Somente Aprovados'}
         ];
 
-        $scope.reportFilter = '';
+        $scope.reportFilter = MapasCulturais.reportStatus;
 
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -71,43 +71,11 @@
 
             var route = MapasCulturais.createUrl('opportunity', 'single', {id: MapasCulturais.entity.id, status: $scope.reportFilter});
 
-            $scope.data.reportRegistrationStatus = $scope.reportFilter;
-
-            window.location = route;
-
-            /*ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
-
-                var legendsToString = [];
-                data.forEach(function(item){
-
-                    if(item.typeGraphic != "pie"){
-                        var total = $scope.sumSerie(item);
-                        item.data.series.forEach(function(value, index){
-                            var color = MapasCulturais.getChartColors();
-                            value.colors = color[0];
-                            legendsToString.push($scope.legendsToString(total, item, index));
-                        });
-                        item.data.tooltips = item.data.legends;
-                        item.data.legends = legendsToString;
-                    }else{
-                        item.data.data.forEach(function(value, index){
-
-                            legendsToString.push($scope.legendsToString(value, item, index));
-
-                        });
-                        item.data.backgroundColor = MapasCulturais.getChartColors(item.data.data.length);
-                        item.data.tooltips = item.data.labels;
-                        item.data.labels = legendsToString;
-                    }
-
-                    legendsToString = [];
-                });
-                $scope.data.graphics = data;
-                $scope.graphicGenerate();
-            });*/
+            window.location = route+"#/tab=reports";
+           
         }
 
-        ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
+        ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.reportFilter}).success(function (data, status, headers){
 
             var legendsToString = [];            
             data.forEach(function(item){
@@ -178,7 +146,7 @@
 
             });
 
-            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
+            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config, status: $scope.reportFilter}).success(function (data, status, headers){
 
                 config.graphicId = $scope.data.creatingGraph.graphicId;
                 var graphic = {
@@ -503,7 +471,6 @@
     module.factory('ReportsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
         return {  
             findDataOpportunity: function (data) {
-               
                 var url = MapasCulturais.createUrl('reports', 'dataOpportunityReport', {opportunity_id: MapasCulturais.entity.id});
 
                 return $http.get(url, data).

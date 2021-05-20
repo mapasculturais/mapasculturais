@@ -49,14 +49,29 @@ class Module extends \MapasCulturais\Module
         	$request = $this->controller->data;
         	$statusValue =  $request['status'] ?? 'all';
 
-	        $status = ($statusValue === 'sent') ? '> 0' : (($statusValue === 'draft') ? '= 0' : '>= 0');
+            switch ($statusValue) {
+                case 'all':
+                    $status = '> 0';
+                    break;
+                case 'draft':
+                    $status = '= 0';
+                    break;
+                case 'approved':
+                    $status = '= 10';
+                    break;
+                default:
+                    $status = '> 0';
+                    break;
+            }
+       
+            $_SESSION['reportStatusRegistration'] = $status;
 
 	        $app->view->jsObject['reportStatus'] = $statusValue;
 
             $opportunity = $this->controller->requestedEntity;
             $sendHook = [];
 
-            if ($registrationsByTime = $self->registrationsByTime($opportunity, '= 0')) {
+            if ($registrationsByTime = $self->registrationsByTime($opportunity, $status)) {
                 $sendHook['registrationsByTime'] = $registrationsByTime;
             }
 
@@ -69,7 +84,7 @@ class Module extends \MapasCulturais\Module
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
             } else {
-                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)) {
+                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity, $status)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
             }
@@ -81,6 +96,7 @@ class Module extends \MapasCulturais\Module
             $sendHook['opportunity'] = $opportunity;
 
             $sendHook['self'] = $self;
+            $sendHook['statusRegistration'] = $statusValue;
 
             if ($opportunity->canUser('@control') && $self->hasRegistrations($opportunity)) {
                 $this->part('opportunity-reports', $sendHook);
@@ -215,7 +231,7 @@ class Module extends \MapasCulturais\Module
         to_char(sent_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id AND r.status {$status}
+        WHERE opportunity_id = :opportunity_id AND r.status > 0
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
@@ -322,8 +338,14 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByEvaluation($opp)
+    public function registrationsByEvaluation($opp, $status)
     {
+        
+        $complement = "";
+        if($status != "> 0"){
+            $complement = "AND status $status";
+        }
+       
         $app = App::i();
 
         //Pega conexão
@@ -333,25 +355,25 @@ class Module extends \MapasCulturais\Module
         $data = [];
         $params = ['opportunity_id' => $opp->id];
 
-        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0'";
+        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' {$complement}";
 
         $evaluated = $conn->fetchAll($query, $params);
 
-        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0'";
+        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0' {$complement}";
 
         $notEvaluated = $conn->fetchAll($query, $params);
 
         $merge = array_merge($evaluated, $notEvaluated);
-
-        foreach ($merge as $m) {
-            foreach ($m as $v) {
-                if (empty($v)) {
-                    return false;
-                }
-            }
-        }
-
         return $merge;
+        // foreach ($merge as $m) {
+        //     foreach ($m as $v) {
+        //         if (empty($v)) {
+        //             return false;
+        //         }
+        //     }
+        // }
+
+        // return $merge;
     }
 
     /**
