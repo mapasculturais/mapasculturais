@@ -10,6 +10,8 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
+$this->jsObject['isPrintReport'] = true;
+
 $this->addEntityToJs($opportunity);
 $this->includeAngularEntityAssets($opportunity);
 $this->includeEditableEntityAssets();
