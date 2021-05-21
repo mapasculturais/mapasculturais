@@ -56,8 +56,10 @@ class Module extends \MapasCulturais\Module
             $opportunity = $this->controller->requestedEntity;
             $sendHook = [];
 
-            if ($registrationsByTime = $self->registrationsByTime($opportunity, '= 0')) {
-                $sendHook['registrationsByTime'] = $registrationsByTime;
+            if(!$opportunity->isOpportunityPhase){
+                if ($registrationsByTime = $self->registrationsByTime($opportunity, $status)) {
+                    $sendHook['registrationsByTime'] = $registrationsByTime;
+                }
             }
 
             if ($registrationsByStatus = $self->registrationsByStatus($opportunity)) {
@@ -186,7 +188,7 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByTime($opp, $status)
+    public function registrationsByTime($opp)
     {
         $app = App::i();
 
@@ -215,7 +217,7 @@ class Module extends \MapasCulturais\Module
         to_char(sent_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id AND r.status {$status}
+        WHERE opportunity_id = :opportunity_id AND r.status > 0
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
