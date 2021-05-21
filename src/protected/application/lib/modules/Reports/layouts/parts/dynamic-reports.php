@@ -13,6 +13,10 @@ use MapasCulturais\i;
             <button ng-click="deleteGraphic(graphic.reportData.graphicId)" class="hltip delete" title="<?php i::_e("Excluir gráfico"); ?>"></button>
             <span class="hltip type" title="{{graphic.fields}}"><i class="fas fa-info-circle"></i></span>
             <p class="description">{{graphic.description}}</p>
+            
+            <div ng-if="graphic.typeGraphic === 'table' && graphic.graphBreak">
+                <?php $this->part('info-dynamic-graphics-break')?>
+            </div>
         </header>
         
         <div ng-if="graphic.typeGraphic == 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width: 100%;">

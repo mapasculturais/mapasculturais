@@ -11,6 +11,10 @@ use MapasCulturais\i;
             <h3>{{graphic.title}}</h3>
             <span class="hltip type">{{graphic.fields}}</span>
             <p class="description">{{graphic.description}}</p>
+            
+            <div ng-if="graphic.typeGraphic === 'table' && graphic.graphBreak">
+                <?php $this->part('info-dynamic-graphics-break')?>
+            </div>
         </header>
         
         <div ng-if="graphic.typeGraphic == 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:100%;">
@@ -41,13 +45,13 @@ use MapasCulturais\i;
             <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
         </div>
 
-        <div ng-if="graphic.typeGraphic === 'bar' || graphic.typeGraphic === 'horizontalBar'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:{{graphic.countData}}%">
+        <div ng-if="graphic.typeGraphic === 'bar' || graphic.typeGraphic === 'horizontalBar'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto;" ng-style="{ 'width' : graphic.countData + '%'}">
             <div class="chart-scroll">
                 <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
             </div>
         </div>
 
-        <div ng-if="graphic.typeGraphic === 'line'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:100%"">
+        <div ng-if="graphic.typeGraphic === 'line'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:100%">
             <div class="chart-scroll">
                 <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>
             </div>
