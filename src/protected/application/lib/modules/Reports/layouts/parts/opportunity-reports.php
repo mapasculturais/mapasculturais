@@ -3,7 +3,7 @@ namespace RegistrationPayments;
 
 use MapasCulturais\i;
 $dataOportunity = $opportunity->getEvaluationCommittee();
-$prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => $opportunity->id))?>
+$prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => $opportunity->id, 'status' => $statusRegistration ))?>
 
 <?php $this->applyTemplateHook('opportunity-reports', 'before'); ?>
 <div ng-controller='Reports'>

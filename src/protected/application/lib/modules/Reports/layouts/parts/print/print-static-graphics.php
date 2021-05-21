@@ -20,8 +20,8 @@ use MapasCulturais\i;
 
         <?php if ($opportunity->evaluationMethod->slug == 'technical') { ?>
 
-            <?php if($module->registrationsByEvaluation($opportunity)){?>
-                <?php $this->part('registrationsEvaluation', ['data' => $module->registrationsByEvaluation($opportunity), 'opportunity' => $opportunity, 'self' => $module]);?>
+            <?php if($module->registrationsByEvaluation($opportunity, $status)){?>
+                <?php $this->part('registrationsEvaluation', ['data' => $module->registrationsByEvaluation($opportunity, $status), 'opportunity' => $opportunity, 'self' => $module, 'statusRegistration' => $status]);?>
             <?php } ?>
 
             <?php if($module->registrationsByEvaluationStatus($opportunity)){?>
@@ -30,8 +30,8 @@ use MapasCulturais\i;
 
         <?php }else { ?>
 
-            <?php if($module->registrationsByEvaluation($opportunity)){?>
-                <?php $this->part('registrationsEvaluation', ['data' => $module->registrationsByEvaluation($opportunity), 'opportunity' => $opportunity, 'self' => $module]);?>
+            <?php if($module->registrationsByEvaluation($opportunity, $status)){?>
+                <?php $this->part('registrationsEvaluation', ['data' => $module->registrationsByEvaluation($opportunity, $status), 'opportunity' => $opportunity, 'self' => $module , 'statusRegistration' => $status]);?>
             <?php } ?>
 
             <?php if($module->registrationsByEvaluationStatus($opportunity)){?>

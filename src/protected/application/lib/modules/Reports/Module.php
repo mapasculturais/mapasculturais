@@ -189,11 +189,11 @@ class Module extends \MapasCulturais\Module
             if ($count >= 2)
                 return true;
                 
-            return false;
+            return true;
     
         }
     
-        return false;
+        return true;
     
     }
 
@@ -202,7 +202,7 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByTime($opp, $status)
+    public function registrationsByTime($opp)
     {
         $app = App::i();
 
@@ -338,9 +338,25 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByEvaluation($opp, $status)
+    public function registrationsByEvaluation($opp, $statusValue)
     {
+        switch ($statusValue) {
+            case 'all':
+                $status = '> 0';
+                break;
+            case 'draft':
+                $status = '= 0';
+                break;
+            case 'approved':
+                $status = '= 10';
+                break;
+            default:
+                $status = '> 0';
+                break;
+        }
         
+        
+
         $complement = "";
         if($status != "> 0"){
             $complement = "AND status $status";
@@ -364,16 +380,15 @@ class Module extends \MapasCulturais\Module
         $notEvaluated = $conn->fetchAll($query, $params);
 
         $merge = array_merge($evaluated, $notEvaluated);
-        return $merge;
-        // foreach ($merge as $m) {
-        //     foreach ($m as $v) {
-        //         if (empty($v)) {
-        //             return false;
-        //         }
-        //     }
-        // }
+        foreach ($merge as $m) {
+            foreach ($m as $v) {
+                if (empty($v)) {
+                    return false;
+                }
+            }
+        }
 
-        // return $merge;
+        return $merge;
     }
 
     /**

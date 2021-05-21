@@ -31,7 +31,6 @@
             error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
             graphics:[],
-            reportRegistrationStatus: 'all'
         };
 
         $scope.statuses = [
@@ -129,7 +128,7 @@
                     }
                 ],
             }
-            ReportsService.save(config, $scope.data.reportRegistrationStatus).success(function (data, status, headers){
+            ReportsService.save(config, $scope.reportFilter).success(function (data, status, headers){
                 
                 if (data.error) {
                     $scope.clearModal();
@@ -542,7 +541,7 @@
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
             },
-            save: function (data) {
+            save: function (data, status) {
                
                 var url = MapasCulturais.createUrl('reports', 'saveGraphic', {opportunity_id: MapasCulturais.entity.id, status: status});
 
