@@ -63,7 +63,7 @@ class Module extends \MapasCulturais\Module
                     $status = '> 0';
                     break;
             }
-       
+
             $_SESSION['reportStatusRegistration'] = $status;
 
 	        $app->view->jsObject['reportStatus'] = $statusValue;
@@ -71,14 +71,16 @@ class Module extends \MapasCulturais\Module
             $opportunity = $this->controller->requestedEntity;
             $sendHook = [];
 
-            if ($registrationsByTime = $self->registrationsByTime($opportunity, $status)) {
-                $sendHook['registrationsByTime'] = $registrationsByTime;
+            if(!$opportunity->isOpportunityPhase){
+                if ($registrationsByTime = $self->registrationsByTime($opportunity, $status)) {
+                    $sendHook['registrationsByTime'] = $registrationsByTime;
+                }
             }
 
             if ($registrationsByStatus = $self->registrationsByStatus($opportunity)) {
                 $sendHook['registrationsByStatus'] = $registrationsByStatus;
             }
-            
+
             if ($opportunity->evaluationMethod->slug == 'technical') {
                 if ($registrationsByEvaluation = $self->registrationsByEvaluationStatusBar($opportunity)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
@@ -137,7 +139,7 @@ class Module extends \MapasCulturais\Module
                 'value' => [
                     'label' => 'Gráfico',
                     'validations' => [
-                        'required' => '',                           
+                        'required' => '',
                     ]
                 ],
             ],
@@ -179,15 +181,16 @@ class Module extends \MapasCulturais\Module
     public function checkIfChartHasData(array $values) {
 
         if (count($values) > 1) {
-    
+
             $count = 0;
             foreach ($values as $key => $value) {
                 if ($value > 1)
                     $count++;
             }
-    
+
             if ($count >= 2)
                 return true;
+<<<<<<< HEAD
                 
             return true;
     
@@ -195,6 +198,15 @@ class Module extends \MapasCulturais\Module
     
         return true;
     
+=======
+
+            return false;
+
+        }
+
+        return false;
+
+>>>>>>> 1ea0aef77931a5dbd5386f9ad6ba2bca9bb52de7
     }
 
     /**
@@ -340,6 +352,7 @@ class Module extends \MapasCulturais\Module
      */
     public function registrationsByEvaluation($opp, $statusValue)
     {
+<<<<<<< HEAD
         switch ($statusValue) {
             case 'all':
                 $status = '> 0';
@@ -356,12 +369,14 @@ class Module extends \MapasCulturais\Module
         }
         
         
+=======
+>>>>>>> 1ea0aef77931a5dbd5386f9ad6ba2bca9bb52de7
 
         $complement = "";
         if($status != "> 0"){
             $complement = "AND status $status";
         }
-       
+
         $app = App::i();
 
         //Pega conexão
