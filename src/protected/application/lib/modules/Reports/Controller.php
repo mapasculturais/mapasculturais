@@ -89,10 +89,12 @@ class Controller extends \MapasCulturais\Controller
     public function GET_printReports()
     {
         $this->requireAuthentication();
-
+        
         $opp = $this->getOpportunity();
-
-        $this->render('print-reports', ['opportunity' => $opp]);
+        
+        $request = $this->data;
+       
+        $this->render('print-reports', ['opportunity' => $opp, 'status' => $request['status']]);
     }
 
     /**
@@ -495,13 +497,13 @@ class Controller extends \MapasCulturais\Controller
             foreach ($metalists as $metalist){
                 $value = json_decode($metalist->value, true);
                 $value['reportData']['graphicId'] = $metalist->id;
-                $value['data'] = $this->getData($value, $opp, $_SESSION['reportStatusRegistration']);
+                $value['data'] = $this->getData($value, $opp, $request['status']);
                 $return[] = $value;
                 
             }
         }else{
             $reportData = json_decode($request['reportData'], true);
-            $return =  $this->getData($reportData, $opp, $_SESSION['reportStatusRegistration']);
+            $return =  $this->getData($reportData, $opp, $request['status']);
         }
 
         $this->apiResponse($return);
@@ -518,18 +520,18 @@ class Controller extends \MapasCulturais\Controller
         $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
         $opp->checkPermission('viewReport');
                 
-        $preload = $this->getData($this->data, $opp, $_SESSION['reportStatusRegistration']);
+        $preload = $this->getData($this->data, $opp, $request['status']);
 
         /**
          * Verifica se existe dados suficientes para gerar o gráfico
          */ 
         if ($preload['typeGraphic'] == 'pie') {
-            if (!$module->checkIfChartHasData($preload['data'])) {
+            if (!$module->checkIfChartHasData($preload['data']) && $request['status'] == 'all') {
                 $this->apiResponse(['error' => true]);
                 return;
             }
         } else {
-            if (!$module->checkIfChartHasData($preload['series'])) {
+            if (!$module->checkIfChartHasData($preload['series']) && $request['status'] == 'all') {
                 $this->apiResponse(['error' => true]);
                 return;
             }
