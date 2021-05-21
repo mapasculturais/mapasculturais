@@ -102,7 +102,8 @@
                 
                 legendsToString = [];
             });
-            $scope.data.graphics = data;            
+            $scope.data.graphics = data;
+            $scope.checkTableGraphic();
             $scope.graphicGenerate();
         });
         
@@ -136,7 +137,7 @@
                     $scope.data.error = data.error;
                     return;
                 }
-
+                $scope.checkTableGraphic();
                 $scope.data.graphics = $scope.data.graphics.filter(function (item) {
                     if (item.reportData.graphicId != data.graphicId) return item;
                 });
@@ -205,6 +206,61 @@
                return (data * 2);
             }
         }
+
+        // Checa se é necessário quebrar o grafico de tabela em varios gráficos
+       $scope.checkTableGraphic = function(){            
+            var scopeGraphic = angular.copy($scope.data.graphics); 
+
+            scopeGraphic.forEach(function(item, index){             
+                if(item.typeGraphic == "table"){
+
+                    var limit = 10;
+                    var soma = Math.floor( item.data.labels.length / limit );
+                    var resto = ( ( item.data.labels.length % limit ) > 0 ) ? 1 : 0;
+                    var qtdGraphic = soma + resto;
+                    var newGraphics = [];
+
+                    for ( var i = 0; i < qtdGraphic; i++ ) {
+                        var copy = angular.copy(item);
+
+                        if(i < (qtdGraphic -1)){
+                            copy.data.legends = {}
+                        }
+
+                        newGraphics.push(copy);                                              
+                    }
+
+                    newGraphics.forEach(function(grafic, index){
+                        grafic.identifier = grafic.identifier+"-"+index;
+                        var min = index * limit
+                        var max = (min) + limit;
+                        var newLabels = grafic.data.labels.slice(min, max);
+                        grafic.data.labels = newLabels;
+                    }); 
+
+                    newGraphics.forEach(function(item, index){
+                        item.data.series.forEach(function(serie){
+                            var min = index * limit
+                            var max = (min) + limit;
+                            var newData = serie.data.slice(min, max);
+                            serie.data = newData;
+                        });                      
+                    }); 
+
+                    newGraphics.forEach(function(item, index){
+                        item.graphBreak = (qtdGraphic > 1) ? true : false;
+                        item.totalBreak = qtdGraphic;
+                        item.graphPart = (index+1);
+                        $scope.data.graphics.push(item)
+                    });
+                   
+                    $scope.data.graphics.splice(index, 1);
+
+                }
+
+                
+            });
+       }        
         
         $scope.graphicGenerate = function() {
             var _datasets;
@@ -238,7 +294,7 @@
                     
                     item.data.total = total;
                     item.data.sumLines = sumLines;
-                    item.data.sumColumns = sumColumns;
+                    item.data.sumColumns = sumColumns;             
                     
                 }
                 if(item.typeGraphic != "pie"){

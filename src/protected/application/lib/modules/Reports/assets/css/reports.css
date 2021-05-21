@@ -120,9 +120,19 @@
     width: 100%;
 }
 
+.charts-dynamic .chart-table table td,
+.charts-dynamic .chart-table table th {
+    padding: 0.1rem;
+}
+
 .charts-dynamic .chart-table table thead tr th {
     line-height: 1.6;
-    min-width: 1.5rem;
+    position: relative;
+}
+
+.charts-dynamic .chart-table table thead tr th span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
 }
 
 .charts-dynamic .chart-table table tbody tr:nth-child(odd) {
