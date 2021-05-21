@@ -188,17 +188,9 @@ class Module extends \MapasCulturais\Module
                     $count++;
             }
 
-            if ($count >= 2)
+            if ($count >= 2){
                 return true;
-<<<<<<< HEAD
-                
-            return true;
-    
-        }
-    
-        return true;
-    
-=======
+            }
 
             return false;
 
@@ -206,7 +198,6 @@ class Module extends \MapasCulturais\Module
 
         return false;
 
->>>>>>> 1ea0aef77931a5dbd5386f9ad6ba2bca9bb52de7
     }
 
     /**
@@ -352,7 +343,6 @@ class Module extends \MapasCulturais\Module
      */
     public function registrationsByEvaluation($opp, $statusValue)
     {
-<<<<<<< HEAD
         switch ($statusValue) {
             case 'all':
                 $status = '> 0';
@@ -369,8 +359,6 @@ class Module extends \MapasCulturais\Module
         }
         
         
-=======
->>>>>>> 1ea0aef77931a5dbd5386f9ad6ba2bca9bb52de7
 
         $complement = "";
         if($status != "> 0"){

@@ -647,7 +647,7 @@ class Controller extends \MapasCulturais\Controller
         $dataB = $reportData["columns"][1];
         $conn = $app->em->getConnection();
         $query = $this->buildQuery($reportData["columns"], $opp,
-                                   ($reportData["typeGraphic"] == "line"));
+                                   ($reportData["typeGraphic"] == "line"), $status);
         $result = $conn->fetchAll($query, ["opportunity" => $opp->id]);
 
         $return = [];
