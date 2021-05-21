@@ -137,7 +137,7 @@
                     $scope.data.error = data.error;
                     return;
                 }
-                $scope.checkTableGraphic();
+                
                 $scope.data.graphics = $scope.data.graphics.filter(function (item) {
                     if (item.reportData.graphicId != data.graphicId) return item;
                 });
@@ -184,6 +184,7 @@
                 if (!$scope.data.error) {
                     $scope.data.graphics.push(graphic);
                     $scope.graphicGenerate();
+                    $scope.checkTableGraphic();
                 }
             });
         }
@@ -208,12 +209,17 @@
         }
 
         // Checa se é necessário quebrar o grafico de tabela em varios gráficos
-       $scope.checkTableGraphic = function(){            
+       $scope.checkTableGraphic = function(){   
+           
+            if(!MapasCulturais.isPrintReport){
+                return;
+            }
+            
             var scopeGraphic = angular.copy($scope.data.graphics); 
 
-            scopeGraphic.forEach(function(item, index){             
+            scopeGraphic.forEach(function(item, indexScope){             
                 if(item.typeGraphic == "table"){
-
+                    $scope.data.graphics.splice(indexScope);
                     var limit = 10;
                     var soma = Math.floor( item.data.labels.length / limit );
                     var resto = ( ( item.data.labels.length % limit ) > 0 ) ? 1 : 0;
@@ -254,7 +260,6 @@
                         $scope.data.graphics.push(item)
                     });
                    
-                    $scope.data.graphics.splice(index, 1);
 
                 }
 

@@ -111,8 +111,8 @@
 
 /* Charts dynamics */
 /* Chart table */
-.charts-dynamic .chart-table {
-    overflow-x: auto;
+ .charts-dynamic .chart-table {
+    overflow-x: auto !important;
 }
 
 .charts-dynamic .chart-table table {
