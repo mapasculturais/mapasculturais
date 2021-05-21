@@ -495,13 +495,13 @@ class Controller extends \MapasCulturais\Controller
             foreach ($metalists as $metalist){
                 $value = json_decode($metalist->value, true);
                 $value['reportData']['graphicId'] = $metalist->id;
-                $value['data'] = $this->getData($value, $opp, $request['status']);
+                $value['data'] = $this->getData($value, $opp, $_SESSION['reportStatusRegistration']);
                 $return[] = $value;
                 
             }
         }else{
             $reportData = json_decode($request['reportData'], true);
-            $return =  $this->getData($reportData, $opp, $request['status']);
+            $return =  $this->getData($reportData, $opp, $_SESSION['reportStatusRegistration']);
         }
 
         $this->apiResponse($return);
@@ -518,7 +518,7 @@ class Controller extends \MapasCulturais\Controller
         $opp = $app->repo("Opportunity")->find($request["opportunity_id"]);
         $opp->checkPermission('viewReport');
                 
-        $preload = $this->getData($this->data, $opp, $request['status']);
+        $preload = $this->getData($this->data, $opp, $_SESSION['reportStatusRegistration']);
 
         /**
          * Verifica se existe dados suficientes para gerar o gráfico
@@ -607,7 +607,7 @@ class Controller extends \MapasCulturais\Controller
         foreach ($metalists as $metalist){
             $value = json_decode($metalist->value, true);
             $value['reportData']['graphicId'] = $metalist->id;
-            $value['data'] = $this->getData($value, $opp);
+            $value['data'] = $this->getData($value, $opp, $_SESSION['reportStatusRegistration']);
             $return = $value;
         }
 
@@ -682,10 +682,24 @@ class Controller extends \MapasCulturais\Controller
         return $return;
     }
 
-    public function buildQuery($columns, $op, $timeSeries=false, $status)
+    public function buildQuery($columns, $op, $timeSeries=false, $statusValue = "all")
     {
 
-    	$st = ($status === "sent") ? '> 0' : (($status === "draft") ? '= 0' : '>=  0');
+        switch ($statusValue) {
+            case 'all':
+                $status = '> 0';
+                break;
+            case 'draft':
+                $status = '= 0';
+                break;
+            case 'approved':
+                $status = '= 10';
+                break;
+            default:
+                $status = '> 0';
+                break;
+        }
+
 
         // FIXME: remove empty definitions at the source, not here
         $columns = array_filter($columns, function ($item) {
@@ -711,7 +725,7 @@ class Controller extends \MapasCulturais\Controller
         $out .= ("SELECT " . $this->querySelect($targets, $timeSeries) .
                  " FROM registration r " .
                  $this->queryJoins($tables, $types, $ctes) .
-                 "WHERE r.opportunity_id = :opportunity AND r.status {$st} " .
+                 "WHERE r.opportunity_id = :opportunity AND r.status {$status} " .
                  "GROUP BY " . $this->queryGroup($targets) .
                  $this->queryOrder($targets, $timeSeries));
         return $out;

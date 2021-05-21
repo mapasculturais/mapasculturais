@@ -49,7 +49,22 @@ class Module extends \MapasCulturais\Module
         	$request = $this->controller->data;
         	$statusValue =  $request['status'] ?? 'all';
 
-	        $status = ($statusValue === 'sent') ? '> 0' : (($statusValue === 'draft') ? '= 0' : '>= 0');
+            switch ($statusValue) {
+                case 'all':
+                    $status = '> 0';
+                    break;
+                case 'draft':
+                    $status = '= 0';
+                    break;
+                case 'approved':
+                    $status = '= 10';
+                    break;
+                default:
+                    $status = '> 0';
+                    break;
+            }
+
+            $_SESSION['reportStatusRegistration'] = $status;
 
 	        $app->view->jsObject['reportStatus'] = $statusValue;
 
@@ -65,13 +80,13 @@ class Module extends \MapasCulturais\Module
             if ($registrationsByStatus = $self->registrationsByStatus($opportunity)) {
                 $sendHook['registrationsByStatus'] = $registrationsByStatus;
             }
-            
+
             if ($opportunity->evaluationMethod->slug == 'technical') {
                 if ($registrationsByEvaluation = $self->registrationsByEvaluationStatusBar($opportunity)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
             } else {
-                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity)) {
+                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity, $status)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
             }
@@ -83,6 +98,7 @@ class Module extends \MapasCulturais\Module
             $sendHook['opportunity'] = $opportunity;
 
             $sendHook['self'] = $self;
+            $sendHook['statusRegistration'] = $statusValue;
 
             if ($opportunity->canUser('@control') && $self->hasRegistrations($opportunity)) {
                 $this->part('opportunity-reports', $sendHook);
@@ -123,7 +139,7 @@ class Module extends \MapasCulturais\Module
                 'value' => [
                     'label' => 'Gráfico',
                     'validations' => [
-                        'required' => '',                           
+                        'required' => '',
                     ]
                 ],
             ],
@@ -165,22 +181,22 @@ class Module extends \MapasCulturais\Module
     public function checkIfChartHasData(array $values) {
 
         if (count($values) > 1) {
-    
+
             $count = 0;
             foreach ($values as $key => $value) {
                 if ($value > 1)
                     $count++;
             }
-    
+
             if ($count >= 2)
                 return true;
-                
+
             return false;
-    
+
         }
-    
+
         return false;
-    
+
     }
 
     /**
@@ -324,8 +340,14 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByEvaluation($opp)
+    public function registrationsByEvaluation($opp, $status)
     {
+
+        $complement = "";
+        if($status != "> 0"){
+            $complement = "AND status $status";
+        }
+
         $app = App::i();
 
         //Pega conexão
@@ -335,25 +357,25 @@ class Module extends \MapasCulturais\Module
         $data = [];
         $params = ['opportunity_id' => $opp->id];
 
-        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0'";
+        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' {$complement}";
 
         $evaluated = $conn->fetchAll($query, $params);
 
-        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0'";
+        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result = '0' {$complement}";
 
         $notEvaluated = $conn->fetchAll($query, $params);
 
         $merge = array_merge($evaluated, $notEvaluated);
-
-        foreach ($merge as $m) {
-            foreach ($m as $v) {
-                if (empty($v)) {
-                    return false;
-                }
-            }
-        }
-
         return $merge;
+        // foreach ($merge as $m) {
+        //     foreach ($m as $v) {
+        //         if (empty($v)) {
+        //             return false;
+        //         }
+        //     }
+        // }
+
+        // return $merge;
     }
 
     /**
