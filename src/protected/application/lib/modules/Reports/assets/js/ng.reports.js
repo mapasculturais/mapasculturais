@@ -31,9 +31,16 @@
             error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
             graphics:[],
-            reportRegistrationStatus: false
+            groupData: false
         };
 
+        $scope.statuses = [
+            {value : 'all', title : 'Mostrar todos'},
+            {value : 'draft', title : 'Somente em rascunho'},
+            {value : 'approved', title : 'Somente Aprovados'}
+        ];
+
+        $scope.reportFilter = MapasCulturais.reportStatus;
 
 
         ReportsService.findDataOpportunity().success(function (data, status, headers){
@@ -61,41 +68,14 @@
         });
 
         $scope.setReportFilter = function(){
-            $scope.data.reportRegistrationStatus = true;
 
-            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
+            var route = MapasCulturais.createUrl('opportunity', 'single', {id: MapasCulturais.entity.id, status: $scope.reportFilter});
 
-                var legendsToString = [];
-                data.forEach(function(item){
-
-                    if(item.typeGraphic != "pie"){
-                        var total = $scope.sumSerie(item);
-                        item.data.series.forEach(function(value, index){
-                            var color = MapasCulturais.getChartColors();
-                            value.colors = color[0];
-                            legendsToString.push($scope.legendsToString(total, item, index));
-                        });
-                        item.data.tooltips = item.data.legends;
-                        item.data.legends = legendsToString;
-                    }else{
-                        item.data.data.forEach(function(value, index){
-
-                            legendsToString.push($scope.legendsToString(value, item, index));
-
-                        });
-                        item.data.backgroundColor = MapasCulturais.getChartColors(item.data.data.length);
-                        item.data.tooltips = item.data.labels;
-                        item.data.labels = legendsToString;
-                    }
-
-                    legendsToString = [];
-                });
-                $scope.data.graphics = data;
-                $scope.graphicGenerate();
-            });
+            window.location = route+"#/tab=reports";
+           
         }
 
-        ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
+        ReportsService.getData({opportunity_id: MapasCulturais.entity.id, status: $scope.reportFilter}).success(function (data, status, headers){
 
             var legendsToString = [];            
             data.forEach(function(item){
@@ -122,7 +102,8 @@
                 
                 legendsToString = [];
             });
-            $scope.data.graphics = data;            
+            $scope.data.graphics = data;
+            $scope.checkTableGraphic();
             $scope.graphicGenerate();
         });
         
@@ -133,6 +114,7 @@
             var fieldB = indexB ? " x " +$scope.data.dataDisplayB[indexB].label : "";        
             var config = {
                 typeGraphic:$scope.data.dataForm.type,
+                groupData:$scope.data.groupData,
                 opportunity_id: MapasCulturais.entity.id,
                 title: $scope.data.dataForm.title,
                 description: $scope.data.dataForm.description,
@@ -148,15 +130,16 @@
                     }
                 ],
             }
-            ReportsService.save(config, $scope.data.reportRegistrationStatus).success(function (data, status, headers){
+            ReportsService.save(config, $scope.reportFilter).success(function (data, status, headers){
                 
+              
                 if (data.error) {
                     $scope.clearModal();
                     MapasCulturais.Messages.error("Dados insuficientes para gerar a visualização desse gráfico");
                     $scope.data.error = data.error;
                     return;
                 }
-
+                
                 $scope.data.graphics = $scope.data.graphics.filter(function (item) {
                     if (item.reportData.graphicId != data.graphicId) return item;
                 });
@@ -166,8 +149,7 @@
 
             });
 
-            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config, status: $scope.data.reportRegistrationStatus}).success(function (data, status, headers){
-
+            ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config, status: $scope.reportFilter}).success(function (data, status, headers){
                 config.graphicId = $scope.data.creatingGraph.graphicId;
                 var graphic = {
                     columns: config.columns,
@@ -203,6 +185,7 @@
                 if (!$scope.data.error) {
                     $scope.data.graphics.push(graphic);
                     $scope.graphicGenerate();
+                    $scope.checkTableGraphic();
                 }
             });
         }
@@ -225,6 +208,65 @@
                return (data * 2);
             }
         }
+
+        // Checa se é necessário quebrar o grafico de tabela em varios gráficos
+       $scope.checkTableGraphic = function(){   
+           
+            if(!MapasCulturais.isPrintReport){
+                return;
+            }
+            
+            var scopeGraphic = angular.copy($scope.data.graphics); 
+
+            scopeGraphic.forEach(function(item, indexScope){             
+                if(item.typeGraphic == "table"){
+                    $scope.data.graphics.splice(indexScope);
+                    var limit = 10;
+                    var soma = Math.floor( item.data.labels.length / limit );
+                    var resto = ( ( item.data.labels.length % limit ) > 0 ) ? 1 : 0;
+                    var qtdGraphic = soma + resto;
+                    var newGraphics = [];
+
+                    for ( var i = 0; i < qtdGraphic; i++ ) {
+                        var copy = angular.copy(item);
+
+                        if(i < (qtdGraphic -1)){
+                            copy.data.legends = {}
+                        }
+
+                        newGraphics.push(copy);                                              
+                    }
+
+                    newGraphics.forEach(function(grafic, index){
+                        grafic.identifier = grafic.identifier+"-"+index;
+                        var min = index * limit
+                        var max = (min) + limit;
+                        var newLabels = grafic.data.labels.slice(min, max);
+                        grafic.data.labels = newLabels;
+                    }); 
+
+                    newGraphics.forEach(function(item, index){
+                        item.data.series.forEach(function(serie){
+                            var min = index * limit
+                            var max = (min) + limit;
+                            var newData = serie.data.slice(min, max);
+                            serie.data = newData;
+                        });                      
+                    }); 
+
+                    newGraphics.forEach(function(item, index){
+                        item.graphBreak = (qtdGraphic > 1) ? true : false;
+                        item.totalBreak = qtdGraphic;
+                        item.graphPart = (index+1);
+                        $scope.data.graphics.push(item)
+                    });
+                   
+
+                }
+
+                
+            });
+       }        
         
         $scope.graphicGenerate = function() {
             var _datasets;
@@ -258,7 +300,7 @@
                     
                     item.data.total = total;
                     item.data.sumLines = sumLines;
-                    item.data.sumColumns = sumColumns;
+                    item.data.sumColumns = sumColumns;             
                     
                 }
                 if(item.typeGraphic != "pie"){
@@ -287,7 +329,7 @@
                 }
 
                 var stacked = false;
-                if(item.typeGraphic == "horizontalBar"){
+                if(item.groupData === "true" || item.reportData.groupData === true){
                     stacked = true;
                 }
                 
@@ -479,6 +521,8 @@
             $scope.data.reportModal = false;
             $scope.data.graphicData = false;
             $scope.data.graphicType = true;
+            $scope.data.checked = false;
+            $scope.data.groupData = false;
             $scope.data.dataForm.type = '';
             $scope.data.dataForm.title = '';
             $scope.data.dataForm.description = '';
@@ -491,7 +535,6 @@
     module.factory('ReportsService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {  
         return {  
             findDataOpportunity: function (data) {
-               
                 var url = MapasCulturais.createUrl('reports', 'dataOpportunityReport', {opportunity_id: MapasCulturais.entity.id});
 
                 return $http.get(url, data).
@@ -502,7 +545,7 @@
                     $rootScope.$emit('error', {message: "Reports not found for this opportunity", data: data, status: status});
                 });
             },
-            save: function (data) {
+            save: function (data, status) {
                
                 var url = MapasCulturais.createUrl('reports', 'saveGraphic', {opportunity_id: MapasCulturais.entity.id, status: status});
 

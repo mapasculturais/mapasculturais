@@ -9,36 +9,38 @@ use MapasCulturais\i;
     <div class="chart-wrap type-{{graphic.typeGraphic}}" ng-repeat="(key, graphic) in data.graphics">  
         <header>
             <h3>{{graphic.title}}</h3>
-            <button ng-click="createCsv(graphic.reportData.graphicId)" name="{{graphic.identifier}}" class="hltip download" title="<?php i::_e("Baixar em CSV"); ?>"></button>
+            <button ng-click="createCsv(graphic.reportData.graphicId)" name="{{graphic.identifier}}" class="hltip download" title="<?php i::_e("Imprimir relatório"); ?>"></button>
             <button ng-click="deleteGraphic(graphic.reportData.graphicId)" class="hltip delete" title="<?php i::_e("Excluir gráfico"); ?>"></button>
             <span class="hltip type" title="{{graphic.fields}}"><i class="fas fa-info-circle"></i></span>
             <p class="description">{{graphic.description}}</p>
+            
+            <div ng-if="graphic.typeGraphic === 'table' && graphic.graphBreak">
+                <?php $this->part('info-dynamic-graphics-break')?>
+            </div>
         </header>
         
         <div ng-if="graphic.typeGraphic == 'table'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width: 100%;">
-            <div class="chart-scroll">    
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th ng-repeat="(key, label) in graphic.data.labels">{{label}}</th>
-                            <th><?php i::_e("Total"); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="(key, serie) in graphic.data.series track by $index">                    
-                            <td >{{serie.label}}</td>
-                            <td ng-repeat="(key, value) in serie.data track by $index">{{value}}</td>
-                            <td>{{graphic.data.sumLines[key]}}</td>
-                        </tr>
-                        <tr>
-                            <td><?php i::_e("Total"); ?></td>
-                            <td ng-repeat="(key, sumColumn) in graphic.data.sumColumns track by $index">{{sumColumn}}</td> 
-                            <td>{{graphic.data.total}}</td>
-                        </tr>
-                    </tbody>
-                </table> 
-            </div>
+        <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th ng-repeat="(key, label) in graphic.data.labels"><span>{{label}}</span></th>
+                        <th><span><?php i::_e("Total"); ?></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(key, serie) in graphic.data.series track by $index">                    
+                        <td >{{serie.label}}</td>
+                        <td ng-repeat="(key, value) in serie.data track by $index">{{value}}</td>
+                        <td>{{graphic.data.sumLines[key]}}</td>
+                    </tr>
+                    <tr>
+                        <td><?php i::_e("Total"); ?></td>
+                        <td ng-repeat="(key, sumColumn) in graphic.data.sumColumns track by $index">{{sumColumn}}</td> 
+                        <td>{{graphic.data.total}}</td>
+                    </tr>
+                </tbody>
+            </table> 
         </div>
         <div ng-if="graphic.typeGraphic === 'pie'" class="chart-container dynamic-graphic-{{graphic.identifier}} chart-{{graphic.typeGraphic}}" style="position: relative; height:auto; width:60%">
             <canvas id="dynamic-graphic-{{graphic.identifier}}"></canvas>

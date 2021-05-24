@@ -32,7 +32,7 @@ foreach ($data as $key_data => $values) {
     $count++;
 }
 
-$labels = array_unique($labels);
+$labels = array_unique($labels ?? []);
 sort($labels);
 
 $dataLabels = array_map(function ($label) {
