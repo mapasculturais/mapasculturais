@@ -35,6 +35,13 @@ use MapasCulturais\i;
                 <label><input ng-model="data.dataForm.type" value="table" type="radio"> <i class="fas fa-th-list"></i> <span><b><?php i::_e("Gráfico de tabela"); ?></b></span> </label>
             </div>
 
+            <div class="line" ng-if="data.dataForm.type == 'bar' || data.dataForm.type == 'horizontalBar'">
+                <label>
+                    <input ng-model="data.groupData" value="true" type="checkbox">   
+                    <span><b><?php i::_e("Agrupar dados");?></b></span>
+                </label>
+            </div>
+
 
         </div>
 
