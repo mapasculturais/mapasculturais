@@ -31,6 +31,7 @@
             error: false,
             typeGraphicDictionary: {pie: "Pizza", bar: "Coluna", line: "Linha", table: "Tabela"},
             graphics:[],
+            groupData: false
         };
 
         $scope.statuses = [
@@ -113,6 +114,7 @@
             var fieldB = indexB ? " x " +$scope.data.dataDisplayB[indexB].label : "";        
             var config = {
                 typeGraphic:$scope.data.dataForm.type,
+                groupData:$scope.data.groupData,
                 opportunity_id: MapasCulturais.entity.id,
                 title: $scope.data.dataForm.title,
                 description: $scope.data.dataForm.description,
@@ -130,6 +132,7 @@
             }
             ReportsService.save(config, $scope.reportFilter).success(function (data, status, headers){
                 
+              
                 if (data.error) {
                     $scope.clearModal();
                     MapasCulturais.Messages.error("Dados insuficientes para gerar a visualização desse gráfico");
@@ -147,7 +150,6 @@
             });
 
             ReportsService.getData({opportunity_id: MapasCulturais.entity.id, reportData:config, status: $scope.reportFilter}).success(function (data, status, headers){
-
                 config.graphicId = $scope.data.creatingGraph.graphicId;
                 var graphic = {
                     columns: config.columns,
@@ -327,7 +329,7 @@
                 }
 
                 var stacked = false;
-                if(item.typeGraphic == "horizontalBar"){
+                if(item.groupData === "true" || item.reportData.groupData === true){
                     stacked = true;
                 }
                 
@@ -519,6 +521,8 @@
             $scope.data.reportModal = false;
             $scope.data.graphicData = false;
             $scope.data.graphicType = true;
+            $scope.data.checked = false;
+            $scope.data.groupData = false;
             $scope.data.dataForm.type = '';
             $scope.data.dataForm.title = '';
             $scope.data.dataForm.description = '';
