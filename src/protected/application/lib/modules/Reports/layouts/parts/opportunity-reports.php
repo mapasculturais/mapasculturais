@@ -3,7 +3,8 @@ namespace RegistrationPayments;
 
 use MapasCulturais\i;
 $dataOportunity = $opportunity->getEvaluationCommittee();
-$prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => $opportunity->id))?>
+$prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => $opportunity->id, 'status' => $statusRegistration ))?>
+
 <?php $this->applyTemplateHook('opportunity-reports', 'before'); ?>
 <div ng-controller='Reports'>
 <?php $this->applyTemplateHook('opportunity-reports', 'begin'); ?>
@@ -13,9 +14,11 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
             <a href="<?=$prinUrl?>" class="btn btn-default hltip print-reports" title="" hltitle="Baixar em CSV" target="_blank"><i class="fas fa-print"></i> <?php i::_e("Imprimir");?></a>
         </header>
 
-	    <button ng-click="setReportFilter()" class='btn btn-default'>
-		    <?php i::_e('Ver também em rascunho'); ?>
-	    </button>
+	    <label for="reportFilter">Filtrar dados por
+		    <select ng-model='reportFilter' ng-options="status.value as status.title for status in statuses" ng-click='setReportFilter()'>
+			    <option value="" ng-hide="reportFilter">Selecione uma opção ...</option>
+		    </select>
+	    </label>
 
         <div class="charts-static">
             <?php if (isset($registrationsByTime)) {?>
@@ -29,7 +32,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
 
             <?php if ($opportunity->evaluationMethod->slug == 'technical') { ?>
                 <?php if (isset($registrationsByEvaluation)) {?>
-                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self]);?>
+                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self, 'statusRegistration' => $statusRegistration]);?>
                 <?php } ?>
 
                 <?php if (isset($registrationsByEvaluationStatus)) {?>
@@ -37,7 +40,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
                 <?php } ?>
             <?php } else {?>
                 <?php if (isset($registrationsByEvaluation)) {?>
-                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self]);?>
+                    <?php $this->part('registrationsEvaluation', ['data' => $registrationsByEvaluation, 'opportunity' => $opportunity, 'self' => $self, 'statusRegistration' => $statusRegistration]);?>
                 <?php } ?>
 
                 <?php if (isset($registrationsByEvaluationStatus)) {?>

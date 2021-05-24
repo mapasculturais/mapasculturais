@@ -779,7 +779,7 @@ class Opportunity extends EntityController {
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users})
                 $sql_status
-            ORDER BY evaluation_id DESC
+            ORDER BY registration_sent_timestamp ASC
             $sql_limit
         ", $params);
 

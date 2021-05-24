@@ -10,8 +10,8 @@
 @media print {
 
     @page {
-        size: 7in 9.25in;
-        margin: 14mm 10mm 14mm 10mm;
+        /* size: 7in 9.25in; */
+        margin: 10mm 7mm 10mm 7mm;
     }
 
     body {
@@ -33,7 +33,8 @@
     }
 
     #print-reports .chart-wrap:last-child {
-        page-break-after: auto;
+        page-break-after: avoid;
+        margin-bottom:0;
     }
 
     #main-header {
@@ -48,7 +49,7 @@
     #print-reports #main-content-header {
         border-bottom: 1px solid #666;
         margin-top: 0;
-        padding: 1.3rem;
+        padding: 1rem;
         width: 100%;
     }
 
@@ -64,9 +65,28 @@
         width: 100%;
     }
 
+    #print-reports .charts-dynamic .chart-table table {
+        max-width: 100% !important;
+    }
+
+    #print-reports .charts-dynamic .chart-table table td,
+    #print-reports .charts-dynamic .chart-table table th {
+        padding: 0.1rem;
+    }
+
+    #print-reports .charts-dynamic .chart-table table thead tr th {
+        line-height: 1.6;
+        position: relative;
+    }
+
+    #print-reports .charts-dynamic .chart-table table thead tr th span {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+    }
+
     #print-reports .chart-wrap header {
-        margin-bottom: 80px;
-        margin-top: 40px;
+        margin-bottom: 30px;
+        margin-top: 30px;
     }
 
     #print-reports .break-page {
@@ -75,6 +95,10 @@
 
     .log-execution-time {
         display: none;
+    }
+
+    #print-reports .alert{
+        margin-bottom:0;
     }
 
 }

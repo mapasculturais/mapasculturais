@@ -67,7 +67,7 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
         }
     }
 
-    if ($self->checkIfChartHasData($values)) {
+    if ($status != "all" || $self->checkIfChartHasData($values)) {
 
         // Imprime o gráfico na tela
         $this->part('charts/pie', [

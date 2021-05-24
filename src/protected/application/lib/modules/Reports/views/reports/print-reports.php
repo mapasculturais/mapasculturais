@@ -10,6 +10,10 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 
 $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 
+$this->jsObject['isPrintReport'] = true;
+
+$app->view->jsObject['reportStatus'] = $this->data['status'];
+
 $this->addEntityToJs($opportunity);
 $this->includeAngularEntityAssets($opportunity);
 $this->includeEditableEntityAssets();
@@ -20,7 +24,8 @@ $this->enqueueScript('app', 'print-reports', 'js/print-reports.js', [], 'print')
 $params = [ 
     'opportunity' => $opportunity,
     'module'      => $module,
-    'print'       => true
+    'print'       => true,
+    'status' => $status
 ];
 
 ?>
