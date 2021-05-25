@@ -220,7 +220,7 @@
 
             scopeGraphic.forEach(function(item, indexScope){             
                 if(item.typeGraphic == "table"){
-                    $scope.data.graphics.splice(indexScope);
+                    $scope.data.graphics.splice(indexScope, 1);
                     var limit = 10;
                     var soma = Math.floor( item.data.labels.length / limit );
                     var resto = ( ( item.data.labels.length % limit ) > 0 ) ? 1 : 0;
