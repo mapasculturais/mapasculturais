@@ -86,7 +86,7 @@ class Module extends \MapasCulturais\Module
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
             } else {
-                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity, $status)) {
+                if ($registrationsByEvaluation = $self->registrationsByEvaluation($opportunity, $statusValue)) {
                     $sendHook['registrationsByEvaluation'] = $registrationsByEvaluation;
                 }
             }
@@ -358,11 +358,9 @@ class Module extends \MapasCulturais\Module
                 break;
         }
         
-        
-
         $complement = "";
         if($status != "> 0"){
-            $complement = "AND status $status";
+            $complement = " AND status $status";
         }
 
         $app = App::i();
@@ -383,10 +381,13 @@ class Module extends \MapasCulturais\Module
         $notEvaluated = $conn->fetchAll($query, $params);
 
         $merge = array_merge($evaluated, $notEvaluated);
-        foreach ($merge as $m) {
-            foreach ($m as $v) {
-                if (empty($v)) {
-                    return false;
+        
+        if($statusValue == "all"){
+            foreach ($merge as $m) {
+                foreach ($m as $v) {
+                    if (empty($v)) {
+                        return false;
+                    }
                 }
             }
         }
