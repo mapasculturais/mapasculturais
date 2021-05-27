@@ -45,7 +45,7 @@ class Module extends \MapasCulturais\Module
         // Adiciona Coluna na lista de prestação de Contas
         $app->hook('template(opportunity.single.registration-list-header):end', function(){
             $entity = $this->controller->requestedEntity;
-            if($entity->isAccountabilityPhase){
+            if($entity->isAccountabilityPhase && $entity->canUser('publishRegistrations')){
                 $this->part('accountability-registrations-header');
             }
         });
@@ -53,7 +53,7 @@ class Module extends \MapasCulturais\Module
         // Carrega botão de publicar resultado de uma única inscrição
         $app->hook('template(opportunity.single.registration-list-item):end', function(){
             $entity = $this->controller->requestedEntity;
-            if($entity->isAccountabilityPhase){
+            if($entity->isAccountabilityPhase && $entity->canUser('publishRegistrations')){
                 $registrations = $entity->getAllRegistrations();
                 $isPublishedResult = [];
                 
