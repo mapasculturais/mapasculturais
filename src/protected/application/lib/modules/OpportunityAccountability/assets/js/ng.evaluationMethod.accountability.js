@@ -275,4 +275,54 @@
         }
     }]);
 
+    module.factory('PublishedResultRegistrationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+
+        return {           
+            publishedResult: function (data) {
+                var url = MapasCulturais.createUrl('accountability', 'publishedResult', {opportunity_id: MapasCulturais.entity.id});
+
+                return $http.post(url, {registrationId:data}).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Accountability found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Accountability not found for this opportunity", data: data, status: status});
+                });
+            },
+            checkPublishedResult: function (data) {
+                var url = MapasCulturais.createUrl('accountability', 'checkRegistrationPublished', {opportunity_id: MapasCulturais.entity.id});
+
+                return $http.get(url, data).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Accountability found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Accountability not found for this opportunity", data: data, status: status});
+                });
+            },
+        };
+    }]);
+    
+
+    module.controller('publishedResultRegistration', ['$scope', '$rootScope', 'PublishedResultRegistrationService', function($scope, $rootScope, PublishedResultRegistrationService) {
+        
+        $scope.isPublishedResult = MapasCulturais.accountability.isPublishedResult;
+        $scope.published = false;
+
+        $scope.isPublished = function(registrationId, index){
+            return $scope.isPublishedResult.includes(registrationId);
+        }
+        
+        $scope.publishedResult = function(registration){
+            if (!confirm("ATENÇÃO, essa ação é irreversível! Você tem certeza que deseja publicar o resultado dessa inscrição?")) {
+                return;
+            }
+
+            PublishedResultRegistrationService.publishedResult(registration.id).success(function (data) {
+                $scope.published = true;
+                MapasCulturais.Messages.success('Resultado da inscrição publicado');
+            });
+        }
+    }]);
+
 })(angular);
