@@ -31,7 +31,7 @@ $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? "
     <?php if(!$disable){?>
         <section>
             <h4><?= i::__('Parecer técnico') ?></h4>
-            <textarea ng-model="evaluationData.obs" class="auto-height" <?=$disable?>></textarea>
+            <textarea id="evaluationEditor" ng-model="evaluationData.obs" class="auto-height" <?=$disable?>></textarea>
         </section>
     <?php } ?>
 
