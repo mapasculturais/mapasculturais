@@ -17,3 +17,7 @@
 .actions span{
     float: left;
 }
+
+.registrations-table .registration-status-col, .my-registrations .registration-status-col {
+    width: 27%;
+}
