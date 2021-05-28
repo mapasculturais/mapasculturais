@@ -17,3 +17,18 @@
 .actions span{
     float: left;
 }
+
+.opportunity #registrations-table thead th {
+    line-height: 1.5;
+    padding: 0.65rem 0.5rem;
+    vertical-align: middle;
+    width: auto;
+}
+
+.opportunity #registrations-table thead th .dropdown {
+    margin-top: 13px;
+}
+
+.opportunity #registrations-table td {
+    vertical-align: middle;
+}
