@@ -309,7 +309,12 @@
         $scope.isPublishedResult = MapasCulturais.accountability.isPublishedResult;
         $scope.published = false;
 
-        $scope.isPublished = function(registrationId, index){
+        $scope.isPublished = function(registrationId){
+            
+            if(MapasCulturais.entity.published){
+                return true;
+            }
+
             return $scope.isPublishedResult.includes(registrationId);
         }
         
