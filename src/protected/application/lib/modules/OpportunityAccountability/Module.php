@@ -45,7 +45,8 @@ class Module extends \MapasCulturais\Module
         // Adiciona Coluna na lista de prestação de Contas
         $app->hook('template(opportunity.single.registration-list-header):end', function(){
             $entity = $this->controller->requestedEntity;
-            if($entity->isAccountabilityPhase && $entity->canUser('publishRegistrations')){
+            
+            if($entity->isAccountabilityPhase){
                 $this->part('accountability-registrations-header');
             }
         });
@@ -53,7 +54,8 @@ class Module extends \MapasCulturais\Module
         // Carrega botão de publicar resultado de uma única inscrição
         $app->hook('template(opportunity.single.registration-list-item):end', function(){
             $entity = $this->controller->requestedEntity;
-            if($entity->isAccountabilityPhase && $entity->canUser('publishRegistrations')){
+
+            if($entity->isAccountabilityPhase){
                 $registrations = $entity->getAllRegistrations();
                 $isPublishedResult = [];
                 
@@ -100,6 +102,37 @@ class Module extends \MapasCulturais\Module
             }
         });
        
+        //Adiciona coluna de data de envio e data de avaliação na lista de pareceres
+        $app->hook('template(opportunity.single.opportunity-evaluations--<<admin|committee>>--table-thead-tr):end', function(){
+            $entity = $this->controller->requestedEntity;
+
+            if($entity->isAccountabilityPhase){ 
+                $this->part('accountability-evaluation-admin-table-head');
+            }
+        });
+        
+         //Adiciona conteúdo na coluna de data de envio e data de avaliação na lista de pareceres
+         $app->hook('template(opportunity.single.opportunity-evaluations--<<admin|committee>>--table-tbody-tr):end', function() use ($app){
+            $entity = $this->controller->requestedEntity;
+
+            if($entity->isAccountabilityPhase){ 
+                $registrations = $entity->getAllRegistrations();
+                $result = [];
+                foreach ($registrations as $registration){
+                    $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration->id]);
+
+                    $result[$registration->id] = [
+                        'dateSent' => ($registration->status >= 1) ? ($registration->sentTimestamp)->format('d/m/Y H:i:s') : i::__('Não enviado'),
+                        'dateEvaluate' => ($evaluation && $evaluation->status > 0) ? ($evaluation->updateTimestamp)->format('d/m/Y H:i:s') : i::__('Não informado') 
+                    ];
+                }
+
+                $this->jsObject['accountability']['dates'] = $result;
+
+                $this->part('accountability-evaluation-admin-table-body');
+            }
+        });
+
         //Adiciona texto explicativo na tela de projetos em rascungo
         $app->hook('template(project.single.tab-about--highlighted-message):before', function(){
             $entity = $this->controller->requestedEntity;

@@ -50,7 +50,6 @@ class Controller extends \MapasCulturais\Controller
         $app->disableAccessControl();
         $registration->save(true);
         $app->enableAccessControl();
-        $this->apiResponse($registration);
     }
 
     /**
