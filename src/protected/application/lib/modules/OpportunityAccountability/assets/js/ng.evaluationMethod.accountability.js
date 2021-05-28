@@ -330,4 +330,13 @@
         }
     }]);
 
+    module.controller('accountabilityDate', ['$scope', '$rootScope', function($scope, $rootScope) {
+        
+        $scope.getSentAccountability = function(registrationId){
+            var accountabilityDates = MapasCulturais.accountability.dates;
+            return accountabilityDates[registrationId];                     
+        }
+        
+    }]);
+
 })(angular);
