@@ -42,6 +42,64 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
+        // Adiciona Coluna na lista de prestação de Contas
+        $app->hook('template(opportunity.single.registration-list-header):end', function(){
+            $entity = $this->controller->requestedEntity;
+            if($entity->isAccountabilityPhase && $entity->canUser('publishRegistrations')){
+                $this->part('accountability-registrations-header');
+            }
+        });
+
+        // Carrega botão de publicar resultado de uma única inscrição
+        $app->hook('template(opportunity.single.registration-list-item):end', function(){
+            $entity = $this->controller->requestedEntity;
+            if($entity->isAccountabilityPhase && $entity->canUser('publishRegistrations')){
+                $registrations = $entity->getAllRegistrations();
+                $isPublishedResult = [];
+                
+                foreach ($registrations as $registration){
+
+                    $metadata = $registration->getMetadata();
+
+                    if(isset($metadata['isPublishedResult']) && (bool) $metadata['isPublishedResult']){
+                        $isPublishedResult[] = $registration->id;
+                    }
+                }
+
+                $this->jsObject['accountability']['isPublishedResult'] = $isPublishedResult;
+
+                $this->part('accountability-registrations-list');
+            }
+        });
+
+        // Adiciona resultado na tela caso metadado isPublishedResult esteja true
+        $app->hook('template(opportunity.single.tabs):end', function() use ($app){
+            $entity = $this->controller->requestedEntity;
+
+            if(!$entity->publishedRegistrations && $entity->isAccountabilityPhase){           
+                $registrations = $entity->getAllRegistrations();
+                
+                $query = new ApiQuery('MapasCulturais\\Entities\\Agent', [
+                    'user' => 'EQ(@me)', 
+                ]);
+                    
+                $ids = $query->findIds();
+                    
+                foreach ($registrations as $registration){
+                    if( (bool) $registration->isPublishedResult && in_array($registration->owner->id, $ids) && $registration->canUser("@control")){
+
+                        // Adiciona a tab Resultado
+                        $this->part('accountability-published-result-tab', ['registration' => $registration]);
+
+                         // Adiciona conteúdo na aba de resultados individual
+                        $app->hook('template(opportunity.single.opportunity-registrations--tables):end', function() use ($entity){
+                            $this->part('accountability-published-result-list', ['entity' => $entity]);
+                        });
+                    }
+                }
+            }
+        });
+       
         //Adiciona texto explicativo na tela de projetos em rascungo
         $app->hook('template(project.single.tab-about--highlighted-message):before', function(){
             $entity = $this->controller->requestedEntity;
@@ -735,6 +793,12 @@ class Module extends \MapasCulturais\Module
                     return null;
                 }
             }
+        ]);
+            
+        $this->registerRegistrationMetadata('isPublishedResult', [
+            'label' => i::__('Indica se o resultado foi publicado a e uma determinada inscrição'),
+            'type' => 'boolean',
+            'default' => false
         ]);
 
         $this->registerRegistrationMetadata('openFields', [
