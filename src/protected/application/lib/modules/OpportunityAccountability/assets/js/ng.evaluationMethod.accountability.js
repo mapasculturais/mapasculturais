@@ -238,12 +238,18 @@
             if (!confirm("Você tem certeza que deseja finalizer o parecer técnico?\n\nApós a finalização não será mais possível modificar o parecer.")) {
                 return;
             }
+
+            tinyMCE.triggerSave(); 
+            $scope.evaluationData.obs = document.getElementById('evaluationEditor').value;
+
             AccountabilityEvaluationService.send(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
                 MapasCulturais.Messages.success('Salvo');
                 setTimeout(function () {
                     location.reload();
                     return;
                 }, 500);
+            }).error(function (data) {
+                MapasCulturais.Messages.error(data.data[0]);
             });
         }
 
