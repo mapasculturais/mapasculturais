@@ -238,12 +238,18 @@
             if (!confirm("Você tem certeza que deseja finalizer o parecer técnico?\n\nApós a finalização não será mais possível modificar o parecer.")) {
                 return;
             }
+
+            tinyMCE.triggerSave(); 
+            $scope.evaluationData.obs = document.getElementById('evaluationEditor').value;
+
             AccountabilityEvaluationService.send(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
                 MapasCulturais.Messages.success('Salvo');
                 setTimeout(function () {
                     location.reload();
                     return;
                 }, 500);
+            }).error(function (data) {
+                MapasCulturais.Messages.error(data.data[0]);
             });
         }
 
@@ -273,6 +279,70 @@
             }
             return false;
         }
+    }]);
+
+    module.factory('PublishedResultRegistrationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+
+        return {           
+            publishedResult: function (data) {
+                var url = MapasCulturais.createUrl('accountability', 'publishedResult', {opportunity_id: MapasCulturais.entity.id});
+
+                return $http.post(url, {registrationId:data}).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Accountability found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Accountability not found for this opportunity", data: data, status: status});
+                });
+            },
+            checkPublishedResult: function (data) {
+                var url = MapasCulturais.createUrl('accountability', 'checkRegistrationPublished', {opportunity_id: MapasCulturais.entity.id});
+
+                return $http.get(url, data).
+                success(function (data, status, headers) {
+                    $rootScope.$emit('registration.create', {message: "Accountability found", data: data, status: status});
+                }).
+                error(function (data, status) {
+                    $rootScope.$emit('error', {message: "Accountability not found for this opportunity", data: data, status: status});
+                });
+            },
+        };
+    }]);
+    
+
+    module.controller('publishedResultRegistration', ['$scope', '$rootScope', 'PublishedResultRegistrationService', function($scope, $rootScope, PublishedResultRegistrationService) {
+        
+        $scope.isPublishedResult = MapasCulturais.accountability.isPublishedResult;
+        $scope.published = false;
+
+        $scope.isPublished = function(registrationId){
+            
+            if(MapasCulturais.entity.published){
+                return true;
+            }
+
+            return $scope.isPublishedResult.includes(registrationId);
+        }
+        
+        $scope.publishedResult = function(registration){
+            if (!confirm("ATENÇÃO, essa ação é irreversível! Você tem certeza que deseja publicar o resultado dessa inscrição?")) {
+                return;
+            }
+
+            PublishedResultRegistrationService.publishedResult(registration.id).success(function (data) {
+                $scope.published = true;
+                MapasCulturais.Messages.success('Resultado da inscrição publicado');
+            });
+        }
+    }]);
+
+    module.controller('accountabilityDate', ['$scope', '$rootScope', function($scope, $rootScope) {
+        
+        $scope.getSentAccountability = function(registrationId){
+            var accountabilityDates = MapasCulturais.accountability.dates;
+            return accountabilityDates[registrationId];                     
+        }
+        
     }]);
 
 })(angular);

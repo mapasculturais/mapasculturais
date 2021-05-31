@@ -33,8 +33,8 @@ function alertPublish(id){
         var url = MapasCulturais.createUrl('opportunity', 'publishRegistrations', [id]);
         $.get(url, function() {
             MapasCulturais.Messages.success('Resultado publicado');
-            location.reload();
         });
+        location.reload();
     });
 }
 
