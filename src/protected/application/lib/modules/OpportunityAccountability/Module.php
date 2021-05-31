@@ -42,6 +42,19 @@ class Module extends \MapasCulturais\Module
 
         $registration_repository = $app->repo('Registration');
 
+        // Abre div antes das mensagens do CHAT
+        $app->hook('template(project.single.chat-messages):before ', function (){
+            echo '<button class="open-toggle-chat">'.i::__('ver conversa').'</button>';
+            echo '<div class="toggle-chat hidden">';
+
+        });
+        
+         // Fecha div depois das mensagens do CHAT
+        $app->hook('template(project.single.chat-messages):end ', function (){
+            echo '</div>';
+        });
+        
+
         // Adiciona Coluna na lista de prestação de Contas
         $app->hook('template(opportunity.single.registration-list-header):end', function(){
             $entity = $this->controller->requestedEntity;

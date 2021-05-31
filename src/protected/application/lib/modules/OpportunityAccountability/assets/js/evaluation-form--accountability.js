@@ -1,3 +1,14 @@
+document.addEventListener('DOMContentLoaded', function(){
+    var buttons = document.querySelectorAll('.open-toggle-chat');
+
+    buttons.forEach(function(item){
+        item.addEventListener('click', function(event) {
+            item.nextSibling.classList.toggle('hidden');
+        });
+    });
+});
+
+
 tinymce.init({
     selector: '#evaluationEditor',
     language: 'pt_BR',
