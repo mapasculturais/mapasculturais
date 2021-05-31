@@ -68,7 +68,6 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
         <?php endif; ?>
     </div>
 
-    <?php if($opportunity->isRegistrationOpen()){ ?>
         <?php $this->part('singles/project--events', ['project' => $entity, 'create_rule_string' => $create_rule_string]) ?>
 
         <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
@@ -100,8 +99,7 @@ $template_hook_params = ['project' => $entity, 'registration' => $registration, 
             </ul>
             <?php $this->applyTemplateHook('registration-field-list', 'after'); ?>
         </div>
-    <?php } ?>
-    
+         
     <?php if ($registration->canUser('modify')) { ?>
         <?php $this->part('accountability/send-button', ['entity' => $registration]); ?>
     <?php } ?>
