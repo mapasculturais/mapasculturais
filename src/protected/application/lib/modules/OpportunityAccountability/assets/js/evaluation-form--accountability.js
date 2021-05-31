@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', function(){
             item.nextSibling.classList.toggle('hidden');
         });
     });
+
+    var inputs = document.querySelectorAll('.new-message');
+    inputs.forEach(function(item){
+        item.addEventListener('focus', function(){
+            document.getElementById(item.dataset.chatId).classList.remove('hidden');
+        });
+    });
 });
 
 
