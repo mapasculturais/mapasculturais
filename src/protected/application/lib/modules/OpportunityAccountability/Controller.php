@@ -25,6 +25,32 @@ class Controller extends \MapasCulturais\Controller
 
         $this->render('registration', ['entity' => $registration]);
     }
+    
+    /**
+     * Method POST_publishedResult
+     *
+     */
+    public function POST_publishedResult()
+    {
+        
+        $this->requireAuthentication();
+
+        $request = $this->data;
+
+        $app = App::i();
+
+       if(!$app->user->is('admin')){
+           $this->errorJson([], '403');
+       }
+
+        $registration = $app->repo('Registration')->find($request['registrationId']);
+        
+        $registration->isPublishedResult = true;
+        
+        $app->disableAccessControl();
+        $registration->save(true);
+        $app->enableAccessControl();
+    }
 
     /**
      * Method POST_openFields

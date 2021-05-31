@@ -82,6 +82,7 @@
             sending: false,
             chatFocusTime: 60000,
             currentUserId: MapasCulturais.userProfile.id,
+            chatFocus: false,
             
             apiQuery: {
 
@@ -96,9 +97,20 @@
             return $rootScope.closedChats && $rootScope.closedChats[$scope.data.threadId];
         }
 
-        $scope.chatIsFocused = function () {
-            $scope.data.chatFocusTime = 10000;
-            setInterval(getLatestMessages, $scope.data.chatFocusTime);
+        $scope.$watch('data.chatFocus', function(new_val, old_val) {
+            
+            if(new_val != old_val){
+                clearInterval($scope.data.interval);
+                $scope.data.chatFocusTime = new_val ? 10000 : 60000;
+                $scope.chatIsFocused();            
+            }
+
+            console.log()
+        });
+
+
+        $scope.chatIsFocused = function () {    
+            $scope.data.interval = setInterval(getLatestMessages, $scope.data.chatFocusTime);
         }
 
         var adjustBoxPosition = function () {
@@ -110,6 +122,7 @@
         };
 
         var getLatestMessages = function () {
+            console.log($scope.data.chatFocusTime)
             ChatService.find($scope.data.threadId).success(function (data, status, headers) {
                 $scope.data.messages.forEach(function (current) {
                     
@@ -181,7 +194,7 @@
             });
         }, 0);
 
-        setInterval(getLatestMessages, $scope.data.chatFocusTime);
+        $scope.data.interval = setInterval(getLatestMessages, $scope.data.chatFocusTime);
 
     }]);
 })(angular);
