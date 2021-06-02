@@ -89,6 +89,23 @@
             }
         };
 
+        $scope.setFocus = function (fieldId) {              
+            document.querySelector('.txt-'+fieldId).focus();
+        }
+
+        $scope.toogleTalk = function (fieldId) {              
+            var chat = document.querySelector('.chat-'+fieldId);            
+            chat.classList.toggle('hidden')
+        }
+        
+        $scope.checkToggleTalk = function(fieldId){
+            var chat = document.querySelector('.chat-'+fieldId);       
+            
+            if(chat.classList.contains("hidden")){
+                chat.classList.toggle('hidden')
+            }
+        }
+
         $scope.init = function(threadId) {
             $scope.data.threadId = threadId;
         }
@@ -161,7 +178,6 @@
                 $scope.data.sending = false;
             });
 
-            $("textarea.new-message").focus();
 
         }
 
