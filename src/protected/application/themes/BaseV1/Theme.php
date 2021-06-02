@@ -1490,7 +1490,7 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
 
         // TinyMCE
-        $this->enqueueScript('vendor', 'tinymce', '/vendor/tinymce/tinymce.min.js');
+        $this->enqueueScript('vendor', 'tinymce', 'https://cdn.tiny.cloud/1/up1au5rsut18ke5qk44x1pl88w6vw3q8ume1vp5xrxm7t69y/tinymce/5/tinymce.min.js');
 
     }
 
