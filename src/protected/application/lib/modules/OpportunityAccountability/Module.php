@@ -43,10 +43,9 @@ class Module extends \MapasCulturais\Module
         $registration_repository = $app->repo('Registration');
 
         // Abre div antes das mensagens do CHAT
-        $app->hook('template(project.single.chat-messages):before ', function ($chatId){
-            echo '<button class="open-toggle-chat">'.i::__('Abrir/Fechar conversa').'</button>';
-            echo '<div class="toggle-chat hidden" id="chat-'.$chatId.'">';
-
+        $app->hook('template(project.single.chat-messages):before ', function (){
+            echo '<button ng-click="toogleTalk(field.id)">'.i::__('Abrir/Fechar conversa').'</button>';
+            echo '<div class="hidden chat-{{field.id}}">';
         });
         
          // Fecha div depois das mensagens do CHAT
