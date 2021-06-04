@@ -186,23 +186,12 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona no painel principal, informações do peojeto de prestação de contas
         $app->hook('template(panel.index.content.registration):end', function() use ($app){
-            $agent_subquery = new ApiQuery('MapasCulturais\\Entities\\Agent', [
+            $agents = new ApiQuery('MapasCulturais\\Entities\\Agent', [
                 'user' => 'EQ(@me)', 
             ]);
-            
-            $query = new ApiQuery('MapasCulturais\\Entities\\Project', [
-                '@select'=>'id', 
-                'isAccountability' => 'EQ(1)', 
-                'status' => 'GTE(0)',
-                '@permissions' => 'view',
-            ]);
-            
-            $query->addFilterByApiQuery($agent_subquery, 'id', 'owner');
-           
-            $project_ids = $query->findIds();
-            
-            $projects = $app->repo('Project')->findBy(['id' => $project_ids]);
 
+            $projects = $app->repo('Project')->findBy(['owner' => $agents->findIds()]);
+           
             $this->part('accountability/project-accountability-panel',['projects' => $projects]);
         });
         
