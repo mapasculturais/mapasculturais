@@ -39,11 +39,13 @@ class Controller extends \MapasCulturais\Controller
 
         $app = App::i();
 
-       if(!$app->user->is('admin')){
-           $this->errorJson([], '403');
-       }
-
         $registration = $app->repo('Registration')->find($request['registrationId']);
+
+        if(($registration->opportunity->owner->id != $app->user->profile->id)){
+            if(!$app->user->is('admin')){
+                $this->errorJson([], '403');
+            }
+        }
         
         $registration->isPublishedResult = true;
         
