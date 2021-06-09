@@ -98,19 +98,24 @@ class Module extends \MapasCulturais\Module
                 ]);
                     
                 $ids = $query->findIds();
-                    
+                
+                $viewTab = false;
                 foreach ($registrations as $registration){
                     if( (bool) $registration->isPublishedResult && in_array($registration->owner->id, $ids) && $registration->canUser("@control")){
-
-                        // Adiciona a tab Resultado
-                        $this->part('accountability-published-result-tab', ['registration' => $registration]);
-
-                         // Adiciona conteúdo na aba de resultados individual
-                        $app->hook('template(opportunity.single.opportunity-registrations--tables):end', function() use ($entity){
-                            $this->part('accountability-published-result-list', ['entity' => $entity]);
-                        });
+                        $viewTab = true;                       
                     }
                 }
+
+                if($viewTab){
+                    // Adiciona a tab Resultado
+                    $this->part('accountability-published-result-tab', ['registration' => $registration]);
+
+                    // Adiciona conteúdo na aba de resultados individual
+                    $app->hook('template(opportunity.single.opportunity-registrations--tables):end', function() use ($entity){
+                        $this->part('accountability-published-result-list', ['entity' => $entity]);
+                    });
+                }
+
             }
         });
        
