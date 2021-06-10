@@ -11,7 +11,7 @@ class ReopenEvaluations extends JobType
 
     protected function _generateId(array $data, string $start_string, string $interval_string, int $iterations)
     {
-        return "reopenEvaluation:{$data['agentRelation']}";
+        return "reopenEvaluation:{$data['agentRelation']}".uniqid();
     }
 
     protected function _execute(\MapasCulturais\Entities\Job $job){
