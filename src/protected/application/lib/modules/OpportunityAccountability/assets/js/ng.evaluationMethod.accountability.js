@@ -254,6 +254,12 @@
         }
 
         $scope.reopenAccountability = function () {
+
+            if(MapasCulturais.entity.isPublishedResult){
+                MapasCulturais.Messages.error("Resultado já publicado para essa prestação de contas.");
+                return;  
+            }
+
             // TODO: i18n
             if (!confirm("Você tem certeza que deseja reabrir a prestação de contas?\n\nA abertura dos campos para edição deverá ser feita manualmente.")) {
                 return;
