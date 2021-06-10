@@ -23,9 +23,9 @@ $chatId = uniqid();
         <?php $this->applyTemplateHook('chat-messages', 'end');?>
     </div>
     <?php $this->applyTemplateHook('chat-messages', 'after');?>
-
+    
     <footer ng-if="!isChatClosed()" ng-style="{'border-top-width': (data.messages.length == 0) ? '0px' : '1px'}">
-        <textarea class="new-message txt-{{field.id}}" ng-keypress="handleCtrlEnterAction($event);" ng-focus="data.chatFocus = true;checkToggleTalk(field.id)" ng-blur="data.chatFocus = false;" ng-model="data.newMessage" ng-style="{'height': (!data.newMessage) ? 'auto' : ''}" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
+        <textarea class="new-message txt-{{getClassName(field.id)}}" ng-keypress="handleCtrlEnterAction($event);" ng-focus="data.chatFocus = true;checkToggleTalk(field.id)" ng-blur="data.chatFocus = false;" ng-model="data.newMessage" ng-style="{'height': (!data.newMessage) ? 'auto' : ''}" placeholder="<?php i::_e("Escreva uma mensagem"); ?>"></textarea>
         <button class="btn-chat-sent" ng-disabled="!data.newMessage || data.sending" ng-click="sendMessage(data.newMessage);setFocus(field.id)"><?php i::_e("Enviar"); ?></button>
     </footer>
 
