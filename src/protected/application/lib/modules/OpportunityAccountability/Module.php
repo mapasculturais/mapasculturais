@@ -43,10 +43,9 @@ class Module extends \MapasCulturais\Module
         $registration_repository = $app->repo('Registration');
 
         // Abre div antes das mensagens do CHAT
-        $app->hook('template(project.single.chat-messages):before ', function ($chatId){
-            echo '<button class="open-toggle-chat">'.i::__('Abrir/Fechar conversa').'</button>';
-            echo '<div class="toggle-chat hidden" id="chat-'.$chatId.'">';
-
+        $app->hook('template(project.single.chat-messages):before ', function (){
+            echo '<button ng-click="toogleTalk(field.id)">'.i::__('Abrir/Fechar conversa').'</button>';
+            echo '<div class="hidden chat-{{getClassName(field.id)}}">';
         });
         
          // Fecha div depois das mensagens do CHAT
@@ -99,19 +98,24 @@ class Module extends \MapasCulturais\Module
                 ]);
                     
                 $ids = $query->findIds();
-                    
+                
+                $viewTab = false;
                 foreach ($registrations as $registration){
                     if( (bool) $registration->isPublishedResult && in_array($registration->owner->id, $ids) && $registration->canUser("@control")){
-
-                        // Adiciona a tab Resultado
-                        $this->part('accountability-published-result-tab', ['registration' => $registration]);
-
-                         // Adiciona conteúdo na aba de resultados individual
-                        $app->hook('template(opportunity.single.opportunity-registrations--tables):end', function() use ($entity){
-                            $this->part('accountability-published-result-list', ['entity' => $entity]);
-                        });
+                        $viewTab = true;                       
                     }
                 }
+
+                if($viewTab){
+                    // Adiciona a tab Resultado
+                    $this->part('accountability-published-result-tab', ['registration' => $registration]);
+
+                    // Adiciona conteúdo na aba de resultados individual
+                    $app->hook('template(opportunity.single.opportunity-registrations--tables):end', function() use ($entity){
+                        $this->part('accountability-published-result-list', ['entity' => $entity]);
+                    });
+                }
+
             }
         });
        
@@ -187,23 +191,12 @@ class Module extends \MapasCulturais\Module
 
         // Adiciona no painel principal, informações do peojeto de prestação de contas
         $app->hook('template(panel.index.content.registration):end', function() use ($app){
-            $agent_subquery = new ApiQuery('MapasCulturais\\Entities\\Agent', [
+            $agents = new ApiQuery('MapasCulturais\\Entities\\Agent', [
                 'user' => 'EQ(@me)', 
             ]);
-            
-            $query = new ApiQuery('MapasCulturais\\Entities\\Project', [
-                '@select'=>'id', 
-                'isAccountability' => 'EQ(1)', 
-                'status' => 'GTE(0)',
-                '@permissions' => 'view',
-            ]);
-            
-            $query->addFilterByApiQuery($agent_subquery, 'id', 'owner');
-           
-            $project_ids = $query->findIds();
-            
-            $projects = $app->repo('Project')->findBy(['id' => $project_ids]);
 
+            $projects = $app->repo('Project')->findBy(['owner' => $agents->findIds()]);
+           
             $this->part('accountability/project-accountability-panel',['projects' => $projects]);
         });
         

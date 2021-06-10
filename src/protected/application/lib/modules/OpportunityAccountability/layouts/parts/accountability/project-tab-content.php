@@ -28,6 +28,7 @@ $this->addOpportunitySelectFieldsToJs($opportunity);
 
 $this->addRegistrationToJs($registration);
 $this->jsObject['entity']['registrationStatus'] = $registration->status;
+$this->jsObject['entity']['isPublishedResult'] = $registration->isPublishedResult ?: false;
 
 $this->includeAngularEntityAssets($opportunity);
 

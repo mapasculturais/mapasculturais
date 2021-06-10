@@ -89,6 +89,43 @@
             }
         };
 
+        $scope.setFocus = function (fieldId) {   
+            if(!fieldId){
+                fieldId = "event";
+            }  
+
+            document.querySelector('.txt-'+fieldId).focus();
+        }
+
+        $scope.toogleTalk = function (fieldId) { 
+            if(!fieldId){
+                fieldId = "event";
+            } 
+
+            var chat = document.querySelector('.chat-'+fieldId);            
+            chat.classList.toggle('hidden')
+        }
+        
+        $scope.checkToggleTalk = function(fieldId){
+            if(!fieldId){
+                fieldId = "event";
+            } 
+
+            var chat = document.querySelector('.chat-'+fieldId);       
+            
+            if(chat.classList.contains("hidden")){
+                chat.classList.toggle('hidden')
+            }
+        }
+
+        $scope.getClassName = function(fieldId){
+            if(!fieldId){
+                return "event";
+            } 
+
+            return fieldId;
+        }
+
         $scope.init = function(threadId) {
             $scope.data.threadId = threadId;
         }
@@ -102,16 +139,9 @@
             if(new_val != old_val){
                 clearInterval($scope.data.interval);
                 $scope.data.chatFocusTime = new_val ? 10000 : 60000;
-                $scope.chatIsFocused();            
+                $scope.data.interval = setInterval(getLatestMessages, $scope.data.chatFocusTime);           
             }
-
-            console.log()
         });
-
-
-        $scope.chatIsFocused = function () {    
-            $scope.data.interval = setInterval(getLatestMessages, $scope.data.chatFocusTime);
-        }
 
         var adjustBoxPosition = function () {
             setTimeout(function () {
@@ -122,7 +152,6 @@
         };
 
         var getLatestMessages = function () {
-            console.log($scope.data.chatFocusTime)
             ChatService.find($scope.data.threadId).success(function (data, status, headers) {
                 $scope.data.messages.forEach(function (current) {
                     
@@ -169,7 +198,6 @@
                 $scope.data.sending = false;
             });
 
-            $("textarea.new-message").focus();
 
         }
 
