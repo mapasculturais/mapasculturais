@@ -37,8 +37,12 @@ $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? "
 
     <section class="actions">
         <?php if (!empty($disable)) { ?>
-            <span><?php i::_e("Parecer técnico já enviado") ?></span>
-            <button class="btn btn-primary align-right" ng-click="reopenAccountability()"><?php i::_e("Reabrir prestação de contas") ?></button>
+                <span><?php i::_e("Parecer técnico já enviado") ?></span>
+            <?php if(!$registration->isPublishedResult){?>
+                <button class="btn btn-primary align-right" ng-click="reopenAccountability()"><?php i::_e("Reabrir prestação de contas") ?></button>
+            <?php } else { ?>
+                <button class="btn btn-success align-right"><?php i::_e("Resultado já publicado") ?></button>
+            <?php }?>
         <?php } else { ?>
             <button class="btn btn-primary align-right" ng-click="sendEvaluation()"><?php i::_e("Finalizar e enviar o parecer técnico") ?></button>
         <?php } ?>
