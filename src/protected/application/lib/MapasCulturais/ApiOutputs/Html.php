@@ -340,6 +340,11 @@ class Html extends \MapasCulturais\ApiOutput{
      * @return string
      */
     protected function convertToUTF16($text){
+        
+        if(mb_check_encoding($text, 'UTF-8')){
+            return $text;
+        }
+        
         return mb_convert_encoding($text,'utf-16','utf-8');
     }
 
