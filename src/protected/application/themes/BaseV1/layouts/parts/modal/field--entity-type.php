@@ -4,6 +4,10 @@ if (!$types) {
     return;
 }
 
+usort($types, function($a, $b ){
+    return $a->name > $b->name;
+});
+
 $_title = empty($definition['label']) ? \MapasCulturais\i::esc_attr__("Tipo") : $definition['label'];
 ?>
 <?php $this->part("modal/title", ['title' => $_title]); ?>
