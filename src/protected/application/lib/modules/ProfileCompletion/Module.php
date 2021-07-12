@@ -22,26 +22,13 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         //Caso config estiver em false, o modulo nao irá iniciar
-        if(!$app->config['profilecompletion']){
+        if(!$this->config['enable']){
             return;
-        }            
-
-        // Verifica se o agente tem os dados mínimos em seu cadastro
-        $app->hook('auth.successful', function() use ($app){
-            $agenteMetadada = $app->user->profile->getMetadata();
-            $profile = $app->user->profile;
-            $terms = $app->user->profile->getTerms()->getArrayCopy();
-
-            if(!isset($agenteMetadada['documento']) || $profile->name === "" || empty($terms['area'] || empty($profile->shortDescription))){
-                $url = $app->createUrl('agent', 'edita', ["id"=>$profile->id,"completeRegister"=>true]);
-                $app->redirect($url);
-            }
-        });
-        
+        }
+       
         //Insere uma mensagem no topo da página de edição do agente
         $app->hook('template(agent.edit.name):after', function() use ($app){
-            $request = $this->controller->data;
-            if(isset($request['completeRegister'])){
+            if($app->user->profile->status === 0){
                 $this->part('profile-complete-message');
             }
         });
