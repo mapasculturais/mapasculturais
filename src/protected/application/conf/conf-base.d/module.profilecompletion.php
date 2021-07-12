@@ -1,5 +1,7 @@
 <?php
 //Configurações Módulo ProfileCompletion
 return [
-    "profilecompletion" => false    
+    "module.ProfileCompletion" => [
+        'enable' => env('MODULE_PROFILECOMPLETIN_ENABLE',true)
+    ]    
 ];
