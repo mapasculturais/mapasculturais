@@ -333,7 +333,7 @@
               <td>{{history.objectId}}</td>
               <td>{{history.objectType}}</td>
               <td>{{history.message}}</td>
-              <td>{{history.createTimestamp.date | date: 'dd-mm-yyyy HH:mm:ss'}}</td>
+              <td>{{history.createTimestamp.date | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
             </tr>
           </tbody>
         </table>

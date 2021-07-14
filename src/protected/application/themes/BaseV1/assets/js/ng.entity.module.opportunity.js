@@ -2163,13 +2163,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     });
             }; 
             $scope.data.sent = false;
-            $scope.sendRegistration = function(redirectUrl){
+            $scope.sendRegistration = function(redirectUrl = false, isAccountability = false){
 
                 // TODO: i18n
-                if(!confirm('Ao enviar a prestação de conta, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
-                    return;
+                if(isAccountability){
+                    if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
+                        return;
+                    }                    
                 }
-                
+
                 RegistrationService.send($scope.data.registration.id).success(function(response){
                     $('.js-response-error').remove();
                     if(response.error){
@@ -2206,7 +2208,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                         if (redirectUrl) {
                             document.location = redirectUrl;
                         } 
-                        else if(redirectUrl === undefined) {
+                        else {
                             document.location = response.redirect || response.singleUrl;
                         } 
                     }
