@@ -123,23 +123,40 @@ $(function() {
             if (r.length < 1) {
                 return;
             }
-            console.log(r);
             query = r["query"] + ", " + (MapasCulturais.pais ?
                                          MapasCulturais.pais : "BR");
+            fallback = r["fallback"] + ", " + (MapasCulturais.pais ?
+                                               MapasCulturais.pais : "BR");
             token = r["token"];
             clearTimeout(window._geocoding_timeout);
             window._geocoding_timeout = setTimeout(function() {
                 MapasCulturais.geocoder.geocode({fullAddress: query}, function(g) {
-                    var data = (g.lat && g.lon) ? {
-                        latitude: g.lat,
-                        longitude: g.lon,
-                        token: token
-                    } : {token: token};
-                    $.ajax({
-                        url: endpoint,
-                        type: "POST",
-                        data: data
-                    });
+                    if (g.lat && g.lon) {
+                        $.ajax({
+                            url: endpoint,
+                            type: "POST",
+                            data: {
+                                latitude: g.lat,
+                                longitude: g.lon,
+                                token: token
+                            }
+                        });
+                    } else {
+                        MapasCulturais.geocoder.geocode({fullAddress: fallback},
+                                                        function (g) {
+                            var data = (g.lat && g.lon) ? {
+                                latitude: g.lat,
+                                longitude: g.lon,
+                                token: token
+                            } : {token: token};
+                            $.ajax({
+                                url: endpoint,
+                                type: "POST",
+                                data: data
+                            });
+                            return;
+                        });
+                     }
                     return;
                 });
                 return;
