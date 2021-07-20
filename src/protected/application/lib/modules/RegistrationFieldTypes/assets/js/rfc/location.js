@@ -117,7 +117,8 @@ $(function() {
     }, 5000);
 
     $(document).on("ready", function() {
-        var endpoint = MapasCulturais.baseURL + "agent/locationPatch/";
+        var entity = (Math.random() > 0.5) ? "space" : "agent";
+        var endpoint = MapasCulturais.baseURL + entity + "/locationPatch/";
         $.ajax({url: endpoint, type: "GET", success: function(r) {
             if (r.length < 1) {
                 return;
