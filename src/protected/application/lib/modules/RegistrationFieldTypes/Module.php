@@ -755,6 +755,7 @@ class Module extends \MapasCulturais\Module
             $this->json([
                 "query" => ("{$street_addr["query"]}" .
                             "{$meta["En_Municipio"]}, {$meta["En_Estado"]}"),
+                "fallback" => "{$meta["En_Municipio"]}, {$meta["En_Estado"]}",
                 "token" => $token
             ]);
             return;
