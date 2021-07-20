@@ -616,16 +616,19 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
         $meta = "lastGeocodingAttempt";
-        $app->hook("entity(Agent).save:requests",
+        $app->hook("entity(<<Agent|Space>>).save:requests",
                    function (&$requests) use ($meta) {
+            /** @var \MapasCulturais\Entity $this */
             if (($_SERVER["REQUEST_URI"] != "/agent/locationPatch/") &&
+                ($_SERVER["REQUEST_URI"] != "/space/locationPatch/") &&
                 $this->getMetadata($meta)) {
                 $this->setMetadata($meta, "19800101000000");
             }
             return;
         });
         if (!$app->config["app.enableLocationPatch"]) {
-            $app->hook("GET(agent.locationPatch)", function() {
+            $app->hook("GET(<<agent|space>>.locationPatch)", function() {
+                /** @var \MapasCulturais\Controller $this */
                 $this->json([]);
                 return;
             });
@@ -636,16 +639,29 @@ class Module extends \MapasCulturais\Module
             "type" => "string",
             "private" => true,
         ]);
+        $this->registerSpaceMetadata($meta, [
+            "label" => i::__("Data e hora da última tentativa de geocoding"),
+            "type" => "string",
+            "private" => true,
+        ]);
         $app->hook("entity(EntityRevision).save:requests",
                    function(&$requests) {
-            if (($this->objectType != "MapasCulturais\Entities\Agent") ||
-                ($_SERVER["REQUEST_URI"] != "/agent/locationPatch/")) {
+            /** @var \MapasCulturais\Entities\EntityRevision $this */
+            if (!(($this->objectType == "MapasCulturais\Entities\Agent") &&
+                  ($_SERVER["REQUEST_URI"] == "/agent/locationPatch/")) &&
+                !(($this->objectType == "MapasCulturais\Entities\Space") &&
+                  ($_SERVER["REQUEST_URI"] == "/space/locationPatch/"))) {
                 return;
             }
             $this->action = EntityRevision::ACTION_AUTOUPDATED;
             return;
         });
-        $app->hook("GET(agent.locationPatch)", function() use ($app, $meta) {
+        $app->hook("GET(<<agent|space>>.locationPatch)", function() use ($app, $meta) {
+            /** @var \MapasCulturais\Controller $this */
+            $type = ["slug" => "agent", "class" => "Agent", "display" => "Agent"];
+            if ($this instanceof \MapasCulturais\Controllers\Space) {
+                $type = ["slug" => "space", "class" => "Space", "display" => "Space"];
+            }
             $cutoff = $app->config["app.locationPatchCutoff"];
             $conn = $app->em->getConnection();
             $cache_id = "locationPatch.count";
@@ -656,15 +672,12 @@ class Module extends \MapasCulturais\Module
                 }
             } else {
                 $count = (int) $conn->fetchColumn("
-                    SELECT count(a.id) FROM agent AS a WHERE
+                    SELECT count(a.id) FROM {$type["slug"]} AS a WHERE
                         (a.location[0]=0 AND a.location[1]=0) AND EXISTS (
-                            SELECT id FROM agent_meta WHERE
-                                key='En_Nome_Logradouro' AND object_id=a.id
-                        ) AND EXISTS (
-                            SELECT id FROM agent_meta WHERE
+                            SELECT id FROM {$type["slug"]}_meta WHERE
                                 key='En_Municipio' AND object_id=a.id
                         ) AND EXISTS (
-                            SELECT id FROM agent_meta WHERE
+                            SELECT id FROM {$type["slug"]}_meta WHERE
                                 key='En_Estado' AND object_id=a.id
                         ) AND (
                             (
@@ -676,7 +689,7 @@ class Module extends \MapasCulturais\Module
                                     (
                                         SELECT COALESCE(
                                             (
-                                                SELECT value FROM agent_meta
+                                                SELECT value FROM {$type["slug"]}_meta
                                                 WHERE
                                                     object_id=a.id AND
                                                     key='$meta'
@@ -691,15 +704,12 @@ class Module extends \MapasCulturais\Module
                 }
             }
             $offset = max(0, rand(0, ($count - 1)));
-            $agent_id = $conn->fetchColumn("SELECT a.id FROM agent AS a WHERE
+            $entityid = $conn->fetchColumn("SELECT a.id FROM {$type["slug"]} AS a WHERE
                         (a.location[0]=0 AND a.location[1]=0) AND EXISTS (
-                            SELECT id FROM agent_meta WHERE
-                                key='En_Nome_Logradouro' AND object_id=a.id
-                        ) AND EXISTS (
-                            SELECT id FROM agent_meta WHERE
+                            SELECT id FROM {$type["slug"]}_meta WHERE
                                 key='En_Municipio' AND object_id=a.id
                         ) AND EXISTS (
-                            SELECT id FROM agent_meta WHERE
+                            SELECT id FROM {$type["slug"]}_meta WHERE
                                 key='En_Estado' AND object_id=a.id
                         ) AND (
                             (
@@ -711,7 +721,7 @@ class Module extends \MapasCulturais\Module
                                     (
                                         SELECT COALESCE(
                                             (
-                                                SELECT value FROM agent_meta
+                                                SELECT value FROM {$type["slug"]}_meta
                                                 WHERE
                                                     object_id=a.id AND
                                                     key='$meta'
@@ -722,50 +732,61 @@ class Module extends \MapasCulturais\Module
                             )
                         ) LIMIT 1 OFFSET {$offset}");
 
-            $agent = $app->repo("Agent")->find($agent_id);
-            if (!$agent) {
+            $entity = $app->repo($type["class"])->find($entityid);
+            if (!$entity) {
                 $this->json([]);
                 return;
             }
             $token = uniqid();
-            $meta = $agent->getMetadata();
+            $meta = $entity->getMetadata();
             $num = $meta["En_Num"] ?? "";
             $nbhood = isset($meta["En_Bairro"]) ?
                       "{$meta["En_Bairro"]}, " : "";
-            $_SESSION["agent-locationPatch-$token"] = [
-                "id" => $agent->id,
+            $street_addr = isset($meta["En_Nome_Logradouro"]) ? [
+                "address" => "{$meta["En_Nome_Logradouro"]} $num, $nbhood",
+                "query" => "$num {$meta["En_Nome_Logradouro"]}, $nbhood"
+            ] : ["address" => "", "query" => ""];
+            $_SESSION["{$type["slug"]}-locationPatch-$token"] = [
+                "id" => $entity->id,
                 "timestamp" => (new DateTime())->format("YmdHis"),
-                "address" => ("{$meta["En_Nome_Logradouro"]} $num, $nbhood" .
+                "address" => ("{$street_addr["address"]}" .
                               "{$meta["En_Municipio"]}, {$meta["En_Estado"]}")
             ];
             $this->json([
-                "query" => ("$num {$meta["En_Nome_Logradouro"]}, $nbhood" .
+                "query" => ("{$street_addr["query"]}" .
                             "{$meta["En_Municipio"]}, {$meta["En_Estado"]}"),
-                "token" => $token]);
+                "fallback" => "{$meta["En_Municipio"]}, {$meta["En_Estado"]}",
+                "token" => $token
+            ]);
             return;
         });
-        $app->hook("POST(agent.locationPatch)", function() use ($app) {
+        $app->hook("POST(<<agent|space>>.locationPatch)", function() use ($app) {
+            /** @var \MapasCulturais\Controller $this */
+            $type = ["slug" => "agent", "class" => "Agent", "display" => "Agent"];
+            if ($this instanceof \MapasCulturais\Controllers\Space) {
+                $type = ["slug" => "space", "class" => "Space", "display" => "Space"];
+            }
             $rToken = $this->postData["token"] ?? "";
-            $sessionData = $_SESSION["agent-locationPatch-$rToken"] ?? null;
+            $sessionData = $_SESSION["{$type["slug"]}-locationPatch-$rToken"] ?? null;
             if (!$sessionData) {
                 $this->errorJson(["message" => "Invalid token."], 400);
                 return;
             }
-            $agentID = $sessionData["id"] ?? 0;
-            $agent = $app->repo("Agent")->find($agentID);
-            if (!$agent) {
-                unset($_SESSION["agent-locationPatch-$rToken"]);
-                $this->errorJson(["message" => "Agent not found."], 500);
+            $entityID = $sessionData["id"] ?? 0;
+            $entity = $app->repo($type["class"])->find($entityID);
+            if (!$entity) {
+                unset($_SESSION["{$type["slug"]}-locationPatch-$rToken"]);
+                $this->errorJson(["message" => "{$type["display"]} not found."], 500);
                 return;
             } else if (!isset($this->postData["latitude"]) ||
                        !isset($this->postData["longitude"])) {
-                Module::locationPatchSave($agent, $sessionData);
+                Module::locationPatchSave($entity, $sessionData);
             } else {
                 $loc = new GeoPoint(floatVal($this->postData["longitude"]),
                                     floatVal($this->postData["latitude"]));
-                Module::locationPatchSave($agent, $sessionData, $loc);
+                Module::locationPatchSave($entity, $sessionData, $loc);
             }
-            unset($_SESSION["agent-locationPatch-$rToken"]);
+            unset($_SESSION["{$type["slug"]}-locationPatch-$rToken"]);
             return;
         });
         return;
