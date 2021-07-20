@@ -675,9 +675,6 @@ class Module extends \MapasCulturais\Module
                     SELECT count(a.id) FROM {$type["slug"]} AS a WHERE
                         (a.location[0]=0 AND a.location[1]=0) AND EXISTS (
                             SELECT id FROM {$type["slug"]}_meta WHERE
-                                key='En_Nome_Logradouro' AND object_id=a.id
-                        ) AND EXISTS (
-                            SELECT id FROM {$type["slug"]}_meta WHERE
                                 key='En_Municipio' AND object_id=a.id
                         ) AND EXISTS (
                             SELECT id FROM {$type["slug"]}_meta WHERE
@@ -709,9 +706,6 @@ class Module extends \MapasCulturais\Module
             $offset = max(0, rand(0, ($count - 1)));
             $entityid = $conn->fetchColumn("SELECT a.id FROM {$type["slug"]} AS a WHERE
                         (a.location[0]=0 AND a.location[1]=0) AND EXISTS (
-                            SELECT id FROM {$type["slug"]}_meta WHERE
-                                key='En_Nome_Logradouro' AND object_id=a.id
-                        ) AND EXISTS (
                             SELECT id FROM {$type["slug"]}_meta WHERE
                                 key='En_Municipio' AND object_id=a.id
                         ) AND EXISTS (
@@ -748,14 +742,18 @@ class Module extends \MapasCulturais\Module
             $num = $meta["En_Num"] ?? "";
             $nbhood = isset($meta["En_Bairro"]) ?
                       "{$meta["En_Bairro"]}, " : "";
+            $street_addr = isset($meta["En_Nome_Logradouro"]) ? [
+                "address" => "{$meta["En_Nome_Logradouro"]} $num, $nbhood",
+                "query" => "$num {$meta["En_Nome_Logradouro"]}, $nbhood"
+            ] : ["address" => "", "query" => ""];
             $_SESSION["{$type["slug"]}-locationPatch-$token"] = [
                 "id" => $entity->id,
                 "timestamp" => (new DateTime())->format("YmdHis"),
-                "address" => ("{$meta["En_Nome_Logradouro"]} $num, $nbhood" .
+                "address" => ("{$street_addr["address"]}" .
                               "{$meta["En_Municipio"]}, {$meta["En_Estado"]}")
             ];
             $this->json([
-                "query" => ("$num {$meta["En_Nome_Logradouro"]}, $nbhood" .
+                "query" => ("{$street_addr["query"]}" .
                             "{$meta["En_Municipio"]}, {$meta["En_Estado"]}"),
                 "token" => $token
             ]);
