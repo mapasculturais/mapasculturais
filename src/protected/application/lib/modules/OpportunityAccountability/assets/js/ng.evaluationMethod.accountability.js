@@ -97,6 +97,11 @@
                 return $http.post(url, {data: evaluationData, uid});
             },
 
+            autoSave: function (registrationId, evaluationData, uid) {
+                var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {id: registrationId, status: 'draft'});
+                return $http.post(url, {data: evaluationData, uid});
+            },
+
             createChat: function (evaluation, identifier) {
                 var url = MapasCulturais.createUrl('chatThread', 'createAccountabilityField');
                 return $http.post(url, {evaluation, identifier});
@@ -135,7 +140,9 @@
         $scope.openChats = {};
         $scope.openFields = {};
 
-        $scope.evaluationData = MapasCulturais.accountabilityPermissions;
+        $scope.accountabilityPermissions = MapasCulturais.accountabilityPermissions;
+        $scope.evaluationData = MapasCulturais.evaluation.evaluationData;
+        $scope.resultString = MapasCulturais.evaluation.resultString;
 
         $rootScope.closedChats = $rootScope.closedChats || {};
 
@@ -148,13 +155,38 @@
             }
         });
 
-        if (!$scope.evaluationData) {
-            $scope.evaluationData = {};
+        if (!$scope.accountabilityPermissions) {
+            $scope.accountabilityPermissions = {};
         }
 
-        Object.keys($scope.evaluationData).forEach(function (key) {
-            $scope.openFields[key] = ($scope.evaluationData[key] == "true");
+        Object.keys($scope.accountabilityPermissions).forEach(function (key) {
+            $scope.openFields[key] = ($scope.accountabilityPermissions[key] == "true");
             return;
+        });
+
+        $scope.obsTimeOut = null;
+        $scope.$watchGroup(['evaluationData.obs'], function(new_val, old_val) {
+            if(new_val != old_val){
+                clearTimeout($scope.obsTimeOut)               
+                $scope.obsTimeOut = setTimeout(() => {
+                    AccountabilityEvaluationService.autoSave(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
+                        MapasCulturais.Messages.success('Salvo');
+                    }).error(function (data) {
+                        MapasCulturais.Messages.error(data.data[0]);
+                    });
+                }, 10000);
+            }
+            
+        });
+
+        $scope.$watchGroup(['evaluationData.result'], function(new_val, old_val) {
+            if(new_val != old_val){
+                AccountabilityEvaluationService.autoSave(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
+                    MapasCulturais.Messages.success('Salvo');
+                }).error(function (data) {
+                    MapasCulturais.Messages.error(data.data[0]);
+                });
+            }
         });
 
         $scope.getFieldIdentifier = function(field) {
@@ -193,15 +225,15 @@
 
         $scope.toggleOpen = function(field) {
             const identifier = $scope.getFieldIdentifier(field); 
-            $scope.evaluationData = {};           
-            $scope.evaluationData[identifier] = $scope.openFields[identifier]; 
+            $scope.accountabilityPermissions = {};           
+            $scope.accountabilityPermissions[identifier] = $scope.openFields[identifier]; 
             if($scope.openFields[identifier]){
-                AccountabilityEvaluationService.openField(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
+                AccountabilityEvaluationService.openField(registrationId, $scope.accountabilityPermissions, MapasCulturais.evaluation.user).success(function (data) {
                     MapasCulturais.Messages.success('Campo aberto para edição');
                     return;
                 });
             }else{
-                AccountabilityEvaluationService.closeField(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function (data) {
+                AccountabilityEvaluationService.closeField(registrationId, $scope.accountabilityPermissions, MapasCulturais.evaluation.user).success(function (data) {
                     MapasCulturais.Messages.success('Campo fechado para edição');
                     return;
                 });
@@ -239,9 +271,6 @@
                 return;
             }
 
-            tinyMCE.triggerSave(); 
-            $scope.evaluationData.obs = document.getElementById('evaluationEditor').value;
-
             AccountabilityEvaluationService.send(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
                 MapasCulturais.Messages.success('Salvo');
                 setTimeout(function () {
@@ -272,6 +301,29 @@
                 }, 500);
             });
         }
+
+       setTimeout(() => {
+            var container = document.getElementById("evaluation-editor");
+            if(!container){
+                return;
+            }
+            
+            var editor = new Quill(container, {
+                modules: { 
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                    ],
+                },
+                theme: 'snow'
+            });
+            
+            editor.on('text-change', function(){
+                $scope.evaluationData.obs = editor.root.innerHTML;
+                $scope.$apply();
+            });
+       },1000);
     }]);
 
     module.controller('OpportunityAccountability', ['$scope', function ($scope) {

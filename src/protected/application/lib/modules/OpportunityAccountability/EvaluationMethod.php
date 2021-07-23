@@ -56,7 +56,6 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
         $app = App::i();
 
         $app->view->enqueueScript('app', 'accountability-evaluation', 'js/ng.evaluationMethod.accountability.js', ['entity.module.opportunity']);
-        $app->view->enqueueScript('app', 'accountability-evaluation-form', 'js/evaluation-form--accountability.js', ['entity.module.opportunity']);
         $app->view->enqueueStyle('app', 'accountability-evaluation-method', 'css/accountability-evaluation-method.css');
         
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.accountability';

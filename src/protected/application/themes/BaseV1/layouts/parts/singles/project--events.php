@@ -26,7 +26,7 @@ $evaluation = $project->registration->accountabilityPhase ? $app->repo("Registra
             <div class='accountability-registration-field-controls'>
                 <label>
                     <?= i::__('Abrir conversação com proponente') ?>
-                    <span class="switch" ng-controller="AccountabilityEvaluationForm">
+                    <span class="switch">
                         <input type="checkbox" ng-model="openChats[getFieldIdentifier(events)]" ng-change="toggleChat(events)">
                         <span class="slider"></span>
                     </span>
