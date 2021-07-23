@@ -31,3 +31,9 @@
 .opportunity #registrations-table td {
     vertical-align: middle;
 }
+
+.evaluation-obs{
+    text-align: left;
+    border-left: solid blue;
+    padding-left: 7px;
+}
