@@ -9,6 +9,14 @@ return [
     */
     'themes.active' => env('ACTIVE_THEME', 'MapasCulturais\Themes\BaseV1'),
 
+    
+    /*
+    Define a url do site
+
+    ex: `https://mapacultural.com.br/`
+    */
+    'base.url' => env('BASE_URL', ''),
+
     /* Nome do site. É utilizado para a formação dos títulos das páginas. */
     'app.siteName' => env('SITE_NAME', i::__('Mapas Culturais')),
 
