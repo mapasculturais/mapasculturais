@@ -9,7 +9,7 @@ $opportunitiesToEvaluate = $user->opportunitiesCanBeEvaluated;
 	<header class="panel-header clearfix">
         <?php $this->applyTemplateHook('panel-header','begin'); ?>
 		<h2><?php \MapasCulturais\i::_e("Minhas oportunidades");?></h2>
-
+        <?php $this->renderModalFor('opportunity', false, "Criar oportunidade", "btn btn-default add");?>
         <?php $this->applyTemplateHook('panel-header','end') ?>
     </header>
     <?php $this->applyTemplateHook('panel-header','after'); ?>
