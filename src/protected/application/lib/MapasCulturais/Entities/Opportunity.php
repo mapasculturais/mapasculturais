@@ -355,7 +355,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
             'registrationTo' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
-            ]
+            ],
+	        'ownerEntity' => [
+		        'required' => \MapasCulturais\i::__('A entidade é obrigatória'),
+	        ],
+	        'evaluationMethod' => [
+		        'required' => \MapasCulturais\i::__('Defina um método de avaliação'),
+	        ]
         ];
 
         $hook_class = self::getHookClassPath();
@@ -475,6 +481,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     function setOwnerEntity($entity){
+    	if (empty($entity)) {
+    		return;
+	    }
+
         if ($entity instanceof Entity) {
             $this->ownerEntity = $entity;
         }
@@ -483,7 +493,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             $ownerEntityClassName = substr($this->getSpecializedClassName(), 24, -11);
             $this->ownerEntity = $app->repo($ownerEntityClassName)->find($entity);
-
         }
     }
 
