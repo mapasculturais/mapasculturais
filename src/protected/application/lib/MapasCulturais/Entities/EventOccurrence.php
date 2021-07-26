@@ -425,7 +425,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             return true;
         }
 
-        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+        return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
 
     function save($flush = false) {
