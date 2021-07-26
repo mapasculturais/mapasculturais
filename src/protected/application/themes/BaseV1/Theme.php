@@ -1489,8 +1489,9 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.js', array('jquery'));
         $this->enqueueStyle ('vendor', 'cropbox', '/vendor/cropbox/jquery.cropbox.css');
 
-        // TinyMCE
-        $this->enqueueScript('vendor', 'tinymce', 'https://cdn.tiny.cloud/1/up1au5rsut18ke5qk44x1pl88w6vw3q8ume1vp5xrxm7t69y/tinymce/5/tinymce.min.js');
+        // Quill
+        $this->enqueueScript('vendor', 'quill-js', '/vendor/quill/quill.js');
+        $this->enqueueStyle ('vendor', 'quill-css', '/vendor/quill/quill.css');
 
     }
 
