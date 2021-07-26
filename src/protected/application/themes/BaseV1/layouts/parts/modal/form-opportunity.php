@@ -128,7 +128,7 @@ $app->applyHook('mapasculturais.add_entity_modal.title', [&$title]);
             <button type="button" class="btn btn-default <?php echo $classes['cancel_class']; ?>" data-form-id='<?php echo $modal_id; ?>'>
                 <?php i::_e("Cancelar"); ?>
             </button>
-            <input type="submit" class="btn btn-primary" value="<?php i::_e("Adicionar"); ?> <?php echo $name; ?>">
+            <button class="btn btn-primary" onclick="saveOpportunity('form-for-<?=$modal_id?>')"><?php i::_e("Adicionar"); ?> <?php echo $name; ?></button>
         </div>
     </form>
 

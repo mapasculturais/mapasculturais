@@ -358,6 +358,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
             ],
 	        'ownerEntity' => [
 		        'required' => \MapasCulturais\i::__('A entidade é obrigatória'),
+	        ],
+	        'evaluationMethod' => [
+		        'required' => \MapasCulturais\i::__('Defina um método de avaliação'),
 	        ]
         ];
 
