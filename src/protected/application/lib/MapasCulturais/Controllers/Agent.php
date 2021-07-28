@@ -216,4 +216,17 @@ class Agent extends EntityController {
             $app->redirect($app->request()->getReferer());
         }
     }
+
+    public function PUT_single($data = null)
+    {
+
+        if (isset($_SESSION['UriHttpReferer'])) {
+            $data['newRedirect'] = 'true';
+            $data['newRedirectUrl'] = $_SESSION['UriHttpReferer'];
+
+            unset($_SESSION['UriHttpReferer']);
+        }
+
+        parent::PUT_single($data);
+    }
 }
