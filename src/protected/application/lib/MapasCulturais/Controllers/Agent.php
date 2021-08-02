@@ -216,10 +216,12 @@ class Agent extends EntityController {
             $app->redirect($app->request()->getReferer());
         }
     }
-
-    public function PUT_single($data = null)
-    {
-
+    /**
+     * @apiDefine APIPut
+     * @apiDescription Atualiza completamente uma entidade.
+     * @apiParam {Array} [data] Array com valores para popular os atributos da entidade. Use o método describe para descobrir os atributos. Atenção: Todos os dados da entidade devem estar na requisição, inclusive aqueles que não serão alterados.
+     */
+    public function PUT_single($data = null) {
         if (isset($_SESSION['UriHttpReferer'])) {
             $data['newRedirect'] = 'true';
             $data['newRedirectUrl'] = $_SESSION['UriHttpReferer'];

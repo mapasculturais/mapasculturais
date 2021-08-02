@@ -93,19 +93,12 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
     }
-
-    private function getUriHttpReferer()
-    {
-        return $_SERVER['HTTP_REFERER'];
-    }
-
     public function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax()){
             $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
         }else{
-            $_SESSION['UriHttpReferer'] = $this->getUriHttpReferer();
-            $this->_setRedirectPath($this->getUriHttpReferer());
+            $this->_setRedirectPath($app->request->getPathInfo());
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }
     }
