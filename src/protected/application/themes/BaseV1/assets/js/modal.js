@@ -51,27 +51,3 @@ function saveEvent(formId, complete = false){
         alert('Erro inesperado, fale com administrador.');
     });
 }
-
-function saveOpportunity(formId, complete = false){
-    let url = MapasCulturais.createUrl('oportunidades', '');
-    var dataForm = $('#'+formId).serializeArray();
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: dataForm,
-        beforeSend: function() {
-            if(!complete){
-                $(".spinner").show();
-            }
-        }
-    })
-    .done(function(data) {
-        $(".modal-loading").hide();
-        if((data.hasOwnProperty('error'))){
-            $(".create-entity").css("display", "block");
-        }
-    })
-    .fail(function(jqXHR, textStatus, msg) {
-        alert('Erro inesperado, fale com administrador.');
-    });
-}
