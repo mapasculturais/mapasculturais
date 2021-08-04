@@ -62,6 +62,12 @@ $(function () {
             url: _url, type: 'POST',
             data: _entity,
             success: function (r) {
+                
+                if((r.hasOwnProperty('error'))){
+                    $(".modal-loading").hide();
+                    $(".create-entity").css("display", "block");
+                }
+                
                 if (r.id) {
                     var name = r.name;
                     /*
