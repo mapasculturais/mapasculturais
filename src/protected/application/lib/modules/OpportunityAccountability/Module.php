@@ -503,7 +503,7 @@ class Module extends \MapasCulturais\Module
             $entity = $this->controller->requestedEntity;
             $base_phase = $entity->parent ?? $entity;
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
+            if (isset($base_phase->lastPhase) && $entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects--tab', ['entity' => $entity]);
             }
         });
@@ -512,7 +512,7 @@ class Module extends \MapasCulturais\Module
             $entity = $this->controller->requestedEntity;
             $base_phase = $entity->parent ?? $entity;
             // accountabilityPhase existe apenas quando lastPhase existe
-            if ($entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
+            if (isset($base_phase->lastPhase) && $entity->accountabilityPhase && $base_phase->lastPhase->publishedRegistrations) {
                 $this->part('singles/opportunity-projects', ['entity' => $entity]);
             }
         });
