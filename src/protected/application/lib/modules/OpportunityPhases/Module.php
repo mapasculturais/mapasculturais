@@ -405,6 +405,13 @@ class Module extends \MapasCulturais\Module{
                     $this->jsObject['entity']['registrationFileConfigurations'][] = $file;
                 }
 
+                if(!is_array($this->jsObject['entity']['registrationFiles'])){
+                    $this->jsObject['entity']['registrationFiles'] = [];
+                }
+
+                foreach($reg->files as $key => $value){
+                    $this->jsObject['entity']['registrationFiles'][$key] = $value;
+                }
 
             }
 
