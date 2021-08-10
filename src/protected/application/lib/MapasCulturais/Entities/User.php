@@ -329,6 +329,43 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return false;
     }
 
+    protected function _getRegistrationsByStatus($status){
+
+        $app = App::i();
+
+        $conn = $app->em->getConnection();
+
+        $sql = "SELECT 
+        r.id
+        FROM agent a 
+        LEFT JOIN usr u on a.user_id = u.id 
+        JOIN registration r on r.agent_id = a.id 
+        WHERE r.status = :status AND u.id = :user";
+        
+        $params = [
+            'user' => $this->id,
+            'status' => $status,
+        ];
+
+        $ids = $conn->fetchAll($sql, $params);
+
+        return $ids;
+    }
+
+    public function getRegistrationsByStatus($status = 0){
+        
+        $app = App::i();
+
+        $ids = $this->_getRegistrationsByStatus($status);
+        
+        $result = [];
+        foreach($ids as $id){
+            $result[] = $id['id'];
+        }
+
+        return $app->repo("Registration")->findBy(["id" => $result]);
+    }
+
     protected function _getEntitiesByStatus($entityClassName, $status = 0, $status_operator = '>'){
         if(is_null($status)){
             $where_status = "";
