@@ -368,6 +368,15 @@ class Module extends \MapasCulturais\Module{
 
             foreach($registrations as $i => $reg){
 
+                if(!is_object($this->jsObject['registration'])){
+                    $this->jsObject['registration'] = $reg;
+                }
+
+                foreach($reg->opportunity->registrationFieldConfigurations as $key => $value){
+                    $field_name = $value->fieldName;
+                    $this->jsObject['registration']->$field_name = $reg->$field_name;
+                }
+
                 $opportunity = $reg->opportunity;
 
                 if (count($opportunity->registrationFieldConfigurations) || count($opportunity->registrationFileConfigurations)) {
