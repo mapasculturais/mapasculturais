@@ -6,11 +6,12 @@
         <h1><span class="icon icon-project"></span> <?php \MapasCulturais\i::_e("Projetos");?></h1>
         <!--                <a class="btn btn-accent add" href="--><?php //echo $app->createUrl('project', 'create') ?><!--">--><?php //\MapasCulturais\i::_e("Adicionar projeto");?><!--</a>-->
     </div>
+    <div>
+        <h2 align="center" style="color: red">Aviso!</h2>
+        <span><h3 align="center">A funcionalidade de projetos se encontra em manutenção.</h3></span>
+    </div>
 </header>
-<!--        <div id="lista-dos-projetos" class="lista project" infinite-scroll="data.global.filterEntity === 'project' && addMore('project')" ng-show="data.global.filterEntity === 'project'">-->
-<!--        --><?php //$this->part('search/list-project-item'); ?>
-<!--        </div>-->
-<div>
-    <h2 align="center" style="color: red">Aviso!</h2>
-    <span><h3 align="center">A funcionalidade de projetos se encontra em manutenção.</h3></span>
-</div>
+        <div id="lista-dos-projetos" class="lista project" infinite-scroll="data.global.filterEntity === 'project' && addMore('project')" ng-show="data.global.filterEntity === 'project'">
+        <?php $this->part('search/list-project-item'); ?>
+        </div>
+
