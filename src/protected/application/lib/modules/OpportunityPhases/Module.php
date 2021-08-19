@@ -8,6 +8,7 @@ use MapasCulturais\App,
     MapasCulturais\Definitions,
     MapasCulturais\Exceptions;
 use MapasCulturais\Entities\Opportunity;
+use \MapasCulturais\Types\GeoPoint;
 
 class Module extends \MapasCulturais\Module{
 
@@ -373,8 +374,20 @@ class Module extends \MapasCulturais\Module{
                 }
 
                 foreach($reg->opportunity->registrationFieldConfigurations as $key => $value){
+                    
                     $field_name = $value->fieldName;
-                    $this->jsObject['registration']->$field_name = $reg->$field_name;
+
+                    if(is_array($reg->$field_name) && (array_key_exists("location", $reg->$field_name) && ($reg->$field_name['location'] instanceof GeoPoint))){
+
+                        $data = $reg->$field_name;
+
+                        $data['location'] = (array) $reg->$field_name['location'];
+
+                        $this->jsObject['registration']->$field_name = $data;
+
+                    }else{
+                        $this->jsObject['registration']->$field_name = $reg->$field_name;
+                    }
                 }
 
                 $opportunity = $reg->opportunity;
