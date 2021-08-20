@@ -1,10 +1,7 @@
 <header id="project-list-header" class="entity-list-header clearfix" ng-show="data.global.filterEntity == 'project'">
-    <!--            <div class="info">-->
-    <!--                <h4>A funcionalidade de inclusão de projetos foi retirada </h4>-->
-    <!--            </div>-->
     <div class="clearfix">
         <h1><span class="icon icon-project"></span> <?php \MapasCulturais\i::_e("Projetos");?></h1>
-        <!--                <a class="btn btn-accent add" href="--><?php //echo $app->createUrl('project', 'create') ?><!--">--><?php //\MapasCulturais\i::_e("Adicionar projeto");?><!--</a>-->
+                        <a class="btn btn-accent add" href="<?php echo $app->createUrl('project', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar projeto");?></a>
     </div>
 
 </header>
