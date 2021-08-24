@@ -12,3 +12,9 @@
 .relation-field-info {
     color:#888;
 }
+
+
+.checkbox-group.ng-scope{
+    width: 50%;
+    display: inline-block;
+}
