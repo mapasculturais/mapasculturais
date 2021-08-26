@@ -13,8 +13,11 @@
     color:#888;
 }
 
-
-.checkbox-group.ng-scope{
+.two-column{
     width: 50%;
     display: inline-block;
+}
+
+.field-required {
+    color: red;
 }
