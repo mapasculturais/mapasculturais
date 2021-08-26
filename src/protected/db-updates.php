@@ -1507,7 +1507,57 @@ $$
 
         __exec("CREATE INDEX job_next_execution_timestamp_idx ON job (next_execution_timestamp);");
         __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
-   
     },
 
+    'add triggers for orphan cleanup #1812' => function () {
+        __exec("CREATE OR REPLACE FUNCTION fn_clean_orphans()
+                    RETURNS trigger
+                    LANGUAGE 'plpgsql'
+                    COST 100
+                    VOLATILE NOT LEAKPROOF AS $$
+                        DECLARE _p_type VARCHAR;
+                    BEGIN
+                        _p_type=TG_ARGV[0];
+                        DELETE FROM agent_relation WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM space_relation WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM term_relation WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM metalist WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM file WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM pcache WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM request WHERE
+                            (origin_type=_p_type AND origin_id=OLD.id) OR
+                            (destination_type=_p_type AND destination_id=OLD.id);
+                        RETURN NULL;
+                    END; $$;");
+        __exec("CREATE TRIGGER trigger_clean_orphans_agent
+                    AFTER DELETE ON agent
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Agent')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_event
+                    AFTER DELETE ON event
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Event')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_opportunity
+                    AFTER DELETE ON opportunity
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Opportunity')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_project
+                    AFTER DELETE ON project
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Project')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_registration
+                    AFTER DELETE ON registration
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Registration')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_space
+                    AFTER DELETE ON space
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Space')");
+    },
 ] + $updates ;
