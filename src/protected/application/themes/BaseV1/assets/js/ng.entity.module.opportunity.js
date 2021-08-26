@@ -1089,6 +1089,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     };
 
+
+    $scope.setClassColumn = function(values){
+        if(values.length >= 8){
+            return "two-column";
+        }
+    }
+
 }]);
 
     module.controller('EvaluationMethodConfigurationController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', 'OpportunityApiService', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox, OpportunityApiService) {
