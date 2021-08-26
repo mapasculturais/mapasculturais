@@ -33,7 +33,7 @@
                     </ul>
                 </div>
             </div>
-            <?php $this->applyTemplateHook('home-search-form','and'); ?>
+            <?php $this->applyTemplateHook('home-search-form','end'); ?>
         </form>
         <?php $this->applyTemplateHook('home-search-form','after'); ?>
         <a class="btn btn-accent btn-large" href="<?php echo $app->createUrl('panel') ?>"><?php $this->dict('home: colabore') ?></a>
