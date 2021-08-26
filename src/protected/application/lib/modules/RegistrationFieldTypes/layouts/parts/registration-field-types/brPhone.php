@@ -9,7 +9,6 @@ use MapasCulturais\i; ?>
     </span>
 
     <div ng-if="::field.description" class="attachment-description">{{::fieldfield.description}}</div>
-    <div ng-if="requiredField(field)" class="field-required"><span class="description"><?php i::_e('obrigatório') ?></span><span class="icon-required">*</span></div>
     <div><?php $this->part('registration-field-types/fields/brPhone') ?></div>
 
 </div>

@@ -13,7 +13,7 @@ foreach ($definitions as $def) {
 <div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'file'" id="file_{{::field.id}}">
     <span class="label">
         {{::field.title}}
-        <span ng-if="::field.required "><?php \MapasCulturais\i::_e('obrigatório'); ?></span>
+        <div ng-if="::field.required " class="field-required"><span class="description"><?php \MapasCulturais\i::_e('obrigatório'); ?></span><span class="icon-required">*</span></div>
     </span>
 
     <div class="attachment-description">
