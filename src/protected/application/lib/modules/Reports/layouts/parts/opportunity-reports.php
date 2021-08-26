@@ -59,7 +59,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
             <button ng-click="data.reportModal=true;data.graficType=true;data.error=false" class="btn btn-default add" id="btnOpenModal"><?php i::_e('Criar novo gráfico');?></button>
         </footer>
 
-        <?php $this->applyTemplateHook('reports-footer', 'and'); ?>
+        <?php $this->applyTemplateHook('reports-footer', 'end'); ?>
         <?php $this->applyTemplateHook('opportunity-reports', 'end'); ?>
     </div>
 
