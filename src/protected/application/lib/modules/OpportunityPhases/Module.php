@@ -369,26 +369,7 @@ class Module extends \MapasCulturais\Module{
 
             foreach($registrations as $i => $reg){
 
-                if(!is_object($this->jsObject['registration'])){
-                    $this->jsObject['registration'] = $reg;
-                }
-
-                foreach($reg->opportunity->registrationFieldConfigurations as $key => $value){
-                    
-                    $field_name = $value->fieldName;
-
-                    if(is_array($reg->$field_name) && (array_key_exists("location", $reg->$field_name) && ($reg->$field_name['location'] instanceof GeoPoint))){
-
-                        $data = $reg->$field_name;
-
-                        $data['location'] = (array) $reg->$field_name['location'];
-
-                        $this->jsObject['registration']->$field_name = $data;
-
-                    }else{
-                        $this->jsObject['registration']->$field_name = $reg->$field_name;
-                    }
-                }
+                $this->jsObject['registration'] = $reg;
 
                 $opportunity = $reg->opportunity;
 
