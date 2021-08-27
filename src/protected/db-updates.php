@@ -1509,6 +1509,41 @@ $$
         __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
     },
 
+    'clean existing orphans #1812' => function () {
+        __exec("CREATE OR REPLACE FUNCTION pg_temp.tempfn_clean_orphans(tbl name, ctype name, cid name)
+                    RETURNS VOID
+                    LANGUAGE 'plpgsql' AS $$
+                    BEGIN
+                        EXECUTE format('DELETE FROM %1$I WHERE (
+                                %2$I=''MapasCulturais\Entities\Agent'' AND
+                                %3$I NOT IN (SELECT id FROM agent)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Event'' AND
+                                %3$I NOT IN (SELECT id FROM event)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Opportunity'' AND
+                                %3$I NOT IN (SELECT id FROM opportunity)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Project'' AND
+                                %3$I NOT IN (SELECT id FROM project)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Registration'' AND
+                                %3$I NOT IN (SELECT id FROM registration)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Space'' AND
+                                %3$I NOT IN (SELECT id FROM space)
+                            )', tbl, ctype, cid);
+                    END; $$");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('agent_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('space_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('term_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('metalist', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('file', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('pcache', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('request', 'origin_type', 'origin_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('request', 'destination_type', 'destination_id')");
+    },
+
     'add triggers for orphan cleanup #1812' => function () {
         __exec("CREATE OR REPLACE FUNCTION fn_clean_orphans()
                     RETURNS trigger
