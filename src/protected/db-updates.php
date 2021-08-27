@@ -1518,8 +1518,20 @@ $$
                                 %2$I=''MapasCulturais\Entities\Agent'' AND
                                 %3$I NOT IN (SELECT id FROM agent)
                             ) OR (
+                                %2$I=''MapasCulturais\Entities\ChatMessage'' AND
+                                %3$I NOT IN (SELECT id FROM chat_message)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\ChatThread'' AND
+                                %3$I NOT IN (SELECT id FROM chat_thread)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\EvaluationMethodConfiguration'' AND
+                                %3$I NOT IN (SELECT id FROM evaluation_method_configuration)
+                            ) OR (
                                 %2$I=''MapasCulturais\Entities\Event'' AND
                                 %3$I NOT IN (SELECT id FROM event)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Notification'' AND
+                                %3$I NOT IN (SELECT id FROM notification)
                             ) OR (
                                 %2$I=''MapasCulturais\Entities\Opportunity'' AND
                                 %3$I NOT IN (SELECT id FROM opportunity)
@@ -1530,15 +1542,23 @@ $$
                                 %2$I=''MapasCulturais\Entities\Registration'' AND
                                 %3$I NOT IN (SELECT id FROM registration)
                             ) OR (
+                                %2$I=''MapasCulturais\Entities\RegistrationFileConfiguration'' AND
+                                %3$I NOT IN (SELECT id FROM registration_file_configuration)
+                            ) OR (
                                 %2$I=''MapasCulturais\Entities\Space'' AND
                                 %3$I NOT IN (SELECT id FROM space)
+                            ) OR (
+                                %2$I=''MapasCulturais\Entities\Subsite'' AND
+                                %3$I NOT IN (SELECT id FROM subsite)
                             )', tbl, ctype, cid);
                     END; $$");
         __exec("SELECT pg_temp.tempfn_clean_orphans('agent_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('seal_relation', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('space_relation', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('term_relation', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('metalist', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('file', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('chat_thread', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('pcache', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('request', 'origin_type', 'origin_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('request', 'destination_type', 'destination_id')");
@@ -1555,6 +1575,8 @@ $$
                         _p_type=TG_ARGV[0];
                         DELETE FROM agent_relation WHERE
                             object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM seal_relation WHERE
+                            object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM space_relation WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM term_relation WHERE
@@ -1562,6 +1584,8 @@ $$
                         DELETE FROM metalist WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM file WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM chat_thread WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM pcache WHERE
                             object_type=_p_type AND object_id=OLD.id;
@@ -1574,10 +1598,26 @@ $$
                     AFTER DELETE ON agent
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Agent')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_chat_message
+                    AFTER DELETE ON chat_message
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\ChatMessage')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_chat_thread
+                    AFTER DELETE ON chat_thread
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\ChatThread')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_evaluation_method_configuration
+                    AFTER DELETE ON evaluation_method_configuration
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\EvaluationMethodConfiguration')");
         __exec("CREATE TRIGGER trigger_clean_orphans_event
                     AFTER DELETE ON event
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Event')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_notification
+                    AFTER DELETE ON notification
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Notification')");
         __exec("CREATE TRIGGER trigger_clean_orphans_opportunity
                     AFTER DELETE ON opportunity
                     FOR EACH ROW
@@ -1590,9 +1630,17 @@ $$
                     AFTER DELETE ON registration
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Registration')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_registration_file_configuration
+                    AFTER DELETE ON registration_file_configuration
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\RegistrationFileConfiguration')");
         __exec("CREATE TRIGGER trigger_clean_orphans_space
                     AFTER DELETE ON space
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Space')");
+        __exec("CREATE TRIGGER trigger_clean_orphans_subsite
+                    AFTER DELETE ON subsite
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Subsite')");
     },
 ] + $updates ;
