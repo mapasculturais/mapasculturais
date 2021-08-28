@@ -1574,21 +1574,21 @@ $$
                     BEGIN
                         _p_type=TG_ARGV[0];
                         DELETE FROM agent_relation WHERE
-                            object_type=_p_type AND object_id=OLD.id;
+                            object_type::varchar=_p_type AND object_id=OLD.id;
                         DELETE FROM seal_relation WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM space_relation WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM term_relation WHERE
-                            object_type=_p_type AND object_id=OLD.id;
+                            object_type::varchar=_p_type AND object_id=OLD.id;
                         DELETE FROM metalist WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM file WHERE
-                            object_type=_p_type AND object_id=OLD.id;
+                            object_type::varchar=_p_type AND object_id=OLD.id;
                         DELETE FROM chat_thread WHERE
                             object_type=_p_type AND object_id=OLD.id;
                         DELETE FROM pcache WHERE
-                            object_type=_p_type AND object_id=OLD.id;
+                            object_type::varchar=_p_type AND object_id=OLD.id;
                         DELETE FROM request WHERE
                             (origin_type=_p_type AND origin_id=OLD.id) OR
                             (destination_type=_p_type AND destination_id=OLD.id);
