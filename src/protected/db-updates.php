@@ -1501,38 +1501,38 @@ $$
                     RETURNS VOID
                     LANGUAGE 'plpgsql' AS $$
                     BEGIN
-                        EXECUTE format('DELETE FROM %1$I WHERE (
-                                %2$I=''MapasCulturais\Entities\Agent'' AND
-                                %3$I NOT IN (SELECT id FROM agent)
+                        EXECUTE format('DELETE FROM %1\$I WHERE (
+                                %2\$I=''MapasCulturais\Entities\Agent'' AND
+                                %3\$I NOT IN (SELECT id FROM agent)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\EvaluationMethodConfiguration'' AND
-                                %3$I NOT IN (SELECT id FROM evaluation_method_configuration)
+                                %2\$I=''MapasCulturais\Entities\EvaluationMethodConfiguration'' AND
+                                %3\$I NOT IN (SELECT id FROM evaluation_method_configuration)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Event'' AND
-                                %3$I NOT IN (SELECT id FROM event)
+                                %2\$I=''MapasCulturais\Entities\Event'' AND
+                                %3\$I NOT IN (SELECT id FROM event)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Notification'' AND
-                                %3$I NOT IN (SELECT id FROM notification)
+                                %2\$I=''MapasCulturais\Entities\Notification'' AND
+                                %3\$I NOT IN (SELECT id FROM notification)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Opportunity'' AND
-                                %3$I NOT IN (SELECT id FROM opportunity)
+                                %2\$I=''MapasCulturais\Entities\Opportunity'' AND
+                                %3\$I NOT IN (SELECT id FROM opportunity)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Project'' AND
-                                %3$I NOT IN (SELECT id FROM project)
+                                %2\$I=''MapasCulturais\Entities\Project'' AND
+                                %3\$I NOT IN (SELECT id FROM project)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Registration'' AND
-                                %3$I NOT IN (SELECT id FROM registration)
+                                %2\$I=''MapasCulturais\Entities\Registration'' AND
+                                %3\$I NOT IN (SELECT id FROM registration)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\RegistrationFileConfiguration'' AND
-                                %3$I NOT IN (SELECT id FROM registration_file_configuration)
+                                %2\$I=''MapasCulturais\Entities\RegistrationFileConfiguration'' AND
+                                %3\$I NOT IN (SELECT id FROM registration_file_configuration)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Space'' AND
-                                %3$I NOT IN (SELECT id FROM space)
+                                %2\$I=''MapasCulturais\Entities\Space'' AND
+                                %3\$I NOT IN (SELECT id FROM space)
                             ) OR (
-                                %2$I=''MapasCulturais\Entities\Subsite'' AND
-                                %3$I NOT IN (SELECT id FROM subsite)
+                                %2\$I=''MapasCulturais\Entities\Subsite'' AND
+                                %3\$I NOT IN (SELECT id FROM subsite)
                             )', tbl, ctype, cid);
-                    END; $$");
+                    END; $$;");
         __exec("SELECT pg_temp.tempfn_clean_orphans('agent_relation', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('seal_relation', 'object_type', 'object_id')");
         __exec("SELECT pg_temp.tempfn_clean_orphans('space_relation', 'object_type', 'object_id')");
