@@ -89,7 +89,7 @@ return array(
         ),
 
         'emailPublico' => array(
-            'label' => \MapasCulturais\i::__('Email Público'),
+            'label' => \MapasCulturais\i::__('Email'),
             'validations' => array(
                 'v::email()' => \MapasCulturais\i::__('O email público não é um email válido.')
             )
@@ -105,7 +105,7 @@ return array(
         ),
 
         'telefonePublico' => array(
-            'label' => \MapasCulturais\i::__('Telefone Público'),
+            'label' => \MapasCulturais\i::__('Telefone'),
             'type' => 'string',
             'validations' => array(
                 'v::allOf(v::regex("#^\(\d{2}\)[ ]?\d{4,5}-\d{4}$#"), v::brPhone())' => \MapasCulturais\i::__('Por favor, informe o telefone público no formato (xx) xxxx-xxxx.')
