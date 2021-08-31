@@ -242,7 +242,7 @@ return array(
     'app.entityPropertiesLabels' => array(
         '@default' => array(
             'id' => \MapasCulturais\i::__('Id'),
-            'name' => \MapasCulturais\i::__('Nome'),
+            'name' => \MapasCulturais\i::__('Nome Fantasia Ponto/Pontão'),
             'createTimestamp' => \MapasCulturais\i::__('Data de Criação'),
             'updateTimestamp' => \MapasCulturais\i::__('Data de Atualização'),
             'shortDescription' => \MapasCulturais\i::__('Descrição Curta'),
