@@ -30,7 +30,7 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueScript('app', 'rfc-cep', 'js/rfc/location.js');
         $app->view->enqueueScript('app', 'rfc-datepicker', 'js/rfc/datepicker.js', ['flatpickr']);
         $app->view->includeIbgeJS();
-        $app->view->enqueueScript('app', 'customizeble', 'js/customizable.js');
+        $app->view->enqueueScript('app', 'customizable', 'js/customizable.js');
         $app->view->enqueueScript('app', 'flatpickr', 'vendor/flatpickr.js');
         $app->view->enqueueScript('app', 'flatpickr-pt', 'vendor/flatpickr-pt.js', ['flatpickr']);
 
@@ -470,17 +470,17 @@ class Module extends \MapasCulturais\Module
         return $registration_field_types;
     }
 
-    function saveToEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null) {
-        
+    function saveToEntity(Entity $entity, $value, Registration $registration=null, Metadata $metadata_definition=null)
+    {
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
-            if($entity_field == '@location'){
-                if(!empty($value['location']['latitude']) && !empty($value['location']['longitude']) ){
-                    $entity->location = $value['location'];
+            if ($entity_field == "@location") {
+                if (!empty($value["location"]["latitude"]) && !empty($value["location"]["longitude"])) {
+                    // this order of coordinates is required by the EntityGeoLocation trait's setter
+                    $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
                 }
-
                 $entity->endereco = isset($value['endereco']) ? $value['endereco'] : '';
                 $entity->En_CEP = isset($value['En_CEP']) ? $value['En_CEP'] : '';
                 $entity->En_Nome_Logradouro = isset($value['En_Nome_Logradouro']) ? $value['En_Nome_Logradouro'] : '';
