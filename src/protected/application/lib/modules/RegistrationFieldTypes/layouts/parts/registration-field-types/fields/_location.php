@@ -1,5 +1,7 @@
-<?php 
-use \MapasCulturais\i; 
+<?php
+use \MapasCulturais\i;
+
+$this->includeGeocodingAssets();
 ?>
 <div class="js-rfc-location field-location">
     <input ng-if="::field.config.setLatLon" type="hidden" ng-model="entity[fieldName].location.latitude" class="js-rfc-input js-rfc-input-_lat"/>
