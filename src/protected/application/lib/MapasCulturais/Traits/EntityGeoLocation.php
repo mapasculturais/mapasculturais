@@ -1,5 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Exception;
 use MapasCulturais\App;
 use \MapasCulturais\Types\GeoPoint;
 use stdClass;
@@ -59,11 +61,19 @@ trait EntityGeoLocation{
     {
         $x = $y = null;
         if (!($location instanceof GeoPoint)) {
-            if ($location instanceof stdClass && (isset($location->latitude) && isset($location->longitude) || isset($location->x) && isset($location->y))) {
+            if ($location instanceof \stdClass && (isset($location->latitude) && isset($location->longitude) || isset($location->x) && isset($location->y))) {
                 $location = (array) $location;
             }
 
-            $location_values = is_array($location) ? array_values($location) : [];
+            $location_values = null;
+
+            if (isset($location['x']) && isset($location['y'])) { 
+                $location_values = [$location['x'], $location['y']];                    
+            } else if (isset($location['longitude']) && isset($location['latitude'])) {
+                $location_values = [$location['longitude'], $location['latitude']];                    
+            } else if (isset($location[0]) && isset($location[1])) {
+                $location_values = $location;
+            } 
 
             if (is_array($location_values) && (count($location_values) === 2) && is_numeric($location_values[0]) && is_numeric($location_values[1])) {
                 $x = $location_values[0];
