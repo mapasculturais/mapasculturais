@@ -44,8 +44,7 @@ class Module extends \MapasCulturais\Module
 
          //Caso exista prestação de contas, impede que seja possível deletar fases anteriores.
          $app->hook("can(Opportunity.remove)", function($user, &$result){
-            $entity = $this->controller->requestedEntity;
-            if($entity->parent && $entity->parent->accountabilityPhase){
+            if($this->parent->accountabilityPhase ?? false){
                 $result = false;
             }
         });
