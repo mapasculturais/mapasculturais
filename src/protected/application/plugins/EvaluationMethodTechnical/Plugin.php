@@ -274,18 +274,29 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     }
 
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
-        $total = 0;
+        $total = 0.00;
 
         $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach($cfg->criteria as $cri){
-            $key = $cri->id;
-            if(!isset($evaluation->evaluationData->$key)){
-                return null;
-            } else {
-                $val = $evaluation->evaluationData->$key;
-                $total += is_numeric($val) ? $cri->weight * $val : 0;
+        $qtdWeightTotal = 0;
+        foreach ($cfg->sections as $section) {
+            $qtdWeightTotal += $section->weight;
+            $totalSection = 0.00;
+            foreach($cfg->criteria as $cri) {
+                if ($section->id == $cri->sid) {
+                    $key = $cri->id;
+                    if(!isset($evaluation->evaluationData->$key)){
+                        return null;
+                    } else {
+                        $val = floatval($evaluation->evaluationData->$key);
+                        $totalSection += is_numeric($val) ? floatval($cri->weight) * floatval($val) : 0;
+                    }
+                }
             }
+
+            $total  += floatval($totalSection) * floatval($section->weight);
         }
+
+        $total = $total / $qtdWeightTotal;
 
         return $total;
     }
