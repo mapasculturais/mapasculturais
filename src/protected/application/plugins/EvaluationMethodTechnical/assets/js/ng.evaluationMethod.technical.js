@@ -39,6 +39,13 @@
                     return e;
                 });
             }
+
+            if(MapasCulturais.evaluationConfiguration && MapasCulturais.evaluationConfiguration.sections){
+                MapasCulturais.evaluationConfiguration.sections = MapasCulturais.evaluationConfiguration.sections.map(function(e){
+                    e.weight = parseFloat(e.weight);
+                    return e;
+                });
+            }
             
             $scope.data = {
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
@@ -88,7 +95,7 @@
             $scope.addSection = function(){
                 var date = new Date;
                 var new_id = 's-' + date.getTime();
-                $scope.data.sections.push({id: new_id, name: ''});
+                $scope.data.sections.push({id: new_id, name: '', weight: 0});
 
                 $timeout(function(){
                     jQuery('#' + new_id + ' header input').focus();
