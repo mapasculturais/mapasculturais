@@ -27,7 +27,7 @@ class Module extends \MapasCulturais\Module
         // Adiciona link da página de suporte no topo da ficha de inscrição
         $app->hook('template(registration.view.header-fieldset):end', function() use ($app){            
             $entity = $this->controller->requestedEntity;
-            if($entity->isUserAdmin($app->user)){
+            if($entity->canUser('support')){
                 $this->part('support/support-link', ['entity' => $entity]);
             }
         });
@@ -125,7 +125,7 @@ class Module extends \MapasCulturais\Module
         $app->hook('GET(registration.view):before', function() use($app) {
             $registration = $this->requestedEntity;
             if ($registration->canUser('support', $app->user)){
-                if(!$registration->isUserAdmin($app->user)){
+                if(!$registration->isUserAdmin($app->user) && !$registration->canUser('evaluate')){
                     $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
                 }
             }
