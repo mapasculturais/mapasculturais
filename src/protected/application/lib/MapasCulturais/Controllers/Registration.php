@@ -332,6 +332,8 @@ class Registration extends EntityController {
 
         $registration->$method_name();
 
+        $app->applyHookBoundTo($this, 'registration.setStatusTo:after', [$registration]);
+
         if($app->request->isAjax()){
             $this->json($registration);
         }else{
