@@ -293,10 +293,16 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 }
             }
 
-            $total  += floatval($totalSection) * floatval($section->weight);
+            if ($section->weight) {
+                $total  += floatval($totalSection) * floatval($section->weight);
+            } else {
+                $total += floatval($totalSection);
+            }
         }
 
-        $total = $total / $qtdWeightTotal;
+        if ($qtdWeightTotal) {
+            $total = $total / $qtdWeightTotal;
+        } 
 
         return $total;
     }
