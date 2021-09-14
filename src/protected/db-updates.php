@@ -1414,7 +1414,7 @@ $$
 
     'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
         __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
-    }
+    },
 
     'add timestamp columns to registration_evaluation' => function () {
         if (__column_exists('registration_evaluation', 'create_timestamp') &&
