@@ -7,7 +7,10 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
 <?php $this->applyTemplateHook('evaluationForm.technical', 'before', $params); ?>
 <div ng-controller="TechnicalEvaluationMethodFormController" class="technical-evaluation-form">
     <?php $this->applyTemplateHook('evaluationForm.technical', 'begin', $params); ?>
-    <section ng-repeat="section in ::data.sections">
+    <div class="alert-evaluation-load" id="alert-evaluation-load-div">
+        <span id="successEvaluationNote" class="load-evaluation-note">A avaliação foi salva</span>
+    </div>
+    <section ng-repeat="section in ::data.sections" ng-if="section.categories.indexOf(data.registrationCategory) != -1">
         <table>
             <tr>
                 <th colspan="2">

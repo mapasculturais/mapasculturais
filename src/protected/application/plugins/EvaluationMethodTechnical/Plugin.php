@@ -278,7 +278,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $cfg = $evaluation->getEvaluationMethodConfiguration();
         $qtdWeightTotal = 0;
+        
+        $category = $evaluation->registration->category;
         foreach ($cfg->sections as $section) {
+            if ($category && !in_array($category, $section->categories ?? [])) {
+                continue;
+            }
+
             $qtdWeightTotal += $section->weight;
             $totalSection = 0.00;
             foreach($cfg->criteria as $cri) {

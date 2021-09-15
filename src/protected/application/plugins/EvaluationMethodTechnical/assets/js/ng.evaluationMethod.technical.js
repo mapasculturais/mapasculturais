@@ -52,6 +52,7 @@
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
+                registrationCategories: MapasCulturais.entity.registrationCategories,
 
                 debounce: 2000
             };
@@ -84,12 +85,16 @@
                     }
                 });
 
-                TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
-                    MapasCulturais.Messages.success(labels.changesSaved);
-                    $scope.data.sections = data.sections;
-                    $scope.data.criteria = data.criteria;
-                    $scope.data.enableViability = data.enableViability;
-                });
+                $timeout.cancel($scope.saveTimeout); 
+
+                $scope.saveTimeout = $timeout(function() {
+                    TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
+                        MapasCulturais.Messages.success(labels.changesSaved);
+                        $scope.data.sections = data.sections;
+                        $scope.data.criteria = data.criteria;
+                        $scope.data.enableViability = data.enableViability;
+                    });
+                }, $scope.data.debounce);
             };
 
             $scope.addSection = function(){
@@ -163,6 +168,7 @@
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
+                registrationCategory: MapasCulturais.entity.object.category,
                 empty: true
             };
 
@@ -205,6 +211,11 @@
 
                 for(var sec in $scope.data.sections){
                     var section = $scope.data.sections[sec];
+
+                    if (section.categories.indexOf($scope.data.registrationCategory) == -1) {
+                        continue;
+                    }
+                    
                     var subtotal = $scope.subtotalSection(section);
 
                     var sectionWeight = parseFloat(section.weight);
@@ -230,6 +241,11 @@
 
                 for(var sec in $scope.data.sections){
                     var section = $scope.data.sections[sec];
+
+                    if (section.categories.indexOf($scope.data.registrationCategory) == -1) {
+                        continue;
+                    }
+
                     var subtotal = $scope.maxSection(section);
 
                     var sectionWeight = parseFloat(section.weight);
