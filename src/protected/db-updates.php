@@ -1422,6 +1422,7 @@ $$
     'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
         __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
     },
+
     'Add metadata to Agent Relation' => function () use($conn) {
         if(__column_exists('agent_relation', 'metadata')){
             return true;
