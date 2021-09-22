@@ -1586,6 +1586,18 @@ class Theme extends MapasCulturais\Theme {
 
     function includeSearchAssets() {
 
+        $this->jsObject['ngSearchAppDependencies'] = [
+            'ng-mapasculturais',
+            'rison',
+            'infinite-scroll',
+            'ui.date',
+            'search.service.find',
+            'search.service.findOne',
+            'search.controller.map',
+            'search.controller.spatial',
+            'mc.module.notifications'
+        ];
+
         $this->enqueueScript('app', 'search.service.find', 'js/ng.search.service.find.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.service.findOne', 'js/ng.search.service.findOne.js', array('ng-mapasculturais', 'search.controller.spatial'));
         $this->enqueueScript('app', 'search.controller.map', 'js/ng.search.controller.map.js', array('ng-mapasculturais', 'map'));
