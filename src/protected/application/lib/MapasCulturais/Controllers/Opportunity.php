@@ -863,6 +863,8 @@ class Opportunity extends EntityController {
             $app->em->clear();
         }
 
+        $url = $app->createUrl('oportunidade', $opportunity->id);
+        $app->redirect($url);
     }
 
     function GET_exportFields() {
