@@ -1143,7 +1143,7 @@ class App extends \Slim\Slim{
                 $display = false;
                 $key = substr($key, 1);
             }
-            
+
             if (!is_array($division)) { // for backward compability version < 4.0, $division is string not a array.
                 $d = new \stdClass();
                 $d->key = $key;
@@ -1526,7 +1526,7 @@ class App extends \Slim\Slim{
         return isset($this->permissionCachePendingQueue["$entity"]);
     }
 
-    public function persistPCachePendingQueue(){
+    public function persistPCachePendingQueue($flush = true){
         foreach($this->permissionCachePendingQueue as $entity) {
             if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
                     'objectId' => $entity->id, 'objectType' => $entity->getClassName()
@@ -1534,11 +1534,13 @@ class App extends \Slim\Slim{
                 $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
                 $pendingCache->objectId = $entity->id;
                 $pendingCache->objectType = $entity->getClassName();
-                $pendingCache->save(true);
+                $pendingCache->save($flush);
                 $this->log->debug("pcache pending: $entity");
             }
         }
-        $this->em->flush();
+        if($flush){
+            $this->em->flush();
+        }
         $this->permissionCachePendingQueue = [];
     }
 

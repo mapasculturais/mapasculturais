@@ -132,25 +132,25 @@ trait EntityRevision{
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
         $message = i::__("Registro atualizado.");
-        
+
         $last_revision = $this->getLastRevision();
         $last_revision_data = $last_revision->getRevisionData();
-        
+
         $old_status = $last_revision_data['status']->value;
         $new_status = $this->status;
-        
+
         if($old_status != $new_status){
             switch ($new_status){
                 case self::STATUS_ENABLED:
                     $action = Revision::ACTION_PUBLISHED;
                     $message = i::__("Registro publicado.");
                     break;
-                
+
                 case self::STATUS_ARCHIVED:
                     $action = Revision::ACTION_ARCHIVED;
                     $message = i::__("Registro arquivado.");
                     break;
-                
+
                 case self::STATUS_DRAFT:
                     if($old_status == self::STATUS_TRASH){
                         $message = i::__("Registro recuperado da lixeira.");
@@ -163,7 +163,7 @@ trait EntityRevision{
                         $message = i::__("Registro despublicado.");
                     }
                     break;
-                    
+
                 case self::STATUS_TRASH:
                     $action = Revision::ACTION_TRASHED;
                     $message = i::__("Registro movido para a lixeira.");

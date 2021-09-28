@@ -87,9 +87,9 @@ abstract class Controller{
 
 
     protected $action = null;
-    
+
     protected $method = null;
-    
+
     // =================== GETTERS ================== //
 
     /**
@@ -239,12 +239,12 @@ abstract class Controller{
         $this->action = $action_name;
 
         $method = strtoupper($method);
-        
+
         $this->method = $method;
 
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";
-        
+
         // hook like ALL(user.teste)
         $ALL_hook =  $method !== 'API' ? "ALL({$this->id}.{$action_name})" : null;
 
@@ -317,9 +317,9 @@ abstract class Controller{
      *
      * @param mixed $data
      */
-    public function json($data, $status = 200){
+    public function json($data, $status = 200, $flush = true){
         $app = App::i();
-        $app->persistPCachePendingQueue();
+        $app->persistPCachePendingQueue($flush);
         $app->contentType('application/json');
         $app->halt($status, json_encode($data));
     }
