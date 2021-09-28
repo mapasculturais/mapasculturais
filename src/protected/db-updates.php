@@ -90,6 +90,36 @@ foreach($registered_taxonomies as $def){
 
 
 return [
+    'UPDATING ENUM TYPES' => function() use($conn) {
+        $reg = \Acelaya\Doctrine\Type\PhpEnumType::getTypeRegistry();
+        
+        foreach ($reg->getMap() as $enum_type => $type){
+            if(get_class($type) == 'Acelaya\Doctrine\Type\PhpEnumType') {
+                $values = $conn->fetchAll("
+                    SELECT e.enumlabel AS value
+                    FROM pg_type t 
+                        JOIN pg_enum e ON t.oid = e.enumtypid  
+                        JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace 
+                    WHERE t.typname = '{$enum_type}'");
+
+                $actual_values = array_map(function($item) { return $item['value']; }, $values);
+                
+                $reflection = new \ReflectionObject($type);
+                $property = $reflection->getProperty('enumClass');
+                $property->setAccessible (true);
+                $class = $property->getValue($type);
+                
+                foreach($class::toArray() as $value){
+                    if(!in_array($value, $actual_values)) {
+                        echo "\n- ALTER TYPE {$enum_type} ADD VALUE '$value'\n";
+                        __exec("ALTER TYPE {$enum_type} ADD VALUE '$value'");
+                    }
+                }
+            }
+        }
+
+        return false;
+    },
 
     'alter tablel term taxonomy type' => function() use ($conn) {
         $conn->executeQuery("ALTER TABLE term ALTER taxonomy TYPE VARCHAR(64);");
@@ -550,24 +580,6 @@ return [
         $this->disableAccessControl();
     },
 
-    'create avatar thumbs' => function() use($conn){
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id NOT IN (SELECT id FROM project)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Event' AND object_id NOT IN (SELECT id FROM event)");
-        $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Seal' AND object_id NOT IN (SELECT id FROM seal)");
-
-        $files = $this->repo('SealFile')->findBy(['group' => 'avatar']);
-        echo count($files) . " ARQUIVOS\n";
-        foreach($files as $f){
-            $f->transform('avatarSmall');
-            $f->transform('avatarMedium');
-            $f->transform('avatarBig');
-        }
-
-        $this->disableAccessControl();
-    },
-
     '*_meta drop all indexes again' => function () use($conn) {
 
         foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
@@ -945,6 +957,30 @@ return [
         __try("DROP INDEX registration_meta_value_idx;");
     },
 
+
+    //Space_Relation
+    'CREATE SEQUENCE REGISTRATION SPACE RELATION registration_space_relation_id_seq' => function() use($conn){
+        $conn->executeQuery("CREATE SEQUENCE space_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+    },
+
+    'CREATE TABLE spacerelation' => function() use($conn){
+        $conn->executeQuery("CREATE TABLE space_relation (id INT NOT NULL, space_id INT DEFAULT NULL, object_id INT NOT NULL, 
+                             create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, 
+                             object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A3023575340 ON space_relation (space_id);");
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A30232D562B ON space_relation (object_id);");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
+    //Adiciona coluna space_data com metadados do espaço vinculado à inscrição
+    'ALTER TABLE registration' => function() use($conn){
+        $conn->executeQuery("ALTER TABLE registration ADD space_data text DEFAULT NULL;");
+    },
+
+    
+    
     'altertable registration_file_and_files_add_order' => function () use($conn){
         if(__column_exists('registration_file_configuration', 'order')){
             echo "ALREADY APPLIED";
@@ -1107,6 +1143,567 @@ return [
         if(!__column_exists('registration', 'valuers_exceptions_list')){
             $conn->executeQuery("ALTER TABLE registration ADD valuers_exceptions_list TEXT NOT NULL DEFAULT '{\"include\": [], \"exclude\": []}';");
         }
-    }
+    },
 
+    'create event attendance table' => function() use($conn) {
+        if(!__table_exists('event_attendance')){
+            $conn->executeQuery("
+                CREATE TABLE event_attendance (
+                    id INT NOT NULL, 
+                    user_id INT NOT NULL, 
+                    event_occurrence_id INT NOT NULL, 
+                    event_id INT NOT NULL, 
+                    space_id INT NOT NULL, 
+                    type VARCHAR(255) NOT NULL, 
+                    reccurrence_string TEXT DEFAULT NULL, 
+                    start_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    end_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    PRIMARY KEY(id));");
+
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BEA76ED395 ON event_attendance (user_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE140E9F00 ON event_attendance (event_occurrence_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE71F7E88B ON event_attendance (event_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE23575340 ON event_attendance (space_id);");
+            $conn->executeQuery("CREATE INDEX event_attendance_type_idx ON event_attendance (type);");
+            $conn->executeQuery("CREATE SEQUENCE event_attendance_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BEA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        }
+    },
+
+    'create procuration table' => function() use($conn) {
+        if(!__table_exists('procuration')){
+            $conn->executeQuery("
+                CREATE TABLE procuration (
+                    token VARCHAR(32) NOT NULL, 
+                    usr_id INT NOT NULL, 
+                    attorney_user_id INT NOT NULL, 
+                    action VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    valid_until_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    PRIMARY KEY(token));");
+                
+            $conn->executeQuery("CREATE INDEX procuration_usr_idx ON procuration (usr_id);");
+            $conn->executeQuery("CREATE INDEX procuration_attorney_idx ON procuration (attorney_user_id);");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            
+        }
+    },
+
+    'alter table registration_field_configuration add column config' => function() use($conn){
+        if(!__column_exists('registration_field_configuration', 'config')){
+            __exec("
+                ALTER TABLE registration_field_configuration 
+                ADD config TEXT;
+            ");
+        }
+    },
+
+    'recreate ALL FKs' => function () use($conn) {
+        $sql = "
+DO
+    $$
+    DECLARE r record;
+    BEGIN
+    FOR r IN (SELECT constraint_name, table_name FROM information_schema.table_constraints WHERE table_schema = 'public' AND constraint_type='FOREIGN KEY') LOOP
+        raise info '%','dropping '||r.constraint_name;
+        execute CONCAT('ALTER TABLE \"public\".'||r.table_name||' DROP CONSTRAINT '||r.constraint_name);
+    END LOOP;
+END;
+$$
+;";
+        __exec($sql);
+
+        __exec("ALTER TABLE subsite ADD CONSTRAINT FK_B0F67B6F3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9D727ACA70 FOREIGN KEY (parent_id) REFERENCES agent (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent ADD CONSTRAINT FK_268B9C9DBDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE role ADD CONSTRAINT FK_57698A6AC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE role ADD CONSTRAINT FK_57698A6ABDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE file ADD CONSTRAINT FK_8C9F3610727ACA70 FOREIGN KEY (parent_id) REFERENCES file (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE usr ADD CONSTRAINT FK_1762498CCCFA12B8 FOREIGN KEY (profile_id) REFERENCES agent (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space ADD CONSTRAINT FK_2972C13A727ACA70 FOREIGN KEY (parent_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space ADD CONSTRAINT FK_2972C13A3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space ADD CONSTRAINT FK_2972C13ABDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EE727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EE3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project ADD CONSTRAINT FK_2FB3D0EEBDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE agent_relation ADD CONSTRAINT FK_54585EDD3414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE term_relation ADD CONSTRAINT FK_EDDF39FDE2C35FC FOREIGN KEY (term_id) REFERENCES term (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF65154778145 FOREIGN KEY (seal_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF6513414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_relation ADD CONSTRAINT FK_487AF6517E3C61F9 FOREIGN KEY (owner_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE pcache ADD CONSTRAINT FK_3D853098A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE user_meta ADD CONSTRAINT FK_AD7358FC232D562B FOREIGN KEY (object_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE303414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal ADD CONSTRAINT FK_2E30AE30BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE notification ADD CONSTRAINT FK_BF5476CAA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE notification ADD CONSTRAINT FK_BF5476CA427EB8A5 FOREIGN KEY (request_id) REFERENCES request (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence ADD CONSTRAINT FK_E61358DC71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence ADD CONSTRAINT FK_E61358DC23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A7BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB19A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE request ADD CONSTRAINT FK_3B978F9FBA78F12A FOREIGN KEY (requester_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence_recurrence ADD CONSTRAINT FK_388ECCB140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision ADD CONSTRAINT FK_CF97A98CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A8521DFA7C8F FOREIGN KEY (revision_id) REFERENCES entity_revision (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A852B4906F58 FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144BDDFBE89 FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BEA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE event_occurrence_cancellation ADD CONSTRAINT FK_A5506736140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;        ");
+        
+    },
+
+    'create object_type enum type' => function () {
+        $object_types = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\ObjectType::values()));
+
+        __exec("CREATE TYPE object_type AS ENUM($object_types)");
+    }, 
+
+    'create permission_action enum type' => function () {
+        $permission_actions = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\PermissionAction::values()));
+
+        __exec("CREATE TYPE permission_action AS ENUM($permission_actions)");
+    }, 
+
+    'alter tables to use enum types' => function() {
+        __exec("ALTER TABLE pcache ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE pcache ALTER COLUMN action TYPE permission_action USING action::permission_action");
+
+        __exec("ALTER TABLE file ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE agent_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE term_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE entity_revision ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE metadata ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+
+    },
+
+    'alter table permission_cache_pending add column status' => function() use($conn) {
+        if (!__column_exists('permission_cache_pending', 'status')) {
+            $conn->executeQuery("ALTER TABLE permission_cache_pending ADD status smallint DEFAULT 0");
+        }
+    },
+
+    'RECREATE VIEW evaluations AGAIN!' => function() use($conn) {
+        __try("DROP VIEW evaluations");
+
+        $conn->executeQuery("
+            CREATE VIEW evaluations AS (
+                SELECT 
+                    registration_id,
+                    registration_sent_timestamp,
+                    registration_number,
+                    registration_category,
+                    registration_agent_id,
+                    opportunity_id,
+                    valuer_user_id,
+                    valuer_agent_id,
+                    max(evaluation_id) AS evaluation_id,
+                    max(evaluation_result) AS evaluation_result,
+                    max(evaluation_status) AS evaluation_status
+                FROM (
+                    SELECT 
+                        r.id AS registration_id, 
+                        r.sent_timestamp AS registration_sent_timestamp,
+                        r.number AS registration_number, 
+                        r.category AS registration_category, 
+                        r.agent_id AS registration_agent_id, 
+                        re.user_id AS valuer_user_id, 
+                        u.profile_id AS valuer_agent_id, 
+                        r.opportunity_id,
+                        re.id AS evaluation_id,
+                        re.result AS evaluation_result,
+                        re.status AS evaluation_status
+                    FROM registration r 
+                        JOIN registration_evaluation re 
+                            ON re.registration_id = r.id 
+                        JOIN usr u 
+                            ON u.id = re.user_id
+                        where 
+                            r.status > 0
+                    UNION
+                    SELECT 
+                        r2.id AS registration_id, 
+                        r2.sent_timestamp AS registration_sent_timestamp,
+                        r2.number AS registration_number, 
+                        r2.category AS registration_category,
+                        r2.agent_id AS registration_agent_id, 
+                        p2.user_id AS valuer_user_id, 
+                        u2.profile_id AS valuer_agent_id, 
+                        r2.opportunity_id,
+                        NULL AS evaluation_id,
+                        NULL AS evaluation_result,
+                        NULL AS evaluation_status
+                    FROM registration r2 
+                        JOIN pcache p2 
+                            ON r2.id = p2.object_id
+                        JOIN usr u2 
+                            ON u2.id = p2.user_id
+                        JOIN evaluation_method_configuration emc
+                            ON emc.opportunity_id = r2.opportunity_id
+
+                        WHERE 
+                            p2.object_type = 'MapasCulturais\Entities\Registration' AND 
+                            p2.action = 'evaluate' AND
+                            
+                            r2.status > 0 AND
+                            p2.user_id IN (
+                                SELECT user_id FROM agent WHERE id in (
+                                    SELECT agent_id 
+                                    FROM agent_relation 
+                                    WHERE 
+                                        object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND 
+                                        object_id = emc.id
+                                )
+                            ) 
+                ) AS evaluations_view 
+                GROUP BY
+                    registration_id,
+                    registration_sent_timestamp,
+                    registration_number,
+                    registration_category,
+                    registration_agent_id,
+                    valuer_user_id,
+                    valuer_agent_id,
+                    opportunity_id
+            )
+        ");
+    },
+
+    'valuer disabling refactor' => function() use($conn) {
+        $conn->executeQuery("
+            UPDATE 
+                agent_relation 
+            SET 
+                status = 8, 
+                has_control = true 
+            WHERE
+                object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
+                has_control IS false");
+    },
+
+    'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
+        __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
+    },
+
+    'Add metadata to Agent Relation' => function () use($conn) {
+        if(__column_exists('agent_relation', 'metadata')){
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE agent_relation ADD COLUMN metadata json;");
+    },
+
+    'add timestamp columns to registration_evaluation' => function () {
+        if (__column_exists('registration_evaluation', 'create_timestamp') &&
+            __column_exists('registration_evaluation', 'update_timestamp')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
+        __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
+        return true;
+    },
+
+    'create chat tables' => function () {
+        if (!__sequence_exists("chat_thread_id_seq")) {
+            __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_thread")) {
+            __exec("CREATE TABLE chat_thread (
+                id INT NOT NULL,
+                object_id INT NOT NULL,
+                object_type VARCHAR(255) NOT NULL,
+                type VARCHAR(255) NOT NULL,
+                identifier VARCHAR(255) NOT NULL,
+                description TEXT DEFAULT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                last_message_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                status INT NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("COMMENT ON COLUMN chat_thread.object_type IS '(DC2Type:object_type)'");
+        }
+        if (!__sequence_exists("chat_message_id_seq")) {
+            __exec("CREATE SEQUENCE chat_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_message")) {
+            __exec("CREATE TABLE chat_message (
+                id INT NOT NULL,
+                chat_thread_id INT NOT NULL,
+                parent_id INT DEFAULT NULL,
+                user_id INT NOT NULL,
+                payload TEXT NOT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("CREATE INDEX IDX_FAB3FC16C47D5262 ON chat_message (chat_thread_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16727ACA70 ON chat_message (parent_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16A76ED395 ON chat_message (user_id)");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16C47D5262
+                FOREIGN KEY (chat_thread_id) REFERENCES chat_thread (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16727ACA70
+                FOREIGN KEY (parent_id) REFERENCES chat_message (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16A76ED395
+                FOREIGN KEY (user_id) REFERENCES usr (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+        }
+    },
+
+    'add timestamp columns to registration_evaluation' => function () {
+        if (__column_exists('registration_evaluation', 'create_timestamp') &&
+            __column_exists('registration_evaluation', 'update_timestamp')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
+        __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
+        return true;
+    },
+
+    'create chat tables' => function () {
+        if (!__sequence_exists("chat_thread_id_seq")) {
+            __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_thread")) {
+            __exec("CREATE TABLE chat_thread (
+                id INT NOT NULL,
+                object_id INT NOT NULL,
+                object_type VARCHAR(255) NOT NULL,
+                type VARCHAR(255) NOT NULL,
+                identifier VARCHAR(255) NOT NULL,
+                description TEXT DEFAULT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                last_message_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                status INT NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("COMMENT ON COLUMN chat_thread.object_type IS '(DC2Type:object_type)'");
+        }
+        if (!__sequence_exists("chat_message_id_seq")) {
+            __exec("CREATE SEQUENCE chat_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_message")) {
+            __exec("CREATE TABLE chat_message (
+                id INT NOT NULL,
+                chat_thread_id INT NOT NULL,
+                parent_id INT DEFAULT NULL,
+                user_id INT NOT NULL,
+                payload TEXT NOT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("CREATE INDEX IDX_FAB3FC16C47D5262 ON chat_message (chat_thread_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16727ACA70 ON chat_message (parent_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16A76ED395 ON chat_message (user_id)");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16C47D5262
+                FOREIGN KEY (chat_thread_id) REFERENCES chat_thread (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16727ACA70
+                FOREIGN KEY (parent_id) REFERENCES chat_message (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16A76ED395
+                FOREIGN KEY (user_id) REFERENCES usr (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+        }
+    },
+
+    'create table job' => function () use($conn) {
+        __exec("CREATE TABLE job (
+                    id VARCHAR(255) NOT NULL, 
+                    name VARCHAR(32) NOT NULL, 
+                    iterations INT NOT NULL, 
+                    iterations_count INT NOT NULL, 
+                    interval_string VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    next_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    last_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    metadata JSON NOT NULL, 
+                    status SMALLINT NOT NULL, 
+                    PRIMARY KEY(id)
+                );");
+
+
+        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json_array)';");
+
+        __exec("CREATE INDEX job_next_execution_timestamp_idx ON job (next_execution_timestamp);");
+        __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
+    },
+
+    'clean existing orphans' => function () {
+        __exec("CREATE OR REPLACE FUNCTION pg_temp.tempfn_clean_orphans(tbl name, ctype name, cid name)
+                    RETURNS VOID
+                    LANGUAGE 'plpgsql' AS $$
+                    BEGIN
+                        EXECUTE format('DELETE FROM %1\$I WHERE (
+                                %2\$I=''MapasCulturais\Entities\Agent'' AND
+                                %3\$I NOT IN (SELECT id FROM agent)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\ChatMessage'' AND
+                                %3\$I NOT IN (SELECT id FROM chat_message)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\ChatThread'' AND
+                                %3\$I NOT IN (SELECT id FROM chat_thread)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\EvaluationMethodConfiguration'' AND
+                                %3\$I NOT IN (SELECT id FROM evaluation_method_configuration)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Event'' AND
+                                %3\$I NOT IN (SELECT id FROM event)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Notification'' AND
+                                %3\$I NOT IN (SELECT id FROM notification)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Opportunity'' AND
+                                %3\$I NOT IN (SELECT id FROM opportunity)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Project'' AND
+                                %3\$I NOT IN (SELECT id FROM project)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Registration'' AND
+                                %3\$I NOT IN (SELECT id FROM registration)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\RegistrationFileConfiguration'' AND
+                                %3\$I NOT IN (SELECT id FROM registration_file_configuration)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Space'' AND
+                                %3\$I NOT IN (SELECT id FROM space)
+                            ) OR (
+                                %2\$I=''MapasCulturais\Entities\Subsite'' AND
+                                %3\$I NOT IN (SELECT id FROM subsite)
+                            )', tbl, ctype, cid);
+                    END; $$;");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('agent_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('seal_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('space_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('term_relation', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('metalist', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('file', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('chat_thread', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('pcache', 'object_type', 'object_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('request', 'origin_type', 'origin_id')");
+        __exec("SELECT pg_temp.tempfn_clean_orphans('request', 'destination_type', 'destination_id')");
+    },
+
+    'add triggers for orphan cleanup' => function () {
+        __exec("CREATE OR REPLACE FUNCTION fn_clean_orphans()
+                    RETURNS trigger
+                    LANGUAGE 'plpgsql'
+                    COST 100
+                    VOLATILE NOT LEAKPROOF AS $$
+                        DECLARE _p_type VARCHAR;
+                    BEGIN
+                        _p_type=TG_ARGV[0];
+                        DELETE FROM agent_relation WHERE
+                            object_type::varchar=_p_type AND object_id=OLD.id;
+                        DELETE FROM seal_relation WHERE
+                            object_type=_p_type AND object_id=OLD.id;   
+                        DELETE FROM space_relation WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM term_relation WHERE
+                            object_type::varchar=_p_type AND object_id=OLD.id;
+                        DELETE FROM metalist WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM file WHERE
+                            object_type::varchar=_p_type AND object_id=OLD.id;
+                        DELETE FROM chat_thread WHERE
+                            object_type=_p_type AND object_id=OLD.id;
+                        DELETE FROM pcache WHERE
+                            object_type::varchar=_p_type AND object_id=OLD.id;
+                        DELETE FROM request WHERE
+                            (origin_type=_p_type AND origin_id=OLD.id) OR
+                            (destination_type=_p_type AND destination_id=OLD.id);
+                        RETURN NULL;
+                    END; $$;");
+
+        __try("CREATE TRIGGER trigger_clean_orphans_agent
+                    AFTER DELETE ON agent
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Agent')");
+
+        __try("CREATE TRIGGER trigger_clean_orphans_chat_message
+                    AFTER DELETE ON chat_message
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\ChatMessage')");
+        __try("CREATE TRIGGER trigger_clean_orphans_chat_thread
+                    AFTER DELETE ON chat_thread
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\ChatThread')");
+        __try("CREATE TRIGGER trigger_clean_orphans_evaluation_method_configuration
+                    AFTER DELETE ON evaluation_method_configuration
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\EvaluationMethodConfiguration')");
+        __try("CREATE TRIGGER trigger_clean_orphans_event
+                    AFTER DELETE ON event
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Event')");
+        __try("CREATE TRIGGER trigger_clean_orphans_notification
+                    AFTER DELETE ON notification
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Notification')");
+        __try("CREATE TRIGGER trigger_clean_orphans_opportunity
+                    AFTER DELETE ON opportunity
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Opportunity')");
+        __try("CREATE TRIGGER trigger_clean_orphans_project
+                    AFTER DELETE ON project
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Project')");
+        __try("CREATE TRIGGER trigger_clean_orphans_registration
+                    AFTER DELETE ON registration
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Registration')");
+        __try("CREATE TRIGGER trigger_clean_orphans_registration_file_configuration
+                    AFTER DELETE ON registration_file_configuration
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\RegistrationFileConfiguration')");
+        __try("CREATE TRIGGER trigger_clean_orphans_space
+                    AFTER DELETE ON space
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Space')");
+        __try("CREATE TRIGGER trigger_clean_orphans_subsite
+                    AFTER DELETE ON subsite
+                    FOR EACH ROW
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Subsite')");
+    },
 ] + $updates ;

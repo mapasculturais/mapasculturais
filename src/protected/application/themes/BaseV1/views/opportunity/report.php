@@ -1,6 +1,7 @@
 <?php
 use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space as SpaceRelation;
 use MapasCulturais\i;
 
 function echoStatus($registration) {
@@ -33,6 +34,8 @@ function showIfField($hasField, $showField) {
 }
 
 $_properties = $app->config['registration.propertiesToExport'];
+$space_properties = $app->config['registration.spaceProperties'];
+
 $custom_fields = [];
 foreach($entity->registrationFieldConfigurations as $field) :
     $custom_fields[$field->displayOrder] = [
@@ -69,14 +72,10 @@ ksort($custom_fields);
             ?>
 
             <th><?php i::_e('Anexos') ?></th>
-            <?php foreach($entity->getUsedAgentRelations() as $def): ?>
-                <th><?php echo $def->label; ?></th>
-                
-                <th><?php echo $def->label; ?> - <?php i::_e("Área de Atuação") ?></th>
-                
-                <?php foreach($_properties as $prop): if($prop === 'name') continue; ?>
-                    <th><?php echo $def->label; ?> - <?php echo Agent::getPropertyLabel($prop); ?></th>
-                <?php endforeach; ?>
+
+            <!-- Cabeçalho com labels das informações dos espaços cadastrados-->
+            <?php foreach($space_properties as $prop): ?>
+                <th><?php echo 'Espaço ' ?> - <?php echo SpaceRelation::getPropertyLabel($prop); ?></th>
             <?php endforeach; ?>
         </tr>
     </thead>
@@ -99,10 +98,14 @@ ksort($custom_fields);
                 foreach($custom_fields as $field):
                     $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "";
 
-                    echo "<th>";
-                        echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
-                    echo "</th>";
+                    if(is_array($_field_val) && isset($_field_val[0]) && $_field_val[0] instanceof stdClass) {
+                        $_field_val = (array)$_field_val[0];
+                    }
 
+                    echo "<th>";
+                    echo (is_array($_field_val)) ? implode(", ", $_field_val) : $_field_val;
+                    echo "</th>";
+                    
                     endforeach;
                 ?>
 
@@ -112,31 +115,14 @@ ksort($custom_fields);
                      <?php endif; ?>
                 </td>
 
-                <?php
-                foreach($r->_getDefinitionsWithAgents() as $def):
-                    if($def->use == 'dontUse') continue;
-                    $agent = $def->agent;
-                ?>
-
-                    <?php if($agent): ?>
-                        <td><a href="<?php echo $agent->singleUrl; ?>" target="_blank"><?php echo $r->agentsData[$def->agentRelationGroupName]['name'];?></a></td>
-                        
-                        <td><?php echo implode(', ', $agent->terms['area']); ?></td>
-
-                        <?php
-                        foreach($_properties as $prop):
-                            if($prop === 'name') continue;
-                        $val = isset($r->agentsData[$def->agentRelationGroupName][$prop]) ? $r->agentsData[$def->agentRelationGroupName][$prop] : '';
-                        ?>
-                        <td><?php echo $prop === 'location' ? "{$val['latitude']},{$val['longitude']}" : $val ?></td>
-
-                        <?php endforeach; ?>
-
+                 <!--Informações dos espaços cadastrados-->
+                 <?php foreach($r->getSpaceData() as $field): ?>
+                    <?php if(is_array($field)): ?>
+                        <td><?php echo implode(', ', $field); ?></td>
                     <?php else: ?>
-                        <?php echo str_repeat('<td></td>', count($_properties)) ?>
+                        <td><?php echo $field; ?></td>
                     <?php endif; ?>
-
-                <?php endforeach ?>
+                <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>
     </tbody>

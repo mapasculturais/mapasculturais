@@ -41,10 +41,11 @@ $app = MapasCulturais\App::i();
             <?php printf(i::__("Este %s está na <b>lixeira</b>"), strtolower($entity->entity->entityTypeLabel));?>
         <?php elseif($entity->status === \MapasCulturais\Entity::STATUS_ARCHIVED): ?>
             <?php printf(i::__("Este %s está <b>arquivado</b>"), strtolower($entity->entity->entityTypeLabel));?>
-        <?php endif; ?>, <?php printf(i::__("e pode ser acessado clicando <a href=\"%s\">aqui</a>"), $entity->entity->singleUrl); ?>
+        <?php endif; ?>, <?php printf(i::__("e pode ser acessado clicando <a href=\"%s\" rel='noopener noreferrer'>aqui</a>"), $entity->entity->singleUrl); ?>
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
@@ -57,7 +58,7 @@ $app = MapasCulturais\App::i();
 
             <div class="entity-type event-type">
                 <div class="icon icon-event"></div>
-                <a href="#"><?php i::_e("Evento");?></a>
+                <a href="#" rel='noopener noreferrer'><?php i::_e("Evento");?></a>
             </div>
             <!--.entity-type-->
             <?php $this->applyTemplateHook('type','after'); ?>
@@ -85,7 +86,7 @@ $app = MapasCulturais\App::i();
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php i::_e("Sobre");?></a></li>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -157,7 +158,7 @@ $app = MapasCulturais\App::i();
                             <div class="regra clearfix">
                                 <header class="clearfix">
                                     <h3 class="alignleft"><a href="<?php echo $app->createUrl("entityRevision","history",[$space->revision])?>"><?php echo $space->name?></a></h3>
-                                    <a class="toggle-mapa" href="#"><span class="ver-mapa"><?php i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
+                                    <a class="toggle-mapa" href="#" rel='noopener noreferrer'><span class="ver-mapa"><?php i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
                                 </header>
                                 <div id="occurrence-map-<?php echo $key?>" class="mapa js-map" data-lat="<?php echo $space->location->latitude;?>" data-lng="<?php echo $space->location->longitude;?>"></div>
                                 <!-- .mapa -->
@@ -196,7 +197,7 @@ $app = MapasCulturais\App::i();
             <!-- Video Gallery BEGIN -->
             <?php if (isset($entity->videos)): ?>
                 <h3><?php i::_e("Vídeos");?></h3>
-                <a name="video"></a>
+                <a name="video" rel='noopener noreferrer'></a>
                 <div id="video-player" class="video" ng-non-bindable>
                     <iframe id="video_display" width="100%" height="100%" src="" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                 </div>
@@ -242,7 +243,7 @@ $app = MapasCulturais\App::i();
                 <div class="selos clearfix">
                 <?php foreach($entity->_seals as $seal):?>
                     <div class="avatar-seal">
-                        <a href="">
+                        <a href="" rel='noopener noreferrer'>
                             <img src="<?php $this->asset('img/avatar--agent.png'); ?>">
                         </a>
                         <div class="descricao-do-selo">
@@ -293,7 +294,7 @@ $app = MapasCulturais\App::i();
             <h3><?php $this->dict('entities: Opportunities of the event'); ?></h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entities->_opportunities as $opportunity): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $opportunity->name; ?></span></a></li>
+                    <li class="widget-list-item"><a href="" rel='noopener noreferrer'><span><?php echo $opportunity->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -309,11 +310,11 @@ $app = MapasCulturais\App::i();
                 <div class="agentes clearfix">
                     <?php foreach($agents as $agent): ?>
                         <div class="avatar">
-                            <a href="">
+                            <a href="" rel='noopener noreferrer'>
                                 <img ng-src="" />
                             </a>
                             <div class="descricao-do-agente">
-                                <h1><a href=""><?php echo $agent->name;?></a></h1>
+                                <h1><a href="" rel='noopener noreferrer'><?php echo $agent->name;?></a></h1>
                             </div>
                         </div>
                     <?php endforeach;?>
@@ -330,7 +331,7 @@ $app = MapasCulturais\App::i();
             <h3><?php $this->dict('entities: Spaces of the agent'); ?></h3>
             <ul class="widget-list js-slimScroll">
                 <?php foreach($entities->_spaces as $space): ?>
-                    <li class="widget-list-item"><a href=""><span><?php echo $space->name; ?></span></a></li>
+                    <li class="widget-list-item"><a href="" rel='noopener noreferrer'><span><?php echo $space->name; ?></span></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>

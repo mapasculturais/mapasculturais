@@ -1,7 +1,7 @@
 <article class="objeto clearfix"  ng-repeat="opportunity in opportunities" id="agent-result-{{opportunity.id}}">
-    <h1><a href="{{opportunity.singleUrl}}">{{opportunity.name}}</a></h1>
+    <h1><a href="{{opportunity.singleUrl}}" rel='noopener noreferrer'>{{opportunity.name}}</a></h1>
     <div class="objeto-content clearfix">
-        <a href="{{opportunity.singleUrl}}" class="js-single-url">
+        <a href="{{opportunity.singleUrl}}" class="js-single-url" rel='noopener noreferrer'>
             <img class="objeto-thumb" ng-src="{{opportunity['@files:avatar.avatarMedium'].url||assetsUrl.avatarOpportunity}}">
         </a>
         <p class="objeto-resumo">
@@ -9,7 +9,7 @@
         </p>
         <div class="objeto-meta">
             <?php $this->applyTemplateHook('list.opportunity.meta','begin'); ?>
-            <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#">{{opportunity.type.name}}</a></div>
+            <div><span class="label"><?php \MapasCulturais\i::_e("Tipo");?>:</span> <a href="#" rel='noopener noreferrer'>{{opportunity.type.name}}</a></div>
             <div ng-if="readableOpportunityRegistrationDates(opportunity)"><span class="label"><?php \MapasCulturais\i::_e("Inscrições");?>:</span> {{readableOpportunityRegistrationDates(opportunity)}}</div>
             <div>
                 <span class="label">Tags:</span>

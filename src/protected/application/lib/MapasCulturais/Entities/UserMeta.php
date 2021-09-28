@@ -55,6 +55,9 @@ class UserMeta extends \MapasCulturais\Entity {
     protected $owner;
 
     public function canUser($action, $userOrAgent = null){
+        if($action == 'create') {
+            $action = 'modify';
+        }
         return $this->owner->canUser($action, $userOrAgent);
     }
 

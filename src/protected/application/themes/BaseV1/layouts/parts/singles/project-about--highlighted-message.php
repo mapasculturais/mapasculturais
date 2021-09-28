@@ -1,3 +1,4 @@
+<?php $this->applyTemplateHook('tab-about--highlighted-message','before'); ?>
 <div class="highlighted-message clearfix">
     <?php $this->applyTemplateHook('tab-about--highlighted-message','begin'); ?>
 
@@ -7,3 +8,4 @@
 
     <?php $this->applyTemplateHook('tab-about--highlighted-message','end'); ?>
 </div>
+<?php $this->applyTemplateHook('tab-about--highlighted-message','after'); ?>

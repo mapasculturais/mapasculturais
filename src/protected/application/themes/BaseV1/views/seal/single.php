@@ -30,6 +30,7 @@ $this->includeAngularEntityAssets($entity);
 
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
             
@@ -48,9 +49,9 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -131,33 +132,30 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar seal">
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo");?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
+    <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
 <div class="sidebar seal sidebar-right">
+    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
 
-    <!-- Related Admin Agents BEGIN -->
-        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Admin Agents END -->
-
-	<!-- Related Agents BEGIN -->
-        <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Agents END -->
-
+    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    
+    <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
+    
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para imagens, download ou links, primeiro é preciso salvar o selo");?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
-	<!-- Downloads BEGIN -->
-        <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
-    <!-- Downloads END -->
-
-    <!-- Link List BEGIN -->
-        <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
-    <!-- Link List END -->
+	<?php $this->part('downloads.php', array('entity'=>$entity)); ?>
+    
+    <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
+    
+    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
 </div>

@@ -6,6 +6,8 @@ use MapasCulturais\Entities\Opportunity;
 /**
  * Defines that the entity has related opportunities.
  *
+ * @property-read \MapasCulturais\Entities\Opportunity[] $opportunities
+ * @property-read string $opportunityClassName
  */
 trait EntityOpportunities{
 

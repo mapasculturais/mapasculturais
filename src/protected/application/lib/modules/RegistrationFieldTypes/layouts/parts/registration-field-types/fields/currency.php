@@ -1,0 +1,1 @@
+<input class="js-mask-currency" ng-required="requiredField(field)" ng-model="entity[fieldName]" ng-blur="saveField(field, entity[fieldName])" placeholder="R$">

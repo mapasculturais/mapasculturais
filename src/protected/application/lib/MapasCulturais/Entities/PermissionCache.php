@@ -16,7 +16,7 @@ use \MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  *
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
  * @ORM\DiscriminatorMap({
         "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunityPermissionCache",
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectPermissionCache",
@@ -28,6 +28,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Notification"  = "\MapasCulturais\Entities\NotificationPermissionCache",
         "MapasCulturais\Entities\Request"       = "\MapasCulturais\Entities\RequestPermissionCache",
         "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache",
+        "MapasCulturais\Entities\ChatMessage"   = "\MapasCulturais\Entities\ChatMessagePermissionCache",
    })
  */
 abstract class PermissionCache extends \MapasCulturais\Entity {
@@ -39,7 +40,7 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="permission_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="pcache_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
 
@@ -47,7 +48,7 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
     /**
      * @var string
      *
-     * @ORM\Column(name="action", type="string", length=255, nullable=false)
+     * @ORM\Column(name="action", type="permission_action", length=255, nullable=false)
      */
     protected $action;
 
@@ -71,7 +72,7 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $user;

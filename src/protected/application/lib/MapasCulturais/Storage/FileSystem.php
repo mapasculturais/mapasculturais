@@ -23,7 +23,6 @@ class FileSystem extends \MapasCulturais\Storage{
      * /**
      *  * Sample Configuration (optional)
      *  * In below example the files will be accessible at url http://mapasculturais.domain/relative/url/
-     *  {@*}
      *  new \MapasCulturais\Storage\FileSystem(array(
      *      'dir' => '/full/path/',
      *      'baseUrl' => '/relative/url/'
@@ -35,7 +34,7 @@ class FileSystem extends \MapasCulturais\Storage{
     protected function __construct(array $config = []) {
         $this->config = $config + [
             'dir' => BASE_PATH . 'files/',
-            'private_dir' => dirname(BASE_PATH) . '/private-files/',
+            'private_dir' => PRIVATE_FILES_PATH,
             'baseUrl' => 'files/'
         ];
     }
@@ -195,6 +194,9 @@ class FileSystem extends \MapasCulturais\Storage{
         }
         \MapasCulturais\App::i()->em->refresh($entity);
         $files = array_map(function($item){
+            if (is_array($item)) {
+                $item = $item[0];
+            }
             return '"'.$this->getPath($item).'"';
         }, $entity->files);
 
@@ -207,7 +209,8 @@ class FileSystem extends \MapasCulturais\Storage{
             $fileName = $entity->id . '.zip';
         }
 
-        if(exec('zip -j ' . $tmpName . ' ' . $strFiles)){
+        if(exec('zip -j ' . $tmpName . ' ' . $strFiles) && file_exists($tmpName)){
+            
             $file_class = $entity->getFileClassName();
             $newFile = new $file_class ([
                 'name' => $fileName,
@@ -223,6 +226,32 @@ class FileSystem extends \MapasCulturais\Storage{
         }else{
             //exception: can't create zipfile
             return null;
+        }
+    }
+
+    protected function _moveToPublicFolder(\MapasCulturais\Entities\File $file) {
+        $relative_path = $this->_getPath($file, true);
+        $public_path = $this->config['dir'] . $relative_path;
+
+        $this->_moveTo($file, $public_path);
+    }
+
+    protected function _moveToPrivateFolder(\MapasCulturais\Entities\File $file) {
+        $relative_path = $this->_getPath($file, true);
+        $private_path = $this->config['private_dir'] . $relative_path;
+
+        $this->_moveTo($file, $private_path);
+    }
+
+    protected function _moveTo($file, $new_path){
+        $current_path = $this->_getPath($file);
+
+        if(!is_dir(dirname($new_path))){
+            mkdir (dirname($new_path), 0755, true);
+        }
+
+        if(file_exists($current_path)){
+            rename($current_path, $new_path);
         }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais;
 
+use ArrayObject;
 use MapasCulturais\App;
 
 /**
@@ -10,8 +11,14 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\View $layout The layout to use when rendering the template.
  * @property \MapasCulturais\Controller $controller The controller that call the render / partial
+ * @property string $template
+ * @property \ArrayObject $documentMeta
+ * @property \ArrayObject $bodyClasses
+ * @property \ArrayObject $bodyProperties
+ * @property \ArrayObject $jsObject
  *
  * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
+ * 
  *
  * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
  * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
@@ -55,7 +62,11 @@ abstract class Theme extends \Slim\View {
 
     protected $_assetManager = null;
 
-    protected $documentMeta = null;
+    /**
+     * Document meta tags
+     * @var ArrayObject
+     */
+    public $documentMeta = [];
 
     /**
      * CSS Classes to print in body tag
@@ -70,7 +81,7 @@ abstract class Theme extends \Slim\View {
     protected $bodyProperties =  null;
 
     /**
-     *
+     * MapasCulturais JS Object
      * @var \ArrayObject
      */
     protected $jsObject = null;
@@ -400,6 +411,8 @@ abstract class Theme extends \Slim\View {
             $title =$app->getReadableName($this->controller->action);
         }
 
+        $app->applyHookBoundTo($this, 'mapasculturais.getTitle', [&$title]);
+
         return $title;
     }
 
@@ -479,6 +492,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function printDocumentMeta(){
+        
         foreach($this->documentMeta as $metacfg){
             $meta = "\n <meta";
             foreach($metacfg as $prop => $val){
@@ -511,7 +525,13 @@ abstract class Theme extends \Slim\View {
     }
 
     function asset($file, $print = true){
+        $app = App::i();
+        $app->applyHook('asset(' . $file . ')', [&$file]);
+        
         $url = $this->getAssetManager()->assetUrl($file);
+
+        $app->applyHook('asset(' . $file . '):url', [&$url]);
+
         if($print){
             echo $url;
         }
@@ -554,7 +574,11 @@ abstract class Theme extends \Slim\View {
     }
 
     function isEditable(){
-        return (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+        $result = (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+
+        App::i()->applyHookBoundTo($this, 'mapasculturais.isEditable', [&$result]);
+
+        return $result;
     }
 
     function isSearch(){
@@ -611,7 +635,7 @@ abstract class Theme extends \Slim\View {
         if ($this->isEditable() && true !== $force)
             return $text;
         
-        return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4">$1$2$3$4</a>', $text);
+        return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4" rel="noopener noreferrer">$1$2$3$4</a>', $text);
         
     }
 }

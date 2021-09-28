@@ -3,33 +3,42 @@
         "psr-0": {"MapasCulturais": "./application/lib/"}
     },
     "require": {
-	"php": ">=5.5.0",
+        "php": ">=7.2",
         "slim/slim": "2.*",
-	"symfony/console": "2.*",
-	"symfony/yaml": "2.*",
-        "doctrine/orm": "2.*",
-        "doctrine/dbal": "2.5.6",
-	"doctrine/annotations": "1.2.*",
+        "symfony/console": "*",
+        "symfony/yaml": "*",
+        "doctrine/orm": "*",
+        "doctrine/dbal": "*",
+        "doctrine/annotations": "*",
         "opauth/openid": "*",
-        "respect/validation": "*",
+        "respect/validation": "1.*",
         "smottt/wideimage": "1.1.1",
-        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit": "8.*",
         "creof/doctrine2-spatial": "dev-master",
         "mustache/mustache": "^2.11",
         "phpoffice/phpword": "0.13.*",
-        "michelf/php-markdown": "1.4.1",
+        "michelf/php-markdown": "1.*",
         "opauth/logincidadao" : "*",
         "curl/curl": "1.2.0",
-        "firebase/php-jwt": "^2.2",
+        "firebase/php-jwt": "4.*",
         "pomo/pomo": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
         "psy/psysh": "@stable",
-        "sinergi/browser-detector": "6.1.2"
+        "sinergi/browser-detector": "*",
+        "acelaya/doctrine-enum-type": "^2.3",
+        "hacklab/bank-account-validator": "1.1.2",
+        "mapasculturais/sdk": "dev-master"
     },
     "require-dev": {
     },
-    "repositories": [{
-        "type": "git",
-        "url": "https://github.com/hacklabr/opauth-logincidadao.git"
-    }]
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/hacklabr/opauth-logincidadao.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/mapasculturais/MapasSDK.git"
+        }
+    ]
 }

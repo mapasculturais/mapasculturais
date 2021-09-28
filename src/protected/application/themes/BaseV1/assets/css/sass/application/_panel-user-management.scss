@@ -181,6 +181,9 @@
             .agents-table {
                 margin: 0;
                 border: solid 1px #ccc;
+                .agent-default{
+                    background-color: #bbb;
+                }
             }
     
             .tab-table {
@@ -214,6 +217,10 @@
                 border-top: solid 1px #ccc;
                 border-right: solid 1px #ccc;
                 width: 20%;
+            }
+            
+            .tab-table.registration button {
+                width: 33.33333%;
             }
     
             .tab-content-table {

@@ -1,11 +1,9 @@
 version: '2'
 services:
-  mapas:
+  mapas_tests:
     build:
       context: ../
       dockerfile: compose/local/Dockerfile
-    ports:
-      - "80:80"
     volumes:
       - ../src:/var/www/src
       - ../scripts:/var/www/scripts
@@ -15,34 +13,21 @@ services:
       - ../docker-data/tests-private-files:/var/www/private-files
       - ../tests:/var/www/tests
     links:
-      - db
+      - db_tests:db
+    
     environment:
-      - POSTGRES_PASSWORD=mapas
-      - POSTGRES_USER=mapas
-      - POSTGRES_DB=mapas
-
-      - APP_MODE=development
-      - SLIM_DEBUG=true
-
-      - APP_LCODE=pt_BR,es_ES
-
-      - ACTIVE_THEME=SpCultura
-
-      - LOG_ENABLED=true
-      - LOG_LEVEL=DEBUG
-      - LOG_HOOK=true  
-
-      - PENDING_PCACHE_RECREATION_INTERVAL=15
+      - DB_HOST=db_tests
+      - DB_NAME=mapas
+      - DB_USER=mapas
+      - DB_PASS=mapas
 
     depends_on:
-      - db
-
-    command: /var/www/scripts/run-tests-docker.sh
+      - db_tests
       
     stdin_open: true
     tty: true
       
-  db:
+  db_tests:
     image: mdillon/postgis:10
     environment:
       - POSTGRES_PASSWORD=mapas

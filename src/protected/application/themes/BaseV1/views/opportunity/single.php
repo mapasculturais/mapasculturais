@@ -46,6 +46,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <?php $this->part('singles/opportunity-header--owner-entity', ['entity' => $entity]) ?>
 
         <!--.header-image-->
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
@@ -96,32 +97,33 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar opportunity">
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
+    
     <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+
+    <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
+
 <div class="sidebar opportunity sidebar-right">
+    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
+    
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o projeto");?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
-    <!-- Related Admin Agents BEGIN -->
-        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Admin Agents END -->
+    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
 
-    <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Agents END -->
 
-    <!-- Downloads BEGIN -->
     <?php $this->part('downloads.php', array('entity'=>$entity)); ?>
-    <!-- Downloads END -->
 
-    <!-- Link List BEGIN -->
     <?php $this->part('link-list.php', array('entity'=>$entity)); ?>
-    <!-- Link List END -->
+
+    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
 </div>

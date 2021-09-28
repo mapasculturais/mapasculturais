@@ -78,6 +78,14 @@
                 roles: rls
             }
         }
+        
+        $scope.hasSubsites = function () {
+            if(MapasCulturais.infoAdmin && MapasCulturais.infoAdmin.roles && MapasCulturais.infoAdmin.roles.users){
+                return Object.keys(MapasCulturais.infoAdmin.roles.users).length > 1;
+            } else {
+                return false;
+            }
+        };
 
         $scope.spinnerShow = true;
 
@@ -186,10 +194,15 @@
         $scope.selectGroupAdmin = 'saasSuperAdmin';
         $scope.selectSubsite = 'MapasCulturais';
 
+        function isValidCPF(cpf){
+            return cpf.match(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/) || cpf.match(/^\d{11}$/);
+        }
+
         if($('#user-managerment-search-form').length) {
             $('#campo-de-busca').focus();
             $('#search-filter .submenu-dropdown li').click(function() {
                 $scope.spinnerShow = true;
+
                 var params = {
                     entity: $(this).data('entity'),
                     keyword: $('#campo-de-busca').val()
@@ -197,10 +210,11 @@
 
                 $scope.data.global.filterEntity = params.entity;
                 $scope.data[params.entity] = {
-                    keyword: params.keyword,
+                    keyword: !isValidCPF(params.keyword) ? params.keyword : '',
                     showAdvancedFilters:false,
-                    filters: {}
+                    filters: isValidCPF(params.keyword) ? {documento: `eq(${params.keyword})`} : {}
                 };
+                
 
                 $window.$timout = $timeout;
                 $timeout.cancel($scope.timer);
@@ -230,6 +244,30 @@
             $(this).closest('table').find('tbody').fadeToggle("fast", "linear");
             $(this).closest('table').find('thead').fadeToggle("fast", "linear");
         });
+
+        $('#user-managerment-adminChangePassword').click(function() {
+            let password = $('#admin-set-user-password').val();
+            let email = $('#email-to-admin-set-password').val();
+            $.post(MapasCulturais.baseURL + 'auth/adminchangeuserpassword', {password: password, email: email}, function(r){
+                MapasCulturais.Modal.close('#admin-change-user-password');
+                MapasCulturais.Messages.success('Senha alterada com sucesso');
+                $('#admin-set-user-password').val("");
+            });
+        })
+
+        $('#user-managerment-adminChangeEmail').click(function() {
+            let new_email = $('#new-email').val();
+            let email = $('#email-to-admin-set-email').val();
+            $.post(MapasCulturais.baseURL + 'auth/adminchangeuseremail', {new_email: new_email, email: email}, function(r){
+                if(r.error) {
+                    alert(r.error);
+                    return;
+                }
+                MapasCulturais.Modal.close('#admin-change-user-email');
+                MapasCulturais.Messages.success('Email alterado com sucesso');
+                location.reload();
+            });
+        })
 
         $('#user-managerment-addRole').click(function() {
             var subsite_id = $('#subsiteList').val();

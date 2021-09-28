@@ -45,7 +45,7 @@ foreach($committee as $valuer){
             <?php
             endforeach;
             foreach($include_list as $valuer):
-                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersExcludeList);
+                $checked = $this->getValuersCheckedAttribute($valuer->user->id, $entity->valuersIncludeList);
             ?>
                 <li>
                     <label>
@@ -59,7 +59,7 @@ foreach($committee as $valuer){
             <?php endforeach ?>
         </ul>
         <p>
-            <small><span>*</span><em> Avaliador desta inscrição pela regra de distribuição.</em></small>
+            <small><span>*</span><em> <?php i::_e('Avaliador desta inscrição pela regra de distribuição.') ?></em></small>
         </p>
     </form>
 

@@ -125,3 +125,129 @@
 #dialog-event-occurrence label {
     white-space: nowrap;
 }
+
+.entity-modal {
+    max-width: 100%;
+    width: 800px;
+
+    form.create-entity {
+        clear: both;
+    }
+
+    .modal-loading {
+        img { width: 5%; }
+    }
+
+    .flash-message {
+        text-align: center;
+        border: 1px solid $gray-light;
+        background: ghostwhite;
+        padding: 20px 0 5px 0;
+        font-size: 12px;
+
+        .entidade {
+            font-weight: bolder;
+            display: block;
+            width: 100%;
+            font-size: 22px;
+        }
+
+        .edit-entity {
+            width: 20%;
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
+            background: $brand-primary;
+            color: white;
+        }
+    }
+
+    input[type='checkbox'] {
+        float: left;
+        width: 3%;
+    }
+
+    label { display: inline-block; }
+
+    input, textarea { width: 100%; }
+
+    select {
+        display: block !important;
+        max-width: 100%;
+    }
+
+    .actions {
+        float: left;
+        width: 100%;
+
+        button, input {
+            float: left;
+            display: inline-block;
+        }
+        input {
+            width: auto;
+            float: right;
+        }
+    }
+
+    .modal-required { color: darkred; }
+
+    button.close-attached-modal {
+        float: left;
+        margin: 0 0 20px 0;
+        width: 15%;
+    }
+
+    .entity-modal-footer {
+        color: $gray-dark;
+        font-size: $font-size-smaller;
+    }
+}
+
+#evt-date-local {
+    .btn-toggle-attached-modal {
+        margin-bottom: 20px;
+    }
+}
+
+.js-event-occurrence {
+    list-style-type: none;
+}
+
+.event-occurrence-list{
+    padding: 5px 5px 5px 15px;
+    height: auto;
+    border-left: 3px solid #1C5690;
+    margin: 30px 0;
+
+}
+
+.event-occurrence-list ul{
+  margin-left: 0;
+}
+
+.event-occurrence-list li{
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #00000014;
+    padding: 10px;
+}
+
+#dialog-event-occurrence {
+    margin-left: -403px !important;
+    width: 40% !important;
+    z-index: 1901 !important;
+}
+
+.tip-yellowsimple{
+    z-index: 1901 !important;   
+}
+
+.select-owner-entity{
+    display: none ;
+    margin-bottom: 20px !important;
+}
+
+.select-owner-entity.active{
+    display: block;
+}

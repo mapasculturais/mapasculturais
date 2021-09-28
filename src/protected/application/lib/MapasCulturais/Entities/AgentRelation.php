@@ -8,9 +8,13 @@ use MapasCulturais\App;
 /**
  * AgentRelation
  *
- *
  * @property-read int $id The Id of the relation.
  * @property string $group Agent relation group name.
+ * @property bool $hasControl
+ * @property int $status
+ * @property int $objectId
+ * @property \MapasCulturais\Entities\Agent $agent
+ * @property \DateTime $createTimestamp
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
  *
@@ -18,7 +22,7 @@ use MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
+ * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
  * @ORM\DiscriminatorMap({
         "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunityAgentRelation",
         "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectAgentRelation",
@@ -26,9 +30,11 @@ use MapasCulturais\App;
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentAgentRelation",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceAgentRelation",
         "MapasCulturais\Entities\Seal"          = "\MapasCulturais\Entities\SealAgentRelation",
-        "MapasCulturais\Entities\Registration" = "\MapasCulturais\Entities\RegistrationAgentRelation",
+        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationAgentRelation",
         "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation",
+        "MapasCulturais\Entities\ChatThread"    = "\MapasCulturais\Entities\ChatThreadAgentRelation",
    })
+ * @ORM\HasLifecycleCallbacks
  */
 abstract class AgentRelation extends \MapasCulturais\Entity
 {
@@ -84,10 +90,18 @@ abstract class AgentRelation extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $agent;
+
+     /**
+     * @var object
+     *
+     * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     */
+    protected $metadata;
+
 
     function jsonSerialize() {
         $result = parent::jsonSerialize();
@@ -178,4 +192,24 @@ abstract class AgentRelation extends \MapasCulturais\Entity
             $this->owner->enqueueToPCacheRecreation();
         }
     }
+
+    //============================================================= //
+    // The following lines ara used by MapasCulturais hook system.
+    // Please do not change them.
+    // ============================================================ //
+
+    /** @ORM\PrePersist */
+    public function prePersist($args = null){ parent::prePersist($args); }
+    /** @ORM\PostPersist */
+    public function postPersist($args = null){ parent::postPersist($args); }
+
+    /** @ORM\PreRemove */
+    public function preRemove($args = null){ parent::preRemove($args); }
+    /** @ORM\PostRemove */
+    public function postRemove($args = null){ parent::postRemove($args); }
+
+    /** @ORM\PreUpdate */
+    public function preUpdate($args = null){ parent::preUpdate($args); }
+    /** @ORM\PostUpdate */
+    public function postUpdate($args = null){ parent::postUpdate($args); }
 }

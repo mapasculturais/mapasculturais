@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 use MapasCulturais\Traits;
 
 /**
@@ -27,6 +28,8 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
         Traits\EntitySealRelation;
+        
+    protected $__enableMagicGetterHook = true;
 
     const STATUS_RELATED = -1;
 
@@ -93,7 +96,7 @@ class Seal extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 
@@ -114,7 +117,7 @@ class Seal extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\SealFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__files;
 
@@ -122,7 +125,7 @@ class Seal extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\SealAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__agentRelations;
     
@@ -151,7 +154,7 @@ class Seal extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     protected $subsite;
@@ -163,7 +166,7 @@ class Seal extends \MapasCulturais\Entity
             ],
             'shortDescription' => [
                 'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
+                'v::stringType()->length(0,2000)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 2000 caracteres')
             ],
             'validPeriod' => [
                 'required' => \MapasCulturais\i::__('Validade do selo é obrigatória.'),
@@ -182,13 +185,34 @@ class Seal extends \MapasCulturais\Entity
     	}
     	return true;
     }
+
+    protected function canUserRemove($user) {
+        $app = App::i();
+        
+        if(in_array($this->id, $app->config['app.verifiedSealsIds'])) {
+            return false;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
+
+    protected function canUserArchive($user) {
+        $app = App::i();
+        
+        if(in_array($this->id, $app->config['app.verifiedSealsIds'])) {
+            return false;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
     
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Selos');
         else
             return \MapasCulturais\i::__('Selo');
     }
+
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

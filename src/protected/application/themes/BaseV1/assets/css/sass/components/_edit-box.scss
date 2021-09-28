@@ -60,6 +60,24 @@
     font-size: $font-size-smaller;
     z-index: $z-index-infobox;
     @extend %edit-box-base;
+    @media screen and (max-width: $screen-tablet) {
+        position: fixed !important;
+        top: 50px !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 25% !important;
+        margin:0 !important;
+        width: auto !important;
+        box-shadow: 0px 0px 114px 200px rgba(0,0,0,0.75);
+
+        .mc-arrow {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+        }
+    }
 }
 .edit-box.mc-top .mc-arrow,
 .edit-box.mc-bottom .mc-arrow {

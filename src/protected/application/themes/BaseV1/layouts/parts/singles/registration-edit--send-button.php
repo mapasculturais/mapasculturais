@@ -1,7 +1,7 @@
 <div class="registration-fieldset">
     <?php if($entity->opportunity->isRegistrationOpen()): ?>
         <p class="registration-help"><?php \MapasCulturais\i::_e("Certifique-se que você preencheu as informações corretamente antes de enviar sua inscrição.");?> <strong><?php \MapasCulturais\i::_e("Depois de enviada, não será mais possível editá-la.");?></strong></p>
-        <a class="btn btn-primary" ng-click="sendRegistration()"><?php \MapasCulturais\i::_e("Enviar inscrição");?></a>
+        <a class="btn btn-primary" ng-click="sendRegistration()" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Enviar inscrição");?></a>
     <?php else: ?>
         <p class="registration-help">
             <strong>
@@ -16,7 +16,11 @@
         </p>
     <?php endif; ?>
 
-    <?php if(!$entity->opportunity->isRegistrationOpen() && $entity->opportunity->isUserAdmin($app->user, 'superAdmin')): ?>
-        <a ng-click="sendRegistration()" class="btn btn-danger hltip" data-hltip-classes="hltip-danger" hltitle="<?php \MapasCulturais\i::esc_attr_e('Somente super admins podem usar este botão e somente deve ser usado para enviar inscrições que não foram enviadas por problema do sistema.'); ?>" data-status="<?php echo MapasCulturais\Entities\Registration::STATUS_SENT ?>"><?php \MapasCulturais\i::_e("enviar esta inscrição");?></a>
+    <?php if(!$entity->opportunity->isRegistrationOpen() && $entity->canUser('send')): ?>
+        <?php if($entity->sentTimestamp): ?>
+            <a ng-click="sendRegistration()" class="btn btn-danger hltip" data-hltip-classes="hltip-danger" data-status="<?php echo MapasCulturais\Entities\Registration::STATUS_SENT ?>"><?php \MapasCulturais\i::_e("reenviar");?></a>
+        <?php else: ?>
+            <a ng-click="sendRegistration()" class="btn btn-danger hltip" data-hltip-classes="hltip-danger" hltitle="<?php \MapasCulturais\i::esc_attr_e('Somente super admins podem usar este botão e somente deve ser usado para enviar inscrições que não foram enviadas por problema do sistema.'); ?>" data-status="<?php echo MapasCulturais\Entities\Registration::STATUS_SENT ?>"><?php \MapasCulturais\i::_e("enviar esta inscrição");?></a>
+        <?php endif; ?>
     <?php endif ?>
 </div>

@@ -1,0 +1,23 @@
+.field-location .opportunity-field {
+    display: inline-block;
+}
+
+.field-location .field-En_Nome_Logradouro input{
+    width: 270px;
+}
+.field-location .field-En_Num input{
+    width: 70px;
+}
+
+.relation-field-info {
+    color:#888;
+}
+
+.two-column{
+    width: 50%;
+    display: inline-block;
+}
+
+.field-required {
+    color: red;
+}

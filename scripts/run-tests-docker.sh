@@ -17,7 +17,11 @@ php -d variables_order=EGPCS -S 0.0.0.0:8888 &
 PID_OF_PHP=$!
 cd ..
 echo 'running tests...'
-src/protected/vendor/phpunit/phpunit/phpunit tests/
+if [ $1 ]; then
+    src/protected/vendor/phpunit/phpunit/phpunit tests/$1
+else
+    src/protected/vendor/phpunit/phpunit/phpunit tests/
+fi
 
 echo "stopping php -S"
 kill $PID_OF_PHP

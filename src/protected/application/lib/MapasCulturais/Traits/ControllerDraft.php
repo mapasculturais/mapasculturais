@@ -16,11 +16,7 @@ trait ControllerDraft{
         if(!$entity)
             $app->pass();
 
-        $entity_class = $entity->getClassName();
-
-        $entity->status = $entity_class::STATUS_ENABLED;
-
-        $entity->save(true);
+        $entity->publish(true);
 
         if($this->isAjax()){
             $this->json($entity);
@@ -43,11 +39,7 @@ trait ControllerDraft{
         if(!$entity)
             $app->pass();
 
-        $entity_class = $entity->getClassName();
-
-        $entity->status = $entity_class::STATUS_DRAFT;
-
-        $entity->save(true);
+        $entity->unpublish(true);
 
         if($this->isAjax()){
             $this->json($entity);

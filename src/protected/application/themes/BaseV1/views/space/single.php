@@ -37,6 +37,7 @@ $this->entity = $entity;
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
         <!--.header-image-->
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
@@ -59,9 +60,9 @@ $this->entity = $entity;
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -72,7 +73,7 @@ $this->entity = $entity;
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
-                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
 
@@ -110,6 +111,8 @@ $this->entity = $entity;
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
 <div class="sidebar-left sidebar space">
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
+
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
 
     <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
@@ -119,21 +122,21 @@ $this->entity = $entity;
     <?php $this->part('widget-tags', ['entity' => $entity]); ?>
 
     <?php $this->part('redes-sociais', ['entity' => $entity]); ?>
+
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
 </div>
 <div class="sidebar space sidebar-right">
+    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
+
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar");?> <?php $this->dict('entities: the space') ?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
-    <!-- Related Admin Agents BEGIN -->
-        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Admin Agents END -->
+    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
 
-    <!-- Related Agents BEGIN -->
     <?php $this->part('related-agents', ['entity' => $entity]); ?>
-    <!-- Related Agents END -->
 
     <?php $this->part('singles/space-children', ['entity' => $entity]); ?>
 
@@ -141,7 +144,7 @@ $this->entity = $entity;
 
     <?php $this->part('link-list', ['entity' => $entity]); ?>
 
-    <!-- History BEGIN -->
-        <?php $this->part('history.php', array('entity' => $entity)); ?>
-    <!-- History END -->
+    <?php $this->part('history.php', array('entity' => $entity)); ?>
+    
+    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
 </div>

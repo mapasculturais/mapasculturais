@@ -101,7 +101,7 @@
         <?php if ($app->auth->isUserAuthenticated()): ?>
             <?php $this->applyTemplateHook('nav.main.notifications','before'); ?>
             <li class="notifications" ng-controller="NotificationController" style="display:none" ng-class="{'visible': data.length > 0}">
-                <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')">
+                <a class="js-submenu-toggle" data-submenu-target="$(this).parent().find('.submenu')" rel='noopener noreferrer'>
                     <div class="icon icon-notifications"></div>
                     <div class="menu-item-label"><?php \MapasCulturais\i::_e("Notificações");?></div>
                 </a>
@@ -117,20 +117,20 @@
                                     <span ng-bind-html="notification.message"></span>
                                     <br>
 
-                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)"><?php \MapasCulturais\i::_e("aceitar");?></a>
+                                    <a ng-if="notification.request.permissionTo.approve" class="btn btn-small btn-success" ng-click="approve(notification.id)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("aceitar");?></a>
 
                                     <span ng-if="notification.request.permissionTo.reject">
                                         <span ng-if="notification.request.requesterUser === MapasCulturais.userId">
-                                            <a class="btn btn-small btn-default" ng-click="reject(notification.id)"><?php \MapasCulturais\i::_e("cancelar");?></a>
-                                            <a class="btn btn-small btn-success" ng-click="delete(notification.id)"><?php \MapasCulturais\i::_e("ok");?></a>
+                                            <a class="btn btn-small btn-default" ng-click="reject(notification.id)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("cancelar");?></a>
+                                            <a class="btn btn-small btn-success" ng-click="delete(notification.id)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("ok");?></a>
                                         </span>
                                         <span ng-if="notification.request.requesterUser !== MapasCulturais.userId">
-                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)"><?php \MapasCulturais\i::_e("rejeitar");?></a>
+                                            <a class="btn btn-small btn-danger" ng-click="reject(notification.id)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("rejeitar");?></a>
                                         </span>
                                     </span>
 
                                     <span ng-if="!notification.request">
-                                        <a class="btn btn-small btn-success" ng-click="delete(notification.id)"><?php \MapasCulturais\i::_e("ok");?></a>
+                                        <a class="btn btn-small btn-success" ng-click="delete(notification.id)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("ok");?></a>
                                     </span>
 
                                 </p>

@@ -3,14 +3,33 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Entity;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
-
+use MapasCulturais\Definitions\Metadata as MetadataDefinition;
 /**
  * Opportunity
  *
- * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property-read int $id
+ * @property-read int $status
+ * @property-read \DateTime $createTimestamp
+ * @property-read \DateTime $updateTimestamp
+ * 
+ * @property string $name
+ * @property string $shortDescription
+ * @property \DateTime $registrationFrom
+ * @property \DateTime $registrationTo
+ * @property array $registrationCategories
+ * @property self $parent
+ * @property Agent $owner
+ * 
+ * 
+ * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property RegistrationFileConfiguration $registrationFileConfigurations
+ * @property RegistrationFieldConfiguration $registrationFieldConfigurations
  * @property \MapasCulturais\Entity $ownerEntity
+ * 
  *
  * @ORM\Table(name="opportunity", indexes={
  *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
@@ -47,6 +66,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive;
+        
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer
@@ -62,7 +83,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="smallint", nullable=true)
+     * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     protected $_type;
 
@@ -76,21 +97,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="short_description", type="text", nullable=true)
+     * @ORM\Column(name="short_description", type="text", nullable=false)
      */
     protected $shortDescription;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_from", type="datetime", nullable=true)
+     * @ORM\Column(name="registration_from", type="datetime", nullable=false)
      */
     protected $registrationFrom;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_to", type="datetime", nullable=true)
+     * @ORM\Column(name="registration_to", type="datetime", nullable=false)
      */
     protected $registrationTo;
 
@@ -135,7 +156,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $parent;
@@ -152,7 +173,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $owner;
@@ -165,20 +186,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $evaluationMethodConfiguration;
 
     /**
-     * @var \MapasCulturais\Entities\RegistrationFileConfiguration[] RegistrationFileConfiguration
-     *
-     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFileConfiguration", mappedBy="owner", fetch="LAZY")
-     */
-    public $registrationFileConfigurations;
-
-    /**
-     * @var \MapasCulturais\Entities\RegistrationFieldConfiguration[] RegistrationFieldConfiguration
-     *
-     * @ORM\OneToMany(targetEntity="\MapasCulturais\Entities\RegistrationFieldConfiguration", mappedBy="owner", fetch="LAZY")
-     */
-    public $registrationFieldConfigurations;
-
-    /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
     */
     protected $__metadata;
@@ -187,7 +194,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\OpportunityFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
 
@@ -195,7 +202,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\OpportunityAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
 
@@ -204,7 +211,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\OpportunityTermRelation[] TermRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
 
@@ -213,7 +220,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\OpportunitySealRelation[] OpportunitySealRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
 
@@ -230,6 +237,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $_subsiteId;
     
     abstract function getSpecializedClassName();
+
+    /**
+     * 
+     * @return RegistrationFileConfiguration[]
+     */
+    public function getRegistrationFileConfigurations() {
+        return App::i()->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
+    }
+
+    /**
+     * 
+     * @return RegistrationFieldConfiguration[]
+     */
+    public function getRegistrationFieldConfigurations() {
+        return App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
+    }
 
     /**
      * Returns the Evaluation Method Definition Object
@@ -256,25 +279,31 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
     
     function getEvaluationCommittee($return_relation = true){
-        $result = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
+        $app = App::i();
+
+        $committee = $this->evaluationMethodConfiguration->getAgentRelations(null, true);
         
         if(!$return_relation) {
-            $result = array_map(function($r){ return $r->agent; }, $result);
+            $committee = array_map(function($r){ return $r->agent; }, $committee);
         }
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluationCommittee", [&$committee, $return_relation]);
         
-        return $result;
+        return $committee;
     }
 
     /*
      * @TODO: renomear esta funcao para um nome mais adequado.
      */
     function getEvaluations($include_empty = false){
+        $app = App::i();
+
         // @TODO: melhorar performance. talvez utilizando a ApiQuery na entidade RegistrationEvaluation ?
         $committee = $this->getEvaluationCommittee(false);
         
         $registrations = $this->getSentRegistrations();
         
-        $result = [];
+        $evaluations = [];
         
         foreach($registrations as $reg){
             foreach($committee as $agent){
@@ -288,16 +317,18 @@ abstract class Opportunity extends \MapasCulturais\Entity
                             'registration' => $reg->simplify('id,number,category,singleUrl,owner,consolidatedResult')
                         ];
                         
-                        $result[] = $item;
+                        $evaluations[] = $item;
                     }
                 }
             }
         }
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.evaluations", [&$evaluations, $include_empty]);
         
-        return $result;
+        return $evaluations;
     }
 
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Oportunidades');
         else
@@ -305,7 +336,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da oportunidade é obrigatório')
             ],
@@ -322,8 +355,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
             'registrationTo' => [
                 '$this->validateDate($value)' => \MapasCulturais\i::__('O valor informado não é uma data válida'),
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
-            ]
+            ],
+	        'ownerEntity' => [
+		        'required' => \MapasCulturais\i::__('A entidade é obrigatória'),
+	        ],
+	        'evaluationMethod' => [
+		        'required' => \MapasCulturais\i::__('Defina um método de avaliação'),
+	        ]
         ];
+
+        $hook_class = self::getHookClassPath();
+
+        $app->applyHook("entity($hook_class).validations", [&$validations]);
+
+        return $validations;
     }
 
     static function getClassName() {
@@ -359,10 +404,31 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
     }
 
-    function getAllRegistrations(){
+    function getAllRegistrations($status = null){
         // ============ IMPORTANTE =============//
         // @TODO implementar findSentByOpportunity no repositório de inscrições
-        $registrations = App::i()->repo('Registration')->findBy(['opportunity' => $this]);
+        $app = App::i();
+
+        if ($status == 'sent') {
+            $status_dql = is_null($status) ? '' : 'r.status > 0 AND';
+        } else {
+            $status_dql = is_null($status) ? '' : "r.status = {$status} AND";
+        }
+
+        $query = $app->em->createQuery("
+        SELECT 
+            r
+        FROM 
+            MapasCulturais\\Entities\\Registration r
+        WHERE 
+            $status_dql
+            r.opportunity = :opportunity
+        ");
+        
+        $query->setParameter('opportunity', $this);
+
+        // $registrations = $query->getResult($query::HYDRATE_SIMPLEOBJECT);
+        $registrations = $query->getResult();
 
         return $registrations;
     }
@@ -377,14 +443,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return \MapasCulturais\Entities\Registration[]
      */
     function getSentRegistrations(){
-        $registrations = $this->getAllRegistrations();
-
-        $result = [];
-        foreach($registrations as $re){
-            if($re->status > 0)
-                $result[] = $re;
-        }
-        return $result;
+        return $this->getAllRegistrations('sent');
     }
 
     /**
@@ -418,6 +477,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
         }else{
             $this->registrationTo = null;
+        }
+    }
+
+    function setOwnerEntity($entity){
+    	if (empty($entity)) {
+    		return;
+	    }
+
+        if ($entity instanceof Entity) {
+            $this->ownerEntity = $entity;
+        }
+        else {
+            $app = App::i();
+
+            $ownerEntityClassName = substr($this->getSpecializedClassName(), 24, -11);
+            $this->ownerEntity = $app->repo($ownerEntityClassName)->find($entity);
         }
     }
 
@@ -464,20 +539,37 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function publishRegistrations(){
         $this->checkPermission('publishRegistrations');
-
-        $this->publishedRegistrations = true;
-
-        // atribui os selos as inscrições selecionadas
+        
         $app = App::i();
-        $registrations = $app->repo('Registration')->findBy(array('opportunity' => $this, 'status' => Registration::STATUS_APPROVED));
+        $app->em->beginTransaction();
 
-        foreach ($registrations as $registration) {
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:before");
+        
+        $this->publishedRegistrations = true;
+        $this->save(true);
+        
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => "EQ({$this->id})", 
+            'status'=>'EQ(10)'
+        ]);
+
+        $registration_ids = $query->findIds();
+
+        foreach ($registration_ids as $registration_id) {
+            $registration = $app->repo('Registration')->find($registration_id);
+
+            // @todo: fazer dos selos em oportunidades um módulo separado (OpportunitySeals ??)
             $registration->setAgentsSealRelation();
+            
+            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistration", [$registration]);
+
+            $app->em->flush();
+            $app->em->clear();
         }
 
-        $app->enqueueEntityToPCacheRecreation($this);
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).publishRegistrations:after");
 
-        $this->save(true);
+        $app->em->commit();
     }
 
     function sendUserEvaluations($user = null){
@@ -488,6 +580,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         $this->checkPermission('sendUserEvaluations', $user);
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:before", [$user]);
 
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
@@ -505,6 +599,137 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app->em->flush();
         
         $app->enableAccessControl();
+
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).sendUserEvaluations:after", [$user]);
+    }
+
+    function importFields($importSource) {
+        $this->checkPermission('modifyRegistrationFields');
+        
+        $app = App::i();
+        
+        $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:before", [&$importSource]);
+
+        $created_fields = [];
+        $created_files = [];
+
+        if (!is_null($importSource)) {
+            $new_fields_by_old_field_name = [];
+
+            // Fields
+            foreach($importSource->fields as &$field) {
+                
+                if(isset($field->config)){
+                    $field->config = (array) $field->config;
+                    if (isset($field->config['require']) && $field->config['require']) {
+                        $field->config['require'] = (array) $field->config['require'];
+                    }
+                }
+
+                $newField = new RegistrationFieldConfiguration;
+                $newField->owner = $this;
+                $newField->title = $field->title;
+                $newField->description = $field->description;
+                $newField->maxSize = $field->maxSize;
+                $newField->fieldType = $field->fieldType;
+                $newField->required = $field->required;
+                $newField->categories = $field->categories;
+                $newField->config = $field->config;
+                $newField->fieldOptions = $field->fieldOptions;
+                $newField->displayOrder = $field->displayOrder;
+
+                $field->newField = $newField;
+
+                $new_fields_by_old_field_name[$field->fieldName] = $newField;
+
+                // salva a primeira vez para obter um id
+                $newField->save();
+
+                $created_fields[] = $newField;
+            }
+
+            foreach($importSource->fields as &$field) {
+                $newField = $field->newField;
+                if(!empty($field->config['require']['field'])){
+                    $field_name = $field->config['require']['field'];
+
+                    if(isset($new_fields_by_old_field_name[$field_name])) {
+                        $field->config['require']['field'] = $new_fields_by_old_field_name[$field_name]->fieldName;
+                        
+                        $newField->config = $field->config;
+
+                        // salva a segunda vez para a tualizar o config
+                        $newField->save();
+                    }
+                    
+                }
+
+            }
+
+            //Files (attachments)
+            foreach($importSource->files as $file) {
+
+                $newFile = new RegistrationFileConfiguration;
+
+                $newFile->owner = $this;
+                $newFile->title = $file->title;
+                $newFile->description = $file->description;
+                $newFile->required = $file->required;
+                $newFile->categories = $file->categories;
+                $newFile->displayOrder = $file->displayOrder;
+
+                $app->em->persist($newFile);
+
+                $newFile->save();
+
+                $created_files[] = $newFile;
+
+
+                if (is_object($file->template)) {
+
+                    $originFile = $app->repo("RegistrationFileConfigurationFile")->find($file->template->id);
+
+                    if (is_object($originFile)) { // se nao achamos o arquivo, talvez este campo tenha sido apagado
+
+                        $tmp_file = sys_get_temp_dir() . '/' . $file->template->name;
+
+                        if (file_exists($originFile->path)) {
+                            copy($originFile->path, $tmp_file);
+
+                            $newTemplateFile = array(
+                                'name' => $file->template->name,
+                                'type' => $file->template->mimeType,
+                                'tmp_name' => $tmp_file,
+                                'error' => 0,
+                                'size' => filesize($tmp_file)
+                            );
+
+                            $newTemplate = new RegistrationFileConfigurationFile($newTemplateFile);
+
+                            $newTemplate->owner = $newFile;
+                            $newTemplate->description = $file->template->description;
+                            $newTemplate->group = $file->template->group;
+
+                            $app->em->persist($newTemplate);
+
+                            $newTemplate->save();
+                        }
+
+                    }
+
+                }
+            }
+
+            // Metadata
+            foreach($importSource->meta as $key => $value) {
+                $this->$key = $value;
+            }
+
+            $this->save(true);
+
+            $app->applyHookBoundTo($this, "entity({$this->hookClassPath}.importFields:after", [&$importSource, &$created_fields, &$created_files]);
+
+        }
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
@@ -544,6 +769,77 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
         
         return $relation->status === EvaluationMethodConfigurationAgentRelation::STATUS_SENT;
+    }
+
+    function registerRegistrationMetadata(){
+       
+        $app = App::i();
+
+        $registered_metadata = $app->getRegisteredMetadata(Registration::class);
+        
+        if (!isset($registered_metadata['projectName']) && $this->projectName){
+            $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
+            
+            $metadata = new MetadataDefinition('projectName', $cfg);
+            $app->registerMetadata($metadata, Registration::class);
+        }
+        
+        foreach($this->registrationFieldConfigurations as $field){
+            if (isset($registered_metadata[$field->getFieldName()])) {
+                continue;
+            }
+
+            $cfg = [
+                'label' => $field->title,
+                'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
+                'private' => true,
+                'registrationFieldConfiguration' => $field
+            ];
+
+            $def = $field->getFieldTypeDefinition();
+            
+            if($def->requireValuesConfiguration){
+                $cfg['options'] = $field->fieldOptions;
+            }
+
+            if(is_callable($def->serialize)){
+                $cfg['serialize'] = $def->serialize;
+            }
+
+            if(is_callable($def->unserialize)){
+                $cfg['unserialize'] = $def->unserialize;
+            }
+
+            if($def->defaultValue){
+                $cfg['default_value'] = $def->defaultValue;
+            }
+
+            if($def->validations){
+                $cfg['validations'] = $def->validations;
+            } else {
+                $cfg['validations'] = [];
+            }
+            
+            if($field->required){
+                $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
+            }
+
+            $app->applyHookBoundTo($this, "controller(opportunity).registerFieldType({$field->fieldType})", [$field, &$cfg]);
+
+
+            $metadata = new MetadataDefinition ($field->fieldName, $cfg);
+
+            $app->registerMetadata($metadata, Registration::class);
+        }
+        
+    }
+
+    protected function genericPermissionVerification($user){
+        if($this->ownerEntity->canUser('@control', $user)){
+            return true;
+        }
+
+        return parent::genericPermissionVerification($user);
     }
 
     protected function canUserModifyRegistrationFields($user){

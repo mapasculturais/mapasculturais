@@ -33,7 +33,7 @@ class Space extends EntityController {
      */
 
     /**
-     * @api {POST} /api/space/index Criar espaço.
+     * @api {POST} /space/index Criar espaço.
      * @apiUse APICreate
      * @apiGroup SPACE
      * @apiName POSTspace
@@ -41,26 +41,26 @@ class Space extends EntityController {
 
      /**
 
-     * @api {PATCH} /api/space/single/:id Atualizar parcialmente um espaço.
+     * @api {PATCH} /space/single/:id Atualizar parcialmente um espaço.
      * @apiUse APIPatch
      * @apiGroup SPACE
      * @apiName PATCHspace
      */
 
     /**
-     * @api {PUT} /api/space/single/:id Atualizar espaço.
+     * @api {PUT} /space/single/:id Atualizar espaço.
      * @apiUse APIPut
      * @apiGroup SPACE
      * @apiName PUTspace
      */
 
      /**
-     * @api {PUT|PATCH} /api/space/single/:id Deletar espaço.
+     * @api {PUT|PATCH} /space/single/:id Deletar espaço.
      * @apiUse APIDelete
      * @apiGroup SPACE
      * @apiName DELETEspace
      */
-    
+
     /**
      * @api {all} /api/space/getTypes Retornar tipos
      * @apiUse getTypes
@@ -77,7 +77,7 @@ class Space extends EntityController {
      *   "id": 12,
      *   "name": "Drive-in"
      * }]
-     * 
+     *
      */
 
     /**

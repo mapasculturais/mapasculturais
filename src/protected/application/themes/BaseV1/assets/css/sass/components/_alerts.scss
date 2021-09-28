@@ -32,12 +32,23 @@
 .alert {
     position: relative;
     margin-bottom: $line-height-base;
-    padding: $padding-base 2.5rem;
+    padding: 0.5em 2.5rem;
     border-radius: $border-radius-base;
     border-style: solid;
     border-width: 1px;
     font-size: $font-size-smaller;
     text-align: left; //to make sure it's always aligned to the left.
+
+    @media screen and (max-width: $screen-tablet) {
+        display: block !important;
+        position: absolute !important;
+        left: 0;
+        right: 0;
+        margin: 0;
+        margin-right: 1em;
+        padding: 0.20rem 2.5rem;
+    }
+    
     &.info {
         background: #cff;
         border-color: #9be7ee;
@@ -83,4 +94,8 @@
     ul {
         margin-bottom: 0;
     }
+}
+
+#editable-entity .alert {
+    margin-bottom: -1em;
 }

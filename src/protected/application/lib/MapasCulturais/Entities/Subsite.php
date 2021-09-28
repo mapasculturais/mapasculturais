@@ -28,6 +28,8 @@ class Subsite extends \MapasCulturais\Entity
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityArchive;
+        
+    protected $__enableMagicGetterHook = true;
 
 
     /**
@@ -94,7 +96,7 @@ class Subsite extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\Role[] Role
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade="remove", fetch="EAGER", orphanRemoval=true)
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id")
+     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id", onDelete="CASCADE")
      * })
     */
     protected $_roles;
@@ -140,7 +142,7 @@ class Subsite extends \MapasCulturais\Entity
      * @var \MapasCulturais\Entities\SubsiteFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
 
@@ -172,6 +174,13 @@ class Subsite extends \MapasCulturais\Entity
         return $this->getSingleUrl();
     }
 
+    public function getSubsiteUrl() {
+        $app = \MapasCulturais\App::i();
+        $req = $app->request;
+
+        return $req->getScheme() . "://" . $this->url;
+    }
+
     protected $_logo;
 
     function getLogo(){
@@ -179,6 +188,15 @@ class Subsite extends \MapasCulturais\Entity
             $this->_logo = $this->getFile('logo');
 
         return $this->_logo;
+    }
+
+    protected $_share;
+
+    function getShareImage(){
+        if(!$this->_share)
+            $this->_share = $this->getFile('share');
+
+        return $this->_share;
     }
 
     protected $_background;

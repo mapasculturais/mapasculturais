@@ -1,5 +1,10 @@
 .compliant-suggestion-box {
     float: right;
+
+    @media screen and (max-width: $screen-tablet) {
+      float: none;
+      margin-top: 2%;
+    }
 }
 
 .button-form-compliant-suggestion {
@@ -9,7 +14,7 @@
 }
 
 .form-complaint-suggestion {
-  background: #f8f8f8;
+  background: #f5f5f5;
   padding-left: 18px;
   padding-top: 32px;
   border-left: 3px solid  #143d65;

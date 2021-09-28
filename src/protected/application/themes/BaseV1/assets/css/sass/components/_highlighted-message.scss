@@ -1,6 +1,29 @@
 .highlighted-message {
     border-left: 3px solid $brand-primary;
-    padding: $padding-base;
+    padding: $padding-large;
     margin-bottom: $line-height-base;
-    background: #f8f8f8;
+    background: #f5f5f5;
+
+    .opportunity-phases {
+        float: left;
+        margin-top: 0;
+
+        & > a.btn {
+            margin-bottom: $margin-small;
+            margin-top: $margin-small;
+        }
+
+        ul {
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            li {
+                margin-top: 0;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
 }

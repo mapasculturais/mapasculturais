@@ -61,28 +61,28 @@ class Agent extends EntityController {
      */
     
      /**
-     * @api {POST} /api/agent/index Criar Agente.
+     * @api {POST} /agent/index Criar Agente.
      * @apiUse APICreate
      * @apiGroup AGENT
      * @apiName POSTagent
      */
 
      /**
-     * @api {PATCH} /api/agent/single/:id Atualizar parcialmente um Agente.
+     * @api {PATCH} /agent/single/:id Atualizar parcialmente um Agente.
      * @apiUse APIPatch
      * @apiGroup AGENT
      * @apiName PATCHagent
      */
 
     /**
-     * @api {PUT} /api/agent/single/:id Atualizar Agente.
+     * @api {PUT} /agent/single/:id Atualizar Agente.
      * @apiUse APIPut
      * @apiGroup AGENT
      * @apiName PUTagent
      */
 
      /**
-     * @api {DELETE} /api/agent/single/:id Deletar Agente.
+     * @api {DELETE} /agent/single/:id Deletar Agente.
      * @apiUse APIDelete
      * @apiGroup AGENT
      * @apiName DELETEagent
@@ -158,11 +158,19 @@ class Agent extends EntityController {
         if(!$agent || !isset($this->data['role']))
             $app->pass();
 
-        if(isset($this->data['subsiteId'])){
-            $success = $agent->user->addRole($this->data['role'], $this->data['subsiteId']);
-        } else {
-            $success = $agent->user->addRole($this->data['role']);
+        if(isset($this->data['subsiteId']) && $this->data['subsiteId']) {
+            $subsite_id = $this->data['subsiteId'];
+        } else if(!isset($this->data['subsiteId'])) {
+            $subsite_id = false;
+        } else if(empty($this->data['subsiteId'])){
+            $subsite_id = null;
+        } 
+
+        foreach ($app->getRoles() as $role) {
+            $agent->user->removeRole($role->role, $subsite_id);
         }
+
+        $success = $agent->user->addRole($this->data['role'], $subsite_id);
 
         if($this->isAjax()){
             if($success)

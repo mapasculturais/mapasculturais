@@ -387,11 +387,11 @@ class ApiQuery {
         
         $this->apiParams = $api_params;
         
-        $class = $class::getClassName();
-
-        if($class == 'MapasCulturais\Entities\Opportunity' && $this->parentQuery){
+        if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
-            $class = $parent_class::getOpportunityClassName();
+            if($parent_class != 'MapasCulturais\Entities\Opportunity') {
+                $class = $parent_class::getOpportunityClassName();
+            }
         }
         
         $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
@@ -480,6 +480,14 @@ class ApiQuery {
         
     }
 
+    public function findIds() {
+        $result = $this->getFindResult('e.id');
+
+        return array_map(function ($row) {
+            return $row['id'];
+        }, $result);
+    }
+
     public function findOne(){
         return $this->getFindOneResult();
     }
@@ -516,8 +524,8 @@ class ApiQuery {
         return $this->getFindResult();
     }
     
-    public function getFindResult() {
-        $dql = $this->getFindDQL();
+    public function getFindResult(string $select = null) {
+        $dql = $this->getFindDQL($select);
 
         $q = $this->em->createQuery($dql);
 
@@ -584,8 +592,8 @@ class ApiQuery {
         return $params;
     }
 
-    public function getFindDQL() {
-        $select = $this->generateSelect();
+    public function getFindDQL(string $select = null) {
+        $select = $select ?: $this->generateSelect();
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
         $order = $this->generateOrder();
@@ -879,8 +887,20 @@ class ApiQuery {
         if($this->_selectingType){
             $types = $app->getRegisteredEntityTypes($this->entityClassName);
         }
+
+        if($this->permissionCacheClassName){
+            $permissions = $this->getViewPrivateDataPermissions($entities);
+        }
         
         foreach ($entities as &$entity){
+            // remove location if the location is not public
+            if($this->permissionCacheClassName && isset($entity['location']) && isset($entity['publicLocation']) && !$entity['publicLocation']){
+                if(!$permissions[$entity['id']]){
+                    $entity['location']->latitude = 0;
+                    $entity['location']->longitude = 0;
+                }
+            }
+
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity['id']]);
             }
@@ -1046,7 +1066,7 @@ class ApiQuery {
                 
         foreach($result as $r){
             $owner_id = $r['ownerId'];
-            $action = $r['action'];
+            $action = $r['action']->getValue();
             if(!isset($permissions[$owner_id])){
                 $permissions[$owner_id] = [];
             }
@@ -1072,6 +1092,16 @@ class ApiQuery {
             }
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
                 $prop = $cfg['property'];
+                
+                // do usuário só permite id e profile
+                if($prop == 'user') {
+                    $cfg['select'] = array_filter($cfg['select'], function($field) {
+                        if ($field == 'id' || substr($field, 0, 7) == 'profile') {
+                            return $field;
+                        }
+                    });
+                }
+                
                 if($prop == 'permissionTo'){
                     $this->appendPermissions($entities, $cfg['select']);
                     continue;
@@ -1500,6 +1530,7 @@ class ApiQuery {
                 }
             } else {
                 $dql_in = $this->getSubqueryInIdentities($entities);
+                
                 $dql = "SELECT IDENTITY(pc.owner) as entity_id FROM {$this->permissionCacheClassName} pc WHERE pc.owner IN ($dql_in) AND pc.user = {$app->user->id}";
 
                 $query = $this->em->createQuery($dql);

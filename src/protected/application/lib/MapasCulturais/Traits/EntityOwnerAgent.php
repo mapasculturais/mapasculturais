@@ -6,6 +6,9 @@ use MapasCulturais\App;
  * Defines that the owner of the entity is an Agent.
  * 
  * Use this trait only in subclasses of **\MapasCulturais\Entity** with property **owner** that is a *many to one* relation with **\MapasCulturais\Entities\Agent**.
+ * 
+ * @property \MapasCulturais\Entities\Agent $owner
+ * @property-write int $ownerId
  */
 trait EntityOwnerAgent{
     
@@ -73,10 +76,13 @@ trait EntityOwnerAgent{
      * @workflow RequestChangeOwnership
      */
     protected function _saveOwnerAgent(){
+
         if(!$this->owner && $this->_newOwner || $this->_newOwner && !$this->_newOwner->equals($this->owner)){
             try{
+                
                 $this->checkPermission('changeOwner');
                 $this->_newOwner->checkPermission('modify');
+                
                 $this->owner = $this->_newOwner;
 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
@@ -94,6 +100,14 @@ trait EntityOwnerAgent{
         }
     }
 
+    protected function _getOwnerSpace() {
+        if(isset($this->_spaceData) && !empty($this->_spaceData)){
+            $arrayOwner = ["owner" => $this->_spaceData];
+            return json_encode($arrayOwner);
+        }else{
+           return '{}';
+        }
+    }
     /**
      * Verify if user can change the entity owner.
      *

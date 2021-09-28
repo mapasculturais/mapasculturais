@@ -2,23 +2,13 @@
     <!--
     <h4><?php \MapasCulturais\i::_e("Campos adicionais do formulário de inscrição.");?></h4>
     -->
+    <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
     <ul class="attachment-list" ng-controller="RegistrationFieldsController">
-
-        <li ng-repeat="field in data.fields" ng-if="showFieldForCategory(field)" id="registration-field-{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
-            <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section'">
-                <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
-                <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
-                <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
-                <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado.");?></em></span>
-            </div>
-            <div ng-if="field.fieldType === 'section'">
-                <h4>{{field.title}}</h4>
-            </div>
-            <div ng-if="field.fieldType === 'file'">
-                <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>
-                <a ng-if="field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank">{{::field.file.name}}</a>
-                <span ng-if="!field.file"><em><?php \MapasCulturais\i::_e("Arquivo não enviado.");?></em></span>
-            </div>
+        <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
+        <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class=" (field.fieldType != 'section') ? 'js-field attachment-list-item registration-view-mode' : ''">
+            <?php $this->part('singles/registration-field-view') ?>
         </li>
+        <?php $this->applyTemplateHook('registration-field-list', 'end') ?>
     </ul>
+    <?php $this->applyTemplateHook('registration-field-list', 'after') ?>
 </div>

@@ -21,7 +21,7 @@
         };
 
         function search (ev, data){
-
+            
             var results = {},
                 numRequests = 0,
                 numSuccessRequests = 0,
@@ -81,6 +81,7 @@
             endRequest();
 
             function callApi(entity, sData){
+                
                 var requestEntity = entity,
                     requestAction = 'find';
 
@@ -186,6 +187,7 @@
             }
 
             function data2searchData(entity, entityData){
+                
                 var searchData = {};
 
                 if(entityData.keyword){
@@ -204,21 +206,26 @@
                         searchData.registrationFrom = 'LTE(' + today + ')';
                         searchData.registrationTo   = 'GTE(' + today + ')';
                     }
-
+                    
+                    if(search_filter == 'documento') {
+                        searchData['documento'] = entityData.filters['documento']; 
+                    }
                     if(entityData.filters[search_filter]){
                         var filter = MapasCulturais.filters[entity].filter(function(f){
                             return f.filter.param === search_filter;
                         })[0];
-                        if (!filter.isArray) {
-                            searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter]);
-                        } else if (entityData.filters[search_filter].length){
-                            if (filter.type === 'term'){
-                                var search_value = entityData.filters[search_filter].map(function(e){
-                                    return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
-                                });
-                                searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
-                            } else
-                                searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
+                        if(filter) {
+                            if (!filter.isArray) {
+                                searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter]);
+                            } else if (entityData.filters[search_filter].length){
+                                if (filter.type === 'term'){
+                                    var search_value = entityData.filters[search_filter].map(function(e){
+                                        return MapasCulturais.taxonomyTerms[filter.filter.param][e] || e;
+                                    });
+                                    searchData['term:'+ filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, search_value.join(','));
+                                } else
+                                    searchData[filter.prefix + filter.filter.param] = filter.filter.value.replace(/\{val\}/g, entityData.filters[search_filter].join(','));
+                            }
                         }
                     }
                 }
@@ -324,6 +331,8 @@
 
                 $rootScope.apiURL = apiExportURL+queryString_apiExport;
                 
+                
+
                 return $http({method: 'GET', cache:true, url:MapasCulturais.baseURL + 'api/' + entity + '/' + action + '/?'+querystring , data:searchData});
             }
 

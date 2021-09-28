@@ -3,11 +3,19 @@
   use MapasCulturais\Entities\Agent;
   use MapasCulturais\Entities\Space;
   use MapasCulturais\Entities\Event;
+use MapasCulturais\i;
 
-
-  $this->requireAuthentication();
+$this->requireAuthentication();
   $app = App::i(); 
-  $roles = $app->getRoles();
+  $roles = [];
+  foreach ($app->getRoles() as $def) {
+    $roles[$def->role] = [
+      'name' => $def->role,
+      'singularLabel' => $def->name,
+      'pluralLabel' => $def->pluralName,
+    ];
+  }
+
   $subsite_id = $app->getCurrentSubsiteId();
 
   $first = true;
@@ -29,7 +37,6 @@
         if(!empty($aux))
           $vars['list_' . $roleSlug] = array_merge($vars['list_' . $roleSlug], $aux);
       }
-
     if ($roleSlug == 'superAdmin') {
       $roles[$roleSlug]['permissionSuffix'] = 'SuperAdmin';
     } elseif ($roleSlug == 'admin') {
@@ -37,7 +44,7 @@
     } else {
       $roles[$roleSlug]['permissionSuffix'] = '';
     }
-    
+
     foreach($vars['list_' . $roleSlug] as $u):
       $remove_role_url = false;
       $subsiteUrl = '';
@@ -63,15 +70,21 @@
 ?>
 
 <div class="user-managerment-admin">
-  <div class="entity-table-content" style="width: 100%;">
+  <div style="width: 100%;">
     <table class="user-admin-table entity-table">
       <caption>
-        <?php \MapasCulturais\i::_e('Administradores do Subsite:'); ?>
-        <select id="subsites" ng-model="selectSubsite" style="margin-bottom: 0px; min-width: 140px;">
-          <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles.users" value="{{key}}">
-            {{key}}
-          </option>
-        </select>
+        <div ng-if="hasSubsites()">
+          <?php \MapasCulturais\i::_e('Administradores do Subsite:'); ?>
+          <select id="subsites" ng-model="selectSubsite" style="margin-bottom: 0px; min-width: 140px;">
+            <option title="{{key}}" class="icon icon-subsite" ng-repeat="(key, value) in data.infoAdmin.roles.users" value="{{key}}">
+              {{key}}
+            </option>
+          </select>
+        </div>
+        <div ng-if="!hasSubsites()">
+          <?php i::_e('Administradores') ?>
+        </div>
+
       </caption>
 
       <thead>
@@ -87,10 +100,10 @@
           <td style="width: 30%;">
             <div>
               <span class="truncate">
-                <a title={{usr.name}} href="{{usr.singleUrl}}">{{usr.name}}</a>
+                <a title={{usr.name}} href="{{usr.singleUrl}}" rel='noopener noreferrer'>{{usr.name}}</a>
               </span>
               <span class="truncate">
-                <a class="small" href="{{usr.subsiteURL}}" style="color:#C3C3C3" target="_blank">{{usr.subsiteURL}}</a>
+                <a class="small" href="{{usr.subsiteURL}}" style="color:#C3C3C3" target="_blank" rel='noopener noreferrer'>{{usr.subsiteURL}}</a>
               </span>
             </div>
           </td>

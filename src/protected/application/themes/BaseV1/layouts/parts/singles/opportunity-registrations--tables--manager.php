@@ -9,6 +9,7 @@ use MapasCulturais\i;
         <?php i::_e("Não é possível alterar o status das inscrições através desse dispositivo. Tente a partir de um dispositivo com tela maior.");?>
         <div class="close"></div>
     </div>
+    <?php $this->applyTemplateHook('header-inscritos','actions'); ?>
     <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('report', [$entity->id]); ?>"><?php i::_e("Baixar inscritos");?></a>
     <a class="btn btn-default download" href="<?php echo $this->controller->createUrl('reportDrafts', [$entity->id]); ?>"><?php i::_e("Baixar rascunhos");?></a>
     <?php $this->applyTemplateHook('header-inscritos','end'); ?>
@@ -28,7 +29,7 @@ use MapasCulturais\i;
 
 <div id="filtro-inscritos">
     <span class="label"> <?php i::_e("Filtrar inscrição:");?> </span>
-    <input ng-model="data.registrations.filtro" placeholder="<?php i::_e('Busque pelo nome do responsável, status ou número de inscrição') ?>" />
+    <input ng-model="data.registrationsFilter" placeholder="<?php i::_e('Busque pelo número de inscrição, status da avaliação, nome ou cpf do responsável') ?>" />
 </div>
 
 <div class="dropdown" style="width:100%; margin:10px 0px;">
@@ -55,8 +56,8 @@ use MapasCulturais\i;
 
 <div id="selected-filters" style="width:100%; margin:10px 0px;">
      <span>
-        <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
-        <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)" >{{field.title}}</a>
+        <a ng-repeat="field in data.defaultSelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)"  rel='noopener noreferrer'>{{field.title}}</a>
+        <a ng-repeat="field in data.opportunitySelectFields" ng-click="toggleSelectionColumn(data.registrationTableColumns, field.fieldName)"  class="tag-selected tag-opportunity" ng-if="isSelected(data.registrationTableColumns, field.fieldName)"  rel='noopener noreferrer'>{{field.title}}</a>
      </span>
 </div>
 
@@ -70,9 +71,10 @@ use MapasCulturais\i;
 <table id="registrations-table" class="js-registration-list registrations-table" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published, 'fullscreen': data.fullscreenTable}"><!-- adicionar a classe registrations-results quando resultados publicados-->
     <thead>
         <tr>
+            <?php $this->applyTemplateHook('registration-list-header','begin'); ?>
             <th ng-show="data.registrationTableColumns.number" class="registration-id-col">
                 <?php i::_e("Inscrição");?>
-            </th>
+            </th>            
             <th ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col" title="{{data.registrationCategory}}">
                 <mc-select class="left transparent-placeholder" placeholder="status" model="registrationsFilters['category']" data="data.registrationCategoriesToFilter" title="{{data.registrationCategory}}"></mc-select>
             </th>
@@ -91,6 +93,8 @@ use MapasCulturais\i;
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
                 <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
             </th>
+
+            <?php $this->applyTemplateHook('registration-list-header','end'); ?>
         </tr>
     </thead>
     <tr>
@@ -113,6 +117,7 @@ use MapasCulturais\i;
                 </div>
                 <div ng-if="data.registrations.length >= 1 ">
                     <strong> {{ data.registrations.length }} </strong>
+                    <span ng-if="data.registrationsAPIMetadata.count > 1"> de {{ data.registrationsAPIMetadata.count }}</i> </span>
                     <span ng-if="data.registrations.length === 1"> <?php i::_e("inscrição encontrada"); ?> </span>
                     <span ng-if="data.registrations.length > 1"> <?php i::_e("inscrições encontradas"); ?> </span>
                     <?php i::_e(" com os filtros selecionados."); ?>
@@ -122,26 +127,26 @@ use MapasCulturais\i;
         </td>
     </tr>
     <tbody>
-    <tr ng-repeat="reg in data.registrations | filter:data.registrations.filtro" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
-        <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}">{{reg.number}}</a></td>
+    <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
+    <?php $this->applyTemplateHook('registration-list-item','begin'); ?>
+            <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}" rel='noopener noreferrer'>{{reg.number}}</a></td>
             <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
             <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
                 {{reg[field.fieldName]}}
             </td>
-
             <td ng-show="data.registrationTableColumns.agents" class="registration-agents-col">
                 <p>
                     <span class="label"><?php i::_e("Responsável");?></span><br />
-                    <a href="{{reg.owner.singleUrl}}">{{reg.owner.name}}</a>
+                    <a href="{{reg.owner.singleUrl}}" rel='noopener noreferrer'>{{reg.owner.name}}</a>
                 </p>
 
                 <p ng-repeat="relation in reg.agentRelations" ng-if="relation.agent">
                     <span class="label">{{relation.label}}</span><br />
-                    <a href="{{relation.agent.singleUrl}}">{{relation.agent.name}}</a>
+                    <a href="{{relation.agent.singleUrl}}" rel='noopener noreferrer'>{{relation.agent.name}}</a>
                 </p>
             </td>
             <td ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}"><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
+                <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}" rel='noopener noreferrer'><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
             </td>
             <td ng-show="data.registrationTableColumns.evaluation" class="registration-status-col">
                 {{reg.evaluationResultString}}
@@ -154,6 +159,7 @@ use MapasCulturais\i;
                     <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                 <?php endif; ?>
             </td>
+            <?php $this->applyTemplateHook('registration-list-item','end'); ?>
         </tr>
     </tbody>
     <tfoot>

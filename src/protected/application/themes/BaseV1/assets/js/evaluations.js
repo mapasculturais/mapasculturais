@@ -13,7 +13,7 @@ $(function(){
 
     $formContainer.find('.js-evaluation-submit').on('click', function(){
         var $button = $(this);
-        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.registration.id, 'status': 'evaluated'});
+        var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': 'evaluated'});
         var data = $form.serialize();
 
         if(!data){
@@ -23,10 +23,17 @@ $(function(){
         $.post(url, data, function(r){
             MapasCulturais.Messages.success(labels.saveMessage);
             if($button.hasClass('js-next')){
-                var $current = $("#registrations-list .registration-item.current");
+                // var $current = $("#registrations-list .registration-item.current");
+                var $current = $(".current");
                 var $next = $current.nextAll('.visible:first');
                 var $link = $next.find('a');
-                document.location = $link.attr('href');
+                //se o proximo registration da lista for igual o registration atual, pule 2 filhos 
+                if($current.find('a').attr('href') == $current.nextAll('.visible:first').find('a').attr('href')) {
+                    $link = $(".registration-item:eq(2)").find('a'); // pegue o segundo filho da lista nos <li>
+                }
+                if($link.attr('href')) {
+                    document.location = $link.attr('href');
+                }
             }
         }).fail(function(rs) {
             if(rs.responseJSON && rs.responseJSON.error){

@@ -69,7 +69,7 @@ class Notification extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $user;
@@ -79,7 +79,7 @@ class Notification extends \MapasCulturais\Entity{
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Request")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="request_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $request;

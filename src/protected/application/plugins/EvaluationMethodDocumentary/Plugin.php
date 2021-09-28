@@ -4,6 +4,7 @@ namespace EvaluationMethodDocumentary;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Registration;
 
 const STATUS_INVALID = 'invalid';
 const STATUS_VALID = 'valid';
@@ -59,8 +60,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     function enqueueScriptsAndStyles() {
         $app = App::i();
 
+        $app->view->enqueueScript('app', 'documentary-evaluation', 'js/ng.evaluationMethod.documentary.js', ['entity.module.opportunity']);
         $app->view->enqueueScript('app', 'documentary-evaluation-form', 'js/evaluation-form--documentary.js', ['entity.module.opportunity']);
         $app->view->enqueueStyle('app', 'documentary-evaluation-method', 'css/documentary-evaluation-method.css');
+        
+        $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.documentary';
     }
 
     public function _init() {
@@ -140,6 +144,128 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
             $sections = $result;
         });
+
+        $app->hook('POST(opportunity.applyEvaluationsDocumentary)', function() {
+            $this->requireAuthentication();
+
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
+            ini_set('memory_limit', '-1');
+    
+            $app = App::i();
+    
+            $opp = $this->requestedEntity;
+    
+            $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
+    
+            if($type != 'documentary') {
+                $this->errorJson(i::__('Somente para avaliações documentais'), 400);
+                die;
+            }
+
+            if (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,2,3,8,10])) {
+                $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
+                die;
+            }
+            $new_status = intval($this->data['to']);
+            
+            $apply_status = $this->data['status'] ?? false;
+            if ($apply_status == 'all') {
+                $status = 'r.status > 0';
+            } else {
+                $status = 'r.status = 1';
+            }
+    
+            $opp->checkPermission('@control');
+
+            // pesquise todas as registrations da opportunity que esta vindo na request
+            $dql = "
+            SELECT 
+                r.id
+            FROM
+                MapasCulturais\Entities\Registration r
+            WHERE 
+                r.opportunity = :opportunity_id AND
+                r.consolidatedResult = :consolidated_result AND
+                r.status <> $new_status AND
+                $status
+            ";
+            $query = $app->em->createQuery($dql);
+        
+            $params = [
+                'opportunity_id' => $opp->id,
+                'consolidated_result' => $this->data['from']
+            ];
+    
+            $query->setParameters($params);
+    
+            $registrations = $query->getScalarResult();
+
+            $count = 0;
+            $total = count($registrations);
+            
+            if ($total > 0) {
+                $opp->enqueueToPCacheRecreation();
+            }
+            // faça um foreach em cada registration e pegue as suas avaliações
+            foreach ($registrations as $reg) {
+                $count++;
+                $registration = $app->repo('Registration')->find($reg['id']);
+                $registration->__skipQueuingPCacheRecreation = true;
+
+                $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
+                switch ($new_status) {
+                    case Registration::STATUS_DRAFT:
+                        $registration->setStatusToDraft();
+                    break;
+                    case Registration::STATUS_INVALID:
+                        $registration->setStatusToInvalid();
+                    break;
+                    case Registration::STATUS_NOTAPPROVED:
+                        $registration->setStatusToNotApproved();
+                    break;
+                    case Registration::STATUS_WAITLIST:
+                        $registration->setStatusToWaitlist();
+                    break;
+                    case Registration::STATUS_APPROVED:
+                        $registration->setStatusToApproved();
+                    break;
+                    default:
+                        $registration->_setStatusTo($new_status);
+                    
+                }
+                $app->disableAccessControl();
+                $registration->save(true);
+                $app->enableAccessControl();
+            }
+
+
+    
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
+    
+        });
+
+        $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app) {
+            $opportunity = $this->controller->requestedEntity;
+            
+            if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'documentary') {
+                return;
+            }
+
+            $consolidated_results = $app->em->getConnection()->fetchAll("
+                SELECT 
+                    consolidated_result evaluation,
+                    COUNT(*) as num
+                FROM 
+                    registration
+                WHERE 
+                    opportunity_id = :opportunity AND
+                    status > 0 
+                GROUP BY consolidated_result
+                ORDER BY num DESC", ['opportunity' => $opportunity->id]);
+            
+            $this->part('documentary--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
+        });
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration) {
@@ -188,7 +314,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             return i::__('Inválida');
         }
 
-        return '';
+        return $value ?: '';
 
     }
     

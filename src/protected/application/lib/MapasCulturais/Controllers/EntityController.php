@@ -2,6 +2,8 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\Entity;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Exceptions\WorkflowRequest;
 
 /**
@@ -27,6 +29,33 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
 
     protected $_requestedEntity = false;
+
+    static $changeStatusMap = [
+        Entity::STATUS_ENABLED => [
+            Entity::STATUS_ENABLED => null,
+            Entity::STATUS_DRAFT => 'unpublish',
+            Entity::STATUS_TRASH => 'delete',
+            Entity::STATUS_ARCHIVED => 'archive'
+        ],
+        Entity::STATUS_DRAFT => [
+            Entity::STATUS_ENABLED => 'publish',
+            Entity::STATUS_DRAFT => null,
+            Entity::STATUS_TRASH => 'delete',
+            Entity::STATUS_ARCHIVED => 'archive'
+        ],
+        Entity::STATUS_TRASH => [
+            Entity::STATUS_ENABLED => 'undelete',
+            Entity::STATUS_DRAFT => 'undelete',
+            Entity::STATUS_TRASH => null,
+            Entity::STATUS_ARCHIVED => 'archive'
+        ],
+        Entity::STATUS_ARCHIVED => [
+            Entity::STATUS_ENABLED => 'publish',
+            Entity::STATUS_DRAFT => 'unpublish',
+            Entity::STATUS_TRASH => 'delete',
+            Entity::STATUS_ARCHIVED => null
+        ]
+    ];
 
 
     /**
@@ -134,12 +163,14 @@ abstract class EntityController extends \MapasCulturais\Controller{
         return $this->getFields();
     }
 
-    protected function _finishRequest($entity, $isAjax = false){
-        $app = App::i();
-
+    protected function _finishRequest($entity, $isAjax = false, $function = null){
         $status = 200;
         try{
-            $entity->save(true);
+            if($function){
+                $entity->$function(true);
+            } else {
+                $entity->save(true);
+            }
         }  catch (WorkflowRequest $e){
             $status = 202;
             $reqs = [];
@@ -149,7 +180,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
             header('CreatedRequests: ' . json_encode($reqs));
         }
-
+        
         $this->finish($entity, $status, $isAjax);
     }
 
@@ -158,11 +189,49 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         if($app->request->isAjax() || $isAjax || $app->request->headers('MapasSDK-REQUEST')){
             $this->json($data, $status);
+
         }elseif(isset($this->getData['redirectTo'])){
             $app->redirect($this->getData['redirectTo'], $status);
         }else{
             $app->redirect($app->request()->getReferer(), $status);
         }
+    }
+
+    /**
+     * Execute a API Query
+     *
+     * @param array $api_params
+     * @param array $options
+     * @return array
+     */
+    public function apiQuery(array $api_params, array $options = []){        
+        $app = App::i();
+        $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $counting = key_exists('@count', $api_params);
+        if($counting){
+            unset($api_params['@count']);
+        }
+
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$api_params]);
+        $query = new ApiQuery($this->entityClassName, $api_params);
+        
+        if($counting){
+            $result = $query->getCountResult();
+        } elseif( $findOne ) {
+            $result = $query->getFindOneResult();
+        } else {
+            $result = $query->getFindResult();
+            if(isset($api_params['@page']) || isset($api_params['@offset']) || isset($api_params['@limit'])){
+                $count = $query->getCountResult();
+            } else {
+                $count = count($result);
+            }
+            $this->apiAddHeaderMetadata($api_params, $result, $count);
+        }
+
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result" , [&$api_params,  &$result]);
+        
+        return $result;
     }
 
     // ============= ACTIONS =============== //
@@ -226,7 +295,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $this->_finishRequest($entity);
+            $this->_finishRequest($entity, true);
         }
     }
 
@@ -371,15 +440,21 @@ abstract class EntityController extends \MapasCulturais\Controller{
         if(!$entity)
             $app->pass();
 
+        $function = null;
+
         //Atribui a propriedade editada
         foreach($data as $field => $value){
+            if($field == 'status'){
+                $function = isset(self::$changeStatusMap[$entity->status][(int)$value]) ? self::$changeStatusMap[$entity->status][(int)$value] : null;
+                continue;
+            }
             $entity->$field = $value;
         }
 
         if($errors = $entity->validationErrors){
             $this->errorJson($errors);
         }else{
-            $this->_finishRequest($entity);
+            $this->_finishRequest($entity, true, $function);
         }
     }
 
@@ -405,9 +480,15 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         if(!$entity)
             $app->pass();
+        
+        $function = null;
 
         //Atribui a propriedade editada
         foreach($data as $field => $value){
+            if($field == 'status'){
+                $function = isset(self::$changeStatusMap[$entity->status][(int)$value]) ? self::$changeStatusMap[$entity->status][(int)$value] : null;
+                continue;
+            }
             $entity->$field = $value;
         }
 
@@ -424,7 +505,71 @@ abstract class EntityController extends \MapasCulturais\Controller{
             }
         }
 
-        $this->_finishRequest($entity);
+        $this->_finishRequest($entity, true, $function);
+    }
+
+    /**
+     * Validates $data for $entity
+     *
+     * @param Entity $entity
+     * @param array $data
+     * @return array validation errors
+     */
+    function validate(Entity $entity, array $data) {
+        foreach ($data as $field => $value) {
+            $entity->$field = $value;
+        }
+        $errors = $entity->validationErrors;
+        return $errors;
+    }
+
+    /**
+     * Validates properties for entity
+     *
+     * @return void
+     */
+    function POST_validateProperties() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+        
+        if ($_errors = $this->validate($entity, $this->postData)) {
+            $errors = [];
+            foreach($this->postData as $field => $value){
+                if(key_exists($field, $_errors)){
+                    $errors[$field] = $_errors[$field];
+                }
+            }
+
+            if($errors){
+                $this->errorJson($errors);
+            }
+        } 
+        
+        $this->json(true);
+    }
+
+    /**
+     * Validates data for entity
+     */
+    function POST_validateEntity() {
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            App::i()->pass();
+        }
+
+        $entity->checkPermission('validate');
+
+        if ($errors = $this->validate($entity, $this->postData)) {
+            $this->errorJson($errors);
+        } else {
+            $this->json(true);
+        }
     }
 
     /**

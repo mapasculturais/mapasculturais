@@ -22,6 +22,7 @@ if($space && $img_url = $this->getEntityFeaturedImageUrl($space)){
 $url_search_spaces = $this->searchSpacesUrl;
 ?>
 <article id="home-spaces" class="js-page-menu-item home-entity clearfix">
+    <?php $this->applyTemplateHook('home-spaces','begin'); ?>
     <div class="box">
         <h1><span class="icon icon-space"></span> <?php $this->dict('entities: Spaces') ?></h1>
         <div class="clearfix">
@@ -37,8 +38,8 @@ $url_search_spaces = $this->searchSpacesUrl;
         <p><?php echo $app->view->renderMarkdown($this->dict('home: spaces',false)); ?></p>
         <h4><?php \MapasCulturais\i::_e("Encontre ");?><?php $this->dict('entities: spaces') ?> <?php \MapasCulturais\i::_e(" por ");?></h4>
         <ul class="abas clearfix">
-            <li class="active"><a href="#space-terms"><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
-            <li><a href="#space-types"><?php \MapasCulturais\i::_e("Tipo");?></a></li>
+            <li class="active"><a href="#space-terms" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Área de atuação");?></a></li>
+            <li><a href="#space-types" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Tipo");?></a></li>
         </ul>
         <div id="space-terms" class="tag-box">
             <div>
@@ -71,4 +72,5 @@ $url_search_spaces = $this->searchSpacesUrl;
         <a class="btn btn-accent btn-large add" href="<?php echo $app->createUrl('space', 'create') ?>"><?php \MapasCulturais\i::_e("Adicionar ");?><?php $this->dict('entities: space') ?></a>
         <a class="btn btn-accent btn-large" href="<?php echo $url_search_spaces ?>"><?php \MapasCulturais\i::_e("Ver tudo");?></a>
     </div>
+    <?php $this->applyTemplateHook('home-spaces','end'); ?>
 </article>

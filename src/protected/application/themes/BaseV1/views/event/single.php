@@ -38,8 +38,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php ob_start(); /* Event Occurrence Item Template - Mustache */ ?>
     <div id="event-occurrence-{{id}}" class="regra clearfix" data-item-id="{{id}}">
         <header class="clearfix">
-            <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
+            <h3 class="alignleft"><a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a></h3>
+            <a class="toggle-mapa" href="#" rel='noopener noreferrer'><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
         </header>
         {{#pending}}<div class="alert warning pending"><?php \MapasCulturais\i::_e("Aguardando confirmação");?></div>{{/pending}}
         <div id="occurrence-map-{{id}}" class="mapa js-map" data-lat="{{space.location.latitude}}" data-lng="{{space.location.longitude}}"></div>
@@ -78,8 +78,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php ob_start(); /* Event Occurrence Item Template VIEW - Mustache */ ?>
     <div class="regra clearfix">
         <header class="clearfix">
-            <h3 class="alignleft"><a href="{{space.singleUrl}}">{{space.name}}</a></h3>
-            <a class="toggle-mapa" href="#"><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
+            <h3 class="alignleft"><a href="{{space.singleUrl}}" rel='noopener noreferrer'>{{space.name}}</a></h3>
+            <a class="toggle-mapa" href="#" rel='noopener noreferrer'><span class="ver-mapa"><?php \MapasCulturais\i::_e("ver mapa");?></span><span class="ocultar-mapa"><?php \MapasCulturais\i::_e("ocultar mapa");?></span> <span class="icon icon-show-map"></span></a>
         </header>
         <div id="occurrence-map-{{space.id}}" class="mapa js-map" data-lat="{{location.latitude}}" data-lng="{{location.longitude}}"></div>
         <!-- .mapa -->
@@ -111,6 +111,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('header.status','after'); ?>
 
         <!--.header-image-->
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
@@ -118,7 +119,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <!--.avatar-->
             <div class="entity-type event-type">
                 <div class="icon icon-event"></div>
-                <a href="#"><?php \MapasCulturais\i::_e("Evento");?></a>
+                <a href="#" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Evento");?></a>
             </div>
             <!--.entity-type-->
 
@@ -143,9 +144,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre"><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao"><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -157,7 +158,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
-                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
+                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
                 <p>
@@ -330,7 +331,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     <?php if($this->controller->action == 'create'): ?>
                         <span class="js-dialog-disabled" data-message="<?php \MapasCulturais\i::esc_attr_e("Para adicionar local e data, primeiro é preciso salvar o evento");?>"></span>
                     <?php else: ?>
-                        <div class="js-dialog-content"></div>
+                        <div class="js-dialog-content js-dialog-event-occurrence"></div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -369,9 +370,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 </article>
 <!--.main-content-->
 <div class="sidebar-left sidebar event">
-    <!-- Related Seals BEGIN -->
+    <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
+    
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
-    <!-- Related Seals END -->
 
     <?php if($this->isEditable()): ?>
         <div class="widget">
@@ -419,145 +420,33 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     </div>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
+
+    <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
 <div class="sidebar event sidebar-right">
+    <?php $this->applyTemplateHook('sidebar-right','begin'); ?>
+
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
             <p class="alert info"><?php \MapasCulturais\i::_e("Para adicionar arquivos para download ou links, primeiro é preciso salvar o evento");?>.<span class="close"></span></p>
         </div>
     <?php endif; ?>
 
-    <!-- Related Admin Agents BEGIN -->
-        <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
-    <!-- Related Admin Agents END -->
-
-    <!-- Related Agents BEGIN -->
+    <?php $this->part('related-admin-agents.php', array('entity'=>$entity)); ?>
+    
     <?php $this->part('related-agents.php', array('entity' => $entity)); ?>
-    <!-- Related Agents END -->
-
-
-    <!-- Downloads BEGIN -->
+    
     <?php $this->part('downloads.php', array('entity' => $entity)); ?>
-    <!-- Downloads END -->
-
-    <!-- Link List BEGIN -->
+    
     <?php $this->part('link-list.php', array('entity' => $entity)); ?>
-    <!-- Link List END -->
+    
+    <?php $this->part('history.php', array('entity' => $entity)); ?>
 
-    <!-- History BEGIN -->
-        <?php $this->part('history.php', array('entity' => $entity)); ?>
-    <!-- History END -->
+    <?php $this->applyTemplateHook('sidebar-right','end'); ?>
 </div>
 <?php if ($this->isEditable()): ?>
-<script id="event-occurrence-form" type="text/html" class="js-mustache-template">
-    <form action="{{formAction}}" method="POST">
-        <div class="alert danger hidden"></div>
-        <input type="hidden" name="eventId" value="<?php echo $entity->id; ?>"/>
-        <input id="espaco-do-evento" type="hidden" name="spaceId" value="{{space.id}}">
 
-        <div class="clearfix js-space">
-            <label><?php $this->dict('entities: Space') ?>:</label><br>
-            <span class="js-search-occurrence-space"
-                data-field-name='spaceId'
-                data-emptytext="Selecione <?php $this->dict('entities: a space') ?>"
-                data-search-box-width="400px"
-                data-search-box-placeholder="<?php \MapasCulturais\i::esc_attr_e('Selecione'); ?> <?php $this->dict('entities: a space') ?>"
-                data-entity-controller="space"
-                data-search-result-template="#agent-search-result-template"
-                data-selection-template="#agent-response-template"
-                data-no-result-template="#agent-response-no-results-template"
-                data-selection-format="chooseSpace"
-                data-auto-open="true"
-                data-value="{{space.id}}"
-                title="<?php \MapasCulturais\i::esc_attr_e('Selecione'); ?> <?php $this->dict('entities: a space') ?>"
-                >{{space.name}}</span>
-        </div>
-
-        <!--mostrar se não encontrar o <?php $this->dict('entities: space') ?> cadastrado
-        <div class="alert warning">
-            Aparentemente o <?php $this->dict('entities: space') ?> procurado ainda não se encontra registrado em nosso sistema. Tente uma nova busca ou antes de continuar, adicione um <?php $this->dict('entities: new space') ?> clicando no botão abaixo.
-        </div>
-        <a class="btn btn-default add" href="#">Adicionar <?php $this->dict('entities: space') ?></a>-->
-        <div class="clearfix">
-            <div class="grupo-de-campos">
-                <label for="horario-de-inicio"><?php \MapasCulturais\i::_e("Horário inicial");?>:</label><br>
-                <input id="horario-de-inicio" class="horario-da-ocorrencia js-event-time" type="text" name="startsAt" placeholder="00:00" value="{{rule.startsAt}}">
-            </div>
-            <div class="grupo-de-campos">
-                <label for="duracao"><?php \MapasCulturais\i::_e("Duração");?>:</label><br>
-                <input id="duracao" class="horario-da-ocorrencia js-event-duration" type="text" name="duration" placeholder="minutos"  value="{{rule.duration}}">
-            </div>
-            <div class="grupo-de-campos">
-                <label for="horario-de-fim"><?php \MapasCulturais\i::_e("Horário final");?>:</label><br>
-                <input id="horario-de-fim" class="horario-da-ocorrencia js-event-end-time" type="text" name="endsAt" placeholder="00:00" value="{{rule.endsAt}}">
-            </div>
-            <div class="grupo-de-campos">
-                <span class="label"><?php \MapasCulturais\i::_e("Frequência");?>:</span><br>
-                    <select name="frequency" class="js-select-frequency">
-                        <option value="once" {{#rule.freq_once}}selected="selected"{{/rule.freq_once}}> <?php \MapasCulturais\i::_e("uma vez");?></option>
-                        <option value="daily" {{#rule.freq_daily}}selected="selected"{{/rule.freq_daily}}> <?php \MapasCulturais\i::_e("todos os dias");?></option>
-                        <option value="weekly" {{#rule.freq_weekly}}selected="selected"{{/rule.freq_weekly}}> <?php \MapasCulturais\i::_e("semanal");?></option>
-                        <!-- for now we will not support monthly recurrences.
-                        <option value="monthly" {{#rule.freq_monthly}}selected="selected"{{/rule.freq_monthly}}>mensal</option>
-                        -->
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix">
-            <div class="grupo-de-campos">
-                <label for="data-de-inicio"><?php \MapasCulturais\i::_e("Data inicial");?>:</label><br>
-                <input id="starts-on-{{id}}-visible" type="text" class="js-event-dates js-start-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_startsOn}}">
-                <input id="starts-on-{{id}}" name="startsOn" type="hidden" data-alt-field="#starts-on-{{id}}-visible" value="{{rule.startsOn}}"/>
-            </div>
-            <div class="grupo-de-campos js-freq-hide js-daily js-weekly js-monthly">
-                <label for="data-de-fim"><?php \MapasCulturais\i::_e("Data final");?>:</label><br>
-                <input id="until-{{id}}-visible" type="text" class="js-event-dates js-end-date data-da-ocorrencia" readonly="readonly" placeholder="00/00/0000" value="{{rule.screen_until}}">
-                <input id="until-{{id}}" name="until" type="hidden" value="{{rule.until}}"/>
-                <!--(Se repetir mostra o campo de data final)-->
-            </div>
-            <div class="alignleft js-freq-hide js-weekly">
-                <span class="label"><?php \MapasCulturais\i::_e("Repete");?>:</span><br>
-                <div>
-                    <?php $weekDaysInitials = explode('|', \MapasCulturais\i::__('D|S|T|Q|Q|S|S')); ?>
-                    <label><input type="checkbox" name="day[0]" {{#rule.day.0}}checked="checked"{{/rule.day.0}}/> <?php echo $weekDaysInitials[0];?> </label>
-                    <label><input type="checkbox" name="day[1]" {{#rule.day.1}}checked="checked"{{/rule.day.1}}/> <?php echo $weekDaysInitials[1];?> </label>
-                    <label><input type="checkbox" name="day[2]" {{#rule.day.2}}checked="checked"{{/rule.day.2}}/> <?php echo $weekDaysInitials[2];?> </label>
-                    <label><input type="checkbox" name="day[3]" {{#rule.day.3}}checked="checked"{{/rule.day.3}}/> <?php echo $weekDaysInitials[3];?> </label>
-                    <label><input type="checkbox" name="day[4]" {{#rule.day.4}}checked="checked"{{/rule.day.4}}/> <?php echo $weekDaysInitials[4];?> </label>
-                    <label><input type="checkbox" name="day[5]" {{#rule.day.5}}checked="checked"{{/rule.day.5}}/> <?php echo $weekDaysInitials[5];?> </label>
-                    <label><input type="checkbox" name="day[6]" {{#rule.day.6}}checked="checked"{{/rule.day.6}}/> <?php echo $weekDaysInitials[6];?> </label>
-                </div>
-                <!-- for now we will not support monthly recurrences.
-                <div>
-                    <label style="display:inline;"><input type="radio" name="monthly" value="month" {{#rule.monthly_month}}checked="checked"{{/rule.monthly_month}}/> dia do mês </label>
-                    <label style="display:inline;"><input type="radio" name="monthly" value="week" {{#rule.monthly_week}}checked="checked"{{/rule.monthly_week}}/> dia da semana </label>
-                </div>
-                -->
-            </div>
-        </div>
-        <div class="clearfix">
-            <div class="grupo-de-campos descricao-horario-legivel">
-                <label for="description"><?php \MapasCulturais\i::_e("Descrição legível do horário");?>:</label>
-                <p class="form-help"><?php \MapasCulturais\i::_e("Você pode inserir uma descrição própria ou inserir a descrição gerada automaticamente clicando no botão ao lado");?>.</p>
-                <div class="grupo-descricao-automatica clearfix">
-                    <p id="descricao-automatica" class="alert automatic"><?php \MapasCulturais\i::_e("Descrição gerada pelo sistema automaticamente");?>.</p>
-                    <a class="btn btn-default insert"></a>
-                </div>
-                <input type="text" name="description" value="{{rule.description}}" placeholder="<?php \MapasCulturais\i::esc_attr_e("Coloque neste campo somente informações sobre a data e hora desta ocorrência do evento.");?>">
-            </div>
-        </div>
-        <div class="clearfix">
-            <div class="grupo-de-campos" >
-                <label for="price"><?php \MapasCulturais\i::_e("Preço");?>:</label><br>
-                <input type="text" name="price" value="{{rule.price}}">
-            </div>
-        </div>
-        <footer class="clearfix">
-            <input type="submit" value="<?php \MapasCulturais\i::esc_attr_e("Enviar");?>">
-        </footer>
-    </form>
-</script>
+    <?php $this->part('modal/event-occurrence-form', array('entity' => $entity)); ?>
 <?php endif; ?>
 <script type="text/html" id="event-occurrence-item" class="js-mustache-template">
     <?php echo $eventOccurrenceItemTemplate; ?>

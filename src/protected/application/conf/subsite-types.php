@@ -218,7 +218,6 @@ return array(
                 24 => 'Biblioteca Nacional',
                 21 => 'Biblioteca Privada',
                 20 => 'Biblioteca Pública',
-                25 => 'Biblioteca Universitária',
                 108 => 'Casa de espetáculo',
                 117 => 'Casa do Patrimônio',
                 116 => 'Centro Comunitário',

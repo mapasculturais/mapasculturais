@@ -100,7 +100,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade="persist")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $event;
@@ -117,7 +117,7 @@ class EventOccurrence extends \MapasCulturais\Entity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $space;
@@ -206,6 +206,11 @@ class EventOccurrence extends \MapasCulturais\Entity
         } else {
             return $value;
         }
+    }
+
+    function setStarts($date){
+        $this->setStartsOn($date);
+        $this->setStartsAt($date);
     }
 
     function setStartsOn($value) {
@@ -420,7 +425,7 @@ class EventOccurrence extends \MapasCulturais\Entity
             return true;
         }
 
-        return $this->space->canUser('modify', $user) && $this->event->canUser('modify', $user);
+        return ( $this->space->public || $this->space->canUser('modify', $user) ) && $this->event->canUser('modify', $user);
     }
 
     function save($flush = false) {

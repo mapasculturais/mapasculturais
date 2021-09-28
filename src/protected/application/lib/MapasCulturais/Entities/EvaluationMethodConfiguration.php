@@ -48,7 +48,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * @var \MapasCulturais\Entities\Opportunity
      *
      * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethodConfiguration", cascade="persist" )
-     * @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $opportunity;
 
@@ -56,7 +56,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade="remove", orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__agentRelations;
 
@@ -121,6 +121,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     function getOwner() {
         return $this->opportunity;
+    }
+
+    protected function canUserCreate($user){
+        return $this->opportunity->canUser('modify', $user);
     }
 
     protected function canUserModify($user){

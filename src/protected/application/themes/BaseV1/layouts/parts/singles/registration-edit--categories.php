@@ -1,10 +1,24 @@
 <?php if($opportunity->registrationCategories): ?>
-    <div class="registration-fieldset">
-        <!-- selecionar categoria -->
-        <h4><?php echo $opportunity->registrationCategTitle ?></h4>
-        <p class="registration-help"><?php echo $opportunity->registrationCategDescription ?></p>
-        <p>
-            <span class='js-editable-registrationCategory' data-original-title="<?php \MapasCulturais\i::esc_attr_e("Opção");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione uma opção");?>" data-value="<?php echo htmlentities($entity->category) ?>"><?php echo $entity->category ?></span>
-        </p>
+    <div class="registration-fieldset"  ng-controller="RegistrationFieldsController">
+        <div id="category">
+            <span class="label"> 
+                <?php echo $opportunity->registrationCategTitle ?>
+                <!-- TODO: required Category -->
+                <!-- <span ng-if="requiredField(field) ">obrigatório</span>   -->
+            </span>
+            
+            <div class="attachment-description"><?php echo $opportunity->registrationCategDescription ?></div>
+            
+            <div>
+            <!-- TODO: ng-required="requiredField(field)" -->
+            <!-- foi trocado ng-blur para ng-change, para dar o trigger na função sempre que uma nova opção no select for escolhida -->
+            <select  ng-model="entity.category" ng-change="saveField({fieldName:'category'}, entity.category)" >
+                <option ng-repeat="option in registrationCategories" value="{{::option.indexOf(':') >= 0 ? option.split(':')[0] : option}}">{{::option.indexOf(':') >= 0 ? option.split(':')[1] : option}}</option>
+            </select>
+        </div>
     </div>
+
+    </div>
+
+    
 <?php endif; ?>

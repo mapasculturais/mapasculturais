@@ -87,9 +87,9 @@ class WorkflowTest extends MapasCulturais_TestCase{
         foreach($this->entities as $class => $e){
             $this->resetTransactions();
 
-            $user1 = $this->getUser('normal',0);
+            $user1 = $this->getUser('admin',0);
             $user2 = $this->getUser('normal',1);
-            $user3 = $this->getUser('staff',0);
+            $user3 = $this->getUser('normal',0);
 
             $entities = $user1->$e;
             $entity = $entities[0];
@@ -171,18 +171,18 @@ class WorkflowTest extends MapasCulturais_TestCase{
     //  Who can Approve: users that control the ORIGIN entity owner agent
     //  Who can Reject: users that can create or approve the request
 
-    function testRequestChangeOwnershipRequest(){
-//        $this->app->enableWorkflow();
-    }
+//     function testRequestChangeOwnershipRequest(){
+//         $this->app->enableWorkflow();
+//     }
 
     // RequestChangeOwnership - Give
     //  Who can Create this Request: users that control the ORIGIN entity owner agent (@control)
     //  Who can Approve: users that control the DESTINATION agent
     //  Who can Reject: users that can create or approve the request
 
-    function testRequestChangeOwnershipGive(){
-//        $this->app->enableWorkflow();
-    }
+    // function testRequestChangeOwnershipGive(){
+    //    $this->app->enableWorkflow();
+    // }
 
 
     //REQUEST TYPE: RequestChildEntity
@@ -194,9 +194,9 @@ class WorkflowTest extends MapasCulturais_TestCase{
     //Who can Approve: users that control the DESTINATION entity (parent space or project)
     //Who can Reject: users that can create or approve the request
 
-    function testRequestChildEntity(){
-//        $this->app->enableWorkflow();
-    }
+    // function testRequestChildEntity(){
+    //    $this->app->enableWorkflow();
+    // }
 
     //REQUEST TYPE: RequestAgentRelation
 
@@ -207,9 +207,9 @@ class WorkflowTest extends MapasCulturais_TestCase{
     //Who can Approve: users that control the DESTINATION Agent
     //Who can Reject: users that can create or approve the request
 
-    function testRequestAgentRelation(){
-//        $this->app->enableWorkflow();
-    }
+    // function testRequestAgentRelation(){
+    //    $this->app->enableWorkflow();
+    // }
 
     
 

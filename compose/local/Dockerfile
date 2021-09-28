@@ -3,14 +3,16 @@ FROM php:7.2-cli
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl libcurl4-gnutls-dev locales imagemagick libmagickcore-dev libmagickwand-dev zip \
         ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
-        libfreetype6-dev libjpeg62-turbo-dev libpng-dev
+        libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs npm
 
-# Install uglify
+RUN rm -rf /var/lib/apt/lists
+
+# Install uglify and terser
 RUN npm install -g \
-        uglify-js@2.2.0 \
+        terser \
         uglifycss \
         autoprefixer
 
@@ -39,9 +41,22 @@ RUN yes | pecl install xdebug \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
+
+# Install GD
+RUN docker-php-ext-install -j$(nproc) iconv \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd
+    
 # Install composer
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer.phar
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --version=1.10.16 --install-dir=/usr/local/bin && \
+    rm composer-setup.php
+
+# Install redis
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
+
 
 # Copy source
 COPY src/index.php /var/www/html/index.php
@@ -70,7 +85,10 @@ RUN ln -s /var/www/html /var/www/src
 COPY src/router.php /var/www/html/router.php
 RUN echo "php -S 0.0.0.0:8001 -t /var/www/html /var/www/html/router.php" > /mapas.sh && chmod +x /mapas.sh
 
+COPY version.txt /var/www/version.txt
+
 COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
+COPY compose/jobs-cron.sh /jobs-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 

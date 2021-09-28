@@ -8,7 +8,7 @@ class Excel extends \MapasCulturais\ApiOutputs\Html{
         $response = $app->response();
         //$response['Content-Encoding'] = 'UTF-8';
         $response['Content-Type'] = 'application/force-download';
-        $response['Content-Disposition'] ='attachment; filename=' . $app->config['export.excelName'];
+        $response['Content-Disposition'] ='attachment; filename="mapas-culturais-dados-exportados.xls"';
         $response['Pragma'] ='no-cache';
 
         return 'application/vnd.ms-excel; charset=UTF-8';
