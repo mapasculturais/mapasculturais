@@ -1009,7 +1009,8 @@ class App extends \Slim\Slim{
                 $group->registerType($type);
                 $this->registerEntityType($type);
 
-                $type_meta = $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+                $type_meta = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+                $type_config['metadata'] = $type_meta;
 
                 // add group metadata to space type
                 if(key_exists('metadata', $group_config))
@@ -1036,7 +1037,9 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+
+            $type_meta = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_config['metadata'] = $type_meta;
 
             // add agents metadata definition to agent type
             foreach($agents_meta as $meta_key => $meta_config)
@@ -1057,8 +1060,10 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
 
+            $type_meta = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_config['metadata'] = $type_meta;
+            
             // add events metadata definition to event type
             foreach($event_meta as $meta_key => $meta_config)
                 if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
@@ -1077,7 +1082,8 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_meta = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_config['metadata'] = $type_meta;
 
             // add projects metadata definition to project type
             foreach($projects_meta as $meta_key => $meta_config)
@@ -1097,7 +1103,8 @@ class App extends \Slim\Slim{
             $type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
 
             $this->registerEntityType($type);
-            $type_config['metadata'] = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_meta = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_config['metadata'] = $type_meta;
 
             // add opportunities metadata definition to opportunity type
             foreach($opportunities_meta as $meta_key => $meta_config)
@@ -1126,6 +1133,9 @@ class App extends \Slim\Slim{
         	$type = new Definitions\EntityType($entity_class, $type_id, $type_config['name']);
         	$this->registerEntityType($type);
 
+            $type_meta = key_exists('metadata', $type_config) && is_array($type_config['metadata']) ? $type_config['metadata'] : [];
+            $type_config['metadata'] = $type_meta;
+            
         	// add projects metadata definition to project type
             foreach($seals_meta as $meta_key => $meta_config)
                 if(!key_exists($meta_key, $type_meta) || key_exists($meta_key, $type_meta) && is_null($type_config['metadata'][$meta_key]))
