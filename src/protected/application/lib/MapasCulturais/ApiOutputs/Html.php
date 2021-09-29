@@ -2,7 +2,7 @@
 namespace MapasCulturais\ApiOutputs;
 use \MapasCulturais\App;
 use MapasCulturais;
-
+use mysql_xdevapi\DatabaseObject;
 
 
 class Html extends \MapasCulturais\ApiOutput{
@@ -65,13 +65,13 @@ class Html extends \MapasCulturais\ApiOutput{
                 $translated = \MapasCulturais\i::__('Id');
             break;
             case 'name':
-                $translated = \MapasCulturais\i::__('Nome');
+                $translated = \MapasCulturais\i::__('Nome Ponto/Pontão de Cultura');
             break;
             case 'singleUrl':
                 $translated = \MapasCulturais\i::__('Link');
             break;
             case 'type':
-                $translated = \MapasCulturais\i::__('Tipo');
+                $translated = \MapasCulturais\i::__('Tipo de Agente');
             break;
             case 'shortDescription':
                 $translated = \MapasCulturais\i::__('Descrição Curta');
@@ -95,7 +95,7 @@ class Html extends \MapasCulturais\ApiOutput{
                 $translated = \MapasCulturais\i::__('Tags');
             break;
             case 'area':
-                $translated = \MapasCulturais\i::__('Áreas');
+                $translated = \MapasCulturais\i::__('Atuação');
             break;
             case 'linguagem':
                 $translated = \MapasCulturais\i::__('Linguagens');
@@ -118,9 +118,6 @@ class Html extends \MapasCulturais\ApiOutput{
             case 'event':
                 $translated = \MapasCulturais\i::__('Evento');
             break;
-            case 'project':
-                $translated = \MapasCulturais\i::__('Projeto');
-            break;
             case 'seal':
                 $translated = \MapasCulturais\i::__('Selo');
             break;
@@ -131,7 +128,7 @@ class Html extends \MapasCulturais\ApiOutput{
                 $translated = \MapasCulturais\i::__('Publicado por');
             break;
             case 'parent':
-                $translated = \MapasCulturais\i::__('Entidade pai');
+                $translated = \MapasCulturais\i::__('Nome Entidade/Coletivo Cultural');
             break;
             case 'createTimestamp':
                 $translated = \MapasCulturais\i::__('Data de Criação');
@@ -145,6 +142,27 @@ class Html extends \MapasCulturais\ApiOutput{
             case 'isVerificationSeal':
                 $translated = \MapasCulturais\i::__('Selo Verificador');
             break;
+            case 'rcv_tipo':
+                $translated = \MapasCulturais\i::__('Tipo de Agente');
+            break;
+            case 'cnpj':
+                $translated = \MapasCulturais\i::__('CNPJ (caso entidade)');
+            break;
+            case 'emailPublico':
+                $translated = \MapasCulturais\i::__('Email Entidade/ Coletivo Cultural');
+            break;
+            case 'telefonePublico':
+                $translated = \MapasCulturais\i::__('Telefone Entidade/ Coletivo Cultural');
+            break;
+            case 'responsavel_cpf':
+                $translated = \MapasCulturais\i::__('CPF Responsável');
+            break;
+            case 'youtube':
+                $translated = \MapasCulturais\i::__('Youtube');
+            break;
+            case 'location':
+                $translated = \MapasCulturais\i::__('Localização');
+                break;
         }
 
         return $translated;
@@ -170,29 +188,22 @@ class Html extends \MapasCulturais\ApiOutput{
      */
     protected function printDaysOfEvent($field, $occurrence){
         if($occurrence->rule->frequency === 'daily'){
-            
             $inicio = strtotime($occurrence->rule->startsOn);
             $fim = strtotime($occurrence->rule->until);
-            
             /**
              * Em caso de repetição diária, iteramos em todos os dias
              * e checamos se o dia da semana atual ($field) existe em qq uma das repetições.
              * Se sim, break. Ou seja, Esse loop vai iterar no máximo 7 vezes.
-             */ 
-            
+             */
             echo '<td>';
             while ($inicio <= $fim) {
-                
                 $dayOfWeek = \date('w', $inicio);
 
-                if($this->diasSemana[$dayOfWeek] === $field){ 
-                    
+                if($this->diasSemana[$dayOfWeek] === $field){
                     echo \MapasCulturais\i::__('Sim');
                     break;
                 }
-                  
                 $inicio += 24 * 60 * 60;
-                
             }
             echo '</td>';
 
@@ -340,12 +351,7 @@ class Html extends \MapasCulturais\ApiOutput{
      * @return string
      */
     protected function convertToUTF16($text){
-        
-        if(mb_check_encoding($text, 'UTF-8')){
-            return $text;
-        }
-        
-        return mb_convert_encoding($text,'utf-16','utf-8');
+        return mb_convert_encoding($text,'utf-8','utf-8');
     }
 
     /**
@@ -360,18 +366,18 @@ class Html extends \MapasCulturais\ApiOutput{
         if(in_array('space', array_keys($app->view->controller->getData))){
             $spaceId = $app->view->controller->getData['space'];
             preg_match_all('!\d+!', $spaceId, $matches);
-            
+
             return implode($matches[0]);
         }
-        
+
         return false;
     }
 
     /**
      * Filtra as ocorrências apenas pelas quais ocorrem no espaço selecionado
-     * 
+     *
      * Isto é útil para quando estamos filtrando eventos por um espaço e não queremos que apareçam suas ocorrências em outros espaços
-     * 
+     *
      * @param string $space_id id do espaço
      * @param array $data array com os eventos
      * @return array
@@ -391,11 +397,44 @@ class Html extends \MapasCulturais\ApiOutput{
         return $data;
     }
 
+    protected function elementosArray(){
+        return  array(
+            'id', 'name', 'parent', 'location', 'shortDescription', 'createTimestamp', 'updateTimestamp',
+            'rcv_tipo', 'type', 'pais',  'En_Estado', 'En_Municipio','cep', 'endereco', 'cnpj', 'responsavel_nome',
+            'responsavel_cpf' ,'terms', 'emailPublico', 'telefonePublico',
+            'site', 'facebook', 'twitter', 'googleplus', 'instagram', 'youtube'
+        );
+    }
+
+    protected function arrayTerms(){
+
+        return  array(
+            'acao_estruturante', 'area', 'publico_participante', 'area_atuacao'
+        );
+    }
+
+
+    public function ordenaArrayTabela ($data, $array = false) {
+        $arrayOrdenado = array();
+        $ordemArray =  $this->elementosArray();
+        $ordemTerms =  $this->arrayTerms();
+        foreach($ordemArray as $key => $dado):
+            if($dado == 'terms'){
+                foreach($ordemTerms as $term):
+                    $arrayOrdenado[$dado][$term] = $data[$dado][$term];
+                endforeach;
+            }else{
+                $arrayOrdenado[$dado] = $data[$dado];
+            }
+        endforeach;
+        return $arrayOrdenado;
+    }
+
     protected function printArrayTable($data){
     	$app = App::i();
     	$entity = $app->view->controller->entityClassName;
     	$label = $entity::getPropertiesLabels();
-        $first = true; 
+        $first = true;
         $isRequestFromAgenda = $this->getSpaceSingleAgendaRequest();
 
         if($isRequestFromAgenda){
@@ -403,10 +442,12 @@ class Html extends \MapasCulturais\ApiOutput{
         }
         
         ?>
+        <!-- Tabela do excel -->
         <table border="1">
         <?php foreach($data as $item):
-            $item = (array) $item;
-            unset($item['rules']);
+        $item = $this->ordenaArrayTabela($item);
+        $item = (array) $item;
+        unset($item['rules']);
 
             if($first){
                 if($entity === 'MapasCulturais\Entities\Event'){
@@ -414,16 +455,15 @@ class Html extends \MapasCulturais\ApiOutput{
                 }else{
                     $first_item_keys = array_keys($item);
                 }
-            } 
-            
+            }
             $item = json_decode(json_encode($item));
             ?>
             <?php if(isset($item->occurrences)) : //Occurrences to the end
                 $occs = $item->occurrences; unset($item->occurrences); $item->occurrences = $occs; ?>
             <?php endif; ?>
-            
-            <?php 
-            if($first): 
+
+            <?php
+            if($first):
                 $first=false;
             ?>
             <thead>
@@ -431,11 +471,10 @@ class Html extends \MapasCulturais\ApiOutput{
                     <?php foreach($first_item_keys as $k):
                         if($k==='terms'){
                             $v = $item->$k;
-                                            
                             foreach ($v as $term => $item1) {
                                 if($term == 'area' || $term == 'tag' || $term == 'linguagem')
                                     continue;
-                                
+
                                 $name_taxo = App::i()->getRegisteredTaxonomyBySlug($term)->description;
                                 echo "<th>" . $this->convertToUTF16($name_taxo) . "</th>";
                             }
@@ -450,9 +489,6 @@ class Html extends \MapasCulturais\ApiOutput{
                             <th><?php echo $this->convertToUTF16($this->translate('occurrences')); ?></th> 
                             <?php
                         } else {
-                            if (in_array($k,['singleUrl','occurrencesReadable','spaces'])) {
-                                continue;
-                            }
                             ?>
                             <th> 
                                 <?php 
@@ -461,14 +497,13 @@ class Html extends \MapasCulturais\ApiOutput{
                                 } else if(!empty($this->translate($k))){
                                     echo $this->convertToUTF16( $this->translate($k));
                                 } else {
-                                    echo $this->convertToUTF16($k);  
+                                    echo $this->convertToUTF16($k);
                                 }
                                 ?>
                             </th>
                         <?php
                         }
                         endforeach;
-
                         // Permite acrescentar novos headers (th) no output html/excel
                         $app->applyHookBoundTo($this, 'API.(space).result.extra-header-fields');
                         ?>
@@ -489,7 +524,6 @@ class Html extends \MapasCulturais\ApiOutput{
         </table>
     <?php
     }
-
     protected function printOneItemTable($item){
         ?>
         <table>
@@ -536,7 +570,7 @@ class Html extends \MapasCulturais\ApiOutput{
                 <h1><?php
 
                 echo sprintf(App::txts("%s $singular_object_name encontrado", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></h1>
-                
+
                 <h4><?php echo \MapasCulturais\i::__('Planilha gerada em: ') . \date("d/m/Y H:i") ?></h4>
                 <?php $this->printTable($data) ?>
             </body>
@@ -573,7 +607,7 @@ class Html extends \MapasCulturais\ApiOutput{
                                 <?php endif; ?>
                                 <?php if(property_exists($v, 'linguagem')): ?>
                                     <td><?php echo $this->convertToUTF16(implode(', ', $v->linguagem)); ?></td>
-                                <?php endif; ?> 
+                                <?php endif; ?>
                             <?php elseif(strpos($k,'@files')===0):  continue; ?>
                             <?php elseif($k==='occurrences'): ?>
                                 <td>
@@ -624,9 +658,7 @@ class Html extends \MapasCulturais\ApiOutput{
                                         } else {
                                             
                                             if(isset($v->name) && isset($v->singleUrl)){
-                                                echo "<a  rel='noopener noreferrer' href=\"$v->singleUrl\">$v->name</a>";
-                                            } else if(isset($v->number) && isset($v->singleUrl)){
-                                                echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->number</a>";
+                                                echo "<a href=\"$v->singleUrl\">$v->name</a>";
                                             } else {
                                                 $this->printTable($v);
                                             }
@@ -660,10 +692,15 @@ class Html extends \MapasCulturais\ApiOutput{
         ?>
         <tr>
                     <?php foreach($first_item_keys as $k): $v = isset($item->$k) ? $item->$k : null;?>
-                        <?php 
-                        
+
+                        <?php
+                            if (is_null($v)){
+                                $v = 'Não Informado';
+                            }
                             if($k === 'terms'){
+
                             foreach ($item->terms as $term => $item1) {
+
                                 if($term == 'area' || $term == 'tag' || $term == 'linguagem')
                                     continue;
                                 echo "<td>" . $this->convertToUTF16(implode(", ",$item1)) . "</td>";
@@ -679,7 +716,7 @@ class Html extends \MapasCulturais\ApiOutput{
                             <?php endif; ?>
                             <?php if(property_exists($v, 'linguagem')): ?>
                                 <td><?php echo mb_convert_encoding(implode(', ', $v->linguagem),"HTML-ENTITIES","UTF-8"); ?></td>
-                            <?php endif; ?> 
+                            <?php endif; ?>
                         <?php elseif(strpos($k,'@files')===0):  continue; ?>
                         <?php elseif($k==='occurrences'): ?>
                             <td>
@@ -691,7 +728,7 @@ class Html extends \MapasCulturais\ApiOutput{
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </td>
-                        <?php elseif($k==='project'):?>
+                        <?php elseif($k==='project'): ?>
                             <?php if(is_object($v)): ?>
                                 <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
                             <?php else: ?>
@@ -699,10 +736,8 @@ class Html extends \MapasCulturais\ApiOutput{
                             <?php endif; ?>
                         <?php else:
                             if($k==='name' && !empty($item->singleUrl)){
-                                $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
-                            }else if($k==='number' && !empty($item->singleUrl)){
-                                    $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
-                            }else if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
+                                $v = '<a href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                            }elseif(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                 continue;
                             }
                             ?>
@@ -718,15 +753,15 @@ class Html extends \MapasCulturais\ApiOutput{
 									echo date_format(date_create($v->date),'Y-m-d H:i:s');
                                 }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){
 									echo $v->latitude . ',' . $v->longitude;
+                                }elseif(is_object($v) && isset($v->tipoPonto)){
+									echo 'Pontão';
                                 }elseif(is_array($v) || is_object($v)){
                                     if(is_array($v) && count($v) > 0 && !is_array($v[0]) && !is_object($v[0]) ) {
-                                    	echo implode(', ',$v);	
+                                    	echo implode(', ',$v);
                                     } else {
-                                        
+
                                         if(isset($v->name) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v->singleUrl\" rel='noopener noreferrer'>$v->name</a>";
-                                        } else if(isset($v->number) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v->singleUrl\" rel='noopener noreferrer'>$v->number</a>";
+                                            echo "<a href=\"$v->singleUrl\">$v->name</a>";
                                         } else {
                                             $this->printTable($v);
                                         }
@@ -736,14 +771,14 @@ class Html extends \MapasCulturais\ApiOutput{
                             </td>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                    <td>
-                        <?php
-                        $vars = get_object_vars($item);
-                        if(!empty($vars['@files:avatar.avatarMedium'])){
-                            ?><img src="<?php echo $vars['@files:avatar.avatarMedium']->url; ?>" width="80"><?php
-                        }
-                        ?>
-                    </td>
+<!--                    <td>-->
+<!--                        --><?php
+//                        $vars = get_object_vars($item);
+//                        if(!empty($vars['@files:avatar.avatarMedium'])){
+//                            ?><!--<img src="--><?php //echo $vars['@files:avatar.avatarMedium']->url; ?><!--" width="80">--><?php
+//                        }
+//                        ?>
+<!--                    </td>-->
         </tr>
 <?php return;
     }
