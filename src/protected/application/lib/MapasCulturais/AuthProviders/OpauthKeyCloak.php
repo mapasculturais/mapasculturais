@@ -94,7 +94,8 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
         unset($_SESSION['opauth']);
     }
     private function getUriHttpReferer() {
-        return $_SERVER['HTTP_REFERER'];
+        $app = App::i();
+        return $app->request()->cookies('mapasculturais_user_nav_url');
     }
     public function _requireAuthentication() {
         $app = App::i();
