@@ -156,6 +156,10 @@ class Module extends \MapasCulturais\Module
 
     public function isSupportUser($opportunity, $user)
     {
+        if($user->is("admin")){
+            return true;
+        }
+
         foreach (($opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []) as $agent) {
             if ($agent->user->id == $user->id) {
                 return true;
