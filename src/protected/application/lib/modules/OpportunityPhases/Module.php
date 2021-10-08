@@ -318,8 +318,13 @@ class Module extends \MapasCulturais\Module{
             }
 
             $this->jsObject['entity']['id'] = $current_registration->id;
+            $this->jsObject['entity']['status'] = $current_registration->status;            
             $this->jsObject['entity']['object']->id = $current_registration->id;
-            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
+            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;            
+            
+            $this->jsObject['registration']->id = $current_registration->id;
+            $this->jsObject['registration']->status = $current_registration->status;
+            $this->jsObject['registration']->opportunity = $current_registration->opportunity;            
 
         });
 
