@@ -2466,7 +2466,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['canUserSend'] = $entity->canUser('send');
         $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');
 
-        $this->jsObject['registration'] = $entity;
+        $this->jsObject['registration'] = (object) $entity->jsonSerialize();
 
         if($entity->opportunity->canUser('viewEvaluations')){
             $this->jsObject['evaluation'] = $this->getCurrentRegistrationEvaluation($entity);
