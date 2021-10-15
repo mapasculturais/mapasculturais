@@ -822,10 +822,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.entity = MapasCulturais.registration;
 
-    // $scope.entityErrors = {};
-
     $scope.data = {
-        fileConfigurations: MapasCulturais.entity.registrationFileConfigurations
+        fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
+        entity: MapasCulturais.entity,
+        isEditable: MapasCulturais.isEditable
     };
 
     $timeout(function(){
@@ -2261,13 +2261,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                     alert('erro');
                 });
             };
-
-            $timeout(function() {
-                //Se não existir agentes registrado ao carregar o modúlo, adiciona o agente padrão ao registro.
-                //if (!MapasCulturais.entity.registrationAgents) {
-                //    $scope.setRegistrationOwner(MapasCulturais.userProfile);
-                //}
-            });
 
         }]);
 
