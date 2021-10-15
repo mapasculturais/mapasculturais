@@ -921,6 +921,24 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }; 
     
     $scope.data.sent = false;
+    $scope.data.propLabels = [];
+
+    for(var name in MapasCulturais.labels.agent){
+        var label = MapasCulturais.labels.agent[name];
+        $scope.data.propLabels.push({
+            name: name,
+            label: label
+        });
+    }
+
+
+    for(var name in MapasCulturais.labels.registration){
+        var label = MapasCulturais.labels.registration[name];
+        $scope.data.propLabels.push({
+            name: name,
+            label: label
+        });
+    }
 
     $scope.sendRegistration = function(redirectUrl = false, isAccountability = false){
         $timeout.cancel(saveTimeout); 
