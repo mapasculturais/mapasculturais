@@ -825,7 +825,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
         entity: MapasCulturais.entity,
-        isEditable: MapasCulturais.isEditable
+        isEditable: MapasCulturais.isEditable,
+        errors: {}
     };
 
     $timeout(function(){
@@ -881,6 +882,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 };
             })
             .error(function(r) {
+                $scope.data.errors = r.data;
                 for (var key in r.data) {
                     $scope.data.fields.forEach(function(field) {
                         if(field.fieldName == key){
@@ -1083,6 +1085,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             RegistrationService.send(MapasCulturais.entity.object.id).success(function(response){
                 $('.js-response-error').remove();
                 if(response.error){
+                    $scope.data.errors = response.data;
+
                     var focused = false;
                     Object.keys(response.data).forEach(function(field, index){
                         var $el;
@@ -2167,6 +2171,32 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                 if (ov && !nv)
                     adjustBoxPosition();
             });
+
+            function replaceRegistrationAgentBy(groupName, agent, relationStatus){
+                for(var i in $scope.data.entity.registrationAgents){
+                    var def = $scope.data.entity.registrationAgents[i];
+                    if(def.agentRelationGroupName === groupName){
+                        def.agent = agent;
+                        if(typeof relationStatus !== 'undefined'){
+                            def.relationStatus = relationStatus;
+                        }
+                    }
+                }
+            }
+
+
+            $scope.setRegistrationOwner = function(agent){
+                $scope.data.registration.owner = agent;
+                replaceRegistrationAgentBy('owner', agent);
+                jQuery('#ownerId').editable('setValue', agent.id);
+                setTimeout(function(){
+                    $('#submitButton').trigger('click');
+                });
+                EditBox.close('editbox-select-registration-owner');
+
+                RegistrationService.save();
+            };            
+
 
             $scope.register = function(){                
                 var registration = $scope.data.registration;                
