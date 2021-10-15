@@ -959,7 +959,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         if(field === 'projectName'){
                             $el = $('#projectName').parent().find('.label');
                         }else if(field === 'category'){
-                            $el = $('.js-editable-registrationCategory').parent();
+                            $el = $('#category');
                         }else if(field.indexOf('agent') !== -1){
                             $el = $('#' + field).parent().find('.registration-label');
                         }else if(field.indexOf('space') !== -1){
@@ -967,14 +967,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         }else {
                             $el = $('#' + field).find('div:first');
                         }
+
                         var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
                         message = message.replace(/"/g, '&quot;');
                         $scope.data.propLabels.forEach(function(prop){
                             message = message.replace('{{'+prop.name+'}}', prop.label);
                         });
                         $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
+                        
                         if(!focused){
-                            $('html,body').animate({scrollTop: $el.parents('li').get(0).offsetTop - 10}, 300);
+                            var el = $el.parents('li').get(0) || $el.get(0);
+                            
+                            $('html,body').animate({scrollTop: el.offsetTop - 10}, 300);
                             focused = true;
                         }
                     });
