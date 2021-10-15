@@ -1,5 +1,5 @@
 <?php if($opportunity->registrationCategories): ?>
-    <div class="registration-fieldset"  ng-controller="RegistrationFieldsController">
+    <div class="registration-fieldset">
         <div id="category">
             <span class="label"> 
                 <?php echo $opportunity->registrationCategTitle ?>
