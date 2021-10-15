@@ -968,16 +968,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                             $el = $('#' + field).find('div:first');
                         }
 
-                        var message = response.data[field] instanceof Array ? response.data[field].join(' ') : response.data[field];
-                        message = message.replace(/"/g, '&quot;');
-                        $scope.data.propLabels.forEach(function(prop){
-                            message = message.replace('{{'+prop.name+'}}', prop.label);
+                        $scope.data.fields.forEach(function(fieldObject) {   
+                            if(fieldObject.fieldName == field){
+                                fieldObject.error = response.data[field];
+                            }
                         });
-                        $el.append('<span title="' + message + '" class="danger hltip js-response-error" data-hltip-classes="hltip-danger"></span>');
                         
                         if(!focused){
-                            var el = $el.parents('li').get(0) || $el.get(0);
-                            
+                            var el = $el.parents('li').get(0) || $el.get(0);                            
                             $('html,body').animate({scrollTop: el.offsetTop - 10}, 300);
                             focused = true;
                         }
