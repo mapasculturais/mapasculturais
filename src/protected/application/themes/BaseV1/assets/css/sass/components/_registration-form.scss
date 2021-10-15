@@ -267,21 +267,16 @@ article.opportunity .editable-buttons button {
             }
         }
         .btn-group {
-            position: absolute;
-            bottom: $padding-base;
+            position: relative;
+            bottom: 2em;
             right: $padding-base;
+            text-align: right;
         }
         &:hover {
         	background: $gray-lighter;
         }
         &:last-child {
             border-bottom: none;
-        }
-        &.registration-edit-mode {
-            padding-right: 11rem;
-            @media screen and (max-width: $screen-tablet) {
-                padding-right: 0.5rem;
-            }
         }
         @media print {
             padding: 0 0 $padding-base;
