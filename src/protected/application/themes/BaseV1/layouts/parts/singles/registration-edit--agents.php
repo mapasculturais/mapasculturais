@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div ng-if="data.isEditable" class="btn-group">
                 <span ng-if="def.agent">
                     <a class="btn btn-default edit hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Trocar agente");?></a>

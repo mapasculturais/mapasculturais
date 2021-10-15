@@ -41,10 +41,9 @@ $opMetaSpace = $app->repo('OpportunityMeta')->findBy(['owner' =>  $entity->oppor
         <?php $this->part('singles/registration-edit--header', $_params) ?>
         
         <?php $this->part('singles/registration-edit--categories', $_params) ?>
-        <div ng-controller="OpportunityController">
-            <?php $this->part('singles/registration-edit--agents', $_params);?>
-            <?php $this->part('singles/registration-edit--spaces', array('params' => $_params, 'query' => $opMetaSpace) ) ?>
-        </div>
+        
+        <?php $this->part('singles/registration-edit--agents', $_params);?>
+        <?php $this->part('singles/registration-edit--spaces', array('params' => $_params, 'query' => $opMetaSpace) ) ?>
 
         <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
         <?php //$this->part('singles/registration-edit--seals', $_params) ?>
