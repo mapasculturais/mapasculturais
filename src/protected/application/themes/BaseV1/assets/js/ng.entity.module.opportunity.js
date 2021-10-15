@@ -870,7 +870,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         
         saveTimeout = $timeout(function(){
             $scope.saveRegistration();
-        }, 60000);
+        }, MapasCulturais.registrationAutosaveTimeout);
     }
 
     $scope.saveRegistration = function () {
