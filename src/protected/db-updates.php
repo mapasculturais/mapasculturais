@@ -1576,40 +1576,40 @@ $$
                     LANGUAGE 'plpgsql' AS $$
                     BEGIN
                         EXECUTE format('DELETE FROM %1\$I WHERE (
-                                %2\$I=''MapasCulturais\\Entities\\Agent'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Agent'' AND
                                 %3\$I NOT IN (SELECT id FROM agent)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\ChatMessage'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\ChatMessage'' AND
                                 %3\$I NOT IN (SELECT id FROM chat_message)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\ChatThread'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\ChatThread'' AND
                                 %3\$I NOT IN (SELECT id FROM chat_thread)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\EvaluationMethodConfiguration'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\EvaluationMethodConfiguration'' AND
                                 %3\$I NOT IN (SELECT id FROM evaluation_method_configuration)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Event'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Event'' AND
                                 %3\$I NOT IN (SELECT id FROM event)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Notification'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Notification'' AND
                                 %3\$I NOT IN (SELECT id FROM notification)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Opportunity'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Opportunity'' AND
                                 %3\$I NOT IN (SELECT id FROM opportunity)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Project'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Project'' AND
                                 %3\$I NOT IN (SELECT id FROM project)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Registration'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Registration'' AND
                                 %3\$I NOT IN (SELECT id FROM registration)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\RegistrationFileConfiguration'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\RegistrationFileConfiguration'' AND
                                 %3\$I NOT IN (SELECT id FROM registration_file_configuration)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Space'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Space'' AND
                                 %3\$I NOT IN (SELECT id FROM space)
                             ) OR (
-                                %2\$I=''MapasCulturais\\Entities\\Subsite'' AND
+                                %2\$I=''MapasCulturais\\\\Entities\\\\Subsite'' AND
                                 %3\$I NOT IN (SELECT id FROM subsite)
                             )', tbl, ctype, cid);
                     END; $$;");
@@ -1659,51 +1659,51 @@ $$
         __try("CREATE TRIGGER trigger_clean_orphans_agent
                     AFTER DELETE ON agent
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Agent')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Agent')");
 
         __try("CREATE TRIGGER trigger_clean_orphans_chat_message
                     AFTER DELETE ON chat_message
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\ChatMessage')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\ChatMessage')");
         __try("CREATE TRIGGER trigger_clean_orphans_chat_thread
                     AFTER DELETE ON chat_thread
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\ChatThread')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\ChatThread')");
         __try("CREATE TRIGGER trigger_clean_orphans_evaluation_method_configuration
                     AFTER DELETE ON evaluation_method_configuration
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\EvaluationMethodConfiguration')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\EvaluationMethodConfiguration')");
         __try("CREATE TRIGGER trigger_clean_orphans_event
                     AFTER DELETE ON event
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Event')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Event')");
         __try("CREATE TRIGGER trigger_clean_orphans_notification
                     AFTER DELETE ON notification
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Notification')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Notification')");
         __try("CREATE TRIGGER trigger_clean_orphans_opportunity
                     AFTER DELETE ON opportunity
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Opportunity')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Opportunity')");
         __try("CREATE TRIGGER trigger_clean_orphans_project
                     AFTER DELETE ON project
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Project')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Project')");
         __try("CREATE TRIGGER trigger_clean_orphans_registration
                     AFTER DELETE ON registration
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Registration')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Registration')");
         __try("CREATE TRIGGER trigger_clean_orphans_registration_file_configuration
                     AFTER DELETE ON registration_file_configuration
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\RegistrationFileConfiguration')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\RegistrationFileConfiguration')");
         __try("CREATE TRIGGER trigger_clean_orphans_space
                     AFTER DELETE ON space
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Space')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Space')");
         __try("CREATE TRIGGER trigger_clean_orphans_subsite
                     AFTER DELETE ON subsite
                     FOR EACH ROW
-                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Subsite')");
+                    EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\\Entities\\Subsite')");
     },
 ] + $updates ;
