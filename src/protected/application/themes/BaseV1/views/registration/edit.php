@@ -48,13 +48,14 @@ $opMetaSpace = $app->repo('OpportunityMeta')->findBy(['owner' =>  $entity->oppor
 
         <?php // Desabilitando este template por enquanto, pois não é a melhor forma de apresentar para o usuário que está se inscrevendo ?>
         <?php //$this->part('singles/registration-edit--seals', $_params) ?>
-        
-        <?php $this->part('singles/registration-edit--fields', $_params) ?>
+        <div  ng-controller="RegistrationFieldsController" >
+            <?php $this->part('singles/registration-edit--fields', $_params) ?>
 
-        <?php if(!$entity->preview): ?>
-            <?php $this->part('singles/registration-edit--send-button', $_params) ?>
-        <?php endif; ?>
+            <?php if(!$entity->preview): ?>
+                <?php $this->part('singles/registration-edit--send-button', $_params) ?>
+            <?php endif; ?>
 
+        </div>
         <?php $this->applyTemplateHook('form','end'); ?>
     </article>
 
