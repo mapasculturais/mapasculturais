@@ -1576,40 +1576,40 @@ $$
                     LANGUAGE 'plpgsql' AS $$
                     BEGIN
                         EXECUTE format('DELETE FROM %1\$I WHERE (
-                                %2\$I=''MapasCulturais\Entities\Agent'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Agent'' AND
                                 %3\$I NOT IN (SELECT id FROM agent)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\ChatMessage'' AND
+                                %2\$I=''MapasCulturais\\Entities\\ChatMessage'' AND
                                 %3\$I NOT IN (SELECT id FROM chat_message)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\ChatThread'' AND
+                                %2\$I=''MapasCulturais\\Entities\\ChatThread'' AND
                                 %3\$I NOT IN (SELECT id FROM chat_thread)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\EvaluationMethodConfiguration'' AND
+                                %2\$I=''MapasCulturais\\Entities\\EvaluationMethodConfiguration'' AND
                                 %3\$I NOT IN (SELECT id FROM evaluation_method_configuration)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Event'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Event'' AND
                                 %3\$I NOT IN (SELECT id FROM event)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Notification'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Notification'' AND
                                 %3\$I NOT IN (SELECT id FROM notification)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Opportunity'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Opportunity'' AND
                                 %3\$I NOT IN (SELECT id FROM opportunity)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Project'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Project'' AND
                                 %3\$I NOT IN (SELECT id FROM project)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Registration'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Registration'' AND
                                 %3\$I NOT IN (SELECT id FROM registration)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\RegistrationFileConfiguration'' AND
+                                %2\$I=''MapasCulturais\\Entities\\RegistrationFileConfiguration'' AND
                                 %3\$I NOT IN (SELECT id FROM registration_file_configuration)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Space'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Space'' AND
                                 %3\$I NOT IN (SELECT id FROM space)
                             ) OR (
-                                %2\$I=''MapasCulturais\Entities\Subsite'' AND
+                                %2\$I=''MapasCulturais\\Entities\\Subsite'' AND
                                 %3\$I NOT IN (SELECT id FROM subsite)
                             )', tbl, ctype, cid);
                     END; $$;");
