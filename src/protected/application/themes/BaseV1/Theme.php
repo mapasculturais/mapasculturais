@@ -1799,6 +1799,8 @@ class Theme extends MapasCulturais\Theme {
             'Todas opções' => i::__('Todas opções'),
         ]);
 
+        $this->jsObject['registrationAutosaveTimeout'] = $app->config['registration.autosaveTimeout'];
+        
         $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
         $this->localizeScript('moduleOpportunity', [
             'allCategories' => i::__('Todas as categorias'),

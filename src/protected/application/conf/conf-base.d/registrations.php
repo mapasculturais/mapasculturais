@@ -3,6 +3,11 @@
 return [
     'registration.prefix' => env('REGISTRATION_PREFIX', 'on-'),
 
+    /* 
+    Timeout para o auto salvamento das inscrições (em milisegundos)
+    */
+    'registration.autosaveTimeout' => env('REGISTRATION_AUTOSAVE_INTERVAL', MINUTE_IN_SECONDS * 1000),
+
     'registration.agentRelationsOptions' => array(
         'dontUse' => \MapasCulturais\i::__('Não utilizar'),
         'required' => \MapasCulturais\i::__('Obrigatório'),
