@@ -876,6 +876,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }, MapasCulturais.registrationAutosaveTimeout);
     }
 
+    // modifica o botão salvar
+    // 
+    $('#editable-entity .js-submit-button').remove();
+    $('#editable-entity .controles').html('<a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
+    if(!$('#editable-entity .js-save-registration').data('registration')) {
+        $('#editable-entity .js-save-registration').data('registration', true);
+        $('#editable-entity .js-save-registration').click(function(e) {
+            $scope.saveRegistration();
+        });
+    }
+
     $scope.saveRegistration = function () {
         return RegistrationService.updateFields($scope.data.editableEntity)
             .error(function(r) {
