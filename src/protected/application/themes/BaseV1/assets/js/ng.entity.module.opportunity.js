@@ -841,6 +841,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 
+    
+
     $scope.data.fields.forEach(function(field) {
         var val = $scope.entity[field.fieldName];
 
@@ -876,11 +878,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.saveRegistration = function () {
         return RegistrationService.updateFields($scope.data.editableEntity)
-            .success(function(){
-                $scope.data.editableEntity = {
-                    id: MapasCulturais.entity.object.id
-                };
-            })
             .error(function(r) {
                 $scope.data.errors = r.data;
                 for (var key in r.data) {
@@ -890,6 +887,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         }
                     });
                 }
+
+                MapasCulturais.Messages.error(labels['correctErrors']);
             });
     }
 
@@ -1055,15 +1054,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.sent = false;
     $scope.data.propLabels = [];
 
-    for(var name in MapasCulturais.labels.agent){
-        var label = MapasCulturais.labels.agent[name];
-        $scope.data.propLabels.push({
-            name: name,
-            label: label
-        });
-    }
-
-
     for(var name in MapasCulturais.labels.registration){
         var label = MapasCulturais.labels.registration[name];
         $scope.data.propLabels.push({
@@ -1072,9 +1062,25 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         });
     }
 
+    $scope.scrollToError = function(){
+        
+        setTimeout(function(){
+            var $el = $('.registration-fieldset .alert.danger');
+            if($el.length){
+                $('html,body').animate({scrollTop: $el.get(0).offsetTop - 100}, 300);
+            }
+        },10);
+    };
+
     $scope.sendRegistration = function(redirectUrl = false, isAccountability = false){
         $timeout.cancel(saveTimeout); 
-        $scope.saveRegistration().success(function () { 
+        var req = $scope.saveRegistration();
+
+        req.error(function(){
+            $scope.scrollToError();
+        });
+        
+        req.success(function () { 
             // TODO: i18n
             if(isAccountability){
                 if(!confirm('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?')){
@@ -1086,8 +1092,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 $('.js-response-error').remove();
                 if(response.error){
                     $scope.data.errors = response.data;
-
-                    var focused = false;
                     Object.keys(response.data).forEach(function(field, index){
                         var $el;
                         if(field === 'projectName'){
@@ -1107,14 +1111,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                                 fieldObject.error = response.data[field];
                             }
                         });
-                        
-                        if(!focused){
-                            var el = $el.parents('li').get(0) || $el.get(0);                            
-                            $('html,body').animate({scrollTop: el.offsetTop - 10}, 300);
-                            focused = true;
-                        }
                     });
                     MapasCulturais.Messages.error(labels['correctErrors']);
+                    $scope.scrollToError();
                 }else{
                     $scope.data.sent = true;
                     MapasCulturais.Messages.success(labels['registrationSent']);
