@@ -218,20 +218,24 @@
 
     <div id="inscricoes" class="aba-content">
       <div class="tab-table registration">
-        <button class="tablinks active" data-entity="inscricoes" data-tab="inscricoes-selecionadas">    <?php i::_e("Selecionadas");?>      (<?php echo count($user->getRegistrationsByStatus(10)); ?>)  </button>
-        <button class="tablinks" data-entity="inscricoes" data-tab="inscricoes-rascunhos"> <?php i::_e("Rascunhos");?>   (<?php echo count($user->getRegistrationsByStatus(0)); ?>)    </button>
-        <button class="tablinks" data-entity="inscricoes" data-tab="inscricoes-lixeira">   <?php i::_e("Lixeira");?>     (<?php echo count($user->getRegistrationsByStatus(-10)); ?>)  </button>
+        <button class="tablinks active" data-entity="inscricoes" data-tab="inscricoes-rascunhos"> <?php i::_e("Rascunhos");?>   (<?php echo count($user->getRegistrationsByStatus(0)); ?>)    </button>
+        <button class="tablinks" data-entity="inscricoes" data-tab="inscricoes-pendentes">   <?php i::_e("Pendente");?>     (<?php echo count($user->getRegistrationsByStatus(1)); ?>)  </button>
+        <button class="tablinks" data-entity="inscricoes" data-tab="inscricoes-selecionadas">    <?php i::_e("Selecionadas");?>      (<?php echo count($user->getRegistrationsByStatus(10)); ?>)  </button>
+        <button class="tablinks" data-entity="inscricoes" data-tab="inscricoes-nao-selecionadas">    <?php i::_e("Não Selecionadas");?>      (<?php echo count($user->getRegistrationsByStatus(3)); ?>)  </button>
       </div>
 
-      <div id="inscricoes-selecionadas" class="tab-content-table" style="display: block;">
+      <div id="inscricoes-selecionadas" class="tab-content-table">
         <?php $this->part('user-management/user-info/info-registrations', array('registrations' => $user->getRegistrationsByStatus(10))); ?>
       </div>
-      <div id="inscricoes-rascunhos" class="tab-content-table">
+      <div id="inscricoes-rascunhos" class="tab-content-table" style="display: block;">
         <?php $this->part('user-management/user-info/info-registrations', array('registrations' => $user->getRegistrationsByStatus(0))); ?>
       </div>
-      <div id="inscricoes-lixeira" class="tab-content-table">
-        <?php $this->part('user-management/user-info/info-registrations', array('registrations' => $user->getRegistrationsByStatus(-10))); ?>
+      <div id="inscricoes-pendentes" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-registrations', array('registrations' => $user->getRegistrationsByStatus(1))); ?>
       </div>      
+      <div id="inscricoes-nao-selecionadas" class="tab-content-table">
+        <?php $this->part('user-management/user-info/info-registrations', array('registrations' => $user->getRegistrationsByStatus(3))); ?>
+      </div>
     </div>
   
     <div id="permissoes" class="aba-content">
