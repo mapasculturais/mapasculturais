@@ -603,11 +603,17 @@ abstract class Theme extends \Slim\View {
     }
     
     function applyTemplateHook($name, $sufix = '', $args = []){
+        $app = App::i();
+
         $hook = "template({$this->controller->id}.{$this->controller->action}.$name)";
         if($sufix){
             $hook .= ':' . $sufix;
         }
-        App::i()->applyHookBoundTo($this, $hook, $args);
+
+        if ($app->mode == APPMODE_DEVELOPMENT) {
+            echo "<!-- TEMPLATE HOOK: $hook -->";
+        }
+        $app->applyHookBoundTo($this, $hook, $args);
     }
     
     /**
