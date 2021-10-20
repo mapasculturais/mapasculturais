@@ -1706,8 +1706,4 @@ $$
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Subsite')");
     },
-
-    'drop registration_meta index' => function () {
-        __exec('DROP INDEX registration_meta_key_value_idx');
-    }
 ] + $updates ;
