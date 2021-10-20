@@ -54,13 +54,6 @@ return [
     Por padrão o valor é verdadeiro quando a aplicação não estiver rodando no modo `APPMODE_PRODUCTION`. 
     */
     'slim.debug' => env('SLIM_DEBUG', env('APP_MODE', APPMODE_PRODUCTION) != APPMODE_PRODUCTION),
-
-    /* 
-    Ativa o modo debug de parte de templates, imprimindo comentários HTML que delimitam os arquivos de template. 
-    
-    Por padrão o valor é verdadeiro quando a aplicação não estiver rodando no modo `APPMODE_PRODUCTION`. 
-    */
-    'themes.active.debugParts' => env('APP_MODE', APPMODE_PRODUCTION) != APPMODE_PRODUCTION,
     
     /* Valor do header Access-Control-Allow-Origin da api de leitura. */
     'api.accessControlAllowOrigin' => env('API_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
