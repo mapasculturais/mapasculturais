@@ -352,14 +352,14 @@ abstract class Theme extends \Slim\View {
             return $output;
         });
         
-        if($app->config['themes.active.debugParts']){
+        if ($app->mode == APPMODE_DEVELOPMENT) {
             $template_debug = str_replace(THEMES_PATH, '', $__template_name);
             echo '<!-- ' . $template_debug . ".php # BEGIN -->";
         }
 
         include $__templatePath;
         
-        if($app->config['themes.active.debugParts']){
+        if ($app->mode == APPMODE_DEVELOPMENT) {
             echo '<!-- ' . $template_debug . ".php # END -->";
         }
 
