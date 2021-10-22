@@ -9,6 +9,7 @@
         "symfony/yaml": "*",
         "doctrine/orm": "*",
         "doctrine/dbal": "*",
+        "doctrine/cache": "1.*",
         "doctrine/annotations": "*",
         "opauth/openid": "*",
         "respect/validation": "1.*",
@@ -19,6 +20,7 @@
         "phpoffice/phpword": "0.13.*",
         "michelf/php-markdown": "1.*",
         "opauth/logincidadao" : "*",
+        "opauth/keycloak" : "1.0.1",
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "4.*",
         "pomo/pomo": "^1.2",
@@ -39,6 +41,10 @@
         {
             "type": "git",
             "url": "https://github.com/mapasculturais/MapasSDK.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/EscolaDeSaudePublica/opauth-keycloak.git"
         }
     ]
 }
