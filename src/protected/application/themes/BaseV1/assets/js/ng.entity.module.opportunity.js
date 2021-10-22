@@ -122,7 +122,7 @@
                         }
                     }
                 });
-
+                
                 return $http.patch(this.getUrl('single', entity.id), data).
                     success(function(data, status){
                         MapasCulturais.Messages.success(labels['changesSaved']);
@@ -500,8 +500,18 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.editFieldConfiguration = function(attrs) {
-            var model = $scope.data.fields[attrs.index],
-            data = {
+            var model = $scope.data.fields[attrs.index];
+
+            if(model.config.hasOwnProperty("require") && model.config.require.condition  && (!model.config.require.field)){
+                MapasCulturais.Messages.error("Informe a qual campo quer condicionar a obrigatoriedade");
+                return;
+            }
+
+            if(model.config.hasOwnProperty("require") && !model.config.require.condition){
+                model.config = ""
+            }
+            
+            var data = {
                 id: model.id,
                 title: model.title,
                 fieldType: model.fieldType,
@@ -1099,6 +1109,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 }                    
             }
 
+         
             RegistrationService.send(MapasCulturais.entity.object.id).success(function(response){
                 $('.js-response-error').remove();
                 if(response.error){
