@@ -11,6 +11,7 @@ use MapasCulturais\App;
     <thead>
         <tr>
             <td><?php \MapasCulturais\i::_e("Inscrição"); ?></td>
+            <td><?php \MapasCulturais\i::_e("Oportunidade"); ?></td>
             <td><?php \MapasCulturais\i::_e("Responsável"); ?></td>
             <td><?php \MapasCulturais\i::_e("Data de envio"); ?></td>
         </tr>
@@ -20,12 +21,14 @@ use MapasCulturais\App;
             <?php foreach ($registrations as $registration) { ?>
                 <?php
                 $date = ($registration->sentTimestamp ? $registration->sentTimestamp->format("d/m/y H:m:s") : null);
-                $url = App::i()->createUrl('inscricao', '', [$registration->id]);
-                $agent = App::i()->createUrl('agente', '', [$registration->getRegistrationOwner()->id]);
+                $url_reg = App::i()->createUrl('inscricao', '', [$registration->id]);
+                $url_opp = App::i()->createUrl('oportunidade', '', [$registration->opportunity->id]);
+                $url_agent = App::i()->createUrl('agente', '', [$registration->getRegistrationOwner()->id]);
                 ?>
                 <tr>
-                    <td><a target="_blank" href="<?=$url?>"><?= $registration->number ?></a></td>
-                    <td><a target="_blank" href="<?= $agent ?>"><?= $registration->getRegistrationOwner()->name ?></a></td>
+                    <td><a target="_blank" href="<?=$url_reg?>"><?= $registration->id ?></a></td>
+                    <td><a target="_blank" href="<?=$url_opp?>"><?= $registration->opportunity->name ?></a></td>
+                    <td><a target="_blank" href="<?= $url_agent ?>"><?= $registration->getRegistrationOwner()->name ?></a></td>
                     <td><?= $date ?: i::_e("Não enviada") ?></td>
                 </tr>
             <?php } ?>
