@@ -20,7 +20,7 @@
         "phpoffice/phpword": "0.13.*",
         "michelf/php-markdown": "1.*",
         "opauth/logincidadao" : "*",
-        "opauth/keycloak" : "1.0.1",
+        "opauth/keycloak" : "1.1.0",
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "4.*",
         "pomo/pomo": "^1.2",
