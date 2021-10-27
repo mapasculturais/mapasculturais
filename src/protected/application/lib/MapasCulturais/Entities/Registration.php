@@ -259,12 +259,18 @@ class Registration extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'owner' => [
                 'required' => \MapasCulturais\i::__("O agente responsável é obrigatório."),
                 '$this->validateOwnerLimit()' => \MapasCulturais\i::__('Foi excedido o limite de inscrições para este agente responsável.'),
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
     
     function jsonSerialize() {

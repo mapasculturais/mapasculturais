@@ -82,7 +82,8 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $__files;
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'owner' => [ 
                 'required' => \MapasCulturais\i::__("A oportunidade é obrigatória.")
             ],
@@ -90,6 +91,11 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
     public function getFileGroupName(){

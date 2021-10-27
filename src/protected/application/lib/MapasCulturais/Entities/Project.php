@@ -219,7 +219,8 @@ class Project extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome do projeto é obrigatório')
             ],
@@ -239,6 +240,11 @@ class Project extends \MapasCulturais\Entity
                 '$this->validateRegistrationDates()' => \MapasCulturais\i::__('A data final das inscrições deve ser maior ou igual a data inicial')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
     function getEvents(){
