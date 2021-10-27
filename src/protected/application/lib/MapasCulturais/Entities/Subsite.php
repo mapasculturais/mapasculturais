@@ -149,8 +149,9 @@ class Subsite extends \MapasCulturais\Entity
 
     protected $filters = [];
 
-    static function getValidations(){
-        return [
+    static function getValidations() {
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome da instalação é obrigatório')
             ],
@@ -162,6 +163,11 @@ class Subsite extends \MapasCulturais\Entity
                 'unique' => \MapasCulturais\i::__('Esta URL já está sendo utilizada')
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
 

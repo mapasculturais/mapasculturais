@@ -100,7 +100,8 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $config = [];
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'owner' => [ 
                 'required' => \MapasCulturais\i::__("O projeto é obrigatório.")
             ],
@@ -111,6 +112,11 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
                 'required' => \MapasCulturais\i::__("O tipo de campo é obrigatório")
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
     public function setOwnerId($id){
