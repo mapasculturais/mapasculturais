@@ -142,7 +142,8 @@ class EventAttendance extends \MapasCulturais\Entity {
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'type' => [
                 'required' => i::__('O tipo do comparecimento é obrigatório'),
                 "v::in(['confirmation','interested'])" => i::__('O tipo deve ser "confirmation" ou "interested"')
@@ -152,8 +153,12 @@ class EventAttendance extends \MapasCulturais\Entity {
                 '$this->validateReccurrenceString()' => i::__('A string da recorrência é inválida')
             ]
         ];
-    }
 
+        $prefix = self::getHookPrefix();
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
+    }
     function validateReccurrenceString(){
         $app = App::i();
 

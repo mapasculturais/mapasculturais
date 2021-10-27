@@ -295,7 +295,8 @@ class Agent extends \MapasCulturais\Entity
     }
 
     static function getValidations() {
-        return [
+        $app = App::i();
+        $validations = [
             'name' => [
                 'required' => \MapasCulturais\i::__('O nome do agente é obrigatório')
             ],
@@ -307,6 +308,12 @@ class Agent extends \MapasCulturais\Entity
                 'required' => \MapasCulturais\i::__('O tipo do agente é obrigatório'),
             ]
         ];
+
+        $prefix = self::getHookPrefix();
+        // entity(Agent).validations
+        $app->applyHook("{$prefix}.validations", [&$validations]);
+
+        return $validations;
     }
 
     function setAsUserProfile(){
