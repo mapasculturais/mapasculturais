@@ -363,14 +363,14 @@ abstract class Theme extends \Slim\View {
             return $output;
         });
         
-        if($app->config['themes.active.debugParts']){
+        if ($app->mode == APPMODE_DEVELOPMENT) {
             $template_debug = str_replace(THEMES_PATH, '', $__template_name);
             echo '<!-- ' . $template_debug . ".php # BEGIN -->";
         }
 
         include $__templatePath;
         
-        if($app->config['themes.active.debugParts']){
+        if ($app->mode == APPMODE_DEVELOPMENT) {
             echo '<!-- ' . $template_debug . ".php # END -->";
         }
 
@@ -614,11 +614,17 @@ abstract class Theme extends \Slim\View {
     }
     
     function applyTemplateHook($name, $sufix = '', $args = []){
+        $app = App::i();
+
         $hook = "template({$this->controller->id}.{$this->controller->action}.$name)";
         if($sufix){
             $hook .= ':' . $sufix;
         }
-        App::i()->applyHookBoundTo($this, $hook, $args);
+
+        if ($app->mode == APPMODE_DEVELOPMENT) {
+            echo "<!-- TEMPLATE HOOK: $hook -->";
+        }
+        $app->applyHookBoundTo($this, $hook, $args);
     }
     
     /**
