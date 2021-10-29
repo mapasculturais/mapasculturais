@@ -41,10 +41,11 @@
         $scope.panelURI = MapasCulturais.baseURL+'panel';
         $scope.MapasCulturais = MapasCulturais;
 
-        MapasCulturais.notifications.forEach(function(value,index){
-            MapasCulturais.notifications[index].message = $sce.trustAsHtml(value.message);
+        $scope.data = angular.copy(MapasCulturais.notifications);
+
+        $scope.data.forEach(function(value,index){
+            $scope.data[index].message = $sce.trustAsHtml(value.message);
         });
-        $scope.data = MapasCulturais.notifications;
 
         var getNotifications = function (){
             NotificationService.get().then(function(data){
