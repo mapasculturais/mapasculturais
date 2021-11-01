@@ -481,14 +481,17 @@ class Module extends \MapasCulturais\Module
                     // this order of coordinates is required by the EntityGeoLocation trait's setter
                     $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
                 }
-                $entity->endereco = isset($value['endereco']) ? $value['endereco'] : '';
-                $entity->En_CEP = isset($value['En_CEP']) ? $value['En_CEP'] : '';
-                $entity->En_Nome_Logradouro = isset($value['En_Nome_Logradouro']) ? $value['En_Nome_Logradouro'] : '';
-                $entity->En_Num = isset($value['En_Num']) ? $value['En_Num'] : '';
-                $entity->En_Complemento = isset($value['En_Complemento']) ? $value['En_Complemento'] : '';
-                $entity->En_Bairro = isset($value['En_Bairro']) ? $value['En_Bairro'] : '';
-                $entity->En_Municipio = isset($value['En_Municipio']) ? $value['En_Municipio'] : '';
-                $entity->En_Estado = isset($value['En_Estado']) ? $value['En_Estado'] : '';
+                $entity->endereco = $value["endereco"] ?? "";
+                $entity->En_CEP = $value["En_CEP"] ?? "";
+                $entity->En_Nome_Logradouro = $value["En_Nome_Logradouro"] ?? "";
+                $entity->En_Num = $value["En_Num"] ?? "";
+                $entity->En_Complemento = $value["En_Complemento"] ?? "";
+                $entity->En_Bairro = $value["En_Bairro"] ?? "";
+                $entity->En_Municipio = $value["En_Municipio"] ?? "";
+                $entity->En_Estado = $value["En_Estado"] ?? "";
+                if (isset($value["En_Pais"])) {
+                    $entity->En_Pais = $value["En_Pais"];
+                }
                 $entity->publicLocation = !empty($value['publicLocation']);
 
             } else if($entity_field == '@terms:area') {
@@ -550,7 +553,8 @@ class Module extends \MapasCulturais\Module
         return json_encode($value);
     }
 
-    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null) {
+    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, Metadata $metadata_definition = null)
+    {
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             
@@ -569,6 +573,9 @@ class Module extends \MapasCulturais\Module
                         'location' => $entity->location,
                         'publicLocation' => $entity->publicLocation
                     ];
+                    if (isset($entity->En_Pais)) {
+                        $result["En_Pais"] = $entity->En_Pais;
+                    }
                 } else {
                     $result = null;
                 }
