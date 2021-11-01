@@ -4,6 +4,14 @@ $(function() {
         return (value ? value : fallback);
     }
 
+    function setIfNotNull(container, key, value)
+    {
+        if (value) {
+            container[key] = value;
+        }
+        return;
+    }
+
     function setAddress($container)
     {
         clearTimeout(window._address_timeout);
@@ -83,37 +91,44 @@ $(function() {
         changeCEP($cep, $container, 10);
     });
 
-    $('body').on('keypress', 'input.js-rfc-input', function() {
+    $("body").on("keypress", "input.js-rfc-input", function() {
         clearTimeout(window._geocoding_timeout);
-
-        var $container = $(this).parents('.js-rfc-location');
-
+        var $container = $(this).parents(".js-rfc-location");
         window._geocoding_timeout = setTimeout(function() {
-            var country = MapasCulturais.pais ? MapasCulturais.pais : 'BR';
-            var state = $container.find('.js-rfc-input-En_Estado').val();
-            var city = $container.find('.js-rfc-input-En_Municipio').val();
-            var street = $container.find('.js-rfc-input-En_Nome_Logradouro').val();
-            var neighborhood = $container.find('.js-rfc-input-En_Bairro').val();
-            var number = $container.find('.js-rfc-input-En_Num').val();
-
+            var country = coalesce($container.find(".js-rfc-input-En_Pais").val(),
+                                   coalesce(MapasCulturais.pais, "br"));
+            var state = $container.find(".js-rfc-input-En_Estado").val();
+            var city = $container.find(".js-rfc-input-En_Municipio").val();
+            var street = $container.find(".js-rfc-input-En_Nome_Logradouro").val();
+            var neighborhood = $container.find(".js-rfc-input-En_Bairro").val();
+            var number = $container.find(".js-rfc-input-En_Num").val();
             if (state && city && street) {
                 var address = neighborhood ?
-                    street + ' ' + number + ', ' + neighborhood + ', ' + city + ', ' + state + ', ' + country :
-                    street + ' ' + number + ', ' + city + ', ' + state + ', ' + country;
-
-                MapasCulturais.geocoder.geocode({ fullAddress: address }, function(r) {
-
+                    street + " " + number + ", " + neighborhood + ", " + city + ", " + state + ", " + country :
+                    street + " " + number + ", " + city + ", " + state + ", " + country;
+                var parms = {
+                    fullAddress: address,
+                    streetName: street,
+                    city: city,
+                    state: state,
+                    country: country,
+                };
+                setIfNotNull(parms, "number", number);
+                setIfNotNull(parms, "neighborhood", neighborhood);
+                setIfNotNull(parms, "postalCode", $container.find(".js-rfc-input-En_CEP").val());
+                MapasCulturais.geocoder.geocode(parms, function(r) {
                     var $scope = $container.scope();
                     var address = $scope.entity[$scope.field.fieldName];
                     address.location.latitude = r.lat;
                     address.location.longitude = r.lon;
                     $scope.saveField($scope.field, address);
-
                     setAddress($container);
-
+                    return;
                 });
             }
-        },1000);
+            return;
+        }, 1000);
+        return;
     });
 
     setTimeout(function() {
@@ -127,14 +142,26 @@ $(function() {
             if (r.length < 1) {
                 return;
             }
-            query = r["query"] + ", " + (MapasCulturais.pais ?
-                                         MapasCulturais.pais : "BR");
-            fallback = r["fallback"] + ", " + (MapasCulturais.pais ?
-                                               MapasCulturais.pais : "BR");
+            var country = coalesce(MapasCulturais.pais, "br");
+            query = r["query"] + ", " + country;
+            fallback = r["fallback"] + ", " + country;
             token = r["token"];
+            var parms = {
+                fullAddress: query,
+                country: country,
+            };
+            if (r["elements"]) {
+                setIf(parms, "streetName", r["elements"]["street"]);
+                setIf(parms, "number", r["elements"]["number"]);
+                setIf(parms, "neighborhood", r["elements"]["neighborhood"]);
+                setIf(parms, "city", r["elements"]["city"]);
+                setIf(parms, "state", r["elements"]["state"]);
+                setIf(parms, "postalCode", r["elements"]["postalcode"]);
+                setIf(parms, "country", r["elements"]["country"]);
+            }
             clearTimeout(window._geocoding_timeout);
             window._geocoding_timeout = setTimeout(function() {
-                MapasCulturais.geocoder.geocode({fullAddress: query}, function(g) {
+                MapasCulturais.geocoder.geocode(parms, function(g) {
                     if (g.lat && g.lon) {
                         $.ajax({
                             url: endpoint,
@@ -146,8 +173,8 @@ $(function() {
                             }
                         });
                     } else {
-                        MapasCulturais.geocoder.geocode({fullAddress: fallback},
-                                                        function (g) {
+                        parms["fullAddress"] = fallback;
+                        MapasCulturais.geocoder.geocode(parms, function (g) {
                             var data = (g.lat && g.lon) ? {
                                 latitude: g.lat,
                                 longitude: g.lon,
