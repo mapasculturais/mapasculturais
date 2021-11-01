@@ -1,26 +1,30 @@
 $(function() {
-    function setAddress($container) {
+    function coalesce(value, fallback)
+    {
+        return (value ? value : fallback);
+    }
+
+    function setAddress($container)
+    {
         clearTimeout(window._address_timeout);
-
-        window._address_timeout = setTimeout(function(){
-            var country = MapasCulturais.pais ? MapasCulturais.pais : 'BR';
-            var state = $container.find('.js-rfc-input-En_Estado').val();
-            var city = $container.find('.js-rfc-input-En_Municipio').val();
-            var street = $container.find('.js-rfc-input-En_Nome_Logradouro').val();
-            var neighborhood = $container.find('.js-rfc-input-En_Bairro').val();
-            var number = $container.find('.js-rfc-input-En_Num').val();
-
+        window._address_timeout = setTimeout(function() {
+            var country = coalesce($container.find(".js-rfc-input-En_Pais").val(), coalesce(MapasCulturais.pais, "BR"));
+            var state = $container.find(".js-rfc-input-En_Estado").val();
+            var city = $container.find(".js-rfc-input-En_Municipio").val();
+            var street = $container.find(".js-rfc-input-En_Nome_Logradouro").val();
+            var neighborhood = $container.find(".js-rfc-input-En_Bairro").val();
+            var number = $container.find(".js-rfc-input-En_Num").val();
             if (state && city && street) {
-                var address = neighborhood ?
-                    street + ' ' + number + ', ' + neighborhood + ', ' + city + ', ' + state + ', ' + country :
-                    street + ' ' + number + ', ' + city + ', ' + state + ', ' + country;
-
+                neighborhood = neighborhood ? (", " + neighborhood) : "";
+                var address = street + " " + number + neighborhood + ", " + city + ", " + state + ", " + country;
                 var $scope = $container.scope();
                 var topAddr = $scope.entity[$scope.field.fieldName];
                 topAddr.endereco = address;
                 $scope.saveField($scope.field, topAddr);
             }
-        },500);
+            return;
+        }, 500);
+        return;
     }
 
     function changeCEP($cep, $container, timeout)
