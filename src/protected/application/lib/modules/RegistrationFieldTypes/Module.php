@@ -648,7 +648,7 @@ class Module extends \MapasCulturais\Module
             $this->action = EntityRevision::ACTION_AUTOUPDATED;
             return;
         });
-        $app->hook("GET(<<agent|space>>.locationPatch)", function() use ($app, $meta) {
+        $app->hook("GET(<<agent|space>>.locationPatch)", function () use ($app) {
             /** @var \MapasCulturais\Controller $this */
             $type = ["slug" => "agent", "class" => "Agent", "display" => "Agent"];
             if ($this instanceof \MapasCulturais\Controllers\Space) {
@@ -662,23 +662,34 @@ class Module extends \MapasCulturais\Module
             }
             $token = uniqid();
             $meta = $entity->getMetadata();
-            $num = $meta["En_Num"] ?? "";
-            $nbhood = isset($meta["En_Bairro"]) ?
-                      "{$meta["En_Bairro"]}, " : "";
-            $street_addr = isset($meta["En_Nome_Logradouro"]) ? [
-                "address" => "{$meta["En_Nome_Logradouro"]} $num, $nbhood",
-                "query" => "$num {$meta["En_Nome_Logradouro"]}, $nbhood"
-            ] : ["address" => "", "query" => ""];
+            $fine = [];
+            $coarse = [];
+            if (isset($meta["En_Nome_Logradouro"])) {
+                self::addIfNotNull($fine, ($meta["En_Num"] ?? null));
+                $fine[] = $meta["En_Nome_Logradouro"];
+            }
+            self::addIfNotNull($coarse, ($meta["En_Bairro"] ?? null));
+            $coarse[] = $meta["En_Municipio"];
+            $coarse[] = $meta["En_Estado"];
+            self::addIfNotNull($coarse, ($meta["En_Pais"] ?? null));
             $_SESSION["{$type["slug"]}-locationPatch-$token"] = [
                 "id" => $entity->id,
                 "timestamp" => (new DateTime())->format("YmdHis"),
-                "address" => ("{$street_addr["address"]}" .
-                              "{$meta["En_Municipio"]}, {$meta["En_Estado"]}")
+                "address" => implode(", ", array_merge([implode(" ", array_reverse($fine))], $coarse))
             ];
+            $elements = [
+                "city" => $meta["En_Municipio"],
+                "state" => $meta["En_Estado"]
+            ];
+            self::addIfNotNull($elements, ($meta["En_Nome_Logradouro"] ?? null), "streetName");
+            self::addIfNotNull($elements, ($meta["En_Num"] ?? null), "number");
+            self::addIfNotNull($elements, ($meta["En_Bairro"] ?? null), "neighborhood");
+            self::addIfNotNull($elements, ($meta["En_CEP"] ?? null), "postalcode");
+            self::addIfNotNull($elements, ($meta["En_Pais"] ?? null), "country");
             $this->json([
-                "query" => ("{$street_addr["query"]}" .
-                            "{$meta["En_Municipio"]}, {$meta["En_Estado"]}"),
-                "fallback" => "{$meta["En_Municipio"]}, {$meta["En_Estado"]}",
+                "elements" => $elements,
+                "query" => implode(", ", array_merge([implode(" ", $fine)], $coarse)),
+                "fallback" => implode(", ", $coarse),
                 "token" => $token
             ]);
             return;
@@ -713,6 +724,18 @@ class Module extends \MapasCulturais\Module
             return;
         });
         return;
+    }
+
+    static function addIfNotNull(array &$list, $value, $key=null)
+    {
+        if (!empty($value)) {
+            if (is_null($key)) {
+                $list[] = $value;
+            } else {
+                $list[$key] = $value;
+            }
+        }
+        return $list;
     }
 
     static function locationPatchSave($agent, $sessionData, $location=null)
