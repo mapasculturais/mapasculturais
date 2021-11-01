@@ -23,53 +23,53 @@ $(function() {
         },500);
     }
 
-    function changeCEP($cep, $container, timeout) {
+    function changeCEP($cep, $container, timeout)
+    {
         clearTimeout(window._cep_timeout);
-
         window._cep_timeout = setTimeout(function() {
             if (/^\d{5}-\d{3}$/.exec($cep.val())) {
-                var oldStreet = $container.find('.js-rfc-input-En_Nome_Logradouro').val();
-                var oldNeighbourhood = $container.find('.js-rfc-input-En_Bairro').val();
-                var oldState = $container.find('.js-rfc-input-En_Estado').val();
-                var oldCity = $container.find('.js-rfc-input-En_Municipio').val();
-                $container.find('.js-rfc-input-En_Nome_Logradouro').val('').attr('placeholder', 'carregando...');
-                $container.find('.js-rfc-input-En_Bairro').val('').attr('placeholder', 'carregando...');
-                $container.find('.js-rfc-input-En_Estado').val('').attr('placeholder', 'carregando...');
-                $container.find('.js-rfc-input-En_Municipio').val('').attr('placeholder', 'carregando...');
-
-                $.getJSON('/site/address_by_postalcode?postalcode='+$cep.val())
-                .success(function(r) {
-                    $container.find('.js-rfc-input-En_Nome_Logradouro').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Bairro').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Estado').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Municipio').attr('placeholder', '');
+                const $street = $container.find(".js-rfc-input-En_Nome_Logradouro");
+                const $nbhood = $container.find(".js-rfc-input-En_Bairro");
+                const $state = $container.find(".js-rfc-input-En_Estado");
+                const $city = $container.find(".js-rfc-input-En_Municipio");
+                const oldStreet = $street.val();
+                const oldNeighbourhood = $nbhood.val();
+                const oldState = $state.val();
+                const oldCity = $city.val();
+                const msgLoading = coalesce(MapasCulturais.gettext.locationPatch.loading, "carregando...");
+                $([$street, $nbhood, $state, $city]).val("").attr("placeholder", msgLoading);
+                $.getJSON("/site/address_by_postalcode?postalcode=" + $cep.val())
+                .done(function(r) {
                     if (r.success) {
-                        $container.find('.js-rfc-input-_lat').val(r.lat).trigger('change');
-                        $container.find('.js-rfc-input-_lon').val(r.lon).trigger('change');
-
-                        $container.find('.js-rfc-input-En_Nome_Logradouro').val(r.streetName).trigger('change');
-                        $container.find('.js-rfc-input-En_Bairro').val(r.neighborhood).trigger('change');
-                        $container.find('.js-rfc-input-En_Estado').val(r.state.sigla).trigger('change');
-
-                        $container.find('.js-rfc-input-En_Municipio').val(r.city.nome).trigger('change');
-
+                        $container.find(".js-rfc-input-_lat").val(r.lat).trigger("change");
+                        $container.find(".js-rfc-input-_lon").val(r.lon).trigger("change");
+                        $street.val(r.streetName).trigger("change");
+                        $nbhood.val(r.neighborhood).trigger("change");
+                        $state.val(r.state.sigla).trigger("change");
+                        $city.val(r.city.nome).trigger("change");
                         setAddress($container);
+                    } else {
+                        $street.val(oldStreet);
+                        $nbhood.val(oldNeighbourhood);
+                        $state.val(oldState);
+                        $city.val(oldCity);
                     }
-                })
-                .error(function() {
-                    $container.find('.js-rfc-input-En_Nome_Logradouro').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Bairro').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Estado').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Municipio').attr('placeholder', '');
-                    $container.find('.js-rfc-input-En_Nome_Logradouro').val(oldStreet);
-                    $container.find('.js-rfc-input-En_Bairro').val(oldNeighbourhood);
-                    $container.find('.js-rfc-input-En_Estado').val(oldState);
-                    $container.find('.js-rfc-input-En_Municipio').val(oldCity);
+                    return;
+                }).fail(function() {
+                    $street.val(oldStreet);
+                    $nbhood.val(oldNeighbourhood);
+                    $state.val(oldState);
+                    $city.val(oldCity);
+                    return;
+                }).always(function() {
+                    $([$street, $nbhood, $state, $city]).attr("placeholder", "");
+                    return;
                 });
             }
-        },timeout);
-
+            return;
+        }, timeout);
         setAddress($container);
+        return;
     }
 
     $('body').on('change', 'input.js-rfc-input-En_CEP', function() {
