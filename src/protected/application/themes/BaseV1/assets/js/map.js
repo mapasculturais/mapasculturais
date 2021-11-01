@@ -167,12 +167,15 @@
                 var city = $('#En_Municipio').editable('getValue', true);
                 var state = $('#En_Estado').editable('getValue', true);
                 var cep = $('#En_CEP').editable('getValue', true);
+                var country = $('#En_Pais').editable('getValue', true);
+                country = country ? country : (MapasCulturais.pais ? MapasCulturais.pais : 'br');
                 MapasCulturais.geocoder.geocode({
                     streetName: streetName,
                     number: number,
                     neighborhood: neighborhood,
                     city: city,
                     state: state,
+                    country: country,
                     postalCode: cep
                 }, geocode_callback);
             });
