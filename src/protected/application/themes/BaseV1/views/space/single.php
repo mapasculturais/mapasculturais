@@ -49,6 +49,8 @@ $this->entity = $entity;
 
             <?php $this->part('singles/name', ['entity' => $entity]) ?>
 
+            <?php $this->part('widget-areas', ['entity' => $entity]); ?>
+
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <!--.header-content-->
@@ -116,8 +118,6 @@ $this->entity = $entity;
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
 
     <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
-
-    <?php $this->part('widget-areas', ['entity' => $entity]); ?>
 
     <?php $this->part('widget-tags', ['entity' => $entity]); ?>
 
