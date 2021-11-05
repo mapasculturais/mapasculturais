@@ -36,6 +36,9 @@
         }
 
     }
+    > hr{
+        margin-bottom: 0em;
+    }    
     @media print {
         .slimScrollDiv, .js-slimScroll {
             overflow: auto !important;
@@ -94,5 +97,14 @@
     }
     a.icon {
         font-size: 1.5rem;
+    }
+}
+
+// areas
+.areas{
+    padding-bottom: 0em;
+    margin-bottom: 0em;
+    > h3 {
+        margin-bottom: 0em !important;
     }
 }
