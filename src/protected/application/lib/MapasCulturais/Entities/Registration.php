@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 /**
  * Registration
@@ -595,6 +596,24 @@ class Registration extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, "entity({$this->hookClassPath}).setAgentsSealRelation:after", [&$opportunityMetadataSeals, &$seal_relations]);
     }
 
+    /**
+     * Retorna array com os nomes dos status
+     * 
+     * @return array
+     */
+    
+    protected static function _getStatusesNames() {
+        $statuses = parent::_getStatusesNames();
+
+        $statuses[self::STATUS_SENT] = i::__('Pendente');
+        $statuses[self::STATUS_INVALID] = i::__('Inválida');
+        $statuses[self::STATUS_NOTAPPROVED] = i::__('Não selecionada');
+        $statuses[self::STATUS_WAITLIST] = i::__('Suplente');
+        $statuses[self::STATUS_APPROVED] = i::__('Selecionada');
+
+        return $statuses;
+    }
+
     function setStatusToDraft(){
         $this->_setStatusTo(self::STATUS_DRAFT);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
@@ -803,7 +822,12 @@ class Registration extends \MapasCulturais\Entity
             $field_required = $field->required;
 
             if(isset($metadata_definition->config['registrationFieldConfiguration']->config['require'])){
-                if ($cond_require = $metadata_definition->config['registrationFieldConfiguration']->config['require']) {
+                if ($cond_require = $metadata_definition->config['registrationFieldConfiguration']->config['require'] && 
+                    ((!empty($metadata_definition->config['registrationFieldConfiguration']->config['require']['condition']) || 
+                    $metadata_definition->config['registrationFieldConfiguration']->config['require']['condition'] != "") && 
+                    $metadata_definition->config['registrationFieldConfiguration']->config['require']['condition'])) {
+
+
                     if(is_object($cond_require)){
                         $cond_require = (array) $cond_require;
                     }
