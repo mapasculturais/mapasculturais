@@ -4,6 +4,8 @@ $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $areas = array_values($app->getRegisteredTaxonomy($entityClass, 'area')->restrictedTerms);
 sort($areas);
 ?>
+
+<hr>
 <div class="widget">
     <h3> <span class="required"></span> <?php $this->dict('taxonomies:area: name') ?></h3>
     <?php if($this->isEditable()): ?>
