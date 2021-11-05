@@ -229,6 +229,52 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
+     * Retorna array com os nomes dos status
+     * 
+     * @return array
+     */
+
+    static function getStatusesNames() {
+        $app = App::i();
+        $class = get_called_class();
+        
+        $statuses = $class::_getStatusesNames();
+        
+        // hook: entity(EntityName).statusesNames
+        $hook_prefix = $class::getHookPrefix();
+        $app->applyHook("{$hook_prefix}.statusesNames", [&$statuses]);
+
+        return $statuses;
+    }
+
+    /**
+     * Retorna array com os nomes dos status
+     * 
+     * @return array
+     */
+    protected static function _getStatusesNames() {
+        return [
+            self::STATUS_ARCHIVED => i::__('Arquivado'),
+            self::STATUS_DISABLED => i::__('Desabilitado'),
+            self::STATUS_DRAFT => i::__('Rascunho'),
+            self::STATUS_ENABLED => i::__('Ativado'),
+            self::STATUS_TRASH => i::__('Lixeira'),
+        ];
+    }
+
+    /**
+     * Retorna o nome do número de status informado, ou null se não existir
+     * 
+     * @return string|null
+     */
+    static function getStatusNameById($status) {
+        $class = get_called_class();
+        $statuses = $class::getStatusesNames();
+
+        return $statuses[$status] ?? null;
+    }
+
+    /**
      * Set entity status
      * 
      * @param int $status 
