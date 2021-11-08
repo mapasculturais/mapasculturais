@@ -2347,7 +2347,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         var registrationAndEvaluationsApi = new OpportunityApiService($scope, 'registrationAndEvaluations', 'findRegistrationsAndEvaluations', {
             '@opportunity': getOpportunityId(),
             '@limit': 50,
-            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status,'
+            '@select': 'id,singleUrl,category,owner.{id,name,singleUrl},consolidatedResult,evaluationResultString,status',
+            '@keyword' : 'like('+$scope.data.keywords+')'
         });
 
         registrationAndEvaluationsApi.find().success(function(){
@@ -2398,15 +2399,32 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
         });
 
         var last = '';
-
+        $scope.timeOut = null;
         $scope.$watch('data.keyword', function(o,n){
             var lower = $scope.data.keyword.toLowerCase();
             if(lower != last){
                 last = lower;
                 $scope.data.keywords = lower.split('*');
             }
+
+            clearTimeout($scope.timeOut);
+            $scope.timeOut = setTimeout(() => {
+                registrationAndEvaluationsApi.find().success(function(){
+                    $scope.registrationAndEvaluations = $scope.data.registrationAndEvaluations.map(object => {
+                        return {
+                            files: {},
+                            id: object.registrationid,
+                            number: object.registrationnumber,
+                            owner: {id: object.agentid, name: object.agentname},
+                            singleUrl: `${MapasCulturais.baseURL}/inscricao/${object.registrationid}/`,
+                            resultString: object.resultString
+                        }
+                    })
+                });                
+            }, 1500);
         });
 
+    
         $scope.evaluated = function(registration){
             return evaluations[registration.id] && evaluations[registration.id].result !== null;
         };
