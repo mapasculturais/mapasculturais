@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $full_date_to = \OpportunityAccountability\Module::fullTextDate($entity->opportunity->registrationTo->getTimestamp());
 ?>
-<div class="registration-fieldset">
+<div class="registration-fieldset" ng-controller="RegistrationFieldsController">
     <?php if ($entity->opportunity->isRegistrationOpen()): ?>
         <p class="registration-help"><?php i::_e("Certifique-se que você preencheu as informações corretamente antes de enviar sua prestação de contas.");?> <strong><?php i::_e("Depois de enviada, não será mais possível editá-la.");?></strong></p>
         <p class="registration-help"><?php i::_e("A prestaçao de contas pode ser enviada até") ?> <?= $full_date_to ?></p>
