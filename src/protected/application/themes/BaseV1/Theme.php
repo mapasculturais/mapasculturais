@@ -1454,9 +1454,8 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-draw', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw-src.js', array('leaflet'));
 
         // Google Maps API only needed in site/search and space, agent and event singles, or if the location patch is active
-        if ((preg_match("#site|space|agent|event|subsite#", $this->controller->id) &&
-             preg_match("#search|single|edit|create#", $this->controller->action)) ||
-            App::i()->config["app.enableLocationPatch"]) {
+        if (preg_match("#site|space|agent|event|subsite#", $this->controller->id) &&
+            preg_match("#search|single|edit|create#", $this->controller->action)) {
             $this->includeGeocodingAssets();
         }
 
