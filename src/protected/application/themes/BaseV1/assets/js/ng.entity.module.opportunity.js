@@ -1110,7 +1110,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
 
          
-            RegistrationService.send(MapasCulturais.entity.object.id).success(function(response){
+            RegistrationService.send(MapasCulturais.registration.id).success(function(response){
                 $('.js-response-error').remove();
                 if(response.error){
                     $scope.data.errors = response.data;
