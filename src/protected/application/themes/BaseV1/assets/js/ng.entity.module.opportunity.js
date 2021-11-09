@@ -872,7 +872,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     var saveTimeout = {};
 
     $scope.data.editableEntity = {
-        id: MapasCulturais.entity.object.id
+        id: MapasCulturais.registration.id
     };
     $scope.saveField = function (field, value, delay) {
         delete field.error;
