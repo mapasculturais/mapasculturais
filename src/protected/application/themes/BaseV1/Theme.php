@@ -1586,6 +1586,14 @@ class Theme extends MapasCulturais\Theme {
         ]);
     }
 
+    function includeGeocodingAssets()
+    {
+        $this->enqueueScript("vendor", "google-maps-api",
+                             ("https://maps.googleapis.com/maps/api/js?key=" .
+                              App::i()->config["app.googleApiKey"]));
+        return;
+    }
+
     function includeSearchAssets() {
 
         $this->jsObject['ngSearchAppDependencies'] = [
