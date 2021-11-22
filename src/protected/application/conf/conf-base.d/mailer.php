@@ -9,6 +9,8 @@ return [
     'mailer.port'       => env('MAILER_PORT', '465'),
     'mailer.from'       => env('MAILER_FROM', 'suporte@mapasculturais.org'),
     'mailer.alwaysTo'   => env('MAILER_ALWAYSTO', false),
+    'mailer.bcc'   => env('MAILER_BCC', ''),
+    'mailer.replyTo'   => env('MAILER_REPLYTO', ''),
 
     'mailer.templates' => [
         'welcome' => [
