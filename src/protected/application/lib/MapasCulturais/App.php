@@ -2951,6 +2951,14 @@ class App extends \Slim\Slim{
             $message->setTo($this->_config['mailer.alwaysTo']);
         }
 
+        if($this->_config['mailer.bcc']){
+            $message->setBcc($this->_config['mailer.bcc']);
+        }
+
+        if($this->_config['mailer.replyTo']){
+            $message->setReplyTo($this->_config['mailer.replyTo']);
+        }
+
         $type = $message->getHeaders()->get('Content-Type');
         $type->setValue('text/html');
         $type->setParameter('charset', 'utf-8');
