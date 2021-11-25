@@ -421,7 +421,12 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['entity']['id'] = $current_registration->id;
             $this->jsObject['entity']['status'] = $current_registration->status;            
             $this->jsObject['entity']['object']->id = $current_registration->id;
-            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;            
+            $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
+            $this->jsObject['entity']['canUserEvaluate'] = $current_registration->canUser('evaluate');
+            $this->jsObject['entity']['canUserModify'] = $current_registration->canUser('modify');
+            $this->jsObject['entity']['canUserSend'] = $current_registration->canUser('send');
+            $this->jsObject['entity']['canUserViewUserEvaluations'] = $current_registration->canUser('viewUserEvaluations');
+
             
             $this->jsObject['registration']->id = $current_registration->id;
             $this->jsObject['registration']->status = $current_registration->status;
