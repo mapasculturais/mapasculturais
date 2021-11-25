@@ -48,16 +48,18 @@ $(function(){
             }
         });
     });
+
     var __onChangeTimeout;
-    $form.on('change', function() {
+    $(".autosave").on('keyup change', function() {
         clearTimeout(__onChangeTimeout);
         __onChangeTimeout = setTimeout(function(){
             var data = $form.serialize();
-            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', [MapasCulturais.registration.id]);
+            var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id, 'status': 'evaluated'});
             $.post(url, data, function(r){
                 MapasCulturais.Messages.success(labels.saveMessage);
             });
-        },1000);
+        },15000);
 
     });
+
 });

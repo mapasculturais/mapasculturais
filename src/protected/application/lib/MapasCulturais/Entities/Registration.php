@@ -1095,16 +1095,12 @@ class Registration extends \MapasCulturais\Entity
                 $is_valuer = true;
             }
         }
+        
+        if(!$is_valuer){
+            return false;
+        }
     
         $evaluation = $this->getUserEvaluation($user);
-
-        if(!$is_valuer){
-            if($evaluation){
-                return true;
-            } else {
-                return false;
-            }
-        }
     
         $can = $this->canUserViewUserEvaluation($user);
 
