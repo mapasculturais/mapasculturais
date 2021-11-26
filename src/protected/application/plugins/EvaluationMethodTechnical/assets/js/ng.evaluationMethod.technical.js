@@ -212,7 +212,7 @@
                 for(var sec in $scope.data.sections){
                     var section = $scope.data.sections[sec];
 
-                    if (section.categories.indexOf($scope.data.registrationCategory) == -1) {
+                    if (section.categories && section.categories.indexOf($scope.data.registrationCategory) == -1) {
                         continue;
                     }
                     
@@ -242,7 +242,7 @@
                 for(var sec in $scope.data.sections){
                     var section = $scope.data.sections[sec];
 
-                    if (section.categories.indexOf($scope.data.registrationCategory) == -1) {
+                    if (section.categories && section.categories.indexOf($scope.data.registrationCategory) == -1) {
                         continue;
                     }
 
