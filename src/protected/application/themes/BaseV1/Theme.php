@@ -1583,6 +1583,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
         $this->localizeScript('editable', [
+            'cepNotFound' => i::__('Não foi possível localizar o endereço pelo CEP informado'),
             'cancel'    => i::__('Cancelar Alteração (Esc)'),
             'confirm'    => i::__('Confirmar Alteração (Enter)'),
             'confirmC'    => i::__('Confirmar Alteração (Ctrl+Enter)'),

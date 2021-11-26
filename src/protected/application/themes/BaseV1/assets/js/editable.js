@@ -1039,6 +1039,7 @@ $(function(){
 
     $('#En_CEP').on('hidden', function(e, params){
         var cep = $('#En_CEP').editable('getValue', true);
+        var labels = MapasCulturais.gettext.editable;
         $.getJSON('/site/address_by_postalcode?postalcode='+cep, function(r){
             if (r.success) {
                 $('#En_Nome_Logradouro').editable('setValue', r.streetName != null ? r.streetName : '');
@@ -1047,6 +1048,8 @@ $(function(){
                 $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
                 concatena_enderco();
             }
+        }).fail(function (response) {
+            MapasCulturais.Messages.error(labels.cepNotFound);
         });
     });
 });
