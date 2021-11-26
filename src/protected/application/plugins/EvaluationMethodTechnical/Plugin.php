@@ -78,6 +78,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 'true' => i::__('Habilitar Análise de Exiquibilidade'),
                 'false' => i::__('Não habilitar'),
             ),
+            'unserialize' => function($value) {
+                if ($value == 'false') {
+                    $value = false;   
+                }
+
+                return (bool) $value;
+            },
+            'default' => 'false'
         ]);
 
     }

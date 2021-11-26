@@ -49,12 +49,12 @@ use MapasCulturais\i;
         <?php i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
     </p>
 
-    <label for="enableViability">
-        <input type="radio" ng-model="data.enableViability" value="true" ng-change="save({enableViability: true})" name="enableViability" /> <?php i::_e('Habilitar'); ?>
+    <label>
+        <input type="radio" ng-model="data.enableViability" ng-value="true" ng-change="save({enableViability: true})" name="enableViability" /> <?php i::_e('Habilitar'); ?>
     </label>
 
-    <label for="enableViability">
-        <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
+    <label>
+        <input type="radio" ng-model="data.enableViability" ng-value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
     </label>
 </div>
 

@@ -35,7 +35,7 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
     </label>
     <hr>
     
-    <label ng-show="data.enableViability=='true'">
+    <label ng-if="data.enableViability">
         <strong> <?php i::_e('Exequibilidade Orçamentária'); ?> </strong> <span class="required">*</span> <br>
         <?php i::_e('Esta proposta está adequada ao orçamento apresentado? Os custos orçamentários estão compatíveis com os praticados no mercado?'); ?>
         <br>
