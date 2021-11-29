@@ -1,5 +1,15 @@
 <?php
-$this->layout = 'panel'
+use MapasCulturais\i;
+$this->layout = 'panel';
+
+$user = $app->user;
+
+$ativos_num = count($seals);
+$meus_num = count($user->enabledSeals);
+$permitido_num = count($user->hasControlSeals);
+$rascunhos_num = count($user->draftSeals);
+$lixeira_num = count($user->trashedSeals);
+$arquivo_num = count($user->archivedSeals);
 ?>
 <div class="panel-list panel-main-content">
 
@@ -15,12 +25,12 @@ $this->layout = 'panel'
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($seals);?>)</a></li>
-        <li><a href="#meus" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Meus");?> (<?php echo count($app->user->enabledSeals);?>)</a></li>
-        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlSeals);?>)</a></li>
-        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($app->user->draftSeals);?>)</a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($app->user->trashedSeals);?>)</a></li>
-        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedSeals);?>)</a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos") . " ($ativos_num)", 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'meus', 'label' => i::__("Meus") . " ($meus_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'permitido', 'label' => i::__("Concedidos") . " ($permitido_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos") . " ($rascunhos_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira") . " ($lixeira_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo") . " ($arquivo_num)"]) ?>
     </ul>
     <!-- #ativos-->
     <div id="ativos">

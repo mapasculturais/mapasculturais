@@ -1,7 +1,16 @@
 <?php
+use MapasCulturais\i;
+
 $this->layout = 'panel';
 $app = \MapasCulturais\App::i();
 $opportunitiesToEvaluate = $user->opportunitiesCanBeEvaluated;
+
+$ativos_num = count($user->enabledOpportunities);
+$permitido_num = count($user->hasControlOpportunities);
+$rascunhos_num = count($user->draftOpportunities);
+$lixeira_num = count($user->trashedOpportunities);
+$arquivo_num = count($user->archivedOpportunities);
+$avaliacoes_num = count($opportunitiesToEvaluate);
 ?>
 <div class="panel-list panel-main-content">
     
@@ -15,12 +24,12 @@ $opportunitiesToEvaluate = $user->opportunitiesCanBeEvaluated;
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledOpportunities); ?>)</a></li>
-        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlOpportunities); ?>)</a></li>
-        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftOpportunities); ?>)</a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedOpportunities); ?>)</a></li>
-        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedOpportunities); ?>)</a></li>
-        <li><a href="#avaliacoes" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Avaliações");?> (<?php echo count($opportunitiesToEvaluate); ?>)</a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos") . " ($ativos_num)", 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'permitido', 'label' => i::__("Concedidos") . " ($permitido_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos") . " ($rascunhos_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira") . " ($lixeira_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo") . " ($arquivo_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'avaliacoes', 'label' => i::__("Avaliações") . " ($avaliacoes_num)"]) ?>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledOpportunities as $entity): ?>
