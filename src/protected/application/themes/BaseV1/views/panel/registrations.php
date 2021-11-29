@@ -1,4 +1,6 @@
 <?php
+use MapasCulturais\i;
+
 use MapasCulturais\Entities\Registration;
 $this->layout = 'panel';
 $has_drafts_registration = false;
@@ -17,8 +19,8 @@ $app->applyHookBoundTo($this, 'panel(registration.panel):begin', [&$sent,&$draft
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-            <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?></a></li>
-            <li><a href="#enviadas" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Enviadas");?></a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Rascunhos"), 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'enviadas', 'label' => i::__("Enviadas")]) ?>
     </ul>
     <div id="ativos">
         <?php foreach($drafts as $registration): ?>
