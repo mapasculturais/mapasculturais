@@ -81,7 +81,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $app = App::i();
         
-        if ($app->config['disableForValuers']) {
+        if ($app->config['registration.disableForValuers']) {
             $opportunity = $this->owner->opportunity;
             $agent_user = $this->agent->user;
 

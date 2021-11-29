@@ -24,8 +24,7 @@ class EvaluationMethodConfiguration extends EntityController {
 
     public function POST_createAgentRelation () {
         $app = App::i();
-
-        if ($app->config['disableForValuers']) {
+        if ($app->config['registration.disableForValuers']) {
             if (!$this->urlData['id'] ?? null) {
                 $app->pass();
             }
