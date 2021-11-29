@@ -3,6 +3,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 use MapasCulturais\Traits;
 
 // use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -17,7 +18,39 @@ use MapasCulturais\Traits;
  */
 class EvaluationMethodConfiguration extends EntityController {
     use Traits\ControllerTypes,
-        Traits\ControllerAgentRelation;
+        Traits\ControllerAgentRelation {
+            POST_createAgentRelation as protected _POST_createAgentRelation;
+        }
+
+    public function POST_createAgentRelation () {
+        $app = App::i();
+
+        if ($app->config['disableForValuers']) {
+            if (!$this->urlData['id'] ?? null) {
+                $app->pass();
+            }
+
+            $owner = $this->repository->find($this->data['id']);
+
+            if (!$owner) {
+                $app->pass();
+            }
+
+            if($this->postData['agentId'] ?? null){
+                $agent = $app->repo('Agent')->find($this->data['agentId']);
+            }else{
+                $app->pass();
+            }
+        
+            $registrations = $app->repo('Registration')->findByOpportunityAndUser($owner->opportunity, $agent->user);
+    
+            if (count($registrations)) {
+               $this->errorJson(i::__('O usuário possui inscrições na oportunidade e não pode ser avaliador'), 403);
+            }
+        }
+
+        $this->_POST_createAgentRelation();
+    }
 
     public function GET_create() {
         App::i()->pass();

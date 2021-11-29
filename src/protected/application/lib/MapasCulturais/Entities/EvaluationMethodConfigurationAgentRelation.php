@@ -3,6 +3,8 @@ namespace MapasCulturais\Entities;
 
 use MapasCulturais\App;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\ApiQuery;
+use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\JobTypes\ReopenEvaluations;
 
 /**
@@ -73,5 +75,22 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $this->save($flush);
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:after");
+    }
+
+    function canUserCreate($user)
+    {
+        $app = App::i();
+        
+        if ($app->config['disableForValuers']) {
+            $opportunity = $this->owner->opportunity;
+            $agent_user = $this->agent->user;
+
+            $registrations = $app->repo('Registration')->findByOpportunityAndUser($opportunity, $agent_user);
+
+            if (count($registrations)) {
+                return false;
+            }
+        }
+        return parent::canUserCreate($user);
     }
 }

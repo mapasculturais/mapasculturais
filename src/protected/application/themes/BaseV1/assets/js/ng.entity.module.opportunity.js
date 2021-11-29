@@ -1560,6 +1560,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                     _scope.$parent.searchText = '';
                     _scope.$parent.result = [];
                     EditBox.close('add-committee-agent');
+                }).error(function (response) {
+                    _scope.spinnerCondition = false;
+                    _scope.noEntityFound  = false;
+                    MapasCulturais.Messages.error(response.data);
+                    // EditBox.close('add-committee-agent');
+                    // _scope.$parent.searchText = '';
+                    // _scope.$parent.result = [];
                 });
             } else {
                 _scope.spinnerCondition = false;

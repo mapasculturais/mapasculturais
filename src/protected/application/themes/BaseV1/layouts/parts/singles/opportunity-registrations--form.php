@@ -1,4 +1,8 @@
-<?php if ($entity->isRegistrationOpen()): ?>
+<?php
+
+use MapasCulturais\i;
+
+if ($entity->isRegistrationOpen() && $entity->canUser('register')): ?>
     <?php if ($app->auth->isUserAuthenticated()): ?>
         <form id="opportunity-registration" class="registration-form clearfix">
             <p class="registration-help"><?php \MapasCulturais\i::_e("Para iniciar sua inscrição, selecione o agente responsável. Ele deve ser um agente individual (pessoa física), com um CPF válido preenchido.");?></p>
@@ -18,5 +22,13 @@
         <a class="btn btn-primary" ng-click="setRedirectUrl()" <?php echo $this->getLoginLinkAttributes() ?>>
             <?php \MapasCulturais\i::_e("Entrar");?>
         </a>
+    <?php endif; ?>
+<?php elseif ($entity->isRegistrationOpen() && !$entity->canUser('register')): ?>
+    <?php if ($app->user->is('admin')): ?>
+        <p class='alert warning'><?php i::_e('Admins não podem se inscrever em oportunidades.'); ?></p>
+    <?php elseif ($entity->canUser('@control')): ?>
+        <p class='alert warning'><?php i::_e('Gestores da oportunidade não podem se inscrever.'); ?></p>
+    <?php elseif ($entity->canUser('viewEvaluations')): ?>
+        <p class='alert warning'><?php i::_e('Avaliadores da oportunidade não podem se inscrever.') ?></p>
     <?php endif; ?>
 <?php endif; ?>

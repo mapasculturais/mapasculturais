@@ -874,6 +874,23 @@ abstract class Opportunity extends \MapasCulturais\Entity
         if($user->is('guest'))
             return false;
 
+        $app = App::i();
+
+        // impede que admins do sistema se inscrevam
+        if ($app->config['registration.disableForAdmins'] && $user->is('admin')) {
+            return false;
+        }
+            
+        // impede que o gestor da oportunidade se inscreva
+        if ($app->config['registration.disableForOwners'] && $this->canUser('@control')) {
+            return false;
+        }
+
+        // impede que avaliadores se inscrevam
+        if ($app->config['registration.disableForValuers'] && $this->canUser('viewEvaluations')) {
+            return false;
+        }
+        
         return $this->isRegistrationOpen();
     }
 

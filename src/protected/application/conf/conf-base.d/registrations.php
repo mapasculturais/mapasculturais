@@ -3,6 +3,10 @@
 return [
     'registration.prefix' => env('REGISTRATION_PREFIX', 'on-'),
 
+    'registration.disableForValuers' => env('REGISTRATION_DISABLE_FOR_VALUERS', true),
+    'registration.disableForAdmins' => env('REGISTRATION_DISABLE_FOR_ADMINS', true),
+    'registration.disableForOwners' => env('REGISTRATION_DISABLE_FOR_OWNERS', true),
+
     /* 
     Timeout para o auto salvamento das inscrições (em milisegundos)
     */
