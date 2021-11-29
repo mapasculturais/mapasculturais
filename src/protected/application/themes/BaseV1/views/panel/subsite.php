@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 $this->layout = 'panel';
 
 if (!$app->user->is('admin')) {
@@ -19,10 +20,10 @@ if (!$app->user->is('admin')) {
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Ativos') ?></a></li>
-        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Rascunhos') ?></a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Lixeira') ?></a></li>
-		<li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e('Arquivo') ?></a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos"), 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos")]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira")]) ?>
+        <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo")]) ?>
     </ul>
     <div id="ativos">
         <?php foreach($app->user->enabledSubsite as $entity): ?>

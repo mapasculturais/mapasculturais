@@ -1,6 +1,14 @@
 <?php
+use MapasCulturais\i;
+
 $this->layout = 'panel';
 $label = \MapasCulturais\i::__("Adicionar novo evento");
+
+$ativos_num = $meta->count;
+$permitido_num = count($app->user->hasControlEvents);
+$rascunhos_num = count($draft);
+$lixeira_num = count($trashed);
+$arquivo_num = count($app->user->archivedEvents);
 ?>
 <div class="panel-list panel-main-content">
     
@@ -13,13 +21,12 @@ $label = \MapasCulturais\i::__("Adicionar novo evento");
     </header>
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 	
-	
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo $meta->count; ?>)</a></li>
-        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlEvents);?>)</a></li>
-        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($draft); ?>)</a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($trashed); ?>)</a></li>
-        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedEvents);?>)</a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos") . " ($ativos_num)", 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'permitido', 'label' => i::__("Concedidos") . " ($permitido_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos") . " ($rascunhos_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira") . " ($lixeira_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo") . " ($arquivo_num)"]) ?>
     </ul>
     <div id="ativos">
 

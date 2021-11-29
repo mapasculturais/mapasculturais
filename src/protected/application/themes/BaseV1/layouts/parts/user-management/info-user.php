@@ -63,14 +63,14 @@
     
   <div>
     <ul class="abas clearfix clear">
-      <li class="active"><a href="#agentes" rel='noopener noreferrer'><?php i::_e("Agentes");?></a></li>
-      <li><a href="#espacos" rel='noopener noreferrer'><?php i::_e("Espaços");?></a></li>
-      <li><a href="#eventos" rel='noopener noreferrer'><?php i::_e("Eventos");?></a></li>
-      <li><a href="#projetos" rel='noopener noreferrer'><?php i::_e("Projetos");?></a></li>
-      <li><a href="#oportunidades" rel='noopener noreferrer'><?php i::_e("Oportunidades");?></a></li>
-      <li><a href="#inscricoes" rel='noopener noreferrer'><?php i::_e("Inscrições");?></a></li>
-      <li><a href="#permissoes" rel='noopener noreferrer'><?php i::_e("Permissões");?></a></li>
-      <li><a href="#atividade" rel='noopener noreferrer'><?php i::_e("Atividades");?></a></li>
+      <?php $this->part('tab', ['id' => 'agentes', 'label' => i::__("Agentes"), 'active' => true]) ?>
+      <?php $this->part('tab', ['id' => 'espacos', 'label' => i::__("Espaços")]) ?>
+      <?php $this->part('tab', ['id' => 'eventos', 'label' => i::__("Eventos")]) ?>
+      <?php $this->part('tab', ['id' => 'projetos', 'label' => i::__("Projetos")]) ?>
+      <?php $this->part('tab', ['id' => 'oportunidades', 'label' => i::__("Oportunidades")]) ?>
+      <?php $this->part('tab', ['id' => 'inscricoes', 'label' => i::__("Inscrições")]) ?>
+      <?php $this->part('tab', ['id' => 'permissoes', 'label' => i::__("Permissões")]) ?>
+      <?php $this->part('tab', ['id' => 'atividade', 'label' => i::__("Atividades")]) ?>
     </ul>
   </div>
     
