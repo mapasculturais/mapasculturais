@@ -2221,30 +2221,18 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             $scope.register = function(){                
                 var registration = $scope.data.registration;                
-                var ownerRegistration = [];
-                // @TODO: buscar na api
-                for(var i in $scope.data.registrations) {
-                    if(registration.owner && $scope.data.registrations[i].owner){
-                        if($scope.data.registrations[i].owner.id == registration.owner.id) {
-                            ownerRegistration.push($scope.data.registrations[i].owner);
+                
+                RegistrationService.register(registration).success(function(rs){
+                    if(rs.error) {
+                        if(rs.data.owner) {
+                            MapasCulturais.Messages.error(rs.data.owner);
+                        } else {
+                            MapasCulturais.Messages.error(MapasCulturais.gettext.moduleOpportunity.unexpectedError);
                         }
-                    }
-                }
-
-                if(MapasCulturais.entity.object.registrationLimitPerOwner > 0 && ownerRegistration.length >= MapasCulturais.entity.object.registrationLimitPerOwner) {
-                    MapasCulturais.Messages.error(labels['limitReached']);
-                }else if(MapasCulturais.entity.object.registrationLimit > 0 && registration.owner && $scope.data.registrations.length >= MapasCulturais.entity.object.registrationLimit){
-                    MapasCulturais.Messages.error(labels['VacanciesOver']);
-                }else if(registration.owner && (MapasCulturais.entity.object.registrationLimit == 0 || $scope.data.registrations.length <= MapasCulturais.entity.object.registrationLimit)){
-                    RegistrationService.register(registration).success(function(rs){
+                    } else {
                         document.location = rs.editUrl;
-                    });
-                }else {
-                    setTimeout(function(){
-                        $('#select-registration-owner-button').trigger("click");
-                    }, 0);
-                    MapasCulturais.Messages.error(labels['needResponsible']);
-                }
+                    }
+                });
             };
 
             $scope.sendRegistrationRulesFile = function(){
