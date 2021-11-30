@@ -4,13 +4,13 @@ namespace MapasCulturais;
 abstract class AssetManager{
     /**
      *
-     * @var type
+     * @var array
      */
     protected $_enqueuedScripts = [];
 
     /**
      *
-     * @var type
+     * @var array
      */
     protected $_enqueuedStyles = [];
 
