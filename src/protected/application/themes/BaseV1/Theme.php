@@ -1805,6 +1805,7 @@ class Theme extends MapasCulturais\Theme {
         
         $this->enqueueScript('app', 'entity.module.opportunity', 'js/ng.entity.module.opportunity.js', array('ng-mapasculturais'));
         $this->localizeScript('moduleOpportunity', [
+            'unexpectedError'    => i::__('Um erro inesperado aconteceu.'),
             'allCategories' => i::__('Todas as categorias'),
             'selectFieldType' =>  i::__('Selecione o tipo de campo'),
             'fieldCreated' =>  i::__('Campo criado.'),
