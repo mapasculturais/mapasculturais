@@ -1706,4 +1706,12 @@ $$
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Subsite')");
     },
+    
+    'alter table add registration_file_configuration metadata' => function() use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_file_configuration ADD metadata TEXT;");
+    },
+    'alter table add registration_file_configuration multiple' => function() use($conn) {
+        $conn->executeQuery("ALTER TABLE registration_file_configuration ADD multiple BOOLEAN;");
+    },
+
 ] + $updates ;

@@ -81,6 +81,20 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     */
     protected $__files;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metadata", type="array", nullable=false)
+     */
+    protected $_metadata = [];
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="multiple", type="boolean", nullable=true)
+     */
+    protected $multiple = false;
+
     static function getValidations() {
         $app = App::i();
         $validations = [
@@ -115,6 +129,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->categories = $value;
     }
 
+    public function setMetadata($value) {
+        $this->_metadata = (array) $value;
+    }
+
+    public function getMetadata() {
+        return (array) $this->_metadata;
+    }
+
     public function jsonSerialize() {
         return [
             'id' => $this->id,
@@ -125,7 +147,9 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
             'categories' => $this->categories,
-            'displayOrder' => $this->displayOrder
+            'displayOrder' => $this->displayOrder,
+            'metadata' => (object) $this->metadata,
+            'multiple' => (boolean) $this->multiple
         ];
     }
 

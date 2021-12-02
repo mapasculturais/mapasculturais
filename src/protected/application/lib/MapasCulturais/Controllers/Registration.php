@@ -22,7 +22,16 @@ class Registration extends EntityController {
 
     function __construct() {
         $app = App::i();
-        $app->hook('POST(registration.upload):before', function() use($app) {
+       
+        $app->hook('<<*>>(registration.<<*>>):before', function() use($app) {
+       // $app->hook('POST(registration.upload):before', function() use($app) {
+
+            $registration = $this->requestedEntity;
+
+            if (!$registration) {
+                return;
+            }
+            
             $mime_types = [
                 'application/pdf',
                 'audio/.+',
@@ -78,10 +87,9 @@ class Registration extends EntityController {
                 'application/zip'
 
             ];
-            $registration = $this->requestedEntity;
+            
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
-
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'),  !$rfc->multiple, null, true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
