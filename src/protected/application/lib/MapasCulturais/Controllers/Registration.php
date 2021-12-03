@@ -28,7 +28,7 @@ class Registration extends EntityController {
 
             $registration = $this->requestedEntity;
 
-            if (!$registration) {
+            if (!$registration || !$registration->opportunity) {
                 return;
             }
             
@@ -87,11 +87,11 @@ class Registration extends EntityController {
                 'application/zip'
 
             ];
-            
+    
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
                 $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'),  !$rfc->multiple, null, true);
                 $app->registerFileGroup('registration', $fileGroup);
-            }
+            }         
         });
 
         $app->hook('entity(Registration).file(rfc_<<*>>).insert:before', function() use ($app){
@@ -105,7 +105,12 @@ class Registration extends EntityController {
             $finfo = pathinfo($this->name);
             $hash = uniqid();
 
-            $this->name = $this->owner->number . ' - ' . $hash . ' - ' . preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title) . '.' . $finfo['extension'];
+            if ($rfc->multiple && $this->description) {
+                $this->name = $this->owner->number . ' - ' . $hash . ' - ' . preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title . ' - ' . $this->description) . '.' . $finfo['extension'];
+            } else {
+                $this->name = $this->owner->number . ' - ' . $hash . ' - ' . preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title) . '.' . $finfo['extension'];
+            }
+
             $tmpFile = $this->tmpFile;
             $tmpFile['name'] = $this->name;
             $this->tmpFile = $tmpFile;
