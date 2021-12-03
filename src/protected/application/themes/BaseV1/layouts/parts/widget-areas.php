@@ -4,8 +4,6 @@ $entityName = strtolower(array_slice(explode('\\', $entityClass),-1)[0]);
 $definition = $app->getRegisteredTaxonomy($entityClass, 'area');
 $areas = array_values($definition->restrictedTerms);
 sort($areas);
-
-eval(\psy\sh());
 ?>
 <div class="widget">
     <h3>
