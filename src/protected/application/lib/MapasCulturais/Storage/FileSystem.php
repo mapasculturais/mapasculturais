@@ -194,11 +194,16 @@ class FileSystem extends \MapasCulturais\Storage{
             $file->delete(true);
         }
         \MapasCulturais\App::i()->em->refresh($entity);
-        $files = array_map(function($item){
-            if (is_array($item)) {
-                $item = $item[0];
+        $files = array_map(function($file){
+            if (is_array($file)) {
+                $files = array_map(function($item) {
+                    return '"'.$this->getPath($item).'"';
+                }, $file);
+                return implode(' ', $files);
+            } else {
+                return '"'.$this->getPath($file).'"';
             }
-            return '"'.$this->getPath($item).'"';
+            
         }, $entity->files);
 
 
