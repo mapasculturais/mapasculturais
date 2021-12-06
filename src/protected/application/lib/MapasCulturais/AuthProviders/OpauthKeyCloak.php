@@ -9,6 +9,8 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
 
     protected $_firstLloginUrl = null;
 
+    protected $baseUrl = '';
+
     protected function _init() {
         $app = App::i();
         
@@ -22,7 +24,9 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
             'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
         ], $this->_config);
         
-        
+        preg_match('#(https?://[^/]+/)#',$config['auth_endpoint'], $matches);
+        $this->baseUrl = $matches[0];
+
          $opauth_config = [
             'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
             'Strategy' => [
@@ -295,5 +299,9 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
 
         return $user;
         
+    }
+
+    function getChangePasswordUrl() {
+        return $this->baseUrl . 'auth/realms/saude/account/password';
     }
 }
