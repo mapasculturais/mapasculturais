@@ -327,15 +327,13 @@ abstract class Theme extends \Slim\View {
             }
 
         }
-        
-        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data, &$__template]);
-
         if(strtolower(substr($__template, -4)) === '.php'){
-            $__template_filename = $__template;
             $__template = substr($__template, 0, -4);
-        } else {
-            $__template_filename = $__template . '.php';
-        }
+        } 
+
+        $app->applyHookBoundTo($this, 'view.partial(' . $__template . ').params', [&$__data, &$__template]);
+        
+        $__template_filename = $__template . '.php';
         
         if(is_array($__data)){
             extract($__data);
