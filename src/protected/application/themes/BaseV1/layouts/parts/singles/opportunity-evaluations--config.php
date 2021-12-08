@@ -3,6 +3,7 @@ use MapasCulturais\i;
 
 $configuration = $entity->evaluationMethodConfiguration;
 $definition = $configuration->definition;
+
 ?>
 
 <div id="evaluations-config" class="aba-content" ng-controller="EvaluationMethodConfigurationController">
@@ -17,7 +18,14 @@ $definition = $configuration->definition;
         <?php $this->part('singles/opportunity-evaluations--committee', ['entity' => $entity]) ?>
 
         <?php if($config_form_part_name): ?>
-            <div> <?php $this->part($config_form_part_name, ['entity' => $entity]) ?> </div> <hr>
+            <?php $this->applyTemplateHook("evaluation-config-form--{$evaluationMethod->slug}", 'before') ?>
+            <div> 
+                <?php $this->applyTemplateHook("evaluation-config-form--{$evaluationMethod->slug}", 'begin') ?>
+                <?php $this->part($config_form_part_name, ['entity' => $entity]) ?> 
+                <?php $this->applyTemplateHook("evaluation-config-form--{$evaluationMethod->slug}", 'end') ?>
+            </div> 
+            <hr>
+            <?php $this->applyTemplateHook("evaluation-config-form--{$evaluationMethod->slug}", 'after') ?>
         <?php endif; ?>
 
         <div>
