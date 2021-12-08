@@ -483,6 +483,16 @@ abstract class Theme extends \Slim\View {
         
     }
 
+    function printJsObject (string $var_name = 'Mapas', bool $print_script_tag = true) {
+        $json = json_encode($this->jsObject);
+        $var = "var {$var_name} = {$json};";
+        if ($print_script_tag) {
+            echo "\n<script type=\"text/javascript\">\n{$var}\n</script>\n";
+        } else {
+            echo $var;
+        }
+    }
+
     function printScripts($group){
         $this->_assetManager->printScripts($group);
     }
