@@ -398,6 +398,84 @@ abstract class Theme extends \Slim\View {
         echo $this->partialRender($template, $data, true);
     }
 
+    /**
+     * Enfileira o javascript do componente
+     * 
+     * @param string $component Nome do componente
+     * @param array $dependences Dependências do componente
+     */
+    function enqueueComponentScript(string $component, array $dependences = [])
+    {
+        $this->enqueueScript('components', $component, "../components/{$component}/script.js", $dependences);
+    }
+
+    /**
+     * Inclui os assets necessários para os componentes funcionarem
+     */
+    abstract function includeComponentBaseAssets();
+
+    /**
+     * Importa um componente
+     * 
+     * @param string $component Nome do componente
+     * @param array $data Dados para passar na renderizaçao do template do componente
+     * @param array $dependences Dependências do componente
+     */
+    function import(string $component, array $data = [], array &$dependences = [])
+    {
+        $template = $this->componentRender($component, $data);
+        $this->jsObject['componentTemplates'][$component] = $template;
+
+        $this->enqueueComponentScript($component, $dependences);
+
+        if (!in_array($component, $dependences)) {
+            $dependences[] = $component;
+        }
+    }
+
+    /**
+     * Renderiza o template do componente informado e retorna o html renderizado
+     *  
+     * @param string $component Nome do componente
+     * @param array $__data Dados Dados para passar na renderizaçao do template do componente 
+     * 
+     * @return string
+     */
+    function componentRender(string $component, array $__data = []): string
+    {
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, "component({$component}):params", [&$component, &$__data]);
+
+        $__template_path = $this->resolveFilename("components/{$component}", 'template.php');
+
+        if (!$__template_path) {
+            throw new Exceptions\TemplateNotFound("Component {$component} not found");
+        }
+
+        $app->applyHookBoundTo($this, "component({$component}):before", [&$__template_path]);
+
+        ob_start(function ($output) {
+            return $output;
+        });
+
+        if ($app->mode == APPMODE_DEVELOPMENT) {
+            echo "<!-- $component -->\n";
+        }
+
+        include $__template_path;
+
+        if ($app->mode == APPMODE_DEVELOPMENT) {
+            echo "\n<!-- /$component -->\n";
+        }
+
+        $__html = ob_get_clean();
+
+        $app->applyHookBoundTo($this, "component({$component}):after", [$__template_path, &$__html]);
+
+        return $__html;
+    }
+
     function getTitle($entity = null){
         $app = App::i();
         $title = '';
@@ -485,7 +563,10 @@ abstract class Theme extends \Slim\View {
 
     function printJsObject (string $var_name = 'Mapas', bool $print_script_tag = true) {
         $json = json_encode($this->jsObject);
-        $var = "var {$var_name} = {$json};";
+        $var = "
+var {$var_name} = {$json}; 
+var \$TEMPLATES = {$var_name}.componentTemplates || [];
+";
         if ($print_script_tag) {
             echo "\n<script type=\"text/javascript\">\n{$var}\n</script>\n";
         } else {
