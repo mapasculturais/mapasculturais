@@ -32,18 +32,6 @@ foreach ($definitions as $def) {
     </div>
     <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>
     <edit-box id="editbox-file-{{::field.id}}" position="bottom" title="{{::field.title}} {{::field.required ? '*' : ''}}" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar"); ?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar anexo"); ?>" loading-label="<?php \MapasCulturais\i::esc_attr_e("Carregando ..."); ?>" on-submit="sendFile" close-on-cancel='true' index="{{$index}}" spinner-condition="data.uploadSpinner">
-
-        <form class="js-ajax-upload" method="post" action="{{uploadUrl}}" data-group="{{::field.groupName}}" enctype="multipart/form-data">
-            <div class="alert danger hidden"></div>
-            <p class="form-help"><?php \MapasCulturais\i::_e("Tamanho máximo do arquivo:"); ?> {{maxUploadSizeFormatted}}</p>
-            <input type="file" name="{{::field.groupName}}" />
-
-            <div class="js-ajax-upload-progress">
-                <div class="progress">
-                    <div class="bar"></div>
-                    <div class="percent">0%</div>
-                </div>
-            </div>
-        </form>
+        <?php $this->part('singles/registration-edit--upload-form') ?>
     </edit-box>
 </div>
