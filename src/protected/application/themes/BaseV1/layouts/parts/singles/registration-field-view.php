@@ -2,11 +2,17 @@
 use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('registration-field-item', 'begin') ?>
-<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links' ">
+<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'checkbox' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links' ">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
     <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
     <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado."); ?></em></span>
+</div>
+<div ng-if="field.fieldType === 'checkbox'">
+    <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
+    <span ng-if="entity[field.fieldName]"><?php \MapasCulturais\i::_e('Sim') ?></span>
+    <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Não.");?></em></span>
+    <p>{{field.description}}<p>
 </div>
 <div ng-if="field.fieldType === 'section'">
     <h4>{{field.title}}</h4>
