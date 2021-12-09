@@ -6,7 +6,9 @@ $ditable_class = $can_edit ? 'js-editable' : '';
 $editEntity = $this->controller->action === 'create' || $this->controller->action === 'edit';
 
 ?>
+<?php $this->applyTemplateHook('registration-agents','before'); ?>
 <div id="registration-agent-relations" class="registration-fieldset">
+    <?php $this->applyTemplateHook('registration-agents','begin'); ?>
     <h4><?php \MapasCulturais\i::_e("Agentes");?></h4>
     <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, mas é possível que a inscrição seja feita em nome de um agente coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são necessárias e se são obrigatórias.");?></p>
     <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php \MapasCulturais\i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto.");?> </p>
@@ -41,5 +43,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <span class="registration-help"><?php \MapasCulturais\i::_e("Zero (0) significa sem limites");?></span><br>
         <span class="<?php echo $ditable_class ?>" data-edit="registrationLimitPerOwner" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Número máximo de inscrições por agente responsável");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o número máximo de inscrições por agente responsável");?>"><?php echo $entity->registrationLimitPerOwner ? $entity->registrationLimitPerOwner : '0'; ?></span>
     </p>
+    <?php $this->applyTemplateHook('registration-agents','end'); ?>
 </div>
+<?php $this->applyTemplateHook('registration-agents','after'); ?>
 <!-- #registration-agent-relations -->

@@ -9,7 +9,19 @@ use MapasCulturais\App;
 
 /**
  * Event
- *
+ * 
+ * @property-read int $id
+ * @property Project $project
+ * @property-write int $projectId
+ * @property string $name
+ * @property array $rule
+ * @property string $shortDescription
+ * @property string $longDescription
+ * @property int $status
+ * @property-read \DateTime $createTimestamp
+ * @property-read \DateTime $updateTimestamp
+ * @property-read MapasCulturais\Entities\EventOccurrence[] $occurrences
+ * 
  * @ORM\Table(name="event")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Event")
@@ -33,6 +45,8 @@ class Event extends \MapasCulturais\Entity
         Traits\EntityArchive,
         Traits\EntityRevision,
         Traits\EntityOpportunities;
+        
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer
@@ -47,7 +61,7 @@ class Event extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="smallint", nullable=false)
+     * @ORM\Column(name="type", type="smallint", nullable=true)
      */
     protected $_type = 1;
 
@@ -94,6 +108,8 @@ class Event extends \MapasCulturais\Entity
     protected $status = self::STATUS_ENABLED;
 
     /**
+     * @var MapasCulturais\Entities\EventOccurrence[]
+     * 
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="event", cascade="remove", orphanRemoval=true)
     */
     protected $occurrences = [];
@@ -197,7 +213,7 @@ class Event extends \MapasCulturais\Entity
 
     private $_newProject = false;
 
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Eventos');
         else

@@ -84,11 +84,11 @@ class EvaluationMethodConfiguration extends EntityController {
         parent::POST_single();
     }
 
-    function POST_reopenValuerEvaluations(){
-        $app = App::i();
-
+    protected function _getValuerAgentRelation() {
         $this->requireAuthentication();
 
+        $app = App::i();
+        
         $entity = $this->requestedEntity;
         $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relationId']);
 
@@ -96,7 +96,29 @@ class EvaluationMethodConfiguration extends EntityController {
             $app->pass();
         }
 
+        return $relation;
+    }
+
+    function POST_reopenValuerEvaluations(){
+        $relation = $this->_getValuerAgentRelation();
+
         $relation->reopen(true);
+
+        $this->_finishRequest($relation);
+    }
+
+    function POST_disableValuer() {
+        $relation = $this->_getValuerAgentRelation();
+
+        $relation->disable(true);
+
+        $this->_finishRequest($relation);
+    }
+
+    function POST_enableValuer() {
+        $relation = $this->_getValuerAgentRelation();
+
+        $relation->enable(true);
 
         $this->_finishRequest($relation);
     }

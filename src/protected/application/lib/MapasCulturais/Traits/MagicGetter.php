@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use MapasCulturais\App;
+
 /**
  * Defines the magic getter method the be used when trying to get a protected or private property.
  *
@@ -15,7 +17,9 @@ trait MagicGetter{
     * Otherwise returns null.
      */
     public function __get($name){
-        $metadata = false;
+        if($name === '__enableMagicGetterHook'){
+            return null;
+        }
 
         if(property_exists($this, 'container') && $val = $this->container[$name]){
             $value =  $val;
@@ -28,12 +32,18 @@ trait MagicGetter{
             $value =  $this->$name;
 
         }else if(method_exists($this,'usesMetadata') && $this->usesMetadata()){
-            $metadata = true;
             $value =  $this->__metadata__get($name);
 
         }else{
             $value = null;
 
+        }
+
+        if ($name != 'hookClassPath' && $name != 'hookPrefix' && $this->__enableMagicGetterHook ?? false) {
+            $app = App::i();
+            $hookPrefix = self::getHookPrefix();
+            $hook_name =  "{$hookPrefix}.get({$name})";
+            $app->applyHookBoundTo($this, $hook_name, [&$value, $name]);
         }
 
         return $value;

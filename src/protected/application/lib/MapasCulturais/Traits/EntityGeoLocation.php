@@ -1,7 +1,10 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Exception;
 use MapasCulturais\App;
 use \MapasCulturais\Types\GeoPoint;
+use stdClass;
 
 /**
  * Defines that the entity has a location and geoLocation properties.
@@ -54,34 +57,43 @@ trait EntityGeoLocation{
      *
      * @param \MapasCulturais\Types\GeoPoint|array $location
      */
-    function setLocation($location){
+    function setLocation($location)
+    {
         $x = $y = null;
-        if(!($location instanceof GeoPoint)){
-            if(is_array($location) && key_exists('x', $location) && key_exists('y', $location)){
-                $x = $location['x'];
-                $y = $location['y'];
+        if (!($location instanceof GeoPoint)) {
+            if ($location instanceof \stdClass && (isset($location->latitude) && isset($location->longitude) || isset($location->x) && isset($location->y))) {
+                $location = (array) $location;
+            }
 
-            }elseif(is_array($location) && key_exists('longitude', $location) && key_exists('latitude', $location)){
-                $x = $location['longitude'];
-                $y = $location['latitude'];
+            $location_values = null;
 
-            }elseif(is_array($location) && count($location) === 2 && is_numeric($location[0]) && is_numeric($location[1])){
-                $x = $location[0];
-                $y = $location[1];
-            }else{
-                throw new \Exception(\MapasCulturais\i::__('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values'));
+            if (isset($location['x']) && isset($location['y'])) { 
+                $location_values = [$location['x'], $location['y']];                    
+            } else if (isset($location['longitude']) && isset($location['latitude'])) {
+                $location_values = [$location['longitude'], $location['latitude']];                    
+            } else if (isset($location[0]) && isset($location[1])) {
+                $location_values = $location;
+            } 
+
+            if (is_array($location_values) && (count($location_values) === 2) && is_numeric($location_values[0]) && is_numeric($location_values[1])) {
+                $x = $location_values[0];
+                $y = $location_values[1];
+            } else {
+                App::i()->log->debug(print_r($location, true));
+                throw new \Exception(\MapasCulturais\i::__('The location must be an instance of \MapasCulturais\Types\GeoPoint or an array with two numeric values, ' . gettype($location) . ' given.'));
             }
             $location = new GeoPoint($x,$y);
+        } else {
+            $x = $location->latitude;
+            $y = $location->longitude;
         }
-
-        if(is_numeric($x) && is_numeric($y)){
+        if (is_numeric($x) && is_numeric($y)) {
             $rsm = new \Doctrine\ORM\Query\ResultSetMapping;
             $sql = "SELECT ST_GeographyFromText('POINT({$location->longitude} {$location->latitude})') AS geo";
             $rsm->addScalarResult('geo','geo');
             $query = App::i()->em->createNativeQuery($sql, $rsm);
             $this->_geoLocation = $query->getSingleScalarResult();
         }
-
         $this->location = $location;
     }
 

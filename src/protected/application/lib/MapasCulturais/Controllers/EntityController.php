@@ -478,6 +478,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
 
         $entity = $this->requestedEntity;
 
+        if($entity->usesPermissionCache() && $entity->usesOwnerAgent() && (!isset($data['ownerId']) && !isset($data['owner']) && !isset($data['status']))) {
+            $entity->__skipQueuingPCacheRecreation = true;
+            if ($entity instanceof \MapasCulturais\Entities\Registration) {
+                $entity->owner->__skipQueuingPCacheRecreation = true;
+            }
+        }
+
         if(!$entity)
             $app->pass();
         

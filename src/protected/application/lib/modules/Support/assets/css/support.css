@@ -1,0 +1,150 @@
+#support-settings {
+    padding-top: 1.3rem;
+}
+
+#support-settings header h4,
+#support-settings header p {
+    margin-bottom: 2.5rem;
+}
+
+#support-settings .support-content {
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    border: 1px solid #eee;
+    border-radius: 2px;
+}
+
+#support-settings .support-content .committee {
+    overflow: hidden;
+}
+
+#support-settings .support-content .committee .btn {
+    margin: 5px 0 0 0;
+    margin-right: 15px;
+}
+
+#support-settings .support-content .committee .committee--name {
+    display: block;
+    padding-top: 5px;
+}
+
+#support-settings .support-content .committee .committee--group {
+    color: #333333;
+    display: block;
+    font-style: italic;
+}
+
+#support-settings .support-message {
+    color: #666666;
+    font-style: italic;
+}
+
+/* Modal */
+body.modal-oppened {
+    overflow: hidden !important;
+}
+
+#support-settings .bg-support-modal.open {
+    display:block;
+}
+
+#support-settings .bg-support-modal {
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1800;
+    display:none;
+}
+
+#support-settings .support-content-modal {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 3px 20px 0 rgb(0 0 0 / 50%);
+    font-size: 14px;
+    height: auto;
+    margin: 20vh auto 100px;
+    max-width: 960px;
+    min-height: 400px;
+    padding: 25px;
+    position: relative;
+    width: 80%;
+}
+
+#support-settings .support-content-modal header {
+    position: relative;
+}
+#support-settings .support-content-modal header a {
+    color: rgba(17, 17, 17, 0.4);
+    line-height: 0;
+    padding: 10px;
+    position: absolute;
+    right: 0px;
+    text-align: center;
+    top: 6px;
+}
+#support-settings .support-content-modal header a:hover {
+    color: rgba(17, 17, 17, 0.8);
+}
+
+#support-settings .support-content-modal .support-modal-title {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+#support-settings .support-content-modal .modal-body ul {
+    margin: 0 -10px;
+}
+
+#support-settings .support-content-modal .modal-body ul li {
+    align-items: center;
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    margin: 0 10px 5px;
+    padding: 5px 5px 5px 10px;
+}
+
+#support-settings .support-content-modal .modal-body ul li:hover {
+    background-color: #f5f5f5;
+}
+
+#support-settings .support-content-modal .modal-body ul li label {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#support-settings .support-content-modal .modal-body ul li label code {
+    font-weight: normal;
+    cursor: pointer;
+    color: darkgreen;
+}
+
+#support-settings .support-content-modal .modal-body ul li label .field-type {
+    display: block;
+    word-wrap: break-word;
+    font-size: 0.75rem;
+    color: #999;
+    margin-bottom: 0;
+    margin-left: 17px;
+}
+
+#support-settings .support-content-modal .modal-body ul li select {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.multiple-fields {
+    height: 40px;
+    margin-left: 1%;
+}
+
+.multiple-fields select{
+    float: right;
+}

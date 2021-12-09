@@ -20,4 +20,7 @@ class DbUpdate extends \MapasCulturais\Entity{
      */
     protected $name;
 
+    function __toString() {
+        return $this->getClassName() . ':' . $this->name;
+    }
 }

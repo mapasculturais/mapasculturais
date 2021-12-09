@@ -4,6 +4,10 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
+/**
+ * @property-read string $permissionCacheClassName
+ * @property-read string[] $permissionsList
+ */
 trait EntityPermissionCache {
     public $__skipQueuingPCacheRecreation = false;
 
@@ -96,6 +100,7 @@ trait EntityPermissionCache {
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
         }
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
 
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
@@ -106,6 +111,8 @@ trait EntityPermissionCache {
         $isStatusNotDraft = ($this->status > Entity::STATUS_DRAFT);
 
         $already_created_users = [];
+        $users = array_unique($users);
+
         foreach ($users as $user) {
             if($user->is('guest')){
                 continue;
@@ -167,7 +174,7 @@ trait EntityPermissionCache {
        
     function enqueueToPCacheRecreation($skip_extra = false){
         $app = App::i();
-        if($app->isEntityEnqueuedToPCacheRecreation($this)){
+        if($app->isEntityEnqueuedToPCacheRecreation($this) || $this->__skipQueuingPCacheRecreation){
             return false;
         }
         

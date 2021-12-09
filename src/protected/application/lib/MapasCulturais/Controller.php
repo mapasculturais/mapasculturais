@@ -280,6 +280,15 @@ abstract class Controller{
         
         $this->method = $method;
 
+        foreach($app->config['ini.set'] as $pattern => $configs) {
+            $pattern = str_replace('*', '.*', $pattern);
+            if(preg_match("#{$pattern}#i", "{$this->method} {$this->id}/{$this->action}")) {
+                foreach($configs as $varname => $newvalue) {
+                    ini_set($varname, $newvalue);
+                }
+            }
+        }
+
         // hook like GET(user.teste)
         $hook = $method . "({$this->id}.{$action_name})";
         
@@ -321,17 +330,25 @@ abstract class Controller{
 
     }
 
+    function getTemplatePrefix()
+    {
+        return $this->id;
+    }
+
     /**
      * Render a template in the folder with the name of the controller id
      *
      * @param string $template the template name
      * @param type $data array with data to pass to the template
      */
-    public function render($template, $data = []){
+    public function render($template, $data=[])
+    {
         $app = App::i();
-        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').render(' . $template . ')', ['template' => &$template, 'data' => &$data]);
-
-        $template = $this->id . '/' . $template;
+        $app->applyHookBoundTo($this, "controller({$this->id}).render($template)", [
+            "template" => &$template,
+            "data" => &$data
+        ]);
+        $template = "{$this->templatePrefix}/$template";
         $app->render($template, $data);
     }
 
@@ -341,11 +358,14 @@ abstract class Controller{
      * @param string $template the template name
      * @param type $data array with data to pass to the template
      */
-    public function partial($template, $data = []){
+    public function partial($template, $data=[])
+    {
         $app = App::i();
-        $app->applyHookBoundTo($this, 'controller(' . $this->id . ').partial(' . $template . ')', ['template' => &$template, 'data' => &$data]);
-
-        $template = $this->id . '/' . $template;
+        $app->applyHookBoundTo($this, "controller({$this->id}).partial($template)", [
+            "template" => &$template,
+            "data" => &$data
+        ]);
+        $template = "{$this->templatePrefix}/$template";
         $app->view->partial = true;
         $app->render($template, $data);
     }

@@ -158,11 +158,19 @@ class Agent extends EntityController {
         if(!$agent || !isset($this->data['role']))
             $app->pass();
 
-        if(isset($this->data['subsiteId'])){
-            $success = $agent->user->addRole($this->data['role'], $this->data['subsiteId']);
-        } else {
-            $success = $agent->user->addRole($this->data['role']);
+        if(isset($this->data['subsiteId']) && $this->data['subsiteId']) {
+            $subsite_id = $this->data['subsiteId'];
+        } else if(!isset($this->data['subsiteId'])) {
+            $subsite_id = false;
+        } else if(empty($this->data['subsiteId'])){
+            $subsite_id = null;
+        } 
+
+        foreach ($app->getRoles() as $role) {
+            $agent->user->removeRole($role->role, $subsite_id);
         }
+
+        $success = $agent->user->addRole($this->data['role'], $subsite_id);
 
         if($this->isAjax()){
             if($success)

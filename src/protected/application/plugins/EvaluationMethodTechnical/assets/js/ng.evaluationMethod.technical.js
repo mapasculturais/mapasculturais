@@ -60,16 +60,28 @@
                 return exists;
             }
 
-            $scope.save = function(data){
-                data = data || {
+            $scope.save = function(){
+                var data = {
                     sections: $scope.data.sections,
-                    criteria: $scope.data.criteria,
+                    criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
                 };
 
+                $scope.data.criteria.forEach(function (crit) {
+                    for (var i in data.sections) {
+                        var section = data.sections[i];
+                        if (crit.sid == section.id) {
+                            data.criteria.push(crit);
+                        }
+                    }
+                });
+
                 TechnicalEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
                     MapasCulturais.Messages.success(labels.changesSaved);
+                    $scope.data.sections = data.sections;
+                    $scope.data.criteria = data.criteria;
+                    $scope.data.enableViability = data.enableViability;
                 });
             };
 
@@ -104,22 +116,22 @@
                 var date = new Date;
                 var new_id = 'c-' + date.getTime();
                 $scope.data.criteria.push({id: new_id, sid: section.id, title: null, min: 0, max: 10, weight:1});
-                $scope.save({criteria: $scope.data.criteria});
+                $scope.save();
 
                 $timeout(function(){
-                    jQuery('#' + new_id + ' .criterion-title input').focus();S
+                    jQuery('#' + new_id + ' .criterion-title input').focus();
                 },1);
             }
 
-            $scope.deleteCriterion = function(section){
+            $scope.deleteCriterion = function(criterion){
                 if(!confirm(labels.deleteCriterionConfirmation)){
                     return;
                 }
-                var index = $scope.data.criteria.indexOf(section);
+                var index = $scope.data.criteria.indexOf(criterion);
 
                 $scope.data.criteria.splice(index,1);
 
-                $scope.save({criteria: $scope.data.criteria});
+                $scope.save();
             }
         }]);
 

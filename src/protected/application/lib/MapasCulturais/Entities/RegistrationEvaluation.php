@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use MapasCulturais;
 use MapasCulturais\i;
+use MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
@@ -25,6 +26,8 @@ use MapasCulturais\App;
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationEvaluation extends \MapasCulturais\Entity {
+    use Traits\EntityRevision;
+
     const STATUS_EVALUATED = self::STATUS_ENABLED;
     const STATUS_SENT = 2;
 
@@ -71,6 +74,20 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * })
      */
     protected $user;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
+     */
+    protected $createTimestamp;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
+     */
+    protected $updateTimestamp;
 
     /**
      * @var integer

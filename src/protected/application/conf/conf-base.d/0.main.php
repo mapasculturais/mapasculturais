@@ -9,6 +9,14 @@ return [
     */
     'themes.active' => env('ACTIVE_THEME', 'MapasCulturais\Themes\BaseV1'),
 
+    
+    /*
+    Define a url do site
+
+    ex: `https://mapacultural.com.br/`
+    */
+    'base.url' => env('BASE_URL', ''),
+
     /* Nome do site. É utilizado para a formação dos títulos das páginas. */
     'app.siteName' => env('SITE_NAME', i::__('Mapas Culturais')),
 
@@ -46,14 +54,30 @@ return [
     Por padrão o valor é verdadeiro quando a aplicação não estiver rodando no modo `APPMODE_PRODUCTION`. 
     */
     'slim.debug' => env('SLIM_DEBUG', env('APP_MODE', APPMODE_PRODUCTION) != APPMODE_PRODUCTION),
-
-    /* 
-    Ativa o modo debug de parte de templates, imprimindo comentários HTML que delimitam os arquivos de template. 
-    
-    Por padrão o valor é verdadeiro quando a aplicação não estiver rodando no modo `APPMODE_PRODUCTION`. 
-    */
-    'themes.active.debugParts' => env('APP_MODE', APPMODE_PRODUCTION) != APPMODE_PRODUCTION,
     
     /* Valor do header Access-Control-Allow-Origin da api de leitura. */
     'api.accessControlAllowOrigin' => env('API_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
+
+    /*
+    Define valores de inicialização do PHP para rotas específicas
+    
+    para usar como variável de ambiente deve ser passado um json 
+    ex: [{"API agent/find":{"memory_limit":"1024M"}}]
+
+    configurando via PHP:
+    ex:
+    ```
+    [
+        'API agent/find' => [
+            'memory_limit' => '1024M',
+            'max_execution_time' => -1
+        ],
+        'API *' => [
+            'memory_limit' => '256M',
+            'max_execution_time' => -1
+        ],
+    ]
+    ```
+    */
+    'ini.set' => json_decode(env('PHP_INI_SET', '[]'))
 ];

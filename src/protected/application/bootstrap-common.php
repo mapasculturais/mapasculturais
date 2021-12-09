@@ -40,7 +40,7 @@ define('MONTH_IN_SECONDS', DAY_IN_SECONDS * 30);
 define('YEAR_IN_SECONDS', DAY_IN_SECONDS * 365 );
 
 
-function env($name, $default) {
+function env($name, $default = null) {
     if(defined('GENERATING_CONFIG_DOCUMENTATION')){
         __log_env($name, $default);
     }
