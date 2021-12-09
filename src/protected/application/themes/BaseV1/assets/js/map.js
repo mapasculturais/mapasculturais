@@ -66,7 +66,7 @@
             options.zoom = defaultZoom;
             options.zoomControl = false;
             options.minZoom = config.zoomMin;
-            var openStreetMap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            var openStreetMap = L.tileLayer(MapasCulturais.mapsTileServer, {
                 attribution: 'Dados e Imagens &copy; <a href="http://www.openstreetmap.org/copyright" rel="noopener noreferrer">Contrib. OpenStreetMap</a>, ',
                 maxZoom: config.zoomMax
             });
@@ -167,12 +167,15 @@
                 var city = $('#En_Municipio').editable('getValue', true);
                 var state = $('#En_Estado').editable('getValue', true);
                 var cep = $('#En_CEP').editable('getValue', true);
+                var country = $('#En_Pais').editable('getValue', true);
+                country = country ? country : (MapasCulturais.pais ? MapasCulturais.pais : 'br');
                 MapasCulturais.geocoder.geocode({
                     streetName: streetName,
                     number: number,
                     neighborhood: neighborhood,
                     city: city,
                     state: state,
+                    country: country,
                     postalCode: cep
                 }, geocode_callback);
             });

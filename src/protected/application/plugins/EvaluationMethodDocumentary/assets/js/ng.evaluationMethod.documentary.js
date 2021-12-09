@@ -17,8 +17,8 @@
     module.factory('ApplyDocumentaryEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
         
         return {
-            apply: function (from, to) {
-                var data = {from: from, to: to};
+            apply: function (from, to, status) {
+                var data = {from: from, to: to, status};
                 var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsDocumentary', [MapasCulturais.entity.id]);
                 console.log(url, data);
                 return $http.post(url, data).
@@ -42,7 +42,8 @@
             registration: evaluation ? evaluation.evaluationData.status : null,
             obs: evaluation ? evaluation.evaluationData.obs : null,
             registrationStatusesNames: statuses,
-            applying: false
+            applying: false,
+            status: 'pending'
         };
 
         $scope.getStatusLabel = (status) => {
@@ -55,8 +56,14 @@
         };
 
         $scope.applyEvaluations = () => {
+            if(!$scope.data.applyFrom || !$scope.data.applyTo) {
+                // @todo: utilizar texto localizado
+                MapasCulturais.Messages.error("É necessário selecionar os campos Avaliação e Status");
+                return;
+            }
+
             $scope.data.applying = true;
-            ApplyDocumentaryEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo).
+            ApplyDocumentaryEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo, $scope.data.status).
                 success(() => {
                     $scope.data.applying = false;
                     MapasCulturais.Messages.success('Avaliações aplicadas com sucesso');

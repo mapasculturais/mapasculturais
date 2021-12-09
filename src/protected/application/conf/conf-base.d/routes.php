@@ -49,7 +49,8 @@ return [
             'instalacoes'    => 'subsite',
             'anexos'         => 'registrationfileconfiguration',
             'revisoes'       => 'entityRevision',
-            'historico'      => 'entityRevision'
+            'historico'      => 'entityRevision',
+            'suporte'        => 'support',
         ],
         'actions' => [
             'lista'         => 'list',
@@ -64,7 +65,9 @@ return [
             'selos'         => 'seals',
             'inscricoes'    => 'registrations',
             'agente'        => 'agent',
-            'evento'        => 'event'
+            'evento'        => 'event',
+            'inscricao'     => 'registration',
+            'prestacoes-de-contas' => 'accountability'
         ],
 
         'readableNames' => [

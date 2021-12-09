@@ -192,16 +192,7 @@
         return skeleton;
     };
 
-    var app = angular.module('search.app', [
-        'ng-mapasculturais',
-        'rison',
-        'infinite-scroll',
-        'ui.date',
-        'search.service.find',
-        'search.service.findOne',
-        'search.controller.map',
-        'search.controller.spatial',
-        'mc.module.notifications']);
+    var app = angular.module('search.app', MapasCulturais.ngSearchAppDependencies);
 
     app.controller('SearchController', ['$scope', '$rootScope', '$location', '$log', '$rison', '$window', '$timeout', 'searchService', 'FindOneService', 'loginService',
         function($scope, $rootScope, $location, $log, $rison, $window, $timeout, searchService, FindOneService, loginService)

@@ -1,8 +1,12 @@
 <?php 
-$types = $app->getRegisteredEntityTypes($new_entity);
+$types = $app->getRegisteredEntityTypes($entity_classname);
 if (!$types) {
     return;
 }
+
+usort($types, function($a, $b ){
+    return $a->name > $b->name;
+});
 
 $_title = empty($definition['label']) ? \MapasCulturais\i::esc_attr__("Tipo") : $definition['label'];
 ?>
@@ -17,6 +21,6 @@ $_title = empty($definition['label']) ? \MapasCulturais\i::esc_attr__("Tipo") : 
 </select>
 
 <?php
-if (("agente" == strtolower($new_entity->getEntityTypeLabel()))) {
+if (("agente" == strtolower($entity_classname::getEntityTypeLabel()))) {
     $app->applyHook('mapasculturais.add_entity_modal.tipologias_agentes', ['modal_id' => $modal_id]);
 }

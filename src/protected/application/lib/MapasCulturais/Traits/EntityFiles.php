@@ -12,12 +12,13 @@ use MapasCulturais\Entities\File;
  * <code>
  * // example of $entity->files
  * array(
- *      'avatar' => [ /* Files {@*} ],
- *      'downloads' => [ /* Files {@*} ],
+ *      'avatar' => [ Files  ],
+ *      'downloads' => [  Files  ],
  * )
  * </code>
  *
  * @property-read \MapasCulturais\Entities\File[] $files Files of this entities grouped by file groups.
+ * @property-read string $fileClassName
  *
  * @see \MapasCulturais\Definitions\FileGroup
  * @see \MapasCulturais\App::registerFileGroup()

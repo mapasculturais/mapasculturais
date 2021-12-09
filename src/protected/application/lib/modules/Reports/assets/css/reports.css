@@ -1,0 +1,413 @@
+#reports div{
+    overflow: hidden;
+}
+
+#reports header .print-reports{
+    float: right;
+    margin-top: 4px;
+}
+
+#reports div.chart-scroll {
+    margin-bottom: 15px;
+    overflow-x: scroll;
+}
+
+/* Charts statics */
+.charts-static .line .line-one{    
+    width: 100%;
+}
+
+.charts-static .pie .line-one > div{
+    float: left;
+    width: 50%;
+    margin-bottom: 20px;
+}
+
+.charts-static .pie .line-two > div {
+    float: left;
+    width: 50%;
+    margin-bottom: 20px;
+}
+
+.charts-static .pie .line-two.chart-full > div {
+    width: 100%;
+}
+
+.charts-static .pie .line-three > div {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.charts-dynamic {
+    border-top: 1px solid #888888;
+    padding-top: 45px;
+}
+
+/* Chart wrap */
+.chart-wrap {
+    margin-bottom: 45px;
+    width: 100%;
+}
+
+/* Chart wrap header */
+.chart-wrap header {
+    margin-bottom: 30px;
+}
+
+.chart-wrap header h3 {
+    display: inline;
+    font-size: 28px;
+    padding-right: 15px;
+}
+
+.chart-wrap header button {
+    border: 0;
+    cursor: pointer;
+    padding-top: 0;
+}
+
+.chart-wrap header .type {
+    cursor: pointer;
+    padding: 3px 0 0 4px;
+}
+
+.chart-wrap header .type i {
+    color: #666;
+}
+
+.chart-wrap header button.delete:hover {
+    color: #cc3333;
+}
+
+.chart-wrap header > a {
+    line-height: 34px;
+    margin-right: 15px;
+}
+
+.chart-wrap header > a i {
+    color: #111111;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+}
+
+.chart-wrap header > a:hover i {
+    opacity: 1;
+}
+
+.chart-wrap header .description {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Chart container */
+.chart-container {
+    float: left;
+    margin-bottom: 30px;
+    width: 60%;
+}
+
+/* Charts dynamics */
+/* Chart table */
+ .charts-dynamic .chart-table {
+    overflow-x: auto !important;
+}
+
+.charts-dynamic .chart-table table {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.charts-dynamic .chart-table table td,
+.charts-dynamic .chart-table table th {
+    padding: 0.1rem;
+}
+
+.charts-dynamic .chart-table table thead tr th {
+    line-height: 1.6;
+    position: relative;
+}
+
+.charts-dynamic .chart-table table thead tr th span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.charts-dynamic .chart-table table tbody tr:nth-child(odd) {
+    background-color: #e4e4e4;
+}
+
+.charts-dynamic .chart-table table tbody tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.charts-dynamic .chart-table table tr td:first-child {
+    text-align: left;
+}
+
+/* Chart footer */
+.chart-wrap footer {
+    box-sizing: border-box;
+    float: left;
+    width: 40%;
+}
+
+/* Chart footer/legends */
+.chart-wrap footer .legends-charts {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-wrap footer .legends-charts .each {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    width: 100%;
+}
+
+.chart-wrap footer .legends-charts .each .dot {
+    border-radius: 12px;
+    display: inline-block;
+    height: 12px;
+    margin-right: 5px;
+    min-width: 12px;
+    width: 12px;
+}
+
+.chart-wrap .chart-table + footer .legends-charts .each .dot {
+    background-color: #d0d0d0 !important;
+}
+
+.chart-wrap footer .legends-charts .each p {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 0;
+    white-space: pre-wrap;
+}
+
+.chart-wrap footer .legends-charts .each p::first-letter {
+    text-transform: uppercase;
+}
+
+/* Chart footer/legends /line /bar /table */
+.chart-wrap.type-line footer,
+.chart-wrap.type-bar footer,
+.chart-wrap.type-table footer,
+.chart-wrap.type-horizontalBar footer {
+    width: 100%;
+}
+
+.chart-wrap.type-line .legends-charts,
+.chart-wrap.type-bar .legends-charts,
+.chart-wrap.type-table .legends-charts,
+.chart-wrap.type-horizontalBar .legends-charts {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.chart-wrap.type-line .legends-charts .each,
+.chart-wrap.type-bar .legends-charts .each,
+.chart-wrap.type-table .legends-charts .each,
+.chart-wrap.type-horizontalBar .legends-charts .each  {
+    padding: 0 15px;
+    width: 33.3333%;
+}
+
+/*Title*/
+.chart-container .title{
+    text-align: center;
+}
+
+/* Footer*/
+#reports > footer {
+    padding: 45px 15px 25px;
+    text-align: center;
+}
+
+#reports > footer .add {
+    background-color: rgba(255,154,0,0.7);
+    border: 0;
+    border-radius: 5px;
+    color: #111111;
+    font-size: 14px;
+    height: auto;
+    line-height: 1;
+    margin-bottom: 0;
+    padding: 17px 50px;
+}
+
+/* Modal */
+.bg-reports-modal.open{
+    display:block;
+}
+
+.bg-reports-modal {
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1800;
+    display:none;
+}
+.reports-modal {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    height: auto;
+    margin: 20vh auto 100px;
+    max-width: 960px;
+    min-height: 400px;
+    padding: 25px;
+    position: relative;
+    width: 80%;
+}
+.reports-modal > div {
+    margin-bottom: 3rem;
+}
+.reports-modal header {
+    position: relative;
+}
+.reports-modal header a {
+    color: rgba(17, 17, 17, 0.4);
+    line-height: 0;
+    padding: 10px;
+    position: absolute;
+    right: 0px;
+    text-align: center;
+    top: 6px;
+}
+.reports-modal header a:hover {
+    color: rgba(17, 17, 17, 0.8);
+}
+.reports-modal p {
+    margin-bottom: 1rem;
+}
+.reports-modal .report-modal-title {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+.reports-modal .line {
+    margin-bottom: 15px;
+}
+.reports-modal .line i {
+    margin-right: 15px;
+}
+.reports-modal .line i::before {
+    color: #555;
+    font-size: 30px;
+}
+.reports-modal .line label {
+    align-items: center;
+    color: #555;
+    display: flex;
+}
+.reports-modal .graphic-type .line label:hover {
+    color: #111;
+    cursor: pointer;
+}
+.reports-modal .line label input {
+    height: 20px;
+    margin-right: 15px;
+}
+.reports-modal .graphic-type .line label:hover i::before,
+.reports-modal .graphic-type .line label input:checked + i::before,
+.reports-modal .graphic-type .line label input:checked ~ span {
+    color: #111;
+}
+
+.reports-modal .graphic-data label {
+    font-weight: bold;
+}
+
+.reports-modal .line > input,
+.reports-modal .line .column > input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+.reports-modal .line > select,
+.reports-modal .line .column > select {
+    cursor: pointer;
+    width: 100%;
+}
+.reports-modal .line > input::placeholder,
+.reports-modal .line .column > input::placeholder {
+    color: #999;
+}
+
+.reports-modal footer {
+    text-align: center;
+}
+.reports-modal footer button {
+    border: 0;
+    border-radius: 5px;
+    color: #444;
+    font-size: 14px;
+    height: auto;
+    line-height: 1;
+    margin: 0 12px 15px;
+    padding: 17px 50px;
+}
+.reports-modal footer button:hover {
+    border: 0;
+    color: #111;
+}
+.reports-modal footer .cancel {
+    border-radius: 5px;
+    background-color: #DDDDDD;
+    color: #666;
+}
+.reports-modal footer .back {
+    background-color: rgba(177, 177, 177,0.7);
+}
+.reports-modal footer .next {
+    border-radius: 5px;
+    background-color: rgba(255,154,0,0.7);
+}
+.reports-modal footer .next:disabled {
+    background-color: rgba(255,154,0,0.4);
+}
+
+/* Grid Flex */
+.reports-modal .flex {
+    display: flex;
+    justify-content: space-between;
+}
+.reports-modal .flex .column {
+    padding-left: 15px;
+    padding-right: 15px;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.reports-modal .flex .column:first-child {
+    padding-left: 0;
+}
+.reports-modal .flex .column:last-child {
+    padding-right: 0;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+
+    .reports-modal .flex {
+        display: block;
+    }
+    .reports-modal .flex .column {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .reports-modal footer button {
+        width: 70%;
+    }
+
+}

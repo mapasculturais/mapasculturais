@@ -1,6 +1,14 @@
 <?php
+use MapasCulturais\i;
+
 $this->layout = 'panel';
 $label = \MapasCulturais\i::__("Adicionar novo projeto");
+
+$ativos_num = count($user->enabledProjects);
+$permitido_num = count($user->hasControlProjects);
+$rascunhos_num = count($user->draftProjects);
+$lixeira_num = count($user->trashedProjects);
+$arquivo_num = count($user->archivedProjects);
 ?>
 <div class="panel-list panel-main-content">
     <?php $this->applyTemplateHook('panel-header','before'); ?>
@@ -14,11 +22,11 @@ $label = \MapasCulturais\i::__("Adicionar novo projeto");
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledProjects); ?>)</a></li>
-        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($user->hasControlProjects); ?>)</a></li>
-        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftProjects); ?>)</a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedProjects); ?>)</a></li>
-        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($user->archivedProjects); ?>)</a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos") . " ($ativos_num)", 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'permitido', 'label' => i::__("Concedidos") . " ($permitido_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos") . " ($rascunhos_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira") . " ($lixeira_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo") . " ($arquivo_num)"]) ?>
     </ul>
     <div id="ativos">
         <?php foreach($user->enabledProjects as $entity): ?>

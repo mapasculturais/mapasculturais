@@ -16,14 +16,14 @@
 }
 article.project .highlighted-message .btn {
     @media screen and (min-width: $screen-tablet) {
-        float: right;
-        margin-left: -125px;
+        float: none !important;
+        margin-left: 0 !important;
     }
 }
 article.opportunity .highlighted-message .btn {
     @media screen and (min-width: $screen-tablet) {
-        float: right;
-        margin-left: -125px;
+        float: none !important;
+        margin-left: 0 !important;
     }
 }
 
@@ -98,7 +98,7 @@ article.opportunity .editable-buttons button {
 }
 .registration-fieldset {
 	margin-bottom: $line-height-base;
-	padding: $padding-small;
+	padding: $padding-large;
 	border: $thin-row;
 	border-radius: $border-radius-base;
 	&.project-edit-mode:hover {
@@ -156,6 +156,11 @@ article.opportunity .editable-buttons button {
     .status {
         width: 100px;
     }
+    .support-link {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+    }
     @media print {
         padding: 0 0 $padding-base;
         border: none;
@@ -167,7 +172,7 @@ article.opportunity .editable-buttons button {
         }
     }
     @media screen and (min-width: $screen-desktop) {
-        padding: $padding-base;
+        padding: $padding-large;
     }
 }
 .registration-help {
@@ -262,21 +267,16 @@ article.opportunity .editable-buttons button {
             }
         }
         .btn-group {
-            position: absolute;
-            bottom: $padding-base;
+            position: relative;
+            bottom: 2em;
             right: $padding-base;
+            text-align: right;
         }
         &:hover {
         	background: $gray-lighter;
         }
         &:last-child {
             border-bottom: none;
-        }
-        &.registration-edit-mode {
-            padding-right: 11rem;
-            @media screen and (max-width: $screen-tablet) {
-                padding-right: 0.5rem;
-            }
         }
         @media print {
             padding: 0 0 $padding-base;
@@ -366,7 +366,7 @@ article.opportunity .editable-buttons button {
         }
 
         &.registration-view-mode {
-            padding: .3em 1em;
+            padding: .75em 1em;
             font-size: 0.75em;
             word-wrap: break-word;
             label {

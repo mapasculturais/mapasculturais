@@ -340,6 +340,11 @@ class Html extends \MapasCulturais\ApiOutput{
      * @return string
      */
     protected function convertToUTF16($text){
+        
+        if(mb_check_encoding($text, 'UTF-8')){
+            return $text;
+        }
+        
         return mb_convert_encoding($text,'utf-16','utf-8');
     }
 
@@ -719,9 +724,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                     } else {
                                         
                                         if(isset($v->name) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->name</a>";
+                                            echo "<a href=\"$v->singleUrl\" rel='noopener noreferrer'>$v->name</a>";
                                         } else if(isset($v->number) && isset($v->singleUrl)){
-                                            echo "<a href=\"$v- rel='noopener noreferrer'>singleUrl\">$v->number</a>";
+                                            echo "<a href=\"$v->singleUrl\" rel='noopener noreferrer'>$v->number</a>";
                                         } else {
                                             $this->printTable($v);
                                         }

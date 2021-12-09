@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais;
 
+use ArrayObject;
 use MapasCulturais\App;
 
 /**
@@ -10,8 +11,14 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\View $layout The layout to use when rendering the template.
  * @property \MapasCulturais\Controller $controller The controller that call the render / partial
+ * @property string $template
+ * @property \ArrayObject $documentMeta
+ * @property \ArrayObject $bodyClasses
+ * @property \ArrayObject $bodyProperties
+ * @property \ArrayObject $jsObject
  *
  * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
+ * 
  *
  * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
  * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
@@ -55,6 +62,10 @@ abstract class Theme extends \Slim\View {
 
     protected $_assetManager = null;
 
+    /**
+     * Document meta tags
+     * @var ArrayObject
+     */
     public $documentMeta = [];
 
     /**
@@ -70,7 +81,7 @@ abstract class Theme extends \Slim\View {
     protected $bodyProperties =  null;
 
     /**
-     *
+     * MapasCulturais JS Object
      * @var \ArrayObject
      */
     protected $jsObject = null;
@@ -352,14 +363,14 @@ abstract class Theme extends \Slim\View {
             return $output;
         });
         
-        if($app->config['themes.active.debugParts']){
+        if ($app->mode == APPMODE_DEVELOPMENT) {
             $template_debug = str_replace(THEMES_PATH, '', $__template_name);
             echo '<!-- ' . $template_debug . ".php # BEGIN -->";
         }
 
         include $__templatePath;
         
-        if($app->config['themes.active.debugParts']){
+        if ($app->mode == APPMODE_DEVELOPMENT) {
             echo '<!-- ' . $template_debug . ".php # END -->";
         }
 
@@ -399,6 +410,8 @@ abstract class Theme extends \Slim\View {
         }else{
             $title =$app->getReadableName($this->controller->action);
         }
+
+        $app->applyHookBoundTo($this, 'mapasculturais.getTitle', [&$title]);
 
         return $title;
     }
@@ -601,11 +614,17 @@ abstract class Theme extends \Slim\View {
     }
     
     function applyTemplateHook($name, $sufix = '', $args = []){
+        $app = App::i();
+
         $hook = "template({$this->controller->id}.{$this->controller->action}.$name)";
         if($sufix){
             $hook .= ':' . $sufix;
         }
-        App::i()->applyHookBoundTo($this, $hook, $args);
+
+        if ($app->mode == APPMODE_DEVELOPMENT) {
+            echo "<!-- TEMPLATE HOOK: $hook -->";
+        }
+        $app->applyHookBoundTo($this, $hook, $args);
     }
     
     /**

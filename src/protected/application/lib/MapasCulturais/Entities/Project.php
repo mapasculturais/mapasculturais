@@ -32,6 +32,8 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
         Traits\EntityOpportunities;
+        
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer
@@ -209,7 +211,7 @@ class Project extends \MapasCulturais\Entity
      */
     protected $subsite;
 
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Projetos');
         else

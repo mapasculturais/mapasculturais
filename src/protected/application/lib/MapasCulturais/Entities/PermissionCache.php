@@ -28,6 +28,7 @@ use \MapasCulturais\App;
         "MapasCulturais\Entities\Notification"  = "\MapasCulturais\Entities\NotificationPermissionCache",
         "MapasCulturais\Entities\Request"       = "\MapasCulturais\Entities\RequestPermissionCache",
         "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache",
+        "MapasCulturais\Entities\ChatMessage"   = "\MapasCulturais\Entities\ChatMessagePermissionCache",
    })
  */
 abstract class PermissionCache extends \MapasCulturais\Entity {

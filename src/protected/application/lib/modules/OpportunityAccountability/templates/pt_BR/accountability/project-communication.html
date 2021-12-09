@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <div>
+            Olá, {{user}}!<br />
+            Um projeto foi criado no site <a href="{{baseUrl}}">{{siteName}}</a> para
+            acompanhamento da sua proposta aprovada na oportunidade {{opportunityTitle}}.
+            Veja os próximos passos:
+            <ol>
+                <li>Acesse o <a href="{{projectUrl}}">projeto</a>, preencha os dados e
+                publique-o.</li>
+                <li>Se sua proposta prevê a realização de eventos, os mesmos devem ser
+                publicados como eventos relacionados ao projeto.
+                </li>
+                <li>O período de prestação de contas terá início em
+                {{accountabilityStartDate}} e será encerrado em
+                {{accountabilityEndDate}}. Durante este período, será disponibilizado
+                na página do projeto o formulário de prestação de contas, que deve ser
+                preenchido e enviado até {{accountabilityEndDate}}.
+                </li>
+            </ol>
+        </div>
+    </body>
+</html>

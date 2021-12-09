@@ -59,6 +59,8 @@
             spinner-condition="data.registrationSpinner">
             </find-entity>
         </edit-box>
+
+        <div ng-if="data.errors.space" class="alert danger" style="margin-top:1em;">{{data.errors.space}}</div>
     </div>
     <?php 
         };

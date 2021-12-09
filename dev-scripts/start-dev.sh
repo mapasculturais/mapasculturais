@@ -56,9 +56,6 @@ if [ $DOWN = "1" ]; then
    sudo docker-compose -f docker-compose.local.yml down
 fi
 
-sudo rm -rf ../docker-data/pcache-cron.log
-sudo touch ../docker-data/pcache-cron.log
-
 sudo docker-compose -f docker-compose.local.yml run --service-ports mapas
 
 sudo docker-compose -f docker-compose.local.yml down --remove-orphans

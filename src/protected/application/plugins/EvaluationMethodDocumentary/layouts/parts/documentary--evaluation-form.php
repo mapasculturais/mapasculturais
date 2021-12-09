@@ -3,12 +3,20 @@ namespace EvaluationMethodDocumentary;
 
 use MapasCulturais\i;
 
+$params = ['registration' => $entity, 'opportunity' => $opportunity];
 ?>
+<?php $this->applyTemplateHook('evaluationForm.documentary', 'before', $params); ?>
 <div id="documentary-evaluation-form" class="documentary-evaluation-form">
+    <?php $this->applyTemplateHook('evaluationForm.documentary', 'begin', $params); ?>
     <div id="documentary-evaluation-form--container"></div>
+    <?php $this->applyTemplateHook('evaluationForm.documentary', 'end', $params); ?>
 </div>
+<?php $this->applyTemplateHook('evaluationForm.documentary', 'after', $params); ?>
+
 <script id='documentary-evaluation-form-template' class='js-mustache-template' type="html/template">
+    <?php $this->applyTemplateHook('evaluationForm.documentary.template', 'before', $params); ?>
     <div id="evaluatin-field-{{id}}" class="documentary-evaluation-form--field">
+        <?php $this->applyTemplateHook('evaluationForm.documentary.template', 'begin', $params); ?>
         <h6>{{label}}</h6>
         <p>
             <label class="input-label">
@@ -33,5 +41,7 @@ use MapasCulturais\i;
             <?php i::_e('Justificativa / Observações') ?><br>
             <textarea name="data[{{id}}][obs]">{{obs}}</textarea>
         </label>
+        <?php $this->applyTemplateHook('evaluationForm.documentary.template', 'end', $params); ?>
     </div>
+    <?php $this->applyTemplateHook('evaluationForm.documentary.template', 'after', $params); ?>
 </script>

@@ -5,6 +5,7 @@ namespace EvaluationMethodSimple;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Registration;
 
 class Plugin extends \MapasCulturais\EvaluationMethod {
 
@@ -125,21 +126,31 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
                 die;
             }
+
             $new_status = intval($this->data['to']);
+            
+            $apply_status = $this->data['status'] ?? false;
+            if ($apply_status == 'all') {
+                $status = 'r.status > 0';
+            } else {
+                $status = 'r.status = 1';
+            }
     
             $opp->checkPermission('@control');
-
+            
             // pesquise todas as registrations da opportunity que esta vindo na request
-            $query = App::i()->getEm()->createQuery("
+            $dql = "
             SELECT 
-                r
+                r.id
             FROM
                 MapasCulturais\Entities\Registration r
             WHERE 
                 r.opportunity = :opportunity_id AND
                 r.consolidatedResult = :consolidated_result AND
-                r.status > 0
-            ");
+                r.status <> $new_status AND
+                $status 
+            ";
+            $query = $app->em->createQuery($dql);
         
             $params = [
                 'opportunity_id' => $opp->id,
@@ -148,20 +159,53 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     
             $query->setParameters($params);
     
-            $registrations = $query->getResult();
+            $registrations = $query->getScalarResult();
             
-            // faça um foreach em cada registration e pegue as suas avaliações
-            foreach ($registrations as $registration) {
-                $app->log->debug("Alterando status da inscrição {$registration->number} para {$new_status}");
-                $app->disableAccessControl();
-                $registration->consolidatedResult = "$new_status";
-                $registration->setStatus($new_status);
-                $registration->save(true);
-                $app->enableAccessControl();
+            $count = 0;
+            $total = count($registrations);
+
+            if ($total > 0) {
+                $opp->enqueueToPCacheRecreation();
             }
 
-    
-            $this->finish("Processo finalizado", 200);
+            // faça um foreach em cada registration e pegue as suas avaliações
+            foreach ($registrations as $reg) {
+                $count++;
+                $registration = $app->repo('Registration')->find($reg['id']);
+                $registration->__skipQueuingPCacheRecreation = true;
+
+                $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
+                
+                switch ($new_status) {
+                    case Registration::STATUS_DRAFT:
+                        $registration->setStatusToDraft();
+                    break;
+                    case Registration::STATUS_INVALID:
+                        $registration->setStatusToInvalid();
+                    break;
+                    case Registration::STATUS_NOTAPPROVED:
+                        $registration->setStatusToNotApproved();
+                    break;
+                    case Registration::STATUS_WAITLIST:
+                        $registration->setStatusToWaitlist();
+                    break;
+                    case Registration::STATUS_APPROVED:
+                        $registration->setStatusToApproved();
+                    break;
+                    default:
+                        $registration->_setStatusTo($new_status);
+                    
+                }
+                $app->disableAccessControl();
+                $registration->save(true);
+                $app->enableAccessControl();
+
+                $app->em->clear();
+            }
+
+            // colocar a oportunidade para regeração de cache
+
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
     
         });
 

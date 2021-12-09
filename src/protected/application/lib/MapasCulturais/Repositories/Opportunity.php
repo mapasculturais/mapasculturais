@@ -10,7 +10,7 @@ class Opportunity extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
         Traits\RepositoryAgentRelation;
 
-    function findRegistrationWithDateByIds($opportunitiesIds, $open = false) {
+    function findOpportunitiesWithDateByIds($opportunitiesIds, $open = false) {
         $today = new DateTime('now');
         $params = [
             'opportunitiesIds' => $opportunitiesIds,

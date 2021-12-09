@@ -27,13 +27,16 @@ return [
         '@default' => array(
             'id' => i::__('Id'),
             'name' => i::__('Nome'),
+            '_type' => i::__('Tipo'),
             'createTimestamp' => i::__('Data de Criação'),
             'updateTimestamp' => i::__('Data de Atualização'),
             'shortDescription' => i::__('Descrição Curta'),
             'longDescription' => i::__('Descrição Longa'),
             'certificateText' => i::__('Conteúdo da Impressão do Certificado'),
             'validPeriod'	=> i::__('Período de Validade'),
-            'status' => i::__('Status')
+            'status' => i::__('Status'),
+            'registrationFrom' => i::__('Data de início das inscrições'), 
+            'registrationTo' => i::__('Data final das inscrições')
         ),
 
         'MapasCulturais\Entities\Agent' => array(
