@@ -1487,6 +1487,8 @@ class App extends \Slim\Slim{
      * Invoke hook
      * @param  string   $name       The hook name
      * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * 
+     * @return callable[]
      */
     function applyHook($name, $hookArg = null) {
         if (is_null($hookArg))
@@ -1514,6 +1516,8 @@ class App extends \Slim\Slim{
         }
 
         array_pop($this->hookStack);
+
+        return $callables;
     }
 
     /**
@@ -1522,6 +1526,8 @@ class App extends \Slim\Slim{
      * @param  object $target_object Object to bind hook
      * @param  string   $name       The hook name
      * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * 
+     * @return callable[]
      */
     function applyHookBoundTo($target_object, $name, $hookArg = null) {
         if (is_null($hookArg))
@@ -1549,6 +1555,8 @@ class App extends \Slim\Slim{
         }
 
         array_pop($this->hookStack);
+
+        return $callables;
     }
 
 

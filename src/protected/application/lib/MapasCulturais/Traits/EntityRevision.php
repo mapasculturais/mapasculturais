@@ -92,23 +92,17 @@ trait EntityRevision{
             }
         }
 
-        if(($links = $this->getMetaLists('links'))) {
-            foreach($links as $link) {
-                $revisionData['links'][] = [
-                    'id' => $link->id,
-                    'title' => $link->title,
-                    'value' => $link->value
-                ];
-            }
-        }
-
-        if(($videos = $this->getMetaLists('videos'))) {
-            foreach($videos as $video) {
-                $revisionData['videos'][] = [
-                    'id' => $video->id,
-                    'title' => $video->title,
-                    'value' => $video->value
-                ];
+        if($this->usesMetaLists()) {
+            $groups = $app->getRegisteredMetaListGroupsByEntity($this);
+            foreach(array_keys($groups) as $group) {
+                $items = $this->getMetaLists($group);
+                foreach($items as $item) {
+                    $revisionData[$group][] = [
+                        'id' => $item->id,
+                        'title' => $item->title,
+                        'value' => $item->value
+                    ];
+                }
             }
         }
 
