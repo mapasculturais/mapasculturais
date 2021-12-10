@@ -18,6 +18,30 @@ trait MagicCallers {
         return true;
     }
 
+    private static function __getMagicCallersHooks($name) {
+        $app = App::i();
+
+        $class = get_called_class();
+        if(method_exists($class,'getClassName')){
+            $class = $class::getClassName();
+        }
+        $classes = class_parents($class);
+        array_unshift($classes, $class);
+
+        $classes = array_map(function($class) { 
+            return str_replace('MapasCulturais\\', '', $class);
+        }, $classes);
+
+        $hooks = [];
+
+        foreach ($classes as $class) {
+            $class_hooks = $app->_getHookCallables("{$class}::{$name}");
+            $hooks = array_merge($class_hooks, $hooks);
+        }
+
+        return $hooks;
+    }
+
     /**
      * Magic Call
      *
@@ -28,27 +52,18 @@ trait MagicCallers {
      * @return mixed
      */
     public function __call($name, $arguments) {
-        $app = App::i();
-        
-        if(method_exists($this, 'getHookClassPath')) {
-            $class = $this->getHookClassPath();
-        } else if(method_exists($this,'getClassName')){
-            $class = $this->getClassName();
-        } else {
-            $class = get_called_class();
-        }
 
         if (substr($name, 0, 4) === 'uses') {
             return false;
-        } else if ($hooks = $app->_getHookCallables("{$class}::{$name}")) {
+        } else if ($hooks = $this->__getMagicCallersHooks($name)) {
             $result = null;
             foreach ($hooks as $callable) {
                 $callable = \Closure::bind($callable, $this);
-                $args = [&$result];
+                $args = [$result];
                 foreach($arguments as $arg){
                     $args[] = $arg;
                 }
-                call_user_func_array($callable, $args);
+                $result = call_user_func_array($callable, $args);
             }
 
             return $result;
@@ -70,26 +85,17 @@ trait MagicCallers {
      * @return mixed
      */
     static public function __callStatic($name, $arguments){
-        $app = App::i();
-
-        $class = get_called_class();
         
-        if(method_exists($class, 'getHookClassPath')) {
-            $class = $class::getHookClassPath();
-        } else if(method_exists($class, 'getClassName')){
-            $class = $class::getClassName();
-        } 
-
         if (substr($name, 0, 4) === 'uses') {
             return false;
-        } else if ($hooks = $app->_getHookCallables("{$class}::{$name}")) {
+        } else if ($hooks = self::__getMagicCallersHooks($name)) {
             $result = null;
             foreach ($hooks as $callable) {
-                $args = [&$result];
+                $args = [$result];
                 foreach($arguments as $arg){
                     $args[] = $arg;
                 }
-                call_user_func_array($callable, $args);
+                $result = call_user_func_array($callable, $args);
             }
 
             return $result;
