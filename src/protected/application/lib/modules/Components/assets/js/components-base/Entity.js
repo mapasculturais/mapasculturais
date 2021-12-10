@@ -1,8 +1,8 @@
 class Entity {
-    constructor(objectType, id) {
+    constructor(objectType, id, scope) {
         this.id = id;
         this.__objectType = objectType;
-        this.__api = new API(objectType);
+        this.__api = new API(objectType, scope || 'default');
         this.__properties = this.__api.getEntityDescription('!relations');
         this.__relations = this.__api.getEntityDescription('relations');
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];

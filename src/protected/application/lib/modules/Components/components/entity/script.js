@@ -21,12 +21,13 @@ app.component('entity', {
     props: {
         id: Number,
         type: String,
-        select: String
+        select: String,
+        scope: String
     },
 
     methods: {
         getDataFromApi() {
-            var api = new API(this.type);
+            var api = new API(this.type, this.scope || 'default');
             api.findOne(this.id).then(entity => { 
                 this.entity = entity;
                 this.loading = false;
