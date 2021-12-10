@@ -21,12 +21,13 @@ app.component('entities', {
     props: {
         ids: Array,
         type: String,
-        select: String
+        select: String,
+        scope: String
     },
     
     methods: {
         getDataFromApi() {
-            const api = new API(this.type);
+            const api = new API(this.type, this.scope || 'default');
             
             let query = {};
 

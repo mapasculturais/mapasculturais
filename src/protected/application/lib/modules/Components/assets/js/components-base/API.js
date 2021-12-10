@@ -1,32 +1,36 @@
 const useEntitiesCache = Pinia.defineStore('entitiesCache', {
     state: () => {
         return {
-            entities: {}
+            default: {}
         }
     },
 
     actions: {
-        store(entity) {
-            this.entities[entity.cacheId] = entity;
+        store(entity, scope) {
+            this[scope] = this[scope] || {};
+            this[scope][entity.cacheId] = entity;
         },
 
-        remove(entity) {
-            delete this.entities[entity.cacheId];
+        remove(entity, scope) {
+            this[scope] = this[scope] || {};
+            delete this[scope][entity.cacheId];
         },
         
-        fetch(cacheId) {
-            return this.entities[cacheId];
+        fetch(cacheId, scope) {
+            this[scope] = this[scope] || {};
+            return this[scope][cacheId];
         }
     }
 });
 
 class API {
-    constructor(objectType, options) {
+    constructor(objectType, scope, fetchOptions) {
+        this.scope = scope;
         this.cache = useEntitiesCache();
         this.objectType = objectType;
         this.options = {
             cacheMode: 'force-cache', 
-            ...options
+            ...fetchOptions
         };
     }
 
@@ -140,12 +144,12 @@ class API {
 
     getEntityInstance(objectId) {
         const cacheId = this.createCacheId(objectId);
-        let entity = this.cache.fetch(cacheId);
+        let entity = this.cache.fetch(cacheId, this.scope);
         if (entity) {
             return entity;
         } else {
-            entity = new Entity(this.objectType, objectId); 
-            this.cache.store(entity);
+            entity = new Entity(this.objectType, objectId, this.scope); 
+            this.cache.store(entity, this.scope);
             return entity;
         }
     }
