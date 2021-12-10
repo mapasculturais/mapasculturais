@@ -28,7 +28,7 @@ class Module extends \MapasCulturais\Module {
         });
 
         $app->hook('mapasculturais.body:after', function () use($app) {
-            $app->view->part('components/footer-javascripts');
+            $app->view->part('components/scripts');
         });
 
         /**
