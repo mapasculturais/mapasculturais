@@ -75,7 +75,7 @@ foreach($userList as $reg) {
 
             $dataValue = [
                 'name'          => $user->profile->name,
-                'entityType'    => $agent->entityTypeLabel(),
+                'entityType'    => $agent->entityTypeLabel,
                 'entityName'    => $agent->name,
                 'url'           => $agent->singleUrl,
                 'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
@@ -126,7 +126,7 @@ foreach($userList as $reg) {
           if($project->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
             $dataValue = [
                 'name'          => $user->profile->name,
-                'entityType'    => $project->entityTypeLabel(),
+                'entityType'    => $project->entityTypeLabel,
                 'entityName'    => $project->name,
                 'url'           => $project->singleUrl,
                 'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
@@ -149,7 +149,7 @@ foreach($userList as $reg) {
           if($interval->format('%a') >= $app->config['notifications.entities.update']) {
             $dataValue = [
                 'name'          => $user->profile->name,
-                'entityType'    => $event->entityTypeLabel(),
+                'entityType'    => $event->entityTypeLabel,
                 'entityName'    => $event->name,
                 'url'           => $event->singleUrl,
                 'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
@@ -172,7 +172,7 @@ foreach($userList as $reg) {
             if($space->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
                 $dataValue = [
                     'name'          => $user->profile->name,
-                    'entityType'    => $space->entityTypeLabel(),
+                    'entityType'    => $space->entityTypeLabel,
                     'entityName'    => $space->name,
                     'url'           => $space->singleUrl,
                     'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
@@ -222,7 +222,7 @@ foreach($userList as $reg) {
           if($seal->status > 0 && $interval->format('%a') >= $app->config['notifications.entities.update']) {
             $dataValue = [
                 'name'          => $user->profile->name,
-                'entityType'    => $seal->entityTypeLabel(),
+                'entityType'    => $seal->entityTypeLabel,
                 'entityName'    => $seal->name,
                 'url'           => $seal->singleUrl,
                 'lastUpdateTimestamp'=> $lastUpdateDate->format("d/m/Y")
