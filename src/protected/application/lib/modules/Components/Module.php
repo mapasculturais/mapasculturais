@@ -12,7 +12,10 @@ class Module extends \MapasCulturais\Module {
     {
         $app = App::i();
 
-        $app->view->enqueueScript('vendor', 'vue3', 'https://unpkg.com/vue@3');
+        $vue3 = $app->mode === APPMODE_PRODUCTION ? 
+            'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
+
+        $app->view->enqueueScript('vendor', 'vue3', $vue3);
         $app->view->enqueueScript('vendor', 'vue-demi', 'https://unpkg.com/vue-demi');
         $app->view->enqueueScript('vendor', 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
         
