@@ -19,6 +19,10 @@ use MapasCulturais\i; ?>
             <?php i::_e('CPF') ?>: <br>
             <input ng-model="person.cpf" ng-blur="saveField(field, entity[fieldName])" js-mask="999.999.999-99" placeholder="___.___.___-__" required>
         </label>
+        <label ng-if="::field.config.function" style="display:inline-block">
+            <?php i::_e('Função') ?>: <br>
+            <input ng-model="person.function" ng-blur="saveField(field, entity[fieldName])" required>
+        </label>
         <label ng-if="::field.config.relationship" style="display:inline-block">
             <?php i::_e('Parentesco') ?>: <br>
             <select ng-model="person.relationship" ng-blur="saveField(field, entity[fieldName])" ng-change="saveField(field, entity[fieldName])">
