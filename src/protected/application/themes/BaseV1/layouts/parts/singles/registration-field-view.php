@@ -11,7 +11,7 @@
 <div ng-if="field.fieldType === 'persons'">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' ">
-        <div><b ng-if="item.name">Nome: </b>{{item.name}}<b ng-if="item.cpf"> CPF: </b>{{item.cpf}} <b ng-if="item.relationship">Relação: </b>{{item.relationship}}</div>
+        <div><b ng-if="item.name">Nome: </b>{{item.name}}<b ng-if="item.cpf"> CPF: </b>{{item.cpf}} <b ng-if="item.relationship">Relação: </b>{{item.relationship}} <b ng-if="item.function">Função: </b>{{item.function}}</div>
     </div>
 </div>
 <?php //@TODO pegar endereço do campo endereço (verificar porque não esta salvando corretamente, arquicos location.js e _location.php)
