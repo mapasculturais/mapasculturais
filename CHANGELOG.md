@@ -12,6 +12,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 
+## [5.1.40] - 2021-12-14
+### Melhorias
+- Faz com que perfis admins tenham acesso a aba de suporte
+- Insere o campo função dentro do campo de listagem de pessoas (refs #1881)
+- Após o envio das avaliações, não exibe mais o formulário de avaliação para os avaliadores (refs: #1876)
+
+### Correções
+- Corrige a lista de inscrições do formulário de avaliação das fases (refs: #1875)
+- Evita possibilidade de conflito de nome de arquivo nos assets publicados em modo de desenvolvimento adicionando um hash do caminho completo do arquivo no nome do arquivo publicado
+
 ## [5.1.39] - 2021-11-22
 ### Melhorias
 - Cria configuração default para as chaves mailer.bbc e mailer.replyto e possibilita setar por variáveis de ambiente
