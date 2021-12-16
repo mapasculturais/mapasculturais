@@ -4,7 +4,7 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 
 trait ControllerSoftDelete{
-    function GET_undelete(){
+    function ALL_undelete(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -24,7 +24,7 @@ trait ControllerSoftDelete{
         }
     }
 
-    function GET_destroy(){
+    function ALL_destroy(){
         $this->requireAuthentication();
 
         $app = App::i();
