@@ -12,22 +12,23 @@ class Module extends \MapasCulturais\Module {
     {
         $app = App::i();
 
-        $vue3 = $app->mode === APPMODE_PRODUCTION ? 
-            'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
+        $app->hook('view.render(<<*>>):before', function () use($app) {
+            $vue3 = $app->mode === APPMODE_PRODUCTION ? 
+                'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
 
-        $app->view->enqueueScript('vendor', 'vue3', $vue3);
-        $app->view->enqueueScript('vendor', 'vue-demi', 'https://unpkg.com/vue-demi');
-        $app->view->enqueueScript('vendor', 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
-        
-        $app->view->enqueueScript('app', 'components-api', 'js/components-base/API.js');
-        $app->view->enqueueScript('app', 'components-entity', 'js/components-base/Entity.js', ['components-api']);
-
-        if (isset($this->jsObject['componentTemplates'])) {
-            $this->jsObject['componentTemplates'] = [];
-        }
-
-        $app->hook('GET(panel.rbal)', function(){
-            $this->render('rbal');
+            $app->view->enqueueScript('vendor', 'vue3', $vue3);
+            $app->view->enqueueScript('vendor', 'vue-demi', 'https://unpkg.com/vue-demi');
+            $app->view->enqueueScript('vendor', 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
+            $app->view->enqueueScript('vendor', 'vue-final-modal', 'https://unpkg.com/vue-final-modal@next', ['vue3']);
+            
+            $app->view->enqueueScript('app', 'components-api', 'js/components-base/API.js');
+            $app->view->enqueueScript('app', 'components-entity', 'js/components-base/Entity.js', ['components-api']);
+            
+            $app->view->enqueueStyle('vendor', 'vue-final-modal', 'css/components-base/modals.css');
+            ;
+            if (isset($this->jsObject['componentTemplates'])) {
+                $this->jsObject['componentTemplates'] = [];
+            }
         });
 
         $app->hook('mapasculturais.body:after', function () use($app) {
