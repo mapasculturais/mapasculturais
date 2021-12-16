@@ -4,6 +4,10 @@ app.component('tab', {
             type: String,
             default: 'tabs-component-panel'
         },
+        navClass: {
+            type: String,
+            value: ''
+        },
         id: {
             type: String,
             default: null
@@ -58,9 +62,11 @@ app.component('tab', {
                 header: header,
                 isDisabled: props.isDisabled,
                 hash: hash,
-                index: tabsProvider.tabs.length
+                index: tabsProvider.tabs.length,
+                navClass: props.navClass
             })
         })
+
         return {
             header,
             computedId,
