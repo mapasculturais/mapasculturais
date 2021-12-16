@@ -12,22 +12,23 @@ class Module extends \MapasCulturais\Module {
     {
         $app = App::i();
 
-        $vue3 = $app->mode === APPMODE_PRODUCTION ? 
-            'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
+        $app->hook('view.render(<<*>>):before', function () use($app) {
+            $vue3 = $app->mode === APPMODE_PRODUCTION ? 
+                'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
 
-        $app->view->enqueueScript('vendor', 'vue3', $vue3);
-        $app->view->enqueueScript('vendor', 'vue-demi', 'https://unpkg.com/vue-demi');
-        $app->view->enqueueScript('vendor', 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
-        
-        $app->view->enqueueScript('app', 'components-api', 'js/components-base/API.js');
-        $app->view->enqueueScript('app', 'components-entity', 'js/components-base/Entity.js', ['components-api']);
-
-        if (isset($this->jsObject['componentTemplates'])) {
-            $this->jsObject['componentTemplates'] = [];
-        }
-
-        $app->hook('GET(panel.rbal)', function(){
-            $this->render('rbal');
+            $app->view->enqueueScript('vendor', 'vue3', $vue3);
+            $app->view->enqueueScript('vendor', 'vue-demi', 'https://unpkg.com/vue-demi');
+            $app->view->enqueueScript('vendor', 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
+            $app->view->enqueueScript('vendor', 'vue-final-modal', 'https://unpkg.com/vue-final-modal@next', ['vue3']);
+            
+            $app->view->enqueueScript('app', 'components-api', 'js/components-base/API.js');
+            $app->view->enqueueScript('app', 'components-entity', 'js/components-base/Entity.js', ['components-api']);
+            
+            $app->view->enqueueStyle('vendor', 'vue-final-modal', 'css/components-base/modals.css');
+            ;
+            if (isset($this->jsObject['componentTemplates'])) {
+                $this->jsObject['componentTemplates'] = [];
+            }
         });
 
         $app->hook('mapasculturais.body:after', function () use($app) {
@@ -37,11 +38,31 @@ class Module extends \MapasCulturais\Module {
         /**
          * Importa um componente
          * 
-         * @param string $component Nome do componente
+         * @param string $component Nome do(s) componente(s separados por vírgula)
          * @param array $data Dados para passar na renderizaçao do template do componente
          * @param array $dependences Dependências do componente
          */
-        $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) {
+        $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) use($app) {
+            $component = trim($component);
+
+            if (!$this->importedComponents) {
+                $this->importedComponents = [];
+            }
+            
+            if(preg_match('#[ ,\n]+#', $component) && ($components = preg_split('#[ ,\n]+#', $component))) {
+                foreach ($components as $component) {
+                    $this->import($component, $data);
+                }
+                return;
+            }
+
+            if (in_array($component, $this->importedComponents)) {
+                return;
+            } 
+            $this->importedComponents[] = $component;
+            
+            $app->log->debug("importing component {$component}");
+
             $template = $this->componentRender($component, $data);
             $this->jsObject['componentTemplates'][$component] = $template;
 
@@ -91,6 +112,8 @@ class Module extends \MapasCulturais\Module {
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 echo "<!-- $component -->\n";
             }
+
+            extract($__data);
     
             include $__template_path;
     

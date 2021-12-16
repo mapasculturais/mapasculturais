@@ -1,19 +1,21 @@
 /* Abas */
-.abas {
+.abas, .tabs-component-tabs {
     margin: 0 0  $line-height-base;
     border-bottom: $thin-row;
     list-style: none;
     font-size: $font-size-smaller;
+    clear: both;
     a {
         display: block;
         cursor: pointer;
+        padding: 5px $padding-small;
         text-decoration: none;
         color: #999;
     }
     li {
-        float: left;
+        // float: left;
+        display: inline-block;
         margin-bottom: -1px;
-        padding: 5px $padding-small;
         border-bottom: $thin-row;
 
         &:hover {
@@ -22,7 +24,7 @@
                 color: $brand-accent;
             }
         }
-        &.active {
+        &.active, &.is-active {
             border-bottom: 1px solid $brand-primary;
             a {
                 color: $brand-accent;
@@ -33,7 +35,9 @@
     @media screen and (min-width: $screen-phone) {
         font-size: $font-size-small;
         li {
-            padding: 5px $padding-large;
+            a {
+                padding: 5px $padding-large;
+            }
             -webkit-transition: all .3s;
                 transition: all .3s;
         }

@@ -89,9 +89,7 @@ app.component('tabs', {
         Vue.provide('tabsProvider', state)
         const storageKey = `vue-tabs-component.cache.${window.location.host}${window.location.pathname}`
         const selectTab = (selectedTabHash, event) => {
-            if (event && !props.options.useUrlFragment) {
-                event.preventDefault();
-            }
+            event?.preventDefault();
             const selectedTab = findTab(selectedTabHash);
             if (!selectedTab) {
                 return;
