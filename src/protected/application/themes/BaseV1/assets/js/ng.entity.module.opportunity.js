@@ -40,9 +40,9 @@
                 return url.create(action, registrationId);
             },
 
-            register: function (params) {
+            register: function (params, opportunityId) {
                 var data = {
-                    opportunityId: MapasCulturais.entity.id,
+                    opportunityId: opportunityId || MapasCulturais.entity.id,
                     ownerId: params.owner.id,
                     category: params.category
                 };
@@ -2219,24 +2219,25 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
                 }
             }
 
-
-            $scope.setRegistrationOwner = function(agent){
+            //ADICIONADO O USURIO LOGADO PARA PREENCHER O INPUT DE INSCRIÇÃO
+            $scope.data.registration.owner = MapasCulturais.userProfile;
+            
+            $scope.setRegistrationOwner = function(agent, attrs){
                 $scope.data.registration.owner = agent;
                 replaceRegistrationAgentBy('owner', agent);
                 jQuery('#ownerId').editable('setValue', agent.id);
                 setTimeout(function(){
                     $('#submitButton').trigger('click');
                 });
-                EditBox.close('editbox-select-registration-owner');
-
+                EditBox.close(attrs.editboxId);
                 RegistrationService.save();
-            };            
+            };                   
 
 
-            $scope.register = function(){                
+            $scope.register = function(idOpportunity){                
                 var registration = $scope.data.registration;                
                 
-                RegistrationService.register(registration).success(function(rs){
+                RegistrationService.register(registration, idOpportunity).success(function(rs){
                     if(rs.error) {
                         if(rs.data.owner) {
                             MapasCulturais.Messages.error(rs.data.owner);
