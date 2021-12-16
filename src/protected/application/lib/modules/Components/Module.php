@@ -38,11 +38,31 @@ class Module extends \MapasCulturais\Module {
         /**
          * Importa um componente
          * 
-         * @param string $component Nome do componente
+         * @param string $component Nome do(s) componente(s separados por vírgula)
          * @param array $data Dados para passar na renderizaçao do template do componente
          * @param array $dependences Dependências do componente
          */
-        $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) {
+        $app->hook('Theme::import', function ($result, string $component, array $data = [], array &$dependences = []) use($app) {
+            $component = trim($component);
+
+            if (!$this->importedComponents) {
+                $this->importedComponents = [];
+            }
+            
+            if(preg_match('#[ ,\n]+#', $component) && ($components = preg_split('#[ ,\n]+#', $component))) {
+                foreach ($components as $component) {
+                    $this->import($component, $data);
+                }
+                return;
+            }
+
+            if (in_array($component, $this->importedComponents)) {
+                return;
+            } 
+            $this->importedComponents[] = $component;
+            
+            $app->log->debug("importing component {$component}");
+
             $template = $this->componentRender($component, $data);
             $this->jsObject['componentTemplates'][$component] = $template;
 
