@@ -4,7 +4,7 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 
 trait ControllerArchive{
-    function GET_archive(){
+    function ALL_archive(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -28,7 +28,7 @@ trait ControllerArchive{
         }
     }
 
-    function GET_unarchive(){
+    function ALL_unarchive(){
         $this->requireAuthentication();
 
         $app = App::i();
