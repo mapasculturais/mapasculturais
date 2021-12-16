@@ -577,6 +577,21 @@ abstract class Entity implements \JsonSerializable{
                     continue;
                 }
             }
+
+            if ($key == 'status') {
+                $options = [
+                    'draft' => self::STATUS_DRAFT, 
+                    'enabled' => self::STATUS_ENABLED,
+                ];
+                if ($class::usesSoftDelete()) {
+                    $options['trash'] = self::STATUS_TRASH;
+                }
+                if ($class::usesArchive()) {
+                    $options['archived'] = self::STATUS_ARCHIVED;
+                }
+                $metadata['options'] = $options;
+            }
+
             $data_array[$key] = $metadata;
         }
 
