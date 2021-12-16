@@ -16,7 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SystemRole extends \MapasCulturais\Entity {
     use Traits\EntityRevision,
-        Traits\EntitySoftDelete;
+        Traits\EntitySoftDelete,
+        Traits\EntityDraft;
 
 
     /**
