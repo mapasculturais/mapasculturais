@@ -1338,9 +1338,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.printField = function(field, value){
+        var fieldDescription;
 
-        if (field.fieldType === 'date') {
-            return moment(value).format('DD-MM-YYYY');
+        if (field.fieldType === 'agent-owner-field' || field.fieldType === 'agent-collective-field') {
+            fieldDescription = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+        } else if(field.fieldType === 'space-field') {
+            fieldDescription = MapasCulturais.EntitiesDescription.space[field.config.entityField];
+        }
+
+        if (field.fieldType === 'date' || (fieldDescription && fieldDescription.type == 'date')) {
+            return moment(value).format('DD/MM/YYYY');
         } else if (field.fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
