@@ -112,6 +112,8 @@ class Module extends \MapasCulturais\Module {
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 echo "<!-- $component -->\n";
             }
+
+            extract($__data);
     
             include $__template_path;
     
