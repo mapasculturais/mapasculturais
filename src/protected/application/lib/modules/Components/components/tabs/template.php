@@ -1,8 +1,11 @@
+<?php
+$this->import('tab');
+?>
 <div :class="wrapperClass">
     <ul role="tablist" :class="navClass">
         <li v-for="(tab, i) in tabs" 
             :key="i" 
-            :class="[ navItemClass, tab.isDisabled ? navItemDisabledClass : '', tab.isActive ? navItemActiveClass : '' ]" 
+            :class="[tab.navClass, navItemClass, tab.isDisabled ? navItemDisabledClass : '', tab.isActive ? navItemActiveClass : '' ]" 
             role="presentation">
             <a v-html="tab.header" 
                 :aria-controls="tab.hash" 
