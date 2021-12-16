@@ -23,15 +23,55 @@ const useEntitiesCache = Pinia.defineStore('entitiesCache', {
     }
 });
 
+const useEntitiesLists = Pinia.defineStore('entitiesLists', {
+    state: () => {
+        return {
+            default: {}
+        }
+    },
+
+    actions: {
+        store(name, list, scope) {
+            console.log(name, list);
+            this[scope] = this[scope] || {};
+            this[scope][name] = list;
+        },
+
+        remove(name, scope) {
+            this[scope] = this[scope] || {};
+            delete this[scope][name];
+        },
+        
+        fetch(name, scope) {
+            this[scope] = this[scope] || {};
+            return this[scope][name];
+        },
+
+        fetchAll(scope) {
+            this[scope] = this[scope] || {};
+            return this[scope];
+        }
+    }
+});
+
+let apiInstances = {};
+
 class API {
     constructor(objectType, scope, fetchOptions) {
-        this.scope = scope;
-        this.cache = useEntitiesCache();
-        this.objectType = objectType;
-        this.options = {
-            cacheMode: 'force-cache', 
-            ...fetchOptions
-        };
+        if (apiInstances[objectType]) {
+            return apiInstances[objectType];
+        } else {
+            this.scope = scope;
+            this.cache = useEntitiesCache();
+            this.lists = useEntitiesLists();
+            this.objectType = objectType;
+            this.options = {
+                cacheMode: 'force-cache', 
+                ...fetchOptions
+            };
+
+            apiInstances[objectType] = this;
+        }
     }
 
     async GET(url, data, init) {
@@ -65,7 +105,7 @@ class API {
 
     async POST(url, data) {
         return fetch(url, {
-            method: 'PATCH',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -100,6 +140,24 @@ class API {
         }
     }
 
+    async destroyEntity(entity) {
+        if (entity.id) {
+            return this.DELETE(entity.destroyUrl);   
+        }
+    }
+
+    async publishEntity(entity) {
+        if (entity.id) {
+            return this.POST(entity.publishUrl);   
+        }
+    }
+
+    async archiveEntity(entity) {
+        if (entity.id) {
+            return this.POST(entity.archiveUrl);   
+        }
+    }
+
     async findOne(id) {
         let url = this.createApiUrl('findOne', {id: `EQ(${id})`, '@select': '*'});
         return this.GET(url).then(response => response.json().then(obj => {
@@ -108,10 +166,12 @@ class API {
         }));
     }
 
-    async find(query) {
+    async find(query, list) {
         let url = this.createApiUrl('find', query);
         return this.GET(url).then(response => response.json().then(objs => {
-            let result = [];
+            let result = list || [];
+            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
+            
             objs.forEach(element => {
                 let entity = this.getEntityInstance(element.id);
                 entity.populate(element);
