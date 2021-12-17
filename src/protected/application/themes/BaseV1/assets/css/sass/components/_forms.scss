@@ -33,6 +33,12 @@ input.data {
     width: 72px;
     padding: 3px;
 }
+.container-switch{ /* direcionado o container do SWITCH para o lado esquerdo da tela. */
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+
 
 /* The switch - the box around the slider */
 .switch {
@@ -96,5 +102,6 @@ input.data {
     .slider.round:before {
         border-radius: 50%;
     }
-
+    
+ 
 }
