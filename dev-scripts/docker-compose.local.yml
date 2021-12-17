@@ -28,6 +28,9 @@ services:
       - APP_LCODE=pt_BR,es_ES
       - ACTIVE_THEME=SpCultura
       - APP_MODE=development
+      - MAPAS_NETWORK_NODES=https://nacional.testes.map.as/,https://ms.testes.map.as/
+      - MAPAS_NETWORK_ENABLED=true
+      - CACHE_ASSETS_URL=false
 
     depends_on:
       - db
@@ -45,4 +48,4 @@ services:
       - "5470:5432"
     volumes:
       - ../docker-data/postgres:/var/lib/postgresql/data
-      - ../db/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ../../dumps/ms/mapas.sql:/docker-entrypoint-initdb.d/dump.sql
