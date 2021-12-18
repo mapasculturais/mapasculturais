@@ -66,6 +66,7 @@ input.data {
         background-color: #ccc;
         -webkit-transition: 0.4s;
         transition: 0.4s;
+        border-radius: 10px;
     }
 
     .slider:before {
@@ -78,6 +79,7 @@ input.data {
         background-color: white;
         -webkit-transition: 0.4s;
         transition: 0.4s;
+        border-radius: 10px;
     }
 
     input:checked + .slider {
