@@ -44,7 +44,12 @@ use MapasCulturais\i;
 
 <div ng-if="field.fieldType === 'file'">
     <label>{{::field.required ? '*' : ''}} {{::field.title}}: </label>
-    <a ng-if="field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank" rel='noopener noreferrer'>{{::field.file.name}}</a>
+    <ul ng-if="field.multiple">
+        <li ng-repeat="file in field.file">
+            <b>{{file.description}}</b> - <a class="attachment-title" href="{{file.url}}" target="_blank" rel='noopener noreferrer'>{{file.name}}</a>
+        </li>
+    </ul>
+    <a ng-if="!field.multiple && field.file" class="attachment-title" href="{{::field.file.url}}" target="_blank" rel='noopener noreferrer'>{{::field.file.name}}</a>
     <span ng-if="!field.file"><em><?php \MapasCulturais\i::_e("Arquivo não enviado."); ?></em></span>
 </div>
 <?php $this->applyTemplateHook('registration-field-item', 'end') ?>

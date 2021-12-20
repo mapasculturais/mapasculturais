@@ -325,6 +325,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         title: null,
         description: null,
         required: false,
+        metadata: {},
+        multiple: false,
         categories: []
     };
 
@@ -591,6 +593,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 required: model.required,
                 template: model.template,
                 categories: model.categories.length ? model.categories : '',
+                metadata: model.metadata,
+                multiple: model.multiple,
             };
             fileService.edit(data).then(function(response){
                 $scope.data.uploadSpinner = false;
@@ -1225,10 +1229,30 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         initAjaxUploader(id, index);
     };
 
-    $scope.removeFile = function (id, $index) {
+    $scope.removeFile = function (file) {
         if(confirm(labels['confirmRemoveAttachment'])){
-            $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
-                delete $scope.data.fields[$index].file;
+            $http.get(file.deleteUrl).success(function(response){
+                for (var key in $scope.data.fields) {
+                    var field = $scope.data.fields[key];
+                    if (field.multiple && field.file instanceof Array) {
+                        for (var f in field.file) {
+                            var fil = field.file[f];
+                            if (file.id == fil.id) {
+                                delete $scope.data.fields[key].file[f];
+                            }
+                        }
+                    } else {
+                        var fil = field.file;
+                        if (typeof fil !== 'undefined') {
+                            if (file.id == fil.id) {
+                                delete $scope.data.fields[key].file;
+                            }
+                        }  
+                    }
+                }
+
+                $("#" + file.id).remove();
+
             });
         }
     };
@@ -1246,7 +1270,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         });
 
         $form.on('ajaxForm.success', function(evt, response){
-            $scope.data.fields[index].file = response[$scope.data.fields[index].groupName];
+            var file = response[$scope.data.fields[index].groupName];
+
+            if ($scope.data.fields[index].multiple) {
+                if ( typeof $scope.data.fields[index].file === 'undefined') {
+                    $scope.data.fields[index].file = [file[0]];
+                } else {
+                    $scope.data.fields[index].file.push(file[0]);
+                }
+
+            } else {
+                $scope.data.fields[index].file = file;
+            }
+        
             $scope.$apply();
             setTimeout(function(){
                 $('.carregando-arquivo').hide();
