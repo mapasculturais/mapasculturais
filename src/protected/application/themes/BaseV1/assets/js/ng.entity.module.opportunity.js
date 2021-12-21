@@ -1238,7 +1238,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                         for (var f in field.file) {
                             var fil = field.file[f];
                             if (file.id == fil.id) {
-                                delete $scope.data.fields[key].file[f];
+                                $scope.data.fields[key].file.splice(f,1);
                             }
                         }
                     } else {
