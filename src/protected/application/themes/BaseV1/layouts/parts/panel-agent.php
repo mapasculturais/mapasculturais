@@ -19,6 +19,7 @@ $_type = is_object($entity->type) ? $entity->type->name : "";
                     <span class="slider"></span>
                 </span>
                 <span class="switch-sinc-panel">Sincronizar</span>
+                <span class="icon icon-help hltip" style="background-color: unset; border: unset; color: #000;"></span> <!-- icone de ajuda  -->
             </label>
         </span>
 
