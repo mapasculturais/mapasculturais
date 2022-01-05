@@ -11,7 +11,17 @@ $_type = is_object($entity->type) ? $entity->type->name : "";
     <h1>
         <?php if($entity->isUserProfile): ?>
             <a class="icon icon-agent hltip active js-disable" title="<?php \MapasCulturais\i::esc_attr_e("Este é seu perfil.");?>"></a>
-            <span style="float: right;font-size: 15px;"><?php \MapasCulturais\i::esc_attr_e("Meu Perfil");?></span>
+
+        <span style="float: right;font-size: 15px;">  <!-- inserido switch de sincronizar no painel do agente -->
+            <label>
+                <span class="switch" ng-controller="MapasNetworkController" style="vertical-align: middle;">
+                    <input type="checkbox" ng-model="entityShouldSync" ng-change="toggleSync()" />
+                    <span class="slider"></span>
+                </span>
+                <span class="switch-sinc-panel">Sincronizar</span>
+            </label>
+        </span>
+
         <?php elseif($entity->status === Agent::STATUS_ENABLED && $can_edit): ?>
             <a class="icon icon-agent hltip" title="<?php \MapasCulturais\i::esc_attr_e("Definir este agente como seu perfil.");?>" href="<?php echo $app->createUrl('agent', 'setAsUserProfile', array($entity->id)); ?>"></a>
         <?php endif; ?>
