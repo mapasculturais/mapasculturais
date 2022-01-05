@@ -33,6 +33,10 @@ input.data {
     width: 72px;
     padding: 3px;
 }
+.switch-sinc-panel{/* distancia entre o sincronizar e o switch */
+    padding-right: 10px;
+    margin-left: 10px;
+}
 .container-switch{ /* direcionado o container do SWITCH para o lado esquerdo da tela. */
     display: flex;
     flex-wrap: nowrap;
