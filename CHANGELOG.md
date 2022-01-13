@@ -12,6 +12,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 
+## [5.1.41] - 2022-01-13
+### Melhorias
+- Remove opção de inserir link da rede social google+ do perfil do agente
+
 ## [5.1.40] - 2021-12-14
 ### Melhorias
 - Faz com que perfis admins tenham acesso a aba de suporte
