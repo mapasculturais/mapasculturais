@@ -19,7 +19,7 @@
 	</div>
 </div>
 
-<?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->googleplus || $entity->instagram): ?>
+<?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->instagram): ?>
     <div class="widget">
         <h3><?php \MapasCulturais\i::_e("Seguir");?></h3>
 
@@ -36,14 +36,6 @@
             <a class="icon icon-facebook js-editable" data-edit="facebook" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Facebook");?>"
                href="<?php echo $entity->facebook ? $entity->facebook : '#" onclick="return false; ' ?>"
                data-value="<?php echo $entity->facebook ?>"></a>
-        </span>
-        <?php endif; ?>
-
-        <?php if ($this->isEditable() || $entity->googleplus): ?>
-        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
-            <a class="icon icon-googleplus js-editable" data-edit="googleplus" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Google Plus");?>"
-               href="<?php echo $entity->googleplus ? $entity->googleplus : '#" onclick="return false; ' ?>"
-               data-value="<?php echo $entity->googleplus ?>"></a>
         </span>
         <?php endif; ?>
 
