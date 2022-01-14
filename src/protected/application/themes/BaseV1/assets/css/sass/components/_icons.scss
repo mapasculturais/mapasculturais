@@ -248,6 +248,12 @@ h1 .icon {
         content: $unicode-youtube;
     }
 }
+.icon-pinterest {
+    color: #FF0000 !important;
+    &:before {
+        content: $unicode-pinterest;
+    }
+}
 .icon-login::after {
     @media screen and (max-width: $screen-tablet) {
         content: "Entrar";
