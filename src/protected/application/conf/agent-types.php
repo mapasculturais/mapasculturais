@@ -316,6 +316,13 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
+        'pinterest' => array(
+            'label' => \MapasCulturais\i::__('Pinterest'),
+            'validations' => array(
+                "v::url('pinterest.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'available_for_opportunities' => true
+        ),
     ),
     'items' => array(
         1 => array( 'name' => \MapasCulturais\i::__('Individual' )),

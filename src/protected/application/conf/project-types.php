@@ -54,6 +54,12 @@ return array(
                 "v::url('youtube.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
+        'pinterest' => array(
+            'label' => \MapasCulturais\i::__('Pinterest'),
+            'validations' => array(
+                "v::url('pinterest.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
 
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
