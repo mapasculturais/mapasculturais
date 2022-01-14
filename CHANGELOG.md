@@ -12,6 +12,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 
+## [5.1.42] - 2022-01-14
+### Melhorias
+
+- Insere opções para cadastros das redes sociais Linkedin, Spotify, YouTube e pinterest nas entidades
 ## [5.1.41] - 2022-01-13
 ### Melhorias
 - Remove opção de inserir link da rede social google+ do perfil do agente
