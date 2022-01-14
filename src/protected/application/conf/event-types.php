@@ -89,7 +89,13 @@ return array(
             'validations' => array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             )
-        )
+        ),
+        'linkedin' => array(
+            'label' => \MapasCulturais\i::__('Linkedin'),
+            'validations' => array(
+                "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
 
     ),
     'items' => array(
