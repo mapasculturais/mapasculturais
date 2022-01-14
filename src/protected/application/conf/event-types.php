@@ -101,7 +101,13 @@ return array(
             'validations' => array(
                 "v::url('open.spotify.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
-        )
+        ),
+        'youtube' => array(
+            'label' => \MapasCulturais\i::__('YouTube'),
+            'validations' => array(
+                "v::url('youtube.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
 
     ),
     'items' => array(
