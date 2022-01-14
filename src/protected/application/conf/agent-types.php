@@ -294,7 +294,14 @@ return array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             ),
             'available_for_opportunities' => true
-        )
+        ),
+        'linkedin' => array(
+            'label' => \MapasCulturais\i::__('Linkedin'),
+            'validations' => array(
+                "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'available_for_opportunities' => true
+        ),
     ),
     'items' => array(
         1 => array( 'name' => \MapasCulturais\i::__('Individual' )),
