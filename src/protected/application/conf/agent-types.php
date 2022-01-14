@@ -281,13 +281,6 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
-        'googleplus' => array(
-            'label' => \MapasCulturais\i::__('Google+'),
-            'validations' => array(
-                "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            ),
-            'available_for_opportunities' => true
-        ),
         'instagram' => array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'validations' => array(

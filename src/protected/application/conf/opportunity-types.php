@@ -48,12 +48,6 @@ return array(
                 "v::url('twitter.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
-        'googleplus' => array(
-            'label' => \MapasCulturais\i::__('Google+'),
-            'validations' => array(
-                "v::url('plus.google.com')" => \MapasCulturais\i::__("A url informada é inválida.")
-            )
-        ),
         'linkedin' => array(
             'label' => \MapasCulturais\i::__('Linkedin'),
             'validations' => array(
