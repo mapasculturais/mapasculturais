@@ -60,6 +60,12 @@ return array(
                 "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
             )
         ),
+        'spotify' => array(
+            'label' => \MapasCulturais\i::__('Spotify'),
+            'validations' => array(
+                "v::url('open.spotify.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            )
+        ),
 
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
