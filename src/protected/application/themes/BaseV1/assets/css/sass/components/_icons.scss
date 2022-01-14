@@ -236,6 +236,12 @@ h1 .icon {
         content: $unicode-linkedin;
     }
 }
+.icon-spotify {
+    color: #1CD15D !important;
+    &:before {
+        content: $unicode-spotify;
+    }
+}
 
 .icon-login::after {
     @media screen and (max-width: $screen-tablet) {
