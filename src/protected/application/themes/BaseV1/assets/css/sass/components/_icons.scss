@@ -242,7 +242,12 @@ h1 .icon {
         content: $unicode-spotify;
     }
 }
-
+.icon-youtube {
+    color: #FF0000 !important;
+    &:before {
+        content: $unicode-youtube;
+    }
+}
 .icon-login::after {
     @media screen and (max-width: $screen-tablet) {
         content: "Entrar";
