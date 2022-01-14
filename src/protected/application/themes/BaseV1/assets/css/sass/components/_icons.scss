@@ -230,7 +230,30 @@ h1 .icon {
         content: $unicode-instagram;
     }
 }
-
+.icon-linkedin {
+    color: #0A66C2 !important;
+    &:before {
+        content: $unicode-linkedin;
+    }
+}
+.icon-spotify {
+    color: #1CD15D !important;
+    &:before {
+        content: $unicode-spotify;
+    }
+}
+.icon-youtube {
+    color: #FF0000 !important;
+    &:before {
+        content: $unicode-youtube;
+    }
+}
+.icon-pinterest {
+    color: #FF0000 !important;
+    &:before {
+        content: $unicode-pinterest;
+    }
+}
 .icon-login::after {
     @media screen and (max-width: $screen-tablet) {
         content: "Entrar";
