@@ -230,6 +230,12 @@ h1 .icon {
         content: $unicode-instagram;
     }
 }
+.icon-linkedin {
+    color: #0A66C2 !important;
+    &:before {
+        content: $unicode-linkedin;
+    }
+}
 
 .icon-login::after {
     @media screen and (max-width: $screen-tablet) {
