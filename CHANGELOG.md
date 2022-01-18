@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Novo formato de changelog
 - Refatoração no trait MagicCaller para disparar exceção quando não existe o método, além de hook para criação de novos métodos (hook `Class::newMethod`)
+- API agora executa o unserialize dos metadados
 
 ### Correções
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
