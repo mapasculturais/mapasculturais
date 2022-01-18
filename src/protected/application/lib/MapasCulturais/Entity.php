@@ -521,6 +521,25 @@ abstract class Entity implements \JsonSerializable{
         return $label;
     }
 
+    private static $__permissions = [];
+
+    static function getPermissionsList() {
+        $class_name = self::getClassName();
+        if (!isset(self::$__permissions[$class_name])) {
+            $permissions = ['@control'];
+            foreach (get_class_methods($class_name) as $method) {
+                if (strpos($method, 'canUser') === 0 && $method != 'canUser') {
+                    $permissions[] = lcfirst(substr($method, 7));
+                }
+            }
+
+            self::$__permissions[$class_name] = $permissions;
+        }
+
+        return self::$__permissions[$class_name];
+    }
+
+
     /**
      * Returns the metadata of this entity properties.
      *
