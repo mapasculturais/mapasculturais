@@ -11,7 +11,6 @@ use MapasCulturais\Entity;
 trait EntityPermissionCache {
     public $__skipQueuingPCacheRecreation = false;
 
-    private static $__permissions = [];
     private $__enabled = true;
 
     public static function usesPermissionCache() {
@@ -34,22 +33,6 @@ trait EntityPermissionCache {
         }
 
         return false;
-    }
-
-    function getPermissionsList() {
-        $class_name = $this->getClassName();
-        if (!isset(self::$__permissions[$class_name])) {
-            $permissions = ['@control'];
-            foreach (get_class_methods($class_name) as $method) {
-                if (strpos($method, 'canUser') === 0 && $method != 'canUser') {
-                    $permissions[] = lcfirst(substr($method, 7));
-                }
-            }
-
-            self::$__permissions[$class_name] = $permissions;
-        }
-
-        return self::$__permissions[$class_name];
     }
     
     function getPCacheObjectType(){
