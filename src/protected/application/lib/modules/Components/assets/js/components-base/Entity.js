@@ -3,6 +3,8 @@ class Entity {
         this.id = id;
         this.__scope = scope;
         this.__objectType = objectType;
+        this.__objectId = `${objectType}-${id}`;
+        this.__validationErrors = {};
         this.__properties = this.API.getEntityDescription('!relations');
         this.__relations = this.API.getEntityDescription('relations');
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
@@ -25,6 +27,8 @@ class Entity {
             }
 
             this[prop] = val;
+
+            this.__validationErrors[prop] = [];
         }
 
         for (let prop in this.__relations) {
