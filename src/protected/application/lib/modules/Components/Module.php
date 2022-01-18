@@ -35,6 +35,12 @@ class Module extends \MapasCulturais\Module {
             $app->view->part('components/scripts');
         });
 
+        $self = $this;
+        /** */
+        $app->hook('App.get(components)', function (&$result) use($self, $app) {
+            $result = $self;
+        });
+
         /**
          * Importa um componente
          * 
