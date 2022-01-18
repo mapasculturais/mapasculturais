@@ -311,7 +311,7 @@ class Metadata extends \MapasCulturais\Definition{
             'length' => key_exists('length', $this->config) ? $this->config['length'] : null,
             'private' => $this->private,
             'available_for_opportunities' => $this->available_for_opportunities,
-            'field_type' => $this->field_type
+            'field_type' => $this->field_type,
         ];
 
         if(key_exists('options', $this->config)){
@@ -319,16 +319,10 @@ class Metadata extends \MapasCulturais\Definition{
             $result['optionsOrder'] = array_keys((array)$this->config['options']);
         }
 
-        if(key_exists('label', $this->config)){
-            $result['label'] = $this->config['label'];
-        }
-
-        if(key_exists('allowOther', $this->config)){
-            $result['allowOther'] = $this->config['allowOther'];
-        }
-
-        if(key_exists('allowOtherText', $this->config)){
-            $result['allowOtherText'] = $this->config['allowOtherText'];
+        foreach($this->config as $key => $val) {
+            if (!isset($result[$key])) {
+                $result[$key] = $val;
+            }
         }
 
         return $result;
