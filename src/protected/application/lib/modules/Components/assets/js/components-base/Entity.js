@@ -3,6 +3,8 @@ class Entity {
         this.id = id;
         this.__scope = scope;
         this.__objectType = objectType;
+        this.__objectId = `${objectType}-${id}`;
+        this.__validationErrors = {};
         this.__properties = this.API.getEntityDescription('!relations');
         this.__relations = this.API.getEntityDescription('relations');
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
@@ -25,6 +27,8 @@ class Entity {
             }
 
             this[prop] = val;
+
+            this.__validationErrors[prop] = [];
         }
 
         for (let prop in this.__relations) {
@@ -83,12 +87,14 @@ class Entity {
 
         this.__processing = 'salvando';
         return this.API.persistEntity(this)
-            .then(() => {
+            .then((response) => {
                 this.__processing = false;
+                return response.json();
             })
             .catch((error) => {
                 this.__processing = false;
                 console.log(error);
+                return error;
             });
     }
 
@@ -97,7 +103,7 @@ class Entity {
 
         this.__processing = 'excluindo';
         return this.API.deleteEntity(this)
-            .then(() => {
+            .then((response) => {
                 this.__processing = false;
                 this.__lists.forEach((list) => {
                     let index = list.indexOf(this);
@@ -105,6 +111,8 @@ class Entity {
                         list.splice(index,1);
                     }
                 });
+
+                return response.json();
             })
             .catch((error) => {
                 this.__processing = false;
@@ -118,7 +126,7 @@ class Entity {
 
         this.__processing = 'excluindo definitivamente';
         return this.API.destroyEntity(this)
-            .then(() => {
+            .then((response) => {
                 this.__processing = false;
                 this.__lists.forEach((list) => {
                     let index = list.indexOf(this);
@@ -126,6 +134,8 @@ class Entity {
                         list.splice(index,1);
                     }
                 });
+
+                return response.json();
             })
             .catch((error) => {
                 this.__processing = false;
@@ -139,7 +149,7 @@ class Entity {
 
         this.__processing = 'publicando';
         return this.API.publishEntity(this)
-            .then(() => {
+            .then((response) => {
                 this.__processing = false;
                 this.__lists.forEach((list) => {
                     let index = list.indexOf(this);
@@ -147,6 +157,8 @@ class Entity {
                         list.splice(index,1);
                     }
                 });
+
+                return response.json();
             })
             .catch((error) => {
                 this.__processing = false;
@@ -159,7 +171,7 @@ class Entity {
 
         this.__processing = 'arquivando';
         return this.API.archiveEntity(this)
-            .then(() => {
+            .then((response) => {
                 this.__processing = false;
                 this.__lists.forEach((list) => {
                     let index = list.indexOf(this);
@@ -167,6 +179,8 @@ class Entity {
                         list.splice(index,1);
                     }
                 });
+
+                return response.json();
             })
             .catch((error) => {
                 this.__processing = false;

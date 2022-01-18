@@ -1,4 +1,7 @@
 app.component('modal', {
+    template: $TEMPLATES['modal'],
+    emits: ['open', 'close'],
+
     data() {
         return {
             modalOpen: false,
@@ -15,10 +18,11 @@ app.component('modal', {
     methods: {
         open () {
             this.modalOpen = true;
+            this.$emit('open', this);
         },
         close () {
             this.modalOpen = false;
+            this.$emit('close', this);
         }
     },
-    template: $TEMPLATES['modal']
 });
