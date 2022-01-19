@@ -13,6 +13,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
 
+## [5.1.43] - 2022-01-19
+### Correção
+
+- Corrige erro de divisão por zero no módulo de relatórios
+
 ## [5.1.42] - 2022-01-14
 ### Melhorias
 
