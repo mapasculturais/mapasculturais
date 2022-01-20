@@ -732,6 +732,10 @@ class Opportunity extends EntityController {
 
         $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
 
+        if(empty($users)){
+            return;
+        }
+
         $params = ['opp' => $opportunity->id];
 
         $queryNumberOfResults = $conn->fetchColumn("
