@@ -4,7 +4,7 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 
 trait ControllerDraft{
-    function GET_publish(){
+    function ALL_publish(){
         $this->requireAuthentication();
 
         $app = App::i();
@@ -26,7 +26,7 @@ trait ControllerDraft{
         }
     }
 
-    function GET_unpublish(){
+    function ALL_unpublish(){
         $this->requireAuthentication();
 
         $app = App::i();

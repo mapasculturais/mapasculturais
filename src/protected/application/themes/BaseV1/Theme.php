@@ -1349,7 +1349,7 @@ class Theme extends MapasCulturais\Theme {
 
         $app->applyHook('mapasculturais.styles');
 
-        $this->_printJsObject();
+        $this->printJsObject();
 
         $this->printScripts('vendor');
         $this->printScripts('app');
@@ -1890,14 +1890,8 @@ class Theme extends MapasCulturais\Theme {
         $app->applyHookBoundTo($this, 'view.includeAngularEntityAssets:after');
     }
 
-    protected function _printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
-        if ($print_script_tag)
-            echo "\n<script type=\"text/javascript\">\n";
-
-        echo " var {$var_name} = " . json_encode($this->jsObject) . ';';
-
-        if ($print_script_tag)
-            echo "\n</script>\n";
+    function printJsObject($var_name = 'MapasCulturais', $print_script_tag = true) {
+        parent::printJsObject($var_name, $print_script_tag);
     }
 
     function ajaxUploader($file_owner, $group_name, $response_action, $response_target, $response_template = '', $response_transform = '', $add_description_input = false, $humanCrop = false, $file_types = '.jpg ou .png') {
