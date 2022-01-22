@@ -19,5 +19,12 @@ $config = require $config_filename;
 
 $config['app.lcode'] = $lcode;
 
+if($_SERVER['CONTENT_TYPE'] == 'application/json') {
+    $json = file_get_contents('php://input');
+    $decoded = json_decode($json, true);
+    if($decoded) {
+        $_POST = $decoded;
+    }
+}
 // create the App instance
 $app = MapasCulturais\App::i()->init($config);

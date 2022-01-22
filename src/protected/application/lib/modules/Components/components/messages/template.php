@@ -1,0 +1,1 @@
+<p v-for="message in store.messages">{{message}}</p>
