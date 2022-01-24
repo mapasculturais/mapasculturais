@@ -122,8 +122,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 die;
             }
 
-            if (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,2,3,8,10])) {
-                $this->errorJson(i::__('os status válidos são 0, 2, 3, 8 e 10'), 400);
+            if (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,1,2,3,8,10])) {
+                $this->errorJson(i::__('os status válidos são 0,1,2, 3, 8 e 10'), 400);
                 die;
             }
 
