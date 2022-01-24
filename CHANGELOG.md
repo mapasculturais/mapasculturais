@@ -13,6 +13,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
 
+## [5.1.44] - 2022-01-24
+### Correção
+
+- Corrige erro no endpoint findEvaluation quando não existe avaliadores cadastrados na oportunidade #1874
+- Evita que quem tenha permissão de edição na inscrição, veja o formulário de enviar prestação de contas #1871
+- Remove o status todas da lista de status da listagem de inscrições #1868
+- Possibilita inserir opções de seleção nos campos de seleção única quando o campo é do tipo @campo_agente_responsável ou @campo_agente_coletivo #1865
+- Correção no texto do filtro de status no módulo de relatórios #1862
+- Adiciona o status pendente na listagem de status permitido no botão de aplicar avaliações #1782
+
 ## [5.1.43] - 2022-01-19
 ### Correção
 
