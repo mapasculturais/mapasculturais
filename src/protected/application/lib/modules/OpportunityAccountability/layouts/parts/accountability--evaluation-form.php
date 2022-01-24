@@ -10,8 +10,8 @@ $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? "
 <div class="registration-fieldset accountability-evaluation-form">
     <?php $this->applyTemplateHook('evaluationForm.accountability', 'begin', $template_hook_params) ?>
     <section>
+        <?php if(!$disable && $registration->canUser('evaluate')){?>
         <h4> <?php i::_e('Resultado') ?> </h4>
-        <?php if(!$disable){?>
             <label>
                 <input type="radio" ng-model="evaluationData.result" value="10" <?=$disable?>>
                 <?php i::_e('Aprovado') ?>
@@ -31,14 +31,19 @@ $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? "
     <?php if(!$disable){?>
         <section>
             <h4><?= i::__('Parecer técnico') ?></h4>
+            <?php if($registration->canUser('evaluate')){?>
             
             <div id="evaluation-editor" ng-bind-html="::evaluationData.obs"></div>
 
             <input id="evaluate-editor-input" type="hidden" ng-model="evaluationData.obs">
+            <?php } else {?>
+                <p class="registration-help" ng-bind-html="::evaluationData.obs"></p>
+            <?php } ?>
         </section>
     <?php } ?>
 
     <section class="actions">
+    <?php if($registration->canUser('evaluate')){?>
         <?php if (!empty($disable)) { ?>
             <span><?php i::_e("Parecer técnico enviado com status") ?> <b>{{resultString}}</b></span>
             <?php if(!$registration->isPublishedResult){?>
@@ -50,6 +55,7 @@ $disable = ($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) ? "
         <?php } else { ?>
             <button class="btn btn-primary align-right" ng-click="sendEvaluation()"><?php i::_e("Finalizar e enviar o parecer técnico") ?></button>
         <?php } ?>
+    <?php } ?>
     </section>
     <?php $this->applyTemplateHook('evaluationForm.accountability', 'end', $template_hook_params) ?>
 </div>
