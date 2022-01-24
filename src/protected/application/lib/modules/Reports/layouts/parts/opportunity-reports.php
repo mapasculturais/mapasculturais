@@ -16,7 +16,7 @@ $prinUrl = $app->createUrl('reports', 'printReports', array('opportunity_id' => 
 
 	    <label for="reportFilter">Filtrar dados por
 		    <select ng-model='reportFilter' ng-options="status.value as status.title for status in statuses" ng-click='setReportFilter()'>
-			    <option value="" ng-hide="reportFilter">Selecione uma opção ...</option>
+			    <option value="" ng-hide="reportFilter"><?php i::_e('Selecione uma opção ...');?></option>
 		    </select>
 	    </label>
 
