@@ -35,7 +35,7 @@
         };
 
         $scope.statuses = [
-            {value : 'all', title : 'Mostrar todos'},
+            {value : 'all', title : 'Mostrar todas'},
             {value : 'draft', title : 'Somente em rascunho'},
             {value : 'approved', title : 'Somente Aprovados'}
         ];
