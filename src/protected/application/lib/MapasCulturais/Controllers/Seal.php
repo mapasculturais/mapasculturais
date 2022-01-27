@@ -114,13 +114,19 @@ class Seal extends EntityController {
         parent::POST_index($data);
     }
 
-    public function GET_sealRelation(){
-    	$app = App::i();
-    	$id = $this->data['id'];
-    	$relation = $app->repo('SealRelation')->find($id);
+    public function GET_sealRelation()
+    {
+        $app = App::i();
+        $id = $this->data['id'];
+        $relation = $app->repo('SealRelation')->find($id);
+        if (!$relation) {
+            $app->pass();
+        }
         $mensagemPrintSealRelation = $relation->getCertificateText(true);
-
-    	$this->render('sealrelation', ['relation'=>$relation, 'printSeal'=>$mensagemPrintSealRelation, 'seal'=>$relation->seal]);
+        $this->render('sealrelation', [
+            'relation' => $relation,
+            'printSeal' => $mensagemPrintSealRelation,
+            'seal' => $relation->seal]);
     }
 
     public function GET_printSealRelation(){
