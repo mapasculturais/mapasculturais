@@ -14,6 +14,39 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
 
+## [5.1.44] - 2022-01-24
+### Correção
+
+- Corrige erro no endpoint findEvaluation quando não existe avaliadores cadastrados na oportunidade #1874
+- Evita que quem tenha permissão de edição na inscrição, veja o formulário de enviar prestação de contas #1871
+- Remove o status todas da lista de status da listagem de inscrições #1868
+- Possibilita inserir opções de seleção nos campos de seleção única quando o campo é do tipo @campo_agente_responsável ou @campo_agente_coletivo #1865
+- Correção no texto do filtro de status no módulo de relatórios #1862
+- Adiciona o status pendente na listagem de status permitido no botão de aplicar avaliações #1782
+
+## [5.1.43] - 2022-01-19
+### Correção
+
+- Corrige erro de divisão por zero no módulo de relatórios
+
+## [5.1.42] - 2022-01-14
+### Melhorias
+
+- Insere opções para cadastros das redes sociais Linkedin, Spotify, YouTube e pinterest nas entidades
+## [5.1.41] - 2022-01-13
+### Melhorias
+- Remove opção de inserir link da rede social google+ do perfil do agente
+
+## [5.1.40] - 2021-12-14
+### Melhorias
+- Faz com que perfis admins tenham acesso a aba de suporte
+- Insere o campo função dentro do campo de listagem de pessoas (refs #1881)
+- Após o envio das avaliações, não exibe mais o formulário de avaliação para os avaliadores (refs: #1876)
+
+### Correções
+- Corrige a lista de inscrições do formulário de avaliação das fases (refs: #1875)
+- Evita possibilidade de conflito de nome de arquivo nos assets publicados em modo de desenvolvimento adicionando um hash do caminho completo do arquivo no nome do arquivo publicado
+
 ## [5.1.39] - 2021-11-22
 ### Melhorias
 - Cria configuração default para as chaves mailer.bbc e mailer.replyto e possibilita setar por variáveis de ambiente
