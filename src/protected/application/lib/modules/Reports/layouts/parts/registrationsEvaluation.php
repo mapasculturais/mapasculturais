@@ -48,6 +48,10 @@ if ($opportunity->evaluationMethod->slug == 'technical') {
     }
     $total = array_sum(array_column($total, null));
 
+    if($total <=0){
+        return;
+    }
+
     // Prepara os dados para o gráfico
     foreach ($data as $key => $value) {
 

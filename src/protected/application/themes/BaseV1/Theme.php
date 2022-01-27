@@ -2380,7 +2380,6 @@ class Theme extends MapasCulturais\Theme {
 
 
         $registrationStatuses = [
-            ['value' => null, 'label' => i::__('Todas')],
             ['value' => 1, 'label' => i::__('Pendente')],
             ['value' => 2, 'label' => i::__('Inválida')],
             ['value' => 3, 'label' => i::__('Não selecionada')],

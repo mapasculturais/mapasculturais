@@ -53,9 +53,10 @@ use MapasCulturais\Entities\User;
  * @method \MapasCulturais\App i() Returns the application object
  */
 class App extends \Slim\Slim{
-    use \MapasCulturais\Traits\MagicGetter,
-        \MapasCulturais\Traits\MagicSetter,
-        \MapasCulturais\Traits\Singleton;
+    use Traits\MagicGetter,
+        Traits\MagicSetter,
+        Traits\MagicCallers,
+        Traits\Singleton;
 
     /**
      * Is the App initiated?
@@ -107,6 +108,11 @@ class App extends \Slim\Slim{
 
 
     protected $_debugbar = null;
+
+    /**
+     * Hibilita os magic getter hooks
+     */
+    protected $__enableMagicGetterHook = true;
 
     /**
      * App Configuration.
@@ -588,6 +594,10 @@ class App extends \Slim\Slim{
         parent::run();
         $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
+    }
+
+    public static function getHookPrefix() {
+        return 'App';
     }
 
     public function getVersion(){
