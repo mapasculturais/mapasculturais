@@ -133,31 +133,31 @@ class Module extends \MapasCulturais\Module {
         $app->hook('doctrine.emum(object_type).values', function(&$values) {
             $values['SystemRole'] = Entities\SystemRole::class;
         });
-    }
 
-    function register() {
-        $app = App::i();
+        $app->hook('app.init:after', function () {
+            $this->registerController('system-role', Controllers\SystemRole::class);
 
-        $app->registerController('system-role', Controllers\SystemRole::class);
-
-        $roles = $app->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
-        if (php_sapi_name() !== "cli") {
-
+            $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
+            
             foreach($roles as $role) {
                 $definition = new Role($role->slug, $role->name, $role->name, $role->subsiteContext, function ($user) {
                     return $user->is('saasAdmin');
                 });
-
-                $app->registerRole($definition);
-
+    
+                $this->registerRole($definition);
+    
                 foreach ($role->permissions as $permission) {
-                    $app->hook("can($permission)", function ($user, &$result) use ($role) {
+                    $this->hook("can($permission)", function ($user, &$result) use ($role) {
                         if($user->is($role->slug)) {
                             $result = true;
                         }
                     });
                 }
             }
-        }
+        });
+    }
+
+    function register() {        
+    
     }
 }
