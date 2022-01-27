@@ -2,6 +2,7 @@
 namespace Components;
 
 use MapasCulturais\App;
+use MapasCulturais\Exceptions;
 /**
  * Módulo que implementa a funcionalidade de componentes Vue
  * 
