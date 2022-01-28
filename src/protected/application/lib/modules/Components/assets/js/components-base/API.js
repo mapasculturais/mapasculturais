@@ -125,11 +125,11 @@ class API {
 
     async persistEntity(entity) {
         if (!entity.id) {
-            let url = this.createUrl('index');
+            let url = Utils.createUrl(this.objectType, 'index');
             return this.POST(url, entity.data())
             
         } else {
-            let url = this.createUrl('single', [entity.id]);
+            let url = Utils.createUrl(this.objectType, 'single', [entity.id]);
             return this.PATCH(url, entity.data())
         }
     }
@@ -183,19 +183,18 @@ class API {
         }));
     }
 
-    createUrl(route, urlData) {
-        let url = MapasCulturais.createUrl(this.objectType, route, urlData);
-        return new URL(url);
+    createUrl(route, query) {
+        const url = Utils.createUrl(this.objectType, route, query); 
+        return url;
     }
 
     createApiUrl(route, query) {
-        let url = MapasCulturais.createUrl(`api/${this.objectType}/${route}`);
-        let urlObject = new URL(url);
+        const url = Utils.createUrl(this.objectType, `api/${route}`); 
         for (var key in query) {
-            urlObject.searchParams.append(key, query[key]);
+            url.searchParams.append(key, query[key]);
         }
 
-        return urlObject;
+        return url;
     }
 
     createCacheId(objectId) {
@@ -215,7 +214,7 @@ class API {
     }
 
     getEntityDescription(filter) {
-        const description = MapasCulturais.EntitiesDescription[this.objectType];
+        const description = $DESCRIPTIONS[this.objectType];
                 
         let result = {};
 

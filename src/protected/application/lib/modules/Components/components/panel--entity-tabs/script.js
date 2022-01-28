@@ -19,7 +19,7 @@ app.component('panel--entity-tabs', {
         }
 
         return {
-            description: MapasCulturais.EntitiesDescription[this.type],
+            description: $DESCRIPTIONS[this.type],
             queries: {
                 publish: {status: 'EQ(1)', ...query},
                 draft: {status: 'EQ(0)', ...query},

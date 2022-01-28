@@ -1,6 +1,8 @@
 <script>
 var MapasCulturais, Mapas;
-$TEMPLATES = Mapas?.componentTemplates || MapasCulturais?.componentTemplates || [];
+$MAPAS = Mapas ?? MapasCulturais
+$TEMPLATES = $MAPAS?.componentTemplates ||  [];
+$DESCRIPTIONS = $MAPAS?.EntitiesDescription || [];
 
 window.app = Vue.createApp({});
 window.pinia = Pinia.createPinia();
