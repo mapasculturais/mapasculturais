@@ -5,6 +5,9 @@ class Entity {
         this.__objectType = objectType;
         this.__objectId = `${objectType}-${id}`;
         this.__validationErrors = {};
+
+        this.API = new API(this.__objectType, this.__scope || 'default');
+
         this.__properties = this.API.getEntityDescription('!relations');
         this.__relations = this.API.getEntityDescription('relations');
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
@@ -58,11 +61,8 @@ class Entity {
         return result;
     }
 
-    get API () {
-        return new API(this.__objectType, this.__scope || 'default');
-    }
-
     get singleUrl() {
+        console.log(this.API.createUrl);
         return this.API.createUrl('single', [this.id]);
     }
 
