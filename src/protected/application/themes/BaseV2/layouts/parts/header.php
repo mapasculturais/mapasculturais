@@ -12,10 +12,6 @@
         <?php $this->printStyles('app-v2'); ?>
         <?php $this->printJsObject(); ?>
 
-        <script src="https://unpkg.com/vue@3"></script>
-        <script src="https://unpkg.com/vuex@4"></script>
-        
-
         <?php $this->printScripts('vendor-v2'); ?>
         <?php $this->printScripts('app-v2'); ?>
 
@@ -25,4 +21,4 @@
     <body <?php $this->bodyProperties() ?> >
         <?php $this->applyTemplateHook('body','begin'); ?>
         <section id="main-app">
-        
+
