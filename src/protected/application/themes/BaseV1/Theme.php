@@ -891,8 +891,6 @@ class Theme extends MapasCulturais\Theme {
 
             );
 
-            $this->jsObject['routes'] = $app->config['routes'];
-
             $this->addDocumentMetas();
             $this->includeVendorAssets();
             $this->includeCommonAssets();

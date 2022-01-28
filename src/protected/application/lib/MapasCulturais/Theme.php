@@ -124,6 +124,8 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['maxUploadSize'] = $app->getMaxUploadSize($useSuffix=false);
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
 
+        $this->jsObject['routes'] = $app->config['routes'];
+
         $folders = [];
 
         $class = get_called_class();
