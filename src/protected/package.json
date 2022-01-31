@@ -1,0 +1,11 @@
+{
+    "name": "mapasculturais",
+    "private": true,
+    "scripts": {
+        "dev": "lerna bootstrap && lerna run --parallel dev",
+        "build": "lerna run --parallel build"
+    },
+    "devDependencies": {
+        "lerna": "^4.0.0"
+    }
+}
