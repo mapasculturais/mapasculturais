@@ -1,5 +1,8 @@
 {
     "scripts": {
-        "dev": "echo 'Hello world from script'"
+        "build:css": "sass assets-src/sass/main.scss --quiet | postcss --use autoprefixer cssnano --no-map > assets/css/main.css",
+        "dev:css": "chokidar assets-src/sass/**.scss assets-src/sass/**/*.scss --command 'sass assets-src/sass/main.scss --quiet | postcss --use autoprefixer --no-map > assets/css/main.css'",
+        "module:build": "npm run build:css",
+        "module:dev": "npm run dev:css"
     }
 }
