@@ -1,0 +1,64 @@
+@use 'sass:color';
+
+// COLORS
+
+$black: #1E1E1E !default;
+$gray-300: #C4C4C4 !default;
+$gray-700: #4E4E4E !default;
+$white: #FFFFFF !default;
+
+$primary-500: #2269F7 !default;
+$primary-300: color.scale($primary-500, $lightness: 25%) !default;
+$primary-700: color.scale($primary-500, $lightness: -25%) !default;
+
+$secondary-500: #BFF3FF !default;
+$secondary-300: color.scale($secondary-500, $lightness: 25%) !default;
+$secondary-700: color.scale($secondary-500, $lightness: -25%) !default;
+
+$agents-500: #1DABC6 !default;
+$agents-300: color.scale($agents-500, $lightness: 25%) !default;
+$agents-700: color.scale($agents-500, $lightness: -25%) !default;
+
+$events-500: #B3B921 !default;
+$events-300: color.scale($events-500, $lightness: 25%) !default;
+$events-700: color.scale($events-500, $lightness: -25%) !default;
+
+$opportunities-500: #FFAA00 !default;
+$opportunities-300: color.scale($opportunities-500, $lightness: 25%) !default;
+$opportunities-700: color.scale($opportunities-500, $lightness: -25%) !default;
+
+$projects-500: #CC0033 !default;
+$projects-300: color.scale($projects-500, $lightness: 25%) !default;
+$projects-700: color.scale($projects-500, $lightness: -25%) !default;
+
+$spaces-500: #E83F96 !default;
+$spaces-300: color.scale($spaces-500, $lightness: 25%) !default;
+$spaces-700: color.scale($spaces-500, $lightness: -25%) !default;
+
+:root {
+    --mc-agents-300: #{$agents-300};
+    --mc-agents-500: #{$agents-500};
+    --mc-agents-700: #{$agents-700};
+    --mc-black: #{$black};
+    --mc-events-300: #{$events-300};
+    --mc-events-500: #{$events-500};
+    --mc-events-700: #{$events-700};
+    --mc-gray-300: #{$gray-300};
+    --mc-gray-700: #{$gray-700};
+    --mc-opportunities-300: #{$opportunities-300};
+    --mc-opportunities-500: #{$opportunities-500};
+    --mc-opportunities-700: #{$opportunities-700};
+    --mc-primary-300: #{$primary-300};
+    --mc-primary-500: #{$primary-500};
+    --mc-primary-700: #{$primary-700};
+    --mc-projects-300: #{$projects-300};
+    --mc-projects-500: #{$projects-500};
+    --mc-projects-700: #{$projects-700};
+    --mc-secondary-300: #{$secondary-300};
+    --mc-secondary-500: #{$secondary-500};
+    --mc-secondary-700: #{$secondary-700};
+    --mc-spaces-300: #{$spaces-300};
+    --mc-spaces-500: #{$spaces-500};
+    --mc-spaces-700: #{$spaces-700};
+    --mc-white: #{$white};
+}
