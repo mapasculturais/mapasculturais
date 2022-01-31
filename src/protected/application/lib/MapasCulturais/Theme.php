@@ -125,7 +125,7 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
 
         $this->jsObject['routes'] = $app->config['routes'];
-        
+
         $this->jsObject['EntitiesDescription'] = [
             "agent"         => Entities\Agent::getPropertiesMetadata(),
             "event"         => Entities\Event::getPropertiesMetadata(),
@@ -377,6 +377,8 @@ abstract class Theme extends \Slim\View {
         
         if ($app->mode == APPMODE_DEVELOPMENT) {
             $template_debug = str_replace(THEMES_PATH, '', $__template_name);
+            $template_debug = str_replace(MODULES_PATH, 'modules/', $template_debug);
+            $template_debug = str_replace(PLUGINS_PATH, 'plugins/', $template_debug);
             echo '<!-- ' . $template_debug . ".php # BEGIN -->";
         }
 
