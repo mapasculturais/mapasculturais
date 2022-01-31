@@ -125,6 +125,16 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['maxUploadSizeFormatted'] = $app->getMaxUploadSize();
 
         $this->jsObject['routes'] = $app->config['routes'];
+        
+        $this->jsObject['EntitiesDescription'] = [
+            "agent"         => Entities\Agent::getPropertiesMetadata(),
+            "event"         => Entities\Event::getPropertiesMetadata(),
+            "space"         => Entities\Space::getPropertiesMetadata(),
+            "project"       => Entities\Project::getPropertiesMetadata(),
+            "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+            "subsite"       => Entities\Subsite::getPropertiesMetadata(),
+            "seal"          => Entities\Seal::getPropertiesMetadata()
+        ];
 
         $folders = [];
 

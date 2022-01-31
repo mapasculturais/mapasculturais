@@ -807,16 +807,6 @@ class Theme extends MapasCulturais\Theme {
 
         $this->jsObject['searchQueryFields'] = implode(',', $this->searchQueryFields);
 
-        $this->jsObject['EntitiesDescription'] = [
-        		"agent"         => Entities\Agent::getPropertiesMetadata(),
-        		"event"         => Entities\Event::getPropertiesMetadata(),
-        		"space"         => Entities\Space::getPropertiesMetadata(),
-        		"project"       => Entities\Project::getPropertiesMetadata(),
-        		"opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
-                        "subsite"       => Entities\Subsite::getPropertiesMetadata(),
-        		"seal"          => Entities\Seal::getPropertiesMetadata()
-        ];
-
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
 
