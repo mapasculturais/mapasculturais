@@ -796,12 +796,14 @@ class App extends \Slim\Slim{
         $this->registerAuthProvider('OpenID');
         $this->registerAuthProvider('logincidadao');
 
-
         // register controllers
 
         $this->registerController('site',    'MapasCulturais\Controllers\Site');
         $this->registerController('auth',    'MapasCulturais\Controllers\Auth');
-        $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
+
+        if(($this->view) instanceof Themes\BaseV1\Theme ) {
+            $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
+        }
         $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
