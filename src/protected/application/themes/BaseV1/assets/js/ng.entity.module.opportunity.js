@@ -877,7 +877,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.saveField = function (field, value, delay) {
         delete field.error;
 
-        $scope.data.editableEntity[field.fieldName] = value;
+        $scope.data.editableEntity[field.fieldName] = JSON.parse(angular.toJson(value));
 
         $timeout.cancel(saveTimeout);
         
