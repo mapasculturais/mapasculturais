@@ -1,5 +1,19 @@
 <?php
-$this->import('panel--entity-tabs');
+use MapasCulturais\i;
+$this->import('tabs');
+
+$profile = $app->user->profile;
 ?>
-<panel--entity-tabs type="agent" #={entity}>
-</panel--entity-tabs>
+
+<h1><?= i::__('Painel de controle') ?></h1>
+<h2><?= sprintf(i::__('Olá, %s'), $profile->name) ?></h2>
+
+<?php $this->applyTemplateHook('tabs', 'before') ?>
+<tabs>
+    <?php $this->applyTemplateHook('tabs', 'begin') ?>
+    <tab name="<?= i::__('Principal') ?>">
+        <h3><?= i::__('Acesso Rápido') ?></h3>
+    </tab>
+    <?php $this->applyTemplateHook('tabs', 'end') ?>
+</tabs>
+<?php $this->applyTemplateHook('tabs', 'after') ?>
