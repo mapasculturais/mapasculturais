@@ -21,7 +21,7 @@ $tabs = $tabs ?? [
             :query="queries['<?=$status?>']" :limit="50">
             <article v-for="entity in entities" class="objeto">
                 <h1><a :href="entity.singleUrl">{{entity.name}}</a></h1>
-                <slot :entity="entity"></slot>
+                <slot :entity="entity">{{entity.id}}</slot>
                 <div class="entity-actions">
                     <panel--entity-actions :entity="entity"></panel--entity-actions>
                 </div>
