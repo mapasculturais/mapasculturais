@@ -7,33 +7,35 @@ $gray-300: #C4C4C4 !default;
 $gray-700: #4E4E4E !default;
 $white: #FFFFFF !default;
 
+$gray-500: color.mix($gray-300, $gray-700, 50%) !default;
+
 $primary-500: #2269F7 !default;
-$primary-300: color.scale($primary-500, $lightness: 25%) !default;
-$primary-700: color.scale($primary-500, $lightness: -25%) !default;
+$primary-300: color.scale($primary-500, $lightness: 40%) !default;
+$primary-700: color.scale($primary-500, $lightness: -40%) !default;
 
 $secondary-500: #BFF3FF !default;
-$secondary-300: color.scale($secondary-500, $lightness: 25%) !default;
-$secondary-700: color.scale($secondary-500, $lightness: -25%) !default;
+$secondary-300: color.scale($secondary-500, $lightness: 40%) !default;
+$secondary-700: color.scale($secondary-500, $lightness: -40%) !default;
 
 $agents-500: #1DABC6 !default;
-$agents-300: color.scale($agents-500, $lightness: 25%) !default;
-$agents-700: color.scale($agents-500, $lightness: -25%) !default;
+$agents-300: color.scale($agents-500, $lightness: 40%) !default;
+$agents-700: color.scale($agents-500, $lightness: -40%) !default;
 
 $events-500: #B3B921 !default;
-$events-300: color.scale($events-500, $lightness: 25%) !default;
-$events-700: color.scale($events-500, $lightness: -25%) !default;
+$events-300: color.scale($events-500, $lightness: 40%) !default;
+$events-700: color.scale($events-500, $lightness: -40%) !default;
 
 $opportunities-500: #FFAA00 !default;
-$opportunities-300: color.scale($opportunities-500, $lightness: 25%) !default;
-$opportunities-700: color.scale($opportunities-500, $lightness: -25%) !default;
+$opportunities-300: color.scale($opportunities-500, $lightness: 40%) !default;
+$opportunities-700: color.scale($opportunities-500, $lightness: -40%) !default;
 
 $projects-500: #CC0033 !default;
-$projects-300: color.scale($projects-500, $lightness: 25%) !default;
-$projects-700: color.scale($projects-500, $lightness: -25%) !default;
+$projects-300: color.scale($projects-500, $lightness: 40%) !default;
+$projects-700: color.scale($projects-500, $lightness: -40%) !default;
 
 $spaces-500: #E83F96 !default;
-$spaces-300: color.scale($spaces-500, $lightness: 25%) !default;
-$spaces-700: color.scale($spaces-500, $lightness: -25%) !default;
+$spaces-300: color.scale($spaces-500, $lightness: 40%) !default;
+$spaces-700: color.scale($spaces-500, $lightness: -40%) !default;
 
 :root {
     --mc-agents-300: #{$agents-300};
@@ -44,6 +46,7 @@ $spaces-700: color.scale($spaces-500, $lightness: -25%) !default;
     --mc-events-500: #{$events-500};
     --mc-events-700: #{$events-700};
     --mc-gray-300: #{$gray-300};
+    --mc-gray-500: #{$gray-500};
     --mc-gray-700: #{$gray-700};
     --mc-opportunities-300: #{$opportunities-300};
     --mc-opportunities-500: #{$opportunities-500};
