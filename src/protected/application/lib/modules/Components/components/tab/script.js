@@ -18,7 +18,6 @@ app.component('tab', {
         },
     },
     setup(props) {
-        const computedId = `tab-${props.slug}`
         const hash = '#' + (!props.disabled ? props.slug : '')
         const tabsProvider = Vue.inject('tabsProvider')
 
@@ -34,7 +33,6 @@ app.component('tab', {
         })
 
         return {
-            computedId,
             hash,
             isActive,
         }
