@@ -22,6 +22,14 @@ app.component('tabs', {
 
         Vue.provide('tabsProvider', state)
 
+        const isActive = (tab) => {
+            return tab.slug === state.activeTab.slug
+        }
+
+        const findTab = (slug) => {
+            return state.tabs.find(tab => tab.slug === slug)
+        }
+
         const selectTab = (slug, event) => {
             event?.preventDefault()
 
@@ -44,10 +52,6 @@ app.component('tabs', {
             state.activeTab = nextTab
         }
 
-        const findTab = (slug) => {
-            return state.tabs.find(tab => tab.slug === slug)
-        }
-
         Vue.onMounted(() => {
             if (!state.tabs.length) {
                 return
@@ -67,6 +71,7 @@ app.component('tabs', {
 
         return {
             ...Vue.toRefs(state),
+            isActive,
             findTab,
             selectTab
         }
