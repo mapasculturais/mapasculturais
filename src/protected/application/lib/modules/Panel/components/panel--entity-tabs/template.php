@@ -1,8 +1,8 @@
-<?php 
+<?php
 use MapasCulturais\i;
 
 $this->import('
-    tabs,tab, 
+    tabs,tab,
     entities
 ');
 
@@ -13,9 +13,9 @@ $tabs = $tabs ?? [
     'trash' => i::esc_attr__('Lixeira'),
 ];
 ?>
-<tabs> 
+<tabs>
     <?php foreach($tabs as $status => $label): ?>
-    <tab v-if="showTab('<?=$status?>')" name="<?=$label?>" nav-class="<?=$status?>" :cache-tls="cacheTls">
+    <tab v-if="showTab('<?=$status?>')" key="<?$status?>" cached label="<?=$label?>" slug="<?=$status?>">
         <entities :name="type + ':<?=$status?>'" :type="type" #="{entities}"
             :select="select"
             :query="queries['<?=$status?>']" :limit="50">

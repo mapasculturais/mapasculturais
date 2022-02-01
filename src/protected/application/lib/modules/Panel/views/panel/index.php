@@ -11,8 +11,11 @@ $profile = $app->user->profile;
 <?php $this->applyTemplateHook('tabs', 'before') ?>
 <tabs>
     <?php $this->applyTemplateHook('tabs', 'begin') ?>
-    <tab name="<?= i::__('Principal') ?>">
+    <tab label="<?= i::__('Principal') ?>" cached key="main" slug="main">
         <h3><?= i::__('Acesso Rápido') ?></h3>
+    </tab>
+    <tab label="<?= i::__('Secundária') ?>" cached key="secondary" slug="secondary">
+        <h3><?= i::__('Conteúdo Secundário') ?></h3>
     </tab>
     <?php $this->applyTemplateHook('tabs', 'end') ?>
 </tabs>

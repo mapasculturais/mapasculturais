@@ -15,7 +15,7 @@ app.component('panel--entity-tabs', {
             '@permissions': 'view'
         };
         if (this.user) {
-            query.user = `EQ(${this.user})` 
+            query.user = `EQ(${this.user})`
         }
 
         return {
@@ -31,10 +31,6 @@ app.component('panel--entity-tabs', {
 
     props: {
         type: String,
-        cacheTls: {
-            type: Number,
-            default: 5000
-        },
         user: {
             type: String,
             default: '@me'
@@ -44,7 +40,7 @@ app.component('panel--entity-tabs', {
             default: 'id,status,name,type,createTimestamp,terms'
         }
     },
-    
+
     methods: {
         showTab (status) {
             if (status == 'publish') {
