@@ -56,7 +56,7 @@ app.component('tabs', {
             const hash = window.location.hash.slice(1)
             window.addEventListener('hashchange', () => selectTab(window.location.hash.slice(1)))
 
-            if (props.useUrlFragment && findTab(hash)) {
+            if (props.useUrlFragment && hash && findTab(hash)) {
                 selectTab(hash)
             } else if (props.defaultTab && findTab(props.defaultTab)) {
                 selectTab(props.defaultTab)
