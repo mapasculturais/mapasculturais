@@ -14,9 +14,6 @@ $profile = $app->user->profile;
     <tab label="<?= i::__('Principal') ?>" cached key="main" slug="main">
         <h3><?= i::__('Acesso Rápido') ?></h3>
     </tab>
-    <tab label="<?= i::__('Secundária') ?>" cached key="secondary" slug="secondary">
-        <h3><?= i::__('Conteúdo Secundário') ?></h3>
-    </tab>
     <?php $this->applyTemplateHook('tabs', 'end') ?>
 </tabs>
 <?php $this->applyTemplateHook('tabs', 'after') ?>
