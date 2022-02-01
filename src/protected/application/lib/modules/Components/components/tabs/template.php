@@ -5,7 +5,7 @@ $this->import('tab');
     <ul class="tabs-component__buttons" role="tablist">
         <li v-for="tab in tabs" :key="tab.slug"
             class="tabs-component__button"
-            :class="[tab.slug, tab.disabled && 'tab-component__button--disabled', isActive(tab) && 'tab-component__button--active']"
+            :class="[tab.slug, tab.disabled && 'is-disabled', isActive(tab) && 'is-active']"
             role="presentation">
             <a
                 :aria-controls="tab.hash"
