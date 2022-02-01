@@ -1,7 +1,7 @@
 <?php
 $this->import('tab');
 ?>
-<div class="tabs-component__controls">
+<div class="tabs-component">
     <ul class="tabs-component__buttons" role="tablist">
         <li v-for="tab in tabs" :key="tab.slug"
             class="tabs-component__button"
