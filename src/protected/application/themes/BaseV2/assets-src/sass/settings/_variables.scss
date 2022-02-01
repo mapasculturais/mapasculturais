@@ -37,11 +37,15 @@ $spaces-500: #E83F96 !default;
 $spaces-300: color.scale($spaces-500, $lightness: 40%) !default;
 $spaces-700: color.scale($spaces-500, $lightness: -40%) !default;
 
+// DIMENSIONS
+$border-radius: 6px !default;
+
 :root {
     --mc-agents-300: #{$agents-300};
     --mc-agents-500: #{$agents-500};
     --mc-agents-700: #{$agents-700};
     --mc-black: #{$black};
+    --mc-border-radius: #{$border-radius};
     --mc-events-300: #{$events-300};
     --mc-events-500: #{$events-500};
     --mc-events-700: #{$events-700};

@@ -1,0 +1,38 @@
+.panel-component {
+    background-color: var(--mc-white);
+    color: var(--mc-black);
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+
+    &__sidebar {
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            border-radius: var(--mc-border-radius);
+            color: inherit;
+            display: block;
+            padding: 0.5em 1em;
+            text-decoration: none;
+
+            &:focus, &:hover {
+                background-color: var(--mc-gray-300);
+            }
+
+            .iconify {
+                margin-right: 2em;
+            }
+        }
+    }
+
+    &__main {
+
+    }
+}
