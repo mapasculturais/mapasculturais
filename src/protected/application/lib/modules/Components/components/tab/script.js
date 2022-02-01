@@ -18,17 +18,11 @@ app.component('tab', {
         },
     },
     setup(props) {
-        const isActive = Vue.ref(false)
         const computedId = `tab-${props.slug}`
         const hash = '#' + (!props.disabled ? props.slug : '')
         const tabsProvider = Vue.inject('tabsProvider')
 
-        Vue.watch(
-            () => tabsProvider.activeTab,
-            () => {
-                isActive.value = props.slug === tabsProvider.activeTab?.slug
-            }
-        )
+        const isActive = Vue.computed(() => props.slug === tabsProvider.activeTab?.slug)
 
         Vue.onBeforeMount(() => {
             tabsProvider.tabs.push({
