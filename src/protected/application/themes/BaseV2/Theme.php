@@ -15,6 +15,7 @@ class Theme extends \MapasCulturais\Theme
 
     function _init()
     {
+        $this->enqueueStyle('app-v2', 'main', 'css/main.css');
     }
 
     function register()
