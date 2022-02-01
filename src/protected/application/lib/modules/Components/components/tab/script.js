@@ -1,6 +1,6 @@
 app.component('tab', {
     props: {
-        cached: {
+        cache: {
             type: Boolean,
             default: false
         },
@@ -18,10 +18,18 @@ app.component('tab', {
         },
     },
     setup(props) {
+        const cached = Vue.ref(false)
         const hash = '#' + (!props.disabled ? props.slug : '')
+        const isActive = Vue.ref(false)
         const tabsProvider = Vue.inject('tabsProvider')
 
-        const isActive = Vue.computed(() => props.slug === tabsProvider.activeTab?.slug)
+        Vue.watch(
+            () => tabsProvider.activeTab,
+            () => {
+                isActive.value = props.slug === tabsProvider.activeTab?.slug
+                cached.value = cached.value || (isActive.value && props.cache)
+            }
+        )
 
         Vue.onBeforeMount(() => {
             tabsProvider.tabs.push({
@@ -33,6 +41,7 @@ app.component('tab', {
         })
 
         return {
+            cached,
             hash,
             isActive,
         }

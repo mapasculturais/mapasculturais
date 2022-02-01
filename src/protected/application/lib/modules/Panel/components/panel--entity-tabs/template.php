@@ -15,7 +15,7 @@ $tabs = $tabs ?? [
 ?>
 <tabs>
     <?php foreach($tabs as $status => $label): ?>
-    <tab v-if="showTab('<?=$status?>')" key="<?$status?>" cached label="<?=$label?>" slug="<?=$status?>">
+    <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
         <entities :name="type + ':<?=$status?>'" :type="type" #="{entities}"
             :select="select"
             :query="queries['<?=$status?>']" :limit="50">
