@@ -1,5 +1,11 @@
+// Let's try to keep it as leaner as possible
+
 * {
     box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
 }
 
 .sr-only {

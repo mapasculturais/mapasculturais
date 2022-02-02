@@ -3,6 +3,7 @@
 // COLORS
 
 $black: #1E1E1E !default;
+$gray-100: #E5E5E5 !default;
 $gray-300: #C4C4C4 !default;
 $gray-700: #4E4E4E !default;
 $white: #FFFFFF !default;
@@ -49,6 +50,7 @@ $border-radius: 6px !default;
     --mc-events-300: #{$events-300};
     --mc-events-500: #{$events-500};
     --mc-events-700: #{$events-700};
+    --mc-gray-100: #{$gray-100};
     --mc-gray-300: #{$gray-300};
     --mc-gray-500: #{$gray-500};
     --mc-gray-700: #{$gray-700};
