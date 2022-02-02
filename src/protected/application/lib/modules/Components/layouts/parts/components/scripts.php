@@ -8,6 +8,7 @@ window.app = Vue.createApp({});
 window.pinia = Pinia.createPinia();
 window.app.use(pinia);
 window.app.use(VueFinalModal.vfmPlugin);
+window.app.component('iconify', Icon.Icon);
 </script>
 
 <?php $this->printScripts('components'); ?>

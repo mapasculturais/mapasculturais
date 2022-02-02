@@ -5,7 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Exceptions;
 /**
  * Módulo que implementa a funcionalidade de componentes Vue
- * 
+ *
  * @since v5.2
  */
 class Module extends \MapasCulturais\Module {
@@ -14,7 +14,7 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
 
         $app->hook('view.render(<<*>>):before', function () use($app) {
-            $vue3 = $app->mode === APPMODE_PRODUCTION ? 
+            $vue3 = $app->mode === APPMODE_PRODUCTION ?
                 'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
 
             $theme = $app->view;
@@ -25,12 +25,13 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript($vendor_group, 'vue3', $vue3);
             $app->view->enqueueScript($vendor_group, 'vue-demi', 'https://unpkg.com/vue-demi');
             $app->view->enqueueScript($vendor_group, 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
+            $app->view->enqueueScript($vendor_group, 'iconify-vue', 'https://unpkg.com/@iconify/vue@3.1.3/dist/iconify.js', ['vue3']);
             $app->view->enqueueScript($vendor_group, 'vue-final-modal', 'https://unpkg.com/vue-final-modal@next', ['vue3']);
-            
+
             $app->view->enqueueScript($app_group, 'components-api', 'js/components-base/API.js');
             $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-api']);
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js');
-            
+
             $app->view->enqueueStyle($vendor_group, 'vue-final-modal', 'css/components-base/modals.css');
             ;
             if (isset($this->jsObject['componentTemplates'])) {
@@ -50,7 +51,7 @@ class Module extends \MapasCulturais\Module {
 
         /**
          * Importa um componente
-         * 
+         *
          * @param string $component Nome do(s) componente(s separados por vírgula)
          * @param array $data Dados para passar na renderizaçao do template do componente
          * @param array $dependences Dependências do componente
@@ -61,7 +62,7 @@ class Module extends \MapasCulturais\Module {
             if (!$this->importedComponents) {
                 $this->importedComponents = [];
             }
-            
+
             if(preg_match('#[ ,\n]+#', $component) && ($components = preg_split('#[ ,\n]+#', $component))) {
                 foreach ($components as $component) {
                     $this->import($component, $data);
@@ -71,9 +72,9 @@ class Module extends \MapasCulturais\Module {
 
             if (in_array($component, $this->importedComponents)) {
                 return;
-            } 
+            }
             $this->importedComponents[] = $component;
-            
+
             $app->log->debug("importing component {$component}");
 
             $template = $this->componentRender($component, $data);
@@ -89,7 +90,7 @@ class Module extends \MapasCulturais\Module {
 
         /**
          * Enfileira o javascript do componente
-         * 
+         *
          * @param string $component Nome do componente
          * @param array $dependences Dependências do componente
          */
@@ -99,45 +100,45 @@ class Module extends \MapasCulturais\Module {
 
         /**
          * Renderiza o template do componente informado e retorna o html renderizado
-         *  
+         *
          * @param string $component Nome do componente
-         * @param array $__data Dados Dados para passar na renderizaçao do template do componente 
-         * 
+         * @param array $__data Dados Dados para passar na renderizaçao do template do componente
+         *
          * @return string
          */
         $app->hook('Theme::componentRender', function ($result, string $component, array $__data = []) {
             $app = App::i();
-    
+
             $app->applyHookBoundTo($this, "component({$component}):params", [&$component, &$__data]);
-    
+
             $__template_path = $this->resolveFilename("components/{$component}", 'template.php');
-    
+
             if (!$__template_path) {
                 throw new Exceptions\TemplateNotFound("Component {$component} not found");
             }
-    
+
             $app->applyHookBoundTo($this, "component({$component}):before", [&$__template_path]);
-    
+
             ob_start(function ($output) {
                 return $output;
             });
-    
+
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 echo "<!-- $component -->\n";
             }
 
             extract($__data);
-    
+
             include $__template_path;
-    
+
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 echo "\n<!-- /$component -->\n";
             }
-    
+
             $__html = ob_get_clean();
-    
+
             $app->applyHookBoundTo($this, "component({$component}):after", [$__template_path, &$__html]);
-    
+
             return $__html;
         });
 
