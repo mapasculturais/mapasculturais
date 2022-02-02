@@ -8,6 +8,10 @@ app.component('tab', {
             type: Boolean,
             default: false
         },
+        icon: {
+            type: String,
+            default: '',
+        },
         label: {
             type: String,
             required: true
@@ -47,6 +51,7 @@ app.component('tab', {
             tabsProvider.tabs.push({
                 disabled: props.disabled,
                 hash: hash,
+                icon: props.icon,
                 label: props.label,
                 slug: props.slug,
             })
