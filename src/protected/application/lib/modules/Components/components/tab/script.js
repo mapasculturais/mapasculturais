@@ -10,7 +10,7 @@ app.component('tab', {
         },
         icon: {
             type: String,
-            default: '',
+            default: null,
         },
         label: {
             type: String,
