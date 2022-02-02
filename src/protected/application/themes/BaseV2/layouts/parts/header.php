@@ -2,7 +2,8 @@
 <html lang="<?= $app->currentLCode ?>" dir="ltr">
     <head>
         <?php $this->applyTemplateHook('head','begin'); ?>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <?php $this->printDocumentMeta(); ?>
         <title><?= $this->getTitle($entity ?? null) ?></title>
         <link rel="profile" href="//gmpg.org/xfn/11" />
