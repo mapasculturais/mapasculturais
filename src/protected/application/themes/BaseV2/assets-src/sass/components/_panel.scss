@@ -1,3 +1,5 @@
+@use '../settings/mixins' as *;
+
 .panel {
     background-color: var(--mc-white);
     color: var(--mc-black);
@@ -5,6 +7,9 @@
     grid-template-columns: 1fr 5fr;
 
     &__sidebar {
+        border-right: 1px solid var(--mc-gray-100);
+        padding: size(40) size(24);
+
         ul {
             margin: 0;
             padding: 0;
@@ -25,6 +30,15 @@
                 background-color: var(--mc-gray-300);
             }
 
+            &.active {
+                background-color: var(--mc-primary-500);
+                color: white;
+
+                &:focus, &:hover {
+                    background-color: var(--mc-primary-700);
+                }
+            }
+
             .iconify {
                 margin-right: 2em;
             }
@@ -32,6 +46,6 @@
     }
 
     &__main {
-
+        padding: 1em;
     }
 }
