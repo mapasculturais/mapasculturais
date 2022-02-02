@@ -1,7 +1,7 @@
 app.component('tab', {
     props: {
         cache: {
-            type: Boolean,
+            type: [Boolean, Number],
             default: false
         },
         disabled: {
@@ -23,11 +23,23 @@ app.component('tab', {
         const isActive = Vue.ref(false)
         const tabsProvider = Vue.inject('tabsProvider')
 
+        let timeout = null
         Vue.watch(
             () => tabsProvider.activeTab,
             () => {
                 isActive.value = props.slug === tabsProvider.activeTab?.slug
-                cached.value = cached.value || (isActive.value && props.cache)
+
+                window.clearTimeout(timeout)
+                if (props.cache) {
+                    if (typeof props.cache === 'number') {
+                        cached.value = true
+                        timeout = window.setTimeout(() => {
+                            cached.value = false
+                        }, props.cache)
+                    } else {
+                        cached.value = !!(cached.value) || isActive.value
+                    }
+                }
             }
         )
 
