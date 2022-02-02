@@ -1,11 +1,10 @@
 <?php
 use MapasCulturais\i;
-$this->import('panel tabs');
+$this->import('tabs');
 
 $profile = $app->user->profile;
 ?>
 
-<panel>
 <h1><?= i::__('Painel de controle') ?></h1>
 <h2><?= sprintf(i::__('Olá, %s'), $profile->name) ?></h2>
 
@@ -18,4 +17,3 @@ $profile = $app->user->profile;
     <?php $this->applyTemplateHook('tabs', 'end') ?>
 </tabs>
 <?php $this->applyTemplateHook('tabs', 'after') ?>
-</panel>

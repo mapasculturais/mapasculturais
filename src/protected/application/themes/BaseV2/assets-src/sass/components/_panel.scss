@@ -1,11 +1,10 @@
-.panel-component {
+.panel {
     background-color: var(--mc-white);
     color: var(--mc-black);
     display: grid;
     grid-template-columns: 1fr 5fr;
 
     &__sidebar {
-
         ul {
             margin: 0;
             padding: 0;
