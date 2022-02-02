@@ -1,0 +1,45 @@
+@use '../settings/mixins' as *;
+
+.tabs-component {
+
+    &__buttons {
+        display: flex;
+        margin: size(40) 0 0;
+        padding: 0;
+    }
+
+    &__button {
+        border-bottom: size(6) solid transparent;
+        list-style: none;
+
+        a {
+            align-items: center;
+            color: inherit;
+            display: flex;
+            padding: size(16);
+            text-decoration: none;
+        }
+
+        .iconify {
+            color: var(--mc-gray-700);
+            font-size: size(20);
+            margin-right: size(6);
+        }
+
+        &.is-active {
+            color: var(--mc-primary-500);
+            font-weight: bold;
+            border-bottom-color: var(--mc-primary-500);
+
+            .iconify {
+                color: var(--mc-primary-500);
+            }
+        }
+    }
+}
+
+.tab-component {
+    background-color: var(--mc-gray-300);
+    display: flex;
+    margin: 0 0 size(40);
+}

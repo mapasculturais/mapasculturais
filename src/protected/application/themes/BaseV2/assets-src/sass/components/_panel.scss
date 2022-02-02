@@ -49,6 +49,11 @@
     }
 
     &__main {
-        padding: 1em;
+        padding: size(40) 0 0;
+    }
+
+    &__row {
+        margin: size(24);
+        max-width: 50rem;
     }
 }
