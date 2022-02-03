@@ -1,5 +1,7 @@
 // Let's try to keep it as leaner as possible
 
+@use './mixins';
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -8,14 +10,7 @@ html {
     font-size: 16px;
 }
 
+// For screen-readers
 .sr-only {
-    border-width: 0;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+    @extend %sr-only;
 }
