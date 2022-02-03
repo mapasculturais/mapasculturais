@@ -1,5 +1,5 @@
 <?php
-namespace SystemRoles\Entities;
+namespace UserManagement\Entities;
 
 use MapasCulturais\Traits;
 

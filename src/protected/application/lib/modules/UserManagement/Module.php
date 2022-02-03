@@ -1,6 +1,6 @@
 <?php
 
-namespace SystemRoles;
+namespace UserManagement;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities as MapasEntities;
@@ -128,14 +128,14 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
-         * Atualiza o ENUM de object_types adicionando a classe SystemRoles\Entities\SystemRole
+         * Atualiza o ENUM de object_types adicionando a classe UserManagement\Entities\SystemRole
          */
         $app->hook('doctrine.emum(object_type).values', function(&$values) {
             $values['SystemRole'] = Entities\SystemRole::class;
         });
 
         $app->hook('app.init:after', function () {
-            $this->registerController('system-role', Controllers\SystemRole::class);
+            $this->registerController('user-management', Controllers\UserManagement::class);
 
             $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
             
