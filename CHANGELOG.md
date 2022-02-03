@@ -12,6 +12,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
+## [5.1.47] - 2022-02-03
+### Correção
+
+- Remove recriação de cache da oportunidade quando se envia um inscrição
+- Remove lixos hashKey gerados pelo angularjs na tabela registration_meta
+
 ## [5.1.46] - 2022-02-02
 ### Correção
 
