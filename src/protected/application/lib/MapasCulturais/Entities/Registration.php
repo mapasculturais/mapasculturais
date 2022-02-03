@@ -677,7 +677,7 @@ class Registration extends \MapasCulturais\Entity
 
         $app->enableAccessControl();
         
-        $app->enqueueEntityToPCacheRecreation($this->opportunity);
+        // $app->enqueueEntityToPCacheRecreation($this->opportunity);
         $app->enqueueEntityToPCacheRecreation($this);
 
         $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:after");
