@@ -1706,4 +1706,33 @@ $$
                     FOR EACH ROW
                     EXECUTE PROCEDURE fn_clean_orphans('MapasCulturais\Entities\Subsite')");
     },
+    "Remove lixo angular registration_meta" => function() use ($conn){
+
+        $clean_meta = function($meta, $clean_meta){
+            if(is_array($meta)){
+                foreach($meta as $key => $value){
+                    $meta[$key] = $clean_meta($value, $clean_meta);
+                }
+            }else if(is_object($meta)){
+                foreach($meta as $key => $value){
+                    if($key == '$$hashKey'){
+                        unset($meta->$key);
+                    }
+                }
+            }
+            return $meta;
+        };
+
+        $metas = $conn->fetchAll("SELECT * FROM registration_meta WHERE value LIKE '%\$\$hashKey%'");
+        foreach($metas as $i => $meta){
+            $raw_value = json_decode($meta['value']);            
+            $value = json_encode($clean_meta($raw_value, $clean_meta));
+
+            $meta['value'] = ($value == "[{}]") ? "[]" : $value;
+
+            $conn->update("registration_meta", $meta, ['id' => $meta['id']]);
+            
+            echo "\nRemovido hashKey registration_meta id {$meta['id']}";
+        }
+    }
 ] + $updates ;
