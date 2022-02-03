@@ -6,13 +6,13 @@ Um conjunto de abas.
 
 ### `changed`
 
-- Payload: `{ tab: Tab }`
+- Payload: `{ tab: ITab }`
 
 Emitido quando a aba ativa é alterada.
 
 ### `clicked`
 
-- Payload: `{ tab: Tab }`
+- Payload: `{ tab: ITab }`
 
 Emitido quando qualquer aba é clicada.
 
@@ -40,16 +40,16 @@ Componentes `<tab>` associados ao componente.
 
 ### `header`
 
-- Escopo: `{ tab: Tab }`
+- Escopo: `{ tab: ITab }`
 
 Customização do HTML utilizado pelos botão de seleção de aba.
 
 ## Interfaces
 
-### `Tab`
+### `ITab`
 
 ```ts
-interface Tab {
+interface ITab {
     disabled: boolean
     hash: string
     icon?: string
