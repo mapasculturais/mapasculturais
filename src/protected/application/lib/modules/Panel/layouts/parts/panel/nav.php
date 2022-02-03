@@ -1,7 +1,10 @@
 <?php
 use MapasCulturais\i;
 ?>
-<h2><span><?=i::__('Menu do painel')?></h2>
+<h2>
+    <iconify icon="mdi:chevron-down"></iconify>
+    <span><?=i::__('Menu do painel')?>
+</h2>
 <nav>
     <ul>
         <li>

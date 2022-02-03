@@ -1,16 +1,19 @@
 // Let's try to keep it as leaner as possible
 
-@use './mixins';
+@use './mixins' as *;
 
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-html {
+html, body {
+    height: 100%;
     font-size: 16px;
+    margin: 0;
+    width: 100%
 }
 
 // For screen-readers
 .sr-only {
-    @extend %sr-only;
+    @include sr-only;
 }
