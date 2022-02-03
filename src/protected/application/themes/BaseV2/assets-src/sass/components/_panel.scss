@@ -4,11 +4,42 @@
     background-color: var(--mc-white);
     color: var(--mc-black);
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: size(320) 1fr;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+    }
 
     &__sidebar {
         border-right: 1px solid var(--mc-gray-100);
         padding: size(40) size(24);
+
+        @include mobile {
+            border: none;
+            padding: size(24) size(16);
+        }
+
+        h2 {
+            align-items: center;
+            background-color: var(--mc-gray-300);
+            border-radius: var(--mc-border-radius);
+            color: var(--mc-gray-700);
+            display: flex;
+            font-size: size(18);
+            font-weight: bold;
+            margin: 0;
+            padding: size(8) size(16);
+
+            @include desktop {
+                @include sr-only;
+            }
+
+            .iconify {
+                height: size(24);
+                margin-right: size(40);
+                width: size(24);
+            }
+        }
 
         ul {
             margin: 0;
@@ -24,7 +55,7 @@
             border-radius: var(--mc-border-radius);
             color: inherit;
             display: flex;
-            padding: 0.5em 1em;
+            padding: size(8) size(16);
             text-decoration: none;
 
             &:focus, &:hover {
@@ -50,10 +81,18 @@
 
     &__main {
         padding: size(40) 0 0;
+
+        @include mobile {
+            padding: 0;
+        }
     }
 
     &__row {
         margin: size(24);
         max-width: 50rem;
+
+        @include mobile {
+            margin: size(16);
+        }
     }
 }
