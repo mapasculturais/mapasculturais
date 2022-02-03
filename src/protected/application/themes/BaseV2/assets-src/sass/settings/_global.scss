@@ -1,6 +1,6 @@
 // Let's try to keep it as leaner as possible
 
-* {
+*, *::before, *::after {
     box-sizing: border-box;
 }
 

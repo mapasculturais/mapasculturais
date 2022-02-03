@@ -9,13 +9,21 @@
     }
 
     &__button {
-        border-bottom: size(6) solid transparent;
         list-style: none;
+
+        &::after {
+            border-radius: var(--mc-border-radius);
+            display: block;
+            height: 6px;
+            content: '';
+            width: 100%;
+        }
 
         a {
             align-items: center;
             color: inherit;
             display: flex;
+            line-height: size(20);
             padding: size(16);
             text-decoration: none;
         }
@@ -33,7 +41,10 @@
         &.is-active {
             color: var(--mc-primary-500);
             font-weight: bold;
-            border-bottom-color: var(--mc-primary-500);
+
+            &::after {
+                background-color: var(--mc-primary-500);
+            }
 
             .iconify {
                 color: var(--mc-primary-500);
@@ -44,10 +55,10 @@
             color: var(--mc-gray-500);
         }
     }
-}
 
-.tab-component {
-    background-color: var(--mc-gray-300);
-    margin: 0 0 size(40);
-    padding: 0.1px; // Hack to avoid margins collapse
+    &__panels {
+        background-color: var(--mc-gray-300);
+        padding: 0.1px; // Hack to avoid margins collapse
+        margin: 0 0 size(40);
+    }
 }
