@@ -20,6 +20,10 @@
             text-decoration: none;
         }
 
+        &:focus, &:hover {
+            background-color: var(--mc-gray-100);
+        }
+
         .iconify {
             color: var(--mc-gray-700);
             font-size: size(20);
@@ -35,11 +39,15 @@
                 color: var(--mc-primary-500);
             }
         }
+
+        &.is-disabled {
+            color: var(--mc-gray-500);
+        }
     }
 }
 
 .tab-component {
     background-color: var(--mc-gray-300);
-    display: flex;
     margin: 0 0 size(40);
+    padding: 0.1px; // Hack to avoid margins collapse
 }
