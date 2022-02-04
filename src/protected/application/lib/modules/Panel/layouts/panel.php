@@ -1,3 +1,4 @@
+<?php $this->import('panel--sidebar'); ?>
 <?php $this->part('header', $render_data); ?>
 <article class="panel">
     <aside class="panel__sidebar">
