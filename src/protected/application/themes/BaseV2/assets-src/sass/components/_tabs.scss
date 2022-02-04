@@ -1,15 +1,27 @@
 @use '../settings/mixins' as *;
 
 .tabs-component {
+    max-width: calc(100vw - size(320));
+
+    @include mobile {
+        max-width: 100vw;
+    }
 
     &__buttons {
-        display: flex;
+        display: block;
         margin: size(40) 0 0;
+        overflow: auto hidden;
         padding: 0;
+        transform: rotateX(180deg); // Hack to put scrollbar above content
+        white-space: nowrap;
+        width: auto;
     }
 
     &__button {
+        --mc-tab-active-color: var(--mc-primary-500);
+        display: inline-block;
         list-style: none;
+        transform: rotateX(180deg);
 
         &::after {
             border-radius: var(--mc-border-radius);
@@ -39,15 +51,15 @@
         }
 
         &.is-active {
-            color: var(--mc-primary-500);
+            color: var(--mc-tab-active-color);
             font-weight: bold;
 
             &::after {
-                background-color: var(--mc-primary-500);
+                background-color: var(--mc-tab-active-color);
             }
 
             .iconify {
-                color: var(--mc-primary-500);
+                color: var(--mc-tab-active-color);
             }
         }
 
