@@ -128,6 +128,15 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
+         * Página para gerenciamento de usuários
+         */
+        $app->hook('GET(panel.user-management)', function() use($app) {
+            $this->requireAuthentication();
+
+            $this->render('user-management');
+        });
+
+        /**
          * Atualiza o ENUM de object_types adicionando a classe UserManagement\Entities\SystemRole
          */
         $app->hook('doctrine.emum(object_type).values', function(&$values) {
