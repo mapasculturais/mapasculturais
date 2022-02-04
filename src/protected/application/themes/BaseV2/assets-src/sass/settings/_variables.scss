@@ -38,6 +38,10 @@ $spaces-500: #E83F96 !default;
 $spaces-300: color.scale($spaces-500, $lightness: 40%) !default;
 $spaces-700: color.scale($spaces-500, $lightness: -40%) !default;
 
+// FONTS
+$font-body: 'Open Sans', sans-serif !default;
+$font-headings: 'Open Sans', sans-serif !default;
+
 // DIMENSIONS
 $border-radius: 6px !default;
 
@@ -50,6 +54,8 @@ $border-radius: 6px !default;
     --mc-events-300: #{$events-300};
     --mc-events-500: #{$events-500};
     --mc-events-700: #{$events-700};
+    --mc-font-body: #{$font-body};
+    --mc-font-headings: #{$font-headings};
     --mc-gray-100: #{$gray-100};
     --mc-gray-300: #{$gray-300};
     --mc-gray-500: #{$gray-500};
