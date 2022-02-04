@@ -23,7 +23,7 @@
 }
 
 // For screen-readers
-%sr-only {
+@mixin sr-only {
     border-width: 0;
     clip: rect(0, 0, 0, 0);
     height: 1px;

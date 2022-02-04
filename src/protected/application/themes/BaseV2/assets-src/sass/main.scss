@@ -1,8 +1,10 @@
 // SETTINGS
 @use 'settings/mixins';
+@use 'settings/typography';
 @use 'settings/variables';
 @use 'settings/global';
 
 // COMPONENTS
 @use 'components/panel';
+@use 'components/panel-sidebar';
 @use 'components/tabs'

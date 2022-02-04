@@ -54,6 +54,7 @@ interface ITab {
     hash: string
     icon?: string
     label: string
+    meta: object
     slug: string
 }
 ```

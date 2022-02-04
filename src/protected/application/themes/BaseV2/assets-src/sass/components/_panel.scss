@@ -4,56 +4,26 @@
     background-color: var(--mc-white);
     color: var(--mc-black);
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: size(320) 1fr;
 
-    &__sidebar {
-        border-right: 1px solid var(--mc-gray-100);
-        padding: size(40) size(24);
-
-        ul {
-            margin: 0;
-            padding: 0;
-        }
-
-        li {
-            list-style: none;
-        }
-
-        a {
-            align-items: center;
-            border-radius: var(--mc-border-radius);
-            color: inherit;
-            display: flex;
-            padding: 0.5em 1em;
-            text-decoration: none;
-
-            &:focus, &:hover {
-                background-color: var(--mc-gray-100);
-            }
-
-            &.active {
-                background-color: var(--mc-primary-500);
-                color: white;
-
-                &:focus, &:hover {
-                    background-color: var(--mc-primary-700);
-                }
-            }
-
-            .iconify {
-                height: size(24);
-                margin-right: size(40);
-                width: size(24);
-            }
-        }
+    @include mobile {
+        grid-template-columns: 1fr;
     }
 
     &__main {
         padding: size(40) 0 0;
+
+        @include mobile {
+            padding: 0;
+        }
     }
 
     &__row {
-        margin: size(24);
-        max-width: 50rem;
+        margin: size(32);
+        max-width: size(1024);
+
+        @include mobile {
+            margin: size(16);
+        }
     }
 }
