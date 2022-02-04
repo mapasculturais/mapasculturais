@@ -26,7 +26,7 @@
         flex-wrap: wrap;
 
         & > * {
-            margin-right: size(8);
+            margin: 0 size(8) size(8) 0;
         }
     }
 
