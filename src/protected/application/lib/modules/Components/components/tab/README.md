@@ -31,6 +31,13 @@ Indica se o botão associado à aba é clicável.
 
 Texto associado ao botão de seleção da aba.
 
+### `meta`
+
+- Tipo: `Object`
+- Valor padrão: `{}`
+
+Metadados associados à aba. Útil para a customização de *slots* do componente `<tabs>`.
+
 ### `slug`
 
 - Tipo: `String`
