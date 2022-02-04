@@ -23,6 +23,5 @@ $profile = $app->user->profile;
 </div>
 
 <?php $this->applyTemplateHook('tabs', 'before') ?>
-<img src="<?php $this->asset('img/default-avatar.png') ?>">
 <panel--entity-tabs type="agent"></panel--entity-tabs>
 <?php $this->applyTemplateHook('tabs', 'after') ?>
