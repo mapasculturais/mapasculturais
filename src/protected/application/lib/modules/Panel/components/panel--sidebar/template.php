@@ -3,7 +3,7 @@ use MapasCulturais\i;
 ?>
 <div class="panel-sidebar">
     <h2>
-        <button class="panel-sidebar__toggle" @click="open = !open">
+        <button class="button panel-sidebar__toggle" @click="open = !open">
             <iconify icon="mdi:chevron-up" v-show="open"></iconify>
             <iconify icon="mdi:chevron-down" v-show="!open"></iconify>
             <span><?=i::__('Menu do painel')?></span>
@@ -67,7 +67,7 @@ use MapasCulturais\i;
         <ul>
             <li>
                 <a href="#">
-                    <iconify icon="grommet-icons:connect"></iconify>
+                    <iconify icon="grommet-icons:connect" style="height: 1.25em"></iconify>
                     <span><?=i::__('Vincular cadastro')?></span>
                 </a>
             </li>
