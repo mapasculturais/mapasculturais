@@ -13,13 +13,11 @@ $profile = $app->user->profile;
     <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>
 </div>
 <div class="panel__row">
-    <div class="justify-between">
-        <h2><?= sprintf(i::__('Olá, %s'), $profile->name) ?></h2>
-        <a class="button is-large is-primary" href="#">
-            <iconify icon="mdi:account"></iconify>
-            <span><?=i::__('Acessar meu perfil')?></span>
-        </a>
-    </div>
+    <p><?=i::__('Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes criados')?></p>
+    <a class="button is-large is-primary" href="#">
+        <iconify icon="mdi:account-multiple-plus"></iconify>
+        <span><?=i::__('Criar agente')?></span>
+    </a>
 </div>
 
 <?php $this->applyTemplateHook('tabs', 'before') ?>

@@ -3,9 +3,11 @@
 // COLORS
 
 $black: #1E1E1E !default;
+$error: #FF2D2D !default;
 $gray-100: #E5E5E5 !default;
 $gray-300: #C4C4C4 !default;
 $gray-700: #4E4E4E !default;
+$warning: #F07B07 !default;
 $white: #FFFFFF !default;
 
 $gray-500: color.mix($gray-300, $gray-700, 50%) !default;
@@ -51,6 +53,7 @@ $border-radius: 6px !default;
     --mc-agents-700: #{$agents-700};
     --mc-black: #{$black};
     --mc-border-radius: #{$border-radius};
+    --mc-error: #{$error};
     --mc-events-300: #{$events-300};
     --mc-events-500: #{$events-500};
     --mc-events-700: #{$events-700};
@@ -75,5 +78,6 @@ $border-radius: 6px !default;
     --mc-spaces-300: #{$spaces-300};
     --mc-spaces-500: #{$spaces-500};
     --mc-spaces-700: #{$spaces-700};
+    --mc-warning: #{$warning};
     --mc-white: #{$white};
 }

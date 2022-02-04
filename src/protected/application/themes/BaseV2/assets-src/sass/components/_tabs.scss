@@ -8,7 +8,7 @@
     }
 
     &__buttons {
-        display: block;
+        display: flex;
         margin: size(40) 0 0;
         overflow: auto hidden;
         padding: 0;
@@ -69,7 +69,7 @@
     }
 
     &__panels {
-        background-color: var(--mc-gray-300);
+        background-color: var(--mc-gray-100);
         padding: 0.1px; // Hack to avoid margins collapse
         margin: 0 0 size(40);
     }

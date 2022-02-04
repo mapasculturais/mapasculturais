@@ -1,0 +1,38 @@
+@use '../settings/mixins' as *;
+
+.entity-tabs {
+
+    .tabs-component__button {
+
+        &.archived {
+            --mc-tab-active-color: var(--mc-warning);
+
+            .iconify {
+                color: var(--mc-warning);
+            }
+        }
+
+        &.trash {
+            --mc-tab-active-color: var(--mc-error);
+
+            .iconify {
+                color: var(--mc-error);
+            }
+        }
+    }
+
+    &__filters {
+        display: flex;
+        flex-wrap: wrap;
+
+        & > * {
+            margin-right: size(8);
+        }
+    }
+
+    &__search-input {
+        border: 1px solid var(--mc-gray-500);
+        border-radius: var(--mc-border-radius);
+        padding: size(8) size(16);
+    }
+}

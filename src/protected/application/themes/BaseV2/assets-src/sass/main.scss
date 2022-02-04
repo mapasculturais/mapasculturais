@@ -9,4 +9,7 @@
 @use 'components/button';
 @use 'components/panel';
 @use 'components/panel-sidebar';
-@use 'components/tabs'
+@use 'components/tabs';
+
+// LAYOUTS
+@use 'layouts/entity-tabs';
