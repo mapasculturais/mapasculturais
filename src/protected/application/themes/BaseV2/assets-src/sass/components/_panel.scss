@@ -89,7 +89,7 @@
 
     &__row {
         margin: size(24);
-        max-width: 50rem;
+        max-width: size(1024);
 
         @include mobile {
             margin: size(16);
