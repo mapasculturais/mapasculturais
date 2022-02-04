@@ -11,17 +11,11 @@
     }
 
     &__toggle {
-        align-items: center;
-        appearance: none;
         background-color: var(--mc-gray-300);
-        border: none;
-        border-radius: var(--mc-border-radius);
         color: var(--mc-gray-700);
-        display: flex;
         font-family: var(--mc-font-body);
         font-size: size(18);
         font-weight: bold;
-        padding: size(8) size(16);
         width: 100%;
 
         .iconify {
