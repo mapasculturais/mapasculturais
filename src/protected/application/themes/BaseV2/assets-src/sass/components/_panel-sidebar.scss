@@ -2,6 +2,7 @@
 
 .panel-sidebar {
     border-right: 1px solid var(--mc-gray-100);
+    height: 100%;
     padding: size(40) size(24);
 
     @include mobile {
@@ -12,29 +13,38 @@
     &__toggle {
         align-items: center;
         appearance: none;
-        background: transparent;
+        background-color: var(--mc-gray-300);
         border: none;
+        border-radius: var(--mc-border-radius);
+        color: var(--mc-gray-700);
         display: flex;
+        font-family: var(--mc-font-body);
         font-size: size(18);
         font-weight: bold;
+        padding: size(8) size(16);
+        width: 100%;
 
         .iconify {
             height: size(24);
-            margin-right: size(40);
+            margin-right: size(32);
             width: size(24);
         }
     }
 
     h2 {
-        background-color: var(--mc-gray-300);
-        border-radius: var(--mc-border-radius);
-        color: var(--mc-gray-700);
         margin: 0;
-        padding: size(8) size(16);
 
         @include desktop {
             @include sr-only;
         }
+    }
+
+    h3 {
+        color: var(--mc-gray-700);
+        font-size: size(12);
+        margin: 0;
+        padding: size(16);
+        text-transform: uppercase;
     }
 
     nav {
@@ -80,7 +90,7 @@
 
         .iconify {
             height: size(24);
-            margin-right: size(40);
+            margin-right: size(32);
             width: size(24);
         }
     }
