@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 $this->import('
     tabs,tab,
-    panel--entity-actions
+    panel--entity-card
     entities
 ');
 
@@ -42,13 +42,20 @@ $tabs = $tabs ?? [
                 </div>
             </template>
 
-            <article v-for="entity in entities" class="objeto">
-                <h1><a :href="entity.singleUrl">{{entity.name}}</a></h1>
-                <slot :entity="entity">{{entity.id}}</slot>
-                <div class="entity-actions">
-                    <panel--entity-actions :entity="entity"></panel--entity-actions>
-                </div>
-            </article>
+            <panel--entity-card v-for="entity in entities" :key="entity.id" :entity="entity">
+                <template #header-actions="{ entity }">
+                    <button class="entity-card__header-action">
+                        <iconify icon="mdi:star-outline"></iconify>
+                        <span><?=i::__('Favoritar')?></span>
+                    </button>
+                </template>
+                <template #default="{ entity }">
+                    <dl>
+                        <dt><?=i::__('Tipo')?></dt>
+                        <dd>{{ entity.type.name }}</dd>
+                    </dl>
+                </template>
+            </panel--entity-card>
         </entities>
     </tab>
     <?php endforeach ?>
