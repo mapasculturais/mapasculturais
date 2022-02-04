@@ -16,6 +16,10 @@ app.component('tab', {
             type: String,
             required: true
         },
+        meta: {
+            type: Object,
+            default: () => ({})
+        },
         slug: {
             type: String,
             required: true
@@ -53,6 +57,7 @@ app.component('tab', {
                 hash: hash,
                 icon: props.icon,
                 label: props.label,
+                meta: props.meta,
                 slug: props.slug,
             })
         })
