@@ -1,0 +1,53 @@
+@use '../settings/mixins' as *;
+
+.button {
+    align-items: center;
+    appearance: none;
+    border: none;
+    border-radius: var(--mc-border-radius);
+    display: flex;
+    font-size: size(16);
+    font-weight: bold;
+    line-height: 1.25em;
+    padding: size(8) size(16);
+    text-decoration: none;
+
+    .iconify {
+        height: 1.25em;
+        margin-right: 1ch;
+        width: 1.25em;
+    }
+
+    &.is-large {
+        justify-content: center;
+        max-width: 100%;
+        width: size(270);
+    }
+
+    &.is-primary {
+        background-color: var(--mc-primary-500);
+        color: var(--mc-white);
+
+        &:focus, &:hover {
+            background-color: var(--mc-primary-700);
+        }
+    }
+
+    &.is-secondary {
+        background-color: var(--mc-secondary-500);
+        color: var(--mc-primary-500);
+
+        &:focus, &:hover {
+            background-color: var(--mc-secondary-700);
+        }
+    }
+
+    &.is-solid {
+        background-color: var(--mc-gray-100);
+        color: var(--mc-gray-700);
+
+        &:focus, &:hover {
+            background-color: var(--mc-gray-300);
+        }
+    }
+}

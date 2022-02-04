@@ -1,7 +1,5 @@
 // Let's try to keep it as leaner as possible
 
-@use './mixins' as *;
-
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -17,9 +15,5 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--mc-font-headings);
-}
-
-// For screen-readers
-.sr-only {
-    @include sr-only;
+    margin: 0
 }
