@@ -1,24 +1,28 @@
 <?php
 use MapasCulturais\i;
-$this->import('tabs');
+$this->import('tabs panel--entity-tabs');
 
 $profile = $app->user->profile;
 ?>
 
 <div class="panel__row">
-    <h1><?= i::__('Painel de controle') ?></h1>
-    <h2><?= sprintf(i::__('Olá, %s'), $profile->name) ?></h2>
+    <h1>
+        <iconify icon="mdi:account-multiple-outline"></iconify>
+        <?= i::__('Meus agentes') ?>
+    </h1>
+    <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>
+</div>
+<div class="panel__row">
+    <div class="justify-between">
+        <h2><?= sprintf(i::__('Olá, %s'), $profile->name) ?></h2>
+        <a class="button is-large is-primary" href="#">
+            <iconify icon="mdi:account"></iconify>
+            <span><?=i::__('Acessar meu perfil')?></span>
+        </a>
+    </div>
 </div>
 
 <?php $this->applyTemplateHook('tabs', 'before') ?>
-<tabs>
-    <?php $this->applyTemplateHook('tabs', 'begin') ?>
-    <tab cache key="main" label="<?= i::__('Principal') ?>" slug="main">
-        <h3><?= i::__('Acesso Rápido') ?></h3>
-    </tab>
-    <tab cache key="secondary" icon="mdi:star" label="<?= i::__('Secundária') ?>" slug="secondary">
-        <h3><?= i::__('Conteúdo Secundário') ?></h3>
-    </tab>
-    <?php $this->applyTemplateHook('tabs', 'end') ?>
-</tabs>
+<img src="<?php $this->asset('img/default-avatar.png') ?>">
+<panel--entity-tabs type="agent"></panel--entity-tabs>
 <?php $this->applyTemplateHook('tabs', 'after') ?>

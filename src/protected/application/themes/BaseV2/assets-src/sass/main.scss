@@ -3,8 +3,10 @@
 @use 'settings/typography';
 @use 'settings/variables';
 @use 'settings/global';
+@use 'settings/atoms';
 
 // COMPONENTS
+@use 'components/button';
 @use 'components/panel';
 @use 'components/panel-sidebar';
 @use 'components/tabs'

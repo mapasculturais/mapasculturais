@@ -16,11 +16,57 @@
         @include mobile {
             padding: 0;
         }
+
+        h1 {
+            align-items: center;
+            color: var(--mc-primary-500);
+            display: flex;
+            font-size: size(32);
+            width: auto;
+
+            .iconify {
+                height: size(56);
+                margin-right: size(16);
+                width: size(56);
+            }
+
+            @include mobile {
+                font-size: size(20);
+
+                .iconify {
+                    height: size(20);
+                    width: size(20);
+                }
+            }
+        }
+
+        h2 {
+            font-size: size(24);
+            font-weight: normal;
+        }
+    }
+
+    &__help-link {
+        background-color: var(--mc-gray-100);
+        border-radius: size(16);
+        color: var(--mc-black);
+        font-size: size(12);
+        font-weight: bold;
+        padding: size(8) size(16);
+        position: absolute;
+        right: 0;
+        text-decoration: none;
+        top: 0;
+
+        &:focus, &:hover {
+            background-color: var(--mc-gray-300);
+        }
     }
 
     &__row {
         margin: size(32);
         max-width: size(1024);
+        position: relative;
 
         @include mobile {
             margin: size(16);
