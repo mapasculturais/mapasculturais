@@ -5,7 +5,7 @@
     appearance: none;
     border: none;
     border-radius: var(--mc-border-radius);
-    display: flex;
+    display: inline-flex;
     font-size: size(16);
     font-weight: bold;
     line-height: 1.25em;
@@ -14,14 +14,14 @@
 
     .iconify {
         height: 1.25em;
-        margin-right: 1ch;
+        margin-right: size(16);
         width: 1.25em;
     }
 
     &.is-large {
         justify-content: center;
         max-width: 100%;
-        width: size(270);
+        width: size(320);
     }
 
     &.is-primary {
@@ -43,11 +43,11 @@
     }
 
     &.is-solid {
-        background-color: var(--mc-gray-100);
-        color: var(--mc-gray-700);
+        background-color: var(--mc-gray-300);
+        color: var(--mc-black);
 
         &:focus, &:hover {
-            background-color: var(--mc-gray-300);
+            background-color: var(--mc-gray-500);
         }
     }
 }
