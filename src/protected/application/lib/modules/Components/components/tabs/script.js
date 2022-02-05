@@ -6,7 +6,7 @@ app.component('tabs', {
             type: String,
             default: null
         },
-        useUrlFragment: {
+        syncHash: {
             type: Boolean,
             default: true
         },
@@ -43,7 +43,7 @@ app.component('tabs', {
                 return
             }
 
-            if (props.useUrlFragment) {
+            if (props.syncHash) {
                 window.location.hash = nextTab.hash
             }
 
@@ -60,7 +60,7 @@ app.component('tabs', {
             const hash = window.location.hash.slice(1)
             window.addEventListener('hashchange', () => selectTab(window.location.hash.slice(1)))
 
-            if (props.useUrlFragment && hash && findTab(hash)) {
+            if (props.syncHash && hash && findTab(hash)) {
                 selectTab(hash)
             } else if (props.defaultTab && findTab(props.defaultTab)) {
                 selectTab(props.defaultTab)
