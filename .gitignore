@@ -25,6 +25,7 @@ compose/config.d/z.config.local.php
 .idea
 main.css
 main.css.map
+mix-manifest.json
 _apigen.phar
 .DS_Store
 .composer/
