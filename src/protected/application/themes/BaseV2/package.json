@@ -1,7 +1,10 @@
 {
     "scripts": {
-        "module:dev": "mix --mix-config=../../../webpack.mix.js",
-        "module:build": "mix --mix-config=../../../webpack.mix.js --production",
-        "module:watch": "mix watch --mix-config=../../../webpack.mix.js"
+        "module:dev": "mix --mix-config=node_modules/@mapas/build/webpack.mix.js",
+        "module:build": "mix --mix-config=node_modules/@mapas/build/webpack.mix.js",
+        "module:watch": "mix watch --mix-config=node_modules/@mapas/build/webpack.mix.js"
+    },
+    "devDependencies": {
+        "@mapas/build": "0.0.0"
     }
 }
