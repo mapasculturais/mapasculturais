@@ -11,9 +11,6 @@ db/arquivos.tar.gz
 src/protected/application/conf/config.php
 src/protected/application/conf/conf-test-local.php
 src/protected/DoctrineProxies/*
-src/protected/application/lib/modules/*/node_modules
-src/protected/application/plugins/*/node_modules
-src/protected/application/themes/*/node_modules
 src/protected/application/themes/mapasculturais-*
 src/protected/node_modules
 src/protected/vendor
@@ -25,7 +22,6 @@ compose/config.d/z.config.local.php
 .idea
 main.css
 main.css.map
-mix-manifest.json
 _apigen.phar
 .DS_Store
 .composer/
@@ -36,3 +32,11 @@ private-files
 docker-data
 scripts/nohup.out
 src/geojson
+
+src/protected/application/lib/modules/*/node_modules
+src/protected/application/lib/modules/*/package-lock.json
+src/protected/application/plugins/*/node_modules
+src/protected/application/lib/modules/*/package-lock.json
+src/protected/application/themes/*/node_modules
+src/protected/application/lib/modules/*/package-lock.json
+mix-manifest.json
