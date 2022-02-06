@@ -5,6 +5,7 @@
     "packages": [
         "application/lib/modules/*",
         "application/plugins/*",
-        "application/themes/*"
+        "application/themes/*",
+        "build"
     ]
 }
