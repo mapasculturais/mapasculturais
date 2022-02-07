@@ -42,20 +42,27 @@ $tabs = $tabs ?? [
                 </div>
             </template>
 
-            <panel--entity-card v-for="entity in entities" :key="entity.id" :entity="entity">
-                <template #header-actions="{ entity }">
-                    <button class="entity-card__header-action">
-                        <iconify icon="mdi:star-outline"></iconify>
-                        <span><?=i::__('Favoritar')?></span>
-                    </button>
-                </template>
-                <template v-if="entity.type" #default="{ entity }">
-                    <dl>
-                        <dt><?=i::__('Tipo')?></dt>
-                        <dd>{{ entity.type.name }}</dd>
-                    </dl>
-                </template>
-            </panel--entity-card>
+           <template v-for="entity in entities">
+                <slot :entity="entity">
+                    <panel--entity-card :key="entity.id" :entity="entity">
+                        <template #title="{ entity }">
+                            <slot name="title" :entity="entity"></slot>
+                        </template>
+                        <template #header-actions="{ entity }">
+                            <button class="entity-card__header-action">
+                                <iconify icon="mdi:star-outline"></iconify>
+                                <span><?=i::__('Favoritar')?></span>
+                            </button>
+                        </template>
+                        <template v-if="entity.type" #default="{ entity }">
+                            <dl>
+                                <dt><?=i::__('Tipo')?></dt>
+                                <dd>{{ entity.type.name }}</dd>
+                            </dl>
+                        </template>
+                    </panel--entity-card>
+                </slot>
+           </template>
         </entities>
     </tab>
     <?php endforeach ?>
