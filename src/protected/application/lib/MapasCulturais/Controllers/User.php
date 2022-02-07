@@ -2,6 +2,8 @@
 namespace MapasCulturais\Controllers;
 use MapasCulturais\Controller;
 use MapasCulturais\App;
+use MapasCulturais\i;
+use MapasCulturais\Traits;
 /**
  * User Controller
  *
@@ -9,8 +11,31 @@ use MapasCulturais\App;
  *
  */
 class User extends Controller {
-    function usesAPI(){
-        return true;
+    use Traits\ControllerAPI {
+        API_find as __API_find;
+        API_findOne as __API_findOne;
+    }
+    
+    protected $entityClassName = 'MapasCulturais\\Entities\\User';
+
+    function API_find()
+    {
+        $app = App::i();
+        if (!$app->user->is('admin')) {
+            $this->errorJson(i::__('Permissão negada', 403));
+        }
+
+        $this->__API_find();
+    }
+
+    function API_findOne()
+    {
+        $app = App::i();
+        if (!$app->user->is('admin')) {
+            $this->errorJson(i::__('Permissão negada', 403));
+        }
+
+        $this->__API_find();
     }
     
     function API_getId(){
