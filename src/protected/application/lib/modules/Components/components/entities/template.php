@@ -5,14 +5,20 @@ use MapasCulturais\i;
 $this->import('loading');
 ?>
 <loading :condition="entities.loading"></loading>
-<slot v-if="!entities.loading" 
-    :entities="entities" 
-    :query="query" 
-    :load-more="loadMore" 
-    :refresh="refresh"></slot> 
+<template v-if="!entities.loading">
+    <slot v-if="entities.length === 0" name="empty">
+        <div class="panel__row">
+            <p><?=i::__('Nenhuma entidade encontrada')?></p>
+        </div>
+    </slot>
+    <slot v-else
+        :entities="entities"
+        :load-more="loadMore"
+        :query="query"
+        :refresh="refresh"></slot>
+</template>
 
-<slot v-if="hasSlot('load-more') && showLoadMore()" :entities="entities"></slot>
-<template v-if="!hasSlot('load-more') && showLoadMore()">
+<slot v-if="showLoadMore()" name="load-more" :entities="entities">
     <loading :condition="entities.loadingMore"></loading>
     <button v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
-</template>
+</slot>
