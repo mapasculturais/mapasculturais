@@ -86,7 +86,7 @@ Utils = {
         if(api) {
             return new URL($MAPAS.baseURL + route.replace('api/', `api/${controllerId}/`));
         } else {
-            return new URL($MAPAS.baseURL + controllerId + route);
+            return new URL($MAPAS.baseURL + route);
         }
         
     }
