@@ -22,6 +22,7 @@ $profile = $app->user->profile;
 
 <?php $this->applyTemplateHook('tabs', 'before') ?>
 
-    <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name}" #default={entities}>
+    <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name}" #default={entities,entity}>
+        
     </panel--entity-tabs>
 </div>
