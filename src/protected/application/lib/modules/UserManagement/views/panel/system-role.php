@@ -20,7 +20,7 @@ $this->import('
         </div>
     </header>
     
-    <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #={entity}>
+    <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #default={entity}>
         {{entity.id}} - {{entity.slug}}
         <code>{{entity.permissions}}</code>
     </panel--entity-tabs>

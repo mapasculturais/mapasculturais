@@ -18,7 +18,6 @@ $this->import('
         <messages></messages>
     </header>
 
-    <panel--entity-tabs type="agent" user="" select="id,status,name" #={entities}>
-
+    <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name}" #default={entities}>
     </panel--entity-tabs>
 </div>
