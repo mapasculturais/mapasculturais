@@ -13,7 +13,7 @@ $this->import('panel--entity-actions');
             </div>
             <h2 class="entity-card__title">
                 <slot name="title" :entity="entity">
-                    {{ entity.name }}
+                    {{ entity?.name || entity?.email || entity?.number || entity?.id }}
                 </slot>
             </h2>
         </div>
