@@ -24,6 +24,43 @@ trait ControllerAPI{
     }
 
     /**
+     * Execute a API Query
+     *
+     * @param array $api_params
+     * @param array $options
+     * @return array
+     */
+    public function apiQuery(array $api_params, array $options = []){        
+        $app = App::i();
+        $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $counting = key_exists('@count', $api_params);
+        if($counting){
+            unset($api_params['@count']);
+        }
+
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).params", [&$api_params]);
+
+        $query = new ApiQuery($this->entityClassName, $api_params);
+        if($counting){
+            $result = $query->getCountResult();
+        } elseif( $findOne ) {
+            $result = $query->getFindOneResult();
+        } else {
+            $result = $query->getFindResult();
+            if(isset($api_params['@page']) || isset($api_params['@offset']) || isset($api_params['@limit'])){
+                $count = $query->getCountResult();
+            } else {
+                $count = count($result);
+            }
+            $this->apiAddHeaderMetadata($api_params, $result, $count);
+        }
+
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result" , [&$api_params,  &$result]);
+        
+        return $result;
+    }
+
+    /**
      * Returns the ApiOutput Object.
      *
      * @return \MapasCulturais\ApiOutput
