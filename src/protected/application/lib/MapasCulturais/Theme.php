@@ -127,6 +127,7 @@ abstract class Theme extends \Slim\View {
         $this->jsObject['routes'] = $app->config['routes'];
 
         $this->jsObject['EntitiesDescription'] = [
+            "user"         => Entities\User::getPropertiesMetadata(),
             "agent"         => Entities\Agent::getPropertiesMetadata(),
             "event"         => Entities\Event::getPropertiesMetadata(),
             "space"         => Entities\Space::getPropertiesMetadata(),
