@@ -1,24 +1,28 @@
 <?php
-
 use MapasCulturais\i;
-
-$this->layout = 'panel';
-
 $this->import('
-    panel--entity-tabs
-    messages
+loading,messages,
+tabs panel--entity-tabs,
+entities
 ');
 
+$profile = $app->user->profile;
 ?>
 
-
-<div id="main-app" class="panel-list panel-main-content">
-    <header class="panel-header clearfix">
-        <h2><?php i::_e('Gestão de usuários') ?></h2>
-        <messages></messages>
-    </header>
-
-    <panel--entity-tabs type="agent" user="" select="id,status,name" #={entities}>
-
-    </panel--entity-tabs>
+<div class="panel__row">
+    <h1>
+        <iconify icon="mdi:account-multiple-outline"></iconify>
+        <?= i::__('Gerenciamento de usuários') ?>
+    </h1>
+    <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>
 </div>
+<div class="panel__row">
+    <p><?=i::__('Gerencia os usuários do sistema')?></p>
+</div>
+
+<?php $this->applyTemplateHook('tabs', 'before') ?>
+
+<panel--entity-tabs type="user" #default={entities}>
+</panel--entity-tabs>
+
+<?php $this->applyTemplateHook('tabs', 'after') ?>
