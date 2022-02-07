@@ -6,6 +6,6 @@
         "application/lib/modules/*",
         "application/plugins/*",
         "application/themes/*",
-        "build"
+        "node_scripts"
     ]
 }
