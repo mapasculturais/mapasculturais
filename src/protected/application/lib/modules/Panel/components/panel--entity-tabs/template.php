@@ -22,7 +22,7 @@ $tabs = $tabs ?? [
     </template>
     <?php foreach($tabs as $status => $label): ?>
     <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
-        <entities :name="type + ':<?=$status?>'" :type="type" #="{entities}"
+        <entities :name="type + ':<?=$status?>'" :type="type" #default="{entities}"
             :select="select"
             :query="queries['<?=$status?>']" :limit="50">
 
@@ -49,7 +49,7 @@ $tabs = $tabs ?? [
                         <span><?=i::__('Favoritar')?></span>
                     </button>
                 </template>
-                <template #default="{ entity }">
+                <template v-if="entity.type" #default="{ entity }">
                     <dl>
                         <dt><?=i::__('Tipo')?></dt>
                         <dd>{{ entity.type.name }}</dd>
