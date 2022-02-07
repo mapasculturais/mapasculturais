@@ -7,6 +7,10 @@
 
 // COMPONENTS
 @use 'components/button';
+@use 'components/entity-card';
 @use 'components/panel';
 @use 'components/panel-sidebar';
-@use 'components/tabs'
+@use 'components/tabs';
+
+// LAYOUTS
+@use 'layouts/entity-tabs';

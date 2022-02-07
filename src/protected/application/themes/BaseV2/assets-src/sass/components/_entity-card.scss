@@ -1,0 +1,147 @@
+@use '../settings/mixins' as *;
+
+.entity-card {
+    background-color: var(--mc-white);
+    border-radius: var(--mc-border-radius);
+
+    &__header {
+        align-items: center;
+        border-bottom: 1px solid var(--mc-gray-100);
+        display: flex;
+        justify-content: space-between;
+        padding: size(8) size(16);
+
+        & > :first-child {
+            align-items: center;
+            display: flex;
+        }
+    }
+
+    &__picture {
+        display: inline-block;
+
+        img {
+            border-radius: 50%;
+            height: size(48);
+            margin-right: size(16);
+            width: size(48);
+
+            @include mobile {
+                height: size(32);
+                margin-right: size(8);
+                width: size(32);
+            }
+        }
+    }
+
+    &__title {
+        display: inline-block;
+
+        h2 {
+            font-size: size(24);
+
+            @include mobile {
+                font-size: size(16);
+            }
+        }
+    }
+
+    &__header-actions {
+        display: flex;
+        flex-wrap: wrap-reverse;
+
+        button {
+            align-items: center;
+            appearance: none;
+            background-color: transparent;
+            border: none;
+            border-radius: var(--mc-border-radius);
+            display: flex;
+            flex-direction: column;
+            padding: size(8);
+
+            &:focus, &:hover {
+                background-color: var(--mc-gray-100);
+            }
+
+            .iconify {
+                height: size(20);
+                width: size(20);
+            }
+
+            span {
+                font-size: size(12);
+                font-weight: bold;
+
+                @include mobile {
+                    @include sr-only;
+                }
+            }
+        }
+    }
+
+    &__main {
+        display: flex;
+        flex-wrap: wrap;
+        padding: size(16) size(16) 0;
+
+        dl {
+            font-size: size(14);
+            margin: 0 size(40) size(16) 0;
+            text-transform: uppercase;
+        }
+
+        dt {
+            display: inline;
+            margin: 0 1ch 0 0;
+            padding: 0;
+
+            &::after {
+                content: ':';
+            }
+        }
+
+        dd {
+            display: inline;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    &__footer {
+        padding: 0 size(8) size(16);
+    }
+
+    &__footer-actions {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            margin-left: size(4);
+        }
+
+        .button {
+
+            &.archive {
+                color: var(--mc-warning);
+            }
+
+            &.delete {
+                color: var(--mc-error);
+            }
+
+            .iconify {
+                margin-right: size(4);
+            }
+
+            @include mobile {
+                padding: size(8);
+
+                span {
+                    @include sr-only;
+                }
+            }
+        }
+    }
+}

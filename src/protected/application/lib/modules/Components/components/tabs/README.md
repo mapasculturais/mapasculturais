@@ -18,19 +18,19 @@ Emitido quando qualquer aba é clicada.
 
 ## Propriedades
 
-### `default-tab`
+### `defaultTab`
 
 - Tipo: `String`
 - Opcional
 
 Slug da aba inicializada quando a detecção pelo *hash* da URL da página falha.
 
-### `use-url-fragment`
+### `syncHash`
 
 - Tipo: `Boolean`
 - Valor padrão: `true`
 
-Se a aba deve ser sincronizada com o *hash* da URL da página. Valor deve ser `false` para conjuntos de abas secundários.
+Se a aba deve ser sincronizada com o *hash* da URL da página. Abas secundárias devem passar o valor `false`, para evitar conflitos.
 
 ## Slots
 

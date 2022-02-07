@@ -60,7 +60,7 @@ $this->import('tab')
 
 Ver também componente `<tabs>`.
 
-```php
+```html
 <!-- utilização básica -->
 <tabs>
     <tab label="Principal" slug="primary">

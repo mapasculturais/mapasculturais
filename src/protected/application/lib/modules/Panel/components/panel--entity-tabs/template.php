@@ -3,6 +3,7 @@ use MapasCulturais\i;
 
 $this->import('
     tabs,tab,
+    panel--entity-card
     entities
 ');
 
@@ -13,19 +14,48 @@ $tabs = $tabs ?? [
     'trash' => i::esc_attr__('Lixeira'),
 ];
 ?>
-<tabs>
+<tabs class="entity-tabs">
+    <template #header="{ tab }">
+        <iconify icon="mdi:archive-outline" v-if="tab.slug === 'archived'"></iconify>
+        <iconify icon="mdi:delete-outline" v-else-if="tab.slug === 'trash'"></iconify>
+        {{ tab.label }}
+    </template>
     <?php foreach($tabs as $status => $label): ?>
     <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
         <entities :name="type + ':<?=$status?>'" :type="type" #="{entities}"
             :select="select"
             :query="queries['<?=$status?>']" :limit="50">
-            <article v-for="entity in entities" class="objeto">
-                <h1><a :href="entity.singleUrl">{{entity.name}}</a></h1>
-                <slot :entity="entity">{{entity.id}}</slot>
-                <div class="entity-actions">
-                    <panel--entity-actions :entity="entity"></panel--entity-actions>
+
+            <template v-if="true">
+                <div class="entity-tabs__filters panel__row">
+                    <input type="search" class="entity-tabs__search-input"
+                        aria-label="<?=i::__('Palavras-chave')?>"
+                        placeholder="<?=i::__('Buscar por palavras-chave')?>"
+                        v-model="entities.query['@keyword']">
+                    <button type="button" class="button is-solid" @click="entities.refresh()">
+                        <?=i::__('Filtrar')?>
+                    </button>
+                    <button type="button" class="button is-solid">
+                        <iconify icon="mdi:sort" inline></iconify>
+                        <?=i::__('Ordenar')?>
+                    </button>
                 </div>
-            </article>
+            </template>
+
+            <panel--entity-card v-for="entity in entities" :key="entity.id" :entity="entity">
+                <template #header-actions="{ entity }">
+                    <button class="entity-card__header-action">
+                        <iconify icon="mdi:star-outline"></iconify>
+                        <span><?=i::__('Favoritar')?></span>
+                    </button>
+                </template>
+                <template #default="{ entity }">
+                    <dl>
+                        <dt><?=i::__('Tipo')?></dt>
+                        <dd>{{ entity.type.name }}</dd>
+                    </dl>
+                </template>
+            </panel--entity-card>
         </entities>
     </tab>
     <?php endforeach ?>
