@@ -44,11 +44,14 @@ app.component('entities', {
     props: {
         name: String,
         ids: Array,
-        type: String,
+        type: {
+            type: String,
+            required: true
+        },
         select: String,
         query: {
             type: Object,
-            default: {}
+            default: () => ({})
         },
         limit: Number,
         order: String,
