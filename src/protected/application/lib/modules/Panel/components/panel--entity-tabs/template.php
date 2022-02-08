@@ -46,19 +46,23 @@ $tabs = $tabs ?? [
                 <slot :entity="entity">
                     <panel--entity-card :key="entity.id" :entity="entity">
                         <template #title="{ entity }">
-                            <slot name="title" :entity="entity"></slot>
+                            <slot name="card-title" :entity="entity"></slot>
                         </template>
                         <template #header-actions="{ entity }">
-                            <button class="entity-card__header-action">
-                                <iconify icon="mdi:star-outline"></iconify>
-                                <span><?=i::__('Favoritar')?></span>
-                            </button>
+                            <slot name="card-actions">
+                                <button class="entity-card__header-action">
+                                    <iconify icon="mdi:star-outline"></iconify>
+                                    <span><?=i::__('Favoritar')?></span>
+                                </button>
+                            </slot>
                         </template>
                         <template v-if="entity.type" #default="{ entity }">
-                            <dl>
-                                <dt><?=i::__('Tipo')?></dt>
-                                <dd>{{ entity.type.name }}</dd>
-                            </dl>
+                            <slot name="card-content">
+                                <dl>
+                                    <dt><?=i::__('Tipo')?></dt>
+                                    <dd>{{ entity.type.name }}</dd>
+                                </dl>
+                            </slot>
                         </template>
                     </panel--entity-card>
                 </slot>
