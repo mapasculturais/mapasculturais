@@ -1029,7 +1029,7 @@ class Theme extends MapasCulturais\Theme {
         });
 
         // faz a keyword buscar pelos termos das taxonomias
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.join,-repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
+        $app->hook('repo(<<agent|space|event|project|opportunity|seal|Registration>>).getIdsByKeywordDQL.join,-repo(Registration).getIdsByKeywordDQL.join', function(&$joins, $keyword) {
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
             $class = $this->getClassName();
@@ -1042,7 +1042,7 @@ class Theme extends MapasCulturais\Theme {
                             t.taxonomy = '{$taxonomy->slug}'";
         });
 
-        $app->hook('repo(<<*>>).getIdsByKeywordDQL.where,-repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
+        $app->hook('repo(<<agent|space|event|project|opportunity|seal|Registration>>).getIdsByKeywordDQL.where,-repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
             $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
         });
 
