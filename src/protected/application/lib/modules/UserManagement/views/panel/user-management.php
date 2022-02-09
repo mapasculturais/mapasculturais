@@ -1,9 +1,9 @@
 <?php
 use MapasCulturais\i;
+
 $this->import('
-loading,messages,
-tabs panel--entity-tabs,
-entities
+    loading,messages,
+    card-user-management
 ');
 
 $profile = $app->user->profile;
@@ -21,8 +21,5 @@ $profile = $app->user->profile;
 </div>
 
 <?php $this->applyTemplateHook('tabs', 'before') ?>
-
-    <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name}">
-        <template #card-title="{entity}">{{entity.profile.name}}</template>
-    </panel--entity-tabs>
+    <card-user-management></card-user-management>
 </div>
