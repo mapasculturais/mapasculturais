@@ -119,6 +119,24 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
+         * Faz JOIN com a tabela Agent para poder fitrar por nome nas keyowrds
+         */
+        $app->hook('repo(User).getIdsByKeywordDQL.join', function(&$joins, $keyword){
+            $joins .= "
+                LEFT JOIN 
+                    MapasCulturais\\Entities\\Agent a 
+                WITH 
+                    e.profile = a.id";
+        });
+
+        /**
+         * Filtra usuários por palavras chaves na view user-management
+         */
+        $app->hook('repo(User).getIdsByKeywordDQL.where', function(&$where, $keyword){
+            $where .= " (unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)))";
+        });
+
+        /**
          * Página para gerenciamento de roles no painel
          */
         $app->hook('GET(panel.system-roles)', function() use($app) {
