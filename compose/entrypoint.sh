@@ -40,8 +40,8 @@ cd /
 touch /nohup.out
 usermod -s /bin/bash www-data
 nohup su www-data -c /jobs-cron.sh >> /dev/stdout &
+nohup su www-data -c /recreate-pending-pcache-cron.sh >> /dev/stdout &
 usermod -s /usr/sbin/nologin www-data
-nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
 tail -f /nohup.out > /dev/stdout &
 touch /mapas-ready
 
