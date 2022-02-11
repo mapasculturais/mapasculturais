@@ -6,16 +6,16 @@ $this->import('loading');
 ?>
 <loading :condition="entities.loading"></loading>
 <template v-if="!entities.loading">
+    <slot v-if="(entities.length > 0) || ('@keyword' in query)"
+        :entities="entities"
+        :load-more="loadMore"
+        :query="query"
+        :refresh="refresh"></slot>
     <slot v-if="entities.length === 0" name="empty">
         <div class="panel__row">
             <p><?=i::__('Nenhuma entidade encontrada')?></p>
         </div>
     </slot>
-    <slot v-else
-        :entities="entities"
-        :load-more="loadMore"
-        :query="query"
-        :refresh="refresh"></slot>
 </template>
 
 <slot v-if="showLoadMore()" name="load-more" :entities="entities">
