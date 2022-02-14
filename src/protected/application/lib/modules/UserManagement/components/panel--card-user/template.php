@@ -21,7 +21,14 @@ $this->import('panel--entity-card');
         <slot name="card-content">
             <?=i::__('Funções')?>
             <ul>
-                <li v-for="role in entity.roles" class="roles">{{role.name}}</li>
+                <li v-for="role in entity.roles" class="roles">
+                    {{role.name}}
+                    <iconify icon="mdi:close" class="icon"></iconify>
+                </li>
+                <li class="roles-add">
+                    <?=i::__('Adicionar função')?>
+                    <iconify icon="mdi:plus" class="icon"></iconify>
+                </li>
             </ul>
         </slot>
     </template>
