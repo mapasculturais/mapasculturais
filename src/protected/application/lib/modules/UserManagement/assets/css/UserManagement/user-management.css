@@ -1,0 +1,14 @@
+.entity-card__main ul{
+    list-style-type: none;
+    margin-top: 0;
+}
+
+.entity-card__main li{
+   float: left;
+}
+
+.entity-card__main .roles{
+    background: #C4C4C4;
+    border-radius: 4px;
+    padding: 8px;
+}

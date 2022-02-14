@@ -151,6 +151,10 @@ class Module extends \MapasCulturais\Module {
         $app->hook('GET(panel.user-management)', function() use($app) {
             $this->requireAuthentication();
 
+            $theme = $app->view;
+            $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
+            $app->view->enqueueStyle($vendor_group, "user-management", "css/UserManagement/user-management.css");
+
             $this->render('user-management');
         });
 
