@@ -3,7 +3,8 @@ use MapasCulturais\i;
 
 $this->import('
     loading,messages,
-    card-user-management
+    panel--card-user,
+    panel--entity-tabs
 ');
 
 $profile = $app->user->profile;
@@ -20,6 +21,9 @@ $profile = $app->user->profile;
     <p><?=i::__('Gerencia os usuários do sistema')?></p>
 </div>
 
-<?php $this->applyTemplateHook('tabs', 'before') ?>
-    <card-user-management></card-user-management>
-</div>
+<panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
+    <template #default="{entity}">
+        <panel--card-user :entity="entity"></panel--card-user>
+    </template>
+</panel--entity-tabs>
+
