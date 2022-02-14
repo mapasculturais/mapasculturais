@@ -5,10 +5,17 @@
 
 .entity-card__main li{
    float: left;
+   margin-left: 10px;
+   padding: 8px;
+   border-radius: 4px;
+   font-size: 13px;
 }
 
 .entity-card__main .roles{
     background: #C4C4C4;
-    border-radius: 4px;
-    padding: 8px;
+}
+
+.entity-card__main .roles-add{
+    background: #4A4A4A;
+    color: #FFFFFF;
 }
