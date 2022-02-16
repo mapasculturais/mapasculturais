@@ -38,10 +38,9 @@ chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/pri
 
 cd /
 touch /nohup.out
-usermod -s /bin/bash www-data
+usermod -s /bin/sh www-data
 nohup su www-data -c /jobs-cron.sh >> /dev/stdout &
 nohup su www-data -c /recreate-pending-pcache-cron.sh >> /dev/stdout &
-usermod -s /usr/sbin/nologin www-data
 tail -f /nohup.out > /dev/stdout &
 touch /mapas-ready
 
