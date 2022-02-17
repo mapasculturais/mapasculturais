@@ -97,7 +97,7 @@ class Registration extends EntityController {
             $finfo = pathinfo($this->name);
             $hash = uniqid();
 
-            $this->name = $this->owner->number . ' - ' . $hash . ' - ' . preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title) . '.' . $finfo['extension'];
+            $this->name = $this->owner->number . ' - ' . $hash . ' - ' . substr( preg_replace ('/[^\. \-\_\p{L}\p{N}]/u', '', $rfc->title),0,64) . '.' . $finfo['extension'];
             $tmpFile = $this->tmpFile;
             $tmpFile['name'] = $this->name;
             $this->tmpFile = $tmpFile;
