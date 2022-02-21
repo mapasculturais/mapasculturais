@@ -13,6 +13,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - altera identidade do usuário que executa os scripts de jobs e recriação de pcache pendente
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
+## [5.1.49] - 2022-02-21
+### Correção
+
+- Ajusta exportação da planilha de inscritos, para que leve em consideração oportunidades multi-fases
 ## [5.1.48] - 2022-02-17
 ### Correção
 
