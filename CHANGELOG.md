@@ -13,6 +13,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - altera identidade do usuário que executa os scripts de jobs e recriação de pcache pendente
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
+
+## [5.1.50] - 2022-02-25
+### Correção
+
+- Corrige verificação de obrigatório nos campos que estão condicionados a outros campos do formulário #1928
+- Aplica máscara de moeda no campo, independentemente do mesmo iniciar oculto ou não no carregamento do formulário #1931
 ## [5.1.49] - 2022-02-21
 ### Correção
 
