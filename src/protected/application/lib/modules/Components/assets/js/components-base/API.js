@@ -90,6 +90,8 @@ class API {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        }).catch((e) => {
+            return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
     }
 
@@ -100,6 +102,8 @@ class API {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        }).catch((e) => {
+            return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
     }
 
@@ -110,6 +114,8 @@ class API {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        }).catch((e) => {
+            return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
     }
 
@@ -120,6 +126,8 @@ class API {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        }).catch((e) => {
+            return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
     }
 
