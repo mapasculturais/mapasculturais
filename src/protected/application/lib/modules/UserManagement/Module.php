@@ -153,7 +153,6 @@ class Module extends \MapasCulturais\Module {
 
             $theme = $app->view;
             $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
-            $app->view->enqueueStyle($vendor_group, "user-management", "css/UserManagement/user-management.css");
 
             $this->render('user-management');
         });
