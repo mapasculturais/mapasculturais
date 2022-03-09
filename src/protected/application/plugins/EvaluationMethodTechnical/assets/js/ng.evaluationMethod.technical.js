@@ -30,6 +30,7 @@
             $scope.editbox = EditBox;
 
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
+
             
             if(MapasCulturais.evaluationConfiguration && MapasCulturais.evaluationConfiguration.criteria){
                 MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
@@ -68,6 +69,17 @@
                 return exists;
             }
 
+            $scope.allCategoriesSections = function(section, model) {
+                if (typeof model !== "undefined") {
+                    if ($scope.data.registrationCategories.length === model.length) {
+                        section.categories = [];
+                        return true;
+                    }
+                    return model.length === 0;
+                } 
+                return true;
+            }
+            
             $scope.save = function(){
                 var data = {
                     sections: $scope.data.sections,

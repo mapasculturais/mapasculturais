@@ -289,7 +289,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         
         $category = $evaluation->registration->category;
         foreach ($cfg->sections as $section) {
-            if ($category && !in_array($category, $section->categories ?? [])) {
+            if (isset($section->categories) && $category && !in_array($category, $section->categories)) {
                 continue;
             }
 

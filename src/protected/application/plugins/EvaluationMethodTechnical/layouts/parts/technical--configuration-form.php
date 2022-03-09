@@ -10,8 +10,10 @@ use MapasCulturais\i;
             <input ng-model="section.weight" type="number" placeholder="<?php i::_e('informe o peso da secão') ?>" class="section-name edit" ng-change="save({sections: data.sections})">
             <p ng-if="data.registrationCategories.length > 1">
                 <small><?php i::_e("Selecione em quais categorias a seção será utilizada");?>:</small><br>
+                <label><input type="checkbox" onclick="if (!this.checked) return false" ng-click="section.categories = [];save()" ng-checked="allCategoriesSections(section, section.categories)"> <?php i::_e("Todas");?> </label>
+                
                 <label ng-repeat="category in data.registrationCategories">
-                    <input type="checkbox" checklist-model="section.categories" checklist-value="category" ng-click="save({sections: data.sections})"> {{category}} 
+                    <input type="checkbox" checklist-model="section.categories" checklist-value="category" ng-click="save()"> {{category}} 
                 </label>
             </p>
             <button ng-if="section.name.trim().length > 0" ng-click="deleteSection(section)" class="btn btn-danger delete alignright"><?php i::_e('Remover seção') ?></button>
