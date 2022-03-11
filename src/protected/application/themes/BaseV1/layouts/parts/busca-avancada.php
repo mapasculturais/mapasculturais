@@ -1,3 +1,4 @@
+
 <div id="header-search-row" class="clearfix" ng-class="{'sombra':data.global.viewMode !== 'list'}">
     <?php if($app->isEnabled('events')): ?>
         <?php $this->part('search/filter', ['display_name' => \MapasCulturais\i::__('Eventos'), 'entity_name' => 'event']); ?>
@@ -42,8 +43,12 @@
                 <a class="hltip icon icon-show-search-on-list"  ng-click="data.global.viewMode='list'" ng-class="{'selected':data.global.viewMode === 'list'}" title="<?php \MapasCulturais\i::esc_attr_e("Ver resultados em lista"); ?>"></a>
                 <a class="hltip icon icon-show-search-on-map" ng-click="data.global.viewMode='map'"  ng-class="{'selected':data.global.viewMode === 'map'}" title="<?php \MapasCulturais\i::esc_attr_e("Ver resultados no mapa"); ?>"></a>
             </div>
-            <div id="export-tools" data-toggle="share-search-results">
+            <div id="export-tools" data-toggle="share-search-resspreadsheetults">
+                <?php $enabled_export_spreadsheet_map =  true;?>
+                <?php $app->applyHookBoundTo($this, 'enabled.agent.spreadsheet.map', [&$enabled_export_spreadsheet_map]);?>
+                <?php if($enabled_export_spreadsheet_map):?>
                 <a class="hltip icon icon-download" ng-href="{{apiURL}}&@type=excel" title="<?php \MapasCulturais\i::esc_attr_e("Exportar dados"); ?>"></a>
+                <?php endif?>
             </div>
             <div id="share-tools">
                 <a class="hltip icon icon-share" title="<?php \MapasCulturais\i::esc_attr_e("Compartilhar resultado"); ?>"></a>
