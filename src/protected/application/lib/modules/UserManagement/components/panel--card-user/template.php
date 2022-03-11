@@ -2,12 +2,15 @@
 
 use MapasCulturais\i;
 
-$this->import('panel--entity-card');
+$this->import('
+    panel--entity-card 
+    user-management--add-role-modal
+');
 ?>
 
 <panel--entity-card :entity="entity">
     <template #title>
-        <slot name="card-title" :entity="entity">{{entity.profile.name}}</slot>
+        <slot name="card-title" :entity="entity" v-if="entity.profile">{{entity.profile.name}}</slot>
     </template>
     <template #header-actions>
         <slot name="card-actions">
@@ -25,9 +28,8 @@ $this->import('panel--entity-card');
                     {{role.name}}
                     <iconify icon="mdi:close" class="icon"></iconify>
                 </li>
-                <li class="roles-add">
-                    <?=i::__('Adicionar função')?>
-                    <iconify icon="mdi:plus" class="icon"></iconify>
+                <li class="roles">    
+                    <user-management--add-role-modal :user="entity"></user-management--add-role-modal>                
                 </li>
             </ul>
         </slot>
