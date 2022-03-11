@@ -167,6 +167,7 @@ class Module extends \MapasCulturais\Module {
         $app->hook('app.init:after', function () {
             $this->registerController('system-role', Controllers\SystemRole::class);
             $this->registerController('user-management', Controllers\UserManagement::class);
+            $this->registerController('role', Controllers\Role::class);
 
             $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
             
