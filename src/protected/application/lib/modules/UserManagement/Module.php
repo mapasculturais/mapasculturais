@@ -16,6 +16,7 @@ class Module extends \MapasCulturais\Module {
          */
         $app->hook('view.render(<<*>>):before', function (){
             $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
+            $this->jsObject['EntitiesDescription']['role'] = \MapasCulturais\Entities\Role::getPropertiesMetadata();
 
             $permission_labels = [
                 '@control' => i::__('*controlar'),
