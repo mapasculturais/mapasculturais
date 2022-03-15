@@ -23,7 +23,7 @@ class Module extends \MapasCulturais\Module {
             $app_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'app-v2' : 'app';
 
             $app->view->enqueueScript($vendor_group, 'vue3', $vue3);
-            $app->view->enqueueScript($vendor_group, 'vue-demi', 'https://unpkg.com/vue-demi');
+            $app->view->enqueueScript($vendor_group, 'vue-demi', 'https://unpkg.com/vue-demi@0.12.1', ['vue3']);
             $app->view->enqueueScript($vendor_group, 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
             $app->view->enqueueScript($vendor_group, 'iconify-vue', 'https://unpkg.com/@iconify/vue@3.1.3/dist/iconify.js', ['vue3']);
             $app->view->enqueueScript($vendor_group, 'vue-final-modal', 'https://unpkg.com/vue-final-modal@next', ['vue3']);
