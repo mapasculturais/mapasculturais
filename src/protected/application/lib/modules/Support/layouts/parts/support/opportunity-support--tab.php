@@ -8,7 +8,7 @@ $tab = null;
         if($this->isEditable()) {
             $anchor = "support-settings";
             $tab = \MapasCulturais\i::__("Configuração do Suporte");
-        } else if($module->isSupportUser($entity, $user) && !$entity->canUser('@control')){
+        } else if($module->isSupportUser($entity, $user)){
             $anchor = "support";
             $tab = \MapasCulturais\i::__("Suporte");
         }

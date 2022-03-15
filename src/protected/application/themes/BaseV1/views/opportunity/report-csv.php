@@ -40,8 +40,13 @@ function showIfField($hasField, $showField)
     return null;
 }
 
+$sort_function =  function($a, $b){
+    return $a->displayOrder <=> $b->displayOrder;
+ };
+
 $_properties = $app->config['registration.propertiesToExport'];
 $space_properties = $app->config['registration.spaceProperties'];
+$fields_configurations = [];
 
 // se está exportando de uma fase, para que a tabela contenha os dados 
 if ($entity->isOpportunityPhase) {
@@ -50,27 +55,27 @@ if ($entity->isOpportunityPhase) {
 
     $repo = $app->repo('Registration');
     $app->controller('Registration')->registerRegistrationMetadata($entity);
+    $app->controller('Registration')->registerRegistrationMetadata($entity_phase);
     
-    $registrations = [];
-    $current_phase_registrations = [];
+    $entity_fields_configurations = $entity->registrationFieldConfigurations;
+    $entity_phase_fields_configurations = $entity_phase->registrationFieldConfigurations;
 
-    foreach($entity_phase->sentRegistrations as $_reg) {
-        $current_phase_registrations[] = $_reg;
-        
-        $first_phase_id = preg_replace('#[^0-9]+#', '', $_reg->number);
-        
-        $registrations[] = $repo->find($first_phase_id);
-    }
+    usort($entity_fields_configurations, $sort_function);
+    usort($entity_phase_fields_configurations, $sort_function);
+
+    $fields_configurations = array_merge($entity_fields_configurations, $entity_phase_fields_configurations);
+    $registrations = $entity_phase->sentRegistrations;
+   
 } else {
+    $fields_configurations = $entity->registrationFieldConfigurations;
+    usort($fields_configurations, $sort_function);
     $entity_phase = $entity;
     $registrations = $entity->sentRegistrations;
-    $current_phase_registrations = $registrations;
 }
 
-
 $custom_fields = [];
-foreach ($entity->registrationFieldConfigurations as $field) :
-    $custom_fields[$field->displayOrder] = [
+foreach ($fields_configurations as $field) :
+    $custom_fields[] = [
         'title' => $field->title,
         'field_name' => $field->getFieldName()
     ];
@@ -135,18 +140,16 @@ $header = array_values(array_map('mb_strtoupper', $header));
  */
 $body = [];
 foreach($registrations as $i => $r) {
-    $origial_r = $current_phase_registrations[$i];
-
     $dataHoraEnvio = $r->sentTimestamp;
     
-    $em = $origial_r->getEvaluationMethod();
-    $result_string = $em->valueToString($origial_r->consolidatedResult);
+    $em = $r->getEvaluationMethod();
+    $result_string = $em->valueToString($r->consolidatedResult);
 
     $outRow = array_values(array_filter([
         $r->number,
         showIfField($entity->projectName, $r->projectName),
         $result_string ?: '""',
-        returnStatus($origial_r) ?: '""',
+        returnStatus($r) ?: '""',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('H:i') : '-'),
         showIfField($entity->registrationCategories, $r->category)
@@ -214,7 +217,7 @@ foreach($registrations as $i => $r) {
 $fh = @fopen('php://output', 'w');
 fprintf($fh, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-$app->applyHook('opportunity.registrations.reportCSV', [$entity_phase, $current_phase_registrations, &$header, &$body]);
+$app->applyHook('opportunity.registrations.reportCSV', [$entity_phase, $registrations, &$header, &$body]);
 
 fputcsv($fh, $header);
 

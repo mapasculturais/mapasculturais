@@ -683,7 +683,7 @@ class Registration extends \MapasCulturais\Entity
 
         $app->enableAccessControl();
         
-        $app->enqueueEntityToPCacheRecreation($this->opportunity);
+        // $app->enqueueEntityToPCacheRecreation($this->opportunity);
         $app->enqueueEntityToPCacheRecreation($this);
 
         $app->applyHookBoundTo($this, "entity($this->hookClassPath).send:after");
@@ -820,17 +820,15 @@ class Registration extends \MapasCulturais\Entity
 
             $field_name = $field_prefix . $field->id;
             $field_required = $field->required;
-
             if(isset($metadata_definition->config['registrationFieldConfiguration']->config['require'])){
-                if ($cond_require = $metadata_definition->config['registrationFieldConfiguration']->config['require'] && 
-                    ((!empty($metadata_definition->config['registrationFieldConfiguration']->config['require']['condition']) || 
-                    $metadata_definition->config['registrationFieldConfiguration']->config['require']['condition'] != "") && 
-                    $metadata_definition->config['registrationFieldConfiguration']->config['require']['condition'])) {
+                $cond_require =  $metadata_definition->config['registrationFieldConfiguration']->config['require'];
 
+                if ($cond_require['condition']) {
 
                     if(is_object($cond_require)){
                         $cond_require = (array) $cond_require;
                     }
+                    
                     $_fied_name = isset($cond_require['field']) ? $cond_require['field'] : null;
                     $_fied_value = isset($cond_require['value']) ? $cond_require['value'] : null;
         

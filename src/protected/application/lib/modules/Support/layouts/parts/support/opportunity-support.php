@@ -82,7 +82,7 @@ use MapasCulturais\i;
         <tbody>
         <tr ng-repeat="reg in data.registrations" id="registration-{{reg.id}}" ng-class="getStatusSlug(reg.status)">
         <?php $this->applyTemplateHook('registration-list-item-support','begin'); ?>
-                <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="{{reg.singleUrl}}" rel='noopener noreferrer'>{{reg.number}}</a></td>
+                <td ng-show="data.registrationTableColumns.number" class="registration-id-col"><a href="<?=$app->createUrl('suporte', 'inscricao', ['{{reg.id}}'])?>" rel='noopener noreferrer'>{{reg.number}}</a></td>
                 <td ng-show="data.registrationTableColumns.category" ng-if="data.entity.registrationCategories" class="registration-option-col">{{reg.category}}</td>
                 <td ng-repeat="field in data.opportunitySelectFields" ng-if="data.registrationTableColumns[field.fieldName]" class="registration-option-col">
                     {{reg[field.fieldName]}}
