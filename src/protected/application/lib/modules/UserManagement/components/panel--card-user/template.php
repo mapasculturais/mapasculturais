@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->import('
     panel--entity-card 
     user-management--add-role-modal
+    user-management--delete-role-modal
 ');
 ?>
 
@@ -25,8 +26,7 @@ $this->import('
             <?=i::__('Funções')?>
             <ul>
                 <li v-for="role in entity.roles" class="roles">
-                    {{role.name}}
-                    <iconify icon="mdi:close" class="icon"></iconify>
+                    <user-management--delete-role-modal :role="role" :user="entity"></user-management--delete-role-modal>
                 </li>
                 <li class="roles">    
                     <user-management--add-role-modal :user="entity"></user-management--add-role-modal>                
