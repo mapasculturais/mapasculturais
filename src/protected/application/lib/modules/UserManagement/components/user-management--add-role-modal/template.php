@@ -8,14 +8,14 @@ $this->import('modal entities loading');
  <modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?> " @open="createInstance()"> 
     <entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
         <label><?= i::__('Função') ?></label>
-        <select v-model="instance.role">
+        <select v-model="instance.name">
             <option v-for="role in entities" v-bind:value="role.slug">{{role.name}}</option>
         </select>
     </entities>
     <entities #default="{entities}" type="subsite" select="id,status,name" v-if="instance">
         <label><?= i::__('Subsite') ?></label>
-        <select v-model="instance.subsite">
-            <option v-for="sub in entities" v-bind:value="sub.id" v-if="entities">{{sub.name}}</option>
+        <select v-model="instance.subsiteId">
+            <option v-for="subsite in entities" v-bind:value="subsite.id" v-if="entities">{{subsite.name}}</option>
         </select>
     </entities>
 
