@@ -16,7 +16,6 @@ class Role extends \MapasCulturais\Controllers\EntityController {
         Traits\ControllerSoftDelete,
         Traits\ControllerDraft;
 
-    protected $entityClassName = "MapasCulturais\\Entities\\Role";
 
 
 }
