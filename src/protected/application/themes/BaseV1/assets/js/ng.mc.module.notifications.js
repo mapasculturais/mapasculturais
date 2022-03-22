@@ -46,20 +46,21 @@
         });
         $scope.data = MapasCulturais.notifications;
 
-        var getNotifications = function (){
-            NotificationService.get().then(function(data){
-                if(data){
-                    data.forEach(function(value,index){
-                        data[index].message = $sce.trustAsHtml(value.message);
-                    });
-                    $scope.data = data;
-                }
-            });
-        };
+        // DESABILITADO PARA NAO FAZER MAIS REQUISIÇÕES DE NOTIFICAÇÕES
+        // var getNotifications = function (){
+        //     NotificationService.get().then(function(data){
+        //         if(data){
+        //             data.forEach(function(value,index){
+        //                 data[index].message = $sce.trustAsHtml(value.message);
+        //             });
+        //             $scope.data = data;
+        //         }
+        //     });
+        // };
 
-        $interval(function(){
-            getNotifications();
-        }, MapasCulturais.notificationsInterval * 1000);
+        // $interval(function(){
+        //     getNotifications();
+        // }, MapasCulturais.notificationsInterval * 1000);
 
         $scope.approve = function(id){
             NotificationService.updateOne(id,'approve').then(getNotifications);
