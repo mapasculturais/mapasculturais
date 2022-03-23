@@ -14,6 +14,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
 - Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
 
+# [5.1.53] - 2022-03-23
+### Correções
+- Corrige filtro de categorias no endpoint findEvaluation
+- Seta valor padrão como desabilitado no plugin ProfileCompletion
 
 ## [5.1.52] - 2022-03-22
 ### Correções
