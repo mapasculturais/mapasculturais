@@ -773,6 +773,22 @@ class Opportunity extends EntityController {
             }
         }
 
+        $rdata = [
+            '@select' => 'id',
+            'opportunity' => "EQ({$opportunity->id})",
+            '@permissions' => "viewPrivateData"
+        ];
+
+        foreach($this->data as $k => $v){
+            if(strtolower(substr($k, 0, 13)) === 'registration:'){
+                $rdata[substr($k, 13)] = $v;
+            }
+        }
+      
+        $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
+
+        $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
+
         $evaluations = $conn->fetchAll("
             SELECT 
                 registration_id, 
@@ -781,12 +797,13 @@ class Opportunity extends EntityController {
             FROM evaluations
             WHERE
                 opportunity_id = :opp AND
-                valuer_user_id IN({$users})
+                valuer_user_id IN({$users}) AND
+                registration_id IN ({$registration_ids})
                 $sql_status
             ORDER BY registration_sent_timestamp ASC
             $sql_limit
         ", $params);
-
+        
         $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
 
