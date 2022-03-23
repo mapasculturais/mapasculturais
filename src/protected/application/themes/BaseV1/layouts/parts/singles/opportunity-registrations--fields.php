@@ -64,7 +64,10 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="<?php i::esc_attr_e("Adicionar anexo");?>" cancel-label="<?php i::esc_attr_e("Cancelar");?>" submit-label="<?php i::esc_attr_e("Criar");?>" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
                 <input type="text" ng-model="data.newFileConfiguration.title" placeholder="<?php i::esc_attr_e("Nome do anexo");?>"/>
                 <textarea ng-model="data.newFileConfiguration.description" placeholder="<?php i::esc_attr_e("Descrição do anexo");?>"/></textarea>
-                <p><label><input type="checkbox" ng-model="data.newFileConfiguration.required"> <small><?php i::_e("O envio deste anexo é obrigatório");?></small></label></p>
+                <p>
+                    <label><input type="checkbox" ng-model="data.newFileConfiguration.required"> <small><?php i::_e("O envio deste anexo é obrigatório");?></small></label><br>
+                    <label><input type="checkbox" ng-model="data.newFileConfiguration.multiple" > <small><?php i::_e("Aceitar multiplos arquivos");?> </small></label>
+                </p>
                 <p ng-if="data.categories.length > 1">
                     <small><?php i::_e("Selecione em quais categorias este anexo é utilizado");?>:</small><br>
                     <label><input type="checkbox" onclick="if (!this.checked)
