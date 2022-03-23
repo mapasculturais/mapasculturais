@@ -11,7 +11,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $config += [];
+        $config += ['enable' => false];
         parent::__construct($config);
     }
 
