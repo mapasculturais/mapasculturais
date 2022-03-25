@@ -2,17 +2,18 @@
     "name": "mapasculturais",
     "private": true,
     "scripts": {
-        "dev": "lerna bootstrap && lerna run --parallel module:dev",
-        "build": "lerna bootstrap && lerna run --parallel module:build"
+        "dev": "lerna bootstrap && lerna run module:dev",
+        "build": "lerna bootstrap && lerna run module:build",
+        "watch": "lerna bootstrap && lerna run --parallel module:watch"
     },
     "devDependencies": {
-        "autoprefixer": "^10.4.2",
-        "chokidar-cli": "^3.0.0",
-        "cssnano": "^5.0.16",
         "esbuild": "^0.14.14",
+        "fast-glob": "^3.2.11",
+        "laravel-mix": "^6.0.41",
+        "laravel-mix-esbuild": "^1.1.0",
         "lerna": "^4.0.0",
-        "postcss": "^8.4.5",
-        "postcss-cli": "^9.1.0",
-        "sass": "^1.49.0"
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.49.0",
+        "sass-loader": "^12.4.0"
     }
 }
