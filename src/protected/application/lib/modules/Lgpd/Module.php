@@ -13,7 +13,7 @@ class Module extends \MapasCulturais\Module{
             'label'=> 'Aceite dos termos e condicoes da LGPD',
             'type'=>'array',
             'private'=> true,
-            'default'=> null,
+            'default'=> 0,
             
         ]);
     }
