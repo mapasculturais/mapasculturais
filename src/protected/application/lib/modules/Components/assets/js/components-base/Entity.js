@@ -84,12 +84,17 @@ class Entity {
 
     async save() {
         const messages = useMessages();
-
         this.__processing = 'salvando';
         return this.API.persistEntity(this)
             .then((response) => {
                 this.__processing = false;
-                return response.json();
+                const rJson = response.json();
+                rJson.then(obj => {
+                    if(!obj.error){
+                        this.id = obj.id;
+                    }
+                })
+                return rJson;
             })
             .catch((error) => {
                 this.__processing = false;
