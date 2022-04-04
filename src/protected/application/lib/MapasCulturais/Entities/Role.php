@@ -36,12 +36,19 @@ class Role extends \MapasCulturais\Entity{
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", )
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade="persist", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     protected $user;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="usr_id", type="integer", nullable=false)
+     */
+    protected $userId;
 
     /**
      * @var int
@@ -87,6 +94,33 @@ class Role extends \MapasCulturais\Entity{
         
         $this->subsite = $subsite;
     }
+
+    protected function _setUser($user){
+        $app = App::i();
+
+        if($user instanceof User){
+            $this->userId = $user->id;
+            $this->user = $user;
+        } else if($user = $app->repo("User")->find($user)){           
+            $this->userId = $user->id;
+            $this->user = $user;
+        }else{
+            throw new \Exception("Invalid User");
+        }
+        
+        
+    }
+
+    public function setUser($user)
+    {
+        $this->_setUser($user);
+    }
+
+    public function setUserId($user)
+    {
+        $this->_setUser($user);
+    }
+
 
     function is(string $role_name) {
         $app = App::i();
