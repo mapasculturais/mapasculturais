@@ -1,8 +1,10 @@
 {
     "scripts": {
-        "build:css": "sass assets-src/sass/main.scss --quiet | postcss --use autoprefixer cssnano --no-map > assets/css/main.css",
-        "dev:css": "chokidar assets-src/sass/**.scss assets-src/sass/**/*.scss --initial --command 'sass assets-src/sass/main.scss --quiet | postcss --use autoprefixer --no-map > assets/css/main.css'",
-        "module:build": "npm run build:css",
-        "module:dev": "npm run dev:css"
+        "module:dev": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js",
+        "module:build": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js --production",
+        "module:watch": "mix watch --mix-config=node_modules/@mapas/scripts/webpack.mix.js"
+    },
+    "devDependencies": {
+        "@mapas/scripts": "0.0.0"
     }
 }
