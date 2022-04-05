@@ -5,10 +5,7 @@ namespace LGPD;
 use MapasCulturais\App;
 
 class Module extends \MapasCulturais\Module{
-
-    
-    
-    
+   
     function __construct($config = []) {
           
         $config += [];
@@ -19,18 +16,6 @@ class Module extends \MapasCulturais\Module{
     public function _init(){
         /** @var App $app */
         $app = App::i();
-        $app->view->enqueueScript('app','LGPD', 'js/script-lgpd.js', ['mapasculturais']);//assets
-        $app->hook('template(site.index.home-developers):end', function() use ($app){
-       
-        $app->view->enqueueStyle('app', 'lgpd-style', 'css/lgpd.css');  
-      
-        //  $app->hook('template(site.index.home-developers):end', function() use ($app){
-            
-        // //     /** @var MapasCulturais\Theme $this*/
-        // //        // $this->part('lgpd/acept-lgpd');
-                
-       
-        // });
     }
 
     public function register()
@@ -53,10 +38,4 @@ class Module extends \MapasCulturais\Module{
         ]);
         
     }
-
-    /**
-     */
-   
-
 }
-
