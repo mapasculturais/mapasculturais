@@ -53,9 +53,13 @@ class Controller  extends \MapasCulturais\Controller{
             'text' => $text,
         
         ];
+        $this->verifiedTerms($app, $acept_terms);
         
-        var_dump($acept_terms);
-        exit;
+        // var_dump($acept_terms);
+        // exit;
+
+    }
+    public function verifiedTerms($app, $acept_terms ){
 
         $agent = $app->repo('Agent')->find(['id' => $app->user->profile->id]);
         if( $_acept_lgpd = json_decode($agent->acept_lgpd, true)){
@@ -74,5 +78,4 @@ class Controller  extends \MapasCulturais\Controller{
         $agent->save();
         echo json_encode($aceptTerms);
     }
-    
 }
