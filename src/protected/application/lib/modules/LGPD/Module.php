@@ -3,6 +3,7 @@
 namespace LGPD;
 
 use MapasCulturais\App;
+use PHPUnit\Util\Getopt;
 
 class Module extends \MapasCulturais\Module{
    
@@ -16,26 +17,45 @@ class Module extends \MapasCulturais\Module{
     public function _init(){
         /** @var App $app */
         $app = App::i();
-    }
+        // eval(\psy\sh());
+        $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
+            if($app->user->is('guest')){
+                return;
+            }
+            $user = $app->user;
+            $config = $app->config['module.LGPD'];
+           
+            foreach($config as $key => $value){
+                $term_hash = md5($value['text']);
+                $acept_terms = $user->{"lgpd_{$key}"};
+                if(!isset($acept_terms->$term_hash)){
+                    $url =  $app->createUrl('lgpd', 'acept', [$key]);
+                    $app->redirect($url);
+                }
+            }
+           
+            
+            
+        });
 
+
+
+    }
     public function register()
     {
         $app= App::i();
         $app->registerController('lgpd', Controller::class);
-        $this->registerUserMetadata('lgpd_termsOfUsage', [
-            'label'=> 'Aceite dos termos e condicoes da LGPD',
-            'type'=>'array',
-            'private'=> true,
-            'default'=> null,
-        ]);
+        $config = $app->config['module.LGPD'];
+        foreach($config as $key => $value){
+            $this->registerUserMetadata("lgpd_{$key}", [
+                'label'=> $value['title'],
+                'type'=>'json',
+                'private'=> true,
+                'default'=> '{}',
+                
+                
+            ]);
+        }
 
-        $this->registerUserMetadata('lgpd_privacyPolice', [
-            'label'=> 'Aceite dos termos e condicoes da LGPD',
-            'type'=>'array',
-            'private'=> true,
-            'default'=> null,
-    
-        ]);
-        
     }
 }
