@@ -5,77 +5,107 @@ namespace LGPD;
 use LGPD\Module;
 use DateTime;
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 class Controller  extends \MapasCulturais\Controller{
-
 
     function __construct()
     {
         parent::construct();
+        $this->layout = 'lgpd';
     }
+    public function GET_acept()
+    {
+        // eval(\psy\sh());
+        $app = App::i();
+        $term_slug = $this->data[0] ?? null;
+        /** @todo Verificar term_slug*/ 
+        $config = $app->config['module.LGPD'][$term_slug] ;
+        
+        $url = $this->createUrl('acept', [$term_slug]);
+        $title = $config['title'];
+        $text = $config['text'];
 
-    public function GET_termsOfUsage(){ 
-        $app= App::i();
-        $this->render('terms-of-usage');
-    }
-    public function GET_policePrivacy ()
-    {
-        $app= App::i();
-        $this->render('privacy-police');
-    }
+        $this->render('acept', ['url' => $url, 'title' => $title, 'text' => $text]);
+        
+    }    
     
-    public function POST_aceptPolicePrivacy ()
+
+  public function POST_acept()
+  {
+        $app = App::i();
+        $term_slug = $this->data[0] ?? null;
+    /** @todo Verificar term_slug*/ 
+        $config = $app->config['module.LGPD'][$term_slug] ;
+        $text = $config['text'];
+
+        $acept_terms = [
+            'timestamp' => (new DateTime())->getTimestamp(),
+            'md5' => md5($text),
+            'text' => $text,
+            
+        ];
+        $this->verifiedTerms("lgpd_{$term_slug}", $acept_terms);
+      
+  }
+    
+    public function POST_aceptprivacypolice ()
     {
         $app= App::i();
+        
         $config = $app->config['module.LGPD'];
  
-        $text = $config['privacyPolice'];
-        $acept_terms[md5($text)] = [
+        $text = $config['privacyPolice']['text'];
+        $acept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
         ];
 
-        var_dump($acept_terms);
-        exit;
-                
+        $this->verifiedTerms('lgpd_privacyPolice', $acept_terms);
     }
      
-    public function POST_aceptTermsOfUsage ()
+    public function POST_acepttermsofusage ()
     {
         $app= App::i();
         $config = $app->config['module.LGPD'];
-       
-        $text = $config['termsOfUsage'];
-        $acept_terms[md5($text)] = [
+        
+        $text = $config['termsOfUsage']['text'];
+        $acept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
-        
+            
         ];
-        $this->verifiedTerms($app, $acept_terms);
-        
-        // var_dump($acept_terms);
-        // exit;
-
+        $this->verifiedTerms('lgpd_termsOfUsage', $acept_terms);
     }
-    public function verifiedTerms($app, $acept_terms ){
+    /** 
+     * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
+     */
+    private function verifiedTerms($meta, $acept_terms ) {
+        $app= App::i();
+        
+        $user = $app->user;
+        $_acept_lgpd = $user->$meta ?: (object)[];
 
-        $agent = $app->repo('Agent')->find(['id' => $app->user->profile->id]);
-        if( $_acept_lgpd = json_decode($agent->acept_lgpd, true)){
-            $flag = false;
-            foreach($_acept_lgpd as $term){
-                if($term['md5'] == $acept_terms['md5']){
-                    $flag = true;
-                }
-            }
-            if(!$flag){    
-                $_acept_lgpd[] = $acept_terms;
-                $aceptTerms =$_acept_lgpd;
-            }
+        $index = $acept_terms['md5'];
+        
+        if(!isset($_acept_lgpd->$index)){
+            $_acept_lgpd->$index = $acept_terms;
+            $user->$meta = $_acept_lgpd;
+            $user->save();
         }
-        $agent->acept_lgpd = json_encode([$aceptTerms]);            
-        $agent->save();
-        echo json_encode($aceptTerms);
+       /** @todo Redirecionar pra url original */
+        $url= $app->createUrl('panel');
+        $app->redirect($url);
     }
 }
+
+/** @todo 
+ * Issue: Registrar o atalho da rota da politica de privacidade na configuracao de rotas 
+ * Issue2: So exibir o botao aceitar se o usuario nao tiver aceito ainda
+ * Caso contrário mostrar quando aceitou timestamp
+ * Para usuarios não logados não mostrar o botão $app->user->is('guest');
+ * Estilo do menu: Classe na tag a, ver como esta na pagina "como usar"
+ *Trocar 'accept' onde esta 'acept';
+*/
