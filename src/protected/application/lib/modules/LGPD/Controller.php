@@ -26,7 +26,23 @@ class Controller  extends \MapasCulturais\Controller{
         $title = $config['title'];
         $text = $config['text'];
 
-        $this->render('acept', ['url' => $url, 'title' => $title, 'text' => $text]);
+        $hashText = md5($text);
+    // verificacao
+    /** o timestamp precisa usar o i */
+        $accepted = false;
+        if(!$app->user->is('guest')){
+            $metadata_key = 'lgpd_'.$term_slug;
+            $_acept_lgpd = $app->user->$metadata_key;
+
+            foreach($_acept_lgpd as $key => $value){
+                if($key == $hashText){
+                    $accepted = $value;
+                    continue;
+                }
+            }
+        }
+
+        $this->render('acept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
         
     }    
     
@@ -43,6 +59,8 @@ class Controller  extends \MapasCulturais\Controller{
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
+            'ip' => $app->request()->getIp(),
+            'userAgent' => $app->request()->getUserAgent(),
             
         ];
         $this->verifiedTerms("lgpd_{$term_slug}", $acept_terms);
@@ -60,6 +78,8 @@ class Controller  extends \MapasCulturais\Controller{
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
+            'ip' => $app->request()->getIp(),
+            'userAgent' => $app->request()->getUserAgent(),
         ];
 
         $this->verifiedTerms('lgpd_privacyPolice', $acept_terms);
@@ -75,16 +95,21 @@ class Controller  extends \MapasCulturais\Controller{
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
-            
+            'ip' => $app->request()->getIp(),
+            'userAgent' => $app->request()->getUserAgent(),
         ];
+        
         $this->verifiedTerms('lgpd_termsOfUsage', $acept_terms);
+            
+        
     }
     /** 
      * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
      */
     private function verifiedTerms($meta, $acept_terms ) {
         $app= App::i();
-        
+        // var_dump($acept_terms);
+        // die;
         $user = $app->user;
         $_acept_lgpd = $user->$meta ?: (object)[];
 
@@ -95,6 +120,7 @@ class Controller  extends \MapasCulturais\Controller{
             $user->$meta = $_acept_lgpd;
             $user->save();
         }
+        
        /** @todo Redirecionar pra url original */
         $url= $app->createUrl('panel');
         $app->redirect($url);
@@ -102,9 +128,11 @@ class Controller  extends \MapasCulturais\Controller{
 }
 
 /** @todo 
- * Issue: Registrar o atalho da rota da politica de privacidade na configuracao de rotas 
- * Issue2: So exibir o botao aceitar se o usuario nao tiver aceito ainda
- * Caso contrário mostrar quando aceitou timestamp
+ *  
+ * 
+ * * Caso contrário mostrar quando aceitou timestamp
+ * Issue2: So exibir o botao aceitar se o usuario nao tiver aceito ainda 
+ 
  * Para usuarios não logados não mostrar o botão $app->user->is('guest');
  * Estilo do menu: Classe na tag a, ver como esta na pagina "como usar"
  *Trocar 'accept' onde esta 'acept';
