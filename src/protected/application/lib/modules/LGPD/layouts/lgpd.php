@@ -6,7 +6,7 @@ $config = $app->config['module.LGPD'];
     <ul>
         <?php foreach($config as $key => $value): ?>
             <li>
-                <a href="<?= $app->createUrl('lgpd', 'acept', [$key]) ?>"><?= $value['title'] ?></a>
+                <a href="<?= $app->createUrl('lgpd', 'accept', [$key]) ?>"><?= $value['title'] ?></a>
             </li>
         <?php endforeach; ?>
     </ul>

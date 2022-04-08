@@ -27,9 +27,9 @@ class Module extends \MapasCulturais\Module{
            
             foreach($config as $key => $value){
                 $term_hash = md5($value['text']);
-                $acept_terms = $user->{"lgpd_{$key}"};
-                if(!isset($acept_terms->$term_hash)){
-                    $url =  $app->createUrl('lgpd', 'acept', [$key]);
+                $accept_terms = $user->{"lgpd_{$key}"};
+                if(!isset($accept_terms->$term_hash)){
+                    $url =  $app->createUrl('lgpd', 'accept', [$key]);
                     $app->redirect($url);
                 }
             }

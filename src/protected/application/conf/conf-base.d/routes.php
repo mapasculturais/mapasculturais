@@ -25,8 +25,8 @@ return [
             'busca'             => ['site', 'search'],
             'sobre'             => ['site', 'page', ['sobre']],
             'como-usar'         => ['site', 'page', ['como-usar']],
-            'termos-de-uso'     => ['lgpd', 'acept', ['termsOfUsage']], 
-            'politica-de-privacidade' => ['lgpd','acept', ['privacyPolice']],
+            'termos-de-uso'     => ['lgpd', 'accept', ['termsOfUsage']], 
+            'politica-de-privacidade' => ['lgpd','accept', ['privacyPolice']],
 
             // workflow actions
             'aprovar-notificacao' => ['notification', 'approve'],
