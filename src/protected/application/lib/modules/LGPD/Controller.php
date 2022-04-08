@@ -33,13 +33,14 @@ class Controller  extends \MapasCulturais\Controller{
         if(!$app->user->is('guest')){
             $metadata_key = 'lgpd_'.$term_slug;
             $_acept_lgpd = $app->user->$metadata_key;
-
-            foreach($_acept_lgpd as $key => $value){
-                if($key == $hashText){
-                    $accepted = $value;
-                    continue;
+            if( is_array($_acept_lgpd) ):
+                foreach($_acept_lgpd as $key => $value){
+                    if($key == $hashText){
+                        $accepted = $value;
+                        continue;
+                    }
                 }
-            }
+            endif;
         }
 
         $this->render('acept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
