@@ -7,21 +7,23 @@ use PHPUnit\Util\Getopt;
 
 class Module extends \MapasCulturais\Module{
    
-    function __construct($config = []) {
+    function __construct($config = []) 
+    {
           
         $config += [];
 
         parent::__construct($config);
     }
 
-    public function _init(){
+    public function _init() 
+    {
         /** @var App $app */
         $app = App::i();
         // eval(\psy\sh());
         $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
-            if($app->user->is('guest')){
+            if($app->user->is('guest'))
                 return;
-            }
+            
             $user = $app->user;
             $config = $app->config['module.LGPD'];
            
@@ -33,15 +35,10 @@ class Module extends \MapasCulturais\Module{
                     $app->redirect($url);
                 }
             }
-           
-            
-            
         });
-
-
-
     }
-    public function register()
+
+    public function register() 
     {
         $app= App::i();
         $app->registerController('lgpd', Controller::class);
@@ -52,10 +49,8 @@ class Module extends \MapasCulturais\Module{
                 'type'=>'json',
                 'private'=> true,
                 'default'=> '{}',
-                
-                
             ]);
         }
-
     }
+
 }

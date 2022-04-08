@@ -14,6 +14,7 @@ class Controller  extends \MapasCulturais\Controller{
         parent::construct();
         $this->layout = 'lgpd';
     }
+
     public function GET_accept()
     {
         $app = App::i();
@@ -27,28 +28,24 @@ class Controller  extends \MapasCulturais\Controller{
 
         $hashText = md5($text);
         $accepted = false;
-        if(!$app->user->is('guest')):
+        if(!$app->user->is('guest')) {
             $metadata_key = 'lgpd_'.$term_slug;
             $_accept_lgpd = $app->user->$metadata_key;
-            if( is_array($_accept_lgpd) ):
-                
-                foreach($_accept_lgpd as $key => $value):
-                    if($key == $hashText):
+            if( is_array($_accept_lgpd) ) {                
+                foreach($_accept_lgpd as $key => $value) {
+                    if($key == $hashText) {
                         $accepted = $value;
                         continue;
-                    endif;
-                endforeach;
-
-            endif;
-        endif;
+                    }
+                }
+            }
+        }
 
         $this->render('accept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
-        
     }    
     
-
-  public function POST_accept()
-  {
+    public function POST_accept()
+    {
         $app = App::i();
         $term_slug = $this->data[0] ?? null;
         
@@ -66,7 +63,7 @@ class Controller  extends \MapasCulturais\Controller{
         ];
         $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
       
-  }
+    }
     
     public function POST_acceptprivacypolice ()
     {
@@ -108,7 +105,8 @@ class Controller  extends \MapasCulturais\Controller{
     /** 
      * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
      */
-    private function verifiedTerms($meta, $accept_terms ) {
+    private function verifiedTerms($meta, $accept_terms ) 
+    {
         $app= App::i();
         $user = $app->user;
         $_accept_lgpd = $user->$meta ?: (object)[];
@@ -125,4 +123,5 @@ class Controller  extends \MapasCulturais\Controller{
         $url= $app->createUrl('panel');
         $app->redirect($url);
     }
+    
 }
