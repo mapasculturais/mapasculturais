@@ -31,8 +31,8 @@ foreach ($definitions as $def) {
         </li>
     </ul>
 
-    <ul ng-if="field.multiple" class="widget-list js-downloads js-slimScroll">
-        <li ng-repeat="file in field.file" id="{{file.id}}" class="widget-list-item is-editable">
+    <ul ng-if="field.multiple" ng-repeat="file in field.file track by $index" class="widget-list js-downloads js-slimScroll">
+        <li id="{{file.id}}" class="widget-list-item is-editable">
             <a href="{{file.url}}" target="_blank" rel='noopener noreferrer'><span>{{file.description}} - {{file.name}}</span></a>
             <div class="botoes">
                 <a hltip ng-click="removeFile(file)" class="delete hltip" title="<?php \MapasCulturais\i::esc_attr_e("Excluir arquivo");?>"></a>
