@@ -14,49 +14,49 @@ class Controller  extends \MapasCulturais\Controller{
         parent::construct();
         $this->layout = 'lgpd';
     }
-    public function GET_acept()
+    public function GET_accept()
     {
-        // eval(\psy\sh());
         $app = App::i();
         $term_slug = $this->data[0] ?? null;
-        /** @todo Verificar term_slug*/ 
+        /** @todo Verificar term_slug */ 
         $config = $app->config['module.LGPD'][$term_slug] ;
         
-        $url = $this->createUrl('acept', [$term_slug]);
+        $url = $this->createUrl('accept', [$term_slug]);
         $title = $config['title'];
         $text = $config['text'];
 
         $hashText = md5($text);
-    // verificacao
-    /** o timestamp precisa usar o i */
         $accepted = false;
-        if(!$app->user->is('guest')){
+        if(!$app->user->is('guest')):
             $metadata_key = 'lgpd_'.$term_slug;
-            $_acept_lgpd = $app->user->$metadata_key;
-            if( is_array($_acept_lgpd) ):
-                foreach($_acept_lgpd as $key => $value){
-                    if($key == $hashText){
+            $_accept_lgpd = $app->user->$metadata_key;
+            if( is_array($_accept_lgpd) ):
+                
+                foreach($_accept_lgpd as $key => $value):
+                    if($key == $hashText):
                         $accepted = $value;
                         continue;
-                    }
-                }
-            endif;
-        }
+                    endif;
+                endforeach;
 
-        $this->render('acept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
+            endif;
+        endif;
+
+        $this->render('accept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
         
     }    
     
 
-  public function POST_acept()
+  public function POST_accept()
   {
         $app = App::i();
         $term_slug = $this->data[0] ?? null;
-    /** @todo Verificar term_slug*/ 
+        
+        /** @todo Verificar term_slug*/ 
         $config = $app->config['module.LGPD'][$term_slug] ;
         $text = $config['text'];
 
-        $acept_terms = [
+        $accept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
@@ -64,18 +64,18 @@ class Controller  extends \MapasCulturais\Controller{
             'userAgent' => $app->request()->getUserAgent(),
             
         ];
-        $this->verifiedTerms("lgpd_{$term_slug}", $acept_terms);
+        $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
       
   }
     
-    public function POST_aceptprivacypolice ()
+    public function POST_acceptprivacypolice ()
     {
         $app= App::i();
         
         $config = $app->config['module.LGPD'];
  
         $text = $config['privacyPolice']['text'];
-        $acept_terms = [
+        $accept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
@@ -83,16 +83,16 @@ class Controller  extends \MapasCulturais\Controller{
             'userAgent' => $app->request()->getUserAgent(),
         ];
 
-        $this->verifiedTerms('lgpd_privacyPolice', $acept_terms);
+        $this->verifiedTerms('lgpd_privacyPolice', $accept_terms);
     }
      
-    public function POST_acepttermsofusage ()
+    public function POST_accepttermsofusage ()
     {
         $app= App::i();
         $config = $app->config['module.LGPD'];
         
         $text = $config['termsOfUsage']['text'];
-        $acept_terms = [
+        $accept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
             'md5' => md5($text),
             'text' => $text,
@@ -100,25 +100,24 @@ class Controller  extends \MapasCulturais\Controller{
             'userAgent' => $app->request()->getUserAgent(),
         ];
         
-        $this->verifiedTerms('lgpd_termsOfUsage', $acept_terms);
+        $this->verifiedTerms('lgpd_termsOfUsage', $accept_terms);
             
         
     }
+    
     /** 
      * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
      */
-    private function verifiedTerms($meta, $acept_terms ) {
+    private function verifiedTerms($meta, $accept_terms ) {
         $app= App::i();
-        // var_dump($acept_terms);
-        // die;
         $user = $app->user;
-        $_acept_lgpd = $user->$meta ?: (object)[];
+        $_accept_lgpd = $user->$meta ?: (object)[];
 
-        $index = $acept_terms['md5'];
+        $index = $accept_terms['md5'];
         
-        if(!isset($_acept_lgpd->$index)){
-            $_acept_lgpd->$index = $acept_terms;
-            $user->$meta = $_acept_lgpd;
+        if(!isset($_accept_lgpd->$index)){
+            $_accept_lgpd->$index = $accept_terms;
+            $user->$meta = $_accept_lgpd;
             $user->save();
         }
         
@@ -127,14 +126,3 @@ class Controller  extends \MapasCulturais\Controller{
         $app->redirect($url);
     }
 }
-
-/** @todo 
- *  
- * 
- * * Caso contrário mostrar quando aceitou timestamp
- * Issue2: So exibir o botao aceitar se o usuario nao tiver aceito ainda 
- 
- * Para usuarios não logados não mostrar o botão $app->user->is('guest');
- * Estilo do menu: Classe na tag a, ver como esta na pagina "como usar"
- *Trocar 'accept' onde esta 'acept';
-*/
