@@ -3,9 +3,13 @@ $this->part('header', $render_data);
 $config = $app->config['module.LGPD'];
 ?> 
 <nav id="nav-da-pagina" class="sidebar-panel">
-    <?php foreach($config as $key => $value): ?>
-    <a href="<?= $app->createUrl('lgpd', 'acept', [$key]) ?>"><?= $value['title'] ?></a>
-    <?php endforeach; ?>
+    <ul>
+        <?php foreach($config as $key => $value): ?>
+            <li>
+                <a href="<?= $app->createUrl('lgpd', 'acept', [$key]) ?>"><?= $value['title'] ?></a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 </nav>
 <div class="panel-main-content">
     <?php echo $TEMPLATE_CONTENT ?>
