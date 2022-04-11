@@ -2,11 +2,8 @@
 
 namespace LGPD;
 
-use LGPD\Module;
 use DateTime;
 use MapasCulturais\App;
-use MapasCulturais\i;
-
 class Controller  extends \MapasCulturais\Controller{
 
     function __construct()
@@ -63,43 +60,6 @@ class Controller  extends \MapasCulturais\Controller{
         ];
         $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
       
-    }
-    
-    public function POST_acceptprivacypolice ()
-    {
-        $app= App::i();
-        
-        $config = $app->config['module.LGPD'];
- 
-        $text = $config['privacyPolice']['text'];
-        $accept_terms = [
-            'timestamp' => (new DateTime())->getTimestamp(),
-            'md5' => md5($text),
-            'text' => $text,
-            'ip' => $app->request()->getIp(),
-            'userAgent' => $app->request()->getUserAgent(),
-        ];
-
-        $this->verifiedTerms('lgpd_privacyPolice', $accept_terms);
-    }
-     
-    public function POST_accepttermsofusage ()
-    {
-        $app= App::i();
-        $config = $app->config['module.LGPD'];
-        
-        $text = $config['termsOfUsage']['text'];
-        $accept_terms = [
-            'timestamp' => (new DateTime())->getTimestamp(),
-            'md5' => md5($text),
-            'text' => $text,
-            'ip' => $app->request()->getIp(),
-            'userAgent' => $app->request()->getUserAgent(),
-        ];
-        
-        $this->verifiedTerms('lgpd_termsOfUsage', $accept_terms);
-            
-        
     }
     
     /** 
