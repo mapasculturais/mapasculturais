@@ -12,7 +12,7 @@ class Controller  extends \MapasCulturais\Controller{
     function __construct()
     {
         parent::construct();
-        $this->layout = 'lgpd';
+        $this->layout = 'lgpd'; 
     }
 
     public function GET_accept()
@@ -31,7 +31,7 @@ class Controller  extends \MapasCulturais\Controller{
         if(!$app->user->is('guest')) {
             $metadata_key = 'lgpd_'.$term_slug;
             $_accept_lgpd = $app->user->$metadata_key;
-            if( is_array($_accept_lgpd) ) {                
+            if( is_object($_accept_lgpd) ) { 
                 foreach($_accept_lgpd as $key => $value) {
                     if($key == $hashText) {
                         $accepted = $value;
