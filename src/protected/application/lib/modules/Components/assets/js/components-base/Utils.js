@@ -40,12 +40,17 @@ Utils = {
     },
 
     createUrl(controllerId, action_name, args) {
-        var shortcuts = $MAPAS.routes.shortcuts,
-            actions = $MAPAS.routes.actions,
-            controllers = $MAPAS.routes.controllers,
-            route = '',
-            action_name = action_name || $MAPAS.routes.default_action_name,
-            api = action_name.indexOf('api/') === 0;
+        const shortcuts = $MAPAS.routes.shortcuts;
+        const actions = $MAPAS.routes.actions;
+        const controllers = $MAPAS.routes.controllers;
+        const api = action_name.indexOf('api/') === 0;
+        if(api) {
+            action_name = action_name.substr(4);
+        }
+        
+        let route = '';
+        
+        action_name = action_name || $MAPAS.routes.default_action_name;
         
         if (args) {
             args = this.sortOjectProperties(args);
@@ -57,10 +62,10 @@ Utils = {
         } else if (this.inArray(shortcuts, [controllerId, action_name])) {
             route = this.arraySearch(shortcuts, [controllerId, action_name]) + '/';
         } else {
-            if (this.inArray(controllers, route)) {
-                route = this.arraySearch(controllers, route) + '/';
+            if (this.inArray(controllers, controllerId)) {
+                route = this.arraySearch(controllers, controllerId) + '/';
             } else {
-                route = route + '/';
+                route = controllerId + '/';
             }
 
             if (action_name !== $MAPAS.routes.default_action_name) {
@@ -84,7 +89,7 @@ Utils = {
         }
 
         if(api) {
-            return new URL($MAPAS.baseURL + route.replace('api/', `api/${controllerId}/`));
+            return new URL($MAPAS.baseURL + `api/${controllerId}/${action_name}`);
         } else {
             return new URL($MAPAS.baseURL + route);
         }
