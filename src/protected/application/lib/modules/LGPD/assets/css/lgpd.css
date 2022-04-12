@@ -10,7 +10,15 @@ nav.sidebar-panel ul a {
 }
 .align-button {
     display: flex ;
-    gap: 20px;
+    gap: 30px;
+}
+.align-button button.accept{
+    background-color: #66cc66 !important;
+    border: 1px solid #66cc66;
+}
+.align-button button.refuse{
+    background-color: #cc3333 !important;
+    border: 1px solid #cc3333;
 }
 ol[type="1"] {
     counter-reset: item;
@@ -52,3 +60,5 @@ ol[type="o"]>li:before {
 ol.nivel1 ol>li {
     font-weight: normal;
 }
+
+
