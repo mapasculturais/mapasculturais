@@ -18,6 +18,7 @@ ol[type="1"] {
 
 ol[type="1"]>li {
     display: block;
+    margin: 10px 10px 0;
 }
 
 ol[type="1"]>li:before {
