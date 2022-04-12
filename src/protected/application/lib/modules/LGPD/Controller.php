@@ -58,7 +58,6 @@ class Controller  extends \MapasCulturais\Controller{
             
         ]; 
         $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
-      
     }
     /** 
      * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
@@ -81,12 +80,18 @@ class Controller  extends \MapasCulturais\Controller{
         $url= $app->createUrl('panel'); 
         $app->redirect($url);
     }
-    public function createHash($text)
+    /**
+     * @var string $text 
+     * @return string
+     *
+     */
+    public function createHash(string $text):string
     {
         $text = str_replace(" ", "", trim($text));
         $text = filter_var($text, FILTER_SANITIZE_STRIPPED);
         $text = str_replace("\n", "", trim($text));
         $text = str_replace("\t", "", trim($text));
+
         return md5($text);
     }
 }
