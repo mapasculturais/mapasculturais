@@ -1,17 +1,22 @@
 
-<?php use MapasCulturais\i; ?>
-
+<?php 
+use MapasCulturais\i;
+?>
 <div class="box">
-    <h1> <?= $title ?></h1> 
+    <h3> <?= $title ?></h3> 
     <p><?= $text ?></p>
-    
     <?php if(!$app->user->is('guest')):?>
         <?php if($accepted): ?>
-            <p><?= sprintf(i::__('Aceito em %s'), date(i::__('d/m/Y à\s H:i'), $accepted->timestamp)) ?></p> 
+            <p ><?= sprintf(i::__('Aceito em %s'), date(i::__('d/m/Y à\s H:i'), $accepted->timestamp)) ?></p> 
         <?php else: ?>
+            <div class='align-button'>
             <form action='<?= $url ?>' method="POST"> 
                 <button type='submit'><?= i::__('Aceitar') ?> </button>
             </form>
+                <form action ="<?=$app->createUrl('auth', 'logout') ?>" method="POST"> 
+                <button type = 'submit'><?=i::__('Não Aceitar')?></button>
+            </form>
+        </div>
         <?php endif; ?>
     <?php endif; ?>
 </div>
