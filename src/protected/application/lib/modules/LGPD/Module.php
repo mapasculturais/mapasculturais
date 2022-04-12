@@ -15,10 +15,8 @@ class Module extends \MapasCulturais\Module{
 
     public function _init() 
     {
-        
         /** @var App $app */
         $app = App::i();
-        
         
         $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
             if($app->user->is('guest'))
@@ -26,7 +24,6 @@ class Module extends \MapasCulturais\Module{
             
             $user = $app->user;
             $config = $app->config['module.LGPD'];
-        
             
             foreach($config as $key => $value){
                 $term_hash = md5($value['text']);

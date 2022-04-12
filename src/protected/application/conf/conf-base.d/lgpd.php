@@ -3,7 +3,7 @@
 return [
     'module.LGPD' => [
         'termsOfUsage'=> [
-           'title' => 'Termos de Uso', 
+           'title' => 'Termos e condições de Uso', 
            'text' => '<ol class="nivel1" type="1">
            <li>TERMOS E CONDIÇÔES DE USO DO MAPA CULTURAL DE PERNAMBUCO
                <ol type="1">
@@ -271,11 +271,13 @@ return [
                de dados. A SECULT/PE busca garantir os direitos previstos na LGPD e aplica as melhores práticas de segurança da
                informação.
            </li>
-       </ol>', 
+       </ol>
+        <p>Versão atualizada em 11 de abril de 2022.</p>
+        <p><strong>ÓRGÃO – SECULT/PE. Equipe GPLAN.</strong></p>', 
         ],
         'privacyPolice'=>[
-            'title' => 'Termos de Privacidade', 
-            'text'  => '<p>Quando você acessar o Mapa Cultural de Pernambuco, estará fornecendo alguns dados pessoais com o objetivo de
+            'title' => 'Política de Privacidade', 
+            'text'  => '    <p>Quando você acessar o Mapa Cultural de Pernambuco, estará fornecendo alguns dados pessoais com o objetivo de
             viabilizar a sua operação. A Secretaria de Cultura de Pernambuco preza pela segurança dos seus dados, pelo
             respeito à sua privacidade e pela transparência com você e, por isso, dedicamos este documento para explicar
             como os seus dados pessoais serão tratados pela SECULT/PE e quais são as medidas que aplicamos para mantê-los
