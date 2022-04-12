@@ -1,0 +1,53 @@
+nav.sidebar-panel ul a.active {
+    background: #fff;
+    border-left-color: #1c5690;
+}
+nav.sidebar-panel ul a {
+    display: block;
+    padding: 0.65rem;
+    border-left: #ccc 6px solid;
+    transition: all .3s;
+}
+.align-button {
+    display: flex ;
+    gap: 20px;
+}
+ol[type="1"] {
+    counter-reset: item;
+}
+
+ol[type="1"]>li {
+    display: block;
+}
+
+ol[type="1"]>li:before {
+    content: counters(item, ".") " ";
+    counter-increment: item;
+}
+
+ol.nivel1>li {
+    font-weight: bold;
+}
+ol.nivel1 ol>li {
+    font-weight: normal;
+}
+ol[type="1"] {
+    counter-reset: item;
+}
+
+ol[type="1"]>li {
+    display: block;
+}
+
+ol[type="1"]>li:before {
+    content: counters(item, ".") " ";
+    counter-increment: item;
+}
+
+ol[type="o"]>li:before {
+    list-style-type: circle;
+}
+
+ol.nivel1 ol>li {
+    font-weight: normal;
+}

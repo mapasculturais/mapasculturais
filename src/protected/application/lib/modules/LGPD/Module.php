@@ -3,8 +3,6 @@
 namespace LGPD;
 
 use MapasCulturais\App;
-use PHPUnit\Util\Getopt;
-
 class Module extends \MapasCulturais\Module{
    
     function __construct($config = []) 
@@ -17,16 +15,19 @@ class Module extends \MapasCulturais\Module{
 
     public function _init() 
     {
+        
         /** @var App $app */
         $app = App::i();
-        // eval(\psy\sh());
+        
+        
         $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
             if($app->user->is('guest'))
                 return;
             
             $user = $app->user;
             $config = $app->config['module.LGPD'];
-           
+        
+            
             foreach($config as $key => $value){
                 $term_hash = md5($value['text']);
                 $accept_terms = $user->{"lgpd_{$key}"};
