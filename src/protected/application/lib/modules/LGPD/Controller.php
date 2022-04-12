@@ -22,7 +22,6 @@ class Controller  extends \MapasCulturais\Controller{
         $url = $this->createUrl('accept', [$term_slug]);
         $title = $config['title'];
         $text = $config['text'];
-
         $hashText = md5($text);
         $accepted = false;
         if(!$app->user->is('guest')) {
@@ -37,7 +36,7 @@ class Controller  extends \MapasCulturais\Controller{
                 }
             }
         }
-
+        $app->view->enqueueStyle('app','lgpd-file','css/lgpd.css');
         $this->render('accept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
     }    
     
@@ -52,25 +51,25 @@ class Controller  extends \MapasCulturais\Controller{
 
         $accept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
-            'md5' => md5($text),
+            'md5' => $this->createHash($text),
             'text' => $text,
             'ip' => $app->request()->getIp(),
             'userAgent' => $app->request()->getUserAgent(),
             
-        ];
+        ]; 
         $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
       
     }
-    
     /** 
      * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
      */
     private function verifiedTerms($meta, $accept_terms ) 
     {
+        /** @var App $app */
         $app= App::i();
+      
         $user = $app->user;
         $_accept_lgpd = $user->$meta ?: (object)[];
-
         $index = $accept_terms['md5'];
         
         if(!isset($_accept_lgpd->$index)){
@@ -78,10 +77,16 @@ class Controller  extends \MapasCulturais\Controller{
             $user->$meta = $_accept_lgpd;
             $user->save();
         }
-        
        /** @todo Redirecionar pra url original */
-        $url= $app->createUrl('panel');
+        $url= $app->createUrl('panel'); 
         $app->redirect($url);
     }
-    
+    public function createHash($text)
+    {
+        $text = str_replace(" ", "", trim($text));
+        $text = filter_var($text, FILTER_SANITIZE_STRIPPED);
+        $text = str_replace("\n", "", trim($text));
+        $text = str_replace("\t", "", trim($text));
+        return md5($text);
+    }
 }
