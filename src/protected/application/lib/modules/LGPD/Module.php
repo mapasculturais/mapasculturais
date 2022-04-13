@@ -2,8 +2,10 @@
 
 namespace LGPD;
 
-use Doctrine\ORM\Mapping\Entity;
+use Exception;
 use MapasCulturais\App;
+use Doctrine\ORM\Mapping\Entity;
+
 class Module extends \MapasCulturais\Module{
    
     function __construct($config = []) 
@@ -43,7 +45,11 @@ class Module extends \MapasCulturais\Module{
         
     }
 
-    public static function createHash(string $text):string
+    /**
+     * @param string $text
+     * @return string
+     */
+    public static function createHash(string $text)
     {
         $text = str_replace(" ", "", trim($text));
         $text = strip_tags($text);

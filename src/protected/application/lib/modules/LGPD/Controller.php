@@ -60,10 +60,13 @@ class Controller  extends \MapasCulturais\Controller{
         ]; 
         $this->verifiedTerms("lgpd_{$term_slug}", $accept_terms);
     }
-    /** 
-     * Funcao para verificar se o termo existe e se nao houver, atualiza a chave.
+  
+    /**
+     * @param string $meta
+     * @param array $accept_terms
+     * @return void
      */
-    private function verifiedTerms($meta, $accept_terms ) 
+    private function verifiedTerms($meta, $accept_terms)
     {
         /** @var App $app */
         $app= App::i();
@@ -87,10 +90,6 @@ class Controller  extends \MapasCulturais\Controller{
         
         $app->redirect( $url);
     }
-    /**
-     * @var string $text 
-     * @return string
-     *
-     */
+
   
 }
