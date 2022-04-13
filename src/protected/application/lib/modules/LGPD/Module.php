@@ -2,9 +2,7 @@
 
 namespace LGPD;
 
-use Exception;
 use MapasCulturais\App;
-use Doctrine\ORM\Mapping\Entity;
 
 class Module extends \MapasCulturais\Module{
    
