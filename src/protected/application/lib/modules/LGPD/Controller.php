@@ -14,6 +14,7 @@ class Controller  extends \MapasCulturais\Controller{
 
     public function GET_accept()
     {
+        
         $app = App::i();
         $term_slug = $this->data[0] ?? null;
         /** @todo Verificar term_slug */ 
@@ -22,7 +23,7 @@ class Controller  extends \MapasCulturais\Controller{
         $url = $this->createUrl('accept', [$term_slug]);
         $title = $config['title'];
         $text = $config['text'];
-        $hashText = md5($text);
+        $hashText =  Module::createHash($text);
         $accepted = false;
         if(!$app->user->is('guest')) {
             $metadata_key = 'lgpd_'.$term_slug;
@@ -51,7 +52,7 @@ class Controller  extends \MapasCulturais\Controller{
 
         $accept_terms = [
             'timestamp' => (new DateTime())->getTimestamp(),
-            'md5' => $this->createHash($text),
+            'md5' => Module::createHash($text),
             'text' => $text,
             'ip' => $app->request()->getIp(),
             'userAgent' => $app->request()->getUserAgent(),
@@ -75,6 +76,7 @@ class Controller  extends \MapasCulturais\Controller{
             $_accept_lgpd->$index = $accept_terms;
             $user->$meta = $_accept_lgpd;
             $user->save();
+
         }
        /** @todo Redirecionar pra url original */
         $url= $app->createUrl('panel'); 
@@ -85,13 +87,5 @@ class Controller  extends \MapasCulturais\Controller{
      * @return string
      *
      */
-    public function createHash(string $text):string
-    {
-        $text = str_replace(" ", "", trim($text));
-        $text = filter_var($text, FILTER_SANITIZE_STRIPPED);
-        $text = str_replace("\n", "", trim($text));
-        $text = str_replace("\t", "", trim($text));
-
-        return md5($text);
-    }
+  
 }
