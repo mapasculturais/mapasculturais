@@ -8,7 +8,6 @@ class Module extends \MapasCulturais\Module{
    
     function __construct($config = []) 
     {
-          
         $config += [];
 
         parent::__construct($config);
@@ -18,19 +17,17 @@ class Module extends \MapasCulturais\Module{
     {
         /** @var App $app */
         $app = App::i();
-        
+
         $app->hook('GET(<<*>>):before,-GET(lgpd.<<*>>):before', function() use ($app){
+
             if($app->user->is('guest'))
                 return;
-           
-            if(!isset($_SESSION['_getReferer']) || empty($_SESSION['_getReferer'])){
-                $url = $app->request()->getReferer();
-                if((strpos($url,'termos-de-uso') == false) && (strpos($url,'politica-de-privacidade')==false)){
-
-                    $_SESSION['_getReferer'] = $app->request()->getReferer();
-                }
-            } 
             
+            $url = $app->request()->getReferer();
+            if((strpos($url,'termos-de-uso') == false) && (strpos($url,'politica-de-privacidade') == false)){
+                $_SESSION['_getReferer'] = $url;
+            }
+      
             $user = $app->user;
             $config = $app->config['module.LGPD'];
             
@@ -43,7 +40,9 @@ class Module extends \MapasCulturais\Module{
                 }
             }
         });
+        
     }
+
     public static function createHash(string $text):string
     {
         $text = str_replace(" ", "", trim($text));
@@ -53,6 +52,7 @@ class Module extends \MapasCulturais\Module{
         $text = strtolower($text);
         return md5($text);
     }
+    
     public function register() 
     {
         $app= App::i();
