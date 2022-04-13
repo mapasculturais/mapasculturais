@@ -24,10 +24,13 @@ class Module extends \MapasCulturais\Module{
                 return;
            
             if(!isset($_SESSION['_getReferer']) || empty($_SESSION['_getReferer'])){
-                $_SESSION['_getReferer'] = $app->request()->getReferer();
+                $url = $app->request()->getReferer();
+                if((strpos($url,'termos-de-uso') == false) && (strpos($url,'politica-de-privacidade')==false)){
+
+                    $_SESSION['_getReferer'] = $app->request()->getReferer();
+                }
             } 
-            var_dump($_SERVER['HTTP_REFERER']);
-            die;
+            
             $user = $app->user;
             $config = $app->config['module.LGPD'];
             
