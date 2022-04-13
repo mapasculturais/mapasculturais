@@ -47,7 +47,7 @@ class Module extends \MapasCulturais\Module{
      * @param string $text
      * @return string
      */
-    public static function createHash(string $text)
+    public static function createHash($text)
     {
         $text = str_replace(" ", "", trim($text));
         $text = strip_tags($text);
