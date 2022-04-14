@@ -8,7 +8,6 @@ class Controller  extends \MapasCulturais\Controller{
 
     function __construct()
     {
-        parent::construct();
         $this->layout = 'lgpd'; 
     }
 
