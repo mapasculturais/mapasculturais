@@ -820,6 +820,11 @@ module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$time
     $scope.toggle = false;
 }]);
 
+module.controller('EvaluationsFieldsConfigController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
+   $scope.data = {
+       fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations)
+   }
+}]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
     var registrationsUrl = new UrlService('registration');
