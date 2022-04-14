@@ -93,6 +93,13 @@ return array(
                 return intval($val);
             }
         ),
+        'avaliableEvaluationFields' => array(
+            'label' => 'Salva campos que o avaliador tem acesso durante o processo de avaliação',
+            'type' => 'json',
+            'validations' => array(
+                'required' => 'Selecione os campos',
+            )
+        ),
     ),
     'items' => array(
         1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
