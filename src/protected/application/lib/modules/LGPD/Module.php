@@ -6,6 +6,8 @@ use MapasCulturais\App;
 
 class Module extends \MapasCulturais\Module{
    
+    const key = "lgpd_redirect_referer";
+
     function __construct($config = []) 
     {
         $config += [];
@@ -23,9 +25,15 @@ class Module extends \MapasCulturais\Module{
             if($app->user->is('guest'))
                 return;
             
-            $url = $app->request()->getReferer();
-            if((strpos($url,'termos-de-uso') == false) && (strpos($url,'politica-de-privacidade') == false)){
-                $_SESSION['_getReferer'] = $url;
+            $skip_routes = [
+                ["lgpd", "accept"],
+                ["site", "search"]
+            ];
+
+            $route = [$this->id, $this->action];
+
+            if(!in_array($route, $skip_routes) && !$app->request()->isAjax()){
+                $_SESSION[self::key] = $_SERVER['REQUEST_URI'] ?? "";
             }
       
             $user = $app->user;

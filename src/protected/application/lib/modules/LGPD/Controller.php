@@ -83,11 +83,7 @@ class Controller  extends \MapasCulturais\Controller{
         }
 
        /** @todo Redirecionar pra url original */
-        $url = $app->createUrl('panel');
-        if(isset($_SESSION['_getReferer'])){
-            $url = $_SESSION['_getReferer'];
-        }            
-        
+        $url = $_SESSION[Module::key] ?? "/";
         $app->redirect( $url);
     }
 
