@@ -5,6 +5,8 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Novas funcionalidades
+- Novo módulo LGPD com redirecionamento para aceitação dos termos de uso e politica de privacidade, se o usuário ainda não tiver aceito ou sempre que houver modificação nos textos dos termos
 ### Melhorias
 - Novo formato de changelog
 - Refatoração no trait MagicCaller para disparar exceção quando não existe o método, além de hook para criação de novos métodos (hook `Class::newMethod`)
@@ -12,7 +14,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - altera identidade do usuário que executa os scripts de jobs e recriação de pcache pendente
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
-- Evita possibilidade de conflito nos nomes de arquivos publicados pelo AsseManager em modo de desenvolvimento, adicionando um hash do caminho completo do arquivo
 
 # [5.1.55] - 2022-03-25
 ### Correções
