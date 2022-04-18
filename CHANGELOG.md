@@ -5,6 +5,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+- Remove chamada do método requireAuthentication desnecessário no template part info-admin
+## [5.2.2] - 2022-04-14
 ### Correções
 - Remove chamada do parent::__construct()  do controlador
 
