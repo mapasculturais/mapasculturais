@@ -96,9 +96,7 @@ return array(
         'avaliableEvaluationFields' => array(
             'label' => 'Salva campos que o avaliador tem acesso durante o processo de avaliação',
             'type' => 'json',
-            'validations' => array(
-                'required' => 'Selecione os campos',
-            )
+            'serialize' => function($value) { return empty($value) ? "{}" : json_encode($value); },
         ),
     ),
     'items' => array(
