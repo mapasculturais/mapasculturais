@@ -820,10 +820,71 @@ module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$time
     $scope.toggle = false;
 }]);
 
-module.controller('EvaluationsFieldsConfigController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
-   $scope.data = {
-       fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations)
-   }
+module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', function ($http, $rootScope) {
+    return {
+        serviceProperty: null,
+        getUrl: function(){
+            return MapasCulturais.entity.object.singleUrl
+        },
+        save: function (param) {
+            var data = {
+                avaliableEvaluationFields: JSON.stringify(param) == "{}" ? null : param,
+                id: MapasCulturais.entity.id,
+            };
+            return $http.patch(this.getUrl(), data).
+                    success(function (data, status) {
+                        $rootScope.$emit('success', {message: "Success", data: data, status: status});
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', {message: "Cannot do something", data: data, status: status});
+                    });
+        }
+    };
+}]);
+
+module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
+    $scope.data = {
+        fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations),
+        avaliableEvaluationFields: {},
+        selected: {},
+    }
+
+    $scope.selectFields = function(field){
+
+        $scope.data.avaliableEvaluationFields = {};
+
+        if(typeof field == "string") {           
+            $scope.data.selected[field] = $scope.data[field] ? true : false;
+        }else{
+            field.checked = !field.checked;
+            Object.values($scope.data.fields).forEach(function(field){
+                if(field.checked){
+                    $scope.data.avaliableEvaluationFields[field.ref] = true;
+                }
+            });
+        }
+            
+        Object.keys($scope.data.selected).forEach(function(field){
+            
+            if($scope.data.selected[field]){
+                $scope.data.avaliableEvaluationFields[field] = true;
+            }
+        });
+
+        EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
+            MapasCulturais.Messages.success("Salvo com sucesso");            
+        });
+
+    }
+
+    $scope.data.fields.map(function(item){
+        if(item.fieldType == "file"){
+            item.ref = item.groupName;
+        }else{
+            item.ref = item.fieldName;
+        }
+    });
+
 }]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
