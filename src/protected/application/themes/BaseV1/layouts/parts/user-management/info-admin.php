@@ -5,7 +5,6 @@
   use MapasCulturais\Entities\Event;
 use MapasCulturais\i;
 
-$this->requireAuthentication();
   $app = App::i(); 
   $roles = [];
   foreach ($app->getRoles() as $def) {
