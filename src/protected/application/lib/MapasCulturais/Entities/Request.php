@@ -300,8 +300,6 @@ abstract class Request extends \MapasCulturais\Entity{
     public function _applyPostPersistHooks(){
         $app = App::i();
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').create');
-
-        $this->_createNotifications();
     }
 
     //============================================================= //
