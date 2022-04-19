@@ -5,6 +5,7 @@ if($entity->isNew()){
 
 $class = $entity->getClassName();
 ?>
+
 <?php $this->applyTemplateHook('entity-status','before'); ?>
 <?php if($entity->status === $class::STATUS_DRAFT): ?>
     <div class="alert warning"><?php printf(\MapasCulturais\i::__("Este %s é um rascunho"), strtolower($entity->entityTypeLabel));?></div>
