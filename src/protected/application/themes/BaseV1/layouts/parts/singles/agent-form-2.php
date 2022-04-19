@@ -35,7 +35,7 @@
             <p class="privado">
                 <span class="icon icon-private-info"></span>
                 <span class="label"><?php  \MapasCulturais\i::_e("CNPJ");?>:</span>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CPF ou CNPJ com pontos, hífens e barras");?>">
+                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CNPJ com pontos, hífens e barras");?>">
                     <?php echo $entity->documento; ?>
                 </span>
             </p>
@@ -47,8 +47,6 @@
                     <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                 </span>
             </p>
-            
-            
             
             <!-- E-mail privado-->
             <p class="privado"><span class="icon icon-private-info"></span>
