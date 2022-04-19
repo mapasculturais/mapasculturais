@@ -846,27 +846,20 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     $scope.data = {
         fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations),
         avaliableEvaluationFields: {},
-        selected: {},
+        checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields,
     }
 
     $scope.selectFields = function(field){
+        $scope.data.avaliableEvaluationFields = {}
 
-        $scope.data.avaliableEvaluationFields = {};
-
-        if(typeof field == "string") {           
-            $scope.data.selected[field] = $scope.data[field] ? true : false;
+        if(!$scope.isChecked(field)){
+            $scope.data.checkedStatus[field] = true;
         }else{
-            field.checked = !field.checked;
-            Object.values($scope.data.fields).forEach(function(field){
-                if(field.checked){
-                    $scope.data.avaliableEvaluationFields[field.ref] = true;
-                }
-            });
+            $scope.data.checkedStatus[field] = false;
         }
             
-        Object.keys($scope.data.selected).forEach(function(field){
-            
-            if($scope.data.selected[field]){
+        Object.keys($scope.data.checkedStatus).forEach(function(field){
+            if($scope.data.checkedStatus[field] || $scope.data.checkedStatus[field] == "true"){
                 $scope.data.avaliableEvaluationFields[field] = true;
             }
         });
@@ -874,7 +867,14 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
             MapasCulturais.Messages.success("Salvo com sucesso");            
         });
+    }
 
+    $scope.isChecked = function(field){
+       if($scope.data.checkedStatus[field]){
+           return true;
+       }
+
+       return false;
     }
 
     $scope.data.fields.map(function(item){
