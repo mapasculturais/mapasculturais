@@ -31,10 +31,10 @@
                     <?php echo $entity->nomeCompleto; ?>
                 </span>
             </p>
-            <!-- Campo CPF/CNPJ -->
+            <!-- Campo CNPJ -->
             <p class="privado">
                 <span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("CPF/CNPJ");?>:</span>
+                <span class="label"><?php  \MapasCulturais\i::_e("CNPJ");?>:</span>
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"documento") && $editEntity? 'required': '');?>" data-edit="documento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("CPF/CNPJ");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu CPF ou CNPJ com pontos, hífens e barras");?>">
                     <?php echo $entity->documento; ?>
                 </span>
@@ -47,28 +47,9 @@
                     <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                 </span>
             </p>
-            <!-- Gênero -->
-            <p class="privado">
-                <span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Gênero");?>:</span>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"genero") && $editEntity? 'required': '');?>" data-edit="genero" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Gênero");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione o gênero se for pessoa física");?>">
-                    <?php echo $entity->genero; ?>
-                </span>
-            </p>
-            <!-- Orientação Sexual -->
-            <p class="privado"><span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Orientação Sexual");?>:</span>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"orientacaoSexual") && $editEntity? 'required': '');?>" data-edit="orientacaoSexual" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Orientação Sexual");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione uma orientação sexual se for pessoa física");?>">
-                    <?php echo $entity->orientacaoSexual; ?>
-                </span>
-            </p>
-            <!-- Raça/Cor -->
-            <p class="privado"><span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span>
-                <span class="js-editable  <?php echo ($entity->isPropertyRequired($entity,"raca") && $editEntity? 'required': '');?>" data-edit="raca" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Raça/cor");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione a raça/cor se for pessoa física");?>">
-                    <?php echo $entity->raca; ?>
-                </span>
-            </p>
+            
+            
+            
             <!-- E-mail privado-->
             <p class="privado"><span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span>
