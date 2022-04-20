@@ -224,6 +224,39 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Opportunity).get(previousPhase)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent AND o.registrationFrom < :rfrom ORDER BY o.registrationFrom DESC");
+
+            $query->setParameters([
+                "parent" => $this->firstPhase,
+                "rfrom" => $this->registrationFrom,
+            ]);
+
+            $value = $query->getOneOrNullResult();
+        });
+
+        $app->hook('entity(Opportunity).get(previousPhases)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE (o.parent = :parent AND o.registrationFrom < :rfrom) OR o.id = :parent ORDER BY o.registrationFrom ASC");
+
+            $query->setParameters([
+                "parent" => $this->firstPhase,
+                "rfrom" => $this->registrationFrom,
+            ]);
+
+            $value = $query->getResult();
+        });
+
+        $app->hook('entity(Opportunity).get(nextPhase)', function(&$value) use ($app) {
+            $query = $app->em->createQuery("SELECT o FROM MapasCulturais\\Entities\\Opportunity o WHERE o.parent = :parent AND o.registrationFrom > :rfrom ORDER BY o.registrationFrom ASC");
+
+            $query->setParameters([
+                "parent" => $this->firstPhase,
+                "rfrom" => $this->registrationFrom,
+            ]);
+
+            $value = $query->getOneOrNullResult();
+        });
+
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             $first_phase = $this->firstPhase;
             $value = Module::getLastCreatedPhase($first_phase);
