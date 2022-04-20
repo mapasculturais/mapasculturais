@@ -211,7 +211,6 @@ class Agent extends EntityController {
         if (!$entity) {
             $app->pass();
         }
-
         if ($entity->canUser('view')) {
             $this->render("single-{$entity->type}", ['entity' => $entity]);
         } else {

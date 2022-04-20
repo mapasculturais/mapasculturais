@@ -71,7 +71,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             
-            <?php $this->part('singles/agent-form', ['entity' => $entity, 'editEntity' => $editEntity]); ?><!--.part/singles/agent-form.php -->
+            <?php $this->part("singles/agent-form-{$entity->type}", ['entity' => $entity, 'editEntity' => $editEntity]); ?><!--.part/singles/agent-form.php -->
             
             <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
 
