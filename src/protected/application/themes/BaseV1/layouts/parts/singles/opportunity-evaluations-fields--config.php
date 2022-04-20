@@ -15,7 +15,7 @@
             </label>
 
             <label>
-                <input type="checkbox" ng-model="data.spaceSummary" ng-click="selectFields('spaceSummary')" ng-checked="isChecked('spaceSummary')"> <?php \MapasCulturais\i::_e("Resumo dos agentes");?>
+                <input type="checkbox" ng-model="data.spaceSummary" ng-click="selectFields('spaceSummary')" ng-checked="isChecked('spaceSummary')"> <?php \MapasCulturais\i::_e("Resumo dos espaços");?>
             </label>
 
             <label ng-repeat="field in data.fields">
