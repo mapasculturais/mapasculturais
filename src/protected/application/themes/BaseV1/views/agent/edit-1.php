@@ -80,7 +80,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
            
            <div>
-           <h3><?php \MapasCulturais\i::_e("Outras informações públicas");?></h3>
+           <h4><strong><?php \MapasCulturais\i::_e("Outras informações públicas");?></strong></h4>
            <p><?php \MapasCulturais\i::_e("Assim como o cartão de visitas, os dados abaixo também serão exibidos para quem visitar o seu perfil.");?></p>
            <hr>
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
