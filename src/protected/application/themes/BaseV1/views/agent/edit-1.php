@@ -78,7 +78,11 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/agent-form-1', ['entity' => $entity, 'editEntity' => $editEntity]); ?><!--.part/singles/agent-form.php -->
             
             <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
-
+           
+           <div>
+           <h3><?php \MapasCulturais\i::_e("Outras informações públicas");?></h3>
+           <p><?php \MapasCulturais\i::_e("Assim como o cartão de visitas, os dados abaixo também serão exibidos para quem visitar o seu perfil.");?></p>
+           <hr>
             <?php if ( $this->isEditable() || $entity->longDescription ): ?>
                 <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
                 <span class="descricao js-editable <?php echo ($entity->isPropertyRequired($entity,"longDescription") && $this->isEditable()? 'required': '');?>" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição do Agente");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição do agente");?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
@@ -87,7 +91,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?><!--.part/video-gallery.php -->
 
                 <?php $this->part('gallery.php', array('entity'=>$entity)); ?><!--.part/gallery.php -->
-
+            </div>
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
