@@ -30,30 +30,34 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         
     <header class="main-content-header">
         <div class="ficha-spcultura">
-        <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
-        
-        <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
-        
-        <div class="header-content">
-        
-        <?php $this->applyTemplateHook('header-content','begin'); ?>
+            <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
+            
+            <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
+            <!-- <h3>"Cartão de visitas" internacionalizar?></h3> -->
+            <!-- <div> inicio card branco-->
+            
+            <div class="header-content"> 
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
+            
+                <?php $this->applyTemplateHook('header-content','begin'); ?>
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
+                <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+                <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
 
-            <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+
+                <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
 
 
-            <?php $this->applyTemplateHook('header-content','end'); ?>
-        </div>
-        <!--.header-content-->
-        <?php $this->applyTemplateHook('header-content','after'); ?>
+                <?php $this->applyTemplateHook('header-content','end'); ?>
+            </div>
+            <!-- </div> fim card branco-->
+            <!--.header-content-->
+            <?php $this->applyTemplateHook('header-content','after'); ?>
         
     
-    </div>
+        </div>
     </header>
     
     <!--.main-content-header-->
