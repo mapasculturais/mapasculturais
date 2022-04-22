@@ -31,8 +31,9 @@
 <?php $this->applyTemplateHook('header-fieldset', 'after');?>
 
 <?php if($entity->projectName): ?>
-    <div class="registration-fieldset">
+    
+    <div class="registration-fieldset" ng-if="data.avaliableEvaluationFields['projectName']">
         <div class="label"><?php \MapasCulturais\i::_e("Nome do Projeto"); ?> </div>
-        <h5> <?php echo $entity->projectName; ?> </h5>
+        <h5> {{data.entity.object.projectName}} </h5>
     </div>
 <?php endif; ?>
