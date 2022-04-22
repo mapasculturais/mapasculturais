@@ -27,7 +27,7 @@ $can_see = function($field) use ($entity, $avaliable_evaluationFields){
         return true;
     }
 
-    if($entity->canUser("viewUserEvaluation")  && !isset($avaliable_evaluationFields->$field)){
+    if($entity->canUser("viewUserEvaluation")  && !isset($avaliable_evaluationFields[$field])){
         return false;
     }
 
