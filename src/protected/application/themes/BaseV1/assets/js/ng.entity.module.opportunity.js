@@ -902,7 +902,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
         entity: MapasCulturais.entity,
         isEditable: MapasCulturais.isEditable,
-        errors: {}
+        errors: {},
+        avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
     $timeout(function(){
