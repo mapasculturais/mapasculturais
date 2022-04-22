@@ -369,6 +369,26 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('GET(opportunity.edit):before', function() use ($app){
+            $entity = $this->requestedEntity;
+         
+            if($entity->canUser('@control')){
+                $previous_phases = $entity->previousPhases;
+
+                if($entity->firstPhase->id != $entity->id){
+                    $previous_phases[] = $entity;
+                }
+    
+                foreach($previous_phases as $phase)
+                {
+                    foreach($phase->registrationFieldConfigurations as $field){
+                        $app->view->jsObject['evaluationFieldsList'][] = $field;
+                    }
+                }
+
+            }
+        });
+
         // unifica as fichas de inscricão
         $app->hook('template(registration.view.form):begin', function() use($app){
             $entity = $this->controller->requestedEntity;
