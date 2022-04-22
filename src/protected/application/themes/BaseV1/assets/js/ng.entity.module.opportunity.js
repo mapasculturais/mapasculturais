@@ -844,9 +844,9 @@ module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', functio
 
 module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
     $scope.data = {
-        fields: MapasCulturais.entity.registrationFieldConfigurations.concat(MapasCulturais.entity.registrationFileConfigurations),
+        fields: MapasCulturais.evaluationFieldsList,
         avaliableEvaluationFields: {},
-        checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields,
+        checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields ?? {},
     }
 
     $scope.selectFields = function(field){
