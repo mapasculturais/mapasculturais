@@ -384,6 +384,10 @@ class Module extends \MapasCulturais\Module{
                     foreach($phase->registrationFieldConfigurations as $field){
                         $app->view->jsObject['evaluationFieldsList'][] = $field;
                     }
+
+                    foreach($phase->registrationFileConfigurations as $file){
+                        $app->view->jsObject['evaluationFieldsList'][] = $file;
+                    }
                 }
 
             }
