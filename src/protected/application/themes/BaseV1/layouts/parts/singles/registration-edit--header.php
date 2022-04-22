@@ -11,7 +11,7 @@ $opportunity = $entity->opportunity;
 
 if ($opportunity->projectName):
     ?>
-    <div class="registration-fieldset" ng-controller="RegistrationFieldsController">
+    <div class="registration-fieldset">
         <div id="projectName">
             <span class="label"> 
                 <?php \MapasCulturais\i::_e("Nome do Projeto"); ?>
