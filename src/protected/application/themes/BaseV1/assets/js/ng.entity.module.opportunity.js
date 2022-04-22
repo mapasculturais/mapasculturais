@@ -1432,6 +1432,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     }
 
+    $scope.getFieldNameString = function(field) 
+    {
+        if(field.fieldType == "file"){
+            return field.groupName;
+        }else{
+            return field.fieldName;
+        }
+    }
+
 }]);
 
     module.controller('EvaluationMethodConfigurationController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', 'OpportunityApiService', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox, OpportunityApiService) {
