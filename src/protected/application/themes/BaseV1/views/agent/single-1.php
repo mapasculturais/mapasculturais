@@ -48,6 +48,15 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
+        <div>
+            <?php if(!$this->isEditable()):?>
+               <small>
+                   <span class="label"><?php \MapasCulturais\i::_e("Descrição Curta:");?></span>
+                    <?= $entity->shortDescription ?>
+               </small>    
+            <?php endif?>
+        <?php $this->part('redes-sociais', array('entity'=>$entity));?>
+        </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
         
