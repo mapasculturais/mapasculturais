@@ -40,7 +40,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
             
                 <?php $this->applyTemplateHook('header-content','begin'); ?>
-                echo 'aaaa';
+             
 
                 <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
 
