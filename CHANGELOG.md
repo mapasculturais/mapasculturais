@@ -6,6 +6,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [5.2.4] - 2022-04-25
+
 - Adição de hooks na tela de gestão de usuários
 ## [5.2.3] - 2022-04-18
 
