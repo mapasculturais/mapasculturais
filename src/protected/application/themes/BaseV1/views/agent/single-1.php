@@ -102,10 +102,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
     
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
-    
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-
+    
+    <?php $this->part('social-share', array('entity'=>$entity)); ?>
     <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
 <div class="sidebar agent sidebar-right">
