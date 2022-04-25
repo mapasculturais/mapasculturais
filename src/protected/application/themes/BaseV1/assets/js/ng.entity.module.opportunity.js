@@ -850,6 +850,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     }
 
     $scope.selectFields = function(field){
+        console.log(field)
         $scope.data.avaliableEvaluationFields = {}
 
         if(!$scope.isChecked(field)){
@@ -878,7 +879,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     }
 
     $scope.data.fields.map(function(item){
-        if(item.fieldType == "file"){
+        if(item.hasOwnProperty("groupName")){
             item.ref = item.groupName;
         }else{
             item.ref = item.fieldName;
