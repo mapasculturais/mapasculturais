@@ -43,9 +43,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
 
             <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
-
             <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-
+            
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
         <div>
