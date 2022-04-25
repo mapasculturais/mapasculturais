@@ -33,13 +33,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
             
             <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
-            <!-- <h3>"Cartão de visitas" internacionalizar?></h3> -->
+            <h3><?php \MapasCulturais\i::__("Cartão de visitas");?></h3>
             <!-- <div> inicio card branco-->
             
             <div class="header-content"> 
 
             
                 <?php $this->applyTemplateHook('header-content','begin'); ?>
+                echo 'aaaa';
 
                 <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
 
@@ -51,13 +52,23 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 
                 <?php $this->applyTemplateHook('header-content','end'); ?>
+
+                <!-- <div>
+                <!-- Related Seals BEGIN -->
+                <!-- ?php $this->part('related-seals.php', array('entity'=>$entity)); ?> -->
+                <!-- Related Seals END -->
+
+                <!-- <?php $this->part('widget-tags', array('entity'=>$entity)); ?> -->
+                <!-- <?php $this->part('redes-sociais', array('entity'=>$entity)); ?> -->
+                <!-- </div> -->
+
             </div>
             <!-- </div> fim card branco-->
             <!--.header-content-->
             <?php $this->applyTemplateHook('header-content','after'); ?>
         
     
-        </div>
+        </div> -->
     </header>
     
     <!--.main-content-header-->
@@ -110,14 +121,14 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
-<div class="sidebar-left sidebar agent">
+ <!-- <div class="sidebar-left sidebar agent">
     <!-- Related Seals BEGIN -->
-    <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
+    <!-- ?php $this->part('related-seals.php', array('entity'=>$entity)); ?> -->
     <!-- Related Seals END -->
 
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
-</div>
+    <!-- ?php $this->part('widget-tags', array('entity'=>$entity)); ?> -->
+    <!-- ?php $this->part('redes-sociais', array('entity'=>$entity)); ?> -->
+<!-- </div> --> 
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
