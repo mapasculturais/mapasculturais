@@ -62,20 +62,25 @@
   </div>
     
   <div>
+    <?php $this->applyTemplateHook("tabs", 'before') ?>
     <ul class="abas clearfix clear">
-      <li class="active"><a href="#agentes" rel='noopener noreferrer'><?php i::_e("Agentes");?></a></li>
-      <li><a href="#espacos" rel='noopener noreferrer'><?php i::_e("Espaços");?></a></li>
-      <li><a href="#eventos" rel='noopener noreferrer'><?php i::_e("Eventos");?></a></li>
-      <li><a href="#projetos" rel='noopener noreferrer'><?php i::_e("Projetos");?></a></li>
-      <li><a href="#oportunidades" rel='noopener noreferrer'><?php i::_e("Oportunidades");?></a></li>
-      <li><a href="#inscricoes" rel='noopener noreferrer'><?php i::_e("Inscrições");?></a></li>
-      <li><a href="#permissoes" rel='noopener noreferrer'><?php i::_e("Permissões");?></a></li>
-      <li><a href="#atividade" rel='noopener noreferrer'><?php i::_e("Atividades");?></a></li>
+      <?php $this->applyTemplateHook("tabs", 'begin') ?>
+      <?php $this->part('tab', ['id' => 'agentes', 'label' => i::__("Agentes"), 'active' => true]) ?>
+      <?php $this->part('tab', ['id' => 'espacos', 'label' => i::__("Espaços")]) ?>
+      <?php $this->part('tab', ['id' => 'eventos', 'label' => i::__("Eventos")]) ?>
+      <?php $this->part('tab', ['id' => 'projetos', 'label' => i::__("Projetos")]) ?>
+      <?php $this->part('tab', ['id' => 'oportunidades', 'label' => i::__("Oportunidades")]) ?>
+      <?php $this->part('tab', ['id' => 'inscricoes', 'label' => i::__("Inscrições")]) ?>
+      <?php $this->part('tab', ['id' => 'permissoes', 'label' => i::__("Permissões")]) ?>
+      <?php $this->part('tab', ['id' => 'atividade', 'label' => i::__("Atividades")]) ?>
+      <?php $this->applyTemplateHook("tabs", 'end') ?>
     </ul>
+    <?php $this->applyTemplateHook("tabs", 'after') ?>
   </div>
-    
+  
+  <?php $this->applyTemplateHook("tabs-content", 'before') ?>
   <div class="tabs-content">
-    
+    <?php $this->applyTemplateHook("tabs-content", 'begin') ?>
     <div id="agentes" class="aba-content">
       <div class="tab-table">
         <button class="tablinks active" data-entity="agentes" data-tab="agents-ativos">     <?php i::_e("Ativos");?>      (<?php echo count($user->enabledAgents);?>)   </button>
@@ -362,7 +367,7 @@
         </table>
       </div>
     </div>
-
+    <?php $this->applyTemplateHook("tabs-content", 'end') ?>
   </div>
-
+  <?php $this->applyTemplateHook("tabs-content", 'after') ?>
 </div>
