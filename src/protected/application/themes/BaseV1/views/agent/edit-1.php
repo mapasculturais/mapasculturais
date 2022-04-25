@@ -33,42 +33,96 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
             
             <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
-            <h3><?php \MapasCulturais\i::__("Cartão de visitas");?></h3>
+            <h3><?php \MapasCulturais\i::_e("Cartão de visitas");?></h3>
             <!-- <div> inicio card branco-->
             
-            <div class="header-content"> 
+            <div class="header-content">
 
-            
                 <?php $this->applyTemplateHook('header-content','begin'); ?>
-             
-
+                
                 <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
-
+                
                 <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
-
+                
                 <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
-
+                
                 <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-
-
+                
                 <?php $this->applyTemplateHook('header-content','end'); ?>
+                
+                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
+                    <div class="alert warning">
+                        <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
+                        <?php echo strlen($entity->shortDescription) ?>
+                        <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?>
+                    </div>
+                <?php endif; ?>
+                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
 
-                <!-- <div>
-                <!-- Related Seals BEGIN -->
-                <!-- ?php $this->part('related-seals.php', array('entity'=>$entity)); ?> -->
-                <!-- Related Seals END -->
+                <?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->instagram || $entity->linkedin || $entity->spotify || $entity->youtube || $entity->pinterest): ?>
+                <div class="widget">
+                    <h3><?php \MapasCulturais\i::_e("Seguir");?></h3>
+                    <?php if ($this->isEditable() || $entity->twitter): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                            <a class="icon icon-twitter js-editable" data-edit="twitter" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Twitter");?>"
+                            href="<?php echo $entity->twitter ? $entity->twitter : '#" onclick="return false; ' ?>"
+                            data-value="<?php echo $entity->twitter ?>"></a>
+                        </span>
+                    <?php endif; ?>
 
-                <!-- <?php $this->part('widget-tags', array('entity'=>$entity)); ?> -->
-                <!-- <?php $this->part('redes-sociais', array('entity'=>$entity)); ?> -->
-                <!-- </div> -->
+                    <?php if ($this->isEditable() || $entity->facebook): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                            <a class="icon icon-facebook js-editable" data-edit="facebook" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Facebook");?>"
+                            href="<?php echo $entity->facebook ? $entity->facebook : '#" onclick="return false; ' ?>"
+                            data-value="<?php echo $entity->facebook ?>"></a>
+                        </span>
+                    <?php endif; ?>
+
+                    <?php if ($this->isEditable() || $entity->instagram): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                            <a class="icon icon-instagram js-editable" data-edit="instagram" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Instagram");?>"
+                            href="<?php echo $entity->instagramUrl; ?>"
+                            data-value="<?php echo $entity->instagram; ?>"></a>
+                        </span>
+                    <?php endif; ?>
+
+                    <?php if ($this->isEditable() || $entity->linkedin): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                            <a class="icon icon-linkedin js-editable" data-edit="linkedin" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Linkedin");?>"
+                            href="<?php echo $entity->linkedin; ?>"
+                            data-value="<?php echo $entity->linkedin; ?>"></a>
+                        </span>
+                    <?php endif; ?>
+
+                    <?php if ($this->isEditable() || $entity->spotify): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                            <a class="icon icon-spotify js-editable" data-edit="spotify" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Spotify");?>"
+                            href="<?php echo $entity->spotify; ?>"
+                            data-value="<?php echo $entity->spotify; ?>"></a>
+                        </span>
+                    <?php endif; ?>
+
+                    <?php if ($this->isEditable() || $entity->youtube): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                            <a class="icon icon-youtube js-editable" data-edit="youtube" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no YouTube");?>"
+                            href="<?php echo $entity->youtube; ?>"
+                            data-value="<?php echo $entity->youtube; ?>"></a>
+                        </span>
+                    <?php endif; ?>
+
+                    <?php if ($this->isEditable() || $entity->pinterest): ?>
+                        <span <?php if($this->isEditable()):?> class="editable-social" <?php endif; ?> >
+                        <a class="icon icon-pinterest js-editable" data-edit="pinterest" data-notext="true" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Perfil no Pinterest");?>"
+                        href="<?php echo $entity->pinterest; ?>"
+                        data-value="<?php echo $entity->pinterest; ?>"></a>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
+                <?php $this->applyTemplateHook('header-content','after'); ?>
 
             </div>
-            <!-- </div> fim card branco-->
-            <!--.header-content-->
-            <?php $this->applyTemplateHook('header-content','after'); ?>
-        
-    
-        </div> -->
+        </div> <!--spcultura-->
     </header>
     
     <!--.main-content-header-->
@@ -121,14 +175,16 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
     <?php $this->applyTemplateHook('main-content','end'); ?>
 </article>
- <!-- <div class="sidebar-left sidebar agent">
-    <!-- Related Seals BEGIN -->
-    <!-- ?php $this->part('related-seals.php', array('entity'=>$entity)); ?> -->
-    <!-- Related Seals END -->
-
-    <!-- ?php $this->part('widget-tags', array('entity'=>$entity)); ?> -->
-    <!-- ?php $this->part('redes-sociais', array('entity'=>$entity)); ?> -->
-<!-- </div> --> 
+        <div class="sidebar-left sidebar agent">
+            <!-- Related Seals BEGIN -->
+            <?php $this->part('related-seals.php', array('entity'=>$entity)); ?> 
+            <!-- Related Seals END -->
+                tags
+            <?php $this->part('widget-tags', array('entity'=>$entity)); ?> 
+            Redes Sociais
+            <?php $this->part('redes-sociais', array('entity'=>$entity)); ?> 
+                
+        </div> 
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
         <div class="widget">
