@@ -62,7 +62,9 @@
   </div>
     
   <div>
+    <?php $this->applyTemplateHook("tabs", 'before') ?>
     <ul class="abas clearfix clear">
+      <?php $this->applyTemplateHook("tabs", 'begin') ?>
       <?php $this->part('tab', ['id' => 'agentes', 'label' => i::__("Agentes"), 'active' => true]) ?>
       <?php $this->part('tab', ['id' => 'espacos', 'label' => i::__("Espaços")]) ?>
       <?php $this->part('tab', ['id' => 'eventos', 'label' => i::__("Eventos")]) ?>
@@ -71,11 +73,14 @@
       <?php $this->part('tab', ['id' => 'inscricoes', 'label' => i::__("Inscrições")]) ?>
       <?php $this->part('tab', ['id' => 'permissoes', 'label' => i::__("Permissões")]) ?>
       <?php $this->part('tab', ['id' => 'atividade', 'label' => i::__("Atividades")]) ?>
+      <?php $this->applyTemplateHook("tabs", 'end') ?>
     </ul>
+    <?php $this->applyTemplateHook("tabs", 'after') ?>
   </div>
-    
+  
+  <?php $this->applyTemplateHook("tabs-content", 'before') ?>
   <div class="tabs-content">
-    
+    <?php $this->applyTemplateHook("tabs-content", 'begin') ?>
     <div id="agentes" class="aba-content">
       <div class="tab-table">
         <button class="tablinks active" data-entity="agentes" data-tab="agents-ativos">     <?php i::_e("Ativos");?>      (<?php echo count($user->enabledAgents);?>)   </button>
@@ -362,7 +367,7 @@
         </table>
       </div>
     </div>
-
+    <?php $this->applyTemplateHook("tabs-content", 'end') ?>
   </div>
-
+  <?php $this->applyTemplateHook("tabs-content", 'after') ?>
 </div>
