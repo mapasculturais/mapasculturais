@@ -179,10 +179,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <!-- Related Seals BEGIN -->
             <?php $this->part('related-seals.php', array('entity'=>$entity)); ?> 
             <!-- Related Seals END -->
-                tags
+                <!-- tags -->
             <?php $this->part('widget-tags', array('entity'=>$entity)); ?> 
-            Redes Sociais
-            <?php $this->part('redes-sociais', array('entity'=>$entity)); ?> 
+            
+           <!-- ?php $this->part('redes-sociais', array('entity'=>$entity)); ?>  --> 
                 
         </div> 
 <div class="sidebar agent sidebar-right">
