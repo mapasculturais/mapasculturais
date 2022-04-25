@@ -60,7 +60,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 
                 <?php $this->applyTemplateHook('header-content','end'); ?>
                 <?php $this->applyTemplateHook('header-content','after'); ?>
-
             </div>
         </div> <!--spcultura-->
     </header>
