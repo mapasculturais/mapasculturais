@@ -47,9 +47,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
                 
                 <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-                
-                <?php $this->applyTemplateHook('header-content','end'); ?>
-                
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning">
                         <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
@@ -58,7 +55,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     </div>
                 <?php endif; ?>
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
-
+                <?php $this->applyTemplateHook('header-content','end'); ?>
+                
                 <?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->instagram || $entity->linkedin || $entity->spotify || $entity->youtube || $entity->pinterest): ?>
                 <div class="widget">
                     <h3><?php \MapasCulturais\i::_e("Seguir");?></h3>
@@ -143,7 +141,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
-
+    
             <?php $this->part('singles/agent-form-1', ['entity' => $entity, 'editEntity' => $editEntity]); ?><!--.part/singles/agent-form.php -->
             
             <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
