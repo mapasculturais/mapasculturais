@@ -6,6 +6,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+- Adição de hooks na tela de gestão de usuários
 ## [5.2.3] - 2022-04-18
 
 - Remove chamada do método requireAuthentication desnecessário no template part info-admin
