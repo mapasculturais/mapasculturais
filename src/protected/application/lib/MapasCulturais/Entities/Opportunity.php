@@ -235,6 +235,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+
+     /**
+     * @var object
+     *
+     * @ORM\Column(name="avaliable_evaluation_fields", type="json_array", nullable=true)
+     */
+    protected $avaliableEvaluationFields = [];
     
     abstract function getSpecializedClassName();
 
