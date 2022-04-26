@@ -35,18 +35,24 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
             <h3><?php \MapasCulturais\i::_e("Cartão de visitas");?></h3>
             <!-- <div> inicio card branco-->
-            
-            <div class="header-content">
 
+            <div class="header-content edit-card">
                 <?php $this->applyTemplateHook('header-content','begin'); ?>
-                
-                <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
-                
-                <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
-                
-                <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
-                
-                <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                <div class="edit-card-header">
+                    <div class="edit-card-header-avatar">
+                        <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
+                    </div>
+                    <div class="edit-card-header-body">
+                        <div>
+                            <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
+                            <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+                        </div>
+                        <div class="edit-card-header-widgets">
+                            <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                            <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+                        </div>
+                    </div>
+                </div>  
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning">
                         <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
@@ -55,8 +61,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     </div>
                 <?php endif; ?>
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
-                
-                <?php $this->part('redes-sociais', array('entity'=>$entity));?>
+                <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p>
+                <!--  -->
                 
                 <?php $this->applyTemplateHook('header-content','end'); ?>
                 <?php $this->applyTemplateHook('header-content','after'); ?>
@@ -122,7 +128,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('widget-tags', array('entity'=>$entity)); ?> 
             
            <?php $this->part('social-share', array('entity'=>$entity)); ?>
-                
+           <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p>
         </div> 
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>

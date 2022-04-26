@@ -89,12 +89,31 @@ article.seal {
         background-color: $brand-seal;
     }
 }
-
+.edit-card {
+    padding: 0 !important;
+}
 .header-content {
     position: relative;
     margin-top: 3.75rem;
     padding-top: 3.75rem;
     text-align: center;
+
+
+    .edit-card-header {
+        display: flex;
+        .avatar{
+            position: relative;
+        }
+        &-avatar{
+            margin-right: 20px;
+        }
+        &-widgets{
+            display: flex;
+        }
+        &-body{
+            width: 100%;
+        }
+    }
     .avatar {
         position: absolute;
         left: 50%;
