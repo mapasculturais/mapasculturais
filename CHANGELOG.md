@@ -5,6 +5,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Novas funcionalidades
+- Implementa sistemas de permissão para os avaliadores
+## [5.2.4] - 2022-04-15
 
 - Adição de hooks na tela de gestão de usuários
 ## [5.2.3] - 2022-04-18
