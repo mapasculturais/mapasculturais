@@ -109,11 +109,13 @@ article.seal {
         }
         &-widgets{
             display: flex;
+            // justify-content: space-around;
         }
         &-body{
             width: 100%;
         }
     }
+
     .avatar {
         position: absolute;
         left: 50%;
