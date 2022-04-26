@@ -850,7 +850,6 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     }
 
     $scope.selectFields = function(field){
-        console.log(field)
         $scope.data.avaliableEvaluationFields = {}
 
         if(!$scope.isChecked(field)){
