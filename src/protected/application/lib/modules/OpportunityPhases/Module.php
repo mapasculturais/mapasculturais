@@ -454,8 +454,16 @@ class Module extends \MapasCulturais\Module{
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
 
                     $field_name = $field->fieldName;
+                    
+                    if($reg->canUser("viewUserEvaluation") && !$this->canUser("@control")){
+                        if(isset($opportunity->avaliableEvaluationFields[$field_name])){
+                            $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+                        }
+                    }else{
+                        $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+                    }
 
-                    $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
+
                 }
 
                 foreach($opportunity->registrationFileConfigurations as $file){
