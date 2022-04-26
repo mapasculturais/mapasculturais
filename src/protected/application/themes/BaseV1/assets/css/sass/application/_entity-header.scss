@@ -109,13 +109,22 @@ article.seal {
         }
         &-widgets{
             display: flex;
-            // justify-content: space-around;
+            
         }
         &-body{
             width: 100%;
         }
+        .edit-card-header-widgets > div {
+            float: left;
+            width: 50%;
+            
+        }
+        
     }
 
+    .edit-card-header >p{
+        margin-bottom: 0rem;
+    }
     .avatar {
         position: absolute;
         left: 50%;
