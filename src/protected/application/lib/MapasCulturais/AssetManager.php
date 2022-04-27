@@ -1,6 +1,6 @@
 <?php
 namespace MapasCulturais;
-
+// die;
 abstract class AssetManager{
     /**
      *
@@ -160,10 +160,7 @@ abstract class AssetManager{
         $ftime = filemtime($asset_filename);
         $hash = crc32($asset_filename);
 
-        if(strtolower($pathinfo['extension']) === 'js' || strtolower($pathinfo['extension']) === 'css')
-            return $pathinfo['filename'] . '-' . $hash . '-' . $ftime . '.' . $pathinfo['extension'];
-        else
-            return $pathinfo['filename'] . '-$hash.' . $pathinfo['extension'];
+        return "{$pathinfo['filename']}-{$hash}-{$ftime}.{$pathinfo['extension']}";
     }
 
     function _getPublishedScriptsGroupFilename($group, $content){
