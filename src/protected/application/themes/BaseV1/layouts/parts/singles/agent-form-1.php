@@ -5,17 +5,10 @@
 
     <div class="servico">
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
+        
+        
 
-        <?php if($this->isEditable() || $entity->site): ?>
-            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-            <?php if($this->isEditable()): ?>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-            <?php else: ?>
-                <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-            <?php endif; ?>
-        <?php endif; ?>
-
-        <?php if($this->isEditable()): ?>
+        <?php if($this->isEditable() || $entity->name ): ?>
             <!-- Campo Nome Completo -->
             <p class="privado">
                 <span class="icon icon-private-info"></span>
@@ -24,6 +17,15 @@
                     <?php echo $entity->nomeCompleto; ?>
                 </span>
             </p>
+        <?php if($this->isEditable() || $entity->site): ?>
+            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
+            <?php if($this->isEditable()): ?>
+                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
+            <?php else: ?>
+                <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if($this->isEditable()): ?>
             <!-- Campo CPF -->
             <p class="privado">
                 <span class="icon icon-private-info"></span>
@@ -32,16 +34,16 @@
                     <?php echo $entity->documento; ?>
                 </span>
             </p>
-           
-           
-            
-            <!-- E-mail privado-->
-            <p class="privado"><span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPrivado") && $editEntity? 'required': '');?>" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>">
-                    <?php echo $entity->emailPrivado; ?>
-                </span>
-            </p>
+        <? endif; ?>
+            <?php if($this->isEditable()): ?>
+                <!-- E-mail privado-->
+                <p class="privado"><span class="icon icon-private-info"></span>
+                    <span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPrivado") && $editEntity? 'required': '');?>" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>">
+                        <?php echo $entity->emailPrivado; ?>
+                    </span>
+                </p>
+            <? endif; ?>
         <?php endif; ?>
 
         <!-- Email Público -->
@@ -52,7 +54,6 @@
                 </span>
             </p>
         <?php endif; ?>
-
         <!-- Email Público -->
         <?php if($this->isEditable() || $entity->telefonePublico): ?>
             <p><span class="label"><?php \MapasCulturais\i::_e("Telefone Público");?>:</span>
@@ -61,7 +62,6 @@
                 </span>
             </p>
         <?php endif; ?>
-
         <?php if($this->isEditable()): ?>
             <!-- Telefone Privado 1 -->
             <p class="privado"><span class="icon icon-private-info"></span>
