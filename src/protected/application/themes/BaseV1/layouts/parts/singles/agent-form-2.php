@@ -12,18 +12,8 @@
 
     <div class="servico">
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
-
-        <?php if($this->isEditable() || $entity->site): ?>
-            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-            <?php if($this->isEditable()): ?>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-            <?php else: ?>
-                <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-            <?php endif; ?>
-        <?php endif; ?>
-
-        <?php if($this->isEditable()): ?>
             <!-- Campo Nome Completo -->
+            <?php if($this->isEditable()): ?>
             <p class="privado">
                 <span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Nome Completo");?>:</span>
@@ -31,7 +21,9 @@
                     <?php echo $entity->nomeCompleto; ?>
                 </span>
             </p>
+            <?php endif; ?>
             <!-- Campo CNPJ -->
+            <?php  if($this->isEditable() || $entity->cnpj): ?>
             <p class="privado">
                 <span class="icon icon-private-info"></span>
                 <span class="label"><?php  \MapasCulturais\i::_e("CNPJ");?>:</span>
@@ -39,7 +31,9 @@
                     <?php echo $entity->documento; ?>
                 </span>
             </p>
+            <?php endif; ?>
             <!-- Campo Data de Nascimento / Fundação -->
+            <?php  if($this->isEditable() || $entity->dataDeNascimento): ?>
             <p class="privado">
                 <span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento/Fundação");?>:</span>
@@ -47,26 +41,26 @@
                     <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                 </span>
             </p>
-            
+            <?php endif; ?>
             <!-- E-mail privado-->
+            <?php if($this->isEditable()): ?>
             <p class="privado"><span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Email Privado");?>:</span>
                 <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPrivado") && $editEntity? 'required': '');?>" data-edit="emailPrivado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que não será exibido publicamente");?>">
                     <?php echo $entity->emailPrivado; ?>
                 </span>
             </p>
-        <?php endif; ?>
+            <?php endif; ?>    
 
-        <!-- Email Público -->
-        <?php if($this->isEditable() || $entity->emailPublico): ?>
-            <p><span class="label"><?php \MapasCulturais\i::_e("E-mail");?>:</span>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPublico") && $this->isEditable()? 'required': '');?>" data-edit="emailPublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que será exibido publicamente");?>">
-                    <?php echo $entity->emailPublico; ?>
-                </span>
-            </p>
-        <?php endif; ?>
-
-        <!-- Email Público -->
+            <!-- Email Público -->
+            <?php if($this->isEditable() || $entity->emailPublico): ?>
+                <p><span class="label"><?php \MapasCulturais\i::_e("E-mail");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"emailPublico") && $this->isEditable()? 'required': '');?>" data-edit="emailPublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Email Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um email que será exibido publicamente");?>">
+                        <?php echo $entity->emailPublico; ?>
+                    </span>
+                </p>
+            <?php endif; ?>
+        <!-- telefone Público -->
         <?php if($this->isEditable() || $entity->telefonePublico): ?>
             <p><span class="label"><?php \MapasCulturais\i::_e("Telefone Público");?>:</span>
                 <span class="js-editable js-mask-phone <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $this->isEditable()? 'required': '');?>" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que será exibido publicamente");?>">
@@ -74,7 +68,6 @@
                 </span>
             </p>
         <?php endif; ?>
-
         <?php if($this->isEditable()): ?>
             <!-- Telefone Privado 1 -->
             <p class="privado"><span class="icon icon-private-info"></span>
@@ -91,10 +84,10 @@
                 </span>
             </p>
         <?php endif; ?>
-
         <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
+        <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
+        <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
+        
     </div><!--.servico -->
-
     <?php $this->applyTemplateHook('tab-about-service','after'); ?><!--. hook tab-about-service:after -->
-
 </div>

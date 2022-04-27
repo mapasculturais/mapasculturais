@@ -61,14 +61,13 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                         <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?>
                     </div>
                 <?php endif; ?>
-                
-               <?php if($this->isEditable() || $entity->site): ?>
-                    <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-                    <?php if($this->isEditable()): ?>
-                        <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-                    <?php else: ?>
-                        <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-                    <?php endif; ?>
+                <?php if($this->isEditable() || $entity->site): ?>
+                        <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
+                        <?php if($this->isEditable()): ?>
+                            <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
+                        <?php else: ?>
+                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                        <?php endif; ?>
                 <?php endif; ?>    
                
                 <span class="label"><?php \MapasCulturais\i::_e("Descrição curta:");?></span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
