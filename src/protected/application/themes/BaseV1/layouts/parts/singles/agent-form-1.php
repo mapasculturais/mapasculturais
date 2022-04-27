@@ -78,7 +78,7 @@
                 </span>
             </p>
         <?php endif; ?>
-       
+        <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
         <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
     </div><!--.servico -->
 

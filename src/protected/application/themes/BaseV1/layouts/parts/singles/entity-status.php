@@ -13,6 +13,6 @@ $class = $entity->getClassName();
     <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está na lixeira"), strtolower($entity->entityTypeLabel));?></div>
 <?php elseif($entity->status === $class::STATUS_ARCHIVED): ?>
     <div class="alert danger"><?php printf(\MapasCulturais\i::__("Este %s está arquivado"), strtolower($entity->entityTypeLabel));?></div>
-<?php endif; ?>
+<?php endif; ?>         
 
 <?php $this->applyTemplateHook('entity-status','after'); ?>

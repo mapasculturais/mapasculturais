@@ -33,7 +33,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
             
             <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
-            <h3><?php \MapasCulturais\i::_e("Cartão de visitas");?></h3>
+            <!-- <h3><?php \MapasCulturais\i::_e("Cartão de visitas");?></h3> -->
             <!-- <div> inicio card branco-->
 
             <div class="header-content edit-card">
@@ -99,10 +99,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
-    
+            
             <?php $this->part('singles/agent-form-1', ['entity' => $entity, 'editEntity' => $editEntity]); ?><!--.part/singles/agent-form.php -->
             
-            <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
+            
            
            <div>
            <h4><strong><?php \MapasCulturais\i::_e("Outras informações públicas");?></strong></h4>
