@@ -29,36 +29,40 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <?php /*if($can_edit) */$this->part('editable-entity', array('entity'=>$entity, 'action'=>$action)); ?><!--.part/editable-entity.php -->
 
 <article class="main-content agent">
+   
     <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
-        <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
+        <div class="ficha-spcultura">
+            <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
 
-        <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
+            <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
 
-        <div class="header-content">
-            <?php $this->applyTemplateHook('header-content','begin'); ?>
+            <div class="header-content-card">
+                <?php $this->applyTemplateHook('header-content','begin'); ?>
+                <!-- criar as divs igual a da edit-1 -->
+                <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
+                <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
-
-            <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
-            <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-            
-            <?php $this->applyTemplateHook('header-content','end'); ?>
-        </div>
-        <div>
-            <?php if(!$this->isEditable()):?>
-               <small>
-                   <span class="label"><?php \MapasCulturais\i::_e("Descrição Curta:");?></span>
-                    <?= $entity->shortDescription ?>
-               </small>    
-            <?php endif?>
-        <?php $this->part('redes-sociais', array('entity'=>$entity));?>
-        </div>
-        <!--.header-content-->
-        <?php $this->applyTemplateHook('header-content','after'); ?>
+                <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+                <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                
+                <?php $this->applyTemplateHook('header-content','end'); ?>
+            </div>
+            <div>
+                <?php if(!$this->isEditable()):?>
+                <small>
+                    <span class="label"><?php \MapasCulturais\i::_e("Descrição Curta:");?></span>
+                        <?= $entity->shortDescription ?>
+                </small>    
+                <?php endif?>
+            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
+            <?php $this->part('redes-sociais', array('entity'=>$entity));?>
+            </div>
+            <!--.header-content-->
+            <?php $this->applyTemplateHook('header-content','after'); ?>
         
+        </div>                
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
