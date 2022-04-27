@@ -5,8 +5,8 @@ use Exception;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
-use MapasCulturais\Entities;
 use MapasCulturais\ApiQuery;
+use MapasCulturais\Entities;
 
 /**
  * Opportunity Controller
@@ -732,7 +732,31 @@ class Opportunity extends EntityController {
                 $sql_status = " AND evaluation_status = {$status}";
             }
         }
-        
+
+        $rdata = [
+            '@select' => 'id',
+            'opportunity' => "EQ({$opportunity->id})",
+            '@permissions' => 'viewPrivateData'
+        ];
+
+        foreach($this->data as $k => $v){
+            if(strtolower(substr($k, 0, 13)) === 'registration:'){
+                $rdata[substr($k, 13)] = $v;
+            }
+        }
+      
+        if(isset($this->data['valuer:id'])){
+            if(preg_match('#EQ\( *(\d+) *\)#', $this->data['valuer:id'], $matches)) {
+                $valuer_id = $matches[1];
+                $valuer = $app->repo("Agent")->find($valuer_id);
+                $rdata['@permissionsuser'] = $valuer->userId;
+            }
+        }
+
+        $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
+
+        $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
+
         $evaluations = $conn->fetchAll("
             SELECT 
                 registration_id, 
@@ -741,12 +765,14 @@ class Opportunity extends EntityController {
             FROM evaluations
             WHERE
                 opportunity_id = :opp AND
-                valuer_user_id IN({$users})
+                valuer_user_id IN({$users}) AND
+                registration_id IN ({$registration_ids})
                 $sql_status
             ORDER BY evaluation_id DESC
             $sql_limit
         ", $params);
-
+        
+        
         $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
         
@@ -757,6 +783,7 @@ class Opportunity extends EntityController {
         
         foreach($evaluations as $eval) {
             $_result[] = [
+                'registration_id' => $eval['registration_id'],
                 'evaluation' => $_evaluations[$eval['evaluation_id']] ?? null,
                 'registration' => $_registrations[$eval['registration_id']] ?? null,
                 'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null

@@ -385,6 +385,7 @@ class ApiQuery {
         
         $this->em = $app->em;
         
+        krsort($api_params);
         $this->apiParams = $api_params;
         
         if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
@@ -1790,6 +1791,8 @@ class ApiQuery {
                 $this->_limit = $value;
             } elseif (strtolower($key) == '@keyword') {
                 $this->_keyword = $value;
+            } elseif (strtolower($key) == '@permissionsuser') {
+                $this->_permissionsUser = $value;
             } elseif (strtolower($key) == '@permissions') {
                 $this->_addFilterByPermissions($value);
             } elseif (strtolower($key) == '@seals') {
@@ -1835,12 +1838,19 @@ class ApiQuery {
     
     protected $_filteringByPermissions = false;
             
+    protected $_permissionsUser = null;
+
+    protected function _setPermissionsUser($value) {
+        $this->_permissionsUser = $value;
+    }
+
     protected function _addFilterByPermissions($value) {
         $app = App::i();
-        $user = $app->user;
+        $user = $this->_permissionsUser ?
+            $app->repo('User')->find($this->_permissionsUser) :
+            $app->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
-        
         if($this->_accessControlEnabled && $this->_permission && !$user->is('saasAdmin')){
             $alias = $this->getAlias('pcache');
             

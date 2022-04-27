@@ -122,7 +122,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             </div>
             <!--.entity-type-->
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?>
+            <?php $this->part('singles/name', ['entity' => $entity]) ?>           
 
             <?php if ($this->isEditable() || $entity->subTitle): ?>
                 <?php $this->applyTemplateHook('subtitle','before'); ?>
@@ -131,6 +131,19 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 </h4>
                 <?php $this->applyTemplateHook('subtitle','after'); ?>
             <?php endif; ?>
+
+            <div class="widget areas">
+                <hr>
+                <h3><?php \MapasCulturais\i::_e("Linguagens");?></h3>
+                <?php if ($this->isEditable()): ?>
+                    <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Linguagens");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione pelo menos uma linguagem");?>" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
+                <?php else: ?>
+                    <?php $linguagens = array_values($app->getRegisteredTaxonomy($entity->getClassName(), 'linguagem')->restrictedTerms); sort($linguagens); ?>
+                    <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
+                        <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
+                    <?php endif; endforeach; ?>
+                <?php endif; ?>
+            </div>
 
             <?php $this->applyTemplateHook('header-content','end'); ?>
         </div>
@@ -406,17 +419,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <a class="event-project-link" href="<?php echo $entity->project->singleUrl; ?>"><?php echo $entity->project->name; ?></a>
         </div>
     <?php endif; ?>
-    <div class="widget">
-        <h3><?php \MapasCulturais\i::_e("Linguagens");?></h3>
-        <?php if ($this->isEditable()): ?>
-            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Linguagens");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione pelo menos uma linguagem");?>" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
-        <?php else: ?>
-            <?php $linguagens = array_values($app->getRegisteredTaxonomy($entity->getClassName(), 'linguagem')->restrictedTerms); sort($linguagens); ?>
-            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
-                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
-            <?php endif; endforeach; ?>
-        <?php endif; ?>
-    </div>
+  
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 

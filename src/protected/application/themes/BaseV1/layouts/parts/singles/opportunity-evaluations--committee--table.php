@@ -24,7 +24,7 @@
                 <?php \MapasCulturais\i::_e("Inscrição");?>
             </th>
             <th ng-if="data.entity.registrationCategories" class="registration-option-col">
-                <mc-select placeholder="status" model="data.registrationCategory" data="data.registrationCategoriesToFilter"></mc-select>
+                <mc-select placeholder="status" model="evaluationsFilters['registration:category']" data="data.registrationCategoriesToFilter"></mc-select>
             </th>
             <th class="registration-agents-col">
                 <?php \MapasCulturais\i::_e("Agentes");?>

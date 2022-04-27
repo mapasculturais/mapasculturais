@@ -1440,9 +1440,9 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('vendor', 'leaflet-draw', 'vendor/leaflet/lib/leaflet-plugins-updated-2014-07-25/Leaflet.draw-master/dist/leaflet.draw-src.js', array('leaflet'));
 
         // Google Maps API only needed in site/search and space, agent and event singles, or if the location patch is active
-        if(preg_match('#site|space|agent|event|subsite#',    $this->controller->id) && preg_match('#search|single|edit|create#', $this->controller->action) ||
-           App::i()->config['app.enableLocationPatch']) {
-            $this->enqueueScript('vendor', 'google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=' . App::i()->config['app.googleApiKey']);
+        if (preg_match("#site|space|agent|event|subsite#", $this->controller->id) &&
+            preg_match("#search|single|edit|create#", $this->controller->action)) {
+            $this->includeGeocodingAssets();
         }
 
         //Leaflet Plugins
@@ -1507,8 +1507,10 @@ class Theme extends MapasCulturais\Theme {
         $this->enqueueScript('app', 'mapasculturais-customizable', 'js/customizable.js', array('mapasculturais'));
 
         // This replaces the default geocoder with the google geocoder
-        if (App::i()->config['app.useGoogleGeocode'])
+        if (App::i()->config['app.useGoogleGeocode']){
+            $this->includeGeocodingAssets();
             $this->enqueueScript('app', 'google-geocoder', 'js/google-geocoder.js', array('mapasculturais-customizable'));
+        }
 
         $this->enqueueScript('app', 'ng-mapasculturais', 'js/ng-mapasculturais.js', array('mapasculturais'));
         $this->enqueueScript('app', 'mc.module.notifications', 'js/ng.mc.module.notifications.js', array('ng-mapasculturais'));
@@ -1582,6 +1584,14 @@ class Theme extends MapasCulturais\Theme {
         $this->localizeScript('evaluations', [
             'saveMessage' => i::__('A avaliação foi salva')
         ]);
+    }
+
+    function includeGeocodingAssets()
+    {
+        $this->enqueueScript("vendor", "google-maps-api",
+                             ("https://maps.googleapis.com/maps/api/js?key=" .
+                              App::i()->config["app.googleApiKey"]));
+        return;
     }
 
     function includeSearchAssets() {
