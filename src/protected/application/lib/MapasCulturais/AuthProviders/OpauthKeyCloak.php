@@ -286,15 +286,11 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
         }
 
         $agent->emailPrivado = $user->email;
-
-        if (isset($user->cpf)) {
-            $agent->documento = $user->cpf;
-        }
-
-        if (isset($user->telefone)) {
-            $agent->telefone1 = $user->telefone;
-        }
         
+        if (!empty($response['auth']['raw']['preferred_username'])) {
+            $agent->documento = $response['auth']['raw']['preferred_username'];
+        }
+
         $agent->save();
         $app->em->persist($agent);
         $app->em->flush();
