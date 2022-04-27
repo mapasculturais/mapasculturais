@@ -5,10 +5,7 @@
 
     <div class="servico">
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
-        
-        
-
-        <?php if($this->isEditable() || $entity->name ): ?>
+        <?php if($this->isEditable()): ?>
             <!-- Campo Nome Completo -->
             <p class="privado">
                 <span class="icon icon-private-info"></span>
@@ -17,14 +14,7 @@
                     <?php echo $entity->nomeCompleto; ?>
                 </span>
             </p>
-        <?php if($this->isEditable() || $entity->site): ?>
-            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-            <?php if($this->isEditable()): ?>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-            <?php else: ?>
-                <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-            <?php endif; ?>
-        <?php endif; ?>
+       
         <?php if($this->isEditable()): ?>
             <!-- Campo CPF -->
             <p class="privado">
@@ -45,7 +35,7 @@
                 </p>
             <? endif; ?>
         <?php endif; ?>
-
+                
         <!-- Email Público -->
         <?php if($this->isEditable() || $entity->emailPublico): ?>
             <p><span class="label"><?php \MapasCulturais\i::_e("E-mail");?>:</span>
@@ -54,7 +44,8 @@
                 </span>
             </p>
         <?php endif; ?>
-        <!-- Email Público -->
+        
+        <!-- Telefone Público -->
         <?php if($this->isEditable() || $entity->telefonePublico): ?>
             <p><span class="label"><?php \MapasCulturais\i::_e("Telefone Público");?>:</span>
                 <span class="js-editable js-mask-phone <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $this->isEditable()? 'required': '');?>" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Público");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que será exibido publicamente");?>">
@@ -77,9 +68,12 @@
                     <?php echo $entity->telefone2; ?>
                 </span>
             </p>
+
         <?php endif; ?>
+        
         <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
         <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
+    
     </div><!--.servico -->
 
     <?php $this->applyTemplateHook('tab-about-service','after'); ?><!--. hook tab-about-service:after -->
@@ -104,14 +98,13 @@
             <?php echo $entity->genero; ?>
         </span>
     </p>
-    
     <!-- Orientação Sexual -->
     <p class="privado"><span class="icon icon-private-info"></span>
         <span class="label"><?php \MapasCulturais\i::_e("Orientação Sexual");?>:</span>
         <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"orientacaoSexual") && $editEntity? 'required': '');?>" data-edit="orientacaoSexual" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Orientação Sexual");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione uma orientação sexual se for pessoa física");?>">
             <?php echo $entity->orientacaoSexual; ?>
         </span>
-    </p>
+    </p> 
         <!-- Raça/Cor -->
         <p class="privado"><span class="icon icon-private-info"></span>
         <span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span>
