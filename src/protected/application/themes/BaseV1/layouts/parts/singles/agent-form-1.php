@@ -14,7 +14,7 @@
                     <?php echo $entity->nomeCompleto; ?>
                 </span>
             </p>
-       
+        <? endif; ?>
         <?php if($this->isEditable()): ?>
             <!-- Campo CPF -->
             <p class="privado">
@@ -34,7 +34,7 @@
                     </span>
                 </p>
             <? endif; ?>
-        <?php endif; ?>
+        
                 
         <!-- Email Público -->
         <?php if($this->isEditable() || $entity->emailPublico): ?>
