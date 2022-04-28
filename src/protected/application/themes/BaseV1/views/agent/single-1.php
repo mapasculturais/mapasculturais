@@ -58,7 +58,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php endif?>
                     
             <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:<?= $entity->site ?></span>
-            <?php $this->part('redes-sociais', array('entity'=>$entity));?>
+            <?php $this->part('redes-sociais', array('entity'=>$entity));?> -->
             
         </div>
             <!--.header-content-->

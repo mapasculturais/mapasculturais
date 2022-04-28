@@ -38,8 +38,9 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
                 <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
                 <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
-
                 <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                <span class="label"><?php \MapasCulturais\i::_e("Descrição curta:");?></span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p> 
                 <?php if($this->isEditable() || $entity->site): ?>
                         <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
                         <?php if($this->isEditable()): ?>
@@ -105,7 +106,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Related Seals END -->
 
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
