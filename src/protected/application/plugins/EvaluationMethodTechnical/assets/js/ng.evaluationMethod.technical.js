@@ -45,9 +45,9 @@
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
-                registrationField: MapasCulturais.entity.registrationFieldConfigurations,
-                affirmativePolicies: [],
-                fieldsAffiermativePolicies: {},
+                registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
+                sessionsAffirmativePolicies: [],
+                fieldsAffiermativePolicie: {},
                 
                 debounce: 2000
             };
@@ -137,11 +137,11 @@
                 $scope.save();
             }
 
-            $scope.addPolicy = function(){
+            $scope.addSessionAffirmativePolice = function(){
                 var date = new Date;
                 var new_id = 'p-' + date.getTime();
-                $scope.data.affirmativePolicies['roof'] = $scope.data.fieldsAffiermativePolicies.roof;
-                $scope.data.affirmativePolicies.push({ id: new_id, percentField: 0, field: $scope.data.fieldsAffiermativePolicies.field, value: '' });
+                $scope.data.sessionsAffirmativePolicies['roof'] = $scope.data.fieldsAffiermativePolicie.roof;
+                $scope.data.sessionsAffirmativePolicies.push({ id: new_id, percentField: 0, field: $scope.data.fieldsAffiermativePolicie.field, value: '' });
             }
             
             $scope.removePolicy = function(policy){
