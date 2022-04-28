@@ -60,6 +60,17 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('affirmative_policies', [
+            'label' => i::__('Políticas Afirmativas'),
+            'type' => 'json',
+            'serialize' => function ($val){
+                return json_encode($val);
+            },
+            'unserialize' => function($val){
+                return json_decode($val);
+            }
+        ]);
+
         $this->registerEvaluationMethodConfigurationMetadata('quota', [
             'label' => i::__('Cotas'),
             'type' => 'json',
