@@ -285,6 +285,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
     
+    function setAvaliableEvaluationFields($value) {
+        if(!$value || empty($value)){
+            $this->avaliableEvaluationFields = [];
+        }else{
+            $this->avaliableEvaluationFields = $value;
+        }
+    }
+    
     function getEvaluationCommittee($return_relation = true){
         $app = App::i();
 
