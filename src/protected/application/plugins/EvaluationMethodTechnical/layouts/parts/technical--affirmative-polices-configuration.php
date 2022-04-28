@@ -11,7 +11,7 @@ use MapasCulturais\i;
 
     <header>
         <p style="font-size: 12px; margin: 0; white-space: nowrap;"> <?php i::_e('Porcentagem máxima das políticas afirmativas') ?> </p>
-        <input ng-model="data.fieldsAffiermativePolicies.roof" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span> <!-- ng-change="save({sections: data.sections})" ng-model-options='{ debounce: data.debounce }' -->
+        <input ng-model="data.fieldsAffiermativePolicie.roof" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span> <!-- ng-change="save({sections: data.sections})" ng-model-options='{ debounce: data.debounce }' -->
     </header>
 
     <table>
@@ -25,21 +25,21 @@ use MapasCulturais\i;
         </tr>
 
 
-        <tr ng-repeat="(key,policy) in data.affirmativePolicies track by $index" id="{{policy.id}}">
+        <tr ng-repeat="(key,policy) in data.sessionsAffirmativePolicies track by $index" id="{{policy.id}}">
             <!-- ng-if="!data.affirmativePolicies" id="{{cri.id}}" ng-repeat="cri in data.criteria" ng-if="cri.sid == section.id" -->
             <td class="policy-percent">
-                <input ng-model="data.fieldsAffiermativePolicies.fieldPercent" type="number" step="0.01" value="{{policy.percentField}}" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit"> <span>%</span>
+                <input ng-model="data.fieldsAffiermativePolicie.fieldPercent" type="number" step="0.01" value="{{policy.percentField}}" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit"> <span>%</span>
                 <!-- ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }' -->
             </td>
 
             <td class="policy-field">
-                <select ng-model="data.fieldsAffiermativePolicies.field">
-                    <option ng-repeat="field in data.registrationField" value="{{field.id}}"> {{field.title}} </option>
+                <select ng-model="data.fieldsAffiermativePolicie.field">
+                    <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}"> {{field.title}} </option>
                 </select>
             </td>
 
             <td class="policy-value">
-                <input ng-model="data.fieldsAffiermativePolicies.value" type="text">
+                <input ng-model="data.fieldsAffiermativePolicie.value" type="text">
             </td>
 
             <td>
