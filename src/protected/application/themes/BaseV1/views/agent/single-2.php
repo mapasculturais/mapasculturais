@@ -47,6 +47,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
                 <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
                 <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:<?= $entity->site ?></span>
+                <span class="label"><?php \MapasCulturais\i::_e("Descrição curta:");?></span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                
                 <?php $this->part('redes-sociais', array('entity'=>$entity));?> 
                 <?php $this->applyTemplateHook('header-content','end'); ?>
             </div>

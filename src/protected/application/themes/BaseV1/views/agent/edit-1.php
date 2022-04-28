@@ -71,7 +71,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php endif; ?>    
                
                 <span class="label"><?php \MapasCulturais\i::_e("Descrição curta:");?></span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
-                <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p>
+                <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p> 
                 <!--  -->
                 
                 <?php $this->applyTemplateHook('header-content','end'); ?>
@@ -136,9 +136,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <!-- Related Seals END -->
                 <!-- tags -->
             <?php $this->part('widget-tags', array('entity'=>$entity)); ?> 
-            
-           <?php $this->part('social-share', array('entity'=>$entity)); ?>
-           <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p>
         </div> 
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
