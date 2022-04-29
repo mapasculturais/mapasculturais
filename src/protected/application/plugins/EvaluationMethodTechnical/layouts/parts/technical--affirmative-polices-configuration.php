@@ -7,14 +7,14 @@ use MapasCulturais\i;
 
 <h4><?php i::_e('Políticas afirmativas') ?></h4>
 <p><?php i::_e('Configure abaixo as políticas afirmativas de avaliação técnica') ?>
-<section>
+<section ng-if="data.isActiveAffirmativePolicies">
     <header>
         <p style="font-size: 12px; margin: 0; white-space: nowrap;"> <?php i::_e('Defina a porcentagem máxima das políticas afirmativas para continuar') ?> </p>
         <input ng-model="data.affiermativePolicie.roof" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span>
     </header>
 
     <table>
-        <tr ng-if="data.affiermativePolicie.roof > 0">
+        <tr>
             <th class="policy-percent"><?php i::_e('Porcentagem') ?></th>
             <th class="policy-field"><?php i::_e('Campo') ?></th>
             <th class="policy-value"><?php i::_e('Valor') ?></th>
