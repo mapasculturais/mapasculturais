@@ -30,6 +30,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
 <article class="main-content agent">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
+    
     <header class="main-content-header">
         <div class="ficha-spcultura">
             <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
