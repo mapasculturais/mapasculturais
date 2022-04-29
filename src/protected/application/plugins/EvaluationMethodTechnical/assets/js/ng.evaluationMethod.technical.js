@@ -49,6 +49,7 @@
                 criteriaAffirmativePolicies: [],
                 fieldsAffiermativePolicie: {},
                 sumAffiermativePoliciefieldsPercent: 0,
+                disabledFieldsPercents: false,
                 
                 debounce: 2000
             };
@@ -70,6 +71,7 @@
                     criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
+                    affirmative_policies: $scope.data.criteriaAffirmativePolicies
                 };
 
                 $scope.data.criteria.forEach(function (crit) {
@@ -141,11 +143,11 @@
             $scope.addSessionAffirmativePolice = function(){
                 var date = new Date;
                 var new_id = 'p-' + date.getTime();
-                $scope.data.criteriaAffirmativePolicies.push({ id: new_id, percentField: 0, field: $scope.data.fieldsAffiermativePolicie.field, value: ''});
+                $scope.data.criteriaAffirmativePolicies.push({ id: new_id, percentField: 0, field: '', value: ''});
             }
             
             $scope.removeSessionAffirmativePolice = function(policy){
-                
+
                 if(!confirm("Você realmente deseja deletar esse critério de politica afirmativa?")){
                     return;
                 }
@@ -154,16 +156,29 @@
                 $scope.data.criteriaAffirmativePolicies.splice(index,1);
             }
 
+            $scope.changeDataAffirmativePolices = function(policy){
+                var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
+                $scope.data.fieldsAffiermativePolicie[policy.id]['id'] = policy.id;
+                $scope.data.criteriaAffirmativePolicies[index] = $scope.data.fieldsAffiermativePolicie[policy.id];
+                $scope.save();
+            }
+
+
             $scope.checkRoofAffirmativePolices = function() {
-                console.log($scope.data.fieldsAffiermativePolicie)
+                
                 $scope.data.sumAffiermativePoliciefieldsPercent = 0;
+
                 Object.values($scope.data.fieldsAffiermativePolicie).forEach(function(value, index){
                     $scope.data.sumAffiermativePoliciefieldsPercent = $scope.data.sumAffiermativePoliciefieldsPercent + value.fieldPercent;
                 })
                
                 if($scope.data.sumAffiermativePoliciefieldsPercent > $scope.data.affiermativePolicie.roof){
-                    MapasCulturais.Messages.error("O máxi de percentual já foi atingido, verifique a distribuição entre os critérios");
+                    MapasCulturais.Messages.error("O máximo de percentual já foi atingido, verifique a distribuição entre os critérios");
+                    $scope.data.disabledFieldsPercents = true;
+                    return;
                 }
+
+                $scope.data.disabledFieldsPercents = false;
             }
         }]);
 
