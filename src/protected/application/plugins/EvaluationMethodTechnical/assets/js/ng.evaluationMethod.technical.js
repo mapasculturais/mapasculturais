@@ -143,7 +143,7 @@
             }
 
             $scope.activeAffirmativePolicies = function(){
-                $scope.data.isActiveAffirmativePolicies =  !$scope.data.isActiveAffirmativePolicies;
+                $scope.data.isActiveAffirmativePolicies = !$scope.data.isActiveAffirmativePolicies;
                 $scope.save();
             }
 
@@ -154,11 +154,9 @@
             }
             
             $scope.removeSessionAffirmativePolice = function(policy){
-
-                if(!confirm("Você realmente deseja deletar esse critério de politica afirmativa?")){
+                if(!confirm(labels.deleteAffirmativePolicy)){
                     return;
                 }
-
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.criteriaAffirmativePolicies.splice(index,1);
                 $scope.save();
