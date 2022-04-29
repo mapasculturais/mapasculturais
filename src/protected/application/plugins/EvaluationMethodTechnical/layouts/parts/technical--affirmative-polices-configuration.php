@@ -9,12 +9,12 @@ use MapasCulturais\i;
 <p><?php i::_e('Configure abaixo as políticas afirmativas de avaliação técnica') ?>
 <section>
     <header>
-        <p style="font-size: 12px; margin: 0; white-space: nowrap;"> <?php i::_e('Porcentagem máxima das políticas afirmativas') ?> </p>
-        <input ng-model="data.fieldsAffiermativePolicie.roof" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span>
+        <p style="font-size: 12px; margin: 0; white-space: nowrap;"> <?php i::_e('Defina a porcentagem máxima das políticas afirmativas para continuar') ?> </p>
+        <input ng-model="data.affiermativePolicie.roof" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span>
     </header>
 
     <table>
-        <tr>
+        <tr ng-if="data.affiermativePolicie.roof > 0">
             <th class="policy-percent"><?php i::_e('Porcentagem') ?></th>
             <th class="policy-field"><?php i::_e('Campo') ?></th>
             <th class="policy-value"><?php i::_e('Valor') ?></th>
@@ -25,7 +25,7 @@ use MapasCulturais\i;
 
         <tr ng-repeat="(key,policy) in data.criteriaAffirmativePolicies track by $index" id="{{policy.id}}">
             <td class="policy-percent">
-                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit"> <span>%</span>
+                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit" ng-change="checkRoofAffirmativePolices(policy)"> <span>%</span>
             </td>
 
             <td class="policy-field">
