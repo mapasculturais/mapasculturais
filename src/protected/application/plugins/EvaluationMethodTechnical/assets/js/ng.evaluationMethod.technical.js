@@ -170,6 +170,11 @@
                 $scope.save();
             }
 
+            $scope.data.criteriaAffirmativePolicies.forEach(function(item){
+                $scope.data.fieldsAffiermativePolicie[item.id] =  item
+                $scope.data.fieldsAffiermativePolicie[item.id].fieldPercent = parseFloat(item.fieldPercent)
+            });
+
         }]);
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
