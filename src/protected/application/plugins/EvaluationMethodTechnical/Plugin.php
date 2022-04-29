@@ -71,6 +71,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('isActiveAffirmativePolicies', [
+            'label' => i::__('Controla se as politicas afirmativas estão ou não ativadas'),
+            'type' => 'bollean',
+        ]);
+
         $this->registerEvaluationMethodConfigurationMetadata('quota', [
             'label' => i::__('Cotas'),
             'type' => 'json',

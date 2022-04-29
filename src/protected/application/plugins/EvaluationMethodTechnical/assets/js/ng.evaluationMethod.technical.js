@@ -49,7 +49,7 @@
                 criteriaAffirmativePolicies: [],
                 fieldsAffiermativePolicie: {},
                 sumAffiermativePoliciefieldsPercent: 0,
-                disabledFieldsPercents: false,
+                isActiveAffirmativePolicies: false,
                 
                 debounce: 2000
             };
@@ -72,6 +72,7 @@
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
                     affirmativePolicies: $scope.data.criteriaAffirmativePolicies,
+                    isActiveAffirmativePolicies: $scope.data.isActiveAffirmativePolicies,
                 };
 
                 $scope.data.criteria.forEach(function (crit) {
