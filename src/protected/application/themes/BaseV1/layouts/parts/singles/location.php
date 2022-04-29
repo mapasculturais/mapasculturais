@@ -29,7 +29,12 @@ $has_private_location = isset($has_private_location) && $has_private_location
                     </span>
                 </p>
             <?php endif; ?>
-            <p class="endereco"><span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span></p>
+            <p class="endereco">
+                <?php if(!$this->isEditable() && !$entity->publicLocation): ?>
+                    <span class="icon icon-private-info"></span>    
+                <?php endif; ?>
+                <span class="label"><?php \MapasCulturais\i::_e("Endereço");?>:</span> <span class="js-endereco"><?php echo $entity->endereco ?></span>
+            </p>
             <?php $this->applyTemplateHook('location-info','after'); ?>
             <?php $html = ''; $geoMeta = false; foreach($app->getRegisteredGeoDivisions() as $k => $geo_division): if (!$geo_division->display) continue; $metakey = $geo_division->metakey;?>
                     <?php
