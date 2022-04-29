@@ -29,7 +29,7 @@ use MapasCulturais\i;
             </td>
 
             <td class="policy-field">
-                <select ng-model="data.fieldsAffiermativePolicie[policy.id].field"  ng-change="changeDataAffirmativePolices(policy)">
+                <select ng-model="data.fieldsAffiermativePolicie[policy.id].field"  ng-change="changeDataAffirmativePolices(policy); changeField(policy)">
                     <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}"> {{field.title}} </option>
                 </select>
             </td>

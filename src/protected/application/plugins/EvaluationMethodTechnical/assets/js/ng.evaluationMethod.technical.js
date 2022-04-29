@@ -45,11 +45,12 @@
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
-                registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
+                registrationFieldConfigurations: [],
                 criteriaAffirmativePolicies: MapasCulturais.affirmativePolicies || [],
                 fieldsAffiermativePolicie: {},
                 sumAffiermativePoliciefieldsPercent: 0,
                 isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies == "true" ? true : false,
+                fieldConfig: [],
                 
                 debounce: 2000
             };
@@ -166,6 +167,7 @@
             $scope.changeDataAffirmativePolices = function(policy){
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.fieldsAffiermativePolicie[policy.id]['id'] = policy.id;
+                $scope.data.fieldsAffiermativePolicie[policy.id]['type'] = policy.id;
                 $scope.data.criteriaAffirmativePolicies[index] = $scope.data.fieldsAffiermativePolicie[policy.id];
                 $scope.save();
             }
@@ -173,6 +175,27 @@
             $scope.data.criteriaAffirmativePolicies.forEach(function(item){
                 $scope.data.fieldsAffiermativePolicie[item.id] =  item
                 $scope.data.fieldsAffiermativePolicie[item.id].fieldPercent = parseFloat(item.fieldPercent)
+            });
+
+            $scope.changeField = function(policy){
+                
+                $scope.data.registrationFieldConfigurations.forEach(function(item){
+                    if(item.id == policy.field){
+                        var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
+                        $scope.data.criteriaAffirmativePolicies[index].isMultiple = (item.fieldType == "checkboxes") ? true : false;
+
+                    }
+                })
+
+            }
+
+            MapasCulturais.entity.registrationFieldConfigurations.forEach(function(item){
+                if(item.fieldType == "checkboxes" || item.fieldType == "select"){
+                    
+                    item.isMultiple = item.fieldType == "checkboxes" ? true : false;
+
+                    $scope.data.registrationFieldConfigurations.push(item)
+                }
             });
 
         }]);
