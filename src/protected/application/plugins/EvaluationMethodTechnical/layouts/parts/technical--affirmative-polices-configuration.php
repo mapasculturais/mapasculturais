@@ -25,17 +25,17 @@ use MapasCulturais\i;
 
         <tr ng-repeat="(key,policy) in data.criteriaAffirmativePolicies track by $index" id="{{policy.id}}">
             <td class="policy-percent">
-                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit" ng-change="checkRoofAffirmativePolices(policy)"> <span>%</span>
+                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit" ng-change="checkRoofAffirmativePolices(policy); changeDataAffirmativePolices(policy)"> <span>%</span>
             </td>
 
             <td class="policy-field">
-                <select ng-model="data.fieldsAffiermativePolicie[policy.id].field">
+                <select ng-model="data.fieldsAffiermativePolicie[policy.id].field"  ng-change="changeDataAffirmativePolices(policy)">
                     <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}"> {{field.title}} </option>
                 </select>
             </td>
 
             <td class="policy-value">
-                <input ng-model="data.fieldsAffiermativePolicie[policy.id].value" type="text">
+                <input ng-model="data.fieldsAffiermativePolicie[policy.id].value" type="text" ng-change="changeDataAffirmativePolices(policy)">
             </td>
 
             <td>
