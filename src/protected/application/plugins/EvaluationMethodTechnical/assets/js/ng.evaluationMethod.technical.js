@@ -140,6 +140,11 @@
                 $scope.save();
             }
 
+            $scope.activeAffirmativePolicies = function(){
+                $scope.data.isActiveAffirmativePolicies =  !$scope.data.isActiveAffirmativePolicies;
+                $scope.save();
+            }
+
             $scope.addSessionAffirmativePolice = function(){
                 var date = new Date;
                 var new_id = 'p-' + date.getTime();
