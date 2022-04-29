@@ -2,7 +2,7 @@
 $lat = $entity->location->latitude; $lng = $entity->location->longitude;
 $has_private_location = isset($has_private_location) && $has_private_location
 ?>
-<?php if ( $this->isEditable() || (($has_private_location && $entity->publicLocation && $lat && $lng) || (!$has_private_location && $lat && $lng)) ): ?>
+<?php if ($entity->canUser("viewPrivateData") || (($has_private_location && $entity->publicLocation && $lat && $lng) || (!$has_private_location && $lat && $lng)) ): ?>
     <?php $this->applyTemplateHook('location','before'); ?>
     <div class="servico clearfix">
        
@@ -17,7 +17,7 @@ $has_private_location = isset($has_private_location) && $has_private_location
             <p><span class="label"><?php \MapasCulturais\i::_e("Complemento");?>:</span> <span class="js-editable" id="En_Complemento" data-edit="En_Complemento" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Complemento");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um complemento");?>" data-showButtons="bottom"><?php echo $entity->En_Complemento ?></span></p>
             <p><span class="label"><?php \MapasCulturais\i::_e("Bairro");?>:</span> <span class="js-editable" id="En_Bairro" data-edit="En_Bairro" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Bairro");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Bairro");?>" data-showButtons="bottom"><?php echo $entity->En_Bairro ?></span></p>
             <p><span class="label"><?php \MapasCulturais\i::_e("Município");?>:</span> <span class="js-editable" id="En_Municipio" data-edit="En_Municipio" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Município");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Município");?>" data-showButtons="bottom"><?php echo $entity->En_Municipio ?></span></p>
-            <p><span class="label"><?php \MapasCulturais\i::_e("Estado");?>:</span> <span class="js-editable" id="En_Estado" data-edit="En_Estado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Estado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Estado");?>" data-showButtons="bottom"><?php echo $entity->En_Estado ?></span></p>
+            <p class="privado"><span class="label"><?php \MapasCulturais\i::_e("Estado");?>:</span> <span class="js-editable" id="En_Estado" data-edit="En_Estado" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Estado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira o Estado");?>" data-showButtons="bottom"><?php echo $entity->En_Estado ?></span></p>
             
             <?php if($this->isEditable()): ?>
                 <p class="privado">
