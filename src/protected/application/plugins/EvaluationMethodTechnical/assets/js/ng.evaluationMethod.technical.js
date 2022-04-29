@@ -165,9 +165,8 @@
             $scope.changeDataAffirmativePolices = function(policy){
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.fieldsAffiermativePolicie[policy.id]['id'] = policy.id;
-                $scope.data.fieldsAffiermativePolicie[policy.id]['type'] = policy.id;
                 $scope.data.criteriaAffirmativePolicies[index] = $scope.data.fieldsAffiermativePolicie[policy.id];
-                $scope.save();
+                
             }
 
             $scope.data.criteriaAffirmativePolicies.forEach(function(item){
@@ -177,11 +176,13 @@
 
             $scope.changeField = function(policy){
                 
+                var field = parseInt($scope.data.fieldsAffiermativePolicie[policy.id].field);
+
                 $scope.data.registrationFieldConfigurations.forEach(function(item){
-                    if(item.id == policy.field){
+                    if(item.id == field){
                         var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                         $scope.data.criteriaAffirmativePolicies[index].isMultiple = (item.fieldType == "checkboxes") ? true : false;
-
+                        $scope.data.criteriaAffirmativePolicies[index].valuesList = item.valuesList;
                     }
                 })
 
@@ -191,10 +192,23 @@
                 if(item.fieldType == "checkboxes" || item.fieldType == "select"){
                     
                     item.isMultiple = item.fieldType == "checkboxes" ? true : false;
+                    item.valuesList = item.fieldOptions.split("\n");
 
                     $scope.data.registrationFieldConfigurations.push(item)
                 }
             });
+
+            $scope.parseStringToBool = function(str){
+                if(!str || str == ""){
+                    return false;
+                }
+
+                return JSON.parse(str);
+            }
+            
+            $scope.savePolicies = function(){
+                $scope.save();
+            }
 
         }]);
 
