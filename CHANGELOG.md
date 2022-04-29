@@ -6,11 +6,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [5.2.7] - 2022-04-25
+- Adiciona possibilidade para a não inclusão do hash nos assets publicados
+
+### Correções
+- Corrige a página de visualização do selo aplicado nas entidades
+
+## [5.2.5] - 2022-04-25
+- Corrige nomes dos arquivos dos assets publicados
+
 ## [5.2.4] - 2022-04-25
-
 - Adição de hooks na tela de gestão de usuários
+  
 ## [5.2.3] - 2022-04-18
-
 - Remove chamada do método requireAuthentication desnecessário no template part info-admin
 ## [5.2.2] - 2022-04-14
 ### Correções
