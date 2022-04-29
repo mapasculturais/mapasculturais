@@ -23,23 +23,23 @@ use MapasCulturais\i;
             </th>
         </tr>
 
-        <tr ng-repeat="(key,policy) in data.sessionsAffirmativePolicies track by $index" id="{{policy.id}}">
+        <tr ng-repeat="(key,policy) in data.criteriaAffirmativePolicies track by $index" id="{{policy.id}}">
             <td class="policy-percent">
-                <input ng-model="data.fieldsAffiermativePolicie.fieldPercent" type="number" step="0.01" value="{{policy.percentField}}" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit"> <span>%</span>
+                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="<?php i::_e('informe a porcentagem do critério') ?>" class="affirmative_policies-roof edit"> <span>%</span>
             </td>
 
             <td class="policy-field">
-                <select ng-model="data.fieldsAffiermativePolicie.field">
+                <select ng-model="data.fieldsAffiermativePolicie[policy.id].field">
                     <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}"> {{field.title}} </option>
                 </select>
             </td>
 
             <td class="policy-value">
-                <input ng-model="data.fieldsAffiermativePolicie.value" type="text">
+                <input ng-model="data.fieldsAffiermativePolicie[policy.id].value" type="text">
             </td>
 
             <td>
-                <button ng-click="removePolicy(policy)" class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
+                <button ng-click="removeSessionAffirmativePolice(policy)" class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
             </td>
         </tr>
 
