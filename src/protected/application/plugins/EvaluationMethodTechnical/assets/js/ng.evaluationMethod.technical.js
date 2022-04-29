@@ -46,10 +46,10 @@
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
-                criteriaAffirmativePolicies: [],
+                criteriaAffirmativePolicies: MapasCulturais.affirmativePolicies || [],
                 fieldsAffiermativePolicie: {},
                 sumAffiermativePoliciefieldsPercent: 0,
-                isActiveAffirmativePolicies: false,
+                isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies == "true" ? true : false,
                 
                 debounce: 2000
             };
