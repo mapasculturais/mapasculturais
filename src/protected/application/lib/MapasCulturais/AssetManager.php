@@ -1,6 +1,5 @@
 <?php
 namespace MapasCulturais;
-// die;
 abstract class AssetManager{
     /**
      *
@@ -231,7 +230,7 @@ abstract class AssetManager{
             
             $result = $asset_url;
         }
-        
+
         return $result;
     }
 
