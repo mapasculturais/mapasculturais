@@ -135,16 +135,16 @@ abstract class AssetManager{
         echo $styles;
     }
 
-    function assetUrl($asset){
+    function assetUrl($asset, $include_hash_in_filename = true){
         $app = App::i();
 
-        $cache_id = "ASSET_URL:$asset";
+        $cache_id = "ASSET_URL:$asset:$include_hash_in_filename";
 
         if($app->config['app.useAssetsUrlCache'] && $app->cache->contains($cache_id)){
             $asset_url = $app->cache->fetch($cache_id);
 
         }else{
-            $asset_url = $this->publishAsset($asset);
+            $asset_url = $this->publishAsset($asset, null, $include_hash_in_filename);
 
             if($app->config['app.useAssetsUrlCache'])
                 $app->cache->save ($cache_id, $asset_url, $app->config['app.assetsUrlCache.lifetime']);
@@ -155,12 +155,15 @@ abstract class AssetManager{
 
     }
 
-    function _getPublishedAssetFilename($asset_filename){
+    function _getPublishedAssetFilename($asset_filename, $include_hash_in_filename = true){
         $pathinfo = pathinfo($asset_filename);
         $ftime = filemtime($asset_filename);
         $hash = crc32($asset_filename);
-
-        return "{$pathinfo['filename']}-{$hash}-{$ftime}.{$pathinfo['extension']}";
+        if ($include_hash_in_filename) {
+            return "{$pathinfo['filename']}-{$hash}-{$ftime}.{$pathinfo['extension']}";
+        } else {
+            return "{$pathinfo['filename']}.{$pathinfo['extension']}";
+        }
     }
 
     function _getPublishedScriptsGroupFilename($group, $content){
@@ -192,9 +195,8 @@ abstract class AssetManager{
         }   
     }
 
-    function publishAsset($asset_filename, $destination = null){
+    function publishAsset($asset_filename, $destination = null, $include_hash_in_filename = true){
         $app = App::i();
-
         if(preg_match('#^(\/\/|https?)#', $asset_filename))
             return $asset_filename;
 
@@ -208,7 +210,7 @@ abstract class AssetManager{
         $extension = strtolower($info['extension']);
         
         if(!$destination){
-            $destination_file = $this->_getPublishedAssetFilename($asset_filename);
+            $destination_file = $this->_getPublishedAssetFilename($asset_filename, $include_hash_in_filename);
 
             if(in_array($extension, ['jpg', 'png', 'gif', 'ico'])){
                 $destination = "img/$destination_file";
@@ -218,9 +220,8 @@ abstract class AssetManager{
         }
         
         $cache_id = __METHOD__ . '::' . $asset_filename . '->' . $destination;
-        
         if($app->config['app.useAssetsUrlCache'] && $app->cache->contains($cache_id)){
-            return $app->cache->fetch($cache_id);
+            $result = $app->cache->fetch($cache_id);
         }else{
             $asset_url = $this->_publishAsset($asset_filename, $destination);
             
@@ -228,8 +229,10 @@ abstract class AssetManager{
                 $app->cache->save($cache_id, $asset_url);
             }
             
-            return $asset_url;
+            $result = $asset_url;
         }
+        
+        return $result;
     }
 
     abstract protected function _publishAsset($asset, $destination);
