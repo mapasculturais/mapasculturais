@@ -27,40 +27,53 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 <article class="main-content agent">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
     <header class="main-content-header">
-        <?php $this->part('singles/header-image', ['entity' => $entity]); ?><!--.part/singles/header-image.php -->
-
-        <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
-        
         <div class="ficha-spcultura">
-            <div class="header-content">
+            <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
+            
+            <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
+                
+            <div class="header-content edit-card">
                 <?php $this->applyTemplateHook('header-content','begin'); ?>
-
-                <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
-                <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
-                <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+                <div class="edit-card-header">
+                    <div class="edit-card-header-avatar">
+                        <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?>
+                    </div>
+                    <div class="edit-card-header-body">
+                        <?php $this->part('singles/type', ['entity' => $entity]) ?>
+                        <?php $this->part('singles/name', ['entity' => $entity]) ?>
+                        <?php $this->part('redes-sociais', array('entity'=>$entity));?>
+                    </div>
+                </div>
+            </div>  
+            <div class="edit-card-header-widgets">
                 <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-                <span class="label"><?php \MapasCulturais\i::_e("Descrição curta:");?></span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
-                <p align=”left”> <?php $this->part('redes-sociais', array('entity'=>$entity));?></p> 
-                <?php if($this->isEditable() || $entity->site): ?>
-                        <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-                        <?php if($this->isEditable()): ?>
-                            <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-                        <?php else: ?>
-                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-                        <?php endif; ?>
-                <?php endif; ?>   
-
-                <?php $this->applyTemplateHook('header-content','end'); ?>
-        </div>
-        <!--.header-content-->
-</div>
-        <?php $this->applyTemplateHook('header-content','after'); ?>
-        
+                <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+            </div>
+            <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
+                <div class="alert warning">
+                    <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
+                    <?php echo strlen($entity->shortDescription) ?>
+                    <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?>
+                </div>
+            <?php endif; ?>
+            <?php if($this->isEditable() || $entity->site): ?>
+                <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
+                <?php if($this->isEditable()): ?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
+                <?php else: ?>
+                    <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                <?php endif; ?>
+            <?php endif; ?>    
+            <span class="label"><?php \MapasCulturais\i::_e("Descrição curta:");?></span><span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+            <?php $this->applyTemplateHook('header-content','end'); ?>
+            <?php $this->applyTemplateHook('header-content','after'); ?>
+        </div> 
     </header>
     <!--.main-content-header-->
-    <?php $this->applyTemplateHook('header','after'); ?>
 
+    <?php $this->applyTemplateHook('header','after'); ?>
     <?php $this->applyTemplateHook('tabs','before'); ?>
+
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
         <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
@@ -75,17 +88,18 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->applyTemplateHook('tabs-content','begin'); ?>
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
-
             <?php $this->part('singles/agent-form-2', ['entity' => $entity, 'editEntity' => $editEntity]); ?><!--.part/singles/agent-form.php -->
-            <?php if ( $this->isEditable() || $entity->longDescription ): ?>
-                <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
-                <span class="descricao js-editable <?php echo ($entity->isPropertyRequired($entity,"longDescription") && $this->isEditable()? 'required': '');?>" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição do Agente");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição do agente");?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
-            <?php endif; ?>
-
+            <div>
+                <h4><strong><?php \MapasCulturais\i::_e("Outras informações públicas");?></strong></h4>
+                <p><?php \MapasCulturais\i::_e("Assim como o cartão de visitas, os dados abaixo também serão exibidos para quem visitar o seu perfil.");?></p>
+                <hr> 
+                <?php if ( $this->isEditable() || $entity->longDescription ): ?>
+                    <h3><?php \MapasCulturais\i::_e("Descrição");?></h3>
+                    <span class="descricao js-editable <?php echo ($entity->isPropertyRequired($entity,"longDescription") && $this->isEditable()? 'required': '');?>" data-edit="longDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição do Agente");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição do agente");?>" ><?php echo $this->isEditable() ? $entity->longDescription : nl2br($entity->longDescription); ?></span>
+                <?php endif; ?>
                 <?php $this->part('video-gallery.php', array('entity'=>$entity)); ?><!--.part/video-gallery.php -->
-
                 <?php $this->part('gallery.php', array('entity'=>$entity)); ?><!--.part/gallery.php -->
-
+            </div>
             <?php $this->applyTemplateHook('tab-about','end'); ?>
         </div>
         <!-- #sobre -->
@@ -104,8 +118,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <!-- Related Seals BEGIN -->
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
-
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
 </div>
 <div class="sidebar agent sidebar-right">
     <?php if($this->controller->action == 'create'): ?>
