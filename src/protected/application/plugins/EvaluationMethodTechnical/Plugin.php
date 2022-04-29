@@ -107,7 +107,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             'sectionNameAlreadyExists' => i::__('Já existe uma seção com o mesmo nome'),
             'changesSaved' => i::__('Alteraçṍes salvas'),
             'deleteSectionConfirmation' => i::__('Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá todas os critérios desta seção.'),
-            'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.')
+            'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.'),
+            'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.')
         ]);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.technical';
     }
