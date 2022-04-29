@@ -160,6 +160,7 @@
 
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.criteriaAffirmativePolicies.splice(index,1);
+                $scope.save();
             }
 
             $scope.changeDataAffirmativePolices = function(policy){
