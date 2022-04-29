@@ -163,23 +163,6 @@
                 $scope.save();
             }
 
-
-            $scope.checkRoofAffirmativePolices = function() {
-                
-                $scope.data.sumAffiermativePoliciefieldsPercent = 0;
-
-                Object.values($scope.data.fieldsAffiermativePolicie).forEach(function(value, index){
-                    $scope.data.sumAffiermativePoliciefieldsPercent = $scope.data.sumAffiermativePoliciefieldsPercent + value.fieldPercent;
-                })
-               
-                if($scope.data.sumAffiermativePoliciefieldsPercent > $scope.data.affiermativePolicie.roof){
-                    MapasCulturais.Messages.error("O máximo de percentual já foi atingido, verifique a distribuição entre os critérios");
-                    $scope.data.disabledFieldsPercents = true;
-                    return;
-                }
-
-                $scope.data.disabledFieldsPercents = false;
-            }
         }]);
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
