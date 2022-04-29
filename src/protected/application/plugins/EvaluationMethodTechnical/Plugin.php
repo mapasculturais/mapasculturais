@@ -60,7 +60,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerEvaluationMethodConfigurationMetadata('affirmative_policies', [
+        $this->registerEvaluationMethodConfigurationMetadata('affirmativePolicies', [
             'label' => i::__('Políticas Afirmativas'),
             'type' => 'json',
             'serialize' => function ($val){
