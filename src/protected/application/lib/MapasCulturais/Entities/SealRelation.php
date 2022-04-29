@@ -153,7 +153,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
         return $this->owner->canUser('@control', $user) || $this->seal->canUser('@control', $user);
     }
     
-    protected function isExpired() {
+    public function isExpired() {
         if($this->seal->validPeriod > 0) {
             
             $today = new \DateTime();

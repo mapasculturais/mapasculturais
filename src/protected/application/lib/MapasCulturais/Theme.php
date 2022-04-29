@@ -522,11 +522,11 @@ abstract class Theme extends \Slim\View {
         return $filename;
     }
 
-    function asset($file, $print = true){
+    function asset($file, $print = true, $include_hash_in_filename = true){
         $app = App::i();
         $app->applyHook('asset(' . $file . ')', [&$file]);
-        
-        $url = $this->getAssetManager()->assetUrl($file);
+        $url = $this->getAssetManager()->assetUrl($file, $include_hash_in_filename);
+        eval(\psy\sh());
 
         $app->applyHook('asset(' . $file . '):url', [&$url]);
 
