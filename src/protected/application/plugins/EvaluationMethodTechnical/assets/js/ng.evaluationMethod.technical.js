@@ -145,6 +145,11 @@
             }
             
             $scope.removeSessionAffirmativePolice = function(policy){
+                
+                if(!confirm("Você realmente deseja deletar esse critério de politica afirmativa?")){
+                    return;
+                }
+
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.criteriaAffirmativePolicies.splice(index,1);
             }
