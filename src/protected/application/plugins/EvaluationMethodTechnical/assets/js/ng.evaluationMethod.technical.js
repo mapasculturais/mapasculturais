@@ -71,7 +71,7 @@
                     criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
-                    affirmativePolicies: $scope.data.criteriaAffirmativePolicies,
+                    affirmativePolicies: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
                     isActiveAffirmativePolicies: $scope.data.isActiveAffirmativePolicies,
                 };
 
