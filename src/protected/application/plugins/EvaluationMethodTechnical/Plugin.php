@@ -115,6 +115,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     public function _init() {
         $app = App::i();
 
+        $app->hook('GET(opportunity.edit):before', function() use ($app){
+            
+            $evaluationMethodConfiguration = $this->requestedEntity->evaluationMethodConfiguration;
+
+            $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
+            $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
+        });
+
         $app->hook('evaluationsReport(technical).sections', function(Entities\Opportunity $opportunity, &$sections){
             $i = 0;
             $get_next_color = function($last = false) use(&$i){
