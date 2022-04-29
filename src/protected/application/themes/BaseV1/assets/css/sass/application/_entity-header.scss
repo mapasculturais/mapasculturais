@@ -2,12 +2,51 @@
 
 .main-content-header {
     .ficha-spcultura{
-        .edit-card-header-widgets{
-            margin: 10px 0px;
-            .widget{
-                h3{
-                    padding-bottom: 10px;
-                }
+        .widget{
+            border:none;
+            padding-bottom: 0em;
+            margin-top: 1em;
+            margin-bottom: 0;
+            > h3 {
+                margin-bottom: 0em !important;
+            }
+        }
+        .label{
+            p{
+                margin-bottom: 0.65rem;
+                font-size: .70rem;
+                line-height: 1.3rem;
+                font-family: "Open Sans", Helvetica, Arial, sans-serif;
+                font-weight: bold;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+                color: #888;
+            }
+        }
+        .label:last-child{
+            padding: 0px;
+            margin: 0;
+            
+        }
+        .site-info{
+            
+            .url{
+                color: #888;
+                font-weight: 400;
+            }
+            margin: 10px 0;
+            p{
+                margin:0;
+                font-family: "Open Sans", Helvetica, Arial, sans-serif;
+                font-weight: bold;
+                font-size: .75rem;
+                text-transform: uppercase;
+                margin-bottom: 0.65rem;
+                color: #888;
+                
+            }
+            .js-editable{
+                padding: 0;
             }
         }
         .site-description{
@@ -127,6 +166,7 @@ article.seal {
         display: flex;
         
         .avatar{
+            display: flex;
             position: relative;
         }
         
@@ -145,6 +185,11 @@ article.seal {
             width: 50%;
             
             
+        }
+        .edit-card-header-body{
+            h2{
+                margin: 5px;
+            }
         }
         
     }
