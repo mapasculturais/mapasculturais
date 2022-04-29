@@ -71,7 +71,7 @@
                     criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
-                    affirmative_policies: $scope.data.criteriaAffirmativePolicies
+                    affirmativePolicies: $scope.data.criteriaAffirmativePolicies,
                 };
 
                 $scope.data.criteria.forEach(function (crit) {
