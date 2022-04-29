@@ -47,7 +47,8 @@
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 registrationFieldConfigurations: MapasCulturais.entity.registrationFieldConfigurations,
                 criteriaAffirmativePolicies: [],
-                fieldsAffiermativePolicie: [],
+                fieldsAffiermativePolicie: {},
+                sumAffiermativePoliciefieldsPercent: 0,
                 
                 debounce: 2000
             };
@@ -140,15 +141,24 @@
             $scope.addSessionAffirmativePolice = function(){
                 var date = new Date;
                 var new_id = 'p-' + date.getTime();
-                $scope.data.criteriaAffirmativePolicies['roof'] = $scope.data.fieldsAffiermativePolicie.roof;
                 $scope.data.criteriaAffirmativePolicies.push({ id: new_id, percentField: 0, field: $scope.data.fieldsAffiermativePolicie.field, value: ''});
-                console.log($scope.data.criteriaAffirmativePolicies)
-
             }
             
             $scope.removeSessionAffirmativePolice = function(policy){
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.criteriaAffirmativePolicies.splice(index,1);
+            }
+
+            $scope.checkRoofAffirmativePolices = function() {
+                console.log($scope.data.fieldsAffiermativePolicie)
+                $scope.data.sumAffiermativePoliciefieldsPercent = 0;
+                Object.values($scope.data.fieldsAffiermativePolicie).forEach(function(value, index){
+                    $scope.data.sumAffiermativePoliciefieldsPercent = $scope.data.sumAffiermativePoliciefieldsPercent + value.fieldPercent;
+                })
+               
+                if($scope.data.sumAffiermativePoliciefieldsPercent > $scope.data.affiermativePolicie.roof){
+                    MapasCulturais.Messages.error("O máxi de percentual já foi atingido, verifique a distribuição entre os critérios");
+                }
             }
         }]);
 
