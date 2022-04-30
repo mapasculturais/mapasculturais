@@ -64,4 +64,3 @@ use MapasCulturais\i;
 
 <button ng-click="activeAffirmativePolicies()" ng-if="!data.isActiveAffirmativePolicies" id="enableAffirmativePolicy" class="btn btn-default add"><?php i::_e('Ativar seção de políticas afirmativas') ?></button>
 <button ng-click="activeAffirmativePolicies()" ng-if="data.isActiveAffirmativePolicies" id="disableAffirmativePolicy" class="btn btn-danger delete"><?php i::_e('Desativar seção de políticas afirmativas') ?></button>
-<button ng-click="savePolicies()" ng-if="data.isActiveAffirmativePolicies" class="btn btn-success add "><?php i::_e('Salvar') ?></button>
