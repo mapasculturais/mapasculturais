@@ -162,17 +162,13 @@
                 $scope.save();
             }
 
-            $scope.changeDataAffirmativePolices = function(policy){
-                var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
-                $scope.data.fieldsAffiermativePolicie[policy.id]['id'] = policy.id;
-                $scope.data.criteriaAffirmativePolicies[index] = $scope.data.fieldsAffiermativePolicie[policy.id];
-                
-            }
-
-            $scope.data.criteriaAffirmativePolicies.forEach(function(item){
-                $scope.data.fieldsAffiermativePolicie[item.id] =  item
-                $scope.data.fieldsAffiermativePolicie[item.id].fieldPercent = parseFloat(item.fieldPercent)
-            });
+            $scope.$watch('data.fieldsAffiermativePolicie', function(new_val,old_val){
+                Object.keys(new_val).forEach(function(id, index){
+                    $scope.data.criteriaAffirmativePolicies[index].fieldPercent = $scope.data.fieldsAffiermativePolicie[id].fieldPercent;
+                    $scope.data.criteriaAffirmativePolicies[index].value = $scope.data.fieldsAffiermativePolicie[id].value;
+                    $scope.data.criteriaAffirmativePolicies[index].field = $scope.data.fieldsAffiermativePolicie[id].field;
+                })
+            },true);    
 
             $scope.changeField = function(policy){
                 
@@ -187,6 +183,17 @@
                 })
 
             }
+
+            // Execuções no carregamento da página
+            $scope.data.criteriaAffirmativePolicies.forEach(function(item){
+                $scope.data.fieldsAffiermativePolicie[item.id] =  item
+                $scope.data.fieldsAffiermativePolicie[item.id].fieldPercent = parseFloat(item.fieldPercent);
+                if((typeof item.value === 'object')){
+                    Object.keys(item.value).forEach(function(v,i){
+                        item.value[v] = (item.value[v] == "true") ? true : false;
+                    });
+                }
+            });
 
             MapasCulturais.entity.registrationFieldConfigurations.forEach(function(item){
                 if(item.fieldType == "checkboxes" || item.fieldType == "select"){
