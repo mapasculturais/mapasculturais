@@ -178,7 +178,6 @@
                 
                 $scope.data.fieldsAffiermativePolicie[policy.id].value =  null;
 
-                console.log($scope.data.fieldsAffiermativePolicie[policy.id])
                 var field = parseInt($scope.data.fieldsAffiermativePolicie[policy.id].field);
 
                 $scope.data.registrationFieldConfigurations.forEach(function(item){
