@@ -455,7 +455,7 @@ class Module extends \MapasCulturais\Module{
 
                     $field_name = $field->fieldName;
                     
-                    if($reg->canUser("viewUserEvaluation") && !$this->canUser("@control")){
+                    if($reg->canUser("viewUserEvaluation") && !$reg->canUser("@control")){
                         if(isset($opportunity->avaliableEvaluationFields[$field_name])){
                             $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
                         }
