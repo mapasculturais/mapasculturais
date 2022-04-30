@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
+- implementa calculo sobre políticas afirmativas nas avaliações técnicas
+
+### Melhorias
 - Define setter para o atributo avaliableEvaluationFields setando um array vazio caso de falores nulos, falsos ou vazios
 ## [5.2.4] - 2022-04-15
 
