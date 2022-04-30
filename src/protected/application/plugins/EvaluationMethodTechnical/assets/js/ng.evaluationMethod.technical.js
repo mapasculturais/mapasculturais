@@ -51,6 +51,7 @@
                 sumAffiermativePoliciefieldsPercent: 0,
                 isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies == "true" ? true : false,
                 fieldConfig: [],
+                affirmativePolicie: 0.00,
                 
                 debounce: 2000
             };
@@ -74,6 +75,7 @@
                     enableViability: $scope.data.enableViability,
                     affirmativePolicies: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
                     isActiveAffirmativePolicies: $scope.data.isActiveAffirmativePolicies,
+                    affirmativePoliciesRoof: $scope.data.affirmativePolicie.roof || 0.00
                 };
 
                 $scope.data.criteria.forEach(function (crit) {

@@ -76,6 +76,11 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             'type' => 'boolean',
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('affirmativePoliciesRoof', [
+            'label' => i::__('Define o valor máximo das políticas afirmativas'),
+            'type' => 'string',
+        ]);
+
         $this->registerEvaluationMethodConfigurationMetadata('quota', [
             'label' => i::__('Cotas'),
             'type' => 'json',
