@@ -159,13 +159,13 @@
                 }
                 var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
                 $scope.data.criteriaAffirmativePolicies.splice(index,1);
-                $scope.save();
+                delete $scope.data.fieldsAffiermativePolicie[policy.id]
             }
 
             $scope.$watch('data.fieldsAffiermativePolicie', function(new_val,old_val){
                 if(new_val != old_val){
                     Object.keys(new_val).forEach(function(id, index){
-                        $scope.data.criteriaAffirmativePolicies[index].fieldPercent = $scope.data.fieldsAffiermativePolicie[id].fieldPercent;
+                        $scope.data.criteriaAffirmativePolicies[index].fieldPercent = $scope.data.fieldsAffiermativePolicie[id].fieldPercent || 0.00;
                         $scope.data.criteriaAffirmativePolicies[index].value = $scope.data.fieldsAffiermativePolicie[id].value;
                         $scope.data.criteriaAffirmativePolicies[index].field = $scope.data.fieldsAffiermativePolicie[id].field;
                     })
