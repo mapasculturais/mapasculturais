@@ -298,10 +298,52 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $num = count($evaluations);
         if($num){
-            return number_format($result / $num, 2);
+            $_result = number_format($result / $num, 2);
+            return $this->applyAffirmativePolicies($_result, $registration);
+
         } else {
             return null;
         }
+    }
+
+    public function applyAffirmativePolicies($result, \MapasCulturais\Entities\Registration $registration)
+    {
+        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->affirmativePolicies;
+        $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
+        $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
+
+        if(!$isActiveAffirmativePolicies || empty($affirmativePoliciesConfig)){
+            return $result;
+        }
+
+        $totalPercent = 0.00;
+        $appliedPolicies = [];
+        foreach($affirmativePoliciesConfig as $rules){
+            $fieldName = "field_".$rules->field;
+
+            if(is_object($rules->value) || is_array($rules->value)){
+                foreach($rules->value as $key => $value){
+                    if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
+                        $totalPercent += $rules->fieldPercent;
+                        $appliedPolicies[] = $rules;
+                        continue;
+                    }
+                }
+            }else{
+                if(filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rules->value, FILTER_VALIDATE_BOOL)){
+                    $totalPercent += $rules->fieldPercent;
+                    $appliedPolicies[] = $rules;
+                }
+            }
+        }
+
+        return ($totalPercent > $affirmativePoliciesRoof) ? $this->percentCalc($result, $affirmativePoliciesRoof) : $this->percentCalc($result, $totalPercent);
+
+    }
+
+    private function percentCalc($value, $percent)
+    {
+        return (($value * $percent) /100) + $value;
     }
 
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
