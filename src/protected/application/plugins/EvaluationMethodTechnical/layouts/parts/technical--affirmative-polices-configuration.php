@@ -33,15 +33,15 @@ use MapasCulturais\i;
             </td>
 
             <td class="policy-value">
-                <div ng-if="!parseStringToBool(policy.isMultiple)">
-                <select ng-model="data.fieldsAffiermativePolicie[policy.id].value">
-                    <option ng-repeat="value in policy.valuesList" value="{{value}}"> {{value}} </option>
-                </select>
+                <div class="select" ng-if="!parseStringToBool(policy.isMultiple)">
+                    <select ng-model="data.fieldsAffiermativePolicie[policy.id].value">
+                        <option ng-repeat="value in policy.valuesList" value="{{value}}"> {{value}} </option>
+                    </select>
                 </div>
-                <div ng-if="parseStringToBool(policy.isMultiple)">
+                <div class="check" ng-if="parseStringToBool(policy.isMultiple)">
                     <span ng-repeat="value in policy.valuesList">
+                        <input id="{{value}}" type="checkbox" >
                         <label for="{{value}}">{{value}}</label>
-                        <input type="checkbox" >
                     </span>
                 </div>
             </td>
@@ -60,4 +60,4 @@ use MapasCulturais\i;
 
 <button ng-click="activeAffirmativePolicies()" ng-if="!data.isActiveAffirmativePolicies" id="enableAffirmativePolicy" class="btn btn-default add"><?php i::_e('Ativar seção de políticas afirmativas') ?></button>
 <button ng-click="activeAffirmativePolicies()" ng-if="data.isActiveAffirmativePolicies" id="disableAffirmativePolicy" class="btn btn-danger delete"><?php i::_e('Desativar seção de políticas afirmativas') ?></button>
-<button ng-click="savePolicies()" class="btn btn-success add "><?php i::_e('Salvar') ?></button>
+<button ng-click="savePolicies()" ng-if="data.isActiveAffirmativePolicies" class="btn btn-success add "><?php i::_e('Salvar') ?></button>
