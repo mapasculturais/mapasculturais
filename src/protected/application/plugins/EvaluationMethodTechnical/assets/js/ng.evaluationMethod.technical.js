@@ -177,7 +177,7 @@
                 $scope.data.registrationFieldConfigurations.forEach(function(item){
                     if(item.id == field){
                         var index = $scope.data.criteriaAffirmativePolicies.indexOf(policy);
-                        $scope.data.criteriaAffirmativePolicies[index].isMultiple = (item.fieldType == "checkboxes") ? true : false;
+                        $scope.data.criteriaAffirmativePolicies[index].viewDataValues = item.viewDataValues;
                         $scope.data.criteriaAffirmativePolicies[index].valuesList = item.valuesList;
                     }
                 })
@@ -196,9 +196,24 @@
             });
 
             MapasCulturais.entity.registrationFieldConfigurations.forEach(function(item){
-                if(item.fieldType == "checkboxes" || item.fieldType == "select"){
+                if(item.fieldType == "checkbox" || item.fieldType == "select" || item.fieldType == "checkboxes"){
+
+                    var _ismultiple = false;
+                    switch(item.fieldType) {
+                        case "checkbox":
+                            _ismultiple = 'bool';
+                            break;
+                        case "select":
+                            _ismultiple = "checkbox";
+                             break;
+                        case "checkboxes":
+                            _ismultiple = "checkbox";
+                            break;
+                        default:
+                            _ismultiple = "";
+                      }
                     
-                    item.isMultiple = item.fieldType == "checkboxes" ? true : false;
+                    item.viewDataValues = _ismultiple;
                     item.valuesList = item.fieldOptions.split("\n");
 
                     $scope.data.registrationFieldConfigurations.push(item)

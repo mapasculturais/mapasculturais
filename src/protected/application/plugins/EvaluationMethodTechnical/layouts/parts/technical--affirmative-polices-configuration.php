@@ -33,21 +33,25 @@ use MapasCulturais\i;
             </td>
 
             <td class="policy-value">
-                <div class="select" ng-if="!parseStringToBool(policy.isMultiple)">
+
+                <div ng-if="policy.viewDataValues == 'bool' || policy.viewDataValues == null">
                     <select ng-model="data.fieldsAffiermativePolicie[policy.id].value">
-                        <option ng-repeat="value in policy.valuesList" value="{{value}}"> {{value}} </option>
+                        <option value=""> Selecione </option>
+                        <option value="true"> Sim </option>
+                        <option value="false"> Não </option>
                     </select>
                 </div>
-                <div class="check" ng-if="parseStringToBool(policy.isMultiple)">
-                    <span ng-repeat="value in policy.valuesList">
-                        <input id="{{value}}" type="checkbox" >
-                        <label for="{{value}}">{{value}}</label>
+
+                <div class="check" ng-if="policy.viewDataValues == 'checkbox'">
+                    <span ng-repeat="(key, v) in policy.valuesList">
+                        <input id="{{v}}" type="checkbox" ng-model="data.fieldsAffiermativePolicie[policy.id].value[v]">
+                        <label for="{{v}}">{{v}}</label>
                     </span>
                 </div>
             </td>
 
             <td class="policy-percent">
-                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="0,00" value="{{policy.percentField}}" class="affirmative_policies-roof edit" ng-keyup="changeDataAffirmativePolices(policy)"> <span>%</span>
+                <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="0,00" value="{{policy.fieldPercent}}" class="affirmative_policies-roof edit"> <span>%</span>
             </td>
 
             <td>
