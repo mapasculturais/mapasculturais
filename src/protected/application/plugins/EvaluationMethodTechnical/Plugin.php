@@ -64,7 +64,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             'label' => i::__('Políticas Afirmativas'),
             'type' => 'json',
             'serialize' => function ($val){
-                return json_encode($val);
+                return (!empty($val)) ? json_encode($val) : "[]";
             },
             'unserialize' => function($val){
                 return json_decode($val);
