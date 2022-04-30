@@ -163,17 +163,21 @@
             }
 
             $scope.$watch('data.fieldsAffiermativePolicie', function(new_val,old_val){
-                Object.keys(new_val).forEach(function(id, index){
-                    $scope.data.criteriaAffirmativePolicies[index].fieldPercent = $scope.data.fieldsAffiermativePolicie[id].fieldPercent;
-                    $scope.data.criteriaAffirmativePolicies[index].value = $scope.data.fieldsAffiermativePolicie[id].value;
-                    $scope.data.criteriaAffirmativePolicies[index].field = $scope.data.fieldsAffiermativePolicie[id].field;
-                })
+                if(new_val != old_val){
+                    Object.keys(new_val).forEach(function(id, index){
+                        $scope.data.criteriaAffirmativePolicies[index].fieldPercent = $scope.data.fieldsAffiermativePolicie[id].fieldPercent;
+                        $scope.data.criteriaAffirmativePolicies[index].value = $scope.data.fieldsAffiermativePolicie[id].value;
+                        $scope.data.criteriaAffirmativePolicies[index].field = $scope.data.fieldsAffiermativePolicie[id].field;
+                    })
+    
+                    $scope.save();
+                }
             },true);    
 
             $scope.changeField = function(policy){
                 
                 $scope.data.fieldsAffiermativePolicie[policy.id].value =  null;
-                
+
                 console.log($scope.data.fieldsAffiermativePolicie[policy.id])
                 var field = parseInt($scope.data.fieldsAffiermativePolicie[policy.id].field);
 
@@ -229,10 +233,6 @@
                 }
 
                 return JSON.parse(str);
-            }
-            
-            $scope.savePolicies = function(){
-                $scope.save();
             }
 
         }]);
