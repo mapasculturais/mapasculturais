@@ -150,7 +150,7 @@
             $scope.addSessionAffirmativePolice = function(){
                 var date = new Date;
                 var new_id = 'p-' + date.getTime();
-                $scope.data.criteriaAffirmativePolicies.push({ id: new_id, percentField: 0, field: '', value: ''});
+                $scope.data.criteriaAffirmativePolicies.push({ id: new_id, fieldPercent: 0, field: '', value: ''});
             }
             
             $scope.removeSessionAffirmativePolice = function(policy){
