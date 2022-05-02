@@ -1,6 +1,70 @@
 @charset "UTF-8";
 
 .main-content-header {
+    .ficha-spcultura{
+        .widget{
+            border:none;
+            padding-bottom: 0em;
+            margin-top: 1em;
+            margin-bottom: 0;
+            > h3 {
+                margin-bottom: 0em !important;
+            }
+        }
+        .label{
+            p{
+                margin-bottom: 0.65rem;
+                font-size: .70rem;
+                line-height: 1.3rem;
+                font-family: "Open Sans", Helvetica, Arial, sans-serif;
+                font-weight: bold;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+                color: #888;
+            }
+        }
+        .label:last-child{
+            padding: 0px;
+            margin: 0;
+            
+        }
+        .site-info{
+            
+            .url{
+                color: #888;
+                font-weight: 400;
+            }
+            margin: 10px 0;
+            p{
+                margin:0;
+                font-family: "Open Sans", Helvetica, Arial, sans-serif;
+                font-weight: bold;
+                font-size: .75rem;
+                text-transform: uppercase;
+                margin-bottom: 0.65rem;
+                color: #888;
+                
+            }
+            .js-editable{
+                padding: 0;
+            }
+        }
+        .site-description{
+            margin-top: 25px;
+            .short-description{
+                margin-top: 10px;
+            }
+            .short-description :first-child{
+                margin-right: 5px;
+            }
+            
+            .site{
+                span{
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
     margin-bottom: 2rem;
     position: relative;
     @media screen and (min-width: $screen-tablet) {
@@ -89,12 +153,51 @@ article.seal {
         background-color: $brand-seal;
     }
 }
-
+.edit-card {
+    padding: 0 !important;
+}
 .header-content {
     position: relative;
     margin-top: 3.75rem;
     padding-top: 3.75rem;
     text-align: center;
+
+    .edit-card-header {
+        display: flex;
+        
+        .avatar{
+            display: flex;
+            position: relative;
+        }
+        
+        &-avatar{
+            margin-right: 20px;
+        }
+        &-widgets{
+            display: flex;
+            
+        }
+        &-body{
+            width: 100%;
+        }
+        .edit-card-header-widgets > div {
+            float: left;
+            width: 50%;
+            
+            
+        }
+        .edit-card-header-body{
+            h2{
+                margin: 5px;
+            }
+        }
+        
+    }
+    
+
+    .edit-card-header >p{
+        margin-bottom: 0rem;
+    }
     .avatar {
         position: absolute;
         left: 50%;
