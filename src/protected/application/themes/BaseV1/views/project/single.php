@@ -37,29 +37,34 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
 <article class="main-content project" ng-controller="ProjectController">
     <?php $this->applyTemplateHook('main-content','begin'); ?>
-    <header class="main-content-header">
-        <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
+    <div class="ficha-spcultura">  
+        <header class="main-content-header">
+            <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
 
-        <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
+            <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
-        <!--.header-image-->
-        <?php $this->applyTemplateHook('header-content','before'); ?>
-        <div class="header-content">
-            <?php $this->applyTemplateHook('header-content','begin'); ?>
+            <!--.header-image-->
+            <?php $this->applyTemplateHook('header-content','before'); ?>
+            <div class="header-content">
+                <?php $this->applyTemplateHook('header-content','begin'); ?>
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
+                <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?>
+                <?php $this->part('singles/type', ['entity' => $entity]) ?>
 
-            <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
+                <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?>
+                <?php $this->part('singles/name', ['entity' => $entity]) ?>
+                <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+    
+                <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>        
 
-            <?php $this->applyTemplateHook('header-content','end'); ?>
-        </div>
-        <!--.header-content-->
-        <?php $this->applyTemplateHook('header-content','after'); ?>
-    </header>
+                <?php $this->applyTemplateHook('header-content','end'); ?>
+            </div>
+            <!--.header-content-->
+            <?php $this->applyTemplateHook('header-content','after'); ?>
+        </header>
+    </div>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
 
@@ -90,9 +95,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 
     <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
