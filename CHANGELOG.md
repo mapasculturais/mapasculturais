@@ -5,6 +5,16 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Novas funcionalidades
+- Implementa sistemas de permissão para os avaliadores
+- implementa calculo sobre políticas afirmativas nas avaliações técnicas
+
+### Melhorias
+- Define setter para o atributo avaliableEvaluationFields setando um array vazio caso de falores nulos, falsos ou vazios
+## [5.2.4] - 2022-04-15
+
+- Adição de hooks na tela de gestão de usuários
+## [5.2.3] - 2022-04-18
 
 - Remove chamada do método requireAuthentication desnecessário no template part info-admin
 ## [5.2.2] - 2022-04-14

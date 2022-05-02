@@ -41,4 +41,10 @@ $definition = $configuration->definition;
         i::_e('As inscrições para esta oportunidade já foram encerradas. Não é mais possível configurar a avaliação.');
     endif; ?>
 
+    <?php if($entity->canUser('@control')):?>
+        
+    <?php $this->part('singles/opportunity-evaluations-fields--config', ['entity' => $entity]) ?>
+
+    <?php endif; ?>
+
 </div>
