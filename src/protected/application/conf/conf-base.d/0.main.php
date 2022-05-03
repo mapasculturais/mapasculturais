@@ -33,6 +33,13 @@ return [
     ex: `pt_BR,es_ES` ou `es_ES` 
     */
     'app.lcode' => env('APP_LCODE', 'pt_BR'),
+
+    /* 
+    Define o valor padrão para o metadado En_pais
+    
+    ex: `BR` ou `AR` 
+    */
+    'app.defaultCountry' => env('APP_DEFAULT_COUNTRY', "BR"),
     
     /* 
     Define o modo em que a aplicação está rodando. 
