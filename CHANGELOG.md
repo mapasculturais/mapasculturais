@@ -9,6 +9,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
 - implementa calculo sobre políticas afirmativas nas avaliações técnicas
+### Correções
+- Corrige atualização de geo localização ao se atualizar endereço do agente
+### Melhorias
+- Define configuração que define valor default para o metadado En_pais e seta esse valor no jsObject
 
 ## [5.2.9]
 ### Correções
