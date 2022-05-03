@@ -17,11 +17,29 @@ $this->addRegistrationToJs($entity);
 $this->includeAngularEntityAssets($entity);
 $this->includeEditableEntityAssets();
 
+$avaliable_evaluationFields = $entity->opportunity->avaliableEvaluationFields ?? [];
+$app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
+
+$can_see = function($field) use ($entity, $avaliable_evaluationFields){  
+
+    /** O Gestor pode ver todos os campos */
+    if($entity->opportunity->canUser("@control")){
+        return true;
+    }
+
+    if($entity->canUser("viewUserEvaluation")  && !isset($avaliable_evaluationFields[$field])){
+        return false;
+    }
+
+    return true;
+};
+
 $_params = [
     'entity' => $entity,
     'action' => $action,
     'opportunity' => $entity->opportunity
 ];
+
 ?>
 <?php $this->part('editable-entity', array('entity'=>$entity, 'action'=>$action));  ?>
 
@@ -33,11 +51,23 @@ $_params = [
 
         <?php $this->part('singles/registration-single--header', $_params) ?>
 
+        <?php if($can_see('category')): ?>
+       
         <?php $this->part('singles/registration-single--categories', $_params) ?>   
+
+        <?php endif ?>
         
+        <?php if($can_see('agentsSummary')): ?>
+
         <?php $this->part('singles/registration-single--agents', $_params) ?>
 
+        <?php endif ?>
+
+        <?php if($can_see('spaceSummary')): ?>
+
         <?php $this->part('singles/registration-single--spaces', $_params) ?>
+        
+        <?php endif ?>
         
         <?php $this->part('singles/registration-single--fields', $_params) ?>
 

@@ -119,7 +119,7 @@ abstract class AuthProvider {
     function setCookies(){
         $user_id = $this->isUserAuthenticated() ? $this->getAuthenticatedUser()->id : 0;
         $user_is_adm = $this->getAuthenticatedUser()->is('admin');
-        if (php_sapi_name() !== "cli") {
+        if (php_sapi_name() != "cli") {
             setcookie('mapasculturais.uid', $user_id, 0, '/');
             setcookie('mapasculturais.adm', $user_is_adm, 0, '/');
         }
