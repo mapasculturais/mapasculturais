@@ -6,7 +6,7 @@ sort($areas);
 ?>
 
 <div class="widget areas">
-    <hr>
+    
     <h3> <span class="required"></span> <?php $this->dict('taxonomies:area: name') ?></h3>
     <?php if($this->isEditable()): ?>
         <span id="term-area" class="js-editable-taxonomy" data-original-title="<?php $this->dict('taxonomies:area: name') ?>" data-emptytext="<?php $this->dict('taxonomies:area: select at least one') ?>" data-restrict="true" data-taxonomy="area"><?php echo implode('; ', $entity->terms['area'])?></span>

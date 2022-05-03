@@ -549,11 +549,10 @@ abstract class Theme extends \Slim\View {
         return $filename;
     }
 
-    function asset($file, $print = true){
+    function asset($file, $print = true, $include_hash_in_filename = true){
         $app = App::i();
         $app->applyHook('asset(' . $file . ')', [&$file]);
-        
-        $url = $this->getAssetManager()->assetUrl($file);
+        $url = $this->getAssetManager()->assetUrl($file, $include_hash_in_filename);
 
         $app->applyHook('asset(' . $file . '):url', [&$url]);
 
@@ -599,7 +598,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function isEditable(){
-        $result = (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+        $result = $this->controller->action == 'edit' || $this->controller->action == 'create'|| $this->editable ?? false;
 
         App::i()->applyHookBoundTo($this, 'mapasculturais.isEditable', [&$result]);
 

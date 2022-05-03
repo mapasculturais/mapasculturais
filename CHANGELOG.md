@@ -3,15 +3,107 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
+### Novas funcionalidades
+- Implementa sistemas de permissão para os avaliadores
+- implementa calculo sobre políticas afirmativas nas avaliações técnicas
+
+## [5.2.9]
+### Correções
+- Corrige a inserção de links nos selos e tela de edição de selos
+
+## [5.2.8]
+### Correções
+- evita warnings em escripts que rodam na cli
+
+## [5.2.7] - 2022-04-25
+- Adiciona possibilidade para a não inclusão do hash nos assets publicados
+
+### Correções
+- Corrige a página de visualização do selo aplicado nas entidades
+
+## [5.2.5] - 2022-04-25
+- Corrige nomes dos arquivos dos assets publicados
+
+## [5.2.4] - 2022-04-25
+- Adição de hooks na tela de gestão de usuários
+  
+## [5.2.3] - 2022-04-18
+- Remove chamada do método requireAuthentication desnecessário no template part info-admin
+
+## [5.2.2] - 2022-04-14
+### Correções
+- Remove chamada do parent::__construct()  do controlador
+
+## [5.2.1] - 2022-04-14
+- Deixa as configuações do modulo LGPD por default  vazia para evitar redirecionamento sem configurações de termos
+
+## [5.2.0] - 2022-04-14
+### Novas funcionalidades
+- Novo módulo LGPD com redirecionamento para aceitação dos termos de uso e politica de privacidade, se o usuário ainda não tiver aceito ou sempre que houver modificação nos textos dos termos
 ### Melhorias
 - Novo formato de changelog
 - Refatoração no trait MagicCaller para disparar exceção quando não existe o método, além de hook para criação de novos métodos (hook `Class::newMethod`)
 - API agora executa o unserialize dos metadados
 
 ### Correções
+- altera identidade do usuário que executa os scripts de jobs e recriação de pcache pendente
 - corrige várias chamadas para métodos inexistentes, que não davam erro por conta do trait MagicCaller
+
+# [5.1.55] - 2022-03-25
+### Correções
+- Corrige o filtro por avaliador no endpoint findEvaluations
+- Adiciona na API a possibilidade de filtrar pela permissão de outros usuários (@permissionsUser)
+
+# [5.1.54] - 2022-03-24
+### Correções
+- Corrige filtro por categoria na aba de avaliações na tela do avaliador
+# [5.1.53] - 2022-03-23
+### Correções
+- Corrige filtro de categorias no endpoint findEvaluation
+- Seta valor padrão como desabilitado no plugin ProfileCompletion
+
+## [5.1.52] - 2022-03-22
+### Correções
+- Desabilita chamada automárica para api/notification/find para evitar sobrecarga no servidor
+## [5.1.51] - 2022-03-07
+### Correção
+
+- Corrige mascara campo de moeda
+- Remove chamada de método desnecessário no módulo de relatŕorios
+
+### Melhorias
+- Insere hook para controlar exibição do botão de download de planilhas nas telas das entidades
+
+## [5.1.50] - 2022-02-25
+### Correção
+
+- Corrige verificação de obrigatório nos campos que estão condicionados a outros campos do formulário #1928
+- Aplica máscara de moeda no campo, independentemente do mesmo iniciar oculto ou não no carregamento do formulário #1931
+## [5.1.49] - 2022-02-21
+### Correção
+
+- Ajusta exportação da planilha de inscritos, para que leve em consideração oportunidades multi-fases
+## [5.1.48] - 2022-02-17
+### Correção
+
+- Aplica redução no nome do campo para evitar problemas na rename do arquivo de anexo no processo de upload Ref.: #1929
+## [5.1.47] - 2022-02-03
+### Correção
+
+- Remove recriação de cache da oportunidade quando se envia um inscrição
+- Remove lixos hashKey gerados pelo angularjs na tabela registration_meta
+
+## [5.1.46] - 2022-02-02
+### Correção
+
+- Corrige bug na troca de agente responsável na fiche de inscrição
+## [5.1.45] - 2022-01-31
+### Correção
+
+- Impede que campos obrigatórios sejam enviados com essas sujeiras e interpretados como valores verdadeiros
+
+>>>>>>> develop
 ## [5.1.44] - 2022-01-24
 ### Correção
 

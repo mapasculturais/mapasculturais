@@ -18,7 +18,7 @@ class Seal extends \MapasCulturais\Entity
 {
     use Traits\EntityMetadata,
     	Traits\EntityOwnerAgent,
-        Traits\EntityMetadata,
+        Traits\EntityMetaLists,
         Traits\EntityFiles,
         Traits\EntityAvatar,
         Traits\EntityAgentRelation,

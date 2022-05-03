@@ -812,19 +812,19 @@ class Theme extends MapasCulturais\Theme {
 
             $this->jsObject['assets'] = array();
             $this->jsObject['templateUrl'] = array();
-            $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false);
+            $this->jsObject['spinnerUrl'] = $this->asset('img/spinner.gif', false, false);
 
             $this->jsObject['lcode'] = $app->config['app.lcode'];
 
-            $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false);
-            $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false);
-            $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false);
-            $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
-            $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
-            $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
-            $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
-            $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
-            $this->jsObject['assets']['avatarOpportunity'] = $this->asset('img/avatar--opportunity.png', false);
+            $this->jsObject['assets']['fundo'] = $this->asset('img/fundo.png', false, false);
+            $this->jsObject['assets']['instituto-tim'] = $this->asset('img/instituto-tim-white.png', false, false);
+            $this->jsObject['assets']['verifiedIcon'] = $this->asset('img/verified-icon.png', false, false);
+            $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false, false);
+            $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false, false);
+            $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false, false);
+            $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false, false);
+            $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false, false);
+            $this->jsObject['assets']['avatarOpportunity'] = $this->asset('img/avatar--opportunity.png', false, false);
 
             $this->jsObject['isEditable'] = $this->isEditable();
             $this->jsObject['isSearch'] = $this->isSearch();
@@ -1665,42 +1665,40 @@ class Theme extends MapasCulturais\Theme {
         $app = App::i();
 
         $this->assetManager->publishAsset('css/main.css.map', 'css/main.css.map');
+        $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false, false);
+        $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false, false);
+        $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false, false);
+        $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false, false);
+        $this->jsObject['assets']['avatarOpportunity'] = $this->asset('img/avatar--opportunity.png', false, false);
+        $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false, false);
 
-        $this->jsObject['assets']['avatarAgent'] = $this->asset('img/avatar--agent.png', false);
-        $this->jsObject['assets']['avatarSpace'] = $this->asset('img/avatar--space.png', false);
-        $this->jsObject['assets']['avatarEvent'] = $this->asset('img/avatar--event.png', false);
-        $this->jsObject['assets']['avatarProject'] = $this->asset('img/avatar--project.png', false);
-        $this->jsObject['assets']['avatarOpportunity'] = $this->asset('img/avatar--opportunity.png', false);
-        $this->jsObject['assets']['avatarSeal'] = $this->asset('img/avatar--seal.png', false);
+        $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false, false);
+        $this->jsObject['assets']['iconFullscreen'] = $this->asset('img/icon-fullscreen.png', false, false);
+        $this->jsObject['assets']['iconZoomIn'] = $this->asset('img/icon-zoom-in.png', false, false);
+        $this->jsObject['assets']['iconZoomOut'] = $this->asset('img/icon-zoom-out.png', false, false);
+        $this->jsObject['assets']['layers'] = $this->asset('img/layers.png', false, false);
+        $this->jsObject['assets']['iconCircle'] = $this->asset('img/icon-circulo.png', false, false);
 
-        $this->jsObject['assets']['iconLocation'] = $this->asset('img/icon-localizacao.png', false);
-        $this->jsObject['assets']['iconFullscreen'] = $this->asset('img/icon-fullscreen.png', false);
-        $this->jsObject['assets']['iconZoomIn'] = $this->asset('img/icon-zoom-in.png', false);
-        $this->jsObject['assets']['iconZoomOut'] = $this->asset('img/icon-zoom-out.png', false);
-        $this->jsObject['assets']['layers'] = $this->asset('img/layers.png', false);
-        $this->jsObject['assets']['iconCircle'] = $this->asset('img/icon-circulo.png', false);
+        $this->jsObject['assets']['pinShadow'] = $this->asset('img/pin-sombra.png', false, false);
+        $this->jsObject['assets']['pinMarker'] = $this->asset('img/marker-icon.png', false, false);
 
-        $this->jsObject['assets']['pinShadow'] = $this->asset('img/pin-sombra.png', false);
-        $this->jsObject['assets']['pinMarker'] = $this->asset('img/marker-icon.png', false);
+        $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agent.png', false, false);
+        $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-space.png', false, false);
+        $this->jsObject['assets']['pinEvent'] = $this->asset('img/pin-event.png', false, false);
 
-        $this->jsObject['assets']['pinAgent'] = $this->asset('img/pin-agent.png', false);
-        $this->jsObject['assets']['pinSpace'] = $this->asset('img/pin-space.png', false);
-        $this->jsObject['assets']['pinEvent'] = $this->asset('img/pin-event.png', false);
+        $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agent.png', false, false);
+        $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-event.png', false, false);
+        $this->jsObject['assets']['pinSpaceGroup'] = $this->asset('img/agrupador-space.png', false, false);
+        //$this->jsObject['assets']['pinSealGroup'] = $this->asset('img/agrupador-seal.png', false, false);
 
-        $this->jsObject['assets']['pinAgentGroup'] = $this->asset('img/agrupador-agent.png', false);
-        $this->jsObject['assets']['pinEventGroup'] = $this->asset('img/agrupador-event.png', false);
-        $this->jsObject['assets']['pinSpaceGroup'] = $this->asset('img/agrupador-space.png', false);
-        //$this->jsObject['assets']['pinSealGroup'] = $this->asset('img/agrupador-seal.png', false);
+        $this->jsObject['assets']['pinAgentEventGroup'] = $this->asset('img/agrupador-combinado-agent-event.png', false, false);
+        $this->jsObject['assets']['pinSpaceEventGroup'] = $this->asset('img/agrupador-combinado-space-event.png', false, false);
+        $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-space-agent.png', false, false);
+        //$this->jsObject['assets']['pinSealSpaceGroup'] = $this->asset('img/agrupador-combinado-space-seal.png', false, false);
 
-        $this->jsObject['assets']['pinAgentEventGroup'] = $this->asset('img/agrupador-combinado-agent-event.png', false);
-        $this->jsObject['assets']['pinSpaceEventGroup'] = $this->asset('img/agrupador-combinado-space-event.png', false);
-        $this->jsObject['assets']['pinAgentSpaceGroup'] = $this->asset('img/agrupador-combinado-space-agent.png', false);
-        //$this->jsObject['assets']['pinSealSpaceGroup'] = $this->asset('img/agrupador-combinado-space-seal.png', false);
-
-        $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false);
+        $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false, false);
 
         $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
-
         $this->enqueueScript('app', 'map', 'js/map.js');
     }
 
