@@ -1711,6 +1711,9 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['assets']['pinAgentSpaceEventGroup'] = $this->asset('img/agrupador-combinado.png', false, false);
 
         $this->jsObject['geoDivisionsHierarchy'] = $app->config['app.geoDivisionsHierarchy'];
+
+        $this->jsObject['defaultCountry'] = $app->config['app.defaultCountry'];
+        
         $this->enqueueScript('app', 'map', 'js/map.js');
     }
 
