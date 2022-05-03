@@ -1046,6 +1046,8 @@ $(function(){
                 $('#En_Municipio').editable('setValue', r.city != null ? r.city.nome : '');
                 $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
                 $('[data-edit="location').editable('setValue', [r.lon, r.lat]);
+                $(".lat-txt").html(r.lat);
+                $(".lon-txt").html(r.lon);
                 concatena_enderco();
             }
         });
