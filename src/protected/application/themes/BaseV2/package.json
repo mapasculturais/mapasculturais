@@ -6,5 +6,12 @@
     },
     "devDependencies": {
         "@mapas/scripts": "workspace:*"
+    },
+    "mapas": {
+        "assets": {
+            "css": {
+                "main": "main"
+            }
+        }
     }
 }
