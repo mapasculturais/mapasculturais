@@ -332,23 +332,32 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $appliedPolicies = [];
         foreach($affirmativePoliciesConfig as $rules){
             $fieldName = "field_".$rules->field;
+            $applied = false;
 
             if(is_object($rules->value) || is_array($rules->value)){
                 foreach($rules->value as $key => $value){
                     if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
                         $totalPercent += $rules->fieldPercent;
-                        $appliedPolicies[] = $rules;
+                        $applied = true;
                         continue;
                     }
                 }
             }else{
                 if(filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rules->value, FILTER_VALIDATE_BOOL)){
                     $totalPercent += $rules->fieldPercent;
-                    $appliedPolicies[] = $rules;
+                    $applied = true;
                 }
             }
-        }
 
+            if($applied){
+                $appliedPolicies[] = [
+                    'title' => $rules->field,
+                    'fieldPercent' => $rules->fieldPercent,
+                    'value' => $registration->$fieldName,
+                ];
+            }
+        }
+        $registration->appliedAffirmativePolicies = $appliedPolicies;
         return ($totalPercent > $affirmativePoliciesRoof) ? $this->percentCalc($result, $affirmativePoliciesRoof) : $this->percentCalc($result, $totalPercent);
 
     }
