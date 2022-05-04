@@ -11,7 +11,7 @@ use MapasCulturais\i;
     <header>
         <div class="policy-roof">
             <p> <?php i::_e('Porcentagem total a ser aplicada') ?> </p>
-            <input ng-model="data.affirmativePolicieRoof" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span> <span class="detail"><?php i::_e('(0 = Sem limitações)') ?></span>
+            <input ng-model="data.affirmativePolicieRoof" ng-change="save()" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span> <span class="detail"><?php i::_e('(0 = Sem limitações)') ?></span>
         </div>
     </header>
 
