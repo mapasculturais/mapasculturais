@@ -7,15 +7,14 @@
         "watch": "pnpm run --parallel --recursive watch"
     },
     "devDependencies": {
-        "esbuild": "^0.14.14",
         "fast-glob": "^3.2.11",
-        "laravel-mix": "^6.0.41",
+        "laravel-mix": "^6.0.43",
         "laravel-mix-esbuild": "^1.1.0",
         "lerna": "^4.0.0",
         "postcss": "^8.4.13",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.49.0",
-        "sass-loader": "^12.4.0",
+        "sass": "^1.51.0",
+        "sass-loader": "^12.6.0",
         "webpack": "^5.72.0"
     }
 }
