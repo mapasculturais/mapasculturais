@@ -320,6 +320,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
     public function applyAffirmativePolicies($result, \MapasCulturais\Entities\Registration $registration)
     {
+        $app = App::i();
+
         $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->affirmativePolicies;
         $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
         $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
@@ -350,15 +352,31 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
 
             if($applied){
+                $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
                 $appliedPolicies[] = [
-                    'title' => $rules->field,
-                    'fieldPercent' => $rules->fieldPercent,
+                    'field' => [
+                        'title' => $field->title,
+                        'id' =>$rules->field
+                    ],
+                    'percentage' => $rules->fieldPercent,
                     'value' => $registration->$fieldName,
                 ];
             }
         }
-        $registration->appliedAffirmativePolicies = $appliedPolicies;
-        return ($totalPercent > $affirmativePoliciesRoof) ? $this->percentCalc($result, $affirmativePoliciesRoof) : $this->percentCalc($result, $totalPercent);
+        
+        $percentage = ($totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
+
+        $registration->appliedAffirmativePolicy = [
+            'raw' => $result,
+            'percentage' => $percentage,
+            'rules' => $appliedPolicies
+        ];
+
+        if($percentage > 0){
+            return $this->percentCalc($result, $percentage);
+        }else{
+            return $result;
+        }
 
     }
 
