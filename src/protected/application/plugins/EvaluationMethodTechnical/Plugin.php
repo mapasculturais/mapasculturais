@@ -71,12 +71,13 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
-        $this->registerRegistrationMetadata('appliedAffirmativePolicies', [
+        $this->registerRegistrationMetadata('appliedAffirmativePolicy', [
             'label' => i::__('Políticas Afirmativas aplicadas a inscrição'),
             'type' => 'json',
             'private' => true,
             'serialize' => function ($val){
-                return (!empty($val)) ? json_encode($val) : "[]";
+                $val = (!empty($val)) ? $val : ['raw' => null, 'percentage' => null, 'rules' => []];
+                return json_encode($val);
             },
             'unserialize' => function($val){
                 return json_decode($val);
