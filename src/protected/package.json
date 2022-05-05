@@ -9,8 +9,6 @@
     "devDependencies": {
         "fast-glob": "^3.2.11",
         "laravel-mix": "^6.0.43",
-        "laravel-mix-esbuild": "^1.1.0",
-        "lerna": "^4.0.0",
         "postcss": "^8.4.13",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.51.0",
