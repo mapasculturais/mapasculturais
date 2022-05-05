@@ -262,16 +262,19 @@ return [
                        </ol>
                    </li>
                    <li>
-                       FALE CONOSCO 
-
-                        <li>Sempre que você tiver alguma dúvida sobre este documento, mesmo após sua leitura, ou precisar interagir conosco
-                            sobre assuntos envolvendo os seus dados pessoais, poderá fazê-lo por meio do nosso canal de comunicação,
-                            solicitando esclarecimentos sobre a privacidade dos seus dados pessoais.</p>
-                            <p>Esperamos que o Mapa Cultural atenda às suas necessidades e que respeite todas as exigências legais de proteção
-                            de dados. A SECULT busca garantir  os direitos previstos na LGPD e aplica as melhores práticas de segurança da
-                            informação.
-                   
-                       </li>
+                       FALE CONOSCO
+                        <ol>
+                            <p style="font-weight:normal;">Sempre que você tiver alguma dúvida sobre este documento, mesmo após sua leitura, ou precisar interagir conosco
+                                sobre assuntos envolvendo os seus dados pessoais, poderá fazê-lo por meio do nosso canal de comunicação,
+                                solicitando esclarecimentos sobre a privacidade dos seus dados pessoais.
+                            </p>
+                            <p style="font-weight:normal;">Esperamos que o Mapa Cultural atenda às suas necessidades e que respeite todas as exigências legais de proteção
+                                de dados. A SECULT busca garantir  os direitos previstos na LGPD e aplica as melhores práticas de segurança da
+                                informação.
+                            </p>
+                                
+                        </ol>    
+                    </li>
                </ol>
                 <p>Versão atualizada em 25 de abril de 2022.</p>
                 <p><strong>ÓRGÃO – SECULT.</strong></p>',
