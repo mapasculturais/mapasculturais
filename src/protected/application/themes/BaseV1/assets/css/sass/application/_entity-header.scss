@@ -2,6 +2,19 @@
 
 .main-content-header {
     .ficha-spcultura{
+        background-color: unset;
+        padding: 0;
+        .span{
+            #dados-pessoais{
+                color: red;
+            }
+        }
+        .header-container-card{
+            border: 20px solid;
+            border-color: #EEEEEE;
+            border-radius: 5px;
+            padding: 25px;
+        }
         .widget{
             border:none;
             padding-bottom: 0em;
