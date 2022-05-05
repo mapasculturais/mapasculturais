@@ -1,5 +1,5 @@
 <div class="ficha-spcultura"> 
-    <h3><?php \MapasCulturais\i::_e("Dados Pessoais");?></h3>
+    <span id="title-dados-pessoais"><h3><?php \MapasCulturais\i::_e("Dados Pessoais");?></h3></span>
     
     <?php $this->applyTemplateHook('tab-about-service','before'); ?>
 
