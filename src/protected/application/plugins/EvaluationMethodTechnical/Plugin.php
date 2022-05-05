@@ -134,24 +134,40 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     public function _init() {
         $app = App::i();
 
-        // passa os dados de configuração das políticas afirmativas para JS
-        $app->hook('GET(opportunity.edit):before', function() use ($app){
-            $entity = $this->requestedEntity;
-            $previous_phases = $entity->previousPhases;
+        $plugin = $this;
 
-            if($entity->firstPhase->id != $entity->id){
-                $previous_phases[] = $entity;
-            }
+        // Insere valores das políticas afirmativas aplicadas na planilha de inscritos
+        $app->hook('opportunity.registrations.reportCSV', function(\MapasCulturais\Entities\Opportunity $opportunity, $registrations, &$header, &$body) use ($app){
+            
+            $isActiveAffirmativePolicies = filter_var($opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
 
-            foreach($previous_phases as $phase){
-                
-                foreach($phase->registrationFieldConfigurations as $field){
-                    $app->view->jsObject['affirmativePoliciesFieldsList'][] = $field;
+            if($isActiveAffirmativePolicies){
+
+                $header[] = 'POLITICAS-AFIRMATIVAS';
+                            
+                foreach($body as $i => $line){    
+                    $reg = $app->repo("Registration")->findOneBy(['number' => $line[0], 'opportunity' => $opportunity]);
+
+                    $policies = $reg->appliedAffirmativePolicy;
+
+                    if(!$policies->rules){
+                        continue;
+                    }
+
+                    $valuePencentage = (($policies->raw * $policies->percentage)/100);
+                    $cell = "";
+                    $cell.= "Políticas afimativas atribuídas \n\n";
+                    foreach($policies->rules as $k => $rule){
+                        $cell.= "{$rule->field->title}: {$rule->value} (+{$rule->percentage}%)\n";
+                        $cell.= "-------------------- \n";
+                    }
+                    
+                    $cell.= "\nAvaliação Técnica: {$policies->raw} \n";
+                    $cell.= "valor somado ao resultado: {$valuePencentage} (+{$policies->percentage}%)\n";
+                    $cell.= "Resultado final: {$reg->consolidatedResult} \n";
+                    $body[$i][] = $cell;
                 }
 
-                foreach($phase->registrationFileConfigurations as $file){
-                    $app->view->jsObject['affirmativePoliciesFieldsList'][] = $file;
-                }
             }
 
         });
