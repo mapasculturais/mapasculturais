@@ -365,19 +365,27 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
             if(is_object($rules->value) || is_array($rules->value)){
                 foreach($rules->value as $key => $value){
-                    if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
-                        $totalPercent += $rules->fieldPercent;
-                        $applied = true;
-                        continue;
+                    if(is_array($registration->$fieldName)){
+                        if(in_array($key, $registration->$fieldName) && filter_var($value, FILTER_VALIDATE_BOOL)){
+                            $totalPercent += $rules->fieldPercent;
+                            $applied = true;
+                            continue;
+                        }
+
+                    }else{
+                        if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
+                            $totalPercent += $rules->fieldPercent;
+                            $applied = true;
+                            continue;
+                        }
                     }
                 }
             }else{
                 if(filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rules->value, FILTER_VALIDATE_BOOL)){
-                    $totalPercent += $rules->fieldPercent;
                     $applied = true;
                 }
             }
-
+        
             if($applied){
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
                 $appliedPolicies[] = [
@@ -386,8 +394,9 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                         'id' =>$rules->field
                     ],
                     'percentage' => $rules->fieldPercent,
-                    'value' => $registration->$fieldName,
+                    'value' => $key,
                 ];
+                continue;
             }
         }
         
