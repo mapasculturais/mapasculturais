@@ -154,6 +154,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                 }
             }
 
+        });
+
+        // passa os dados de configuração das políticas afirmativas para JS
+        $app->hook('GET(opportunity.edit):before', function() use ($app, $plugin){
+            $entity = $this->requestedEntity;
+
+            $app->view->jsObject['affirmativePoliciesFieldsList'] = $plugin->getFieldsAllPhases($entity);
+           
             $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
 
             $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
@@ -402,6 +410,28 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     private function percentCalc($value, $percent)
     {
         return (($value * $percent) /100) + $value;
+    }
+
+    public function getFieldsAllPhases($entity)
+    {
+            $previous_phases = $entity->previousPhases;
+
+            if($entity->firstPhase->id != $entity->id){
+                $previous_phases[] = $entity;
+            }
+
+            $fieldsPhases = [];
+            foreach($previous_phases as $phase){
+                foreach($phase->registrationFieldConfigurations as $field){
+                    $fieldsPhases[] = $field;
+                }
+
+                foreach($phase->registrationFileConfigurations as $file){
+                    $fieldsPhases[] = $file;
+                }
+            }
+
+            return $fieldsPhases;
     }
 
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
