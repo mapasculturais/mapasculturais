@@ -1,0 +1,22 @@
+.entity-terms {
+    h4 {
+        margin: 0 10px 15px;
+    }
+    ul {
+        display: flex;
+        gap: 10px;
+        padding: 0;
+        li {
+            list-style: none; 
+            padding: 10px 25px; 
+            background-color: #EFEFEF; 
+            border-radius: 15px; 
+            font-size: 13px; 
+            line-height: 13px;
+            a {
+                text-decoration: none; 
+                color: black; 
+            }
+        }
+    }
+}
