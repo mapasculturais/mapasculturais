@@ -20,6 +20,7 @@ services:
       - db
       - redis
     environment:
+      - BUILD_ASSETS=1
       - PENDING_PCACHE_RECREATION_INTERVAL=15
       - JOBS_INTERVAL=15
       # - DB_HOST=db
@@ -36,14 +37,14 @@ services:
     depends_on:
       - db
       - redis
-      
+
     stdin_open: true
     tty: true
-  
+
   redis:
     image: redis:5
     command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
-    hostname: redis    
+    hostname: redis
   db:
     image: mdillon/postgis:11
     environment:
