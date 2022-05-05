@@ -14,23 +14,15 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
 
         $app->hook('view.render(<<*>>):before', function () use($app) {
-            $vue3 = $app->mode === APPMODE_PRODUCTION ?
-                'https://unpkg.com/vue@3/dist/vue.global.prod.js' : 'https://unpkg.com/vue@3/dist/vue.global.js';
-
             $theme = $app->view;
 
             $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
             $app_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'app-v2' : 'app';
 
-            $app->view->enqueueScript($vendor_group, 'vue3', $vue3);
-            $app->view->enqueueScript($vendor_group, 'vue-demi', 'https://unpkg.com/vue-demi@0.12.1', ['vue3']);
-            $app->view->enqueueScript($vendor_group, 'pinia', 'https://unpkg.com/pinia', ['vue3', 'vue-demi']);
-            $app->view->enqueueScript($vendor_group, 'iconify-vue', 'https://unpkg.com/@iconify/vue@3.1.3/dist/iconify.js', ['vue3']);
-            $app->view->enqueueScript($vendor_group, 'vue-final-modal', 'https://unpkg.com/vue-final-modal@next', ['vue3']);
-
-            $app->view->enqueueScript($app_group, 'components-api', 'js/components-base/API.js');
-            $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-api']);
-            $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js');
+            $app->view->enqueueScript($app_group, 'components-init', 'js/modules_Components_app.js', []);
+            $app->view->enqueueScript($app_group, 'components-api', 'js/components-base/API.js', ['components-init']);
+            $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api']);
+            $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
 
             $app->view->enqueueStyle($vendor_group, 'vue-final-modal', 'css/components-base/modals.css');
             ;
@@ -40,7 +32,7 @@ class Module extends \MapasCulturais\Module {
         });
 
         $app->hook('mapasculturais.body:after,template(<<*>>.body):after', function () use($app) {
-            $app->view->part('components/scripts');
+            $app->view->printScripts('components');;
         });
 
         $self = $this;

@@ -7,11 +7,10 @@
     "devDependencies": {
         "@mapas/scripts": "workspace:*"
     },
-    "mapas": {
-        "assets": {
-            "css": {
-                "main": "main"
-            }
-        }
+    "dependencies": {
+        "@iconify/vue": "^3.2.1",
+        "pinia": "^2.0.13",
+        "vue": "^3.2.33",
+        "vue-final-modal": "^3.4.3"
     }
 }
