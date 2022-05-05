@@ -12,7 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias
-- Define configuração que define valor default para o metadado En_pais e seta esse valor no jsObject
+- Revisão dos scripts de desenvolvimento
 
 ## [5.2.9]
 ### Correções
