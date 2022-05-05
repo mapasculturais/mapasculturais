@@ -19,7 +19,7 @@ class Module extends \MapasCulturais\Module {
             $vendor_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'vendor-v2' : 'vendor';
             $app_group = $theme instanceof \MapasCulturais\Themes\BaseV2\Theme ? 'app-v2' : 'app';
 
-            $app->view->enqueueScript($app_group, 'components-init', 'js/modules_Components_app.js', []);
+            $app->view->enqueueScript($app_group, 'components-init', 'js/vue-init.js', []);
             $app->view->enqueueScript($app_group, 'components-api', 'js/components-base/API.js', ['components-init']);
             $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api']);
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
