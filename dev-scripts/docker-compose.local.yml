@@ -20,30 +20,22 @@ services:
       - db
       - redis
     environment:
+      - APP_MODE=development
+      - ACTIVE_THEME=MapasCulturais\Themes\BaseV1
+      - APP_LCODE=pt_BR,es_ES
       - PENDING_PCACHE_RECREATION_INTERVAL=15
       - JOBS_INTERVAL=15
-      # - DB_HOST=db
-      # - DB_NAME=mapas
-      # - DB_USER=mapas
-      # - DB_PASS=mapas
-
-      - ACTIVE_THEME=MapasCulturais\Themes\BaseV1
-
-      - APP_LCODE=pt_BR,es_ES
-      - APP_MODE=development
       - REDIS_CACHE=redis
-
     depends_on:
       - db
       - redis
       
     stdin_open: true
     tty: true
-  
+
   redis:
-    image: redis:5
-    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
-    hostname: redis    
+    image: redis:6
+    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
   db:
     image: mdillon/postgis:11
     environment:
