@@ -7,7 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
-- implementa calculo sobre políticas afirmativas nas avaliações técnicas
+- Implementa calculo sobre políticas afirmativas nas avaliações técnicas
+- Novo tipo de saída da api em tabela de texto: @type=texttable
 ### Correções
 - Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias
