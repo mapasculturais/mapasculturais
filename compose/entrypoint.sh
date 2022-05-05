@@ -36,6 +36,10 @@ fi
 
 chown -R www-data:www-data /var/www/html/assets /var/www/html/files /var/www/private-files
 
+if [ $BUILD_ASSETS = "1" ]; then
+    ( cd protected && pnpm install --recursive && pnpm run dev )
+fi
+
 cd /
 touch /nohup.out
 usermod -s /bin/sh www-data
