@@ -134,9 +134,27 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
     public function _init() {
         $app = App::i();
 
+        // passa os dados de configuração das políticas afirmativas para JS
         $app->hook('GET(opportunity.edit):before', function() use ($app){
-            
-            $evaluationMethodConfiguration = $this->requestedEntity->evaluationMethodConfiguration;
+            $entity = $this->requestedEntity;
+            $previous_phases = $entity->previousPhases;
+
+            if($entity->firstPhase->id != $entity->id){
+                $previous_phases[] = $entity;
+            }
+
+            foreach($previous_phases as $phase){
+                
+                foreach($phase->registrationFieldConfigurations as $field){
+                    $app->view->jsObject['affirmativePoliciesFieldsList'][] = $field;
+                }
+
+                foreach($phase->registrationFileConfigurations as $file){
+                    $app->view->jsObject['affirmativePoliciesFieldsList'][] = $file;
+                }
+            }
+
+            $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
 
             $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
             $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
@@ -365,7 +383,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         }
         
-        $percentage = ($totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
+        $percentage = (($affirmativePoliciesRoof > 0) && $totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
 
         $registration->appliedAffirmativePolicy = [
             'raw' => $result,
