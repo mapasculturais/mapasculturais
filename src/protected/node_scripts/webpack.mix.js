@@ -12,8 +12,7 @@ function resolveDestination (source, type) {
     if (exportName) {
         return `assets/${type}/${exportName}.${type}`
     } else {
-        const prefix = CWD.split('/').slice(-2).join('_')
-        return `assets/${type}/${prefix}_${sourceId}.${type}`
+        return `assets/${type}/${sourceId}.${type}`
     }
 }
 
