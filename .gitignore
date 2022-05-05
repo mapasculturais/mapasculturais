@@ -30,3 +30,4 @@ documentation/site
 private-files
 docker-data
 scripts/nohup.out
+*node_modules*
