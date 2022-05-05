@@ -203,7 +203,7 @@
                 }
             });
 
-            MapasCulturais.entity.registrationFieldConfigurations.forEach(function(item){
+            MapasCulturais.affirmativePoliciesFieldsList.forEach(function(item){
                 if(item.fieldType == "checkbox" || 
                      item.fieldType == "select" || 
                      item.fieldType == "checkboxes" || 
@@ -257,7 +257,7 @@
                       }
                     
                     item.viewDataValues = _ismultiple;
-                    item.valuesList = item.fieldOptions.split("\n");
+                    item.valuesList = item.fieldOptions;
 
                     if(_ismultiple){
                         $scope.data.registrationFieldConfigurations.push(item)
