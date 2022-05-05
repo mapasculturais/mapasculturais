@@ -365,7 +365,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         }
         
-        $percentage = ($totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
+        $percentage = (($affirmativePoliciesRoof > 0) && $totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
 
         $registration->appliedAffirmativePolicy = [
             'raw' => $result,
