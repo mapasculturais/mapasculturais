@@ -12,7 +12,6 @@ src/protected/application/conf/config.php
 src/protected/application/conf/conf-test-local.php
 src/protected/DoctrineProxies/*
 src/protected/application/themes/mapasculturais-*
-src/protected/node_modules
 src/protected/vendor
 src/pub
 src/assets
@@ -26,6 +25,7 @@ _apigen.phar
 .DS_Store
 .composer/
 .bash_history
+.pnpm-store
 SaaS/*
 documentation/site
 private-files
@@ -33,10 +33,5 @@ docker-data
 scripts/nohup.out
 src/geojson
 
-src/protected/application/lib/modules/*/node_modules
-src/protected/application/lib/modules/*/package-lock.json
-src/protected/application/plugins/*/node_modules
-src/protected/application/lib/modules/*/package-lock.json
-src/protected/application/themes/*/node_modules
-src/protected/application/lib/modules/*/package-lock.json
+node_modules/
 mix-manifest.json

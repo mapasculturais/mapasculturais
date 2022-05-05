@@ -5,16 +5,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs npm
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs
 
 RUN rm -rf /var/lib/apt/lists
 
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PATH:/root/.local/share/pnpm
+
 # Install uglify and terser
-RUN npm install -g \
+RUN pnpm install -g \
         terser \
         uglifycss \
-        autoprefixer
+        autoprefixer \
+        postcss
 
 # Install sass
 RUN gem install sass -v 3.4.22
@@ -46,7 +51,7 @@ RUN yes | pecl install xdebug \
 RUN docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
-    
+
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --version=1.10.16 --install-dir=/usr/local/bin && \

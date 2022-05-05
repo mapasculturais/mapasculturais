@@ -7,3 +7,5 @@ Dockerfile
 src/protected/vendor
 **/.sass-cache/**
 db*
+**/node_modules/**
+**/.pnpm-store/**
