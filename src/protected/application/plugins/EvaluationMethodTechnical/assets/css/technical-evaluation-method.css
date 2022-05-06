@@ -26,7 +26,6 @@
 }
 
 .technical-evaluation-configuration table input {
-    width: 100%;
 }
 
 .technical-evaluation-configuration .criterion-title {
@@ -62,6 +61,7 @@
 }
 .technical-evaluation-configuration .policy-roof input {
     margin: 0 5px;
+    margin-right: 5px;
 }
 
 .technical-evaluation-configuration .policy-field,
@@ -72,18 +72,26 @@
 .technical-evaluation-configuration .policy-value {
     width: 50%;
 }
+
 .technical-evaluation-configuration .policy-value select {
     width: 100%;
 }
 .technical-evaluation-configuration .policy-value .check {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 .technical-evaluation-configuration .policy-value .check span {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    margin-right: 5px;
+    align-items: center;
 }
+.technical-evaluation-configuration .policy-value .check span input{
+    margin-right: 5px;
+}
+
 
 .technical-evaluation-configuration td.policy-field select {
     width: 100%;
