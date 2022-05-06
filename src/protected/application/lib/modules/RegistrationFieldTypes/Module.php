@@ -368,20 +368,22 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module, $app) {
-                    $access_control_enabled = $app->isAccessControlEnabled();
-                    $disable_access_control = false;
+                    if($registration->status > 0){
+                        $result = json_decode($value);
+                    }else{
+                        $disable_access_control = false;
 
-                    if($access_control_enabled && $registration->canUser('viewPrivateData')){
-                        $disable_access_control = true;
-                        $app->disableAccessControl();
+                        if($registration->canUser('viewPrivateData')){
+                            $disable_access_control = true;
+                            $app->disableAccessControl();
+                        }
+                        
+                        $result = $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
+
+                        if($disable_access_control) {
+                            $app->enableAccessControl();
+                        }
                     }
-                    
-                    $result = $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
-
-                    if($disable_access_control && $access_control_enabled) {
-                        $app->enableAccessControl();
-                    }
-
 
                     return $result;
                 }   
@@ -401,24 +403,28 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module, $app) {
-                    $access_control_enabled = $app->isAccessControlEnabled();
-                    $disable_access_control = false;
-
-                    if($access_control_enabled && $registration->canUser('viewPrivateData')){
-                        $disable_access_control = true;
-                        $app->disableAccessControl();
-                    }
-
-                    $agent = $registration->getRelatedAgents('coletivo');
-
-                    if($agent){
-                        $result = $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
-                    } else {
+                    if($registration->status > 0){
                         $result = json_decode($value);
-                    }
+                    } else {
+                        $disable_access_control = false;
 
-                    if($disable_access_control && $access_control_enabled) {
-                        $app->enableAccessControl();
+                        if($registration->canUser('viewPrivateData')){
+                            $disable_access_control = true;
+                            $app->disableAccessControl();
+                        }
+    
+                        $agent = $registration->getRelatedAgents('coletivo');
+    
+                        if($agent){
+                            $result = $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
+                        } else {
+                            $result = json_decode($value);
+                        }
+    
+                        if($disable_access_control) {
+                            $app->enableAccessControl();
+                        }
+    
                     }
 
                     return $result;
@@ -440,23 +446,26 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value, Registration $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
-                    $access_control_enabled = $app->isAccessControlEnabled();
-                    $disable_access_control = false;
-                    
-                    if($access_control_enabled && $registration->canUser('viewPrivateData')){
-                        $disable_access_control = true;
-                        $app->disableAccessControl();
-                    }
-
-                    $space_relation = $registration->getSpaceRelation();
-                    if($space_relation){
-                        $result = $module->fetchFromEntity($space_relation->space, $value, $registration, $metadata_definition);
-                    } else {
+                    if($registration->status > 0){
                         $result = json_decode($value);
-                    }
-
-                    if($disable_access_control && $access_control_enabled) {
-                        $app->enableAccessControl();
+                    } else {
+                        $disable_access_control = false;
+                    
+                        if($registration->canUser('viewPrivateData')){
+                            $disable_access_control = true;
+                            $app->disableAccessControl();
+                        }
+    
+                        $space_relation = $registration->getSpaceRelation();
+                        if($space_relation){
+                            $result = $module->fetchFromEntity($space_relation->space, $value, $registration, $metadata_definition);
+                        } else {
+                            $result = json_decode($value);
+                        }
+    
+                        if($disable_access_control) {
+                            $app->enableAccessControl();
+                        }
                     }
 
                     return $result;

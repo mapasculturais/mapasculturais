@@ -234,6 +234,10 @@ return array(
         'En_Pais' => [
             'label' => \MapasCulturais\i::__('País'),
             'type' => 'select',
+            'default' => function(){
+                $app = MapasCulturais\App::i();
+                return $app->config['app.defaultCountry'];
+            },
             'options' => [
                 'AD' => 'Andorra',
                 'AR' => 'Argentina',
