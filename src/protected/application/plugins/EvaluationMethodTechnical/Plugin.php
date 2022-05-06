@@ -60,6 +60,40 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }
         ]);
 
+        $this->registerEvaluationMethodConfigurationMetadata('affirmativePolicies', [
+            'label' => i::__('Políticas Afirmativas'),
+            'type' => 'json',
+            'serialize' => function ($val){
+                return (!empty($val)) ? json_encode($val) : "[]";
+            },
+            'unserialize' => function($val){
+                return json_decode($val);
+            }
+        ]);
+
+        $this->registerRegistrationMetadata('appliedAffirmativePolicy', [
+            'label' => i::__('Políticas Afirmativas aplicadas a inscrição'),
+            'type' => 'json',
+            'private' => true,
+            'serialize' => function ($val){
+                $val = (!empty($val)) ? $val : ['raw' => null, 'percentage' => null, 'rules' => []];
+                return json_encode($val);
+            },
+            'unserialize' => function($val){
+                return json_decode($val);
+            }
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('isActiveAffirmativePolicies', [
+            'label' => i::__('Controla se as politicas afirmativas estão ou não ativadas'),
+            'type' => 'boolean',
+        ]);
+
+        $this->registerEvaluationMethodConfigurationMetadata('affirmativePoliciesRoof', [
+            'label' => i::__('Define o valor máximo das políticas afirmativas'),
+            'type' => 'string',
+        ]);
+
         $this->registerEvaluationMethodConfigurationMetadata('quota', [
             'label' => i::__('Cotas'),
             'type' => 'json',
@@ -91,13 +125,65 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             'sectionNameAlreadyExists' => i::__('Já existe uma seção com o mesmo nome'),
             'changesSaved' => i::__('Alteraçṍes salvas'),
             'deleteSectionConfirmation' => i::__('Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá todas os critérios desta seção.'),
-            'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.')
+            'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.'),
+            'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.')
         ]);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.technical';
     }
 
     public function _init() {
         $app = App::i();
+
+        $plugin = $this;
+
+        // Insere valores das políticas afirmativas aplicadas na planilha de inscritos
+        $app->hook('opportunity.registrations.reportCSV', function(\MapasCulturais\Entities\Opportunity $opportunity, $registrations, &$header, &$body) use ($app){
+            
+            $isActiveAffirmativePolicies = filter_var($opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
+
+            if($isActiveAffirmativePolicies){
+
+                $header[] = 'POLITICAS-AFIRMATIVAS';
+                            
+                foreach($body as $i => $line){    
+                    $reg = $app->repo("Registration")->findOneBy(['number' => $line[0], 'opportunity' => $opportunity]);
+
+                    $policies = $reg->appliedAffirmativePolicy;
+
+                    if(!$policies->rules){
+                        continue;
+                    }
+
+                    $valuePencentage = (($policies->raw * $policies->percentage)/100);
+                    $cell = "";
+                    $cell.= "Políticas afimativas atribuídas \n\n";
+                    foreach($policies->rules as $k => $rule){
+                        $cell.= "{$rule->field->title}: {$rule->value} (+{$rule->percentage}%)\n";
+                        $cell.= "-------------------- \n";
+                    }
+                    
+                    $cell.= "\nAvaliação Técnica: {$policies->raw} \n";
+                    $cell.= "valor somado ao resultado: {$valuePencentage} (+{$policies->percentage}%)\n";
+                    $cell.= "Resultado final: {$reg->consolidatedResult} \n";
+                    $body[$i][] = $cell;
+                }
+
+            }
+
+        });
+
+        // passa os dados de configuração das políticas afirmativas para JS
+        $app->hook('GET(opportunity.edit):before', function() use ($app, $plugin){
+            $entity = $this->requestedEntity;
+
+            $app->view->jsObject['affirmativePoliciesFieldsList'] = $plugin->getFieldsAllPhases($entity);
+           
+            $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
+
+            $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
+            $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
+            $app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+        });
 
         $app->hook('evaluationsReport(technical).sections', function(Entities\Opportunity $opportunity, &$sections){
             $i = 0;
@@ -267,10 +353,110 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $num = count($evaluations);
         if($num){
-            return number_format($result / $num, 2);
+            $_result = number_format($result / $num, 2);
+            return $this->applyAffirmativePolicies($_result, $registration);
+
         } else {
             return null;
         }
+    }
+
+    public function applyAffirmativePolicies($result, \MapasCulturais\Entities\Registration $registration)
+    {
+        $app = App::i();
+
+        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->affirmativePolicies;
+        $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
+        $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
+
+        if(!$isActiveAffirmativePolicies || empty($affirmativePoliciesConfig)){
+            return $result;
+        }
+
+        $totalPercent = 0.00;
+        $appliedPolicies = [];
+        foreach($affirmativePoliciesConfig as $rules){
+            $fieldName = "field_".$rules->field;
+            $applied = false;
+
+            if(is_object($rules->value) || is_array($rules->value)){
+                foreach($rules->value as $key => $value){
+                    if(is_array($registration->$fieldName)){
+                        if(in_array($key, $registration->$fieldName) && filter_var($value, FILTER_VALIDATE_BOOL)){
+                            $totalPercent += $rules->fieldPercent;
+                            $applied = true;
+                            continue;
+                        }
+
+                    }else{
+                        if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
+                            $totalPercent += $rules->fieldPercent;
+                            $applied = true;
+                            continue;
+                        }
+                    }
+                }
+            }else{
+                if(filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rules->value, FILTER_VALIDATE_BOOL)){
+                    $applied = true;
+                }
+            }
+        
+            if($applied){
+                $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
+                $appliedPolicies[] = [
+                    'field' => [
+                        'title' => $field->title,
+                        'id' =>$rules->field
+                    ],
+                    'percentage' => $rules->fieldPercent,
+                    'value' => $key,
+                ];
+                continue;
+            }
+        }
+        
+        $percentage = (($affirmativePoliciesRoof > 0) && $totalPercent > $affirmativePoliciesRoof) ? $affirmativePoliciesRoof : $totalPercent;
+
+        $registration->appliedAffirmativePolicy = [
+            'raw' => $result,
+            'percentage' => $percentage,
+            'rules' => $appliedPolicies
+        ];
+
+        if($percentage > 0){
+            return $this->percentCalc($result, $percentage);
+        }else{
+            return $result;
+        }
+
+    }
+
+    private function percentCalc($value, $percent)
+    {
+        return (($value * $percent) /100) + $value;
+    }
+
+    public function getFieldsAllPhases($entity)
+    {
+            $previous_phases = $entity->previousPhases;
+
+            if($entity->firstPhase->id != $entity->id){
+                $previous_phases[] = $entity;
+            }
+
+            $fieldsPhases = [];
+            foreach($previous_phases as $phase){
+                foreach($phase->registrationFieldConfigurations as $field){
+                    $fieldsPhases[] = $field;
+                }
+
+                foreach($phase->registrationFileConfigurations as $file){
+                    $fieldsPhases[] = $file;
+                }
+            }
+
+            return $fieldsPhases;
     }
 
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {

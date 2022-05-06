@@ -6,6 +6,6 @@ cd $DIR
 
 MAPAS_NAME=mapas-run
 
-docker exec -it $MAPAS_NAME bash
+docker exec -it $MAPAS_NAME bash -c "cd /var/www/html/protected/tools/ && ./doctrine orm:schema-tool:update --dump-sql"
 
 cd $CDIR
