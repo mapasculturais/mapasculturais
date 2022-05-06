@@ -78,21 +78,18 @@ class APITest extends MapasCulturais_TestCase {
     function testQuerySintax(){
         $this->user = 'admin';
 
-        $s1 = 'id,name,user.id,user.email,user.profile.id,user.profile.name,user.profile.singleUrl,user.profile.endereco,user.profile.spaces.id,user.profile.spaces.name,user.profile.spaces.singleUrl,user.profile.spaces.endereco';
-        $s2 = 'id,name,user.{id,email,profile.id,profile.name,profile.singleUrl,profile.endereco,profile.spaces.id,profile.spaces.name,profile.spaces.singleUrl,profile.spaces.endereco}';
-        $s3 = 'id,name,user.{id,email,profile.{id,name,singleUrl,endereco,spaces.id,spaces.name,spaces.singleUrl,spaces.endereco}}';
-        $s4 = 'id,name,user.{id,email,profile.{id,name,singleUrl,endereco,spaces.{id,name,singleUrl,endereco}}}';
+        $s1 = 'id,name,owner';
+        $s2 = 'id,name,owner.id';
+        $s3 = 'id,name,owner.{id}';
 
         $entities = $this->app->repo('Event')->findAll();
         foreach($entities as $entity){
             $r1 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s1");
             $r2 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s2");
             $r3 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s3");
-            $r4 = $this->apiFind('event', "id=EQ($entity->id)&@select=$s4");
 
             $this->assertEquals($r1, $r2, 'asserting same result for different sitaxes');
             $this->assertEquals($r1, $r3, 'asserting same result for different sitaxes');
-            $this->assertEquals($r1, $r4, 'asserting same result for different sitaxes');
         }
     }
 

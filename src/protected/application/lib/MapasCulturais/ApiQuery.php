@@ -274,9 +274,15 @@ class ApiQuery {
     
     /**
      * Properties of files that are being selected
-     * @var type
+     * @var array
      */
     protected $_selectingFilesProperties = ['url'];
+
+    /**
+     * Indica se foi usado o formato @files na seleção
+     * @var bool
+     */
+    protected $_usingLegacyImageSelectFormat = false;
 
     protected $_selectingIsVerfied = false;
     
@@ -322,13 +328,13 @@ class ApiQuery {
     
     /**
      * Seals filter
-     * @var type
+     * @var array
      */
     protected $_seals = [];
     
     /**
      *
-     * @var type
+     * @var array
      */
     protected $_permissions = [];
     
@@ -1007,7 +1013,7 @@ class ApiQuery {
                 $meta = $metadata[$entity_id];
                 foreach($meta as $k => $v){
                     $private = $definitions[$k]->private;
-                    if(is_callable($private)){
+                    if($private instanceof \Closure){ 
                         $private = \Closure::bind($private, (object) $entity);
                         if($private() && !$can_view){
                             unset($meta[$k]);
@@ -1023,6 +1029,10 @@ class ApiQuery {
     }
     
     protected function appendPermissions(array &$entities, array $select){
+        if(!$this->permissionCacheClassName) {
+            return;
+        }
+
         $skel = [];
         $admin_skel = [];
         $class = $this->entityClassName;
@@ -1050,9 +1060,7 @@ class ApiQuery {
                 pc.owner IN ($dql_in) AND
                 pc.user = {$user->id}";
                 
-        
-                
-             
+                     
         $query = $this->em->createQuery($dql);
         
         if($this->_usingSubquery){
@@ -1096,6 +1104,21 @@ class ApiQuery {
                 return;
             }
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
+                
+                if($cfg['property'] == 'files') {
+                    if($cfg['selectAll']) {
+                        $this->_selectingFiles[] = "*";
+                    } else {
+                        foreach($cfg['select'] as $group) {
+                            if(!in_array("$group.*", $this->_selectingFiles)) {
+                                $this->_selectingFiles[] = "$group.*";
+                            }    
+                        }
+                    }
+
+                    continue;
+                }
+
                 $prop = $cfg['property'];
                 
                 // do usuário só permite id e profile
@@ -1244,24 +1267,33 @@ class ApiQuery {
         
         $where = [];
         foreach($this->_selectingFiles as $select){
-            if(strpos($select, '.') > 0){
+            if ($select == '*') {
+                $where[] = '1 = 1';
+            } elseif (strpos($select, '.') > 0){
                 list($group, $transformation) = explode('.', $select);
-                $where[] = "(f.group = 'img:{$transformation}' AND fp.group = '{$group}')";
+                if ($transformation == '*') {
+                    $where[] = "(fp.group = '{$group}') OR (f.group = '{$group}')";
+                } else {
+                    $where[] = "(f.group = 'img:{$transformation}' AND fp.group = '{$group}')";
+                }
             } else {
                 $where[] = "(f.group = '{$select}')";
             }
         }
+
         $sub = $this->getSubqueryInIdentities($entities);
         
         $where = implode(' OR ', $where);
-        
+
         $dql = "
             SELECT
                 f.id,               
                 f.name,
+                f.mimeType,
                 f.description,
                 f._path,
                 f.group as file_group,
+                fp.id as parent_id,
                 f.private,
                 fp.group as parent_group,
                 IDENTITY(f.owner) AS owner_id,
@@ -1312,12 +1344,14 @@ class ApiQuery {
         foreach($entities as &$entity){
             $id = $entity['id'];
             if(isset($files[$id])){
+                $entity['files'] = [];
+                // método para compatibilidade da v1 da api
                 foreach($files[$id] as $f){
                     if(!isset($file_groups[$f['mainGroup']])){
                         continue;
                     }
                     
-                    if(true) { // método para compatibilidade da v1 da api
+                    if($this->_usingLegacyImageSelectFormat) { 
                         $file = [];
                         if(in_array('id', $this->_selectingFilesProperties)){
                             $file['id'] = $f['id'];
@@ -1337,6 +1371,7 @@ class ApiQuery {
                         
                         $key = '@files:' . $f['group'];
                         if($file_groups[$f['mainGroup']]->unique){
+
                             $entity[$key] = $file;
                         } else {
                             if(!isset($entity[$key])){
@@ -1344,11 +1379,50 @@ class ApiQuery {
                             }
                             $entity[$key][] = $file;
                         }
-                    } else {
-                        // @TODO: implementar o novo método de retorno de imagens
-                    }
-                    
+                    }                     
                 }
+
+                $raw_files = [];
+                $transformed_files = [];
+
+                foreach($files[$id] as $f){
+                    $file = (object) [
+                        'id' => $f['id'],
+                        'name' => $f['name'],
+                        'mimeType' => $f['mimeType'],
+                        'url' => $f['url'],
+                    ];
+
+                    list($group, $transformation) = explode('.', "{$f['group']}.");
+                    
+                    if ($transformation) {
+                        $parent = $f['parent_id'];
+
+                        $transformed_files[$parent] = $transformed_files[$parent] ?? [];
+                        $transformed_files[$parent][$transformation] = $file;
+                    } else {
+                        $file->description = $f['description'];
+
+                        if ($file_groups[$group]->unique) {
+                            $raw_files[$group] = $file;
+                        } else {
+                            $raw_files[$group] = $raw_files[$group] ?? [];
+                            $raw_files[$group][] = $file;
+                        }
+                    }
+                }
+
+                foreach($raw_files as $group => &$fs){
+                    if ($file_groups[$group]->unique) {
+                        $fs->transformations = $transformed_files[$fs->id] ?? null;
+                    } else {
+                        foreach($fs as &$file) {
+                            $file->transformations = $transformed_files[$file->id] ?? null;
+                        }
+                    }
+                }
+
+                $entity['files'] = $raw_files;
             }
         }
         
@@ -1810,6 +1884,7 @@ class ApiQuery {
             } elseif (strtolower($key) == '@or') {
                 $this->_op = ' OR ';
             } elseif (strtolower($key) == '@files') {
+                $this->_usingLegacyImageSelectFormat = true;
                 $this->_parseFiles($value);
             } elseif ($key === 'user' && $this->usesOwnerAgent) {
                 $this->_addFilterByOwnerUser($value);
@@ -1957,8 +2032,14 @@ class ApiQuery {
             '_geoLocation'
         ];
         
+        $defaults = ['terms'];
+
+        if ($this->usesFiles) {
+            $defaults[] = 'files';
+        }
+
         $properties = array_merge(
-                    ['terms'],
+                    $defaults,
                     $this->entityProperties,
                     $this->registeredMetadata,
                     array_keys($this->entityRelations)
@@ -1987,8 +2068,9 @@ class ApiQuery {
         
         $replacer = function ($select, $prop, $_subquery_select, $_subquery_match){
             $replacement = $this->_preCreateSelectSubquery($prop, $_subquery_select, $_subquery_match);
+            
             if(is_null($replacement)){
-                $select = str_replace(["$_subquery_match,", ",$_subquery_match"], '', $select);
+                $select = str_replace(["$_subquery_match,", ",$_subquery_match", ".$_subquery_match"], '', $select);
 
             }else{
                 $select = str_replace($_subquery_match, $replacement, $select);
@@ -2010,12 +2092,10 @@ class ApiQuery {
             $_subquery_match = $matches[0];
             $prop = $matches[1];
             $_subquery_select = $matches[2];
-
             $select = $replacer($select, $prop, $_subquery_select, $_subquery_match);
         }
 
         $this->_selecting = array_unique(explode(',', $select));
-
 
         if($this->_selectAll){
             foreach($this->_getAllPropertiesNames() as $k){
@@ -2035,7 +2115,6 @@ class ApiQuery {
             }
         }
 
-        $entity_class = $this->entityClassName;
         foreach ($this->_selecting as $i => $prop) {
             if(!$prop){
                 continue;
@@ -2061,9 +2140,10 @@ class ApiQuery {
                 $this->_selectingVerfiedSeals = true;
             } elseif($prop === 'seals') {
                 $this->_selectingSeals = true;
+            } elseif ($prop === 'files') {
+                $this->_selectingFiles = ['*'];
             }
         }
-        
     }
     
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {
@@ -2091,36 +2171,24 @@ class ApiQuery {
             }
         }, $_select_properties);
 
-        $first_time = !isset($this->_selectingRelations[$prop]);
+        $uid = uniqid('#sq:');
         
-        if(isset($this->_selectingRelations[$prop])){
-            $uid = $this->_selectingRelations[$prop];
-            $cfg = &$this->_subqueriesSelect[$uid];
-            
-            $cfg['select'] = array_merge($cfg['select'],array_diff($select,$cfg['select']));
-            $cfg['match'] = "{$prop}.\{" . implode(',', $cfg['select']) . "\}";
-            
-            $result = null;
-            
-        } else {
-            $uid = uniqid('#sq:');
-            
-            $this->_selectingRelations[$prop] = $uid;
-            
-            $this->_subqueriesSelect[$uid] = [
-                'selectAll' => $_select_all,
-                'property' => $prop,
-                'select' => array_unique($select),
-                'match' => $_match,
-            ];
-            
-            $result = $uid;
-        }
+        $this->_subqueriesSelect[$uid] = [
+            'selectAll' => $_select_all,
+            'property' => $prop,
+            'select' => array_unique($select),
+            'match' => $_match,
+        ];
         
-        if($first_time && $prop === 'user' && !isset($this->entityRelations['user']) && $this->usesOwnerAgent){
+        $result = $uid;
+    
+
+        // eval(\psy\sh());
+        
+        if($prop === 'user' && !isset($this->entityRelations['user']) && $this->usesOwnerAgent){
             $user_alias = $this->getAlias('user');
             $owner_alias = $this->getAlias('owner');
-            $this->select .=  $this->select ? ", IDENTITY({$owner_alias}.user) AS user" : "IDENTITY({$owner_alias}.user) AS user";
+            $this->select .=  $this->select ? ", IDENTITY({$owner_alias}.user)   AS   user" : "IDENTITY({$owner_alias}.user) AS user";
             $this->joins .= " JOIN e.owner {$owner_alias}";
         }
         
