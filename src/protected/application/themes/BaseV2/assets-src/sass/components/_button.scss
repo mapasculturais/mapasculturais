@@ -14,8 +14,14 @@
 
     .iconify {
         height: 1.25em;
-        margin-right: size(16);
         width: 1.25em;
+    }
+
+    &:not(&--icon) {
+
+        .iconify {
+            margin-right: size(16);
+        }
     }
 
     &--large {
