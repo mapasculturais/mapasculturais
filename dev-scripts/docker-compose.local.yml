@@ -10,8 +10,7 @@ services:
       - ../src/protected:/var/www/html/protected
       - ../scripts:/var/www/scripts
       - ../compose/config.php:/var/www/html/protected/application/conf/config.php
-      - ../compose/config.d:/var/www/html/protected/application/conf/config.d
-      - ../compose/local/config.local.php:/var/www/html/protected/application/conf/config.d/z.config.local.php
+      - ../compose/local/config.d:/var/www/html/protected/application/conf/config.d
       - ../docker-data/assets:/var/www/html/assets
       - ../docker-data/public-files:/var/www/html/files
       - ../docker-data/private-files:/var/www/private-files
@@ -22,28 +21,17 @@ services:
     environment:
       - PENDING_PCACHE_RECREATION_INTERVAL=15
       - JOBS_INTERVAL=15
-      # - DB_HOST=db
-      # - DB_NAME=mapas
-      # - DB_USER=mapas
-      # - DB_PASS=mapas
-
-      - ACTIVE_THEME=MapasCulturais\Themes\BaseV1
-
-      - APP_LCODE=pt_BR,es_ES
-      - APP_MODE=development
       - REDIS_CACHE=redis
-
     depends_on:
       - db
       - redis
       
     stdin_open: true
     tty: true
-  
+
   redis:
-    image: redis:5
-    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru
-    hostname: redis    
+    image: redis:6
+    command: --maxmemory 256Mb --maxmemory-policy allkeys-lru  
   db:
     image: mdillon/postgis:11
     environment:
