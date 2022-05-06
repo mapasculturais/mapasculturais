@@ -1,0 +1,20 @@
+@use '../settings/mixins' as *;
+
+.share-links {
+
+    &--links {
+        display: flex;
+        gap: size(20);
+        margin: 10px 0;
+    }
+
+    a{
+        width: size(20);
+        text-align: center;
+        cursor: pointer;
+        svg{
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
