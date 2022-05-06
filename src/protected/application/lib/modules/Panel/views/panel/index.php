@@ -14,7 +14,7 @@ $profile = $app->user->profile;
 </div>
 <div class="panel__row">
     <p><?=i::__('Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes criados')?></p>
-    <a class="button is-large is-primary" href="#">
+    <a class="button button--large button--primary" href="#">
         <iconify icon="mdi:account-multiple-plus"></iconify>
         <span><?=i::__('Criar agente')?></span>
     </a>

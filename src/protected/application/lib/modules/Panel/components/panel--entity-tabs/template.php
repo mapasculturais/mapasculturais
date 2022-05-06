@@ -32,10 +32,10 @@ $tabs = $tabs ?? [
                         aria-label="<?=i::__('Palavras-chave')?>"
                         placeholder="<?=i::__('Buscar por palavras-chave')?>"
                         v-model="entities.query['@keyword']">
-                    <button type="button" class="button is-solid" @click="entities.refresh()">
+                    <button type="button" class="button button--solid" @click="entities.refresh()">
                         <?=i::__('Filtrar')?>
                     </button>
-                    <button type="button" class="button is-solid">
+                    <button type="button" class="button button--solid">
                         <iconify icon="mdi:sort" inline></iconify>
                         <?=i::__('Ordenar')?>
                     </button>

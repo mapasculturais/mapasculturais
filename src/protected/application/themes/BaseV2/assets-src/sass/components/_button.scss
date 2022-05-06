@@ -18,13 +18,13 @@
         width: 1.25em;
     }
 
-    &.is-large {
+    &--large {
         justify-content: center;
         max-width: 100%;
         width: size(320);
     }
 
-    &.is-primary {
+    &--primary {
         background-color: var(--mc-primary-500);
         color: var(--mc-white);
 
@@ -33,7 +33,7 @@
         }
     }
 
-    &.is-secondary {
+    &--secondary {
         background-color: var(--mc-secondary-500);
         color: var(--mc-primary-500);
 
@@ -42,7 +42,7 @@
         }
     }
 
-    &.is-solid {
+    &--solid {
         background-color: var(--mc-gray-300);
         color: var(--mc-black);
 
@@ -51,7 +51,7 @@
         }
     }
 
-    &.is-text {
+    &--text {
         background-color: transparent;
         color: var(--mc-primary-500);
 
