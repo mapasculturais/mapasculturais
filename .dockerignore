@@ -1,7 +1,7 @@
 # comment
 */temp*
 */*/temp*
-docker-data
+docker-data/**
 temp?
 Dockerfile
 src/protected/vendor

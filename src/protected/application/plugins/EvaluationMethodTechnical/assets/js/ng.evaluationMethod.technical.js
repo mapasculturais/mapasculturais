@@ -76,6 +76,8 @@
                     affirmativePoliciesRoof: $scope.data.affirmativePolicieRoof || 0.00
                 };
 
+                console.log(data);
+
                 $scope.data.criteria.forEach(function (crit) {
                     for (var i in data.sections) {
                         var section = data.sections[i];
@@ -201,11 +203,28 @@
                 }
             });
 
-            MapasCulturais.entity.registrationFieldConfigurations.forEach(function(item){
-                if(item.fieldType == "checkbox" || item.fieldType == "select" || item.fieldType == "checkboxes"){
+            MapasCulturais.affirmativePoliciesFieldsList.forEach(function(item){
+                if(item.fieldType == "checkbox" || 
+                     item.fieldType == "select" || 
+                     item.fieldType == "checkboxes" || 
+                     item.fieldType == "agent-collective-field" ||
+                     item.fieldType == "agent-owner-field" ||
+                     item.fieldType == "space-field"
+                ){
+
+                    var fieldType = null;
+                    if(item.config){
+                        fieldType = item.config.entityField;
+                    }else{
+                        fieldType = item.fieldType;
+                    }
+
+                    fieldType = (Object.keys(item.config).length > 0) ? item.config.entityField : item.fieldType;
+
+
 
                     var _ismultiple = false;
-                    switch(item.fieldType) {
+                    switch(fieldType) {
                         case "checkbox":
                             _ismultiple = 'bool';
                             break;
@@ -215,14 +234,34 @@
                         case "checkboxes":
                             _ismultiple = "checkbox";
                             break;
+                        case "checkboxes":
+                            _ismultiple = "checkbox";
+                            break;
+                        case "orientacaoSexual":
+                            _ismultiple = "checkbox";
+                            break;
+                        case "raca":
+                            _ismultiple = "checkbox";
+                            break;
+                        case "@terms:area":
+                            _ismultiple = "checkbox";
+                            break;
+                        case "genero":
+                            _ismultiple = "checkbox";
+                            break;
+                        case "@type":
+                            _ismultiple = "checkbox";
+                            break;
                         default:
-                            _ismultiple = "";
+                            _ismultiple = false;
                       }
                     
                     item.viewDataValues = _ismultiple;
-                    item.valuesList = item.fieldOptions.split("\n");
+                    item.valuesList = item.fieldOptions;
 
-                    $scope.data.registrationFieldConfigurations.push(item)
+                    if(_ismultiple){
+                        $scope.data.registrationFieldConfigurations.push(item)
+                    }
                 }
             });
 

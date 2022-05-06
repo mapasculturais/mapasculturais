@@ -32,6 +32,6 @@ private-files
 docker-data
 scripts/nohup.out
 src/geojson
-
 node_modules/
 mix-manifest.json
+compose/local/config.d

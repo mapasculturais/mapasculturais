@@ -167,8 +167,8 @@
                 var city = $('#En_Municipio').editable('getValue', true);
                 var state = $('#En_Estado').editable('getValue', true);
                 var cep = $('#En_CEP').editable('getValue', true);
-                var country = $('#En_Pais').editable('getValue', true);
-                country = country ? country : (MapasCulturais.pais ? MapasCulturais.pais : 'br');
+                var country = ($('#En_Pais').length >= 1) ? $('#En_Pais').editable('getValue', true) : null;
+                country = country ? country : MapasCulturais.defaultCountry;
                 MapasCulturais.geocoder.geocode({
                     streetName: streetName,
                     number: number,
