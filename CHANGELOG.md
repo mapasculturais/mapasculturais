@@ -7,22 +7,43 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
-- implementa calculo sobre políticas afirmativas nas avaliações técnicas
-
+- Implementa calculo sobre políticas afirmativas nas avaliações técnicas
+- Novo tipo de saída da api em tabela de texto: @type=texttable
+### Correções
+- Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias
-- Define setter para o atributo avaliableEvaluationFields setando um array vazio caso de falores nulos, falsos ou vazios
-## [5.2.4] - 2022-04-15
+- Revisão dos scripts e arquivos de configuração para ambiente de desenvolvimento
 
+## [5.2.9]
+### Correções
+- Corrige a inserção de links nos selos e tela de edição de selos
+
+## [5.2.8]
+### Correções
+- evita warnings em escripts que rodam na cli
+
+## [5.2.7] - 2022-04-25
+- Adiciona possibilidade para a não inclusão do hash nos assets publicados
+
+### Correções
+- Corrige a página de visualização do selo aplicado nas entidades
+
+## [5.2.5] - 2022-04-25
+- Corrige nomes dos arquivos dos assets publicados
+
+## [5.2.4] - 2022-04-25
 - Adição de hooks na tela de gestão de usuários
+  
 ## [5.2.3] - 2022-04-18
-
 - Remove chamada do método requireAuthentication desnecessário no template part info-admin
+
 ## [5.2.2] - 2022-04-14
 ### Correções
 - Remove chamada do parent::__construct()  do controlador
 
 ## [5.2.1] - 2022-04-14
 - Deixa as configuações do modulo LGPD por default  vazia para evitar redirecionamento sem configurações de termos
+
 ## [5.2.0] - 2022-04-14
 ### Novas funcionalidades
 - Novo módulo LGPD com redirecionamento para aceitação dos termos de uso e politica de privacidade, se o usuário ainda não tiver aceito ou sempre que houver modificação nos textos dos termos

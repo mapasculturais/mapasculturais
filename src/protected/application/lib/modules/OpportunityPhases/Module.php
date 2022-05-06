@@ -290,6 +290,13 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(field_<<*>>)', function(&$value, $field_name) use($registration_repository) {
+            if(empty($value) && ($previous_phase = $this->previousPhase)){
+                $previous_phase->registerFieldsMetadata();
+                $value = $previous_phase->$field_name;
+            }
+        });
+
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             $opportunity = $this->opportunity;
 
