@@ -135,7 +135,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                     </h4>
                     <?php $this->applyTemplateHook('subtitle','after'); ?>
                 <?php endif; ?>
-                <hr style="margin: 0;">
+                <hr style="margin: 0; margin-top: 5px; margin-bottom: 5px;">
                 <div class="widget areas">
                     
                     <h3><?php \MapasCulturais\i::_e("Linguagens");?></h3>
