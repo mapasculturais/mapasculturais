@@ -2317,7 +2317,7 @@ class Theme extends MapasCulturais\Theme {
         $in = implode(',', array_map(function ($e){ return '@Project:' . $e; }, $ids));
 
         $this->jsObject['entity']['events'] = $app->controller('Event')->apiQuery([
-            '@select' => 'id,name,shortDescription,classificacaoEtaria,singleUrl,occurrences.{id,space.{id,name,endereco,singleUrl},rule},terms,status,owner.id,owner.name,owner.singleUrl',
+            '@select' => 'id,name,shortDescription,classificacaoEtaria,singleUrl,occurrences.{id,space.{id,name,endereco,singleUrl},rule},terms,status,owner.{id,name,singleUrl}',
             'project' => 'IN(' . $in . ')',
             'status' => 'GTE(0)', // include drafts
             '@permissions' => 'view',
