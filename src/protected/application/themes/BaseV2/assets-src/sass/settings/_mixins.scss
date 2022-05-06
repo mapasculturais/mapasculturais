@@ -16,9 +16,11 @@
     @if $unit == 'rem' {
         @return #{$value}rem;
     }
-
     @else if $unit == 'px' {
         @return #{math.div($value, 16)}rem;
+    }
+    @else {
+        @return #{$value}#{$unit};
     }
 }
 
