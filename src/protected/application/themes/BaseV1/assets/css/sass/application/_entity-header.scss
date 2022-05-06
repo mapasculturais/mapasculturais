@@ -1,6 +1,13 @@
 @charset "UTF-8";
 
 .main-content-header {
+    .container-card{
+        border: 20px solid;
+        border-color: #EEEEEE;
+        border-radius: 5px;
+        padding: 20px;
+    
+    }
     .ficha-spcultura{
         .widget{
             border:none;
