@@ -4,6 +4,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
 cd $DIR
 
-sudo docker exec -i $(docker-compose -f docker-compose.local.yml ps -q mapas) "/var/www/scripts/watch-active-theme-sass.sh"
+MAPAS_NAME=mapas-run
+
+sudo docker exec -i $MAPAS_NAME "/var/www/scripts/watch-active-theme-sass.sh"
 
 cd $CDIR

@@ -17,8 +17,11 @@ class Entity {
     }
 
     populate(obj) {
-        if (obj.terms) {
-            this.terms = obj.terms;
+
+        for (const prop of ['terms', 'files']) {
+            if (obj[prop]) {
+                this[prop] = obj[prop];
+            }    
         }
 
         for (let prop in this.__properties) {

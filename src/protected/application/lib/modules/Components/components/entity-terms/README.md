@@ -2,31 +2,21 @@
 Mostra os termos da entidade,
   
 ## Propriedades
-- **entity**: *Entity* - Entidade
-- **taxonomy**: *String* - Taxonomia do termo
-- **title**: *String* (opcional) - Label do elemento
+- **entity**: *Entity* - Entidade com a propriedade `terms` carregada. Para saber como se obter o objeto entity ver a documentação dos componentes `<entity>` e `<entities>`;
+- **taxonomy**: *String* - Taxonomia do termo;
+- **title**: *String* (opcional) - Label do elemento;
 
 ### Importando componente
 ```PHP
 <?php 
-$this->import('entities entity-terms');
+$this->import('entity-terms');
 ?>
 ```
 ### Exemplos de uso
-```HTML
+```PHP
 <!-- utilizaçao básica para listagem das tags -->
-<entities type="agent" select="id, name, terms" #default="{entities}">
-    <div v-for="entity in entities">
-        <entity-terms :entity="entity" taxonomy="tag" title="Tags" >
-        </entity-terms>        
-    </div>
-</entities>
+<entity-terms :entity="entity" taxonomy="tag" title="Tags" ></entity-terms>
 
 <!-- utilizaçao básica para listagem das areas -->
-<entities type="agent" select="id, name, terms" #default="{entities}">
-    <div v-for="entity in entities">
-        <entity-terms :entity="entity" taxonomy="area" title="Áreas de atuação" >
-        </entity-terms>        
-    </div>
-</entities>
+<entity-terms :entity="entity" taxonomy="area" title="Áreas de atuação" ></entity-terms>
 ```

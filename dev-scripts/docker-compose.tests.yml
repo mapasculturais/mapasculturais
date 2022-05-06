@@ -8,9 +8,6 @@ services:
       - ../src:/var/www/src
       - ../scripts:/var/www/scripts
       - ../compose/local/config-tests.php:/var/www/html/protected/application/conf/config.php
-      - ../docker-data/tests-assets:/var/www/html/assets
-      - ../docker-data/tests-public-files:/var/www/html/files
-      - ../docker-data/tests-private-files:/var/www/private-files
       - ../tests:/var/www/tests
     links:
       - db_tests:db
@@ -28,7 +25,7 @@ services:
     tty: true
       
   db_tests:
-    image: mdillon/postgis:10
+    image: mdillon/postgis:11
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
