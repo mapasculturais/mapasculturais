@@ -46,7 +46,7 @@
         @include mobile {
             display: none;
 
-            &.is-open {
+            &.--open {
                 display: block;
             }
         }
