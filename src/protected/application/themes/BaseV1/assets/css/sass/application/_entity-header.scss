@@ -14,6 +14,13 @@
             padding-bottom: 0em;
             margin-top: 1em;
             margin-bottom: 0;
+            .areas{
+
+                .h3{
+                    margin-bottom: 0;
+                }        
+
+            }
             > h3 {
                 margin-bottom: 0em !important;
             }
@@ -168,7 +175,6 @@ article.seal {
     margin-top: 3.75rem;
     padding-top: 3.75rem;
     text-align: center;
-
     .edit-card-header {
         display: flex;
         
