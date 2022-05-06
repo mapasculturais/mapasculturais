@@ -1,4 +1,4 @@
-# Componente `<entity-terms>`
+# Componente `<share-links>`
 Mostra os termos da entidade,
   
 ## Propriedades
