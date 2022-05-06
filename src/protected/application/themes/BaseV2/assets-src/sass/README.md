@@ -52,13 +52,13 @@ Os layouts devem sem importados em ordem alfabética, e sempre depois da listage
 
 ## Nome de seletores
 
-O tema utiliza uma convenção de nomes inspirado no [BEM](http://getbem.com/introduction/) e [SUITCSS](https://suitcss.github.io/).
+O tema utiliza uma convenção de nomes inspirado no [BEM](http://getbem.com/introduction/).
 
 Suponha um componente `user-card`.
 
 Seus elementos internos podem prefixados pelo nome do compoenente, seguido por `__` (ex: `user-card__avatar` e `user-card__title`). Evite o uso de seletores de tag (exemplo: `.user-card p`).
 
-Seus modificadores podem ser prefixados por `is-` ou `has-`. Exemplo, `user-card is-administrator`.
+Seus modificadores podem ser prefixados por `--`. Exemplo, `user-card--featured` ou `user-card__button--disabled`.
 
 Exemplo de uso:
 
@@ -70,10 +70,13 @@ Exemplo de uso:
         color: silver;
     }
 
-    &.is-featured {
+    &--featured & {
 
-        .user-card__title {
-            color: goldenrod;
+        .user-card {
+
+            &__title {
+                color: goldenrod;
+            }
         }
     }
 }
@@ -90,7 +93,7 @@ CSS resultante:
     color: silver;
 }
 
-.user-card.is-featured .user-card__title {
+.user-card--featured .user-card__title {
     color: goldenrod;
 }
 ```

@@ -9,7 +9,7 @@ use MapasCulturais\i;
             <span><?=i::__('Menu do painel')?></span>
         </button>
     </h2>
-    <nav :class="{ 'is-open': open }">
+    <nav :class="{ '--open': open }">
         <ul>
             <li>
                 <a href="#">
