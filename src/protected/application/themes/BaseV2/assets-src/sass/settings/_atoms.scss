@@ -1,5 +1,19 @@
 @use './mixins' as *;
 
+.hide-desktop {
+
+    @include desktop {
+        display: none;
+    }
+}
+
+.hide-mobile {
+
+    @include mobile {
+        display: none;
+    }
+}
+
 .justify-between {
     display: flex;
     flex-wrap: wrap;
