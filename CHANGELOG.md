@@ -4,6 +4,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.10] - 2022-05-06
+### Melhorias
+- Após a inscrição ser enviada, pega os dados dos @campo diretamente do metadado e não mais do agente
 ## [5.2.9] - 2022-05-03
 ### Correções
 - Corrige atualização de geo localização ao se atualizar endereço do agente
