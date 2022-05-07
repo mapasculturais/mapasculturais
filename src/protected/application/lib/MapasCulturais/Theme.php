@@ -138,19 +138,24 @@ abstract class Theme extends \Slim\View {
             ];
         });
 
-        $folders = [];
 
+        $this->path = new \ArrayObject();
+
+        $self = $this;
         $class = get_called_class();
-        while($class !== __CLASS__){
-            if(!method_exists($class, 'getThemeFolder'))
-                throw new \Exception ("getThemeFolder method is required for theme classes and is not present in {$class} class");
 
-            $folders[] = $class::getThemeFolder() . '/';
+        $app->hook('app.modules.init:after', function() use($class, $self){
+            $reflaction = new \ReflectionClass($class);
+        
+            while($reflaction->getName() != __CLASS__){
+                $dir = dirname($reflaction->getFileName());
+                if($dir != __DIR__) {
+                    $self->addPath($dir);
+                }
+                $reflaction = $reflaction->getParentClass();
+            }
+        });
 
-            $class = get_parent_class($class);
-        }
-
-        $this->path = new \ArrayObject(array_reverse($folders));
     }
 
     function init(){

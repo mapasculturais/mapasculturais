@@ -24,11 +24,13 @@ abstract class Module {
         
         while($reflaction->getName() != __CLASS__){
             $dir = dirname($reflaction->getFileName());
-            $active_theme->addPath($dir);
+
+            if($dir != __DIR__) {
+                $active_theme->addPath($dir);
+            }
             
             $reflaction = $reflaction->getParentClass();
         }
-
 
         // include Module Entities path to doctrine path
         $path = self::getPath('Entities');
