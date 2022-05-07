@@ -21,5 +21,3 @@
 
     <body <?php $this->bodyProperties() ?> >
         <?php $this->applyTemplateHook('body','begin'); ?>
-        <section id="main-app">
-
