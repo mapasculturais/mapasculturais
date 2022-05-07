@@ -61,6 +61,10 @@ class Entity {
             result[prop] = val;
         }
 
+        if(this.terms) {
+            result.terms = this.terms;
+        }
+
         return result;
     }
 
