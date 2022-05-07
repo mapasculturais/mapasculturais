@@ -78,7 +78,7 @@ abstract class AssetManager{
         $url = null;
 
         if($app->config['app.useAssetsUrlCache']){
-            $keys = array_keys($this->_enqueuedScripts[$group]);
+            $keys = array_keys($this->_enqueuedScripts[$group] ?? []);
             sort($keys);
             $cache_id = "ASSETS_SCRIPTS:$group:" . implode(':', $keys);
             if($app->cache->contains($cache_id)){
@@ -111,7 +111,7 @@ abstract class AssetManager{
         $url = null;
 
         if($app->config['app.useAssetsUrlCache']){
-            $keys = array_keys($this->_enqueuedStyles[$group]);
+            $keys = array_keys($this->_enqueuedStyles[$group] ?? []);
             sort($keys);
             $cache_id = "ASSETS_STYLES:$group:" . implode(':', $keys);
             if($app->cache->contains($cache_id)){
