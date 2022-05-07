@@ -34,15 +34,29 @@ app.component('field', {
             __timeout: null,
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
-            type: description.input_type || description.type,
+            fieldType: this.type || description.input_type || description.type,
             value: value,
             errors: []
         }
     },
 
     props: {
-        entity: Entity,
-        prop: String,
+        entity: {
+            type: Entity,
+            required: true
+        },
+        prop: {
+            type: String,
+            required: true
+        },
+        label: {
+            type: String,
+            default: null
+        },
+        type: {
+            type: String,
+            default: null
+        },
         showLabel: {
             type: Boolean,
             default: true
@@ -55,7 +69,7 @@ app.component('field', {
     
     methods: {
         hasErrors() {
-            let errors = this.entity?.__validationErrors[this.prop] || [];
+            let errors = this.entity.__validationErrors[this.prop] || [];
             if(errors.length > 0){
                 return true;
             } else {
@@ -80,7 +94,7 @@ app.component('field', {
         },
 
         is(type) {
-            return this.type == type;
+            return this.fieldType == type;
         }
     },
 });
