@@ -668,13 +668,19 @@ abstract class Theme extends \Slim\View {
         
         return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4" rel="noopener noreferrer">$1$2$3$4</a>', $text);
         
-    }
+    }    
 
-    function addRequestedEntityToJs(Entity $entity = null) {
-        if ($entity) {
-            $this->jsObject['requestedEntity'] = $entity;
-        } elseif(method_exists($this->controller, 'getRequestedEntity')) {
-            $this->jsObject['requestedEntity'] = $this->controller->requestedEntity;
+    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null) {
+        $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
+        $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
+        
+        if ($entity_class_name && $entity_id) {
+            $app = App::i();
+            $query = new ApiQuery($entity_class_name, ['@select' => '*', 'id' => "EQ({$entity_id})"]);
+            $e = $query->findOne();
+            $e['controllerId'] = $app->getControllerIdByEntity($entity_class_name);
+            $this->jsObject['requestedEntity'] = $e;
         }
     }
+    
 }
