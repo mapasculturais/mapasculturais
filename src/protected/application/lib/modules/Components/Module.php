@@ -25,7 +25,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
 
             $app->view->enqueueStyle($vendor_group, 'vue-final-modal', 'css/components-base/modals.css');
-            ;
+            
             if (isset($this->jsObject['componentTemplates'])) {
                 $this->jsObject['componentTemplates'] = [];
             }
@@ -40,6 +40,14 @@ class Module extends \MapasCulturais\Module {
         $app->hook('App.get(components)', function (&$result) use($self, $app) {
             $result = $self;
         });
+
+        $app->hook('template(<<*>>.body):begin', function () {
+            $this->part('main-app--begin');
+        });
+
+        $app->hook('template(<<*>>.body):end', function () {
+            $this->part('main-app--end');
+        },1000);
 
         /**
          * Importa um componente
