@@ -38,7 +38,14 @@ app.component('entity', {
     },
 
     created() {
-        this.getDataFromApi();
+        if (this.id) {
+            this.getDataFromApi();
+        } else if($MAPAS.requestedEntity) {
+            const entity = $MAPAS.requestedEntity;
+            this.loading = false;
+            this.entity = new Entity(entity.controllerId, entity.id, this.scope);
+            this.entity.populate(entity);
+        }
     },
 
     template: $TEMPLATES['entity']
