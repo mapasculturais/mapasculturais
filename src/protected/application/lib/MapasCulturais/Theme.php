@@ -106,14 +106,6 @@ abstract class Theme extends \Slim\View {
 
         $app = App::i();
         
-        $app->hook('app.register', function() use($app){
-            $def = new Definitions\Metadata('sentNotification', ['label' => 'Notificação enviada', 'type' => 'boolean']);
-
-            $app->registerMetadata($def, 'MapasCulturais\Entities\Agent');
-            $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
-        });
-        
-        
         $this->documentMeta = new \ArrayObject;
         $this->bodyClasses = new \ArrayObject;
         $this->bodyProperties = new \ArrayObject;
@@ -126,16 +118,25 @@ abstract class Theme extends \Slim\View {
 
         $this->jsObject['routes'] = $app->config['routes'];
 
-        $this->jsObject['EntitiesDescription'] = [
-            "user"         => Entities\User::getPropertiesMetadata(),
-            "agent"         => Entities\Agent::getPropertiesMetadata(),
-            "event"         => Entities\Event::getPropertiesMetadata(),
-            "space"         => Entities\Space::getPropertiesMetadata(),
-            "project"       => Entities\Project::getPropertiesMetadata(),
-            "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
-            "subsite"       => Entities\Subsite::getPropertiesMetadata(),
-            "seal"          => Entities\Seal::getPropertiesMetadata()
-        ];
+        $app->hook('app.register', function() use($app){
+            $def = new Definitions\Metadata('sentNotification', ['label' => 'Notificação enviada', 'type' => 'boolean']);
+
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Agent');
+            $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
+        });
+        
+        $app->hook('app.register:after', function () {
+            $this->view->jsObject['EntitiesDescription'] = [
+                "user"         => Entities\User::getPropertiesMetadata(),
+                "agent"         => Entities\Agent::getPropertiesMetadata(),
+                "event"         => Entities\Event::getPropertiesMetadata(),
+                "space"         => Entities\Space::getPropertiesMetadata(),
+                "project"       => Entities\Project::getPropertiesMetadata(),
+                "opportunity"   => Entities\Opportunity::getPropertiesMetadata(),
+                "subsite"       => Entities\Subsite::getPropertiesMetadata(),
+                "seal"          => Entities\Seal::getPropertiesMetadata()
+            ];
+        });
 
         $folders = [];
 
@@ -667,5 +668,13 @@ abstract class Theme extends \Slim\View {
         
         return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4" rel="noopener noreferrer">$1$2$3$4</a>', $text);
         
+    }
+
+    function addRequestedEntityToJs(Entity $entity = null) {
+        if ($entity) {
+            $this->jsObject['requestedEntity'] = $entity;
+        } elseif(method_exists($this->controller, 'getRequestedEntity')) {
+            $this->jsObject['requestedEntity'] = $this->controller->requestedEntity;
+        }
     }
 }
