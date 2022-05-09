@@ -1,11 +1,55 @@
+<?php
+$fieldsList = [
+    'personalData' => [
+        'nomeCompleto',
+        'documento',
+        'emailPrivado',
+        'emailPublico',
+        'telefonePublico',
+        'telefone1',
+        'telefone2',
+    ],
+    'sensitiveData' => [
+        'dataDeNascimento',
+        'genero',
+        'orientacaoSexual',
+        'raca'
+    ],
+    'location' => [
+        'En_CEP',
+        'En_Nome_Logradouro',
+        'En_Complemento',
+        'En_Bairro',
+        'En_Municipio',
+        'En_Estado'
+    ]
+
+];
+$this->applyTemplateHook('agent-form-1', 'before', [&$fieldsList]);
+
+$canSee = function ($view) use ($entity, $fieldsList) {
+
+    foreach ($fieldsList[$view] as $_field) {
+        if ($entity->$_field) {
+            return true;
+        }
+    }
+
+    return false;
+};
+?>
 <div class="ficha-spcultura">
+    <?php if($canSee('personalData') || ($entity->publicLocation && $canSee('location'))):?>
     <h3><?php \MapasCulturais\i::_e("Dados Pessoais");?></h3>
+    <? endif; ?>
+
     <?php $this->applyTemplateHook('tab-about-service','before'); ?><!--. hook tab-about-service:before -->
 
     <div class="servico">
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
         <?php if($entity->canUser("viewPrivateData")): ?>
-            <!-- Campo Nome Completo -->
+            <?php if($this->isEditable() || $canSee('personalData')):?>
+                <!-- Campo Nome Completo -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Nome Completo");?>:</span>
@@ -39,6 +83,7 @@
                         <?php echo $entity->emailPrivado; ?>
                     </span>
                 </p>
+            <?php endif; ?>
         <?php endif; ?>
                 <!-- Email Público -->
                 <?php if($this->isEditable() || $entity->emailPublico): ?>
@@ -57,24 +102,30 @@
                 </p>
             <?php endif; ?>
             <?php if($entity->canUser("viewPrivateData")): ?>
-            <!-- Telefone Privado 1 -->
-            <p class="privado"><span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Telefone 1");?>:</span>
-                <span class="js-editable js-mask-phone <?php echo ($entity->isPropertyRequired($entity,"telefone1") && $this->isEditable()? 'required': '');?>" data-edit="telefone1" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>">
-                    <?php echo $entity->telefone1; ?>
-                </span>
-            </p>
-            <!-- Telefone Privado 2 -->
-            <p class="privado"><span class="icon icon-private-info"></span>
-                <span class="label"><?php \MapasCulturais\i::_e("Telefone 2");?>:</span>
-                <span class="js-editable js-mask-phone <?php echo ($entity->isPropertyRequired($entity,"telefone2") && $this->isEditable()? 'required': '');?>" data-edit="telefone2" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>">
-                    <?php echo $entity->telefone2; ?>
-                </span>
-            </p>
+                <?php if($this->isEditable() || $canSee('personalData')):?>
+                    <!-- Telefone Privado 1 -->
+                    <p class="privado"><span class="icon icon-private-info"></span>
+                        <span class="label"><?php \MapasCulturais\i::_e("Telefone 1");?>:</span>
+                        <span class="js-editable js-mask-phone <?php echo ($entity->isPropertyRequired($entity,"telefone1") && $this->isEditable()? 'required': '');?>" data-edit="telefone1" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>">
+                            <?php echo $entity->telefone1; ?>
+                        </span>
+                    </p>
+                    <!-- Telefone Privado 2 -->
+                    <p class="privado"><span class="icon icon-private-info"></span>
+                        <span class="label"><?php \MapasCulturais\i::_e("Telefone 2");?>:</span>
+                        <span class="js-editable js-mask-phone <?php echo ($entity->isPropertyRequired($entity,"telefone2") && $this->isEditable()? 'required': '');?>" data-edit="telefone2" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Telefone Privado");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira um telefone que não será exibido publicamente");?>">
+                            <?php echo $entity->telefone2; ?>
+                        </span>
+                    </p>
+                <?php endif; ?>
             <?php endif; ?>
         
         <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
-        <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
+        
+        <?php if($this->isEditable() || ($entity->publicLocation && $canSee('location')) ):?>
+            <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => true]); ?><!--.part/singles/location.php -->
+        <?php endif; ?>
+
         <?php $this->applyTemplateHook('tab-about-service','end'); ?><!--. hook tab-about-service:end -->
         
     </div><!--.servico -->
