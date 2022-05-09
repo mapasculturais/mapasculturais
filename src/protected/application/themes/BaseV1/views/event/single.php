@@ -137,26 +137,28 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php endif; ?>
                 <hr style="margin: 0; margin-top: 5px; margin-bottom: 5px;">
                 <div class="widget areas">
-                    <div class="language">
-                        <?php \MapasCulturais\i::_e("Linguagens");?>
-                        <?php if ($this->isEditable()): ?>
-                            <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Linguagens");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione pelo menos uma linguagem");?>" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
-                        <?php else: ?>
-                            <?php $linguagens = array_values($app->getRegisteredTaxonomy($entity->getClassName(), 'linguagem')->restrictedTerms); sort($linguagens); ?>
-                            <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
-                                <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
-                            <?php endif; endforeach; ?>
-                        <?php endif; ?>
+                    <div class="card-event"> 
+                            <?php \MapasCulturais\i::_e("Linguagens");?>
+                            <?php if ($this->isEditable()): ?>
+                                <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Linguagens");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione pelo menos uma linguagem");?>" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
+                            <?php else: ?>
+                                <?php $linguagens = array_values($app->getRegisteredTaxonomy($entity->getClassName(), 'linguagem')->restrictedTerms); sort($linguagens); ?>
+                                <?php foreach ($linguagens as $i => $t): if(in_array($t, $entity->terms['linguagem'])): ?>
+                                    <a class="tag tag-event" href="<?php echo $app->createUrl('site', 'search') ?>##(event:(linguagens:!(<?php echo $i ?>)),global:(enabled:(event:!t),filterEntity:event))"><?php echo $t ?></a>
+                                <?php endif; endforeach; ?>
+                            <?php endif; ?>
                     </div>
-                    <div class="tags">
-                        <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-                    </div>
+                    
                 </div>
 
                 <?php $this->applyTemplateHook('header-content','end'); ?>
             </div>
             <!--.header-content-->
+
             <?php $this->applyTemplateHook('header-content','after'); ?>
+            <div class="tags">
+                        <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+            </div>
             <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                         <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
             <?php endif; ?>
