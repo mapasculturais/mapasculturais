@@ -8,7 +8,7 @@
     <?php $this->applyTemplateHook('header-fieldset', 'begin');?>
     <?php if ($sentDate): ?>
         <div class="alert success">
-            <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>    
+            <?= sprintf(\MapasCulturais\i::__("Obrigado por utilizar o %s. Suas informações foram enviadas com sucesso no dia"), $this->dict('site: name', false));?> 
             <?php echo $sentDate->format(\MapasCulturais\i::__('d/m/Y à\s H:i:s')); ?>
         </div>
     <?php endif; ?>
