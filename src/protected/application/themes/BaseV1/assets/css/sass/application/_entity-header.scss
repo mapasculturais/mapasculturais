@@ -14,15 +14,27 @@
             padding-bottom: 0em;
             margin-top: 1em;
             margin-bottom: 0;
+             
             .areas{
+                .language{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: flex-start;
+                    background-color: red;
+                    color: red;
+        
+                }
+                .tags{
+                    display: flex;        
+                } 
 
                 .h3{
                     margin-bottom: 0;
-                }        
-
-            }
-            > h3 {
+                }
+                > h3 {
                 margin-bottom: 0em !important;
+                }
             }
         }
         .label{
