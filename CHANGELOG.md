@@ -5,6 +5,7 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [5.3.0] - 2022-05-09
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
 - Implementa calculo sobre políticas afirmativas nas avaliações técnicas
@@ -13,6 +14,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias
 - Revisão dos scripts e arquivos de configuração para ambiente de desenvolvimento
+- Deixa o cadastro do agente em conformidade com a LGPD
+- Implementa checagem do tamanho da string da descrição curta do agente no back-end para garantir que se tenha 400 caracteres
 
 ## [5.2.9]
 ### Correções
