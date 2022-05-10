@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Limita acesso ao botão de download da planila de agentes a administradores
 - Informa numero de caracteres preenchidos na descrição curta do agente
+- Ajusta limite de caractéres da descrição curta em todas as entidades
 ## [5.3.1] - 2022-05-09
 ### Melhorias
 - Altera mensagem das inscrições enviadas

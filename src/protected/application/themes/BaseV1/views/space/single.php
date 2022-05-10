@@ -77,12 +77,13 @@ $this->entity = $entity;
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
-                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
+                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 400): ?>
                     <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
 
                 <p>
-                    <span class="js-editable required" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="label <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $this->isEditable()? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição curta:");?> <?php if($this->isEditable()){ ?><span data-element='countLength'><?=strlen($entity->shortDescription)?></span> <?php \MapasCulturais\i::_e("de 400:");?></span> <?php } ?><br>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <?php $this->part('singles/space-servico', ['entity' => $entity]); ?>
