@@ -100,6 +100,7 @@ $this->includeMapAssets();
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <p>
+                    sss
                     <span class="js-editable" data-edit="shortDescription" data-original-title="<?php i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
 
