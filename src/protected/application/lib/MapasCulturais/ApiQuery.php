@@ -279,6 +279,12 @@ class ApiQuery {
     protected $_selectingFilesProperties = ['url'];
 
     /**
+     * Metalists that are being selected
+     * @var array
+     */
+    protected $_selectingMetalists = [];
+
+    /**
      * Indica se foi usado o formato @files na seleção
      * @var bool
      */
@@ -877,6 +883,7 @@ class ApiQuery {
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
         $this->appendFiles($entities);
+        $this->appendMetalists($entities);
         $this->appendTerms($entities);
         $this->appendIsVerified($entities);
         $this->appendVerifiedSeals($entities);
@@ -1060,7 +1067,7 @@ class ApiQuery {
                 pc.owner IN ($dql_in) AND
                 pc.user = {$user->id}";
                 
-                     
+        
         $query = $this->em->createQuery($dql);
         
         if($this->_usingSubquery){
@@ -1112,6 +1119,20 @@ class ApiQuery {
                         foreach($cfg['select'] as $group) {
                             if(!in_array("$group.*", $this->_selectingFiles)) {
                                 $this->_selectingFiles[] = "$group.*";
+                            }    
+                        }
+                    }
+
+                    continue;
+                }
+
+                if($cfg['property'] == 'metalists') {
+                    if($cfg['selectAll']) {
+                        $this->_selectingMetalists[] = "*";
+                    } else {
+                        foreach($cfg['select'] as $group) {
+                            if(!in_array($group, $this->_selectingMetalists)) {
+                                $this->_selectingMetalists[] = $group;
                             }    
                         }
                     }
@@ -1426,6 +1447,79 @@ class ApiQuery {
             }
         }
         
+    }
+
+    protected function appendMetalists(array &$entities){
+        if(!$this->_selectingMetalists){
+            return;
+        }
+        
+        $where = [];
+        $all = false;
+        foreach($this->_selectingMetalists as $select){
+            if ($select == '*') {
+                $where[] = '1 = 1';
+                $all = true;
+            } else {
+                $where[] = "'{$select}'";
+            }
+        }
+
+        $sub = $this->getSubqueryInIdentities($entities);
+        
+        if ($all) {
+            $where = '1 = 1';
+        } else {
+            $where = "ml.group IN (" . implode(',', $where) . ')';
+        }
+
+        $dql = "
+            SELECT
+                ml.id,               
+                ml.objectId AS ownerId,
+                ml.group,
+                ml.title,
+                ml.description,
+                ml.value
+            FROM
+                MapasCulturais\Entities\MetaList ml
+            WHERE
+                ml.objectType = '{$this->entityClassName}' AND 
+                ml.objectId IN ({$sub}) AND ({$where})
+            ORDER BY ml.id ASC";
+                
+        
+        $this->logDql($dql, __FUNCTION__);
+        
+        $query = $this->em->createQuery($dql);
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+        
+        $restult = $query->getResult(Query::HYDRATE_ARRAY);
+        
+        $metalists = [];
+        
+        foreach($restult as $ml){
+            $ownerId = $ml['ownerId'];
+            $group = $ml['group'];
+            
+            $metalists[$ownerId] = $metalists[$ownerId] ?? [];
+            $metalists[$ownerId][$group] = $metalists[$ownerId][$group] ?? [];
+            
+            unset($ml['ownerId'], $ml['group']);
+                        
+            $metalists[$ownerId][$group][] = $ml;
+        }
+        
+        foreach($entities as &$entity){
+            $id = $entity['id'];
+            $entity['metalists'] = $entity['metalists'] ?? [];
+            if(isset($metalists[$id])){
+                $entity['metalists'] = $metalists[$id];
+            }
+        }
     }
     
     protected function appendTerms(array &$entities){
@@ -2142,6 +2236,8 @@ class ApiQuery {
                 $this->_selectingSeals = true;
             } elseif ($prop === 'files') {
                 $this->_selectingFiles = ['*'];
+            } elseif ($prop === 'metalists') {
+                $this->_selectingMetalists = ['*'];
             }
         }
     }
