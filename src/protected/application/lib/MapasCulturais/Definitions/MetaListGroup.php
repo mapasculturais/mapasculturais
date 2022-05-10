@@ -76,10 +76,6 @@ class MetaListGroup{
                 if(!$ok)
                     $errors[] = $message;
             }
-
-            if(!$errors && $this->is_unique && !$this->validateUniqueValue($owner, $value))
-                $errors[] = $this->is_unique_error_message;
-
         }
 
         return $errors ? $errors : true;
