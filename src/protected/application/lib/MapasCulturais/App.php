@@ -989,8 +989,7 @@ class App extends \Slim\Slim{
                     'value' => [
                         'label' => 'Link',
                         'validations' => [
-                            'required' => 'O link do vídeo é obrigatório',
-                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                            'required' => \MapasCulturais\i::__('O link é obrigatório')
                         ]
                     ],
                 ],
@@ -1003,10 +1002,9 @@ class App extends \Slim\Slim{
                         'label' => 'Nome'
                     ],
                     'value' => [
-                        'label' => 'Link',
+                        'label' => 'Vídeo',
                         'validations' => [
-                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório'),
-                            "v::url('vimeo.com')" => "Insira um link de um vídeo do Vimeo ou Youtube"
+                            'required' => \MapasCulturais\i::__('O link do vídeo é obrigatório')
                         ]
                     ],
                 ],
