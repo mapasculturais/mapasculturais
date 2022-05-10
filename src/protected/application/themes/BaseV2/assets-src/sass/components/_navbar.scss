@@ -1,0 +1,73 @@
+.main-navbar {
+
+    &__link {
+        background-color: var(--mc-gray-700);
+        color: white;
+
+        &.agents {
+
+            &.current, &:hover, &:focus {
+                background-color: var(--mc-agents-500);
+            }
+
+            &.current:hover, &.current:focus {
+                background-color: var(--mc-agents-700);
+            }
+        }
+
+        &.events {
+
+            &.current, &:hover, &:focus {
+                background-color: var(--mc-events-500);
+            }
+
+            &.current:hover, &.current:focus {
+                background-color: var(--mc-events-700);
+            }
+        }
+
+        &.home {
+
+            &.current, &:hover, &:focus {
+                background-color: var(--mc-primary-500);
+            }
+
+            &.current:hover, &.current:focus {
+                background-color: var(--mc-primary-700);
+            }
+        }
+
+        &.opportunities {
+
+            &.current, &:hover, &:focus {
+                background-color: var(--mc-opportunities-500);
+            }
+
+            &.current:hover, &.current:focus {
+                background-color: var(--mc-opportunities-700);
+            }
+        }
+
+        &.projects {
+
+            &.current, &:hover, &:focus {
+                background-color: var(--mc-projects-500);
+            }
+
+            &.current:hover, &.current:focus {
+                background-color: var(--mc-projects-700);
+            }
+        }
+
+        &.spaces {
+
+            &.current, &:hover, &:focus {
+                background-color: var(--mc-spaces-500);
+            }
+
+            &.current:hover, &.current:focus {
+                background-color: var(--mc-spaces-700);
+            }
+        }
+    }
+}
