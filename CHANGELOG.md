@@ -3,8 +3,30 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
+
+## [5.3.1] - 2022-05-09
+### Melhorias
+- Altera mensagem das inscrições enviadas
+## [5.3.0] - 2022-05-09
+### Novas funcionalidades
+- Implementa sistemas de permissão para os avaliadores
+- Implementa calculo sobre políticas afirmativas nas avaliações técnicas
+- Novo tipo de saída da api em tabela de texto: @type=texttable
+### Correções
+- Corrige atualização de geo localização ao se atualizar endereço do agente
+### Melhorias
+- Revisão dos scripts e arquivos de configuração para ambiente de desenvolvimento
+- Deixa o cadastro do agente em conformidade com a LGPD
+- Implementa checagem do tamanho da string da descrição curta do agente no back-end para garantir que se tenha 400 caracteres
+
+## [5.2.9]
+### Correções
+- Corrige a inserção de links nos selos e tela de edição de selos
+
+## [5.2.8]
+### Correções
+- evita warnings em escripts que rodam na cli
 
 ## [5.2.7] - 2022-04-25
 - Adiciona possibilidade para a não inclusão do hash nos assets publicados
@@ -20,12 +42,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   
 ## [5.2.3] - 2022-04-18
 - Remove chamada do método requireAuthentication desnecessário no template part info-admin
+
 ## [5.2.2] - 2022-04-14
 ### Correções
 - Remove chamada do parent::__construct()  do controlador
 
 ## [5.2.1] - 2022-04-14
 - Deixa as configuações do modulo LGPD por default  vazia para evitar redirecionamento sem configurações de termos
+
 ## [5.2.0] - 2022-04-14
 ### Novas funcionalidades
 - Novo módulo LGPD com redirecionamento para aceitação dos termos de uso e politica de privacidade, se o usuário ainda não tiver aceito ou sempre que houver modificação nos textos dos termos

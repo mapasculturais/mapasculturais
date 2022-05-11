@@ -325,8 +325,51 @@ class Registration extends \MapasCulturais\Entity
         }else{
             $json = null;
         }
+        
+        if($this->canUser("viewUserEvaluation") && !$this->canUser("@control")){
+            $checkList = 'projectName,category,files,field,owner';
+            $values = ['files' => []];
 
-        return $json;
+            foreach($json as $k => $v){
+                $_k = preg_replace('/field_\d+/', 'field', $k);
+                
+                if(strpos($checkList, $_k) >= 0){
+
+                    if($k == "files"){
+                        foreach(array_keys($v) as $f){
+                            if($this->canSee($f)){
+                                $values[$k][$f] = $v[$f];
+                            }  
+                        }
+                       
+                    }else if($k == "owner" || $k == "agentRelations"){
+                        if($this->canSee("agentsSummary")){
+                            $values[$k] = $v;
+                        }
+                    }else{
+                        if($this->canSee($k)){
+                            $values[$k] = $v;
+                        }
+                    }
+                }else{
+                    $values[$k] = $v;
+                }
+            }
+        }else{
+            $values = $json;
+        }
+
+        return $values;
+    }
+
+    public function canSee($key)
+    {
+        $avaliableEvaluationFields = ($this->opportunity->avaliableEvaluationFields != "null") ? $this->opportunity->avaliableEvaluationFields : [];
+        if(in_array($key, array_keys($avaliableEvaluationFields))){
+            return true;
+        }
+
+        return false;
     }
 
     function getSpaceRelation(){ 

@@ -571,7 +571,7 @@ abstract class Theme extends \Slim\View {
     }
 
     function isEditable(){
-        $result = (bool) preg_match('#^\w+/(create|edit)$#', $this->template);
+        $result = $this->controller->action == 'edit' || $this->controller->action == 'create'|| $this->editable ?? false;
 
         App::i()->applyHookBoundTo($this, 'mapasculturais.isEditable', [&$result]);
 

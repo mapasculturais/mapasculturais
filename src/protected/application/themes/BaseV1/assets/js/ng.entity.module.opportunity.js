@@ -824,6 +824,72 @@ module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$time
     $scope.toggle = false;
 }]);
 
+module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', function ($http, $rootScope) {
+    return {
+        serviceProperty: null,
+        getUrl: function(){
+            return MapasCulturais.entity.object.singleUrl
+        },
+        save: function (param) {
+            var data = {
+                avaliableEvaluationFields: JSON.stringify(param) == "{}" ? null : param,
+                id: MapasCulturais.entity.id,
+            };
+            return $http.patch(this.getUrl(), data).
+                    success(function (data, status) {
+                        $rootScope.$emit('success', {message: "Success", data: data, status: status});
+                    }).
+                    error(function (data, status) {
+                        $rootScope.$emit('error', {message: "Cannot do something", data: data, status: status});
+                    });
+        }
+    };
+}]);
+
+module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
+    $scope.data = {
+        fields: MapasCulturais.evaluationFieldsList,
+        avaliableEvaluationFields: {},
+        checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields ?? {},
+    }
+
+    $scope.selectFields = function(field){
+        $scope.data.avaliableEvaluationFields = {}
+
+        if(!$scope.isChecked(field)){
+            $scope.data.checkedStatus[field] = true;
+        }else{
+            $scope.data.checkedStatus[field] = false;
+        }
+            
+        Object.keys($scope.data.checkedStatus).forEach(function(field){
+            if($scope.data.checkedStatus[field] || $scope.data.checkedStatus[field] == "true"){
+                $scope.data.avaliableEvaluationFields[field] = true;
+            }
+        });
+
+        EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
+            MapasCulturais.Messages.success("Salvo com sucesso");            
+        });
+    }
+
+    $scope.isChecked = function(field){
+       if($scope.data.checkedStatus[field]){
+           return true;
+       }
+
+       return false;
+    }
+
+    $scope.data.fields.map(function(item){
+        if(item.hasOwnProperty("groupName")){
+            item.ref = item.groupName;
+        }else{
+            item.ref = item.fieldName;
+        }
+    });
+
+}]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
     var registrationsUrl = new UrlService('registration');
@@ -840,7 +906,8 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
         entity: MapasCulturais.entity,
         isEditable: MapasCulturais.isEditable,
-        errors: {}
+        errors: {},
+        avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
     $timeout(function(){
@@ -1352,6 +1419,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             result = result && $scope.entity[requiredFieldName] == requeredFieldValue;
         }
 
+        if(MapasCulturais.entity.canUserEvaluate){
+            if(!$scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+                return false;
+            }
+        }
+
         return result;
     };
 
@@ -1399,6 +1472,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.setClassColumn = function(values){
         if(values.length >= 8){
             return "two-column";
+        }
+    }
+
+    $scope.getFieldNameString = function(field) 
+    {
+        if(field.fieldType == "file"){
+            return field.groupName;
+        }else{
+            return field.fieldName;
         }
     }
 

@@ -43,8 +43,10 @@ use MapasCulturais\i;
     </section>
     <button ng-click="addSection()" class="btn btn-default add"><?php i::_e('Adicionar seção de avaliação técnica') ?></button>
 
+    <?php $this->part('technical--affirmative-polices-configuration')?>
 
-    <hr>
+    <br><br><hr>
+
     <h4><?php i::_e('Habilitar avaliação da exequibilidade da inscrição?'); ?></h4>
     <p>
         <?php i::_e('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição.'); ?>

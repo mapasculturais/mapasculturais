@@ -836,6 +836,7 @@ class App extends \Slim\Slim{
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Dump');
+        $this->registerApiOutput('MapasCulturais\ApiOutputs\TextTable');
 
         $roles = [
             'saasSuperAdmin' => (object) [

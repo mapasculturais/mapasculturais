@@ -1046,6 +1046,9 @@ $(function(){
                 $('#En_Bairro').editable('setValue', r.neighborhood != null ? r.neighborhood : '');
                 $('#En_Municipio').editable('setValue', r.city != null ? r.city.nome : '');
                 $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
+                $('[data-edit="location').editable('setValue', [r.lon, r.lat]);
+                $(".lat-txt").html(r.lat);
+                $(".lon-txt").html(r.lon);
                 concatena_enderco();
             }
         }).fail(function (response) {

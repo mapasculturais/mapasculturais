@@ -8,7 +8,7 @@
     <?php $this->applyTemplateHook('header-fieldset', 'begin');?>
     <?php if ($sentDate): ?>
         <div class="alert success">
-            <?php \MapasCulturais\i::_e("Inscrição enviada no dia");?>    
+            <?= sprintf(\MapasCulturais\i::__("Obrigado por utilizar o %s. Suas informações foram enviadas com sucesso no dia"), $this->dict('site: name', false));?> 
             <?php echo $sentDate->format(\MapasCulturais\i::__('d/m/Y à\s H:i:s')); ?>
         </div>
     <?php endif; ?>
@@ -31,8 +31,9 @@
 <?php $this->applyTemplateHook('header-fieldset', 'after');?>
 
 <?php if($entity->projectName): ?>
-    <div class="registration-fieldset">
+    
+    <div class="registration-fieldset" ng-if="data.avaliableEvaluationFields['projectName']">
         <div class="label"><?php \MapasCulturais\i::_e("Nome do Projeto"); ?> </div>
-        <h5> <?php echo $entity->projectName; ?> </h5>
+        <h5> {{data.entity.object.projectName}} </h5>
     </div>
 <?php endif; ?>
