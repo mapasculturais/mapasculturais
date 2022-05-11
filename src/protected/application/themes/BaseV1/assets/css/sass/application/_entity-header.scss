@@ -183,6 +183,12 @@ article.seal {
     margin-top: 3.75rem;
     padding-top: 3.75rem;
     text-align: center;
+    .widget{
+        .card-event{
+            display: flex;
+            flex-direction: column;
+        }
+    }
     .edit-card-header {
         display: flex;
         
