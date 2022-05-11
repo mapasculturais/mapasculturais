@@ -27,8 +27,7 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
-        Traits\EntitySealRelation,
-        Traits\EntityMetaLists;
+        Traits\EntitySealRelation;
         
     protected $__enableMagicGetterHook = true;
 
