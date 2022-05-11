@@ -1,6 +1,6 @@
 <div class="share-links">
 
-    <h5 class="share-links--title"> {{title}} </h5>
+    <h4 class="share-links--title"> {{title}} </h4>
 
     <div class="share-links--links">
         <a  class="fa fa-twitter" 
