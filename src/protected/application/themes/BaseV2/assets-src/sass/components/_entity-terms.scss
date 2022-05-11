@@ -1,18 +1,23 @@
 .entity-terms {
+    margin: 20px 0;
     h4 {
-        margin: 0 10px 15px;
+        font-weight: 700;
+        font-size: 18px;
     }
     ul {
+        margin: 10px 0;
         display: flex;
         gap: 10px;
         padding: 0;
         li {
             list-style: none; 
-            padding: 10px 25px; 
+            padding: 10px; 
+            min-width: 130px;
             background-color: #EFEFEF; 
             border-radius: 15px; 
             font-size: 13px; 
             line-height: 13px;
+            text-align: center;
             a {
                 text-decoration: none; 
                 color: black; 
