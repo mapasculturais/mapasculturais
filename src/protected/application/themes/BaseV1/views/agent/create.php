@@ -34,23 +34,22 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
 
         <?php $this->applyTemplateHook('header-content','before'); ?>
-        <div class="header-content">
-            <?php $this->applyTemplateHook('header-content','begin'); ?>
+        <div class="container-card">            
+            <div class="header-content">
+                    <?php $this->applyTemplateHook('header-content','begin'); ?>
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
+                    <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
+                    <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+                    <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
 
-            <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
-
-
-            <?php $this->applyTemplateHook('header-content','end'); ?>
+                    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                    <?php $this->applyTemplateHook('header-content','end'); ?>
+            </div>
+            <!--.header-content-->
+            <?php $this->applyTemplateHook('header-content','after'); ?>
         </div>
-        <!--.header-content-->
-        <?php $this->applyTemplateHook('header-content','after'); ?>
-        
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
