@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 .main-content-header {
+    margin:0;
     .container-card{
         border: 20px solid;
         border-color: #EEEEEE;
@@ -16,7 +17,10 @@
             margin-bottom: 0;
              
             .areas{
-                
+                .card-event{
+                    display: flex;
+                    flex-direction: row;
+                }
                 .tags{
                     display: flex;        
                 } 
