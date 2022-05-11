@@ -1,6 +1,6 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms share-links');
+$this->import('entity-terms share-links files-list');
 ?>
 <h1>{{entity.name}}</h1>
 <div v-if="entity.files.avatar">
@@ -12,3 +12,5 @@ $this->import('entity-terms share-links');
 <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
 
 <share-links title="Compartilhar" text="Veja este link:"></share-links>
+
+<files-list title="Arquivos para download" :files="entity.files.downloads"></files-list>
