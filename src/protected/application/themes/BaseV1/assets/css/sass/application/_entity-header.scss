@@ -2,11 +2,23 @@
 
 .main-content-header {
     margin:0;
+   #header-banner{
+    display: flex;
+   
+    a{
+            background-color: red;
+            
+       }
+   }
     .container-card{
         border: 20px solid;
         border-color: #EEEEEE;
         border-radius: 5px;
         padding: 20px;
+        .social-card{
+            padding: 0;
+            margin: 0;
+        }
       
     }
     .ficha-spcultura{
@@ -20,7 +32,7 @@
                 .card-event{
                     display: flex;
                     flex-direction: row;
-                }
+                }       
                 .tags{
                     display: flex;        
                 } 
@@ -188,7 +200,9 @@ article.seal {
             display: flex;
             flex-direction: column;
         }
+        
     }
+    
     .edit-card-header {
         display: flex;
         
@@ -211,13 +225,15 @@ article.seal {
             float: left;
             width: 50%;
             
-            
+
         }
+        
         .edit-card-header-body{
             h2{
                 margin: 5px;
             }
         }
+        
         
     }
     
