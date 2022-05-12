@@ -1,6 +1,5 @@
 
     <header class="main-content-header">
-            <div class="container-card">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
                 
                 <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
