@@ -1954,9 +1954,9 @@ class ApiQuery {
         ];
         
         $properties = array_merge(
-                    ['terms'],
                     $this->entityProperties,
                     $this->registeredMetadata,
+                    ['terms'],
                     array_keys($this->entityRelations)
                 );
         
@@ -1980,7 +1980,6 @@ class ApiQuery {
         if($select === '*'){
             $select = implode(',', $this->_getAllPropertiesNames());
         }
-        
         $replacer = function ($select, $prop, $_subquery_select, $_subquery_match){
             $replacement = $this->_preCreateSelectSubquery($prop, $_subquery_select, $_subquery_match);
             if(is_null($replacement)){
@@ -2010,8 +2009,23 @@ class ApiQuery {
             $select = $replacer($select, $prop, $_subquery_select, $_subquery_match);
         }
 
-        $this->_selecting = array_unique(explode(',', $select));
+        
+        $this->_selecting = [];
+        $selecting = array_unique(explode(',', $select));
+        
+        sort($selecting);
 
+        foreach($this->_getAllPropertiesNames() as $prop) {
+            if(in_array($prop, $selecting)) {
+                $this->_selecting[] = $prop;
+            }
+        }
+
+        foreach($selecting as $prop) {
+            if(in_array($prop, $selecting)) {
+                $this->_selecting[] = $prop;
+            }
+        }
 
         if($this->_selectAll){
             foreach($this->_getAllPropertiesNames() as $k){
