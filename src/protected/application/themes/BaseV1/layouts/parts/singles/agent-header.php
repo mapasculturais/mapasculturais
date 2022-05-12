@@ -1,9 +1,8 @@
 
     <header class="main-content-header">
         <?php $this->part('singles/header-image', ['entity' => $entity]); ?>
-                
+            <div class="container-card">
                 <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
-                    
                 <div class="header-content edit-card">
                     <?php $this->applyTemplateHook('header-content','begin'); ?>
                     <div class="edit-card-header">
@@ -19,11 +18,8 @@
                     </div>
                 </div>  
                 <div class="edit-card-header-widgets">
-                    
                     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
                 </div>
-                
-                
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning">
                         <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
@@ -49,7 +45,6 @@
                 <?php $this->applyTemplateHook('header-content','end'); ?>
                 <?php $this->applyTemplateHook('header-content','after'); ?>
             </div>  
-         
     </header>
     <!--.main-content-header-->
 
