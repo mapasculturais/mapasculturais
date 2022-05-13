@@ -47,18 +47,21 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
         <!--.header-image-->
         <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="container-card">
-            <div class="header-content">
+            <div class="header-content edit-card">
                 <?php $this->applyTemplateHook('header-content','begin'); ?>
+                <div class="edit-card-header">
+                    <div class="edit-card-header-avatar">
+                        <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
+                    </div>
+                    <div class= "edit-card-header-body">
+                        <?php $this->part('singles/type', ['entity' => $entity]) ?>
 
-                <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
+                        <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
-                <?php $this->part('singles/type', ['entity' => $entity]) ?>
-
-                <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
-
-                <?php $this->part('singles/name', ['entity' => $entity]) ?>
-                <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
-
+                        <?php $this->part('singles/name', ['entity' => $entity]) ?>
+                        <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+                    </div>
+                </div>
                 <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
                     <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
@@ -67,7 +70,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                     <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
-                <div class="servico">
+                
                     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
                     <?php if($this->isEditable() || $entity->site): ?>
                         <p>
@@ -77,7 +80,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         </p>
                     <?php endif; ?>
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
-                </div>
+                
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?> 
                 <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         </div>
