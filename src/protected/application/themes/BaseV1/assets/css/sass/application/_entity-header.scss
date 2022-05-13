@@ -1,7 +1,13 @@
 @charset "UTF-8";
 
 .main-content-header {
+    .button-position-delete{
+        position: absolute;
+        bottom: -4px;
+        right: 1px;
+    }
     margin:0;
+    
    #header-banner{
     display: flex;
    
