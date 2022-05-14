@@ -4,7 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
-
+## [5.3.2] - 2022-05-13
+### Correções
+- Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
+### Melhorias
+- Libera avaliações antes do término das inscrições
 ## [5.2.11] - 2022-05-13
 ### Correções
 - Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
