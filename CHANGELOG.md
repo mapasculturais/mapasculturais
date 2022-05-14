@@ -5,6 +5,12 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [5.2.11] - 2022-05-13
+### Correções
+- Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
+### Melhorias
+- Libera avaliações antes do término das inscrições
+
 ## [5.3.1] - 2022-05-09
 ### Melhorias
 - Altera mensagem das inscrições enviadas
@@ -13,6 +19,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa sistemas de permissão para os avaliadores
 - Implementa calculo sobre políticas afirmativas nas avaliações técnicas
 - Novo tipo de saída da api em tabela de texto: @type=texttable
+
+## [5.2.10] - 2022-05-06
+### Melhorias
+- Após a inscrição ser enviada, pega os dados dos @campo diretamente do metadado e não mais do agente
+  
+## [5.2.9] - 2022-05-03
 ### Correções
 - Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias

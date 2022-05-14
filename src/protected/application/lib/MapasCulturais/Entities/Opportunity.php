@@ -920,7 +920,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->registrationTo > (new \DateTime) || $this->publishedRegistrations){
+        if($this->publishedRegistrations){
             return false;
         }
 
