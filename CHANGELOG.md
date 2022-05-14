@@ -8,6 +8,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Limita acesso ao botão de download da planila de agentes a administradores
 - Informa numero de caracteres preenchidos na descrição curta do agente
 - Ajusta limite de caractéres da descrição curta em todas as entidades
+## [5.3.2] - 2022-05-13
+### Correções
+- Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
+### Melhorias
+- Libera avaliações antes do término das inscrições
+## [5.2.11] - 2022-05-13
+### Correções
+- Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
+### Melhorias
+- Libera avaliações antes do término das inscrições
+
 ## [5.3.1] - 2022-05-09
 ### Melhorias
 - Altera mensagem das inscrições enviadas
@@ -16,6 +27,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa sistemas de permissão para os avaliadores
 - Implementa calculo sobre políticas afirmativas nas avaliações técnicas
 - Novo tipo de saída da api em tabela de texto: @type=texttable
+
+## [5.2.10] - 2022-05-06
+### Melhorias
+- Após a inscrição ser enviada, pega os dados dos @campo diretamente do metadado e não mais do agente
+  
+## [5.2.9] - 2022-05-03
 ### Correções
 - Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias
