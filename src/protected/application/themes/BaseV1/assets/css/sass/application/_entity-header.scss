@@ -151,7 +151,7 @@
         margin: -2rem -2rem 2rem;
     }
     @media screen and (min-width: $screen-lg-desktop) {
-        margin: -2rem -2rem 2rem;
+        margin: -4rem -4rem 2rem;
     }
 }
 article.agent {
@@ -199,8 +199,7 @@ article.seal {
     text-align: center;
     .widget{
         .card-event{
-            display: flex;
-            flex-direction: column;
+            display: inline;
         }
         
     }
