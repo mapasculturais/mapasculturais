@@ -148,6 +148,9 @@ class Agent extends EntityController {
      * @apiParam {String} role nome da "role" a ser atribuida ao usuário. 
      * @apiParam {Number} [subsiteId] identificador do subsite.
      * @apiPermission user
+     * 
+     * @deprecated 6.0.0
+     * 
      */
     function ALL_addRole(){
         $this->requireAuthentication();
@@ -226,6 +229,8 @@ class Agent extends EntityController {
      * @apiParam {Number} [subsiteId] identificador do subsite.
      * @apiPermission user
      * @apiVersion 4.0.0
+     * 
+     * @deprecated 6.0.0
     */
     function ALL_removeRole(){
         $this->requireAuthentication();
