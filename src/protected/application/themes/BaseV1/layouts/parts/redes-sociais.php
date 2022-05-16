@@ -1,5 +1,5 @@
 <?php if ($this->isEditable() || $entity->twitter || $entity->facebook || $entity->instagram || $entity->linkedin || $entity->spotify || $entity->youtube || $entity->pinterest): ?>
-    <div class="widget">
+    <div class="widget social-card">
         <h3><?php \MapasCulturais\i::_e("REDES SOCIAIS");?></h3>
 
         <?php if ($this->isEditable() || $entity->twitter): ?>
