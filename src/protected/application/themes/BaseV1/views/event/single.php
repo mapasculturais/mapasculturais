@@ -138,7 +138,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <hr style="margin: 0; margin-top: 5px; margin-bottom: 5px;">
                 <div class="widget areas">
                     <div class="card-event"> 
-                            <?php \MapasCulturais\i::_e("Linguagens");?>
+                            <?php \MapasCulturais\i::_e("Linguagens");?><br>
                             <?php if ($this->isEditable()): ?>
                                 <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Linguagens");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione pelo menos uma linguagem");?>" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
                             <?php else: ?>
