@@ -4,7 +4,7 @@ $has_private_location = isset($has_private_location) && $has_private_location
 ?>
 <?php if ($entity->canUser("viewPrivateData") || (($has_private_location && $entity->publicLocation && $lat && $lng) || (!$has_private_location && $lat && $lng)) ): ?>
     <?php $this->applyTemplateHook('location','before'); ?>
-    <div class="servico clearfix">
+    <div class=" clearfix">
        
         <div class="infos">
 
