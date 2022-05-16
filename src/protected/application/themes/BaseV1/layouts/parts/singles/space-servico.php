@@ -1,4 +1,4 @@
-<div class="servico">
+<div >
     <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
 
     <?php if($this->isEditable()): ?>
