@@ -164,7 +164,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php endif; ?>
                 <p>
                     <?php if ($this->isEditable() || $entity->shortDescription): ?>
-                        <span class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"> <?php \MapasCulturais\i::_e("Descrição curta:");?> <?php if($this->isEditable()){ ?><span data-element='countLength'><?=strlen($entity->shortDescription)?></span> <?php \MapasCulturais\i::_e("de 400:");?></span></span><?php } ?><br>
+                        <span class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"> <?php \MapasCulturais\i::_e("Descrição curta:");?> <?php if($this->isEditable()){ ?><span data-element='countLength'><?=strlen($entity->shortDescription)?></span> <?php \MapasCulturais\i::_e("/400 Caracteres");?></span></span><?php } ?><br>
                         <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta para o evento");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
                 </p>
