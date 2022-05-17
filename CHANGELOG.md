@@ -8,6 +8,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Limita acesso ao botão de download da planila de agentes a administradores
 - Informa numero de caracteres preenchidos na descrição curta do agente
 - Ajusta limite de caractéres da descrição curta em todas as entidades
+- Na listagem de eventos, faz com que filtro seja efetuado por padrão de 1 anos apartir da data atual
+- No endpoint apiQueryByLocation, seta que o período de eventos pesquisados sejam de 1 anos apartir da data atual
 ## [5.3.2] - 2022-05-13
 ### Correções
 - Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
