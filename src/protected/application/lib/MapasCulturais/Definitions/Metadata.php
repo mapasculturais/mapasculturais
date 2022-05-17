@@ -221,9 +221,15 @@ class Metadata extends \MapasCulturais\Definition{
 
 
         if(class_exists($owner_class . 'Meta')){
-            $q = $app->em->createQuery("SELECT COUNT(m) FROM {$owner_class}Meta m WHERE m.key = :key AND m.value = :value AND m.owner != :owner");
-
-            $q->setParameters(['key' => $this->key, 'value' => $value, 'owner' => $owner]);
+            if ($owner->isNew()) {
+                $q = $app->em->createQuery("SELECT COUNT(m) FROM {$owner_class}Meta m WHERE m.key = :key AND m.value = :value");
+    
+                $q->setParameters(['key' => $this->key, 'value' => $value]);
+            } else {
+                $q = $app->em->createQuery("SELECT COUNT(m) FROM {$owner_class}Meta m WHERE m.key = :key AND m.value = :value AND m.owner != :owner");
+    
+                $q->setParameters(['key' => $this->key, 'value' => $value, 'owner' => $owner]);
+            }
 
         }else{
             $q = $app->em->createQuery("SELECT COUNT(m) FROM \MapasCulturais\Entities\Metadata m WHERE m.key = :key AND m.value = :value AND m.ownerType :ownerType AND m.ownerId != :ownerId");
