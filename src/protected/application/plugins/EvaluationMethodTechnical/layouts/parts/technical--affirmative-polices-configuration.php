@@ -5,8 +5,8 @@ use MapasCulturais\i;
 <br><br>
 <hr>
 
-<h4><?php i::_e('Políticas afirmativas') ?></h4>
-<p><?php i::_e('Configure abaixo as políticas afirmativas de avaliação técnica') ?>
+<h4><?php i::_e('Políticas Afirmativas') ?></h4>
+<p><?php i::_e('Configure abaixo os percentuais de cada Política Afirmativa que serão aplicados na nota final, caso o proponente se enquadre. ') ?>
 <section ng-if="data.isActiveAffirmativePolicies">
     <header>
         <div class="policy-roof">
@@ -28,7 +28,7 @@ use MapasCulturais\i;
         <tr ng-repeat="(key,policy) in data.criteriaAffirmativePolicies track by $index" id="{{policy.id}}">
             <td class="policy-field">
                 <select ng-model="data.fieldsAffiermativePolicie[policy.id].field" ng-change="changeField(policy); ">
-                    <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}"> {{field.title}} </option>
+                    <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}">#{{field.id}} {{field.title}} </option>
                 </select>
             </td>
 
@@ -44,8 +44,10 @@ use MapasCulturais\i;
 
                 <div class="check" ng-if="policy.viewDataValues == 'checkbox'">
                     <span ng-repeat="(key, v) in policy.valuesList">
-                        <input id="{{v}}" type="checkbox" ng-model="data.fieldsAffiermativePolicie[policy.id].value[v]">
-                        <label for="{{v}}">{{v}}</label>
+                        <label>
+                            <input type="checkbox" ng-model="data.fieldsAffiermativePolicie[policy.id].value[v]">
+                            {{v}}
+                        </label>
                     </span>
                 </div>
             </td>
@@ -62,5 +64,5 @@ use MapasCulturais\i;
     </table>
 </section>
 
-<button ng-click="activeAffirmativePolicies()" ng-if="!data.isActiveAffirmativePolicies" id="enableAffirmativePolicy" class="btn btn-default add"><?php i::_e('Ativar seção de políticas afirmativas') ?></button>
-<button ng-click="activeAffirmativePolicies()" ng-if="data.isActiveAffirmativePolicies" id="disableAffirmativePolicy" class="btn btn-danger delete"><?php i::_e('Desativar seção de políticas afirmativas') ?></button>
+<button ng-click="activeAffirmativePolicies()" ng-if="!data.isActiveAffirmativePolicies" id="enableAffirmativePolicy" class="btn btn-default add"><?php i::_e('Utilizar Políticas Afirmativas') ?></button>
+<button ng-click="activeAffirmativePolicies()" ng-if="data.isActiveAffirmativePolicies" id="disableAffirmativePolicy" class="btn btn-danger delete"><?php i::_e('Não Utilizar Políticas Afirmativas') ?></button>
