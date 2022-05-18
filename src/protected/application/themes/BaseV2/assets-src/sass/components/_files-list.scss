@@ -14,10 +14,15 @@
             font-weight: 700;
             font-size: 18px;
             line-height: 25px;
-            color: var(--mc-black);
             margin: 7px 5px;
             color: var(--mc-black);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            svg {
+                margin: 0 5px;
+            }
         }
     }
 }
