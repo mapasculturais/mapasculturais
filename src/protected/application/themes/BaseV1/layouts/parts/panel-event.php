@@ -13,6 +13,7 @@
         <?php endif; ?>
 	</div>
     <div class="entity-actions">
+        <?php $this->applyTemplateHook('entity-actions','begin', [ $entity ]); ?>
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
         <?php if(!isset($only_edit_button)): ?>
             <?php if($entity->status === \MapasCulturais\Entities\Event::STATUS_ENABLED): ?>
@@ -35,5 +36,6 @@
             <?php endif; ?>
 
         <?php endif; ?>
+        <?php $this->applyTemplateHook('entity-actions','end', [ $entity ]); ?>
     </div>
 </article>
