@@ -9,11 +9,12 @@
         display: flex;
         gap: 10px;
         padding: 0;
+        flex-wrap: wrap;
         li {
             list-style: none; 
             padding: 10px; 
             min-width: 130px;
-            background-color: #EFEFEF; 
+            background-color: #E1E1E1; 
             border-radius: 15px; 
             font-size: 13px; 
             line-height: 13px;
