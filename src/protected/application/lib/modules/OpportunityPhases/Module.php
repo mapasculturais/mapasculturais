@@ -290,31 +290,18 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) {
+            if(empty($value) && ($previous_phase = $this->previousPhase)){
+                $previous_phase->registerFieldsMetadata();
+                $value = $previous_phase->$field_name;
+            }
+        });
+
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             $opportunity = $this->opportunity;
 
             $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
 
-        });
-
-        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $metadata_key) use($app) {
-            if(!$value && $this->previousPhase) {
-                $this->previousPhase->registerFieldsMetadata();
-
-                $cache_id = "registration:{$this->number}:$metadata_key";
-                if($app->cache->contains($cache_id)) {
-                    $value = $app->cache->fetch($cache_id);
-                } else {
-                    $value = $this->previousPhase->$metadata_key;
-                    $app->cache->save($cache_id, $value, DAY_IN_SECONDS);
-                }
-            }
-        });
-
-
-        $app->hook('entity(registration).meta(<<projectName|field_*>>).update:after', function() use($app) {
-            $cache_id = "registration:{$this->owner->number}:{$this->key}";
-            $app->cache->delete($cache_id);
         });
 
         // registra os metadados das inscrićões das fases anteriores

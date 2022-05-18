@@ -3,6 +3,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [feature/BaseV2]
 ### Novas funcionalidades
 - Possibilidade de selecionar files pelo parâmetro @select da api (#1994)
@@ -11,16 +12,55 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Quebra de compatibilidade
 - Não é mais possível selecionar entidades reacionadas utilizando várias vezes o nome da entidade (ex: `@select=owner.id,owner.name`). Deve-se substituir por `@select=owner.{id,name}`
 
-
 ## [Unreleased]
+### Melhorias
+- Limita acesso ao botão de download da planila de agentes a administradores
+- Informa numero de caracteres preenchidos na descrição curta do agente
+- Ajusta limite de caractéres da descrição curta em todas as entidades
+- Na listagem de eventos, faz com que filtro seja efetuado por padrão de 1 anos apartir da data atual
+- No endpoint apiQueryByLocation, seta que o período de eventos pesquisados sejam de 1 anos apartir da data atual
+- Quando o agente é redirecionado para a tela de edição por nao ter os dados mínimos preenchidos, eexibe opção de sair "Deslogar"
+
+## [5.3.3] - 2022-05-17
+### Correções
+- corrige validação de metadaos únicos na criação de entidades
+
+## [5.2.12] - 2022-05-17
+### Correções
+- corrige validação de metadaos únicos na criação de entidades
+
+## [5.3.2] - 2022-05-13
+### Correções
+- Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
+### Melhorias
+- Libera avaliações antes do término das inscrições
+
+## [5.2.11] - 2022-05-13
+### Correções
+- Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
+### Melhorias
+- Libera avaliações antes do término das inscrições
+
+## [5.3.1] - 2022-05-09
+### Melhorias
+- Altera mensagem das inscrições enviadas
+## [5.3.0] - 2022-05-09
 ### Novas funcionalidades
 - Implementa sistemas de permissão para os avaliadores
 - Implementa calculo sobre políticas afirmativas nas avaliações técnicas
 - Novo tipo de saída da api em tabela de texto: @type=texttable
+
+## [5.2.10] - 2022-05-06
+### Melhorias
+- Após a inscrição ser enviada, pega os dados dos @campo diretamente do metadado e não mais do agente
+  
+## [5.2.9] - 2022-05-03
 ### Correções
 - Corrige atualização de geo localização ao se atualizar endereço do agente
 ### Melhorias
 - Revisão dos scripts e arquivos de configuração para ambiente de desenvolvimento
+- Deixa o cadastro do agente em conformidade com a LGPD
+- Implementa checagem do tamanho da string da descrição curta do agente no back-end para garantir que se tenha 400 caracteres
 
 ## [5.2.9]
 ### Correções

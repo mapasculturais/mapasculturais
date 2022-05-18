@@ -183,10 +183,15 @@ a.editable-click:hover {
 }
 
 .editable-input input,
-.editable-input select,
 .editable-buttons button {
     margin-bottom: 0;
     display: inline-block;
+}
+
+.editable-input select{
+    margin-bottom: 0;
+    display: inline-block;
+    max-width: 400px;
 }
 
 .editable-buttons button.editable-cancel {

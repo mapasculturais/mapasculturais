@@ -1216,6 +1216,11 @@ class Theme extends MapasCulturais\Theme {
         $app->hook('template(event.<<create|edit|single>>.tab-about-service):before', function(){
             $this->part('event-attendance', ['entity' => $this->data->entity]);
         });
+
+        // Limita acesso ao botão de download da planila de agentes a administradores
+        $app->hook('enabled.agent.spreadsheet.map', function(&$enabled_export_spreadsheet_map) use ($app){
+            $enabled_export_spreadsheet_map = $app->user->is('admin') ? true : false;
+        });
     }
 
     /*
