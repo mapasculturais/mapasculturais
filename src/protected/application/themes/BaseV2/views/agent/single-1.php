@@ -17,4 +17,4 @@ $this->import('entity-terms share-links files-list entity-links entity-owner');
 
 <entity-links title="Links" :entity="entity"></entity-links>
 
-<entity-owner title="Publicado por" :entity="entity"></entity-links>
+<entity-owner title="Publicado por" :entity="entity"></entity-owner>
