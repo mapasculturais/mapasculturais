@@ -11,11 +11,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Na listagem de eventos, faz com que filtro seja efetuado por padrão de 1 anos apartir da data atual
 - No endpoint apiQueryByLocation, seta que o período de eventos pesquisados sejam de 1 anos apartir da data atual
 - Quando o agente é redirecionado para a tela de edição por nao ter os dados mínimos preenchidos, eexibe opção de sair "Deslogar"
+
+## [5.3.3] - 2022-05-17
+### Correções
+- corrige validação de metadaos únicos na criação de entidades
+
+## [5.2.12] - 2022-05-17
+### Correções
+- corrige validação de metadaos únicos na criação de entidades
+
 ## [5.3.2] - 2022-05-13
 ### Correções
 - Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
 ### Melhorias
 - Libera avaliações antes do término das inscrições
+
 ## [5.2.11] - 2022-05-13
 ### Correções
 - Corrige listagem de campos das fases anteriores que ficavam vazios em algumas situações
