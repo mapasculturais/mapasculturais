@@ -682,7 +682,15 @@ abstract class Theme extends \Slim\View {
         if ($entity_class_name && $entity_id) {
             $app = App::i();
             $query = new ApiQuery($entity_class_name, ['@select' => '*', 'id' => "EQ({$entity_id})"]);
+            $owner_prop = ($entity_class_name == Entities\Agent::class) ? 'parent' : 'owner';
             $e = $query->findOne();
+
+            if ($owner_id = $e[$owner_prop]) {
+                $query = new ApiQuery(Entities\Agent::class, ['@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 'id' => "EQ({$owner_id})"]);
+                $owner = $query->findOne();
+                $e[$owner_prop] = $owner;
+            }
+            
             $e['controllerId'] = $app->getControllerIdByEntity($entity_class_name);
             $this->jsObject['requestedEntity'] = $e;
         }
