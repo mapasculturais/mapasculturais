@@ -7,10 +7,6 @@ app.component('entity-owner', {
         return { hasSlot }
     },
 
-    created() {
-
-    },
-
     data() {
         return {
             owner: this.entity.owner || this.entity.parent || null
@@ -26,5 +22,6 @@ app.component('entity-owner', {
             type: String,
             default: 'Publicado por'
         }
-    },
+    }
+    
 });
