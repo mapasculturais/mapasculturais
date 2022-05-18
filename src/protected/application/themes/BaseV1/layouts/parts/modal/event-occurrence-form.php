@@ -25,7 +25,7 @@
                 >{{space.name}}</span>
         </div>
 
-        <a href="javascript:void(0)" class="btn btn-toggle-attached-modal btn-default" rel='noopener noreferrer'>
+        <a href="javascript:void(0)" class="btn btn-default" onclick="toggleEventModal()" rel='noopener noreferrer'>
             <?php \MapasCulturais\i::esc_attr_e('Ou crie e vincule um novo espaço'); ?>
         </a>
 

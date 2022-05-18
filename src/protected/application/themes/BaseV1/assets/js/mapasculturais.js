@@ -8,10 +8,24 @@ function charCounter(obj) {
     $('#charCounter').text(($(obj).val().length + '/' + max[1]));
 }
 
-function toggleAttachedModal(el, modal_id) {
-    $("div#" + modal_id).toggle();
+function toggleEventModal(){
+    var modal = $("#evt-date-local").siblings().find('div').attr('id');
+    $("div#" + modal).toggle();
     $("#evt-date-local").toggle();
 }
+
+$(document).
+    on('click', '.btn-toggle-attached-modal', function () {
+        var modal = $("#evt-date-local").siblings().find('div').attr('id');
+        if (modal) {
+            toggleEventModal();
+        }
+    }).
+    on('click', '.close-attached-modal', function() {
+        var modal = $(this).data('form-id');
+        toggleEventModal();
+});
+
 
 function copyToClipboard(element) {
     if (document.selection) {

@@ -137,7 +137,9 @@ jQuery(function(){
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
-
+        $("[data-element='shortDescription']").on("keyup", function(){
+            $("[data-element='countLength']").html(this.value.length);
+        })
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
