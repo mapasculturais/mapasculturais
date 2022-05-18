@@ -1,0 +1,29 @@
+.entity-links {
+    margin: 25px 0;
+    h2 {
+        margin: 0 0 10px 0;
+    }
+    .links {
+        display: flex;
+        flex-direction: column; 
+        justify-content: space-around;
+        flex-wrap: nowrap;
+        a {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 25px;
+            margin: 7px 5px;
+            color: var(--mc-black);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            svg {
+                font-size: 20px;
+                margin: 0 5px;
+            }
+        }
+    }
+}
