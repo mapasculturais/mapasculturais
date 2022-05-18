@@ -111,6 +111,12 @@ class ApiQuery {
     protected $usesFiles;
     
     /**
+     * The entity uses MetaLists?
+     * @var bool
+     */
+    protected $usesMetalists;
+    
+    /**
      * The entity uses permission cache?
      * @var bool
      */
@@ -415,6 +421,8 @@ class ApiQuery {
         $this->entityRepository = $app->repo($this->entityClassName);
         
         $this->usesFiles = $class::usesFiles();
+        $this->usesMetalists = $class::usesMetalists();
+
         $this->usesPermissionCache = $class::usesPermissionCache();
         $this->usesTaxonomies = $class::usesTaxonomies();
         $this->usesMetadata = $class::usesMetadata();
@@ -2130,6 +2138,10 @@ class ApiQuery {
 
         if ($this->usesFiles) {
             $defaults[] = 'files';
+        }
+
+        if ($this->usesMetalists) {
+            $defaults[] = 'metalists';
         }
 
         $properties = array_merge(
