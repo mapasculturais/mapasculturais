@@ -1,4 +1,4 @@
-<div class="entity-owner">
+<div v-if="owner" class="entity-owner">
     <h4>{{title}}</h4>
     <a :href="owner.singleUrl" :title="owner.shortDescription">
         <div class="owner">
