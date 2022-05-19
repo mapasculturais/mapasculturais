@@ -2144,6 +2144,10 @@ class ApiQuery {
             $defaults[] = 'metalists';
         }
 
+        if ($this->usesMetalists) {
+            $defaults[] = 'seals';
+        }
+
         $properties = array_merge(
                     $this->entityProperties,
                     $this->registeredMetadata,
