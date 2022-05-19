@@ -404,13 +404,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         
             if($applied){
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
+                $field_id = "field_".$field->id;
                 $appliedPolicies[] = [
                     'field' => [
                         'title' => $field->title,
                         'id' =>$rules->field
                     ],
                     'percentage' => $rules->fieldPercent,
-                    'value' => $key,
+                    'value' => $registration->$field_id,
                 ];
                 continue;
             }
