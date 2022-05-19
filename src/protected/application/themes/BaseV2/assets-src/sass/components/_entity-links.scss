@@ -1,9 +1,9 @@
-.files-list {
+.entity-links {
     margin: 25px 0;
     h2 {
         margin: 0 0 10px 0;
     }
-    .files {
+    .links {
         display: flex;
         flex-direction: column; 
         justify-content: space-around;
@@ -21,6 +21,7 @@
             align-items: center;
             gap: 5px;
             svg {
+                font-size: 20px;
                 margin: 0 5px;
             }
         }
