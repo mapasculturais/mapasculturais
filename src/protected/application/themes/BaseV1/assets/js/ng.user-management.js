@@ -208,6 +208,7 @@
                     keyword: $('#campo-de-busca').val()
                 };
 
+                $scope.data.userManagerment =  true;
                 $scope.data.global.filterEntity = params.entity;
                 $scope.data[params.entity] = {
                     keyword: !isValidCPF(params.keyword) ? params.keyword : '',

@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.2.13] - 2022-06-07
 ### Correções
 - evita criação duplicada de metadados
-- 
+
 ### Melhorias
 - Novos hooks
 
