@@ -1,0 +1,21 @@
+.entity-seals {
+    margin: 25px 0;
+    h4 {
+        margin: 0 0 10px 0;
+    }
+    .seals {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        .seal {
+            align-items: center;
+            background: #C4C4C4;
+            border-radius: 4px;
+            display: flex;
+            height: 47px;
+            justify-content: center;
+            overflow: hidden;
+            width: 48px;
+        }
+    }
+}
