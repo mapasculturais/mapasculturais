@@ -166,8 +166,8 @@ class API {
         }
     }
 
-    async findOne(id) {
-        let url = this.createApiUrl('findOne', {id: `EQ(${id})`, '@select': '*'});
+    async findOne(id, select) {
+        let url = this.createApiUrl('findOne', {id: `EQ(${id})`, '@select': select || '*'});
         return this.GET(url).then(response => response.json().then(obj => {
             let entity = this.getEntityInstance(id);
             return entity.populate(obj);

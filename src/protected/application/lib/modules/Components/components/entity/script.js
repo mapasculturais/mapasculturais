@@ -21,7 +21,10 @@ app.component('entity', {
     props: {
         id: Number,
         type: String,
-        select: String,
+        select: {
+            type: String,
+            default: '*'
+        },
         scope: String
     },
 
