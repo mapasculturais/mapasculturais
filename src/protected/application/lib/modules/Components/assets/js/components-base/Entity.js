@@ -18,7 +18,7 @@ class Entity {
 
     populate(obj) {
 
-        for (const prop of ['terms', 'files', 'metalists']) {
+        for (const prop of ['terms', 'files', 'metalists', 'seals']) {
             if (obj[prop]) {
                 this[prop] = obj[prop];
             }    
