@@ -59,9 +59,10 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                         <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
                         <?php $this->part('singles/name', ['entity' => $entity]) ?>
-                        <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+                        
                     </div>
                 </div>
+                <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
                 <?php if($this->isEditable() && $entity->shortDescription && mb_strlen($entity->shortDescription) > 400): ?>
                 <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo mb_strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
