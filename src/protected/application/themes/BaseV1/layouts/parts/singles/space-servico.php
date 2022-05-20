@@ -25,15 +25,6 @@
     <p><span class="label"><?php \MapasCulturais\i::_e("Horário de funcionamento");?>: </span><span class="js-editable" data-edit="horario" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Horário de Funcionamento');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Insira o horário de abertura e fechamento');?>"><?php echo $entity->horario; ?></span></p>
     <?php endif; ?>
 
-    <?php if($this->isEditable() || $entity->site): ?>
-        <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-        <?php if($this->isEditable()): ?>
-            <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Site');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Insira a url de seu site');?>"><?php echo $entity->site; ?></span></p>
-        <?php else: ?>
-            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-        <?php endif; ?>
-    <?php endif; ?>
-
     <?php if($this->isEditable() || $entity->emailPublico): ?>
     <p><span class="label"><?php \MapasCulturais\i::_e("Email Público");?>:</span> <span class="js-editable" data-edit="emailPublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Email Público');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Insira um email que será exibido publicamente');?>"><?php echo $entity->emailPublico; ?></span></p>
     <?php endif; ?>
