@@ -168,6 +168,15 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                         <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta para o evento");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
                 </p>
+                <?php if ($this->isEditable() || $entity->site): ?>
+                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Site");?>:</span>
+                            <?php if ($this->isEditable()): ?>
+                                <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o endereço do site do evento");?>"><?php echo $entity->site; ?></span></p>
+                        <?php else: ?>
+                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                        <?php endif; ?>
+                <?php endif; ?>
+                
             <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         </div>
     </header>
@@ -203,14 +212,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"classificacaoEtaria") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Classificação Etária");?>: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Classificação Etária");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe a classificação etária do evento");?>"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if ($this->isEditable() || $entity->site): ?>
-                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Site");?>:</span>
-                            <?php if ($this->isEditable()): ?>
-                                <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o endereço do site do evento");?>"><?php echo $entity->site; ?></span></p>
-                        <?php else: ?>
-                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                    
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Mais Informações");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Mais Informações");?>" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
