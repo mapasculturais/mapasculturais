@@ -14,12 +14,13 @@
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
 
         <?php if($this->isEditable() || $entity->site): ?>
-            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-            <?php if($this->isEditable()): ?>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-            <?php else: ?>
-                <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-            <?php endif; ?>
+            <div class="widget"><h3 class="label"><?php \MapasCulturais\i::_e("Site");?>:</h3>
+                <?php if($this->isEditable()): ?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span>
+                <?php else: ?>
+                    <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <?php if($this->isEditable()): ?>
