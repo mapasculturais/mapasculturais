@@ -290,6 +290,12 @@ article.seal {
         color: $brand-event;
     }
     .space-type {
+        .editable-input{
+            width: 75%;
+            select{
+                width: 100%;
+            }
+        }
         color: $brand-space;
     }
     .subsite-type {
