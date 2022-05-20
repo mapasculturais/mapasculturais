@@ -35,7 +35,7 @@
                 <div class="widget">
                     <h3><?php \MapasCulturais\i::_e("Site:");?></h3>
                     <?php if($this->isEditable()): ?>
-                        <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $this->isEditable()? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
+                        <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $this->isEditable()? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span>
                     <?php else: ?>
                         <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     <?php endif; ?>

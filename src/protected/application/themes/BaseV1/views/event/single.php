@@ -137,8 +137,8 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                 <?php endif; ?>
                 <hr style="margin: 0; margin-top: 5px; margin-bottom: 5px;">
                 <div class="widget areas">
-                    <div class="card-event"> 
-                            <?php \MapasCulturais\i::_e("Linguagens");?><br>
+                    <div class="widget card-event"> 
+                            <h3><?php \MapasCulturais\i::_e("Linguagens");?></h3>
                             <?php if ($this->isEditable()): ?>
                                 <span id="term-linguagem" class="js-editable-taxonomy" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Linguagens");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Selecione pelo menos uma linguagem");?>" data-restrict="true" data-taxonomy="linguagem"><?php echo implode('; ', $entity->terms['linguagem']) ?></span>
                             <?php else: ?>
@@ -162,12 +162,22 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
             <?php if($this->isEditable() && $entity->shortDescription && mb_strlen($entity->shortDescription) > 400): ?>
                     <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo mb_strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
                 <?php endif; ?>
-                <p>
+                <div class="widget">
                     <?php if ($this->isEditable() || $entity->shortDescription): ?>
-                        <span class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"> <?php \MapasCulturais\i::_e("Descrição curta");?> <?php if($this->isEditable()){ ?>(<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Caracteres");?></span></span>)<?php } ?>:<br>
+                        <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"> <?php \MapasCulturais\i::_e("Descrição curta");?> <?php if($this->isEditable()){ ?>(<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Caracteres):");?></span></h3><?php } ?>
                         <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta para o evento");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                     <?php endif; ?>
-                </p>
+                    </div>
+                <?php if ($this->isEditable() || $entity->site): ?>
+                        <div class="widget"><h3 <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Site:");?></h3>
+                            <?php if ($this->isEditable()): ?>
+                                <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o endereço do site do evento");?>"><?php echo $entity->site; ?></span>
+                        <?php else: ?>
+                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                        <?php endif; ?>
+                        </div>
+                <?php endif; ?>
+                
             <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         </div>
     </header>
@@ -203,14 +213,7 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"classificacaoEtaria") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Classificação Etária");?>: </span><span class="js-editable" data-edit="classificacaoEtaria" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Classificação Etária");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe a classificação etária do evento");?>"><?php echo $entity->classificacaoEtaria; ?></span></p>
                     <?php endif; ?>
 
-                    <?php if ($this->isEditable() || $entity->site): ?>
-                        <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Site");?>:</span>
-                            <?php if ($this->isEditable()): ?>
-                                <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o endereço do site do evento");?>"><?php echo $entity->site; ?></span></p>
-                        <?php else: ?>
-                            <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                    
 
                     <?php if($this->isEditable() || $entity->telefonePublico): ?>
                         <p><span class="label <?php echo ($entity->isPropertyRequired($entity,"telefonePublico") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Mais Informações");?>:</span> <span class="js-editable js-mask-phone" data-edit="telefonePublico" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Mais Informações");?>" data-emptytext="(000) 0000-0000"><?php echo $entity->telefonePublico; ?></span></p>
