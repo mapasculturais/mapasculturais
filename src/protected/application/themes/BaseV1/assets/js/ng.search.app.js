@@ -88,7 +88,7 @@
         event: {
             keyword: '',
             from: moment().format('YYYY-MM-DD'),
-            to: moment().add(1, 'month').format('YYYY-MM-DD'),
+            to: moment().add(1, 'year').format('YYYY-MM-DD'),
             showAdvancedFilters:false,
             filters: {}
             

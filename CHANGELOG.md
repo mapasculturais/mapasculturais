@@ -3,12 +3,27 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+## [5.3.7] - 2022-05-23 
+### Correções
+- Ajuste nas fontes dos cartões das entidades
+- Ajuste dos itens faltantes do cartão das entidades
+- Ajuste da posição da tag
+- Corrige css do select que define o tipo de um espaço
+- Utiliza função mb_strlen para contar os caractéres da descrição curta, levando em conta que podem existir caracteres multibyte
 
-## [5.3.6] - 2022-05-23
-## Correções
+### Melhorias
+- Limita acesso ao botão de download da planila de agentes a administradores
+- Informa numero de caracteres preenchidos na descrição curta do agente
+- Ajusta limite de caractéres da descrição curta em todas as entidades
+- Na listagem de eventos, faz com que filtro seja efetuado por padrão de 1 anos apartir da data atual
+- No endpoint apiQueryByLocation, seta que o período de eventos pesquisados sejam de 1 anos apartir da data atual
+- Quando o agente é redirecionado para a tela de edição por nao ter os dados mínimos preenchidos, eexibe opção de sair "Deslogar"
+- Faz com que o filtro de eventos na gestão de usuários busque todos os eventos independente de existir espaço ou ocorrencias
+## [5.3.6] - 2022-05-23 
 - Corrige erro que nao deixava exibir campos condicionados a outros nas configurações das politicas afirmativas
 
-## [5.3.5] - 2022-05-19
+## [5.3.5] - 2022-05-19 
 ## Correções
 - Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com políticas afirmativas aplicadas
 - Na planilha de inscritos, corrige exibição dos valores de politicas afirmativas atribídas a inscrição

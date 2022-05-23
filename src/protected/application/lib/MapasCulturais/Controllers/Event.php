@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use DateInterval;
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -461,8 +463,11 @@ class Event extends EntityController {
     }
 
     function apiQueryByLocation($query_data){
-        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
-        $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
+
+        $today = new DateTime('now');
+
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : $today->format("Y-m-d");
+        $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $today->add(new DateInterval("P1Y"));
         $spaces     = key_exists('space',   $query_data) ? $query_data['space'] : null;
 
         unset(
