@@ -40,21 +40,50 @@ $this->entity = $entity;
 
         <!--.header-image-->
         <?php $this->applyTemplateHook('header-content','before'); ?>
-        <div class="header-content">
-            <?php $this->applyTemplateHook('header-content','begin'); ?>
+        <div class="container-card">
+            <div class="header-content edit-card ">
+                <?php $this->applyTemplateHook('header-content','begin'); ?>
+                <div class="edit-card-header">
+                        <div class="edit-card-header-avatar">
+                            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--space.png']); ?>
+                        </div>
+                        <div class="edit-card-header-body">
+                            <?php $this->part('singles/type', ['entity' => $entity]) ?>
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--space.png']); ?>
+                            <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?>
+                            <?php $this->part('singles/name', ['entity' => $entity]) ?>
 
-            <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
+                            <?php $this->part('widget-areas', ['entity' => $entity]); ?>
+                        </div>   
+                </div> 
+                <?php $this->part('widget-tags', ['entity' => $entity]); ?>
+                
+                <?php if($this->isEditable() && $entity->shortDescription && mb_strlen($entity->shortDescription) > 400): ?>
+                    <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo mb_strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
+                <?php endif; ?>
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?>
+                <div class="widget">
+                    <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $this->isEditable()? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição curta");?> <?php if($this->isEditable()){ ?>(<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Carecteres):");?></h3> <?php } ?>
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                </div>
 
-            <?php $this->part('widget-areas', ['entity' => $entity]); ?>
+                <?php if($this->isEditable() || $entity->site): ?>
+                    <div class="widget"><h3><?php \MapasCulturais\i::_e("Site");?>:</h3>
+                    <?php if($this->isEditable()): ?>
+                        <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Site');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Insira a url de seu site');?>"><?php echo $entity->site; ?></span>
+                    <?php else: ?>
+                        <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                    <?php endif; ?>
+                    </div>
+                 <?php endif; ?>
 
-            <?php $this->applyTemplateHook('header-content','end'); ?>
-        </div>
+
+                <?php $this->part('redes-sociais', ['entity' => $entity]); ?>
+
+                <?php $this->applyTemplateHook('header-content','end'); ?>
+            </div>
+</div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
     </header>
@@ -77,13 +106,7 @@ $this->entity = $entity;
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
-                <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
-                    <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
-                <?php endif; ?>
-
-                <p>
-                    <span class="js-editable required" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
-                </p>
+                
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <?php $this->part('singles/space-servico', ['entity' => $entity]); ?>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>
@@ -121,9 +144,6 @@ $this->entity = $entity;
 
     <?php $this->part('singles/space-public', ['entity' => $entity]) ?>
 
-    <?php $this->part('widget-tags', ['entity' => $entity]); ?>
-
-    <?php $this->part('redes-sociais', ['entity' => $entity]); ?>
 
     <?php $this->applyTemplateHook('sidebar-left','begin'); ?>
 </div>

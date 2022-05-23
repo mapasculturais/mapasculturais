@@ -144,6 +144,23 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
         $plugin = $this;
 
+         // Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com políticas afirmativas aplicadas
+         $app->hook('entity(Registration).update:after', function() use ($app){
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $phase = $this;
+            
+            do{
+                $em = $phase->getEvaluationMethod();
+
+                if($em->getSlug() == "technical"){
+                    $app->disableAccessControl();
+                    $phase->consolidateResult();
+                    $app->enableAccessControl();
+                }
+            }while($phase = $phase->nextPhase);
+        });
+
+
         // Insere valores das políticas afirmativas aplicadas na planilha de inscritos
         $app->hook('opportunity.registrations.reportCSV', function(\MapasCulturais\Entities\Opportunity $opportunity, $registrations, &$header, &$body) use ($app){
             
@@ -412,13 +429,14 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         
             if($applied){
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
+                $field_id = "field_".$field->id;
                 $appliedPolicies[] = [
                     'field' => [
                         'title' => $field->title,
                         'id' =>$rules->field
                     ],
                     'percentage' => $rules->fieldPercent,
-                    'value' => $key,
+                    'value' => $registration->$field_id,
                 ];
                 continue;
             }
