@@ -44,7 +44,7 @@ $canSee = function ($view) use ($entity, $fieldsList) {
     
     <?php if($canSee('personalData') || ($entity->publicLocation && $canSee('location'))):?>
     <h3><?php \MapasCulturais\i::_e("Dados Pessoais");?></h3>
-    <? endif; ?>
+    <?php endif; ?>
 
     <?php $this->applyTemplateHook('tab-about-service','before'); ?>
 
@@ -75,8 +75,8 @@ $canSee = function ($view) use ($entity, $fieldsList) {
                         <?php echo $entity->emailPrivado; ?>
                     </span>
                 </p>
-            <? endif; ?>
-        <? endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
         <!-- Email Público -->
         <?php if($this->isEditable() || $entity->emailPublico): ?>
             <p><span class="label"><?php \MapasCulturais\i::_e("E-mail Público");?>:</span>
