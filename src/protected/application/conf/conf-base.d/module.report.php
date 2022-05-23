@@ -8,6 +8,7 @@ return [
         "raca",
         "genero",
         "orientacaoSexual",
+        "agenteItinerante",
         "En_Estado",
         "En_Municipio",
         "En_Bairro",

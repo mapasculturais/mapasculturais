@@ -63,6 +63,13 @@
                     <?php echo $entity->orientacaoSexual; ?>
                 </span>
             </p>
+             <!-- Agente Itinerante -->
+             <p class="privado"><span class="icon icon-private-info"></span>
+                    <span class="label"><?php \MapasCulturais\i::_e("Agente Itinerante");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"agenteItinerante") && $editEntity? 'required': '');?>" data-edit="agenteItinerante" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Agente Itinerante");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Responda sim, caso seja agente Itinerante ou não se possuir residência fixa");?>">
+                        <?php echo $entity->agenteItinerante; ?>
+                    </span>
+                </p> 
             <!-- Raça/Cor -->
             <p class="privado"><span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span>
