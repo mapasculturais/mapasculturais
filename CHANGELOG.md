@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.6] - 2022-05-23
+## Correções
+- Corrige erro que nao deixava exibir campos condicionados a outros nas configurações das politicas afirmativas
+
 ## [5.3.5] - 2022-05-19
 ## Correções
 - Reconsolida a avaliação da inscrição caso em fases posteriores exista avaliação técnica com políticas afirmativas aplicadas
