@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajuste dos itens faltantes do cartão das entidades
 - Ajuste da posição da tag
 - Corrige css do select que define o tipo de um espaço
+- Corrige erro que nao deixava exibir campos condicionados a outros nas configurações das politicas afirmativas
 ### Melhorias
 - Limita acesso ao botão de download da planila de agentes a administradores
 - Informa numero de caracteres preenchidos na descrição curta do agente
