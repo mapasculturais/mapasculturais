@@ -212,16 +212,7 @@
                      item.fieldType == "space-field"
                 ){
 
-                    var fieldType = null;
-                    if(item.config){
-                        fieldType = item.config.entityField;
-                    }else{
-                        fieldType = item.fieldType;
-                    }
-
-                    fieldType = (Object.keys(item.config).length > 0) ? item.config.entityField : item.fieldType;
-
-
+                    var fieldType = (Object.keys(item.config).length > 0 && item.config.hasOwnProperty('entityField')) ? item.config.entityField : item.fieldType;
 
                     var _ismultiple = false;
                     switch(fieldType) {
