@@ -13,6 +13,7 @@ $fieldsList = [
         'dataDeNascimento',
         'genero',
         'orientacaoSexual',
+        'agenteItinerante',
         'raca'
     ],
     'location' => [
