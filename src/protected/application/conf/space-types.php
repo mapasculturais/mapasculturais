@@ -220,7 +220,36 @@ return array(
                 "v::startsWith('@')" => \MapasCulturais\i::__("O usuário informado é inválido. Informe no formato @usuario e tente novamente")
             ),
             'available_for_opportunities' => true
-        )
+        ),
+        'linkedin' => array(
+            'label' => \MapasCulturais\i::__('Linkedin'),
+            'validations' => array(
+                "v::url('linkedin.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'available_for_opportunities' => true
+        ),
+        'spotify' => array(
+            'label' => \MapasCulturais\i::__('Spotify'),
+            'validations' => array(
+                "v::url('open.spotify.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'available_for_opportunities' => true
+        ),
+        'youtube' => array(
+            'label' => \MapasCulturais\i::__('YouTube'),
+            'validations' => array(
+                "v::url('youtube.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'available_for_opportunities' => true
+        ),
+        'pinterest' => array(
+            'label' => \MapasCulturais\i::__('Pinterest'),
+            'validations' => array(
+                "v::url('pinterest.com')" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'available_for_opportunities' => true
+        ),
+
     ),
 
 /**

@@ -64,7 +64,8 @@ $this->includeAngularEntityAssets($entity);
         <div id="sobre" class="aba-content">
             <div class="ficha-spcultura">
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="label <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $this->isEditable() ? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição curta:");?> <span data-element='countLength'><?php if($this->isEditable()){ ?> (<?=mb_strlen($entity->shortDescription)?></span> <?php \MapasCulturais\i::_e("/400 Caracteres");?></span></span>)<br> <?php }?>:
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">

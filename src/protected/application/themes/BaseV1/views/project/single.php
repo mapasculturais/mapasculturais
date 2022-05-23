@@ -1,6 +1,8 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
+$editEntity = $action === 'create' || $action === 'edit';
+
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
 
@@ -44,18 +46,45 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
 
         <!--.header-image-->
         <?php $this->applyTemplateHook('header-content','before'); ?>
-        <div class="header-content">
-            <?php $this->applyTemplateHook('header-content','begin'); ?>
+        <div class="container-card">
+            <div class="header-content edit-card">
+                <?php $this->applyTemplateHook('header-content','begin'); ?>
+                <div class="edit-card-header">
+                    <div class="edit-card-header-avatar">
+                        <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
+                    </div>
+                    <div class= "edit-card-header-body">
+                        <?php $this->part('singles/type', ['entity' => $entity]) ?>
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--project.png']); ?>
+                        <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?>
+                        <?php $this->part('singles/name', ['entity' => $entity]) ?>
+                        
+                    </div>
+                </div>
+                <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
+                <?php if($this->isEditable() && $entity->shortDescription && mb_strlen($entity->shortDescription) > 400): ?>
+                <div class="alert warning"><?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?> <?php echo mb_strlen($entity->shortDescription) ?> <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?></div>
+                <?php endif; ?>
 
-            <?php $this->part('entity-parent', ['entity' => $entity, 'child_entity_request' => $child_entity_request]) ?>
-
-            <?php $this->part('singles/name', ['entity' => $entity]) ?>
-
-            <?php $this->applyTemplateHook('header-content','end'); ?>
+                <div class="widget">
+                    <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição Curta");?> <?php if($this->isEditable()){?> (<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Caracteres):");?></span></h3><?php }?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showbuttons="bottom" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                </div>
+                <?php $this->applyTemplateHook('tab-about-service','before'); ?>
+                
+                    <?php $this->applyTemplateHook('tab-about-service','begin'); ?>
+                    <?php if($this->isEditable() || $entity->site): ?>
+                        <div class="widget">
+                            <h3 class="label <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Site");?>:</h3>
+                            <span ng-if="data.isEditable" class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span>
+                            <a ng-if="!data.isEditable" class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                    </div>
+                    <?php endif; ?>
+                    <?php $this->applyTemplateHook('tab-about-service','end'); ?>
+                
+                <?php $this->applyTemplateHook('tab-about-service','after'); ?> 
+                <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
         </div>
         <!--.header-content-->
         <?php $this->applyTemplateHook('header-content','after'); ?>
@@ -90,9 +119,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
     
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     
-    <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     
-    <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 
     <?php $this->applyTemplateHook('sidebar-left','end'); ?>
 </div>
