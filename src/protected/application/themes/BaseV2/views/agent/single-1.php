@@ -1,12 +1,20 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals');
+$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header');
 ?>
+
+<entity-header :entity="entity"></entity-header>
+
+
+
 <h1>{{entity.name}}</h1>
 <div v-if="entity.files.avatar">
     <img :src="entity.files.avatar?.transformations?.avatarMedium?.url">
 </div>
 <div>{{entity.shortDescription}}</div>
+
+
+
 
 <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse"></entity-terms>
 
