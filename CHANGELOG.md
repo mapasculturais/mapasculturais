@@ -4,7 +4,8 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
-
+### Correções
+- Aplica reverse na máscara do campo caso  o mesmo tenha aclasse  js-mask-currency
 ## [5.3.9] - 2022-05-23 
 ### Correções
 - Corrige erro na abertura da tag php
