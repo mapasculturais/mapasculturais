@@ -1634,6 +1634,10 @@ class App extends \Slim\Slim{
      * @throws Exception 
      */
     public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("ENQUEUED JOB: $type_slug");
+        }
+
         $type = $this->getRegisteredJobType($type_slug);
         
         if (!$type) {
