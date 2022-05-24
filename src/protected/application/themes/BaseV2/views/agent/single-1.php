@@ -1,11 +1,11 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header');
+$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header gallery');
 ?>
 
 <entity-header :entity="entity"></entity-header>
 
-
+<gallery :entity="entity"></gallery>
 
 <h1>{{entity.name}}</h1>
 <div v-if="entity.files.avatar">
