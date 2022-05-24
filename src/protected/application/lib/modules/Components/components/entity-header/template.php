@@ -2,8 +2,6 @@
 use MapasCulturais\i;
 ?>
 
-{{entity}}
-
 <header class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
 
     <div class="entity-header__cover" :style="{ '--url': url(entity.files.header?.url) }">
