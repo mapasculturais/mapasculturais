@@ -19,7 +19,8 @@
             </span>
 
             <span ng-repeat="field in data.fields"> 
-                <label><input type="checkbox" ng-click="selectFields(field.ref)" ng-checked="isChecked(field.ref)"> <code class="field-id ng-binding">#{{field.id}}</code>  {{field.title}}</label><br>
+            <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php \MapasCulturais\i::_e('Clique para copiar')?>" style="color: darkgreen;">#{{field.id}}</code>
+            <label><input type="checkbox" ng-click="selectFields(field.ref)" ng-checked="isChecked(field.ref)">   {{field.title}}</label><br>
             </span>
         </div>
         
