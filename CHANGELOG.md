@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [5.3.10] - 2022-05-24
 ### Correções
+- Define chave ENV para configurar chaves do recaptcha google no módulo CompliantSuggestion
+## [5.3.10] - 2022-05-24
+### Correções
 - Aplica reverse na máscara do campo caso  o mesmo tenha aclasse  js-mask-currency
 ## [5.3.9] - 2022-05-23 
 ### Correções
