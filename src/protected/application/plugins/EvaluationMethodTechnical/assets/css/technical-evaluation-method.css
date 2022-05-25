@@ -5,6 +5,7 @@
 .technical-evaluation-configuration input {
     border:1px solid transparent;
     cursor: pointer;
+    width: 100%;
 }
 
 .technical-evaluation-configuration input:focus {
