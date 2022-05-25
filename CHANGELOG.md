@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
 - Ajusta classe do ID do campo na listagem de campos para liberação para o avaliador padronizando com a configuração do formulário
 - Evita que necessite do número da residência para que se resolva uma geolocalização
+- Ajusta tabela dos crtérios de avaliação para que nao quebre a estilização com mudanças de resolução
 ## [5.3.11] - 2022-05-25
 ### Correções
 - Define chave ENV para configurar chaves do recaptcha google no módulo CompliantSuggestion
