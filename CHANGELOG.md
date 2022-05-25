@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Melhora configuração do recapcha no módulo CompliantSuggestion
+
+### Melhorias
+- Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
 ## [5.3.11] - 2022-05-25
 ### Correções
 - Define chave ENV para configurar chaves do recaptcha google no módulo CompliantSuggestion
