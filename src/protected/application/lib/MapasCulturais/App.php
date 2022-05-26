@@ -235,7 +235,7 @@ class App extends \Slim\Slim{
         if($handle = opendir(MODULES_PATH)){
             while (false !== ($file = readdir($handle))) {
                 $dir = MODULES_PATH . $file . '/';
-                if ($file != "." && $file != ".." && is_dir($dir)) {
+                if ($file != "." && $file != ".." && is_dir($dir) && file_exists($dir."/Module.php")) {
                     $available_modules[] = $file;
                     $config['namespaces'][$file] = $dir;
                 }
