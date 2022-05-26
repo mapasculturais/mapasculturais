@@ -1,19 +1,18 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header gallery');
+$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery');
 ?>
+
+
 
 <entity-header :entity="entity"></entity-header>
 
-<gallery :entity="entity"></gallery>
 
 <h1>{{entity.name}}</h1>
 <div v-if="entity.files.avatar">
     <img :src="entity.files.avatar?.transformations?.avatarMedium?.url">
 </div>
 <div>{{entity.shortDescription}}</div>
-
-
 
 
 <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse"></entity-terms>
@@ -31,3 +30,5 @@ $this->import('entity-terms share-links files-list entity-links entity-owner ent
 <entity-links :entity="entity" title="Links"></entity-links>
 
 <files-list :files="entity.files.downloads" title="Arquivos para download"></files-list>
+
+<entity-gallery :entity="entity"></entity-gallery>
