@@ -1,7 +1,7 @@
 <?php
 $fieldsList = [
     'personalData' => [
-        'nomeFantasia',
+        'nomeCompleto',
         'documento',
         'emailPrivado',
         'emailPublico',
@@ -53,8 +53,8 @@ $canSee = function ($view) use ($entity, $fieldsList) {
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
                     <span class="label"><?php \MapasCulturais\i::_e("Nome Fantasia");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeFantasia") && $editEntity? 'required': '');?>" data-edit="nomeFantasia" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Fantasia ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o nome fantasia ou razão social");?>">
-                        <?php echo $entity->nomeFantasia; ?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeCompleto") && $editEntity? 'required': '');?>" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Fantasia ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o nome fantasia ou razão social");?>">
+                        <?php echo $entity->nomeCompleto; ?>
                     </span>
                 </p>
                 <!-- Campo CNPJ -->
