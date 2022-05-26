@@ -1,16 +1,18 @@
-body.gallery{
+body.galleryOpen{
     overflow: hidden;
 }
 
-.gallery{
-
-    /* temporário */
-    margin: 0 auto;
-    max-width: 1170px;
+.entity-gallery {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
     //margin: 25px 0;
-    h4 {
-        margin: 0 0 10px 0;
+    h2 {
+        margin: 0 0 16px 0;
     }
 
     &__images {
@@ -19,6 +21,7 @@ body.gallery{
 
         &--img {
             border-radius: 4px;
+            cursor: pointer;
             display: flex;
             height: 222px;
             justify-content: center;
@@ -58,10 +61,13 @@ body.gallery{
             display: flex;
             justify-content: center;
             max-width: 1170px;
-            min-width: 300px;
-            min-height: 300px;
+            min-width: 50px;
+            min-height: 50px;
             overflow: hidden;
+            position: relative;
             z-index: 1;
+            width: auto;
+
             svg {
                 position: absolute;
                 font-size: 50px;
@@ -69,6 +75,42 @@ body.gallery{
             }
             img {
                 z-index: 2;
+                width: 100%;
+                max-height: 100vh;
+            }
+
+            .description {
+                position: absolute;
+                z-index: 2;
+                bottom: 0;
+                padding: 10px;
+                background: rgba(0,0,0,0.5);
+                color: white;
+                width: 100%;
+            }
+        }
+
+        &--buttons {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1170px;
+            position: absolute;
+            width: 100%;
+            z-index: 1;
+
+            & > * {
+                align-items: center;
+                border-radius: 5px;
+                color: white;
+                cursor: pointer;
+                display: flex;
+                font-size: 50px;
+                justify-content: center;
+                padding: 40px 25px;
+
+                &:hover, &:active {
+                    background: rgba(0,0,0,0.2);
+                }
             }
         }
     }
