@@ -1,0 +1,211 @@
+.main-header {
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    height: 90px;
+    justify-content: space-between;
+    padding: 0 25px;
+    position: relative;
+    width: 100%;
+
+    &__logo {
+        color: #1c5690;
+    }
+
+    &__menu {
+        display: flex;
+        gap: 46px;
+        list-style: none;
+        padding: 0;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &--item {
+            text-decoration: none;
+
+            li {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 5px;
+            }
+
+            .icon {
+                align-items: center;
+                background-color: #4E4E4E;
+                color: white;
+                display: flex;
+                height: 32px;
+                justify-content: center;
+                width: 32px;
+                border-radius: 50%;
+
+            }
+
+            .label {
+                margin: 4px 0;
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 15px;
+                text-align: center;
+                color: #000000;
+            }
+
+
+            &.home {
+                &:hover{
+                    .icon {
+                        background-color: #1c5690;
+                    }
+                    .label {
+                        color: #1c5690;
+                    }
+                }
+            }
+
+            &.projects {
+                &:hover{
+                    .icon {
+                        background-color: #cc0033;
+                    }
+                    .label {
+                        color: #cc0033;
+                    }
+                }
+            }
+
+            &.spaces {
+                &:hover{
+                    .icon {
+                        background-color: #e83f96;
+                    }
+                    .label {
+                        color: #e83f96;
+                    }
+                }
+            }
+
+            &.events {
+                &:hover{
+                    .icon {
+                        background-color: #b3b921;
+                    }
+                    .label {
+                        color: #b3b921;
+                    }
+                }
+            }
+
+            &.agents {
+                .icon {
+                    font-size: 14px;
+                }   
+                
+                &:hover{
+                    .icon {
+                        background-color: #1dabc6;
+                    }
+                    .label {
+                        color: #1dabc6;
+                    }
+                }
+            }
+
+            &.opportunities {
+                &:hover{
+                    .icon {
+                        background-color: #ED2CD4;
+                    }
+                    .label {
+                        color: #ED2CD4;
+                    }
+                }
+            }
+            
+        }
+    }
+
+    &__options {
+        &--loggedIn {
+            ul {
+                list-style-type: none;
+                padding: 0;
+
+                li {
+                    background: #575757;
+                    border-radius: 8px;
+                    color: #FFFFFF;
+                    display: inline;
+                    position: relative;
+                    padding: 13px 35px 13px 16px;
+                    transition:all 0.3s ease;
+
+                    ul {
+                        display: none;
+                        flex-direction: column;
+                        left: 0;
+                        margin-top: 34px;
+                        position: absolute;  
+                        transition:all 0.3s ease;
+
+                        li {
+                            border-radius: 0;
+                        }
+                    }
+                    &:hover ul {
+                        display: flex;
+                    }
+                    
+                }
+
+                & > ul {
+                    width: 150px;
+                    & > li {
+                        display: block;
+                    }
+                }
+            }
+
+            .select-wrapper {
+                position: relative;
+                select {
+                    align-items: center;
+                    background: #575757;
+                    border: 0;
+                    border-radius: 8px;
+                    color: #FFFFFF;
+                    display: flex;
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 14px;
+                    outline: 0;
+                    padding: 13px 35px 13px 16px;
+
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                }
+
+                &::before {
+                    content: url(https://api.iconify.design/fe/arrow-down.svg?color=white);
+                    height: 18px;
+                    position: absolute;
+                    right: 13px;
+                    top: 11px;
+                    width: 18px;
+                }
+            }
+        }
+    }
+}
