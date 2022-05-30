@@ -106,10 +106,8 @@ $this->entity = $entity;
         <div id="sobre" class="aba-content">
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
-                <div class="servico">
                     <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                     <?php $this->part('singles/space-servico', ['entity' => $entity]); ?>
-                </div>
                 <?php $this->part('singles/location', ['entity' => $entity, 'has_private_location' => false]); ?>
             </div>
 
