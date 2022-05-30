@@ -173,7 +173,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
 
                     $valuePencentage = (($policies->raw * $policies->percentage)/100);
                     $cell = "";
-                    $cell.= "Políticas afimativas atribuídas \n\n";
+                    $cell.= "Políticas afirmativas atribuídas \n\n";
                     foreach($policies->rules as $k => $rule){
                         $cell.= "{$rule->field->title}: {$rule->value} (+{$rule->percentage}%)\n";
                         $cell.= "-------------------- \n";
