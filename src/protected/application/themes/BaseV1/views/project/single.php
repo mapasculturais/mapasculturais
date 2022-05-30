@@ -68,8 +68,10 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                 <?php endif; ?>
 
                 <div class="widget">
-                    <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição Curta");?> <?php if($this->isEditable()){?> (<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Caracteres):");?></span></h3><?php }?>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showbuttons="bottom" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <?php if ($this->isEditable() || $entity->shortDescription): ?>
+                        <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $editEntity? 'required': '');?>"> <?php \MapasCulturais\i::_e("Descrição curta");?> <?php if($this->isEditable()){ ?>(<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Caracteres):");?></span></h3><?php } ?>
+                        <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta para o evento");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <?php endif; ?>
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 
@@ -81,6 +83,7 @@ $child_entity_request = isset($child_entity_request) ? $child_entity_request : n
                             <a ng-if="!data.isEditable" class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
                     </div>
                     <?php endif; ?>
+                    
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?> 
