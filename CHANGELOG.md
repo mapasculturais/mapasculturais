@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Melhora configuração do recapcha no módulo CompliantSuggestion
+- Corrige texto das politicas afirmativas da planilha de inscritos que estava escrito errado
 
 ### Melhorias
 - Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
