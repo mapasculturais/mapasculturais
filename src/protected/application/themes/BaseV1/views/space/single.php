@@ -64,12 +64,12 @@ $this->entity = $entity;
                 <?php endif; ?>
 
                 <div class="widget">
-                    <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $this->isEditable()? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição curta");?> <?php if($this->isEditable()){ ?>(<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Carecteres):");?></h3> <?php } ?>
+                    <h3 class=" <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $this->isEditable()? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição curta");?> <?php if($this->isEditable()){ ?>(<span data-element='countLength'><?=mb_strlen($entity->shortDescription)?></span><?php \MapasCulturais\i::_e("/400 Carecteres)");?> <?php } ?></h3>
                     <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </div>
 
                 <?php if($this->isEditable() || $entity->site): ?>
-                    <div class="widget"><h3><?php \MapasCulturais\i::_e("Site");?>:</h3>
+                    <div class="widget"><h3><?php \MapasCulturais\i::_e("Site");?></h3>
                     <?php if($this->isEditable()): ?>
                         <span class="js-editable" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e('Site');?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e('Insira a url de seu site');?>"><?php echo $entity->site; ?></span>
                     <?php else: ?>
