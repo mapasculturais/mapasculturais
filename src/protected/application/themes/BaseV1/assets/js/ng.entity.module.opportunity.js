@@ -1258,9 +1258,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $('[js-mask]').each(function() {
             var $this = jQuery(this);
 
-            if (!$this.data('js-mask-init')) {
+            if (!$this.data('js-mask-init')) {                
+                $this.data('js-mask-init', true);                
+            }
+
+            if($(this).hasClass('js-mask-currency')){
+                $this.mask($this.attr('js-mask'), {reverse: true});
+            }else{
                 $this.mask($this.attr('js-mask'));
-                $this.data('js-mask-init', true);
             }
         });
     }
