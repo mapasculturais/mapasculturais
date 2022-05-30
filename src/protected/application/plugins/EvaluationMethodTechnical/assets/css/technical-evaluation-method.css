@@ -5,6 +5,8 @@
 .technical-evaluation-configuration input {
     border:1px solid transparent;
     cursor: pointer;
+}
+.technical-evaluation-configuration .criteria-fields{
     width: 100%;
 }
 
