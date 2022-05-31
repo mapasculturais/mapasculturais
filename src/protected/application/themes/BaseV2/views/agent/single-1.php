@@ -15,7 +15,7 @@ $this->import('entity-terms share-links files-list entity-links entity-owner ent
 <div>{{entity.shortDescription}}</div>
 
 
-<entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse"></entity-terms>
+<entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse" editable="true"></entity-terms>
 
 <entity-owner :entity="entity" title="Publicado por"></entity-owner>
 
