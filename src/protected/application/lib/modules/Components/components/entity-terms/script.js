@@ -8,6 +8,10 @@ app.component('entity-terms', {
     },
 
     props: {
+        editable: {
+            type: Boolean,
+            default: false
+        },
         entity: {
             type: Entity,
             required: true
