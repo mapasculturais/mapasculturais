@@ -6,6 +6,9 @@
     <ul class="terms">
         <li v-for="term in entity.terms[taxonomy]"> 
             <a> {{term}} </a> 
+            
+            <a v-if="editable"><iconify icon="codicon:chrome-close"/></a>
+             
         </li>
     </ul>
 
