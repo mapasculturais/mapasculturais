@@ -10,17 +10,29 @@
         padding: 0;
         flex-wrap: wrap;
         li {
-            list-style: none; 
-            padding: 10px; 
-            min-width: 130px;
-            background-color: #E1E1E1; 
-            border-radius: 15px; 
-            font-size: 13px; 
+            align-items: center;
+            background-color: #E1E1E1;
+            border-radius: 15px;
+            display: flex;
+            font-size: 13px;
+            gap: 10px;
+            justify-content: center;
             line-height: 13px;
+            list-style: none;
+            min-width: 130px;
+            padding: 10px 20px;
             text-align: center;
+            position: relative;
             a {
                 text-decoration: none; 
                 color: black; 
+            }
+            svg {
+                position: absolute;
+                top: calc(50% - 6.5px);
+                font-size: 13px;
+                right: 10px;
+                color: var(--mc-primary-500);
             }
         }
     }
