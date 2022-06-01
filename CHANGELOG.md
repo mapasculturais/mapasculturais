@@ -14,6 +14,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Impede que o proponente envie inscrições que estão em fases excluídas
 - Melhora texto do toltip do botão enviar avaliações
 - Impede que as avaliações sejam enviadas antes do prazo final da fase
+- Evita que o nome do agente e categoria da inscrição seja exibida na listagens de inscrições a serem avaliadas na tela do avaliador caso nao tenha permissão para visualizar
 ### Melhorias
 - Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
 - Ajusta classe do ID do campo na listagem de campos para liberação para o avaliador padronizando com a configuração do formulário
