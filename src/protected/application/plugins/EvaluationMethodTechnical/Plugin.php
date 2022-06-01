@@ -175,7 +175,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                     $cell = "";
                     $cell.= "Políticas afirmativas atribuídas \n\n";
                     foreach($policies->rules as $k => $rule){
-                        $cell.= "{$rule->field->title}: {$rule->value} (+{$rule->percentage}%)\n";
+                        $_value = is_array($rule->value) ? implode(",", $rule->value) : $rule->value;
+                        $cell.= "{$rule->field->title}: {$_value} (+{$rule->percentage}%)\n";
                         $cell.= "-------------------- \n";
                     }
                     
@@ -401,6 +402,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                     if(is_array($registration->$fieldName)){
                         if(in_array($key, $registration->$fieldName) && filter_var($value, FILTER_VALIDATE_BOOL)){
                             $totalPercent += $rules->fieldPercent;
+                            $_value = $key;
                             $applied = true;
                             continue;
                         }
@@ -408,6 +410,7 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
                     }else{
                         if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
                             $totalPercent += $rules->fieldPercent;
+                            $_value = $key;
                             $applied = true;
                             continue;
                         }
@@ -416,19 +419,19 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
             }else{
                 if(filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rules->value, FILTER_VALIDATE_BOOL)){
                     $applied = true;
+                    $_value = $registration->$fieldName;
                 }
             }
         
             if($applied){
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
-                $field_id = "field_".$field->id;
                 $appliedPolicies[] = [
                     'field' => [
                         'title' => $field->title,
                         'id' =>$rules->field
                     ],
                     'percentage' => $rules->fieldPercent,
-                    'value' => $registration->$field_id,
+                    'value' => $_value,
                 ];
                 continue;
             }
