@@ -34,6 +34,14 @@
                 right: 10px;
                 color: var(--mc-primary-500);
             }
+            &.addNew {
+                background-color: var(--mc-primary-500) !important;
+                color: white !important;
+                cursor: pointer;
+                svg {
+                    color: white !important;
+                }
+            }
         }
     }
 }

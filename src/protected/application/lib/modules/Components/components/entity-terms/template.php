@@ -10,6 +10,10 @@
             <a v-if="editable"><iconify icon="codicon:chrome-close"/></a>
              
         </li>
+        <li class="addNew" v-if="editable">
+            Adicionar nova
+            <span><iconify icon="ant-design:plus-outlined"/></span>
+        </li>
     </ul>
 
 </div>
