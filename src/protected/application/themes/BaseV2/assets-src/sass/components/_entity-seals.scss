@@ -14,8 +14,35 @@
             display: flex;
             height: 47px;
             justify-content: center;
-            overflow: hidden;
+            position: relative;
+            // overflow: hidden;
             width: 48px;
+            .icon {
+                align-items: center;
+                background-color: red;
+                border-radius: 50%;
+                color: white;
+                display: flex;
+                font-size: 13px;
+                height: 16px;
+                justify-content: center;
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                width: 16px;
+                z-index: 2;
+            }
+            .seal {
+                align-items: center;
+                background: #C4C4C4;
+                border-radius: 4px;
+                display: flex;
+                height: 47px;
+                justify-content: center;
+                position: relative;
+                width: 48px;
+
+            }
         }
     }
 }
