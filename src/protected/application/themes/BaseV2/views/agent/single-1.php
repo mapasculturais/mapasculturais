@@ -15,13 +15,13 @@ $this->import('entity-terms share-links files-list entity-links entity-owner ent
 <div>{{entity.shortDescription}}</div>
 
 
-<entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse" editable="true"></entity-terms>
+<entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse" :editable="true"></entity-terms>
 
 <entity-owner :entity="entity" title="Publicado por"></entity-owner>
 
 <entity-seals :entity="entity" title="Verificações"></entity-seals>
 
-<entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
+<entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>  
 
 <share-links title="Compartilhar" text="Veja este link:"></share-links>
 
