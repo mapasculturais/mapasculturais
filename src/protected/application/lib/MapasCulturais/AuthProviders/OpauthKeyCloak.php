@@ -287,8 +287,9 @@ class OpauthKeyCloak extends \MapasCulturais\AuthProvider{
 
         $agent->emailPrivado = $user->email;
         
-        if (!empty($response['auth']['raw']['preferred_username'])) {
-            $agent->documento = $response['auth']['raw']['preferred_username'];
+        $documento = $response['auth']['raw']['preferred_username'];
+        if (!empty($documento) && strlen($documento) === 11) {
+            $agent->documento = preg_replace("/(\d{3})(\d{3})(\d{3})(\d{2})/", "\$1.\$2.\$3-\$4", $documento);
         }
 
         $agent->save();
