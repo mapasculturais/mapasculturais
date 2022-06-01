@@ -2445,6 +2445,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             registrations: [],
             evaluations: [],
             registrationAndEvaluations: [],
+            avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
         }
 
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
