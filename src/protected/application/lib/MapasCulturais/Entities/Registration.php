@@ -964,7 +964,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->opportunity->status <1){
+        if(!in_array($this->opportunity->status, [-1,1])){
             return false;
         }
 
@@ -1027,7 +1027,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->opportunity->status <1){
+        if(!in_array($this->opportunity->status, [-1,1])){
             return false;
         }
 
