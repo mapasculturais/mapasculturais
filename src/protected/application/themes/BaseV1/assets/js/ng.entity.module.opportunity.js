@@ -879,7 +879,6 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
        return false;
     }
 
-    console.log($scope.data.fields)
     $scope.data.fields.map(function(item){
         if(item.hasOwnProperty("groupName")){
             item.ref = item.groupName;
