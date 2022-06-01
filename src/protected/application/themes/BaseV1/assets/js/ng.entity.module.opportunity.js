@@ -844,7 +844,7 @@ module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', functio
 
 module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
     $scope.data = {
-        fields: MapasCulturais.evaluationFieldsList,
+        fields: MapasCulturais.evaluationFieldsList || [],
         avaliableEvaluationFields: {},
         checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields ?? {},
     }
@@ -879,6 +879,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
        return false;
     }
 
+    console.log($scope.data.fields)
     $scope.data.fields.map(function(item){
         if(item.hasOwnProperty("groupName")){
             item.ref = item.groupName;
