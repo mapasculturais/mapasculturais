@@ -3,44 +3,46 @@
     h4 {
         margin: 0 0 10px 0;
     }
-    ul {
+    &__terms {
         margin: 10px 0;
         display: flex;
         gap: 10px;
         padding: 0;
         flex-wrap: wrap;
         li {
-            align-items: center;
-            background-color: #E1E1E1;
             border-radius: 15px;
-            display: flex;
-            font-size: 13px;
-            gap: 10px;
-            justify-content: center;
-            line-height: 13px;
             list-style: none;
-            min-width: 130px;
             padding: 10px 20px;
+            display: flex;
+            justify-content: center;
             text-align: center;
             position: relative;
+            font-size: 13px;
+            gap: 10px;
+            line-height: 13px;
+            min-width: 130px;
+            svg {
+                position: absolute;
+                top: calc(50% - 8px);
+                font-size: 16px;
+                right: 10px;
+                color: var(--mc-primary-500);
+            }
+        }
+        &--term {
+            align-items: center;
+            background-color: #E1E1E1;
             a {
                 text-decoration: none; 
                 color: black; 
             }
+        }
+        &--addNew {
+            background-color: var(--mc-primary-500) !important;
+            color: white !important;
+            cursor: pointer;
             svg {
-                position: absolute;
-                top: calc(50% - 6.5px);
-                font-size: 13px;
-                right: 10px;
-                color: var(--mc-primary-500);
-            }
-            &.addNew {
-                background-color: var(--mc-primary-500) !important;
                 color: white !important;
-                cursor: pointer;
-                svg {
-                    color: white !important;
-                }
             }
         }
     }
