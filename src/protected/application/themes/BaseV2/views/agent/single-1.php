@@ -19,7 +19,7 @@ $this->import('entity-terms share-links files-list entity-links entity-owner ent
 
 <entity-owner :entity="entity" title="Publicado por"></entity-owner>
 
-<entity-seals :entity="entity" title="Verificações"></entity-seals>
+<entity-seals :entity="entity" title="Verificações" :editable="true"></entity-seals>
 
 <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>  
 
