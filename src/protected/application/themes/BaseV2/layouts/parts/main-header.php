@@ -1,3 +1,7 @@
+<?php
+$this->import('popover');
+?>
+
 <header class="main-header">
 
     <div class="main-header__logo">
@@ -43,56 +47,29 @@
         </a> 
     </ul>
 
-    <!-- <iconify icon="ri:file-list-2-line" />              Projetos        -->
-    <!-- <iconify icon="clarity:building-line" />            Espaços         -->
-    <!-- <iconify icon="ant-design:calendar-twotone" />      Eventos         -->
-    <!-- <iconify icon="fa-solid:user-friends" />            Agentes         -->
-    <!-- <iconify icon="fa:user" />                          Agente          -->
-    <!-- <iconify icon="icons8:idea" />                      Oportunidades   -->  
-
-    <!-- <ul class="main-header__menu">
-
-        <li>
-            <a>  </a>
-        </li>
-        
-        <a class="main-header__items--item">  </a>
-        <a class="main-header__items--item">  </a>
-        <a class="main-header__items--item">  </a>
-        <a class="main-header__items--item">  </a>
-        <a class="main-header__items--item">  </a>
-    </ul> -->
-
     <div class="main-header__options">
         
-        <div class="main-header__options--loggedIn">
-
-            <div class="select-wrapper">
-                <select>
-                    <option> Painel de controle </option>
-                    <option> Editais e Oportunidades </option>
-                    <option> Meus eventos </option>
-                    <option> Meus agentes </option>
-                    <option> Meus espaços </option>
-                </select>
+        <div class="main-header__options--loggedIn active">
+            <div class="notifications">
+                <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline" /> </a>
+                <a class="mobile" href=""> <iconify icon="eva:bell-outline" /> </a>
             </div>
-
-            <!-- <ul>
-                <li> Painel de controle
-                    <ul>
-                        <li> <a href=""> Painel de controle         </a> </li>
-                        <li> <a href=""> Editais e Oportunidades    </a> </li>
-                        <li> <a href=""> Meus eventos               </a> </li>
-                        <li> <a href=""> Meus agentes               </a> </li>
-                        <li> <a href=""> Meus espaços               </a> </li>
-                    </ul>
-                </li>
-            </ul> -->
-
+            <popover openside="down-left" label="menu" classbnt="options"> 
+                <ul>
+                    <li> <a href=""> Painel de controle         </a> </li>
+                    <li> <a href=""> Editais e Oportunidades    </a> </li>
+                    <li> <a href=""> Meus eventos               </a> </li>
+                    <li> <a href=""> Meus agentes               </a> </li>
+                    <li> <a href=""> Meus espaços               </a> </li>
+                </ul>
+            </popover>
         </div>
 
-        <div class="main-header__options--loggedOff">
-            
+        <div class="main-header__options--loggedOff ">
+            <a href="" class="logIn">
+                <span><iconify icon="icon-park-outline:login" /></span>
+                Entrar
+            </a>
         </div>
 
     </div>
