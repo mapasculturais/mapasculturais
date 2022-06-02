@@ -1,0 +1,22 @@
+.stack {
+    &--sm {
+        & > * + * {
+            margin-bottom: 0;
+            margin-top: 10px;
+        }
+    }
+
+    &--md {
+        & > * + * {
+            margin-bottom: 0;
+            margin-top: 20px;
+        }
+    }
+
+    &--lg {
+        & > * + * {
+            margin-bottom: 0;
+            margin-top: 40px;
+        }
+    }
+}

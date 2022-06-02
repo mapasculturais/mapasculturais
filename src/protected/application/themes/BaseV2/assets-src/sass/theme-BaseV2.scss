@@ -20,6 +20,8 @@
 @use 'components/navbar';
 @use 'components/panel';
 @use 'components/panel-sidebar';
+@use 'components/popover';
+@use 'components/select-entity';
 @use 'components/share-links';
 @use 'components/tabs';
 
@@ -27,3 +29,4 @@
 @use 'layouts/entity-tabs';
 @use 'layouts/main-header';
 @use 'layouts/main-footer';
+@use 'layouts/stack';
