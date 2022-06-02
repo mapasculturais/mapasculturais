@@ -1,0 +1,137 @@
+@use '../settings/mixins' as *;
+
+.popover {
+    position: relative;
+    display: inline-block;
+}
+#popover {
+    background-color: white;
+    border: size(1) solid var(--mc-gray-100);
+    border-radius: size(5);
+    display: none;
+    position: absolute;
+    z-index: 1;
+
+    &.active {
+        display: block;
+    }
+
+    &[class*="up"], &[class*="down"], &[class*="left"], &[class*="right"] { 
+        &::before {
+            background-color: white;
+            content: '';
+            height: size(7);
+            position: absolute;
+            transform: rotate(45deg);
+            width: size(7);
+        }
+    }
+
+    /* Up */
+    &[class*="up"], &.up {
+        bottom: calc(100% + 10px);
+        &::before {
+            border: size(1) solid var(--mc-gray-100);
+            border-top: none;
+            border-left: none;
+            bottom: size(-4);
+        }
+    }
+    &.up {
+        &::before {
+            right: calc(50% - size(3.5));
+        }        
+        &-left {
+            right: 0;
+            &::before {
+                right: size(20);
+            }
+        }
+        &-right {
+            left: 0;
+            &::before {
+                left: size(20);
+            }
+        }
+    }
+
+    /* Down */
+    &[class*="down"], &.down {
+        top: calc(100% + 10px);
+        &::before {
+            border: 1px solid var(--mc-gray-100);
+            border-bottom: none;
+            border-right: none;
+            top: size(-4);
+        }
+    }
+    &.down {
+        right: -50%;
+        &::before {
+            right: calc(50% - size(3.5));
+        }  
+        &-left {
+            right: 0;
+            &::before {
+                right: size(20);
+            }
+        }
+        &-right {
+            left: 0;
+            &::before {
+                left: size(20);
+            }
+        }
+    }
+    
+    /* Left */
+    &[class*="left-"], &.left {
+        &::before {
+            border: size(1) solid var(--mc-gray-100);
+            border-bottom: none;
+            border-left: none;
+            right: size(-4);
+        }
+    }
+    &.left {
+        &::before {
+            top: calc(50% - size(2.5));
+        }        
+        &-up {
+            &::before {
+                bottom: size(20);
+            }
+        }
+        &-down {
+            &::before {
+                top: size(20);
+            }
+        }
+    }
+
+    /* Right */
+    &[class*="right-"], &.right {
+        &::before {
+            border: size(1) solid var(--mc-gray-100);
+            border-top: none;
+            border-right: none;
+            left: size(-4);
+        }
+    }
+    &.right {
+        &::before {
+            top: calc(50% - size(2.5));
+        }
+        &-up {
+            &::before {
+                bottom: size(20);
+            }
+        }
+        &-down {
+            &::before {
+                top: size(20);
+            }
+        }
+    }
+
+}
