@@ -942,9 +942,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         id: MapasCulturais.registration.id
     };
     $scope.saveField = function (field, value, delay) {
+
         delete field.error;
 
-        $scope.data.editableEntity[field.fieldName] = JSON.parse(angular.toJson(value));
+        $scope.data.editableEntity[field.fieldName] = value ? JSON.parse(angular.toJson(value)) : null;
 
         $timeout.cancel(saveTimeout);
         
@@ -1242,11 +1243,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.data.fields.forEach(function(field) {
         $scope.$watch('entity.' + field.fieldName, function(current, old){
-            if(current == old){
-                return;
-            }
 
-            $scope.saveField(field, current, 10000)
+            $scope.saveField(field, current, 10000);
+            
         }, true);
     });
 
@@ -1753,7 +1752,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                             }
                         }
                     }
-                    var metadata = JSON.parse(headers()['api-metadata']);
+                    var metadata = headers()['api-metadata'] ? JSON.parse(headers()['api-metadata']) : {};
                     
                     $scope.data[meta_key] = metadata;
                     $scope.data[varname] = $scope.data[varname].concat(response);
