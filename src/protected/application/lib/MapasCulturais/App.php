@@ -1647,6 +1647,7 @@ class App extends \Slim\Slim{
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
         if ($job = $this->repo('Job')->find($id)) {
+            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
             return $job;
         }
 
