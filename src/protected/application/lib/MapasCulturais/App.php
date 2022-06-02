@@ -1690,6 +1690,10 @@ class App extends \Slim\Slim{
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
             $this->enableAccessControl();
+
+            return $job_id;
+        } else {
+            return false;
         }
     }
 
