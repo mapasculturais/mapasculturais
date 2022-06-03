@@ -21,6 +21,10 @@ app.component('entity-owner', {
         title: {
             type: String,
             default: 'Publicado por'
+        },
+        editable: {
+            type: Boolean,
+            default: false
         }
     }
     
