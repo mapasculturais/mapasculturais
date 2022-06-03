@@ -2,7 +2,10 @@
 
 .popover {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: center;
 }
 #popover {
     background-color: white;
@@ -28,8 +31,9 @@
     }
 
     /* Up */
-    &[class*="up"], &.up {
+    &[class*="up-"], &.up {
         bottom: calc(100% + 10px);
+        white-space: nowrap;
         &::before {
             border: size(1) solid var(--mc-gray-100);
             border-top: none;
@@ -56,8 +60,9 @@
     }
 
     /* Down */
-    &[class*="down"], &.down {
+    &[class*="down-"], &.down {
         top: calc(100% + 10px);
+        white-space: nowrap;
         &::before {
             border: 1px solid var(--mc-gray-100);
             border-bottom: none;
@@ -66,7 +71,6 @@
         }
     }
     &.down {
-        right: -50%;
         &::before {
             right: calc(50% - size(3.5));
         }  
@@ -86,6 +90,8 @@
     
     /* Left */
     &[class*="left-"], &.left {
+        right: calc(100% + 10px);
+        white-space: nowrap;
         &::before {
             border: size(1) solid var(--mc-gray-100);
             border-bottom: none;
@@ -98,11 +104,13 @@
             top: calc(50% - size(2.5));
         }        
         &-up {
+            bottom: -15px;
             &::before {
                 bottom: size(20);
             }
         }
         &-down {
+            top: -15px;
             &::before {
                 top: size(20);
             }
@@ -111,6 +119,8 @@
 
     /* Right */
     &[class*="right-"], &.right {
+        left: calc(100% + 10px);
+        white-space: nowrap;
         &::before {
             border: size(1) solid var(--mc-gray-100);
             border-top: none;
@@ -123,11 +133,13 @@
             top: calc(50% - size(2.5));
         }
         &-up {
+            bottom: size(-15);
             &::before {
                 bottom: size(20);
             }
         }
         &-down {
+            top: size(-15);
             &::before {
                 top: size(20);
             }

@@ -18,7 +18,7 @@ app.component('popover', {
     },
 
     props: {
-        classbnt: {
+        buttonClass: {
             type: String,
             default: 'open popover'
         },
