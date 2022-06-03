@@ -19,10 +19,10 @@
             padding: 0;
             li:first-child {
                 font-weight: 600;
-                padding-bottom: 8px;        
+                padding-bottom: size(8) ;        
             }
             li {
-                padding-bottom: 16px;
+                padding-bottom: size(16);
                 a {
                     color: #2269F7;
                     text-decoration: none;
