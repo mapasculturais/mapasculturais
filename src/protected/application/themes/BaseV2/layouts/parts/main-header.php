@@ -50,19 +50,32 @@ $this->import('popover');
     <div class="main-header__options">
         
         <div class="main-header__options--loggedIn active">
+
             <div class="notifications">
                 <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline" /> </a>
                 <a class="mobile" href=""> <iconify icon="eva:bell-outline" /> </a>
             </div>
-            <popover openside="down-left" label="menu" classbnt="options"> 
-                <ul>
-                    <li> <a href=""> Painel de controle         </a> </li>
-                    <li> <a href=""> Editais e Oportunidades    </a> </li>
-                    <li> <a href=""> Meus eventos               </a> </li>
-                    <li> <a href=""> Meus agentes               </a> </li>
-                    <li> <a href=""> Meus espaços               </a> </li>
-                </ul>
+            
+            <popover openside="down-left"> 
+                <template #btn="{ onClick }">
+                    <button :class="['openPopever', 'options']" @click="onClick"> Menu </button>
+                </template>
+
+                <template #content>
+                    <ul>
+                        <li> <a href=""> Painel de controle         </a> </li>
+                        <li> <a href=""> Editais e Oportunidades    </a> </li>
+                        <li> <a href=""> Meus eventos               </a> </li>
+                        <li> <a href=""> Meus agentes               </a> </li>
+                        <li> <a href=""> Meus espaços               </a> </li>
+                    </ul>
+                </template>
             </popover>
+            
+            <a class="mobile">
+                <iconify icon="icon-park-outline:hamburger-button" />
+            </a>
+            
         </div>
 
         <div class="main-header__options--loggedOff ">
