@@ -41,111 +41,147 @@
             display: none;
         }
 
-        &--item {
-            text-decoration: none;
-
-            li {
+        &, &-mobile {
+            &--item {
                 align-items: center;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 padding: 0 size(5);
-            }
-
-            .icon {
-                align-items: center;
-                background-color: var(--mc-gray-700);
-                color: var(--mc-white);
-                display: flex;
-                height: size(32);
-                justify-content: center;
-                width: size(32);
-                border-radius: 50%;
-
-            }
-
-            .label {
-                margin: size(4) 0;
-                font-family: var(--mc-font-body);
-                font-style: normal;
-                font-weight: 400;
-                font-size: size(14);
-                line-height: size(15);
-                text-align: center;
-                color: var(--mc-black);;
-            }
-
-
-            &.home {
-                &:hover{
-                    .icon {
-                        background-color: var(--mc-primary-500);
-                    }
-                    .label {
-                        color: var(--mc-primary-500);
-                    }
-                }
-            }
-
-            &.projects {
-                &:hover{
-                    .icon {
-                        background-color: var(--mc-projects-500);
-                    }
-                    .label {
-                        color: var(--mc-projects-500);
-                    }
-                }
-            }
-
-            &.spaces {
-                &:hover{
-                    .icon {
-                        background-color: var(--mc-spaces-500);
-                    }
-                    .label {
-                        color: var(--mc-spaces-500);
-                    }
-                }
-            }
-
-            &.events {
-                &:hover{
-                    .icon {
-                        background-color: var(--mc-events-500);
-                    }
-                    .label {
-                        color: var(--mc-events-500);
-                    }
-                }
-            }
-
-            &.agents {
+                text-decoration: none;
+    
                 .icon {
-                    font-size: 14px;
-                }   
+                    align-items: center;
+                    background-color: var(--mc-gray-700);
+                    color: var(--mc-white);
+                    display: flex;
+                    height: size(32);
+                    justify-content: center;
+                    width: size(32);
+                    border-radius: 50%;
+    
+                }
+    
+                .label {
+                    margin: size(4) 0;
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: size(14);
+                    line-height: size(15);
+                    text-align: center;
+                    color: var(--mc-black);;
+                }
+    
+    
+                &.home {
+                    &:hover{
+                        .icon {
+                            background-color: var(--mc-primary-500);
+                        }
+                        .label {
+                            color: var(--mc-primary-500);
+                        }
+                    }
+                }
+    
+                &.projects {
+                    &:hover{
+                        .icon {
+                            background-color: var(--mc-projects-500);
+                        }
+                        .label {
+                            color: var(--mc-projects-500);
+                        }
+                    }
+                }
+    
+                &.spaces {
+                    &:hover{
+                        .icon {
+                            background-color: var(--mc-spaces-500);
+                        }
+                        .label {
+                            color: var(--mc-spaces-500);
+                        }
+                    }
+                }
+    
+                &.events {
+                    &:hover{
+                        .icon {
+                            background-color: var(--mc-events-500);
+                        }
+                        .label {
+                            color: var(--mc-events-500);
+                        }
+                    }
+                }
+    
+                &.agents {
+                    .icon {
+                        font-size: 14px;
+                    }   
+                    
+                    &:hover{
+                        .icon {
+                            background-color: var(--mc-agents-500);
+                        }
+                        .label {
+                            color: var(--mc-agents-500);
+                        }
+                    }
+                }
+    
+                &.opportunities {
+                    &:hover{
+                        .icon {
+                            background-color: var(--mc-opportunities-500);
+                        }
+                        .label {
+                            color: var(--mc-opportunities-500);
+                        }
+                    }
+                }
                 
-                &:hover{
-                    .icon {
-                        background-color: var(--mc-agents-500);
-                    }
-                    .label {
-                        color: var(--mc-agents-500);
-                    }
-                }
             }
+        }
 
-            &.opportunities {
-                &:hover{
-                    .icon {
-                        background-color: var(--mc-opportunities-500);
-                    }
-                    .label {
-                        color: var(--mc-opportunities-500);
-                    }
-                }
-            }
-            
+    }
+
+    &__menu-mobile {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: none;
+        padding: 20px 0;
+
+        @media (min-width: 1200px) {
+            display: none;
+        }
+
+        li {
+            display: flex;
+            border-bottom: 1px solid #DFDFDF;
+        }
+        
+        &.active {
+            display: flex;
+        }
+
+        &--item {
+            gap: 20px;
+            margin: 10px 20px;
+            flex-direction: row;
+            min-height: 2rem;
+            justify-content: flex-start;
+            width: 100%;
         }
     }
 
@@ -155,67 +191,85 @@
             align-items: center;
             &.active {
                 display: flex;
-            }
-            button.options {
-                background:  var(--mc-gray-700);
-                border-radius: size(8);
-                color: var(--mc-white);
-                cursor: pointer;
-                display: inline;
-                position: relative;
-                padding: size(13) size(35) size(13) size(16);
-                border: none;
-                font-weight: 600;
-                font-size: size(14);
-                line-height: size(14);
-                &::before {
-                    content: url(https://api.iconify.design/fe/arrow-down.svg?color=white);
-                    height: 16px;
-                    position: absolute;
-                    right: 13px;
-                    top: calc(50% - size(8));
-                    width: size(16);
-                }   
+                gap: 6px;
             }
 
-            ul {
-                display: flex;
-                flex-direction: column;
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                li {
-                    color: var(--mc-gray-700);
-                    display: flex;
+            .popover {
+                @media (max-width: 1200px) {
+                    display: none;
+                }
+                button.options {
+                    background:  var(--mc-gray-700);
+                    border-radius: size(8);
+                    color: var(--mc-white);
+                    cursor: pointer;
+                    display: inline;
                     position: relative;
-                    border-bottom: 1px solid var(--mc-gray-100);
-                    white-space: nowrap;
-                    &:first-child {
-                        border-radius: size(5) size(5) 0 0;
-                    }
-                    &:last-child {
-                        border-bottom: none;
-                        border-radius: 0 0 size(5) size(5);
-                    }
-                    a {
+                    padding: size(13) size(35) size(13) size(16);
+                    border: none;
+                    font-weight: 600;
+                    font-size: size(14);
+                    line-height: size(14);
+                    &::before {
+                        content: url(https://api.iconify.design/fe/arrow-down.svg?color=white);
+                        height: 16px;
+                        position: absolute;
+                        right: 13px;
+                        top: calc(50% - size(8));
+                        width: size(16);
+                    }   
+                }
+                ul.menu-options {
+                    display: flex;
+                    flex-direction: column;
+                    list-style-type: none;
+                    margin: 0;
+                    padding: 0;
+                    li {
                         color: var(--mc-gray-700);
-                        padding: size(10) size(16);
-                        text-decoration: none;
-                        width: 100%;
-                    }
-                    &:hover {
-                        background-color: var(--mc-gray-700);
-                        color: var(--mc-white);
+                        display: flex;
+                        position: relative;
+                        border-bottom: 1px solid var(--mc-gray-100);
+                        white-space: nowrap;
+                        &:first-child {
+                            border-radius: size(5) size(5) 0 0;
+                        }
+                        &:last-child {
+                            border-bottom: none;
+                            border-radius: 0 0 size(5) size(5);
+                        }
                         a {
+                            color: var(--mc-gray-700);
+                            padding: size(10) size(16);
+                            text-decoration: none;
+                            width: 100%;
+                        }
+                        &:hover {
+                            background-color: var(--mc-gray-700);
                             color: var(--mc-white);
+                            a {
+                                color: var(--mc-white);
+                            }
                         }
                     }
                 }
             }
 
+            .btn-mobile {
+                display: none;
+                padding: size(13);
+                @media (max-width: 1200px) {
+                    display: flex;
+                }
+
+                svg {
+                    font-size: size(24);
+                }
+            }
+
             .notifications {
                 a {
-                    padding: size(13) size(35) size(13) size(16);
+                    padding: size(13);
                     display: flex;
                     gap: size(4);
                     align-items: center;
@@ -234,7 +288,7 @@
                         }
                     }
     
-                    @include mobile {
+                    @media (max-width: 1200px) {
                         &.mobile {
                             display: flex;
                         }
