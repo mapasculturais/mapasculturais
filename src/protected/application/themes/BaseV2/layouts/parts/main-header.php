@@ -4,49 +4,120 @@ $this->import('popover');
 
 <header class="main-header">
 
+    <!-- Logo -->
     <div class="main-header__logo">
         <h1>Mapa Cultural</h1>
     </div>     
 
+    
+    <!-- Menu -->
     <ul class="main-header__menu">
-        <a href="" class="main-header__menu--item home">
-            <li> 
+        <li> 
+            <a href="" class="main-header__menu--item home">
                 <span class="icon"> <iconify icon="fluent:home-12-regular" /> </span>
                 <p class="label"> Home </p>      
-            </li>
-        </a>  
-        <a href="" class="main-header__menu--item opportunities">
-            <li>
+            </a>  
+        </li>
+        <li>
+            <a href="" class="main-header__menu--item opportunities">
                 <span class="icon"> <iconify icon="icons8:idea" /> </span>
                 <p class="label"> Oportunidades </p>
-            </li>
-        </a>
-        <a href="" class="main-header__menu--item agents">
-            <li>
+            </a>
+        </li>
+        <li>
+            <a href="" class="main-header__menu--item agents">
                 <span class="icon"> <iconify icon="fa-solid:user-friends" /> </span>
                 <p class="label"> Agentes </p>
-            </li>
-        </a>
-        <a href="" class="main-header__menu--item events">
-            <li> 
+            </a>
+        </li>
+        <li> 
+            <a href="" class="main-header__menu--item events">
                 <span class="icon"> <iconify icon="ant-design:calendar-twotone" /> </span>
                 <p class="label"> Eventos </p>
-            </li>
-        </a>  
-        <a href="" class="main-header__menu--item spaces">
-            <li> 
+            </a>  
+        </li>
+        <li> 
+            <a href="" class="main-header__menu--item spaces">
                 <span class="icon"> <iconify icon="clarity:building-line" /> </span>
                 <p class="label"> Espaços </p>       
-            </li>
-        </a> 
-        <a href="" class="main-header__menu--item projects">
-            <li> 
+            </a> 
+        </li>
+        <li> 
+            <a href="" class="main-header__menu--item projects">
                 <span class="icon"> <iconify icon="ri:file-list-2-line" /> </span>
                 <p class="label"> Projetos </p>      
-            </li>
-        </a> 
+            </a> 
+        </li>
     </ul>
 
+    <!-- Menu mobile -->
+    <ul class="main-header__menu-mobile">
+        <li> 
+            <a href="" class="main-header__menu-mobile--item home">
+                <span class="icon"> <iconify icon="fluent:home-12-regular" /> </span>
+                <p class="label"> Home </p>      
+            </a>  
+        </li>
+        <li>
+            <a href="" class="main-header__menu-mobile--item opportunities">
+                <span class="icon"> <iconify icon="icons8:idea" /> </span>
+                <p class="label"> Oportunidades </p>
+            </a>
+        </li>
+        <li>
+            <a href="" class="main-header__menu-mobile--item agents">
+                <span class="icon"> <iconify icon="fa-solid:user-friends" /> </span>
+                <p class="label"> Agentes </p>
+            </a>
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item events">
+                <span class="icon"> <iconify icon="ant-design:calendar-twotone" /> </span>
+                <p class="label"> Eventos </p>
+            </a>  
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item spaces">
+                <span class="icon"> <iconify icon="clarity:building-line" /> </span>
+                <p class="label"> Espaços </p>       
+            </a> 
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item projects">
+                <span class="icon"> <iconify icon="ri:file-list-2-line" /> </span>
+                <p class="label"> Projetos </p>      
+            </a> 
+        </li>
+        
+        <li> 
+            <a href="" class="main-header__menu-mobile--item"> 
+                <p class="label"> Painel de controle </p>
+            </a> 
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item"> 
+                <p class="label"> Editais e Oportunidades </p>
+            </a> 
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item"> 
+                <p class="label"> Meus eventos </p>
+            </a> 
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item"> 
+                <p class="label"> Meus agentes </p>
+            </a> 
+        </li>
+        <li> 
+            <a href="" class="main-header__menu-mobile--item"> 
+                <p class="label"> Meus espaços </p>
+            </a> 
+        </li>
+    </ul>
+
+
+    <!-- Options -->
     <div class="main-header__options">
         
         <div class="main-header__options--loggedIn active">
@@ -62,7 +133,7 @@ $this->import('popover');
                 </template>
 
                 <template #content>
-                    <ul>
+                    <ul class="menu-options">
                         <li> <a href=""> Painel de controle         </a> </li>
                         <li> <a href=""> Editais e Oportunidades    </a> </li>
                         <li> <a href=""> Meus eventos               </a> </li>
@@ -72,7 +143,7 @@ $this->import('popover');
                 </template>
             </popover>
             
-            <a class="mobile">
+            <a class="btn-mobile">
                 <iconify icon="icon-park-outline:hamburger-button" />
             </a>
             
