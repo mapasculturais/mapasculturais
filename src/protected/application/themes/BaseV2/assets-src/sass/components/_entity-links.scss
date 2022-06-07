@@ -1,28 +1,66 @@
 .entity-links {
     margin: 25px 0;
-    h2 {
+    &__title {
         margin: 0 0 10px 0;
     }
-    .links {
+    &__links {
         display: flex;
         flex-direction: column; 
-        justify-content: space-around;
         flex-wrap: nowrap;
-        a {
-            font-family: var(--mc-font-body);
-            font-style: normal;
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 25px;
-            margin: 7px 5px;
-            color: var(--mc-black);
-            text-decoration: none;
+        justify-content: space-around;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        &--item{
+            align-items: center;
+            display: flex;
+            .link {
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 25px;
+                margin: 7px 5px;
+                color: var(--mc-black);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                svg {
+                    font-size: 20px;
+                    margin: 0 5px;
+                }
+            }
+            .edit{
+                display: flex;
+                gap: 12px;
+                a {
+                    margin: 0;
+                }
+                svg {
+                    font-size: 13px;
+                }
+            }  
+            
+        }
+        &--addNew {
+            border-radius: 15px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            // justify-content: center;
+            // text-align: center;
+            position: relative;
+            font-size: 13px;
+            gap: 10px;
+            line-height: 13px;
+            min-width: 130px;
+            max-width: 150px;
+            background-color: var(--mc-primary-500) !important;
+            color: white !important;
+            cursor: pointer;
             svg {
-                font-size: 20px;
-                margin: 0 5px;
+                color: white !important;
             }
         }
     }
