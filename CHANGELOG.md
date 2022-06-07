@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ## Melhorias
 - Ajusta db-update que pega os dados relacionados a ficha e salva nos metadados, usando sql nativo
+- ### Coreções
+- Garante que fique visivel campo do projeto para o proponente e o gestor, independente se existe liberação para o avaliador ou não no sistema de permissão dos avaliadores
 ## [5.3.13] - 2022-06-07
 ### Correções
 - Melhora configuração do recapcha no módulo CompliantSuggestion
