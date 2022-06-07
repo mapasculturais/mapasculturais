@@ -70,7 +70,7 @@
                     font-size: size(14);
                     line-height: size(15);
                     text-align: center;
-                    color: var(--mc-black);;
+                    color: var(--mc-black);
                 }
     
     
@@ -85,7 +85,7 @@
                     }
                 }
     
-                &.projects {
+                &.project {
                     &:hover{
                         .icon {
                             background-color: var(--mc-projects-500);
@@ -96,7 +96,7 @@
                     }
                 }
     
-                &.spaces {
+                &.space {
                     &:hover{
                         .icon {
                             background-color: var(--mc-spaces-500);
@@ -107,7 +107,7 @@
                     }
                 }
     
-                &.events {
+                &.event {
                     &:hover{
                         .icon {
                             background-color: var(--mc-events-500);
@@ -118,7 +118,7 @@
                     }
                 }
     
-                &.agents {
+                &.agent {
                     .icon {
                         font-size: 14px;
                     }   
@@ -133,7 +133,7 @@
                     }
                 }
     
-                &.opportunities {
+                &.opportunity {
                     &:hover{
                         .icon {
                             background-color: var(--mc-opportunities-500);
