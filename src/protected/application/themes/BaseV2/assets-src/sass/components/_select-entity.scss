@@ -1,0 +1,176 @@
+
+@use '../settings/mixins' as *;
+
+.select-entity {
+    padding: size(19) size(16);
+
+    &__form {
+        align-items: center;
+        display: flex;
+        margin-bottom: size(20);
+        position: relative;
+
+        &--input {
+            padding: size(10) size(20);
+            border-radius: size(20) 0 0 size(20);
+            border: size(1) solid var(--mc-gray-100);
+            border-right: 0;    
+            &:focus-visible {
+                outline-style: none;
+            }
+        }
+
+        &--button {
+            align-items: center;
+            background: white;
+            border: size(1) solid var(--mc-gray-100);
+            border-radius: 0 size(20) size(20) 0;
+            border-left: 0;
+            cursor: pointer;
+            display: flex;
+            font-size: size(20);
+            height: size(37);
+            padding: 0 size(15);
+        }
+    }
+
+    &__description {
+        font-size: size(12);
+        margin: 0 0 size(10);
+    }
+
+    &__results {
+        display: flex;
+        flex-direction: column;
+        gap: size(10);
+        max-height: size(230);
+        overflow-y: scroll;
+        padding: 0;
+        padding-right: size(5);
+
+        &--item {
+            align-items: center;
+            border: size(1) solid;
+            border-radius: size(5);
+            color: inherit;
+            cursor: pointer;
+            display: flex;
+            gap: size(10);
+            padding: size(8);
+            text-decoration: none;
+
+            .icon {
+                align-items: center;
+                background-color: #4E4E4E;
+                color: white;
+                display: flex;
+                height: 32px;
+                justify-content: center;
+                width: 32px;
+                border-radius: 50%;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                }
+            }     
+
+            &.project {
+                &:hover{
+                    border: 1px solid var(--mc-projects-500);
+                    .icon {
+                        background-color: var(--mc-projects-500);
+                    }
+                    .label {
+                        color: var(--mc-projects-500);
+                    }
+                }
+            }
+
+            &.space {
+                &:hover{
+                    border: 1px solid var(--mc-spaces-500);
+                    .icon {
+                        background-color: var(--mc-spaces-500);
+                    }
+                    .label {
+                        color: var(--mc-spaces-500);
+                    }
+                }
+            }
+
+            &.event {
+                &:hover{
+                    border: 1px solid var(--mc-events-500);
+                    .icon {
+                        background-color: var(--mc-events-500);
+                    }
+                    .label {
+                        color: var(--mc-events-500);
+                    }
+                }
+            }
+
+            &.agent {
+                .icon {
+                    font-size: 14px;
+                }   
+                
+                &:hover{
+                    border: 1px solid var(--mc-agents-500);
+                    .icon {
+                        background-color: var(--mc-agents-500);
+                    }
+                    .label {
+                        color: var(--mc-agents-500);
+                    }
+                }
+            }
+
+            &.opportunity {
+                &:hover{
+                    border: 1px solid var(--mc-opportunities-500);
+                    .icon {
+                        background-color: var(--mc-opportunities-500);
+                    }
+                    .label {
+                        color: var(--mc-opportunities-500);
+                    }
+                }
+            }
+        }
+    }
+
+    &__add {
+        display: flex;
+        flex-direction: column;
+
+        p {
+            text-align: center;
+        }
+
+        &--button {
+            align-items: center;
+            border: 1px solid var(--mc-primary-500);
+            border-radius: 5px;
+            color: var(--mc-primary-500);
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding: 13px;
+            text-decoration: none;
+            
+            &:hover {
+                background-color: var(--mc-primary-500);
+                color: white;
+            }
+        }
+    }
+
+    .loading {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+}
