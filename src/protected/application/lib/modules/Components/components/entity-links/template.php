@@ -1,11 +1,26 @@
-<div class="entity-links">
-    <h2> {{title}} </h2>
+<?php
+use MapasCulturais\i;
 
-    <div class="links">
-        <a v-for="link in entity.metalists.links" :href="link.value" target="_blank" >
-            <iconify icon="eva:link-outline" /> {{link.title}}
-        </a>
-    </div>
+?>
+<div class="entity-links">
+    <h4 class="entity-links__title"> {{title}} </h4>
+
+    <ul class="entity-links__links">
+        <li class="entity-links__links--item" v-for="link in entity.metalists.links">
+            <a class="link" :href="link.value" target="_blank" >
+                <iconify icon="eva:link-outline" /> {{link.title}}
+            </a>
+            <div class="edit">
+                <a> <iconify icon="zondicons:edit-pencil"/></a>
+                <a><iconify icon="ooui:trash"/></a>
+            </div>
+        </li>
+        <li class="entity-links__links--addNew">
+            <?php i::_e("Adicionar novo")?>
+            <span><iconify icon="fluent:add-12-regular"></iconify></span>
+        </li>
+
+    </ul>
 </div>
 
 <!-- :href="file.url" -->

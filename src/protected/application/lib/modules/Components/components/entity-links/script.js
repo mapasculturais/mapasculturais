@@ -15,7 +15,12 @@ app.component('entity-links', {
         title: {
             type: String,
             default: 'Links'
+        },
+        editable: {
+            type: Boolean,
+            default: false
         }
+
     },
     
 });
