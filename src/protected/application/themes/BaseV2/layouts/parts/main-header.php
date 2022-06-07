@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 $this->import('popover');
 ?>
 
@@ -15,37 +16,37 @@ $this->import('popover');
         <li> 
             <a href="" class="main-header__menu--item home">
                 <span class="icon"> <iconify icon="fluent:home-12-regular" /> </span>
-                <p class="label"> Home </p>      
+                <p class="label"> <?php i::_e('Home') ?> </p>      
             </a>  
         </li>
         <li>
-            <a href="" class="main-header__menu--item opportunities">
-                <span class="icon"> <iconify icon="icons8:idea" /> </span>
-                <p class="label"> Oportunidades </p>
+            <a href="" class="main-header__menu--item oportunity">
+                <span class="icon opportunity__bg-hover"> <iconify icon="icons8:idea" /> </span>
+                <p class="label"> <?php i::_e('Oportunidades') ?> </p>
             </a>
         </li>
         <li>
-            <a href="" class="main-header__menu--item agents">
+            <a href="" class="main-header__menu--item agent">
                 <span class="icon"> <iconify icon="fa-solid:user-friends" /> </span>
-                <p class="label"> Agentes </p>
+                <p class="label"> <?php i::_e('Agentes') ?> </p>
             </a>
         </li>
         <li> 
-            <a href="" class="main-header__menu--item events">
+            <a href="" class="main-header__menu--item event">
                 <span class="icon"> <iconify icon="ant-design:calendar-twotone" /> </span>
-                <p class="label"> Eventos </p>
+                <p class="label"> <?php i::_e('Eventos') ?> </p>
             </a>  
         </li>
         <li> 
-            <a href="" class="main-header__menu--item spaces">
+            <a href="" class="main-header__menu--item space">
                 <span class="icon"> <iconify icon="clarity:building-line" /> </span>
-                <p class="label"> Espaços </p>       
+                <p class="label"> <?php i::_e('Espaços') ?> </p>       
             </a> 
         </li>
         <li> 
-            <a href="" class="main-header__menu--item projects">
+            <a href="" class="main-header__menu--item project">
                 <span class="icon"> <iconify icon="ri:file-list-2-line" /> </span>
-                <p class="label"> Projetos </p>      
+                <p class="label"> <?php i::_e('Projetos') ?> </p>      
             </a> 
         </li>
     </ul>
