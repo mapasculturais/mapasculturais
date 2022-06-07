@@ -128,9 +128,10 @@ $this->import('popover');
                 <a class="mobile" href=""> <iconify icon="eva:bell-outline" /> </a>
             </div>
             
+
             <popover openside="down-left"> 
-                <template #btn="{ onClick }">
-                    <button :class="['openPopever', 'options']" @click="onClick"> Menu </button>
+                <template #btn="{ toggle }">
+                    <button :class="['openPopever', 'options']" @click="toggle()" > Menu </button>
                 </template>
 
                 <template #content>
@@ -143,6 +144,7 @@ $this->import('popover');
                     </ul>
                 </template>
             </popover>
+
             
             <a class="btn-mobile">
                 <iconify icon="icon-park-outline:hamburger-button" />
