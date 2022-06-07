@@ -30,3 +30,94 @@
 .sr-only {
     @include sr-only;
 }
+
+
+// entities colors
+.home {
+    &__color {
+        color: var(--mc-primary-500);
+    }
+    &__background {
+        background-color: var(--mc-primary-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-primary-500);
+        }
+    }
+}
+
+.agent {
+    &__color {
+        color: var(--mc-agents-500);
+    }
+    &__background {
+        background-color: var(--mc-agents-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-agents-500);
+        }
+    }
+}
+
+.space {
+    &__color {
+        color: var(--mc-spaces-500);
+    }
+    &__background {
+        background-color: var(--mc-spaces-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-spaces-500);
+        }
+    }
+}
+
+.event {
+    &__color {
+        color: var(--mc-events-500);
+    }
+    &__background {
+        background-color: var(--mc-events-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-events-500);
+        }
+    }
+}
+
+.project {
+    &__color {
+        color: var(--mc-projects-500);
+    }
+    &__background {
+        background-color: var(--mc-projects-500);
+    }
+    &__hover {
+        &:hover {
+            color: var(--mc-projects-500);
+        }
+    }
+}
+
+.opportunity {
+    &__color {
+        color: var(--mc-opportunities-500);
+    }
+    &__background {
+        background-color: var(--mc-opportunities-500);
+    }
+    /* &__hover {
+        &:hover {
+            color: var(--mc-opportunities-500);
+        }
+    }
+    &__bg-hover {
+        &:hover {
+            background-color: var(--mc-opportunities-500);
+        }
+    } */
+}
