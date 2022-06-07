@@ -3,7 +3,7 @@
     <popover openside="right-down"> 
         <template #btn="{ toggle }">
             <slot name="btn" :toggle="toggle"> 
-                <a class="openPopever" :class="type + '__color'" > Abrir select-Entity </a>
+                <a :class="['openPopover'], type + '__color'" > Abrir select-Entity </a>
             </slot>
         </template>
 
