@@ -191,4 +191,11 @@ trait EntityRevision{
         $revisions = $app->repo('EntityRevision')->findEntityRevisions($this);
         return $revisions;
     }
+
+    public function getRevisionsByDate($date)
+    {
+        $app = App::i();
+        $revisions = $app->repo('EntityRevision')->findEntityRevisionsByDate($this, $date);
+        return $revisions;        
+    }
 }

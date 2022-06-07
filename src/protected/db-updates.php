@@ -1737,5 +1737,87 @@ $$
     },
     "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
+    },
+    "Atualização registration_metadada campos @ inscrição" => function () use ($app, $conn) {
+
+        $fields = $conn->fetchAll("
+            SELECT id, opportunity_id, config, categories
+            FROM registration_field_configuration 
+            WHERE field_type IN ('agent-owner-field', 'agent-collective-field', 'space-field') AND
+                  opportunity_id IN (SELECT id from opportunity WHERE status > 0 OR status = -1)");
+        $opportunity_ids = [];
+        $fields_by_opportunity_id = [];
+
+        foreach ($fields as $field) {
+            $opportunity_ids[$field['opportunity_id']] = $field['opportunity_id'];
+            $fields_by_opportunity_id[$field['opportunity_id']] = $fields_by_opportunity_id[$field['opportunity_id']] ?? [];
+            $fields_by_opportunity_id[$field['opportunity_id']][] = $field;
+        }
+
+        $_opp_ids = implode(",", $opportunity_ids);
+        $registration_ids = $conn->fetchAll("
+            SELECT id, opportunity_id, agent_id, category, sent_timestamp FROM registration 
+            WHERE opportunity_id IN ($_opp_ids) AND status > 0 AND sent_timestamp is not null");
+
+        $next_id_rm = $conn->fetchAssoc("SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM registration_meta");
+        $_next_id_rm = (int)$next_id_rm['next_id'];
+        $i = 1;
+
+        foreach ($registration_ids as $reg) {
+            $reg_id = $reg['id'];
+            $opp_id = $reg['opportunity_id'];
+            $agent_id = $reg['agent_id'];
+            $category = $reg['category'];
+            $sent_timestamp = $reg['sent_timestamp'];
+
+            foreach ($fields_by_opportunity_id[$opp_id] as $field) {
+                $field_name = "field_" . $field['id'];
+                $field_categories = unserialize($field['categories']);
+
+                $metadata = $conn->fetchAssoc("SELECT * from registration_meta WHERE object_id = {$reg_id} AND key = '{$field_name}'");
+
+                if (!($metadata && $metadata['value']) && (!$field_categories || in_array($category, $field_categories))) {
+                    $agent = $app->repo("Agent")->find($agent_id);
+                    $agent_revision = $agent->getRevisionsByDate($sent_timestamp);
+                    $agent_revision_data = $agent_revision->getRevisionData();
+                    $cfg = unserialize($field['config']);
+                    $_f = $cfg['entityField'];
+
+                    $value = null;
+                    if ($cfg['entityField'] == "@location") {
+                        $value['En_CEP'] = $agent_revision_data['En_CEP']->value ?? null;
+                        $value['En_Nome_Logradouro'] = $agent_revision_data['En_Nome_Logradouro']->value ?? null;
+                        $value['En_Num'] = $agent_revision_data['En_Num']->value ?? null;
+                        $value['En_Complemento'] = $agent_revision_data['En_Complemento']->value ?? null;
+                        $value['En_Bairro'] = $agent_revision_data['En_Bairro']->value ?? null;
+                        $value['En_Municipio'] = $agent_revision_data['En_Municipio']->value ?? null;
+                        $value['En_Estado'] = $agent_revision_data['En_Estado']->value ?? null;
+                        $value['location'] =  $agent_revision_data['location']->value ?? null;
+                        $value['publicLocation'] = $agent_revision_data['publicLocation']->value ?? null;
+                        $value['endereco'] = $agent_revision_data['endereco']->value ?? null;
+                    } elseif ($cfg['entityField'] == "@links") {
+                        $value = $agent_revision_data['links']->value ?? null;
+                    } elseif ($cfg['entityField'] == "@type") {
+                        $value = $agent_revision_data['_type']->value ?? null;
+                    } elseif ($cfg['entityField'] == "@terms:area") {
+                        $value = $agent_revision_data['_terms']->value ?? null;
+                    } else {
+                        $value = $agent_revision_data[$_f]->value ?? null;
+                    }
+
+                    if ($value) {
+                        $_valeu = str_replace(["'"], "", json_encode($value));
+                        __exec("INSERT INTO registration_meta (id, object_id, key, value) VALUES ({$_next_id_rm}, {$reg_id}, '{$field_name}', '{$_valeu}')");
+                        $_next_id_rm++;
+                        $app->log->debug("{$i} -- registration_metadada campos @ inscrição [campo {$field_name} - {$_f}] - {$reg_id}");
+                    }
+                }else{
+                    $app->log->debug("{$i} -- {$reg_id}");
+                }
+                $i++;
+                $app->em->clear();
+            }
+        }
+        return false;
     }
 ] + $updates ;
