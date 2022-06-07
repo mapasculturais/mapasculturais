@@ -8,8 +8,12 @@ app.component('entity-owner', {
     },
 
     data() {
-        return {
-            owner: this.entity.owner || this.entity.parent || null
+        return {  }
+    },
+
+    computed: {
+        owner() {
+            return this.entity.owner || this.entity.parent || null
         }
     },
     
@@ -25,6 +29,16 @@ app.component('entity-owner', {
         editable: {
             type: Boolean,
             default: false
+        }
+    },
+
+    methods: {
+        changeOwner(entity) {
+            if (this.entity.__objectType == 'agent') {
+                this.entity.parent = entity;
+            } else {
+                this.entity.owner = entity;
+            }
         }
     }
     
