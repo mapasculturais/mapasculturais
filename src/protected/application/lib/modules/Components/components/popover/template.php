@@ -1,7 +1,7 @@
 <div class="popover">
-    <slot name="btn" :onClick="$event => popover($event)" />
+    <slot name="btn" :open="open" :close="close" :toggle="toggle" />
     
-    <div class="popover__content" id="popover" :class="openside">
-        <slot name="content" />
+    <div v-if="active" class="popover__content" :class="openside">
+        <slot name="content" :open="open" :close="close" :toggle="toggle" />
     </div>
 </div>

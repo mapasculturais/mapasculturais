@@ -13,7 +13,7 @@ app.component('popover', {
 
     data() {
         return {
-            message: 'test'
+            active: false
         }
     },
 
@@ -33,9 +33,14 @@ app.component('popover', {
     },
     
     methods: {
-        popover(event) {
-            var element = event.target.parentElement.querySelectorAll("#popover")[0];
-            element.classList.toggle("active");
+        open() {
+            this.active = true;
+        },
+        close() {
+            this.active = false;
+        },
+        toggle() {
+            this.active = !this.active;
         }
     },
 });
