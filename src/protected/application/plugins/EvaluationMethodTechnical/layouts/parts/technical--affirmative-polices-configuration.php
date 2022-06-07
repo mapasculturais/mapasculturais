@@ -28,7 +28,7 @@ use MapasCulturais\i;
         <tr ng-repeat="(key,policy) in data.criteriaAffirmativePolicies track by $index" id="{{policy.id}}">
             <td class="policy-field">
                 <select ng-model="data.fieldsAffiermativePolicie[policy.id].field" ng-change="changeField(policy); ">
-                    <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}">#{{field.id}} {{field.title}} </option>
+                    <option ng-repeat="field in data.registrationFieldConfigurations" value="{{field.id}}">#{{field.id}} - {{field.title}} </option>
                 </select>
             </td>
 

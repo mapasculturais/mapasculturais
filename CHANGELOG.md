@@ -3,6 +3,27 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [5.3.13] - 2022-06-07
+### Correções
+- Melhora configuração do recapcha no módulo CompliantSuggestion
+- Corrige texto das politicas afirmativas da planilha de inscritos que estava escrito errado
+- Correção do cartão das entidades no campo descrição curta.
+- Aplica o ajuste na de estilo tabela de critérios de avaliações de forma que nao afete outros inputs
+- Impede que o proponente envie inscrições que estão em fases excluídas
+- Melhora texto do toltip do botão enviar avaliações
+- Impede que as avaliações sejam enviadas antes do prazo final da fase
+- Evita que o nome do agente e categoria da inscrição seja exibida na listagem de inscrições a serem avaliadas na tela do avaliador caso não tenha permissão para visualizar
+- Faz com que nas politicas afirmativas que a inscrição se enquandar, caso seja um campo multiseleção salve somente o campo correto e não todos
+- Corrige erro de nao deixar associar espaço na tela de edição da inscrição 
+- Corrige erro na política afirmativa que fazia o botão de adicionar administradores nao aparecesse na tela de edição da oportunidade
+
+### Melhorias
+- Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
+- Ajusta classe do ID do campo na listagem de campos para liberação para o avaliador padronizando com a configuração do formulário
+- Evita que necessite do número da residência para que se resolva uma geolocalização
+- Ajusta tabela dos crtérios de avaliação para que nao quebre a estilização com mudanças de resolução
+- Adiciona método para poder filtrar campo na sessão de permissão dos avaliadores
+- Verifica se o arquivo Module.php esta presente antes de setar na lista de módulos ativos
 ## [5.3.12] - 2022-06-02
 - Corrige erro ao salvar campo @ quando os mesmos já retornam preenchidos com dados do agente
 ## [5.3.11] - 2022-05-25

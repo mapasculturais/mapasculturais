@@ -12,13 +12,7 @@ use MapasCulturais\App,
 class Module extends \MapasCulturais\Module {
 
     public function __construct(array $config = array()) {
-        $config = $config + [
-            'compliant' => true, 
-            'suggestion' => true,
-            'CompliantSuggestion',
-            'googleRecaptchaSiteKey' => (env('COMPLIANT_SUGGESTION_RECAPTACHA_SITE_KEY', null)),
-            'googleRecaptchaSecret' => (env('COMPLIANT_SUGGESTION_RECAPTACHA_SECRET', null)),
-        ];
+        $config = $config + ['compliant' => true, 'suggestion' => true];
 
         parent::__construct($config);
     }
@@ -108,8 +102,8 @@ class Module extends \MapasCulturais\Module {
             $params['suggestion'] = $this->_config['suggestion'];
         }
               
-        if(array_key_exists('googleRecaptchaSiteKey',$this->config)) {
-            $params['googleRecaptchaSiteKey'] = $this->config['googleRecaptchaSiteKey'];
+        if(array_key_exists('app.recaptcha.key',$app->_config)) {
+            $params['googleRecaptchaSiteKey'] = $app->_config['app.recaptcha.key'];
         }
         
         $app->hook('template(<<agent|space|event|project>>.<<single>>.main-content):end', function() use ($app, $plugin, $params) {
@@ -354,10 +348,10 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
         $config = $app->_config;
     
-        if (!isset($this->config['googleRecaptchaSiteKey'])) return true;
+        if (!isset($app->_config['app.recaptcha.key'])) return true;
         if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) return false;
 
         $token = $_POST["g-recaptcha-response"];
-        return $this->verificarToken($token, $this->config['googleRecaptchaSecret']);
+        return $this->verificarToken($token, $app->_config['app.recaptcha.secret']);
     }
 }
