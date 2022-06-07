@@ -69,7 +69,6 @@ class Entity {
     }
 
     get singleUrl() {
-        console.log(this.API.createUrl);
         return this.API.createUrl('single', [this.id]);
     }
 
