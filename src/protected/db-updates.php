@@ -1737,5 +1737,93 @@ $$
     },
     "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
+    }, 
+    "Atualização registration_metadada campos @ inscrição" => function () use ($app) {
+        /** @var App $app */
+        $app = App::i();
+        $em = $app->em;
+        $conn = $em->getConnection();
+
+        // Pega todos os campos @ presentes na plataforma
+        $dql = "SELECT e  FROM \\MapasCulturais\\Entities\\RegistrationFieldConfiguration e 
+      where e.fieldType IN ('agent-owner-field', 'agent-collective-field', 'space-field')";
+
+        $query = $app->em->createQuery($dql);
+        $RegistrationFieldConfiguration = $query->getResult();
+
+        // Pega todas as opportunitys que usam os campos @
+        $opportunity_ids = [];
+        foreach ($RegistrationFieldConfiguration as $rfc) {
+            if ($rfc->owner->status > 0) {
+                $opportunity_ids[$rfc->owner->id] = $rfc->owner->id;
+            }
+        }
+
+        // Pega todas as inscrições relacionadas as oportunidades acima
+        $_opp_ids = implode(",", $opportunity_ids);
+        $dql = "SELECT r.id FROM \\MapasCulturais\\Entities\\Registration r 
+          WHERE r.opportunity IN ( 
+              SELECT o.id FROM \\MapasCulturais\\Entities\\Opportunity o 
+                  WHERE o.id IN ($_opp_ids) 
+                  AND o.status > 0
+          ) AND r.status > 0";
+
+        $query = $app->em->createQuery($dql);
+        $registrations_ids = $query->getResult();
+
+
+        $app->disableAccessControl();
+        foreach ($registrations_ids as $reg) {
+            $_reg = $app->repo("Registration")->find($reg['id']);
+
+            $_reg->opportunity->registerRegistrationMetadata();
+            $fields = $_reg->opportunity->registrationFieldConfigurations;
+
+            $agent_revision = $_reg->owner->getRevisionsByDate($_reg->sentTimestamp);
+            $agent_revision_data = $agent_revision ? $agent_revision->getRevisionData() : null;
+
+            $agent_data = $_reg->getAgentsData() ?? null;
+            if ($agent_data || $agent_revision_data) {
+                foreach ($fields as $field) {
+
+                    if ($field->config) {
+
+                        if ((in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'])) && !$_reg->{$field->fieldName}) {
+
+                            $_f = preg_replace('/[^A-Zaz0-9]/i', '', $field->config['entityField']);
+
+                            if ($agent_data && in_array($_f, array_keys($agent_data['owner']))) {
+                                $origin = "agent_data";
+                                $result = $agent_data['owner'][$_f];
+                            } else {
+                                $origin = "agent_revision";
+                                $result = isset($agent_revision_data[$_f]) ? $agent_revision_data[$_f]->value : null;
+                            }
+
+                            if (isset($_reg->{$field->fieldName}) && $_reg->{$field->fieldName} != $result) {
+                                $app->log->debug("ATUALIZADO -- registration_metadada campos @ inscrição - {$_reg->id} -- {$field->fieldName} - '{$_f}'  <-- {$origin} ");
+                            } else {
+                                $app->log->debug("CRIADO -- registration_metadada campos @ inscrição - {$_reg->id} -- {$field->fieldName} - '{$_f}'  <-- {$origin} ");
+                            }
+
+                            $_fieldName = $field->fieldName;
+                            if ((is_array($result) || is_object($result))) {
+
+                                $_reg->$_fieldName = $result ? json_decode(json_encode($result), true) : [];
+                            } else {
+                                if ($result) {
+                                    $_reg->$_fieldName = $result;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // $_reg->save(true);
+            // $app->em->clear();
+        }
+        $app->enableAccessControl();
+        return false;
     }
 ] + $updates ;
