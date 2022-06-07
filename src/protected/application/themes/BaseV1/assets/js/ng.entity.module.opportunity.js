@@ -844,11 +844,13 @@ module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', functio
 
 module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
     $scope.data = {
-        fields: MapasCulturais.evaluationFieldsList,
+        fields: MapasCulturais.evaluationFieldsList || [],
         avaliableEvaluationFields: {},
         checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields ?? {},
     }
-
+    $scope.evaluationsFieldsFilter = "";
+    $scope.allFields = false;
+    
     $scope.selectFields = function(field){
         $scope.data.avaliableEvaluationFields = {}
 
@@ -885,6 +887,43 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         }
     });
 
+    $scope.checkedAll = function(){
+
+        $scope.data.avaliableEvaluationFields = {}
+        $scope.allFields = !$scope.allFields;
+
+        $scope.data.fields.forEach(function(item){
+            if(item.filterActive){
+               item.checked = $scope.allFields;
+               
+               $scope.data.checkedStatus[item.ref] = $scope.allFields;
+            }
+        });
+
+        $scope.data.checkedStatus['category'] = $scope.allFields;
+        $scope.data.checkedStatus['projectName'] = $scope.allFields;
+        $scope.data.checkedStatus['agentsSummary'] = $scope.allFields;
+        $scope.data.checkedStatus['spaceSummary'] = $scope.allFields;
+
+        Object.keys($scope.data.checkedStatus).forEach(function(field){
+            if($scope.data.checkedStatus[field] || $scope.data.checkedStatus[field] == "true"){
+                $scope.data.avaliableEvaluationFields[field] = true;
+            }
+        });
+
+        EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
+            MapasCulturais.Messages.success("Salvo com sucesso");            
+        });
+
+    }
+    
+    $scope.filter = function(field){
+        if((field.title.toLowerCase().indexOf($scope.evaluationsFieldsFilter.toLowerCase()) >= 0)  || (field.ref.toLowerCase().indexOf("field_"+$scope.evaluationsFieldsFilter.replace('#', '').toLowerCase()) >= 0)){
+            field.filterActive = true;
+            return true;
+        }
+        field.filterActive = false;
+    }
 }]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
@@ -1752,7 +1791,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                             }
                         }
                     }
-                    var metadata = headers()['api-metadata'] ? JSON.parse(headers()['api-metadata']) : {};
+                    var metadata = headers()['api-metadata'] ?  JSON.parse(headers()['api-metadata']) : {};
                     
                     $scope.data[meta_key] = metadata;
                     $scope.data[varname] = $scope.data[varname].concat(response);
@@ -2404,6 +2443,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             registrations: [],
             evaluations: [],
             registrationAndEvaluations: [],
+            avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
         }
 
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {
