@@ -3,6 +3,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [unreleased]
+## Melhorias
+- Ajusta db-update que pega os dados relacionados a ficha e salva nos metadados, usando sql nativo
 ## [5.3.12] - 2022-06-02
 - Corrige erro ao salvar campo @ quando os mesmos já retornam preenchidos com dados do agente
 ## [5.3.11] - 2022-05-25
