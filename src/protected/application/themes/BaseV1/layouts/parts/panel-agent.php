@@ -29,6 +29,7 @@ $_type = is_object($entity->type) ? $entity->type->name : "";
     </div>
 
     <div class="entity-actions">
+        <?php $this->applyTemplateHook('entity-actions','begin', [ $entity ]); ?>
         <?php
         if(!$can_edit){
             ?>
@@ -62,5 +63,7 @@ $_type = is_object($entity->type) ? $entity->type->name : "";
             <?php endif; ?>
         <?php endif; ?>
         <?php } ?>
+        <?php $this->applyTemplateHook('entity-actions','end', [ $entity ]); ?>
     </div>
+
 </article>

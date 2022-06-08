@@ -5,10 +5,16 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
-## Melhorias
-- Ajusta db-update que pega os dados relacionados a ficha e salva nos metadados, usando sql nativo
-- ### Coreções
+- ### Correções
 - Garante que fique visivel campo do projeto para o proponente e o gestor, independente se existe liberação para o avaliador ou não no sistema de permissão dos avaliadores
+- cria db-update que pega os dados relacionados a ficha e salva nos metadados
+
+## [5.3.14] - 2022-06-07
+### Correções
+- Evita criação duplicada de metadados
+### Melhorias
+- Novos hooks
+  
 ## [5.3.13] - 2022-06-07
 ### Correções
 - Melhora configuração do recapcha no módulo CompliantSuggestion
@@ -75,6 +81,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.3.3] - 2022-05-17
 ### Correções
 - corrige validação de metadaos únicos na criação de entidades
+
+## [5.2.13] - 2022-06-07
+### Correções
+- evita criação duplicada de metadados
+- 
+### Melhorias
+- Novos hooks
 
 ## [5.2.12] - 2022-05-17
 ### Correções

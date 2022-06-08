@@ -93,7 +93,13 @@ abstract class AuthProvider {
     }
 
     protected function getRedirectPath() {
-        return $_SESSION['mapasculturais.auth.redirect_path'];
+        $app = App::i();
+        
+        $redirect = $_SESSION['mapasculturais.auth.redirect_path'] ?? $app->createUrl('panel', 'index');
+
+        $app->applyHookBoundTo($this, 'auth.redirectUrl', [&$redirect]);
+        
+        return $redirect;
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){
