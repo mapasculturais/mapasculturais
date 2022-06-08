@@ -1642,6 +1642,10 @@ class App extends \Slim\Slim{
      * @throws Exception 
      */
     public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("ENQUEUED JOB: $type_slug");
+        }
+
         $type = $this->getRegisteredJobType($type_slug);
         
         if (!$type) {
@@ -1651,6 +1655,7 @@ class App extends \Slim\Slim{
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
         if ($job = $this->repo('Job')->find($id)) {
+            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
             return $job;
         }
 
@@ -1694,6 +1699,10 @@ class App extends \Slim\Slim{
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
             $this->enableAccessControl();
+
+            return $job_id;
+        } else {
+            return false;
         }
     }
 
