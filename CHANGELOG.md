@@ -4,6 +4,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.13] - 2022-06-07
+### Correções
+- evita criação duplicada de metadados
+- 
+### Melhorias
+- Novos hooks
+
 ## [5.2.12] - 2022-05-17
 ### Correções
 - corrige validação de metadaos únicos na criação de entidades
