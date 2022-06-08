@@ -1427,9 +1427,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
-            if(!$scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
-                return false;
+            if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+                return true;
             }
+            return false;
         }
 
         return result;
