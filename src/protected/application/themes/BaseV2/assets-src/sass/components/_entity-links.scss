@@ -16,6 +16,10 @@
             align-items: center;
             display: flex;
             justify-content: space-between;
+            padding: size(7) 0;
+            &:hover {
+                background-color: var(--mc-gray-100);
+            }
             .link {
                 font-family: var(--mc-font-body);
                 font-style: normal;
@@ -55,15 +59,13 @@
             line-height: size(16);
             padding: size(10) size(20);
             position: relative;
+            margin: size(7) 0;
             svg {
                 font-size: size(16);
                 position: absolute;
                 right: size(10);
                 top: calc(50% - size(8));
             }
-        }
-        li {
-            margin: size(7) 0;
         }
     }
 }

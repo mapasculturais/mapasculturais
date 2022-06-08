@@ -11,13 +11,13 @@ use MapasCulturais\i;
                 <iconify icon="eva:link-outline" /> 
                 {{link.title}}
             </a>            
-            <div class="edit">
+            <div v-if="editable" class="edit">
                 <a> <iconify icon="zondicons:edit-pencil" /> </a>
                 <a> <iconify icon="ooui:trash" /> </a>
             </div>
         </li>
 
-        <li class="button--primary entity-links__links--addNew">
+        <li v-if="editable" class="button--primary entity-links__links--addNew">
             <?php i::_e("Adicionar novo link")?>
             <span> <iconify icon="fluent:add-12-regular" /> </span>
         </li>
