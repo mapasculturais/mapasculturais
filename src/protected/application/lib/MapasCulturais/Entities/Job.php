@@ -185,12 +185,15 @@ class Job extends \MapasCulturais\Entity{
             $this->iterationsCount++;
             
             if ($this->iterationsCount >= $this->iterations) {
-                $app->log->info("Job {$this->slug}:{$this->id}: SUCCESS and TERMINATED");
+                if($app->config['app.log.jobs']) {
+                    $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL and TERMINATED");
+                }
 
                 $this->delete(true);
             } else {
-                $app->log->info("Job {$this->slug}:{$this->id}: SUCCESS");
-
+                if($app->config['app.log.jobs']) {
+                    $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL");
+                }
                 $this->status = 0;
                 $this->lastExecutionTimestamp = new DateTime;
                 $this->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($this->intervalString, $this->nextExecutionTimestamp->getTimestamp())));
@@ -199,7 +202,9 @@ class Job extends \MapasCulturais\Entity{
             }
 
         } else {
-            $app->log->info("Job {$this->slug}:{$this->id}: ERROR");
+            if($app->config['app.log.jobs']) {
+                $app->log->info("Job {$this->slug}:{$this->id}: ERROR");
+            }
         }
 
         return $success;
