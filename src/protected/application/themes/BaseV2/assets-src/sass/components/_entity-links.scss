@@ -1,67 +1,69 @@
+@use '../settings/mixins' as *;
+
 .entity-links {
-    margin: 25px 0;
+    margin: size(25) 0;
+    max-width: size(500);
     &__title {
-        margin: 0 0 10px 0;
+        margin: 0 0 size(10) 0;
     }
     &__links {
         display: flex;
         flex-direction: column; 
-        flex-wrap: nowrap;
-        justify-content: space-around;
         list-style: none;
         margin: 0;
         padding: 0;
         &--item{
             align-items: center;
             display: flex;
+            justify-content: space-between;
             .link {
                 font-family: var(--mc-font-body);
                 font-style: normal;
                 font-weight: 700;
-                font-size: 18px;
-                line-height: 25px;
-                margin: 7px 5px;
+                font-size: size(18);
+                line-height: size(25);
+                margin: 0 size(5);
                 color: var(--mc-black);
                 text-decoration: none;
                 display: flex;
                 align-items: center;
-                gap: 5px;
+                gap: size(5);
                 svg {
-                    font-size: 20px;
-                    margin: 0 5px;
+                    font-size: size(20);
+                    margin: 0 (5);
                 }
-            }
-            .edit{
+            }            
+            .edit {
                 display: flex;
-                gap: 12px;
-                a {
-                    margin: 0;
-                }
+                gap: size(14);
+                line-height: size(25);
                 svg {
-                    font-size: 13px;
+                    cursor: pointer;
+                    font-size: size(14);
                 }
-            }  
-            
+            }              
         }
         &--addNew {
-            border-radius: 15px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            // justify-content: center;
-            // text-align: center;
-            position: relative;
-            font-size: 13px;
-            gap: 10px;
-            line-height: 13px;
-            min-width: 130px;
-            max-width: 150px;
-            background-color: var(--mc-primary-500) !important;
-            color: white !important;
+            border-radius: size(15);
             cursor: pointer;
+            display: flex;
+            font-family: var(--mc-font-body);
+            font-size: size(12);
+            font-weight: 600;
+            gap: size(10);
+            justify-content: center;
+            line-height: size(16);
+            padding: size(10) size(20);
+            position: relative;
             svg {
-                color: white !important;
+                font-size: size(16);
+                position: absolute;
+                right: size(10);
+                top: calc(50% - size(8));
             }
+        }
+        li {
+            margin: size(7) 0;
         }
     }
 }
