@@ -8,6 +8,7 @@
     gap: 40px;
     justify-content: center;
     padding: 80px 0;
+    flex-wrap: wrap;
     @include mobile {
         align-items: center;
         flex-direction: column;
