@@ -4,6 +4,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.14] - 2022-06-08
+- Impede que o proponente envie inscrições que estão em fases excluídas Ref
+- Impede que as avaliações sejam enviadas antes do prazo final da fase Ref
+- Verifica se o arquivo Module.php esta presente antes de setar na lista de módulos ativos
+- Evita que necessite do número da residência para que se resolva uma geolocalização
+- Melhora configuração do recapcha no módulo CompliantSuggestion
+- Exibe opção de sair e editar perfil quando agente é redirecionado para edição do agente por ter dados minimos não preenchidos
+- Faz com que o filtro entre datas na listagem de eventos, seja de 1 anos apartir da data atual
+- Limita acesso ao botão de download da planila de agentes a administradores
+- Faz com que o filtro de eventos na gestão de usuários busque todos os eventos independente de existir espaço ou ocorrencias
 ## [5.2.13] - 2022-06-07
 ### Correções
 - evita criação duplicada de metadados
