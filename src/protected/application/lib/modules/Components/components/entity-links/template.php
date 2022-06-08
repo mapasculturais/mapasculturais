@@ -19,7 +19,7 @@ use MapasCulturais\i;
 
         <li v-if="editable" class="button--primary entity-links__links--addNew">
             <?php i::_e("Adicionar novo link")?>
-            <span> <iconify icon="fluent:add-12-regular" /> </span>
+            <span> <iconify icon="fluent:add-20-filled" /> </span>
         </li>
 
     </ul>
