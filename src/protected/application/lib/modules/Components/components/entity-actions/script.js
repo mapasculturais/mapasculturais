@@ -7,14 +7,10 @@ app.component('entity-actions', {
         return { hasSlot }
     },
 
-    created() {
-
-    },
+    created() {},
 
     data() {
-        return {
-            message: 'test'
-        }
+        return {}
     },
 
     props: {
@@ -24,21 +20,5 @@ app.component('entity-actions', {
         }
     },
     
-    methods: {
-        save() {
-            console.log("save");
-        },
-        publish() {
-            console.log("publish");
-
-        },
-        archive() {
-            console.log("archive");
-
-        },
-        del() {
-            console.log("delete");
-
-        }
-    },
+    methods: {},
 });
