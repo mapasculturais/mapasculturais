@@ -5,6 +5,28 @@
     padding: size(24) size(137);
     background-color: var(--mc-primary-500);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: space-between;
+    
+    &__groupBtn {
+        display: flex;
+        gap: 25px;
 
+        &--btn {
+            background: #BFF3FF;
+            color: #2269F7;
+            font-weight: 600;
+            font-size: 18px;
+            font-family: var(--mc-font-body);
+            line-height: 25px;
+            padding: 11px 32px;
+            
+            &.publish {
+                background: var(--mc-white);
+                padding: size(11) size(100);
+            }
+        }
+
+    }
 
 }

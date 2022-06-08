@@ -26,15 +26,18 @@ app.component('entity-actions', {
     
     methods: {
         save() {
-
+            console.log("save");
         },
         publish() {
+            console.log("publish");
 
         },
         archive() {
+            console.log("archive");
 
         },
-        delete() {
+        del() {
+            console.log("delete");
 
         }
     },
