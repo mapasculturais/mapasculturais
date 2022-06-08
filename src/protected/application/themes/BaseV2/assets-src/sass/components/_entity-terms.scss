@@ -1,49 +1,44 @@
+@use '../settings/mixins' as *;
+
 .entity-terms {
-    margin: 20px 0;
-    h4 {
-        margin: 0 0 10px 0;
+    margin: size(20) 0;
+    &__title {
+        margin: 0 0 size(10) 0;
     }
     &__terms {
-        margin: 10px 0;
+        margin: size(10) 0;
         display: flex;
-        gap: 10px;
+        gap: size(10);
         padding: 0;
         flex-wrap: wrap;
         li {
-            border-radius: 15px;
+            border-radius: size(15);
             list-style: none;
-            padding: 10px 20px;
+            padding: size(10) size(20);
             display: flex;
             justify-content: center;
             text-align: center;
             position: relative;
-            font-size: 13px;
-            gap: 10px;
-            line-height: 13px;
-            min-width: 130px;
+            font-size: size(13);
+            gap: size(10);
+            line-height: size(13);
+            min-width: size(130);
             svg {
                 position: absolute;
-                top: calc(50% - 8px);
-                font-size: 16px;
-                right: 10px;
-                color: var(--mc-primary-500);
+                top: calc(50% - size(8));
+                font-size: size(16);
+                right: size(10);
             }
         }
         &--term {
-            align-items: center;
-            background-color: #E1E1E1;
-            a {
-                text-decoration: none; 
-                color: black; 
+            cursor: default;
+            svg {
+                color: var(--mc-primary-500);
+                cursor: pointer;
             }
         }
         &--addNew {
-            background-color: var(--mc-primary-500) !important;
-            color: white !important;
             cursor: pointer;
-            svg {
-                color: white !important;
-            }
         }
     }
 }
