@@ -11,6 +11,7 @@
         "@iconify/vue": "^3.2.1",
         "pinia": "^2.0.13",
         "vue": "^3.2.33",
-        "vue-final-modal": "^3.4.3"
+        "vue-final-modal": "^3.4.3",
+        "vue-advanced-cropper": "^2.8.1"
     }
 }
