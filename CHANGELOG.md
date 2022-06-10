@@ -9,7 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Garante que fique visivel campo do projeto para o proponente e o gestor, independente se existe liberação para o avaliador ou não no sistema de permissão dos avaliadores
 - cria db-update que pega os dados relacionados a ficha e salva nos metadados
 - Corrige erro que nao deixa exibir campo permitido ao avaliador, caso a categoria nao esteja liberada
-
+- Ajusta telas de edição e visualização do cartão de visitas do agente para exibição da label dados pessoais somente se existir dados ou se estiver em modo de edição
 ## [5.3.14] - 2022-06-07
 ### Correções
 - Evita criação duplicada de metadados

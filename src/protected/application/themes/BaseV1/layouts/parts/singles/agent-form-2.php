@@ -40,8 +40,6 @@ $canSee = function ($view) use ($entity, $fieldsList) {
 };
 ?>
 <div class="ficha-spcultura">
-    <?php if($canSee('personalData') || ($entity->publicLocation && $canSee('location'))):?>
-    <?php endif; ?>
 
     <?php $this->applyTemplateHook('tab-about-service','before'); ?><!--. hook tab-about-service:before -->
 
