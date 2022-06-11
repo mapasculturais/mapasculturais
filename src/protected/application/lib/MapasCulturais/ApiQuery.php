@@ -1372,8 +1372,8 @@ class ApiQuery {
         
         foreach($entities as &$entity){
             $id = $entity['id'];
+            $entity['files'] = [];
             if(isset($files[$id])){
-                $entity['files'] = [];
                 // método para compatibilidade da v1 da api
                 foreach($files[$id] as $f){
                     if(!isset($file_groups[$f['mainGroup']])){
