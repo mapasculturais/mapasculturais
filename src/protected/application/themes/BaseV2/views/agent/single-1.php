@@ -5,6 +5,8 @@ $this->import('entity-terms share-links files-list entity-links entity-owner ent
 ?>
 <entity-header :entity="entity"></entity-header>
 
+<image-uploader group="avatar" ></image-uploader>
+
 <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse" :editable="true"></entity-terms>
 
 <entity-owner :entity="entity" title="Publicado por"></entity-owner>
