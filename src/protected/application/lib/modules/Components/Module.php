@@ -32,7 +32,8 @@ class Module extends \MapasCulturais\Module {
         });
 
         $app->hook('mapasculturais.body:after,template(<<*>>.body):after', function () use($app) {
-            $app->view->printScripts('components');;
+            $app->view->printScripts('components');
+            $app->view->printStyles('components');
         });
 
         $self = $this;
@@ -81,7 +82,8 @@ class Module extends \MapasCulturais\Module {
             $this->jsObject['componentTemplates'][$component] = $template;
 
             $this->enqueueComponentScript($component, $dependences);
-
+            $this->enqueueComponentStyle($component, $dependences);
+            
             if (!in_array($component, $dependences)) {
                 $dependences[] = $component;
             }
@@ -96,6 +98,18 @@ class Module extends \MapasCulturais\Module {
          */
         $app->hook('Theme::enqueueComponentScript', function ($result, string $component, array $dependences = []) {
             $this->enqueueScript('components', $component, "../components/{$component}/script.js", $dependences);
+        });
+
+        /**
+         * Enfileira o estilo do componente
+         *
+         * @param string $component Nome do componente
+         * @param array $dependences Dependências do componente
+         */
+        $app->hook('Theme::enqueueComponentStyle', function ($result, string $component, array $dependences = []) {
+            if($this->resolveFilename("components/{$component}", 'style.css')) {
+                $this->enqueueStyle('components', $component, "../components/{$component}/style.css", $dependences);
+            }
         });
 
         /**
