@@ -1,23 +1,31 @@
-<template>
-    <div id="app">
-        <div class="upload-example">
-            <Cropper
-                ref="cropper"
-                class="upload-example-cropper"
-                :src="image"
-            />
-            <div class="button-wrapper">
-                <span class="button" @click="$refs.file.click()">
-                    <input
-                        type="file"
-                        ref="file"
-                        @change="uploadImage($event)"
-                        accept="image/*"
-                    />
-                    Upload image
-                </span>
-                <span class="button" @click="cropImage">Crop image</span>
+<?php 
+use MapasCulturais\i;
+
+$this->import('modal'); 
+?>
+
+<div class="upload-example">
+    
+    <modal title="<?php i::_e("Recorte a imagem") ?>">
+        <template #default>
+            <div style="height:500px">
+                <cropper
+                    ref="cropper"
+                    class="upload-example-cropper"
+                    :src="image.src"
+                    :stencil-props="stencilProps"
+                    :default-size="defaultSize"
+                />
             </div>
-        </div>
-    </div>
-</template>
+        </template>
+
+        <template #button="modal">
+            <input type="file" ref="file" @change="loadImage($event, modal)" accept="image/*">
+        </template>
+
+        <template #actions="modal">
+            <a class="button button--primary" @click="crop(modal)"><?php i::_e('Enviar Imagem') ?></a>
+            <a class="button button--secondary" @click="modal.close()"><?php i::_e('Cancelar') ?></a>
+        </template>
+    </modal>
+</div>
