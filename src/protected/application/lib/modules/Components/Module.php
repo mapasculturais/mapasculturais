@@ -24,8 +24,6 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api']);
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
 
-            $app->view->enqueueStyle($vendor_group, 'vue-final-modal', 'css/components-base/modals.css');
-            
             if (isset($this->jsObject['componentTemplates'])) {
                 $this->jsObject['componentTemplates'] = [];
             }
