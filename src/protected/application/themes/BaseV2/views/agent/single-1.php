@@ -1,20 +1,9 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover');
+$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover image-uploader');
 
 ?>
-
-
-
 <entity-header :entity="entity"></entity-header>
-
-
-<h1>{{entity.name}}</h1>
-<div v-if="entity.files.avatar">
-    <img :src="entity.files.avatar?.transformations?.avatarMedium?.url">
-</div>
-<div>{{entity.shortDescription}}</div>
-
 
 <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse" :editable="true"></entity-terms>
 
@@ -25,8 +14,6 @@ $this->import('entity-terms share-links files-list entity-links entity-owner ent
 <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>  
 
 <share-links title="Compartilhar" text="Veja este link:"></share-links>
-
-
 
 <entity-links :entity="entity" title="Links"></entity-links>
 
