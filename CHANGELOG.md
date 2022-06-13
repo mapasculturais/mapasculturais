@@ -3,6 +3,44 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [5.3.17] - 2022-06-10
+- Remove atualização dos metadados dos campos @ do dp-update e passa para o mc-updates
+## [5.3.16] - 2022-06-10
+- Cria termo de autorização de uso de imagem padrão
+## [5.3.15] - 2022-06-10
+- ### Correções
+- Garante que fique visivel campo do projeto para o proponente e o gestor, independente se existe liberação para o avaliador ou não no sistema de permissão dos avaliadores
+- cria db-update que pega os dados relacionados a ficha e salva nos metadados
+- Corrige erro que nao deixa exibir campo permitido ao avaliador, caso a categoria nao esteja liberada
+- Ajusta telas de edição e visualização do cartão de visitas do agente para exibição da label dados pessoais somente se existir dados ou se estiver em modo de edição
+## [5.3.14] - 2022-06-07
+### Correções
+- Evita criação duplicada de metadados
+### Melhorias
+- Novos hooks
+  
+## [5.3.13] - 2022-06-07
+### Correções
+- Melhora configuração do recapcha no módulo CompliantSuggestion
+- Corrige texto das politicas afirmativas da planilha de inscritos que estava escrito errado
+- Correção do cartão das entidades no campo descrição curta.
+- Aplica o ajuste na de estilo tabela de critérios de avaliações de forma que nao afete outros inputs
+- Impede que o proponente envie inscrições que estão em fases excluídas
+- Melhora texto do toltip do botão enviar avaliações
+- Impede que as avaliações sejam enviadas antes do prazo final da fase
+- Evita que o nome do agente e categoria da inscrição seja exibida na listagem de inscrições a serem avaliadas na tela do avaliador caso não tenha permissão para visualizar
+- Faz com que nas politicas afirmativas que a inscrição se enquandar, caso seja um campo multiseleção salve somente o campo correto e não todos
+- Corrige erro de nao deixar associar espaço na tela de edição da inscrição 
+- Corrige erro na política afirmativa que fazia o botão de adicionar administradores nao aparecesse na tela de edição da oportunidade
+
+### Melhorias
+- Trunca em 80 caractéres o tamanho do título do campo ao exibir no select de configuração das políticas afirmativa
+- Ajusta classe do ID do campo na listagem de campos para liberação para o avaliador padronizando com a configuração do formulário
+- Evita que necessite do número da residência para que se resolva uma geolocalização
+- Ajusta tabela dos crtérios de avaliação para que nao quebre a estilização com mudanças de resolução
+- Adiciona método para poder filtrar campo na sessão de permissão dos avaliadores
+- Verifica se o arquivo Module.php esta presente antes de setar na lista de módulos ativos
 ## [5.3.12] - 2022-06-02
 - Corrige erro ao salvar campo @ quando os mesmos já retornam preenchidos com dados do agente
 ## [5.3.11] - 2022-05-25
@@ -48,6 +86,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [5.3.3] - 2022-05-17
 ### Correções
 - corrige validação de metadaos únicos na criação de entidades
+
+## [5.2.13] - 2022-06-07
+### Correções
+- evita criação duplicada de metadados
+- 
+### Melhorias
+- Novos hooks
 
 ## [5.2.12] - 2022-05-17
 ### Correções

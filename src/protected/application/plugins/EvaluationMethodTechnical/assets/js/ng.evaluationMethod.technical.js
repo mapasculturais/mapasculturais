@@ -275,6 +275,11 @@
                     item.valuesList = item.fieldOptions;
 
                     if(_ismultiple){
+
+                        if(item.title.length > 80){
+                            item.title = item.title.substring(0, 80)+"..."
+                        }
+
                         $scope.data.registrationFieldConfigurations.push(item)
                     }
                 }

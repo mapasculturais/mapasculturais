@@ -31,10 +31,10 @@ use MapasCulturais\i;
             </tr>
 
             <tr id="{{cri.id}}" ng-repeat="cri in data.criteria" ng-if="cri.sid == section.id">
-                <td class="criterion-title"><input ng-model="cri.title" placeholder="<?php i::_e('informe o título do critério') ?>" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
-                <td class="criterion-num"><input ng-model="cri.min" type="number" placeholder="<?php i::_e('informe a nota mínima') ?>" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
-                <td class="criterion-num"><input ng-model="cri.max" type="number" placeholder="<?php i::_e('informe a nota máxima') ?>" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
-                <td class="criterion-num"><input ng-model="cri.weight" type="number" placeholder="<?php i::_e('informe o peso da nota') ?>" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
+                <td class="criterion-title"><input ng-model="cri.title" placeholder="<?php i::_e('informe o título do critério') ?>" class="criteria-fields" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
+                <td class="criterion-num"><input ng-model="cri.min" type="number" placeholder="<?php i::_e('informe a nota mínima') ?>" class="criteria-fields" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
+                <td class="criterion-num"><input ng-model="cri.max" type="number" placeholder="<?php i::_e('informe a nota máxima') ?>" class="criteria-fields" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
+                <td class="criterion-num"><input ng-model="cri.weight" type="number" placeholder="<?php i::_e('informe o peso da nota') ?>" class="criteria-fields" ng-change="save({criteria: data.criteria})" ng-model-options='{ debounce: data.debounce }'></td>
                 <td>
                     <button ng-click="deleteCriterion(cri)" class="btn btn-danger delete" title="<?php i::_e('Remover critério') ?>"></button>
                 </td>

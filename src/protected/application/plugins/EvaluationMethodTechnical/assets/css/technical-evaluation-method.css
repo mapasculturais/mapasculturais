@@ -6,6 +6,9 @@
     border:1px solid transparent;
     cursor: pointer;
 }
+.technical-evaluation-configuration .criteria-fields{
+    width: 100%;
+}
 
 .technical-evaluation-configuration input:focus {
     border:1px solid #888;

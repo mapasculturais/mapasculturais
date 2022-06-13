@@ -141,6 +141,73 @@ return [
             $entity->consolidateResult(true);
         });
         
-    }
+    },
+    'corrige registration_metadada dos campos @' => function(){
+
+        $sql = "
+        SELECT DISTINCT(opportunity_id)
+        FROM registration_field_configuration 
+        WHERE field_type IN ('agent-owner-field', 'agent-collective-field', 'space-field') AND
+              opportunity_id IN (SELECT id from opportunity WHERE status > 0 OR status = -1)";
+
+        DB_UPDATE::enqueue('Registration', "opportunity_id in ({$sql}) AND status > 0", function (MapasCulturais\Entities\Registration $registration){
+            $app = \MapasCulturais\App::i();
+            $conn = $app->em->getConnection();
+
+            $fields = $conn->fetchAll("
+                SELECT id, config, categories
+                FROM registration_field_configuration 
+                WHERE field_type IN ('agent-owner-field', 'agent-collective-field', 'space-field') AND
+                    opportunity_id = {$registration->opportunity->id}");
+                    
+
+            $reg_id = $registration->id;
+            $category = $registration->category;
+            $sent_timestamp = $registration->sentTimestamp;
+
+            foreach ($fields as $field) {
+                $field_name = "field_" . $field['id'];
+                $field_categories = unserialize($field['categories']);
+
+                $metadata = $conn->fetchAssoc("SELECT * from registration_meta WHERE object_id = {$reg_id} AND key = '{$field_name}'");
+
+                if (!($metadata && $metadata['value']) && (!$field_categories || in_array($category, $field_categories))) {
+                    $agent = $registration->owner;
+                    $agent_revision = $agent->getRevisionsByDate($sent_timestamp);
+                    $agent_revision_data = $agent_revision->getRevisionData();
+                    $cfg = unserialize($field['config']);
+                    $_f = $cfg['entityField'];
+
+                    $value = null;
+                    if ($cfg['entityField'] == "@location") {
+                        $value = [];
+                        $value['En_CEP'] = $agent_revision_data['En_CEP']->value ?? null;
+                        $value['En_Nome_Logradouro'] = $agent_revision_data['En_Nome_Logradouro']->value ?? null;
+                        $value['En_Num'] = $agent_revision_data['En_Num']->value ?? null;
+                        $value['En_Complemento'] = $agent_revision_data['En_Complemento']->value ?? null;
+                        $value['En_Bairro'] = $agent_revision_data['En_Bairro']->value ?? null;
+                        $value['En_Municipio'] = $agent_revision_data['En_Municipio']->value ?? null;
+                        $value['En_Estado'] = $agent_revision_data['En_Estado']->value ?? null;
+                        $value['location'] =  $agent_revision_data['location']->value ?? null;
+                        $value['publicLocation'] = $agent_revision_data['publicLocation']->value ?? null;
+                        $value['endereco'] = $agent_revision_data['endereco']->value ?? null;
+                    } elseif ($cfg['entityField'] == "@links") {
+                        $value = $agent_revision_data['links']->value ?? null;
+                    } elseif ($cfg['entityField'] == "@type") {
+                        $value = $agent_revision_data['_type']->value ?? null;
+                    } elseif ($cfg['entityField'] == "@terms:area") {
+                        $value = $agent_revision_data['_terms']->value ?? null;
+                    } else {
+                        $value = $agent_revision_data[$_f]->value ?? null;
+                    }
+
+                    if ($value) {
+                        $params = ['val' => json_encode($value)];
+                        $conn->executeQuery("INSERT INTO registration_meta (id, object_id, key, value) VALUES (nextval('registration_meta_id_seq'), {$reg_id}, '{$field_name}', :val)", $params);
+                    }
+                }
+            }
+        });
+    },
 
 ];

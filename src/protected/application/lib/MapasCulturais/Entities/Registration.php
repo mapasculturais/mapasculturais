@@ -1013,6 +1013,10 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if(!in_array($this->opportunity->status, [-1,1])){
+            return false;
+        }
+
         if($this->opportunity->isUserAdmin($user)){
             return true;
         }
@@ -1067,9 +1071,15 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserSend($user){
+
         if($user->is('guest')){
             return false;
         }
+
+        if(!in_array($this->opportunity->status, [-1,1])){
+            return false;
+        }
+
 
         if($this->opportunity->isUserAdmin($user)){
             return true;

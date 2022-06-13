@@ -23,8 +23,8 @@ use MapasCulturais\i;
                         <a href="{{::registration.singleUrl}}" rel='noopener noreferrer'>
                             <div class="registration-evaluated"> (<?php i::_e('Avaliação:'); ?> <strong> {{registrationStatus(registration)}}</strong>) </div>
                             <div class="registration-number">{{::registration.number}}</div>
-                            <div class="registration-owner">{{::registration.owner.name}}</div>
-                            <div ng-if="registration.category" class="registration-category">{{::registration.category}}</div>
+                            <div class="registration-owner" ng-if="data.avaliableEvaluationFields.agentsSummary">{{::registration.owner.name}}</div>
+                            <div ng-if="registration.category && data.avaliableEvaluationFields.category" class="registration-category">{{::registration.category}}</div>
                         </a>
                     </li>
                 </ul>

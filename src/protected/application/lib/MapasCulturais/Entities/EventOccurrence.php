@@ -210,7 +210,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         if ($d && $d->format($format) == $value) {
             return $d;
         } else {
-            return $value;
+            return null;
         }
     }
 

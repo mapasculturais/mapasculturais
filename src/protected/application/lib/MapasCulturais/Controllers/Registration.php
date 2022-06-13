@@ -198,10 +198,7 @@ class Registration extends EntityController {
             
             $this->refresh();
             $this->deleteUsersWithControlCache();
-
-            if($this->usesPermissionCache()){
-                $this->addToRecreatePermissionsCacheList();
-            }
+            $this->usesPermissionCache();
             
             $this->json(true);
         }        

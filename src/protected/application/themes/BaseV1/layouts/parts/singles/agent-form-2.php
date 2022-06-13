@@ -40,9 +40,6 @@ $canSee = function ($view) use ($entity, $fieldsList) {
 };
 ?>
 <div class="ficha-spcultura">
-    <?php if($canSee('personalData') || ($entity->publicLocation && $canSee('location'))):?>
-    <h3><?php \MapasCulturais\i::_e("Dados Pessoais");?></h3>
-    <?php endif; ?>
 
     <?php $this->applyTemplateHook('tab-about-service','before'); ?><!--. hook tab-about-service:before -->
 
@@ -53,8 +50,8 @@ $canSee = function ($view) use ($entity, $fieldsList) {
                 <!-- Campo Nome Completo -->
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Nome Completo");?>:</span>
-                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeCompleto") && $editEntity? 'required': '');?>" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Completo ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe seu nome completo ou razão social");?>">
+                    <span class="label"><?php \MapasCulturais\i::_e("Nome Fantasia");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"nomeCompleto") && $editEntity? 'required': '');?>" data-edit="nomeCompleto" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Nome Fantasia ou Razão Social");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Informe o nome fantasia ou razão social");?>">
                         <?php echo $entity->nomeCompleto; ?>
                     </span>
                 </p>
@@ -71,7 +68,7 @@ $canSee = function ($view) use ($entity, $fieldsList) {
 
                 <p class="privado">
                     <span class="icon icon-private-info"></span>
-                    <span class="label"><?php \MapasCulturais\i::_e("Data de Nascimento/Fundação");?>:</span>
+                    <span class="label"><?php \MapasCulturais\i::_e("Data de Fundação");?>:</span>
                     <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"dataDeNascimento") && $this->isEditable()? 'required': '');?>" <?php echo $entity->dataDeNascimento ? "data-value='".$entity->dataDeNascimento . "'" : ''?>  data-type="date" data-edit="dataDeNascimento" data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
                         <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                     </span>

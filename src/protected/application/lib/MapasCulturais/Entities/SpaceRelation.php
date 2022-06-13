@@ -106,7 +106,6 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
             
             if($this->owner->usesPermissionCache()){
                 $this->owner->deleteUsersWithControlCache();
-                $this->owner->addToRecreatePermissionsCacheList();
             }
         }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
            if(!App::i()->isWorkflowEnabled())
