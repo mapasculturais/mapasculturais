@@ -1,6 +1,6 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover image-uploader');
+$this->import('entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover');
 
 ?>
 <entity-header :entity="entity"></entity-header>
