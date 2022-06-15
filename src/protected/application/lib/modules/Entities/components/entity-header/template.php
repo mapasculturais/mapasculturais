@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 
-<header class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
+<header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
 
     <div class="entity-header__cover" :style="{ '--url': url(entity.files.header?.url) }">
         <nav class="entity-header__breadcrumbs" aria-label="<?= i::__('Breadcrumbs') ?>">
@@ -18,7 +18,7 @@ use MapasCulturais\i;
             </slot>
         </nav>
     
-        <iconify v-if="!entity.files.header?.url" icon="fa:user" />
+        <iconify v-if="!entity.files.header?.url" :icon="icon" />
 
     </div>
 
@@ -28,15 +28,7 @@ use MapasCulturais\i;
             <div class="avatar">
                 <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarBig?.url">
 
-                <iconify v-else icon="fa:user" />
-
-                <!-- <iconify icon="ri:file-list-2-line" />              Projetos        -->
-                <!-- <iconify icon="clarity:building-line" />            Espaços         -->
-                <!-- <iconify icon="ant-design:calendar-twotone" />      Eventos         -->
-                <!-- <iconify icon="fa-solid:user-friends" />            Agentes         -->
-                <!-- <iconify icon="fa:user" />                          Agente          -->
-                <!-- <iconify icon="icons8:idea" />                      Oportunidades   -->                
-                
+                <iconify v-else :icon="icon" />
             </div>
 
             <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
@@ -107,3 +99,33 @@ use MapasCulturais\i;
     </div>
 
 </header>
+
+<header v-else class="entity-header" > 
+
+    <div class="entity-header__edit" >
+        <nav class="entity-header__breadcrumbs" aria-label="<?= i::__('Breadcrumbs') ?>">
+            <slot name="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="#"> {{entity.__objectType}} </a>
+                    </li>
+                    <li aria-current="page">
+                        {{entity.name}}
+                    </li>
+                </ul>
+            </slot>
+        </nav>
+        <div class="entity-header__edit--content">
+            <div class="title">
+                <div :class="['icon', entity.__objectType+'__background']">
+                    <iconify :icon="icon" />
+                </div>
+                <h2><?php i::_e("Edição do agente Individual")?></h2>
+            </div>
+            <button class="button button--primary"><?php i::_e("Publicar")?></button>
+        </div>
+    </div>
+
+
+</header>
+
