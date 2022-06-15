@@ -1,5 +1,6 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
+$app = \MapasCulturais\App::i();
 
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
@@ -21,6 +22,7 @@ $this->includeEditableEntityAssets();
 // Verify allowed fields
 $fields = $this->jsObject['entity']['registrationFieldConfigurations'];
 $this->jsObject['entity']['hasControl'] = $entity->isUserAdmin($app->user) ? $entity->canUser('@control') : false;
+$this->jsObject['isEditable'] = true;
 
 if(!$entity->canUser('@control')){
     foreach ($fields as $key => $f) {

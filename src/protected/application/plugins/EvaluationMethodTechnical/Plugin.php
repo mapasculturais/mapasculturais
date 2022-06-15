@@ -387,7 +387,8 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $affirmativePoliciesRoof = $registration->opportunity->evaluationMethodConfiguration->affirmativePoliciesRoof;
         $isActiveAffirmativePolicies = filter_var($registration->opportunity->evaluationMethodConfiguration->isActiveAffirmativePolicies, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
-        
+
+       
         if(!$isActiveAffirmativePolicies || empty($affirmativePoliciesConfig)){
             return $result;
         }
@@ -395,6 +396,10 @@ class Plugin extends \MapasCulturais\EvaluationMethod {
         $totalPercent = 0.00;
         $appliedPolicies = [];
         foreach($affirmativePoliciesConfig as $rules){
+            if(empty($metadata)){
+                continue;
+            }
+            
             $fieldName = "field_".$rules->field;
             $applied = false;
             $field_conf = $metadata[$fieldName]->config['registrationFieldConfiguration'];
