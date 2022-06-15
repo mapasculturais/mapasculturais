@@ -291,6 +291,14 @@ class ApiQuery {
     protected $_selectingMetalists = [];
 
     /**
+     * Permissions that are being selected
+     * @var array
+     */
+    protected $_selectingCurrentUserPermissions = [];
+
+    
+
+    /**
      * Indica se foi usado o formato @files na seleção
      * @var bool
      */
@@ -892,6 +900,7 @@ class ApiQuery {
         $this->appendRelations($entities);
         $this->appendFiles($entities);
         $this->appendMetalists($entities);
+        $this->appendCurrentUserPermissions($entities);
         $this->appendTerms($entities);
         $this->appendIsVerified($entities);
         $this->appendVerifiedSeals($entities);
@@ -1141,6 +1150,20 @@ class ApiQuery {
                         foreach($cfg['select'] as $group) {
                             if(!in_array($group, $this->_selectingMetalists)) {
                                 $this->_selectingMetalists[] = $group;
+                            }    
+                        }
+                    }
+
+                    continue;
+                }
+
+                if($cfg['property'] == 'currentUserPermissions') {
+                    if($cfg['selectAll']) {
+                        $this->_selectingCurrentUserPermissions[] = "*";
+                    } else {
+                        foreach($cfg['select'] as $permission) {
+                            if(!in_array($permission, $this->_selectingCurrentUserPermissions)) {
+                                $this->_selectingCurrentUserPermissions[] = $permission;
                             }    
                         }
                     }
@@ -1527,6 +1550,77 @@ class ApiQuery {
             if(isset($metalists[$id])){
                 $entity['metalists'] = $metalists[$id];
             }
+        }
+    }
+
+    protected function appendCurrentUserPermissions(array &$entities) {
+        $app = App::i();
+        $entity_class_name = $this->entityClassName;
+        $permission_cache_class_name = $this->permissionCacheClassName;
+
+        if ($permission_cache_class_name && in_array('currentUserPermissions', $this->_selecting)) {
+            if ($app->auth->isUserAuthenticated()) {
+                $user_id = $app->user->id;
+            } else {
+                $user_id = -1;
+            }
+            $permission_list = $entity_class_name::getPermissionsList();
+            
+            $dql_in = $this->getSubqueryInIdentities($entities);
+
+            $where = [];
+            $all = false;
+            foreach($this->_selectingCurrentUserPermissions as $select){
+                if ($select == '*') {
+                    $all = true;
+                    break;
+                } else {
+                    $where[] = "'{$select}'";
+                }
+            }
+            $where_action = '';
+            if (!$all) {
+                $where_action = "pc.action IN (" . implode(',', $where) . ') AND';
+                $permission_list = $this->_selectingCurrentUserPermissions;
+            }
+
+            $dql = "
+            SELECT
+                pc.action,
+                IDENTITY(pc.owner) AS owner_id
+            FROM 
+                {$permission_cache_class_name} as pc
+            WHERE 
+                $where_action
+                pc.owner IN ($dql_in) AND
+                pc.userId = {$user_id}"; 
+
+            $query = $this->em->createQuery($dql);
+
+            if($this->_usingSubquery){
+                $query->setParameters($this->_dqlParams);
+            }
+
+            $result = $query->getResult(Query::HYDRATE_ARRAY);
+            // eval(\psy\sh());
+            $permissions_by_entity = [];
+
+            foreach ($result as $item) {
+                $owner_id = $item['owner_id'];
+                $action = (string)$item['action'];
+                $permissions_by_entity[$owner_id] = $permissions_by_entity[$owner_id] ?? [];
+                $permissions_by_entity[$owner_id][$action] = true;
+            }
+
+            foreach ($entities as &$entity) {
+                $entity_id = $entity['id'];
+                $entity['currentUserPermissions'] = [];
+
+                foreach ($permission_list as $permission) {
+                    $entity['currentUserPermissions'][$permission] = $permissions_by_entity[$entity_id][$permission] ?? false;
+                }
+            }
+
         }
     }
     
@@ -2269,6 +2363,8 @@ class ApiQuery {
                 $this->_selectingFiles = ['*'];
             } elseif ($prop === 'metalists') {
                 $this->_selectingMetalists = ['*'];
+            } elseif ($prop === 'currentUserPermissions') {
+                $this->_selectingCurrentUserPermissions = ['*'];
             }
         }
     }
