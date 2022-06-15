@@ -1,9 +1,16 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('entity-terms popover field entity-header entity-actions');
+$this->import('entity-terms entity-header popover field entity-header entity-actions');
 
 ?>
+
+<entity-header :entity="entity" :editable="true" />
+
+
+
+
+
 
 <div>
     <button @click="entity.save()">salvar</button>
@@ -40,5 +47,4 @@ $this->import('entity-terms popover field entity-header entity-actions');
 </div>
 <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>
 <input v-model="entity.terms.tag.newTerm"> <button @click="entity.terms.tag.push(entity.terms.tag.newTerm)">add</button>
-
 <entity-actions :entity="entity" />

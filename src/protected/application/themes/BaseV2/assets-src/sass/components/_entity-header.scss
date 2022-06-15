@@ -257,4 +257,36 @@
             }
         }
     }
+
+    &__edit {
+        background-color: var(--mc-white);
+        &--content {
+            align-items: baseline;
+            display: flex;
+            justify-content: space-between;
+            padding: size(74) size(130) size(61);
+            .title {
+                align-items: center;
+                display: flex;
+                gap: size(18);
+                .icon {
+                    align-items: center;
+                    border-radius: 50%;
+                    display: flex;
+                    height: size(72);
+                    justify-content: center;
+                    width: size(72);
+                    svg {
+                        font-size: size(22);
+                        color: var(--mc-white);
+                    }
+                }
+            }
+
+
+            
+        }    
+    }
+    
+
 }
