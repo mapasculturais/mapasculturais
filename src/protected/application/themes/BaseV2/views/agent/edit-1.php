@@ -5,8 +5,28 @@ $this->import('entity-terms entity-header popover field entity-header entity-act
 
 ?>
 
-<entity-header :entity="entity" :editable="true" />
+<entity-header :entity="entity" :editable="true"></entity-header>
 
+
+<div class="card">
+    <div class="card__title">
+        <h3 class="card__title--title"><?php i::_e("Informações de Apresentação")?> </h3>
+        <p class="card__title--description" ><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
+    </div>
+
+    <div class="card__content">
+        <div class="row">
+            <div class="card__content--name">
+                <field :entity="entity" prop="name"></field>
+            </div>
+        </div>
+
+    <div>
+        <field :entity="entity" prop="shortDescription"></field>
+    </div>
+    
+    </div>
+</div>
 
 
 
@@ -18,9 +38,7 @@ $this->import('entity-terms entity-header popover field entity-header entity-act
 <div>
     <field :entity="entity" prop="name"></field>
 </div>
-<div>
-    <field :entity="entity" prop="shortDescription"></field>
-</div>
+
 <div>
     <field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></field>
 </div>
