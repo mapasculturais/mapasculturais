@@ -1557,8 +1557,8 @@ class ApiQuery {
         $app = App::i();
         $entity_class_name = $this->entityClassName;
         $permission_cache_class_name = $this->permissionCacheClassName;
-
-        if ($permission_cache_class_name && in_array('currentUserPermissions', $this->_selecting)) {
+        
+        if ($permission_cache_class_name && $this->_selectingCurrentUserPermissions) {
             if ($app->auth->isUserAuthenticated()) {
                 $user_id = $app->user->id;
             } else {
