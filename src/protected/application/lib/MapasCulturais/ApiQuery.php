@@ -2226,7 +2226,11 @@ class ApiQuery {
             '_geoLocation'
         ];
         
-        $defaults = ['terms'];
+        $defaults = [];
+
+        if ($this->usesTaxonomies) {
+            $defaults[] = 'terms';
+        }
 
         if ($this->usesFiles) {
             $defaults[] = 'files';
