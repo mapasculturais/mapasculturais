@@ -1126,46 +1126,31 @@ class ApiQuery {
                 return;
             }
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
-                
-                if($cfg['property'] == 'files') {
-                    if($cfg['selectAll']) {
-                        $this->_selectingFiles[] = "*";
-                    } else {
-                        foreach($cfg['select'] as $group) {
-                            if(!in_array("$group.*", $this->_selectingFiles)) {
-                                $this->_selectingFiles[] = "$group.*";
-                            }    
-                        }
-                    }
 
-                    continue;
+                $special_relations = [
+                    'files' => '_selectingFiles',
+                    'metalists' => '_selectingMetalists',
+                    'currentUserPermissions' => '_selectingCurrentUserPermissions',
+                ];
+
+                $is_special = false;
+                foreach ($special_relations as $prop => $_selecting) {
+                    if($cfg['property'] == $prop) {
+                        if($cfg['selectAll']) {
+                            $this->$_selecting[] = "*";
+                        } else {
+                            foreach($cfg['select'] as $sub) {
+                                if(!in_array("$sub.*", $this->$_selecting)) {
+                                    $this->$_selecting[] = $prop === 'files' ? "$sub.*" : $sub;
+                                }
+                            }
+                        }
+    
+                        $is_special = true;
+                    }
                 }
 
-                if($cfg['property'] == 'metalists') {
-                    if($cfg['selectAll']) {
-                        $this->_selectingMetalists[] = "*";
-                    } else {
-                        foreach($cfg['select'] as $group) {
-                            if(!in_array($group, $this->_selectingMetalists)) {
-                                $this->_selectingMetalists[] = $group;
-                            }    
-                        }
-                    }
-
-                    continue;
-                }
-
-                if($cfg['property'] == 'currentUserPermissions') {
-                    if($cfg['selectAll']) {
-                        $this->_selectingCurrentUserPermissions[] = "*";
-                    } else {
-                        foreach($cfg['select'] as $permission) {
-                            if(!in_array($permission, $this->_selectingCurrentUserPermissions)) {
-                                $this->_selectingCurrentUserPermissions[] = $permission;
-                            }    
-                        }
-                    }
-
+                if ($is_special) {
                     continue;
                 }
 
