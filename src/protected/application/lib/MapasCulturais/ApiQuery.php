@@ -296,8 +296,6 @@ class ApiQuery {
      */
     protected $_selectingCurrentUserPermissions = [];
 
-    
-
     /**
      * Indica se foi usado o formato @files na seleção
      * @var bool
@@ -1578,6 +1576,7 @@ class ApiQuery {
                     $where[] = "'{$select}'";
                 }
             }
+
             $where_action = '';
             if (!$all) {
                 $where_action = "pc.action IN (" . implode(',', $where) . ') AND';
@@ -1602,7 +1601,6 @@ class ApiQuery {
             }
 
             $result = $query->getResult(Query::HYDRATE_ARRAY);
-            // eval(\psy\sh());
             $permissions_by_entity = [];
 
             foreach ($result as $item) {
@@ -2404,9 +2402,6 @@ class ApiQuery {
         ];
         
         $result = $uid;
-    
-
-        // eval(\psy\sh());
         
         if($prop === 'user' && !isset($this->entityRelations['user']) && $this->usesOwnerAgent){
             $user_alias = $this->getAlias('user');
