@@ -3,7 +3,7 @@
 namespace MapasCulturais;
 
 use Doctrine\ORM\Query;
-use \MapasCulturais\Entities\File;
+use MapasCulturais\Entities\Agent;
 
 class ApiQuery {
     use Traits\MagicGetter;
@@ -77,6 +77,14 @@ class ApiQuery {
     protected $termRelationClassName;
     
     /**
+     * The Entity Agent Relation Class Name
+     *
+     * @example "MapasCulturais\Entities\AgentAgentRelation"
+     * @var string
+     */
+    protected $agentRelationClassName;
+    
+    /**
      * The Entity Permission Cache Class Name
      *
      * @example "MapasCulturais\Entities\AgentPermissionCache"
@@ -103,6 +111,12 @@ class ApiQuery {
      * @var \MapasCulturais\Repository
      */
     protected $entityRepository;
+    
+    /**
+     * The entity uses agent relations?
+     * @var bool
+     */
+    protected $usesAgentRelations;
     
     /**
      * The entity uses files?
@@ -273,6 +287,18 @@ class ApiQuery {
     protected $_selectingUrls = [];
 
     /**
+     * Agent relations that are being selected
+     * @var array
+     */
+    protected $_selectingAgentRelations = [];
+
+    /**
+     * Related Agentes that are being selected
+     * @var array
+     */
+    protected $_selectingRelatedAgents = [];
+
+    /**
      * Files that are being selected
      * @var array
      */
@@ -435,6 +461,7 @@ class ApiQuery {
         $this->usesFiles = $class::usesFiles();
         $this->usesMetalists = $class::usesMetalists();
 
+        $this->usesAgentRelations = $class::usesAgentRelation();
         $this->usesPermissionCache = $class::usesPermissionCache();
         $this->usesTaxonomies = $class::usesTaxonomies();
         $this->usesMetadata = $class::usesMetadata();
@@ -451,6 +478,10 @@ class ApiQuery {
         
         if ($this->usesPermissionCache) {
             $this->permissionCacheClassName = $class::getPermissionCacheClassName();
+        }
+        
+        if ($this->usesAgentRelations) {
+            $this->agentRelationClassName = $class::getAgentRelationEntityClassName();
         }
 
         if ($this->usesSealRelation) {
@@ -904,15 +935,13 @@ class ApiQuery {
         $this->appendRelations($entities);
         $this->appendFiles($entities);
         $this->appendMetalists($entities);
+        $this->appendAgentRelations($entities);
+        $this->appendRelatedAgents($entities);
         $this->appendCurrentUserPermissions($entities);
         $this->appendTerms($entities);
         $this->appendIsVerified($entities);
         $this->appendVerifiedSeals($entities);
         $this->appendSeals($entities);
-        
-        // @TODO: metalist (copiar o files)
-        // @TODO: relatedAgents
-        // @TODO: seals
         
         $app = app::i();
         
@@ -1070,6 +1099,7 @@ class ApiQuery {
                     'currentUserPermissions' => '_selectingCurrentUserPermissions',
                     'permissionTo' => '_selectingCurrentUserPermissions',
                     'agentRelations' => '_selectingAgentRelations',
+                    'relatedAgents' => '_selectingRelatedAgents',
                 ];
 
                 $is_special = false;
@@ -1475,6 +1505,182 @@ class ApiQuery {
         }
     }
 
+    protected function appendAgentRelations(array &$entities) {
+        if (!$this->_selectingAgentRelations || !$this->usesAgentRelations) {
+            return;
+        }
+
+        $relation_class_name = $this->agentRelationClassName;
+        
+        $where = [];
+        $all = false;
+        foreach($this->_selectingAgentRelations as $select){
+            if ($select == '*') {
+                $where[] = '1 = 1';
+                $all = true;
+            } else {
+                $where[] = "'{$select}'";
+            }
+        }
+
+        $sub = $this->getSubqueryInIdentities($entities);
+        
+        if ($all) {
+            $where = '1 = 1';
+        } else {
+            $where = "ar.group IN (" . implode(',', $where) . ')';
+        }
+
+        $dql = "
+            SELECT
+                ar.objectId as ownerId,
+                ar.id,
+                ar.group,
+                ar.status,
+                ar.hasControl,
+                ar.createTimestamp,
+                ar.metadata,
+                a.id as agentId
+
+            FROM
+                $relation_class_name ar
+                JOIN ar.agent a
+            WHERE
+                ar.objectId IN ({$sub}) AND 
+                ({$where})
+            ORDER BY ar.group ASC, ar.createTimestamp ASC";
+                        
+        
+        $this->logDql($dql, __FUNCTION__);
+    
+        $query = $this->em->createQuery($dql);
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+        
+        $relations = $query->getResult(Query::HYDRATE_ARRAY);
+
+        if ($relations) {
+            $relations_by_owner_id = [];
+            $agent_ids = implode(',', array_unique(array_map(function($item) {
+                return $item['agentId'];
+            }, $relations)));
+
+            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents = $agents_query->find();
+            $agents_by_id = [];
+            foreach($agents as $agent) {
+                $agents_by_id[$agent['id']] = $agent;
+            }
+
+            foreach($relations as $relation) {
+                $group = $relation['group'];
+                $owner_id = $relation['ownerId'];
+                $agent_id = $relation['agentId'];
+
+                unset($relation['agentId'], $relation['ownerId']);
+
+                $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
+                
+                $relation['agent'] = $agents_by_id[$agent_id];
+
+                $relations_by_owner_id[$owner_id][$group][] = $relation;
+            }
+
+            foreach($entities as &$entity) {
+                $entity_id = $entity['id'];
+
+                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+            }
+
+        }
+    }
+
+    protected function appendRelatedAgents(array &$entities) {
+        if (!$this->_selectingRelatedAgents || !$this->usesAgentRelations) {
+            return;
+        }
+
+        $relation_class_name = $this->agentRelationClassName;
+        
+        $where = [];
+        $all = false;
+        foreach($this->_selectingRelatedAgents as $select){
+            if ($select == '*') {
+                $where[] = '1 = 1';
+                $all = true;
+            } else {
+                $where[] = "'{$select}'";
+            }
+        }
+
+        $sub = $this->getSubqueryInIdentities($entities);
+        
+        if ($all) {
+            $where = '1 = 1';
+        } else {
+            $where = "ar.group IN (" . implode(',', $where) . ')';
+        }
+
+        $dql = "
+            SELECT
+                ar.objectId as ownerId,
+                ar.group,
+                a.id as agentId
+
+            FROM
+                $relation_class_name ar
+                JOIN ar.agent a
+            WHERE
+                
+                ar.objectId IN ({$sub}) AND 
+                ({$where})
+            ORDER BY ar.group ASC, ar.createTimestamp ASC";
+                        
+        
+        $this->logDql($dql, __FUNCTION__);
+    
+        $query = $this->em->createQuery($dql);
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+        
+        $relations = $query->getResult(Query::HYDRATE_ARRAY);
+
+        if ($relations) {
+            $relations_by_owner_id = [];
+            $agent_ids = implode(',', array_unique(array_map(function($item) {
+                return $item['agentId'];
+            }, $relations)));
+
+            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents = $agents_query->find();
+            $agents_by_id = [];
+            foreach($agents as $agent) {
+                $agents_by_id[$agent['id']] = $agent;
+            }
+
+            foreach($relations as $relation) {
+                $group = $relation['group'];
+                $owner_id = $relation['ownerId'];
+                $agent_id = $relation['agentId'];
+
+                $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
+
+                $relations_by_owner_id[$owner_id][$group][] =  $agents_by_id[$agent_id];
+            }
+
+            foreach($entities as &$entity) {
+                $entity_id = $entity['id'];
+
+                $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+            }
+
+        }
+    }
+
     protected function appendCurrentUserPermissions(array &$entities) {
         $app = App::i();
         $entity_class_name = $this->entityClassName;
@@ -1562,7 +1768,7 @@ class ApiQuery {
 
         }
     }
-    
+
     protected function appendTerms(array &$entities){
         $class = $this->entityClassName;
         $term_relation_class_name = $this->termRelationClassName;
@@ -2304,6 +2510,10 @@ class ApiQuery {
                 $this->_selectingSeals = true;
             } elseif ($prop === 'files') {
                 $this->_selectingFiles = ['*'];
+            } elseif ($prop === 'agentRelations') {
+                $this->_selectingAgentRelations = ['*'];
+            } elseif ($prop === 'relatedAgents') {
+                $this->_selectingRelatedAgents = ['*'];
             } elseif ($prop === 'metalists') {
                 $this->_selectingMetalists = ['*'];
             } elseif ($prop === 'currentUserPermissions') {
