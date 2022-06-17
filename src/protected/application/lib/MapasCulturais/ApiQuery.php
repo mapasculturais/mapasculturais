@@ -1261,7 +1261,7 @@ class ApiQuery {
     }
     
     protected function appendFiles(array &$entities){
-        if(!$this->_selectingFiles){
+        if(!$this->_selectingFiles || !$this->usesFiles){
             return;
         }
         
@@ -1431,9 +1431,8 @@ class ApiQuery {
         }
         
     }
-
     protected function appendMetalists(array &$entities){
-        if(!$this->_selectingMetalists){
+        if(!$this->_selectingMetalists || !$this->usesMetalists){
             return;
         }
         
@@ -1682,90 +1681,91 @@ class ApiQuery {
     }
 
     protected function appendCurrentUserPermissions(array &$entities) {
+        if (!$this->_selectingCurrentUserPermissions || !$this->usesPermissionCache) {
+            return;
+        }
+
         $app = App::i();
         $entity_class_name = $this->entityClassName;
         $permission_cache_class_name = $this->permissionCacheClassName;
+
+        $user = $app->user;
+
+        if ($user->is('guest')) {
+            $user_id = -1;
+        } else {
+            $user_id = $user->id;
+        }
+
+        $permission_list = $entity_class_name::getPermissionsList();
         
-        if ($permission_cache_class_name && $this->_selectingCurrentUserPermissions) {
-            $user = $app->user;
+        $dql_in = $this->getSubqueryInIdentities($entities);
 
-            if ($user->is('guest')) {
-                $user_id = -1;
+        $where = [];
+        $all = false;
+        foreach($this->_selectingCurrentUserPermissions as $select){
+            if ($select == '*') {
+                $all = true;
+                break;
             } else {
-                $user_id = $user->id;
+                $where[] = "'{$select}'";
             }
+        }
 
-            $permission_list = $entity_class_name::getPermissionsList();
-            
-            $dql_in = $this->getSubqueryInIdentities($entities);
+        $where_action = '';
+        if (!$all) {
+            $where_action = "pc.action IN (" . implode(',', $where) . ') AND';
+            $permission_list = $this->_selectingCurrentUserPermissions;
+        }
 
-            $where = [];
-            $all = false;
-            foreach($this->_selectingCurrentUserPermissions as $select){
-                if ($select == '*') {
-                    $all = true;
-                    break;
+        $dql = "
+        SELECT
+            pc.action,
+            IDENTITY(pc.owner) AS owner_id
+        FROM 
+            {$permission_cache_class_name} as pc
+        WHERE 
+            $where_action
+            pc.owner IN ($dql_in) AND
+            pc.userId = {$user_id}"; 
+
+        $query = $this->em->createQuery($dql);
+
+        if($this->_usingSubquery){
+            $query->setParameters($this->_dqlParams);
+        }
+
+        $result = $query->getResult(Query::HYDRATE_ARRAY);
+        $permissions_by_entity = [];
+
+        foreach ($result as $item) {
+            $owner_id = $item['owner_id'];
+            $action = (string)$item['action'];
+            $permissions_by_entity[$owner_id] = $permissions_by_entity[$owner_id] ?? [];
+            $permissions_by_entity[$owner_id][$action] = true;
+        }
+
+        foreach ($entities as &$entity) {
+            $entity_id = $entity['id'];
+            $entity['currentUserPermissions'] = [];
+
+            foreach ($permission_list as $permission) {
+                if(($this->usesOriginSubsite && $user->is('admin', $entity['_subsiteId'])) || (!$this->usesOriginSubsite && $user->is('saasAdmin'))){
+                    $has_permission = true;
                 } else {
-                    $where[] = "'{$select}'";
-                }
-            }
-
-            $where_action = '';
-            if (!$all) {
-                $where_action = "pc.action IN (" . implode(',', $where) . ') AND';
-                $permission_list = $this->_selectingCurrentUserPermissions;
-            }
-
-            $dql = "
-            SELECT
-                pc.action,
-                IDENTITY(pc.owner) AS owner_id
-            FROM 
-                {$permission_cache_class_name} as pc
-            WHERE 
-                $where_action
-                pc.owner IN ($dql_in) AND
-                pc.userId = {$user_id}"; 
-
-            $query = $this->em->createQuery($dql);
-
-            if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
-            }
-
-            $result = $query->getResult(Query::HYDRATE_ARRAY);
-            $permissions_by_entity = [];
-
-            foreach ($result as $item) {
-                $owner_id = $item['owner_id'];
-                $action = (string)$item['action'];
-                $permissions_by_entity[$owner_id] = $permissions_by_entity[$owner_id] ?? [];
-                $permissions_by_entity[$owner_id][$action] = true;
-            }
-
-            foreach ($entities as &$entity) {
-                $entity_id = $entity['id'];
-                $entity['currentUserPermissions'] = [];
-
-                foreach ($permission_list as $permission) {
-                    if(($this->usesOriginSubsite && $user->is('admin', $entity['_subsiteId'])) || (!$this->usesOriginSubsite && $user->is('saasAdmin'))){
+                    if($permission == 'view' && !$entity_class_name::isPrivateEntity()){
+                        // @todo verificar se status é maior que zero
                         $has_permission = true;
                     } else {
-                        if($permission == 'view' && !$entity_class_name::isPrivateEntity()){
-                            // @todo verificar se status é maior que zero
-                            $has_permission = true;
-                        } else {
-                            $has_permission = $permissions_by_entity[$entity_id][$permission] ?? false;
-                        }
+                        $has_permission = $permissions_by_entity[$entity_id][$permission] ?? false;
                     }
-                    $entity['currentUserPermissions'][$permission] = $has_permission;
                 }
-
-                if ($this->_usingLegacyPermissionFormat) {
-                    $entity['permissionTo'] = $entity['currentUserPermissions'];
-                }
+                $entity['currentUserPermissions'][$permission] = $has_permission;
             }
 
+            if ($this->_usingLegacyPermissionFormat) {
+                $entity['permissionTo'] = $entity['currentUserPermissions'];
+            }
         }
     }
 
