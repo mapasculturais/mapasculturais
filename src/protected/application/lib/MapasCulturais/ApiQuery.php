@@ -2391,6 +2391,10 @@ class ApiQuery {
             $defaults[] = 'seals';
         }
 
+        if ($this->usesAgentRelations) {
+            $defaults[] = 'relatedAgents';
+        }
+
         $properties = array_merge(
                     $this->entityProperties,
                     $this->registeredMetadata,
