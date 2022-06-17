@@ -297,6 +297,12 @@ class ApiQuery {
     protected $_selectingCurrentUserPermissions = [];
 
     /**
+     * Indica se foi usado o formato permissionTo
+     * @var array
+     */
+    protected $_usingLegacyPermissionFormat = false;
+
+    /**
      * Indica se foi usado o formato @files na seleção
      * @var bool
      */
@@ -1048,76 +1054,7 @@ class ApiQuery {
                 $entity += $meta;
             }
         }
-    }
-    
-    protected function appendPermissions(array &$entities, array $select){
-        if(!$this->permissionCacheClassName) {
-            return;
-        }
-
-        $skel = [];
-        $admin_skel = [];
-        $class = $this->entityClassName;
-        $user = App::i()->user;
-        
-        $dql_in = $this->getSubqueryInIdentities($entities);
-        
-        foreach($select as $permission){
-            $admin_skel[$permission] = true;
-            if($permission == 'view' && !$class::isPrivateEntity()){
-                $skel['view'] = true;
-            } else {
-                $skel[$permission] = false;
-            }
-        }
-        
-        $dql = "
-            SELECT
-                IDENTITY(pc.owner) AS ownerId,
-                pc.action
-            FROM
-                {$this->permissionCacheClassName} pc
-            WHERE
-                pc.action IN (:pcache_select) AND
-                pc.owner IN ($dql_in) AND
-                pc.user = {$user->id}";
-                
-        
-        $query = $this->em->createQuery($dql);
-        
-        if($this->_usingSubquery){
-            $params = $this->getDqlParams();
-            $params['pcache_select'] = $select;
-            
-        } else {
-            $params = ['pcache_select' => $select];
-        }
-        
-        $query->setParameters($params);
-        
-        $result = $query->getResult();
-        
-        $permissions = [];
-                
-        foreach($result as $r){
-            $owner_id = $r['ownerId'];
-            $action = $r['action']->getValue();
-            if(!isset($permissions[$owner_id])){
-                $permissions[$owner_id] = [];
-            }
-            
-            $permissions[$owner_id][$action] = true;
-        }
-        
-        foreach($entities as &$entity){
-            if(($this->usesOriginSubsite && $user->is('admin', $entity['_subsiteId'])) || (!$this->usesOriginSubsite && $user->is('saasAdmin'))){
-                $entity['permissionTo'] = $admin_skel;
-            } else {
-                $entity_id = $entity['id'];
-                $entity['permissionTo'] = isset($permissions[$entity_id]) ? $permissions[$entity_id] + $skel : $skel;
-            }
-        }
-    }
+    }    
     
     protected function appendRelations(array &$entities) {
         if ($this->_subqueriesSelect) {
@@ -1131,11 +1068,17 @@ class ApiQuery {
                     'files' => '_selectingFiles',
                     'metalists' => '_selectingMetalists',
                     'currentUserPermissions' => '_selectingCurrentUserPermissions',
+                    'permissionTo' => '_selectingCurrentUserPermissions',
+                    'agentRelations' => '_selectingAgentRelations',
                 ];
 
                 $is_special = false;
                 foreach ($special_relations as $prop => $_selecting) {
                     if($cfg['property'] == $prop) {
+                        if ($prop == 'permissionTo') { 
+                            $this->_usingLegacyPermissionFormat = true;
+                        }
+
                         if($cfg['selectAll']) {
                             $this->$_selecting[] = "*";
                         } else {
@@ -1164,11 +1107,7 @@ class ApiQuery {
                         }
                     });
                 }
-                
-                if($prop == 'permissionTo'){
-                    $this->appendPermissions($entities, $cfg['select']);
-                    continue;
-                }
+
                 if(isset($this->entityRelations[$prop])){
                     $mapping = $this->entityRelations[$prop];
                 } else if(isset($this->entityRelations['_' . $prop])){
@@ -1542,11 +1481,14 @@ class ApiQuery {
         $permission_cache_class_name = $this->permissionCacheClassName;
         
         if ($permission_cache_class_name && $this->_selectingCurrentUserPermissions) {
-            if ($app->auth->isUserAuthenticated()) {
-                $user_id = $app->user->id;
-            } else {
+            $user = $app->user;
+
+            if ($user->is('guest')) {
                 $user_id = -1;
+            } else {
+                $user_id = $user->id;
             }
+
             $permission_list = $entity_class_name::getPermissionsList();
             
             $dql_in = $this->getSubqueryInIdentities($entities);
@@ -1600,7 +1542,21 @@ class ApiQuery {
                 $entity['currentUserPermissions'] = [];
 
                 foreach ($permission_list as $permission) {
-                    $entity['currentUserPermissions'][$permission] = $permissions_by_entity[$entity_id][$permission] ?? false;
+                    if(($this->usesOriginSubsite && $user->is('admin', $entity['_subsiteId'])) || (!$this->usesOriginSubsite && $user->is('saasAdmin'))){
+                        $has_permission = true;
+                    } else {
+                        if($permission == 'view' && !$entity_class_name::isPrivateEntity()){
+                            // @todo verificar se status é maior que zero
+                            $has_permission = true;
+                        } else {
+                            $has_permission = $permissions_by_entity[$entity_id][$permission] ?? false;
+                        }
+                    }
+                    $entity['currentUserPermissions'][$permission] = $has_permission;
+                }
+
+                if ($this->_usingLegacyPermissionFormat) {
+                    $entity['permissionTo'] = $entity['currentUserPermissions'];
                 }
             }
 
@@ -2352,6 +2308,9 @@ class ApiQuery {
                 $this->_selectingMetalists = ['*'];
             } elseif ($prop === 'currentUserPermissions') {
                 $this->_selectingCurrentUserPermissions = ['*'];
+            } elseif ($prop === 'permissionTo') {
+                $this->_selectingCurrentUserPermissions = ['*'];
+                $this->_usingLegacyPermissionFormat = true;
             }
         }
     }
