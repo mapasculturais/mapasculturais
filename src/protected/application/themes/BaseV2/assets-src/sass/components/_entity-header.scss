@@ -3,6 +3,16 @@
 .entity-header {
     max-width: 1170px;
     margin: 0 auto;
+    position: relative;
+
+    &::before {
+        width: 100vw;
+        height: 100%;
+        position: absolute;
+        content: " ";
+        margin: 0 calc(50% - 50vw);
+        background-color: white;
+    }
 
     &__content { 
         display: flex;
@@ -260,6 +270,7 @@
 
     &__edit {
         background-color: var(--mc-white);
+        position: relative;
         &--content {
             align-items: baseline;
             display: flex;
