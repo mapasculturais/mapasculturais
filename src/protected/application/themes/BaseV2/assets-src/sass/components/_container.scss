@@ -1,0 +1,6 @@
+@use '../settings/mixins' as *;
+
+.container {
+    max-width: size(1170);
+    margin: 0 auto;
+}
