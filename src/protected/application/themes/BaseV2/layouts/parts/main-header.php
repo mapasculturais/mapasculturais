@@ -1,6 +1,7 @@
 <?php
+use MapasCulturais\App;
 use MapasCulturais\i;
-$this->import('popover');
+$this->import('popover messages main-menu');
 ?>
 
 <header class="main-header">
@@ -51,114 +52,63 @@ $this->import('popover');
         </li>
     </ul>
 
-    <!-- Menu mobile -->
-    <ul class="main-header__menu-mobile">
-        <li> 
-            <a href="" class="main-header__menu-mobile--item home">
-                <span class="icon"> <iconify icon="fluent:home-12-regular" /> </span>
-                <p class="label"> Home </p>      
-            </a>  
-        </li>
-        <li>
-            <a href="" class="main-header__menu-mobile--item opportunities">
-                <span class="icon"> <iconify icon="icons8:idea" /> </span>
-                <p class="label"> Oportunidades </p>
-            </a>
-        </li>
-        <li>
-            <a href="" class="main-header__menu-mobile--item agents">
-                <span class="icon"> <iconify icon="fa-solid:user-friends" /> </span>
-                <p class="label"> Agentes </p>
-            </a>
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item events">
-                <span class="icon"> <iconify icon="ant-design:calendar-twotone" /> </span>
-                <p class="label"> Eventos </p>
-            </a>  
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item spaces">
-                <span class="icon"> <iconify icon="clarity:building-line" /> </span>
-                <p class="label"> Espaços </p>       
-            </a> 
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item projects">
-                <span class="icon"> <iconify icon="ri:file-list-2-line" /> </span>
-                <p class="label"> Projetos </p>      
-            </a> 
-        </li>
-        
-        <li> 
-            <a href="" class="main-header__menu-mobile--item"> 
-                <p class="label"> Painel de controle </p>
-            </a> 
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item"> 
-                <p class="label"> Editais e Oportunidades </p>
-            </a> 
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item"> 
-                <p class="label"> Meus eventos </p>
-            </a> 
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item"> 
-                <p class="label"> Meus agentes </p>
-            </a> 
-        </li>
-        <li> 
-            <a href="" class="main-header__menu-mobile--item"> 
-                <p class="label"> Meus espaços </p>
-            </a> 
-        </li>
-    </ul>
-
 
     <!-- Options -->
     <div class="main-header__options">
-        
-        <div class="main-header__options--loggedIn active">
-
-            <div class="notifications">
-                <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline" /> </a>
-                <a class="mobile" href=""> <iconify icon="eva:bell-outline" /> </a>
+        <?php if ($app->user->is('guest')): ?>
+            
+            <div class="main-header__options--loggedOff">
+                <a href="" class="logIn">
+                    <span><iconify icon="icon-park-outline:login" /></span>
+                    Entrar
+                </a>
             </div>
             
+        <?php else: ?>
 
-            <popover openside="down-left"> 
-                <template #btn="{ toggle }">
-                    <button :class="['openPopever', 'options']" @click="toggle()" > Menu </button>
-                </template>
+            <div class="main-header__options--loggedIn active">
+                <div class="notifications">
+                    <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline" /> </a>
+                    <a class="mobile" href=""> <iconify icon="eva:bell-outline" /> </a>
+                </div>
 
-                <template #content>
-                    <ul class="menu-options">
-                        <li> <a href=""> Painel de controle         </a> </li>
-                        <li> <a href=""> Editais e Oportunidades    </a> </li>
-                        <li> <a href=""> Meus eventos               </a> </li>
-                        <li> <a href=""> Meus agentes               </a> </li>
-                        <li> <a href=""> Meus espaços               </a> </li>
-                    </ul>
-                </template>
-            </popover>
+                <main-menu>
+                    <li> 
+                        <a href="<?= $app->createUrl('panel', 'index') ?>"> 
+                            <p class="label"> <?php i::_e('Painel de controle') ?> </p>
+                        </a> 
+                    </li>
+                    <li> 
+                        <a href="<?= $app->createUrl('panel', 'opportunities') ?>"> 
+                            <p class="label"> <?php i::_e('Editais e Oportunidades') ?> </p>
+                        </a> 
+                    </li>
+                    <li> 
+                        <a href="<?= $app->createUrl('panel', 'events') ?>"> 
+                            <p class="label"> <?php i::_e('Meus eventos') ?> </p>
+                        </a> 
+                    </li>
+                    <li> 
+                        <a href="<?= $app->createUrl('panel', 'agents') ?>"> 
+                            <p class="label"> <?php i::_e('Meus agentes') ?> </p>
+                        </a> 
+                    </li>
+                    <li> 
+                        <a href="<?= $app->createUrl('panel', 'spaces') ?>"> 
+                            <p class="label"> <?php i::_e('Meus espaços') ?> </p>
+                        </a> 
+                    </li>
+                    <li>
+                        <a href="<?= $app->createUrl('auth', 'logout') ?>">
+                            <p class="label"> <?php i::_e('Sair') ?> </p>
+                        </a>
+                    </li>
+                </main-menu>
+            </div>
 
-            
-            <a class="btn-mobile">
-                <iconify icon="icon-park-outline:hamburger-button" />
-            </a>
-            
-        </div>
-
-        <div class="main-header__options--loggedOff ">
-            <a href="" class="logIn">
-                <span><iconify icon="icon-park-outline:login" /></span>
-                Entrar
-            </a>
-        </div>
-
+        <?php endif; ?>
     </div>
 
 </header>
+
+<messages></messages>
