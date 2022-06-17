@@ -933,12 +933,12 @@ class ApiQuery {
     protected function processEntities(array &$entities) {
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
-        $this->appendFiles($entities);
+        $this->appendTerms($entities);
         $this->appendMetalists($entities);
+        $this->appendFiles($entities);
         $this->appendAgentRelations($entities);
         $this->appendRelatedAgents($entities);
         $this->appendCurrentUserPermissions($entities);
-        $this->appendTerms($entities);
         $this->appendIsVerified($entities);
         $this->appendVerifiedSeals($entities);
         $this->appendSeals($entities);
