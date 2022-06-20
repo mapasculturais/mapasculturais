@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('entity-terms entity-header popover field entity-header entity-actions tabs main-menu container card entity-owner');
+$this->import('entity-profile entity-cover entity-terms entity-header popover field entity-header entity-actions tabs main-menu container card entity-owner');
 ?>
 
 <entity-header :entity="entity" :editable="true"></entity-header>
@@ -18,16 +18,18 @@ $this->import('entity-terms entity-header popover field entity-header entity-act
             <div class="card-1__left">
 
                 <div class="row">
-                    <div class="profileImg">
-                        <div class="profileImg__img">
-                            <iconify icon="bi:image-fill" />
-                            <!-- <img href="" class="select-profileImg__img--img" /> -->
-                        </div>
-                        <label> <?php i::_e("Selecionar imagem de perfil"); ?> </label>
+                    <entity-cover />
+                </div>    
+                
+                <div class="row">
+                    <div class="col">
+                        <entity-profile />
                     </div>
-                    <field :entity="entity" prop="name"></field>
+                    <div class="col">
+                        <field :entity="entity" prop="name"></field>
+                    </div>
                 </div>
-
+                
                 <div class="row">
                     <field :entity="entity" prop="shortDescription"></field>
                 </div>  
