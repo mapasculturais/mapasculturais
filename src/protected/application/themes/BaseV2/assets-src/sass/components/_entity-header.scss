@@ -55,6 +55,8 @@
         }
 
         &-rightSide {
+            z-index: 1;
+            
             .title {
                 font-style: normal;
                 font-weight: 700;        
