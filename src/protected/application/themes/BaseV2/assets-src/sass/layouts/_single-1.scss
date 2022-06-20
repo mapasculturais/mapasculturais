@@ -1,0 +1,11 @@
+@use '../settings/mixins' as *;
+
+.single-1 {
+    justify-content: space-between;
+    main {
+        width: 74.36%;
+    }
+    aside {
+        width: 23.08%;
+    }
+}
