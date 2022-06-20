@@ -846,23 +846,45 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     $scope.data = {
         fields: MapasCulturais.evaluationFieldsList || [],
         avaliableEvaluationFields: {},
-        checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields ?? {},
+        category:{
+            fieldName: "category",
+            checked: false,
+            title: "Categoria"
+        },
+        projectName:{
+            fieldName: "projectName",
+            checked: false,
+            title: "Nome do projeto"
+        },
+        agentsSummary:{
+            fieldName: "agentsSummary",
+            checked: false,
+            title: "Resumo dos agentes"
+        },
+        spaceSummary:{
+            fieldName: "spaceSummary",
+            checked: false,
+            title: "Resumo dos espaços"
+        },
+        allFields: {
+            checked:false
+        }
     }
     $scope.evaluationsFieldsFilter = "";
-    $scope.allFields = false;
+
     
     $scope.selectFields = function(field){
         $scope.data.avaliableEvaluationFields = {}
 
-        if(!$scope.isChecked(field)){
-            $scope.data.checkedStatus[field] = true;
-        }else{
-            $scope.data.checkedStatus[field] = false;
+        $scope.dependenceVeriry(field);
+
+        if(field.ref == "category" && !field.checked){
+            MapasCulturais.Messages.alert("Você desativou a categoria, todos os campos vinculado a alguma categoria serão também desativados");
         }
-            
-        Object.keys($scope.data.checkedStatus).forEach(function(field){
-            if($scope.data.checkedStatus[field] || $scope.data.checkedStatus[field] == "true"){
-                $scope.data.avaliableEvaluationFields[field] = true;
+
+        $scope.data.fields.forEach(function(item){
+            if(item.checked){
+                $scope.data.avaliableEvaluationFields[item.ref] = true;
             }
         });
 
@@ -871,50 +893,123 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         });
     }
 
-    $scope.isChecked = function(field){
-       if($scope.data.checkedStatus[field]){
-           return true;
-       }
+    $scope.data.fields = [
+        $scope.data.category,
+        $scope.data.projectName,
+        $scope.data.agentsSummary,
+        $scope.data.spaceSummary,
+    ].concat(MapasCulturais.evaluationFieldsList)
 
-       return false;
-    }
 
+    $scope.fieldTitles = [];
     $scope.data.fields.map(function(item){
+
         if(item.hasOwnProperty("groupName")){
             item.ref = item.groupName;
         }else{
             item.ref = item.fieldName;
         }
+        $scope.fieldTitles[item.ref] = item.title
     });
 
+    $scope.data.fields.map(function(item){
+        if(MapasCulturais.entity.object.avaliableEvaluationFields[item.ref] == "true"){
+            item.checked = true;
+        }
+
+        if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
+            item.disabled = true;
+            item.titleDisabled = "Para ativar este campo, ative também o campo Categoria";
+            
+        }
+
+        var field_condition = item.config?.require?.field;
+        if(field_condition && MapasCulturais.entity.object.avaliableEvaluationFields[field_condition] != "true"){
+            item.disabled = true;
+            item.titleDisabled = "Para ativar este campo, ative também o campo '"+$scope.fieldTitles[field_condition]+"'";
+        }
+    });
+
+
     $scope.checkedAll = function(){
-
         $scope.data.avaliableEvaluationFields = {}
-        $scope.allFields = !$scope.allFields;
-
+        $scope.data.allFields.checked = !$scope.data.allFields.checked;
+        $scope.hasDisabled = false;
+        
         $scope.data.fields.forEach(function(item){
             if(item.filterActive){
-               item.checked = $scope.allFields;
-               
-               $scope.data.checkedStatus[item.ref] = $scope.allFields;
+                item.checked = $scope.data.allFields.checked;
+                item.disabled = false;
+                var fieldCondition = item.config?.require?.field;
+                if(fieldCondition || item.categories?.length > 0){
+                    $scope.data.fields.forEach(function(field){
+                        if(fieldCondition == field.ref){
+                            if(!field.filterActive){
+                                field.checked = item.checked;
+                            }
+                        }
+
+                        if(field.ref == "category" && item.categories?.length > 0){
+                            field.checked = item.checked;
+                        }
+
+                    });
+                }
+            }
+
+            if(item.disabled){
+                $scope.hasDisabled = true;
             }
         });
 
-        $scope.data.checkedStatus['category'] = $scope.allFields;
-        $scope.data.checkedStatus['projectName'] = $scope.allFields;
-        $scope.data.checkedStatus['agentsSummary'] = $scope.allFields;
-        $scope.data.checkedStatus['spaceSummary'] = $scope.allFields;
-
-        Object.keys($scope.data.checkedStatus).forEach(function(field){
-            if($scope.data.checkedStatus[field] || $scope.data.checkedStatus[field] == "true"){
-                $scope.data.avaliableEvaluationFields[field] = true;
+        $scope.data.fields.forEach(function(item){
+            if(item.checked){
+                $scope.data.avaliableEvaluationFields[item.ref] = true;
             }
         });
 
         EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
-            MapasCulturais.Messages.success("Salvo com sucesso");            
+            if($scope.hasDisabled && $scope.data.allFields.checked){
+                MapasCulturais.Messages.alert("Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente");            
+            }else{
+                MapasCulturais.Messages.success("Salvo com sucesso");            
+            }
         });
 
+    }
+
+    $scope.checkedDependence = function(field){
+        $scope.data.fields.forEach(function(item){
+            var fieldCondition = item.config?.require?.field;
+            console.log(fieldCondition)
+            if(fieldCondition == field.ref){
+                item.checked = field.checked;
+                item.disabled = !field.checked;
+            }
+        });
+    }
+
+    $scope.dependenceVeriry = function(field){
+        $scope.data.fields.forEach(function(item){
+            var fieldCondition = item.config?.require?.field;
+            if(fieldCondition == field.ref){
+                if(field.checked){
+                    item.disabled = false;
+                }else{
+                    item.disabled = true;
+                    item.checked = false;
+                }
+            }
+
+            if(field.ref == "category" && item.categories?.length > 0){
+                if(field.checked){
+                    item.disabled = false;
+                }else{
+                    item.disabled = true;
+                    item.checked = false;
+                }
+            }
+        });
     }
     
     $scope.filter = function(field){
