@@ -9,6 +9,7 @@
 
 // COMPONENTS
 @use 'components/button';
+@use 'components/card';
 @use 'components/container';
 @use 'components/entity-actions';
 @use 'components/entity-card';
@@ -17,6 +18,7 @@
 @use 'components/entity-owner';
 @use 'components/entity-seals';
 @use 'components/entity-terms';
+@use 'components/field';
 @use 'components/files-list';
 @use 'components/gallery';
 @use 'components/main-menu';
