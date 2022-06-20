@@ -1,0 +1,12 @@
+@use '../settings/mixins' as *;
+
+.entity-cover {
+    border: 1px dashed;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 0;
+}
