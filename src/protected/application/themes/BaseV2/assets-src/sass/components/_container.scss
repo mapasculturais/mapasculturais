@@ -1,6 +1,9 @@
 @use '../settings/mixins' as *;
 
 .container {
-    max-width: size(1170);
+    background-color: lightgray;
+    display: flex;
+    flex-wrap: wrap;
     margin: 0 auto;
+    max-width: size(1170);
 }
