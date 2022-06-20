@@ -1,7 +1,7 @@
 @use '../settings/mixins' as *;
 
 .entity-links {
-    margin: size(25) 0;
+    margin: 0;
     max-width: size(500);
     &__title {
         margin: 0 0 size(10) 0;
