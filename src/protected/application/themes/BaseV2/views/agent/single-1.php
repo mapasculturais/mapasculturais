@@ -17,13 +17,15 @@ $this->import('entity-terms card container share-links files-list entity-links e
     </main>
     
     <aside>
-        <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse" :editable="true"></entity-terms>
+        <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse"></entity-terms>
+
+
+        <entity-seals :entity="entity" title="Verificações"></entity-seals>
+
+        <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
 
         <entity-owner :entity="entity" title="Publicado por"></entity-owner>
 
-        <entity-seals :entity="entity" title="Verificações" :editable="true"></entity-seals>
-
-        <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>  
 
         <share-links title="Compartilhar" text="Veja este link:"></share-links>
     </aside>
