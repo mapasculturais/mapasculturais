@@ -7,6 +7,8 @@ $this->import('entity-terms card container share-links files-list entity-links e
 
     <entity-header :entity="entity"></entity-header>
     
+    <div class="divider"></div>
+    
     <main>
         <entity-links :entity="entity" title="Links"></entity-links>
         <entity-gallery :entity="entity"></entity-gallery>
