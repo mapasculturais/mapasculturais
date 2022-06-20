@@ -1,0 +1,23 @@
+@use '../settings/mixins' as *;
+
+.card {
+    padding: size(25) size(24);
+    background-color: var(--mc-white);
+    border-radius: size(5);
+    width: 100%;
+
+    &__title {
+        p {
+            margin: size(8) 0 0;
+            font-size: size(14);
+            line-height: size(19);
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 24px 0;
+    }
+}
