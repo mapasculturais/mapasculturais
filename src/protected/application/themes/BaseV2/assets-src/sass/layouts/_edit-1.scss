@@ -1,24 +1,15 @@
 @use '../settings/mixins' as *;
 
 .edit-1 {
-    background-color: lightgray;
-    margin: 0 auto;
-    gap: 30px;
+    background-color: var(--mc-gray-100);
 
-
-    // temporário
-    padding: size(32) 0 0;
-    position: relative;
-    
-    &::before {
-        width: 100vw;
-        height: 100%;
-        position: absolute;
-        content: " ";
-        margin: 0 calc(50% - 50vw);
-        background-color: lightgray;
-        top: 0;
+    &__content {
+        display: flex;
+        flex-wrap: wrap;
+        z-index: 1;
+        gap: size(30) 2.56%;
     }
+    
     &>* {
         z-index: 1;
     }
@@ -63,12 +54,12 @@
             position: relative;
 
             &::before {
-                content: " ";
                 background: url('https://api.iconify.design/zondicons/edit-pencil.svg') no-repeat center center / contain;
+                content: " ";
+                height: size(12);
                 position: absolute;
                 top: 0;
                 width: size(12);
-                height: size(12);
             }
         }
     }    
@@ -77,22 +68,22 @@
     .row {
         display: flex;
         gap: size(24);
-        align-items: flex-end;
         width: 100%;
     }
 
     .card-1 {
         &__left {
-            width: 100%;
-            max-width: size(722);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 65%;
         }
         &__divider {
-            margin: 0 auto;
             border-right: 1px solid var(--mc-gray-300);
+            margin: 0 calc(4% - 0.5px);
         }
         &__right {
-            width: 100%;
-            max-width: size(294);
+            width: 27%;
         }
     }
 
@@ -100,12 +91,10 @@
         display: flex;
         flex-direction: column;
         gap: 30px;
-        max-width: size(770);
-        width: 100%;
+        width: 65.81%;
     }
 
     aside {
-        max-width: size(370);
-        width: 100%;
+        width: 31.62%;
     }
 }
