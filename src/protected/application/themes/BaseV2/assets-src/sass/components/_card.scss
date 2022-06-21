@@ -8,7 +8,7 @@
 
     &__title {
         p {
-            margin: size(8) 0 0;
+            margin: size(8) 0 size(24);
             font-size: size(14);
             line-height: size(19);
         }
@@ -18,6 +18,5 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        margin: 24px 0;
     }
 }
