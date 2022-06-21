@@ -22,7 +22,14 @@
         @media (max-width: size(800)) {
 
             grid-template-columns: 100%;
-            .divider {
+            .divider, aside {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+            
+        }
+        @media (min-width: size(350)) {
+            .aside {
                 grid-column-start: 1;
                 grid-column-end: 2;
             }
