@@ -1,6 +1,10 @@
 @use '../settings/mixins' as *;
 
 .single-1 {
+    .container {
+        gap: size(30) 2.56%;
+    }
+
     .divider {
         border-bottom: size(5) solid var(--mc-black);
         margin: size(60) 0;
