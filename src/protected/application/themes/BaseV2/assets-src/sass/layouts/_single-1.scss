@@ -29,7 +29,8 @@
             
         }
         @media (min-width: size(350)) {
-            .aside {
+            grid-template-columns: 100%;
+            .divider, aside {
                 grid-column-start: 1;
                 grid-column-end: 2;
             }
