@@ -4,7 +4,7 @@
 
     &__content {
         display: grid;
-        grid-template-columns: size(870) size(270);
+        grid-template-columns: 65.81% 31.62%;
         gap: size(30);
 
         .divider {
@@ -19,5 +19,21 @@
             flex-direction: column;
             gap: size(40);
         }
+        @media (max-width: size(800)) {
+
+            grid-template-columns: 100%;
+            .divider {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+        }
+        
+
     }
+
+
+    // @media screen {
+        
+    //     max-width: 800px ;
+    // }
 }
