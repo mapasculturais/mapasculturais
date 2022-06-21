@@ -4,9 +4,9 @@ use MapasCulturais\i;
 
 <header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
 
-    <div class="entity-header__all">
+    <div class="entity-header__single">
 
-        <div class="entity-header__cover" :style="{ '--url': url(entity.files.header?.url) }">
+        <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }">
             <nav class="entity-header__breadcrumbs" aria-label="<?= i::__('Breadcrumbs') ?>">
                 <slot name="breadcrumbs">
                     <ul>
@@ -24,9 +24,9 @@ use MapasCulturais\i;
 
         </div>
 
-        <div class="entity-header__content">
+        <div class="entity-header__single--content">
 
-            <div class="entity-header__content-leftSide">
+            <div class="leftSide">
                 <div class="avatar">
                     <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarBig?.url">
 
@@ -55,7 +55,7 @@ use MapasCulturais\i;
                 </nav>
             </div>
 
-            <div class="entity-header__content-rightSide">
+            <div class="rightSide">
 
                 <div class="data">
                     <h1 class="title"> {{entity.name}} </h1>
