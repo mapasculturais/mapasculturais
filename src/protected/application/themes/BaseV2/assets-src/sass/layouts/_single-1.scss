@@ -1,21 +1,23 @@
 @use '../settings/mixins' as *;
 
 .single-1 {
-    .container {
-        gap: size(30) 2.56%;
-    }
 
-    .divider {
-        border-bottom: size(5) solid var(--mc-black);
-        margin: size(60) 0;
-        width: 100%;
-    }
-    
-    justify-content: space-between;
-    main {
-        width: 74.36%;
-    }
-    aside {
-        width: 23.08%;
+    &__content {
+        display: grid;
+        grid-template-columns: size(870) size(270);
+        gap: size(30);
+
+        .divider {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            border-bottom: size(5) solid var(--mc-black);
+            margin: size(60) 0;
+            width: 100%;
+        }
+        main, aside {
+            display: flex;
+            flex-direction: column;
+            gap: size(40);
+        }
     }
 }
