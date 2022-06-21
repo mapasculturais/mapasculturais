@@ -4,16 +4,16 @@ $this->layout = 'entity';
 $this->import('entity-profile entity-cover entity-terms entity-header popover field entity-header entity-actions tabs main-menu container card entity-owner');
 ?>
 
-<container class="edit-1">
+<div class="main-app edit-1">
+    
+    <entity-header :entity="entity" :editable="true"></entity-header>
 
-    <div class="edit-1__content">
-
-        <entity-header :entity="entity" :editable="true"></entity-header>
+    <container class="edit-1__content">
 
         <card class="card-1">
             <template #title>
-                <h3 class="card__title--title"> <?php i::_e("Informações de Apresentação")?> </h3>
-                <p class="card__title--description"> <?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?> </p>
+                <h3 class="card__title--title"><?php i::_e("Informações de Apresentação")?></h3>
+                <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
             </template>
             <template #content>
                 
@@ -47,8 +47,8 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
         <main>
             <card>
                 <template #title>
-                    <h3> <?php i::_e("Dados Pessoais"); ?> </h3>
-                    <p> <?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistema e não serão exibidos publicamente"); ?> </p>
+                    <h2><?php i::_e("Dados Pessoais"); ?></h2>
+                    <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistema e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>                
                     <div class="row">
@@ -79,8 +79,8 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
 
             <card>
                 <template #title>
-                    <h3> <?php i::_e("Dados pessoais sensíveis"); ?> </h3>
-                    <p> <?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?> </p>
+                    <h3><?php i::_e("Dados pessoais sensíveis"); ?></h3>
+                    <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
                     <div class="row">
@@ -96,8 +96,8 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
 
             <card>
                 <template #title>
-                    <h3> <?php i::_e("Mais informações públicas"); ?> </h3>
-                    <p> <?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?> </p>
+                    <h3><?php i::_e("Mais informações públicas"); ?></h3>
+                    <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
             </card>
         </main>
@@ -117,44 +117,27 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
                 </template>
             </card>
         </aside>
+        
+    </container>    
 
-        <entity-actions :entity="entity" />
-    </div>
+    <entity-actions :entity="entity" />
 
-</container>    
-
+</div>
 
 
-<!-- <tabs>
+
+<!-- 
+<tabs>
     <tab label="label Tag" slug="tab1">
         Teste tag    
     </tab>
     <tab label="label Tag 2" slug="tab2">
         Teste tag 2 
     </tab>
-</tabs> -->
+</tabs> 
 
-
-
-
-<!-- <div>
-    <button @click="entity.save()">salvar</button>
+<div>
+    <button @click="entity.save()"> salvar </button>
 </div>
-
-
-<div>
-    <field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Deta de Nascimento') ?>"></field>
-    <field :entity="entity" prop="genero"></field>
-</div>
-<div>
-    <field :entity="entity" prop="raca"></field>
-</div>
-<div>
-    
-</div> 
-<div>
-    <field :entity="entity" prop="longDescription"></field>
-</div> -->
-
-
-<!-- <input v-model="entity.terms.tag.newTerm"> <button @click="entity.terms.tag.push(entity.terms.tag.newTerm)">add</button> -->
+<input v-model="entity.terms.tag.newTerm"> <button @click="entity.terms.tag.push(entity.terms.tag.newTerm)"> add </button> 
+-->
