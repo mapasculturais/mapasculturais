@@ -939,7 +939,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         $scope.data.fields.forEach(function(item){
             if(item.filterActive){
                 item.checked = $scope.data.allFields.checked;
-                item.disabled = false;
+                item.disabled = !$scope.data.allFields.checked;
                 var fieldCondition = item.config?.require?.field;
                 if(fieldCondition || item.categories?.length > 0){
                     $scope.data.fields.forEach(function(field){
