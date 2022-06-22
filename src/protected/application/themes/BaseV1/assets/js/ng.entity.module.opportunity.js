@@ -930,10 +930,23 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         }
     });
 
+    $scope.countSelected = 0;
+    $scope.data.fields.map(function(item){
+        if(item.checked){
+            $scope.countSelected ++;
+        }
+    });
+
+    if($scope.countSelected == $scope.data.fields.length){
+        $scope.data.allFields.checked = true;
+    console.log($scope.data.allFields.checked)
+
+    }
+
+
 
     $scope.checkedAll = function(){
         $scope.data.avaliableEvaluationFields = {}
-        $scope.data.allFields.checked = !$scope.data.allFields.checked;
         $scope.hasDisabled = false;
 
         $scope.data.fields.forEach(function(item){
