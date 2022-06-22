@@ -31,6 +31,9 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
                     <div class="row">
                         <field :entity="entity" prop="shortDescription"></field>
                     </div>  
+                    <div class="row">
+                        <field :entity="entity" prop="site"></field>
+                    </div>
                     
                 </div>
 
