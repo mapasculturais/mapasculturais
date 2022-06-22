@@ -1,0 +1,134 @@
+@use '../settings/mixins' as *;
+
+.main-menu {
+
+    .popover {
+        @media (max-width: 1200px) {
+            display: none;
+        }   
+    }
+
+    &__btn {
+        background:  var(--mc-gray-700);
+        border-radius: size(8);
+        color: var(--mc-white);
+        cursor: pointer;
+        display: inline;
+        position: relative;
+        padding: size(13) size(35) size(13) size(16);
+        border: none;
+        font-weight: 600;
+        font-size: size(14);
+        line-height: size(14);
+        &::before {
+            content: url(https://api.iconify.design/fe/arrow-down.svg?color=white);
+            height: 16px;
+            position: absolute;
+            right: 13px;
+            top: calc(50% - size(8));
+            width: size(16);
+        }
+    }
+
+    &__desktop {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            color: var(--mc-gray-700);
+            display: flex;
+            position: relative;
+            border-bottom: 1px solid var(--mc-gray-100);
+            white-space: nowrap;
+            &:first-child {
+                border-radius: size(5) size(5) 0 0;
+            }
+            &:last-child {
+                border-bottom: none;
+                border-radius: 0 0 size(5) size(5);
+            }
+
+            a {
+                color: var(--mc-gray-700);
+                padding: size(10) size(16);
+                text-decoration: none;
+                width: 100%;
+            }
+
+            .label {
+                margin: 0;
+            }
+
+            &:hover {
+                background-color: var(--mc-gray-700);
+                color: var(--mc-white);
+                a {
+                    color: var(--mc-white);
+                }
+            }
+        }
+    }
+
+    &__mobile {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: none;
+        padding: size(90) 0 size(20);
+
+        @media (min-width: 1200px) {
+            display: none;
+        }
+
+        li {
+            display: flex;
+            border-bottom: size(1) solid #DFDFDF;
+            line-height: size(20);
+            padding: 0 size(20);
+            &:first-child {
+                border-top: size(1) solid #DFDFDF;
+            }
+
+            a {
+                text-decoration: none;
+                color: var(--mc-black);
+            }
+            
+            &:hover {
+                background-color: var(--mc-gray-700);
+                color: var(--mc-white);
+                a {
+                    color: var(--mc-white);
+                }
+            }
+        }
+        
+        &.active {
+            display: block;
+        }
+
+        &--btn {
+            display: none;
+            padding: size(13);
+            @media (max-width: 1200px) {
+                display: flex;
+                position: relative;
+                z-index: 99;
+            }
+
+            svg {
+                font-size: size(24);
+            }
+        }
+
+    }
+}

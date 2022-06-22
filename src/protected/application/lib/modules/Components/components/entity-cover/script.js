@@ -1,5 +1,5 @@
-app.component('__template__', {
-    template: $TEMPLATES['__template__'],
+app.component('entity-cover', {
+    template: $TEMPLATES['entity-cover'],
     emits: [],
 
     setup(props, { slots }) {

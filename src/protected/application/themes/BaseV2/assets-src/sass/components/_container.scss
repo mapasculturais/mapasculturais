@@ -1,0 +1,9 @@
+@use '../settings/mixins' as *;
+
+.container {
+    display: flex;
+    margin: size(32) auto 0;
+    max-width: size(1190);
+    padding: 0 size(10);
+    flex-wrap: wrap;
+}

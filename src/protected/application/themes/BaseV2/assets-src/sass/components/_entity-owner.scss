@@ -1,12 +1,12 @@
+@use '../settings/mixins' as *;
+
 .entity-owner {
-    margin: 25px 0;
+    margin: 0;
 
     h4 {
         margin: 0;
     }
-
     
-
     &__owner {
         align-items: center;
         display: flex;
@@ -14,9 +14,9 @@
         &--img {
             border-radius: 50%;
             overflow: hidden;
-            width: 56px;
-            height: 56px;
-            margin: 13px 14px 13px 0; 
+            width: size(56);
+            height: size(56);
+            margin: size(13) size(14) size(13) 0; 
 
             .profile {
                 width: 100%;
@@ -28,7 +28,7 @@
                 background-color: #797979;
                 color: white;
                 display: flex;
-                font-size: 25px;
+                font-size: size(25);
                 justify-content: center;
                 height: 100%;
                 width: 100%;
@@ -40,8 +40,8 @@
             font-family: var(--mc-font-body);
             font-style: normal;
             font-weight: 700;
-            font-size: 12px;
-            line-height: 16px;
+            font-size: size(12);
+            line-height: size(16);
         }
     }
     &__edit {
@@ -49,9 +49,9 @@
             align-items: center;
             cursor: pointer;
             display: flex;
-            gap: 8px;
+            gap: size(8);
             svg {
-                font-size: 20px;
+                font-size: size(20);
             }
         }
     }
@@ -61,10 +61,10 @@
             font-family: var(--mc-font-body);
             font-style: normal;
             font-weight: 400;
-            font-size: 16px;
-            line-height: 22px;
+            font-size: size(16);
+            line-height: size(22);
             color: var(--mc-black);
-            margin: 11px 0 16px;
+            margin: size(11) 0 size(16);
         }
     }
 }

@@ -1,0 +1,28 @@
+@use '../settings/mixins' as *;
+
+.entity-cover {
+    border: size(1) dashed var(--mc-gray-500);
+    border-radius: size(8);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: size(25) 0;
+    gap: size(10);
+
+    svg {
+        font-size: 40px;
+        color: var(--mc-gray-500);
+    }
+
+    h5 {
+        margin: 0;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--mc-gray-700);
+    }
+}
