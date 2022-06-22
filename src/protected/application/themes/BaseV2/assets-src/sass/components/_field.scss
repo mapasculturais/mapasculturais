@@ -1,0 +1,39 @@
+@use '../settings/mixins' as *;
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+    margin: size(12) 0;
+    width: 100%;
+
+    label {
+        font-family: var(--mc-font-headings);
+        font-style: normal;
+        font-weight: 600;
+        font-size: size(14);
+        line-height: size(19);
+        margin: 0 size(5);
+    }
+
+    input, textarea, select {
+        border: 1px solid var(--mc-gray-100);
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 14px;
+        width: 100%;
+    }
+
+    select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+        background-color: var(--mc-white);
+        background-size: size(20);
+    }
+
+    textarea {
+        min-height: size(91);
+    }
+}

@@ -1,0 +1,46 @@
+@use '../settings/mixins' as *;
+
+.single-1 {
+
+    &__content {
+        display: grid;
+        grid-template-columns: 65.81% 31.62%;
+        gap: size(30);
+
+        .divider {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            border-bottom: size(5) solid var(--mc-black);
+            margin: size(60) 0;
+            width: 100%;
+        }
+        main, aside {
+            display: flex;
+            flex-direction: column;
+            gap: size(40);
+        }
+        @media (max-width: size(800)) {
+
+            grid-template-columns: 100%;
+            .divider, aside {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+            
+        }
+        @media (min-width: size(350)) {
+            .divider, aside {
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+        }
+        
+
+    }
+
+
+    // @media screen {
+        
+    //     max-width: 800px ;
+    // }
+}

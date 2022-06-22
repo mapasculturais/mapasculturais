@@ -9,15 +9,21 @@
 
 // COMPONENTS
 @use 'components/button';
+@use 'components/card';
+@use 'components/container';
 @use 'components/entity-actions';
 @use 'components/entity-card';
+@use 'components/entity-cover';
 @use 'components/entity-header';
 @use 'components/entity-links';
 @use 'components/entity-owner';
+@use 'components/entity-profile';
 @use 'components/entity-seals';
 @use 'components/entity-terms';
+@use 'components/field';
 @use 'components/files-list';
 @use 'components/gallery';
+@use 'components/main-menu';
 @use 'components/navbar';
 @use 'components/panel';
 @use 'components/panel-sidebar';
@@ -27,7 +33,9 @@
 @use 'components/tabs';
 
 // LAYOUTS
+@use 'layouts/edit-1';
 @use 'layouts/entity-tabs';
 @use 'layouts/main-header';
 @use 'layouts/main-footer';
+@use 'layouts/single-1';
 @use 'layouts/stack';
