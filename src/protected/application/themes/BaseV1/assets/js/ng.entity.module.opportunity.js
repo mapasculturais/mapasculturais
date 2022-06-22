@@ -939,18 +939,12 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         $scope.data.fields.forEach(function(item){
             if(item.filterActive){
                 item.checked = $scope.data.allFields.checked;
-                if(item.ref != "category" && item.ref != "projectName" && item.ref != "agentsSummary" && item.ref != "spaceSummary"){
-                    item.disabled = !$scope.data.allFields.checked;
-                }
                 var fieldCondition = item.config?.require?.field;
                 if(fieldCondition || item.categories?.length > 0){
                     $scope.data.fields.forEach(function(field){
                         if(fieldCondition == field.ref){
                             if(!field.filterActive){
                                 field.checked = item.checked;
-                                field.disabled = !item.checked
-                            }else{
-                                field.disabled = false
                             }
                         }
 
@@ -959,6 +953,12 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
                         }
 
                     });
+
+                    if(item.checked){
+                        item.disabled = false;
+                    }else{
+                        item.disabled = true;
+                    }
                 }
             }
 
