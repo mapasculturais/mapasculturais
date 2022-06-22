@@ -10,7 +10,7 @@
                 </label>
 
                 <div>
-                    <label><input type="checkbox" ng.model="data.allFields.checked" ng-click="checkedAll()"> <?php \MapasCulturais\i::_e("Selecionar todos os campos");?></label> <br>
+                    <label><input type="checkbox" ng-model="data.allFields.checked" ng-click="checkedAll()"> <?php \MapasCulturais\i::_e("Selecionar todos os campos");?></label> <br>
                 </div>
                 <hr>
             </div>
