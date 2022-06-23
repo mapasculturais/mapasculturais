@@ -46,21 +46,20 @@
 }
 @media (max-width: size(1024)) {
     .entity-actions {
-
-        display: flex;
-        gap: size(24);
-        flex-direction: column-reverse;
-        
-        &__groupBtn {
-            display: inline-flex;
+        &__content {
+            display: flex;
             gap: size(24);
-
-            &--btn {
-                justify-content: center;
-                width: 100%;
+            flex-direction: column-reverse;
+            
+            &--groupBtn {
+                display: inline-flex;
+                gap: size(24);
+    
+                .btn {
+                    justify-content: center;
+                    width: 100%;
+                }
             }
-
-        
         }
     }
 }

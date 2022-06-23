@@ -67,6 +67,7 @@ use MapasCulturais\i;
                             </dl>
                         </slot>
                     </div>
+                    
                 </div>
 
                 <nav class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
@@ -95,7 +96,10 @@ use MapasCulturais\i;
                         <p> {{entity.shortDescription}} </p>
                     </slot>
                 </div>
-
+                <div class="field">
+                <dt><?= i::__('Site') ?></dt>
+                    <h1>{{entity.site}}</h1>
+                </div>
             </div>
 
         </div>
