@@ -13,7 +13,9 @@
         display: grid;
         grid-template-columns: 770px 370px;
         gap: 32px;
-
+        @media (max-width: size(800)) {
+            grid-template-columns: 100%;
+        }
         .card-1 {
             grid-column-start: 1;
             grid-column-end: 3;
@@ -33,11 +35,24 @@
             }
         }
 
-        main, aside {
+        main, aside, card-1__left {
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
+        
+        
+        // @media (max-width: size(800)) {
+        //     grid-template-columns: 100%;
+        //       aside, divider {
+        //         grid-column-start: 1;
+        //         grid-column-end: 3;
+        //       }
+        // }
+        //  @media (min-width: size(350)){
+        //      grid-column-start: 1;
+        //      grid-column-end: 3;
+        //  }
         
     }
     
