@@ -10,6 +10,7 @@
     }
 
     &__content {
+        
         display: grid;
         grid-template-columns: 770px 370px;
         gap: 32px;
@@ -19,19 +20,24 @@
         .card-1 {
             grid-column-start: 1;
             grid-column-end: 3;
+            .card__content {
+                display: grid;
+                grid-template-columns: 65% 8% 27%;
+            }
 
             &__left {
                 display: flex;
                 flex-direction: column;
                 gap: 24px;
-                width: 65%;
+                width: 100%;
             }
             &__divider {
                 border-right: 1px solid var(--mc-gray-300);
-                margin: 0 calc(4% - 0.5px);
+                margin: 0 auto;
+                width: 1px;
             }
             &__right {
-                width: 27%;
+                width: 100%;
             }
         }
 
