@@ -4,7 +4,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [5.3.18] - 2022-06-23
 - Revisa condicionais para exibir campos das politicas afirmatrivas para o avaliador e na planilha de inscritos
 ## [5.3.17] - 2022-06-10
 - Remove atualização dos metadados dos campos @ do dp-update e passa para o mc-updates
