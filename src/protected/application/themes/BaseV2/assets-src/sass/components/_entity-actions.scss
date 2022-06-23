@@ -65,12 +65,14 @@
 }
 @media (max-width: size(870)) {
     .entity-actions {
-        &__groupBtn {
-            flex-direction: column;
+        &__content {
+            &--groupBtn {
+                flex-direction: column;
+            }
+    
         }
     }
 }
-
 @media (max-width: size(600)) {
     .entity-actions {
         padding: size(24) size(10);

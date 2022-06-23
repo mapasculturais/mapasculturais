@@ -10,16 +10,27 @@
     }
 
     &__content {
-        
         display: grid;
-        grid-template-columns: 770px 370px;
+        grid-template-columns: 65% 31%;
         gap: 32px;
+
+        
         @media (max-width: size(800)) {
             grid-template-columns: 100%;
+            
         }
         .card-1 {
             grid-column-start: 1;
             grid-column-end: 3;
+         
+            @media (max-width: size(800)) {
+                grid-template-columns: 100%;
+                grid-column-end: 2;
+
+            }
+
+         
+         
             .card__content {
                 display: grid;
                 grid-template-columns: 65% 8% 27%;
