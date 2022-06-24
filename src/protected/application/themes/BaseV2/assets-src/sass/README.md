@@ -44,11 +44,15 @@ Os componentes devem sem importados em ordem alfabética.
 
 ### `layouts`
 
-Contém componentes, ou seja, abstrações nomeadas.
-
-Contém customizações de componentes reutilizáveis para páginas ou seções específicas.
+Contém customizações de componentes reutilizáveis.
 
 Os layouts devem sem importados em ordem alfabética, e sempre depois da listagem de componentes.
+
+### `pages`
+
+Contém customizações de componentes ou layouts reutilizáveis para páginas ou seções únicas.
+
+As páginas devem sem importados em ordem alfabética, e sempre depois da listagem de layouts.
 
 ## Nome de seletores
 
