@@ -4,7 +4,7 @@
     <div class="main-footer__links">
         <ul>
             <li>
-                <a href="">Acesse</a>
+                <a>Acesse</a>
             </li>
             <li>
                 <a>Lista de editais e oportunidades</a>
@@ -27,22 +27,22 @@
     <div class="main-footer__links">
         <ul>
             <li>
-                <a>Painel</a>
+                <a href="<?= $app->createUrl('panel', 'index') ?>">Painel</a>
             </li>
             <li>
-                <a>Editais e oportunidades</a>
+                <a  href="<?= $app->createUrl('panel', 'opportunities') ?>">Editais e oportunidades</a>
             </li>
             <li>
-                <a>Meus eventos</a>
+                <a href="<?= $app->createUrl('panel', 'events') ?>">Meus eventos</a>
             </li>
             <li>
-                <a>Meus agentes</a>
+                <a href="<?= $app->createUrl('panel', 'agents') ?>">Meus agentes</a>
             </li>
             <li>
-                <a>Meus espaços</a>
+                <a href="<?= $app->createUrl('panel', 'spaces') ?>">Meus espaços</a>
             </li>
             <li>
-                <a>Meus espaços</a>
+                <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
             </li>
         </ul>
     </div>
