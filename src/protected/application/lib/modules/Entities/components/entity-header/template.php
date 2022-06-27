@@ -98,7 +98,8 @@ use MapasCulturais\i;
                 </div>
                 <div class="field">
                 <dt><?= i::__('Site') ?></dt>
-                    <h1>{{entity.site}}</h1>
+                    <h3><iconify icon="akar-icons:link-on"/>{{entity.site}}</h3>
+
                 </div>
             </div>
 
