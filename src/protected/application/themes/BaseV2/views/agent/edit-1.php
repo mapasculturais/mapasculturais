@@ -75,6 +75,24 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
                     </div>
                     divider
                     <div class="row">
+                        <field :entity="entity" prop="En_CEP"></field>
+                        <field :entity="entity" prop="En_Nome_Logradouro"></field>
+                    </div>
+                    <div class="row">
+                        <field :entity="entity" prop="En_Num"></field>
+                        <field :entity="entity" prop="En_Bairro"></field>
+                    </div>
+                    <div class="row">
+                        <field :entity="entity" prop="En_Complemento"></field>
+                    </div>
+                    <div class="row">
+                        <field :entity="entity" prop="En_Municipio"></field>
+                        <field :entity="entity" prop="En_Estado"></field>
+                    </div>
+                    <div class="row">
+                        <!-- <field :entity="entity" prop="publicLocation"></field> -->
+                    </div>
+                    <div class="row">
                         <field :entity="entity" prop="longDescription"></field>
                     </div>
                 </template>
