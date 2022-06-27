@@ -74,7 +74,17 @@
     
             .rightSide {
                 z-index: 1;
-                
+                .field {
+                    display: flex;
+                    flex-direction: column;
+                    svg {
+                        margin-right: size(7);
+                    }
+                    h3 {
+                        align-items: center;
+                        display: flex;
+                    }
+                }
                 .title {
                     font-style: normal;
                     font-weight: 700;        
