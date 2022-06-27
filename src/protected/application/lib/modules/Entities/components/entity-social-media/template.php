@@ -7,45 +7,44 @@ $this->import('field');
 
     <h4 v-if="!editable" class="entity-social-media__title"> <?php i::_e("Redes sociais") ?> </h4>
 
-    <ul v-if="!editable" class="entity-social-media__links">
-        
-        <li v-if="entity.twitter">
-            <a :href="entity.twitter" class="entity-social-media__links--link" aria-label="Twitter" target="_blank">
-                <iconify icon="fa6-brands:twitter"></iconify> {{entity.twitter}}
-            </a>
-        </li>
+    <div v-if="!editable" class="entity-social-media__links">
 
-        <li v-if="entity.facebook">
-            <a :href="entity.facebook" class="entity-social-media__links--link" aria-label="Facebook" target="_blank">
-                <iconify icon="la:facebook-f"></iconify> {{entity.facebook}}
-            </a>
-        </li>
+        <div v-if="entity.instagram" class="entity-social-media__links--link">
+            <iconify icon="fa6-brands:instagram"></iconify>
+            {{entity.instagram}}
+        </div>
 
-        <li v-if="entity.instagram">
-            <a :href="entity.instagram" class="entity-social-media__links--link" aria-label="Instagram" target="_blank">
-                <iconify icon="fa6-brands:instagram"></iconify> {{entity.instagram}}
-            </a>
-        </li>
+        <div v-if="entity.twitter" class="entity-social-media__links--link">
+            <iconify icon="fa6-brands:twitter"></iconify>
+            {{entity.twitter}}
+        </div>
 
-        <li v-if="entity.telegram">
-            <a :href="entity.telegram" class="entity-social-media__links--link" aria-label="Telegram" target="_blank">
-                <iconify icon="bxl:telegram"></iconify> {{entity.telegram}}
-            </a>
-        </li>
+        <div v-if="entity.facebook" class="entity-social-media__links--link">
+            <iconify icon="brandico:facebook-rect"></iconify>
+            {{entity.facebook}}
+        </div>
 
-        <li v-if="entity.pinterest">
-            <a :href="entity.pinterest" class="entity-social-media__links--link" aria-label="Pinterest" target="_blank">
-                <iconify icon="fa6-brands:pinterest-p"></iconify> {{entity.pinterest}}
-            </a>
-        </li>
+        <div v-if="entity.youtube" class="entity-social-media__links--link">
+            <iconify icon="akar-icons:youtube-fill"></iconify>
+            {{entity.youtube}}
+        </div>
 
-        <li v-if="entity.whatsapp">
-            <a :href="entity.whatsapp" class="entity-social-media__links--link" aria-label="WhatsApp" target="_blank">
-                <iconify icon="fa6-brands:whatsapp"></iconify> {{entity.whatsapp}}
-            </a>
-        </li>   
+        <div v-if="entity.linkedin" class="entity-social-media__links--link">
+            <iconify icon="akar-icons:linkedin-box-fill"></iconify>
+            {{entity.linkedin}}
+        </div>
 
-    </ul>
+        <div v-if="entity.spotify" class="entity-social-media__links--link">
+            <iconify icon="akar-icons:spotify-fill"></iconify>
+            {{entity.spotify}}
+        </div>
+
+        <div v-if="entity.pinterest" class="entity-social-media__links--link">
+            <iconify icon="akar-icons:pinterest-fill"></iconify>
+            {{entity.pinterest}}
+        </div>
+    </div>
+
 
     <h4 v-if="editable" class="entity-social-media__title"> <?php i::_e("Adicionar redes sociais") ?> </h4>
 
