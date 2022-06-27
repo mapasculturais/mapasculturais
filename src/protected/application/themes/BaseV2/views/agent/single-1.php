@@ -1,6 +1,6 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms card container share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover image-uploader');
+$this->import('entity-terms card container share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover image-uploader entity-social-media');
 
 ?>
 <div class="main-app single-1">
@@ -19,7 +19,8 @@ $this->import('entity-terms card container share-links files-list entity-links e
         </main>
         
         <aside>
-            <entity-terms :entity="entity" taxonomy="area" title="Áreas de interesse"></entity-terms>
+            <entity-terms :entity="entity" taxonomy="area" title="Linguagens culturais"></entity-terms>
+            <entity-social-media :entity="entity"></entity-social-media>
             <entity-seals :entity="entity" title="Verificações"></entity-seals>
             <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
             <entity-owner :entity="entity" title="Publicado por"></entity-owner>
