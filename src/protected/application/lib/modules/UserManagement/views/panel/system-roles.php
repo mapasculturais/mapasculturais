@@ -11,7 +11,7 @@ $this->import('
 ');
 
 ?>
-<div id="main-app" class="panel-list panel-main-content">
+<div class="panel-list panel-main-content">
     <header class="panel-header clearfix">
         <h2><?php i::_e('Papeis do sistema') ?></h2>
         <messages></messages>
