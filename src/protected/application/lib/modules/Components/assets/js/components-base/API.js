@@ -74,6 +74,21 @@ class API {
         }
     }
 
+    getHeaders(data) {
+        if (data instanceof FormData) {
+            return {};
+        } else {
+            return {'Content-Type': 'application/json'};
+        }
+    }
+
+    parseData(data) {
+        if (data instanceof FormData) {
+            return data;
+        } else {
+            return JSON.stringify(data);
+        }
+    }
     async GET(url, data, init) {
         const requestInit = {
             cache: this.options.cacheMode,
@@ -86,10 +101,8 @@ class API {
     async PUT(url, data) {
         return fetch(url, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers: this.getHeaders(data),
+            body: this.parseData(data)
         }).catch((e) => {
             return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
@@ -98,10 +111,8 @@ class API {
     async PATCH(url, data) {
         return fetch(url, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers: this.getHeaders(data),
+            body: this.parseData(data)
         }).catch((e) => {
             return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
@@ -110,10 +121,8 @@ class API {
     async POST(url, data) {
         return fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers: this.getHeaders(data),
+            body: this.parseData(data)
         }).catch((e) => {
             return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
@@ -122,10 +131,8 @@ class API {
     async DELETE(url, data) {
         return fetch(url, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers: this.getHeaders(data),
+            body: this.parseData(data)
         }).catch((e) => {
             return new Response(null, {status: 0, statusText: 'erro inesperado'});
         });
