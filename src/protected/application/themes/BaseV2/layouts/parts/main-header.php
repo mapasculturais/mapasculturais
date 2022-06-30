@@ -8,7 +8,7 @@ $this->import('popover messages main-menu');
 
     <!-- Logo -->
     <div class="main-header__logo">
-        <h1>Mapa Cultural</h1>
+        <?php $this->part('site-logo') ?>
     </div>     
 
     
