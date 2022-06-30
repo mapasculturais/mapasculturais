@@ -170,6 +170,11 @@ class RoutesManager{
     }
 
     public function createUrl($controller_id, $action_name = '', array $args = []){
+        $app = App::i();
+
+        if ($controller_id == $app->config['routes']['default_controller_id'] && $action_name == $app->config['routes']['default_action_name']) {
+            return $app->baseUrl;
+        }
 
         if($action_name == '')
             $action_name = $this->config['default_action_name'];
@@ -205,6 +210,6 @@ class RoutesManager{
             else
                 $route .= $key . ':' . $val . '/';
 
-        return App::i()->baseUrl . $route;
+        return $app->baseUrl . $route;
     }
 }
