@@ -22,13 +22,17 @@ function getMimeType(file, fallback = null) {
 
 app.component('image-uploader', {
     template: $TEMPLATES['image-uploader'],
-    emits: [],
+    emits: ['uploaded'],
 
 	components: {
 		Cropper: VueAdvancedCropper.Cropper,
 	},
 
     props: {
+        entity: {
+            type: Entity,
+            required: true
+        },
         group: {
             type: String,
             required: true
@@ -94,15 +98,18 @@ app.component('image-uploader', {
 			},
 		};
 	},
+    
 	methods: {
-
 		crop(modal) {
             const mimeType = this.image.type;
-            const filename = this.image.type;
+            const filename = this.image.name;
 			const { canvas } = this.$refs.cropper.getResult()
 			canvas.toBlob((blob) => {
-                const extension = mimeType.split('/')[1];
 				const file = new File([blob], filename, { type: mimeType });
+                this.entity.upload(file, this.group).then((response) => {
+                    this.$emit('uploaded', this);
+                    modal.close();
+                });
 			}, this.image.type);
 		},
 		reset() {
