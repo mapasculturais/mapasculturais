@@ -2419,9 +2419,11 @@ class ApiQuery {
     protected function _parseSelect($select) {
         $select = str_replace(' ', '', $select);
         
-        if($select === '*'){
-            $select = implode(',', $this->_getAllPropertiesNames());
+        if(strpos($select, '*') === 0){
+            $_select = preg_replace('#^\*,?#', '', $select);    
+            $select = implode(',', $this->_getAllPropertiesNames()) . ($_select ? ",$_select" : '');
         }
+
         $replacer = function ($select, $prop, $_subquery_select, $_subquery_match){
             $replacement = $this->_preCreateSelectSubquery($prop, $_subquery_select, $_subquery_match);
             
