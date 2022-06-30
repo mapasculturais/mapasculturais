@@ -89,7 +89,18 @@ class API {
             return JSON.stringify(data);
         }
     }
+
+    parseUrl(url) {
+        let _url = url.toString();
+        if(_url.indexOf('/') === 0 || _url.indexOf('http://') === 0 || _url.indexOf('https://') === 0) {
+            return url;
+        } else {
+            return this.createUrl(url);
+        }
+    }
+
     async GET(url, data, init) {
+        url = this.parseUrl(url);
         const requestInit = {
             cache: this.options.cacheMode,
             ...init
@@ -99,6 +110,7 @@ class API {
     }
 
     async PUT(url, data) {
+        url = this.parseUrl(url);
         return fetch(url, {
             method: 'PUT',
             headers: this.getHeaders(data),
@@ -109,6 +121,7 @@ class API {
     }
 
     async PATCH(url, data) {
+        url = this.parseUrl(url);
         return fetch(url, {
             method: 'PATCH',
             headers: this.getHeaders(data),
@@ -119,6 +132,7 @@ class API {
     }
 
     async POST(url, data) {
+        url = this.parseUrl(url);
         return fetch(url, {
             method: 'POST',
             headers: this.getHeaders(data),
@@ -129,6 +143,7 @@ class API {
     }
 
     async DELETE(url, data) {
+        url = this.parseUrl(url);
         return fetch(url, {
             method: 'DELETE',
             headers: this.getHeaders(data),
