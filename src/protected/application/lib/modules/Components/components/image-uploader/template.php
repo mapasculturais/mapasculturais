@@ -20,9 +20,11 @@ $this->import('modal');
         </template>
 
         <template #button="modal">
-            <input type="file" ref="file" @change="loadImage($event, modal)" accept="image/*">
+            <label>
+                <slot></slot>
+                <input type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
+            </label>
         </template>
-
         <template #actions="modal">
             <a class="button button--primary" @click="crop(modal)"><?php i::_e('Enviar Imagem') ?></a>
             <a class="button button--secondary" @click="modal.close()"><?php i::_e('Cancelar') ?></a>
