@@ -3,7 +3,7 @@ app.component('panel--entity-card', {
 
     props: {
         entity: {
-            type: Object,
+            type: Entity,
             required: true
         }
     },
