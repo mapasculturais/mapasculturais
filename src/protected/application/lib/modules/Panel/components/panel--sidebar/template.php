@@ -12,31 +12,31 @@ use MapasCulturais\i;
     <nav :class="{ '--open': open }">
         <ul>
             <li>
-                <a href="#">
+                <a href="<?= $this->controller->createUrl('index') ?>">
                     <iconify icon="mdi:view-dashboard-outline"></iconify>
                     <span><?=i::__('Visão geral')?></span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="<?= $this->controller->createUrl('agents') ?>">
                     <iconify icon="mdi:account-multiple-outline"></iconify>
                     <span><?=i::__('Meus agentes')?></span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="<?= $this->controller->createUrl('spaces') ?>">
                     <iconify icon="mdi:domain"></iconify>
                     <span><?=i::__('Meus espaços')?></span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="<?= $this->controller->createUrl('events') ?>">
                     <iconify icon="mdi:calendar-month"></iconify>
                     <span><?=i::__('Meus eventos')?></span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="<?= $this->controller->createUrl('projects') ?>">
                     <iconify icon="mdi:clipboard-text-outline"></iconify>
                     <span><?=i::__('Meus projetos')?></span>
                 </a>
