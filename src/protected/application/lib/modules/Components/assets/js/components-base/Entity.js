@@ -84,6 +84,10 @@ class Entity {
         return this.API.createUrl('archive', [this.id]);
     }
 
+    get uploadUrl() {
+        return this.API.createUrl('upload', [this.id]);
+    }
+
     get cacheId() {
         return this.API.createCacheId(this.id);
     }
@@ -193,6 +197,35 @@ class Entity {
 
                 return response.json();
             })
+            .catch((error) => {
+                this.__processing = false;
+                console.log(error);
+            });
+    }
+
+    async upload(file, group) {
+        const data = new FormData();
+        data.append(group, file);
+
+        this.__processing = 'subindo arquivo';
+
+        fetch(this.uploadUrl, {method: 'POST', body: data})
+            .then(response => response.json().then(f => {
+                let file;
+                if(f[group] instanceof Array) {
+                    file = f[group][0];
+                    file.transformations = file.files;
+                    delete file.files;
+                    this.files[group].push(file);
+                } else {
+                    file = f[group];
+                    file.transformations = file.files;
+                    delete file.files;
+                    this.files[group] = file;
+                }
+
+                return file;
+            }))
             .catch((error) => {
                 this.__processing = false;
                 console.log(error);
