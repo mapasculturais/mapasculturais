@@ -1,3 +1,6 @@
+<?php
+$this->import('popover');
+?>
 <div class="main-menu">
 
     <popover openside="down-left"> 
