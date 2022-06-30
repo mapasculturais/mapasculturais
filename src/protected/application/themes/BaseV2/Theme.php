@@ -15,6 +15,8 @@ class Theme extends \MapasCulturais\Theme
 
     function _init()
     {
+        $app = App::i();
+        $this->bodyClasses[] = 'base-v2';
         $this->enqueueStyle('app-v2', 'main', 'css/theme-BaseV2.css');
         $this->assetManager->publishFolder('fonts');
     }
