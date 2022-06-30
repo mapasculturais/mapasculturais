@@ -15,7 +15,7 @@ app.component('system-roles--create-modal', {
     data() {
         return {
             instance: this.createSystemRoleInstance(),
-            permissions: MapasCulturais?.EntityPermissionsList || Mapas?.EntityPermissionsList || []
+            permissions: $MAPAS.EntityPermissionsList || []
         }
     },
 
@@ -44,7 +44,6 @@ app.component('system-roles--create-modal', {
         },
 
         resetInstance() {
-            console.log('teste');
             this.instance = this.createSystemRoleInstance();
         }
     },
