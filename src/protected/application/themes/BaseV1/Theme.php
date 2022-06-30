@@ -955,38 +955,6 @@ class Theme extends MapasCulturais\Theme {
             }
         });
 
-        // sempre que insere uma imagem cria o avatarSmall
-        $app->hook('entity(<<agent|space|event|project|opportunity|subsite|seal>>).file(avatar).insert:after', function() {
-            $this->transform('avatarSmall');
-            $this->transform('avatarMedium');
-            $this->transform('avatarBig');
-        });
-
-        $app->hook('entity(<<agent|space|event|project|opportunity|subsite|seal>>).file(header).insert:after', function() {
-            $this->transform('header');
-        });
-
-        $app->hook('entity(<<subsite>>).file(logo).insert:after', function() {
-            $this->transform('logo');
-        });
-
-        $app->hook('entity(<<subsite>>).file(background).insert:after', function() {
-            $this->transform('background');
-        });
-
-        $app->hook('entity(<<subsite>>).file(institute).insert:after', function() {
-            $this->transform('institute');
-        });
-
-        $app->hook('entity(<<subsite>>).file(favicon).insert:after', function() {
-            $this->transform('favicon');
-        });
-
-        $app->hook('entity(<<agent|space|event|project|opportunity|seal>>).file(gallery).insert:after', function() {
-            $this->transform('galleryThumb');
-            $this->transform('galleryFull');
-        });
-
         $app->hook('entity(event).save:before', function() {
             $this->type = 1;
         });
