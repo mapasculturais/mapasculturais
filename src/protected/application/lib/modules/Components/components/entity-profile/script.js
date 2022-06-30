@@ -18,9 +18,9 @@ app.component('entity-profile', {
     },
 
     props: {
-        name: {
-            type: String,
-            default: ''
+        entity: {
+            type: Entity,
+            required: true
         }
     },
     

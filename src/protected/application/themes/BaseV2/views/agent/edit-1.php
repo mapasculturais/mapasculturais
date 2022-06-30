@@ -1,7 +1,10 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('entity-profile entity-cover entity-terms entity-header popover field entity-header entity-actions tabs main-menu container card entity-owner entity-social-media');
+$this->import('
+    popover field tabs main-menu container card image-uploader
+    entity-profile entity-cover entity-terms entity-header 
+    entity-header entity-actions entity-owner entity-social-media');
 ?>
 
 <div class="main-app edit-1">
@@ -24,7 +27,7 @@ $this->import('entity-profile entity-cover entity-terms entity-header popover fi
                     </div>    
                     
                     <div class="row">
-                        <entity-profile></entity-profile>
+                        <entity-profile :entity="entity"></entity-profile>
                         <field :entity="entity" prop="name"></field>
                     </div>
                     
