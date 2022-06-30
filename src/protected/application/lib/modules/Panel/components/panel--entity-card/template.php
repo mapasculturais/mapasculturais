@@ -8,7 +8,8 @@ $this->import('panel--entity-actions');
         <div>
             <div class="entity-card__picture">
                 <slot name="picture" :entity="entity">
-                    <img src="<?php $this->asset('img/default-image.svg')?>" alt="">
+                    <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarSmall?.url" alt="">
+                    <img v-if="!entity.files.avatar" src="<?php $this->asset('img/default-image.svg')?>" alt="">
                 </slot>
             </div>
             <h2 class="entity-card__title">
