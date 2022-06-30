@@ -776,6 +776,7 @@ class Theme extends MapasCulturais\Theme {
 
     protected function _init() {
         $app = App::i();
+        $this->bodyClasses[] = 'base-v1';
 
         if(!$app->user->is('guest') && $app->user->profile->status < 1){
             $app->hook('view.partial(nav-main-user).params', function($params, &$name){
