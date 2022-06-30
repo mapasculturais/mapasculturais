@@ -1580,8 +1580,12 @@ class ApiQuery {
 
                 unset($relation['agentId'], $relation['ownerId']);
 
+                // o agente pode estar na lixeira e por isso não ter sido retornado na query
+                if (!isset($agents_by_id[$agent_id])) {
+                    continue;
+                }
+
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
-                
                 $relation['agent'] = $agents_by_id[$agent_id];
 
                 $relations_by_owner_id[$owner_id][$group][] = $relation;
@@ -1665,6 +1669,11 @@ class ApiQuery {
                 $group = $relation['group'];
                 $owner_id = $relation['ownerId'];
                 $agent_id = $relation['agentId'];
+
+                // o agente pode estar na lixeira e por isso não ter sido retornado na query
+                if (!isset($agents_by_id[$agent_id])) {
+                    continue;
+                }
 
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
 
