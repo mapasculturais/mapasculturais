@@ -31,8 +31,8 @@ app.component('panel--entity-actions', {
             const entity = this.entity;
             entity.loading = true;
             entity.archive().then(() => {
-                entity.loading = false;
                 this.$emit('archived', {entity, modal});
+                entity.loading = false;
             });
         },
         
@@ -40,8 +40,8 @@ app.component('panel--entity-actions', {
             const entity = this.entity;
             entity.loading = true;
             entity.delete().then(() => {
-                entity.loading = false;
                 this.$emit('deleted', {entity, modal});
+                entity.loading = false;
             });
         },
         
@@ -49,8 +49,8 @@ app.component('panel--entity-actions', {
             const entity = this.entity;
             entity.loading = true;
             entity.destroy().then(() => {
-                entity.loading = false;
                 this.$emit('destroyed', {entity, modal});
+                entity.loading = false;
             });
         },
 
@@ -58,8 +58,8 @@ app.component('panel--entity-actions', {
             const entity = this.entity;
             entity.loading = true;
             entity.publish().then(() => {
-                entity.loading = false;
                 this.$emit('published', {entity, modal});
+                entity.loading = false;
             });
         },
     },

@@ -32,7 +32,7 @@ const useEntitiesLists = Pinia.defineStore('entitiesLists', {
 
     actions: {
         store(name, list, scope) {
-            console.log(name, list);
+            list.__name = name;
             this[scope] = this[scope] || {};
             this[scope][name] = list;
         },

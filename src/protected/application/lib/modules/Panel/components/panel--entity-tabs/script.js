@@ -37,7 +37,7 @@ app.component('panel--entity-tabs', {
         },
         select: {
             type: String,
-            default: 'id,status,name,type,createTimestamp,terms'
+            default: 'id,status,name,type,createTimestamp,terms,files.avatar,currentUserPermissions'
         }
     },
 
@@ -51,6 +51,26 @@ app.component('panel--entity-tabs', {
                 return true;
             } else {
                 return false;
+            }
+        },
+
+        moveEntity (entity) {
+            const lists = useEntitiesLists();
+            const status = `${entity.status}`;
+
+            const listnames = {
+                '1': `${this.type}:publish`,
+                '-10':  `${this.type}:trash`,
+                '-2':  `${this.type}:archived`,
+            };
+            
+            const list = lists.fetch(listnames[status]);
+
+            entity.removeFromLists();
+
+            if(list instanceof Array) {
+                list.push(entity);
+                entity.__lists.push(list);
             }
         }
     },

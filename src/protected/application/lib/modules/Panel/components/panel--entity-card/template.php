@@ -30,7 +30,12 @@ $this->import('panel--entity-actions');
     <footer class="entity-card__footer">
         <div class="entity-card__footer-actions">
             <slot name="footer-actions" :entity="entity">
-                <panel--entity-actions :entity="entity"></panel--entity-actions>
+                <panel--entity-actions 
+                    :entity="entity" 
+                    @deleted="$emit('deleted', arguments)"
+                    @archived="$emit('archived', arguments)"
+                    @published="$emit('published', arguments)"
+                />
             </slot>
         </div>
     </footer>
