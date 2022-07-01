@@ -14,7 +14,6 @@ app.component('Cropper', VueAdvancedCropper)
 
 window.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
 window.$DESCRIPTIONS = $MAPAS?.EntitiesDescription ?? []
-window.$TEMPLATES = $MAPAS?.componentTemplates ?? []
 
 window.app = app
 window.Pinia = Pinia

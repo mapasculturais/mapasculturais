@@ -9,6 +9,8 @@ use MapasCulturais\Exceptions;
  * @since v5.2
  */
 class Module extends \MapasCulturais\Module {
+    public $templates = [];
+
     function _init()
     {
         $app = App::i();
@@ -24,12 +26,14 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api']);
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
 
-            if (isset($this->jsObject['componentTemplates'])) {
-                $this->jsObject['componentTemplates'] = [];
+            if (isset($app->components->templates)) {
+                $app->components->templates = [];
             }
         });
 
         $app->hook('mapasculturais.body:after,template(<<*>>.body):after', function () use($app) {
+            $templates = json_encode($app->components->templates);
+            echo "\n<script>window.\$TEMPLATES = $templates</script>";
             $app->view->printScripts('components');
             $app->view->printStyles('components');
         });
@@ -77,7 +81,7 @@ class Module extends \MapasCulturais\Module {
             $app->log->debug("importing component {$component}");
 
             $template = $this->componentRender($component, $data);
-            $this->jsObject['componentTemplates'][$component] = $template;
+            $app->components->templates[$component] = $template;
 
             $this->enqueueComponentScript($component, $dependences);
             $this->enqueueComponentStyle($component, $dependences);
