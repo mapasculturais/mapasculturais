@@ -22,7 +22,7 @@ $this->import('entity-terms container share-links files-list entity-links entity
             <files-list :files="entity.files.downloads" title="Arquivos para download"></files-list>
             <entity-links :entity="entity" title="Links"></entity-links>
             <entity-gallery :entity="entity"></entity-gallery>
-            
+
         </main>
         
         <aside>
@@ -37,4 +37,3 @@ $this->import('entity-terms container share-links files-list entity-links entity
         
     </container>
 </div>
-<image-uploader group="avatar" ></image-uploader>
