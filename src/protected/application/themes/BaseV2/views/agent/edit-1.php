@@ -2,8 +2,8 @@
 use MapasCulturais\i;
 $this->layout = 'entity'; 
 $this->import('
-    popover field tabs main-menu container card image-uploader
-    entity-profile entity-cover entity-terms entity-header 
+    field container card 
+    entity-profile entity-cover entity-terms  
     entity-header entity-actions entity-owner entity-social-media');
 ?>
 

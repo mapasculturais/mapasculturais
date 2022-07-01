@@ -1,4 +1,3 @@
-<?php $this->import('main-menu messages panel--sidebar '); ?>
 <?php $this->part('header', $render_data); ?>
 <?php $this->part('main-header', $render_data) ?>
 <article class="panel">

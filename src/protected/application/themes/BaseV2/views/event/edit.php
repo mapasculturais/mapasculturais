@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('space-card entity-profile entity-cover entity-terms entity-header popover field entity-header entity-actions tabs main-menu container card entity-owner');
+$this->import('space-card entity-header entity-header container card');
 ?>
 
 <div class="main-app edit-event">
