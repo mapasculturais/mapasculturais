@@ -1,7 +1,6 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms card container share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery popover image-uploader entity-social-media main-menu');
-
+$this->import('entity-terms container share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
 ?>
 <div class="main-app single-1">
 
