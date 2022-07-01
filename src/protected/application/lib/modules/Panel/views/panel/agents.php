@@ -3,7 +3,6 @@ use MapasCulturais\i;
 
 $this->import('panel--entity-tabs panel--entity-card');
 ?>
-
 <div class="panel__row">
     <h1>
         <iconify icon="mdi:account-multiple-outline"></iconify>
@@ -20,7 +19,5 @@ $this->import('panel--entity-tabs panel--entity-card');
 </div>
 
 <div class="panel-list panel-main-content">    
-    <panel--entity-tabs type="agent" select="id,name,terms,files.avatar" #default={entity}>
-        <panel--entity-card :entity="entity"></panel--entity-card>
-    </panel--entity-tabs>
+    <panel--entity-tabs type="agent"></panel--entity-tabs>
 </div>
