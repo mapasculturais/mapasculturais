@@ -14,7 +14,9 @@ $tabs = $tabs ?? [
     'trash' => i::esc_attr__('Lixeira'),
 ];
 ?>
+<?php $this->applyTemplateHook('entity-tabs', 'before') ?>
 <tabs class="entity-tabs">
+    <?php $this->applyTemplateHook('entity-tabs', 'begin') ?>
     <template #header="{ tab }">
         <iconify icon="mdi:archive-outline" v-if="tab.slug === 'archived'"></iconify>
         <iconify icon="mdi:delete-outline" v-else-if="tab.slug === 'trash'"></iconify>
@@ -74,4 +76,6 @@ $tabs = $tabs ?? [
         </entities>
     </tab>
     <?php endforeach ?>
+    <?php $this->applyTemplateHook('entity-tabs', 'end') ?>
 </tabs>
+<?php $this->applyTemplateHook('entity-tabs', 'after') ?>
