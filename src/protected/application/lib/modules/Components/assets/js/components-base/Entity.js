@@ -92,6 +92,19 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
+    removeFromLists(skipList) {
+        skipList = skipList || [];
+        this.__lists.forEach((list) => {
+            if (skipList.indexOf(list.__name) >= 0) {
+                return;
+            }
+            let index = list.indexOf(this);
+            if (index >= 0){
+                list.splice(index,1);
+            }
+        });
+    }
+
     async save() {
         const messages = useMessages();
         this.__processing = 'salvando';
@@ -113,20 +126,17 @@ class Entity {
             });
     }
 
-    async delete() {
+    async delete(removeFromLists) {
         const messages = useMessages();
 
         this.__processing = 'excluindo';
         return this.API.deleteEntity(this)
             .then((response) => {
+                this.status = -10;
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
                 this.__processing = false;
-                this.__lists.forEach((list) => {
-                    let index = list.indexOf(this);
-                    if (index >= 0){
-                        list.splice(index,1);
-                    }
-                });
-
                 return response.json();
             })
             .catch((error) => {
@@ -142,14 +152,8 @@ class Entity {
         this.__processing = 'excluindo definitivamente';
         return this.API.destroyEntity(this)
             .then((response) => {
+                this.removeFromLists();
                 this.__processing = false;
-                this.__lists.forEach((list) => {
-                    let index = list.indexOf(this);
-                    if (index >= 0){
-                        list.splice(index,1);
-                    }
-                });
-
                 return response.json();
             })
             .catch((error) => {
@@ -159,20 +163,17 @@ class Entity {
 
     }
 
-    async publish() {
+    async publish(removeFromLists) {
         const messages = useMessages();
-
+        
         this.__processing = 'publicando';
         return this.API.publishEntity(this)
             .then((response) => {
+                this.status = 1;
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
                 this.__processing = false;
-                this.__lists.forEach((list) => {
-                    let index = list.indexOf(this);
-                    if (index >= 0){
-                        list.splice(index,1);
-                    }
-                });
-
                 return response.json();
             })
             .catch((error) => {
@@ -181,20 +182,17 @@ class Entity {
             });
     }
 
-    async archive() {
+    async archive(removeFromLists) {
         const messages = useMessages();
 
         this.__processing = 'arquivando';
         return this.API.archiveEntity(this)
             .then((response) => {
+                this.status = -2;
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
                 this.__processing = false;
-                this.__lists.forEach((list) => {
-                    let index = list.indexOf(this);
-                    if (index >= 0){
-                        list.splice(index,1);
-                    }
-                });
-
                 return response.json();
             })
             .catch((error) => {

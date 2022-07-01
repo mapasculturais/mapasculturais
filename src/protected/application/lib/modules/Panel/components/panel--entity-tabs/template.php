@@ -42,9 +42,13 @@ $tabs = $tabs ?? [
                 </div>
             </template>
 
-           <template v-for="entity in entities">
-                <slot :entity="entity">
-                    <panel--entity-card :key="entity.id" :entity="entity">
+            <template #default="{entities}">
+                <slot v-for="entity in entities" :entity="entity">
+                    <panel--entity-card :key="entity.id" :entity="entity" 
+                        @deleted="moveEntity(entity)" 
+                        @archived="moveEntity(entity)" 
+                        @published="moveEntity(entity)"
+                        >
                         <template #title="{ entity }">
                             <slot name="card-title" :entity="entity"></slot>
                         </template>
