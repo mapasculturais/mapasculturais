@@ -22,11 +22,11 @@ $tabs = $tabs ?? [
     </template>
     <?php foreach($tabs as $status => $label): ?>
     <tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
-        <entities :name="type + ':<?=$status?>'" :type="type" #default="{entities}"
+        <entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" :limit="50">
 
-            <template v-if="true">
+            <template v-if="true" #header="{entities}">
                 <div class="entity-tabs__filters panel__row">
                     <input type="search" class="entity-tabs__search-input"
                         aria-label="<?=i::__('Palavras-chave')?>"

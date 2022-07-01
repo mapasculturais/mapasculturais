@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 $this->import('loading');
 ?>
-<slot name="header1"
+<slot name="header"
       :entities="entities"
       :load-more="loadMore"
       :query="query"
