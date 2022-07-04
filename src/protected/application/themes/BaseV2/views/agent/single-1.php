@@ -1,13 +1,15 @@
 <?php 
 $this->layout = 'entity'; 
-$this->import('entity-terms container share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
+$this->import('
+    mapas-container 
+    entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
 ?>
 <div class="main-app single-1">
 
     <entity-header :entity="entity"></entity-header>
     
     
-    <container class="single-1__content">
+    <mapas-container class="single-1__content">
         
         <div class="divider"></div>
         
@@ -38,5 +40,5 @@ $this->import('entity-terms container share-links files-list entity-links entity
             <
         </aside>
         
-    </container>
+    </mapas-container>
 </div>
