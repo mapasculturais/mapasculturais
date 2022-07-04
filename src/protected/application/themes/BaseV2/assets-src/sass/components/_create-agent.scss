@@ -3,14 +3,6 @@
 
 .create-agent {
     margin: 0;
-    .create-agent__modal {
-        position: fixed;
-        z-index: 999;
-        top: 20%;
-        left: 50%;
-        width: 300px;
-        margin-left: -150px;
-      }
     .create-agent__buttons {
         border-radius: 8px;
         display: flex;
