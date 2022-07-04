@@ -1,0 +1,21 @@
+@use '../settings/mixins' as *;
+
+.single-1 {
+
+    &__content {
+
+        .divider {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            border-bottom: size(5) solid var(--mc-black);
+            margin: size(60) 0;
+            width: 100%;
+        }
+
+        main, aside {
+            display: flex;
+            flex-direction: column;
+            gap: size(40);
+        }      
+    }
+}
