@@ -1,5 +1,5 @@
-app.component('card', {
-    template: $TEMPLATES['card'],
+app.component('mapas-card', {
+    template: $TEMPLATES['mapas-card'],
     emits: [],
 
     setup(props, { slots }) {
