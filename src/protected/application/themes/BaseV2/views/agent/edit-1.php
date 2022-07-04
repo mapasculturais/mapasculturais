@@ -1,8 +1,9 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('create-agent
-    field container card 
+$this->import('
+    create-agent
+    mapas-field mapas-container mapas-card 
     entity-profile entity-cover entity-terms  
     entity-header entity-actions entity-owner entity-social-media');
 ?>
@@ -11,9 +12,9 @@ $this->import('create-agent
     
     <entity-header :entity="entity" :editable="true"></entity-header>
 
-    <container class="edit-1__content">
+    <mapas-container class="edit-1__content">
 
-        <card class="card-1">
+        <mapas-card class="card-1">
             <template #title>
                 <h3 class="card__title--title"><?php i::_e("Informações de Apresentação")?></h3>
                 <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
@@ -28,14 +29,14 @@ $this->import('create-agent
                     
                     <div class="row">
                         <entity-profile :entity="entity"></entity-profile>
-                        <field :entity="entity" prop="name"></field>
+                        <mapas-field :entity="entity" prop="name"></mapas-field>
                     </div>
                     
                     <div class="row">
-                        <field :entity="entity" prop="shortDescription"></field>
+                        <mapas-field :entity="entity" prop="shortDescription"></mapas-field>
                     </div>  
                     <div class="row">
-                        <field :entity="entity" prop="site"></field>
+                        <mapas-field :entity="entity" prop="site"></mapas-field>
                     </div>
                     
                 </div>
@@ -49,86 +50,86 @@ $this->import('create-agent
                  
 
             </template>
-        </card>
+        </mapas-card>
 
         <main>
-            <card>
+            <mapas-card>
                 <template #title>
                     <h2><?php i::_e("Dados Pessoais"); ?></h2>
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistema e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>                
                     <div class="row">
-                        <field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></field>
+                        <mapas-field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="documento"></field>
+                        <mapas-field :entity="entity" prop="documento"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="emailPrivado"></field>
+                        <mapas-field :entity="entity" prop="emailPrivado"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="telefonePublico"></field>
+                        <mapas-field :entity="entity" prop="telefonePublico"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="emailPublico"></field>
+                        <mapas-field :entity="entity" prop="emailPublico"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="telefone1"></field>
-                        <field :entity="entity" prop="telefone2"></field>
+                        <mapas-field :entity="entity" prop="telefone1"></mapas-field>
+                        <mapas-field :entity="entity" prop="telefone2"></mapas-field>
                     </div>
                     divider
                     <div class="row">
-                        <field :entity="entity" prop="En_CEP"></field>
-                        <field :entity="entity" prop="En_Nome_Logradouro"></field>
+                        <mapas-field :entity="entity" prop="En_CEP"></mapas-field>
+                        <mapas-field :entity="entity" prop="En_Nome_Logradouro"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="En_Num"></field>
-                        <field :entity="entity" prop="En_Bairro"></field>
+                        <mapas-field :entity="entity" prop="En_Num"></mapas-field>
+                        <mapas-field :entity="entity" prop="En_Bairro"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="En_Complemento"></field>
+                        <mapas-field :entity="entity" prop="En_Complemento"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="En_Municipio"></field>
-                        <field :entity="entity" prop="En_Estado"></field>
+                        <mapas-field :entity="entity" prop="En_Municipio"></mapas-field>
+                        <mapas-field :entity="entity" prop="En_Estado"></mapas-field>
                     </div>
                     <div class="row">
-                        <!-- <field :entity="entity" prop="publicLocation"></field> -->
+                        <!-- <mapas-field :entity="entity" prop="publicLocation"></mapas-field> -->
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="longDescription"></field>
+                        <mapas-field :entity="entity" prop="longDescription"></mapas-field>
                     </div>
                 </template>
-            </card>
+            </mapas-card>
 
-            <card>
+            <mapas-card>
                 <template #title>
                     <h3><?php i::_e("Dados pessoais sensíveis"); ?></h3>
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
                     <div class="row">
-                        <field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Deta de Nascimento') ?>"></field>
-                        <field :entity="entity" prop="genero"></field>
+                        <mapas-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Deta de Nascimento') ?>"></mapas-field>
+                        <mapas-field :entity="entity" prop="genero"></mapas-field>
                     </div>
                     <div class="row">
-                        <field :entity="entity" prop="orientacaoSexual"></field>
-                        <field :entity="entity" prop="raca"></field>
+                        <mapas-field :entity="entity" prop="orientacaoSexual"></mapas-field>
+                        <mapas-field :entity="entity" prop="raca"></mapas-field>
                     </div>
                 </template>
-            </card>
+            </mapas-card>
 
-            <card>
+            <mapas-card>
                 <template #title>
                     <h3><?php i::_e("Mais informações públicas"); ?></h3>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
-            </card>
+            </mapas-card>
         </main>
 
         <aside>
-            <card>
+            <mapas-card>
                 <template #content>
                     
                     <div class="row">
@@ -141,20 +142,19 @@ $this->import('create-agent
                       
 
                 </template>
-            
-            
-            </card>
-            <card>
+            </mapas-card>
+
+            <mapas-card>
                 <template #content>
                     <div class="row">
                         <create-agent :entity="entity" :editable="true"></create-agent>
                     </div>
                 </template>
-            </card>
-                
+            </mapas-card>
+
         </aside>
         
-    </container>    
+    </mapas-container>    
 
     <entity-actions :entity="entity" />
 

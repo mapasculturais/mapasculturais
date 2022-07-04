@@ -1,6 +1,6 @@
 <?php 
 use MapasCulturais\i;
-$this->import('field');
+$this->import('mapas-field');
 ?>
 
 <div class="entity-social-media">
@@ -52,37 +52,37 @@ $this->import('field');
 
         <div class="entity-social-media__edit--link">
             <iconify icon="fa6-brands:instagram"></iconify>
-            <field :entity="entity" prop="instagram"></field>
+            <mapas-field :entity="entity" prop="instagram"></mapas-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="fa6-brands:twitter"></iconify>
-            <field :entity="entity" prop="twitter"></field>
+            <mapas-field :entity="entity" prop="twitter"></mapas-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="brandico:facebook-rect"></iconify>
-            <field :entity="entity" prop="facebook"></field>
+            <mapas-field :entity="entity" prop="facebook"></mapas-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:youtube-fill"></iconify>
-            <field :entity="entity" prop="youtube"></field>
+            <mapas-field :entity="entity" prop="youtube"></mapas-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:linkedin-box-fill"></iconify>
-            <field :entity="entity" prop="linkedin"></field>
+            <mapas-field :entity="entity" prop="linkedin"></mapas-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:spotify-fill"></iconify>
-            <field :entity="entity" prop="spotify"></field>
+            <mapas-field :entity="entity" prop="spotify"></mapas-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:pinterest-fill"></iconify>
-            <field :entity="entity" prop="pinterest"></field>
+            <mapas-field :entity="entity" prop="pinterest"></mapas-field>
         </div>
     </div>
 

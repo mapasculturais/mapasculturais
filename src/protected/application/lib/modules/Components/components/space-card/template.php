@@ -4,7 +4,7 @@ $this->import('card');
 ?>
 
 <div class="space-card">
-    <card class="space-card__card">
+    <mapas-card class="space-card__card">
         <template #profile>
         <div class="profile">
         <iconify icon="bi:image-fill" />
@@ -18,5 +18,5 @@ $this->import('card');
 
 
         </template>
-    </card>
+    </mapas-card>
 </div>
