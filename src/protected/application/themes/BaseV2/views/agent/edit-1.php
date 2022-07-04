@@ -46,6 +46,7 @@ $this->import('
                     <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
                     <entity-social-media :entity="entity" :editable="true"></entity-social-media>
                 </div>
+                 
 
             </template>
         </card>
@@ -137,9 +138,20 @@ $this->import('
                     <div class="row">
                         <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
                     </div>
+                      
 
                 </template>
+            
+            
             </card>
+            <card>
+                <template #content>
+                    <div class="row">
+                        <create-agent :entity="entity" :editable="true"></create-agent>
+                    </div>
+                </template>
+            </card>
+                
         </aside>
         
     </container>    
