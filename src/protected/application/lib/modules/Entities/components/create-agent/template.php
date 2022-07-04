@@ -6,17 +6,21 @@ $this->import('modal field');
 
 <div class="create-agent">
    <modal @open="createInstance()">
-   
-   <field :entity="instance" prop="name"></field>
-   <field :entity="entity"  prop="name"></field>
-        
-       <template #button="modal">
-           <button class="button btn" @click="modal.open()">Criar Agente</button>
-       </template>
+    <div class="create-agent__fields">
+        <field :entity="instance" prop="name"></field>
+        <field :entity="instance"  prop="name"></field>
+        <field :entity="entity"  prop="name"></field>
+    </div>
+        <template #button="modal">
+            <button class="button button--primary" @click="modal.open()">Criar Agente</button>
+        </template>
         <template #actions="modal">
-            <button @click="createPublic(modal)">Criar e Publicar</button>
-            <button @click="createDraft(modal)">Criar em Rascunho</button>
-            <button @click="cancel(modal)">Cancelar</button>
+            <div class="create-agent__buttons">
+
+                <button class="button button--primary" @click="createPublic(modal)">Criar e Publicar</button>
+                <button class="button button--primary" @click="createDraft(modal)">Criar em Rascunho</button>
+                <button class="button button--primary" @click="cancel(modal)">Cancelar</button>
+            </div>
         </template>
    </modal>
 </div>

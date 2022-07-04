@@ -1,7 +1,7 @@
 <?php 
 use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('
+$this->import('create-agent
     field container card 
     entity-profile entity-cover entity-terms  
     entity-header entity-actions entity-owner entity-social-media');
