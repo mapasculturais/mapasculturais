@@ -1,3 +1,6 @@
+<?php 
+use MapasCulturais\i;
+?>
 <div class="main-footer">
 
 
@@ -7,19 +10,19 @@
                 <a>Acesse</a>
             </li>
             <li>
-                <a>Lista de editais e oportunidades</a>
+                <a href="<?= $app->createUrl('search', 'opportunities') ?>">Lista de editais e oportunidades</a>
             </li>
             <li>
-                <a>Lista de eventos</a>
+                <a href="<?= $app->createUrl('search', 'events') ?>">Lista de eventos</a>
             </li>
             <li>
-                <a>Lista de agentes</a>
+                <a href="<?= $app->createUrl('search', 'agents') ?>">Lista de agentes</a>
             </li>
             <li>
-                <a>Lista de espaços</a>
+                <a href="<?= $app->createUrl('search', 'spaces') ?>">Lista de espaços</a>
             </li>
             <li>
-                <a>Lista de projetos</a>
+                <a href="<?= $app->createUrl('search', 'projects') ?>">Lista de projetos</a>
             </li>
         </ul>
     </div>
@@ -45,11 +48,11 @@
                 <a href="<?= $app->createUrl('auth', 'logout') ?>">Sair</a>
             </li>
         </ul>
-    </div>
-
+    </div> 
+    
     <div class="main-footer__links">
         <ul>
-            <li>
+            <!-- <li>
                 <a>Ajuda e Privacidade</a>
             </li>
             <li>
@@ -57,7 +60,7 @@
             </li>
             <li>
                 <a>Dúvidas frequentes (FAQ)</a>
-            </li>
+            </li> -->
             <li>
                 <a>Termos de uso</a>
             </li>
