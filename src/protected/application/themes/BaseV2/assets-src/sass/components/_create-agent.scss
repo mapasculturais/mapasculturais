@@ -1,0 +1,25 @@
+@use '../settings/mixins' as *;
+
+
+.create-agent {
+    margin: 0;
+    .create-agent__modal {
+        position: fixed;
+        z-index: 999;
+        top: 20%;
+        left: 50%;
+        width: 300px;
+        margin-left: -150px;
+      }
+      
+}
+.modal-agent {
+    padding: 1.5625rem 1.5rem;
+    background-color: var(--mc-white);
+    border-radius: 0.3125rem;
+    width: 100%;
+    position: relative;
+    width: 360px;
+    height: 829px;
+}
+    
