@@ -11,6 +11,17 @@
         width: 300px;
         margin-left: -150px;
       }
+    .create-agent__buttons {
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 24px;
+        .button{
+            place-content: center;
+
+        }
+    }
       
 }
 .modal-agent {
