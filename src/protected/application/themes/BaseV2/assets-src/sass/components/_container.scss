@@ -1,7 +1,9 @@
 @use '../settings/mixins' as *;
 
 .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 65% 32%;
+    gap: size(32) 3%;
     margin: size(32) auto 0;
     max-width: size(1190);
     padding: 0 size(10);
