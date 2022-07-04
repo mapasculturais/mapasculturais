@@ -32,14 +32,16 @@
 @use 'components/popover';
 @use 'components/select-entity';
 @use 'components/share-links';
+@use 'components/stack';
 @use 'components/tabs';
 
 // LAYOUTS
-@use 'layouts/edit-1';
 @use 'layouts/entity-tabs';
 @use 'layouts/main-header';
 @use 'layouts/main-footer';
-@use 'layouts/single-1';
-@use 'layouts/stack';
 @use 'layouts/event-edit';
 @use 'layouts/event-single';
+
+// PAGES
+@use 'pages/edit-1';
+@use 'pages/single-1';
