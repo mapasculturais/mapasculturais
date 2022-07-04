@@ -1,7 +1,6 @@
 @use '../settings/mixins' as *;
 
 .entity-actions {
-
     background-color: var(--mc-primary-500);
     bottom: 0;
     margin-top: 50px;
@@ -39,22 +38,21 @@
                     padding: size(11) size(100);
                 }
             }
-    
         }
     }
-
 }
+
 @media (max-width: size(1024)) {
     .entity-actions {
         &__content {
             display: flex;
             gap: size(24);
             flex-direction: column-reverse;
-            
+
             &--groupBtn {
                 display: inline-flex;
                 gap: size(24);
-    
+
                 .btn {
                     justify-content: center;
                     width: 100%;
@@ -63,17 +61,22 @@
         }
     }
 }
+
 @media (max-width: size(870)) {
+
     .entity-actions {
+        
         &__content {
+
             &--groupBtn {
                 flex-direction: column;
-            }
-    
+            }   
         }
     }
 }
+
 @media (max-width: size(600)) {
+
     .entity-actions {
         padding: size(24) size(10);
     }
