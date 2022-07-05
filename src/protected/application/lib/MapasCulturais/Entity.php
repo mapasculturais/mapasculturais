@@ -565,6 +565,8 @@ abstract class Entity implements \JsonSerializable{
      * @return array the metadata of this entity properties.
      */
     public static function getPropertiesMetadata($include_column_name = false){
+        $app = App::i();
+
         $__class = get_called_class();
         $class = $__class::getClassName();
 
@@ -627,6 +629,24 @@ abstract class Entity implements \JsonSerializable{
 
         if($class::usesMetadata()){
             $data_array = $data_array + $class::getMetadataMetadata();
+        }
+
+        
+        
+        if($class::usesTypes()){
+            $types = [];
+            $types_order = [];
+            foreach($app->getRegisteredEntityTypes(self::getClassName()) as $type) {
+                $types[$type->id] = $type->name;
+                $types_order[] = $type->id;
+            }
+
+            $data_array['type'] = [
+                'type' => 'select',
+                'options' => $types,
+                'optionsOrder' => $types_order,
+
+            ] + $data_array['_type'];
         }
 
         if(isset($data_array['location']) && isset($data_array['publicLocation'])){
