@@ -26,7 +26,6 @@ $this->import('
             <entity-links :entity="entity" title="Links"></entity-links>
             <create-agent></create-agent>
             <entity-gallery :entity="entity"></entity-gallery>
-
         </main>
         
         <aside>
@@ -37,7 +36,6 @@ $this->import('
             <entity-terms :entity="entity" taxonomy="tag" title="Tags"></entity-terms>  
             <entity-owner :entity="entity" title="Publicado por"></entity-owner>
             <share-links title="Compartilhar" text="Veja este link:"></share-links>
-            <
         </aside>
         
     </mapas-container>

@@ -2,7 +2,6 @@
 use MapasCulturais\i;
 $this->layout = 'entity'; 
 $this->import('
-    create-agent
     mapas-field mapas-container mapas-card 
     entity-profile entity-cover entity-terms  
     entity-header entity-actions entity-owner entity-social-media');
@@ -144,13 +143,7 @@ $this->import('
                 </template>
             </mapas-card>
 
-            <mapas-card>
-                <template #content>
-                    <div class="row">
-                        <create-agent :entity="entity" :editable="true"></create-agent>
-                    </div>
-                </template>
-            </mapas-card>
+            
 
         </aside>
         

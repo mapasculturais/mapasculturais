@@ -1,6 +1,6 @@
 app.component('create-agent' , {
     template: $TEMPLATES['create-agent'],
-    emits: [],
+    emits: ['create'],
     components: {
 		
 	},
@@ -10,22 +10,19 @@ app.component('create-agent' , {
     },
 
     created() {
-        this.createInstance()
-        
+        this.createEntity()
+        this.iterationFields()
 
     },
 
     data() {
         return {
-            instance: null,
+            entity: null,
+            fields: []
         }
     },
 
     props: {
-        entity: {
-            type: Entity,
-            required: true
-        },
         editable: {
             type: Boolean,
             default:true
@@ -36,23 +33,35 @@ app.component('create-agent' , {
         doSomething () {
 
         },
-        createInstance() {
-            // this.entity = new Entity("agent");
-            this.instance= new Entity('agent');
-         
+        iterationFields() {
+            let array = ['type', '_type', 'name'];
+            Object.keys($DESCRIPTIONS.agent).forEach((item)=>{
+                if(!array.includes(item) && $DESCRIPTIONS.agent[item].required){
+                    this.fields.push(item);
+                }
+            })
+        console.log(this.fields);
+        },
+        createEntity() {
+            this.entity= new Entity('agent');
+            this.entity.terms = {area: ['Cultura Digital', 'Música']}
         },
         createDraft(modal) {
-            modal.open();
-            this.instance.status = 0;
+            this.entity.status = 0;
+            this.save(modal);
         },
         createPublic(modal) {
             //lançar dois eventos
-            modal.open();
-            this.instance.status = 1;
-            console.log(this.instance);
-        },
-        save () {
+            this.entity.status = 1;
+            this.save(modal);
 
+        },
+        save (modal) {
+            this.entity.save().then((response) => {
+                modal.close();
+                this.$emit('create',response)
+                console.log(response);
+            })
         },
         cancel(modal) {
             modal.close()

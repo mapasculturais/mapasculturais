@@ -1,25 +1,34 @@
  <?php 
 use MapasCulturais\i;
 
-$this->import('modal field'); 
+$this->import('modal mapas-field entity-terms'); 
 ?>
 
-<div class="create-agent">
-   <modal title="Criar Agente" @open="createInstance()">
+<div class="create-modal">
+   <modal title="Criar Agente">
        <label>Crie um agente com informações básicas<br>
            e de forma rápida</label>
-        <div class="create-agent__fields">
+        <div class="create-modal__fields">
+            <!-- Agente col. indiv  -->
+            <!--  iterar dentro do descriptions.agent populando o this.fields com os campos obrigatórios
+         pular os campos agent, type e shortDescription
+        v-for field in fields no template chamando o componente mapa-field (vou usar o entity)
+        renomear o entity pra entity ok<- -->
             
-            <field label="Selecione o tipo de agente" :entity="instance"  prop="name"></field>
-            <field label="Nome ou título" :entity="instance" prop="name"></field>
-            
-            <field label="Selecione a área de atuação" :entity="entity"  prop="name"></field>
+        
+        <mapas-field :entity="entity" label="Selecione o tipo de agente" prop="type"></mapas-field>
+        <mapas-field :entity="entity" label="Nome ou título"  prop="name"></mapas-field>
+        <entity-terms :entity="entity" :editable="true" taxonomy="area"></entity-terms>
+        <mapas-field :entity="entity" prop="shortDescription"></mapas-field>
+        <mapas-field :entity="entity" v-for="field in fields" :prop="field"></mapas-field>
         </div>
         <template #button="modal">
-            <button class="button button--primary" @click="modal.open()">Criar Agente</button>
+            <slot :modal="modal">
+                <button class="button button--primary" @click="modal.open()">Criar Agente</button>
+            </slot>
         </template>
         <template #actions="modal">
-            <div class="create-agent__buttons">
+            <div class="create-modal__buttons">
 
                 <button class="button button--primary" @click="createPublic(modal)">Criar e Publicar</button>
                 <button class="button button--solid" @click="createDraft(modal)">Criar em Rascunho</button>
