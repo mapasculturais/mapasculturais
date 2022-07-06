@@ -4,7 +4,8 @@ $this->layout = 'entity';
 $this->import('
     mapas-field mapas-container mapas-card 
     entity-profile entity-cover entity-terms  
-    entity-header entity-actions entity-owner entity-social-media');
+    entity-header entity-actions entity-owner entity-social-media
+    entity-related-agents');
 ?>
 
 <div class="main-app edit-1">
@@ -136,9 +137,12 @@ $this->import('
                     </div>
 
                     <div class="row">
+                        <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
+                    </div>
+
+                    <div class="row">
                         <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
                     </div>
-                      
 
                 </template>
             </mapas-card>
