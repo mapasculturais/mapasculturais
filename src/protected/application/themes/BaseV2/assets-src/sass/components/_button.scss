@@ -5,36 +5,108 @@
     appearance: none;
     border: none;
     border-radius: var(--mc-border-radius);
+    cursor: pointer;
     display: inline-flex;
     font-size: size(16);
     font-weight: bold;
-    line-height: 1.25em;
-    padding: size(8) size(16);
+    justify-content: center;
+    line-height: size(18);
+    padding: size(11) size(19);
+    position: relative;
     text-decoration: none;
 
-    .iconify {
-        height: 1.25em;
-        width: 1.25em;
+    &:hover {
+        opacity: 0.9;
     }
 
-    &:not(&--icon) {
+    &:active {
+        opacity: 1;
+    }
 
+    &.disabled {
+        cursor: default;
+        opacity: .3;
+        pointer-events: none;
+    }
+
+    &--icon {
+        gap: size(12);
         .iconify {
-            margin-right: size(16);
+            font-size: size(16);
         }
     }
 
+    // larguras
+    
     &--large {
-        justify-content: center;
-        max-width: 100%;
-        width: size(320);
+        width: 100%;
+    }
+
+    // tamanhos
+
+    &--bg {
+        font-size: size(18);
+        font-weight: 700;
+        padding: size(24) size(32);
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+
+    &--md {
+        font-size: size(18);
+        font-weight: 600;
+        padding: size(14) size(24);
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+
+    &--sm {
+        font-size: size(14);
+        padding: size(9) size(15);
+        gap: size(9);
+
+        .iconify {
+            font-size: size(14);
+        }
+    }
+
+    // estilos
+
+    &--rounded {
+        border-radius: size(264);
+    }
+
+    &--outline {
+        background-color: transparent;
+        color: var(--mc-gray-500);
+        border: size(1) solid var(--mc-gray-300);
+
+        &:hover {
+            border-color: var(--mc-gray-300);
+            background-color: var(--mc-gray-300);
+        }
     }
 
     &--primary {
         background-color: var(--mc-primary-500);
         color: var(--mc-white);
 
-        &:focus, &:hover {
+        &-outline {
+            background-color: transparent;
+            color: var(--mc-primary-500);
+            border: size(1) solid var(--mc-primary-500);
+            &:hover {
+                border-color: var(--mc-primary-700);
+                background-color: var(--mc-primary-700);
+                color: var(--mc-white);                
+            }
+        }
+
+        &:hover {
             background-color: var(--mc-primary-700);
         }
     }
@@ -43,7 +115,19 @@
         background-color: var(--mc-secondary-500);
         color: var(--mc-primary-500);
 
-        &:focus, &:hover {
+        &-outline {
+            background-color: transparent;
+            color: var(--mc-primary-500);
+            border: size(1) solid var(--mc-secondary-500);
+
+            &:hover {
+                border-color: var(--mc-secondary-700);
+                background-color: var(--mc-secondary-700);
+                color: var(--mc-primary-500);
+            }
+        }
+
+        &:hover {
             background-color: var(--mc-secondary-700);
         }
     }
@@ -52,17 +136,41 @@
         background-color: var(--mc-gray-300);
         color: var(--mc-black);
 
-        &:focus, &:hover {
+        &-outline {
+            background-color: transparent;
+            color: var(--mc-black);
+            border: size(1) solid var(--mc-gray-300);
+
+            &:hover {
+                border-color: var(--mc-gray-500);
+                background-color: var(--mc-gray-500);
+                color: var(--mc-black);
+            }
+        }
+
+        &:hover {
             background-color: var(--mc-gray-500);
         }
     }
 
     &--text {
         background-color: transparent;
-        color: var(--mc-primary-500);
+        color: var(--mc-black);
 
-        &:focus, &:hover {
-            background-color: rgba(black, 0.1);
+        &:hover {
+            color: var(--mc-primary-700);
+        }
+
+        &-del {
+            background-color: transparent;
+            color: var(--mc-black);
+            .iconify {
+                color: var(--mc-error);
+            }
+
+            &:hover {
+                color: var(--mc-error);
+            }
         }
     }
 }
