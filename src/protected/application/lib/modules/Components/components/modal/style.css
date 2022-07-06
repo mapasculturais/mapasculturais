@@ -15,6 +15,7 @@
     border: 1px solid #e2e8f0;
     border-radius: 0.25rem;
     background: #fff;
+    color: var(--mc-black);
 }
 .modal__title {
     margin: 0 2rem 0 0;

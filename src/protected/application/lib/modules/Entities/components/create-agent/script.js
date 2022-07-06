@@ -8,6 +8,11 @@ app.component('create-agent' , {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
+    // <!-- Agente col. indiv  -->
+    //         <!--  iterar dentro do descriptions.agent populando o this.fields com os campos obrigatórios
+    //      pular os campos agent, type e shortDescription
+    //     v-for field in fields no template chamando o componente mapa-field (vou usar o entity)
+    //     renomear o entity pra entity ok<- -->
 
     created() {
         this.createEntity()

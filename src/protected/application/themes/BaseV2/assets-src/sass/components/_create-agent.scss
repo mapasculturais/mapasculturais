@@ -1,8 +1,10 @@
 @use '../settings/mixins' as *;
 
 
-.create-agent {
+.create-entity {
     margin: 0;
+    color: black;
+
     .create-agent__buttons {
         border-radius: 8px;
         display: flex;
@@ -16,13 +18,13 @@
     }
       
 }
-.modal-agent {
-    padding: 1.5625rem 1.5rem;
-    background-color: var(--mc-white);
-    border-radius: 0.3125rem;
-    width: 100%;
-    position: relative;
-    width: 360px;
-    height: 829px;
-}
+// .create-modal__fields {
+//     padding: 1.5625rem 1.5rem;
+//     background-color: var(--mc-white);
+//     border-radius: 0.3125rem;
+//     width: 100%;
+//     position: relative;
+//     width: 360px;
+//     height: 829px;
+// }
     
