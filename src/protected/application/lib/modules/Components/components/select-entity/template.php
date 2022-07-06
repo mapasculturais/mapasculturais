@@ -1,6 +1,6 @@
 <?php $this->import('entities popover') ?>
 
-    <popover openside="right-down"> 
+    <popover :openside="openSide"> 
         <template #btn="{ toggle }">
             <slot name="btn" :toggle="toggle"> 
                 <a :class="['openPopover'], type + '__color'" > Abrir select-Entity </a>
@@ -25,12 +25,11 @@
 
                     <template #default="{entities}">
                         <p class="select-entity__description"> {{itensText}} </p>
-                        
                         <ul class="select-entity__results">
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
                                     <img v-if="entity.files" :src="entity.files?.avatar?.transformations?.avatarSmall?.url" />
-                                    <iconify v-else :icon="icon" />
+                                    <iconify v-else :icon="icon"></iconify>
                                 </span>
                                 <span class="label"> {{entity.name}} </span>
                             </li>

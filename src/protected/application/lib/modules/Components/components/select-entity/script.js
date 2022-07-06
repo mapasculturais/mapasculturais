@@ -76,6 +76,9 @@ app.component('select-entity', {
         },
         scope: {
             type: String
+        },
+        openSide: {
+            type: String
         }
     },
     
