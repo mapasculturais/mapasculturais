@@ -1,0 +1,95 @@
+@use '../settings/mixins' as *;
+
+.entity-related-agents {
+    margin: size(10) 0;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        margin: size(16) 0;
+        gap: size(20);
+
+        &--name {
+            color: var(--mc-black);
+            font-family: var(--mc-font-heading);
+            font-size: size(14);
+            font-style: normal;
+            font-weight: 700;
+            line-height: size(19);
+        }
+
+        &--agents {
+            display: flex;
+            gap: size(30);
+
+            .agent {
+                display: flex;
+                height: size(40);
+                position: relative;
+                width: size(40);
+
+                &__img {
+                    border-radius: 50%;
+                    display: flex;
+                    overflow: hidden;
+                }
+
+                &__delete {
+                    align-items: center;
+                    background-color: var(--mc-error);
+                    border-radius: 50%;
+                    color: white;
+                    display: flex;
+                    height: size(18);
+                    position: absolute;
+                    justify-content: center;
+                    right: size(-5);
+                    top: size(-5);
+                    width: size(18);
+                    .iconify {
+                        font-size: size(14);
+                    }
+                }
+            }
+        }
+
+        &--actions {
+            display: flex;
+        }
+    }
+
+    &__addNew {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        &--title {
+            color: var(--mc-black);
+            font-family: var(--mc-font-heading);
+            font-size: size(14);
+            font-style: normal;
+            font-weight: 600;
+            line-height: size(19);
+            margin-bottom: size(8);
+        }
+
+        &--newGroup {
+            display: flex;
+            flex-direction: column;
+            gap: size(30);
+            padding: size(20) size(16);
+
+            .newGroupName{
+                background: var(--mc-white);
+                border: size(1) solid var(--mc-gray-100);
+                border-radius: size(4); 
+                font-size: size(16);
+                line-height: size(19);
+                color: var(--mc-gray-300);
+                padding: size(10) size(8);
+            }
+            
+        }
+    }
+}
