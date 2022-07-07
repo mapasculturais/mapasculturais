@@ -15,5 +15,5 @@ use MapasCulturais\i;
 </vue-final-modal>
 
 <slot name="button" :close="close" :open="open" :loading="loading">
-    <button class="button button--sm button--primary" @click="open()">{{button || '<?= i::__('Defina a propriedade `button` do componente modal') ?>'}}</button>
+    <button :class="'button ' + buttonClasses" @click="open()">{{buttonLabel || '<?= i::__('Defina a propriedade `buttonLabel` do componente modal') ?>'}}</button>
 </slot>
