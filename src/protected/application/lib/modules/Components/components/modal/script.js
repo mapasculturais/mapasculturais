@@ -13,13 +13,17 @@ app.component('modal', {
             type: String,
             default: ''
         },
-        button: {
-            type: String,
-            default: ''
-        },
         classes: {
             type: String,
             default: '',
+        },
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+        buttonClasses: {
+            type: String,
+            default: 'button-primary'
         },
         closeButton: {
             type: Boolean,
