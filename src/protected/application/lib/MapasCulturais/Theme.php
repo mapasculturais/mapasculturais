@@ -125,7 +125,7 @@ abstract class Theme extends \Slim\View {
             $app->registerMetadata($def, 'MapasCulturais\Entities\Space');
         });
         
-        $app->hook('app.register:after', function () {
+        $app->hook('app.register:after', function () use($app) {
             $this->view->jsObject['EntitiesDescription'] = [
                 "user"         => Entities\User::getPropertiesMetadata(),
                 "agent"         => Entities\Agent::getPropertiesMetadata(),
@@ -136,6 +136,17 @@ abstract class Theme extends \Slim\View {
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata()
             ];
+
+            $taxonomies = [];
+            foreach($app->getRegisteredTaxonomies() as $slug => $definition) {
+                $taxonomy = $definition->jsonSerialize();
+                $taxonomy['terms'] = array_values($taxonomy['restrictedTerms']);
+
+                unset($taxonomy['id'], $taxonomy['slug'], $taxonomy['restrictedTerms']);
+                
+                $taxonomies[$slug] = $taxonomy;
+            }
+            $this->view->jsObject['Taxonomies'] = $taxonomies;
         });
 
 
