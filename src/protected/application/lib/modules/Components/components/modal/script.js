@@ -5,15 +5,26 @@ app.component('modal', {
     data() {
         return {
             modalOpen: false,
-            loading: {active: false}
+            processing: false,
         }
     },
     props: {
-        title: String,
+        title: {
+            type: String,
+            default: ''
+        },
+        button: {
+            type: String,
+            default: ''
+        },
+        classes: {
+            type: String,
+            default: '',
+        },
         closeButton: {
             type: Boolean,
             default: true
-        }
+        },
     },
     methods: {
         open () {
@@ -23,6 +34,9 @@ app.component('modal', {
         close () {
             this.modalOpen = false;
             this.$emit('close', this);
+        },
+        loading (active) {
+            this.processing = active ? true : false 
         }
     },
 });
