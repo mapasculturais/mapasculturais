@@ -2789,7 +2789,7 @@ class App extends \Slim\Slim{
             $entity = $entity->getClassName();
 
         if(is_null($entity)){
-            return $this->_register['taxonomies']['by-entity'];
+            return $this->_register['taxonomies']['by-slug'];
         }else{
             return key_exists($entity, $this->_register['taxonomies']['by-entity']) ? $this->_register['taxonomies']['by-entity'][$entity] : [];
         }
