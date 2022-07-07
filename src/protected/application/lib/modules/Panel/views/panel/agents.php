@@ -10,14 +10,15 @@ $this->import('create-agent panel--entity-tabs panel--entity-card');
     </h1>
     <a class="panel__help-link" href="#"><?=i::__('Ajuda')?></a>
 </div>
+<!-- o a ser um slot do create-agent -->
 <div class="panel__row">
     <p><?=i::__('Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes criados')?></p>
-    <a class="button button--large button--primary" href="#">
-        <iconify icon="mdi:account-multiple-plus"></iconify>
-    <create-agent :entity="entity" :editable="true" #default="{modal}"  >
-            <span @click="modal.open()"><?=i::__('Criar agente!!')?></span>
-        </create-agent>
-    </a>
+    <create-agent  :editable="true" #default="{modal}"  >
+        <button class="button button--large button--primary">
+            <iconify icon="mdi:account-multiple-plus"></iconify>
+            <span @click="modal.open()"><?=i::__('Criar agente!')?></span>
+        </button>
+    </create-agent>
 </div>
 
 <div class="panel-list panel-main-content">    
