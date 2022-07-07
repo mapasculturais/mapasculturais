@@ -1,12 +1,19 @@
-<vue-final-modal v-model="modalOpen" classes="modal-container" content-class="modal-content">
+<?php
+
+use MapasCulturais\i;
+?>
+<vue-final-modal v-model="modalOpen" :classes="'modal-container ' + classes" content-class="modal-content">
     <button v-if="closeButton" class="modal__close" @click="close()">X</button>
     <span v-if="title" class="modal__title">{{title}}</span>
     <div class="modal__content">
-        <slot :close="close" :open="open"></slot>
+        <slot :close="close" :open="open" :loading="loading"></slot>
     </div>
     <div class="modal__action">
-        <slot name="actions" :close="close" :open="open"></slot>
+        <loading :condition="processing"></loading>
+        <slot v-if="!processing" name="actions" :close="close" :open="open" :loading="loading"></slot>
     </div>
 </vue-final-modal>
 
-<slot name="button" :close="close" :open="open"></slot>
+<slot name="button" :close="close" :open="open" :loading="loading">
+    <button class="button button--sm button--primary" @click="open()">{{button || '<?= i::__('Defina a propriedade `button` do componente modal') ?>'}}</button>
+</slot>
