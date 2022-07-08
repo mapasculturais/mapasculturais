@@ -13,15 +13,17 @@
  * 6. beforeUnmount
  * 7. unmounted                  
  */
- app.component('__template__', {
+
+app.component('__template__', {
     template: $TEMPLATES['__template__'],
     
     // define os eventos que este componente emite
     emits: ['namesDefined'],
 
-    setup(props, { attrs, slots, emit, expose }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('__template__')
+        return { text }
     },
 
     beforeCreate() { },
@@ -40,6 +42,13 @@
         entity: {
             type: Entity,
             required: true
+        },
+
+        textoLocalizado: {
+            type: String,
+
+            // nas propriedades não é possível utilizar o this.text
+            default: __('texto localizado', '__template__') 
         },
 
         name: {
@@ -63,7 +72,8 @@
     data() {
         return {
             displayName: this.nickname || this.name,
-            fullname: this.fullname ? `${this.name} ${this.lastname}` : `${this.name}`
+            fullname: this.fullname ? `${this.name} ${this.lastname}` : `${this.name}`,
+            localizedData: this.text('texto localizado')
         }
     },
 
