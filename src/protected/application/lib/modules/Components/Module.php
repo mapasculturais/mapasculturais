@@ -99,6 +99,11 @@ class Module extends \MapasCulturais\Module {
          * @param array $dependences Dependências do componente
          */
         $app->hook('Theme::enqueueComponentScript', function ($result, string $component, array $dependences = []) {
+            $texts_filename = $this->resolveFilename("components/{$component}", 'texts.php');
+            if($texts_filename && is_file($texts_filename)) {
+                $texts = include $texts_filename;
+                $this->localizeScript("component:$component", $texts);
+            }
             $this->enqueueScript('components', $component, "../components/{$component}/script.js", $dependences);
         });
 

@@ -1,4 +1,16 @@
-Utils = {
+globalThis.__ = (key, componentName) => {
+    const dict = Utils.getTexts(componentName);
+    return dict(key);
+}
+
+globalThis.Utils = {
+    getTexts(componentName) {
+        const texts = $MAPAS.gettext?.[`component:${componentName}`] || {};
+        return (key) => {
+            return texts[key];
+        };
+    },
+
     getObjectProperties (obj) {
         var keys = [];
         for (var key in obj) {
