@@ -14,9 +14,9 @@ respectivamente, e emitirá o evento `namesDefined`, que poderá ser capturado f
 - **namesDefined** - disparado quando o método `defineNames` é chamado, após a definição do `name` e `nomeCompleto`
   
 ## Propriedades
-- **entity**: *String* - Nome
-- **name**: *String* - Nome
-- **lastname**: *String* (opcional) - Sobrenome
+- *Entity **entity*** - Entidade
+- *String **name*** - Nome
+- *String **lastname** = ''* - Sobrenome
 
 ## Slots
 - **default** `{fullname, displayName, compareDisplayName, compareFullname}`: informações dos nomes e comparação com o nome gerado
