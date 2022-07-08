@@ -3,6 +3,7 @@ use MapasCulturais\i;
 
 $this->import('create-agent panel--entity-tabs panel--entity-card');
 ?>
+
 <div class="panel__row">
     <h1>
         <iconify icon="mdi:account-multiple-outline"></iconify>
@@ -14,9 +15,9 @@ $this->import('create-agent panel--entity-tabs panel--entity-card');
 <div class="panel__row">
     <p><?=i::__('Nesta seção você visualiza e gerencia seu perfil de usuário e outros agentes criados')?></p>
     <create-agent  :editable="true" #default="{modal}"  >
-        <button class="button button--large button--primary">
+        <button @click="modal.open()" class="button button--large button--primary">
             <iconify icon="mdi:account-multiple-plus"></iconify>
-            <span @click="modal.open()"><?=i::__('Criar agente!')?></span>
+            <span><?=i::__('Criar agente!')?></span>
         </button>
     </create-agent>
 </div>
