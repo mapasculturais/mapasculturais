@@ -47,7 +47,7 @@ app.component('create-agent' , {
         },
         createEntity() {
             this.entity= new Entity('agent');
-            this.entity.terms = {area: ['Cultura Digital', 'Música']}
+            this.entity.terms = {area: []}
         },
         createDraft(modal) {
             this.entity.status = 0;
