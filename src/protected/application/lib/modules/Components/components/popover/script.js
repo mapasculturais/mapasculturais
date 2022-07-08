@@ -1,14 +1,10 @@
 app.component('popover', {
     template: $TEMPLATES['popover'],
-    emits: [],
+    emits: ['open', 'close'],
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
-    },
-
-    created() {
-
     },
 
     data() {
@@ -18,29 +14,43 @@ app.component('popover', {
     },
 
     props: {
-        buttonClass: {
+        classes: {
             type: String,
-            default: 'open popover'
+            default: ''
         },
-        label: {
+        buttonLabel: {
             type: String,
-            default: 'open popover'
+            default: ''
+        },
+        buttonClasses: {
+            type: String,
+            default: ''
         },
         openside: {
             type: String,
-            default: ''
+            default: '',
+            validator: (value) => {
+                return [
+                    'up-right','up-left',
+                    'down-right', 'down-left',
+                    'left-up', 'left-down',
+                    'right-up', 'right-down',
+                ].indexOf(value) >= 0;
+            }
         }
     },
     
     methods: {
         open() {
             this.active = true;
+            this.$emit('open', this);
         },
         close() {
             this.active = false;
+            this.$emit('close', this);
         },
         toggle() {
-            this.active = !this.active;
+            this.active ? this.close() : this.open();
         }
     },
 });

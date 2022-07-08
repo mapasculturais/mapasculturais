@@ -23,7 +23,7 @@ app.component('modal', {
         },
         buttonClasses: {
             type: String,
-            default: 'button--primary'
+            default: ''
         },
         closeButton: {
             type: Boolean,
