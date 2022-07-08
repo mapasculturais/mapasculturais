@@ -5,18 +5,20 @@ use MapasCulturais\i;
 $this->import('modal,loading,field')
 ?>
 <modal title="<?php i::esc_attr_e('Criar nova função') ?> " @close="resetInstance()" @open="resetInstance()">
-    <mapas-field :entity="instance" prop="slug"></mapas-field>
-    <mapas-field :entity="instance" prop="name"></mapas-field>
-    <section v-for="(entityPermissions,entitySlug) in permissions"> 
-        <h4>{{entitySlug}}</h4>
-        <ul>
-            <li v-for="permission in entityPermissions" style="display:inline-block; margin: 0.2em 0.5em;">
-                <input type="checkbox" :id="`new-system-role--${entitySlug}--${permission.permission}`" v-model="instance.permissions" :value="`${entitySlug}.${permission.permission}`">
-                <label :for="`new-system-role--${entitySlug}--${permission.permission}`"> {{permission.label || permission.permission}}</label>
-                <i v-if="permission.description" class="hltip icon icon-help" :title="permission.description"></i>
-            </li> 
-        </ul>
-    </section>
+    <template #default>
+        <mapas-field :entity="instance" prop="slug"></mapas-field>
+        <mapas-field :entity="instance" prop="name"></mapas-field>
+        <section v-for="(entityPermissions,entitySlug) in permissions"> 
+            <h4>{{entitySlug}}</h4>
+            <ul>
+                <li v-for="permission in entityPermissions" style="display:inline-block; margin: 0.2em 0.5em;">
+                    <input type="checkbox" :id="`new-system-role--${entitySlug}--${permission.permission}`" v-model="instance.permissions" :value="`${entitySlug}.${permission.permission}`">
+                    <label :for="`new-system-role--${entitySlug}--${permission.permission}`"> {{permission.label || permission.permission}}</label>
+                    <i v-if="permission.description" class="hltip icon icon-help" :title="permission.description"></i>
+                </li> 
+            </ul>
+        </section>
+    </template>
 
     <template #button="modal">
         <button @click="modal.open()"><slot></slot></button>
