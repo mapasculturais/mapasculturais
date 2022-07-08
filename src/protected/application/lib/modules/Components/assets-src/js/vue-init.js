@@ -12,15 +12,15 @@ app.use(VueFinalModal)
 app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 
-window.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
-window.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
-window.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
+globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
+globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
+globalThis.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
-window.app = app
-window.Pinia = Pinia
-window.pinia = pinia
-window.Vue = Vue
-window.VueAdvancedCropper = VueAdvancedCropper
+globalThis.app = app
+globalThis.Pinia = Pinia
+globalThis.pinia = pinia
+globalThis.Vue = Vue
+globalThis.VueAdvancedCropper = VueAdvancedCropper
 
 document.addEventListener('DOMContentLoaded', () => {
     app.mount('#main-app')
