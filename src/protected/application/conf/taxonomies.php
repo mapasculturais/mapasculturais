@@ -5,6 +5,7 @@ return array(
     1 => array(
        // 'slug' => i::__('tag'),
     'slug' => 'tag',
+    'name' => 'Tag',
         'entities' => array(
             'MapasCulturais\Entities\Space',
             'MapasCulturais\Entities\Agent',
@@ -16,8 +17,9 @@ return array(
 
     2 => array(
         //'slug' => i::__('area'),
-'slug' => 'area',
-        'required' => i::__("Você deve informar ao menos uma área de atuação"),
+    'slug' => 'area',
+    'name' => 'Área de Atuação',
+    'required' => i::__("Você deve informar ao menos uma área de atuação"),
         'entities' => array(
             'MapasCulturais\Entities\Space',
             'MapasCulturais\Entities\Agent'
@@ -83,6 +85,7 @@ return array(
 
     3 => array(
         'slug' => 'linguagem',
+        'name' => 'Linguagem',
         'required' => i::__("Você deve informar ao menos uma linguagem"),
         'entities' => array(
             'MapasCulturais\Entities\Event'
