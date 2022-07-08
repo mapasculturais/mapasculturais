@@ -13,7 +13,8 @@ app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 
 window.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
-window.$DESCRIPTIONS = $MAPAS?.EntitiesDescription ?? []
+window.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
+window.$TAXONOMIES = $MAPAS.Taxonomies ?? {}
 
 window.app = app
 window.Pinia = Pinia
