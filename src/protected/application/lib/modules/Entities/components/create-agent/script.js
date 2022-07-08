@@ -67,11 +67,5 @@ app.component('create-agent' , {
         cancel(modal) {
             modal.close()
         },
-        escModal(modal) {
-
-            this.$emit('closed',response) =>{
-                modal.close();
-            }
-        }
     },
 });

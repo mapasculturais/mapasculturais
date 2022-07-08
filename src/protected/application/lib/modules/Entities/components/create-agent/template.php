@@ -1,6 +1,7 @@
  <?php 
 use MapasCulturais\i;
 
+
 $this->import('modal mapas-field entity-terms'); 
 ?>
 
@@ -20,7 +21,7 @@ $this->import('modal mapas-field entity-terms');
         <slot :modal="modal"></slot>
     </template>
     <template #actions="modal">
-        <div class="create-modal__buttons">
+        <div class="create-modal__buttons" ">
 
             <button class="button button--primary" @click="createPublic(modal)">Criar e Publicar</button>
             <button class="button button--solid" @click="createDraft(modal)">Criar em Rascunho</button>
