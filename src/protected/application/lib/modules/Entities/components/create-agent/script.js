@@ -1,29 +1,21 @@
 app.component('create-agent' , {
     template: $TEMPLATES['create-agent'],
     emits: ['create'],
-    components: {
-		
-	},
+    
+
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
-    // <!-- Agente col. indiv  -->
-    //         <!--  iterar dentro do descriptions.agent populando o this.fields com os campos obrigatórios
-    //      pular os campos agent, type e shortDescription
-    //     v-for field in fields no template chamando o componente mapa-field (vou usar o entity)
-    //     renomear o entity pra entity ok<- -->
-
     created() {
         this.createEntity()
         this.iterationFields()
-
     },
 
     data() {
         return {
             entity: null,
-            fields: []
+            fields: [],
         }
     },
 
@@ -35,17 +27,23 @@ app.component('create-agent' , {
     },
     
     methods: {
-        doSomething () {
-
-        },
         iterationFields() {
-            let array = ['type', '_type', 'name'];
+            let skip = [
+                'createTimestamp', 
+                'id',
+                'location',
+                'name', 
+                'shortDescription', 
+                'status', 
+                'type',
+                '_type', 
+                'userId',
+            ];
             Object.keys($DESCRIPTIONS.agent).forEach((item)=>{
-                if(!array.includes(item) && $DESCRIPTIONS.agent[item].required){
+                if(!skip.includes(item) && $DESCRIPTIONS.agent[item].required){
                     this.fields.push(item);
                 }
             })
-        console.log(this.fields);
         },
         createEntity() {
             this.entity= new Entity('agent');
@@ -59,17 +57,21 @@ app.component('create-agent' , {
             //lançar dois eventos
             this.entity.status = 1;
             this.save(modal);
-
         },
         save (modal) {
             this.entity.save().then((response) => {
                 modal.close();
                 this.$emit('create',response)
-                console.log(response);
             })
         },
         cancel(modal) {
             modal.close()
+        },
+        escModal(modal) {
+
+            this.$emit('closed',response) =>{
+                modal.close();
+            }
         }
     },
 });
