@@ -1,4 +1,4 @@
-const useEntitiesCache = Pinia.defineStore('entitiesCache', {
+globalThis.useEntitiesCache = Pinia.defineStore('entitiesCache', {
     state: () => {
         return {
             default: {}
@@ -23,7 +23,7 @@ const useEntitiesCache = Pinia.defineStore('entitiesCache', {
     }
 });
 
-const useEntitiesLists = Pinia.defineStore('entitiesLists', {
+globalThis.useEntitiesLists = Pinia.defineStore('entitiesLists', {
     state: () => {
         return {
             default: {}
@@ -54,7 +54,7 @@ const useEntitiesLists = Pinia.defineStore('entitiesLists', {
     }
 });
 
-let apiInstances = {};
+globalThis.apiInstances = {};
 
 class API {
     constructor(objectType, scope, fetchOptions) {
