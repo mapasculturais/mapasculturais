@@ -49,7 +49,7 @@ $this->import('popover');
         <popover openside="down-right">
             <template #button="{ toggle }">
                 <slot name="button" :toggle="toggle"> 
-                    <button class="button button--primary-outline button--icon" @click="toggle()" > <iconify icon="ps:plus"/></iconify> <?php i::_e("Adicionar") ?> </button>
+                    <button class="button button--primary-outline button--icon" @click="toggle()" > <iconify icon="ps:plus"/> <?php i::_e("Adicionar") ?> </button>
                 </slot>
             </template>
 
