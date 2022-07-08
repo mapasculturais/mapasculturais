@@ -77,9 +77,17 @@ app.component('select-entity', {
         scope: {
             type: String
         },
-        openSide: {
+        openside: {
             type: String
-        }
+        },
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+        buttonClasses: {
+            type: String,
+            default: ''
+        },
     },
     
     methods: {

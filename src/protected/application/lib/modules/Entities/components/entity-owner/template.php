@@ -17,8 +17,8 @@ $this->import('select-entity');
 
     <div v-if="editable" class="entity-owner__edit">
         
-        <select-entity type="agent" @select="changeOwner($event)" openSide="right-down">            
-            <template #btn="{ toggle }">
+        <select-entity type="agent" @select="changeOwner($event)" openside="right-down">            
+            <template #button="{ toggle }">
                 <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()"> 
                     <iconify icon="material-symbols:change-circle-outline"/> <h4> Alterar Propriedade</h4>    
                 </a>

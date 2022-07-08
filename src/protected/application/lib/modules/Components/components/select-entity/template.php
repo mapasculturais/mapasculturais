@@ -1,13 +1,11 @@
 <?php $this->import('entities popover') ?>
 
-    <popover :openside="openSide"> 
-        <template #btn="{ toggle }">
-            <slot name="btn" :toggle="toggle"> 
-                <a :class="['openPopover'], type + '__color'" > Abrir select-Entity </a>
-            </slot>
+    <popover :openside="openside" :button-label="buttonLabel" :button-classes="[buttonClasses, type + '__color']"> 
+        <template #button="{ toggle }">
+            <slot name="button" :toggle="toggle"></slot>
         </template>
 
-        <template #content="{ close }">
+        <template #default="{ close }">
 
             <div class="select-entity">
 
