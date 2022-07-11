@@ -32,9 +32,9 @@
 
         &--content { 
             display: flex;
-            max-width: 1170px;
+            max-width: size(1170);
             margin: 0 auto;
-    
+            padding: 0 size(16);
             .leftSide {
                 z-index: 1;
     
@@ -122,7 +122,6 @@
                     @include mobile {
                         font-size: size(12);
                         line-height: size(16);
-                        padding: 0 size(16)!important;
                     }
                 }
             }
