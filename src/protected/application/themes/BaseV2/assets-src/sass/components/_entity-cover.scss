@@ -1,28 +1,82 @@
 @use '../settings/mixins' as *;
 
 .entity-cover {
+    align-items: center;    
     border: size(1) dashed var(--mc-gray-500);
     border-radius: size(8);
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    width: 100%;
     justify-content: center;
-    align-items: center;
-    padding: size(25) 0;
-    gap: size(10);
+    overflow: hidden;
+    width: 100%;
+
+    .upload-example {
+        width: 100%;
+    }
+
+    &__cover{
+        &--img {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+
+            .label{
+                align-items: center;
+                border-radius: size(8);
+                color: var(--mc-white);
+                display: none;
+                justify-content: center;
+                padding: size(5) size(10);
+                position: absolute;
+                background-color: rgba(0, 0, 0, .3);
+            }
+
+            img{
+                width: 100%;
+            }
+            
+            &:hover {
+                .label {
+                    display: flex;
+                }
+
+                img {
+                    filter: blur(size(2));
+                }
+            }
+        }
+        
+        &--newImg {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: size(10);
+            padding: size(25) 0;
+            & > * {
+                cursor: pointer;
+            }
+            &:hover {
+                background-color: rgba(0, 0, 0, .2);
+            }
+        }
+    }
 
     svg {
-        font-size: 40px;
         color: var(--mc-gray-500);
+        font-size: 40px;
     }
 
     h5 {
-        margin: 0;
-        font-weight: 400;
-        display: flex;
         align-items: center;
-        text-align: center;
         color: var(--mc-gray-700);
+        display: flex;
+        font-weight: 400;
+        margin: 0;
+        text-align: center;
     }
 }
