@@ -5,16 +5,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ruby ruby-dev libpq-dev gnupg nano iputils-ping git \
         libfreetype6-dev libjpeg62-turbo-dev libpng-dev less vim
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs npm
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs
 
 RUN rm -rf /var/lib/apt/lists
 
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PATH:/root/.local/share/pnpm
+
 # Install uglify and terser
-RUN npm install -g \
+RUN pnpm install -g \
         terser \
         uglifycss \
-        autoprefixer
+        autoprefixer \
+        postcss
 
 # Install sass
 RUN gem install sass -v 3.4.22
@@ -57,6 +62,7 @@ RUN ln -s /var/www/html/protected/application/lib/postgis-restful-web-service-fr
 
 WORKDIR /var/www/html/protected
 RUN composer.phar install
+RUN pnpm install --recursive && pnpm run build 
 
 WORKDIR /var/www/html/protected/application/themes/
 
