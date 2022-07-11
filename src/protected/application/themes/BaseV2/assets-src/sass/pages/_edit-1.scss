@@ -4,19 +4,20 @@
     background-color: var(--mc-gray-100);
 
     .row {
-        display: flex;
-        gap: size(24);
-        width: 100%;
         align-items: center;
-        margin-bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(24);
+        margin-bottom: size(10);
+        width: 100%;
     }
 
     &__content {
         
         @media (max-width: size(800)) {
             grid-template-columns: 100%;
-            
         }
+
         .card-1 {
             grid-column-start: 1;
             grid-column-end: 3;
@@ -24,28 +25,40 @@
             @media (max-width: size(800)) {
                 grid-template-columns: 100%;
                 grid-column-end: 2;
-
             }
-
-         
          
             .card__content {
                 display: grid;
                 grid-template-columns: 66% 7% 27%;
+
+                @media (max-width: size(800)) {
+                    grid-template-columns: 100%;
+                    gap: size(20);
+                }
             }
 
             &__left {
                 display: flex;
                 flex-direction: column;
-                gap: 24px;
+                gap: size(24);
                 width: 100%;
+                .row {
+                    flex-wrap: nowrap;
+                }
             }
+
             &__divider {
                 border-right: 1px solid var(--mc-gray-300);
                 margin: 0 auto;
                 width: 1px;
                 height: 100%;
+                @media (max-width: size(800)) {
+                    border-bottom: 1px solid var(--mc-gray-300);
+                    height: size(1);
+                    width: 100%;
+                }
             }
+
             &__right {
                 display: flex;
                 flex-direction: column;
@@ -61,13 +74,13 @@
         }
         
         
-        // @media (max-width: size(800)) {
-        //     grid-template-columns: 100%;
-        //       aside, divider {
-        //         grid-column-start: 1;
-        //         grid-column-end: 3;
-        //       }
-        // }
+        /* @media (max-width: size(800)) {
+            grid-template-columns: 100%;
+            aside, divider {
+                grid-column-start: 1;
+                grid-column-end: 3;
+            }
+        } */
         //  @media (min-width: size(350)){
         //      grid-column-start: 1;
         //      grid-column-end: 3;
