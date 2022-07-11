@@ -4,7 +4,7 @@
     background-color: var(--mc-primary-500);
     bottom: 0;
     margin-top: 50px;
-    padding: size(24) 0;
+    padding: size(24) size(10);
     position: -webkit-sticky;
     position: sticky;
     width: 100%;
@@ -65,10 +65,12 @@
 @media (max-width: size(870)) {
 
     .entity-actions {
-        
+        padding: size(24) size(10);    
+            
         &__content {
-
+            gap: size(15);
             &--groupBtn {
+                gap: size(15);
                 flex-direction: column;
             }   
         }
