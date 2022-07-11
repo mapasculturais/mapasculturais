@@ -44,6 +44,9 @@
                 width: 100%;
                 .row {
                     flex-wrap: nowrap;
+                    @media (max-width: size(800)) {
+                        flex-wrap: wrap;
+                    }
                 }
             }
 
