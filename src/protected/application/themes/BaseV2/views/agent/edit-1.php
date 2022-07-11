@@ -24,7 +24,7 @@ $this->import('
                 <div class="card-1__left">
 
                     <div class="row">
-                        <entity-cover></entity-cover>
+                        <entity-cover :entity="entity"></entity-cover>
                     </div>    
                     
                     <div class="row">
