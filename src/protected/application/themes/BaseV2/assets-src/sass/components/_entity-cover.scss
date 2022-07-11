@@ -33,7 +33,11 @@
                     cursor: pointer;
                 }
             }
+            img{
+                width: 100%;
+            }
         }
+        
         &--newImg {
             align-items: center;
             cursor: pointer;
