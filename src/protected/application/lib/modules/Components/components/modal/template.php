@@ -3,8 +3,10 @@
 use MapasCulturais\i;
 ?>
 <vue-final-modal v-model="modalOpen" :classes="['modal-container',classes]" content-class="modal-content">
-    <button v-if="closeButton" class="modal__close" @click="close()">X</button>
-    <span v-if="title" class="modal__title">{{title}}</span>
+    <div class="modal__header">
+        <span v-if="title" class="modal__title">{{title}}</span>
+        <button v-if="closeButton" class="modal__close" @click="close()"> <iconify icon="gg:close"></iconify> </button>
+    </div>
     <div class="modal__content">
         <slot :close="close" :open="open" :loading="loading"></slot>
     </div>
