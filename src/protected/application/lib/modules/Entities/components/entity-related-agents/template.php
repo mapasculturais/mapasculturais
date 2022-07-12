@@ -7,9 +7,7 @@ $this->import('popover');
 
     <h3><?php i::_e("Grupo de agentes")?></h3>
 
-    {{groups}}
-
-    <div v-for="(groupAgents, groupName) in entity.relatedAgents" class="entity-related-agents__group">
+    <div v-for="(groupAgents, groupName) in groups" class="entity-related-agents__group">
 
         <label class="entity-related-agents__group--name"> {{groupName}} </label>
         
