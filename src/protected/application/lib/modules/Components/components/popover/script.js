@@ -40,6 +40,15 @@ app.component('popover', {
         }
     },
     
+
+    mounted() {
+        document.addEventListener('mousedown', (event) => {
+            if (!event.target.closest('.popover')) {
+                this.close();
+            }
+        })
+    },
+
     methods: {
         open() {
             this.active = true;
