@@ -733,6 +733,8 @@ class Opportunity extends EntityController {
         $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
 
         if(empty($users)){
+            $this->apiAddHeaderMetadata($this->data, [], 0);
+            $this->apiResponse([]);
             return;
         }
 
