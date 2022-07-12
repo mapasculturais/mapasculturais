@@ -151,6 +151,11 @@
         &:hover {
             background-color: var(--mc-gray-500);
         }
+
+        &-dark {
+            background-color: #575757;
+            color: var(--mc-white);
+        }
     }
 
     &--text {
