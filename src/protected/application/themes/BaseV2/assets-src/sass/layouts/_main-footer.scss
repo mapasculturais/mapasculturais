@@ -34,7 +34,7 @@
             }
         }
         @include mobile {
-            width: 50%;
+            width: 70%;
         }
     }
     &__logo {
@@ -48,7 +48,7 @@
             padding: 34px 0;
         }
         @include mobile {
-            width: 90%;
+            width: 70%;
             margin: 0 5%;
             svg {
                 width: 100%;
