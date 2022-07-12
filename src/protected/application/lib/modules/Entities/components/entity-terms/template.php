@@ -7,7 +7,7 @@ $this->import('popover')
     <h4 class="entity-terms__title" v-if="title == ''"> {{taxonomy}} </h4>
     <h4 class="entity-terms__title" v-else> {{title}} </h4>
 
-    <popover openside="down-right" @close="this.filter = ''" @open="loadTerms()">
+    <popover v-if="editable" openside="down-right" @close="this.filter = ''" @open="loadTerms()">
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
                 <?php i::_e("Adicionar nova") ?>
