@@ -1,13 +1,5 @@
 app.component('entity-related-agents', {
     template: $TEMPLATES['entity-related-agents'],
-    
-    // define os eventos que este componente emite
-    emits: ['namesDefined'],
-
-    setup(props, { attrs, slots, emit, expose }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
-    },
 
     props: {
         entity: {
@@ -19,13 +11,25 @@ app.component('entity-related-agents', {
             default: false
         }
     },
+
+    data() {
+        return {
+            groups: {}
+        }
+    },
     
     methods: {
         hasGroups() {
             if (this.entity.relatedAgents == undefined) {
                 return false;
             } else {
-                delete this.entity.relatedAgents['group-admin'];
+                for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
+                    if (groupName == "group-admin") {
+                        continue;
+                    } else {
+                        this.groups[groupName] = group;
+                    }
+                }
                 return true;
             }
         }
