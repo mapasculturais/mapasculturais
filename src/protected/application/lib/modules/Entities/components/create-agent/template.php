@@ -19,9 +19,8 @@ $this->import('modal mapas-field entity-terms');
     </template>
     <template #actions="modal">
         <div class="create-modal__buttons">
-
             <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar')?></button>
-            <button class="button button--solid" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho')?></button>
+            <button class="button button--solid-dark" @click="createDraft(modal)"><?php i::_e('Criar em Rascunho')?></button>
             <button class="button button--text button--text-del " @click="cancel(modal)"><?php i::_e('Cancelar')?></button>
         </div>
     </template>
