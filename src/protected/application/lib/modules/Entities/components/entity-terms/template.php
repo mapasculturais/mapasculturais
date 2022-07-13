@@ -24,7 +24,7 @@ $this->import('popover')
                 </form>
                 <ul v-if="terms.length > 0">
                     <li @click="addTerm(term, popover)" v-for="term in filteredTerms">
-                        <span v-html="underlinedTerm(term)"></span>
+                        <span v-html="highlightedTerm(term)"></span>
                     </li>
                 </ul>
             </div>
@@ -41,7 +41,7 @@ $this->import('popover')
                                 :checked="entityTerms.indexOf(term) >= 0"
                                 @change="toggleTerm(term)"
                                 class="input" > 
-                            <span class="text" v-html="underlinedTerm(term)"></span>
+                            <span class="text" v-html="highlightedTerm(term)"></span>
                         </label>
                     </li>
                 </ul>
