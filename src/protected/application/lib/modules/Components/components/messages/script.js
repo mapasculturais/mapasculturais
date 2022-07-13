@@ -4,36 +4,60 @@ const useMessages = Pinia.defineStore('messages', {
             messages: []
         }
     },
-
+    getters: {
+        activeMessages() {
+            const messages = this.messages.filter((item)=>{
+                if(item.active){
+                    return item;
+                }
+            });
+            return messages;
+        },
+    },
     actions: {
         push(message, timeout) {
-            const messages = this.messages;
-            messages.push(message);
+            this.messages.push(message);
             
             setTimeout(() => {
-                let index = messages.indexOf(message);
-                messages.splice(index - 1, 1);
+                const index = this.messages.indexOf(message);
+                this.messages.splice(index, 1);
             }, timeout || 1000);
         },
         
-        alert(text, timeout) {
-            const type = 'alert';
-            const message = {type, text};
-            this.push(message);
+        success(text, timeout) {
+            const type = 'success';
+            const message = {active:true, type, text};
+            this.push(message, timeout);
+        },
+
+        warning(text, timeout) {
+            const type = 'warning';
+            const message = {active:true, type, text};
+            this.push(message, timeout);
         },
 
         error(text, timeout) {
             const type = 'error';
-            const message = {type, text};
+            const message = {active:true, type, text};
             this.push(message, timeout);
         },
+        
     }
 });
 window.messages = useMessages();
 app.component('messages', {
+    template: $TEMPLATES['messages'],
+    
     setup() {
         const store = useMessages();
         return {store};
     },
-    template: $TEMPLATES['messages']
+
+    computed: {
+
+        messages() {
+            
+            return this.store.activeMessages;
+        },
+    },
 });

@@ -6,6 +6,7 @@ $this->import('
 ?>
 <div class="main-app single-1">
 
+    <entity-links :entity="entity" title="Links"></entity-links>
     <entity-header :entity="entity"></entity-header>
     
     
@@ -14,7 +15,6 @@ $this->import('
         <div class="divider"></div>
         
         <main>
-            
             <div class="row">
                 <h3>Endereço</h3>
                 <p>{{entity.En_Nome_Logradouro}}, {{entity.En_Num}}, {{entity.En_Bairro}}, {{entity.En_CEP}}, {{entity.En_Municipio}}, {{entity.En_Estado}}</p>
@@ -24,7 +24,6 @@ $this->import('
                 <p>{{entity.longDescription}}</p>
             </div>
             <files-list :files="entity.files.downloads" title="Arquivos para download"></files-list>
-            <entity-links :entity="entity" title="Links"></entity-links>
             <entity-gallery :entity="entity"></entity-gallery>
         </main>
         

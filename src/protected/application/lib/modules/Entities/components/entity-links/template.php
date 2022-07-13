@@ -3,7 +3,10 @@ use MapasCulturais\i;
 ?>
 <div class="entity-links">
     <h4 class="entity-links__title"> {{title}} </h4>
-
+    <button class="button button-primary" @click="success()">Sucesso</button>
+    <button class="button button-primary" @click="error()">Erro</button>
+    <button class="button button-primary" @click="warning()">Aviso</button>
+    
     <ul class="entity-links__links">
 
         <li class="entity-links__links--item" v-for="link in entity.metalists.links">
