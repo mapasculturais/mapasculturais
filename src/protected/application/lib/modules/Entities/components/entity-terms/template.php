@@ -19,7 +19,7 @@ $this->import('popover')
         <template v-if="allowInsert" #default="popover">
             <div class="entity-terms__popover">
                 <form class="entity-terms__popover--form" @submit="addTerm(filter, popover)">
-                    <input type="text" v-model="filter" class="entity-terms__popover--input" placeholder="Filter">
+                    <input type="text" v-model="filter" class="entity-terms__popover--input" placeholder="<?= i::__('Busque') ?>">
                     <button class="entity-terms__popover--button"><iconify icon="ic:baseline-search"></iconify></button>
                 </form>
                 <ul v-if="terms.length > 0">
@@ -33,7 +33,7 @@ $this->import('popover')
         <!-- Modo Área de Atuação -->
         <template v-if="!allowInsert" #default="popover">
             <div class="entity-terms__popover">
-                <input type="text" v-model="filter" class="entity-terms__popover--input" placeholder="Filter">
+                <input type="text" v-model="filter" class="entity-terms__popover--input" placeholder="<?= i::__('Filtre') ?>">
                 <ul v-if="terms.length > 0">
                     <li v-for="term in filteredTerms">
                         <label class="entity-terms__popover--field">
