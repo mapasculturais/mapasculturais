@@ -1,12 +1,13 @@
 app.component('create-agent' , {
     template: $TEMPLATES['create-agent'],
     emits: ['create'],
-    
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('create-agent')
+        return { text }
     },
+    
     created() {
         this.createEntity()
         this.iterationFields()

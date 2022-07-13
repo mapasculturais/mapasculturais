@@ -14,7 +14,7 @@ app.component('entity-seals', {
         },
         title: {
             type: String,
-            default: 'Verificações'
+            default: __('verificacoes','entity-seals'),
         },
         editable: {
             type: Boolean,
