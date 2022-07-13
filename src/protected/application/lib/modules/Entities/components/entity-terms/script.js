@@ -86,15 +86,15 @@ app.component('entity-terms', {
             }
         },
 
-        underlinedTerm(term) {
+        highlightedTerm(term) {
             const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _term = term.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const indexOf = _term.indexOf(_filter);
             if(indexOf >= 0) {
-                const part0 = term.substr(0, indexOf);
-                const part1 = term.substr(indexOf, this.filter.length);
+                const part0 = term.substr(0, indexOf); 
+                const part1 = term.substr(indexOf, this.filter.length); 
                 const part2 = term.substr(indexOf + this.filter.length);
-                return `${part0}<u>${part1}</u>${part2}`;
+                return `${part0}<b><u>${part1}</u></b>${part2}`;
             } else {
                 return term;
             }
