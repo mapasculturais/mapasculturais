@@ -2,6 +2,12 @@ app.component('entity-terms', {
     template: $TEMPLATES['entity-terms'],
     emits: [],
 
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('__template__')
+        return { text }
+    },
+    
     beforeCreate() {
         this.definition = $TAXONOMIES[this.taxonomy];
     
