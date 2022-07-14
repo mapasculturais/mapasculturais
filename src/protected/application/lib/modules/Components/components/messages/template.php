@@ -5,7 +5,10 @@ $this->import('mapas-container');
 <mapas-container class="messages">
     <template  v-for="message in messages">
         <div class="messages__message" :class="message.type">
-            <button class="button button-primary" @click="message.active=false">x</button>{{message.text}}
+            <a @click="message.active=false"></a>
+            <div class="messages__message--text">{{message.text}}</div>
+        
         </div>
     </template>
 </mapas-container>
+

@@ -14,13 +14,15 @@
 
     &__message {
         padding: 10px;
+        &--text {
+            margin-left: 45px;
+        }
         
         &.success {
-            background-color: green;
-            color:green
-            background: url('https://api.iconify.design/bi/check-circle.svg')  no-repeat center center / contain;
-            
-
+            margin-right: 8px;
+                background: url('https://api.iconify.design/bi/check-circle.svg') no-repeat left center / contain;
+                background-color: green;
+                background-size: size(20);
         }
         &.warning {
             background-color: gold;
