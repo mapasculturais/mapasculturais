@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 $this->layout = 'entity'; 
 $this->import('
-    mapas-field mapas-container mapas-card 
+    entity-field mapas-container mapas-card 
     entity-profile entity-cover entity-terms entity-admins
     entity-header entity-actions entity-owner entity-social-media
     entity-related-agents');
@@ -29,14 +29,14 @@ $this->import('
                     
                     <div class="row">
                         <entity-profile :entity="entity"></entity-profile>
-                        <mapas-field :entity="entity" prop="name"></mapas-field>
+                        <entity-field :entity="entity" prop="name"></entity-field>
                     </div>
                     
                     <div class="row">
-                        <mapas-field :entity="entity" prop="shortDescription"></mapas-field>
+                        <entity-field :entity="entity" prop="shortDescription"></entity-field>
                     </div>  
                     <div class="row">
-                        <mapas-field :entity="entity" prop="site"></mapas-field>
+                        <entity-field :entity="entity" prop="site"></entity-field>
                     </div>
                     
                 </div>
@@ -60,45 +60,45 @@ $this->import('
                 </template>
                 <template #content>                
                     <div class="row">
-                        <mapas-field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></mapas-field>
+                        <entity-field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="documento"></mapas-field>
+                        <entity-field :entity="entity" prop="documento"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="emailPrivado"></mapas-field>
+                        <entity-field :entity="entity" prop="emailPrivado"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="telefonePublico"></mapas-field>
+                        <entity-field :entity="entity" prop="telefonePublico"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="emailPublico"></mapas-field>
+                        <entity-field :entity="entity" prop="emailPublico"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="telefone1"></mapas-field>
-                        <mapas-field :entity="entity" prop="telefone2"></mapas-field>
+                        <entity-field :entity="entity" prop="telefone1"></entity-field>
+                        <entity-field :entity="entity" prop="telefone2"></entity-field>
                     </div>
                     divider
                     <div class="row">
-                        <mapas-field :entity="entity" prop="En_CEP"></mapas-field>
-                        <mapas-field :entity="entity" prop="En_Nome_Logradouro"></mapas-field>
+                        <entity-field :entity="entity" prop="En_CEP"></entity-field>
+                        <entity-field :entity="entity" prop="En_Nome_Logradouro"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="En_Num"></mapas-field>
-                        <mapas-field :entity="entity" prop="En_Bairro"></mapas-field>
+                        <entity-field :entity="entity" prop="En_Num"></entity-field>
+                        <entity-field :entity="entity" prop="En_Bairro"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="En_Complemento"></mapas-field>
+                        <entity-field :entity="entity" prop="En_Complemento"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="En_Municipio"></mapas-field>
-                        <mapas-field :entity="entity" prop="En_Estado"></mapas-field>
+                        <entity-field :entity="entity" prop="En_Municipio"></entity-field>
+                        <entity-field :entity="entity" prop="En_Estado"></entity-field>
                     </div>
                     <div class="row">
-                        <!-- <mapas-field :entity="entity" prop="publicLocation"></mapas-field> -->
+                        <!-- <entity-field :entity="entity" prop="publicLocation"></entity-field> -->
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="longDescription"></mapas-field>
+                        <entity-field :entity="entity" prop="longDescription"></entity-field>
                     </div>
                 </template>
             </mapas-card>
@@ -110,12 +110,12 @@ $this->import('
                 </template>
                 <template #content>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Deta de Nascimento') ?>"></mapas-field>
-                        <mapas-field :entity="entity" prop="genero"></mapas-field>
+                        <entity-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Deta de Nascimento') ?>"></entity-field>
+                        <entity-field :entity="entity" prop="genero"></entity-field>
                     </div>
                     <div class="row">
-                        <mapas-field :entity="entity" prop="orientacaoSexual"></mapas-field>
-                        <mapas-field :entity="entity" prop="raca"></mapas-field>
+                        <entity-field :entity="entity" prop="orientacaoSexual"></entity-field>
+                        <entity-field :entity="entity" prop="raca"></entity-field>
                     </div>
                 </template>
             </mapas-card>

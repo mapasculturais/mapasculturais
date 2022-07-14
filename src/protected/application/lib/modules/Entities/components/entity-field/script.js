@@ -1,5 +1,5 @@
-app.component('mapas-field', {
-    template: $TEMPLATES['mapas-field'],
+app.component('entity-field', {
+    template: $TEMPLATES['entity-field'],
     emits: ['change'],
 
     setup(props, { slots }) {

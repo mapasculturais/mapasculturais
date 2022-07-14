@@ -1,17 +1,17 @@
  <?php 
 use MapasCulturais\i;
-$this->import('modal mapas-field entity-terms'); 
+$this->import('modal entity-field entity-terms'); 
 ?>
 
 <modal title="Criar Agente" class="create-modal" button-label="Criar Agente" >
     <template #default>
         <label><?php i::_e('Crie um agente com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
-            <mapas-field :entity="entity"  :editable="true" label="<?php i::esc_attr_e("Selecione o tipo do agente")?>" prop="type"></mapas-field>
-            <mapas-field :entity="entity" label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></mapas-field>
+            <entity-field :entity="entity"  :editable="true" label="<?php i::esc_attr_e("Selecione o tipo do agente")?>" prop="type"></entity-field>
+            <entity-field :entity="entity" label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>
             <entity-terms :entity="entity" :editable="true" taxonomy='area' title="Área de Atuação"></entity-terms>
-            <mapas-field :entity="entity" prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></mapas-field>
-            <mapas-field :entity="entity" v-for="field in fields" :prop="field"></mapas-field>
+            <entity-field :entity="entity" prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
+            <entity-field :entity="entity" v-for="field in fields" :prop="field"></entity-field>
         </div>
     </template>
     <template #button="modal">
