@@ -9,38 +9,40 @@
     margin: auto;
     position: fixed;
     top: 20px;
+    border-left-style:initial;
     z-index: 100;
     width: 100%;
 
     &__message {
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 4px;
-        padding: 10px;
+        padding: 15px;
         width: 478px;
 
         &--text {
-            padding: 8px;
             margin-left: 10px;
+            color: white;
+            padding-left: 8px;
         }
 
         &.success {
-            margin-right: 8px;
-            background: url('https://api.iconify.design/bi/check-circle.svg') no-repeat left center / contain;
+            margin-left: 8px;
+            background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat left center / contain;
             background-color: green;
             background-size: size(20);
         
         }
         
         &.warning {
-            margin-right: 8px;
-            background: url('https://api.iconify.design/bi/check-circle.svg') no-repeat left center / contain;
+            margin-left: 8px;
+            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat left center / contain;
             background-color: gold;
             background-size: size(20);
         }
         
         &.error {
-            margin-right: 8px;
-            background: url('https://api.iconify.design/ant-design/exclamation-circle-outlined.svg') no-repeat left center / contain;
+            margin-left: 8px;
+            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat left center / contain;
             background-color: red;
             background-size: size(20);
         
