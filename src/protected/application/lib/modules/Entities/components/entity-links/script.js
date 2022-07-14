@@ -2,9 +2,10 @@ app.component('entity-links', {
     template: $TEMPLATES['entity-links'],
     emits: [],
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('__template__')
+        return { text }
     },
 
     props: {
@@ -22,5 +23,19 @@ app.component('entity-links', {
         }
 
     },
+    methods: {
+        success() {
+            const messages = useMessages();
+            messages.success("mensagem de sucesso", 10000);
+        },
+        error() {
+            const messages = useMessages();
+            messages.error("Mensagem de erro",10000)
+        },
+        warning() {
+            const messages = useMessages();
+            messages.warning("Mensagem de aviso", 10000);
+        },
+    }
     
 });

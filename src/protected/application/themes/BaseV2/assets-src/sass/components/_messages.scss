@@ -1,0 +1,32 @@
+@use '../settings/mixins' as *;
+
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    margin: auto;
+    position: fixed;
+    top: 20px;
+    z-index: 100;
+    width: 100%;
+
+    &__message {
+        padding: 10px;
+        
+        &.success {
+            background-color: green;
+            color:green
+            background: url('https://api.iconify.design/bi/check-circle.svg')  no-repeat center center / contain;
+            
+
+        }
+        &.warning {
+            background-color: gold;
+        }
+        &.error {
+            background-color: red;
+        }
+    }
+}
