@@ -20,6 +20,7 @@
 		<div><span class="label"><?php \MapasCulturais\i::_e("Data de Criação:");?></span> <?php echo $entity->createTimestamp->format('d/m/Y H:i:s');?></div>
 	</div>
     <div class="entity-actions">
+        <?php $this->applyTemplateHook('entity-actions','begin', [ $entity ]); ?>
         <a class="btn btn-small btn-primary" href="<?php echo $entity->editUrl; ?>"><?php \MapasCulturais\i::_e("editar");?></a>
 
         <?php if($entity->status === \MapasCulturais\Entities\Subsite::STATUS_ENABLED): ?>
@@ -39,5 +40,6 @@
                 <a class="btn btn-small btn-danger" href="<?php echo $entity->destroyUrl; ?>"><?php \MapasCulturais\i::_e("excluir definitivamente");?></a>
             <?php endif; ?>
         <?php endif; ?>
+        <?php $this->applyTemplateHook('entity-actions','end', [ $entity ]); ?>
     </div>
 </article>

@@ -91,6 +91,17 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
+        'agenteItinerante' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Agente Itinerante'),
+            'type' => 'select',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não Informar'),
+                'Sim' => \MapasCulturais\i::__('Sim'),
+                'Não' => \MapasCulturais\i::__('Não'),
+            ),
+            'available_for_opportunities' => true
+        ),
         
         
         

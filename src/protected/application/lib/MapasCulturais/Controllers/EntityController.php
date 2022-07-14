@@ -76,7 +76,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @return bool
      */
     public function isAjax(){
-        return App::i()->request->isAjax();
+        $app = App::i();
+        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
     }
 
 
