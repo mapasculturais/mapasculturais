@@ -331,7 +331,7 @@ trait EntityMetadata{
 
             $unserialize = $metadata_definition->unserialize;
             if (is_callable($unserialize)) {
-                $val = $unserialize($val);
+                $val = $unserialize($val, $this);
             }
 
             $metadata_value_errors = $metadata_definition->validate($this, $val);
