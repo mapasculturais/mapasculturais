@@ -62,7 +62,7 @@ app.component('entity-field', {
         },
         debounce: {
             type: Number,
-            default: 2000
+            default: 0
         }
     },
 
