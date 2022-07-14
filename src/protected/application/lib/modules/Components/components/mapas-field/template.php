@@ -1,7 +1,8 @@
 <div class="field">
-    <label v-if="showLabel" :for="propId">{{label || description.label}}</label>
-    <small v-if="hasErrors()">
-        {{getErrors().join('; ')}}
+    <label v-if="showLabel" :for="propId">{{label || description.label}}</label> 
+    <span v-if="description.required">OBRIGATORIO</span>
+    <small v-if="hasErrors">
+        {{errors.join('; ')}}
     </small>
     <slot name="input">
         <?php //@todo implementar registro de tipos de campos (#1895) ?>

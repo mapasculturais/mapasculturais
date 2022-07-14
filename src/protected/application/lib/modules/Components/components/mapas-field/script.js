@@ -35,8 +35,7 @@ app.component('mapas-field', {
             description: description,
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType: this.type || description.input_type || description.type,
-            value: value,
-            errors: []
+            value: value
         }
     },
 
@@ -66,8 +65,8 @@ app.component('mapas-field', {
             default: 2000
         }
     },
-    
-    methods: {
+
+    computed: {
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
             if(errors.length > 0){
@@ -76,11 +75,12 @@ app.component('mapas-field', {
                 return false;
             }
         },
-
-        getErrors() {
+        errors() {
             return this.entity.__validationErrors[this.prop];
-        },
-
+        }
+    },
+    
+    methods: {
         change() {
             clearTimeout(this.__timeout);
 
