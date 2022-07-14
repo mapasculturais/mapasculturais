@@ -14,7 +14,8 @@ app.component('entity-related-agents', {
 
     data() {
         return {
-            groups: {}
+            groups: {},
+            newGroupName: ''
         }
     },
     
@@ -32,6 +33,19 @@ app.component('entity-related-agents', {
                 }
                 return true;
             }
+        },
+
+        addGroup(group) {
+            if (!this.entity.relatedAgents[group]) {
+                this.entity.relatedAgents[group] = [];
+            }
+            if (!this.entity.agentRelations[group]) {
+                this.entity.agentRelations[group] = [];
+            }
+        },
+
+        addAgent(group, agent) {
+            this.entity.addRelatedAgent(group, agent);
         }
     },
 });

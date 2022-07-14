@@ -28,7 +28,7 @@ $this->import('popover');
     
         <div class="entity-related-agents__group--actions">
 
-            <select-entity type="agent" @select="changeOwner($event)" openside="down-right">            
+            <select-entity type="agent" @select="addAgent(groupName, $event)" openside="down-right">            
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> <?php i::_e('Adicionar agente') ?> <iconify icon="ps:plus"/> </button>
                 </template>
@@ -53,11 +53,11 @@ $this->import('popover');
 
             <template #default="{ close }">
                 <div class="entity-related-agents__addNew--newGroup">
-                    <input class="newGroupName" type="text" name="newGroup" placeholder="Digite o nome do grupo" />
+                    <input v-model="newGroupName" class="newGroupName" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                     
                     <div class="newGroup--actions">
                         <button class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                        <button class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
+                        <button @click="addGroup(newGroupName)" class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
                     </div>
                 </div>
 
