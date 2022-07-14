@@ -88,6 +88,10 @@ class Entity {
         return this.API.createUrl('upload', [this.id]);
     }
 
+    get createAgentRelationUrl() {
+        return this.API.createUrl('createAgentRelation', [this.id]);
+    }
+
     get cacheId() {
         return this.API.createCacheId(this.id);
     }
@@ -228,5 +232,36 @@ class Entity {
                 this.__processing = false;
                 console.log(error);
             });
+    }
+
+    async createAgentRelation(group, agent, hasControl, metadata) {
+        this.__processing = true;
+        
+        return this.API.POST(this.createAgentRelationUrl, {group, agentId: agent.id, has_control: hasControl})
+            .then(response => response.json().then(agentRelation => {
+                delete agentRelation.owner;
+                delete agentRelation.agentUserId;
+                delete agentRelation.objectId;
+                delete agentRelation.owner;
+                delete agentRelation.ownerUserId;
+
+                this.agentRelations[group] = this.agentRelations[group] || [];
+                this.agentRelations[group].push(agentRelation);
+                
+                this.relatedAgents[group] = this.relatedAgents[group] || [];
+                this.relatedAgents[group].push(agent);
+                
+                console.log(agentRelation);
+                this.__processing = false;
+            })
+            .catch((error) => {
+                this.__processing = false;
+                console.log(error);
+            }))
+    }
+
+    async addRelatedAgent(group, agentId, metadata) {
+        console.log('teste');
+        return this.createAgentRelation(group, agentId);
     }
 }
