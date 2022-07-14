@@ -844,23 +844,47 @@ module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', functio
 
 module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFieldsConfigService', '$timeout', function ($scope, EvaluationsFieldsConfigService, $timeout) {
     $scope.data = {
-        fields: MapasCulturais.evaluationFieldsList,
+        fields: MapasCulturais.evaluationFieldsList || [],
         avaliableEvaluationFields: {},
-        checkedStatus: MapasCulturais.entity.object.avaliableEvaluationFields ?? {},
+        category:{
+            fieldName: "category",
+            checked: false,
+            title: "Categoria"
+        },
+        projectName:{
+            fieldName: "projectName",
+            checked: false,
+            title: "Nome do projeto"
+        },
+        agentsSummary:{
+            fieldName: "agentsSummary",
+            checked: false,
+            title: "Resumo dos agentes"
+        },
+        spaceSummary:{
+            fieldName: "spaceSummary",
+            checked: false,
+            title: "Resumo dos espaços"
+        },
+        allFields: {
+            checked:false
+        }
     }
+    $scope.evaluationsFieldsFilter = "";
 
+    
     $scope.selectFields = function(field){
         $scope.data.avaliableEvaluationFields = {}
 
-        if(!$scope.isChecked(field)){
-            $scope.data.checkedStatus[field] = true;
-        }else{
-            $scope.data.checkedStatus[field] = false;
+        $scope.dependenceVeriry(field);
+
+        if(field.ref == "category" && !field.checked){
+            MapasCulturais.Messages.alert("Você desativou a categoria, todos os campos vinculado a alguma categoria serão também desativados");
         }
-            
-        Object.keys($scope.data.checkedStatus).forEach(function(field){
-            if($scope.data.checkedStatus[field] || $scope.data.checkedStatus[field] == "true"){
-                $scope.data.avaliableEvaluationFields[field] = true;
+
+        $scope.data.fields.forEach(function(item){
+            if(item.checked){
+                $scope.data.avaliableEvaluationFields[item.ref] = true;
             }
         });
 
@@ -869,22 +893,150 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
         });
     }
 
-    $scope.isChecked = function(field){
-       if($scope.data.checkedStatus[field]){
-           return true;
-       }
+    $scope.data.fields = [
+        $scope.data.category,
+        $scope.data.projectName,
+        $scope.data.agentsSummary,
+        $scope.data.spaceSummary,
+    ].concat(MapasCulturais.evaluationFieldsList)
 
-       return false;
-    }
 
+    $scope.fieldTitles = [];
     $scope.data.fields.map(function(item){
+
         if(item.hasOwnProperty("groupName")){
             item.ref = item.groupName;
         }else{
             item.ref = item.fieldName;
         }
+        $scope.fieldTitles[item.ref] = item.title
     });
 
+    $scope.data.fields.map(function(item){
+        if(MapasCulturais.entity.object.avaliableEvaluationFields[item.ref] == "true"){
+            item.checked = true;
+        }
+
+        if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
+            item.disabled = true;
+            item.titleDisabled = "Para ativar este campo, ative também o campo Categoria";
+            
+        }
+
+        var field_condition = item.config?.require?.field;
+        if(field_condition && MapasCulturais.entity.object.avaliableEvaluationFields[field_condition] != "true"){
+            item.disabled = true;
+            item.titleDisabled = "Para ativar este campo, ative também o campo '"+$scope.fieldTitles[field_condition]+"'";
+        }
+    });
+
+    $scope.countSelected = 0;
+    $scope.data.fields.map(function(item){
+        if(item.checked){
+            $scope.countSelected ++;
+        }
+    });
+
+    if($scope.countSelected == $scope.data.fields.length){
+        $scope.data.allFields.checked = true;
+    console.log($scope.data.allFields.checked)
+
+    }
+
+
+
+    $scope.checkedAll = function(){
+        $scope.data.avaliableEvaluationFields = {}
+        $scope.hasDisabled = false;
+
+        $scope.data.fields.forEach(function(item){
+            if(item.filterActive){
+                item.checked = $scope.data.allFields.checked;
+                var fieldCondition = item.config?.require?.field;
+                if(fieldCondition || item.categories?.length > 0){
+                    $scope.data.fields.forEach(function(field){
+                        if(fieldCondition == field.ref){
+                            if(!field.filterActive){
+                                field.checked = item.checked;
+                            }
+                        }
+
+                        if(field.ref == "category" && item.categories?.length > 0){
+                            field.checked = item.checked;
+                        }
+
+                    });
+
+                    if(item.checked){
+                        item.disabled = false;
+                    }else{
+                        item.disabled = true;
+                    }
+                }
+            }
+
+            if(item.disabled){
+                $scope.hasDisabled = true;
+            }
+        });
+
+        $scope.data.fields.forEach(function(item){
+            if(item.checked){
+                $scope.data.avaliableEvaluationFields[item.ref] = true;
+            }
+        });
+
+        EvaluationsFieldsConfigService.save($scope.data.avaliableEvaluationFields).success(function(r) {
+            if($scope.hasDisabled && $scope.data.allFields.checked){
+                MapasCulturais.Messages.alert("Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente");            
+            }else{
+                MapasCulturais.Messages.success("Salvo com sucesso");            
+            }
+        });
+
+    }
+
+    $scope.checkedDependence = function(field){
+        $scope.data.fields.forEach(function(item){
+            var fieldCondition = item.config?.require?.field;
+            console.log(fieldCondition)
+            if(fieldCondition == field.ref){
+                item.checked = field.checked;
+                item.disabled = !field.checked;
+            }
+        });
+    }
+
+    $scope.dependenceVeriry = function(field){
+        $scope.data.fields.forEach(function(item){
+            var fieldCondition = item.config?.require?.field;
+            if(fieldCondition == field.ref){
+                if(field.checked){
+                    item.disabled = false;
+                }else{
+                    item.disabled = true;
+                    item.checked = false;
+                }
+            }
+
+            if(field.ref == "category" && item.categories?.length > 0){
+                if(field.checked){
+                    item.disabled = false;
+                }else{
+                    item.disabled = true;
+                    item.checked = false;
+                }
+            }
+        });
+    }
+    
+    $scope.filter = function(field){
+        if((field.title.toLowerCase().indexOf($scope.evaluationsFieldsFilter.toLowerCase()) >= 0)  || (field.ref.toLowerCase().indexOf("field_"+$scope.evaluationsFieldsFilter.replace('#', '').toLowerCase()) >= 0)){
+            field.filterActive = true;
+            return true;
+        }
+        field.filterActive = false;
+    }
 }]);
 
 module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$interval', '$timeout', 'RelatedAgentsService', 'RegistrationService', 'RegistrationConfigurationService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $interval, $timeout, RelatedAgentsService, RegistrationService, RegistrationConfigurationService, EditBox, $http, UrlService) {
@@ -942,9 +1094,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         id: MapasCulturais.registration.id
     };
     $scope.saveField = function (field, value, delay) {
+
         delete field.error;
 
-        $scope.data.editableEntity[field.fieldName] = JSON.parse(angular.toJson(value));
+        $scope.data.editableEntity[field.fieldName] = value ? JSON.parse(angular.toJson(value)) : null;
 
         $timeout.cancel(saveTimeout);
         
@@ -954,14 +1107,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     // modifica o botão salvar
-    // 
-    $('#editable-entity .js-submit-button').remove();
-    $('#editable-entity .controles').html('<a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
-    if(!$('#editable-entity .js-save-registration').data('registration')) {
-        $('#editable-entity .js-save-registration').data('registration', true);
-        $('#editable-entity .js-save-registration').click(function(e) {
-            $scope.saveRegistration();
-        });
+    if(MapasCulturais.isEditable){
+        $('#editable-entity .js-submit-button').remove();
+        $('#editable-entity .controles').html('<a class="btn btn-primary js-save-registration" rel="noopener noreferrer">Salvar</a>');
+        if(!$('#editable-entity .js-save-registration').data('registration')) {
+            $('#editable-entity .js-save-registration').data('registration', true);
+            $('#editable-entity .js-save-registration').click(function(e) {
+                $scope.saveRegistration();
+            });
+        }
+    }else{
+        $('#editable-entity .controles').remove();
     }
 
     $scope.saveRegistration = function () {
@@ -1242,11 +1398,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.data.fields.forEach(function(field) {
         $scope.$watch('entity.' + field.fieldName, function(current, old){
-            if(current == old){
-                return;
-            }
 
-            $scope.saveField(field, current, 10000)
+            $scope.saveField(field, current, 10000);
+            
         }, true);
     });
 
@@ -1254,9 +1408,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         $('[js-mask]').each(function() {
             var $this = jQuery(this);
 
-            if (!$this.data('js-mask-init')) {
+            if (!$this.data('js-mask-init')) {                
+                $this.data('js-mask-init', true);                
+            }
+
+            if($(this).hasClass('js-mask-currency')){
+                $this.mask($this.attr('js-mask'), {reverse: true});
+            }else{
                 $this.mask($this.attr('js-mask'));
-                $this.data('js-mask-init', true);
             }
         });
     }
@@ -1368,7 +1527,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }, 1000);
 
     $scope.showField = function(field){
-
+        
         var result;
         if (!$scope.useCategories){
             result = true;
@@ -1384,9 +1543,25 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
-            if(!$scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
-                return false;
+
+            if(MapasCulturais.entity.object.category){
+                if(!MapasCulturais.entity.object.category.includes(field.categories)){
+                    return false;
+                }   
             }
+            
+            if(field.config && field.config.require && field.config.require.condition){
+                var _field = field.config.require.field;
+                if(field.config.require.value != MapasCulturais.entity.object[_field]){
+                    return false;
+                }
+            }
+
+            if($scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+                return true;
+            }
+            
+            return false;
         }
 
         return result;
@@ -1748,7 +1923,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                             }
                         }
                     }
-                    var metadata = JSON.parse(headers()['api-metadata']);
+                    var metadata = headers()['api-metadata'] ?  JSON.parse(headers()['api-metadata']) : {};
                     
                     $scope.data[meta_key] = metadata;
                     $scope.data[varname] = $scope.data[varname].concat(response);
@@ -2400,6 +2575,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             registrations: [],
             evaluations: [],
             registrationAndEvaluations: [],
+            avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
         }
 
         var registrationsApi = new OpportunityApiService($scope, 'registrations', 'findRegistrations', {

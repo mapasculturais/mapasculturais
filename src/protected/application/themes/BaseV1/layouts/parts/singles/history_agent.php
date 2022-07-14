@@ -131,6 +131,10 @@ $this->includeMapAssets();
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Orientação Sexual");?>:</span> <span class="js-editable" data-edit="orientacaoSexual" data-original-title="<?php i::esc_attr_e("Orientação Sexual"); ?>" data-emptytext="<?php i::esc_attr_e("Selecione a orientação sexual se for pessoa física");?>"><?php echo $entity->orientacaoSexual; ?></span></p>
                     <?php endif;?>
 
+                    <?php if(isset($entity->agenteItinerante) && $userCanView):?>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Agente Itinerante");?>:</span> <span class="js-editable" data-edit="agenteItinerante" data-original-title="<?php i::esc_attr_e("Agente Itinerante"); ?>" data-emptytext="<?php i::esc_attr_e("Responda sim, caso seja agente Itinerante ou não se possuir residência fixa");?>"><?php echo $entity->agenteItinerante; ?></span></p>
+                    <?php endif;?>
+
                     <?php if(isset($entity->raca) && $userCanView):?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Raça/Cor");?>:</span> <span class="js-editable" data-edit="raca" data-original-title="<?php i::esc_attr_e("Raça/cor");?>" data-emptytext="<?php i::esc_attr_e("Selecione a raça/cor se for pessoa física");?>"><?php echo $entity->raca; ?></span></p>
                     <?php endif;?>

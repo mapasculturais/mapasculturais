@@ -1737,5 +1737,5 @@ $$
     },
     "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
         __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
-    }
+    },
 ] + $updates ;
