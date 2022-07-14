@@ -17,6 +17,10 @@
         
         &.success {
             background-color: green;
+            color:green
+            background: url('https://api.iconify.design/bi/check-circle.svg')  no-repeat center center / contain;
+            
+
         }
         &.warning {
             background-color: gold;
