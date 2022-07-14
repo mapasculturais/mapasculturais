@@ -15,16 +15,16 @@ app.component('popover', {
 
     props: {
         classes: {
-            type: String,
-            default: ''
+            type: Array,
+            default: []
         },
         buttonLabel: {
             type: String,
             default: ''
         },
         buttonClasses: {
-            type: String,
-            default: ''
+            type: Array,
+            default: []
         },
         openside: {
             type: String,
