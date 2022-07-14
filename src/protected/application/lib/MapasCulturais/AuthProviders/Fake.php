@@ -47,8 +47,10 @@ class Fake extends \MapasCulturais\AuthProvider {
         $app->hook('GET(auth.fakeLogin)', function () use($app) {
             $app->auth->processResponse();
 
-            if ($app->auth->isUserAuthenticated()) {
-                $app->redirect($app->auth->getRedirectPath());
+            if ($app->auth->isUserAuthenticated()) {        
+                $url = $app->auth->getRedirectPath();
+                $app->redirect($url);
+                
             } else {
                 $app->redirect($this->createUrl(''));
             }
@@ -62,20 +64,6 @@ class Fake extends \MapasCulturais\AuthProvider {
 
     public function _cleanUserSession() {
         unset($_SESSION['auth.fakeAuthenticationUserId']);
-    }
-
-    /**
-     * Returns the URL to redirect after authentication
-     * @return string
-     */
-    public function getRedirectPath() {
-        
-        $path = key_exists('mapasculturais.auth.redirect_path', $_SESSION) ?
-            $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site', '');
-    
-        unset($_SESSION['mapasculturais.auth.redirect_path']);
-
-        return $path;
     }
 
     public function _getAuthenticatedUser() {

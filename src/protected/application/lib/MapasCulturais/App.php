@@ -241,7 +241,7 @@ class App extends \Slim\Slim{
         if($handle = opendir(MODULES_PATH)){
             while (false !== ($file = readdir($handle))) {
                 $dir = MODULES_PATH . $file . '/';
-                if ($file != "." && $file != ".." && is_dir($dir)) {
+                if ($file != "." && $file != ".." && is_dir($dir) && file_exists($dir."/Module.php")) {
                     $available_modules[] = $file;
                     $config['namespaces'][$file] = $dir;
                 }
@@ -1653,6 +1653,10 @@ class App extends \Slim\Slim{
      * @throws Exception 
      */
     public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
+        if($this->config['app.log.jobs']) {
+            $this->log->debug("ENQUEUED JOB: $type_slug");
+        }
+
         $type = $this->getRegisteredJobType($type_slug);
         
         if (!$type) {
@@ -1662,6 +1666,7 @@ class App extends \Slim\Slim{
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
         if ($job = $this->repo('Job')->find($id)) {
+            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
             return $job;
         }
 
@@ -1705,6 +1710,10 @@ class App extends \Slim\Slim{
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
             $this->enableAccessControl();
+
+            return $job_id;
+        } else {
+            return false;
         }
     }
 

@@ -41,10 +41,11 @@ if [ $BUILD_ASSETS = "1" ]; then
 fi
 
 cd /
+
 touch /nohup.out
-usermod -s /bin/sh www-data
-nohup su www-data -c /jobs-cron.sh >> /dev/stdout &
-nohup su www-data -c /recreate-pending-pcache-cron.sh >> /dev/stdout &
+sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &
+sudo -E -u www-data nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
+
 tail -f /nohup.out > /dev/stdout &
 touch /mapas-ready
 

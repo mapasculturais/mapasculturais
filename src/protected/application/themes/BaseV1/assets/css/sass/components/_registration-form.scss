@@ -112,7 +112,17 @@ article.opportunity .editable-buttons button {
         cursor: pointer;
       }
 	}
-
+    .evaluationFields{
+        > span {
+            margin-bottom: 0.5em;
+            display: block;
+            border-bottom: 1px dotted #eee;
+            padding-bottom: 0.5em;
+        }
+        .evaluation-fields-filter{
+            width: 100%;
+        }
+    }
     .opportunity-togglable-form-content {
       margin-top: $line-height-half;
     }
