@@ -26,15 +26,15 @@ app.component('entity-links', {
     methods: {
         success() {
             const messages = useMessages();
-            messages.success("mensagem de sucesso", 10000);
+            messages.success("Isso é um snackbar de confirmação", 10000);
         },
         error() {
             const messages = useMessages();
-            messages.error("Mensagem de erro",10000)
+            messages.error("Isso é um snackbar de erro",10000)
         },
         warning() {
             const messages = useMessages();
-            messages.warning("Mensagem de aviso", 10000);
+            messages.warning("Isso é um snackbar de aviso", 10000);
         },
     }
     
