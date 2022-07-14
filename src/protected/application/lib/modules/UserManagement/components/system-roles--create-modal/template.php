@@ -2,12 +2,12 @@
 
 use MapasCulturais\i;
 
-$this->import('modal,loading,field')
+$this->import('modal,loading, entity-field')
 ?>
 <modal title="<?php i::esc_attr_e('Criar nova função') ?> " @close="resetInstance()" @open="resetInstance()">
     <template #default>
-        <mapas-field :entity="instance" prop="slug"></mapas-field>
-        <mapas-field :entity="instance" prop="name"></mapas-field>
+        <entity-field :entity="instance" prop="slug"></entity-field>
+        <entity-field :entity="instance" prop="name"></entity-field>
         <section v-for="(entityPermissions,entitySlug) in permissions"> 
             <h4>{{entitySlug}}</h4>
             <ul>

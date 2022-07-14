@@ -1,6 +1,6 @@
 <?php 
 use MapasCulturais\i;
-$this->import('mapas-field');
+$this->import('entity-field');
 ?>
 
 <div class="entity-social-media">
@@ -52,37 +52,37 @@ $this->import('mapas-field');
 
         <div class="entity-social-media__edit--link">
             <iconify icon="fa6-brands:instagram"></iconify>
-            <mapas-field :entity="entity" prop="instagram"></mapas-field>
+            <entity-field :entity="entity" prop="instagram"></entity-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="fa6-brands:twitter"></iconify>
-            <mapas-field :entity="entity" prop="twitter"></mapas-field>
+            <entity-field :entity="entity" prop="twitter"></entity-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="brandico:facebook-rect"></iconify>
-            <mapas-field :entity="entity" prop="facebook"></mapas-field>
+            <entity-field :entity="entity" prop="facebook"></entity-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:youtube-fill"></iconify>
-            <mapas-field :entity="entity" prop="youtube"></mapas-field>
+            <entity-field :entity="entity" prop="youtube"></entity-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:linkedin-box-fill"></iconify>
-            <mapas-field :entity="entity" prop="linkedin"></mapas-field>
+            <entity-field :entity="entity" prop="linkedin"></entity-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:spotify-fill"></iconify>
-            <mapas-field :entity="entity" prop="spotify"></mapas-field>
+            <entity-field :entity="entity" prop="spotify"></entity-field>
         </div>
 
         <div class="entity-social-media__edit--link">
             <iconify icon="akar-icons:pinterest-fill"></iconify>
-            <mapas-field :entity="entity" prop="pinterest"></mapas-field>
+            <entity-field :entity="entity" prop="pinterest"></entity-field>
         </div>
     </div>
 
