@@ -12,21 +12,25 @@
     border-left-style:initial;
     z-index: 100;
     width: 100%;
+    padding-left:10px ;
 
     &__message {
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 4px;
         padding: 15px;
         width: 478px;
+        margin-left: 8px;
 
         &--text {
             margin-left: 10px;
             color: white;
             padding-left: 8px;
         }
+        &--snackbar {
+            margin-left: 15px;
+        }
 
         &.success {
-            margin-left: 8px;
             background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat left center / contain;
             background-color: green;
             background-size: size(20);
@@ -34,14 +38,12 @@
         }
         
         &.warning {
-            margin-left: 8px;
             background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat left center / contain;
             background-color: gold;
             background-size: size(20);
         }
         
         &.error {
-            margin-left: 8px;
             background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat left center / contain;
             background-color: red;
             background-size: size(20);
