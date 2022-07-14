@@ -7,10 +7,10 @@ $this->import('modal mapas-field entity-terms');
     <template #default>
         <label><?php i::_e('Crie um agente com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
-            <mapas-field :entity="entity"  :editable="true" label="Selecione o tipo do agente" prop="type"></mapas-field>
-            <mapas-field :entity="entity" label="Nome ou título"  prop="name"></mapas-field>
+            <mapas-field :entity="entity"  :editable="true" label="<?php i::esc_attr_e("Selecione o tipo do agente")?>" prop="type"></mapas-field>
+            <mapas-field :entity="entity" label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></mapas-field>
             <entity-terms :entity="entity" :editable="true" taxonomy='area' title="Área de Atuação"></entity-terms>
-            <mapas-field :entity="entity" prop="shortDescription" label="Adicione uma Descrição curta para o Agente"></mapas-field>
+            <mapas-field :entity="entity" prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></mapas-field>
             <mapas-field :entity="entity" v-for="field in fields" :prop="field"></mapas-field>
         </div>
     </template>
