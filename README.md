@@ -8,6 +8,7 @@ Mapas Culturais é uma plataforma colaborativa que reúne informações sobre ag
 
 A plataforma já está em uso em diversos municipios, estados, no governo federal em diversos projetos do ministério da cultura e até mesmo fora do Brasil no Uruguai. Instalações recentes: 
 
+
 ### Instalações em nível federal ou internacional
 - IberculturaViva - https://mapa.iberculturaviva.org/
 - Mapa Uruguai - http://culturaenlinea.uy/
