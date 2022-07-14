@@ -87,7 +87,11 @@
 
                 if(entity === 'event'){
                     if(data.global.viewMode === 'list'){
-                        requestAction = 'findByLocation';
+                        if(data.userManagerment){
+                            requestAction = 'find';
+                        }else{
+                            requestAction = 'findByLocation';
+                        }
                     }else{
                         requestEntity = 'space' ;
                         requestAction = 'findByEvents';

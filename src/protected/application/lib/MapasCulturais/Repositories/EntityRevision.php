@@ -27,6 +27,23 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $query->getResult();
     }
 
+    public function findEntityRevisionsByDate($entity, $date) {
+        $objectId = $entity->id;
+        $objectType = $entity->getClassName();
+        $query = $this->_em->createQuery("SELECT e
+                                            FROM MapasCulturais\Entities\EntityRevision e
+                                            WHERE e.objectId = {$objectId} AND e.objectType = '{$objectType}'
+                                            AND e.createTimestamp <= :sendTimeStemp ORDER BY e.id DESC");
+
+        $params = [
+            'sendTimeStemp' => $date
+        ];      
+
+        $query->setParameters($params);
+        $query->setMaxResults(1);
+        return $query->getOneOrNullResult();
+    }
+
     public function findCreateRevisionObject($id) {
         $app = App::i();
         $qryRev = $this->_em->createQuery("SELECT e
