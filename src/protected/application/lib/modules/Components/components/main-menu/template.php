@@ -3,7 +3,7 @@ $this->import('popover');
 ?>
 <div class="main-menu">
 
-    <popover openside="down-left" button-label="Menu" button-classes="openPopever main-menu__btn"> 
+    <popover openside="down-left" button-label="Menu" :button-classes="['openPopever', 'main-menu__btn']"> 
         <ul class="main-menu__desktop">
             <slot name="default"></slot>
         </ul>
