@@ -226,6 +226,7 @@ class Entity {
                     this.files[group] = file;
                 }
 
+                this.__processing = false;
                 return file;
             }))
             .catch((error) => {
