@@ -11,8 +11,6 @@ $this->import('mapas-container');
                 {{message.text}}
             </div>
         </div>
-        
-        </div>
     </template>
 </mapas-container>
 
