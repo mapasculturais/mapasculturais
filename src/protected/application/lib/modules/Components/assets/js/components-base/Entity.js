@@ -234,7 +234,7 @@ class Entity {
                 }
             });
         } catch (error) {
-            return this.doCatch(erorr);
+            return this.doCatch(error);
         }
     }
 
@@ -253,7 +253,7 @@ class Entity {
                 }
             });
         } catch (error) {
-            return this.doCatch(erorr);
+            return this.doCatch(error);
         }
     }
 
