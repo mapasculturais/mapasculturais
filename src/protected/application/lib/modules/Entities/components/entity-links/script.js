@@ -4,7 +4,7 @@ app.component('entity-links', {
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('__template__')
+        const text = Utils.getTexts('entity-links')
         return { text }
     },
 
