@@ -19,32 +19,40 @@
         border-radius: 4px;
         padding: 15px;
         width: 478px;
-        margin-left: 8px;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
 
+        &--close {
+            color:white;
+            width:size(20);
+            height: size(20);
+            font-size: size(20);
+            cursor: pointer;
+
+        }
+        
         &--text {
             margin-left: 10px;
             color: white;
-            padding-left: 8px;
-        }
-        &--snackbar {
-            margin-left: 15px;
+            padding-left: 37px;
         }
 
         &.success {
-            background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat left center / contain;
+            background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat 16px center / contain;
             background-color: green;
             background-size: size(20);
         
         }
         
         &.warning {
-            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat left center / contain;
+            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
             background-color: gold;
             background-size: size(20);
         }
         
         &.error {
-            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat left center / contain;
+            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
             background-color: red;
             background-size: size(20);
         
