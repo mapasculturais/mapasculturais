@@ -7,6 +7,26 @@
     margin: size(12) 0;
     width: 100%;
 
+    &__error {
+        font-family: Open Sans;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 16px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: var(--mc-error);
+    
+    }
+    .required {
+        font-family: Open Sans;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: var(--mc-error);
+    }
+
     label {
         font-family: var(--mc-font-headings);
         font-style: normal;
@@ -35,5 +55,13 @@
 
     textarea {
         min-height: size(91);
+    }
+
+    &.error {
+        
+        input, textarea {
+            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red')   no-repeat right 20px center / 20px;
+            border: 2px solid #FF0000;
+        }
     }
 }

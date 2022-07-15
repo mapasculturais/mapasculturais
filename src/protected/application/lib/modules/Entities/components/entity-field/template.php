@@ -4,9 +4,9 @@ use MapasCulturais\i;
 <div class="field" :class="{error: hasErrors}">
     <label v-if="showLabel" :for="propId">{{label || description.label}} <span v-if="description.required" class="required">*<?php i::_e('obrigatório') ?></span></label> 
     
-    <slot name="input" >
+    <slot  name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
-        <input v-if="is('string')" v-model="value" :id="propId" :name="prop" type="text" @change="change()">
+        <input  v-if="is('string')" v-model="value" :id="propId" :name="prop" type="text"  @change="change()">
 
         <textarea v-if="is('text')" v-model="value" :id="propId" :name="prop" @change="change()"></textarea>
 
@@ -30,7 +30,8 @@ use MapasCulturais\i;
             </label>
         </template>
     </slot>
-    <small v-if="hasErrors">
+    <small class="field__error" v-if="hasErrors">
+  
         {{errors.join('; ')}}
     </small>
 </div>
