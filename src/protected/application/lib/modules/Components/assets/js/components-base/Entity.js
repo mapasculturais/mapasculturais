@@ -13,12 +13,16 @@ class Entity {
         this.__skipDataProperties = ['createTimestamp', 'updateTimestamp'];
         
         this.__lists = [];
-        this.__processing = false;    
+        this.__processing = false;
+
+        // as traduções estão no arquivo texts.php do componente <entity>
+        this.text = Utils.getTexts('entity');
     }
 
     populate(obj) {
+        const defaultProperties = ['terms', 'files', 'metalists', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
 
-        for (const prop of ['terms', 'files', 'metalists', 'seals', 'relatedAgents', 'agentRelations']) {
+        for (const prop of defaultProperties) {
             if (obj[prop]) {
                 this[prop] = obj[prop];
             }    
@@ -33,15 +37,35 @@ class Entity {
             }
 
             this[prop] = val;
-
-            this.__validationErrors[prop] = [];
         }
 
         for (let prop in this.__relations) {
             this[prop] = obj[prop];
         }
+
+        this.cleanErrors();
         
         return this;
+    }
+
+    cleanErrors() {
+        for (let prop in this.__properties) {
+            this.__validationErrors[prop] = [];
+        }
+    }
+
+    catchErrors(res, data) {
+        const messages = useMessages();
+        if (res.status >= 500 && res.status <= 599) {
+            messages.error(this.text('erro inesperado'));
+        } else if(res.status == 400) {
+            if (data.error) {
+                this.__validationErrors = {...this.__validationErrors, ...data.data};
+                messages.error(this.text('erro de validacao'));
+            }
+        } else if(res.status == 403) {
+            messages.error(this.text('permissao negada'));
+        }
     }
 
     data() {
@@ -109,107 +133,136 @@ class Entity {
         });
     }
 
-    async save() {
+    async doPromise(res, cb) {
+        const data = await res.json();
+        let result;
+
+        if (res.ok) { // status 20x
+            cb(data);
+            this.cleanErrors();
+            result = Promise.resolve(data);
+        } else {
+            this.catchErrors(res, data);
+            data.status = res.status;
+            result = Promise.reject(data);
+        }
+
+        this.__processing = false;
+        return result;
+    }
+
+    async doCatch(error) {
         const messages = useMessages();
-        this.__processing = 'salvando';
-        return this.API.persistEntity(this)
-            .then((response) => {
-                this.__processing = false;
-                const rJson = response.json();
-                rJson.then(obj => {
-                    if(!obj.error){
-                        this.id = obj.id;
-                    }
-                })
-                return rJson;
-            })
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
-                return error;
+
+        this.__processing = false;
+        messages.error(this.text('erro inesperado'));
+        return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
+    }
+
+    async save() {
+        this.__processing = this.text('salvando');
+
+        const messages = useMessages();
+
+        try {
+            const res = await this.API.persistEntity(this);
+            return this.doPromise(res, (data) => {
+                if (this.id) {
+                    messages.success(this.text('modificacoes salvas'));
+                } else {
+                    messages.success(this.text('entidade salva'));
+                }
+    
+                this.id = data.id;
             });
+
+        } catch (error) {
+            return this.doCatch(error)
+        }
     }
 
     async delete(removeFromLists) {
+        this.__processing = this.text('excluindo');
+
         const messages = useMessages();
 
-        this.__processing = 'excluindo';
-        return this.API.deleteEntity(this)
-            .then((response) => {
-                this.status = -10;
+        try {
+            const res = await this.API.deleteEntity(this);
+            return this.doPromise(res, () => {
+                messages.success(this.text('entidade removida'));
+                
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
-                this.__processing = false;
-                return response.json();
-            })
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
+
+                this.status = -10;
             });
-        
+
+        } catch (error) {
+            return this.doCatch(error)
+        }        
     }
 
     async destroy() {
+        this.__processing = this.text('excluindo definitivamente');
+
         const messages = useMessages();
 
-        this.__processing = 'excluindo definitivamente';
-        return this.API.destroyEntity(this)
-            .then((response) => {
-                this.removeFromLists();
-                this.__processing = false;
-                return response.json();
-            })
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
+        try {
+            const res = await this.API.destroyEntity(this);
+            return this.doPromise(res, () => {
+                messages.success(this.text('entidade removida definitivamente'));
+                this.removeFromLists()
             });
-
+        } catch (error) {
+            return this.doCatch(error)
+        }
     }
 
     async publish(removeFromLists) {
+        this.__processing = this.text('publicando');
+
         const messages = useMessages();
-        
-        this.__processing = 'publicando';
-        return this.API.publishEntity(this)
-            .then((response) => {
+
+        try {
+            const res = await this.API.publishEntity(this);
+            return this.doPromise(res, () => {
+                messages.success(this.text('entidade publicada'));
                 this.status = 1;
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
-                this.__processing = false;
-                return response.json();
-            })
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
             });
+        } catch (error) {
+            return this.doCatch(erorr);
+        }
     }
 
     async archive(removeFromLists) {
+        this.__processing = this.text('arquivando');
+
         const messages = useMessages();
 
-        this.__processing = 'arquivando';
-        return this.API.archiveEntity(this)
-            .then((response) => {
+        try {
+            const res = await this.API.archiveEntity(this);
+            return this.doPromise(res, () => {
+                messages.success(this.text('entidade arquivada'));
                 this.status = -2;
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
-                this.__processing = false;
-                return response.json();
-            })
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
             });
+        } catch (error) {
+            return this.doCatch(erorr);
+        }
     }
 
     async upload(file, group) {
+        this.__processing = this.text('subindo arquivo');
+
         const data = new FormData();
         data.append(group, file);
 
-        this.__processing = 'subindo arquivo';
 
         fetch(this.uploadUrl, {method: 'POST', body: data})
             .then(response => response.json().then(f => {
@@ -236,8 +289,6 @@ class Entity {
     }
 
     async createAgentRelation(group, agent, hasControl, metadata) {
-        this.__processing = true;
-        
         return this.API.POST(this.createAgentRelationUrl, {group, agentId: agent.id, has_control: hasControl})
             .then(response => response.json().then(agentRelation => {
                 delete agentRelation.owner;
@@ -262,7 +313,8 @@ class Entity {
     }
 
     async addRelatedAgent(group, agentId, metadata) {
-        console.log('teste');
+        this.__processing = this.text('adicionando agente relacionado');
+
         return this.createAgentRelation(group, agentId);
     }
 }
