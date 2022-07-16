@@ -66,6 +66,15 @@ class Module extends \MapasCulturais\Module {
                 $this->importedComponents = [];
             }
 
+            $init_file = $this->resolveFilename("components/{$component}", 'init.php');
+
+            if ($init_file) {
+                $app->hook('mapas.printJsObject:before', function () use($init_file, $app) {
+                    include $init_file;
+                });
+            }
+
+
             if(preg_match('#[ ,\n]+#', $component) && ($components = preg_split('#[ ,\n]+#', $component))) {
                 foreach ($components as $component) {
                     $this->import($component, $data);
