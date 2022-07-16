@@ -575,12 +575,14 @@ abstract class Entity implements \JsonSerializable{
 
         $data_array = [];
 
+        $validations = $__class::getValidations();
+
         foreach ($class_metadata as $key => $value){
             $metadata = [
                 'isMetadata' => false,
                 'isEntityRelation' => false,
 
-                'required'  => !$value['nullable'],
+                'required'  => (bool) ($validations[$key]['required'] ?? !$value['nullable']),
                 'type' => $value['type'],
                 'length' => $value['length'],
                 'label' => $class::_getConfiguredPropertyLabel($key),
