@@ -16,4 +16,6 @@ return [
     'entidade removida definitivamente' => i::__('Entidade removida definitivamente'), 
     'entidade publicada' => i::__('Entidade publicada'), 
     'entidade arquivada' => i::__('Entidade arquivada'), 
+
+    'subindo arquivo' => i::__('Enviando arquivo'), 
 ];

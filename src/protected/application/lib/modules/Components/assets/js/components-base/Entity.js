@@ -134,11 +134,11 @@ class Entity {
     }
 
     async doPromise(res, cb) {
-        const data = await res.json();
+        let data = await res.json();
         let result;
 
         if (res.ok) { // status 20x
-            cb(data);
+            data = cb(data) || data;
             this.cleanErrors();
             result = Promise.resolve(data);
         } else {
@@ -263,9 +263,9 @@ class Entity {
         const data = new FormData();
         data.append(group, file);
 
-
-        fetch(this.uploadUrl, {method: 'POST', body: data})
-            .then(response => response.json().then(f => {
+        try{
+            const res = await fetch(this.uploadUrl, {method: 'POST', body: data});
+            return this.doPromise(res, (f) => {
                 let file;
                 if(f[group] instanceof Array) {
                     file = f[group][0];
@@ -278,14 +278,11 @@ class Entity {
                     delete file.files;
                     this.files[group] = file;
                 }
-
-                this.__processing = false;
                 return file;
-            }))
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
             });
+        } catch (error) {
+            this.doCatch(error);
+        }
     }
 
     async createAgentRelation(group, agent, hasControl, metadata) {
