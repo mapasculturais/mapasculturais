@@ -319,7 +319,11 @@ abstract class Theme extends \Slim\View {
             return $output;
         });
 
+        $app->applyHookBoundTo($this, 'view.renderLayout(' . $this->_layout . '):before', ['template' => $__template_name]);
+
         include $__layoutPath;
+
+        $app->applyHookBoundTo($this, 'view.renderLayout(' . $this->_layout . '):after', ['template' => $__template_name]);
 
         $__html = ob_get_clean();
 
@@ -516,6 +520,8 @@ abstract class Theme extends \Slim\View {
     }
 
     function printJsObject (string $var_name = 'Mapas', bool $print_script_tag = true) {
+        $app = App::i();
+        $app->applyHookBoundTo($this, 'mapas.printJsObject:before');
         $json = json_encode($this->jsObject);
         $var = "var {$var_name} = {$json};";
         if ($print_script_tag) {
@@ -523,6 +529,7 @@ abstract class Theme extends \Slim\View {
         } else {
             echo $var;
         }
+        $app->applyHookBoundTo($this, 'mapas.printJsObject:after');
     }
 
     function printScripts($group){
