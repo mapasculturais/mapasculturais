@@ -2,13 +2,21 @@
 use MapasCulturais\i;
 $this->layout = 'entity'; 
 $this->import('
-    entity-field mapas-container mapas-card 
-    entity-profile entity-cover entity-terms entity-admins
-    entity-header entity-actions entity-owner entity-social-media
-    entity-related-agents');
+    mapas-container mapas-card mapas-breadcrumb
+    entity-field entity-profile entity-cover entity-terms 
+    entity-admins entity-header entity-actions entity-owner 
+    entity-social-media entity-related-agents');
+
+$this->breadcramb = [
+    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label'=> i::__('Meus Agentes'), 'url' => $app->createUrl('panel', 'agents')],
+    ['label'=> $entity->name, 'url' => $app->createUrl('agent', 'edit', [$entity->id])],
+];
 ?>
 
 <div class="main-app edit-1">
+
+    <mapas-breadcrumb></mapas-breadcrumb>
     
     <messages></messages>
     
