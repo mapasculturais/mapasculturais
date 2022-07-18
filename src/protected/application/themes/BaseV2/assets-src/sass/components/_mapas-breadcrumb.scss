@@ -1,0 +1,51 @@
+@use '../settings/mixins' as *;
+
+.mapas-breadcrumb {
+    margin: 0 auto;
+    max-width: 1170px;
+
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        align-items: center;
+        display: flex;
+        gap: size(5);
+        margin: size(8) size(10);
+        position: absolute;
+        z-index: 1;
+    }
+
+    li {
+        align-items: center;
+        display: flex;
+        list-style: none;
+        margin-right: size(26);
+        position: relative;
+
+        &::after {
+            background: url(https://api.iconify.design/fe/arrow-right.svg) no-repeat center center/contain;
+            content: "";
+            margin-inline-start: size(5);
+            height: size(18);
+            opacity: 0.5;
+            position: absolute;
+            right: size(-26);
+            width: size(18);
+        }
+    }
+
+    li:last-child {
+        font-weight: bold;
+        &::after {
+            content: none;
+        }
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}
