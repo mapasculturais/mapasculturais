@@ -10,6 +10,8 @@ $this->import('
 
 <div class="main-app edit-1">
     
+    <messages></messages>
+    
     <entity-header :entity="entity" :editable="true"></entity-header>
 
     <mapas-container class="edit-1__content">
