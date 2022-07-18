@@ -110,5 +110,3 @@ $this->import('popover messages main-menu');
     </div>
 
 </header>
-
-<messages></messages>
