@@ -21,7 +21,7 @@ const useMessages = Pinia.defineStore('messages', {
             setTimeout(() => {
                 const index = this.messages.indexOf(message);
                 this.messages.splice(index, 1);
-            }, timeout || 5000);
+            }, timeout || 10000);
         },
         
         success(text, timeout) {
