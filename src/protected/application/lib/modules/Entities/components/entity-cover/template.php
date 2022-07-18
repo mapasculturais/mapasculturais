@@ -8,7 +8,7 @@ use MapasCulturais\i;
             <div class="entity-cover__cover">                
                 <div v-if="entity.files.header" class="entity-cover__cover--img">
                     <img :src="entity.files.header?.transformations?.header?.url" class="img" />
-                    <!-- <label class="label"> <?php i::_e("Alterar Imagem de Capa")?> </label> -->
+                    <label class="label" for="header<?= date("Ymd") ?>"> <?php i::_e("Alterar Imagem de Capa")?> </label>
                 </div>
 
                 <div v-else class="entity-cover__cover--newImg">

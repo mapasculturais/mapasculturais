@@ -28,6 +28,7 @@
                 align-items: center;
                 border-radius: size(8);
                 color: var(--mc-white);
+                cursor: pointer;
                 display: none;
                 justify-content: center;
                 padding: size(5) size(10);
@@ -45,7 +46,7 @@
                 }
 
                 img {
-                    filter: blur(size(2));
+                    filter: blur(size(1));
                 }
             }
         }

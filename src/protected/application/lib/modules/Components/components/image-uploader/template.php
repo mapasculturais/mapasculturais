@@ -22,7 +22,7 @@ $this->import('modal');
         <template #button="modal">
             <label>
                 <slot></slot>
-                <input type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
+                <input :id="group+<?= date("Ymd") ?>" type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
             </label>
         </template>
         <template #actions="modal">
