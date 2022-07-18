@@ -6,22 +6,8 @@ use MapasCulturais\i;
 
     <div class="entity-header__single">
 
-        <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }">
-            <nav class="entity-header__breadcrumbs" aria-label="<?= i::__('Breadcrumbs') ?>">
-                <slot name="breadcrumbs">
-                    <ul>
-                        <li>
-                            <a href="#"> {{entity.__objectType}} </a>
-                        </li>
-                        <li aria-current="page">
-                            {{entity.name}}
-                        </li>
-                    </ul>
-                </slot>
-            </nav>
-    
+        <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }">    
             <iconify v-if="!entity.files.header?.url" :icon="icon" />
-
         </div>
 
         <div class="entity-header__single--content">
@@ -110,18 +96,6 @@ use MapasCulturais\i;
 <header v-else class="entity-header" > 
 
     <div class="entity-header__edit" >
-        <nav class="entity-header__breadcrumbs" aria-label="<?= i::__('Breadcrumbs') ?>">
-            <slot name="breadcrumbs">
-                <ul>
-                    <li>
-                        <a href="#"> {{entity.__objectType}} </a>
-                    </li>
-                    <li aria-current="page">
-                        {{entity.name}}
-                    </li>
-                </ul>
-            </slot>
-        </nav>
         <div class="entity-header__edit--content">
             <div class="title">
                 <div :class="['icon', entity.__objectType+'__background']">
