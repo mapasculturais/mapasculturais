@@ -12,6 +12,12 @@
         flex-direction: column;
         gap: size(7);
 
+        &:hover {
+            img {
+                filter: blur(size(1));
+            }
+        }
+
         &--img {
             align-items: center;
             background-color: var(--mc-gray-500);
@@ -28,6 +34,7 @@
     
         &--label {
             align-items: center;
+            cursor: pointer;
             display: flex;
             font-size: size(14);
             line-height: size(19);
