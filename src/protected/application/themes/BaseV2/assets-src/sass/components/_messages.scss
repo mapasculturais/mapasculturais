@@ -1,61 +1,72 @@
 @use '../settings/mixins' as *;
 
-
 .messages {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    margin: auto;
-    position: fixed;
-    top: 20px;
-    border-left-style:initial;
-    z-index: 100;
+    position: sticky;
+    top: size(20);
     width: 100%;
-    padding-left:10px ;
-
-    &__message {
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 4px;
-        padding: 15px;
-        width: 478px;
-        display:flex;
-        justify-content: space-between;
+    z-index: 100;
+    
+    &__content {
         align-items: center;
-
-        &--close {
-            color:white;
-            width:size(20);
-            height: size(20);
-            font-size: size(20);
-            cursor: pointer;
-
-        }
-        
-        &--text {
-            margin-left: 10px;
-            color: white;
-            padding-left: 37px;
-        }
-
-        &.success {
-            background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat 16px center / contain;
-            background-color: green;
-            background-size: size(20);
-        
-        }
-        
-        &.warning {
-            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
-            background-color: gold;
-            background-size: size(20);
-        }
-        
-        &.error {
-            background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
-            background-color: red;
-            background-size: size(20);
-        
+        border-left-style: initial;
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+        margin: auto;
+        position: absolute;
+        top: size(20);
+        width: 100%;
+        z-index: 100;
+    
+        &--message {
+            align-items: center;
+            box-shadow: size(0) size(4) size(4) rgba(0, 0, 0, 0.25);
+            border-radius: size(4);
+            display: flex;
+            justify-content: space-between;
+            padding: size(15);
+            width: size(478);
+    
+            @media (max-width: size(480)) {
+                display: flex;
+                max-width: 80%;
+                position: sticky;
+                position: -webkit-sticky;
+                z-index: 100;
+            }
+    
+            &-close {
+                color:white;
+                cursor: pointer;
+                font-size: size(20);
+                height: size(20);
+                width: size(20);
+            }
+            
+            &-text {
+                color: white;
+                margin-left: size(10);
+                padding-left: size(37);
+            }
+    
+            &.success {
+                background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat 16px center / contain;
+                background-color: green;
+                background-size: size(20);
+            }
+            
+            &.warning {
+                background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
+                background-color: gold;
+                background-size: size(20);
+            }
+            
+            &.error {
+                background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
+                background-color: red;
+                background-size: size(20);
+            }
         }
     }
+
 }
