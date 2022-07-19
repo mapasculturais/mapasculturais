@@ -116,6 +116,10 @@ class Entity {
         return this.API.createUrl('createAgentRelation', [this.id]);
     }
 
+    get removeAgentRelationUrl() {
+        return this.API.createUrl('removeAgentRelation', [this.id]);
+    }
+
     get cacheId() {
         return this.API.createCacheId(this.id);
     }
@@ -309,9 +313,31 @@ class Entity {
             }))
     }
 
-    async addRelatedAgent(group, agentId, metadata) {
+    async addRelatedAgent(group, agent, metadata) {
         this.__processing = this.text('adicionando agente relacionado');
 
-        return this.createAgentRelation(group, agentId);
+        return this.createAgentRelation(group, agent);
+    }
+
+    async removeAgentRelation(group, agent) {
+        this.__processing = this.text('removendo agente relacionado');
+
+        try {
+            const res = this.API.POST(this.removeAgentRelationUrl, {group, agentId: agent.id});
+            res.then(() => {
+                let index;
+                
+                index = this.agentRelations[group].indexOf(agent);
+                this.agentRelations[group].splice(index,1);
+                
+                index = this.relatedAgents[group].indexOf(agent);
+                this.relatedAgents[group].splice(index,1);
+
+                this.__processing = false;
+            
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
     }
 }

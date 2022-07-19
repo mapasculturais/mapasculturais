@@ -46,6 +46,10 @@ app.component('entity-related-agents', {
 
         addAgent(group, agent) {
             this.entity.addRelatedAgent(group, agent);
+        },
+
+        removeAgent(group, agent) {
+            this.entity.removeAgentRelation(group, agent);
         }
     },
 });
