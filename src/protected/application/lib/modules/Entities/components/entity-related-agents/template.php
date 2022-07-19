@@ -1,6 +1,6 @@
 <?php
 use MapasCulturais\i;
-$this->import('popover');
+$this->import('popover confirm-button');
 ?>
 
 <div class="entity-related-agents" v-if="hasGroups()">
@@ -20,7 +20,14 @@ $this->import('popover');
                 </a>
 
                 <div v-if="editable" class="agent__delete">
-                    <iconify icon="gg:close"/>
+                    <confirm-button @confirm="removeAgent(groupName, agent)">
+                        <template #button="modal">
+                            <iconify @click="modal.open()" icon="gg:close"/>
+                        </template> 
+                        <template #message="message">
+                            <?php i::_e('Remover agente relacionado?') ?>
+                        </template> 
+                    </confirm-button>
                 </div>
             </div>
             
