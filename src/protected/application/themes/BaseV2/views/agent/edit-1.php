@@ -5,7 +5,7 @@ $this->import('
     mapas-container mapas-card mapas-breadcrumb
     entity-field entity-profile entity-cover entity-terms 
     entity-admins entity-header entity-actions entity-owner 
-    entity-social-media entity-related-agents');
+    entity-social-media entity-related-agents entity-links');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -134,6 +134,11 @@ $this->breadcramb = [
                 <template #title>
                     <h3><?php i::_e("Mais informações públicas"); ?></h3>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
+                </template>
+                <template #content>
+                    <div class="row">
+                        <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
+                    </div>
                 </template>
             </mapas-card>
         </main>
