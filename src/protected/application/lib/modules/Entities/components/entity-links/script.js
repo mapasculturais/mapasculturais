@@ -24,6 +24,13 @@ app.component('entity-links', {
 
     },
     methods: {
+        addLink(title, link) {
+            // @todo tratamento de erros e adição do novo link
+
+            // limpar campos
+            document.querySelector("input[name='newLinkTitle']").value="";
+            document.querySelector("input[name='newLink']").value="";
+        },
         success() {
             const messages = useMessages();
             messages.success("Isso é um snackbar de confirmação", 10000);
