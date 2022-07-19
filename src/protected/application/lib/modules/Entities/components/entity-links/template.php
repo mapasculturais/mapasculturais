@@ -21,7 +21,7 @@ use MapasCulturais\i;
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"> 
                 <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
-                    <iconify icon="fluent:add-20-filled"></iconify>
+                    <iconify icon="gridicons:plus"></iconify>
                     <?php i::_e("Adicionar")?>
                 </a>
             </slot>
