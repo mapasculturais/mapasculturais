@@ -18,6 +18,18 @@ app.component('entity-related-agents', {
             newGroupName: ''
         }
     },
+
+    computed: {
+        queries() {
+            const result = {};
+            for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
+                const ids = group.map((item) => item.id).join(',');
+                result[groupName] = ids ? {id: `!IN(${ids})`} : {};
+            }
+
+            return result;
+        }
+    },
     
     methods: {
         hasGroups() {
