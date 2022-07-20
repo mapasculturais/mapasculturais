@@ -49,6 +49,7 @@ $this->includeMapAssets();
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
@@ -88,7 +89,7 @@ $this->includeMapAssets();
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php i::_e("Sobre");?></a></li>
+        <?php $this->part('tab', ['id' => 'sobre', 'label' => i::__("Sobre"), 'active' => true]) ?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -99,6 +100,7 @@ $this->includeMapAssets();
             <?php $this->applyTemplateHook('tab-about','begin'); ?>
             <div class="ficha-spcultura">
                 <p>
+                    sss
                     <span class="js-editable" data-edit="shortDescription" data-original-title="<?php i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
 

@@ -4,8 +4,9 @@ use MapasCulturais\Entities\Registration as R;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space as SpaceRelation;
 use MapasCulturais\i;
+use MapasCulturais\App;
 
-$app = MapasCulturais\App::i();
+$app = App::i();
 
 function returnStatus($registration)
 {
@@ -39,12 +40,42 @@ function showIfField($hasField, $showField)
     return null;
 }
 
+$sort_function =  function($a, $b){
+    return $a->displayOrder <=> $b->displayOrder;
+ };
+
 $_properties = $app->config['registration.propertiesToExport'];
 $space_properties = $app->config['registration.spaceProperties'];
+$fields_configurations = [];
+
+// se está exportando de uma fase, para que a tabela contenha os dados 
+if ($entity->isOpportunityPhase) {
+    $entity_phase = $entity;
+    $entity = $entity->parent;
+
+    $repo = $app->repo('Registration');
+    $app->controller('Registration')->registerRegistrationMetadata($entity);
+    $app->controller('Registration')->registerRegistrationMetadata($entity_phase);
+    
+    $entity_fields_configurations = $entity->registrationFieldConfigurations;
+    $entity_phase_fields_configurations = $entity_phase->registrationFieldConfigurations;
+
+    usort($entity_fields_configurations, $sort_function);
+    usort($entity_phase_fields_configurations, $sort_function);
+
+    $fields_configurations = array_merge($entity_fields_configurations, $entity_phase_fields_configurations);
+    $registrations = $entity_phase->sentRegistrations;
+   
+} else {
+    $fields_configurations = $entity->registrationFieldConfigurations;
+    usort($fields_configurations, $sort_function);
+    $entity_phase = $entity;
+    $registrations = $entity->sentRegistrations;
+}
 
 $custom_fields = [];
-foreach ($entity->registrationFieldConfigurations as $field) :
-    $custom_fields[$field->displayOrder] = [
+foreach ($fields_configurations as $field) :
+    $custom_fields[] = [
         'title' => $field->title,
         'field_name' => $field->getFieldName()
     ];
@@ -64,9 +95,32 @@ $header = array_values(array_filter([
     showIfField($entity->registrationCategories, $entity->registrationCategTitle),
 ]));
 
-$header = array_merge($header, array_map(function($field) { 
-    return $field['title'];
-}, $custom_fields));
+foreach ($app->config['registration.reportOwnerProperties'] as $field) {
+    $header[] = R::getPropertiesLabels()[$field] ?? $field;
+}
+
+function is_entity_location_field($field) {
+    $app = App::i();
+    $def = $app->getRegisteredMetadataByMetakey ($field['field_name'], 'MapasCulturais\\Entities\\Registration');
+    if ($def->config['type'] == 'agent-owner-field') {
+        $field_config = $def->config['registrationFieldConfiguration'];
+        $ft = $field_config->config['entityField'] ?? null;
+
+        if($ft == '@location') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+foreach ($custom_fields as $field) {
+    if (is_entity_location_field($field)) {
+        $header[] = i::__('UF');
+        $header[] = i::__('Município');
+    }
+    $header[] = $field['title'];
+}
 
 $header[] = i::__('Anexos');
 
@@ -77,7 +131,6 @@ $header[] = i::__('Anexos');
 
 $header = array_values(array_map('mb_strtoupper', $header));
 
-$registrations = $entity->sentRegistrations;
 
 /**
  * array de linhas de entradas do CSV
@@ -85,8 +138,8 @@ $registrations = $entity->sentRegistrations;
  * @todo campos com vírgula, exemplo "BREVE HISTÓRICO DE ATUAÇÃO" estão gerando novas colunas a cada vírgula em seu conteúdo
  * @todo campo endereço aparenta estar exibindo informação duplicada
  */
-$body = array_map(function($r) use ($entity, $custom_fields) {
-    
+$body = [];
+foreach($registrations as $i => $r) {
     $dataHoraEnvio = $r->sentTimestamp;
     
     $em = $r->getEvaluationMethod();
@@ -95,15 +148,25 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
     $outRow = array_values(array_filter([
         $r->number,
         showIfField($entity->projectName, $r->projectName),
-        '"' . $result_string . '"',
-        '"' . returnStatus($r) . '"',
+        $result_string ?: '""',
+        returnStatus($r) ?: '""',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('H:i') : '-'),
         showIfField($entity->registrationCategories, $r->category)
     ]));
 
-    $outRow = array_merge($outRow, array_map(function($field) use($r) {
+    foreach ($app->config['registration.reportOwnerProperties'] as $field) {
+        $outRow[] = $r->agentsData['owner'][$field] ?? '';
+    }    
+
+    foreach ($custom_fields as $field) {
+
         $_field_val = (isset($field["field_name"])) ? $r->{$field["field_name"]} : "-";
+
+        if(is_entity_location_field($field)) {
+            $outRow[] = str_replace(';', ',', $_field_val['En_Estado']);
+            $outRow[] = str_replace(';', ',', $_field_val['En_Municipio']);
+        }
 
         if (is_object($_field_val)){
             $_field_val = (array)$_field_val;
@@ -137,21 +200,24 @@ $body = array_map(function($r) use ($entity, $custom_fields) {
             $result =  (is_array($_field_val)) ? '"' . implode(" - ", $_field_val) . '"' : $_field_val;
         }
 
-        return str_replace(';', ',', $result);
+        $outRow[] = str_replace(';', ',', $result);
         
-    }, $custom_fields));
+    }
         
     $outRow[] = (key_exists('zipArchive', $r->files)) ? $r->files['zipArchive']->url : '-';
     $outRow = array_merge($outRow, array_map(function($field) {
         return (is_array($field)) ? '"' . implode(' - ', $field) . '"' : $field;
     }, $r->getSpaceData()));
-    return $outRow;
-}, $registrations);
+    
+    $body[] = $outRow;
+}
+
+// @todo ordenar as inscrições utilizando a função de ordenação do método de avaliação
 
 $fh = @fopen('php://output', 'w');
 fprintf($fh, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-$app->applyHook('opportunity.registrations.reportCSV', [$entity, $registrations, &$header, &$body]);
+$app->applyHook('opportunity.registrations.reportCSV', [$entity_phase, $registrations, &$header, &$body]);
 
 fputcsv($fh, $header);
 

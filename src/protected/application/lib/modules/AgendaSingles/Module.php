@@ -61,10 +61,16 @@ class Module extends \MapasCulturais\Module{
         });
         
         $app->hook('template(<<agent|space|project|registration>>.<<single|view>>.tabs-content):end', function() use($app){
-            $date_from = new \DateTime();
-            $date_to = new \DateTime('+30 days');
-            
             $entity = $this->controller->requestedEntity;
+
+            if ($entity->registrationFrom && $entity->registrationTo) {
+                $date_from = $entity->registrationFrom;
+                $date_to = $entity->registrationTo;
+            } else {
+                $date_create_timestamp = clone $entity->createTimestamp;
+                $date_from = $entity->createTimestamp;
+                $date_to = $date_create_timestamp->add(new \DateInterval('P90D'));
+            }
 
             if($entity->className === 'MapasCulturais\Entities\Registration') {
                 $entity = $this->controller->requestedEntity->owner;    

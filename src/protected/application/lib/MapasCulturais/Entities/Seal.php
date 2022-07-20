@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 use MapasCulturais\Traits;
 
 /**
@@ -17,7 +18,7 @@ class Seal extends \MapasCulturais\Entity
 {
     use Traits\EntityMetadata,
     	Traits\EntityOwnerAgent,
-        Traits\EntityMetadata,
+        Traits\EntityMetaLists,
         Traits\EntityFiles,
         Traits\EntityAvatar,
         Traits\EntityAgentRelation,
@@ -27,6 +28,8 @@ class Seal extends \MapasCulturais\Entity
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
         Traits\EntitySealRelation;
+        
+    protected $__enableMagicGetterHook = true;
 
     const STATUS_RELATED = -1;
 
@@ -163,7 +166,7 @@ class Seal extends \MapasCulturais\Entity
             ],
             'shortDescription' => [
                 'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,2000)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 2000 caracteres')
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
             ],
             'validPeriod' => [
                 'required' => \MapasCulturais\i::__('Validade do selo é obrigatória.'),
@@ -182,13 +185,34 @@ class Seal extends \MapasCulturais\Entity
     	}
     	return true;
     }
+
+    protected function canUserRemove($user) {
+        $app = App::i();
+        
+        if(in_array($this->id, $app->config['app.verifiedSealsIds'])) {
+            return false;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
+
+    protected function canUserArchive($user) {
+        $app = App::i();
+        
+        if(in_array($this->id, $app->config['app.verifiedSealsIds'])) {
+            return false;
+        } else {
+            return parent::canUserRemove($user);
+        }
+    }
     
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Selos');
         else
             return \MapasCulturais\i::__('Selo');
     }
+
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

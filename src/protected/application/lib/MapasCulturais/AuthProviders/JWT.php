@@ -3,17 +3,21 @@
 namespace MapasCulturais\AuthProviders;
 
 use MapasCulturais\App;
-
+use \Firebase\JWT\JWT as FireJWT; 
 class JWT extends \MapasCulturais\AuthProvider {
 
     protected $__user = null;
+    protected $__userApp = null;
 
     protected function _init() {
         $app = App::i();
         $token = $this->_config['token'];
 
         try {
-            $jwt_data = \JWT::decode($token);
+            $exploded = array_map(function($item) {
+                return json_decode(base64_decode($item));
+            }, explode('.', $token));
+            $jwt_data = $exploded[1] ?? null;
             if (isset($jwt_data->pk)) {
                 $pk = $jwt_data->pk;
 
@@ -24,9 +28,10 @@ class JWT extends \MapasCulturais\AuthProvider {
                     die;
                 }
 
-                \JWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
+                FireJWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
                 $user = $userapp->user;
                 $this->__user = $user;
+                $this->__userApp = $userapp;
                 return true;
             }
         } catch (\Exception $e) {
@@ -37,8 +42,10 @@ class JWT extends \MapasCulturais\AuthProvider {
         die;
     }
 
-    public function _cleanUserSession() {
+    public function _cleanUserSession()
+    {
         $this->__user = null;
+        $this->__userApp = null;
     }
 
     /**
@@ -51,6 +58,11 @@ class JWT extends \MapasCulturais\AuthProvider {
 
     public function _getAuthenticatedUser() {
         return $this->__user;
+    }
+
+    public function getUserApp()
+    {
+        return $this->__userApp;
     }
 
     /**

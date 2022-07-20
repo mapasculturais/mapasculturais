@@ -94,6 +94,11 @@
         letter-spacing: .1em;
         font-size: .70rem;
     }
+
+
+    &:first {
+        border-top: 0;
+    }
 }
 
 .event {
@@ -151,7 +156,7 @@
     -moz-box-sizing: border-box;
     margin-bottom: 3rem;
     .objeto {
-        background-color: #f8f8f8;
+        background-color: #f5f5f5;
         &:hover {
         background-color: #fff;
         }
@@ -261,11 +266,11 @@
     margin-bottom: 3rem;
     padding: $padding-base;
     border-radius: $border-radius-base;
-    background: $gray-light;
+    background: $gray-lighter;
     font-size: $font-size-smaller;
     .agenda-singles-datepicker {
         border: none;
-        width: 75px;
+        width: 95px;
         cursor: pointer;
         font-size: .8rem;
         font-weight: bold;

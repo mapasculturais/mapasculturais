@@ -11,9 +11,10 @@ $(function () {
             $this.flatpickr({
                 allowInput: true,
                 locale: MapasCulturais.lcode.substr(0,2),
-                dateFormat: "Y-m-d",
+                dateFormat: $this.data('enableTime') ? "Y-m-d H:i" : "Y-m-d",
+                enableTime: $this.data('enableTime'),
                 altInput: true,
-                altFormat: MapasCulturais.flatpickr.altFormat,
+                altFormat: $this.data('enableTime') ? MapasCulturais.flatpickr.altFormat+ ' H:i' : MapasCulturais.flatpickr.altFormat,
                 onChange: function(selectedDates, dateStr, instance) {
                     setTimeout(() => {
                         $this.trigger('blur')

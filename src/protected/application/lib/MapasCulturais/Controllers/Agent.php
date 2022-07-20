@@ -158,11 +158,19 @@ class Agent extends EntityController {
         if(!$agent || !isset($this->data['role']))
             $app->pass();
 
-        if(isset($this->data['subsiteId'])){
-            $success = $agent->user->addRole($this->data['role'], $this->data['subsiteId']);
-        } else {
-            $success = $agent->user->addRole($this->data['role']);
+        if(isset($this->data['subsiteId']) && $this->data['subsiteId']) {
+            $subsite_id = $this->data['subsiteId'];
+        } else if(!isset($this->data['subsiteId'])) {
+            $subsite_id = false;
+        } else if(empty($this->data['subsiteId'])){
+            $subsite_id = null;
+        } 
+
+        foreach ($app->getRoles() as $role) {
+            $agent->user->removeRole($role->role, $subsite_id);
         }
+
+        $success = $agent->user->addRole($this->data['role'], $subsite_id);
 
         if($this->isAjax()){
             if($success)
@@ -173,7 +181,42 @@ class Agent extends EntityController {
             $app->redirect($app->request()->getReferer());
         }
     }
+    function GET_edit() {
+        $this->requireAuthentication();
+        $app = App::i();
 
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }
+
+        $entity->checkPermission('modify');
+
+        if($entity->usesNested()){
+
+            $child_entity_request = $app->repo('RequestChildEntity')->findOneBy(['originType' => $entity->getClassName(), 'originId' => $entity->id]);
+
+            $this->render("edit-{$entity->type}", ['entity' => $entity, 'child_entity_request' => $child_entity_request]);
+
+        }else{
+            $this->render("edit-{$entity->type}", ['entity' => $entity]);
+        }
+    }
+    function GET_single() {
+        $app = App::i();
+
+        $entity = $this->requestedEntity;;
+
+        if (!$entity) {
+            $app->pass();
+        }
+        if ($entity->canUser('view')) {
+            $this->render("single-{$entity->type}", ['entity' => $entity]);
+        } else {
+            $app->pass();
+        }
+    }
     /**
      * @api {all} /agent/removeRole Remove um papel
      * @apiDescription Remove um Papel (função) atribuido ao agente

@@ -71,6 +71,7 @@ RUN ln -s /var/www/html /var/www/src
 
 COPY version.txt /var/www/version.txt
 
+COPY compose/jobs-cron.sh /jobs-cron.sh
 COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

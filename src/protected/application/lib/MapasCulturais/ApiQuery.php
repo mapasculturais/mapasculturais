@@ -385,11 +385,14 @@ class ApiQuery {
         
         $this->em = $app->em;
         
+        krsort($api_params);
         $this->apiParams = $api_params;
         
         if(strpos($class, 'MapasCulturais\Entities\Opportunity') === 0 && $this->parentQuery){
             $parent_class = $this->parentQuery->entityClassName;
-            $class = $parent_class::getOpportunityClassName();
+            if($parent_class != 'MapasCulturais\Entities\Opportunity') {
+                $class = $parent_class::getOpportunityClassName();
+            }
         }
         
         $this->entityProperties = array_keys($this->em->getClassMetadata($class)->fieldMappings);
@@ -478,6 +481,14 @@ class ApiQuery {
         
     }
 
+    public function findIds() {
+        $result = $this->getFindResult('e.id');
+
+        return array_map(function ($row) {
+            return $row['id'];
+        }, $result);
+    }
+
     public function findOne(){
         return $this->getFindOneResult();
     }
@@ -514,8 +525,8 @@ class ApiQuery {
         return $this->getFindResult();
     }
     
-    public function getFindResult() {
-        $dql = $this->getFindDQL();
+    public function getFindResult(string $select = null) {
+        $dql = $this->getFindDQL($select);
 
         $q = $this->em->createQuery($dql);
 
@@ -582,8 +593,8 @@ class ApiQuery {
         return $params;
     }
 
-    public function getFindDQL() {
-        $select = $this->generateSelect();
+    public function getFindDQL(string $select = null) {
+        $select = $select ?: $this->generateSelect();
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
         $order = $this->generateOrder();
@@ -1085,7 +1096,11 @@ class ApiQuery {
                 
                 // do usuário só permite id e profile
                 if($prop == 'user') {
-                    $cfg['select'] = array_intersect($cfg['select'], ['id', 'profile']);
+                    $cfg['select'] = array_filter($cfg['select'], function($field) {
+                        if ($field == 'id' || substr($field, 0, 7) == 'profile') {
+                            return $field;
+                        }
+                    });
                 }
                 
                 if($prop == 'permissionTo'){
@@ -1780,6 +1795,8 @@ class ApiQuery {
                 $this->_limit = $value;
             } elseif (strtolower($key) == '@keyword') {
                 $this->_keyword = $value;
+            } elseif (strtolower($key) == '@permissionsuser') {
+                $this->_permissionsUser = $value;
             } elseif (strtolower($key) == '@permissions') {
                 $this->_addFilterByPermissions($value);
             } elseif (strtolower($key) == '@seals') {
@@ -1825,12 +1842,19 @@ class ApiQuery {
     
     protected $_filteringByPermissions = false;
             
+    protected $_permissionsUser = null;
+
+    protected function _setPermissionsUser($value) {
+        $this->_permissionsUser = $value;
+    }
+
     protected function _addFilterByPermissions($value) {
         $app = App::i();
-        $user = $app->user;
+        $user = $this->_permissionsUser ?
+            $app->repo('User')->find($this->_permissionsUser) :
+            $app->user;
         $this->_permission = trim($value);
         $class = $this->entityClassName;
-        
         if($this->_accessControlEnabled && $this->_permission && !$user->is('saasAdmin')){
             $alias = $this->getAlias('pcache');
             
@@ -1930,9 +1954,9 @@ class ApiQuery {
         ];
         
         $properties = array_merge(
-                    ['terms'],
                     $this->entityProperties,
                     $this->registeredMetadata,
+                    ['terms'],
                     array_keys($this->entityRelations)
                 );
         
@@ -1956,7 +1980,6 @@ class ApiQuery {
         if($select === '*'){
             $select = implode(',', $this->_getAllPropertiesNames());
         }
-        
         $replacer = function ($select, $prop, $_subquery_select, $_subquery_match){
             $replacement = $this->_preCreateSelectSubquery($prop, $_subquery_select, $_subquery_match);
             if(is_null($replacement)){
@@ -1986,8 +2009,23 @@ class ApiQuery {
             $select = $replacer($select, $prop, $_subquery_select, $_subquery_match);
         }
 
-        $this->_selecting = array_unique(explode(',', $select));
+        
+        $this->_selecting = [];
+        $selecting = array_unique(explode(',', $select));
+        
+        sort($selecting);
 
+        foreach($this->_getAllPropertiesNames() as $prop) {
+            if(in_array($prop, $selecting)) {
+                $this->_selecting[] = $prop;
+            }
+        }
+
+        foreach($selecting as $prop) {
+            if(in_array($prop, $selecting)) {
+                $this->_selecting[] = $prop;
+            }
+        }
 
         if($this->_selectAll){
             foreach($this->_getAllPropertiesNames() as $k){

@@ -1,0 +1,39 @@
+.attachment-list .type-section .accountability-registration-field-controls {
+    display: none;
+}
+
+.widget-registration-revision-accountability{
+    list-style: none;
+}
+
+.main-content.registration-tab {
+    background-color: #ffffff;
+    margin-bottom: 0;
+    margin-top: -78px;
+    padding: 0;
+    width: 100%;
+}
+
+.actions span{
+    float: left;
+}
+
+.opportunity #registrations-table thead th {
+    line-height: 1.5;
+    padding: 0.65rem 0.5rem;
+    vertical-align: middle;
+}
+
+.opportunity #registrations-table thead th .dropdown {
+    margin-top: 13px;
+}
+
+.opportunity #registrations-table td {
+    vertical-align: middle;
+}
+
+.evaluation-obs{
+    text-align: left;
+    border-left: solid blue;
+    padding-left: 7px;
+}

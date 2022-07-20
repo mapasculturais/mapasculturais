@@ -5,6 +5,10 @@ use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Entities\EntityRevision as Revision;
 
+/**
+ * @property-read \MapasCulturais\Entities\EntityRevision $lastRevision
+ * @property-read \MapasCulturais\Entities\EntityRevision[] $revisions
+ */
 trait EntityRevision{
 
     /**
@@ -88,23 +92,17 @@ trait EntityRevision{
             }
         }
 
-        if(($links = $this->getMetaLists('links'))) {
-            foreach($links as $link) {
-                $revisionData['links'][] = [
-                    'id' => $link->id,
-                    'title' => $link->title,
-                    'value' => $link->value
-                ];
-            }
-        }
-
-        if(($videos = $this->getMetaLists('videos'))) {
-            foreach($videos as $video) {
-                $revisionData['videos'][] = [
-                    'id' => $video->id,
-                    'title' => $video->title,
-                    'value' => $video->value
-                ];
+        if($this->usesMetaLists()) {
+            $groups = $app->getRegisteredMetaListGroupsByEntity($this);
+            foreach(array_keys($groups) as $group) {
+                $items = $this->getMetaLists($group);
+                foreach($items as $item) {
+                    $revisionData[$group][] = [
+                        'id' => $item->id,
+                        'title' => $item->title,
+                        'value' => $item->value
+                    ];
+                }
             }
         }
 
@@ -192,5 +190,12 @@ trait EntityRevision{
         $app = App::i();
         $revisions = $app->repo('EntityRevision')->findEntityRevisions($this);
         return $revisions;
+    }
+
+    public function getRevisionsByDate($date)
+    {
+        $app = App::i();
+        $revisions = $app->repo('EntityRevision')->findEntityRevisionsByDate($this, $date);
+        return $revisions;        
     }
 }

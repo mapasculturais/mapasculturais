@@ -1,8 +1,8 @@
 <div class="ficha-spcultura">
-    <?php if($this->isEditable() && $entity->shortDescription && strlen($entity->shortDescription) > 2000): ?>
+    <?php if($this->isEditable() && $entity->shortDescription && mb_strlen($entity->shortDescription) > 400): ?>
         <div class="alert warning">
             <?php \MapasCulturais\i::_e("O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto atual possui");?>
-            <?php echo strlen($entity->shortDescription) ?>
+            <?php echo mb_strlen($entity->shortDescription) ?>
             <?php \MapasCulturais\i::_e("caracteres. Você deve alterar seu texto ou este será cortado ao salvar.");?>
         </div>
     <?php endif; ?>
@@ -14,12 +14,13 @@
         <?php $this->applyTemplateHook('tab-about-service','begin'); ?><!--. hook tab-about-service:begin -->
 
         <?php if($this->isEditable() || $entity->site): ?>
-            <p><span class="label"><?php \MapasCulturais\i::_e("Site");?>:</span>
-            <?php if($this->isEditable()): ?>
-                <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span></p>
-            <?php else: ?>
-                <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
-            <?php endif; ?>
+            <div class="widget"><h3 class="label"><?php \MapasCulturais\i::_e("Site");?>:</h3>
+                <?php if($this->isEditable()): ?>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"site") && $editEntity? 'required': '');?>" data-edit="site" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Site");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira a url de seu site");?>"><?php echo $entity->site; ?></span>
+                <?php else: ?>
+                    <a class="url" href="<?php echo $entity->site; ?>"><?php echo $entity->site; ?></a>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <?php if($this->isEditable()): ?>
@@ -62,6 +63,13 @@
                     <?php echo $entity->orientacaoSexual; ?>
                 </span>
             </p>
+             <!-- Agente Itinerante -->
+             <p class="privado"><span class="icon icon-private-info"></span>
+                    <span class="label"><?php \MapasCulturais\i::_e("Agente Itinerante");?>:</span>
+                    <span class="js-editable <?php echo ($entity->isPropertyRequired($entity,"agenteItinerante") && $editEntity? 'required': '');?>" data-edit="agenteItinerante" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Agente Itinerante");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Responda sim, caso seja agente Itinerante ou não se possuir residência fixa");?>">
+                        <?php echo $entity->agenteItinerante; ?>
+                    </span>
+                </p> 
             <!-- Raça/Cor -->
             <p class="privado"><span class="icon icon-private-info"></span>
                 <span class="label"><?php \MapasCulturais\i::_e("Raça/Cor");?>:</span>

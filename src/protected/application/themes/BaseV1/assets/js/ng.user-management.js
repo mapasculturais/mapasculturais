@@ -78,6 +78,14 @@
                 roles: rls
             }
         }
+        
+        $scope.hasSubsites = function () {
+            if(MapasCulturais.infoAdmin && MapasCulturais.infoAdmin.roles && MapasCulturais.infoAdmin.roles.users){
+                return Object.keys(MapasCulturais.infoAdmin.roles.users).length > 1;
+            } else {
+                return false;
+            }
+        };
 
         $scope.spinnerShow = true;
 
@@ -200,6 +208,7 @@
                     keyword: $('#campo-de-busca').val()
                 };
 
+                $scope.data.userManagerment =  true;
                 $scope.data.global.filterEntity = params.entity;
                 $scope.data[params.entity] = {
                     keyword: !isValidCPF(params.keyword) ? params.keyword : '',

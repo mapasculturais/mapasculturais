@@ -6,7 +6,6 @@ cd $DIR
 
 
 BUILD="0"
-SLEEP_TIME="10"
 
 for i in "$@"
 do

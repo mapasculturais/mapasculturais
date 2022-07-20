@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 $this->layout = 'panel'
 ?>
 <div class="panel-list panel-main-content">
@@ -13,8 +14,8 @@ $this->layout = 'panel'
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?></a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?></a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos"), 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira")]) ?>
     </ul>
     <div id="ativos">
         <?php foreach($enabledApps as $userApp): ?>

@@ -46,55 +46,53 @@ MapasCulturais.buildAddress = function(streetName, streetNumber, complement, nei
  *
  */
 MapasCulturais.geocoder = {
-
-    country: 'br', // ISO 3166-1alpha2 code or list of codes
-
+    country: "br", // ISO 3166-1alpha2 code or list of codes
     initialize: function() {
         //
     },
     geocode: function(addressElements, callback) {
-
         this.initialize();
-
         var params = {
-            format: 'json',
+            format: "json",
             countrycodes: this.country
+        };
+        console.log(addressElements);
+        var structured = false;
+        if (addressElements.streetName) {
+            params.street = (addressElements.number ? addressElements.number + " " : "") + addressElements.streetName;
+            structured = true;
         }
-
-        if (addressElements.fullAddress) {
+        if (addressElements.city) {
+            params.city = addressElements.city;
+            structured = true;
+        }
+        if (addressElements.state) {
+            params.state = addressElements.state;
+            structured = true;
+        }
+        if (addressElements.country) {
+            params.country = addressElements.country;
+            structured = true;
+        }
+        // Parece que o nominatim não se dá bem com nosso CEP
+        // if (addressElements.postalCode) {
+        //     params.postalcode = addressElements.postalCode;
+        //     structured = true;
+        // }
+        if (!structured && addressElements.fullAddress) {
             params.q = addressElements.fullAddress;
-        } else {
-
-            if (addressElements.streetName)
-                params.street = (addressElements.number ? addressElements.number + ' ' : '') + addressElements.streetName;
-
-            if (addressElements.city)
-                params.city = addressElements.city;
-
-            if (addressElements.state)
-                params.state = addressElements.state;
-
-            // Parece que o nominatim não se dá bem com nosso CEP
-            // if (addressElements.postalCode)
-            //     params.postalcode = addressElements.postalCode;
         }
-
-        var result = jQuery.get('https://nominatim.openstreetmap.org/search', params, function(r) {
-
+        console.log(params);
+        jQuery.get("https://nominatim.openstreetmap.org/search", params, function(r) {
+            console.log(r);
+            var response = false;
             // Consideramos o primeiro resultado
-            if (r[0]) {
-
-                if (r[0].lat && r[0].lon)
-                    var response = { lat: r[0].lat, lon: r[0].lon };
-
-            } else {
-                var response = false;
+            if (r[0] && r[0].lat && r[0].lon) {
+                response = {lat: r[0].lat, lon: r[0].lon};
             }
-
             callback(response);
-
+            return;
         });
-
+        return;
     }
-
 }

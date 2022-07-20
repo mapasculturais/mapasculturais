@@ -122,7 +122,7 @@ class Site extends \MapasCulturais\Controller {
             
             $content = $view->renderMarkdown($file_content);
             $content = $view->renderMarkdown($content);
-            $version = $this->getVersionFile();
+            $version = $app->getVersion();
             $content .= "<div class='version'>" . sprintf('v%s',$version) . "</div>";
             $attrs = ['content' => $content, 'left' => $left, 'right' => $right];
             

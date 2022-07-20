@@ -9,7 +9,7 @@ class WorkflowRequestTransport extends \Exception{
     
     public function __construct(\MapasCulturais\Entities\Request $request) {
         $this->request = $request;
-        parent::__construct($request->getRequestMessage());
+        parent::__construct();
     }
     public function __get($name){
         if($name == 'request')

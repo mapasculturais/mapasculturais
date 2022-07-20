@@ -49,6 +49,7 @@ $this->includeMapAssets();
         </div>
         <?php $this->applyTemplateHook('entity-status','after'); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
 
@@ -84,7 +85,7 @@ $this->includeMapAssets();
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php i::_e("Sobre");?></a></li>
+        <?php $this->part('tab', ['id' => 'sobre', 'label' => i::__("Sobre"), 'active' => true]) ?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
     <?php $this->applyTemplateHook('tabs','after'); ?>
@@ -116,7 +117,7 @@ $this->includeMapAssets();
 
                     <?php if(isset($entity->dataDeNascimento) && $userCanView): ?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Data de Nascimento/Fundação");?>:</span>
-                            <span class="js-editable" data-type="date" data-edit="dataDeNascimento" <?php echo $entity->dataDeNascimento ? "data-value='".$entity->dataDeNascimento->format('Y-m-d') . "'" : ''?> data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
+                            <span class="js-editable" data-type="date" data-edit="dataDeNascimento" <?php echo $entity->dataDeNascimento ? "data-value='". (is_string($entity->dataDeNascimento) ? $entity->dataDeNascimento : $entity->dataDeNascimento->format('Y-m-d')) . "'" : ''?> data-viewformat="dd/mm/yyyy" data-showbuttons="false" data-original-title="<?php i::esc_attr_e("Data de Nascimento/Fundação");?>" data-emptytext="<?php i::esc_attr_e("Insira a data de nascimento ou fundação do agente");?>">
                                 <?php $dtN = (new DateTime)->createFromFormat('Y-m-d', $entity->dataDeNascimento); echo $dtN ? $dtN->format('d/m/Y') : ''; ?>
                             </span>
                         </p>
@@ -128,6 +129,10 @@ $this->includeMapAssets();
 
                     <?php if(isset($entity->orientacaoSexual) && $userCanView):?>
                         <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Orientação Sexual");?>:</span> <span class="js-editable" data-edit="orientacaoSexual" data-original-title="<?php i::esc_attr_e("Orientação Sexual"); ?>" data-emptytext="<?php i::esc_attr_e("Selecione a orientação sexual se for pessoa física");?>"><?php echo $entity->orientacaoSexual; ?></span></p>
+                    <?php endif;?>
+
+                    <?php if(isset($entity->agenteItinerante) && $userCanView):?>
+                        <p class="privado"><span class="icon icon-private-info"></span><span class="label"><?php i::_e("Agente Itinerante");?>:</span> <span class="js-editable" data-edit="agenteItinerante" data-original-title="<?php i::esc_attr_e("Agente Itinerante"); ?>" data-emptytext="<?php i::esc_attr_e("Responda sim, caso seja agente Itinerante ou não se possuir residência fixa");?>"><?php echo $entity->agenteItinerante; ?></span></p>
                     <?php endif;?>
 
                     <?php if(isset($entity->raca) && $userCanView):?>

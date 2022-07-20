@@ -39,10 +39,10 @@
     module.factory('ApplySimpleEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
         
         return {
-            apply: function (from, to) {
-                var data = {from: from, to: to};
+            apply: function (from, to, status) {
+                var data = {from: from, to: to, status: status};
                 var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsSimple', [MapasCulturais.entity.id]);
-                console.log(url, data);
+                
                 return $http.post(url, data).
                     success(function (data, status) {
                         $rootScope.$emit('registration.create', {message: "Opportunity registration was created", data: data, status: status});
@@ -64,7 +64,8 @@
             registration: evaluation ? evaluation.evaluationData.status : null,
             obs: evaluation ? evaluation.evaluationData.obs : null,
             registrationStatusesNames: statuses,
-            applying: false
+            applying: false,
+            status: 'pending'
         };
 
         $scope.getStatusLabel = (status) => {
@@ -77,8 +78,13 @@
         };
 
         $scope.applyEvaluations = () => {
+            if(!$scope.data.applyFrom || !$scope.data.applyTo) {
+                // @todo: utilizar texto localizado
+                MapasCulturais.Messages.error("É necessário selecionar os campos Avaliação e Status");
+                return;
+            }
             $scope.data.applying = true;
-            ApplySimpleEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo).
+            ApplySimpleEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo, $scope.data.status).
                 success(() => {
                     $scope.data.applying = false;
                     MapasCulturais.Messages.success('Avaliações aplicadas com sucesso');

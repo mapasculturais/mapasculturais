@@ -6,6 +6,9 @@
     border:1px solid transparent;
     cursor: pointer;
 }
+.technical-evaluation-configuration .criteria-fields{
+    width: 100%;
+}
 
 .technical-evaluation-configuration input:focus {
     border:1px solid #888;
@@ -26,7 +29,6 @@
 }
 
 .technical-evaluation-configuration table input {
-    width: 100%;
 }
 
 .technical-evaluation-configuration .criterion-title {
@@ -41,6 +43,71 @@
     font-weight: bold;
     text-align: center;
     font-size: 13px;
+}
+
+
+/* Políticas afirmativas */
+.technical-evaluation-configuration .policy-roof {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.technical-evaluation-configuration .policy-roof p {
+    font-size: 12px; 
+    margin: 0; 
+    white-space: nowrap;
+    width: 100%;
+}
+.technical-evaluation-configuration .policy-roof span.detail {
+    font-size: 12px; 
+    margin: 0 0 0 15px; 
+}
+.technical-evaluation-configuration .policy-roof input {
+    margin: 0 5px;
+    margin-right: 5px;
+}
+
+.technical-evaluation-configuration .policy-field,
+.technical-evaluation-configuration .policy-percent {
+    width: 20%;
+}
+
+.technical-evaluation-configuration .policy-value {
+    width: 50%;
+}
+
+.technical-evaluation-configuration .policy-value select {
+    width: 100%;
+}
+.technical-evaluation-configuration .policy-value .check {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.technical-evaluation-configuration .policy-value .check span {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 5px;
+    align-items: center;
+}
+.technical-evaluation-configuration .policy-value .check span input{
+    margin-right: 5px;
+}
+
+
+.technical-evaluation-configuration td.policy-field select {
+    width: 100%;
+    margin: 0;
+}
+
+.technical-evaluation-configuration td.policy-percent input {
+    width: 80% !important;
+    margin: 0;
+    border-bottom: 1px solid #EEE;
+}
+.technical-evaluation-configuration td.policy-percent input:focus{
+    border-bottom: 1px solid #888;
 }
 
 /* evaluation form */

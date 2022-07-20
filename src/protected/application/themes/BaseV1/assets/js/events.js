@@ -2,19 +2,9 @@ $(function(){
     MapasCulturais.EventOccurrenceManager.initMapTogglers('.toggle-mapa');
 });
 
-$(document).
-    on('click', '.btn-toggle-attached-modal', function () {
-        var modal = $("#evt-date-local").siblings().find('div').attr('id');
-        if (modal) {
-            toggleAttachedModal(this,modal);
-        }
-    }).
-    on('click', '.close-attached-modal', function() {
-        var modal = $(this).data('form-id');
-        toggleAttachedModal(this, modal);
-});
 
-MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
+MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){    
+    $("#dialog-event-occurrence").addClass('occurrence-open');
     var $dialog = $($caller.data('dialog'));
     $dialog.find('h2').html($caller.data('dialog-title'));
     var template = MapasCulturais.TemplateManager.getTemplate('event-occurrence-form');
@@ -43,6 +33,12 @@ MapasCulturais.eventOccurrenceUpdateDialog = function ($caller){
     var $startsAt = $dialog.find('form').find('.js-event-time');
     var $duration = $dialog.find('form').find('.js-event-duration');
     var $endsAt = $dialog.find('form').find('.js-event-end-time');
+    var eventId = $dialog.find('form').find('.event-id');
+    
+    if(!MapasCulturais.eventId){
+        MapasCulturais.eventId =  MapasCulturais.entity.id;
+    }
+    eventId.val(MapasCulturais.eventId);
 
     $startsAt.mask('00:00', {
       onComplete: function(time) {
@@ -115,7 +111,7 @@ MapasCulturais.EventOccurrenceManager = {
                         $('#espaco-do-evento').val(new_space);
 
                         var toggle = modal_id.replace('form-for-', '');
-                        toggleAttachedModal(this,toggle);
+                        toggleEventModal();
                         $('.modal-loading').hide();
                     }
                 } else {
@@ -160,16 +156,23 @@ MapasCulturais.EventOccurrenceManager = {
                     if(isEditing){
                         $('#event-occurrence-'+response.id).replaceWith($renderedData);
                     }else{
+                        $('.event-occurrence-list').removeClass("hidden");
                         $('.js-event-occurrence').append($renderedData);
                     }
                     MapasCulturais.Modal.initButtons($editBtn);
-                    $form.parents('.js-dialog').find('.js-close').click();
+                    MapasCulturais.Modal.close('#dialog-event-occurrence');
+                    $("#dialog-event-occurrence").removeClass('occurrence-open');
 
                     //Por enquanto sempre inicializa o mapa
-                    MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
-                    MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
-
+                    if($('#occurrence-map-'+response.id).length){
+                        MapasCulturais.Map.initialize({mapSelector:'#occurrence-map-'+response.id,locateMeControl:false});
+                        MapasCulturais.EventOccurrenceManager.initMapTogglers($('#event-occurrence-'+response.id).find('.toggle-mapa'));
+                    }
+                    
                     if(response.pending){
+                        $(".pendin-space-"+response.space.id).html(' Aguardando confirmação do espaço <strong>'+ response.space.name + '</strong>');
+                        $(".pendin-space-"+response.space.id).toggle('hidden');
+                        console.log(response.space)
                         MapasCulturais.Messages.alert(labels['requestAddToSpace'].replace('%s', '<strong>' + response.space.name + '</strong>'));
                     }
                 }

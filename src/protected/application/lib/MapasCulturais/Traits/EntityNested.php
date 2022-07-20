@@ -6,6 +6,10 @@ use MapasCulturais\App;
  * Defines that the entity is nested.
  * 
  * Use this trait only in subclasses of **\MapasCulturais\Entity** with a *many to one* relation **parent** and a *one to many* relation **_children**.
+ * 
+ * @property self $parent
+ * @property-read self[] $children
+ * @property-write int $parentId
  */
 trait EntityNested{
 
@@ -21,7 +25,7 @@ trait EntityNested{
     /**
      * Returns the children entities.
      * 
-     * @return \MapasCulturais\Entities[]
+     * @return self[]
      */
     function getChildren(){
         $class = $this->getClassName();
@@ -52,7 +56,7 @@ trait EntityNested{
     /**
      * Returns the parent entity.
      * 
-     * @return \MapasCulturais\Entity
+     * @return self
      */
     function getParent(){
         if($this->_newParent !== false){

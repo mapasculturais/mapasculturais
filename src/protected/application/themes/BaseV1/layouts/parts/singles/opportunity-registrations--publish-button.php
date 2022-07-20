@@ -6,7 +6,7 @@
     <?php else: ?>
         <div class="clearfix">
             <?php if ($entity->canUser('publishRegistrations')): ?>
-                <a id="btn-publish-results" class="btn btn-primary" href="<?php echo $app->createUrl('opportunity', 'publishRegistrations', [$entity->id]) ?>"><?php \MapasCulturais\i::_e("Publicar resultados");?></a>
+                <a id="btn-publish-results" class="btn btn-primary" href="javascript:void(0)" onclick="alertPublish('<?=$entity->id?>')"><?php \MapasCulturais\i::_e("Publicar resultados");?></a>
             <?php else: ?>
                 <a id="btn-publish-results" class="btn btn-primary disabled hltip" title="<?php \MapasCulturais\i::esc_attr_e("Você só pode publicar a lista de aprovados após o término do período de inscrições.");?>"><?php \MapasCulturais\i::_e("Publicar resultados");?></a>
             <?php endif; ?>

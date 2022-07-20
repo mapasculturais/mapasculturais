@@ -1,10 +1,13 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Error;
+use MapasCulturais\App;
+
 /**
  * Defines the magic callers that returns false if a method starts with **uses**
  */
-trait MagicCallers{
+trait MagicCallers {
     
     /**
      * This class uses magic callers
@@ -13,6 +16,30 @@ trait MagicCallers{
      */
     public static function usesMagicCallers(){
         return true;
+    }
+
+    private static function __getMagicCallersHooks($name) {
+        $app = App::i();
+
+        $class = get_called_class();
+        if(method_exists($class,'getClassName')){
+            $class = $class::getClassName();
+        }
+        $classes = class_parents($class);
+        array_unshift($classes, $class);
+
+        $classes = array_map(function($class) { 
+            return str_replace('MapasCulturais\\', '', $class);
+        }, $classes);
+
+        $hooks = [];
+
+        foreach ($classes as $class) {
+            $class_hooks = $app->_getHookCallables("{$class}::{$name}");
+            $hooks = array_merge($class_hooks, $hooks);
+        }
+
+        return $hooks;
     }
 
     /**
@@ -25,10 +52,27 @@ trait MagicCallers{
      * @return mixed
      */
     public function __call($name, $arguments) {
-        if(method_exists($this, $name))
-            return $this->$name();
-        if(substr($name, 0, 4) === 'uses')
+
+        if (substr($name, 0, 4) === 'uses') {
             return false;
+        } else if ($hooks = $this->__getMagicCallersHooks($name)) {
+            $result = null;
+            foreach ($hooks as $callable) {
+                $callable = \Closure::bind($callable, $this);
+                $args = [$result];
+                foreach($arguments as $arg){
+                    $args[] = $arg;
+                }
+                $result = call_user_func_array($callable, $args);
+            }
+
+            return $result;
+        } else {
+            $class = self::class;
+            $trace = debug_backtrace();
+            $l = $trace[0];
+            throw new Error("Call to undefined method {$class}::{$name}() in {$l['file']} on line {$l['line']}");
+        }
     }
 
     /**
@@ -41,11 +85,25 @@ trait MagicCallers{
      * @return mixed
      */
     static public function __callStatic($name, $arguments){
-        $class = get_called_class();
-
-        if(method_exists($class, $name))
-            return $class::$name();
-        if(substr($name, 0, 4) === 'uses')
+        
+        if (substr($name, 0, 4) === 'uses') {
             return false;
+        } else if ($hooks = self::__getMagicCallersHooks($name)) {
+            $result = null;
+            foreach ($hooks as $callable) {
+                $args = [$result];
+                foreach($arguments as $arg){
+                    $args[] = $arg;
+                }
+                $result = call_user_func_array($callable, $args);
+            }
+
+            return $result;
+        } else {
+            $class = self::class;
+            $trace = debug_backtrace();
+            $l = $trace[0];
+            throw new Error("Call to undefined static method {$class}::{$name}() in {$l['file']} on line {$l['line']}");
+        }
     }
 }

@@ -51,7 +51,13 @@ RUN docker-php-ext-install -j$(nproc) iconv \
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --version=1.10.16 --install-dir=/usr/local/bin && \
     rm composer-setup.php
-    
+
+# Install redis
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
+
+
 # Copy source
 COPY src/index.php /var/www/html/index.php
 COPY src/protected /var/www/html/protected
@@ -82,6 +88,7 @@ RUN echo "php -S 0.0.0.0:8001 -t /var/www/html /var/www/html/router.php" > /mapa
 COPY version.txt /var/www/version.txt
 
 COPY compose/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
+COPY compose/jobs-cron.sh /jobs-cron.sh
 COPY compose/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 

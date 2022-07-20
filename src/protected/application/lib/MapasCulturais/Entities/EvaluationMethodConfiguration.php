@@ -80,7 +80,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     public function jsonSerialize() {
         $result = parent::jsonSerialize();
 
-        $result['opportunity'] = $this->opportunity->simduplify('id,name,singleUrl');
+        $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl');
 
         return $result;
     }
@@ -121,6 +121,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     function getOwner() {
         return $this->opportunity;
+    }
+
+    protected function canUserCreate($user){
+        return $this->opportunity->canUser('modify', $user);
     }
 
     protected function canUserModify($user){

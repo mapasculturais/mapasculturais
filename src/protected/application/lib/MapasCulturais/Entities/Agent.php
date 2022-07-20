@@ -9,8 +9,21 @@ use MapasCulturais\App;
 
 /**
  * Agent
+ * 
+ * @property-read int $id
+ * @property User $user
+ * @property-write int $userId
+ * @property string $name
+ * @property array $rule
+ * @property string $shortDescription
+ * @property string $longDescription
+ * @property int $status
+ * @property-read \DateTime $createTimestamp
+ * @property-read \DateTime $updateTimestamp
  *
- * @property-read \MapasCulturais\Entities\Space[] $spaces spaces owned by this agent
+ * @property-read Space[] $spaces spaces owned by this agent
+ * @property-read Event[] $events events owned by this agent
+ * @property-read Project[] $projects projects owned by this agent
  * @property-read bool $isUserProfile Is this agent the user profile?
  *
  * @ORM\Table(name="agent")
@@ -42,6 +55,8 @@ class Agent extends \MapasCulturais\Entity
 
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
+
+    protected $__enableMagicGetterHook = true;
 
     protected function validateLocation(){
         if($this->location instanceof \MapasCulturais\Types\GeoPoint && $this->location != '(0,0)'){
@@ -272,7 +287,7 @@ class Agent extends \MapasCulturais\Entity
         parent::__construct();
     }
 
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Agentes');
         else
@@ -286,7 +301,7 @@ class Agent extends \MapasCulturais\Entity
             ],
             'shortDescription' => [
                 'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,2000)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 2000 caracteres')
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
             ],
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo do agente é obrigatório'),

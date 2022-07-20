@@ -12,3 +12,12 @@
 .relation-field-info {
     color:#888;
 }
+
+.two-column{
+    width: 50%;
+    display: inline-block;
+}
+
+.field-required {
+    color: red;
+}

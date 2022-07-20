@@ -1,11 +1,14 @@
+<?php
+
+use MapasCulturais\i; ?>
+
 <div ng-class="field.error ? 'invalidField': '' " ng-if="::field.fieldType === 'brPhone'" id="field_{{::field.id}}">
-    <div class="label"> 
+    <span class="label">
         {{field.title}}
-        <span ng-if="requiredField(field) ">obrigatório</span>   
-    </div>
-    
+        <div ng-if="requiredField(field)" class="field-required"><span class="description"><?php i::_e('obrigatório') ?></span><span class="icon-required">*</span></div>
+    </span>
+
     <div ng-if="::field.description" class="attachment-description">{{::fieldfield.description}}</div>
-    <span ng-if="requiredField(field) ">obrigatório</span>        
     <div><?php $this->part('registration-field-types/fields/brPhone') ?></div>
-    
+
 </div>

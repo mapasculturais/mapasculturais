@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
@@ -32,20 +33,23 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
 
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?><!--.part/singles/entity-status.php -->
 
-        <div class="header-content">
-            <?php $this->applyTemplateHook('header-content','begin'); ?>
+        <?php $this->applyTemplateHook('header-content','before'); ?>
+        <div class="container-card">            
+            <div class="header-content">
+                    <?php $this->applyTemplateHook('header-content','begin'); ?>
 
-            <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
+                    <?php $this->part('singles/avatar', ['entity' => $entity, 'default_image' => 'img/avatar--agent.png']); ?><!--.part/singles/avatar.php -->
 
-            <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
+                    <?php $this->part('singles/type', ['entity' => $entity]) ?><!--.part/singles/type.php -->
 
-            <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
+                    <?php $this->part('singles/name', ['entity' => $entity]) ?><!--.part/singles/name.php -->
 
-            <?php $this->applyTemplateHook('header-content','end'); ?>
+                    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
+                    <?php $this->applyTemplateHook('header-content','end'); ?>
+            </div>
+            <!--.header-content-->
+            <?php $this->applyTemplateHook('header-content','after'); ?>
         </div>
-        <!--.header-content-->
-        <?php $this->applyTemplateHook('header-content','after'); ?>
-        
     </header>
     <!--.main-content-header-->
     <?php $this->applyTemplateHook('header','after'); ?>
@@ -53,9 +57,10 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+
+        <?php $this->part('tab', ['id' => 'sobre', 'label' => i::__("Sobre"), 'active' => true]) ?>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+            <?php $this->part('tab', ['id' => 'permissao', 'label' => i::__("Responsáveis")]) ?>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -98,7 +103,6 @@ $editEntity = $this->controller->action === 'create' || $this->controller->actio
     <?php $this->part('related-seals.php', array('entity'=>$entity)); ?>
     <!-- Related Seals END -->
 
-    <?php $this->part('widget-areas', array('entity'=>$entity)); ?>
     <?php $this->part('widget-tags', array('entity'=>$entity)); ?>
     <?php $this->part('redes-sociais', array('entity'=>$entity)); ?>
 </div>

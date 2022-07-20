@@ -17,15 +17,6 @@
         <li>
             <a href="<?php echo $app->createUrl('agente', $app->user->profile->id) ?>"></span><?php \MapasCulturais\i::_e("Meu Perfil");?></a>
         </li>
-        
-        <?php if($app->isEnabled('events')): ?>
-            <?php $this->applyTemplateHook('nav.dropdown.events','before'); ?>
-            <li>
-                <a href="<?php echo $app->createUrl('panel', 'events') ?>"><?php \MapasCulturais\i::_e("Meus Eventos");?></a>
-                <?php $this->renderModalFor('event'); ?>
-            </li>
-            <?php $this->applyTemplateHook('nav.dropdown.events','after'); ?>
-        <?php endif; ?>
 
         <?php if($app->isEnabled('agents')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.agents','before'); ?>
@@ -78,9 +69,12 @@
             <?php $this->applyTemplateHook('nav.dropdown.opportunities','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'opportunities') ?>"><?php \MapasCulturais\i::_e("Minhas Oportunidades");?></a>
+                <?php $this->renderModalFor('opportunity'); ?>
             </li>
             <?php $this->applyTemplateHook('nav.dropdown.opportunities','after'); ?>
+        <?php endif; ?>
 
+        <?php if ($app->isEnabled('projects') || $app->isEnabled('opportunities')): ?>
             <?php $this->applyTemplateHook('nav.dropdown.registrations','before'); ?>
             <li>
                 <a href="<?php echo $app->createUrl('panel', 'registrations') ?>"><?php \MapasCulturais\i::_e("Minhas Inscrições");?></a>

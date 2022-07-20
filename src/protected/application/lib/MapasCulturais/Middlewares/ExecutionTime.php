@@ -34,11 +34,14 @@ class ExecutionTime extends \Slim\Middleware{
      */
     public function call()
     {
-        // Get reference to application
         $app = App::i();
+        $METHOD = $app->request->getMethod();
+        $URI = $app->request->getResourceUri();
+        $udate = $this->udate('Y-m-d H:i:s.u');
+        // Get reference to application
         $app->log->info('');
         $app->log->info('=========================================================================');
-        $app->log->info('(' . $app->request->getMethod() . ') ' . $app->request->getResourceUri() . ' - timestamp: ' . $this->udate('Y-m-d H:i:s.u'));
+        $app->log->info("{$METHOD} {$URI} - timestamp: {$udate}");
 
         // Run inner middleware and application
         $this->next->call();
@@ -49,9 +52,10 @@ class ExecutionTime extends \Slim\Middleware{
 
         $time_end = microtime(true);
 
-        $execution_time = number_format($time_end - $this->time_start, 4);
+        $execution_time = number_format($time_end - $this->time_start, 2);
         $mem = memory_get_usage(true) / 1024 / 1024;
-        $log_string = '(' . $app->request->getMethod() . ') ' . $app->request->getResourceUri() . ' - executed in -' . $execution_time . ' seconds. (MEM: ' . $mem . 'MB)';
+
+        $log_string = "{$METHOD} {$URI} - executed in <strong>{$execution_time}</strong> seconds. (MEM: <strong>{$mem}MB</strong>)";
         
         if($this->print){
             $append = $this->html_comment ?
@@ -63,7 +67,7 @@ class ExecutionTime extends \Slim\Middleware{
             $res->body($body);
         }
 
-        $app->log->info($log_string);
+        $app->log->info(strip_tags($log_string));
         $app->log->info('=========================================================================');
 
     }

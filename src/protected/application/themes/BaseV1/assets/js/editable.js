@@ -65,8 +65,14 @@ jQuery(function(){
         }
     });
 
-    //Máscaras de telefone, CEP e hora
+    //Máscara de moeda BRL para campos com a classe .js-mask-currency
+    if($('.js-mask-currency').length){
+        $('.js-mask-currency').mask('###.###.###.###.###.##0,00', {
+            reverse: true
+        });
+    }
 
+    //Máscaras de telefone, CEP e hora
     $('.js-editable').on('shown', function(e, editable) {
         if ($(this).hasClass('js-editablemask')) {
             var mask = $(this).data('mask');
@@ -131,7 +137,9 @@ jQuery(function(){
 
         // Fixes padding right hardcoded on 24px, now 0;
         //editable.input.$input.css('padding-right', 10);
-
+        $("[data-element='shortDescription']").on("keyup", function(){
+            $("[data-element='countLength']").html(this.value.length);
+        })
     });
 
     //Display Default Shortcuts on Editable Buttons and Focus on select2 input
@@ -1017,8 +1025,8 @@ $(function(){
         var bairro = $('#En_Bairro').editable('getValue', true);
         var municipio = $('#En_Municipio').editable('getValue', true);
         var estado = $('#En_Estado').editable('getValue', true);
-        if(cep && nome_logradouro && numero && bairro && municipio && estado){
-            var endereco = MapasCulturais.buildAddress(nome_logradouro, numero, complemento, bairro, municipio, estado, cep);
+        if(cep && nome_logradouro && bairro && municipio && estado){
+            var endereco = MapasCulturais.buildAddress(nome_logradouro, complemento, bairro, municipio, estado, cep);
             $('#endereco').editable('setValue', endereco);
             $('#endereco').trigger('changeAddress', endereco);
             $('.js-endereco').html(endereco);
@@ -1027,7 +1035,7 @@ $(function(){
 
     };
 
-    $('#En_Nome_Logradouro, #En_CEP, #En_Num, #En_Complemento, #En_Bairro, #En_Municipio,  #En_Estado').on('hidden', function(e, params) {
+    $('#En_Nome_Logradouro, #En_CEP,  #En_Complemento, #En_Bairro, #En_Municipio,  #En_Estado').on('hidden', function(e, params) {
         concatena_enderco();
     });
 
@@ -1039,6 +1047,9 @@ $(function(){
                 $('#En_Bairro').editable('setValue', r.neighborhood != null ? r.neighborhood : '');
                 $('#En_Municipio').editable('setValue', r.city != null ? r.city.nome : '');
                 $('#En_Estado').editable('setValue', r.state != null ? r.state.sigla : '');
+                $('[data-edit="location').editable('setValue', [r.lon, r.lat]);
+                $(".lat-txt").html(r.lat);
+                $(".lon-txt").html(r.lon);
                 concatena_enderco();
             }
         });

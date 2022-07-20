@@ -6,12 +6,11 @@
 //**  Widgets structure.
 .widget {
     position: relative;
-    margin-bottom: $line-height-base;
     padding-bottom: $padding-large;
     border-bottom: 1px solid #fff;
     font-size: $font-size-small;
 	> h3 {
-	    margin-bottom: $line-height-half;
+	    margin-bottom: 0;
 	    font-size: .70rem;
 	    line-height: $line-height-base;
 	    font-family: $font-stack-base;
@@ -36,6 +35,9 @@
         }
 
     }
+    > hr{
+        margin-bottom: 0em;
+    }    
     @media print {
         .slimScrollDiv, .js-slimScroll {
             overflow: auto !important;
@@ -96,3 +98,5 @@
         font-size: 1.5rem;
     }
 }
+
+

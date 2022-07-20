@@ -1,0 +1,246 @@
+//
+// Opportunities Accountability
+// --------------------------------------------------
+
+#accountability {
+    padding-top: $padding-large;
+
+    .highlighted-message {
+        margin-bottom: $margin-large;
+    }
+
+    h4 {
+        margin-bottom: $margin-large;
+    }
+
+    & > p {
+        margin-bottom: $margin-large;
+    }
+
+    .registration-fieldset {
+        margin-bottom: $margin-large;
+
+        .registration-help {
+            margin-bottom: $margin-large;
+        }
+    }
+
+    .attachment-list {
+        .attachment-list-item {
+            margin-bottom: $margin-medium;
+            margin-top: 0;
+            padding-bottom: $margin-medium;
+            padding-top: 0;
+
+            &.attachment-list-item-type-section {
+                margin-bottom: $margin-medium;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .label {
+                margin-bottom: $margin-small;
+            }
+
+            .attachment-description {
+                margin-bottom: 0;
+            }
+
+            input {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+                max-width: 100%;
+                min-width: 230px;
+
+                &[type="checkbox"] {
+                    margin-right: $margin-small;
+                    margin-top: 0;
+                    min-width: auto;
+                }
+            }
+
+            select {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+                max-width: 100%;
+                min-width: 230px;
+            }
+
+            & > textarea {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+                max-width: 100%;
+                min-width: 230px;
+            }
+
+            button {
+                margin-bottom: 0;
+                margin-top: $margin-medium;
+            }
+
+            .alert {
+                margin: $margin-small 0 0 0;
+            }
+
+            & > div > span {
+                display: block;
+            }
+
+            .field-required {
+                display: inline-block;
+
+                .description {
+                    display: none;
+                }
+
+                .icon-required {
+                    color: red;
+                }
+            }
+        }
+    }
+}
+
+
+//
+// Opportunities Accountability/Projects
+// --------------------------------------------------
+
+.add-event{
+    box-sizing: border-box;
+    height: 32px;
+    width: 158px;
+    border: 1px solid #BBBBBB;
+    border-radius: 3px;
+    background-color: #DDDDDD;
+    float: right;
+}
+
+.event-link {   
+    
+    header {
+        h4 {
+            color: #111111;
+            float: left;
+            font-family: Aleo;
+            font-size: 24px;
+            letter-spacing: 0;
+            line-height: 29px;
+        }
+
+        & > .accountability-registration-field-controls {
+            margin-right: 1em;
+            margin-top: 5px;
+
+            @media screen and (max-width: 768px) {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .event-status {
+        overflow: hidden;
+        width: 100%;
+
+        .js-event-list{
+            padding: 0 0 0 15px;
+            height: auto;
+            border-left: 3px solid #1C5690;
+            margin: 0;
+
+            .event-item {
+                padding: 5px 10px 5px 0;
+            }
+
+            li {
+                box-sizing: border-box;
+                display: block;
+                width: 100%;
+                list-style-type: none;
+                color: #111111;
+                font-family: "Open Sans";
+                font-size: 16px;
+                line-height: 32px;
+                overflow: hidden;  
+                margin-bottom: 10px;
+                       
+                div {
+                    float: left;
+                    margin-right: 10px;
+                }
+
+                ul {
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            .occurrence-list {
+                clear: left;
+                margin-left: 25px;
+                text-align: left;
+
+                p {
+                    line-height: 1.3rem;
+                    margin-bottom: $margin-smaller;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        p {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        
+    }
+    
+    .status-info {
+        position: absolute;
+        right: 74%;
+        color: #111111;
+        font-family: "Open Sans";
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0;
+        line-height: 22px;
+        margin-top: -35px;
+    }
+    
+}
+
+
+.accountability-evaluation-form {
+    section {
+        margin-bottom: 1.25em;
+
+        &.actions {
+            text-align: right;
+        }
+    }
+
+}
+
+.accountability-registration-field-controls {
+    font-size: 12px;
+    text-align: right;
+    float: right;
+    margin-left: 2em;
+
+    label {
+        font-weight: bold;
+        color: #333;
+    }
+}

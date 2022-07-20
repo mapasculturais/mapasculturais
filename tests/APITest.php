@@ -166,4 +166,11 @@ class APITest extends MapasCulturais_TestCase {
             ]
         ], $r1[0], 'verify the returned event');
     }
+
+    function testSelectPropertiesOrder() {
+        $r1 = $this->apiFindOne('agent', "@select=id,name,location,shortDescription");
+        $r2 = $this->apiFindOne('agent', "@select=id,shortDescription,name,location");
+        
+        $this->assertEquals(json_encode($r1), json_encode($r2), "Certificando que o resultado da api é o mesmo independente da ordem das propriedades no @select");
+    }
 }

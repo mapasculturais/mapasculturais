@@ -25,6 +25,8 @@ return [
             'busca'             => ['site', 'search'],
             'sobre'             => ['site', 'page', ['sobre']],
             'como-usar'         => ['site', 'page', ['como-usar']],
+            'termos-de-uso'     => ['lgpd', 'accept', ['termsOfUsage']], 
+            'politica-de-privacidade' => ['lgpd','accept', ['privacyPolicy']],
 
             // workflow actions
             'aprovar-notificacao' => ['notification', 'approve'],
@@ -49,7 +51,8 @@ return [
             'instalacoes'    => 'subsite',
             'anexos'         => 'registrationfileconfiguration',
             'revisoes'       => 'entityRevision',
-            'historico'      => 'entityRevision'
+            'historico'      => 'entityRevision',
+            'suporte'        => 'support',
         ],
         'actions' => [
             'lista'         => 'list',
@@ -64,7 +67,9 @@ return [
             'selos'         => 'seals',
             'inscricoes'    => 'registrations',
             'agente'        => 'agent',
-            'evento'        => 'event'
+            'evento'        => 'event',
+            'inscricao'     => 'registration',
+            'prestacoes-de-contas' => 'accountability'
         ],
 
         'readableNames' => [

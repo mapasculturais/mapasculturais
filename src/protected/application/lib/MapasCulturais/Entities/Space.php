@@ -7,8 +7,17 @@ use MapasCulturais\App;
 
 /**
  * Space
- * @property-read \MapasCulturais\Entities\Agent $owner The owner of this space
- *
+ * 
+ * @property-read int $id
+ * @property string $name
+ * @property boolean $public
+ * @property string $shortDescription
+ * @property string $longDescription
+ * @property int $status
+ * @property-read \DateTime $createTimestamp
+ * @property-read \DateTime $updateTimestamp
+ * @property-read \MapasCulturais\Entities\EventOccurrence[] $eventOccurrences
+ * 
  * @ORM\Table(name="space")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Space")
@@ -34,6 +43,8 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityArchive,
         Traits\EntityRevision,
         Traits\EntityOpportunities;
+        
+    protected $__enableMagicGetterHook = true;
 
     /**
      * @var integer
@@ -233,7 +244,7 @@ class Space extends \MapasCulturais\Entity
         parent::__construct();
     }
 
-    public function getEntityTypeLabel($plural = false) {
+    public static function getEntityTypeLabel($plural = false) {
         if ($plural)
             return \MapasCulturais\i::__('Espaços');
         else
@@ -247,7 +258,7 @@ class Space extends \MapasCulturais\Entity
             ],
             'shortDescription' => [
                 'required' => \MapasCulturais\i::__('A descrição curta é obrigatória'),
-                'v::stringType()->length(0,2000)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 2000 caracteres')
+                'v::stringType()->length(0,400)' => \MapasCulturais\i::__('A descrição curta deve ter no máximo 400 caracteres')
             ],
             'type' => [
                 'required' => \MapasCulturais\i::__('O tipo do espaço é obrigatório'),

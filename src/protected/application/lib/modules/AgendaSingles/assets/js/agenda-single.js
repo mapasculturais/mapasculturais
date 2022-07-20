@@ -6,7 +6,7 @@ $(function() {
     }
 
     function formatDate(date){
-        return date.split('/').reverse().join('-');
+        return date ? date.split('/').reverse().join('-') : {};
     }
 
     function setSpreadsheetUrl(){

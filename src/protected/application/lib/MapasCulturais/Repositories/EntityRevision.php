@@ -27,6 +27,23 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $query->getResult();
     }
 
+    public function findEntityRevisionsByDate($entity, $date) {
+        $objectId = $entity->id;
+        $objectType = $entity->getClassName();
+        $query = $this->_em->createQuery("SELECT e
+                                            FROM MapasCulturais\Entities\EntityRevision e
+                                            WHERE e.objectId = {$objectId} AND e.objectType = '{$objectType}'
+                                            AND e.createTimestamp <= :sendTimeStemp ORDER BY e.id DESC");
+
+        $params = [
+            'sendTimeStemp' => $date
+        ];      
+
+        $query->setParameters($params);
+        $query->setMaxResults(1);
+        return $query->getOneOrNullResult();
+    }
+
     public function findCreateRevisionObject($id) {
         $app = App::i();
         $qryRev = $this->_em->createQuery("SELECT e
@@ -34,15 +51,16 @@ class EntityRevision extends \MapasCulturais\Repository{
                                             WHERE e.id = {$id}");
         $qryRev->setMaxResults(1);
         $entityRevision = $qryRev->getOneOrNullResult();
-        $actualEntity = $app->repo($entityRevision->objectType)->find($entityRevision->objectId);
+        $objectType = $entityRevision->objectType->getValue();
+        $actualEntity = $app->repo($objectType)->find($entityRevision->objectId);
         $entityRevisioned = new \stdClass();
         $entityRevisioned->controller_id =  $actualEntity->getControllerId();
         $entityRevisioned->id = $actualEntity->id;
-        $entityRevisioned->entityClassName = $entityRevision->objectType;
+        $entityRevisioned->entityClassName = $objectType;
         $entityRevisioned->userCanView = $actualEntity->canUser('viewPrivateData');
         $entityRevisioned->entity = $actualEntity;
 
-        $registeredMetadata = $app->getRegisteredMetadata($entityRevision->objectType);
+        $registeredMetadata = $app->getRegisteredMetadata($objectType);
 
         foreach(array_keys($registeredMetadata) as $metadata) {
             $entityRevisioned->$metadata = null;

@@ -115,6 +115,11 @@
             return $scope.agentRelationDisabledCD.indexOf(groupName) >= 0;
         };
 
+        $scope.groups.map(function(item, index){
+            if(item.name.indexOf("@") != -1){
+                $scope.groups.splice(index,1);
+            }
+        })
 
         function getGroup(groupName){
             var result = null;
@@ -157,9 +162,9 @@
         $scope.createGroup = function(){
             if($scope.data.newGroupName.trim() && !groupExists( $scope.data.newGroupName ) && $scope.data.newGroupName.toLowerCase().trim() !== 'registration' && $scope.data.newGroupName.toLowerCase().trim() !== 'group-admin' ){
                 var newGroup = {name: $scope.data.newGroupName, relations: []};
-
-                $scope.groups = [newGroup].concat($scope.groups);
-
+                if(newGroup.name.indexOf("@") == -1){
+                    $scope.groups = [newGroup].concat($scope.groups);
+                }
                 $scope.data.newGroupName = '';
                 EditBox.close('new-related-agent-group');
             }

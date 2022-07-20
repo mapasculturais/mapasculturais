@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div ng-if="data.isEditable" class="btn-group">
                 <span ng-if="def.agent">
                     <a class="btn btn-default edit hltip" ng-click="openEditBox('editbox-select-registration-' + def.agentRelationGroupName, $event)" title="<?php \MapasCulturais\i::esc_attr_e("Editar");?> {{def.label}}"><?php \MapasCulturais\i::_e("Trocar agente");?></a>
@@ -32,6 +32,8 @@
                 <!-- <p ng-if='def.agentRelationGroupName != "owner"'><label><input type="checkbox"> Permitir que este agente também edite essa inscrição.</label></p> -->
                 <find-entity id='find-entity-registration-{{def.agentRelationGroupName}}' name='{{def.agentRelationGroupName}}' api-query="data.relationApiQuery[def.agentRelationGroupName]" entity="agent" no-results-text="<?php \MapasCulturais\i::esc_attr_e("Nenhum agente encontrado");?>" select="setRegistrationAgent" spinner-condition="data.registrationSpinner"></find-entity>
             </edit-box>
+
+            <div ng-repeat="error in data.errors['agent_' + def.agentRelationGroupName]" class="alert danger clear" >{{error}}</div>
         </li>
     </ul>
 </div>

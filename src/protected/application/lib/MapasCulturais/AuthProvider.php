@@ -93,7 +93,13 @@ abstract class AuthProvider {
     }
 
     protected function getRedirectPath() {
-        return $_SESSION['mapasculturais.auth.redirect_path'];
+        $app = App::i();
+        
+        $redirect = $_SESSION['mapasculturais.auth.redirect_path'] ?? $app->createUrl('panel', 'index');
+
+        $app->applyHookBoundTo($this, 'auth.redirectUrl', [&$redirect]);
+        
+        return $redirect;
     }
 
     protected final function _setAuthenticatedUser(Entities\User $user = null){
@@ -119,9 +125,9 @@ abstract class AuthProvider {
     function setCookies(){
         $user_id = $this->isUserAuthenticated() ? $this->getAuthenticatedUser()->id : 0;
         $user_is_adm = $this->getAuthenticatedUser()->is('admin');
-
-        setcookie('mapasculturais.uid', $user_id, 0, '/');
-        setcookie('mapasculturais.adm', $user_is_adm, 0, '/');
-
+        if (php_sapi_name() != "cli") {
+            setcookie('mapasculturais.uid', $user_id, 0, '/');
+            setcookie('mapasculturais.adm', $user_is_adm, 0, '/');
+        }
     }
 }

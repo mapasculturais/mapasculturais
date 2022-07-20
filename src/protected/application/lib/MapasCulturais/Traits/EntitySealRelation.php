@@ -8,7 +8,10 @@ use MapasCulturais\App,
 /**
  * Defines that this entity has seals related to it.
  *
- * @property-read \MapasCulturais\Entities\SealRelation[] $relatedSeals The seals related to this entity
+ * @property-read \MapasCulturais\Entities\Seal[] $relatedSeals The seals related to this entity
+ * @property-read \MapasCulturais\Entities\SealRelation[] $sealRelations
+ * @property-read string $sealRelationEntityClassNamerelatedSeals
+ * 
  *
  */
 trait EntitySealRelation {

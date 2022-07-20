@@ -76,7 +76,8 @@ abstract class EntityController extends \MapasCulturais\Controller{
      * @return bool
      */
     public function isAjax(){
-        return App::i()->request->isAjax();
+        $app = App::i();
+        return $app->request->isAjax() || $app->request()->headers()->get('Content-Type') === 'application/json';
     }
 
 
@@ -477,6 +478,13 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $app->applyHookBoundTo($this, "PATCH({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
+
+        if($entity->usesPermissionCache() && $entity->usesOwnerAgent() && (!isset($data['ownerId']) && !isset($data['owner']) && !isset($data['status']))) {
+            $entity->__skipQueuingPCacheRecreation = true;
+            if ($entity instanceof \MapasCulturais\Entities\Registration) {
+                $entity->owner->__skipQueuingPCacheRecreation = true;
+            }
+        }
 
         if(!$entity)
             $app->pass();

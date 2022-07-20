@@ -1,6 +1,14 @@
 <?php
+use MapasCulturais\i;
+
 $this->layout = 'panel';
 $label = \MapasCulturais\i::__("Adicionar novo agente");
+
+$ativos_num = count($user->enabledAgents);
+$permitido_num = count($app->user->hasControlAgents);
+$rascunhos_num = count($user->draftAgents);
+$lixeira_num = count($user->trashedAgents);
+$arquivo_num = count($app->user->archivedAgents);
 ?>
 <?php /*$this->part('singles/breadcrumb', ['entity' => $app->entity]); */?>
 <div class="panel-list panel-main-content">
@@ -15,12 +23,11 @@ $label = \MapasCulturais\i::__("Adicionar novo agente");
     <?php $this->applyTemplateHook('panel-header','after'); ?>
 
     <ul class="abas clearfix clear">
-
-        <li class="active"><a href="#ativos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Ativos");?> (<?php echo count($user->enabledAgents); ?>)</a></li>
-        <li><a href="#permitido" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Concedidos");?> (<?php echo count($app->user->hasControlAgents); ?>)</a></li>
-        <li><a href="#rascunhos" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Rascunhos");?> (<?php echo count($user->draftAgents); ?>)</a></li>
-        <li><a href="#lixeira" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Lixeira");?> (<?php echo count($user->trashedAgents); ?>)</a></li>
-        <li><a href="#arquivo" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Arquivo");?> (<?php echo count($app->user->archivedAgents);?>)</a></li>
+        <?php $this->part('tab', ['id' => 'ativos', 'label' => i::__("Ativos") . " ($ativos_num)", 'active' => true]) ?>
+        <?php $this->part('tab', ['id' => 'permitido', 'label' => i::__("Concedidos") . " ($permitido_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'rascunhos', 'label' => i::__("Rascunhos") . " ($rascunhos_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'lixeira', 'label' => i::__("Lixeira") . " ($lixeira_num)"]) ?>
+        <?php $this->part('tab', ['id' => 'arquivo', 'label' => i::__("Arquivo") . " ($arquivo_num)"]) ?>
     </ul>
     <div id="ativos">
 		<?php $this->part('panel-agent', array('entity' => $app->user->profile)); ?>

@@ -1,4 +1,6 @@
 <?php
+use MapasCulturais\i;
+
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 $this->bodyProperties['ng-app'] = "entity.app";
 $this->bodyProperties['ng-controller'] = "EntityController";
@@ -30,6 +32,7 @@ $this->includeAngularEntityAssets($entity);
 
         <?php $this->part('singles/entity-status', ['entity' => $entity]); ?>
 
+        <?php $this->applyTemplateHook('header-content','before'); ?>
         <div class="header-content">
             <?php $this->applyTemplateHook('header-content','begin'); ?>
             
@@ -48,9 +51,9 @@ $this->includeAngularEntityAssets($entity);
     <?php $this->applyTemplateHook('tabs','before'); ?>
     <ul class="abas clearfix clear">
         <?php $this->applyTemplateHook('tabs','begin'); ?>
-        <li class="active"><a href="#sobre" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Sobre");?></a></li>
+        <?php $this->part('tab', ['id' => 'sobre', 'label' => i::__("Sobre"), 'active' => true]) ?>
         <?php if(!($this->controller->action === 'create')):?>
-        <li><a href="#permissao" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("Responsáveis");?></a></li>
+            <?php $this->part('tab', ['id' => 'permissao', 'label' => i::__("Responsáveis")]) ?>
         <?php endif;?>
         <?php $this->applyTemplateHook('tabs','end'); ?>
     </ul>
@@ -61,7 +64,8 @@ $this->includeAngularEntityAssets($entity);
         <div id="sobre" class="aba-content">
             <div class="ficha-spcultura">
                 <p>
-                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
+                    <span class="label <?php echo ($entity->isPropertyRequired($entity,"shortDescription") && $this->isEditable() ? 'required': '');?>"><?php \MapasCulturais\i::_e("Descrição curta:");?> <span data-element='countLength'><?php if($this->isEditable()){ ?> (<?=mb_strlen($entity->shortDescription)?></span> <?php \MapasCulturais\i::_e("/400 Caracteres");?></span></span>)<br> <?php }?>:
+                    <span class="js-editable" data-edit="shortDescription" data-original-title="<?php \MapasCulturais\i::esc_attr_e("Descrição Curta");?>" data-emptytext="<?php \MapasCulturais\i::esc_attr_e("Insira uma descrição curta");?>" data-showButtons="bottom" data-tpl='<textarea data-element="shortDescription" maxlength="400"></textarea>'><?php echo $this->isEditable() ? $entity->shortDescription : nl2br($entity->shortDescription); ?></span>
                 </p>
                 <?php $this->applyTemplateHook('tab-about-service','before'); ?>
                 <div class="servico">
