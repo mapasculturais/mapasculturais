@@ -93,35 +93,19 @@ class Entity {
     }
 
     get singleUrl() {
-        return this.API.createUrl('single', [this.id]);
+        return this.getUrl('single');
     }
 
-    get destroyUrl() {
-        return this.API.createUrl('destroy', [this.id]);
-    }
-
-    get publishUrl() {
-        return this.API.createUrl('publish', [this.id]);
-    }
-
-    get archiveUrl() {
-        return this.API.createUrl('archive', [this.id]);
-    }
-
-    get uploadUrl() {
-        return this.API.createUrl('upload', [this.id]);
-    }
-
-    get createAgentRelationUrl() {
-        return this.API.createUrl('createAgentRelation', [this.id]);
-    }
-
-    get removeAgentRelationUrl() {
-        return this.API.createUrl('removeAgentRelation', [this.id]);
+    get editUrl() {
+        return this.getUrl('edit');
     }
 
     get cacheId() {
         return this.API.createCacheId(this.id);
+    }
+
+    getUrl(action) {
+        return this.API.createUrl(action, [this.id]);
     }
 
     removeFromLists(skipList) {
@@ -268,7 +252,7 @@ class Entity {
         data.append(group, file);
 
         try{
-            const res = await fetch(this.uploadUrl, {method: 'POST', body: data});
+            const res = await fetch(this.getUrl('upload'), {method: 'POST', body: data});
             return this.doPromise(res, (f) => {
                 let file;
                 if(f[group] instanceof Array) {
@@ -290,7 +274,7 @@ class Entity {
     }
 
     async createAgentRelation(group, agent, hasControl, metadata) {
-        return this.API.POST(this.createAgentRelationUrl, {group, agentId: agent.id, has_control: hasControl})
+        return this.API.POST(this.getUrl('createAgentRelation'), {group, agentId: agent.id, has_control: hasControl})
             .then(response => response.json().then(agentRelation => {
                 delete agentRelation.owner;
                 delete agentRelation.agentUserId;
@@ -323,7 +307,7 @@ class Entity {
         this.__processing = this.text('removendo agente relacionado');
 
         try {
-            const res = this.API.POST(this.removeAgentRelationUrl, {group, agentId: agent.id});
+            const res = this.API.POST(this.getUrl('removeAgentRelation'), {group, agentId: agent.id});
             res.then(() => {
                 let index;
                 
