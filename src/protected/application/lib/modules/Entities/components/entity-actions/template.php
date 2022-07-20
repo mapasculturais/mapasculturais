@@ -9,7 +9,7 @@ $this->import('loading');
         <loading :entity="entity"></loading>
         <template v-if="!entity.__processing">
             <div class="entity-actions__content--groupBtn rowBtn">
-                <button class="button button--icon button--sm arquivar">
+                <button v-if="entity.currentUserPermissions?.archive" class="button button--icon button--sm arquivar">
                     <iconify icon="mi:archive"></iconify>
                     <?php i::_e("Arquivar")?>
                 </button>
