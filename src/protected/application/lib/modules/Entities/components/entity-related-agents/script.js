@@ -14,7 +14,6 @@ app.component('entity-related-agents', {
 
     data() {
         return {
-            groups: {},
             newGroupName: ''
         }
     },
@@ -28,6 +27,20 @@ app.component('entity-related-agents', {
             }
 
             return result;
+        },
+
+        groups() {
+            let groups = {};
+            for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
+                if (groupName == "group-admin") {
+                    continue;
+                } else {
+                    group.newGroupName = groupName;
+                    groups[groupName] = group;
+                }
+            }
+
+            return groups;
         }
     },
     
@@ -36,13 +49,6 @@ app.component('entity-related-agents', {
             if (this.entity.relatedAgents == undefined) {
                 return false;
             } else {
-                for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
-                    if (groupName == "group-admin") {
-                        continue;
-                    } else {
-                        this.groups[groupName] = group;
-                    }
-                }
                 return true;
             }
         },
@@ -62,6 +68,14 @@ app.component('entity-related-agents', {
 
         removeAgent(group, agent) {
             this.entity.removeAgentRelation(group, agent);
-        }
+        },
+
+        removeGroup(group) {
+            this.entity.removeAgentRelationGroup(group);
+        },
+
+        renameGroup(oldName, newName, popover) {
+            this.entity.renameAgentRelationGroup(oldName, newName).then(() => popover.close());
+        },
     },
 });
