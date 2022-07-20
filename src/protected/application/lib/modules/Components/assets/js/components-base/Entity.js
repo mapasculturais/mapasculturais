@@ -324,4 +324,42 @@ class Entity {
             return this.doCatch(error);
         }
     }
+
+
+    async removeAgentRelationGroup(group) {
+        this.__processing = this.text('removendo grupo de agentes relacionados');
+
+        try {
+            const res = this.API.POST(this.getUrl('removeAgentRelationGroup'), {group});
+            res.then(() => {
+                delete this.agentRelations[group];
+                delete this.relatedAgents[group];
+                
+                this.__processing = false;
+            
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
+
+    async renameAgentRelationGroup(oldName, newName) {
+        this.__processing = this.text('renomeando grupo de agentes relacionados');
+
+        try {
+            const res = this.API.POST(this.getUrl('renameAgentRelationGroup'), {oldName, newName});
+            res.then(() => {
+                this.agentRelations[newName] = this.agentRelations[oldName];
+                this.relatedAgents[newName] = this.relatedAgents[oldName];
+                delete this.agentRelations[oldName];
+                delete this.relatedAgents[oldName];
+                
+                this.__processing = false;
+            
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
 }
