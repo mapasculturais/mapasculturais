@@ -39,7 +39,7 @@ $this->import('popover confirm-button');
             <!-- remover grupo -->
             <confirm-button @confirm="removeGroup(groupName)">
                 <template #button="modal">
-                    <button @click="modal.open()"class="button button--icon button--text-del button--sm"> <iconify icon="ooui:trash" /> <?php i::_e('Excluir') ?> </button>
+                    <button @click="modal.open()" class="button button--icon button--text-del button--sm"> <iconify icon="ooui:trash" /> <?php i::_e('Excluir') ?> </button>
                 </template> 
                 <template #message="message">
                     <?php i::_e('Remover grupo de agentes relacionados?') ?>
