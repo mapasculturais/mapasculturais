@@ -103,28 +103,27 @@ trait ControllerAgentRelation{
         
         if(!$this->urlData['id'])
             $app->pass();
+
+        if (!isset($this->data['newName'])) {
+            $this->errorJson('Missing argument: newName');
+        }
+
+        if (!isset($this->data['oldName'])) {
+            $this->errorJson('Missing argument: oldName');
+        }
+
+        $entity = $this->requestedEntity;
         
-        if (isset($this->postData['group']) && is_array($this->postData['group'])
-            && isset($this->postData['group']['relations']) && is_array($this->postData['group']['relations']) ) {
-        
-                $ids = array();
-                
-                foreach ($this->postData['group']['relations'] as $rel) {
-                    array_push($ids, $rel['id']);
-                }
-                
-                $query = sprintf('update MapasCulturais\Entities\AgentRelation r set r.group = :newName WHERE r.id IN(%s)', implode(',', $ids));
-                
-                $q = $app->em->createQuery($query);
-                $q->setParameter("newName", $this->postData['group']['name']);
-                
-                $numUpdated = $q->execute();
-                
-                $this->finish($numUpdated, 200, true);
-        
+        if ($entity->renameAgentRelationGroup($this->data['oldName'], $this->data['newName'])) {
+            $this->json(true);
+        } else {
+            $this->json(false);
         }
     }
 
+    /**
+     * Define se um agente relacionado tem controle da entidade
+     */
     public function POST_setRelatedAgentControl(){
         $this->requireAuthentication();
         $app = App::i();

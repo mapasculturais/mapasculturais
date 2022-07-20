@@ -3,7 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App,
     MapasCulturais\Entities\Agent;
-
+use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
  * Defines that this entity has agents related to it.
@@ -270,6 +270,30 @@ trait EntityAgentRelation {
         if($this->usesPermissionCache()){
             $this->enqueueToPCacheRecreation();
         }
+    }
+
+    function renameAgentRelationGroup($old_name, $new_name) {
+        $this->checkPermission('modify');
+
+        $app = App::i();
+
+        if($old_name === 'group-admin') {
+            return false;
+        }
+
+        $relations = $this->getRelatedAgents($old_name, true, true) ?: []; 
+
+        foreach($relations as $relation) {
+            $relation->group = $new_name;
+            $errors = $relation->getValidationErrors();
+            if (isset($errors['group'])) {
+                throw new PermissionDenied($app->user, $this, 'renameAgentRelationGroup');
+            }
+
+            $relation->save(true);
+        }
+
+        return true;
     }
 
     function setRelatedAgentControl($agent, $control){
