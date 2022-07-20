@@ -147,4 +147,29 @@ trait ControllerAgentRelation{
         $owner->setRelatedAgentControl($agent, $hasControl == 'true');
         $this->json(true);
     }
+
+
+    /**
+     * Remove a group agent relation.
+     *
+     * This action requires authentication.
+     *
+     *
+     * @WriteAPI POST removeAgentRelationGroup
+     */
+    public function POST_removeAgentRelationGroup(){
+        $this->requireAuthentication();
+       
+        $entity = $this->requestedEntity;
+
+        if (!isset($this->data['group'])) {
+            $this->errorJson('Missing argument: name');
+        }
+
+        if ($entity->removeAgentRelationGroup($this->data['group'])) {
+            $this->json(true);
+        } else {
+            $this->json(false);
+        }
+    }
 }

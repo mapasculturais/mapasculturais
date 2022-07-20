@@ -296,6 +296,24 @@ trait EntityAgentRelation {
         return true;
     }
 
+    function removeAgentRelationGroup(string $name) {
+        $this->checkPermission('removeAgentRelation');
+
+        $app = App::i();
+
+        if($name === 'group-admin') {
+            return false;
+        }
+
+        $relations = $this->getRelatedAgents($name, true, true) ?: []; 
+
+        foreach($relations as $relation) {
+            $relation->delete(true);
+        }
+
+        return true;
+    }
+
     function setRelatedAgentControl($agent, $control){
     	// canUserCreateAgentRelationWithControl
         if($control)
