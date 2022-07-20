@@ -20,9 +20,14 @@
         }
         
         &--groupBtn {
+            align-items: center;
             display: flex;
             gap: size(25);
-    
+            
+            &.rowBtn {
+                flex-direction: row;
+            }
+
             .btn {
                 background: #BFF3FF;
                 color: #2269F7;
@@ -33,21 +38,44 @@
                 line-height: size(25);
                 padding: size(11) size(32);
                 
+                &.button--secondary {
+                    width: size(150);
+                }
                 &.publish {
                     background: var(--mc-white);
                     padding: size(11) size(100);
+                }
+            }
+            .arquivar {
+                .iconify {
+                    color:#FF7A00;
+                    font-size: size(16);
+                }
+            }
+            .excluir {
+                .iconify {
+                    color: #ED0000;
+                    font-size: size(16);
                 }
             }
         }
     }
 }
 
-@media (max-width: size(1024)) {
+@media(max-width: 950px){
+    .entity-actions {
+        &__content {
+            flex-direction: column-reverse;
+            align-items: center;    
+        }
+    }
+}
+
+@media (max-width: 1024px) {
     .entity-actions {
         &__content {
             display: flex;
             gap: size(24);
-            flex-direction: column-reverse;
 
             &--groupBtn {
                 display: inline-flex;
@@ -55,14 +83,13 @@
 
                 .btn {
                     justify-content: center;
-                    width: 100%;
                 }
             }
         }
     }
 }
 
-@media (max-width: size(870)) {
+@media (max-width: 870px) {
 
     .entity-actions {
         padding: size(24) size(10);    
@@ -70,8 +97,8 @@
         &__content {
             gap: size(15);
             &--groupBtn {
+                flex-direction: column-reverse;
                 gap: size(15);
-                flex-direction: column;
             }   
         }
     }

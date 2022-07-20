@@ -7,7 +7,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    max-height: 70%;
+    max-height: 80%;
     min-width: 200px;
     max-width: 80%;
     margin: 0 1rem;
@@ -35,11 +35,13 @@
     padding-right: 1rem;
 }
 .modal__action {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
     flex-shrink: 0;
-    padding: 1rem 0 0;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    padding: 1rem 1rem 0;
 }
 .modal__close {
     background: none;
@@ -49,4 +51,11 @@
     height: 20px;
     padding: 0;
     cursor: pointer;
+}
+
+@media (max-width: 600px)
+{
+    .modal__action .button {
+        width: 100%;
+    }
 }

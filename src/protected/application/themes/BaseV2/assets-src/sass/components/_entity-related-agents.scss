@@ -20,6 +20,7 @@
 
         &--agents {
             display: flex;
+            flex-wrap: wrap;
             gap: size(30);
 
             .agent {

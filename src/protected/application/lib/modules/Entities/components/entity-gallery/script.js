@@ -2,11 +2,6 @@ app.component('entity-gallery', {
     template: $TEMPLATES['entity-gallery'],
     emits: [],
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
-    },
-
     created() {
         window.addEventListener('keydown', (e) => {
             switch(e.key) {
@@ -34,6 +29,10 @@ app.component('entity-gallery', {
         title: {
             type: String,
             default: 'Galeria de fotos'
+        },
+        editable: {
+            type: Boolean,
+            default: false
         }
     },
     
