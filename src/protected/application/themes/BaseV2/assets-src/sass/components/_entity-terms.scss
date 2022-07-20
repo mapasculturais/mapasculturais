@@ -107,6 +107,7 @@
             width: 100%;
 
             &-item {
+                cursor: pointer;
                 padding: size(16);
             }
         }
@@ -148,6 +149,7 @@
             border-bottom: size(1) solid #BBBBBB;
 
             &-item {
+                cursor: pointer;
                 display: flex;
                 gap: size(8);
             }
