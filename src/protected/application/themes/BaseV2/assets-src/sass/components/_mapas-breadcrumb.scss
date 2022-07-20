@@ -3,6 +3,10 @@
 .mapas-breadcrumb {
     margin: 0 auto;
     max-width: 1170px;
+    
+    @media (max-width: size(800)) {
+        font-size: 14px;
+    }
 
     ul, li {
         margin: 0;
@@ -12,6 +16,7 @@
     ul {
         align-items: center;
         display: flex;
+        flex-wrap: wrap;
         gap: size(5);
         margin: size(8) size(10);
         position: absolute;
@@ -25,6 +30,10 @@
         margin-right: size(26);
         position: relative;
 
+        @media (max-width: size(800)) {
+            margin-right: size(16);
+        }
+
         &::after {
             background: url(https://api.iconify.design/fe/arrow-right.svg) no-repeat center center/contain;
             content: "";
@@ -34,6 +43,10 @@
             position: absolute;
             right: size(-26);
             width: size(18);
+
+            @media (max-width: size(800)) {
+                right: size(-20);
+            }
         }
     }
 
