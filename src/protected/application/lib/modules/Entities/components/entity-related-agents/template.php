@@ -35,7 +35,7 @@ $this->import('popover confirm-button');
     
         <div class="entity-related-agents__group--actions">
 
-            <select-entity type="agent" @select="addAgent(groupName, $event)" openside="down-right">            
+            <select-entity type="agent" @select="addAgent(groupName, $event)" :query="queries[groupName]" openside="down-right">
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> <?php i::_e('Adicionar agente') ?> <iconify icon="ps:plus"/> </button>
                 </template>
