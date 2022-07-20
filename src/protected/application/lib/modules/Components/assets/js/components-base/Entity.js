@@ -123,7 +123,7 @@ class Entity {
 
     async doPromise(res, cb) {
         let data = await res.json();
-        let result;
+        let result; 
 
         if (res.ok) { // status 20x
             data = cb(data) || data;
@@ -274,8 +274,10 @@ class Entity {
     }
 
     async createAgentRelation(group, agent, hasControl, metadata) {
-        return this.API.POST(this.getUrl('createAgentRelation'), {group, agentId: agent.id, has_control: hasControl})
-            .then(response => response.json().then(agentRelation => {
+        try{
+            const res = await this.API.POST(this.getUrl('createAgentRelation'), {group, agentId: agent.id, has_control: hasControl});
+
+            this.doPromise(res, (agentRelation) => {
                 delete agentRelation.owner;
                 delete agentRelation.agentUserId;
                 delete agentRelation.objectId;
@@ -287,14 +289,11 @@ class Entity {
                 
                 this.relatedAgents[group] = this.relatedAgents[group] || [];
                 this.relatedAgents[group].push(agent);
-                
-                console.log(agentRelation);
-                this.__processing = false;
-            })
-            .catch((error) => {
-                this.__processing = false;
-                console.log(error);
-            }))
+            
+            });
+        } catch (error) {
+            this.doCatch(error);
+        }
     }
 
     async addRelatedAgent(group, agent, metadata) {
@@ -307,8 +306,8 @@ class Entity {
         this.__processing = this.text('removendo agente relacionado');
 
         try {
-            const res = this.API.POST(this.getUrl('removeAgentRelation'), {group, agentId: agent.id});
-            res.then(() => {
+            const res = await this.API.POST(this.getUrl('removeAgentRelation'), {group, agentId: agent.id});
+            this.doPromise(res, (data) => {
                 let index;
                 
                 index = this.agentRelations[group].indexOf(agent);
@@ -316,8 +315,6 @@ class Entity {
                 
                 index = this.relatedAgents[group].indexOf(agent);
                 this.relatedAgents[group].splice(index,1);
-
-                this.__processing = false;
             
             });
         } catch (error) {
@@ -330,13 +327,10 @@ class Entity {
         this.__processing = this.text('removendo grupo de agentes relacionados');
 
         try {
-            const res = this.API.POST(this.getUrl('removeAgentRelationGroup'), {group});
-            res.then(() => {
+            const res = await this.API.POST(this.getUrl('removeAgentRelationGroup'), {group});
+            this.doPromise(res, (data) => {
                 delete this.agentRelations[group];
                 delete this.relatedAgents[group];
-                
-                this.__processing = false;
-            
             });
         } catch (error) {
             return this.doCatch(error);
@@ -348,15 +342,13 @@ class Entity {
         this.__processing = this.text('renomeando grupo de agentes relacionados');
 
         try {
-            const res = this.API.POST(this.getUrl('renameAgentRelationGroup'), {oldName, newName});
-            res.then(() => {
+            const res = await this.API.POST(this.getUrl('renameAgentRelationGroup'), {oldName, newName});
+            this.doPromise(res, (data) => {
                 this.agentRelations[newName] = this.agentRelations[oldName];
                 this.relatedAgents[newName] = this.relatedAgents[oldName];
                 delete this.agentRelations[oldName];
                 delete this.relatedAgents[oldName];
-                
-                this.__processing = false;
-            
+               
             });
         } catch (error) {
             return this.doCatch(error);
