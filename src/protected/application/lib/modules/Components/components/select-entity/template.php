@@ -1,4 +1,8 @@
-<?php $this->import('entities popover') ?>
+<?php
+
+use MapasCulturais\i;
+
+ $this->import('entities popover') ?>
 
     <popover :openside="openside" :button-label="buttonLabel" :button-classes="[buttonClasses, type + '__color']"> 
         <template #button="{ toggle }">
@@ -11,18 +15,17 @@
 
                 <entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope">
 
-                    <template #header1="{entities}">
-                        <div class="select-entity__form">
+                    <template #header="{entities}">
+                        <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
                             <input v-model="query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" />
-                            <button @click="entities.refresh()" type="button" class="select-entity__form--button">
+                            <button type="button" class="select-entity__form--button">
                                 <iconify icon="ant-design:search-outlined" />
                             </button>
-                            <input type="checkbox" v-model="entities.loading" />
-                        </div>
+                        </form>
                     </template>
 
                     <template #default="{entities}">
-                        <p class="select-entity__description"> {{itensText}} </p>
+                        <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
                         <ul class="select-entity__results">
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
                                 <span class="icon">
@@ -38,7 +41,7 @@
                 </entities>
 
                 <div v-if="createNew" class="select-entity__add">
-                    <p> ou </p>
+                    <p> <?php i::__('ou') ?> </p>
                     <a href="" class="select-entity__add--button">
                         {{buttonText}}
                     </a>
