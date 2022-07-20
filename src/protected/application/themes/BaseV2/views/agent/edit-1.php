@@ -5,7 +5,8 @@ $this->import('
     mapas-container mapas-card mapas-breadcrumb
     entity-field entity-profile entity-cover entity-terms 
     entity-admins entity-header entity-actions entity-owner 
-    entity-social-media entity-related-agents entity-links');
+    entity-social-media entity-related-agents entity-links
+    entity-gallery');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -139,6 +140,9 @@ $this->breadcramb = [
                     <div class="row">
                         <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                     </div>
+                    <div class="row">
+                        <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-links>
+                    </div>
                 </template>
             </mapas-card>
         </main>
@@ -172,21 +176,3 @@ $this->breadcramb = [
     <entity-actions :entity="entity" />
 
 </div>
-
-
-
-<!-- 
-<tabs>
-    <tab label="label Tag" slug="tab1">
-        Teste tag    
-    </tab>
-    <tab label="label Tag 2" slug="tab2">
-        Teste tag 2 
-    </tab>
-</tabs> 
-
-<div>
-    <button @click="entity.save()"> salvar </button>
-</div>
-<input v-model="entity.terms.tag.newTerm"> <button @click="entity.terms.tag.push(entity.terms.tag.newTerm)"> add </button> 
--->
