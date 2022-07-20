@@ -54,7 +54,7 @@
             },
             
             this.renameGroup = function(group) {
-                return $http.post(this.getUrl('renameGroupAgentRelation'), {group: group}).
+                return $http.post(this.getUrl('renameGroupAgentRelation'), {oldName: group.oldName, newName: group.name}).
                     success(function(data, status){
                         $rootScope.$emit('relatedAgent.renamedGroup', data);
                     }).
@@ -173,6 +173,7 @@
         $scope.setRenameGroup = function(group){
             $scope.data.editGroup = {};
             angular.copy(group, $scope.data.editGroup);
+            $scope.data.editGroup.oldName = group.name;
             $scope.data.editGroupIndex = $scope.groups.indexOf(group);
         };
         
