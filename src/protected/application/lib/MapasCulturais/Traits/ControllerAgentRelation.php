@@ -120,7 +120,9 @@ trait ControllerAgentRelation{
             $this->json(false);
         }
     }
-
+    public function POST_renameAgentRelationGroup(){
+        $this->POST_renameGroupAgentRelation();
+    }
     /**
      * Define se um agente relacionado tem controle da entidade
      */
