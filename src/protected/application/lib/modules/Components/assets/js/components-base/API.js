@@ -159,8 +159,7 @@ class API {
             return this.POST(url, entity.data())
             
         } else {
-            let url = Utils.createUrl(this.objectType, 'single', [entity.id]);
-            return this.PATCH(url, entity.data())
+            return this.PATCH(entity.singleUrl, entity.data())
         }
     }
 
@@ -172,19 +171,19 @@ class API {
 
     async destroyEntity(entity) {
         if (entity.id) {
-            return this.DELETE(entity.destroyUrl);   
+            return this.DELETE(entity.getUrl('destroy'));   
         }
     }
 
     async publishEntity(entity) {
         if (entity.id) {
-            return this.POST(entity.publishUrl);   
+            return this.POST(entity.getUrl('publish'));   
         }
     }
 
     async archiveEntity(entity) {
         if (entity.id) {
-            return this.POST(entity.archiveUrl);   
+            return this.POST(entity.getUrl('archive'));   
         }
     }
 
