@@ -1,4 +1,8 @@
-<?php $this->import('entities popover') ?>
+<?php
+
+use MapasCulturais\i;
+
+ $this->import('entities popover') ?>
 
     <popover :openside="openside" :button-label="buttonLabel" :button-classes="[buttonClasses, type + '__color']"> 
         <template #button="{ toggle }">
@@ -38,7 +42,7 @@
                 </entities>
 
                 <div v-if="createNew" class="select-entity__add">
-                    <p> ou </p>
+                    <p> <?php i::__('ou') ?> </p>
                     <a href="" class="select-entity__add--button">
                         {{buttonText}}
                     </a>
