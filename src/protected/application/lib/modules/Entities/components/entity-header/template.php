@@ -103,7 +103,6 @@ use MapasCulturais\i;
                 </div>
                 <h2><?php i::_e("Edição do agente Individual")?></h2>
             </div>
-            <button class="button button--primary"><?php i::_e("Publicar")?></button>
         </div>
     </div>
 
