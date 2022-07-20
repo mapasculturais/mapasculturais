@@ -119,13 +119,13 @@ $this->breadcramb = [
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
-                    <div class="row">
-                        <entity-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Deta de Nascimento') ?>"></entity-field>
-                        <entity-field :entity="entity" prop="genero"></entity-field>
+                    <div class="row no-breakline">
+                        <entity-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
+                        <entity-field :entity="entity" prop="genero" label="<?= i::__('Selecione o Gênero')?>" ></entity-field>
                     </div>
-                    <div class="row">
-                        <entity-field :entity="entity" prop="orientacaoSexual"></entity-field>
-                        <entity-field :entity="entity" prop="raca"></entity-field>
+                    <div class="row no-breakline">
+                        <entity-field :entity="entity" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
+                        <entity-field :entity="entity" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
                     </div>
                 </template>
             </mapas-card>
