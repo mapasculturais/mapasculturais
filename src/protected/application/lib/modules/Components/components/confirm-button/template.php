@@ -13,7 +13,7 @@ $this->import('modal');
     </template>
 
     <template #actions="modal">
+        <button class="button button--text" @click="cancel(modal)">{{no || "<?php i::_e("Não") ?>"}}</button>
         <button class="button button--primary" @click="confirm(modal)">{{yes || "<?php i::_e("Sim") ?>"}}</button>
-        <button class="button button--secondary" @click="cancel(modal)">{{no || "<?php i::_e("Não") ?>"}}</button>
     </template>
 </modal>
