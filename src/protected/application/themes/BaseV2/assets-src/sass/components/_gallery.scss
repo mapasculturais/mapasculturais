@@ -64,6 +64,10 @@ body.galleryOpen {
         }
     }
 
+    &__addNew {
+        margin-top: size(16);
+    }
+
     &__full {
         align-items: center;
         display: none;

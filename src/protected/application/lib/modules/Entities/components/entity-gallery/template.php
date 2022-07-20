@@ -18,38 +18,33 @@ use MapasCulturais\i;
                 <a> <iconify icon="ooui:trash"></iconify> </a>
             </div>
         </div>
+    
+    </div>
+    
+    <div v-if="editable" class="entity-gallery__addNew">
+        <modal title="Adicionar uma nova imagem" class="create-modal" button-label="Adicionar uma nova imagem" >
+            <template #default>
 
-        <div v-if="editable" class="entity-gallery__list--addNew">
+                <image-uploader :entity="entity" group="gallery" :circular="false">
+                    <template #default="modal">
 
-            <modal title="Adicionar uma nova imagem" class="create-modal" button-label="Adicionar uma nova imagem" >
-                <template #default>
+                        <img :src="images[Object.keys(images).length-1].url" />
 
-                    <image-uploader :entity="entity" group="gallery" :circular="false">
-                        <template #default="modal">
+                    </template>
+                </image-uploader>
 
-                            teste
-
-                        </template>
-                    </image-uploader>
-
-                </template>
-                <template #button="modal">
-                    <a @click="modal.open()" class="button button--primary button--icon button--primary-outline">
-                        <iconify icon="gridicons:plus"></iconify>
-                        <?php i::_e("Adicionar")?>
-                    </a>
-                </template>
-                <template #actions="modal">
-                    <div class="create-modal__buttons">
-                        <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Adicionar')?></button>
-                        <button class="button button--text button--text-del " @click="cancel(modal)"><?php i::_e('Cancelar')?></button>
-                    </div>
-                </template>
-            </modal>
-
-            
-        </div>
-
+            </template>
+            <template #button="modal">
+                <a @click="modal.open()" class="button button--primary button--icon button--primary-outline">
+                    <iconify icon="gridicons:plus"></iconify>
+                    <?php i::_e("Adicionar")?>
+                </a>
+            </template>
+            <template #actions="modal">
+                <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Adicionar')?></button>
+                <button class="button button--text button--text-del " @click="cancel(modal)"><?php i::_e('Cancelar')?></button>
+            </template>
+        </modal>            
     </div>
 
     <div class="entity-gallery__full" :class="{ 'active': galleryOpen }">
