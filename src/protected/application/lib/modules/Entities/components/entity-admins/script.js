@@ -12,9 +12,14 @@ app.component('entity-admins', {
         }
     },
 
-    data() {
-        return {
-            group: {}
+    computed: {
+        query() {
+            const ids = this.group.map((item) => item.id).join(',');
+            return ids ? {id: `!IN(${ids})`} : {};
+
+        },
+        group() {
+            return  this.entity.relatedAgents?.['group-admin'] || [];
         }
     },
 
@@ -23,13 +28,16 @@ app.component('entity-admins', {
             if (this.entity.relatedAgents == undefined) {
                 return false;
             } else {
-                for (var [groupName, group] of Object.entries(this.entity.relatedAgents)) {
-                    if (groupName == "group-admin") {
-                        this.group[groupName] = group;
-                    }
-                }
                 return true;
             }
-        }
+        },
+
+        addAgent(agent) {
+            this.entity.addAdmin(agent);
+        },
+
+        removeAgent(agent) {
+            this.entity.removeAgentRelation('group-admin', agent);
+        },
     },
 });
