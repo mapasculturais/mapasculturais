@@ -16,11 +16,15 @@ if(!is_dir(DOCTRINE_PROXIES_PATH)){
 define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', dirname(BASE_PATH) . '/private-files/'));
 define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', PRIVATE_FILES_PATH . 'sessions/'));
 
+define('REDIS_SESSION', strpos(SESSIONS_SAVE_PATH, 'tcp://') !== false);
+
 if(!is_dir(PRIVATE_FILES_PATH)){
     mkdir(PRIVATE_FILES_PATH);
 }
 
-if(strpos(SESSIONS_SAVE_PATH,'tcp://') === false){
+if (REDIS_SESSION) {
+    ini_set('session.save_handler', 'redis'); 
+} else {
     if(!is_dir(SESSIONS_SAVE_PATH)){
             mkdir(SESSIONS_SAVE_PATH);
     }
