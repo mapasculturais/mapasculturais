@@ -6,6 +6,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [5.3.19] - 2022-07-12
 ### Correções
+- Remove chamadas de função iniexistente
+## [5.3.19] - 2022-07-12
+### Correções
 - Corrige erro na contagem de avaliações
 ## [5.3.18] - 2022-06-23
 - Revisa condicionais para exibir campos das politicas afirmatrivas para o avaliador e na planilha de inscritos
