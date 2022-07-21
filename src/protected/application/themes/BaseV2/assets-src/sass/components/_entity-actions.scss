@@ -44,6 +44,9 @@
                 &.publish {
                     background: var(--mc-white);
                     padding: size(11) size(100);
+                    &-exit {
+                        padding: size(15) size(40);
+                    }
                 }
             }
             .arquivar {
@@ -95,7 +98,7 @@
         padding: size(24) size(10);    
             
         &__content {
-            gap: size(15);
+            gap: size(48);
             &--groupBtn {
                 flex-direction: column-reverse;
                 gap: size(15);
