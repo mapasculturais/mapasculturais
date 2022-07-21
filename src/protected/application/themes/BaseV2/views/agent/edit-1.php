@@ -141,7 +141,7 @@ $this->breadcramb = [
                         <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
                     </div>
                     <div class="row">
-                        <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-links>
+                        <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
                     </div>
                 </template>
             </mapas-card>
