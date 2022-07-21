@@ -23,4 +23,5 @@ return [
     'removendo agente relacionado' => i::__('Removendo agente relacionado'),
     'removendo grupo de agentes relacionados' => i::__('Removendo grupo de agentes relacionados'),
     'renomeando grupo de agentes relacionados' => i::__('Renomeando grupo de agentes relacionados'),
+    'adicionando administrador' => i::__('Adicionando administrador'),
 ];

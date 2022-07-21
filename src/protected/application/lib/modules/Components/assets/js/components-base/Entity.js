@@ -302,6 +302,12 @@ class Entity {
         return this.createAgentRelation(group, agent);
     }
 
+    async addAdmin(agent) {
+        this.__processing = this.text('adicionando administrador');
+
+        return this.createAgentRelation('group-admin', agent, true);
+    }
+
     async removeAgentRelation(group, agent) {
         this.__processing = this.text('removendo agente relacionado');
 
