@@ -6,7 +6,7 @@ $this->import('
     entity-field entity-profile entity-cover entity-terms 
     entity-admins entity-header entity-actions entity-owner 
     entity-social-media entity-related-agents entity-links
-    entity-gallery');
+    entity-gallery entity-gallery-video');
 
 $this->breadcramb = [
     ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
@@ -139,6 +139,9 @@ $this->breadcramb = [
                 <template #content>
                     <div class="row">
                         <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
+                    </div>
+                    <div class="row">
+                        <entity-gallery-video title="<?php i::_e('Adicionar vídeos') ?>" :entity="entity" :editable="true"></entity-gallery-video>
                     </div>
                     <div class="row">
                         <entity-gallery title="<?php i::_e('Adicionar fotos na galeria') ?>" :entity="entity" :editable="true"></entity-gallery>
