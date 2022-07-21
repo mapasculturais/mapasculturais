@@ -11,42 +11,6 @@ $this->import('popover confirm-button');
 
         <label class="entity-related-agents__group--name"> {{groupName}} </label>
 
-        <!-- botões de ação do grupo -->
-        <div v-if="editable" >
-            <!-- renomear grupo -->
-            <popover openside="down-right">
-                <template #button="{ toggle }">
-                    <slot name="button" :toggle="toggle"> 
-                        <iconify @click="toggle()"  icon="zondicons:edit-pencil"/> 
-                    </slot>
-                </template>
-
-                <template #default="popover">
-                    <div class="entity-related-agents__addNew--newGroup">
-                        <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault()">
-                            <input v-model="groupAgents.newGroupName" class="newGroupName" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
-                            
-                            <div class="newGroup--actions">
-                                <a class="button button--text"  @click="popover.close()"> <?php i::_e("Cancelar") ?> </a>
-                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
-                            </div>
-                        </form>
-                    </div>
-                </template>
-            </popover>
-            
-
-            <!-- remover grupo -->
-            <confirm-button @confirm="removeGroup(groupName)">
-                <template #button="modal">
-                    <button @click="modal.open()" class="button button--icon button--text-del button--sm"> <iconify icon="ooui:trash" /> <?php i::_e('Excluir') ?> </button>
-                </template> 
-                <template #message="message">
-                    <?php i::_e('Remover grupo de agentes relacionados?') ?>
-                </template>
-            </confirm-button>
-        </div>
-
         <!-- lista de agentes -->
         <div class="entity-related-agents__group--agents">
             <div v-for="agent in groupAgents" class="agent">
@@ -77,6 +41,44 @@ $this->import('popover confirm-button');
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()"> <?php i::_e('Adicionar agente') ?> <iconify icon="ps:plus"/> </button>
                 </template>
             </select-entity>
+
+            <!-- botões de ação do grupo -->
+            <div v-if="editable" class="act">
+                <!-- renomear grupo -->
+                <popover openside="down-right">
+                    <template #button="{ toggle }">
+                        <slot name="button" :toggle="toggle"> 
+                            <a @click="toggle()"> 
+                                <iconify icon="zondicons:edit-pencil"></iconify> 
+                            </a>
+                        </slot>
+                    </template>
+
+                    <template #default="popover">
+                        <form @submit="renameGroup(groupName, groupAgents.newGroupName, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                            <input v-model="groupAgents.newGroupName" class="newGroup--name" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
+                            
+                            <div class="newGroup--actions">
+                                <button class="button button--text"  @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                            </div>
+                        </form>
+                    </template>
+                </popover>
+                
+
+                <!-- remover grupo -->
+                <confirm-button @confirm="removeGroup(groupName)">
+                    <template #button="modal">
+                        <a @click="modal.open()"> 
+                            <iconify icon="ooui:trash"></iconify> 
+                        </a>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Remover grupo de agentes relacionados?') ?>
+                    </template>
+                </confirm-button>
+            </div>
             
         </div>
         
