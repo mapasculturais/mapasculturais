@@ -29,8 +29,11 @@ $this->import('loading');
                     <?php i::_e("Salvar") ?>
                 </button>
 
-                <button v-if="entity.currentUserPermissions?.publish && !entity.status" class="button btn publish" @click="entity.publish()">
+                <button v-if="entity.currentUserPermissions?.modify && !entity.status" class="button btn publish" @click="entity.publish()">
                     <?php i::_e("Publicar") ?>
+                </button>
+                <button v-if="entity.status" class="button btn publish publish-exit" @click="entity.publish()">
+                    <?php i::_e("Concluir Edição e Sair") ?>
                 </button>
             </div>
         </template>
