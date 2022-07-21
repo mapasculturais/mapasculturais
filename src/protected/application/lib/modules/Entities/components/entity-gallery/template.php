@@ -6,7 +6,7 @@ use MapasCulturais\i;
 
     <h2> {{title}} </h2>
 
-    <div class="entity-gallery__list">   
+    <div class="entity-gallery__list" v-if="images">   
 
         <div class="entity-gallery__list--image" v-for="(img, index) in images">
             <div @click="open" class="entity-gallery__list--image-img" >
@@ -28,7 +28,7 @@ use MapasCulturais\i;
                 <image-uploader :entity="entity" group="gallery" :circular="false">
                     <template #default="modal">
 
-                        <img :src="images[Object.keys(images).length-1].url" />
+                        teste
 
                     </template>
                 </image-uploader>
@@ -47,7 +47,7 @@ use MapasCulturais\i;
         </modal>            
     </div>
 
-    <div class="entity-gallery__full" :class="{ 'active': galleryOpen }">
+    <div class="entity-gallery__full" v-if="images" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>
 
         <div class="entity-gallery__full--image">
