@@ -4,7 +4,7 @@ use MapasCulturais\i;
 
 <div class="entity-gallery">
 
-    <h2> {{title}} </h2>
+    <label class="entity-gallery__title"> {{title}} </label>
 
     <div class="entity-gallery__list" v-if="images">   
 
