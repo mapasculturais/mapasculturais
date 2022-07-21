@@ -150,6 +150,10 @@ $this->breadcramb = [
         <aside>
             <mapas-card>
                 <template #content>
+
+                    <div class="row">
+                        <entity-admins :entity="entity" :editable="true"></entity-admins>
+                    </div>
                     
                     <div class="row">
                         <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>
@@ -157,10 +161,6 @@ $this->breadcramb = [
 
                     <div class="row">
                         <entity-related-agents :entity="entity" :editable="true"></entity-related-agents>
-                    </div>
-
-                    <div class="row">
-                        <entity-admins :entity="entity" :editable="true"></entity-admins>
                     </div>
 
                     <div class="row">

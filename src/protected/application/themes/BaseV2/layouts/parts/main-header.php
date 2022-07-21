@@ -21,7 +21,7 @@ $this->import('popover messages main-menu');
             </a>  
         </li>
         <li>
-            <a href="" class="main-header__menu--item oportunity">
+            <a href="" class="main-header__menu--item opportunity">
                 <span class="icon opportunity__bg-hover"> <iconify icon="icons8:idea" /> </span>
                 <p class="label"> <?php i::_e('Oportunidades') ?> </p>
             </a>
