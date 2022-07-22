@@ -89,7 +89,9 @@ $this->breadcramb = [
                         <entity-field :entity="entity" prop="telefone1"></entity-field>
                         <entity-field :entity="entity" prop="telefone2"></entity-field>
                     </div>
-                    divider
+                    
+                    <div class="divider"></div>
+                    
                     <div class="row">
                         <entity-field :entity="entity" prop="En_CEP"></entity-field>
                         <entity-field :entity="entity" prop="En_Nome_Logradouro"></entity-field>
