@@ -7,6 +7,8 @@ return [
     'erro de conexao' => i::__('Não foi possível se conectar ao servidor'),
 
     'salvando' => i::__('Salvando a entidade'),
+    'publicando' => i::__('Publicando a entidade'),
+    'arquivando' => i::__('Arquivando a entidade'),
     'excluindo' => i::__('Excluindo a entidade'),
     'excluindo definitivamente' => i::__('Excluindo a entidade definitivamente'),
 
