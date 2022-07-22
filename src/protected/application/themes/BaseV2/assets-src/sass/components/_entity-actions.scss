@@ -15,10 +15,6 @@
         max-width: size(1170);
         margin: 0 auto;
 
-        & > * {
-            z-index: 1;
-        }
-        
         &--groupBtn {
             align-items: center;
             display: flex;
@@ -111,5 +107,6 @@
 
     .entity-actions {
         padding: size(24) size(10);
+        position: relative;
     }
 }

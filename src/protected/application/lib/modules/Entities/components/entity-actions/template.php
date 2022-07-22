@@ -1,29 +1,53 @@
 <?php 
 use MapasCulturais\i;
 
-$this->import('loading');
+$this->import('loading confirm-button');
 ?>
 <div class="entity-actions">
 
     <div class="entity-actions__content">
         <loading :entity="entity"></loading>
         <template v-if="!entity.__processing">
+            
             <div class="entity-actions__content--groupBtn rowBtn">
-                <button v-if="entity.currentUserPermissions?.archive" @click="entity.archive()" class="button button--icon button--sm arquivar">
-                    <iconify icon="mi:archive"></iconify>
-                    <?php i::_e("Arquivar")?>
-                </button>
+                <confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="entity.archive()">
+                    <template #button="modal">
+                        <button  @click="modal.open()" class="button button--icon button--sm arquivar">
+                            <iconify icon="mi:archive"></iconify>
+                            <?php i::_e("Arquivar")?>
+                        </button>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja arquivar esse agente?') ?>
+                    </template> 
+                </confirm-button>
 
-                <button v-if="entity.currentUserPermissions?.remove" @click="entity.delete()" class="button button--icon button--sm excluir">
-                    <iconify icon="ooui:trash"></iconify>
-                    <?php i::_e("Excluir")?>
-                </button>
+                <confirm-button v-if="entity.currentUserPermissions?.remove" @confirm="entity.delete()">
+                    <template #button="modal">
+                        <button  @click="modal.open()" class="button button--icon button--sm excluir">
+                            <iconify icon="ooui:trash"></iconify>
+                            <?php i::_e("Excluir")?>
+                        </button>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja remover esse agente?') ?>
+                    </template> 
+                </confirm-button>
             </div>
 
             <div class="entity-actions__content--groupBtn">
-                <button v-if="entity.status != 1" class="button button--secondary btn">
-                    <?php i::_e("Sair") ?>
-                </button>
+                <confirm-button v-if="entity.status != 1" @confirm="">
+                    <template #button="modal">
+                        <button  @click="modal.open()" class="button button--secondary btn">
+                            <?php i::_e("Sair")?>
+                        </button>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja sair?') ?>
+                    </template> 
+                </confirm-button>
+
+                
 
                 <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--secondary btn" >
                     <?php i::_e("Salvar") ?>
