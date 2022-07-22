@@ -39,7 +39,7 @@ use MapasCulturais\i;
                     <input v-model="newLink" class="newLink" type="text" name="newLink" />
                 </div>
                 
-                <div class="newGroup--actions">
+                <div class="actions">
                     <button class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </button>
                     <button @click="addLink(newLinkTitle, newLink)" class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
                 </div>
