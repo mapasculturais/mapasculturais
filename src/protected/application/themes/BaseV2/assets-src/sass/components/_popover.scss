@@ -140,7 +140,8 @@
             }
         }
 
-        .field {
+        .field,
+        form {
             &:first-child {
                 margin-top: 0;
             }
@@ -154,7 +155,7 @@
                 width: 100%;
             }
         }
-        
+
         .actions {
             display: flex;
             gap: size(10);
