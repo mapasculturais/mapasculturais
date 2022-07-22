@@ -1,5 +1,7 @@
 <?php 
 use MapasCulturais\i;
+
+$this->import('confirm-button popover modal');
 ?>
 
 <div class="entity-gallery">
@@ -14,9 +16,23 @@ use MapasCulturais\i;
             </div>
 
             <div v-if="editable" class="entity-gallery__list--image-actions">
-                <a> <iconify icon="zondicons:edit-pencil"></iconify> </a>
+                <popover @open="img.newDescription = img.description" openside="down-right">
+                    <template #button="{ toggle }">
+                        <a @click="toggle()"> <iconify icon="zondicons:edit-pencil"></iconify> </a>
+                    </template>
+                    <template #default="popover">
+                        <form @submit="rename(img, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                            <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>
+                            
+                            <div class="actions">
+                                <a class="button button--text"  @click="popover.close()"> <?php i::_e("Cancelar") ?> </a>
+                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                            </div>
+                        </form>
+                    </template>
+                </popover>
 
-                <confirm-button @confirm="">
+                <confirm-button @confirm="img.delete()">
                     <template #button="modal">
                         <a @click="modal.open()"> <iconify icon="ooui:trash"></iconify> </a>
                     </template> 
