@@ -7,12 +7,9 @@ use MapasCulturais\i;
 
     <div class="entity-gallery__list">   
 
-        <!-- {{videos}} -->
-
-        <div v-if="entity.metalists?.videos" v-for="(video, index) in videos()" class="entity-gallery__list--video"> <!-- v-for="(img, index) in images" -->
-            <div class="entity-gallery__list--video-img"> <!-- @click="open" -->
+        <div v-if="entity.metalists?.videos" v-for="(video, index) in videos()" class="entity-gallery__list--video">
+            <div class="entity-gallery__list--video-img">
                 <img @click="openVideo(index); open()" :src="video.data.thumbnail" />
-                <!-- <div style="width: 100%; height: 100%; background-color: green;"></div> -->
             </div>
 
             <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{video.title}} </p>
@@ -20,7 +17,7 @@ use MapasCulturais\i;
             <div v-if="editable" class="entity-gallery__list--video-actions">
                 <a> <iconify icon="zondicons:edit-pencil"></iconify> </a>
 
-                <confirm-button v-if="entity.currentUserPermissions?.archive" @confirm="">
+                <confirm-button @confirm="">
                     <template #button="modal">
                         <a @click="modal.open()"> <iconify icon="ooui:trash"></iconify> </a>
                     </template> 
@@ -45,27 +42,25 @@ use MapasCulturais\i;
             </template>
 
             <template #default="{ close }">
-                <div class="entity-gallery__addNew--video">
-                    <div class="field">
-                        <label><?php i::_e('URL do vídeo') ?></label>
-                        <input v-model="newVideo" class="newVideo" type="text" name="newVideo" />
-                    </div>
+                <div class="field">
+                    <label><?php i::_e('URL do vídeo') ?></label>
+                    <input v-model="newVideo" class="newVideo" type="text" name="newVideo" />
+                </div>
 
-                    <div class="field">
-                        <label><?php i::_e('Descrição do vídeo') ?></label>
-                        <input v-model="newVideoDesc" class="newVideoDesc" type="text" name="newVideoDesc" />
-                    </div>
-                    
-                    <div class="actions">
-                        <button class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                        <button @click="addLink(newVideoDesc, newVideo)" class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
-                    </div>
+                <div class="field">
+                    <label><?php i::_e('Descrição do vídeo') ?></label>
+                    <input v-model="newVideoDesc" class="newVideoDesc" type="text" name="newVideoDesc" />
+                </div>
+                
+                <div class="actions">
+                    <button class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                    <button @click="addLink(newVideoDesc, newVideo)" class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </template>        
         </popover>
     </div>
 
-    <div class="entity-gallery__full" v-if="entity.metalists?.videos" :class="{ 'active': galleryOpen }"> <!-- v-if="actualVideo" -->
+    <div class="entity-gallery__full" v-if="entity.metalists?.videos" :class="{ 'active': galleryOpen }">
         <div @click="close" class="entity-gallery__full--overlay"> </div>
 
         <div class="entity-gallery__full--video">
