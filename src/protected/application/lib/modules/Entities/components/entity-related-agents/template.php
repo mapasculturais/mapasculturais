@@ -97,7 +97,9 @@ $this->import('popover confirm-button');
             <template #default="{ close }">
                 <div class="entity-related-agents__addNew--newGroup">
                     <form @submit="addGroup(newGroupName); close(); $event.preventDefault();">
-                        <input v-model="newGroupName" class="newGroupName" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
+                        <div class="field">
+                            <input v-model="newGroupName" class="newGroup--name" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
+                        </div>
                         
                         <div class="newGroup--actions">
                             <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
