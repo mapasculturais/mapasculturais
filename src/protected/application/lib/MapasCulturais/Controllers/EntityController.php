@@ -596,7 +596,7 @@ abstract class EntityController extends \MapasCulturais\Controller{
         $entity->delete(true);
 
         if($this->isAjax()){
-            $this->json(true);
+            $this->json($entity);
         }else{
             //e redireciona de volta para o referer
             $redirect_url = $app->request()->getReferer();
