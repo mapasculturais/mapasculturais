@@ -23,7 +23,9 @@ class Module extends \MapasCulturais\Module {
 
             $app->view->enqueueScript($app_group, 'components-init', 'js/vue-init.js', []);
             $app->view->enqueueScript($app_group, 'components-api', 'js/components-base/API.js', ['components-init']);
-            $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api']);
+            $app->view->enqueueScript($app_group, 'components-entityFile', 'js/components-base/EntityFile.js', ['components-init']);
+            $app->view->enqueueScript($app_group, 'components-entityMetalist', 'js/components-base/EntityMetalist.js', ['components-init']);
+            $app->view->enqueueScript($app_group, 'components-entity', 'js/components-base/Entity.js', ['components-init', 'components-api', 'components-entityFile', 'components-entityMetalist']);
             $app->view->enqueueScript($app_group, 'components-utils', 'js/components-base/Utils.js', ['components-init']);
 
             if (isset($app->components->templates)) {

@@ -21,14 +21,10 @@ class Entity {
     }
 
     populate(obj) {
-        const defaultProperties = ['terms', 'files', 'metalists', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
+        const defaultProperties = ['terms', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
         
         for (const prop of defaultProperties) {
             let _default = prop == 'terms' ? [] : {};
-            if (prop == 'files') {
-                this.populateFiles(obj.files);
-                continue;
-            }
             this[prop] = obj[prop] || _default;
         }
 
@@ -47,6 +43,9 @@ class Entity {
             this[prop] = obj[prop];
         }
 
+        this.populateFiles(obj.files);
+        this.populateMetalists(obj.metalists);
+
         this.cleanErrors();
         
         return this;
@@ -61,6 +60,14 @@ class Entity {
             } else {
                 this.files[groupName] = new EntityFile(this, groupName, group);
             }
+        }
+    }
+
+    populateMetalists(metalists) {
+        this.metalists = {};
+        for (let groupName in metalists) {
+            const group = metalists[groupName];
+            this.metalists[groupName] = group.map((data) => new EntityMetalist(this, groupName, data));
         }
     }
 
@@ -371,66 +378,6 @@ class Entity {
             });
         } catch (error) {
             return this.doCatch(error);
-        }
-    }
-}
-
-class EntityFile {
-    constructor(owner, group, data) {
-        this.id = data.id;
-        this.name = data.name;
-        this.description = data.description;
-        this.url = data.url;
-        this.mimeType = data.mimeType;
-        this.transformations = data.transformations || data.files || {};
-
-        this._owner = owner;
-        this._group = group;
-
-        this.API = new API('file', this._owner.__scope || 'default');
-
-        this.text = Utils.getTexts('entity');
-    }
-
-    get singleUrl() {
-        return Utils.createUrl('file', 'single', [this.id]);
-    }
-
-    data() {
-        return {
-            id: this.id,
-            description: this.description
-        };
-    }
-
-    async save() {
-        const owner = this._owner;
-        owner.__processing = this.text('salvando arquivo');
-        try {
-            const res = await this.API.persistEntity(this);
-            owner.doPromise(res, () => null);
-        } catch (error) {
-            owner.doCatch(error);
-        }
-    }
-
-    async delete() {
-        const owner = this._owner;
-        owner.__processing = this.text('removendo arquivo');
-        try {
-            const res = await this.API.deleteEntity(this);
-
-            owner.doPromise(res, () => {
-                const group = owner.files[this._group]
-                if (group instanceof Array) {
-                    let index = group.indexOf(this);
-                    group.splice(index,1); 
-                } else {
-                    delete owner.files[this._group];
-                }
-            });
-        } catch (error) {
-            owner.doCatch(error);
         }
     }
 }
