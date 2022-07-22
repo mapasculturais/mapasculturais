@@ -900,6 +900,7 @@ abstract class Entity implements \JsonSerializable{
      * @return array
      */
     public function jsonSerialize() {
+        $app = App::i();
         $result = [];
         $allowed_classes = [
             'DateTime',
@@ -953,6 +954,17 @@ abstract class Entity implements \JsonSerializable{
         }
         
         unset(Entity::$_jsonSerializeNestedObjects[$_uid]);
+
+        // adiciona as permissões do usuário sobre a entidade:
+        if ($this->usesPermissionCache()) {
+            $permissions_list = $this->getPermissionsList();
+            $permissions = [];
+            foreach($permissions_list as $action) {
+                $permissions[$action] = $this->canUser($action);
+            }
+
+            $result['currentUserPermissions'] = $permissions;
+        }
 
         return $result;
     }
