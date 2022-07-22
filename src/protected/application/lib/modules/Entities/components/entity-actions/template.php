@@ -9,30 +9,30 @@ $this->import('loading');
         <loading :entity="entity"></loading>
         <template v-if="!entity.__processing">
             <div class="entity-actions__content--groupBtn rowBtn">
-                <button v-if="entity.currentUserPermissions?.archive" class="button button--icon button--sm arquivar">
+                <button v-if="entity.currentUserPermissions?.archive" @click="entity.archive()" class="button button--icon button--sm arquivar">
                     <iconify icon="mi:archive"></iconify>
                     <?php i::_e("Arquivar")?>
                 </button>
 
-                <button v-if="entity.currentUserPermissions?.remove" class="button button--icon button--sm excluir">
+                <button v-if="entity.currentUserPermissions?.remove" @click="entity.delete()" class="button button--icon button--sm excluir">
                     <iconify icon="ooui:trash"></iconify>
                     <?php i::_e("Excluir")?>
                 </button>
             </div>
 
             <div class="entity-actions__content--groupBtn">
-                <button v-if="!entity.status" class="button button--secondary btn">
+                <button v-if="entity.status != 1" class="button button--secondary btn">
                     <?php i::_e("Sair") ?>
                 </button>
 
-                <button v-if="entity.currentUserPermissions?.modify" class="button button--secondary btn" @click="entity.save()">
+                <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--secondary btn" >
                     <?php i::_e("Salvar") ?>
                 </button>
 
-                <button v-if="entity.currentUserPermissions?.modify && !entity.status" class="button btn publish" @click="entity.publish()">
+                <button v-if="entity.currentUserPermissions?.publish" @click="entity.publish()" class="button btn publish">
                     <?php i::_e("Publicar") ?>
                 </button>
-                <button v-if="entity.status" class="button btn publish publish-exit" @click="entity.publish()">
+                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="entity.save()" class="button btn publish publish-exit">
                     <?php i::_e("Concluir Edição e Sair") ?>
                 </button>
             </div>
