@@ -99,34 +99,5 @@
             line-height: size(19);
             margin-bottom: size(8);
         }
-
-        &--newGroup {
-            display: flex;
-            flex-direction: column;
-            gap: size(30);
-            padding: size(20) size(16);
-
-            .field:first-child {
-                margin-top: 0;
-            }
-
-            .newGroup{
-
-                &--name{
-                    background: var(--mc-white);
-                    border: size(1) solid var(--mc-gray-100);
-                    border-radius: size(4); 
-                    font-size: size(16);
-                    line-height: size(19);
-                    color: var(--mc-gray-300);
-                    padding: size(10) size(8);
-                }
-
-                &--actions {
-                    display: flex;
-                    gap: 10px; 
-                }
-            }            
-        }
     }
 }
