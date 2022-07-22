@@ -46,8 +46,8 @@ app.component('entity-related-agents', {
     
     methods: {
         hasGroups() {
-            if (this.entity.relatedAgents == undefined) {
-                return false;
+            if (Object.keys(this.entity.relatedAgents).length > 0) {
+                return true;
             } else {
                 return true;
             }

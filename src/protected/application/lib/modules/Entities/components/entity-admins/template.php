@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 
-<div class="entity-admins" v-if="hasGroups()">
+<div class="entity-admins" v-if="editable || group.length > 0">
 
     <h3><?php i::_e("Administradores")?></h3>
 

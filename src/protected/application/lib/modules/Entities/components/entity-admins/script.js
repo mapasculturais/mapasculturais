@@ -24,14 +24,6 @@ app.component('entity-admins', {
     },
 
     methods: {
-        hasGroups() {
-            if (this.entity.relatedAgents == undefined) {
-                return false;
-            } else {
-                return true;
-            }
-        },
-
         addAgent(agent) {
             this.entity.addAdmin(agent);
         },
