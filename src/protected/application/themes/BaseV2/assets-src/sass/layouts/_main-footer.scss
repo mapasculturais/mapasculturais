@@ -3,14 +3,22 @@
 .main-footer {
     align-items: flex-start;
     background: #FFFFFF;
-    box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.25);
     display: flex;
-    gap: 40px;
+    gap: size(40);
     justify-content: center;
-    padding: 80px 0;
+    padding: size(80) 0;
     position: relative;
     flex-wrap: wrap;
-    z-index: 1;
+
+    &::before {
+        box-shadow: 0px -4px 4px rgb(0 0 0 / 25%);
+        content: '';
+        height: size(80);
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+    }
     
     @include mobile {
         align-items: center;
@@ -21,18 +29,22 @@
         ul {
             list-style: none;
             padding: 0;
+
             li:first-child {
                 font-weight: 600;
                 padding-bottom: size(8) ;        
             }
+
             li {
                 padding-bottom: size(16);
+
                 a {
                     color: #2269F7;
                     text-decoration: none;
                 }
             }
         }
+
         @include mobile {
             width: 70%;
         }
@@ -47,13 +59,14 @@
             justify-content: center;
             padding: 34px 0;
         }
+
         @include mobile {
             width: 70%;
             margin: 0 5%;
+            
             svg {
                 width: 100%;
             }
-
         }    
     }
 }
