@@ -20,6 +20,8 @@ return [
     'entidade arquivada' => i::__('Entidade arquivada'), 
 
     'subindo arquivo' => i::__('Enviando arquivo'), 
+    'removendo arquivo' => i::__('Removendo arquivo'),
+    'salvando arquivo' =>  i::__('Salvando arquivo'),
 
     'adicionando agente relacionado' => i::__('Adicionando agente relacionado'),
     'removendo agente relacionado' => i::__('Removendo agente relacionado'),
