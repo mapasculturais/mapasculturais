@@ -2,7 +2,6 @@
 @use '../settings/mixins' as *;
 
 .select-entity {
-    padding: size(19) size(16);
 
     &__form {
         align-items: center;

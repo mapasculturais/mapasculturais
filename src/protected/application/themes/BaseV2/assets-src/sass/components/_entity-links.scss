@@ -65,17 +65,4 @@
             }              
         }
     }
-
-    &__newLink {
-        padding: size(24) size(16);
-
-        .field:first-child{
-            margin-top: 0;    
-        }
-
-        .actions {
-            display: flex;
-            gap: size(10);
-        }
-    }
 }

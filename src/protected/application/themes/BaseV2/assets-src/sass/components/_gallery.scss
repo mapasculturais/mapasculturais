@@ -84,19 +84,6 @@ body.galleryOpen {
 
     &__addNew {
         margin-top: size(16);
-
-        &--video {
-            padding: size(24) size(16);
-
-            .field:first-child {
-                margin-top: 0;
-            }
-
-            .actions {
-                display: flex;
-                gap: size(10);
-            }
-        }
     }
 
     &__full {
