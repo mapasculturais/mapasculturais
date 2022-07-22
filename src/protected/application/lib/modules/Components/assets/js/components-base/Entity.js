@@ -17,15 +17,14 @@ class Entity {
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('entity');
+
     }
 
     populate(obj) {
         const defaultProperties = ['terms', 'files', 'metalists', 'seals', 'relatedAgents', 'agentRelations', 'currentUserPermissions'];
-
+        
         for (const prop of defaultProperties) {
-            if (obj[prop]) {
-                this[prop] = obj[prop];
-            }    
+            this[prop] = obj[prop] || {};
         }
 
         for (let prop in this.__properties) {
