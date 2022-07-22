@@ -3,6 +3,12 @@
 .edit-1 {
     background-color: var(--mc-gray-100);
 
+    .divider {
+        width: 100%;
+        border-bottom: 1px solid;
+        margin: 12px 0;
+    }
+
     .row {
         align-items: center;
         display: flex;
