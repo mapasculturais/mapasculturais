@@ -15,21 +15,27 @@ use MapasCulturais\i;
 
             <div v-if="editable" class="entity-gallery__list--image-actions">
                 <a> <iconify icon="zondicons:edit-pencil"></iconify> </a>
-                <a> <iconify icon="ooui:trash"></iconify> </a>
+
+                <confirm-button @confirm="">
+                    <template #button="modal">
+                        <a @click="modal.open()"> <iconify icon="ooui:trash"></iconify> </a>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja excluir essa imagem?') ?>
+                    </template> 
+                </confirm-button>
             </div>
         </div>
     
     </div>
     
     <div v-if="editable" class="entity-gallery__addNew">
-        <modal title="Adicionar uma nova imagem" class="create-modal" button-label="Adicionar uma nova imagem" >
+        <modal title="Adicionar uma nova imagem" button-label="Adicionar uma nova imagem" >
             <template #default>
 
                 <image-uploader :entity="entity" group="gallery" :circular="false">
                     <template #default="modal">
-
                         teste
-
                     </template>
                 </image-uploader>
 
@@ -41,8 +47,8 @@ use MapasCulturais\i;
                 </a>
             </template>
             <template #actions="modal">
-                <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Adicionar')?></button>
-                <button class="button button--text button--text-del " @click="cancel(modal)"><?php i::_e('Cancelar')?></button>
+                <button class="button button--primary"><?php i::_e('Adicionar')?></button> <!-- @click="createPublic(modal)" -->
+                <button class="button button--text button--text-del"><?php i::_e('Cancelar')?></button> <!--  @click="cancel(modal)" -->
             </template>
         </modal>            
     </div>

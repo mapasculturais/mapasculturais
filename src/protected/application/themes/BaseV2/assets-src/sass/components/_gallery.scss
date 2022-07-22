@@ -35,6 +35,7 @@ body.galleryOpen {
             display: flex;
             flex-direction: column;
             gap: size(8);
+            justify-content: space-between;
             max-width: size(139);
 
             &-img {
@@ -49,6 +50,7 @@ body.galleryOpen {
             }
 
             &-label {
+                cursor: pointer;
                 font-weight: 500;
                 font-size: size(16);
                 line-height: size(22);
@@ -106,7 +108,7 @@ body.galleryOpen {
         position: fixed;
         top: 0;
         width: 100vw;
-        z-index: 1;
+        z-index: 99;
 
         &.active {
             display: flex;
@@ -122,18 +124,48 @@ body.galleryOpen {
             z-index: 1;
         }
 
-        &--image {
+        &--image,
+        &--video {
             align-items: center;
-            background-color: white;
+            background-color: var(--mc-high-500);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             max-width: size(1170);
             min-width: size(50);
             min-height: size(50);
             overflow: hidden;
-            position: relative;
             z-index: 1;
             width: auto;
+
+            .description {
+                bottom: 0;
+                color: var(--mc-high-500);
+                max-width: size(1170);
+                position: absolute;
+                padding: size(10);
+                width: 100%;
+
+                &:before {
+                    content: '';
+                    width: 100vw;
+                    background: green;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    margin: 0 calc(50% - 50vw);
+                    background: rgba(0, 0, 0, 0.7);
+                    z-index: -1;
+                }
+            }
+
+            p {
+                margin: size(20) size(50);
+            }
+        }
+
+        &--image {
 
             svg {
                 position: absolute;
@@ -143,17 +175,16 @@ body.galleryOpen {
             img {
                 z-index: 2;
                 width: 100%;
-                max-height: 100vh;
+                max-height: 80vh;
             }
 
-            .description {
-                position: absolute;
-                z-index: 2;
-                bottom: 0;
-                padding: size(10);
-                background: rgba(0,0,0,0.5);
-                color: white;
-                width: 100%;
+        }
+
+        &--video {
+            z-index: 2;
+
+            iframe {
+                aspect-ratio: 16/9;
             }
         }
 
