@@ -59,7 +59,7 @@ class Entity {
             messages.error(this.text('erro inesperado'));
         } else if(res.status == 400) {
             if (data.error) {
-                this.__validationErrors = {...this.__validationErrors, ...data.data};
+                this.__validationErrors = data.data;
                 messages.error(this.text('erro de validacao'));
             }
         } else if(res.status == 403) {
