@@ -14,12 +14,17 @@ app.component('entity-gallery', {
 
     data() {
         return {
-            images: this.entity.files.gallery,
             galleryOpen: false,
             actualImgIndex: null,
             actualImg: null
         }
     },
+
+    computed: {
+        images() {
+            return this.entity.files.gallery;
+        }
+    }, 
 
     props: {
         entity: {
@@ -63,6 +68,11 @@ app.component('entity-gallery', {
         next() {
             this.actualImgIndex = (this.actualImgIndex < this.images.length-1) ? ++this.actualImgIndex : 0 ;
             this.openImg(this.actualImgIndex);
-        }
+        },
+
+        rename(img, popopver) {
+            img.description = img.newDescription;
+            img.save().then(() => popopver.close());
+        } 
     },
 });

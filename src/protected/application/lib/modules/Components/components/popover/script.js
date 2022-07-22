@@ -53,6 +53,12 @@ app.component('popover', {
         open() {
             this.active = true;
             this.$emit('open', this);
+            this.$nextTick(() => {
+                const inputs = this.$el.nextElementSibling.getElementsByTagName('input');
+                if (inputs.length) {
+                    inputs[0].focus();
+                }
+            });
         },
         close() {
             this.active = false;
