@@ -3,7 +3,7 @@ use MapasCulturais\i;
 $this->import('popover confirm-button');
 ?>
 
-<div class="entity-related-agents" v-if="hasGroups()">
+<div class="entity-related-agents" v-if="editable || hasGroups()">
 
     <h3><?php i::_e("Agentes relacionados")?></h3>
 
