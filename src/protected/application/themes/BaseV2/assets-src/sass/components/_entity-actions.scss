@@ -8,6 +8,7 @@
     position: -webkit-sticky;
     position: sticky;
     width: 100%;
+    z-index: 1;
 
     &__content {
         display: flex;
@@ -25,8 +26,8 @@
             }
 
             .btn {
-                background: #BFF3FF;
-                color: #2269F7;
+                background: var(--mc-secondary-500);
+                color: var(--mc-low-500);
                 cursor: pointer;
                 font-weight: 600;
                 font-size: size(18);
@@ -38,10 +39,12 @@
                     width: size(150);
                 }
                 &.publish {
-                    background: var(--mc-white);
+                    background: var(--mc-high-500);
+                    color: var(--mc-primary-500);
                     padding: size(11) size(100);
+                    
                     &-exit {
-                        padding: size(15) size(40);
+                        padding: size(11) size(40);
                     }
                 }
             }
