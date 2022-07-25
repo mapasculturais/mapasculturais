@@ -6,6 +6,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 - Ajusta local de tipagem para array da variavel $_field_val
+- Ajusta entripoint para setar permissão correta na pasta DoctrineProxies
 ## [5.3.20] - 2022-07-21
 ### Correções
 - Remove chamadas de função iniexistente
