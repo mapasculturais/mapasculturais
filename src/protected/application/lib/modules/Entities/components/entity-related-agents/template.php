@@ -59,7 +59,7 @@ $this->import('popover confirm-button');
                             <input v-model="groupAgents.newGroupName" class="newGroup--name" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome do grupo') ?>" />
                             
                             <div class="newGroup--actions">
-                                <button class="button button--text"  @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <a class="button button--text" @click="popover.close()"> <?php i::_e("Cancelar") ?> </a>
                                 <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
