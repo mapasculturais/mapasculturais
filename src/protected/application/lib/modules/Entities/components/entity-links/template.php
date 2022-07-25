@@ -5,14 +5,45 @@ use MapasCulturais\i;
     <h4 class="entity-links__title"> {{title}} </h4>
 
     <ul class="entity-links__links">
-        <li class="entity-links__links--item" v-for="link in entity.metalists.links">
-            <a class="link" :class="{'editable': editable}" :href="link.value" target="_blank" >
+        <li class="entity-links__links--item" v-for="metalist in entity.metalists.links">
+            <a class="link" :class="{'editable': editable}" :href="metalist.value" target="_blank" >
                 <iconify icon="eva:link-outline" /> 
-                {{link.title}}
+                {{metalist.title}}
             </a>            
             <div v-if="editable" class="edit">
-                <a> <iconify icon="zondicons:edit-pencil" /> </a>
-                <a> <iconify icon="ooui:trash" /> </a>
+                <popover @open="metalist.newData = {...metalist}" openside="down-right">
+                    <template #button="{ toggle, close }">
+                        <a @click="toggle()"> <iconify icon="zondicons:edit-pencil"></iconify> </a>
+                    </template>
+                    <template #default="{close}">
+                        <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                            <div class="field">
+                                <label><?php i::_e('Título do link') ?></label>
+                                <input v-model="metalist.newData.title" type="text" />
+                            </div>
+
+                            <div class="field">
+                                <label><?php i::_e('Link') ?></label>
+                                <input v-model="metalist.newData.value" type="url" />
+                            </div>
+                            
+                            <div class="actions">
+                                <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
+                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                            </div>
+                        </form>
+                    </template>
+                </popover>
+                
+                <confirm-button @confirm="metalist.delete()">
+                    <template #button="{open}">
+                        <a @click="open()"> <iconify icon="ooui:trash" /> </a>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja remover o link?') ?>
+                    </template> 
+                </confirm-button>
+                
             </div>
         </li>
     </ul>
@@ -28,23 +59,22 @@ use MapasCulturais\i;
         </template>
 
         <template #default="{ close }">
-            <div class="entity-links__newLink">
+            <form @submit="create().then(close); $event.preventDefault();" class="entity-links__newLink">
                 <div class="field">
                     <label><?php i::_e('Título do link') ?></label>
-                    <input v-model="newLinkTitle" class="newLinkTitle" type="text" name="newLinkTitle" />
+                    <input v-model="metalist.title" class="newLinkTitle" type="text" name="newLinkTitle" />
                 </div>
 
                 <div class="field">
                     <label><?php i::_e('Link') ?></label>
-                    <input v-model="newLink" class="newLink" type="text" name="newLink" />
+                    <input v-model="metalist.value" class="newLink" type="url" name="newLink" />
                 </div>
                 
                 <div class="actions">
-                    <button class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </button>
-                    <button @click="addLink(newLinkTitle, newLink)" class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
+                    <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
+                    <button class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
                 </div>
-            </div>
-
+            </form>
         </template>
     </popover>
 </div>
