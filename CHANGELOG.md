@@ -4,6 +4,8 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+- Ajusta local de tipagem para array da variavel $_field_val
 ## [5.3.20] - 2022-07-21
 ### Correções
 - Remove chamadas de função iniexistente
