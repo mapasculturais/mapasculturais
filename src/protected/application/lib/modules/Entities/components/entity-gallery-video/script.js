@@ -46,7 +46,17 @@ app.component('entity-gallery-video', {
             videoList: {},
             galleryOpen: false,
             actualVideoIndex: null,
-            actualVideo: {}
+            actualVideo: {},
+            metalist: {},
+        }
+    },
+
+    computed: {
+        videos() {
+            Object(this.entity.metalists.videos).forEach((content, index)=>{        
+                content.video = this.getVideoBasicData(content.value);  
+            });
+            return this.entity.metalists.videos;
         }
     },
     
@@ -75,13 +85,6 @@ app.component('entity-gallery-video', {
                 'thumbnail': videoThumbnail
             }
         },
-        // adiciona dados do video ao array
-        videos() {
-            Object(this.entity.metalists.videos).forEach((content, index)=>{        
-                content.data = this.getVideoBasicData(content.value);  
-            });
-            return this.entity.metalists.videos;
-        },
         // Abertura da modal
         open() {
             this.galleryOpen = true;
@@ -108,6 +111,17 @@ app.component('entity-gallery-video', {
         next() {
             this.actualVideoIndex = (this.actualVideoIndex < this.entity.metalists.videos.length-1) ? ++this.actualVideoIndex : 0 ;
             this.openVideo(this.actualVideoIndex);
+        },
+
+        create() {
+            return this.entity.createMetalist('videos', this.metalist);      
+        },
+
+        save(metalist) {
+            metalist.title = metalist.newData.title;
+            metalist.value = metalist.newData.value;
+            
+            return metalist.save();
         }
     },
 });

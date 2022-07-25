@@ -21,28 +21,25 @@ app.component('entity-links', {
             type: Boolean,
             default: false
         }
-
     },
-    methods: {
-        addLink(title, link) {
-            // @todo tratamento de erros e adição do novo link
 
-            // limpar campos
-            document.querySelector("input[name='newLinkTitle']").value="";
-            document.querySelector("input[name='newLink']").value="";
+    data() {
+        return {
+            metalist: {}
+        }
+    },
+
+    methods: {
+        create() {
+            return this.entity.createMetalist('links', this.metalist);      
         },
-        success() {
-            const messages = useMessages();
-            messages.success("Isso é um snackbar de confirmação", 10000);
-        },
-        error() {
-            const messages = useMessages();
-            messages.error("Isso é um snackbar de erro",10000)
-        },
-        warning() {
-            const messages = useMessages();
-            messages.warning("Isso é um snackbar de aviso", 10000);
-        },
+
+        save(metalist) {
+            metalist.title = metalist.newData.title;
+            metalist.value = metalist.newData.value;
+            
+            return metalist.save();
+        }
     }
     
 });
