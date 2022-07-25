@@ -47,5 +47,6 @@
 @use 'layouts/event-single';
 
 // PAGES
-@use 'pages/edit-1';
-@use 'pages/single-1';
+@use 'pages/agents/edit-1';
+@use 'pages/agents/single-1';
+@use 'pages/events/edit';
