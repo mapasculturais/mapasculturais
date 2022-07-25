@@ -1,6 +1,6 @@
 <?php use MapasCulturais\i;
 $this->layout = 'entity'; 
-$this->import('card');
+$this->import('mapas-card');
 ?>
 
 <div class="space-card">
