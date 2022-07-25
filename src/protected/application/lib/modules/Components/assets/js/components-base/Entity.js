@@ -293,6 +293,22 @@ class Entity {
         }
     }
 
+    async createMetalist(group, {title, description, value} ) {
+        this.__processing = this.text('criando');
+        try{
+            const res = await this.API.POST(this.getUrl('metalist'), {group, title, description, value});
+
+            this.metalists[group] = this.metalists[group] || [];
+
+            this.doPromise(res, (data) => {
+                const metalist = new EntityMetalist(this, group, {title, description, value});
+                this.metalists[group].push(metalist);
+            });
+        } catch (error) {
+            this.doCatch(error);
+        }
+    }
+
     async createAgentRelation(group, agent, hasControl, metadata) {
         try{
             const res = await this.API.POST(this.getUrl('createAgentRelation'), {group, agentId: agent.id, has_control: hasControl});

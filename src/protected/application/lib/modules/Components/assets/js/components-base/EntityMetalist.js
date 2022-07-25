@@ -20,7 +20,7 @@ class EntityMetalist {
     data() {
         return {
             id: this.id,
-            title: data.title,
+            title: this.title,
             description: this.description
         };
     }
@@ -43,7 +43,7 @@ class EntityMetalist {
             const res = await this.API.deleteEntity(this);
 
             owner.doPromise(res, () => {
-                const group = owner.metalist[this._group]
+                const group = owner.metalists[this._group]
                 let index = group.indexOf(this);
                 group.splice(index,1);
             });
