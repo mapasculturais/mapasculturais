@@ -51,6 +51,9 @@ app.component('entity-gallery', {
         // Fechamento da modal
         close() {
             this.galleryOpen = false;
+            this.actualImg = null;
+            this.actualImgIndex = null;
+
             if (document.querySelector('body').classList.contains('galleryOpen'))
                 document.querySelector('body').classList.remove('galleryOpen');
         },
