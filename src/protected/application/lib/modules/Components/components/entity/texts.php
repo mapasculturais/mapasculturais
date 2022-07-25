@@ -6,6 +6,7 @@ return [
     'permissao negada' => i::__('Você não tem permissão para executar esta operação'),
     'erro de conexao' => i::__('Não foi possível se conectar ao servidor'),
 
+    'criando' => i::__('Criando'),
     'salvando' => i::__('Salvando a entidade'),
     'publicando' => i::__('Publicando a entidade'),
     'arquivando' => i::__('Arquivando a entidade'),
