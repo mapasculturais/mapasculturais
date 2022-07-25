@@ -58,7 +58,7 @@ use MapasCulturais\i;
                 <slot name="button" :toggle="toggle"> 
                     <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
                         <iconify icon="gridicons:plus"></iconify>
-                        <?php i::_e("Adicionar")?>
+                        <?php i::_e("Adicionar vídeo")?>
                     </a>
                 </slot>
             </template>
