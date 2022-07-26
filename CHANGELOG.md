@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.22] - 2022-07-26
+- ### Correções
+- Corrige redirecionamento do subsite após edição e criação
+- Garante que ao acessar a single do subsite esteja em modo de edição
 ## [5.3.21] - 2022-07-25
 - Ajusta local de tipagem para array da variavel $_field_val
 - Ajusta entripoint para setar permissão correta na pasta DoctrineProxies
