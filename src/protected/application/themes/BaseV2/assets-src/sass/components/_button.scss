@@ -76,14 +76,19 @@
 
     // estilos
 
+    &--large-txt {
+        padding-left: size(3);
+        padding-right: size(3);
+    }
+
     &--rounded {
         border-radius: size(264);
     }
 
     &--outline {
         background-color: transparent;
-        color: var(--mc-gray-500);
         border: size(2) solid var(--mc-gray-300);
+        color: var(--mc-gray-500);
 
         &:hover {
             border-color: var(--mc-gray-300);
@@ -93,63 +98,93 @@
 
     &--primary {
         background-color: var(--mc-primary-500);
+        border: size(2) solid var(--mc-primary-500);
         color: var(--mc-white);
+
+        &:hover {
+            border-color: var(--mc-primary-700);
+            background-color: var(--mc-primary-700);
+        }
 
         &-outline {
             background-color: transparent;
-            color: var(--mc-primary-500);
             border: size(2) solid var(--mc-primary-500);
+            color: var(--mc-primary-500);
+
             &:hover {
                 border-color: var(--mc-primary-700);
                 background-color: var(--mc-primary-700);
                 color: var(--mc-white);                
             }
         }
-
-        &:hover {
-            background-color: var(--mc-primary-700);
-        }
     }
 
     &--secondary {
         background-color: var(--mc-secondary-500);
-        color: var(--mc-primary-500);
+        border: size(2) solid var(--mc-secondary-500);
+        color: var(--mc-high-500);
+
+        &:hover {
+            border-color: var(--mc-secondary-700);
+            background-color: var(--mc-secondary-700);
+        }
 
         &-outline {
             background-color: transparent;
-            color: var(--mc-primary-500);
             border: size(2) solid var(--mc-secondary-500);
+            color: var(--mc-secondary-500);
 
             &:hover {
                 border-color: var(--mc-secondary-700);
                 background-color: var(--mc-secondary-700);
-                color: var(--mc-primary-500);
+                color: var(--mc-high-500);
             }
         }
+    }
+
+    &--highlight {
+        background-color: var(--mc-highlight-500);
+        border: size(2) solid var(--mc-highlight-500);
+        color: var(--mc-high-500);
 
         &:hover {
-            background-color: var(--mc-secondary-700);
+            border-color: var(--mc-highlight-700);
+            background-color: var(--mc-highlight-700);
+        }
+
+        &-outline {
+            background-color: transparent;
+            border: size(2) solid var(--mc-highlight-500);
+            color: var(--mc-highlight-500);
+
+            &:hover {
+                border-color: var(--mc-highlight-700);
+                background-color: var(--mc-highlight-700);
+                color: var(--mc-high-500);
+            }
         }
     }
 
     &--solid {
         background-color: var(--mc-gray-300);
+        border: size(2) solid var(--mc-gray-300);
         color: var(--mc-black);
+
+        &:hover {
+            border-color: var(--mc-gray-500);
+            background-color: var(--mc-gray-500);
+        }
 
         &-outline {
             background-color: transparent;
-            color: var(--mc-black);
             border: size(2) solid var(--mc-gray-300);
+            color: var(--mc-black);
 
             &:hover {
                 border-color: var(--mc-gray-500);
                 background-color: var(--mc-gray-500);
-                color: var(--mc-black);
+                color: var(--mc-high-500);
             }
-        }
-
-        &:hover {
-            background-color: var(--mc-gray-500);
         }
 
         &-dark {
@@ -160,10 +195,24 @@
 
     &--text {
         background-color: transparent;
+        border: size(2) solid transparent;
         color: var(--mc-black);
 
         &:hover {
+            border-color: var(--mc-primary-700);
             color: var(--mc-primary-700);
+        }
+
+        &-outline {
+            background-color: transparent;
+            border: size(2) solid var(--mc-low-500);
+            color: var(--mc-low-500);
+
+            &:hover {
+                border-color: var(--mc-primary-700);
+                background-color: var(--mc-primary-700);
+                color: var(--mc-high-500);
+            }
         }
 
         &-del {
