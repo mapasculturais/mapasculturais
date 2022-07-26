@@ -12,23 +12,24 @@ $col-columns: 12;
     }
 }
 
+
+.col-12 {
+    padding-right: 0;
+}
 @media (max-width: size(800)) {
     .col-sm-12 {
         padding-right: 0;
     }
 }
-.col-12 {
-    padding-right: 0;
-}
 
 @for $i from 1 through $col-columns {
+    .col-#{$i} {
+        width: 100% / $col-columns * $i;
+    }
     @media (max-width: size(800)) {
         .col-sm-#{$i} {
-            width: 100% / $col-columns * $i
+            width: 100% / $col-columns * $i !important;
         }
-    }
-    .col-#{$i} {
-        width: 100% / $col-columns * $i
     }
 }
 
