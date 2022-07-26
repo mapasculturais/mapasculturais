@@ -73,6 +73,19 @@ $this->import('
             <mapas-card>
                 <template #title>
                     <h2><?php i::_e("Informações sobre o evento"); ?></h2>
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                            <entity-field :entity="entity" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
+                        </div>
+                    </div>   
+                    <div class="row">
+                        <div class="col-12">
+                        <entity-field :entity="entity" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field>
+
+                        </div>
+                    </div>
                 </template>
                 <template #content>   
                 
