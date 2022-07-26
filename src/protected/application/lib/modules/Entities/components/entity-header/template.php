@@ -101,11 +101,10 @@ use MapasCulturais\i;
                 <div :class="['icon', entity.__objectType+'__background']">
                     <iconify :icon="icon" />
                 </div>
-                <h2><?php i::_e("Edição do agente Individual")?></h2>
+                <h2>{{titleEdit}}</h2>
             </div>
         </div>
     </div>
-
 
 </header>
 
