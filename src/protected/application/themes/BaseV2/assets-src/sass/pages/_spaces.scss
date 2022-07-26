@@ -1,0 +1,9 @@
+@use '../settings/mixins' as *;
+
+.Space-105 {
+    background-color: var(--mc-white);
+    
+    &.action-edit {
+        background-color: var(--mc-gray-100);
+    }
+}
