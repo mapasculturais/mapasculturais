@@ -35,15 +35,15 @@ $this->import('
                         </div>
 
                         <div class="col-9 col-sm-12">
-                            <!-- <entity-field :entity="entity" label="Nome do Evento" prop="name"></entity-field> -->
-                            <!-- <entity-field :entity="entity" label="Subtítulo do evento" prop="subTitle"></entity-field> -->
+                            <entity-field :entity="entity" label="Nome do espaço" prop="name"></entity-field>
+                            <entity-field :entity="entity" label="Tipo do espaço" prop="type"></entity-field>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-12">
-                            <!-- <entity-field :entity="entity" prop="shortDescription"></entity-field> -->
-                            <!-- <entity-field :entity="entity" label="Link para página ou site do evento" prop="site"></entity-field> -->
+                            <entity-field :entity="entity" prop="shortDescription"></entity-field>
+                            <entity-field :entity="entity" label="Link para página ou site do espaço" prop="site"></entity-field>
                         </div>
                     </div>                    
                 </div>
@@ -62,11 +62,26 @@ $this->import('
         <main>         
             <mapas-card>
                 <template #title>
-                    <h3 class="card__title--title"><?php i::_e("Data, hora e local do evento"); ?></h3>
-                    <p class="card__title--description"><?php i::_e("Adicione data, hora e local da ocorrência do seu evento. Você pode várias ocorrências com informações diferentes."); ?></p>
+                    <h3 ><?php i::_e("Endereço do espaço"); ?></h3>
                 </template>
                 <template #content>   
-                
+                    <div class="row">
+                        <div class="col-5">
+                            <entity-field :entity="entity" label="CEP" prop="En_CEP"></entity-field>
+                        </div>
+                        <div class="col-7">
+                            <entity-field :entity="entity" label="Rua, avenida, travessa etc." prop="En_Nome_Logradouro"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <entity-field :entity="entity" label="Número" prop="En_Num"></entity-field>
+
+                        </div>
+                        <div class="col-9">
+                            <entity-field :entity="entity" label="Complemento" prop="En_Complemento"></entity-field>
+                        </div>
+                    </div>
                 </template>   
             </mapas-card>
 
