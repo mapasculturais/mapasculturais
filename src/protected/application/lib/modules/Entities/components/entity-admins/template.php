@@ -1,5 +1,7 @@
 <?php
 use MapasCulturais\i;
+
+$this->import('select-entity confirm-button');
 ?>
 
 <div class="entity-admins" v-if="editable || group.length > 0">
