@@ -1,11 +1,77 @@
 @use '../settings/mixins' as *;
 
+$col-columns: 12;
+
+[class*="col-"] {
+    float: left;
+    margin-bottom: size(20);
+    box-sizing: border-box;
+    padding-right: size(24);
+    &:last-child {
+        padding-right: 0;
+    }
+}
+
+@for $i from 1 through $col-columns {
+    @media (max-width: size(800)) {
+        .col-sm-#{$i} {
+            width: 100% / $col-columns * $i
+        }
+    }
+    .col-#{$i} {
+        width: 100% / $col-columns * $i
+    }
+}
+
+.row{
+    align-items: flex-end;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    &.no-breakline {
+        flex-wrap: nowrap;
+    }
+
+    &.v-center {
+        align-items: center;
+    }
+
+    &.v-top {
+        align-items: flex-start;
+    }
+    
+    &.v-bottom {
+        align-items: flex-end;
+    }
+}
+  
+.row:before, .row:after {
+    content: " ";
+    display: table;
+}
+  
+.row:after {
+    clear: both;
+}
+
 .container {
     display: grid;
     grid-template-columns: 65% 32%;
     gap: size(32) 3%;
-    margin: size(32) auto 0;
+    margin: size(32) auto;
     max-width: size(1190);
     padding: 0 size(10);
     flex-wrap: wrap;
+    
+    @media (max-width: size(800)) {
+        grid-template-columns: 100%;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
 }
