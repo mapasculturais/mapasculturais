@@ -61,7 +61,7 @@ $this->import('confirm-button popover modal');
             <template #button="modal">
                 <a @click="modal.open()" class="button button--primary button--icon button--primary-outline">
                     <iconify icon="gridicons:plus"></iconify>
-                    <?php i::_e("Adicionar")?>
+                    <?php i::_e("Adicionar imagem")?>
                 </a>
             </template>
             <template #actions="modal">
