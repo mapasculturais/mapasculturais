@@ -82,41 +82,57 @@ $this->import('
                             <entity-field :entity="entity" label="Complemento" prop="En_Complemento"></entity-field>
                         </div>
                     </div>
-                </template>   
-            </mapas-card>
-
-            <mapas-card>
-                <template #title>
-                    <h2><?php i::_e("Informações sobre o evento"); ?></h2>
-                    <div class="row">
-                        <div class="col-6">
-                            <!-- <entity-field :entity="entity" label="Total de público"></entity-field> -->
-                        </div>
-                        <div class="col-6">
-                            <entity-field :entity="entity" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
-                        </div>
-                    </div>   
                     <div class="row">
                         <div class="col-12">
-                        <!-- <entity-field :entity="entity" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field> -->
-
+                            <entity-field :entity="entity" label="Bairro" prop="En_Bairro"></entity-field>
                         </div>
                     </div>
-                </template>
-                <template #content>   
-                
+                    <div class="row">
+                        <div class="col-6">
+                            <entity-field :entity="entity" label="Município" prop="En_Municipio"></entity-field>
+                        </div>
+                        <div class="col-6">
+                            <entity-field :entity="entity" label="Estado" prop="En_Estado"></entity-field>
+                        </div>
+                    </div>
                 </template>   
             </mapas-card>
 
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Acessibilidade"); ?></h2>
+                    <h2><?php i::_e("Informações sobre o espaço"); ?></h2>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-field :entity="entity" prop="emailPublico"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-field :entity="entity" prop="emailPrivado"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-field :entity="entity" prop="telefonePublico"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-field :entity="entity" label="Telefone privado 1" prop="telefone1"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-field :entity="entity" label="Telefone privado 2" prop="telefone2"></entity-field>
+                        </div>
+                    </div>
+                    
                 </template>
                 <template #content>   
                 
                 </template>   
             </mapas-card>
-
+            
             <mapas-card>
                 <template #title>
                     <h2><?php i::_e("Mais informações públicas"); ?></h2>
