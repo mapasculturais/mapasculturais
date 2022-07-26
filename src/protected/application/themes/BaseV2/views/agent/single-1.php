@@ -2,7 +2,7 @@
 $this->layout = 'entity'; 
 $this->import('
     mapas-container 
-    entity-terms share-links files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
+    entity-terms share-links entity-files-list entity-links entity-owner entity-seals entity-header entity-gallery entity-social-media');
 ?>
 <div class="main-app single-1">
 
@@ -23,7 +23,7 @@ $this->import('
                 <h2>Descrição Detalhada</h2>
                 <p>{{entity.longDescription}}</p>
             </div>
-            <files-list :files="entity.files.downloads" title="Arquivos para download"></files-list>
+            <entity-files-list :files="entity.files.downloads" title="Arquivos para download"></entity-files-list>
             <entity-gallery :entity="entity"></entity-gallery>
         </main>
         
