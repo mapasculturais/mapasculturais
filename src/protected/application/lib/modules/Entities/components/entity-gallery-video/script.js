@@ -1,25 +1,7 @@
-/**
- * Vue Lifecycle
- * 1. setup
- * 2. beforeCreate
- * 3. created
- * 4. beforeMount
- * 5. mounted
- * 
- * // sempre que há modificação nos dados
- *  - beforeUpdate
- *  - updated
- * 
- * 6. beforeUnmount
- * 7. unmounted                  
- */
 
 app.component('entity-gallery-video', {
     template: $TEMPLATES['entity-gallery-video'],
     
-    // define os eventos que este componente emite
-    emits: ['namesDefined'],
-
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-gallery-video')
@@ -94,6 +76,8 @@ app.component('entity-gallery-video', {
         // Fechamento da modal
         close() {
             this.galleryOpen = false;
+            this.actualVideo = null;
+            this.actualVideoIndex = null;
             if (document.querySelector('body').classList.contains('galleryOpen'))
                 document.querySelector('body').classList.remove('galleryOpen');
         },
