@@ -12,6 +12,15 @@ $col-columns: 12;
     }
 }
 
+@media (max-width: size(800)) {
+    .col-sm-12 {
+        padding-right: 0;
+    }
+}
+.col-12 {
+    padding-right: 0;
+}
+
 @for $i from 1 through $col-columns {
     @media (max-width: size(800)) {
         .col-sm-#{$i} {
@@ -41,7 +50,7 @@ $col-columns: 12;
     &.v-top {
         align-items: flex-start;
     }
-    
+
     &.v-bottom {
         align-items: flex-end;
     }
