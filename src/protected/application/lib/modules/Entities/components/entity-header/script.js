@@ -22,7 +22,6 @@ app.component('entity-header', {
         }
     },
     created() {
-        console.log(this.entity);
         switch(this.entity.__objectType) {
             case 'agent': 
                 this.icon = "fa-solid:user-friends";
