@@ -7,8 +7,9 @@
     width: 100%;
 
     &__title {
+        margin-bottom: size(24);
         p {
-            margin: size(8) 0 size(24);
+            margin: size(8) 0;
             font-size: size(14);
             line-height: size(19);
         }
