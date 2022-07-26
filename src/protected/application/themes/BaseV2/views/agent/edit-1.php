@@ -122,10 +122,10 @@ $this->breadcramb = [
                         </div>                        
                     </div>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-2 col-sm-4">
                             <entity-field :entity="entity" prop="En_Num"></entity-field>
                         </div>
-                        <div class="col-10">
+                        <div class="col-10 col-sm-8">
                             <entity-field :entity="entity" prop="En_Bairro"></entity-field>
                         </div>
                     </div>
