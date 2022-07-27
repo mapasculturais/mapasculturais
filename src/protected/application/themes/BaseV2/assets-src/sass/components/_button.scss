@@ -3,7 +3,7 @@
 .button {
     align-items: center;
     appearance: none;
-    border: none;
+    border: 2px solid transparent;
     border-radius: var(--mc-border-radius);
     cursor: pointer;
     display: inline-flex;
@@ -11,7 +11,7 @@
     font-weight: bold;
     justify-content: center;
     line-height: size(18);
-    padding: size(11) size(19);
+    padding: size(9) size(19);
     position: relative;
     text-decoration: none;
 
@@ -47,7 +47,7 @@
     &--bg {
         font-size: size(18);
         font-weight: 700;
-        padding: size(24) size(32);
+        padding: size(20) size(32);
 
         .iconify {
             font-size: size(18);
@@ -57,7 +57,7 @@
     &--md {
         font-size: size(18);
         font-weight: 600;
-        padding: size(14) size(24);
+        padding: size(12) size(24);
 
         .iconify {
             font-size: size(18);
@@ -66,7 +66,7 @@
 
     &--sm {
         font-size: size(14);
-        padding: size(9) size(15);
+        padding: size(5) size(15);
         gap: size(9);
 
         .iconify {
