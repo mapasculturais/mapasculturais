@@ -33,7 +33,7 @@ $this->import('
                         </div>
                     </div>    
                     
-                    <div class="row">
+                    <div class="row v-center">
                         <div class="col-3 col-sm-12">
                             <entity-profile :entity="entity"></entity-profile>
                         </div>
@@ -129,6 +129,7 @@ $this->import('
             <mapas-card>
                 <template #title>
                     <label><?php i::_e("Contatos do projeto"); ?></label>
+                    
                 </template>
                 <template #content>   
                 
@@ -143,7 +144,12 @@ $this->import('
                 <template #content>
                     <div class="row">
                         <div class="col-12">
-                            <entity-links title="Adicionar links" :entity="entity" :editable="true"></entity-links>
+                            <entity-field :entity="entity" label="<?php i::_e('Descrição')?>" prop="longDescription"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-links title="<?php i::_e('Adicionar links')?>" :entity="entity" :editable="true"></entity-links>
                         </div>
                     </div>
                     <div class="row">
@@ -172,7 +178,7 @@ $this->import('
                     
                     <div class="row">
                         <div class="col-12">
-                            <entity-terms :entity="entity" taxonomy="tag" title="Tags" :editable="true"></entity-terms>
+                            <entity-terms :entity="entity" taxonomy="tag" title="<?php i::_e('Tags')?>" :editable="true"></entity-terms>
                         </div>
                     </div>
 
@@ -184,7 +190,7 @@ $this->import('
 
                     <div class="row">
                         <div class="col-12">
-                            <entity-owner :entity="entity" title="Publicado por" :editable="true"></entity-owner>
+                            <entity-owner :entity="entity" title="<?php i::_e('Publicado por')?>" :editable="true"></entity-owner>
                         </div>
                     </div>
                 </template>   
