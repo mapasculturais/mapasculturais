@@ -21,8 +21,6 @@ $this->breadcramb = [
 
     <mapas-breadcrumb></mapas-breadcrumb>
 
-    <messages></messages>
-
     <entity-header :entity="entity" :editable="true"></entity-header>
 
     <mapas-container>

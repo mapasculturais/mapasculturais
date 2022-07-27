@@ -25,7 +25,7 @@ app.component('entity-header', {
         switch(this.entity.__objectType) {
             case 'agent': 
                 this.icon = "fa-solid:user-friends";
-                this.titleEdit = __('title agent-1', 'entity-header');
+                this.titleEdit = (this.entity.type?.id == 1) ?  __('title agent-1', 'entity-header') : __('title agent-2', 'entity-header');
                 break;
             case 'project':
                 this.icon = "ri:file-list-2-line";

@@ -14,7 +14,6 @@ $this->import('
 <div class="panel-list panel-main-content">
     <header class="panel-header clearfix">
         <h2><?php i::_e('Papeis do sistema') ?></h2>
-        <messages></messages>
         <div style="float: right;">
             <system-roles--create-modal list="system-role:publish"><?php i::_e("adicionar novo papel") ?></system-roles--create-modal>
         </div>
