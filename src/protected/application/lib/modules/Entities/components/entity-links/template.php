@@ -17,19 +17,27 @@ use MapasCulturais\i;
                     </template>
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                            <div class="field">
-                                <label><?php i::_e('Título do link') ?></label>
-                                <input v-model="metalist.newData.title" type="text" />
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="field">
+                                        <label><?php i::_e('Título do link') ?></label>
+                                        <input class="input" v-model="metalist.newData.title" type="text" />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="field">
-                                <label><?php i::_e('Link') ?></label>
-                                <input v-model="metalist.newData.value" type="url" />
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="field">
+                                        <label><?php i::_e('Link') ?></label>
+                                        <input class="input" v-model="metalist.newData.value" type="url" />
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="actions">
-                                <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
-                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                                <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -60,19 +68,27 @@ use MapasCulturais\i;
 
         <template #default="{ close }">
             <form @submit="create().then(close); $event.preventDefault();" class="entity-links__newLink">
-                <div class="field">
-                    <label><?php i::_e('Título do link') ?></label>
-                    <input v-model="metalist.title" class="newLinkTitle" type="text" name="newLinkTitle" />
+                <div class="row">
+                    <div class="col-12">
+                        <div class="field">
+                            <label><?php i::_e('Título do link') ?></label>
+                            <input v-model="metalist.title" class="newLinkTitle" type="text" name="newLinkTitle" />
+                        </div>
+                    </div>
                 </div>
 
-                <div class="field">
-                    <label><?php i::_e('Link') ?></label>
-                    <input v-model="metalist.value" class="newLink" type="url" name="newLink" />
+                <div class="row">
+                    <div class="col-12">
+                        <div class="field">
+                            <label><?php i::_e('Link') ?></label>
+                            <input v-model="metalist.value" class="newLink" type="url" name="newLink" />
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="actions">
-                    <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
-                    <button class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
+                    <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                    <button class="button button--solid" type="submit"> <?php i::_e("Confirmar") ?> </button>
                 </div>
             </form>
         </template>
