@@ -72,7 +72,7 @@ $col-columns: 12;
     gap: size(32) 3%;
     margin: size(32) auto;
     max-width: size(1190);
-    padding: 0 size(10);
+    padding: 0 size(16);
     flex-wrap: wrap;
     
     @media (max-width: size(800)) {
