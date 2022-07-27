@@ -36,27 +36,26 @@ $this->import('loading confirm-button');
             </div>
 
             <div class="entity-actions__content--groupBtn">
-                <confirm-button v-if="entity.status != 1" @confirm="">
+                <confirm-button v-if="entity.status == 0" @confirm="">
                     <template #button="modal">
-                        <button  @click="modal.open()" class="button button--secondary btn">
+                        <button  @click="modal.open()" class="button button--md button--secondary">
                             <?php i::_e("Sair")?>
                         </button>
                     </template> 
                     <template #message="message">
                         <?php i::_e('Deseja sair?') ?>
                     </template> 
-                </confirm-button>
+                </confirm-button>              
 
-                
-
-                <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--secondary btn" >
+                <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md button--secondary" >
                     <?php i::_e("Salvar") ?>
                 </button>
 
-                <button v-if="entity.currentUserPermissions?.publish" @click="entity.publish()" class="button btn publish">
+                <button v-if="entity.status == 0 && entity.currentUserPermissions?.publish" @click="entity.publish()" class="button button--md publish">
                     <?php i::_e("Publicar") ?>
                 </button>
-                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="entity.save()" class="button btn publish publish-exit">
+
+                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md publish publish-exit">
                     <?php i::_e("Concluir Edição e Sair") ?>
                 </button>
             </div>
