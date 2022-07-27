@@ -6,10 +6,22 @@ $this->import('
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
-        mapas-container mapas-card');
+        entity-actions
+        mapas-container mapas-card mapas-breadcrumb
+        messages');
+
+$this->breadcramb = [
+    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label'=> i::__('Meus Espaços'), 'url' => $app->createUrl('panel', 'spaces')],
+    ['label'=> $entity->name, 'url' => $app->createUrl('space', 'edit', [$entity->id])],
+];
 ?>
 
 <div class="main-app">
+
+    <mapas-breadcrumb></mapas-breadcrumb>
+    
+    <messages></messages>
 
     <entity-header :entity="entity" :editable="true"></entity-header>
 
@@ -51,7 +63,7 @@ $this->import('
                 <div class="divider"></div>
 
                 <div class="right">
-                    <!-- <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms> -->
+                    <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Área de atuação"></entity-terms>
                     <entity-social-media :entity="entity" :editable="true"></entity-social-media>
                 </div>
                 
@@ -100,7 +112,9 @@ $this->import('
 
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Informações sobre o espaço"); ?></h2>
+                    <h2><?php i::_e("Informações sobre o espaço"); ?></h2>                    
+                </template>
+                <template #content>   
                     <div class="row">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="emailPublico"></entity-field>
@@ -126,10 +140,6 @@ $this->import('
                             <entity-field :entity="entity" label="Telefone privado 2" prop="telefone2"></entity-field>
                         </div>
                     </div>
-                    
-                </template>
-                <template #content>   
-                
                 </template>   
             </mapas-card>
             
@@ -189,5 +199,7 @@ $this->import('
         </aside>
 
     </mapas-container>
+
+    <entity-actions :entity="entity" />
 
 </div>
