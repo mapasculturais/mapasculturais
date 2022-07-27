@@ -5,7 +5,7 @@
     border: unset;
     bottom: 0;
     margin-top: 50px;
-    padding: size(24) size(10);
+    padding: size(24) size(16);
     position: -webkit-sticky;
     position: sticky;
     width: 100%;
@@ -26,26 +26,18 @@
                 flex-direction: row;
             }
 
-            .btn {
-                background: var(--mc-secondary-500);
-                color: var(--mc-low-500);
+            .button {
                 cursor: pointer;
-                font-weight: 600;
-                font-size: size(18);
-                font-family: var(--mc-font-body);
-                line-height: size(25);
-                padding: size(11) size(32);
                 
-                &.button--secondary {
-                    width: size(150);
-                }
                 &.publish {
                     background: var(--mc-high-500);
                     color: var(--mc-primary-500);
-                    padding: size(11) size(100);
+                    padding-left: size(100);
+                    padding-right: size(100);
                     
                     &-exit {
-                        padding: size(11) size(40);
+                        padding-left: size(40);
+                        padding-right: size(40);
                     }
                 }
             }
@@ -67,6 +59,7 @@
 
 @media(max-width: 950px){
     .entity-actions {
+        position: relative;
         &__content {
             flex-direction: column-reverse;
             align-items: center;    
