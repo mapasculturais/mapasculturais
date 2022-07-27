@@ -22,13 +22,17 @@ $this->import('confirm-button popover modal');
                     </template>
                     <template #default="popover">
                         <form @submit="rename(img, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                            <div class="field">
-                                <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="field">
+                                        <input v-model="img.newDescription" type="text" placeholder="<?php i::esc_attr_e("Informe a descrição da imagem") ?>"/>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="actions">
-                                <a class="button button--text"  @click="popover.close()"> <?php i::_e("Cancelar") ?> </a>
-                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                                <button class="button button--text" type="reset" @click="popover.close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
