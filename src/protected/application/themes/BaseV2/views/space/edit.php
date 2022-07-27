@@ -47,14 +47,24 @@ $this->breadcramb = [
                         </div>
 
                         <div class="col-9 col-sm-12">
-                            <entity-field :entity="entity" label="Nome do espaço" prop="name"></entity-field>
-                            <entity-field :entity="entity" label="Tipo do espaço" prop="type"></entity-field>
+                            <div class="rol">
+                                <div class="col-12">
+                                    <entity-field :entity="entity" label="Nome do espaço" prop="name"></entity-field>
+                                </div>
+                            </div>
+                            <div class="rol">
+                                <div class="col-12">
+                                    <entity-field :entity="entity" label="Tipo do espaço" prop="type"></entity-field>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
+                        </div>
+                        <div class="col-12">
                             <entity-field :entity="entity" label="Link para página ou site do espaço" prop="site"></entity-field>
                         </div>
                     </div>                    
