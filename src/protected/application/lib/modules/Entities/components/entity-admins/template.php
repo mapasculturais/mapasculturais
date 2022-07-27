@@ -4,7 +4,7 @@ use MapasCulturais\i;
 $this->import('select-entity confirm-button');
 ?>
 
-<div class="entity-admins" v-if="editable || group.length > 0">
+<div class="entity-related-agents" v-if="editable || group.length > 0">
 
     <h3><?php i::_e("Administradores")?></h3>
 
