@@ -27,11 +27,10 @@ $this->breadcramb = [
 
         <mapas-card class="feature">
             <template #title>
-                <h3 class="card__title--title"><?php i::_e("Informações de Apresentação")?></h3>
-                <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
+                <label><?php i::_e("Informações de Apresentação")?></label>
+                <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
             </template>
-            <template #content>
-                
+            <template #content>                
                 <div class="left">
                     <div class="row">
                         <div class="col-12">
@@ -75,15 +74,13 @@ $this->breadcramb = [
                         </div>
                     </div>
                 </div>
-                 
-
             </template>
         </mapas-card>
 
         <main>
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Dados Pessoais"); ?></h2>
+                    <label><?php i::_e("Dados Pessoais"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistema e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>                
@@ -167,7 +164,7 @@ $this->breadcramb = [
 
             <mapas-card>
                 <template #title>
-                    <h3><?php i::_e("Dados pessoais sensíveis"); ?></h3>
+                    <label><?php i::_e("Dados pessoais sensíveis"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
@@ -192,7 +189,7 @@ $this->breadcramb = [
 
             <mapas-card>
                 <template #title>
-                    <h3><?php i::_e("Mais informações públicas"); ?></h3>
+                    <label><?php i::_e("Mais informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
@@ -218,7 +215,6 @@ $this->breadcramb = [
         <aside>
             <mapas-card>
                 <template #content>
-
                     <div class="row">
                         <div class="col-12">
                             <entity-admins :entity="entity" :editable="true"></entity-admins>

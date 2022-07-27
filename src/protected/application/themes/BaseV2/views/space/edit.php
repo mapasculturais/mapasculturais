@@ -29,7 +29,7 @@ $this->breadcramb = [
 
         <mapas-card class="feature">
             <template #title>
-                <h3 class="card__title--title"><?php i::_e("Informações de Apresentação")?></h3>
+                <label class="card__title--title"><?php i::_e("Informações de Apresentação")?></label>
                 <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
             </template>
             <template #content>
@@ -84,7 +84,7 @@ $this->breadcramb = [
         <main>         
             <mapas-card>
                 <template #title>
-                    <h3 ><?php i::_e("Endereço do espaço"); ?></h3>
+                    <label ><?php i::_e("Endereço do espaço"); ?></label>
                 </template>
                 <template #content>   
                     <div class="row">
@@ -122,7 +122,7 @@ $this->breadcramb = [
 
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Informações sobre o espaço"); ?></h2>                    
+                    <label><?php i::_e("Informações sobre o espaço"); ?></label>                    
                 </template>
                 <template #content>   
                     <div class="row">
@@ -155,7 +155,7 @@ $this->breadcramb = [
             
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Mais informações públicas"); ?></h2>
+                    <label><?php i::_e("Mais informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>

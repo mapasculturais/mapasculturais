@@ -29,8 +29,8 @@ $this->breadcramb = [
 
         <mapas-card class="feature">
             <template #title>
-                <h3 class="card__title--title"><?php i::_e("Informações de Apresentação")?></h3>
-                <p class="card__title--description"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
+                <label><?php i::_e("Informações de Apresentação")?></label>
+                <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários")?></p>
             </template>
             <template #content>
                 
@@ -94,8 +94,8 @@ $this->breadcramb = [
         <main>         
             <mapas-card>
                 <template #title>
-                    <h3 class="card__title--title"><?php i::_e("Data, hora e local do evento"); ?></h3>
-                    <p class="card__title--description"><?php i::_e("Adicione data, hora e local da ocorrência do seu evento. Você pode várias ocorrências com informações diferentes."); ?></p>
+                    <label><?php i::_e("Data, hora e local do evento"); ?></label>
+                    <p><?php i::_e("Adicione data, hora e local da ocorrência do seu evento. Você pode várias ocorrências com informações diferentes."); ?></p>
                 </template>
                 <template #content>   
                 
@@ -104,7 +104,7 @@ $this->breadcramb = [
 
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Informações sobre o evento"); ?></h2>
+                    <label><?php i::_e("Informações sobre o evento"); ?></label>
                     <div class="row">
                         <div class="col-6">
                         </div>
@@ -126,7 +126,7 @@ $this->breadcramb = [
 
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Acessibilidade"); ?></h2>
+                    <label><?php i::_e("Acessibilidade"); ?></label>
                 </template>
                 <template #content>   
                 
@@ -135,7 +135,7 @@ $this->breadcramb = [
 
             <mapas-card>
                 <template #title>
-                    <h2><?php i::_e("Mais informações públicas"); ?></h2>
+                    <label><?php i::_e("Mais informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                 </template>
                 <template #content>
