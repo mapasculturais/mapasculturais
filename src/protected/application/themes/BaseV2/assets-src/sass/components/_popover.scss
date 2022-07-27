@@ -146,13 +146,15 @@
                 margin-top: 0;
             }
 
-            input[type="text"] {
+            .input {
                 border: 1px solid var(--mc-gray-100);
                 border-radius: size(5);
                 color: var(--mc-low);
                 font-size: size(16);
+                outline: 0;
                 padding: size(14);
                 width: 100%;
+                min-width: size(213);
             }
         }
 
