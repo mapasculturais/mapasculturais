@@ -2,7 +2,9 @@
 
 .home-header {
     display: flex;
-    max-height: size(510);
+    height: size(510);
+    max-width: size(1440);
+    margin: 0 auto;
 
     &__left {
         background-color: #0074C1;
@@ -52,9 +54,10 @@
 
         .img {
             align-items: stretch;
+            aspect-ratio: 24/17;
             display: flex;
             justify-content: center;
-            width: 100%;
+            height: 100%;
 
             img {
                 width: 100%;
@@ -62,4 +65,24 @@
         }
     }
 
+    @media (max-width: 800px) {
+        flex-direction: column;
+        min-height: size(510);
+
+        &__left {
+            padding: size(24);
+            justify-content: center;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        &__right {
+            .img {
+                height: unset;
+                width: 100%;
+            }
+        }
+    }
 }
