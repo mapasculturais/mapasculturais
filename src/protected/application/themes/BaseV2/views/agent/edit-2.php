@@ -78,18 +78,13 @@ $this->breadcramb = [
         <main>
             <mapas-card>
                 <template #title>
-                    <label><?php i::_e("Dados Pessoais"); ?></label>
-                    <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistema e não serão exibidos publicamente"); ?></p>
+                    <label><?php i::_e("Dados do Agente Coletivo"); ?></label>
                 </template>
                 <template #content>                
+                    
                     <div class="row">
                         <div class="col-12">
-                            <entity-field :entity="entity" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="documento"></entity-field>
+                            <entity-field :entity="entity" prop="documento" label="CNPJ"></entity-field>
                         </div>
                     </div>
                     <div class="row">
@@ -108,12 +103,10 @@ $this->breadcramb = [
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <entity-field :entity="entity" prop="telefone1"></entity-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <entity-field :entity="entity" prop="telefone2"></entity-field>
                         </div>
                     </div>
@@ -152,36 +145,7 @@ $this->breadcramb = [
                     <div class="row">
                         <!-- <entity-field :entity="entity" prop="publicLocation"></entity-field> -->
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <entity-field :entity="entity" prop="longDescription"></entity-field>
-                        </div>
-                    </div>
-                </template>
-            </mapas-card>
-
-            <mapas-card>
-                <template #title>
-                    <label><?php i::_e("Dados pessoais sensíveis"); ?></label>
-                    <p><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
-                </template>
-                <template #content>
-                    <div class="row">
-                        <div class="col-6 col-sm-12">
-                            <entity-field :entity="entity" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
-                        </div>
-                        <div class="col-6 col-sm-12">
-                            <entity-field :entity="entity" prop="genero" label="<?= i::__('Selecione o Gênero')?>" ></entity-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 col-sm-12">
-                            <entity-field :entity="entity" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
-                        </div>
-                        <div class="col-6 col-sm-12">
-                            <entity-field :entity="entity" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
-                        </div>
-                    </div>
+                    
                 </template>
             </mapas-card>
 
@@ -189,6 +153,11 @@ $this->breadcramb = [
                 <template #title>
                     <label><?php i::_e("Mais informações públicas"); ?></label>
                     <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-field :entity="entity" prop="longDescription" label="Descrição"></entity-field>
+                        </div>
+                    </div>
                 </template>
                 <template #content>
                     <div class="row">

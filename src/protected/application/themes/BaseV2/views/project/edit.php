@@ -2,19 +2,23 @@
 use MapasCulturais\i;
 $this->layout = 'entity'; 
 $this->import('
-        entity-header entity-cover entity-profile 
+        entity-header entity-cover entity-profile mapas-breadcrumb
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
         mapas-container mapas-card');
+        
+$this->breadcramb = [
+    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label'=> i::__('Meus Projetos'), 'url' => $app->createUrl('panel', 'projects')],
+    ['label'=> $entity->name, 'url' => $app->createUrl('project', 'edit', [$entity->id])],
+];
 ?>
 
 <div class="main-app">
 
     <mapas-breadcrumb></mapas-breadcrumb>
     
-    <messages></messages>
-
     <entity-header :entity="entity" :editable="true"></entity-header>
 
     <mapas-container>
@@ -83,7 +87,15 @@ $this->import('
                     <label><?php i::_e("Período de execução do projeto"); ?></label>
                 </template>
                 <template #content>   
-                
+                    <div class="row">
+                        <div class="col-6">
+                            <entity-field :entity="entity" label="<?php i::_e('Data inicial')?>" prop="registrationFrom"></entity-field>
+                        </div>
+                        <div class="col-6">
+                            <entity-field :entity="entity" label="<?php i::_e('Data Final')?>" prop="registrationTo"></entity-field>
+                        
+                        </div>
+                    </div>
                 </template>   
             </mapas-card>
 
