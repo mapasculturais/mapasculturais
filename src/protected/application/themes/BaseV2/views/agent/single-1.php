@@ -23,7 +23,7 @@ $this->import('
                 <h2>Descrição Detalhada</h2>
                 <p>{{entity.longDescription}}</p>
             </div>
-            <entity-files-list :files="entity.files.downloads" title="Arquivos para download"></entity-files-list>
+            <entity-files-list :entity="entity" group="downloads" title="Arquivos para download"></entity-files-list>
             <entity-gallery :entity="entity"></entity-gallery>
         </main>
         
