@@ -1,6 +1,6 @@
 @use '../settings/mixins' as *;
 
-.Event-1 {
+.controller-event {
     background-color: var(--mc-white);
     
     &.action-edit {

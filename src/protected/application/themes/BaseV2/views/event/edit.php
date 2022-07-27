@@ -6,10 +6,22 @@ $this->import('
         entity-field entity-terms entity-social-media 
         entity-links entity-gallery entity-gallery-video
         entity-admins entity-related-agents entity-owner
-        mapas-container mapas-card');
+        entity-actions
+        mapas-container mapas-card mapas-breadcrumb
+        messages');
+
+$this->breadcramb = [
+    ['label'=> i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
+    ['label'=> i::__('Meus Eventos'), 'url' => $app->createUrl('panel', 'events')],
+    ['label'=> $entity->name, 'url' => $app->createUrl('event', 'edit', [$entity->id])],
+];
 ?>
 
 <div class="main-app">
+
+    <mapas-breadcrumb></mapas-breadcrumb>
+
+    <messages></messages>
 
     <entity-header :entity="entity" :editable="true"></entity-header>
 
@@ -157,5 +169,7 @@ $this->import('
         </aside>
 
     </mapas-container>
+
+    <entity-actions :entity="entity" />
 
 </div>
