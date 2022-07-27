@@ -35,3 +35,6 @@ $this->import('loading');
 <confirm-button v-if="!entity.__processing && destroyButton && entity.status == <?= Entity::STATUS_TRASH ?>"
     @confirm="destroyEntity($event)"
     message="<?php i::esc_attr_e("Você está certo que deseja excluir definitivamente esta entidade?") ?>"><?php i::_e('Excluir permanentemente') ?></confirm-button>
+
+<a :href="entity.singleUrl" class="button button--outline"><?php i::_e('Acessar') ?></a> 
+<a :href="entity.editUrl" class="button button--primary"><?php i::_e('Editar') ?></a>
