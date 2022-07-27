@@ -47,14 +47,25 @@ $this->breadcramb = [
                         </div>
 
                         <div class="col-9 col-sm-12">
-                            <entity-field :entity="entity" label="Nome do Evento" prop="name"></entity-field>
-                            <entity-field :entity="entity" label="Subtítulo do evento" prop="subTitle"></entity-field>
+                            <div class="rol">
+                                <div class="col-12">
+                                    <entity-field :entity="entity" label="Nome do Evento" prop="name"></entity-field>
+                                </div>
+                            </div>
+                            <div class="rol">
+                                <div class="col-12">
+                                    <entity-field :entity="entity" label="Subtítulo do evento" prop="subTitle"></entity-field>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
+                        </div>
+
+                        <div class="col-12">
                             <entity-field :entity="entity" label="Link para página ou site do evento" prop="site"></entity-field>
                         </div>
                     </div>                    
@@ -63,8 +74,17 @@ $this->breadcramb = [
                 <div class="divider"></div>
 
                 <div class="right">
-                    <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
-                    <entity-social-media :entity="entity" :editable="true"></entity-social-media>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-social-media :entity="entity" :editable="true"></entity-social-media>
+                        </div>
+                    </div>
                 </div>
                 
 
