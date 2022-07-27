@@ -18,9 +18,7 @@ $this->breadcramb = [
 <div class="main-app edit-1">
 
     <mapas-breadcrumb></mapas-breadcrumb>
-    
-    <messages></messages>
-    
+            
     <entity-header :entity="entity" :editable="true"></entity-header>
 
     <mapas-container class="edit-1__content">
