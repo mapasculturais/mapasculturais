@@ -6,9 +6,11 @@ $this->import('modal');
 
 <div class="upload-example">
     
-    <modal title="<?php i::_e("Recorte a imagem") ?>">
+    <modal title="<?php i::_e("Recorte a imagem") ?>" @open="reset()">
         <template #default>
-            <div style="height:500px">
+            <input v-if="useDescription" v-model="description" placeholder="<?php i::esc_attr_e('Descrição da imagem') ?>">
+
+            <div style="height:500px; width:500px;">
                 <cropper
                     ref="cropper"
                     class="upload-example-cropper"
@@ -21,12 +23,12 @@ $this->import('modal');
 
         <template #button="modal">
             <label>
-                <slot></slot>
+                <slot :modal="modal" :blob="blob" :file="file" :blobUrl="blobUrl" :fileDescription="fileDescription" :upload="upload"></slot>
                 <input :id="group+<?= date("Ymd") ?>" type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
             </label>
         </template>
         <template #actions="modal">
-            <a class="button button--primary" @click="crop(modal)"><?php i::_e('Enviar Imagem') ?></a>
+            <a class="button button--primary" @click="crop(modal)"><?php i::_e('Recortar e subir imagem') ?></a>
             <a class="button button--secondary" @click="modal.close()"><?php i::_e('Cancelar') ?></a>
         </template>
     </modal>

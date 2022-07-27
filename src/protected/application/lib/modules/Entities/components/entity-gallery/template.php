@@ -52,27 +52,11 @@ $this->import('confirm-button popover modal');
     </div>
     
     <div v-if="editable" class="entity-gallery__addNew">
-        <modal title="Adicionar uma nova imagem" button-label="Adicionar uma nova imagem" >
-            <template #default>
-
-                <image-uploader :entity="entity" group="gallery" :circular="false">
-                    <template #default="modal">
-                        teste
-                    </template>
-                </image-uploader>
-
+        <image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
+            <template #default='uploader'>
+                <span class="button button--primary"><?php i::_e('Adicionar') ?></span>
             </template>
-            <template #button="modal">
-                <a @click="modal.open()" class="button button--primary button--icon button--primary-outline">
-                    <iconify icon="gridicons:plus"></iconify>
-                    <?php i::_e("Adicionar imagem")?>
-                </a>
-            </template>
-            <template #actions="modal">
-                <button class="button button--primary"><?php i::_e('Adicionar')?></button> <!-- @click="createPublic(modal)" -->
-                <button class="button button--text button--text-del"><?php i::_e('Cancelar')?></button> <!--  @click="cancel(modal)" -->
-            </template>
-        </modal>            
+        </image-uploader>
     </div>
 
     <div class="entity-gallery__full" v-if="images" :class="{ 'active': galleryOpen }">
