@@ -21,19 +21,27 @@ use MapasCulturais\i;
                     </template>
                     <template #default="{close}">
                         <form @submit="save(metalist).then(close); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
-                            <div class="field">
-                                <label><?php i::_e('Link do vídeo') ?></label>
-                                <input v-model="metalist.newData.value" type="url" />
-                            </div>
-                            
-                            <div class="field">
-                                <label><?php i::_e('Nome do vídeo') ?></label>
-                                <input v-model="metalist.newData.title" type="text" />
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="field">
+                                        <label><?php i::_e('Link do vídeo') ?></label>
+                                        <input v-model="metalist.newData.value" type="url" />
+                                    </div>
+                                </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="field">
+                                        <label><?php i::_e('Nome do vídeo') ?></label>
+                                        <input v-model="metalist.newData.title" type="text" />
+                                    </div>
+                                </div>
+                            </div>                            
+
                             <div class="actions">
-                                <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
-                                <button class="button button--primary"> <?php i::_e("Confirmar") ?> </button>
+                                <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
                     </template>
@@ -65,19 +73,27 @@ use MapasCulturais\i;
 
             <template #default="{ close }">
                 <form @submit="create().then(close); $event.preventDefault();">
-                    <div class="field">
-                        <label><?php i::_e('URL do vídeo') ?></label>
-                        <input v-model="metalist.value" class="newVideo" type="url" name="newVideo" />
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="field">
+                                <label><?php i::_e('URL do vídeo') ?></label>
+                                <input v-model="metalist.value" class="newVideo" type="url" name="newVideo" />
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="field">
-                        <label><?php i::_e('Título do vídeo') ?></label>
-                        <input v-model="metalist.title" class="newVideoDesc" type="text" name="newVideoDesc" />
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="field">
+                                <label><?php i::_e('Título do vídeo') ?></label>
+                                <input v-model="metalist.title" class="newVideoDesc" type="text" name="newVideoDesc" />
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="actions">
-                        <a class="button button--text"  @click="close()"> <?php i::_e("Cancelar") ?> </a>
-                        <button class="button button--solid"> <?php i::_e("Confirmar") ?> </button>
+                        <button class="button button--text" type="reset" @click="close()"> <?php i::_e("Cancelar") ?> </button>
+                        <button class="button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                     </div>
                 </form>
             </template>        
