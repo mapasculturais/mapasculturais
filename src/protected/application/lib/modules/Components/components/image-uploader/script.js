@@ -22,7 +22,7 @@ function getMimeType(file, fallback = null) {
 
 app.component('image-uploader', {
     template: $TEMPLATES['image-uploader'],
-    emits: ['uploaded'],
+    emits: ['uploaded', 'cropped'],
 
 	components: {
 		Cropper: VueAdvancedCropper.Cropper,
@@ -52,7 +52,11 @@ app.component('image-uploader', {
         height: {
             type: Number,
             required: false
-        }
+        },
+        useDescription: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
@@ -96,29 +100,64 @@ app.component('image-uploader', {
 				src: null,
 				type: null
 			},
+            description: '',
+            blob: null,
+            file: null,
+            modal: null,
 		};
 	},
+
+    computed: {
+        blobUrl () {
+            return this.blob ? URL.createObjectURL(this.blob) : '';
+        }
+    },
     
 	methods: {
 		crop(modal) {
             const mimeType = this.image.type;
             const filename = this.image.name;
-			const { canvas } = this.$refs.cropper.getResult()
+			const { canvas } = this.$refs.cropper.getResult();
+
+            this.modal = modal;
+
 			canvas.toBlob((blob) => {
-				const file = new File([blob], filename, { type: mimeType });
-                this.entity.upload(file, this.group).then((response) => {
-                    this.$emit('uploaded', this);
-                    modal.close();
-                });
+                this.blob = blob;
+                this.file = new File([this.blob], filename, { type: mimeType });
+                this.$emit('cropped', this);
+                this.upload();
 			}, this.image.type);
 		},
+
+        upload() {
+            if (!this.file) {
+                return false;
+            }
+
+            let data = {
+                group: this.group, 
+                description: this.description
+            };
+
+            this.entity.upload(this.file, data).then((response) => {
+                this.$emit('uploaded', this);
+                this.modal.close();
+            });
+
+            return true;
+        },
+
 		reset() {
-			this.image = {
+            this.file = null;
+            this.blob = null;
+            this.description = '';
+            this.image = {
                 name: null,
-				src: null,
-				type: null
-			}
+                src: null,
+                type: null
+            }
 		},
+
 		loadImage(event, modal) {
             modal.open();
 			// Reference to the DOM input element

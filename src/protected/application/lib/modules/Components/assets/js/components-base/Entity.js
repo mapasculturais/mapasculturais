@@ -269,12 +269,14 @@ class Entity {
         }
     }
 
-    async upload(file, group) {
+    async upload(file, {group, description}) {
         this.__processing = this.text('subindo arquivo');
 
         const data = new FormData();
         data.append(group, file);
-
+        if (description) {
+            data.append(`description[${group}]`, description);
+        }
         try{
             const res = await fetch(this.getUrl('upload'), {method: 'POST', body: data});
             return this.doPromise(res, (f) => {
