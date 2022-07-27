@@ -76,7 +76,12 @@ $this->breadcramb = [
                 <div class="right">
                     <div class="row">
                         <div class="col-12">
-                            <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
+                            <entity-field :entity="entity" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-terms :entity="entity" taxonomy="linguagem" :editable="true" title="Linguagens culturais"></entity-terms>
                         </div>
                     </div>
 
