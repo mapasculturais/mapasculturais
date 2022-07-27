@@ -19,7 +19,7 @@ $this->import('popover')
         <template v-if="allowInsert" #default="popover">
             <div class="entity-terms__tags">
                 <form class="entity-terms__tags--form" @submit="addTerm(filter, popover)">
-                    <input type="text" v-model="filter" class="entity-terms__tags--form-input" placeholder="<?= i::__('Adicione uma nova tag') ?>">
+                    <input type="text" v-model="filter" class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>">
                     <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
                         <iconify icon="gridicons:plus"></iconify>
                     </button>
