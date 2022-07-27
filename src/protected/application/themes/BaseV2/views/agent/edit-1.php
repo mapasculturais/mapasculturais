@@ -52,6 +52,9 @@ $this->breadcramb = [
                     <div class="row">
                         <div class="col-12">
                             <entity-field :entity="entity" prop="shortDescription"></entity-field>
+                        </div>
+
+                        <div class="col-12">
                             <entity-field :entity="entity" prop="site"></entity-field>
                         </div>
                     </div>                      
@@ -60,8 +63,17 @@ $this->breadcramb = [
                 <div class="divider"></div>
 
                 <div class="right">
-                    <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
-                    <entity-social-media :entity="entity" :editable="true"></entity-social-media>
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-terms :entity="entity" taxonomy="area" :editable="true" title="Áreas de interesse"></entity-terms>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <entity-social-media :entity="entity" :editable="true"></entity-social-media>
+                        </div>
+                    </div>
                 </div>
                  
 
