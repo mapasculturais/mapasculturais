@@ -12,12 +12,36 @@
         gap: size(20);
 
         &--name {
+            align-items: center;
             color: var(--mc-black);
+            display: flex;
             font-family: var(--mc-font-heading);
-            font-size: size(14);
+            font-size: size(16);
             font-style: normal;
             font-weight: 700;
-            line-height: size(19);
+            gap: size(14);
+            line-height: size(22);
+
+            .act {
+                align-items: center;
+                display: flex;
+                height: size(22);
+                justify-content: space-between;
+                width: size(48);
+    
+                a {
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: size(15);
+                    justify-content: center;
+                    padding: size(3.5);
+
+                    &:hover {
+                        color: var(--mc-gray-700);
+                    }
+                }
+            }
         }
 
         &--agents {
@@ -60,29 +84,6 @@
             align-items: center;
             display: flex;
             gap: 13px;
-
-            .act {
-                align-items: center;
-                background-color: var(--mc-gray-300);
-                border-radius: size(4);
-                display: flex;
-                height: size(30);
-                justify-content: space-evenly;
-                width: size(80);
-    
-                a {
-                    align-items: center;
-                    cursor: pointer;
-                    display: flex;
-                    font-size: size(15);
-                    justify-content: center;
-                    padding: size(7.5);
-
-                    &:hover {
-                        color: var(--mc-gray-700);
-                    }
-                }
-            }
         }
     }
 
