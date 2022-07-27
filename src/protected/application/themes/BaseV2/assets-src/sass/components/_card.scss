@@ -8,8 +8,15 @@
 
     &__title {
         margin-bottom: size(24);
+
+        label {
+            font-weight: 700;
+            font-size: size(24);
+            line-height: size(28);
+        }
+
         p {
-            margin: size(8) 0;
+            margin: size(8) 0 0;
             font-size: size(14);
             line-height: size(19);
         }
