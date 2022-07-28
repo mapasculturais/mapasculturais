@@ -1,6 +1,6 @@
 @use '../settings/mixins' as *;
 
-.card {
+.mapas-card {
     padding: size(25) size(24);
     background-color: var(--mc-white);
     border-radius: size(5);
@@ -37,7 +37,7 @@
             grid-column-end: 2;
         }
         
-        .card__content {
+        &__content {
             display: grid;
             grid-template-columns: 66% 7% 27%;
             flex-wrap: wrap;

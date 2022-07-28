@@ -1,8 +1,8 @@
-<div class="card">
-    <div class="card__title">
+<div class="mapas-card">
+    <div class="mapas-card__title">
         <slot name="title" />
     </div>
-    <div class="card__content">
+    <div class="mapas-card__content">
         <slot name="content" />
     </div>
 </div>
