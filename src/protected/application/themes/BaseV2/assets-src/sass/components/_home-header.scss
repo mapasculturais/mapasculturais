@@ -1,88 +1,92 @@
 @use '../settings/mixins' as *;
 
 .home-header {
-    display: flex;
-    height: size(510);
-    max-width: size(1440);
-    margin: 0 auto;
-
-    &__left {
-        background-color: #0074C1;
+    background-color: #0074C1;
+    &__content {
         display: flex;
-        flex-basis: 50%;
-        justify-content: flex-end;
-        padding: size(108) size(33);
-        position: relative;
-
-        &::before {
+        height: size(510);
+        margin: 0 auto;
+        max-width: size(1440);
+        &--left {
             background-color: #0074C1;
-            content: '';
-            height: 100%;
-            position: absolute;
-            right: -11px;
-            transform: skewX(-2deg);
-            top: 0;
-            width: 30px;
-        }
+            display: flex;
+            flex-basis: 50%;
+            justify-content: flex-end;
+            padding: size(108) size(33);
+            position: relative;
+    
+            &::before {
+                background-color: #0074C1;
+                content: '';
+                height: 100%;
+                position: absolute;
+                right: -11px;
+                transform: skewX(-2deg);
+                top: 0;
+                width: 30px;
+            }
+            
+            .content {
+                max-width: size(560);
+                color: var(--mc-high-500);
+    
+                &__title {
+                    display: flex;
+                    font-weight: 700;
+                    font-size: size(32);
+                    line-height: size(44);
+                    max-width: size(400);
+                }
         
-        &--content {
-            max-width: size(560);
-            color: var(--mc-high-500);
-
-            .title {
+                &__description {
+                    font-weight: 400;
+                    font-size: size(18);
+                    line-height: size(25);
+                }
+            }
+        }
+    
+        &--right {
+            align-items: center;
+            display: flex;
+            flex-basis: 50%;
+            justify-content: center;
+            overflow: hidden;
+    
+            .img {
+                align-items: stretch;
+                aspect-ratio: 24/17;
                 display: flex;
-                font-weight: 700;
-                font-size: size(32);
-                line-height: size(44);
-                max-width: size(400);
+                justify-content: center;
+                height: 100%;
+    
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    
+        @media (max-width: 800px) {
+            flex-direction: column;
+            min-height: size(510);
+    
+            &--left {
+                padding: size(24);
+                justify-content: center;
+    
+                &::before {
+                    display: none;
+                }
             }
     
-            .description {
-                font-weight: 400;
-                font-size: size(18);
-                line-height: size(25);
+            &--right {
+                .img {
+                    height: unset;
+                    width: 100%;
+                }
             }
         }
     }
 
-    &__right {
-        align-items: center;
-        display: flex;
-        flex-basis: 50%;
-        justify-content: center;
-        overflow: hidden;
-
-        .img {
-            align-items: stretch;
-            aspect-ratio: 24/17;
-            display: flex;
-            justify-content: center;
-            height: 100%;
-
-            img {
-                width: 100%;
-            }
-        }
-    }
-
-    @media (max-width: 800px) {
-        flex-direction: column;
-        min-height: size(510);
-
-        &__left {
-            padding: size(24);
-            justify-content: center;
-
-            &::before {
-                display: none;
-            }
-        }
-
-        &__right {
-            .img {
-                height: unset;
-                width: 100%;
-            }
-        }
-    }
+    
 }
