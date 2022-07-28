@@ -16,11 +16,11 @@
     text-decoration: none;
 
     &:hover {
-        opacity: 0.9;
+        filter: contrast(90%);
     }
 
     &:active {
-        opacity: 1;
+        filter: contrast(100%);
     }
 
     &.disabled {
