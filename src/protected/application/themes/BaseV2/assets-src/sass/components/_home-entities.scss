@@ -1,0 +1,33 @@
+@use '../settings/mixins' as *;
+
+
+.home-entities {
+    border:1px solid;
+    padding: size(60) size(16);
+    background-color: var(--mc-gray-300);
+    &__content {
+        &--header {
+            .title {
+                
+            }
+            .description {
+
+            }
+
+        }
+        &--cards {
+            .card {
+                display: flex;
+                &__left {
+                    flex-basis: 55%;
+                }
+                &__right{
+                    padding: size(24) size(32) size(13);
+                    flex-basis: 45%;
+                }
+
+            }
+        }
+    }
+       
+}
