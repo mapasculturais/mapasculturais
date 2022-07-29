@@ -8,7 +8,6 @@ app.component('entity-card', {
     },
 
     mounted() {
-        console.log(this.entity);
     },
 
     props: {
