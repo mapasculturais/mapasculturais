@@ -19,6 +19,13 @@
             font-weight: 700;
             font-size: size(32);
             line-height: size(44);
+            margin-top: size(4);
+
+            @media (max-width: size(800)) {
+                font-size: size(24);
+                line-height: size(28);
+                margin-top: size(11);
+            }
         }
         &--description {
             margin: size(24) 0;
@@ -26,6 +33,11 @@
             font-size: size(18);
             line-height: size(25);
             text-align: center;
+
+            @media (max-width: size(800)) {
+                font-size: size(16);
+                line-height: size(22);
+            }
         }
 
         &--link {
