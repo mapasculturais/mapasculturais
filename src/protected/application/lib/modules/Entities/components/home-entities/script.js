@@ -6,6 +6,6 @@ app.component('home-entities', {
     },
 
     methods: {
-        
+         
     },
 });

@@ -9,15 +9,24 @@ use MapasCulturais\i;
                 <?php i::_e('O que você encontra em Mapas Culturais,') ?>
             </label>
             <label class="description">
-                <?php i::_e('Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla. ,') ?>
+                <p></p><?php i::_e('Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum et, rhoncus semper et, nulla. ,') ?></p>
             </label>
         
         </div>
         <div class="home-entities__content--cards">
             <div class="card">
                 <div class="card__left">
-                    <div class="img">
-                        <iconify icon="fa-solid:user-friends"></iconify>
+                    <div class="card__left--content">
+                        <div class="card__left--content-icon opportunity__background">
+                        <iconify icon="icons8:idea"></iconify>
+                        </div>
+                        <div class="card__left--content-title">
+                            <label class="title">
+                                <?php i::_e('Oportunidades') ?>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="card__left--img">
                         <img src="<?php $this->asset('img/home/mapa.jpg') ?>" />
                     </div>
                 </div>
