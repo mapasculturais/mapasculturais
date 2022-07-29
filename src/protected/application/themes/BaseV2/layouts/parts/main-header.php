@@ -16,37 +16,37 @@ $this->import('popover messages main-menu');
     <ul class="main-header__menu">
         <li> 
             <a href="" class="main-header__menu--item home">
-                <span class="icon"> <iconify icon="fluent:home-12-regular" /> </span>
+                <span class="icon"> <iconify icon="fluent:home-12-regular"></iconify> </span>
                 <p class="label"> <?php i::_e('Home') ?> </p>      
             </a>  
         </li>
         <li>
             <a href="" class="main-header__menu--item opportunity">
-                <span class="icon opportunity__bg-hover"> <iconify icon="icons8:idea" /> </span>
+                <span class="icon opportunity__bg-hover"> <iconify icon="icons8:idea"></iconify> </span>
                 <p class="label"> <?php i::_e('Oportunidades') ?> </p>
             </a>
         </li>
         <li>
             <a href="" class="main-header__menu--item agent">
-                <span class="icon"> <iconify icon="fa-solid:user-friends" /> </span>
+                <span class="icon"> <iconify icon="fa-solid:user-friends"></iconify> </span>
                 <p class="label"> <?php i::_e('Agentes') ?> </p>
             </a>
         </li>
         <li> 
             <a href="" class="main-header__menu--item event">
-                <span class="icon"> <iconify icon="ant-design:calendar-twotone" /> </span>
+                <span class="icon"> <iconify icon="ant-design:calendar-twotone"></iconify>  </span>
                 <p class="label"> <?php i::_e('Eventos') ?> </p>
             </a>  
         </li>
         <li> 
             <a href="" class="main-header__menu--item space">
-                <span class="icon"> <iconify icon="clarity:building-line" /> </span>
+                <span class="icon"> <iconify icon="clarity:building-line"></iconify> </span>
                 <p class="label"> <?php i::_e('Espaços') ?> </p>       
             </a> 
         </li>
         <li> 
             <a href="" class="main-header__menu--item project">
-                <span class="icon"> <iconify icon="ri:file-list-2-line" /> </span>
+                <span class="icon"> <iconify icon="ri:file-list-2-line"></iconify> </span>
                 <p class="label"> <?php i::_e('Projetos') ?> </p>      
             </a> 
         </li>
@@ -59,7 +59,7 @@ $this->import('popover messages main-menu');
             
             <div class="main-header__options--loggedOff">
                 <a href="" class="logIn">
-                    <span><iconify icon="icon-park-outline:login" /></span>
+                    <span><iconify icon="icon-park-outline:login"></iconify></span>
                     Entrar
                 </a>
             </div>
@@ -68,8 +68,8 @@ $this->import('popover messages main-menu');
 
             <div class="main-header__options--loggedIn active">
                 <div class="notifications">
-                    <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline" /> </a>
-                    <a class="mobile" href=""> <iconify icon="eva:bell-outline" /> </a>
+                    <a class="desk" href=""> Notificações <iconify icon="eva:bell-outline"></iconify> </a>
+                    <a class="mobile" href=""> <iconify icon="eva:bell-outline"></iconify> </a>
                 </div>
 
                 <main-menu>
