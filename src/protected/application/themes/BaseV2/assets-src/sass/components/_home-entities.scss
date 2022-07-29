@@ -1,10 +1,10 @@
 @use '../settings/mixins' as *;
 
-
 .home-entities {
     border:1px solid;
     padding: size(60) size(16);
     background-color: var(--mc-gray-300);
+    
     &__content {
         &--header {
             .title {
@@ -12,6 +12,7 @@
                 font-size: 32px;
                 line-height: 44px;
             }
+
             .description {
                 font-weight: 400;
                 font-size: 18px;
@@ -19,15 +20,18 @@
             }
 
         }
+        
         &--cards {
             display: flex;
             flex-direction: column;
             gap: 16px;
             margin: 40px 0 20px;
+
             .card {
                 display: flex;
+
                 &__left {
-                        flex-basis: 55%;
+                    flex-basis: 55%;
                     width: size(648);
                     height: size(156);
                     overflow: hidden;
@@ -51,6 +55,7 @@
                             display: flex;
                             justify-content: center;
                             align-items: center;
+
                             .iconify {
                                 font-size: size(31);
                                 color: var(--mc-high-300);
@@ -89,9 +94,7 @@
                         margin: 0;
                     }
                 }
-
             }
         }
     }
-       
 }
