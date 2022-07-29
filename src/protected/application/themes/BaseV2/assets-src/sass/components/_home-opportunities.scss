@@ -49,7 +49,7 @@
                 display: flex;
                 font-size: size(20);
                 padding: size(15) size(34);
-                margin-left: -1px;
+                margin-left: size(-1);
 
                 .iconify {
                     font-size: size(16);
@@ -64,6 +64,12 @@
         .button.filter {
             .iconify {
                 font-size: size(24);
+            }
+
+            @media (max-width: size(800)) {
+                font-size: size(14);
+                padding: size(5) size(15);
+                gap: size(9);
             }
         }
     }

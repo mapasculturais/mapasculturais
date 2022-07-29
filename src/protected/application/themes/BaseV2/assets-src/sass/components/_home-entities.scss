@@ -41,8 +41,12 @@
             gap: size(16);
             margin: size(40) 0 size(20);
 
+            @media (max-width: size(800)) {
+                gap: size(24);
+            }
+
             .card {
-                border-radius: size(7);
+                border-radius: size(6);
                 display: flex;
                 overflow: hidden;
                 
@@ -64,6 +68,10 @@
                         gap: size(18);
                         max-width: size(1170);
                         margin: 0 auto;
+
+                        @media (max-width: size(800)) {
+                            padding: size(46) size(30);
+                        }
 
                         &-icon {
                             width:size(64);
@@ -105,6 +113,7 @@
                     display: flex;
                     flex-basis: 45%;
                     flex-direction: column;
+                    gap: size(8);
                     padding: size(24) size(32) size(13);
                     width: size(23);
                     justify-content: space-between;
@@ -115,6 +124,15 @@
                         font-size:size(16);
                         line-height:size(22);
                         margin: 0;
+                    }
+
+                    .button {
+                        padding: 0 size(7);
+                    }
+
+                    @media (max-width:size(800)) {
+                        align-items: flex-start;
+                        padding: size(24) size(14) size(13);
                     }
                 }
 
