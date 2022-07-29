@@ -34,12 +34,9 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="card__right">
-                    <p>
-                        {{opportunityText}}
-                    </p>
+                    <p>{{opportunityText}}</p>
                     <a class="button button--icon button--sm opportunity__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
-
             </div>
 
             <div class="card">
@@ -67,7 +64,6 @@ use MapasCulturais\i;
                     </p>
                     <a class="button button--icon button--sm event__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
-
             </div>
 
             <div class="card">
@@ -90,9 +86,7 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="card__right">
-                    <p>
-                        {{spaceText}}
-                    </p>
+                    <p>{{spaceText}}</p>
                     <a class="button button--icon button--sm space__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
 
@@ -118,12 +112,9 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="card__right">
-                    <p>
-                        {{agentText}}
-                    </p>
+                        <p>{{agentText}}</p>
                     <a class="button button--icon button--sm agent__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
-
             </div>
 
             <div class="card">
@@ -146,12 +137,9 @@ use MapasCulturais\i;
                 </div>
 
                 <div class="card__right">
-                    <p>
-                        {{projectText}}
-                    </p>
+                    <p>{{projectText}}</p>
                     <a class="button button--icon button--sm project__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
-
             </div>
         </div>
     </div>
