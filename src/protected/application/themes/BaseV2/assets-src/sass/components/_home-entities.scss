@@ -14,12 +14,23 @@
                 font-weight: 700;
                 font-size: size(32);
                 line-height: size(44);
+                @media (max-width: size(800)) {
+                    font-weight: 700;
+                    font-size: size(24);
+                    line-height: size(28);
+                }
             }
 
             .description {
                 font-weight: 400;
                 font-size: size(18);
                 line-height: size(25);
+
+                @media (max-width: size(800)) {
+                    font-weight: 400;
+                    font-size: size(16);
+                    line-height: size(22);
+                }
             }
 
         }
