@@ -35,7 +35,7 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>
-                        Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
+                        {{opportunityText}}
                     </p>
                     <a class="button button--icon button--sm opportunity__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
@@ -63,7 +63,7 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>
-                        Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
+                        {{eventText}}
                     </p>
                     <a class="button button--icon button--sm event__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
@@ -91,7 +91,7 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>
-                        Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
+                        {{spaceText}}
                     </p>
                     <a class="button button--icon button--sm space__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
@@ -119,7 +119,7 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>
-                        Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
+                        {{agentText}}
                     </p>
                     <a class="button button--icon button--sm agent__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
@@ -147,7 +147,7 @@ use MapasCulturais\i;
 
                 <div class="card__right">
                     <p>
-                        Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.
+                        {{projectText}}
                     </p>
                     <a class="button button--icon button--sm project__color"><?php i::_e('Ver todos')?><iconify icon="ooui:previous-rtl"></iconify> </a>
                 </div>
